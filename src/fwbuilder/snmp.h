@@ -469,7 +469,6 @@ class SNMPCrawler : public BackgroundOp
     unsigned int                 dns_threads  ;
     int                          dns_retries  ;
     int                          dns_timeout  ;
-    bool                         skip_virtual ;
 
     static const int  PTP_INTERFACE_TYPES[];
 
@@ -481,7 +480,6 @@ class SNMPCrawler : public BackgroundOp
     bool special     (const InetAddr &) const ;
     bool point2point (const InetAddrMask &, const InterfaceData&) const ;
     bool point2point (const InterfaceData&) const ;
-    bool isvirtual   (const InetAddr &, const std::string &) const ;
 
     std::list<InterfaceData> guessInterface(
         const IPRoute &r, const std::map<int, InterfaceData> &intf) const;
@@ -492,7 +490,6 @@ class SNMPCrawler : public BackgroundOp
     SNMPCrawler(const InetAddr &seed, 
                 const std::string &_community,
                 bool _recursive=true,
-                bool _skip_virtual=true,
                 bool _do_dns=true,
                 bool _follow_ptp=false,
                 unsigned int _dns_threads=10,
@@ -506,7 +503,6 @@ class SNMPCrawler : public BackgroundOp
     void init(const InetAddr &seed, 
 	      const std::string &_community,
 	      bool _recursive=true,
-              bool _skip_virtual=true,
               bool _do_dns=true,
               bool _follow_ptp=false,
               unsigned int _dns_threads=10,
@@ -520,8 +516,6 @@ class SNMPCrawler : public BackgroundOp
     std::set<InetAddrMask*> getNetworks();
         
     virtual void run_impl(Logger *logger,SyncFlag *stop_program)
-        throw(FWException);
-    void remove_virtual(Logger *logger,SyncFlag *stop_program)
         throw(FWException);
     void bacresolve_results(Logger *logger,SyncFlag *stop_program)
         throw(FWException);

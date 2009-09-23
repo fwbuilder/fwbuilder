@@ -93,8 +93,6 @@ public:
         
         bool checkComplexMatch(Host *obj1, FWObject *obj2);
         
-        bool checkComplexMatch(Firewall *obj1, FWObject *obj2);
-        
         bool checkComplexMatch(AddressRange *obj1, FWObject *obj2);
         
         bool checkComplexMatch(physAddress *obj1, FWObject *obj2);

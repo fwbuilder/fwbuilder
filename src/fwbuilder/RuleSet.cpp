@@ -125,14 +125,24 @@ FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
     return *this;
 }
 
-
-
-
-
-Rule* RuleSet::insertRuleAtTop() 
+/**
+ * Add new rule on top of the rule set. If hidden_rule arg is true,
+ * force new rule position number ot be negative. Make sure it grows
+ * backwards if there are other rules with negative position
+ * numbers. If the topmost rule has position > 0 for whatever reason,
+ * set hidden rule's position to -1 rather than 0.
+ *
+ * Hidden rules are those added by compilers automatically, such as
+ * automatic rule to permit ssh to the firewall or rules to permit
+ * vrrp and other protocols. These rules are constructed by compilers
+ * rather than defined by the user in the GUI.
+ */
+Rule* RuleSet::insertRuleAtTop(bool hidden_rule) 
 {
-    Rule *r=createRule();
-    r->setPosition( 0 );
+    Rule *r = createRule();
+    r->setHidden(hidden_rule);
+    if (hidden_rule) r->setPosition(-1);
+    else r->setPosition(0);
     insert(begin(), r);
     _adopt(r);
     renumberRules();
@@ -149,20 +159,23 @@ Rule* RuleSet::insertRuleBefore(int rule_n)
     return(r);
 }
 
-Rule* RuleSet::appendRuleAtBottom() 
+Rule* RuleSet::appendRuleAtBottom(bool hidden_rule) 
 {
-    Rule *r=createRule();
-    add( r );            // FWObject::add adds to the end of the list
+    Rule *r = createRule();
+    r->setHidden(hidden_rule);
+    int last_rule_position = Rule::cast(back())->getPosition();
+    if (hidden_rule) r->setPosition(last_rule_position + 1000);
+    add(r);            // FWObject::add adds to the end of the list
     renumberRules();
     return(r);
 }
 
 Rule* RuleSet::appendRuleAfter(int rule_n) 
 {
-    Rule *old_rule=getRuleByNum(rule_n);
-    Rule *r=createRule();
+    Rule *old_rule = getRuleByNum(rule_n);
+    Rule *r = createRule();
     if (old_rule==NULL) add(r);
-    else                insert_after(old_rule,r);
+    else insert_after(old_rule,r);
     renumberRules();
     return(r);
 }
@@ -174,8 +187,9 @@ bool RuleSet::deleteRule(int rule_n)
 
 bool RuleSet::deleteRule(Rule *r) 
 {
-    if (r!=NULL) {
-	remove(r,false);   // do not put in "Deleted objects"
+    if (r!=NULL)
+    {
+	remove(r, false);   // do not put in "Deleted objects"
 	renumberRules();
 	return(true);
     }
@@ -186,8 +200,8 @@ bool RuleSet::moveRuleUp(int rule_n)
 {
     if (rule_n==0) return(false);
 
-    FWObject* o   =getRuleByNum( rule_n );
-    FWObject* prev=getRuleByNum( rule_n-1 );
+    FWObject* o = getRuleByNum( rule_n );
+    FWObject* prev = getRuleByNum( rule_n-1 );
 
     swapObjects(prev,o);
     renumberRules();
@@ -198,8 +212,8 @@ bool RuleSet::moveRuleDown(int rule_n)
 {
     if (rule_n > (getRuleSetSize()-2) ) return(false);
 
-    FWObject* o   =getRuleByNum( rule_n );
-    FWObject* next=getRuleByNum( rule_n+1 );
+    FWObject* o = getRuleByNum( rule_n );
+    FWObject* next = getRuleByNum( rule_n+1 );
 
     swapObjects(o,next);
     renumberRules();
@@ -268,13 +282,47 @@ bool RuleSet::moveRule(int src_rule_n, int dst_rule_n)
 
 void RuleSet::renumberRules()
 {
+    if (size() == 0) return;
+
     FWObject *o;
-    list<FWObject*>::iterator m;
+    list<FWObject*>::iterator m, it;
     int rn;
 
-    for (rn=0,m=begin(); m!=end(); ++rn,++m) {
-	if ( (o=(*m))!=NULL && Rule::cast(o)!=NULL )   
-	    (Rule::cast(o))->setPosition( rn );
+    // first pass: find first not hidden rule; it will become rule #0
+    // Even though RuleSet object an only have Rule objects as
+    // children, I am checking for the child type everywhere in case
+    // we ever add another type of child.
+    it = begin();
+    for (; it!=end(); ++it)
+    {
+        Rule *rule = Rule::cast(*it);
+        if (rule && !rule->isHidden()) break;
+    }
+
+    list<FWObject*>::reverse_iterator rev_it(it);
+    list<FWObject*>::reverse_iterator rev_end(begin());
+    // rev_it points to the last hidden rule
+    rn = 0;
+    for (; it != end(); it++)
+    {
+        Rule *rule = Rule::cast(*it);
+        // there can be hidden rules at the bottom of policy
+        // Just do not change their position numbers.
+        if (rule && !rule->isHidden())
+        {
+            rule->setPosition(rn);
+            rn++;
+        }
+    }
+    rn = -1;
+    for (; rev_it != rev_end; rev_it++)
+    {
+        Rule *rule = Rule::cast(*rev_it);
+        if (rule && rule->isHidden())
+        {
+            rule->setPosition(rn);
+            rn--;
+        }
     }
 }
 

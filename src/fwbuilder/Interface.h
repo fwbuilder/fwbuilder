@@ -33,6 +33,7 @@
 #include <fwbuilder/physAddress.h>
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/ObjectMatcher.h>
+#include <fwbuilder/FWOptions.h>
 
 namespace libfwbuilder
 {
@@ -77,7 +78,16 @@ public:
 
         virtual bool  validateChild(FWObject *o);
 
+        virtual FWOptions* getOptionsObject();
+        virtual FWOptions* getOptionsObjectConst() const;
+
         DECLARE_FWOBJECT_SUBTYPE(Interface);
+
+        /**
+         *  helper-function, needed when dealing with sub-interfaces: function
+         *  returns the parent host (or firewall) of an interface.
+         */
+        FWObject* getParentHost() const;
 
         /**
          *   each interface must be associated with some security level. Level
@@ -87,13 +97,6 @@ public:
          */
         int  getSecurityLevel() const;
         void setSecurityLevel(int level);
-
-        /**
-         *   Convenience methods: interface is considered "external" if its
-         *   security level is 0
-         */
-        void setExt(bool value);
-        bool isExt() const ;
 
         /**
          * set and check 'dyn' attribute - for interfaces that get their
@@ -109,13 +112,27 @@ public:
         bool isUnnumbered() const ;
 
         /**
-         * set and check 'bridgeport' attribute.  The difference between
-         * bridge port and unnumbered interface is that compilers may use
-         * special modules or commands for bridge ports on platforms that
-         * support them, such as module physdev for iptables.
+         * Check if this is a bridge port. Bridge port is an
+         * interfaces with type "ethernet" that is a child of an
+         * interface with type "bridge". Type is defined in the
+         * InterfaceOptions object.  This is different from how it was
+         * in v3.0.x where bridge port was defined by an attribute
+         * "bridgeport" of the interface object.  There is no
+         * automatic conversion! User must conver their bridge port
+         * interfaces manually by dragging them under the bridge
+         * interface (typically br0) and setting the type
+         * appropriately.
+         *
          */
-        void setBridgePort(bool value);
-        bool isBridgePort() const ;
+        bool isBridgePort() const;
+
+        /**
+         * Check if this is a slave of bonding interface. Slave is an
+         * interfaces with type "ethernet" that is a child of an
+         * interface with type "bonding". Type is defined in the
+         * InterfaceOptions object. 
+         */
+        bool isSlave() const;
 
         /**
          * we often need to check if this is a regular interface
@@ -136,6 +153,8 @@ public:
 
         bool isUp () const { return ostatus; }
         void setOStatus(bool value);
+
+        bool isFailoverInterface() const;
 
         void setInterfaceType(int _snmp_type);
         int  getInterfaceType() const { return snmp_type; }
@@ -178,7 +197,7 @@ public:
 
         virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
         { return om->checkComplexMatch(this, obj); }
-};
+    };
 
 }
 

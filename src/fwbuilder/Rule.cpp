@@ -276,7 +276,7 @@ string PolicyRule::getDirectionAsString() const
     {
     case Inbound:   return "Inbound";
     case Outbound:  return "Outbound";
-    case Both:      return "Both";
+    default:        return "Both";
     }
     return "Both";
 }
@@ -399,7 +399,7 @@ FWOptions* PolicyRule::getOptionsObject()
 RuleSet*   PolicyRule::getBranch()
 {
     FWObject *fw = this;
-    while (fw && !Firewall::isA(fw)) fw = fw->getParent();
+    while (fw && Firewall::cast(fw) == NULL) fw = fw->getParent();
     assert(fw!=NULL);
     string branch_id = getOptionsObject()->getStr("branch_id");
     if (!branch_id.empty())

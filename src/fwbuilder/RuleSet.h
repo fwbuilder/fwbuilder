@@ -46,8 +46,6 @@ class RuleSet : public FWObject
 
     protected:
     
-    void   renumberRules();
-        
     public:
     
     RuleSet();
@@ -87,11 +85,11 @@ class RuleSet : public FWObject
     
     Rule* getRuleByNum(int n);
     
-    Rule* insertRuleAtTop();
+    Rule* insertRuleAtTop(bool hidden_rule=false);
     Rule* insertRuleBefore(int rule_n);
     
     Rule* appendRuleAfter(int rule_n);
-    Rule* appendRuleAtBottom();
+    Rule* appendRuleAtBottom(bool hidden_rule=false);
     
     bool  deleteRule(int rule_n);
     bool  deleteRule(Rule *r);
@@ -110,6 +108,8 @@ class RuleSet : public FWObject
     
     virtual bool isPrimaryObject() const { return false; }
 
+    void   renumberRules();
+        
 }; //__RULESET_HH_FLAG__
 
 }

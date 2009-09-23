@@ -2,11 +2,12 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2002 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
+
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -23,20 +24,27 @@
 
 */
 
+#ifndef __STATESYNCCLUSTERGROUP_HH_
+#define __STATESYNCCLUSTERGROUP_HH_
 
-#include "OSConfigurator.h"
+#include <fwbuilder/ClusterGroup.h>
 
-using namespace libfwbuilder;
-using namespace fwcompiler;
-using namespace std;
-
-OSConfigurator::~OSConfigurator() {}
-
-OSConfigurator::OSConfigurator(FWObjectDatabase *_db,
-                               Firewall *fw, bool ipv6_policy) :
-    Compiler(_db, fw, ipv6_policy)
+namespace libfwbuilder
 {
-    num_virtual_addresses_for_nat = 0;
-};
 
+    class StateSyncClusterGroup : public ClusterGroup
+    {
+    public:
+        StateSyncClusterGroup();
+        StateSyncClusterGroup(const FWObjectDatabase *root, bool prepopulate);
+        virtual ~StateSyncClusterGroup() {};
+
+        DECLARE_FWOBJECT_SUBTYPE(StateSyncClusterGroup);
+
+        virtual void fromXML(xmlNodePtr parent) throw(FWException);
+        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+    };
+}
+
+#endif /* __CLUSTERGROUP_HH_ */
 

@@ -35,6 +35,8 @@
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Interface.h>
+#include <fwbuilder/StateSyncClusterGroup.h>
+#include <fwbuilder/FailoverClusterGroup.h>
 #include <fwbuilder/Management.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
@@ -230,10 +232,91 @@ bool  Firewall::validateChild(FWObject *o)
 	     otype==FirewallOptions::TYPENAME ));
 }
 
+void Firewall::duplicateInterfaces(FWObject *target, const FWObject *source,
+                                   map<int,int> &id_mapping, bool preserve_id)
+{
+    for (FWObjectTypedChildIterator m = source->findByType(Interface::TYPENAME);
+         m!=m.end(); ++m ) 
+    {
+        FWObject *src_interface   = *m;
+        FWObject *dst_interface_copy = target->addCopyOf(src_interface, preserve_id);
+
+        id_mapping[src_interface->getId()] = dst_interface_copy->getId();
+        dst_interface_copy->destroyChildren();
+
+        for (FWObjectTypedChildIterator k=src_interface->findByType(IPv4::TYPENAME);
+             k!=k.end(); ++k ) 
+        {
+            FWObject *src_obj = *k;
+            FWObject *dst_obj_copy= dst_interface_copy->addCopyOf(src_obj,preserve_id);
+
+            if (src_obj!=NULL && dst_obj_copy!=NULL)
+                id_mapping[src_obj->getId()] = dst_obj_copy->getId();
+        }
+
+        for (FWObjectTypedChildIterator k=src_interface->findByType(IPv6::TYPENAME);
+             k!=k.end(); ++k ) 
+        {
+            FWObject *src_obj = *k;
+            FWObject *dst_obj_copy= dst_interface_copy->addCopyOf(src_obj,preserve_id);
+
+            if (src_obj!=NULL && dst_obj_copy!=NULL)
+                id_mapping[src_obj->getId()] = dst_obj_copy->getId();
+        }
+
+        for (FWObjectTypedChildIterator k = src_interface->findByType(physAddress::TYPENAME);
+             k!=k.end(); ++k ) 
+        {
+            FWObject *src_obj = *k;
+            FWObject *dst_obj_copy= dst_interface_copy->addCopyOf(src_obj,preserve_id);
+
+            if (src_obj!=NULL && dst_obj_copy!=NULL)
+                id_mapping[src_obj->getId()] = dst_obj_copy->getId();
+        }
+
+        for (FWObjectTypedChildIterator k = src_interface->findByType(InterfaceOptions::TYPENAME);
+             k!=k.end(); ++k )
+        {
+            FWObject *src_obj = *k;
+            FWObject *dst_obj_copy= dst_interface_copy->addCopyOf(src_obj,preserve_id);
+
+            if (src_obj!=NULL && dst_obj_copy!=NULL)
+                id_mapping[src_obj->getId()] = dst_obj_copy->getId();
+        }
+
+        if (Firewall::cast(target))
+        {
+            /*
+             * duplicate FailoverClusterGroup object of all interfaces
+             * this is actually used for Cluster object only atm.
+             *
+             * Do this only if @target is Firewall or Cluster, do not do
+             * this if @target is an interface because in the latter case
+             * this function copies subinterfaces and those don't have
+             * failover group child objects.
+             */
+            for (FWObjectTypedChildIterator k = src_interface->findByType(FailoverClusterGroup::TYPENAME);
+                 k!=k.end(); ++k )
+            {
+                FWObject *src_subinterface  = *k;
+                FWObject *dst_subinterface_copy = dst_interface_copy->addCopyOf(src_subinterface, preserve_id);
+
+                if (src_subinterface!=NULL && dst_subinterface_copy!=NULL)
+                    id_mapping[src_subinterface->getId()] = dst_subinterface_copy->getId();
+            }
+
+            duplicateInterfaces(dst_interface_copy, src_interface,
+                                id_mapping, preserve_id);
+        }
+    }
+}
+
 FWObject& Firewall::duplicate(const FWObject *obj,
                               bool preserve_id) throw(FWException)
 {
     string err="Error creating object with type: ";
+
+    map<int, int> id_mapping;
 
     checkReadOnly();
     bool xro=obj->getBool("ro"); 
@@ -244,6 +327,8 @@ FWObject& Firewall::duplicate(const FWObject *obj,
     setReadOnly(false);
 
     destroyChildren();
+
+    duplicateInterfaces(this, obj, id_mapping, preserve_id);
 
     for (FWObjectTypedChildIterator it = obj->findByType(Policy::TYPENAME);
          it != it.end(); ++it)
@@ -261,54 +346,23 @@ FWObject& Firewall::duplicate(const FWObject *obj,
         addCopyOf(*it, preserve_id);
     }
 
-    replaceRef(obj->getId(), getId() );
-
-    for (FWObjectTypedChildIterator m = obj->findByType(Interface::TYPENAME);
-         m!=m.end(); ++m ) 
-    {
-        FWObject *o   = *m;
-        FWObject *o1  = addCopyOf(o,preserve_id);
-
-        replaceRef(o->getId(),   o1->getId()   );
-
-        o1->destroyChildren();
-
-        for (FWObjectTypedChildIterator k=o->findByType(IPv4::TYPENAME);
-             k!=k.end(); ++k ) 
-        {
-            FWObject *oa = *k;
-            FWObject *oa1= o1->addCopyOf(oa,preserve_id);
-
-            if (oa!=NULL && oa1!=NULL)
-                replaceRef(oa->getId(),  oa1->getId() );
-        }
-
-        for (FWObjectTypedChildIterator k=o->findByType(IPv6::TYPENAME);
-             k!=k.end(); ++k ) 
-        {
-            FWObject *oa = *k;
-            FWObject *oa1= o1->addCopyOf(oa,preserve_id);
-
-            if (oa!=NULL && oa1!=NULL)
-                replaceRef(oa->getId(),  oa1->getId() );
-        }
-
-        for (FWObjectTypedChildIterator k = o->findByType(physAddress::TYPENAME);
-             k!=k.end(); ++k ) 
-        {
-            FWObject *opa = *k;
-            FWObject *opa1= o1->addCopyOf(opa,preserve_id);
-
-            if (opa!=NULL && opa1!=NULL)
-                replaceRef(opa->getId(),  opa1->getId() );
-        }
-    }
+    // replace references to old fw (obj) with references to this fw
+    id_mapping[obj->getId()] = getId();
 
     FWObject *o=obj->getFirstByType( Management::TYPENAME );
     addCopyOf(o,preserve_id);
 
     o=obj->getFirstByType( FirewallOptions::TYPENAME );
     addCopyOf(o,preserve_id);
+
+    // replace references to old objects in rules
+    map<int, int>::iterator it;
+    for (it=id_mapping.begin(); it!=id_mapping.end(); ++it)
+    {
+        int old_id = it->first;
+        int new_id = it->second;
+        replaceRef(old_id,  new_id);
+    }
 
     setDirty(true);
     if (xro)  setReadOnly(true);
@@ -367,5 +421,31 @@ bool   Firewall::getInactive()
 void   Firewall::setInactive(bool b)
 {
     setBool("inactive",b);
+}
+
+/*
+ * There are only two levels of interfaces, i.e. a top-level interface can only
+ * have a subinterface. Subinterfaces can not have further subinterfaces.
+ */
+list<Interface*> Firewall::getInterfacesByType(const string &iface_type)
+{
+    list<Interface*> res;
+
+    for (FWObjectTypedChildIterator it = findByType(Interface::TYPENAME);
+         it != it.end(); ++it)
+    {
+        Interface *iface = Interface::cast(*it);
+        if (iface->getOptionsObject()->getStr("type") == iface_type)
+            res.push_back(iface);
+
+        for (FWObjectTypedChildIterator subit = iface->findByType(Interface::TYPENAME);
+             subit != subit.end(); ++subit)
+        {
+            Interface *subiface = Interface::cast(*subit);
+            if (subiface->getOptionsObject()->getStr("type") == iface_type)
+                res.push_back(subiface);
+        }
+    }
+    return res;
 }
 

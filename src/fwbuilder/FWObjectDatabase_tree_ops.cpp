@@ -452,7 +452,7 @@ FWObject* FWObjectDatabase::recursivelyCopySubtree(FWObject *target,
 
     FWObject *nobj = _recursivelyCopySubtree(target, source, id_map,
                                              dedup_attribute);
-
+    
     fixReferences(nobj, id_map);
 
     // one more pass to fix references in other firewalls and groups

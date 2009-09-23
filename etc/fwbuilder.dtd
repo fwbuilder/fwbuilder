@@ -83,12 +83,13 @@ TODO:
 <!ELEMENT FWObjectDatabase (Library*)>
 <!ATTLIST FWObjectDatabase
  xmlns        CDATA     #FIXED "http://www.fwbuilder.org/1.0/"
- version      %STRING;  #FIXED "10"
+ version      %STRING;  #FIXED "12"
  lastModified %NUMBER;  #IMPLIED
  id           ID        #REQUIRED
 >
 
-<!ELEMENT Library ((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|Host|Firewall|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService)*)>
+<!ELEMENT Library
+((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService|UserService)*)>
 <!ATTLIST Library
  %STD_ATTRIBUTES;
  color   %STRING;  #IMPLIED
@@ -127,10 +128,29 @@ TODO:
        ref IDREF #REQUIRED
 >
 
-<!ELEMENT ObjectGroup ((ObjectGroup|Host|Firewall|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|AddressRange|ObjectRef)*)>
+<!ELEMENT ObjectGroup ((ObjectGroup|Host|Firewall|Cluster|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|AddressRange|ObjectRef)*)>
 <!ATTLIST ObjectGroup
  %STD_ATTRIBUTES;
 >
+
+<!--
+      **** Document structure, Cluster members. ****
+-->
+
+<!ELEMENT StateSyncClusterGroup (ObjectRef*, ClusterGroupOptions?)>
+<!ATTLIST StateSyncClusterGroup
+ %STD_ATTRIBUTES;
+ type         %STRING; #REQUIRED
+ master_iface IDREF    #IMPLIED
+>
+
+<!ELEMENT FailoverClusterGroup (ObjectRef*, ClusterGroupOptions?)>
+<!ATTLIST FailoverClusterGroup
+ %STD_ATTRIBUTES;
+ type         %STRING; #REQUIRED
+ master_iface IDREF    #IMPLIED
+>
+
 
 <!-- 
 
@@ -157,8 +177,10 @@ own compiler) we do not define content model for this element.
 <!ELEMENT NATRuleOptions    (Option*)>
 <!ELEMENT RoutingRuleOptions (Option*)>
 <!ELEMENT FirewallOptions   (Option*)>
+<!ELEMENT InterfaceOptions  (Option*)>
 <!ELEMENT HostOptions       (Option*)>
 <!ELEMENT GatewayOptions    (Option*)>
+<!ELEMENT ClusterGroupOptions (Option*)>
 
 <!-- 
       **** Document structure, rest ****
@@ -324,7 +346,7 @@ Interface can have the following attributes:
    - label          human-readable label of this interface
 
 -->
-<!ELEMENT Interface (IPv4*, IPv6*, physAddress?)>
+<!ELEMENT Interface (IPv4*, IPv6*, physAddress?, InterfaceOptions?, Interface*, FailoverClusterGroup?)>
 <!ATTLIST Interface
  %STD_ATTRIBUTES;
  dyn            %BOOLEAN;   #REQUIRED
@@ -502,6 +524,17 @@ Interface can have the following attributes:
  %STD_ATTRIBUTES;
  platform             %STRING;    #REQUIRED
  version              %STRING;    #IMPLIED
+ host_OS              %STRING;    #IMPLIED
+ lastModified         %NUMBER;    #IMPLIED
+ lastInstalled        %NUMBER;    #IMPLIED
+ lastCompiled         %NUMBER;    #IMPLIED
+ inactive             %BOOLEAN;   #IMPLIED
+>
+
+<!ELEMENT Cluster (NAT*, Policy*, Routing, Interface*, Management?, FirewallOptions?, StateSyncClusterGroup*)>
+<!ATTLIST Cluster
+ %STD_ATTRIBUTES;
+ platform             %STRING;    #REQUIRED
  host_OS              %STRING;    #IMPLIED
  lastModified         %NUMBER;    #IMPLIED
  lastInstalled        %NUMBER;    #IMPLIED

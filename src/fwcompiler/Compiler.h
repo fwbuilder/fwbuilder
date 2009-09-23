@@ -29,6 +29,7 @@
 #include <fwbuilder/libfwbuilder-config.h>
 #include "fwbuilder/FWException.h"
 
+#include "fwcompiler/BaseCompiler.h"
 #include "fwcompiler/RuleProcessor.h"
 
 #include <list>
@@ -44,6 +45,9 @@ namespace libfwbuilder {
     class FWObjectDatabase;
     class InetAddr;
     class Address;
+    class Cluster;
+    class FailoverClusterGroup;
+    class StateSyncClusterGroup;
     class Service;
     class Interval;
     class IPv4;
@@ -66,13 +70,6 @@ namespace libfwbuilder {
 namespace fwcompiler {
 
     class OSConfigurator;
-
-    class FWCompilerException : public libfwbuilder::FWException {
-	libfwbuilder::Rule *rule;
-	public:
-	FWCompilerException(libfwbuilder::Rule *r,const std::string &err);
-	libfwbuilder::Rule *getRule() const { return rule; }
-    };
 
 /* 
  * operations    (see Compiler_ops.cc)
@@ -121,10 +118,9 @@ namespace fwcompiler {
         libfwbuilder::Service *srv;
     };
 
-    class Compiler {
+    class Compiler : public BaseCompiler {
 
-        void _init(libfwbuilder::FWObjectDatabase *_db,
-                   const std::string &fwname);
+        void _init(libfwbuilder::FWObjectDatabase *_db, libfwbuilder::Firewall *fw);
 
         virtual void _expand_group_recursive(libfwbuilder::FWObject *o,
 				     std::list<libfwbuilder::FWObject*> &ol);
@@ -211,39 +207,33 @@ protected:
         * the following variables are simply a cache for frequently used
         * objects
         */
-        std::map<int, libfwbuilder::Interface*> fw_interfaces;
         int                                     fw_id;
         libfwbuilder::FWOptions                *fwopt;
-        std::map<int, libfwbuilder::FWObject*>  objcache;
-
-        /**
-         * stores object o and all its children in the cache, recursively
-         */
-        int cache_objects(libfwbuilder::FWObject *o);
-
 
 	public:
 
-	int                                debug;
-	int                                debug_rule;
-	bool                               verbose;
+	int  debug;
+	int  debug_rule;
+        bool rule_debug_on;
+	bool verbose;
+        bool single_rule_mode;
+        std::string single_rule_ruleset_name;
+        int single_rule_position;
 
-	fwcompiler::OSConfigurator        *osconfigurator;
-	libfwbuilder::FWObjectDatabase    *dbcopy;
-	libfwbuilder::Firewall            *fw;
+	fwcompiler::OSConfigurator *osconfigurator;
+	libfwbuilder::FWObjectDatabase *dbcopy;
+	libfwbuilder::Firewall *fw;
 
-        std::string                        ruleSetName;;
+        std::string ruleSetName;;
         
-	libfwbuilder::RuleSet             *source_ruleset;
-	libfwbuilder::RuleSet             *combined_ruleset;
-	libfwbuilder::RuleSet             *temp_ruleset;
+	libfwbuilder::RuleSet *source_ruleset;
+	libfwbuilder::RuleSet *combined_ruleset;
+	libfwbuilder::RuleSet *temp_ruleset;
 
-        libfwbuilder::Group               *temp;
+        libfwbuilder::Group *temp;
 
-	std::stringstream                  output;
-	std::stringstream                  errors_buffer;
+	std::stringstream output;
 
-        bool                               test_mode;
 
         void registerIPv6Rule() { countIPv6Rules++; }
         bool haveIPv6Rules() { return countIPv6Rules > 0; }
@@ -254,10 +244,10 @@ protected:
          * reference. Uses cache, therefore is faster than
          * RuleElement::getFirst(true)
          */
-        libfwbuilder::Address*   getFirstSrc(libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Address*   getFirstDst(libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Service*   getFirstSrv(libfwbuilder::PolicyRule *rule);
-        libfwbuilder::Interval*  getFirstWhen(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Address* getFirstSrc(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Address* getFirstDst(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Service* getFirstSrv(libfwbuilder::PolicyRule *rule);
+        libfwbuilder::Interval* getFirstWhen(libfwbuilder::PolicyRule *rule);
         libfwbuilder::Interface* getFirstItf(libfwbuilder::PolicyRule *rule);
         
         libfwbuilder::Address* getFirstOSrc(libfwbuilder::NATRule *rule);
@@ -453,6 +443,19 @@ protected:
             virtual bool processNext();
         };
 
+        /**
+         * Replace cluster interface object with corresponding real
+         * interface
+         */
+        class replaceFailoverInterfaceInRE : public BasicRuleProcessor
+        {
+            std::string re_type;
+            public:
+            replaceFailoverInterfaceInRE(const std::string &name,
+                      const std::string &t) : BasicRuleProcessor(name) { re_type=t; }
+            virtual bool processNext();
+        };
+
 	/**
 	 * generic rule debugger: prints name of the previous rule
 	 * processor in a chain and then a rule if its number is
@@ -460,6 +463,16 @@ protected:
 	 * Compiler::debugPrintRule to actually print the rule
 	 */
         class Debug : public BasicRuleProcessor
+        {
+            public:
+            virtual bool processNext();
+        };
+
+	/**
+         * this rule processor skips all rules except the one with ID
+         * set by call to setSingleRuleMode()
+	 */
+        class singleRuleFilter : public BasicRuleProcessor
         {
             public:
             virtual bool processNext();
@@ -482,12 +495,6 @@ protected:
         virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
 
         /**
-         * returns pointer to cached interface
-         */
-        libfwbuilder::Interface* getCachedFwInterface(int id)
-        { return fw_interfaces[id]; }
-
-        /**
          * returns cached firewall object ID
          */
         int getFwId() { return fw_id; }
@@ -497,19 +504,6 @@ protected:
          */
         libfwbuilder::FWOptions* getCachedFwOpt() { return fwopt; }
         
-        /**
-         *  stores object with given ID in the cache
-         */
-        void cacheObj(libfwbuilder::FWObject *o);
-
-        /**
-         * does cache lookup for object with given ID
-         */
-        libfwbuilder::FWObject* getCachedObj(int id)
-        {
-            return objcache[id];
-        }
-	
 	/**
 	 * internal: scans children of 's' and, if finds host or
 	 * firewall with multiple interfaces, replaces reference to
@@ -559,6 +553,14 @@ protected:
                           bool recognize_broadcasts=true,
                           bool recognize_multicasts=true);
 
+        /**
+         * Compares given object with firewall or its parent cluster
+         * (if any).  Compares only IDs of these objects. Relies on
+         * class CompilerDriver to set integer variable
+         * "parent_cluster_id" in the firewall object if it is a
+         * member of a cluster.
+         */
+        bool isFirewallOrCluster(libfwbuilder::FWObject *obj);
         
         /**
          * This method finds interface of obj2 (which is usually
@@ -583,39 +585,36 @@ protected:
         libfwbuilder::FWObject* findAddressFor(
             const libfwbuilder::Address *o1, const libfwbuilder::Address *o2);
         
-
-        /**
-         * prints error message and aborts the program. If compiler is
-         * in testing mode (flag test_mode==true), then just prints
-         * the error message and returns.
-         */
-	void abort(const std::string &errstr) throw(libfwbuilder::FWException);
-
-        /**
-         * prints an error message and returns
-         */
-	void error(const std::string &warnstr);
-
-        /**
-         * prints warning message
-         */
-	void warning(const std::string &warnstr);
-
 	virtual ~Compiler();
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db,
-		 const std::string &fwname, bool ipv6_policy);
+		 libfwbuilder::Firewall *fw, bool ipv6_policy);
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db,
-		 const std::string &fwname, bool ipv6_policy,
+		 libfwbuilder::Firewall *fw, bool ipv6_policy,
 		 fwcompiler::OSConfigurator *_oscnf);
 
 	Compiler(libfwbuilder::FWObjectDatabase *_db, bool ipv6_policy);
-        
+
+        /**
+         * overloaded methods: uses current firewall and ruleset objects
+         */
+        virtual void abort(const std::string &errstr) throw(libfwbuilder::FWException);
+        virtual void abort(libfwbuilder::FWObject *rule, const std::string &errstr)
+            throw(libfwbuilder::FWException);
+
+        virtual void error(const std::string &errstr);
+        virtual void error(libfwbuilder::FWObject *rule, const std::string &errstr);
+
+        virtual void warning(const std::string &errstr);
+        virtual void warning(libfwbuilder::FWObject *rule, const std::string &errstr);
+
 	void setDebugLevel(int dl) { debug=dl;       }
-	void setDebugRule(int dr)  { debug_rule=dr;  }
+	void setDebugRule(int dr)  { debug_rule = dr; rule_debug_on = true; }
 	void setVerbose(bool v)    { verbose=v;      }
-        void setTestMode()         { test_mode=true; }
+        void setSingleRuleCompileMode(const std::string &rule_id);
+        bool inSingleRuleCompileMode() { return single_rule_mode; }
+
         void setSourceRuleSet(libfwbuilder::RuleSet *rs) { source_ruleset = rs; }
         libfwbuilder::RuleSet* getSourceRuleSet() { return source_ruleset; }
 
@@ -624,8 +623,6 @@ protected:
         
 	std::string getCompiledScript();
         int getCompiledScriptLength();
-	std::string getErrors(const std::string &comment_sep);
-	bool haveErrorsAndWarnings();
 
 	void expandGroupsInRuleElement(libfwbuilder::RuleElement *s);
 
@@ -633,7 +630,7 @@ protected:
 	 * this method should return platform name. It is used 
 	 * to construct proper error and warning messages.
 	 */
-	virtual std::string myPlatformName() =0;
+	virtual std::string myPlatformName() { return ""; }
 
 	std::string getUniqueRuleLabel();
 
@@ -656,8 +653,6 @@ protected:
         void debugRule();
 
     };
-
-
 }
 
 #endif

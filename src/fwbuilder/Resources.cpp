@@ -49,6 +49,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Interface.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Tools.h"
 
@@ -219,6 +220,36 @@ bool    Resources::getResourceBool(const string& resource_path)
     return (res=="true" || res=="True");
 }
 
+/*
+ * Adds bodies of xml elements found directly under resource_path to
+ * the list<string> res
+ *
+ * <element1>
+ *   <element2>
+ *      <string>value1</string>
+ *      <string>value2</string>
+ *      <string>value3</string>
+ *      <string>value4</string>
+ *   </element2>
+ * </element1>
+ *
+ * here resorce_path="/element1/element2", returned list consists of
+ * strings value1,value2,value3,value4
+ */
+void Resources::getResourceStrList(const string& resource_path, list<string> &res)
+{
+    xmlNodePtr node = XMLTools::getXmlNodeByPath(root, resource_path.c_str());
+    if (node)
+    {
+        xmlNodePtr c;
+        for(c=node->xmlChildrenNode; c; c=c->next) 
+        {
+            if ( xmlIsBlankNode(c) ) continue;
+            res.push_back(getXmlNodeContent(c));
+        }
+    }
+}
+
 string  Resources::getObjResourceStr(const FWObject *obj,
                                      const string& resource_name)
 {
@@ -278,6 +309,11 @@ string  Resources::getCompiler()
 string  Resources::getInstaller()
 {
     return getResourceStr("/FWBuilderResources/Target/installer");
+}
+
+string  Resources::getTransferAgent()
+{
+    return getResourceStr("/FWBuilderResources/Target/transfer_agent");
 }
 
 vector<string> Resources::getListOfPlatforms()
@@ -438,6 +474,26 @@ void    Resources::setDefaultTargetOptions(const string &target,Firewall *fw)  t
         throw FWException("Support module for target '"+target+"' is not available");
 
     r->setDefaultOptionsAll(opt,"/FWBuilderResources/Target/options/default");
+}
+
+void    Resources::setDefaultIfaceOptions(const string &target,Interface *iface)
+        throw (FWException)
+{
+    FWOptions *opt=iface->getOptionsObject();
+    /* if InterfaceOptions object does not yet exist -> create one */
+    if (opt == NULL) {
+        iface->add(iface->getRoot()->create(InterfaceOptions::TYPENAME));
+        opt = iface->getOptionsObject();
+    }
+
+    Resources *r=NULL;
+
+    if (platform_res.count(target)!=0)      r=platform_res[target];
+    if (r==NULL && os_res.count(target)!=0) r=os_res[target];
+    if (r==NULL)
+        throw FWException("Support module for target '"+target+"' is not available");
+
+    r->setDefaultOptionsAll(opt,"/FWBuilderResources/Target/options/interface");
 }
 
 void    Resources::setDefaultOptions(Host *h)

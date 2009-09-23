@@ -60,6 +60,14 @@ class FirewallOptions : public FWOptions
     DECLARE_FWOBJECT_SUBTYPE(FirewallOptions);
 };
 
+class InterfaceOptions : public FWOptions
+{
+    public:
+    InterfaceOptions();
+    InterfaceOptions(const FWObjectDatabase *root,bool prepopulate);
+    DECLARE_FWOBJECT_SUBTYPE(InterfaceOptions);
+};
+
 class PolicyRuleOptions : public FWOptions 
 {
     public:
@@ -85,6 +93,14 @@ class RoutingRuleOptions : public FWOptions
     RoutingRuleOptions();
     RoutingRuleOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(RoutingRuleOptions);
+};
+
+class ClusterGroupOptions : public FWOptions
+{
+    public:
+    ClusterGroupOptions();
+    ClusterGroupOptions(const FWObjectDatabase *root,bool prepopulate);
+    DECLARE_FWOBJECT_SUBTYPE(ClusterGroupOptions);
 };
 
 }

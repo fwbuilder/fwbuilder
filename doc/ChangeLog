@@ -1,3 +1,143 @@
+2009-09-18  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (ItfNegation::processNext): fix for bug
+	#2710034 "PF Compiler in 3.0.3 Unprotected Interface Bug". When we
+	expand "interface" rule element which uses negation, skip
+	unprotected interfaces.
+
+2009-08-28  vadim  <vadim@vk.crocodile.org>
+
+	* Interface.cpp (Interface::getOptionsObjectConst): Added
+	Interface::getOptionsObjectconst(), Interface::isSlave()
+
+2009-08-24  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::processFailoverGroup): cluster
+	interface may not need an ip address, but this depends on the
+	failover protocol. Adding check for when the address is missing.
+	See #337
+
+2009-08-12  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler.cpp (classifyNATRule::processNext): fixed bug
+	#2836321: "SNAT rule that changes Trans Src and Trans Port does
+	not work". Dual translation rule that changes source address and
+	destination port was not supported.
+
+2009-08-03  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::_expandInterface): See #284:
+	PolicyCompiler::ExpandMultipleAddresses and
+	NATCompiler::ExpandMultipleAddresses should include subinterfaces
+
+2009-08-02  vadim  <vadim@vk.crocodile.org>
+
+	* Interface.cpp (Interface::validateChild): DTD does not allow
+	nested subinterfaces; only one level of subinterfaces is supported.
+	Interface::validateChild() now checks for this condition.
+
+2009-07-29  vadim  <vadim@vk.crocodile.org>
+
+	* snmp.h (class SNMPCrawler): Removed obsolete parameter
+	skip_virtual - we never ignore virtual addresses.
+
+2009-07-28  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::populateClusterElements): while
+	scanning interfaces-members of a failover group, use only those
+	that are children of the firewall that we are compiling. fixes
+	#242 "fwb_ipt generates duplicate automatic rules for heartbeat
+	and other protocols"
+
+2009-07-27  vadim  <vadim@vk.crocodile.org>
+
+	* Cluster.cpp (Cluster::getMembersList): cluster group members can
+	be references to interfaces and subinterfaces; this change adds
+	support for subinterfaces.
+
+2009-07-26  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::processFailoverGroup): While
+	adding a copy of cluster interface to the firewall, make sure it
+	has new unique ID instead of a copy of the ID of the cluster's
+	interface object. If the ID is the same,
+	RuleElementItf::validateChild() finds clusters' interface which is
+	not a child of the firewall object and therefore is rejected.
+
+2009-07-25  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.h (fwcompiler): Deprecated object caching in compiler,
+	fixes #228
+
+	* Cluster.cpp (Cluster::getMembersList): need to scan not only
+	StateSyncClusterGroup child objects but also all
+	FailoverClusterGroup objects in order to find all member
+	firewalls. The program used to look only at StateSyncClusterGroup
+	objects, which meant it did not recognize any members if state
+	sync group was empty. This fixes issue #4 in the bug #2826765:
+	"problems and suggestions for 3.1.0-b1187".
+
+2009-07-24  vadim  <vadim@vk.crocodile.org>
+
+	* Rule.cpp (PolicyRule::getBranch): fixed problem #4 "GUI crash
+	when setting action to be a chain." reported in the bug #2826765:
+	"problems and suggestions for 3.1.0-b1187". The GUI crashed when
+	policy rule in the cluster policy was set to action "Chain".
+
+2009-07-17  vadim  <vadim@vk.crocodile.org>
+
+	* Resources.cpp (Resources::getResourceStrList): This function
+	provides a way to create lists of parameters in resource files.
+
+	* fwbuilder.dtd.in (Library): fixed bug #2823424: "Deleting
+	UserService object breaks data file format". When user deleted
+	UserService object, it was moved to the "Deleted Objects" library
+	which broke XML file because DTD did not allow UserService element
+	as a child of Library
+
+2009-07-16  vadim  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase_11.xslt: Bumped data file format to 12; system
+	group "Clusters" moves to the top level of the tree. Fixes #167
+
+2009-07-13  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (checkForZeroAddr::findZeroAddress): followup
+	for bug #2820152: AddressRange object has an address but no
+	netmask. Have to check for getNetmaskPtr() == NULL where
+	necessary.
+
+2009-07-11  vadim  <vadim@vk.crocodile.org>
+
+	* AddressRange.h (libfwbuilder): fixed bug #2820152: "Address
+	ranges and other such need IPv4/v6 typing". AddressRange object
+	should be recognized and removed from the rule if it is used in
+	ipv6 rule set. To do this, add virtual method
+	hasInetAddress() (should return true) to indicate that this object
+	has an address. This works since virtual method getAddressPtr()
+	has been implemented anyway.
+
+	* VERSION (VERSION): started v3.0.6 in the current production branch
+
+2009-07-09  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::populateClusterElements): user
+	can now add loopback interface to the cluster object and use it in
+	rules. This interface does not have failover group and has the
+	usual 127.0.0.1/8 ip address. refers #163
+
+2009-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Firewall.cpp (Firewall::getIntrfacesByType()): Simple method to
+	get a list of pointers to all intrfaces of given type.
+
+        * Compiler_cluster.cpp (Compiler::processFailoverGroup): fixes
+        #166: cluster should be allowed to have interfaces with the same
+        name as interfaces of the member firewall (i.e. "eth0"). This is
+        necessary to support failover protocols that do not create virtual
+        interfaces, but rather operate over normal interfaces, such as
+        heartbeat.
+
 2009-06-24  vadim  <vadim@vk.crocodile.org>
 
 	* Rule.cpp (PolicyRule::getDirectionAsString): Direction
@@ -5,9 +145,34 @@
 	if it is not "Inbound" or "Outbound". This is a last-minute fix
 	which causes re-relase of 3.0.5
 
+2009-06-23  vadim  <vadim@vk.crocodile.org>
+
+	* InetAddr.cpp (InetAddr::init_from_string): Fixes #112: use strtol
+	instead of atoi so we can determine when the string could not be
+	converted entirely.
+
+2009-06-18  vadim  <vadim@vk.crocodile.org>
+
+	* Interface.cpp (Interface::isBridgePort): Refs #90 :
+	deprecated attribute "bridgeport" in Interface object, using
+	type set in the InterfaceOptions object.
+
+	* Firewall.cpp (Firewall::duplicateInterfaces): Fixes #142 : Copy
+	interfaces of the firewall before policies in
+	Firewall::duplicate() because interfaces might be referenced in
+	rules and should be coped before rule elements for the latter
+	to set up references to the copies.
+
 2009-06-17  vadim  <vadim@vk.crocodile.org>
 
 	* v3.0.5 released
+
+2009-06-14  vadim  <vadim@vk.crocodile.org>
+
+	* Interface.h (libfwbuilder): Ticket #55: deprecated isExt()
+	and setExt() methods. Platforms that care about interface being
+	external should use security levels. Currently this is only PIX
+	and it uses sec. levels already.
 
 2009-06-09  vadim  <vadim@vk.crocodile.org>
 
@@ -36,6 +201,38 @@
 	compiler". When a group included itself, compiler used to go
 	into infinite loop and crash.
 
+2009-06-01  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler_cluster.cpp (Compiler::processStateSyncGroup):
+	This method finds StateSyncClusterGroup objects and saves
+	essential parameters in the Interface objects of the firewall
+	so that compilers later can use this information to generate
+	script to confgure state synchronisation.
+
+	* IPService.cpp (IPService::addNamedProtocol): class IPService now
+	has internal mapping table of protocols numbers and names.  By
+	default it comes with a list of typical protocols "ip", "icmp",
+	"tcp" and "udp". More protocols can be added to the table using
+	IPService::addNamedProtocol() method. After that, method
+	IPService::getProtocolName() will return protocol name for the
+	registered named protocols. This facility replaces CARPService
+	class.
+
+2009-05-30  vadim  <vadim@vk.crocodile.org>
+
+	* CARPService.cpp: Added trivial CARPService class that defines IP
+	service with name "carp" and protocol number 112. There is no
+	standard object of this type at this time and no XML DTD
+	definition. Objects of this class are created internally by policy
+	compilers. This is the same as VRRPService object. The purpose of
+	having separate classes VRRPService and CARPService is to insert
+	protocol name "vrrp" and "carp" in generated scripts.
+
+	* Compiler.cpp (Compiler::_expand_group_recursive): ref #50:
+	ignore various FWOptions child objects while expanding groups. In
+	particular this skips ClusterGroupOptions object which is a child
+	of FailoverClusterGroup and StateSyncClusterGroup objects.
+
 2009-05-28  vadim  <vadim@vk.crocodile.org>
 
 	* InterfaceData.cpp (InterfaceData::guessSecurityLevel): set
@@ -57,11 +254,53 @@
 	items created in map<string,Resources*> when we try to get
 	resource for non-existent platform or host os.
 
+2009-05-08  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::IsFirewallOrCluster): This new method
+	compares given object with firewall or its parent cluster (if
+	any).  Compares only IDs of these objects. This operation is often
+	used in compilers to check if an object in source or destination
+	is firewall, however when policy belongs to a cluster, it is
+	cluster object that is usually found in rules and we need generic
+	method to check for both conditions. This method checks an object
+	if it is firewall or its parent cluster.
+
+	* PolicyCompiler.cpp (PolicyCompiler::prolog): compilers reassign
+	position numbers to rules before compilation to protect against
+	possible errors upstream. Positional rule numbers are almost not used
+	anywhere except for compiler debugging.
+
+2009-05-07  vadim  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase::_findFirewallByNameRecursive: Made this method
+	find both Firewall and Cluster objects in the database.
+
+	* RuleSet.cpp (RuleSet::insertRuleAtTop): methods insertRuleAtTop
+	and appendRuleAtBottom now accept argument "hidden_rule". If this
+	arg is true, added new rule becomes "hidden" (using
+	Rule::setHidden()). Method RuleSet::renumberRules() assigns
+	negative position numbers to hidden rules
+
 2009-04-20  vadim  <vadim@vk.crocodile.org>
 
 	* RuleElement.cpp: Additional validation to make sure Inteval
 	objects are not allowed in rule elements except for the
 	RuleElementInterval
+
+2009-04-17  vadim  <vadim@vk.crocodile.org>
+
+	* Cluster.cpp (Cluster::Cluster): Support for clusters of
+	firewalls.
+
+	* FWObjectDatabase_10.xslt: auto-upgrade transformation adds tree
+	branch Clusters
+
+	* VERSION: DTD version 11
+
+	* Merging patches from Secunet Security Networks AG to add support
+	for Secuwall firewall.
+
+	* VERSION: start v3.1.0 branch v3_1_secunet
 
 2009-04-09  vadim  <vadim@vk.crocodile.org>
 

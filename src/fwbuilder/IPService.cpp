@@ -31,30 +31,62 @@
 #include <fwbuilder/IPService.h>
 #include <fwbuilder/XMLTools.h>
 
+#include <iostream>
+
 using namespace libfwbuilder;
 using namespace std;
 
 const char *IPService::TYPENAME={"IPService"};
 
+std::map<int, std::string> IPService::named_protocols;
+
+
+void IPService::initNamedProtocols()
+{
+    if (IPService::named_protocols.size() == 0)
+    {
+        IPService::named_protocols[0] = "ip";
+        IPService::named_protocols[1] = "icmp";
+        IPService::named_protocols[6] = "tcp";
+        IPService::named_protocols[17] = "udp";
+    }
+}
+
 IPService::IPService() 
 {
     setStr("protocol_num", "");
+    IPService::initNamedProtocols();
 }
 
 IPService::IPService(const FWObjectDatabase *root,bool prepopulate) : Service(root,prepopulate)
 {
     setStr("protocol_num", "");
+    IPService::initNamedProtocols();
 }
 
 IPService::~IPService() {}
 
+void IPService::addNamedProtocol(int proto_num, const std::string &proto_name)
+{
+    // Call initialize function because we might be trying to register
+    // named protocol before any IPService objects have been created.
+    IPService::initNamedProtocols();
+    IPService::named_protocols[proto_num] = proto_name;
+}
+
+void IPService::setProtocolNumber(int n)
+{
+    setInt("protocol_num", n);
+}
+
 string IPService::getProtocolName()
 {
-    if      (getInt("protocol_num")==0)  return "ip";
-    else if (getInt("protocol_num")==1)  return "icmp";
-    else if (getInt("protocol_num")==6)  return "tcp";
-    else if (getInt("protocol_num")==17) return "udp";
-    else return getStr("protocol_num");
+    int proto_num = getInt("protocol_num");
+
+    if (IPService::named_protocols.count(proto_num) > 0)
+        return IPService::named_protocols[proto_num];
+    else
+        return getStr("protocol_num");
 }
 
 int    IPService::getProtocolNumber()

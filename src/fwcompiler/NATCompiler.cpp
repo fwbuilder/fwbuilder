@@ -52,7 +52,7 @@ int NATCompiler::prolog()
 {
     Compiler::prolog();
 
-    FWObject  *nat=fw->getFirstByType(NAT::TYPENAME);
+    NAT *nat = NAT::cast(fw->getFirstByType(NAT::TYPENAME));
     assert(nat);
 
     combined_ruleset = new NAT();
@@ -75,12 +75,14 @@ int NATCompiler::prolog()
 //    list<FWObject*> l3=nat->getByType(NATRule::TYPENAME);
 //    for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) {
 
-    FWObject *ruleset = source_ruleset;
+    RuleSet *ruleset = source_ruleset;
     if (ruleset == NULL)
     {
         source_ruleset = RuleSet::cast(nat);
         ruleset = nat;
     }
+
+    ruleset->renumberRules();
 
     combined_ruleset->setName(ruleset->getName());
     temp_ruleset->setName(ruleset->getName());
@@ -184,37 +186,63 @@ bool NATCompiler::classifyNATRule::processNext()
     bool tsrv_translates_src_port = false;
     bool tsrv_translates_dst_port = false;
 
-    if (TCPUDPService::cast(osrv))
+    if (TCPUDPService::cast(osrv) && TCPUDPService::cast(tsrv))
     {
         TCPUDPService *tu_osrv = TCPUDPService::cast(osrv);
-
-        osrv_defines_src_port =                                         \
-            (tu_osrv->getSrcRangeStart() != 0 && tu_osrv->getDstRangeStart() == 0);
-        osrv_defines_dst_port =                                         \
-            (tu_osrv->getSrcRangeStart() == 0 && tu_osrv->getDstRangeStart() != 0);
-    }
-
-    if (TCPUDPService::cast(tsrv))
-    {
         TCPUDPService *tu_tsrv = TCPUDPService::cast(tsrv);
 
-        tsrv_translates_src_port =                                      \
+        osrv_defines_src_port = 
+            (tu_osrv->getSrcRangeStart() != 0 && tu_osrv->getDstRangeStart() == 0);
+        osrv_defines_dst_port = 
+            (tu_osrv->getSrcRangeStart() == 0 && tu_osrv->getDstRangeStart() != 0);
+
+        tsrv_translates_src_port =
             (tu_tsrv->getSrcRangeStart() != 0 && tu_tsrv->getDstRangeStart() == 0);
-        tsrv_translates_dst_port =                                      \
+        tsrv_translates_dst_port =
             (tu_tsrv->getSrcRangeStart() == 0 && tu_tsrv->getDstRangeStart() != 0);
+
+        if (tsrv_translates_dst_port &&
+            tu_osrv->getDstRangeStart() == tu_tsrv->getDstRangeStart() &&
+            tu_osrv->getDstRangeEnd() == tu_tsrv->getDstRangeEnd())
+            tsrv_translates_dst_port = false;  // osrv and tsrv define the same ports
+
+        if (tsrv_translates_src_port &&
+            tu_osrv->getSrcRangeStart() == tu_tsrv->getSrcRangeStart() &&
+            tu_osrv->getSrcRangeEnd() == tu_tsrv->getSrcRangeEnd())
+            tsrv_translates_src_port = false;  // osrv and tsrv define the same ports
     }
 
     if (!osrv->isAny() && !tsrv->isAny() && !( *osrv == *tsrv ) )  // have operator==, but do not have operator!=
     {
         if (osrv->getTypeName() != tsrv->getTypeName())
-            compiler->abort("NAT rule can not change service types: " +
-                              osrv->getTypeName() + " to " +
-                              tsrv->getTypeName() + "; NAT rule: "+rule->getLabel());
+            compiler->abort(
+                                rule,
+                                "NAT rule can not change service types: " +
+                                osrv->getTypeName() + " to " +
+                                tsrv->getTypeName());
 
 //      rule->setRuleType(NATRule::DNAT);
 //	return true;
     }
 
+
+/*
+ * SDNAT rule is rather special. We should split it onto two normal
+ * rules, one SNAT and another DNAT and run this rule processor again
+ * for each. This algorithm should be implemented for each platform
+ * separately.  Platforms where it does not seem possible to implement
+ * at all should catch SDNAT rules and abort in their own
+ * verifyNATRule processor.
+ */
+    if (
+        ( ! tsrc->isAny() && ! tdst->isAny() ) ||
+        ( ! tsrc->isAny() && tsrv_translates_dst_port) ||
+        ( ! tdst->isAny() && tsrv_translates_src_port)
+    )
+    {
+        rule->setRuleType(NATRule::SDNAT);
+	return true;
+    }
 
     if (
         (! tsrc->isAny() && tdst->isAny()) ||
@@ -264,25 +292,7 @@ bool NATCompiler::classifyNATRule::processNext()
 	return true;
     }
 
-/*
- * SDNAT rule is rather special. We should split it onto two normal
- * rules, one SNAT and another DNAT and run this rule processor again
- * for each. This algorithm should be implemented for each platform
- * separately.  Platforms where it does not seem possible to implement
- * at all should catch SDNAT rules and abort in their own
- * verifyNATRule processor.
- */
-    if (
-        ( ! tsrc->isAny() && ! tdst->isAny() ) ||
-        ( ! tsrc->isAny() && tsrv_translates_dst_port) ||
-        ( ! tdst->isAny() && tsrv_translates_src_port)
-    )
-    {
-        rule->setRuleType(NATRule::SDNAT);
-	return true;
-    }
-
-    compiler->abort("Unsupported NAT rule: " + rule->getLabel());
+    compiler->abort(rule, "Unsupported NAT rule");
     return false;
 }
 
@@ -376,7 +386,8 @@ bool NATCompiler::checkForUnnumbered::processNext()
          compiler->catchUnnumberedIfaceInRE( rule->getODst() ) ||
          compiler->catchUnnumberedIfaceInRE( rule->getTSrc() ) ||
          compiler->catchUnnumberedIfaceInRE( rule->getTDst() ) )
-        compiler->abort("Can not use unnumbered interfaces in rules. Rule "+rule->getLabel());
+        compiler->abort(
+                            rule, "Can not use unnumbered interfaces in rules. ");
 
     tmp_queue.push_back(rule);
     return true;
@@ -658,10 +669,14 @@ bool NATCompiler::MACFiltering::processNext()
     if ( ! checkRuleElement(osrc) )
     {
         if (last_rule_lbl!=lbl)
-            compiler->warning( "MAC address matching is not supported. One or several MAC addresses removed from Original Source in the rule "+lbl);
+            compiler->warning(
+                
+                    rule, "MAC address matching is not supported. One or several MAC addresses removed from Original Source ");
 
         if (osrc->empty() || osrc->isAny())
-            compiler->abort("Original Source becomes 'Any' after all MAC addresses have been removed in the rule "+lbl);
+            compiler->abort(
+                
+                    rule, "Original Source becomes 'Any' after all MAC addresses have been removed");
 
         last_rule_lbl=lbl;
     }
@@ -670,10 +685,14 @@ bool NATCompiler::MACFiltering::processNext()
     if ( ! checkRuleElement(odst) )
     {
         if (last_rule_lbl!=lbl)
-            compiler->warning("MAC address matching is not supported. One or several MAC addresses removed from Original Destination in the rule "+lbl);
+            compiler->warning(
+                
+                    rule, "MAC address matching is not supported. One or several MAC addresses removed from Original Destination ");
 
         if (odst->empty() || odst->isAny())
-            compiler->abort("Original Destination becomes 'Any' after all MAC addresses have been removed in the rule "+lbl);
+            compiler->abort(
+                
+                    rule, "Original Destination becomes 'Any' after all MAC addresses have been removed");
 
         last_rule_lbl=lbl;
     }

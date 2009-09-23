@@ -33,6 +33,7 @@
 #include "fwbuilder/FWObjectReference.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
@@ -44,6 +45,7 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
@@ -67,30 +69,8 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-FWCompilerException::FWCompilerException(Rule *r,const string &err) : FWException(err)
-{
-    rule=r;
-}
-
 
 Compiler::~Compiler() {}
-
-int Compiler::cache_objects(FWObject *o)
-{
-    if ( o->getId() > -1 )  cacheObj(o);
-
-    int n=0;
-    for (FWObject::iterator i=o->begin(); i!=o->end(); ++i) {
-        n=n+1+cache_objects((*i));
-    }
-    return n;
-}
-
-void Compiler::cacheObj(libfwbuilder::FWObject *o)
-{
-    objcache[o->getId()]=o;
-}
-
 
 int Compiler::prolog() 
 {
@@ -98,21 +78,9 @@ int Compiler::prolog()
 
     fw->add(temp,false);
 
-/* caching firewall interfaces */
-    FWObjectTypedChildIterator j=fw->findByType(Interface::TYPENAME);
-    for ( ; j!=j.end(); ++j )
-    {
-        Interface *interface_ = Interface::cast(*j);
-        fw_interfaces[interface_->getId()] = interface_;
-    }
-    
     fw_id=fw->getId();
 
     fwopt = fw->getOptionsObject();
-
-/* caching all objects */
-
-    cache_objects( dbcopy );
 
     return 0;
 }
@@ -123,7 +91,37 @@ void Compiler::epilog()
     exit(1);
 }
 
-int    Compiler::getCompiledScriptLength()
+void Compiler::abort(const string &errstr) throw(FWException)
+{
+    BaseCompiler::abort(fw, source_ruleset, NULL, errstr);
+}
+
+void Compiler::abort(FWObject *rule, const string &errstr) throw(FWException)
+{
+    BaseCompiler::abort(fw, source_ruleset, rule, errstr);
+}
+
+void Compiler::error(const string &errstr)
+{
+    BaseCompiler::error(fw, source_ruleset, NULL, errstr);
+}
+
+void Compiler::error(FWObject *rule, const string &errstr)
+{
+    BaseCompiler::error(fw, source_ruleset, rule, errstr);
+}
+
+void Compiler::warning(const string &errstr)
+{
+    BaseCompiler::warning(fw, source_ruleset, NULL, errstr);
+}
+
+void Compiler::warning(FWObject *rule, const string &errstr)
+{
+    BaseCompiler::warning(fw, source_ruleset, rule, errstr);
+}
+
+int Compiler::getCompiledScriptLength()
 {
     return int(output.tellp());
 }
@@ -145,71 +143,49 @@ string Compiler::getCompiledScript()
     return res;
 }
 
-bool Compiler::haveErrorsAndWarnings()
-{
-    return (int(output.tellp()) > 0);
-}
-
-string Compiler::getErrors(const string &comment_sep)
-{
-    ostringstream ostr;
-    istringstream istr(errors_buffer.str());
-    while (!istr.eof())
-    {
-        string tmpstr;
-        getline(istr, tmpstr);
-        ostr << comment_sep << tmpstr << endl;
-    }
-    errors_buffer.str("");
-    return ostr.str();
-}
-
-void Compiler::_init(FWObjectDatabase *_db, const string &fwobjectname)
+void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
 { 
-    initialized=false;
-    _cntr_=1; 
+    initialized = false;
+    _cntr_ = 1; 
 
-    fw=NULL; 
-    temp_ruleset=NULL; 
-    combined_ruleset=NULL;
+    temp_ruleset = NULL; 
+    combined_ruleset = NULL;
 
-    debug=0;
-    debug_rule=-1;
-    verbose=true;
+    debug = 0;
+    debug_rule = -1;
+    rule_debug_on = false;
+    verbose = true;
+    single_rule_mode = false;
+    single_rule_ruleset_name = "";
+    single_rule_position = -1;
+
+    assert(_fw->getRoot() == _db);
+
+    string fw_str_id = FWObjectDatabase::getStringId(_fw->getId());
     
-    dbcopy=new FWObjectDatabase(*_db);  // copies entire tree
-
-    fw=dbcopy->findFirewallByName(fwobjectname);
-    if (fw==NULL) {
-	cerr << "Firewall object '" << fwobjectname << "' not found \n";
-	exit(1);
-    }
-
+    dbcopy = new FWObjectDatabase(*_db);  // copies entire tree
+    fw = Firewall::cast(dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_str_id)));
 }
 
-Compiler::Compiler(FWObjectDatabase *_db, 
-		   const string &fwobjectname, bool ipv6_policy)
+Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy)
 {
     source_ruleset = NULL;
     ruleSetName = "";
-    test_mode = false;
     osconfigurator = NULL;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
-    _init(_db,fwobjectname);
+    _init(_db, fw);
 }
 
-Compiler::Compiler(FWObjectDatabase *_db, 
-		   const string &fwobjectname, bool ipv6_policy,
+Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy,
 		   OSConfigurator *_oscnf)
 {
     source_ruleset = NULL;
     ruleSetName = "";
-    test_mode = false;
     osconfigurator = _oscnf;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
-    _init(_db,fwobjectname);
+    _init(_db, fw);
 }
 
 // this constructor is used by class Preprocessor, it does not call _init
@@ -217,7 +193,6 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
 {
     source_ruleset = NULL;
     ruleSetName = "";
-    test_mode = false;
     osconfigurator = NULL;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
@@ -228,7 +203,24 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
     combined_ruleset = NULL;
     debug = 0;
     debug_rule = -1;
+    rule_debug_on = false;
     verbose = true;
+    single_rule_mode = false;
+}
+
+void Compiler::setSingleRuleCompileMode(const string &rule_id)
+{
+    if (!rule_id.empty())
+    {
+        Rule *rule = Rule::cast(
+            dbcopy->findInIndex(FWObjectDatabase::getIntId(rule_id)));
+        if (rule)
+        {
+            single_rule_mode = true;
+            single_rule_position = rule->getPosition();
+            single_rule_ruleset_name = rule->getParent()->getName();
+        }
+    }
 }
 
 string Compiler::createRuleLabel(const std::string &prefix,
@@ -240,32 +232,6 @@ string Compiler::createRuleLabel(const std::string &prefix,
     str << rule_num << " ";
     str << "(" << txt << ")";
     return str.str();
-}
-
-void Compiler::abort(const string &errstr) throw(FWException)
-{
-    if (test_mode)
-        error(errstr);
-    else
-        throw FWException(errstr);
-}
-
-void Compiler::error(const string &errstr)
-{
-    cout << flush;
-    cerr << "Error (" << myPlatformName() << "): ";
-    cerr << errstr << endl;
-    errors_buffer << "Error (" << myPlatformName() << "): ";
-    errors_buffer << errstr << endl;
-}
-
-void Compiler::warning(const string &warnstr)
-{
-    cout << flush;
-    cerr << "Warning (" << myPlatformName() << "): ";
-    cerr << warnstr << endl;
-    errors_buffer << "Warning (" << myPlatformName() << "): ";
-    errors_buffer << warnstr << endl;
 }
 
 string Compiler::getUniqueRuleLabel()
@@ -285,6 +251,13 @@ void Compiler::compile()
 
 void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
 {
+/*
+ * ref #50: ignore various Options child objects. In particular this
+ * skips ClusterGroupOptions object which is a child of
+ * FailoverClusterGroup and StateSyncClusterGroup objects.
+ */
+    if (FWOptions::cast(o)) return;
+
 /* special case: MultiAddress. This class inherits ObjectGroup, but
  * should not be expanded if it is expanded at run time
  *
@@ -354,7 +327,7 @@ void Compiler::expandGroupsInRuleElement(RuleElement *s)
 void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
                                       list<FWObject*> &ol)
 {
-    Interface *rule_iface = fw_interfaces[rule->getInterfaceId()];
+    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(rule->getInterfaceId()));
     bool on_loopback= ( rule_iface && rule_iface->isLoopback() );
 
     list<FWObject*> addrlist;
@@ -389,7 +362,7 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
             continue;
         }
     }
-
+ 
     if (addrlist.empty())
     {
         if (RuleElement::cast(s)==NULL) ol.push_back(s);
@@ -431,7 +404,7 @@ void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
 /*
  * if this is unnumbered interface or a bridge port, then do not use it
  */
-    if (iface->isUnnumbered() || iface->isBridgePort()) return;
+//    if (iface->isUnnumbered() || iface->isBridgePort()) return;
 
 /*
  * if this is an interface with dynamic address, then simply use it
@@ -448,12 +421,11 @@ void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
  * we use physAddress only if Host option "use_mac_addr_filter" of the
  * parent Host object is true
  */
-    FWObject  *p;
-    FWOptions *hopt;
-    p = iface->getParent();
+    FWObject  *p = iface->getParentHost();
     Host *hp = Host::cast(p);
-    bool use_mac= (hp && (hopt = hp->getOptionsObject())!=NULL &&
-                   hopt->getBool("use_mac_addr_filter") ); 
+    if (hp==NULL) return;  // something is very broken
+    FWOptions *hopt = hp->getOptionsObject();
+    bool use_mac = (hopt!=NULL && hopt->getBool("use_mac_addr_filter")); 
 
     for (FWObject::iterator i1=iface->begin(); i1!=iface->end(); ++i1) 
     {
@@ -462,6 +434,15 @@ void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
         if (physAddress::cast(o)!=NULL)
         {
             if (use_mac) ol.push_back(o);
+            continue;
+        }
+
+        // Skip bridge ports
+        Interface *subint = Interface::cast(o);
+        if (subint)
+        {
+            if (subint->isBridgePort()) continue;
+            _expandInterface(subint, ol);
             continue;
         }
 
@@ -535,7 +516,6 @@ void Compiler::_expandAddressRanges(Rule*, FWObject *re)
                     h->setName(string("%n-")+(*i).toString()+string("%") );
                     h->setNetmask(*(i->getNetmaskPtr()));
                     h->setAddress(*(i->getAddressPtr()));
-                    cacheObj(h); // to keep cache consistent
                     dbcopy->add(h,false);
                     cl.push_back(h);
                 }
@@ -558,18 +538,16 @@ void Compiler::normalizePortRange(int &rs,int &re)
     if (rs!=0 && re==0) re=rs;
 }
 
-
-
 void Compiler::debugRule()
 {
     for (FWObject::iterator i=combined_ruleset->begin();
          i!=combined_ruleset->end(); i++)
     {
 	Rule *rule = Rule::cast( *i );
-        if ( rule->getPosition()==debug_rule )
+        if (rule_debug_on && rule->getPosition()==debug_rule )
         {
-            cout << debugPrintRule(rule);
-            cout << endl;
+            info(debugPrintRule(rule));
+            info("\n");
         }
     }
 }
@@ -593,7 +571,7 @@ string Compiler::debugPrintRule(libfwbuilder::Rule *rule)
 void Compiler::add(BasicRuleProcessor* rp) 
 { 
     rule_processors.push_back(rp); 
-    if (debug_rule>=0  && dynamic_cast<simplePrintProgress*>(rp)==NULL) 
+    if (rule_debug_on && dynamic_cast<simplePrintProgress*>(rp)==NULL) 
         rule_processors.push_back(new Debug());
 }
 
@@ -614,7 +592,11 @@ void Compiler::runRuleProcessors()
 
 void Compiler::deleteRuleProcessors()
 {
-
+    list<BasicRuleProcessor*>::iterator i=rule_processors.begin();
+    for ( ; i!=rule_processors.end(); ++i)
+    {
+        delete *i;
+    }
     rule_processors.clear();
 }
 
@@ -643,7 +625,8 @@ bool Compiler::Begin::processNext()
             tmp_queue.push_back( r );
         }
         init=true;
-        if (!name.empty()) cout << " " << name << endl << flush;
+        if (!name.empty())
+            compiler->info(string(" ") + name);
 
         return true;
     }
@@ -657,7 +640,12 @@ bool Compiler::printTotalNumberOfRules::processNext()
 
     slurp();
     if (tmp_queue.size()==0) return false;
-    if (compiler->verbose) cout << " processing " << tmp_queue.size() << " rules" << endl << flush;
+    if (compiler->verbose)
+    {
+        ostringstream str;
+        str << " processing " << tmp_queue.size() << " rules";
+        compiler->info(str.str());
+    }
     return true;
 }
 
@@ -668,7 +656,7 @@ bool Compiler::createNewCompilerPass::processNext()
 
     slurp();
     if (tmp_queue.size()==0) return false;
-    cout << pass_name << endl << flush;
+    compiler->info(pass_name);
     return true;
 }
 
@@ -680,19 +668,42 @@ bool Compiler::Debug::processNext()
     slurp();
     if (tmp_queue.size()==0) return false;
 
-    if (compiler->debug_rule>=0) {
-        string n=prev_processor->getName();
-        cout << endl << flush;
-        cout << "--- "  << n << " " << setw(74-n.length()) << setfill('-') << "-" << flush;
-
-        for (std::deque<Rule*>::iterator i=tmp_queue.begin(); i!=tmp_queue.end(); ++i) {
-            Rule *rule=Rule::cast(*i);
-            if ( rule->getPosition()==compiler->debug_rule ) {
-                cout << compiler->debugPrintRule(rule) << flush;
-                cout << endl << flush;
+    if (compiler->rule_debug_on)
+    {
+        string n = prev_processor->getName();
+        ostringstream str;
+        str << endl << "--- "  << n << " " << setw(74-n.length()) << setfill('-') << "-";
+        compiler->info(str.str());
+        for (std::deque<Rule*>::iterator i=tmp_queue.begin(); i!=tmp_queue.end(); ++i)
+        {
+            Rule *rule = Rule::cast(*i);
+            if (compiler->rule_debug_on && rule->getPosition()==compiler->debug_rule )
+            {
+                compiler->info(compiler->debugPrintRule(rule));
+                compiler->info("\n");
             }
         }
     }
+    return true;
+}
+
+bool Compiler::singleRuleFilter::processNext()
+{
+    assert(compiler!=NULL);
+    assert(prev_processor!=NULL);
+
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+
+    if (!compiler->single_rule_mode)
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+    if (compiler->single_rule_ruleset_name == compiler->ruleSetName &&
+        rule->getPosition() == compiler->single_rule_position)
+        tmp_queue.push_back(rule);
+
     return true;
 }
 
@@ -704,8 +715,8 @@ bool Compiler::simplePrintProgress::processNext()
     if (rl!=current_rule_label) {
             
         if (compiler->verbose) {
-            std::string s=" rule "+rl+"\n";
-            cout << s << flush;
+            std::string s=" rule "+rl;
+            compiler->info(s);
         }
 
         current_rule_label=rl;
@@ -721,7 +732,7 @@ bool Compiler::convertInterfaceIdToStr::processNext()
 
     if (rule->getInterfaceStr().empty())
     {
-        Interface *iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+        FWObject *iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
         string iface_name= (iface!=NULL) ? iface->getName() : "";
         rule->setInterfaceStr( iface_name );
     } else
@@ -828,7 +839,9 @@ void  Compiler::recursiveGroupsInRE::isRecursiveGroup(int grid, FWObject *obj)
         {
             if (o->getId()==grid || obj->getId()==o->getId())
             {
-                compiler->abort("Group '"+o->getName()+"' references itself recursively");
+                compiler->abort(
+                    
+                        "Group '" + o->getName() + "' references itself recursively");
             }
             isRecursiveGroup(grid,o);
             isRecursiveGroup(o->getId(),o);
@@ -922,10 +935,9 @@ bool Compiler::emptyGroupsInRE::processNext()
                 ostringstream  str;
                 str << "Empty group or address table object '"
                     << o->getName()
-                    << "' used in the rule "
-                    << rule->getLabel();
+                    << "'";
                 re->removeRef(o);
-                compiler->warning( str.str() );
+                compiler->warning(rule, str.str());
             }
             if (re->isAny())
             {
@@ -938,7 +950,7 @@ bool Compiler::emptyGroupsInRE::processNext()
                     << "Dropping rule "
                     <<  rule->getLabel()
                     << " because option 'Ignore rules with empty groups' is in effect";
-                compiler->warning( str.str() );
+                compiler->warning(rule,  str.str());
 
                 return true; // dropping this rule
             }
@@ -961,10 +973,9 @@ bool Compiler::emptyGroupsInRE::processNext()
                 << sfx
                 << " '"
                 << gr
-                << "' found in the rule "
-                << rule->getLabel()
+                << "'"
                 << " and option 'Ignore rules with empty groups' is off";
-            compiler->abort( str.str() );
+            compiler->abort(rule, str.str());
         }
     }
     tmp_queue.push_back(rule);
@@ -1020,7 +1031,6 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
                 mart->setId( mart_id );
                 compiler->dbcopy->addToIndex(mart);
                 compiler->dbcopy->add(mart);
-                compiler->cacheObj(mart);
             }
             re->removeRef(ma);
             re->addRef(mart);
@@ -1029,6 +1039,50 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
         return true;
     }
 
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+bool Compiler::replaceFailoverInterfaceInRE::processNext()
+{
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
+
+    // list of pointers to cluster interfaces used in the RE
+    list<Interface*> cl;
+    for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
+    {
+        Interface *intf = Interface::cast(FWReference::getObject(*i));
+        if (intf==NULL) continue;
+
+        // Remember that even if this interface used to be cluster
+        // interface, here we have its copy which belongs to the
+        // firewall. This is done in
+        // Compiler::processFailoverGroup. Dont use interface name to
+        // distinguish cluster interface. Better method is to check
+        // for the variable "cluster_interface".
+        if (intf->getOptionsObject()->getBool("cluster_interface"))
+            cl.push_back(intf);
+    }
+
+    if (!cl.empty())
+    {
+        for (list<Interface*>::iterator i=cl.begin(); i!=cl.end(); i++)
+        {
+            Interface *intf = *i;
+            string base_interface_id = intf->getOptionsObject()->getStr("base_interface_id");
+            if (!base_interface_id.empty())
+            {
+                FWObject *base_interface = compiler->dbcopy->findInIndex(
+                    FWObjectDatabase::getIntId(base_interface_id));
+                if (base_interface)
+                {
+                    re->removeRef(intf);
+                    re->addRef(base_interface);
+                }
+            }
+        }
+    }
     tmp_queue.push_back(rule);
     return true;
 }
@@ -1124,9 +1178,8 @@ bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)
             string errmsg =
                 string("catchUnnumberedIfaceInRE: Can't find object ") +
                 string("in cache, ID=") +
-                FWObjectDatabase::getStringId(refo->getPointerId()) +
-                "  rule " + rule->getLabel();
-            abort(errmsg);
+                FWObjectDatabase::getStringId(refo->getPointerId());
+            abort(re->getParent(), errmsg);
         }
         err |= ((iface=Interface::cast(o))!=NULL &&
                 (iface->isUnnumbered() || iface->isBridgePort())
@@ -1212,5 +1265,18 @@ Service* Compiler::getFirstTSrv(NATRule *rule)
     RuleElementTSrv *tsrv = rule->getTSrv();
     FWObject *o = FWReference::getObject(tsrv->front());
     return Service::cast(o);
+}
+
+/*
+ * Compares given object with firewall or its parent cluster (if any).
+ * Compares only IDs of these objects. Relies on class CompilerDriver
+ * to set integer variable "parent_cluster_id" in the firewall object
+ * if it is a member of a cluster.
+ */
+bool Compiler::isFirewallOrCluster(FWObject *obj)
+{
+    int fw_id = fw->getId();
+    int cluster_id = fw->getInt("parent_cluster_id");
+    return obj->getId() == fw_id || obj->getId() == cluster_id;
 }
 

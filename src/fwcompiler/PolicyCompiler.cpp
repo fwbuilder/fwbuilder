@@ -64,7 +64,7 @@ int PolicyCompiler::prolog()
 {
     Compiler::prolog();
 
-    FWObject *policy = fw->getFirstByType(Policy::TYPENAME);
+    Policy *policy = Policy::cast(fw->getFirstByType(Policy::TYPENAME));
     assert(policy);
 
     combined_ruleset = new Policy();   // combined ruleset (all interface policies and global policy)
@@ -75,12 +75,13 @@ int PolicyCompiler::prolog()
 
     int global_num=0;
 
-    FWObject *ruleset = source_ruleset;
+    RuleSet *ruleset = source_ruleset;
     if (ruleset == NULL)
     {
         source_ruleset = RuleSet::cast(policy);
         ruleset = policy;
     }
+    ruleset->renumberRules();
 
     combined_ruleset->setName(ruleset->getName());
     temp_ruleset->setName(ruleset->getName());
@@ -90,10 +91,12 @@ int PolicyCompiler::prolog()
 
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
     {
-	PolicyRule *r= PolicyRule::cast(*i);
+	PolicyRule *r = PolicyRule::cast(*i);
+
 	if (r->isDisabled()) continue;
 
-        RuleElementItf *itfre=r->getItf();   assert(itfre);
+        RuleElementItf *itfre = r->getItf();
+        assert(itfre);
 
         if (itfre->isAny())
         {
@@ -312,17 +315,25 @@ bool PolicyCompiler::cmpRules(PolicyRule &r1, PolicyRule &r2)
 bool PolicyCompiler::ItfNegation::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-//    FWOptions  *ruleopt =rule->getOptionsObject();
 
-    list<FWObject*> allInterfaces=compiler->fw->getByType(Interface::TYPENAME);
+    // Use getByTypeDeep() to pick subinterfaces (vlans and such)
+    list<FWObject*> all_interfaces = compiler->fw->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*> work_interfaces;
+
+    // skip unprotected interfaces bug #2710034 "PF Compiler in 3.0.3
+    // Unprotected Interface Bug"
+    for (FWObject::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+    {
+        Interface *intf = Interface::cast(*i);
+        if (intf && intf->isUnprotected()) continue;
+        work_interfaces.push_back(intf);
+    }
 
     RuleElementItf *itfre = rule->getItf();
     if (itfre==NULL)
     {
-        compiler->abort("Missing interface RE in rule '" +
-                        rule->getLabel() +
-                        "' id=" + FWObjectDatabase::getStringId(rule->getId())
-        );
+        compiler->abort(
+            rule, "Missing interface rule element");
     }
 
     if (itfre->getNeg())
@@ -330,11 +341,11 @@ bool PolicyCompiler::ItfNegation::processNext()
         for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
         {
             FWObject *o = FWReference::getObject(*i);
-            allInterfaces.remove(o);
+            work_interfaces.remove(o);
         }
         itfre->reset();
         itfre->setNeg(false);
-        for (FWObject::iterator i=allInterfaces.begin(); i!=allInterfaces.end(); ++i)
+        for (FWObject::iterator i=work_interfaces.begin(); i!=work_interfaces.end(); ++i)
             itfre->addRef(*i);
     }
 
@@ -366,7 +377,11 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
                 FWObject *o1 = FWReference::getObject(*i);
                 if (!Interface::isA(o1))
                 {
-                    compiler->warning("Object '" + o1->getName() + "', which is not an interface, is a member of the group '" + o->getName() + "' used in 'Interface' element of a rule.   Rule: " + rule->getLabel());
+                    compiler->warning(
+                        "Object '" + o1->getName() +
+                        "', which is not an interface, is a member of the group '" +
+                        o->getName() +
+                        "' used in 'Interface' element of a rule.");
                     continue;
                 }
                 PolicyRule *r= compiler->dbcopy->createPolicyRule();
@@ -676,9 +691,11 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
         
         if (addr==NULL && o!=NULL)
             compiler->warning(
-                string("findZeroAddress: Unknown object in rule element: ") +
-                o->getName() +
-                "  type=" + o->getTypeName());
+                
+                    re->getParent(), 
+                    string("findZeroAddress: Unknown object in rule element: ") +
+                    o->getName() +
+                    "  type=" + o->getTypeName());
 
         if (addr && addr->hasInetAddress())
         {
@@ -688,13 +705,18 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
                  Interface::cast(o)->isBridgePort()))
                 continue;
 
-            if ( ! addr->isAny() 
-                 && addr->getAddressPtr()->isAny()
-                 && addr->getNetmaskPtr()->isAny()
-            ) 
+            if ( ! addr->isAny())
             {
-                a = addr;
-                break;
+                const InetAddr *ad = addr->getAddressPtr();
+                const InetAddr *nm = addr->getNetmaskPtr();
+                // AddressRange has address but not netmask
+                // AddressRange with address 0.0.0.0 is acceptable
+                // (not equivalent to "any")
+                if (ad->isAny() && nm!=NULL && nm->isAny())
+                {
+                    a = addr;
+                    break;
+                }
             }
         }
     }
@@ -705,22 +727,21 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
 Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(
     RuleElement *re)
 {
-    Address *a=NULL;
-
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
         FWObject *o = FWReference::getObject(*i);
 	assert(o!=NULL);
         Host *addr = Host::cast(o);
-        // if host has child of type Interface, it must be first of the children
-        if (addr!=NULL && addr->front()!=NULL && Interface::isA(addr->front()))
+
+        if (addr!=NULL && addr->front()!=NULL)
         {
-            a=addr;
-            break;
+            FWObject::iterator it;
+            for (it=addr->begin(); it!=addr->end() && !Interface::isA(*it); ++it);
+            if (it==addr->end()) return addr; // has no interfaces
         }
     }
 
-    return a;
+    return NULL;
 }
 
 
@@ -738,10 +759,11 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
     if (a==NULL) a = findHostWithNoInterfaces( rule->getDst() );
 
     if (a!=NULL)
-        compiler->abort("Object '"+a->getName()+
-                        "' has no interfaces, therefore it does not have "
-                        "address and can not be used in the rule."+
-                        " Rule "+rule->getLabel());
+        compiler->abort(
+            
+                rule, "Object '"+a->getName()+
+                "' has no interfaces, therefore it does not have "
+                "address and can not be used in the rule.");
 
     a = findZeroAddress( rule->getSrc() );
     if (a==NULL) a = findZeroAddress( rule->getDst() );
@@ -762,9 +784,9 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
             }
         }
         err += " has address 0.0.0.0, which is equivalent to 'any'. "
-            "This is most likely an error. Rule " + rule->getLabel();
+            "This is likely an error.";
 
-        compiler->abort(err);
+        compiler->abort(rule, err);
     }
 
     tmp_queue.push_back(rule);
@@ -779,7 +801,9 @@ bool PolicyCompiler::checkForUnnumbered::processNext()
 
     if ( compiler->catchUnnumberedIfaceInRE( rule->getSrc() ) || 
          compiler->catchUnnumberedIfaceInRE( rule->getDst() ) )
-        compiler->abort("Can not use unnumbered interfaces in rules. Rule "+rule->getLabel());
+        compiler->abort(
+            
+                rule, "Can not use unnumbered interfaces in rules.");
 
     tmp_queue.push_back(rule);
     return true;
@@ -957,8 +981,9 @@ bool PolicyCompiler::DetectShadowing::processNext()
         if (r && r->getAbsRuleNumber() != rule->getAbsRuleNumber() && 
             ! (*r == *rule) ) 
         {
-            compiler->abort("Rule '" + r->getLabel() +
-             "' shadows rule '" + rule->getLabel() + "'  below it");
+            compiler->abort(
+                                r, "Rule '" + r->getLabel() +
+                                "' shadows rule '" + rule->getLabel() + "'  below it");
         }
     }
 
@@ -991,8 +1016,11 @@ bool PolicyCompiler::DetectShadowingForNonTerminatingRules::processNext()
         if (r && r->getAbsRuleNumber() != rule->getAbsRuleNumber() && 
             ! (*r == *rule) ) 
         {
-            compiler->abort("Non-terminating rule '" + rule->getLabel() +
-             "' shadows rule '" + r->getLabel() + "'  above it");
+            compiler->abort(
+                
+                    rule, 
+                    "Non-terminating rule '" + rule->getLabel() +
+                    "' shadows rule '" + r->getLabel() + "'  above it");
         }
     }
 
@@ -1031,10 +1059,17 @@ bool PolicyCompiler::MACFiltering::processNext()
     if ( ! checkRuleElement(src) )
     {
         if (last_rule_lbl!=lbl)
-            compiler->warning( "MAC address matching is not supported. One or several MAC addresses removed from source in the rule "+lbl);
+            compiler->warning(
+                
+                    rule, "MAC address matching is not supported. "
+                    "One or several MAC addresses removed from source in the rule");
 
         if (src->empty() || src->isAny())
-            compiler->abort("Source becomes 'Any' after all MAC addresses have been removed in the rule "+lbl);
+            compiler->abort(
+                
+                    rule, 
+                    "Source becomes 'Any' after all MAC addresses "
+                    "have been removed in the rule");
 
         last_rule_lbl=lbl;
     }
@@ -1043,10 +1078,18 @@ bool PolicyCompiler::MACFiltering::processNext()
     if ( ! checkRuleElement(dst) )
     {
         if (last_rule_lbl!=lbl)
-            compiler->warning("MAC address matching is not supported. One or several MAC addresses removed from destination in the rule "+lbl);
+            compiler->warning(
+                
+                    rule, 
+                    "MAC address matching is not supported. "
+                    "One or several MAC addresses removed from destination in the rule");
 
         if (dst->empty() || dst->isAny())
-            compiler->abort("Destination becomes 'Any' after all MAC addresses have been removed in the rule "+lbl);
+            compiler->abort(
+                
+                    rule, 
+                    "Destination becomes 'Any' after all MAC addresses "
+                    "have been removed in the rule ");
 
         last_rule_lbl=lbl;
     }
@@ -1069,7 +1112,13 @@ bool PolicyCompiler::CheckForTCPEstablished::processNext()
         if (s==NULL) continue;
 
         if (s->getEstablished())
-            compiler->abort(string("TCPService object with option \"established\" is not supported by firewall platform \"") + compiler->myPlatformName() + string("\". Use stateful rule instead."));
+            compiler->abort(
+                
+                    rule, 
+                    string("TCPService object with option \"established\" "
+                           "is not supported by firewall platform \"") +
+                    compiler->myPlatformName() +
+                    string("\". Use stateful rule instead."));
     }
 
     tmp_queue.push_back(rule);
@@ -1087,8 +1136,11 @@ bool PolicyCompiler::CheckForUnsupportedUserService::processNext()
         FWObject *o = FWReference::getObject(*i);
 
         if (UserService::isA(o))
-            compiler->abort(string("UserService object is not supported by ") +
-                            compiler->myPlatformName());
+            compiler->abort(
+                
+                    rule, 
+                    string("UserService object is not supported by ") +
+                    compiler->myPlatformName());
     }
 
     tmp_queue.push_back(rule);
@@ -1164,9 +1216,10 @@ string PolicyCompiler::debugPrintRule(Rule *r)
     RuleElementSrc *srcrel=rule->getSrc();
     RuleElementDst *dstrel=rule->getDst();
     RuleElementSrv *srvrel=rule->getSrv();
+    RuleElementItf *itfrel=rule->getItf();
 
     int iface_id = rule->getInterfaceId();
-    Interface *rule_iface = fw_interfaces[iface_id];
+    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(iface_id));
 
     ostringstream str;
 
@@ -1176,21 +1229,26 @@ string PolicyCompiler::debugPrintRule(Rule *r)
     FWObject::iterator i1=srcrel->begin();
     FWObject::iterator i2=dstrel->begin(); 
     FWObject::iterator i3=srvrel->begin();
-    while ( i1!=srcrel->end() || i2!=dstrel->end() || i3!=srvrel->end() ) {
+    FWObject::iterator i4=itfrel->begin();
 
+    while ( i1!=srcrel->end() || i2!=dstrel->end() || i3!=srvrel->end() ||
+            i4!=itfrel->end())
+    {
         str << endl;
 
         string src=" ";
         string dst=" ";
         string srv=" ";
+        string itf=" ";
 
         int src_id = -1;
         int dst_id = -1;
         int srv_id = -1;
 
-        if (srcrel->getNeg()) src="!";
-        if (dstrel->getNeg()) dst="!";
-        if (srvrel->getNeg()) srv="!";
+        if (srcrel->getNeg()) src = "!";
+        if (dstrel->getNeg()) dst = "!";
+        if (srvrel->getNeg()) srv = "!";
+        if (itfrel->getNeg()) itf = "!";
 
         if (i1!=srcrel->end())
         {
@@ -1213,6 +1271,12 @@ string PolicyCompiler::debugPrintRule(Rule *r)
             srv_id = o->getId();
         }
 
+        if (i4!=itfrel->end()) {
+            FWObject *o=*i4;
+            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            itf+=o->getName();
+        }
+
         int w=0;
         if (no==0) {
             str << rule->getLabel();
@@ -1224,6 +1288,7 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         str <<  setw(18) << setfill(' ') << src.c_str() << "(" << src_id << ")";
         str <<  setw(18) << setfill(' ') << dst.c_str() << "(" << dst_id << ")";
         str <<  setw(12) << setfill(' ') << srv.c_str() << "(" << srv_id << ")";
+        str <<  setw(8)  << setfill(' ') << itf.c_str();
 
         if (no==0)
         {
@@ -1239,7 +1304,67 @@ string PolicyCompiler::debugPrintRule(Rule *r)
         if ( i1!=srcrel->end() ) ++i1;
         if ( i2!=dstrel->end() ) ++i2;
         if ( i3!=srvrel->end() ) ++i3;
+        if ( i4!=itfrel->end() ) ++i4;
     }
     return str.str();
 }
 
+PolicyRule* PolicyCompiler::addMgmtRule(Address* const src,
+                                        Address* const dst,
+                                        Service* const service,
+                                        Interface* const iface,
+                                        PolicyRule::Direction direction,
+                                        PolicyRule::Action action,
+                                        const string &label)
+{
+    assert(combined_ruleset != NULL);
+
+    /* Insert PolicyRules at top so they do not get shadowed by other
+     * rules. Call insertRuleAtTop() with hidden_rule argument true to
+     * make sure this rule gets negative position number and does not
+     * shift positions of other rules. See ticket #16. Also, hidden
+     * rules are not considered for shadowing.
+     */
+
+    PolicyRule* rule = PolicyRule::cast(combined_ruleset->insertRuleAtTop(true));
+    assert(rule != NULL);
+
+    ostringstream str;
+    str << rule->getPosition() << " " << label << " (automatic)" ;
+    rule->setLabel(str.str());
+
+    FWObject *re;
+    re = rule->getSrc();  assert(re!=NULL);
+    RuleElementSrc::cast(re)->reset();
+    if(src != NULL)
+        re->addRef(src);
+
+    re = rule->getDst();  assert(re!=NULL);
+    RuleElementDst::cast(re)->reset();
+    if(dst != NULL)
+        re->addRef(dst);
+
+    re = rule->getSrv();  assert(re!=NULL);
+    RuleElementSrv::cast(re)->reset();
+    if(service != NULL)
+        re->addRef(service);
+
+    re = rule->getWhen(); assert(re!=NULL);
+    RuleElementInterval::cast(re)->reset();
+
+    re = rule->getItf(); assert(re!=NULL);
+    RuleElementItf::cast(re)->reset();
+    if(iface != NULL)
+    {
+        re->addRef(iface);
+        rule->setInterfaceId(iface->getId());
+    }
+
+    rule->add(dbcopy->create(PolicyRuleOptions::TYPENAME));
+    rule->setLogging(false);
+    rule->enable();
+    rule->setAction(action);
+    rule->setDirection(direction);
+    
+    return rule;
+}

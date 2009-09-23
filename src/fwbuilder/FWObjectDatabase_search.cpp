@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland vadim@fwbuilder.org
 
-  $Id: FWObjectDatabase_tree_ops.cpp 233 2008-12-23 05:27:43Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -97,10 +97,15 @@ void FWObjectDatabase::_findObjectsInGroup(Group *g, set<FWObject *> &res)
 /*
  ***********************************************************************
  */
+
+/**
+ * Find firewall object by name. Finds Firewall and Cluster objects.
+ */
 Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
                                          const string &name) throw(FWException)
 {
-    if (Firewall::isA(db) &&
+    // use Firewall::cast so that both Firewall and Cluster objects match
+    if (Firewall::cast(db) &&
         db->getName()==name &&
         db->getParent()->getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
         return static_cast<Firewall*>(db);
@@ -110,7 +115,7 @@ Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
     {
         FWObject *o=*j;
 
-        o = _findFirewallByNameRecursive(o,name);
+        o = _findFirewallByNameRecursive(o, name);
         if(o) return static_cast<Firewall*>(o);
     }
     if (db==this)
@@ -120,7 +125,7 @@ Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
 
 Firewall* FWObjectDatabase::findFirewallByName(const string &name) throw(FWException)
 {
-    return _findFirewallByNameRecursive(this,name);
+    return _findFirewallByNameRecursive(this, name);
 }
 
 //#define DEBUG_WHERE_USED 1

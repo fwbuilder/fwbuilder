@@ -15,6 +15,10 @@ SOURCES  = 	InetAddr.cpp \
 			CustomService.cpp \
 			dns.cpp \
 			Firewall.cpp \
+			Cluster.cpp \
+			ClusterGroup.cpp \
+			FailoverClusterGroup.cpp \
+			StateSyncClusterGroup.cpp \
 			FWException.cpp \
 			FWIntervalReference.cpp \
 			FWObject.cpp \
@@ -55,6 +59,7 @@ SOURCES  = 	InetAddr.cpp \
 			Rule.cpp \
 			RuleElement.cpp \
 			RuleSet.cpp \
+			SecuwallMgmtFile.cpp \
 			Service.cpp \
 			ServiceGroup.cpp \
 			snmp.cpp \
@@ -83,6 +88,10 @@ HEADERS  = 	inet_net.h \
 			CustomService.h \
 			dns.h \
 			Firewall.h \
+			Cluster.h \
+			ClusterGroup.h \
+			FailoverClusterGroup.h \
+			StateSyncClusterGroup.h \
 			FWException.h \
 			FWIntervalReference.h \
 			FWObjectDatabase.h \
@@ -123,6 +132,7 @@ HEADERS  = 	inet_net.h \
 			RuleElement.h \
 			Rule.h \
 			RuleSet.h \
+			SecuwallMgmtFile.h \
 			ServiceGroup.h \
 			Service.h \
 			snmp.h \

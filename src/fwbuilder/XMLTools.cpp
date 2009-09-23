@@ -221,8 +221,6 @@ void XMLTools::initXMLTools()
 string XMLTools::readFile(const std::string &rfile) throw(FWException)
 {
     string buf;
-    struct stat stt;
-    int         fd;
 
     if (rfile=="-")
     {

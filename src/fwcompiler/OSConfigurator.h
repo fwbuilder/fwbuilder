@@ -46,7 +46,7 @@ public:
 
 	virtual ~OSConfigurator();
 	OSConfigurator(libfwbuilder::FWObjectDatabase *_db,
-                       const std::string &fwname, bool ipv6_policy);
+                       libfwbuilder::Firewall *fw, bool ipv6_policy);
 
 	virtual void processFirewallOptions() =0;
 	virtual void addVirtualAddressForNAT(

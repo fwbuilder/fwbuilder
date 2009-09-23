@@ -30,10 +30,12 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/Interface.h>
+#include <fwbuilder/FailoverClusterGroup.h>
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/IPv4.h>
 #include <fwbuilder/IPv6.h>
 #include <fwbuilder/FWObjectDatabase.h>
+#include <fwbuilder/Resources.h>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -55,7 +57,6 @@ Interface::Interface():Address()
     setBool("dyn",false);
     setBool("unnum",false);
     setBool("unprotected",false);
-    setBool("bridgeport",false);
     setInt("security_level",0);
 
     bcast_bits       = 1    ;
@@ -70,12 +71,11 @@ Interface::Interface(const FWObjectDatabase *root,bool prepopulate) :
     setBool("dyn",false);
     setBool("unnum",false);
     setBool("unprotected",false);
-    setBool("bridgeport",false);
     setInt("security_level",0);
 
     bcast_bits       = 1    ;
     ostatus          = true ;
-    snmp_type        = -1   ;     
+    snmp_type        = -1   ;
 }
 
 Interface::~Interface() {}
@@ -145,13 +145,6 @@ void Interface::fromXML(xmlNodePtr root) throw(FWException)
         FREEXMLBUFF(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("bridgeport")));
-    if (n!=NULL)
-    {
-        setStr("bridgeport",n);
-        FREEXMLBUFF(n);
-    }
-
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("mgmt")));
     if (n!=NULL)
     {
@@ -202,10 +195,69 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
             o->toXML(me);
     }
 
+    o = getFirstByType(InterfaceOptions::TYPENAME);
+    if (o) o->toXML(me);
+
+    /*
+     * serialize ClusterGroup members (if any)
+     */
+    o = getFirstByType(FailoverClusterGroup::TYPENAME);
+    if (o) o->toXML(me);
+
+    /*
+     * serialize sub-interfaces (only for interfaces with advanced interface
+     * config mode enabled)
+     */
+    for(FWObjectTypedChildIterator j1=findByType(Interface::TYPENAME);
+        j1!=j1.end(); ++j1)
+    {
+        if((o=(*j1))!=NULL)
+            o->toXML(me);
+    }
+
     return me;
 }
 
+FWOptions* Interface::getOptionsObject()
+{
+    FWOptions *iface_opt = FWOptions::cast(getFirstByType(InterfaceOptions::TYPENAME));
 
+    if (iface_opt == NULL)
+    {
+        iface_opt = FWOptions::cast(getRoot()->create(InterfaceOptions::TYPENAME));
+        add(iface_opt);
+
+        // set default interface options
+        if (this->getParentHost() != NULL)
+        {
+            const string host_OS = this->getParentHost()->getStr("host_OS");
+            try
+            {
+                Resources::setDefaultIfaceOptions(host_OS, this);
+            } catch (FWException &ex)
+            {
+                // Resources::setDefaultIfaceOptions throws exception if it can't
+                // find resources module for the given host OS.
+                ;
+            }
+        }
+    }
+    return iface_opt;
+}
+
+FWOptions* Interface::getOptionsObjectConst() const
+{
+    FWOptions *iface_opt = FWOptions::cast(getFirstByType(InterfaceOptions::TYPENAME));
+    if (iface_opt == NULL)
+        cerr << "Interface "
+             << getName()
+             << " ("
+             << getPath()
+             << ") "
+             << " has no options object; late initialization failure"
+             << endl;
+    return iface_opt;
+}
 
 int  Interface::getSecurityLevel() const
 {
@@ -217,21 +269,6 @@ void Interface::setSecurityLevel(int level)
     setInt("security_level",level);
 }
 
-bool Interface::isExt() const 
-{ 
-    return( getInt("security_level")==0 );
-}
-
-/**
- *   if parameter value is true, then security level is set to 0 (least secure,
- *   or "outside")
- *   if parameter value is false, then current security level is set to 100
- */
-void Interface::setExt(bool external)
-{
-    setInt("security_level",(external)?0:100);
-}
-
 void Interface::setDyn(bool value) { setBool("dyn",value); }
 bool Interface::isDyn() const { return(getBool("dyn")); }
 
@@ -240,9 +277,6 @@ bool Interface::isUnnumbered() const { return getBool("unnum"); }
 
 void Interface::setUnprotected(bool value) { setBool("unprotected",value); }
 bool Interface::isUnprotected() const { return getBool("unprotected"); }
-
-void Interface::setBridgePort(bool value) { setBool("bridgeport",value); }
-bool Interface::isBridgePort() const { return getBool("bridgeport"); }
 
 void Interface::setManagement(bool value) { setBool("mgmt",value); }
 bool Interface::isManagement() const { return (getBool("mgmt")); }
@@ -256,15 +290,62 @@ void Interface::setBroadcastBits(int _val) { bcast_bits=_val; }
 bool  Interface::validateChild(FWObject *o)
 {
     string otype=o->getTypeName();
+    if (otype==Interface::TYPENAME)
+    {
+        // Interface with subinterfaces is not allowed (DTD allows only one
+        // level of subinterfaces)
+        if (Interface::isA(getParent())) return false;
+        list<FWObject*> il = o->getByType(Interface::TYPENAME);
+        return (il.size() == 0);
+    }
+            
     return (otype==IPv4::TYPENAME ||
             otype==IPv6::TYPENAME ||
-            otype==physAddress::TYPENAME);
+            otype==physAddress::TYPENAME ||
+            otype==InterfaceOptions::TYPENAME ||
+            otype==FailoverClusterGroup::TYPENAME);
+}
+
+/*
+ * I get options obect directly instead of calling getOptionsObject()
+ * because that method tries to add options object if it is missing,
+ * which means @this can not be const.
+ */
+bool Interface::isBridgePort() const
+{
+    string my_type;
+    FWOptions *iface_opt = getOptionsObjectConst();
+    if (iface_opt) my_type = iface_opt->getStr("type");
+    Interface *parent = Interface::cast(getParent());
+    return ((my_type.empty() || my_type == "ethernet") &&
+            parent && parent->getOptionsObject()->getStr("type") == "bridge");
+}
+
+bool Interface::isSlave() const
+{
+    string my_type;
+    FWOptions *iface_opt = getOptionsObjectConst();
+    if (iface_opt) my_type = iface_opt->getStr("type");
+    Interface *parent = Interface::cast(getParent());
+    return ((my_type.empty() || my_type == "ethernet") &&
+            parent && parent->getOptionsObject()->getStr("type") == "bonding");
 }
 
 bool Interface::isLoopback() const
 {
     const Address *iaddr = getAddressObject();
     return (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr());
+}
+
+FWObject* Interface::getParentHost() const
+{
+    FWObject *p = this->getParent();
+    if (!Interface::isA(p)) {
+        return p;
+    } else {
+        p = p->getParent();
+    }
+    return p;
 }
 
 physAddress*  Interface::getPhysicalAddress () const
@@ -332,3 +413,7 @@ int Interface::countInetAddresses(bool skip_loopback) const
     return res;
 }
 
+bool Interface::isFailoverInterface() const
+{
+    return getFirstByType(FailoverClusterGroup::TYPENAME) != NULL;
+}

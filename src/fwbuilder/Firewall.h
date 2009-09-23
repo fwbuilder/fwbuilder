@@ -34,7 +34,7 @@
 
 namespace libfwbuilder
 {
-
+    class Interface;
     class Policy;
     class NAT;
     class RuleSet;
@@ -43,10 +43,15 @@ namespace libfwbuilder
 class Firewall : public Host 
 {
 
+    void duplicateInterfaces(FWObject *target,
+                             const FWObject *source,
+                             std::map<int,int> &id_mapping,
+                             bool preserve_id = true);
+    
 public:
     
     Firewall();
-    Firewall(const FWObjectDatabase *root,bool prepopulate);
+    Firewall(const FWObjectDatabase *root, bool prepopulate);
     virtual ~Firewall();
     
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
@@ -76,6 +81,12 @@ public:
     NAT     *getNAT();
     Routing *getRouting();
 
+    /**
+     * Return list of interfaces of given type. This walks all interfaces recursively,
+     * including subinterfaces.
+     */
+    std::list<libfwbuilder::Interface*> getInterfacesByType(const std::string &iface_type);
+    
     time_t getLastModified();
     time_t getLastInstalled();
     time_t getLastCompiled();

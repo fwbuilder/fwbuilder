@@ -57,6 +57,10 @@ public:
         std::string label;
         std::string networkZone;
 
+        std::string interface_type;
+        int vlan_id;
+        std::list<InterfaceData*> subinterfaces;
+
         InterfaceData();
         InterfaceData(const InterfaceData& other);
         InterfaceData(const libfwbuilder::Interface &iface);

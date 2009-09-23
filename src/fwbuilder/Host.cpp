@@ -133,10 +133,11 @@ Management *Host::getManagementObject()
  */
 const InetAddr* Host::getManagementAddress() throw(FWException)
 {
-    FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
-    for( ; j!=j.end(); ++j)
+    list<FWObject*> interfaces = getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*>::iterator i;
+    for (i=interfaces.begin(); i!=interfaces.end(); ++i )
     {
-        Interface *iface = Interface::cast(*j);
+        Interface *iface = Interface::cast(*i);
         if (iface->isManagement())
         {
             FWObjectTypedChildIterator k = iface->findByType(IPv4::TYPENAME);

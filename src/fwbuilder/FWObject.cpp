@@ -179,6 +179,7 @@ FWObject::FWObject()
     setId(FWObjectDatabase::generateUniqueId());
 
     setDirty(false);
+    storeCreationTime();
 }
 
 FWObject::FWObject(bool new_id)
@@ -197,12 +198,14 @@ FWObject::FWObject(bool new_id)
         setId(FWObjectDatabase::generateUniqueId());
 
     setDirty(false);
+    storeCreationTime();
 }
 
 FWObject::FWObject(const FWObject &c) : list<FWObject*>(c)
 {
     init = false;
     *this = c;
+    storeCreationTime();
 }
 
 FWObject::FWObject(const FWObjectDatabase *root, bool )
@@ -220,12 +223,13 @@ FWObject::FWObject(const FWObjectDatabase *root, bool )
     setId(FWObjectDatabase::generateUniqueId());
 
     setDirty(false);
+    storeCreationTime();
 }
 
 FWObject::~FWObject() 
 {
     init = true;  // ignore read-only
-    deleteChildren();
+    destroyChildren();
     data.clear();
 }
 
@@ -909,15 +913,22 @@ bool FWObject::validateChild(FWObject *obj)
     return true;
 }
 
+/*
+ * this method deletes all children recursively regardless of their
+ * usage counter. We call this method form destructor.
+ */
 void FWObject::destroyChildren()
 {
     FWObjectDatabase *dbr = getRoot();
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
-        FWObject *o=*m;
-        o->destroyChildren();
-        if (dbr) dbr->removeFromIndex( o->getId() );
-        delete o;
+        FWObject *o = *m;
+        if (o && o->size())
+        {
+            o->destroyChildren();
+            if (dbr && !dbr->init) dbr->removeFromIndex( o->getId() );
+            delete o;
+        }
     }
     clear();
 }
@@ -962,24 +973,6 @@ void FWObject::clearChildren(bool recursive)
     }
     clear();
     setDirty(true);
-}
-
-/*
- * this method deletes all children recursively regardless of their
- * usage counter. We call this method form destructor.
- */
-void FWObject::deleteChildren()
-{
-    FWObjectDatabase *dbr = getRoot();
-
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
-    {
-        FWObject *o=*m;
-        o->deleteChildren();
-        if (dbr && !dbr->init) dbr->removeFromIndex( o->getId() );
-        delete o;
-    }
-    clear();
 }
 
 int FWObject::getChildrenCount()

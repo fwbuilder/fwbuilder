@@ -115,6 +115,11 @@ FirewallOptions::FirewallOptions(const FWObjectDatabase *root,
                                  bool prepopulate) :
     FWOptions(root,prepopulate) {}
 
+const char *InterfaceOptions::TYPENAME  ={"InterfaceOptions"};
+InterfaceOptions::InterfaceOptions() : FWOptions() {}
+InterfaceOptions::InterfaceOptions(const FWObjectDatabase *root,bool prepopulate) :
+    FWOptions(root, prepopulate) {}
+
 const char *PolicyRuleOptions::TYPENAME={"PolicyRuleOptions"};
 PolicyRuleOptions::PolicyRuleOptions() : FWOptions() {}
 PolicyRuleOptions::PolicyRuleOptions(const FWObjectDatabase *root,
@@ -132,4 +137,11 @@ RoutingRuleOptions::RoutingRuleOptions() : FWOptions() {}
 RoutingRuleOptions::RoutingRuleOptions(const FWObjectDatabase *root,
                                        bool prepopulate) :
     FWOptions(root,prepopulate) {}
+
+const char *ClusterGroupOptions::TYPENAME={"ClusterGroupOptions"};
+ClusterGroupOptions::ClusterGroupOptions() : FWOptions() {}
+ClusterGroupOptions::ClusterGroupOptions(const FWObjectDatabase *root,
+                                         bool prepopulate) :
+    FWOptions(root,prepopulate) {}
+
 

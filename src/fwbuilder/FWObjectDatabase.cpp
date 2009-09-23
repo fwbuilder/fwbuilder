@@ -63,6 +63,9 @@
 #include <fwbuilder/RuleSet.h>
 #include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Firewall.h>
+#include <fwbuilder/Cluster.h>
+#include <fwbuilder/StateSyncClusterGroup.h>
+#include <fwbuilder/FailoverClusterGroup.h>
 #include <fwbuilder/NAT.h>
 #include <fwbuilder/Policy.h>
 #include <fwbuilder/Routing.h>
@@ -263,7 +266,7 @@ void FWObjectDatabase::load(const string &f,
         init = true;
 
 //        clearChildren();
-        deleteChildren();
+        destroyChildren();
         clearIndex();
 
         fromXML(root);
@@ -412,6 +415,7 @@ FWObject* FWObjectDatabase::checkIndex(int id)
 
 FWObject* FWObjectDatabase::findInIndex(int id)
 {
+    if (id < 0) return NULL;
     FWObject *o = checkIndex(id);
     if (o!=NULL) index_hits++;
     else
