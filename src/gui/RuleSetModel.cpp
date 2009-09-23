@@ -110,7 +110,7 @@ RuleSetModelIterator& RuleSetModelIterator::operator-- ()
 
 bool RuleSetModelIterator::operator== ( RuleSetModelIterator& it)
 {
-    return (parent == it.parent) and (row == it.row);
+    return (parent == it.parent) && (row == it.row);
 }
 
 bool RuleSetModelIterator::operator!= ( RuleSetModelIterator& it )
