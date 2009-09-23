@@ -46,16 +46,15 @@ class FirewallInstallerUnx : public FirewallInstaller
     Q_OBJECT
 
     void executeSession(const QString &cmd);
-        
+
 public:
 
     FirewallInstallerUnx(instDialog *_dlg, instConf *_cnf, const QString &_p) :
     FirewallInstaller(_dlg, _cnf, _p) {}
 
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
-    virtual void copyFile(const QString &file_name);
-    virtual void activatePolicy();
-
+    virtual void copyFile(const QString &local_name, const QString &remote_name);
+    virtual void activatePolicy(const QString &script,  const QString &args);
     
 };
 

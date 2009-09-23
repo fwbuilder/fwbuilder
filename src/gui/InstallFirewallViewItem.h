@@ -42,7 +42,6 @@ public:
                             const QString & text, bool slt );
     
     bool showLastTimes;
-    QVariant data (int column, int role) const;
 };
 
 

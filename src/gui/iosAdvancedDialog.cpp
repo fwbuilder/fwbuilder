@@ -70,6 +70,8 @@ iosAdvancedDialog::iosAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->ios_ip_address  ,    fwoptions,  "ios_ip_address"    );
 
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -78,7 +80,7 @@ iosAdvancedDialog::iosAdvancedDialog(QWidget *parent,FWObject *o)
 void iosAdvancedDialog::accept()
 {
     data.saveAll();
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

@@ -27,12 +27,17 @@
 #include "global.h"
 
 #include "platforms.h"
+#include "FWBSettings.h"
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
 
 #include <QObject>
 #include <QStringList>
 #include <QComboBox>
 
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Interface.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
@@ -40,6 +45,9 @@
 #include "fwbuilder/Policy.h"
 
 #include <algorithm>
+#include <iostream>
+#include <memory>
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -51,8 +59,6 @@ QStringList logFacilities;
 QStringList actionsOnReject;
 QStringList routeOptions_pf_ipf;
 QStringList routeLoadOptions_pf;
-QStringList prologPlaces_ipt;
-QStringList prologPlaces_pf;
 QStringList limitSuffixes;
 
 void init_platforms()
@@ -156,28 +162,6 @@ void init_platforms()
     routeLoadOptions_pf.push_back("source_hash");
     routeLoadOptions_pf.push_back(QObject::tr("Round Robin"));
     routeLoadOptions_pf.push_back("round_robin");
-
-    prologPlaces_ipt.push_back(QObject::tr("on top of the script"));
-    prologPlaces_ipt.push_back("top");
-    prologPlaces_ipt.push_back(QObject::tr("after interface configuration"));
-    prologPlaces_ipt.push_back("after_interfaces");
-    prologPlaces_ipt.push_back(QObject::tr("after policy reset"));
-    prologPlaces_ipt.push_back("after_flush");
-
-    prologPlaces_pf.push_back(QObject::tr("in the activation shell script"));
-    prologPlaces_pf.push_back("fw_file");
-
-    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, at the very top"));
-    prologPlaces_pf.push_back("pf_file_top");
-
-    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after set comamnds"));
-    prologPlaces_pf.push_back("pf_file_after_set");
-
-    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after scrub comamnds"));
-    prologPlaces_pf.push_back("pf_file_after_scrub");
-
-    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after table definitions"));
-    prologPlaces_pf.push_back("pf_file_after_tables");
 
     limitSuffixes.push_back("");
     limitSuffixes.push_back("");
@@ -375,17 +359,16 @@ bool isDefaultRoutingRuleOptions(FWOptions *opt)
 
 QString getVersionString(const QString &platform, const QString &version)
 {
-    list<QStringPair> vl = getVersionsForPlatform(platform);
+    list<QStringPair> vl;
+    getVersionsForPlatform(platform, vl);
     list<QStringPair>::iterator li =
         std::find_if(vl.begin(),vl.end(),findFirstInQStringPair(version));
     QString readableVersion = (li!=vl.end())?li->second:"";
     return readableVersion;
 }
 
-list<QStringPair> getVersionsForPlatform(const QString &platform)
+void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &res)
 {
-    list<QStringPair> res;
-
 /* versions are defined here instead of the resource files so that
  * strings could be localized. We use strings that can be localized
  * only for iptables but define versions for all platforms here for
@@ -400,6 +383,7 @@ list<QStringPair> getVersionsForPlatform(const QString &platform)
         res.push_back(QStringPair("1.2.9", QObject::tr("1.2.9 to 1.2.11")));
         res.push_back(QStringPair("1.3.0", QObject::tr("1.3.x")));
         res.push_back(QStringPair("1.4.0", QObject::tr("1.4.0 or later")));
+        res.push_back(QStringPair("1.4.3", QObject::tr("1.4.3 or later")));
     } else
     {
         if (platform=="pix" || platform=="fwsm" || platform=="iosacl")
@@ -439,8 +423,155 @@ list<QStringPair> getVersionsForPlatform(const QString &platform)
             }
         }
     }
+}
 
-    return res;
+/*
+ * ticket #58: move state sync types and failover types to resource files.
+ *
+ * Note: this function fills in list of QString pairs, each pair is 
+ * <protocol_name>,<user_readable_protocol_name>
+ * The second element in the pair is for QComboBox and is visible to the user.
+ */
+void getStateSyncTypesForOS(const QString &host_os, std::list<QStringPair> &res)
+{
+    Resources* os_res = Resources::os_res[host_os.toStdString()];
+    if (os_res==NULL) return;
+    list<string> protocols;
+    os_res->getResourceStrList("/FWBuilderResources/Target/protocols/state_sync",
+                               protocols);
+    _repackStringList(protocols, res);
+}
+
+void getFailoverTypesForOS(const QString &host_os, std::list<QStringPair> &res)
+{
+    Resources* os_res = Resources::os_res[host_os.toStdString()];
+    if (os_res==NULL) return;
+    list<string> protocols;
+    os_res->getResourceStrList("/FWBuilderResources/Target/protocols/failover",
+                               protocols);
+    _repackStringList(protocols, res);
+}
+
+void getInterfaceTypes(Interface *iface, list<QStringPair> &res)
+{
+    FWObject *fw = iface->getParent();
+    string host_os = fw->getStr("host_OS");
+    Resources* os_res = Resources::os_res[host_os];
+    if (os_res==NULL) return;
+    list<string> interface_types;
+
+    if (Cluster::isA(fw))
+    {
+        os_res->getResourceStrList("/FWBuilderResources/Target/interfaces/cluster",
+                                   interface_types);
+    } else
+    {
+        os_res->getResourceStrList("/FWBuilderResources/Target/interfaces/firewall",
+                                   interface_types);
+    }
+    _repackStringList(interface_types, res);
+}
+
+/*
+ * Return list of types of subinterfaces that given interface can have
+ *
+ * @iface an Interface object. This is not a subinterface, this is a
+ * regular interface. This function returns list of subinterface types
+ * this interface can have.
+ *
+ * @res a list of pairs of QString, each pair is <type>,<description>
+ */
+void getSubInterfaceTypes(Interface *iface, list<QStringPair> &res)
+{
+    FWObject *p = iface->getParentHost();
+    assert(p!=NULL);
+
+    QString host_os = p->getStr("host_OS").c_str();
+    Resources* os_res = Resources::os_res[host_os.toStdString()];
+    if (os_res==NULL) return;
+
+    FWOptions *ifopt;
+    ifopt = Interface::cast(iface)->getOptionsObject();
+    string parent_type = ifopt->getStr("type");
+
+    // empty parent type is equivalent to "ethernet" for backwards
+    // compatibility
+    if (parent_type.empty()) parent_type = "ethernet";
+
+    QString obj_name = iface->getName().c_str();
+
+    list<string> interface_types;
+    os_res->getResourceStrList(
+        "/FWBuilderResources/Target/subinterfaces/" + parent_type,
+        interface_types);
+    _repackStringList(interface_types, res);
+}
+ 
+void setInterfaceTypes(QComboBox *iface_type,
+                       Interface *iface,
+                       const QString &current_type)
+{
+    bool this_is_subinterface = Interface::isA(iface->getParent());
+    list<QStringPair> mapping;
+    if (this_is_subinterface)
+        getSubInterfaceTypes(Interface::cast(iface->getParent()), mapping);
+    else getInterfaceTypes(iface, mapping);
+
+    // #335 : if interface name matches naming convention for vlan
+    // interfaces and vlan type is in the list that came from the
+    // resource file, then leave only vlan in the list we return.
+    // Note that if resource file says this subint can not be vlan, we
+    // dan't return vlan type on the list even if its name looks like
+    // it could be one.
+    FWObject *p = iface->getParentHost();
+    assert(p!=NULL);
+    QString host_os = p->getStr("host_OS").c_str();
+    QString obj_name = iface->getName().c_str();
+
+    std::auto_ptr<interfaceProperties> int_prop(
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            host_os.toStdString()));
+    if (int_prop->looksLikeVlanInterface(obj_name))
+    {
+        QString parent_name = iface->getParent()->getName().c_str();
+        QString err;
+        if (int_prop->isValidVlanInterfaceName(obj_name, parent_name, err))
+        {
+            // iface can be valid vlan interface. Leave only vlan type
+            // in the list if it was there to begin with. 
+            for (list<QStringPair>::iterator it=mapping.begin();
+                 it!=mapping.end(); ++it)
+            {
+                QString itype = it->first;
+                QString rtype = it->second;
+                if (itype == "8021q")
+                {
+                    mapping.clear();
+                    mapping.push_back(QStringPair(itype, rtype));
+                    mapping.push_back(QStringPair("unknown", "Unknown"));
+                    break;
+                }
+            }
+        }
+    }
+
+    list<QStringPair>::iterator it;
+    int idx = 0;
+    int unknown_idx = 0;
+    int current_idx = -1;
+    for (it = mapping.begin(); it != mapping.end(); it++)
+    {
+        if (it->first == "unknown") unknown_idx = idx;
+        iface_type->addItem(it->second);
+        iface_type->setItemData(idx,  QVariant(it->first));
+        if (current_type == it->first)
+            current_idx = idx;
+        idx++;
+    }
+    if (current_idx >= 0)
+        iface_type->setCurrentIndex(current_idx);
+    else
+        iface_type->setCurrentIndex(unknown_idx);
 }
 
 /* currently we return the same list for all platforms */
@@ -482,14 +613,6 @@ const QStringList& getRouteOptions_pf_ipf(const QString&)
 const QStringList& getRouteLoadOptions_pf(const QString&)
 {
     return routeLoadOptions_pf;
-}
-
-const QStringList& getPrologPlaces(const QString &platform)
-{
-    if (platform=="pf")
-        return prologPlaces_pf;
-    else
-        return prologPlaces_ipt;
 }
 
 const QStringList& getLimitSuffixes(const QString&)
@@ -647,27 +770,37 @@ QString getReadableRuleElementName(const string &rule_element_type_name)
     return QString();
 }
 
-QMap<QString,QString> getAllPlatforms()
+QMap<QString,QString> getAllPlatforms(bool filter)
 {
     QMap<QString,QString> res;
-
     map<string,string> platforms = Resources::getPlatforms();
     map<string,string>::iterator i;
     for (i=platforms.begin(); i!=platforms.end(); i++)
-        res[ i->first.c_str() ] = i->second.c_str();
-
+    {
+        QString name = i->first.c_str();
+        QString res_status = Resources::platform_res[name.toStdString()]->getResourceStr(
+            "/FWBuilderResources/Target/status/").c_str();
+        QString status = st->getTargetStatus(name, res_status);
+        if (filter && status == "disabled") continue;
+        res[name] = i->second.c_str();
+    }
     return res;
 }
 
-QMap<QString,QString> getAllOS()
+QMap<QString,QString> getAllOS(bool filter)
 {
     QMap<QString,QString> res;
-
     map<string,string> OSs = Resources::getOS();
     map<string,string>::iterator i;
     for (i=OSs.begin(); i!=OSs.end(); i++)
-        res[ i->first.c_str() ] = i->second.c_str();
-
+    {
+        QString name = i->first.c_str();
+        QString res_status = Resources::os_res[name.toStdString()]->getResourceStr(
+            "/FWBuilderResources/Target/status/").c_str();
+        QString status = st->getTargetStatus(name, res_status);
+        if (filter && status == "disabled") continue;
+        res[name] = i->second.c_str();
+    }
     return res;
 }
 
@@ -729,18 +862,24 @@ void setPlatform(QComboBox *platform, const QString &pl)
 
         QString group = platform_mapping[*iter].first;
         QString platform_name = platform_mapping[*iter].second;
+
+        if (platforms.count(platform_name) == 0) continue;
+
         if (group != current_group)
         {
             current_group = group;
-            platform->addItem(group, "");
-            // QT before 4.4.? does not support separator in QComboBox
-            //platform->insertSeparator(cp);
+#if (QT_VERSION > 0x040500)
+            platform->insertSeparator(cp);  // QT before 4.4.? does not support separator in QComboBox
+#else
+            platform->addItem("");
+#endif
             cp++;
         }
 
         platform->addItem(platforms[platform_name], platform_name);
-        // note that if pl is "", then no real platform name will match it
-        // and ind will remain 0, which makes the top item in the combobox current.
+        // note that if pl is "", then no real platform name will
+        // match it and ind will remain 0, which makes the top item in
+        // the combobox current.
         if ( pl == platform_name ) ind = cp;
         cp++;
     }
@@ -795,9 +934,12 @@ void setHostOS(QComboBox *hostOS, const QString &platform, const QString &os)
              os_iter!=supported_os_list.end(); ++os_iter)
         {
             QString os_code = *os_iter;
-            hostOS->addItem( OSs[os_code], os_code);
-            if ( os == os_code ) ind = cp;
-            cp++;
+            if (OSs.count(os_code) > 0)
+            {
+                hostOS->addItem( OSs[os_code], os_code);
+                if ( os == os_code ) ind = cp;
+                cp++;
+            }
         }
         hostOS->setCurrentIndex( ind );
         return;
@@ -822,3 +964,18 @@ void setHostOS(QComboBox *hostOS, const QString &platform, const QString &os)
 
     hostOS->setCurrentIndex( ind );
 }
+
+void _repackStringList(list<string> &list1, list<QStringPair> &list2)
+{
+    list2.clear();
+    foreach(string p, list1)
+    {
+        QString str = QString(p.c_str());
+        QStringList pl = str.split(",");
+        if (pl.size() == 1)
+            list2.push_back(QStringPair(str, str));
+        else
+            list2.push_back(QStringPair(pl[0], pl[1]));
+    }
+}
+

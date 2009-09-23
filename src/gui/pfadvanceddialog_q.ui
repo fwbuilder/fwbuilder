@@ -41,9 +41,6 @@
        <string>Compiler</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_8" >
-       <property name="verticalSpacing" >
-        <number>10</number>
-       </property>
        <item row="0" column="0" >
         <widget class="QLabel" name="compilerLabel" >
          <property name="text" >
@@ -96,7 +93,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" >
+       <item row="2" column="0" colspan="2" >
         <widget class="QLabel" name="textLabel1_5" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -115,7 +112,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
+       <item row="3" column="1" >
         <widget class="QLineEdit" name="outputFileName" >
          <property name="maximumSize" >
           <size>
@@ -125,7 +122,51 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2" >
+       <item row="4" column="0" colspan="2" >
+        <widget class="QLabel" name="label_4" >
+         <property name="text" >
+          <string>Generated script (.fw file) and configuration (.conf) file can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>Script (.fw) file name on the firewall</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QLineEdit" name="fileNameOnFw" >
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label_3" >
+         <property name="text" >
+          <string>.conf file name on the firewall</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" >
+        <widget class="QLineEdit" name="confFileNameOnFw" >
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2" >
         <widget class="QGroupBox" name="groupBox" >
          <property name="title" >
           <string/>
@@ -231,7 +272,7 @@
          <zorder>pf_accept_new_tcp_with_no_syn</zorder>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2" >
+       <item row="8" column="0" colspan="2" >
         <widget class="QGroupBox" name="groupBox_2" >
          <property name="title" >
           <string/>
@@ -274,7 +315,7 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="5" column="1" >
+       <item row="9" column="1" >
         <spacer name="verticalSpacer" >
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -2095,20 +2136,41 @@ with this address:</string>
         </widget>
        </item>
        <item row="4" column="1" colspan="2" >
+        <widget class="QCheckBox" name="pf_configure_carp_interfaces" >
+         <property name="text" >
+          <string>Configure CARP Interfaces</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" colspan="2" >
+        <widget class="QCheckBox" name="pf_configure_pfsync_interfaces" >
+         <property name="text" >
+          <string>Configure pfsync Interfaces</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" colspan="2" >
+        <widget class="QCheckBox" name="pf_configure_vlan_interfaces" >
+         <property name="text" >
+          <string>Configure VLAN Interfaces</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" colspan="2" >
         <widget class="QCheckBox" name="pf_manage_virtual_addr" >
          <property name="text" >
           <string>Add virtual addresses for NAT</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" colspan="2" >
+       <item row="8" column="1" colspan="2" >
         <widget class="QCheckBox" name="pf_flush_states" >
          <property name="text" >
           <string>Flush pf states after reloading rules</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" >
+       <item row="9" column="1" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>

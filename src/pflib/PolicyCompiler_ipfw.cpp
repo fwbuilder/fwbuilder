@@ -55,17 +55,14 @@ int PolicyCompiler_ipfw::prolog()
     anytcp=dbcopy->createTCPService();
     anytcp->setId(FWObjectDatabase::generateUniqueId()); // ANY_TCP_OBJ_ID);
     dbcopy->add(anytcp,false);
-    cacheObj(anytcp); // to keep cache consistent
 
     anyudp=dbcopy->createUDPService();
     anyudp->setId(FWObjectDatabase::generateUniqueId()); //ANY_UDP_OBJ_ID);
     dbcopy->add(anyudp,false);
-    cacheObj(anyudp); // to keep cache consistent
 
     anyicmp=dbcopy->createICMPService();
     anyicmp->setId(FWObjectDatabase::generateUniqueId()); //ANY_ICMP_OBJ_ID);
     dbcopy->add(anyicmp,false);
-    cacheObj(anyicmp); // to keep cache consistent
 
 
     return n;
@@ -504,7 +501,10 @@ bool PolicyCompiler_ipfw::processMultiAddressObjectsInRE::processNext()
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
         if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
-            compiler->abort("Run-time AddressTable objects are not supported. Rule " + rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    "Run-time AddressTable objects are not supported.");
     }
 
     tmp_queue.push_back(rule);
@@ -514,10 +514,10 @@ bool PolicyCompiler_ipfw::processMultiAddressObjectsInRE::processNext()
 
 void PolicyCompiler_ipfw::compile()
 {
-    cout << " Compiling " << fw->getName();
-    if (!getRuleSetName().empty())  cout << " ruleset " << getRuleSetName();
-    if (ipv6) cout << ", IPv6";
-    cout <<  endl << flush;
+    string banner = " Compiling " + fw->getName();
+    if (!getRuleSetName().empty())  banner += " ruleset " + getRuleSetName();
+    if (ipv6) banner += ", IPv6";
+    info(banner);
 
     try {
 
@@ -526,7 +526,8 @@ void PolicyCompiler_ipfw::compile()
 	addDefaultPolicyRule();
         bool check_for_recursive_groups=true;
 
-        if ( fw->getOptionsObject()->getBool("check_shading")) 
+        if ( fw->getOptionsObject()->getBool("check_shading") &&
+             ! inSingleRuleCompileMode())
         {
             add( new Begin("Detecting rule shadowing"));
             add( new printTotalNumberOfRules());
@@ -569,6 +570,8 @@ void PolicyCompiler_ipfw::compile()
 
         add( new Begin());
         add( new printTotalNumberOfRules());
+
+        add( new singleRuleFilter());
 
         if (check_for_recursive_groups)
         {
@@ -638,7 +641,8 @@ void PolicyCompiler_ipfw::compile()
         runRuleProcessors();
 
 
-    } catch (FWException &ex) {
+    } catch (FWException &ex)
+    {
 	error(ex.toString());
 	exit(1);
     }
@@ -652,7 +656,7 @@ string PolicyCompiler_ipfw::debugPrintRule(Rule *r)
     int  iface = rule->getInterfaceId();
     if (iface > -1)
     {
-	Interface *rule_iface = getCachedFwInterface( iface );
+	FWObject *rule_iface = dbcopy->findInIndex( iface );
         s += " intf: "+rule_iface->getName();
     }
 

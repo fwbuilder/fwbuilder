@@ -346,9 +346,9 @@ void SSHPIX::stateMachine()
 
 /* install full policy */
             QString ff;
-            QFileInfo conffile_info(conffile);
-            if (conffile_info.isAbsolute()) ff = conffile;
-            else ff = wdir + "/" + conffile;
+            QFileInfo script_info(script);
+            if (script_info.isAbsolute()) ff = script;
+            else ff = wdir + "/" + script;
 
             config_file = new ifstream(ff.toLatin1().constData());
             if ( ! *config_file)
@@ -734,9 +734,9 @@ void SSHPIX::PIXincrementalInstall()
     if (state==COMMAND_DONE)
     {
         QString statefile;
-        QFileInfo conffile_info(conffile);
-        if (conffile_info.isAbsolute()) statefile = conffile + "_current";
-        else statefile = wdir + "/" + conffile + "_current";
+        QFileInfo script_info(script);
+        if (script_info.isAbsolute()) statefile = script + "_current";
+        else statefile = wdir + "/" + script + "_current";
 
         ofstream ofs(statefile.toLatin1().constData());
         ofs << current_config.toAscii().constData();
@@ -746,8 +746,8 @@ void SSHPIX::PIXincrementalInstall()
         emit printStdout_sign( "\n");
 
         QString cm = diff_pgm + " \"" + statefile + "\" \"";
-        if (conffile_info.isAbsolute()) cm += wdir + "/";
-        cm += conffile + "\"";
+        if (script_info.isAbsolute()) cm += wdir + "/";
+        cm += script + "\"";
 
 //        emit printStdout_sign(tr("Running command: %1\n").arg(cm));
 

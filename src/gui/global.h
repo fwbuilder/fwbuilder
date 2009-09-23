@@ -29,10 +29,11 @@
 #include "../../VERSION.h"
 #include <string>
 
+#include <QEvent>
+
 class  QApplication;
 class  FWWindow;
 class  FWBSettings;
-class  listOfLibraries;
 
 extern QApplication      *app;
 extern FWWindow          *mw;

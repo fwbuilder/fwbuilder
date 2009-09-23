@@ -32,15 +32,17 @@
 
 namespace libfwbuilder {
     class FWObject;
+    class FWObjectDatabase;
 };
 
 class ObjectListView : public QTreeWidget {
 
-    Q_OBJECT
+    Q_OBJECT ;
             
+    libfwbuilder::FWObjectDatabase *db;
     bool startingDrag;
 
- protected:
+protected:
 
     virtual QDrag* dragObject();
     virtual void dragEnterEvent( QDragEnterEvent *ev);
@@ -51,12 +53,16 @@ class ObjectListView : public QTreeWidget {
     void mouseMoveEvent ( QMouseEvent * event );
     
     bool event ( QEvent * event );
- public:
+public:
 
-    ObjectListView(QWidget* parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
- public slots:
+    ObjectListView(QWidget* parent, const char * name = 0, Qt::WindowFlags f = 0);
+
+    void setDB(libfwbuilder::FWObjectDatabase *_db) { db = _db; }
+
+public slots:
     void sectionClicked ( int logicalIndex ) ;
- signals:
+
+signals:
 
     void delObject_sign();
     void dropped(QDropEvent *ev);

@@ -279,10 +279,10 @@ void TimeDialog::applyChanges()
 
     s->setDaysOfWeek(weekDays.join(",").toAscii().data());
 
-    mw->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void TimeDialog::discardChanges()

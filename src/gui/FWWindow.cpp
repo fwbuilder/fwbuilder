@@ -27,7 +27,6 @@
 #include "global.h"
 #include "check_update_url.h"
 #include "../../VERSION.h"
-#include "../../build_num"
 
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -41,7 +40,6 @@
 #include "FWBSettings.h"
 #include "FWObjectPropertiesFactory.h"
 #include "upgradePredicate.h"
-#include "listOfLibraries.h"
 #include "ObjConflictResolutionDialog.h"
 #include "RuleSetView.h"
 #include "ObjectEditor.h"
@@ -62,6 +60,10 @@
 #include "instDialog.h"
 #include "HttpGet.h"
 #include "StartTipDialog.h"
+
+#include "transferDialog.h"
+
+#include "events.h"
 
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/Policy.h"
@@ -181,10 +183,9 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     showSub(proj);
     
     setSafeMode(false);
-    setStartupFileName("");
 
 #ifdef Q_OS_MACX
-    getMdiArea()->setViewMode(QMdiArea::TabbedView);
+    m_space->setViewMode(QMdiArea::TabbedView);
 #endif    
 
     printer = new QPrinter(QPrinter::HighResolution);
@@ -200,28 +201,31 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
 
     connect( m_mainWindow->newObjectAction, SIGNAL( triggered() ),
-             this,              SLOT(newObject() ) );
+             this, SLOT(newObject() ) );
 
     connect( m_mainWindow->backAction, SIGNAL( triggered() ),
-             this,         SLOT(back() ) );
+             this, SLOT(back() ) );
 
     connect( m_mainWindow->findAction, SIGNAL( triggered() ),
-             this,       SLOT(search()) );
+             this, SLOT(search()) );
 
     connect( m_mainWindow->editMenu, SIGNAL (aboutToShow() ),
-            this,     SLOT( prepareEditMenu()  ));
+            this,  SLOT( prepareEditMenu()  ));
 
     connect( m_mainWindow->ObjectMenu, SIGNAL (aboutToShow() ),
-            this,     SLOT( prepareObjectMenu()  ));
+            this,  SLOT( prepareObjectMenu()  ));
 
     connect( m_mainWindow->fileMenu, SIGNAL (aboutToShow() ),
-            this,     SLOT( prepareFileMenu()  ));
+            this,  SLOT( prepareFileMenu()  ));
+
+    connect( m_mainWindow->toolsMenu, SIGNAL (aboutToShow() ),
+            this,  SLOT( prepareToolsMenu()  ));
 
     connect( m_mainWindow->menuWindow, SIGNAL (aboutToShow() ),
-            this,     SLOT( prepareWindowsMenu()  ));
+            this,  SLOT( prepareWindowsMenu()  ));
 
-    connect( m_space, SIGNAL(subWindowActivated (QMdiSubWindow *)),
-             this, SLOT(changeActiveSubwindow())); 
+    connect( m_space, SIGNAL(subWindowActivated(QMdiSubWindow*)),
+             this, SLOT(subWindowActivated(QMdiSubWindow*))); 
 
     disableActions(false);
 
@@ -395,6 +399,13 @@ void FWWindow::startupLoad()
         updateOpenRecentMenu(file);
     }
 
+    QString release_notes_flag = QString("UI/%1/ReleaseNotesShown").arg(VERSION);
+//    if (!st->getBool(release_notes_flag))
+//    {
+    showReleaseNotes();
+    st->setBool(release_notes_flag, true);
+//    }
+
     if (! st->getBool("UI/NoStartTip"))
     {
         StartTipDialog *stdlg = new StartTipDialog();
@@ -403,6 +414,8 @@ void FWWindow::startupLoad()
         //stdlg->show();
         //stdlg->raise();
     }
+
+    prepareFileMenu();
 }
 
 void FWWindow::helpAbout()
@@ -415,40 +428,6 @@ void FWWindow::debug()
 {
     debugDialog dd(this);
     dd.exec();
-}
-
-void FWWindow::info(FWObject *obj, bool forced)
-{
-    if (fwbdebug) qDebug("FWWindow::info called");
-    if (activeProject()) activeProject()->info(obj, forced);
-}
-
-bool FWWindow::saveIfModified()
-{
-    if (activeProject()) return activeProject()->saveIfModified();
-    return false;
-}
-
-QString FWWindow::getDestDir(const QString &fname)
-{
-   if (activeProject()) return activeProject()->getDestDir(fname);
-   return "";
-}
-
-QString FWWindow::chooseNewFileName(const QString &fname, const QString &title)
-{  
-    if (activeProject()) return activeProject()->chooseNewFileName(fname,title);
-    return "";
-}
-
-void FWWindow::setFileName(const QString &fname)
-{
-    if (activeProject()) activeProject()->setFileName(fname);
-}
-
-void FWWindow::fileProp()
-{
-    if (activeProject()) activeProject()->fileProp();
 }
 
 void FWWindow::fileNew()
@@ -465,7 +444,7 @@ void FWWindow::fileNew()
         if (proj->fileNew())
         {
             showSub(proj.get());
-            //proj->startupLoad();
+            prepareFileMenu();
             proj.release();
         }
     }
@@ -473,51 +452,77 @@ void FWWindow::fileNew()
 
 void FWWindow::fileOpen()
 {
+    QString dir;
+    QMdiSubWindow *last_active_window = m_space->activeSubWindow();
+
+/*
+ * Pick default directory where to look for the file to open.
+ * 1) if "work directory" is configured in preferences, always use it
+ * 2) if it is blank, use the same directory where currently opened file is
+ * 3) if this is the first file to be opened, get directory where the user opened
+ *    during last session from settings using st->getOpenFileDir
+ */
+
+    dir = st->getWDir();
+    if (fwbdebug) qDebug("Choosing directory for file open 1: %s",
+                         dir.toStdString().c_str());
+
+    if (dir.isEmpty() && !mw->getCurrentFileName().isEmpty())
+        dir = getFileDir(mw->getCurrentFileName());
+    if (fwbdebug) qDebug("Choosing directory for file open 2: %s",
+                         dir.toStdString().c_str());
+
+    if (dir.isEmpty()) dir = st->getOpenFileDir();
+    if (fwbdebug) qDebug("Choosing directory for file open 3: %s",
+                         dir.toStdString().c_str());
+
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        tr("Open File"),
+        dir,
+        "FWB files (*.fwb *.fwl *.xml);;All Files (*)");
+    
+    if (fileName.isEmpty())
+    {
+        m_space->setActiveSubWindow(last_active_window);
+        return ;
+    }
+
+    if (loadFile(fileName, false))
+    {
+        updateOpenRecentMenu(fileName);
+        // reset actions, including Save() which should now
+        // be inactive
+        prepareFileMenu();
+    } else
+        m_space->setActiveSubWindow(last_active_window);
+}
+
+bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
+{
+    ProjectPanel *proj;
     // if the only project panel window that we have shows
     // default object tree (i.e. its filename is empty), then load file
     // into. Otherwise create new project window.
     if (activeProject() && activeProject()->getFileName().isEmpty())
     {
-        ProjectPanel *proj = activeProject();
-        if (proj->fileOpen())
-        {
-            proj->readyStatus(true);
-            proj->loadState(true);
-        }
+        proj = activeProject();
+        if (!proj->loadFile(file_name, load_rcs_head)) return false;
     } else
     {
-        std::auto_ptr<ProjectPanel> proj(newProjectPanel());
-        if (proj->fileOpen())
+        proj = newProjectPanel();
+        if (proj->loadFile(file_name, load_rcs_head))
         {
-            showSub(proj.get());
-            proj->readyStatus(true);
-            proj->loadState(true);
-            proj.release();
+            showSub(proj);
+        } else
+        {
+            delete proj;
+            return false;
         }
     }
-}
-
-void FWWindow::loadFile(const QString &filename, bool load_rcs_head)
-{
-    if (activeProject() && activeProject()->getFileName().isEmpty())
-    {
-        ProjectPanel *proj = activeProject();
-        if (proj->loadFile(filename, load_rcs_head))
-        {
-            proj->readyStatus(true);
-            proj->loadState(true);
-        }
-    } else
-    {
-        std::auto_ptr<ProjectPanel> proj(newProjectPanel());
-        if (proj->loadFile(filename, load_rcs_head))
-        {
-            showSub(proj.get());
-            proj->readyStatus(true);
-            proj->loadState(true);
-            proj.release();
-        }
-    }
+    proj->readyStatus(true);
+    proj->loadState(true);
+    return true;
 }
 
 void FWWindow::fileClose()
@@ -535,16 +540,6 @@ void FWWindow::fileClose()
     if (fwbdebug) qDebug("subWindowList().size()=%d",
                          m_space->subWindowList().size());
 
-}
-
-void FWWindow::fileSave()
-{
-    if (activeProject()) activeProject()->fileSave();
-}
-
-void FWWindow::fileSaveAs()
-{
-    if (activeProject()) activeProject()->fileSaveAs();
 }
 
 void FWWindow::fileExit()
@@ -568,31 +563,6 @@ void FWWindow::fileExit()
     QCoreApplication::exit(0);
 }
 
-void FWWindow::fileCommit()
-{
-    if (activeProject()) activeProject()->fileCommit();
-}
-
-/*
- * discard changes done to the file and check out clean copy of the
- * head revision from RCS
- */
-void FWWindow::fileDiscard()
-{
-    if (activeProject()) activeProject()->fileDiscard();
-}
-
-void FWWindow::fileAddToRCS()
-{
-    if (activeProject()) activeProject()->fileAddToRCS();
-}
-
-bool FWWindow::editingLibrary()
-{
-    if (activeProject()) return activeProject()->editingLibrary();
-    return false;
-}
-
 void FWWindow::toolsDiscoveryDruid()
 {
     DiscoveryDruid druid(this);
@@ -603,102 +573,6 @@ void FWWindow::importPolicy()
 {
     DiscoveryDruid druid(this, true);
     druid.exec();
-}
-
-void FWWindow::load(QWidget*)
-{
-    if (activeProject()) activeProject()->loadStandardObjects();
-}
-
-FWObject* FWWindow::getVisibleFirewalls()
-{ 
-    if (activeProject()) return activeProject()->getVisibleFirewall(); 
-    return 0;
-}
-
-void FWWindow::load(QWidget*, RCS *_rcs)
-{
-    if (activeProject()) activeProject()->loadFromRCS(_rcs);
-}
-
-bool FWWindow::checkin(bool unlock)
-{
-    if (activeProject()) return activeProject()->checkin(unlock);
-    return false;
-}
-
-void FWWindow::save()
-{
-    if (activeProject()) activeProject()->save();
-}
-
-void FWWindow::loadLibrary(const string &libfpath)
-{
-    if (activeProject()) activeProject()->loadLibrary(libfpath);
-}
-
-void FWWindow::fileImport()
-{
-    if (activeProject()) activeProject()->fileImport();
-}
-
-
-void FWWindow::fileCompare()
-{
-    if (activeProject()) activeProject()->fileCompare();
-}
-
-void FWWindow::findExternalRefs(FWObject *lib,
-                                       FWObject *root,
-                                       list<FWReference*> &extRefs)
-{
-    if (activeProject()) activeProject()->findExternalRefs(lib, root, extRefs);
-}
-
-void FWWindow::setSafeMode(bool f)
-{
-    if (activeProject()) activeProject()->setSafeMode(f);
-}
-
-void FWWindow::setStartupFileName(const QString &fn)
-{
-    if (activeProject()) activeProject()->setStartupFileName(fn);
-}
-
-bool FWWindow::exportLibraryTest(list<FWObject*> &selectedLibs)
-{
-/* VERY IMPORTANT: External library file must be self-contained,
- * otherwise it can not be exported.
- *
- * check if selected libraries have references to objects in other
- * libraries (not exported to the same file). Exporting such libraries
- * pulls in other ones because of these references. This is confusing
- * because it means we end up with multiple copies of such objects (in
- * exported library file and in user's data file). When user imports
- * this library and opens their file, it is impossible to say which
- * library an object belongs to.
- *
- * This is prohibited. We check if exported set of libraries has such
- * references and refuse to export it. The user is supposed to clean
- * it up by either moving objects into the library they are trying to
- * export, or by rearranging objects. The only exception for this is
- * library "Standard", which is assumed to be always present so we can
- * have references to objects in it.
- */
-    if (activeProject())
-        return activeProject()->exportLibraryTest(selectedLibs);
-    return false;
-}
-
-void FWWindow::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, bool rof)
-{
-    if (activeProject())
-        activeProject()->exportLibraryTo(fname,selectedLibs, rof);
-}
-
-void FWWindow::fileExport()
-{
-    if (activeProject()) activeProject()->fileExport();
 }
 
 void FWWindow::setActionsEnabled(bool en)
@@ -716,68 +590,6 @@ void FWWindow::setActionsEnabled(bool en)
 
     m_mainWindow->compileAction->setEnabled(en );
     m_mainWindow->installAction->setEnabled(en );
-}
-
-int  FWWindow::findFirewallInList(FWObject *f)
-{
-    if (activeProject()) return activeProject()->findFirewallInList(f);
-    return -1;
-}
-
-void FWWindow::ensureObjectVisibleInRules(FWReference *obj)
-{
-    if (activeProject()) activeProject()->ensureObjectVisibleInRules(obj);
-}
-
-/*
- * Make rule visible and highlight given column
- */
-void FWWindow::ensureRuleIsVisible(Rule *rule, int col)
-{
-    if (activeProject()) activeProject()->ensureRuleIsVisible(rule, col);
-}
-
-void FWWindow::updateRuleSetViewSelection()
-{
-    if (activeProject()) activeProject()->updateRuleSetViewSelection();
-}
-
-void FWWindow::updateTreeViewItemOrder()
-{
-    //this is for case when tree becomes to be resorted
-    //if we do not reopen parent item, some of child
-    //items mix incorrectly (maybe bug of QT?)
-    if (activeProject()) activeProject()->updateTreeViewItemOrder();
-}
-
-void FWWindow::updateRuleSetView()
-{
-    if (activeProject()) activeProject()->updateRuleSetView();
-}
-
-void FWWindow::updateRuleOptions()
-{
-    if (activeProject()) activeProject()->updateRuleOptions();
-}
-
-void FWWindow::updateFirewallName()
-{
-    if (activeProject()) activeProject()->updateFirewallName();
-}
-
-void FWWindow::scheduleRuleSetRedraw()
-{
-    if (activeProject()) activeProject()->scheduleRuleSetRedraw();
-}
-
-void FWWindow::redrawRuleSets()
-{
-    if (activeProject()) activeProject()->redrawRuleSets();
-}
-
-void FWWindow::reopenFirewall()
-{
-    if (activeProject()) activeProject()->reopenFirewall();
 }
 
 void FWWindow::setEnabledAfterRF()
@@ -816,11 +628,6 @@ void FWWindow::selectRules()
     if (activeProject()) activeProject()->selectRules();
 }
 
-void FWWindow::unselectRules()
-{
-    if (activeProject()) activeProject()->unselectRules();
-}
-
 void FWWindow::disableActions(bool havePolicies)
 {
     m_mainWindow ->insertRuleAction->setEnabled( havePolicies ); // enabled if there are policies
@@ -834,47 +641,15 @@ void FWWindow::disableActions(bool havePolicies)
     m_mainWindow ->pasteRuleAboveAction->setEnabled( false );
     m_mainWindow ->pasteRuleBelowAction->setEnabled( false );
 
-    m_mainWindow ->compileAction->setEnabled( havePolicies );
-    m_mainWindow ->installAction->setEnabled( havePolicies );
-}
-
-void FWWindow::editCopy()
-{
-    if (activeProject()) activeProject()->editCopy();
-}
-
-void FWWindow::editCut()
-{
-    if (activeProject())
-    {
-        activeProject()->editCut();
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-void FWWindow::editDelete()
-{
-    if (activeProject())
-    {
-        activeProject()->editDelete();
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-void FWWindow::editPaste()
-{
-    if (activeProject())
-    {
-        activeProject()->editPaste();
-        reloadAllWindowsWithFile(activeProject());
-    }
+    m_mainWindow ->compileAction->setEnabled( true );
+    m_mainWindow ->installAction->setEnabled( true );
 }
 
 void FWWindow::compile()
 {
     std::set<Firewall*> emp;
 
-    instd = new instDialog(NULL,BATCH_COMPILE,emp);
+    instd = new instDialog(NULL, BATCH_COMPILE, emp);
     instd->show();
 
 //    id->exec();
@@ -887,7 +662,7 @@ void FWWindow::compile(set<Firewall*> vf)
         qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
 
 
-    instDialog *id = new instDialog(NULL,BATCH_COMPILE,vf);
+    instDialog *id = new instDialog(NULL, BATCH_COMPILE, vf);
 
     instd = id;
     instd->show();
@@ -898,7 +673,7 @@ void FWWindow::compile(set<Firewall*> vf)
 
 void FWWindow::install(set<Firewall*> vf)
 {
-    instDialog *id=new instDialog(NULL,BATCH_INSTALL, vf);
+    instDialog *id = new instDialog(NULL, BATCH_INSTALL, vf);
 
     instd = id;
     instd->show();
@@ -918,70 +693,17 @@ void FWWindow::install()
 //    delete id;
 }
 
-void FWWindow::changeInfoStyle()
+void FWWindow::transferfw(set<Firewall*> vf)
 {
-    if (activeProject()) activeProject()->changeInfoStyle();
+    transferDialog *ed = new transferDialog(NULL, vf);
+    ed->show();
 }
 
-void FWWindow::insertRule()
+void FWWindow::transferfw()
 {
-    if (activeProject()) activeProject()->insertRule();
-}
-
-void FWWindow::addRuleAfterCurrent()
-{
-    if (activeProject())
-        activeProject()->addRuleAfterCurrent();
-}
-
-void FWWindow::removeRule()
-{
-    if (activeProject()) activeProject()->removeRule();
-}
-
-void FWWindow::moveRule()
-{
-    if (activeProject()) activeProject()->moveRule();
-}
-
-void FWWindow::moveRuleUp()
-{
-    if (activeProject()) activeProject()->moveRuleUp();
-}
-
-void FWWindow::moveRuleDown()
-{
-    if (activeProject()) activeProject()->moveRuleDown();
-}
-
-void FWWindow::copyRule()
-{
-    if (activeProject()) activeProject()->copyRule();
-}
-
-void FWWindow::cutRule()
-{
-    if (activeProject()) activeProject()->cutRule();
-}
-
-void FWWindow::pasteRuleAbove()
-{
-    if (activeProject()) activeProject()->pasteRuleAbove();
-}
-
-void FWWindow::pasteRuleBelow()
-{
-    if (activeProject()) activeProject()->pasteRuleBelow();
-}
-
-void FWWindow::search()
-{
-    if (activeProject()) activeProject()->search();
-}
-
-void FWWindow::findWhereUsed(FWObject * obj)
-{
-    if (activeProject()) activeProject()->findWhereUsed(obj);
+    std::set<Firewall*> emp;
+    transferDialog *ed = new transferDialog(NULL, emp);
+    ed->show();
 }
 
 void FWWindow::showEvent(QShowEvent *ev)
@@ -994,32 +716,6 @@ void FWWindow::hideEvent(QHideEvent *ev)
 {
     st->saveGeometry(this);
     QMainWindow::hideEvent(ev);
-}
-
-void FWWindow::back()
-{
-    if (activeProject()) activeProject()->back();
-}
-
-void FWWindow::newObject()
-{
-    if (activeProject()) activeProject()->newObject();
-}
-
-// ObjectManipulator::lockObject calls
-// mw->reloadAllWindowsWithFile(activeProject()) to update
-// other windows
-void FWWindow::lockObject()
-{
-    if (activeProject()) activeProject()->lockObject();
-}
-
-// ObjectManipulator::unlockObject calls
-// mw->reloadAllWindowsWithFile(activeProject()) to update
-// other windows
-void FWWindow::unlockObject()
-{
-    if (activeProject()) activeProject()->unlockObject();
 }
 
 void FWWindow::prepareEditMenu()
@@ -1081,14 +777,17 @@ void FWWindow::prepareFileMenu()
     bool real_file_opened = (activeProject()->getFileName() != "");
     bool in_rcs = (activeProject()->getRCS() != NULL &&
                    activeProject()->getRCS()->isCheckedOut());
+    bool needs_saving = (db() && db()->isDirty());
 
     if (fwbdebug)
         qDebug("FWWindow::prepareFileMenu(): activeProject()=%p"
-               "  activeProject()->getFileName()='%s'",
+               "  activeProject()->getFileName()='%s'"
+               "  real_file_opened=%d  needs_saving=%d",
                activeProject(),
-               activeProject()->getFileName().toAscii().constData());
+               activeProject()->getFileName().toAscii().constData(),
+               real_file_opened, needs_saving);
     
-    m_mainWindow->fileSaveAction->setEnabled(real_file_opened);
+    m_mainWindow->fileSaveAction->setEnabled(real_file_opened && needs_saving);
     m_mainWindow->fileCloseAction->setEnabled(real_file_opened);
     m_mainWindow->filePropAction->setEnabled(real_file_opened);
     m_mainWindow->filePrintAction->setEnabled(real_file_opened);
@@ -1101,6 +800,11 @@ void FWWindow::prepareFileMenu()
     m_mainWindow->fileNewAction->setEnabled(true);
     m_mainWindow->fileOpenAction->setEnabled(true);
     m_mainWindow->fileSaveAsAction->setEnabled(true);
+}
+
+void FWWindow::prepareToolsMenu()
+{
+    m_mainWindow->DiscoveryDruidAction->setEnabled(db()!=NULL);
 }
 
 void FWWindow::prepareWindowsMenu()
@@ -1128,7 +832,7 @@ void FWWindow::prepareWindowsMenu()
     connect(next, SIGNAL(triggered()),m_space, SLOT(activateNextSubWindow()));
     connect(previous, SIGNAL(triggered()),m_space, SLOT(activatePreviousSubWindow()));
 
-    QList<QMdiSubWindow *> subWindowList = getMdiArea()->subWindowList();
+    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     QActionGroup * ag = new QActionGroup(this);
     ag->setExclusive (true);
     for (int i = 0 ; i < subWindowList.size(); i++)
@@ -1158,41 +862,17 @@ void FWWindow::prepareWindowsMenu()
     }
 }
 
-void FWWindow::setupAutoSave()
+/**
+ * QMdiArea emits this signal after window has been activated. When
+ * window is 0, QMdiArea has just deactivated its last active window,
+ * and there are no active windows on the workspace.
+ */
+void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
 {
-    if (activeProject()) activeProject()->setupAutoSave();
-}
-
-QString FWWindow::getCurrentFileName()
-{
-    if (activeProject()) return activeProject()->getCurrentFileName();
-    return "";
-}
-
-RCS * FWWindow::getRCS()
-{
-    if (activeProject()) return activeProject()->getRCS();
-    return 0;
-}
-
-void FWWindow::findObject(FWObject *o)
-{
-    if (activeProject()) activeProject()->findObject(o);
-}
-
-void FWWindow::closeAuxiliaryPanel()
-{
-    if (activeProject()) activeProject()->closeAuxiliaryPanel();
-}
-
-void FWWindow::closeEditorPanel()
-{
-    if (activeProject()) activeProject()->closeEditorPanel();
-}
-
-void FWWindow::openEditorPanel()
-{
-    if (activeProject()) activeProject()->openEditorPanel();
+    if (subwindow==NULL) return;
+    ProjectPanel *pp = dynamic_cast<ProjectPanel*>(subwindow->widget());
+    if (pp)
+        prepareFileMenu();
 }
 
 void FWWindow::editPrefs()
@@ -1201,37 +881,6 @@ void FWWindow::editPrefs()
     pd.exec();
 }
 
-
-/*
- * reset tab via callback because calling setCurrentPage from
- * ruleSetTabChanged causes recursive call to ruleSetTabChanged
- */
-void FWWindow::restoreRuleSetTab()
-{
-    if (activeProject()) activeProject()->restoreRuleSetTab();
-}
-
-/*
- *  w       - widget that requests editor ownership (ruleset view or tree)
- *  obj     - object to be opened in the editor
- *  otype   - editor type in case obj is a rule
- * validate - validate and save editor contents
- *
- *  if w==NULL, then request is done by the same widget that owns editor.
- *  just need to run validateAndSave and return result
- *
- *  if obj==NULL, then no new object is to be opened in the editor
- *
- */
-bool FWWindow::requestEditorOwnership(QWidget *w,
-                                      FWObject *obj,
-                                      ObjectEditor::OptType otype,
-                                      bool validate)
-{
-    if (activeProject())
-        return activeProject()->requestEditorOwnership(w, obj, otype, validate);
-    return false;
-}
 
 void FWWindow::editFind()
 {
@@ -1257,398 +906,10 @@ void FWWindow::helpIndex()
 {
 }
 
-/* 
- * find all windows that represent the same file as ProjectPanel pp
- * and reload objects (except for the window attached to pp)
- */
-void FWWindow::reloadAllWindowsWithFile(ProjectPanel *pp)
-{
-    if (fwbdebug)
-        qDebug("FWWindow::reloadAllWindowsWithFile pp=%p file=%s",
-               pp, pp->getRCS()->getFileName().toAscii().constData());
-
-    QList<QMdiSubWindow*> subWindowList = getMdiArea()->subWindowList();
-    QString fileName = pp->getRCS()->getFileName();
-    for (int i = 0 ; i < subWindowList.size(); i++)
-    {
-        ProjectPanel * other_pp = dynamic_cast<ProjectPanel*>(
-            subWindowList[i]->widget());
-        if (pp==other_pp) continue;
-        if (other_pp->getRCS()->getFileName()==fileName)
-        {
-            FWObject *obj = other_pp->m_panel->om->getOpened();
-
-            if (fwbdebug)
-                qDebug("FWWindow::reloadAllWindowsWithFile "
-                       "Object %p is opened in the other window", obj);
-
-            other_pp->m_panel->om->loadObjects();
-
-            if (fwbdebug)
-                qDebug("FWWindow::reloadAllWindowsWithFile "
-                       "Reopen object %p in the other window", obj);
-
-            other_pp->m_panel->om->openObject(obj, false);
-            other_pp->mdiWindow->update();
-        }
-    }
-}
-
-void FWWindow::closeRuleSetInAllWindowsWhereOpen(RuleSet *rs)
-{
-    QList<QMdiSubWindow*> subWindowList = getMdiArea()->subWindowList();
-    for (int i = 0 ; i < subWindowList.size(); i++)
-    {
-        ProjectPanel * pp = dynamic_cast<ProjectPanel*>(
-            subWindowList[i]->widget());
-        pp->clearFirewallTabs();
-        pp->closeRuleSet(rs);
-    }
-}
-
-void FWWindow::closeObjectInAllWindowsWhereOpen(FWObject*)
-{
-    QList<QMdiSubWindow*> subWindowList = getMdiArea()->subWindowList();
-    for (int i = 0 ; i < subWindowList.size(); i++)
-    {
-        ProjectPanel * pp = dynamic_cast<ProjectPanel*>(
-            subWindowList[i]->widget());
-        pp->m_panel->om->closeObject();
-        pp->mdiWindow->update();
-    }
-}
-
-//wrapers for some ObjectManipulator functions
-FWObject* FWWindow::getOpened()
-{
-    if (activeProject())
-        return activeProject()->getOpened();
-    return 0;
-}
-
-FWObject* FWWindow::getCurrentLib()
-{
-    if (activeProject())
-        return activeProject()->getCurrentLib();
-    return 0;
-}
-
-
-void FWWindow::loadDataFromFw(Firewall *fw)
-{
-    if (activeProject())
-        activeProject()->loadDataFromFw(fw);
-}
-
-void FWWindow::insertObjectInTree(FWObject *parent, FWObject *obj)
-{
-    if (activeProject())
-        activeProject()->insertObjectInTree(parent, obj);
-}
-
-FWObject* FWWindow::createObject(const QString &objType,
-                                               const QString &objName,
-                                               FWObject *copyFrom)
-{
-    FWObject *res = NULL;
-    if (activeProject())
-    {
-        res = activeProject()->createObject(objType, objName, copyFrom);
-        reloadAllWindowsWithFile(activeProject());
-    }
-    return res;
-}
-
-FWObject* FWWindow::createObject(FWObject *parent,
-                                               const QString &objType,
-                                               const QString &objName,
-                                               FWObject *copyFrom)
-{
-    FWObject *res = NULL;
-    if (activeProject())
-    {
-        res =  activeProject()->createObject(parent, objType,
-                                             objName, copyFrom);
-        reloadAllWindowsWithFile(activeProject());
-    }
-    return res;
-}
-
-void FWWindow::moveObject(FWObject *target, FWObject *obj)
-{
-    if (activeProject())
-    {
-        activeProject()->moveObject(target, obj);
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-void FWWindow::moveObject(const QString &targetLibName, FWObject *obj)
-{
-    if (activeProject())
-    {
-        activeProject()->moveObject(targetLibName, obj);
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-void FWWindow::autorename(FWObject *obj,
-                          const std::string &objtype,
-                          const std::string &namesuffix)
-{
-    if (activeProject()) activeProject()->autorename(obj, objtype, namesuffix);
-}
-
-
-void FWWindow::updateLibColor(FWObject *lib)
-{
-    if (activeProject())
-    {
-        activeProject()->updateLibColor(lib);
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-void FWWindow::updateLibName(FWObject *lib)
-{
-    if (activeProject())
-    {
-        activeProject()->updateLibName(lib);
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-void FWWindow::updateObjName(FWObject *obj,
-                             const QString &oldName,
-                             bool  askForAutorename)
-{
-    if (activeProject())
-    {
-        activeProject()->updateObjName(obj, oldName, askForAutorename);
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-void FWWindow::updateObjName(FWObject *obj,
-                             const QString &oldName,
-                             const QString &oldLabel,
-                             bool  askForAutorename)
-{
-    if (activeProject())
-    {
-        activeProject()->updateObjName(obj, 
-                                       oldName, oldLabel, askForAutorename);
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-
-void FWWindow::updateLastModifiedTimestampForOneFirewall(FWObject *o)
-{
-    if (activeProject())
-        activeProject()->updateLastModifiedTimestampForOneFirewall(o);
-}
-
-void FWWindow::updateLastModifiedTimestampForAllFirewalls(FWObject *o)
-{
-    if (activeProject())
-        activeProject()->updateLastModifiedTimestampForAllFirewalls(o);
-}
-
-void FWWindow::updateLastInstalledTimestamp(FWObject *o)
-{
-    if (activeProject()) activeProject()->updateLastInstalledTimestamp(o);
-}
-
-void FWWindow::updateLastCompiledTimestamp(FWObject *o)
-{
-    if (activeProject()) activeProject()->updateLastCompiledTimestamp(o);
-}
-
-
-FWObject* FWWindow::pasteTo(FWObject *target, FWObject *obj)
-{
-    if (activeProject()) return activeProject()->pasteTo(target, obj);
-    return 0;
-}
-
-void FWWindow::delObj(FWObject *obj,bool openobj)
-{
-    if (activeProject())
-    {
-        activeProject()->delObj(obj, openobj);
-        reloadAllWindowsWithFile(activeProject());
-    }
-}
-
-ObjectTreeView* FWWindow::getCurrentObjectTree()
-{
-    if (activeProject()) return activeProject()->getCurrentObjectTree();
-    return 0;
-}
-
-void FWWindow::openObject(QTreeWidgetItem *otvi)
-{
-    if (activeProject()) activeProject()->openObject(otvi);
-}
-
-void FWWindow::openObject(FWObject *obj)
-{
-    if (activeProject()) activeProject()->openObject(obj);
-}
-
-bool FWWindow::editObject(FWObject *obj)
-{
-    if (activeProject()) return activeProject()->editObject(obj);
-    return false;
-}
-
-void FWWindow::findAllFirewalls (std::list<Firewall *> &fws)
-{
-    if (activeProject()) activeProject()->findAllFirewalls (fws);
-}
-
-FWObject* FWWindow::duplicateObject(FWObject *target,
-                                    FWObject *obj,
-                                    const QString &name,
-                                    bool  askForAutorename)
-{
-    if (activeProject())
-        return activeProject()->duplicateObject(target,
-                                                obj, name, askForAutorename);
-    return 0;
-}
-
-void FWWindow::showDeletedObjects(bool f)
-{
-    if (activeProject()) activeProject()->showDeletedObjects(f);
-}
-
-void FWWindow::select()
-{
-    if (activeProject()) activeProject()->select();
-}
-
-void FWWindow::unselect()
-{
-    if (activeProject()) activeProject()->unselect();
-}
-
-void FWWindow::info()
-{
-    if (activeProject()) info(activeProject()->getSelectedObject(), true);
-}
-
-void FWWindow::setManipulatorFocus()
-{
-    if (activeProject()) activeProject()->setManipulatorFocus();
-}
-
-void FWWindow::clearManipulatorFocus()
-{
-    if (activeProject()) activeProject()->clearManipulatorFocus();
-}
-
-//wrapers for some Object Editor functions
-bool FWWindow::isEditorVisible()
-{
-    if (activeProject()) return activeProject()->isEditorVisible();
-    return false;
-}
-
-bool FWWindow::isEditorModified()
-{
-    if (activeProject()) return activeProject()->isEditorModified();
-    return false;
-}
-
-void FWWindow::showEditor()
-{    
-    if (activeProject()) activeProject()->showEditor();
-}
-
-void FWWindow::hideEditor()
-{
-    if (activeProject()) activeProject()->hideEditor();
-}
-
-void FWWindow::closeEditor()
-{
-    if (activeProject()) activeProject()->closeEditor();
-}
-
-void FWWindow::openEditor(FWObject *o)
-{
-    if (activeProject()) activeProject()->openEditor(o);
-}
-
-void FWWindow::openOptEditor(FWObject *o, ObjectEditor::OptType t)
-{
-    if (activeProject()) activeProject()->openOptEditor(o, t);
-}
-
-void FWWindow::blankEditor()
-{
-    if (activeProject()) activeProject()->blankEditor();
-}
-
-
-FWObject* FWWindow::getOpenedEditor()
-{
-    if (activeProject()) return activeProject()->getOpenedEditor();
-    return 0;
-}
-
-ObjectEditor::OptType FWWindow::getOpenedOptEditor()
-{
-    if (activeProject()) return activeProject()->getOpenedOptEditor();
-    return ObjectEditor::optNone;
-}
-
-void FWWindow::selectObjectInEditor(FWObject *o)
-{
-    if (activeProject()) activeProject()->selectObjectInEditor(o);
-}
-
-void FWWindow::actionChangedEditor(FWObject *o)
-{
-    if (activeProject()) activeProject()->actionChangedEditor(o);
-}
-
-bool FWWindow::validateAndSaveEditor()
-{
-    if (activeProject()) return activeProject()->validateAndSaveEditor();
-    return false;
-}
-
-void FWWindow::setFDObject(FWObject *o)
-{
-    if (activeProject()) activeProject()->setFDObject(o);
-}
-
 QPrinter* FWWindow::getPrinter()
 {
     return printer;
 }
-
-FWObjectDatabase* FWWindow::db() 
-{ 
-    if (activeProject()) return activeProject()->db(); 
-    return 0;
-}
-
-QString FWWindow::printHeader()
-{
-    if (activeProject()) return activeProject()->printHeader();
-    return "";
-}
-
-bool FWWindow::isSystem(FWObject *obj)
-{
-    if (activeProject()) return activeProject()->isSystem(obj);
-    return false;
-}
-
 
 void FWWindow::closeEvent(QCloseEvent* ev)
 {
@@ -1676,6 +937,21 @@ void FWWindow::closeEvent(QCloseEvent* ev)
     }
 }
 
+bool FWWindow::event(QEvent *event)
+{
+    if (event->type() >= QEvent::User)
+    {
+        // dispatch event to all projectpanel windows
+        QList<QMdiSubWindow*> subWindowList = m_space->subWindowList();
+        for (int i = 0 ; i < subWindowList.size(); i++)
+            QCoreApplication::sendEvent(subWindowList[i]->widget(), event);
+
+        event->accept();
+        return true;
+    }
+    return QMainWindow::event(event);
+}
+
 void FWWindow::selectActiveSubWindow (/*const QString & text*/)
 {
     QObject * sender_ = sender ();
@@ -1687,7 +963,7 @@ void FWWindow::selectActiveSubWindow (/*const QString & text*/)
     {
         if (windowsTitles[i]==text)
         {
-            getMdiArea()->setActiveSubWindow(windowsPainters[i]);
+            m_space->setActiveSubWindow(windowsPainters[i]);
         }
     }
 }
@@ -1718,12 +994,10 @@ void FWWindow::maximize ()
     st->setInt("Window/maximized", 1);
 }
 
-void FWWindow::changeActiveSubwindow() {}
-
 void FWWindow::updateTreeFont ()
 {
     QFont font = st->getTreeFont();
-   QList<QMdiSubWindow *> subWindowList = getMdiArea()->subWindowList();
+   QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
@@ -1740,9 +1014,21 @@ void FWWindow::updateTreeFont ()
 
 void FWWindow::checkForUpgrade(const QString& server_response)
 {
+    disconnect(current_version_http_getter, SIGNAL(done(const QString&)),
+               this, SLOT(checkForUpgrade(const QString&)));
+
+    /*
+     * getStatus() returns error status if server esponded with 302 or
+     * 301 redirect. Only "200" is considered success.
+     */
     if (current_version_http_getter->getStatus())
     {
-        if (!server_response.trimmed().isEmpty())
+        /*
+         * server response may be some html or other data in case
+         * connection goes via proxy, esp. with captive portals. We
+         * should not interpret that as "new version is available"
+         */
+        if (server_response.trimmed() == "update = 1")
         {
             QMessageBox::warning(
                 this,"Firewall Builder",
@@ -1772,7 +1058,33 @@ void FWWindow::projectWindowClosed()
 
 void FWWindow::help()
 {
-    Help *h = new Help(this, "main", "Firewall Builder");
+    Help *h = new Help(this, "Firewall Builder");
+    h->setSource(QUrl("main.html"));
     h->show();
+}
+
+void FWWindow::showReleaseNotes()
+{
+    QString file_name = QString("release_notes_%1.html").arg(VERSION);
+    // Show "release notes" dialog only if corresponding file
+    // exists.
+    QString contents;
+    Help *h = new Help(this, "Important Information About This Release");
+    if (h->findHelpFile(file_name).isEmpty())
+    {
+        // the file does not exist
+        delete h;
+    } else
+    {
+        // I do not know why, but url "file://file_name" does not seem to work.
+        // But "file:file_name" works.
+        h->setSource(QUrl("file:" + file_name));
+        h->setModal(false);
+        h->show();
+        h->exec();
+        // Class Help uses attribute Qt::WA_DeleteOnClose which
+        // means the system will delete the object on close.  No
+        // need to delete it explicitly if it was shown.
+    }
 }
 

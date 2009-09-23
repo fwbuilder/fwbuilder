@@ -109,7 +109,7 @@ class SSHSession : public QObject {
     bool        stripComments;
     bool        testRun;
     QString     wdir;
-    QString     conffile;
+    QString     script;
     QString     backupFile;
     QString     diff_pgm;
     bool        save_diff;
@@ -186,7 +186,7 @@ public:
     void setTestRun(bool f) { testRun=f; }
     void setStripComments(bool f) { stripComments=f; }
     void setWDir(const QString &wd) { wdir=wd; }
-    void setConfFile(const QString &cf) { conffile=cf; }
+    void setScript(const QString &cf) { script=cf; }
     void setBackupFile(const QString &cf) { backupFile=cf; }
     void setSaveDiff(bool f) { save_diff=f; }
     void setDiffPgm(const QString &v) { diff_pgm=v; }

@@ -152,10 +152,9 @@ bool NATCompiler_ipf::ExpandPortRange::processNext()
         if (numPorts > 20)
         {
             ostringstream ostr;
-            ostr << string("Rule ") << rule->getLabel() << " : "
-                 << string("Expanding port range ") << osrv->getName()
+            ostr << string("Expanding port range ") << osrv->getName()
                  << " creates " << numPorts << " rules";
-            compiler->warning(ostr.str());
+            compiler->warning(rule, ostr.str());
         }
 
         string newSrvType = TCPService::TYPENAME;
@@ -172,7 +171,6 @@ bool NATCompiler_ipf::ExpandPortRange::processNext()
             TCPUDPService::cast(newSrv)->setDstRangeEnd(p);
             compiler->dbcopy->add(newSrv,false);
             compiler->dbcopy->addToIndex(newSrv);
-            compiler->cacheObj(newSrv);
 
             RuleElementOSrv *nosrv = r->getOSrv();
             nosrv->clearChildren();
@@ -508,7 +506,10 @@ bool NATCompiler_ipf::processMultiAddressObjectsInRE::processNext()
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
         if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
-            compiler->abort("Run-time AddressTable objects are not supported. Rule " + rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    "Run-time AddressTable objects are not supported.");
     }
 
     tmp_queue.push_back(rule);
@@ -520,7 +521,7 @@ void NATCompiler_ipf::compile()
 {
     bool manage_virtual_addr=getCachedFwOpt()->getBool("manage_virtual_addr");
 
-    cout << _(" Compiling NAT rules for ") << fw->getName() << " ..." << endl << flush;
+    info(" Compiling NAT rules for " + fw->getName());
 
     try {
 
@@ -528,6 +529,8 @@ void NATCompiler_ipf::compile()
 
         add( new Begin());
         add( new printTotalNumberOfRules() );
+
+        add( new singleRuleFilter());
 
         add( new recursiveGroupsInOSrc(      "check for recursive groups in OSRC"     ) );
         add( new recursiveGroupsInODst(      "check for recursive groups in ODST"     ) );
@@ -587,7 +590,8 @@ void NATCompiler_ipf::compile()
         runRuleProcessors();
 
 
-    } catch (FWException &ex) {
+    } catch (FWException &ex)
+    {
 	error(ex.toString());
 	exit(1);
     }

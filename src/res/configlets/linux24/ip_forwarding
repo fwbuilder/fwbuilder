@@ -1,0 +1,9 @@
+## -*- mode: shell-script; -*- 
+
+{{if ipv4}}
+echo {{$ipv4_forw}} > /proc/sys/net/ipv4/ip_forward
+{{endif}}
+
+{{if ipv6}}
+echo {{$ipv6_forw}} > /proc/sys/net/ipv6/conf/all/forwarding
+{{endif}}

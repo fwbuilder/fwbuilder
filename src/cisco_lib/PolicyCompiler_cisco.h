@@ -434,7 +434,7 @@ protected:
 public:
 
 	PolicyCompiler_cisco(libfwbuilder::FWObjectDatabase *_db,
-                             const std::string &fwname,
+                             libfwbuilder::Firewall *fw,
                              bool ipv6_policy,
                              fwcompiler::OSConfigurator *_oscnf);
         virtual ~PolicyCompiler_cisco() {}

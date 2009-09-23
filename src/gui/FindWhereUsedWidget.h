@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_findwhereusedwidget_q.h>
+#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/RuleElement.h"
@@ -50,6 +51,7 @@ class FindWhereUsedWidget : public QWidget
     Q_OBJECT
 
 private:
+    ProjectPanel *project_panel;
     bool flShowObject;
     libfwbuilder::FWObject* object;
     std::set<libfwbuilder::FWObject *> resset;
@@ -58,7 +60,7 @@ private:
     void showObject(libfwbuilder::FWObject*);
 
 public:
-    FindWhereUsedWidget(QWidget*p, const char * n = 0,
+    FindWhereUsedWidget(QWidget*p, ProjectPanel* pp, const char * n = 0,
                         Qt::WindowFlags f = 0, bool f_mini=false);
     ~FindWhereUsedWidget();
 

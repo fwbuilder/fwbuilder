@@ -61,7 +61,8 @@ RuleOptionsDialog::~RuleOptionsDialog()
     delete m_dialog;
 }
 
-RuleOptionsDialog::RuleOptionsDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+RuleOptionsDialog::RuleOptionsDialog(ProjectPanel *project, QWidget *parent) :
+    QWidget(parent), m_project(project)
 {
     m_dialog = new Ui::RuleOptionsDialog_q;
     m_dialog->setupUi(this);
@@ -81,7 +82,8 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 //    rsv=rv;
 
     FWObject *p=obj;
-    while ( !Firewall::isA(p) ) p=p->getParent();
+    // use Firewall::cast to match both Firewall and Cluster
+    while (!Firewall::cast(p)) p = p->getParent();
     platform=p->getStr("platform").c_str();
 
     help_name = platform + "_rule_options";
@@ -304,10 +306,10 @@ void RuleOptionsDialog::applyChanges()
     data.saveAll();
     init=false;
 
-    mw->updateRuleOptions();
+//    mw->updateRuleOptions();
 
-    //apply->setEnabled(false);
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void RuleOptionsDialog::cancelChanges()

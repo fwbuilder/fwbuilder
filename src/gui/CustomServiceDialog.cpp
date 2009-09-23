@@ -230,10 +230,9 @@ void CustomServiceDialog::applyChanges()
     int af = (m_dialog->ipv6->isChecked()) ? AF_INET6 : AF_INET;
     s->setAddressFamily(af);
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
 }
 
 void CustomServiceDialog::discardChanges()

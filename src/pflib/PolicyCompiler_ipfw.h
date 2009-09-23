@@ -241,10 +241,10 @@ namespace fwcompiler {
 	public:
 
 	PolicyCompiler_ipfw(libfwbuilder::FWObjectDatabase *_db,
-			   const std::string &fwname,
+                            libfwbuilder::Firewall *fw,
                             bool ipv6_policy,
 			   fwcompiler::OSConfigurator *_oscnf) :
-        PolicyCompiler_pf(_db, fwname, ipv6_policy, _oscnf, NULL)
+        PolicyCompiler_pf(_db, fw, ipv6_policy, _oscnf, NULL)
         {
             ipfw_num = 0;
         }

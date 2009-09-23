@@ -27,14 +27,14 @@
 #include "../../config.h"
 #include "global.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "FWWindow.h"
+#include "ProjectPanel.h"
 #include "ObjectIconView.h"
 #include "ObjectIconViewItem.h"
 #include "FWObjectDrag.h"
 #include "FWBSettings.h"
-
 #include "FWObjectPropertiesFactory.h"
+
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Resources.h"
 
@@ -57,6 +57,8 @@ using namespace libfwbuilder;
 ObjectIconView::ObjectIconView(QWidget* parent, const char*, Qt::WindowFlags) :
     QListWidget(parent)
 {
+    db = NULL;
+
     //setWindowFlags(f);
 
     setDragEnabled(true);
@@ -80,15 +82,15 @@ bool ObjectIconView::event(QEvent *event)
 
             //viewportToContents(pos.x(),pos.y(),cx,cy);
 
-            FWObject  *obj=NULL;
-            QRect      cr;
+            FWObject *obj = NULL;
+            QRect cr;
 
             QListWidgetItem *itm = itemAt( QPoint(cx,cy) );
             QModelIndex ind = indexAt( QPoint(cx,cy) );
             if (itm==NULL) return false;
 
             int obj_id = itm->data(Qt::UserRole).toInt();
-            obj = mw->db()->findInIndex(obj_id);
+            obj = db->findInIndex(obj_id);
             if (obj==NULL) return false;
 
             cr = rectForIndex(ind);
@@ -102,12 +104,9 @@ bool ObjectIconView::event(QEvent *event)
                 viewport()->mapToGlobal(cr.topLeft()),
                 viewport()->mapToGlobal(cr.bottomRight()));
 
-
             QToolTip::showText(mapToGlobal( he->pos() ),
-                FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj,
-                                                                       true,
-                                                                       true),
-                this, global);
+                FWObjectPropertiesFactory::getObjectPropertiesDetailed(
+                    obj, true, true), this, global);
         }
 
         return true;
@@ -122,7 +121,7 @@ QDrag* ObjectIconView::dragObject()
     // currentItem returns NULL if the list is empty
     if (ivi==NULL) return NULL;
     int obj_id = ivi->data(Qt::UserRole).toInt();
-    FWObject *obj = mw->db()->findInIndex(obj_id);
+    FWObject *obj = db->findInIndex(obj_id);
     QString icn =
         Resources::global_res->getObjResourceStr(obj, "icon-ref").c_str();
     list<FWObject*> dragobj;

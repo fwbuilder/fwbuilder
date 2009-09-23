@@ -34,6 +34,7 @@
 #include "FWWindow.h"
 #include "ObjConflictResolutionDialog.h"
 #include "upgradePredicate.h"
+#include "events.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Host.h"
@@ -755,7 +756,7 @@ void newHostDialog::finishClicked()
                 }
             }
         }
-        mw->reloadAllWindowsWithFile(mw->activeProject());
+        
     }
     if (unloadTemplatesLib)
     {

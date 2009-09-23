@@ -55,17 +55,14 @@ int PolicyCompiler_ipf::prolog()
     anytcp = dbcopy->createTCPService();
     anytcp->setId(FWObjectDatabase::generateUniqueId()); //ANY_TCP_OBJ_ID);
     dbcopy->add(anytcp,false);
-    cacheObj(anytcp); // to keep cache consistent
 
     anyudp=dbcopy->createUDPService();
     anyudp->setId(FWObjectDatabase::generateUniqueId()); //ANY_UDP_OBJ_ID);
     dbcopy->add(anyudp,false);
-    cacheObj(anyudp); // to keep cache consistent
 
     anyicmp=dbcopy->createICMPService();
     anyicmp->setId(FWObjectDatabase::generateUniqueId()); //ANY_ICMP_OBJ_ID);
     dbcopy->add(anyicmp,false);
-    cacheObj(anyicmp); // to keep cache consistent
 
     return n;
 }
@@ -372,7 +369,10 @@ bool PolicyCompiler_ipf::processMultiAddressObjectsInRE::processNext()
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
         if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
-            compiler->abort("Run-time AddressTable objects are not supported. Rule " + rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    "Run-time AddressTable objects are not supported.");
     }
 
     tmp_queue.push_back(rule);
@@ -382,7 +382,7 @@ bool PolicyCompiler_ipf::processMultiAddressObjectsInRE::processNext()
 
 void PolicyCompiler_ipf::compile()
 {
-    cout << " Compiling policy for " << fw->getName() << " ..." <<  endl << flush;
+    info(" Compiling policy for " + fw->getName());
 
     try {
 
@@ -391,7 +391,8 @@ void PolicyCompiler_ipf::compile()
 	addDefaultPolicyRule();
         bool check_for_recursive_groups=true;
 
-        if ( fw->getOptionsObject()->getBool ("check_shading") ) 
+        if ( fw->getOptionsObject()->getBool ("check_shading") &&
+             ! inSingleRuleCompileMode())
         {
             add( new Begin ("Detecting rule shadowing"              ) );
             add( new printTotalNumberOfRules( ) );
@@ -430,6 +431,9 @@ void PolicyCompiler_ipf::compile()
 
         add( new Begin());
         add( new printTotalNumberOfRules() );
+
+        add( new singleRuleFilter());
+
 //        add( new MACFiltering(                "verify for MAC address filtering"                ) );
         add( new setQuickFlag("set 'quick' flag") );
 
@@ -517,7 +521,8 @@ void PolicyCompiler_ipf::compile()
         runRuleProcessors();
 
 
-    } catch (FWException &ex) {
+    } catch (FWException &ex)
+    {
 	error(ex.toString());
 	exit(1);
     }
@@ -534,7 +539,7 @@ string PolicyCompiler_ipf::debugPrintRule(Rule *r)
     int iface_id = rule->getInterfaceId();
     if (iface_id > -1)
     {
-	Interface *rule_iface = getCachedFwInterface( iface_id );
+	FWObject *rule_iface = dbcopy->findInIndex( iface_id );
         s << " intf: "+rule_iface->getName();
     } else
         s << iface_id;
@@ -545,6 +550,9 @@ string PolicyCompiler_ipf::debugPrintRule(Rule *r)
     if (r->getStr("skip_label")!="")             s << "skip_label: " << r->getStr("skip_label") << " ";
     if (r->getStr("skip_to")!="")                s << "skip_to: "    << r->getStr("skip_to")    << " ";
     if (r->getInt("no_to_skip")!=-1)             s << "no_to_skip: " << r->getInt("no_to_skip");
+
+    s << " " << FWObjectDatabase::getStringId(r->getId()) << " (" << r->getId() << ")";
+
     return s.str();
 }
 

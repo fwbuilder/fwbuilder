@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
-<FWBuilderResources version="3.1.0">
+<FWBuilderResources>
     <Target name="iptables">
       <description>iptables</description>
+      <status>active</status>
       <group>Open Source Firewalls</group>
       <compiler>fwb_ipt</compiler>
       <dialog>iptables</dialog>
       <!-- maintian order of supported os names to make them appear in the dialog
         in the right order
         -->
-      <supported_os>linux24,linksys,ipcop,endian,oneshield,openwrt</supported_os>
+      <supported_os>linux24,openwrt,linksys,ipcop,endian,oneshield,secuwall</supported_os>
       <family>iptables</family>
 
       <options>
@@ -44,6 +45,7 @@
         <network_zones>False</network_zones>
         <unprotected_interfaces>False</unprotected_interfaces>
         <supports_prolog_epilog>True</supports_prolog_epilog>
+        <supports_cluster>True</supports_cluster>
         <actions>
             <Accept>
                 <supported>True</supported>

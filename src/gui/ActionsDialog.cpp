@@ -211,7 +211,9 @@ void ActionsDialog::applyChanges()
     else
         ropt->setInt("ipfw_classify_method",DUMMYNETQUEUE);
 
-    mw->updateLastModifiedTimestampForAllFirewalls(rule);
+    emit notify_changes_applied_sign();
+
+//    mw->updateLastModifiedTimestampForAllFirewalls(rule);
 }
 
 void ActionsDialog::discardChanges()

@@ -100,7 +100,7 @@ SSHSession::SSHSession(QWidget *_par,
     testRun=false;
     stripComments=false;
     wdir="";
-    conffile="";
+    script="";
     backupFile="";
     save_diff="";
     diff_pgm="";
@@ -238,7 +238,7 @@ void SSHSession::setOptions(instConf *cnf)
     setTestRun(cnf->testRun);
     setStripComments(cnf->stripComments);
     setWDir(cnf->wdir);
-    setConfFile(cnf->conffile);
+    setScript(cnf->script);
     setSaveDiff(cnf->save_diff);
     setDiffPgm(cnf->diff_pgm);
     setDiffFile(cnf->diff_file);

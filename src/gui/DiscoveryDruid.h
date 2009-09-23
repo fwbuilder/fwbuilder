@@ -170,6 +170,7 @@ public:
 class DiscoveryDruid : public QDialog, public FakeWizard
 {
     Q_OBJECT
+
 private:
     WorkerThread *thread;
     BackgroundTask current_task;
@@ -213,10 +214,18 @@ private:
     void startBackgroundProcess();
     void DataFromCrawler();
     int monitorOperation();
-    void autorename(FWObject *obj,const string &objtype,const string &namesuffix);
     void restore();
     void save();
+    QString guessOS(const string &sysDescr);
 
+    void rearrangeInterfaces(
+        const QString &os,
+        std::map<int,libfwbuilder::InterfaceData> &interfaces,
+        std::list<libfwbuilder::InterfaceData*> &interface_tree);
+    FWObject* addInterface(libfwbuilder::FWObject *parent,
+                           libfwbuilder::InterfaceData *in,
+                           bool skip_ip_address_check);
+    
 public:
 
     DiscoveryDruid(QWidget *parent, bool start_with_import=false);

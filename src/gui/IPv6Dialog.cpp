@@ -28,8 +28,7 @@
 #include "utils.h"
 
 #include "IPv6Dialog.h"
-
-//#include "ProjectPanel.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/IPv6.h"
@@ -222,10 +221,10 @@ void IPv6Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr(AF_INET6, 0));
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void IPv6Dialog::discardChanges()

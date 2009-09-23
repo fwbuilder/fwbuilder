@@ -43,6 +43,8 @@
 #include <QList>
 #include <QPixmap>
 
+#include "FWBSettings.h"
+
 #include "fwbuilder/dns.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWReference.h"
@@ -447,3 +449,39 @@ void loadIcon(QPixmap &pm, libfwbuilder::FWObject *obj)
     }
 }
 
+void LoadPixmap(const QString path, QPixmap &where)
+{
+    if (fwbdebug) qDebug() << "Pixmap: " << path;
+    if ( ! QPixmapCache::find( path, where ) )
+    {
+        where.load( path );
+        if (where.width() == 0)
+            qDebug("pixmap load failed: %s", path.toAscii().constData());
+        QPixmapCache::insert( path, where );
+    }
+}
+
+QPixmap LoadPixmap(const QString path)
+{
+
+    QPixmap p;
+    LoadPixmap(path, p);
+    return p;
+}
+
+QString calculateIconName(const QString &_icn, bool negation)
+{
+    QString icn = ":/Icons/"+_icn;
+
+    if (negation)
+    {
+        icn = icn + "-neg";
+    }
+
+    if (FWBSettings::SIZE16X16 == st->getIconsInRulesSize())
+    {
+        return icn+"-tree";
+    }
+
+    return icn;
+}

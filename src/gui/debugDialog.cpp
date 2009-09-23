@@ -32,6 +32,7 @@
 
 #include "debugDialog.h"
 #include "RCS.h"
+#include "ProjectPanel.h"
 #include "FWWindow.h"
 
 #include <qtextbrowser.h>
@@ -121,7 +122,7 @@ debugDialog::debugDialog(QWidget *parent) :
     m_dialog->debugText->append( QString("FWObjectDatabase index statistics:"));
 
     int s,h,m;
-    mw->db()->getIndexStats(s,h,m);
+    mw->activeProject()->db()->getIndexStats(s,h,m);
     m_dialog->debugText->append( QString("  index size: %1 records").arg(s) );
     m_dialog->debugText->append( QString("  hits: %1").arg(h) );
     m_dialog->debugText->append( QString("  misses: %1").arg(m) );

@@ -84,8 +84,8 @@ bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
         msg = "Two of the sub rules created from the gui routing rules " +
             rules_it->second + " and " + rule->getLabel() +
             " are identical, skipping the second. " +
-            "Please revise them to avoid this warning";
-        compiler->warning( msg.c_str() );
+            "Revise them to avoid this warning";
+        compiler->warning(rule,  msg.c_str() );
         return true;
     }
 

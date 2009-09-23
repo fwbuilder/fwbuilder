@@ -1,0 +1,327 @@
+<ui version="4.0" >
+ <class>carpOptionsDialog_q</class>
+ <widget class="QDialog" name="carpOptionsDialog_q" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>408</width>
+    <height>391</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>CARP protocol settings</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>151</width>
+         <height>27</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk" >
+       <property name="text" >
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="tabShape" >
+      <enum>QTabWidget::Rounded</enum>
+     </property>
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>CARP Parameters</string>
+      </attribute>
+      <attribute name="icon" >
+       <iconset resource="MainRes.qrc" >
+        <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout" >
+       <item row="0" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="carp_password_label" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
+         <property name="toolTip" >
+          <string>CARP password</string>
+         </property>
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>CARP password</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="2" >
+        <widget class="QLineEdit" name="carp_password" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="carp_vhid_label" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
+         <property name="toolTip" >
+          <string>Virtual Host ID</string>
+         </property>
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>VHID</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QSpinBox" name="carp_vhid" >
+         <property name="minimum" >
+          <number>1</number>
+         </property>
+         <property name="maximum" >
+          <number>255</number>
+         </property>
+         <property name="value" >
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2" >
+        <spacer name="horizontalSpacer_4" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>78</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label_3" >
+         <property name="text" >
+          <string>Advertisement interval (sec)</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QSpinBox" name="advbase" >
+         <property name="minimum" >
+          <number>1</number>
+         </property>
+         <property name="maximum" >
+          <number>255</number>
+         </property>
+         <property name="value" >
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" >
+        <spacer name="horizontalSpacer_3" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>78</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>Master advskew</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <widget class="QSpinBox" name="master_advskew" >
+         <property name="maximum" >
+          <number>254</number>
+         </property>
+         <property name="value" >
+          <number>50</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2" >
+        <spacer name="horizontalSpacer" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>78</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>Default advskew</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QSpinBox" name="default_advskew" >
+         <property name="maximum" >
+          <number>254</number>
+         </property>
+         <property name="value" >
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" >
+        <spacer name="horizontalSpacer_2" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>78</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="6" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>carpOptionsDialog_q</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>193</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>carpOptionsDialog_q</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>397</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

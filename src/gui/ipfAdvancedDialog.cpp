@@ -123,6 +123,9 @@ ipfAdvancedDialog::ipfAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->compiler, fwopt, "compiler" );
     data.registerOption( m_dialog->compilerArgs, fwopt, "cmdline"  );
     data.registerOption( m_dialog->outputFileName, fwopt, "output_file"  );
+    data.registerOption( m_dialog->fileNameOnFw, fwopt, "script_name_on_firewall");
+    data.registerOption( m_dialog->ipfConfFileNameOnFw, fwopt, "ipf_conf_file_name_on_firewall");
+    data.registerOption( m_dialog->natConfFileNameOnFw, fwopt, "nat_conf_file_name_on_firewall");
 
     slm=getActionsOnReject( obj->getStr("platform").c_str() );
     m_dialog->actionOnReject->clear();
@@ -143,6 +146,8 @@ ipfAdvancedDialog::ipfAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->epilog_script, fwopt, "epilog_script"  );
 
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -162,7 +167,7 @@ void ipfAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

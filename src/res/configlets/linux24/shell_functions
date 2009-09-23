@@ -1,0 +1,146 @@
+## -*- mode: shell-script; -*- 
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by AddressTable object $1"
+        exit 1
+    }
+}
+
+## va_num=1
+## add_addr() {
+##   addr=$1
+##   nm=$2
+##   dev=$3
+##
+##   type=""
+##   aadd=""
+##
+##   L=`$IP -4 link ls $dev | head -n1`
+##   if test -n "$L"; then
+##     OIFS=$IFS
+##     IFS=" /:,<"
+##     set $L
+##     type=$4
+##     IFS=$OIFS
+##     if test "$type" = "NO-CARRIER"; then
+##       type=$5
+##     fi
+##
+##     L=`$IP -4 addr ls $dev to $addr | grep inet | grep -v :`
+##     if test -n "$L"; then
+##       OIFS=$IFS
+##       IFS=" /"
+##       set $L
+##       aadd=$2
+##       IFS=$OIFS
+##     fi
+##   fi
+##   if test -z "$aadd"; then
+##     if test "$type" = "POINTOPOINT"; then
+##       $IP -4 addr add $addr dev $dev scope global label $dev:FWB${va_num}
+##       va_num=`expr $va_num + 1`
+##     fi
+##     if test "$type" = "BROADCAST"; then
+##       $IP -4 addr add $addr/$nm dev $dev brd + scope global label $dev:FWB${va_num}
+##       va_num=`expr $va_num + 1`
+##     fi
+##   fi
+## }
+
+getInterfaceVarName() {
+    echo $1 | sed 's/\./_/'
+}
+
+getaddr() {
+    dev=$1
+    name=$2
+##
+## originally this command looked like this:
+## $IP -4 addr ls $dev to $addr | grep inet | grep -E "$dev$"`
+##
+##  i.e. it looked for a line that ends with "$dev":
+##  inet 10.3.14.40/24 brd 10.3.14.255 scope global eth0  
+##    as opposed to
+##  inet 192.168.1.100/24 brd 192.168.1.255 scope global eth0:1
+##
+##  It turns out, some busybox-based systems have grep compiled w/o
+##  support for regular expressions. Using "grep -v :" seems to be an
+##  easy way to filter out secondary addresses without using regex
+##
+    L=`$IP -4 addr show dev $dev | grep inet | grep -v :`
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    OIFS=$IFS
+    IFS=" /"
+    set $L
+    eval "$name=$2"
+    IFS=$OIFS
+}
+
+getaddr6() {
+    dev=$1
+    name=$2
+    L=`$IP -6 addr show dev $dev | grep inet6 | grep -v :`
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    OIFS=$IFS
+    IFS=" /"
+    set $L
+    eval "$name=$2"
+    IFS=$OIFS
+}
+
+# function getinterfaces is used to process wildcard interfaces
+getinterfaces() {
+    NAME=$1
+    $IP link show | grep ": $NAME" | while read L; do
+        OIFS=$IFS
+        IFS=" :"
+        set $L
+        IFS=$OIFS
+        echo $2
+    done
+}
+
+## increment ip address
+## incaddr() {
+##   n1=$4
+##   n2=$3
+##   n3=$2
+##   n4=$1
+##
+##   vn1=`eval  "echo \\$$n1"`
+##
+##   R=`expr $vn1 \< 255`
+##   if test $R = "1"; then
+##     eval "$n1=`expr $vn1 + 1`"
+##   else
+##     eval "$n1=0"
+##     incaddr XX $n4 $n3 $n2
+##   fi
+## }
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+

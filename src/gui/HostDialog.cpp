@@ -153,11 +153,12 @@ void HostDialog::applyChanges()
 //    mgmt->getSNMPManagement()->setReadCommunity( snmpCommunity->text().latin1() );
     opt->setBool("use_mac_addr_filter", m_dialog->MACmatching->isChecked() );
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     modified = false;
+
+    emit notify_changes_applied_sign();
+
 }
 
 void HostDialog::discardChanges()

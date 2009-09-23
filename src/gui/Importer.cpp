@@ -31,11 +31,10 @@
 
 #include "Importer.h"
 
+#include <string>
 #include <ios>
 #include <iostream>
 #include <algorithm>
-
-#include <qstring.h>
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -57,7 +56,30 @@
 #include "ProjectPanel.h"
 #include "FWBTree.h"
 
+#include <QString>
+
+
 using namespace libfwbuilder;
+using namespace std;
+
+// a functor to join list<string> into a string with separator sep
+class join : public std::unary_function<std::string, void>
+{
+    std::string *result;
+    std::string  separator;
+public:
+    join(std::string *res, const std::string &s)
+    { result = res; separator = s; }
+    void operator()(std::string &s);
+};
+
+void join::operator()(string &s)
+{
+    if (!result->empty()) *result += separator;
+    *result += s;
+}
+
+
 
 FWObject* Importer::createObject(const std::string &objType,
                                  const std::string &objName)

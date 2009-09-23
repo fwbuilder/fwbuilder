@@ -31,7 +31,6 @@
 #include <ui_pagesetupdialog_q.h>
 
 #include "RCS.h"
-#include "ObjectEditor.h"
 #include "HttpGet.h"
 #include "printerStream.h"
 
@@ -41,6 +40,7 @@
 
 #include <vector>
 #include <list>
+#include <set>
 
 namespace libfwbuilder {
     class FWObjectDatabase;
@@ -49,6 +49,7 @@ namespace libfwbuilder {
     class RuleSet;
     class Rule;
     class FWObject;
+    class FWReference;
 };
 
 class ObjectManipulator;
@@ -104,14 +105,12 @@ public:
 
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);
+    void subWindowActivated(QMdiSubWindow*);
 
     void minimize();
     void maximize();
-    void changeActiveSubwindow();
     virtual void search();
 
-    virtual void reopenFirewall();
-    virtual void redrawRuleSets();
     virtual void changeInfoStyle();
     virtual void restoreRuleSetTab();
 
@@ -122,6 +121,7 @@ public slots:
     virtual void helpContentsAction();
     virtual void helpIndex();
     virtual void help();
+    virtual void showReleaseNotes();
 
     virtual void fileNew();
     virtual void fileOpen();
@@ -155,6 +155,8 @@ public slots:
     virtual void compile();
     virtual void install(std::set<libfwbuilder::Firewall * > vf);
     virtual void install();
+    virtual void transferfw(std::set<libfwbuilder::Firewall * > vf);
+    virtual void transferfw();
 
     virtual void insertRule();
     virtual void addRuleAfterCurrent();
@@ -176,13 +178,12 @@ public slots:
     virtual void prepareEditMenu();
     virtual void prepareObjectMenu();
     virtual void prepareFileMenu();
+    virtual void prepareToolsMenu();
     virtual void prepareWindowsMenu();
     virtual void prepareFileOpenRecentMenu();
 
     virtual void toolsDiscoveryDruid();
     virtual void closeAuxiliaryPanel();
-    virtual void closeEditorPanel();
-    virtual void openEditorPanel();
 
     virtual void killInstDialog();
 
@@ -199,46 +200,25 @@ public slots:
     ~FWWindow();
 
 
-    QMdiArea* getMdiArea () {return m_space;}
     RCS * getRCS(); 
-
-    libfwbuilder::FWObject* getVisibleFirewalls();
 
     void registerAutoOpenDocFile(const QString &file_name,
                                  bool load_from_rcs_head);
     void load(QWidget *dialogs_parent,RCS *rcs);
     void load(QWidget *dialogs_parent);
     void loadLibrary(const std::string &libfpath);
-    void loadFile(const QString &filename, bool load_rcs_head);
+    bool loadFile(const QString &filename, bool load_rcs_head);
     void save();
     bool checkin(bool unlock);
     int  findFirewallInList(libfwbuilder::FWObject *f);
-    void updateTreeViewItemOrder();
 
-    void reloadAllWindowsWithFile(ProjectPanel *pp);
-    void closeRuleSetInAllWindowsWhereOpen(libfwbuilder::RuleSet *rs);
-    void closeObjectInAllWindowsWhereOpen(libfwbuilder::FWObject *obj);
-    
     bool editingLibrary();
-
-    void ensureObjectVisibleInRules(libfwbuilder::FWReference *obj);
-    void ensureRuleIsVisible(libfwbuilder::Rule *rule, int col=0);
 
     QString chooseNewFileName(const QString &fname, const QString &title);
     void setFileName(const QString &fname);
     
     bool saveIfModified();
     
-    void updateFirewallName();
-    void updateRuleSetView();
-    void updateRuleOptions();
-    void updateRuleSetViewSelection();
-    
-    /**
-     * unselects whatever is selected in policy
-     */
-    void unselectRules();
-
     /**
      * selects whatever is current in rules
      */
@@ -249,22 +229,11 @@ public slots:
 
     QString getCurrentFileName();
     
-    void info(libfwbuilder::FWObject *o, bool forced = false);
-
     void setupAutoSave();
     void findObject(libfwbuilder::FWObject *);
 
     void findWhereUsed(libfwbuilder::FWObject *);
     
-    /**
-     * panel that wants to open an object in the editor
-     * uses this method to request permission to do so and
-     * to register itself as an owner of the editor
-     */
-    bool requestEditorOwnership(QWidget *w,
-                                libfwbuilder::FWObject *o,
-                                ObjectEditor::OptType   otype,
-                                bool validate = true);
     bool exportLibraryTest(std::list<libfwbuilder::FWObject*> &selectedLibs);
     void exportLibraryTo(QString fname,std::list<libfwbuilder::FWObject*> &selectedLibs, bool rof);
 
@@ -274,8 +243,6 @@ public slots:
     
     void setSafeMode(bool f);
     void setStartupFileName(const QString &fn);
-
-    void scheduleRuleSetRedraw();
 
     // semi-intelligent way to guess most appropriate
     // destination directory for various file save or file open
@@ -287,9 +254,6 @@ public slots:
     // is returned (however on windows and mac userDataDir is returned)
 
     QString getDestDir(const QString &filename);
-    
-    //wrapers for some ObjectManipulator functions
-    libfwbuilder::FWObject* getOpened();
     
     libfwbuilder::FWObject*  getCurrentLib();
 
@@ -311,35 +275,13 @@ public slots:
     void moveObject(const QString &targetLibName,
                     libfwbuilder::FWObject *obj);
 
-    void autorename(libfwbuilder::FWObject *obj,
-                    const std::string &objtype,
-                    const std::string &namesuffix);
-
-    void updateLibColor(libfwbuilder::FWObject *lib);
-    void updateLibName(libfwbuilder::FWObject *lib);
-
-    void updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       bool  askForAutorename=true);
-    void updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       const QString &oldLabel,
-                       bool  askForAutorename=true);
-
-    void updateLastModifiedTimestampForOneFirewall(libfwbuilder::FWObject *o);
-    void updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o);   
-    void updateLastInstalledTimestamp(libfwbuilder::FWObject *o);
-    void updateLastCompiledTimestamp(libfwbuilder::FWObject *o);
-       
     void loadDataFromFw(libfwbuilder::Firewall *fw);
 
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                     libfwbuilder::FWObject *obj);
     void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
     ObjectTreeView* getCurrentObjectTree();
-    void openObject(QTreeWidgetItem *otvi);
-    void openObject(libfwbuilder::FWObject *obj);
-    bool editObject(libfwbuilder::FWObject *obj);
+
     void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
 
     libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
@@ -347,35 +289,9 @@ public slots:
                                             const QString &name = QString::null,
                                             bool  askForAutorename=true);
     void showDeletedObjects(bool f);
-    void select();
-    void unselect();
-    void info();
 
-    
-    void setManipulatorFocus();
-    void clearManipulatorFocus();
-    
-    //wrapers for some Object Editor functions
-    bool isEditorVisible();
-    bool isEditorModified();
-    
-    void showEditor();
-    void hideEditor();
-    void closeEditor();
-    
-    void openEditor(libfwbuilder::FWObject *o);
-    void openOptEditor(libfwbuilder::FWObject *, ObjectEditor::OptType t);
-    void blankEditor();
-    
-    libfwbuilder::FWObject* getOpenedEditor();
-    ObjectEditor::OptType getOpenedOptEditor();
-    
-    void selectObjectInEditor(libfwbuilder::FWObject *o);
-    
-    void actionChangedEditor(libfwbuilder::FWObject *o);
-    bool validateAndSaveEditor();
-    //find dialog functions wrapers
-    void setFDObject(libfwbuilder::FWObject *o);
+//    void select();
+//    void unselect();
     
     QPrinter* getPrinter();
     libfwbuilder::FWObjectDatabase* db();
@@ -390,10 +306,10 @@ public slots:
 
  protected:
 
-    virtual void showEvent( QShowEvent *ev);
-    virtual void hideEvent( QHideEvent *ev);
-    virtual void closeEvent( QCloseEvent * );
-
+    virtual void showEvent(QShowEvent *ev);
+    virtual void hideEvent(QHideEvent *ev);
+    virtual void closeEvent(QCloseEvent *ev);
+    virtual bool event(QEvent *event);
 };
 
 #endif

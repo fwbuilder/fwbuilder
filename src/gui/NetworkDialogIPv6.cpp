@@ -118,7 +118,7 @@ void NetworkDialogIPv6::validate(bool *res)
     assert(s!=NULL);
     try
     {
-        InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData() );
+        InetAddr(AF_INET6, m_dialog->address->text().toStdString() );
     } catch (FWException &ex)
     {
         *res=false;
@@ -130,8 +130,9 @@ void NetworkDialogIPv6::validate(bool *res)
     }
     
     bool ok = false;
-    int range =m_dialog->netmask->text().toInt(&ok); 
-    if (ok && range >= 0 && range < 128)
+    int range = m_dialog->netmask->text().toInt(&ok); 
+    // Do not allow netmask of 0 bits. See #251
+    if (ok && range > 0 && range < 128)
     {
     }
     else
@@ -168,7 +169,7 @@ void NetworkDialogIPv6::applyChanges()
     {
         s->setAddress(
             InetAddr(AF_INET6,
-                     m_dialog->address->text().toLatin1().constData()) );
+                     m_dialog->address->text().toStdString()) );
         bool ok = false;
         s->setNetmask(
             InetAddr(AF_INET6, m_dialog->netmask->text().toInt(&ok)) );
@@ -180,10 +181,13 @@ void NetworkDialogIPv6::applyChanges()
  */
 
     }
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    //mw->updateLastModifiedTimestampForAllFirewalls(obj);
+
+    emit notify_changes_applied_sign();
+
 }
 
 void NetworkDialogIPv6::discardChanges()
@@ -207,7 +211,7 @@ void NetworkDialogIPv6::addressEntered()
     try
     {
         QString addr = m_dialog->address->text();
-        Inet6AddrMask address_and_mask(string(addr.toLatin1().constData()));
+        Inet6AddrMask address_and_mask(string(addr.toStdString()));
         if (addr.contains('/'))
         {
             m_dialog->address->setText(

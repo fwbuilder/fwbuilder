@@ -77,10 +77,7 @@
       <attribute name="title" >
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
-        <number>6</number>
-       </property>
+      <layout class="QGridLayout" name="gridLayout_4" >
        <item row="0" column="0" colspan="2" >
         <widget class="QLabel" name="compilerLabel" >
          <property name="text" >
@@ -94,205 +91,13 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="4" >
-        <widget class="QLabel" name="label571" >
-         <property name="text" >
-          <string>There are two ways compiler can generate code for rules in the Global Policy: it can either create two ipf rules to control both incoming and outgoing packets for each rule, or it can create only one ipf rule for incoming packets and permit all outgoing ones.You get more control over the packets crossing the firewall in the first mode, but generated script is going to be smaller if you choose the second.</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="1" colspan="3" >
-        <widget class="QCheckBox" name="ipf_return_icmp_as_dest" >
-         <property name="text" >
-          <string>Masquerade returned icmp as being from original
-packet's destination</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1" colspan="3" >
-        <widget class="QCheckBox" name="ipf_accept_new_tcp_with_no_syn" >
-         <property name="text" >
-          <string>Accept TCP sessions opened prior to firewall restart</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1" colspan="3" >
-        <widget class="QCheckBox" name="ipf_eliminate_duplicates" >
-         <property name="text" >
-          <string>Find and eliminate duplicate rules</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1" colspan="3" >
-        <widget class="QCheckBox" name="ipf_check_shadowing" >
-         <property name="toolTip" >
-          <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
-         </property>
-         <property name="text" >
-          <string>Detect rule shadowing in policy</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1" colspan="3" >
-        <widget class="QCheckBox" name="ipf_ignore_empty_groups" >
-         <property name="toolTip" >
-          <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
-         </property>
-         <property name="text" >
-          <string>Ignore empty groups in rules</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>20</width>
-           <height>30</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="14" column="1" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>20</width>
-           <height>16</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="13" column="1" colspan="2" >
-        <widget class="QCheckBox" name="mgmt_ssh" >
-         <property name="text" >
-          <string>Always permit ssh access from
-the management workstation
-with this address:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1" >
-        <widget class="QLabel" name="textLabel9" >
-         <property name="maximumSize" >
-          <size>
-           <width>400</width>
-           <height>32767</height>
-          </size>
-         </property>
-         <property name="text" >
-          <string>Default action on 'Reject':</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="2" colspan="2" >
-        <widget class="QComboBox" name="actionOnReject" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize" >
-          <size>
-           <width>400</width>
-           <height>32767</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="0" colspan="4" >
-        <widget class="Line" name="line4" >
-         <property name="frameShape" >
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="3" >
-        <widget class="QLineEdit" name="mgmt_addr" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+       <item row="0" column="2" colspan="2" >
+        <widget class="QLineEdit" name="compiler" >
          <property name="maximumSize" >
           <size>
            <width>32767</width>
            <height>32767</height>
           </size>
-         </property>
-        </widget>
-       </item>
-       <item rowspan="5" row="7" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>20</width>
-           <height>130</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="5" column="0" colspan="4" >
-        <widget class="Line" name="hseparator34" >
-         <property name="frameShape" >
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="4" >
-        <widget class="Line" name="hseparator34_2" >
-         <property name="frameShape" >
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -315,35 +120,6 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2" >
-        <widget class="QLabel" name="textLabel1_5" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>Output file name (if left blank, the file name is constructed of the firewall object name and extension ".fw")</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2" colspan="2" >
-        <widget class="QLineEdit" name="compiler" >
-         <property name="maximumSize" >
-          <size>
-           <width>32767</width>
-           <height>32767</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="2" colspan="2" >
         <widget class="QLineEdit" name="compilerArgs" >
          <property name="maximumSize" >
@@ -354,7 +130,26 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="2" colspan="2" >
+       <item row="2" column="0" colspan="4" >
+        <widget class="QLabel" name="textLabel1_5" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text" >
+          <string>Output file name. If left blank, the file name is constructed of the firewall object name and extension ".fw"</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" colspan="2" >
         <widget class="QLineEdit" name="outputFileName" >
          <property name="maximumSize" >
           <size>
@@ -363,6 +158,243 @@ with this address:</string>
           </size>
          </property>
         </widget>
+       </item>
+       <item row="4" column="0" colspan="4" >
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>Generated script (.fw file) and configuration (.conf) files can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2" >
+        <widget class="QLabel" name="label_3" >
+         <property name="text" >
+          <string>Script (.fw) file name on the firewall</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" colspan="2" >
+        <widget class="QLineEdit" name="fileNameOnFw" >
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2" >
+        <widget class="QLabel" name="label_4" >
+         <property name="text" >
+          <string>ipf.conf file name on the firewall</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2" colspan="2" >
+        <widget class="QLineEdit" name="ipfConfFileNameOnFw" >
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2" >
+        <widget class="QLabel" name="label_5" >
+         <property name="text" >
+          <string>nat.conf file name on the firewall</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2" colspan="2" >
+        <widget class="QLineEdit" name="natConfFileNameOnFw" >
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0" colspan="4" >
+        <widget class="Line" name="hseparator34_2" >
+         <property name="frameShape" >
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item rowspan="6" row="9" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>130</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="9" column="1" colspan="3" >
+        <widget class="QCheckBox" name="ipf_accept_new_tcp_with_no_syn" >
+         <property name="text" >
+          <string>Accept TCP sessions opened prior to firewall restart</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1" colspan="3" >
+        <widget class="QCheckBox" name="ipf_eliminate_duplicates" >
+         <property name="text" >
+          <string>Find and eliminate duplicate rules</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1" colspan="3" >
+        <widget class="QCheckBox" name="ipf_check_shadowing" >
+         <property name="toolTip" >
+          <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
+         </property>
+         <property name="text" >
+          <string>Detect rule shadowing in policy</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1" colspan="3" >
+        <widget class="QCheckBox" name="ipf_ignore_empty_groups" >
+         <property name="toolTip" >
+          <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
+         </property>
+         <property name="text" >
+          <string>Ignore empty groups in rules</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1" >
+        <widget class="QLabel" name="textLabel9" >
+         <property name="maximumSize" >
+          <size>
+           <width>400</width>
+           <height>32767</height>
+          </size>
+         </property>
+         <property name="text" >
+          <string>Default action on 'Reject':</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="2" colspan="2" >
+        <widget class="QComboBox" name="actionOnReject" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>400</width>
+           <height>32767</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="1" colspan="3" >
+        <widget class="QCheckBox" name="ipf_return_icmp_as_dest" >
+         <property name="text" >
+          <string>Masquerade returned icmp as being from original
+packet's destination</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="0" colspan="4" >
+        <widget class="Line" name="line4" >
+         <property name="frameShape" >
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>30</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="16" column="1" colspan="2" >
+        <widget class="QCheckBox" name="mgmt_ssh" >
+         <property name="text" >
+          <string>Always permit ssh access from
+the management workstation
+with this address:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="3" >
+        <widget class="QLineEdit" name="mgmt_addr" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>32767</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

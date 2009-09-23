@@ -36,18 +36,37 @@ string ciscoACL::addLine(const std::string &s)
     return printLastLine();
 }
 
-    /*
-     * Adds remark to access list. Checks and adds each remark only
-     * once. We use rule labels for remarks
-     */
-string ciscoACL::addRemark(const std::string &rl)
+/*
+ * Adds remark to access list. Checks and adds each remark only
+ * once. We use rule labels for remarks
+ */
+string ciscoACL::addRemark(const std::string &rl, const std::string &comment)
 {
-    if (_last_rule_label!=rl)
+    string output;
+    if (_last_rule_label != rl)
     {
-        acl.push_back(" remark "+rl);
-        _last_rule_label=rl;
+        acl.push_back(" remark " + rl);
+        output += printLastLine();
         nlines++;
-        return printLastLine();
+
+        if (!comment.empty())
+        {
+            string::size_type n, c1;
+            c1 = 0;
+            while ( (n = comment.find("\n", c1)) != string::npos )
+            {
+                acl.push_back(" remark " + comment.substr(c1, n-c1));
+                output += printLastLine();
+                nlines++;
+                c1 = n + 1;
+            }
+            acl.push_back(" remark " + comment.substr(c1));
+            output += printLastLine();
+            nlines++;
+        }
+
+        _last_rule_label = rl;
+        return output;
     }
     return "";
 }

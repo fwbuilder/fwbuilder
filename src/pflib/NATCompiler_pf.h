@@ -78,7 +78,17 @@ namespace fwcompiler {
 
         virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
 
-
+        /**
+         * analyse given address and decide which interface this NAT
+         * rule should be tied to. If interface is found, use
+         * rule->setInterfaceId() to save its ID and return
+         * true. Otherwise, return false. Most importantly, this
+         * function checks if @obj is cluster interface and then
+         * uses corresponding real interface instead of it.
+         */
+        bool assignInterfaceToNATRule(libfwbuilder::Rule *rule,
+                                      libfwbuilder::Address *obj);
+        
 	/**
 	 *  determines type of the NAT rule
 	 */
@@ -368,11 +378,11 @@ namespace fwcompiler {
 	public:
 
 	NATCompiler_pf(libfwbuilder::FWObjectDatabase *_db,
-		       const std::string &fwname,
+		       libfwbuilder::Firewall *fw,
                        bool ipv6_policy,
 		       fwcompiler::OSConfigurator *_oscnf,
                        TableFactory *tbf = NULL) :
-        NATCompiler(_db, fwname, ipv6_policy, _oscnf)
+        NATCompiler(_db, fw, ipv6_policy, _oscnf)
         {
             tables = tbf;
         }

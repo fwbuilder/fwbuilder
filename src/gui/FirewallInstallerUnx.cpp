@@ -62,37 +62,33 @@
 using namespace std;
 using namespace libfwbuilder;
 
+
 bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
 {
     if (fwbdebug) qDebug("FirewallInstallerUnx::packInstallJobList");
 
     job_list.clear();
 
+    inst_dlg->addToLog(QString("Installation plan:\n"));
+
     Management *mgmt = cnf->fwobj->getManagementObject();
     assert(mgmt!=NULL);
     PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
     if (pis->getCommand()!="")
     {
-        job_list.push_back(instJob(ACTIVATE_POLICY, ""));
+        QString cmd = pis->getCommand().c_str();
+        QString args = pis->getArguments().c_str();
+        job_list.push_back(
+            instJob(RUN_EXTERNAL_SCRIPT, cmd, args));
+        inst_dlg->addToLog(QString("Run script %1 %2\n").arg(cmd).arg(args));
         return true;
-    }
-
-    if (cnf->copyFWB)
-    {
-        QFileInfo fwbfile_base(cnf->fwbfile);
-
-        if (fwbdebug)
-            qDebug( QString("Will copy data file: %1").arg(
-                        fwbfile_base.fileName()).toAscii().constData());
-
-        job_list.push_back(instJob(COPY_FILE, fwbfile_base.fileName()));
     }
 
 /* read manifest from the conf file */
 
     if (fwbdebug)
         qDebug("FirewallInstaller::packInstallJobsList read manifest from %s",
-               cnf->conffile.toAscii().constData());
+               cnf->script.toAscii().constData());
 
 /*
  * Note that if output file is specified in firewall settings dialog,
@@ -103,66 +99,70 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
  * dir path from the .fw file and if it is not empty, assume that all
  * other files are located there as well.
  */
-    QFileInfo cnf_file_info(cnf->conffile);
-    QString dir_path = "";
-    if (cnf_file_info.isAbsolute())
-        dir_path = cnf_file_info.dir().path() + "/";
-
     // compilers always write file names into manifest in Utf8
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
-    QFile cf(cnf->conffile);
-    if (cf.open(QIODevice::ReadOnly ))
-    {
-        QTextStream stream(&cf);
-        QString line;
-        do
-        {
-            line = stream.readLine();
-            if (line.isNull()) break;
-            int pos = -1;
-            if ( (pos=line.indexOf(MANIFEST_MARKER))!=-1 )
-            {
-                int n = pos + QString(MANIFEST_MARKER).length();
-                QString conf_file = line.mid(n+2);
-                job_list.push_back(instJob(COPY_FILE, dir_path + conf_file));
+    //key: local_file_name  val: remote_file_name
+    QMap<QString,QString> all_files;
 
-                if (fwbdebug)
-                    qDebug("FirewallInstaller: adding %c %s",
-                           line[n].toLatin1(),
-                           line.mid(n+2).toAscii().constData());
-            }
-        } while  (!line.isNull());
-        cf.close();
+    // readManifest() modifies cnf !
+    if (readManifest(cnf->script, &all_files))
+    {
+        QMap<QString, QString>::iterator it;
+        for (it=all_files.begin(); it!=all_files.end(); ++it)
+        {
+            QString local_name = it.key();
+            QString remote_name = it.value();
+
+            job_list.push_back(instJob(COPY_FILE, local_name, remote_name));
+            inst_dlg->addToLog(QString("Copy file: %1 --> %2\n")
+                               .arg(local_name)
+                               .arg(remote_name).toAscii().constData());
+        }
     } else
     {
-        QMessageBox::critical(
-            inst_dlg, "Firewall Builder",
-            tr("Generated script file %1 not found.").arg(cnf->conffile),
-            tr("&Continue") );
         inst_dlg->opError(fw);
         return false;
     }
 
     if (job_list.size()==0)
-        job_list.push_back(instJob(COPY_FILE, cnf->conffile));
+    {
+        QMessageBox::critical(
+            inst_dlg, "Firewall Builder",
+            tr("Incorrect manifest format in generated script. "
+               "Line with \"*\" is missing, can not find any files "
+               "to copy to the firewall.\n%1").arg(cnf->script),
+            tr("&Continue"), QString::null,QString::null,
+            0, 1 );
+        return false;
+    }
 
-    job_list.push_back(instJob(ACTIVATE_POLICY, ""));
+    if (cnf->copyFWB)
+    {
+        QString dest_dir = getDestinationDir(cnf->fwdir);
+        QFileInfo fwbfile_base(cnf->fwbfile);
+        job_list.push_back(instJob(
+                               COPY_FILE,
+                               fwbfile_base.fileName(),
+                               dest_dir));
+        inst_dlg->addToLog(QString("Copy data file: %1 --> %2\n")
+                           .arg(fwbfile_base.fileName())
+                           .arg(dest_dir).toAscii().constData());
+    }
+
+    QString cmd = getActivationCmd();
+    job_list.push_back(instJob(ACTIVATE_POLICY, cmd, ""));
+    inst_dlg->addToLog(QString("Run script %1\n").arg(cmd));
+    inst_dlg->addToLog(QString("\n"));
     return true;
 }
 
 // ************************************************************************
 
-void FirewallInstallerUnx::activatePolicy()
+void FirewallInstallerUnx::activatePolicy(const QString &cmd, const QString&)
 {
-    Management *mgmt = cnf->fwobj->getManagementObject();
-    assert(mgmt!=NULL);
-    PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
-    if (pis->getCommand()=="" )
-        executeSession(getActivationCmd());
-    else
-        executeInstallScript();
+    executeSession(cmd);
 }
 
 void FirewallInstallerUnx::executeSession(const QString &cmd)
@@ -186,19 +186,20 @@ void FirewallInstallerUnx::executeSession(const QString &cmd)
 
 // ************************************************************************
 
-void FirewallInstallerUnx::copyFile(const QString &file_name)
+void FirewallInstallerUnx::copyFile(const QString &local_name,
+                                    const QString &remote_name)
 {
     QString platform = cnf->fwobj->getStr("platform").c_str();
 
 //    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("latin1"));
 
     QStringList args;
-    packSCPArgs(file_name, args);
+    packSCPArgs(local_name, remote_name, args);
 
-    QString file_with_path = getFullPath(file_name);
     inst_dlg->addToLog( tr("Copying %1 -> %2:%3\n")
-                        .arg(QString::fromUtf8(file_with_path.toAscii().constData()))
-                        .arg(cnf->maddr).arg(getDestinationDir()));
+                        .arg(QString::fromUtf8(local_name.toAscii().constData()))
+                        .arg(cnf->maddr)
+                        .arg(QString::fromUtf8(remote_name.toAscii().constData())));
 
     if (cnf->verbose) inst_dlg->displayCommand(args);
     qApp->processEvents();

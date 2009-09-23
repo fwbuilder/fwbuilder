@@ -115,10 +115,12 @@ void CommentEditorPanel::applyChanges()
 {
     if (fwbdebug) qDebug("CommentEditorPanel::applyChanges()");
 
-    mw->updateLastModifiedTimestampForAllFirewalls(rule);
+//    mw->updateLastModifiedTimestampForAllFirewalls(rule);
     rule->setComment(
         string(m_widget->editor->toPlainText().toUtf8().constData())
     );
+
+    emit notify_changes_applied_sign();
 }
 
 void CommentEditorPanel::getHelpName(QString *str)

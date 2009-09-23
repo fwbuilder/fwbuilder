@@ -53,13 +53,12 @@
 #include "LibExportDialog.h"
 #include "longTextDialog.h"
 
-//#include "listOfLibraries.h"
-
 #include <QMdiSubWindow>
 #include <QMdiArea>
 #include <QStatusBar>
 #include <QTextStream>
 #include <QFile>
+#include <QFileInfo>
 #include <QTimer>
 
 #include <list>
@@ -77,7 +76,11 @@ using namespace std;
 
 bool ProjectPanel::saveIfModified()
 {
-    if (db() && db()->isDirty() && rcs && !rcs->getFileName().isEmpty())
+    if (fwbdebug)
+        qDebug("ProjectPanel::saveIfModified()");
+
+    if (db() && db()->isDirty())
+//    if (db() && db()->isDirty() && rcs && !rcs->getFileName().isEmpty())
     {
         QString message = "Some objects have been modified but not saved.\n";
         message += "Do you want to save ";
@@ -113,6 +116,10 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
     QString fn = QFileDialog::getSaveFileName( this, title, destdir,
        tr( "FWB Files (*.fwb);;All Files (*)" ) );
 
+    if (fn.isEmpty()) return fn; // user pressed Cancel
+
+    QFileInfo finfo(fn);
+    if (finfo.suffix().isEmpty()) fn += ".fwb";
     return fn;
 }
 
@@ -152,67 +159,11 @@ bool ProjectPanel::fileNew()
         qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
                rcs, rcs->getFileName().toAscii().constData());
 
+    // reset actions, including Save() which should now
+    // be inactive
+    mw->prepareFileMenu();
+
     return (rcs!=NULL);
-}
-
-bool ProjectPanel::fileOpen()
-{
-/*
- * there appears to be a bug on Mac OS X that causes main window to
- * switch to a different MDI subwindow if user opens "File Open"
- * dialog and cancels operation by clicking "Cancel". This does not
- * happen on other platforms so this must be Mac only thing. To work
- * around the issue we save pointer to the MDI subwindow that was
- * active before activation of the "OpenFile" dialog and restore it if
- * user cancelled operation.
- *
- * This only happens in fileOpen(). fileImport() uses the same
- * QFileDialog dialog but does not trigger this effect. Perhaps this
- * happens because we call fileOpen from newly created but still
- * hidden ProjectPanel object. This is the only difference I can think
- * of.
- */
-    QMdiSubWindow *current_active_window = mainW->getMdiArea()->activeSubWindow();
-
-    QString dir;
-
-/*
- * Pick default directory where to look for the file to open.
- * 1) if "work directory" is configured in preferences, always use it
- * 2) if it is blank, use the same directory where currently opened file is
- * 3) if this is the first file to be opened, get directory where the user opened
- *    during last session from settings using st->getOpenFileDir
- */
-
-    dir = st->getWDir();
-    if (fwbdebug) qDebug("Choosing directory for file open 1: %s",
-                         dir.toStdString().c_str());
-
-    if (dir.isEmpty() && !mw->getCurrentFileName().isEmpty())
-        dir = getFileDir(mw->getCurrentFileName());
-    if (fwbdebug) qDebug("Choosing directory for file open 2: %s",
-                         dir.toStdString().c_str());
-
-    if (dir.isEmpty()) dir = st->getOpenFileDir();
-    if (fwbdebug) qDebug("Choosing directory for file open 3: %s",
-                         dir.toStdString().c_str());
-
-    QString fileName = QFileDialog::getOpenFileName(
-        mainW,
-        tr("Open File"),
-        dir,
-        "FWB files (*.fwb *.fwl *.xml);;All Files (*)");
-    
-    if (fileName.isEmpty())
-    {
-        mainW->getMdiArea()->setActiveSubWindow(current_active_window);
-        return false;
-    }
-
-    bool res = loadFile(fileName, false);
-    if (res) mw->updateOpenRecentMenu(fileName);
-
-    return res;
 }
 
 bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
@@ -250,19 +201,21 @@ bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
     try
     {
         new_rcs->co();
+        if (loadFromRCS(new_rcs)) 
+        {
+            if (new_rcs->isTemp())
+                unlink(new_rcs->getFileName().toLocal8Bit().constData());
+
+            st->setOpenFileDir(getFileDir(fileName));
+            return true;
+        }
+
     } catch (FWException &ex)
     {
         return false;
     }
 
-    loadFromRCS(new_rcs);
-
-    if (new_rcs->isTemp())
-        unlink(new_rcs->getFileName().toLocal8Bit().constData());
-
-    st->setOpenFileDir(getFileDir(fileName));
-
-    return true;
+    return false;
 }
 
 void ProjectPanel::fileClose()
@@ -291,6 +244,10 @@ void ProjectPanel::fileClose()
     clearFirewallTabs();
     clearObjects();
 
+    // reset actions, including Save() which should now
+    // be inactive
+    mw->prepareFileMenu();
+
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): done");
 }
 
@@ -311,7 +268,8 @@ void ProjectPanel::fileSave()
     sb->showMessage( tr("Saving data to file...") );
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
     save();
-    sb->clearMessage();
+    // Keep status bar message little longer so user can read it. See #272
+    QTimer::singleShot( 1000, sb, SLOT(clearMessage()));
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 }
 
@@ -364,6 +322,10 @@ void ProjectPanel::fileCommit()
     save();
     if (!checkin(true))  return;
     rcs->co();
+
+    // reset actions, including Save() which should now
+    // be inactive
+    mw->prepareFileMenu();
 }
 
 /*
@@ -412,6 +374,10 @@ void ProjectPanel::fileDiscard()
          * open, which it isn't because we reset rcs to NULL
          */
         loadFile(fname, false);
+
+        // reset actions, including Save() which should now
+        // be inactive
+        mw->prepareFileMenu();
     }
 }
 
@@ -442,6 +408,10 @@ void ProjectPanel::fileAddToRCS()
             0, 1 );
     }
 
+    // reset actions, including Save() which should now
+    // be inactive
+    mw->prepareFileMenu();
+
     setWindowTitle(getPageTitle());
 }
 
@@ -460,6 +430,10 @@ void ProjectPanel::fileImport()
     loadLibrary( fname.toLocal8Bit().constData() );
 
     loadObjects();
+
+    // reset actions, including Save() which should now
+    // be inactive
+    mw->prepareFileMenu();
 }
 
 
@@ -969,7 +943,7 @@ void ProjectPanel::loadStandardObjects()
     sb->clearMessage();
 }
 
-void ProjectPanel::loadFromRCS(RCS *_rcs)
+bool ProjectPanel::loadFromRCS(RCS *_rcs)
 {
     QStatusBar *sb = mainW->statusBar();
 
@@ -1147,7 +1121,7 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
                      */
                     QMessageBox::warning(
                         this,"Firewall Builder",
-                        tr("Firewall Builder 2 uses file extension '.fwb' and\n"
+                        tr("Firewall Builder uses file extension '.fwb' and\n"
                            "needs to rename old data file '%1' to '%2',\n"
                            "but file '%3' already exists.\n"
                            "Choose a different name for the new file.")
@@ -1172,7 +1146,7 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
                             0, 1 );
 
                         loadStandardObjects();
-                        return;
+                        return false;
                     }
                     nfinfo.setFile(newFileName);
                 }
@@ -1182,7 +1156,7 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
 
                 QMessageBox::warning(
                 this,"Firewall Builder",
-                tr("Firewall Builder 2 uses file extension '.fwb'. Your data"
+                tr("Firewall Builder uses file extension '.fwb'. Your data"
                    "file '%1' \nhas been renamed '%2'")
                 .arg(fn).arg(newFileName),
                 tr("&Continue"), QString::null,QString::null,
@@ -1231,7 +1205,7 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
                 0, 1 );
         } else
         {
-            QString error_txt = ex.toString().c_str();
+            QString error_txt = QString::fromUtf8(ex.toString().c_str());
             if (error_txt.length() > LONG_ERROR_CUTOFF) 
             {
                 error_txt.truncate(LONG_ERROR_CUTOFF);
@@ -1248,7 +1222,7 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
         }
         // load standard objects so the window does not remain empty
         loadStandardObjects();
-        return;
+        return false;
     }
 
     db()->setReadOnly( rcs->isRO() || rcs->isTemp() );
@@ -1276,6 +1250,7 @@ void ProjectPanel::loadFromRCS(RCS *_rcs)
         qDebug("ProjectPanel::load(): all done: "
                "dirty=%d last_modified=%s",
                db()->isDirty(), ctime(&last_modified));
+    return true;
 }
 
 bool ProjectPanel::checkin(bool unlock)
@@ -1404,7 +1379,12 @@ void ProjectPanel::save()
                     delete ndb;
 
                     QApplication::restoreOverrideCursor();
-
+                    // reset "dirty" flag only after we actually save the data
+                    // fixes #389
+                    db()->setDirty(false);
+                    // and reset actions, including Save() which should now
+                    // be inactive
+                    mw->prepareFileMenu();
                 } else
                 {
                     QApplication::setOverrideCursor(QCursor( Qt::WaitCursor));
@@ -1414,7 +1394,6 @@ void ProjectPanel::save()
                     QApplication::restoreOverrideCursor();
                 }
             }
-            db()->setDirty(false);
         }
         catch (FWException &ex)
         {

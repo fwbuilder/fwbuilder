@@ -1,0 +1,486 @@
+<ui version="4.0" >
+ <class>ClusterDialog_q</class>
+ <widget class="QWidget" name="ClusterDialog_q" >
+  <property name="enabled" >
+   <bool>true</bool>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>824</width>
+    <height>283</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Cluster</string>
+  </property>
+  <layout class="QHBoxLayout" >
+   <property name="spacing" >
+    <number>2</number>
+   </property>
+   <property name="margin" >
+    <number>2</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" >
+     <property name="spacing" >
+      <number>2</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="frame3" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>16</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="palette" >
+        <palette>
+         <active>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>254</green>
+             <blue>253</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>254</green>
+             <blue>253</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Base" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>254</green>
+             <blue>253</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>254</green>
+             <blue>253</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="autoFillBackground" >
+        <bool>true</bool>
+       </property>
+       <property name="frameShape" >
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow" >
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <layout class="QGridLayout" >
+        <property name="margin" >
+         <number>2</number>
+        </property>
+        <property name="spacing" >
+         <number>2</number>
+        </property>
+        <item row="0" column="2" >
+         <widget class="QLabel" name="editorTitle" >
+          <property name="font" >
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text" >
+           <string>Cluster</string>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="QLabel" name="label" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="pixmap" >
+           <pixmap resource="MainRes.qrc" >:/Icons/Cluster/icon</pixmap>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame20" >
+       <property name="frameShape" >
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow" >
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <layout class="QGridLayout" >
+        <item row="0" column="0" >
+         <widget class="QFrame" name="frame7_2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <layout class="QVBoxLayout" >
+           <property name="spacing" >
+            <number>2</number>
+           </property>
+           <property name="margin" >
+            <number>8</number>
+           </property>
+           <item>
+            <layout class="QGridLayout" >
+             <property name="spacing" >
+              <number>8</number>
+             </property>
+             <item row="0" column="0" >
+              <widget class="QLabel" name="textLabel1_4_2" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize" >
+                <size>
+                 <width>32767</width>
+                 <height>32767</height>
+                </size>
+               </property>
+               <property name="text" >
+                <string>Name:</string>
+               </property>
+               <property name="wordWrap" >
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1" >
+              <widget class="QLineEdit" name="obj_name" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+                 <horstretch>200</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize" >
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" >
+              <widget class="QLabel" name="textLabel1_3_2_2" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize" >
+                <size>
+                 <width>32767</width>
+                 <height>32767</height>
+                </size>
+               </property>
+               <property name="text" >
+                <string>Platform:</string>
+               </property>
+               <property name="wordWrap" >
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1" >
+              <widget class="QComboBox" name="platform" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0" >
+              <widget class="QLabel" name="textLabel2_3_2_2" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize" >
+                <size>
+                 <width>32767</width>
+                 <height>32767</height>
+                </size>
+               </property>
+               <property name="text" >
+                <string>Host OS:</string>
+               </property>
+               <property name="wordWrap" >
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1" >
+              <widget class="QComboBox" name="hostOS" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>20</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="QCheckBox" name="inactive" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip" >
+           <string>Skip this firewall for batch compile and install operations</string>
+          </property>
+          <property name="text" >
+           <string>Inactive cluster</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2" >
+         <layout class="QVBoxLayout" >
+          <property name="spacing" >
+           <number>2</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="textLabel2" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string>Comment:</string>
+            </property>
+            <property name="wordWrap" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="comment" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="tabChangesFocus" >
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>obj_name</tabstop>
+  <tabstop>platform</tabstop>
+  <tabstop>hostOS</tabstop>
+  <tabstop>inactive</tabstop>
+  <tabstop>comment</tabstop>
+ </tabstops>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>inactive</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ClusterDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comment</sender>
+   <signal>textChanged()</signal>
+   <receiver>ClusterDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>obj_name</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ClusterDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>platform</sender>
+   <signal>activated(int)</signal>
+   <receiver>ClusterDialog_q</receiver>
+   <slot>platformChanged()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hostOS</sender>
+   <signal>activated(QString)</signal>
+   <receiver>ClusterDialog_q</receiver>
+   <slot>hostOSChanged()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>changed()</slot>
+  <slot>platformChanged()</slot>
+  <slot>hostOSChanged()</slot>
+ </slots>
+</ui>

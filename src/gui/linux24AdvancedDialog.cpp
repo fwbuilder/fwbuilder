@@ -152,6 +152,15 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_path_logger,
                          fwopt,
                          "linux24_path_logger");
+    data.registerOption( m_dialog->linux24_path_vconfig,
+                         fwopt,
+                         "linux24_path_vconfig");
+    data.registerOption( m_dialog->linux24_path_brctl,
+                         fwopt,
+                         "linux24_path_brctl");
+    data.registerOption( m_dialog->linux24_path_ifenslave,
+                         fwopt,
+                         "linux24_path_ifenslave");
     data.registerOption( m_dialog->linux24_path_modprobe,
                          fwopt,
                          "linux24_path_modprobe");
@@ -161,9 +170,9 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_path_ip6tables_restore,
                          fwopt,
                          "linux24_path_ip6tables_restore");
-
-
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -179,7 +188,7 @@ void linux24AdvancedDialog::accept()
 
     data.saveAll();
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 
@@ -190,11 +199,12 @@ void linux24AdvancedDialog::reject()
 
 void linux24AdvancedDialog::help()
 {
-    Help *h = new Help(this, "linux24AdvancedDialog", "Host type Linux 2.4/2.6");
-    h->show();
     QString tab_title = m_dialog->tabWidget->tabText(
         m_dialog->tabWidget->currentIndex());
-    h->scrollToAnchor(tab_title.replace('/', '-').replace(' ', '-').toLower());
+    QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
+    Help *h = new Help(this, "Host type Linux 2.4/2.6");
+    h->setSource(QUrl("linux24AdvancedDialog.html#" + anchor));
+    h->show();
 }
 
 

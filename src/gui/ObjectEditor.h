@@ -59,13 +59,11 @@ class ObjectEditor : public QObject {
     QPushButton *helpButton;
     ProjectPanel *m_project;
     
-    QMap<QString,bool> help_available_cache;
-
     void disconnectSignals();
     void findAndLoadHelp();
 
 public: 
-    enum OptType{optAction,optComment,optMetric,optNone};
+    enum OptType{optAction, optComment, optMetric, optNone, optRuleCompile};
 
 private: 
    OptType  openedOpt;
@@ -107,6 +105,17 @@ public slots:
     void close();
     void changed();
     void blank();
+
+    /*
+     * this slot is used by the object dialog class to notify
+     * ObjectEditor that it applied changes to the object. This way,
+     * object dialog can call its applyChanges() method itself, not
+     * only when user clicks "Apply" button.  Slot
+     * notifyChangesApplied() attached to this signal can disable
+     * Apply button and do other things as appropriate.
+     */
+    void notifyChangesApplied();
+
 signals:
 
     /**

@@ -141,10 +141,10 @@ void DNSNameDialog::applyChanges()
     s->setSourceName( m_dialog->dnsrec->text().toLatin1().constData() );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void DNSNameDialog::discardChanges()

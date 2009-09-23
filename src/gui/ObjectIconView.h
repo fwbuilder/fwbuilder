@@ -32,15 +32,17 @@
 
 namespace libfwbuilder {
     class FWObject;
+    class FWObjectDatabase;
 };
 
 class ObjectIconView : public QListWidget {
 
-    Q_OBJECT
+    Q_OBJECT ;
             
+    libfwbuilder::FWObjectDatabase *db;
     bool startingDrag;
 
- protected:
+protected:
 
     virtual QDrag* dragObject();
     virtual void dragEnterEvent( QDragEnterEvent *ev);
@@ -53,10 +55,12 @@ class ObjectIconView : public QListWidget {
     
     bool event ( QEvent * event );
     
- public:
+public:
 
-     ObjectIconView(QWidget* parent = 0, const char * name = 0, Qt::WindowFlags f = 0);
+    ObjectIconView(QWidget* parent, const char * name = 0, Qt::WindowFlags f = 0);
     
+    void setDB(libfwbuilder::FWObjectDatabase *_db) { db = _db; }
+
  signals:
 
     void delObject_sign();

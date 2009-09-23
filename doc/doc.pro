@@ -48,6 +48,7 @@ man.files   = fwbedit.1             \
               fwb_ipt.1             \
               fwb_pf.1              \
               fwb_pix.1             \
+              export_secuwall.1     \
 
 #             fwb_install.1           \
 #			  fwb_compile_all.1       \

@@ -54,6 +54,7 @@ class ProjectPanel;
 namespace libfwbuilder 
 {
     class Firewall;
+    class Cluster;
     class Library;
 }
 
@@ -120,15 +121,19 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
     void removeLib(libfwbuilder::FWObject*);
     void removeLib(int idx);
     void updateCreateObjectMenu(libfwbuilder::FWObject* lib);
+
     void makeNameUnique(libfwbuilder::FWObject* p,libfwbuilder::FWObject* obj);
 
+    /* find the name of the interface that was created last */
+    QString findNewestInterfaceName(libfwbuilder::FWObject *parent);
+    
     libfwbuilder::FWObject* actuallyCreateObject(
         libfwbuilder::FWObject *parent,
         const QString &objType,
         const QString &objName,
         libfwbuilder::FWObject *copyFrom=NULL);
 
-    void autorename(libfwbuilder::FWObject *obj,bool ask=true);
+    void autorename(libfwbuilder::FWObject *obj, bool ask=true);
     void extractFirewallsFromGroup(libfwbuilder::ObjectGroup *gr,
                                    std::set<libfwbuilder::Firewall*> &fo);
     
@@ -137,12 +142,14 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
                                             std::map<int,int> &map_ids);
 
     bool validateForPaste(libfwbuilder::FWObject *target,
-                          libfwbuilder::FWObject *obj);
+                          libfwbuilder::FWObject *obj,
+                          QString &err);
     
     void findWhereUsedRecursively(libfwbuilder::FWObject *obj,
                                   libfwbuilder::FWObject *top,
                                   std::set<libfwbuilder::FWObject*> &resset);
-    
+    void refreshSubtree(QTreeWidgetItem *itm);
+
 public slots:
      virtual void libChanged(int l);
      virtual void switchingTrees(QWidget* w);
@@ -174,6 +181,15 @@ public slots:
      
      void contextMenuRequested(const QPoint &pos);
 
+     /*
+      * Internal: this method is used in relocateTo() and
+      * actuallyPasteTo(). This method checks if the target object is
+      * appropriate and replaces it with parent if needed. Also does
+      * validation and shows error dialogs if validation
+      * fails. Returns new parent or NULL if validation fails.
+      */
+     libfwbuilder::FWObject* prepareForInsertion(libfwbuilder::FWObject *target,
+                                                 libfwbuilder::FWObject *obj);
      
      libfwbuilder::FWObject* createObject(const QString &objType,
                                           const QString &objName,
@@ -183,11 +199,14 @@ public slots:
                                           const QString &objType,
                                           const QString &objName,
                                           libfwbuilder::FWObject *copyFrom=NULL);
-     
 
      void newLibrary();
      void newObject();
      void newFirewall();
+     void newCluster();
+     void newClusterIface();
+     void newStateSyncClusterGroup();
+     void newFailoverClusterGroup();
      void newHost();
      void newInterface();
      void newNetwork();
@@ -222,6 +241,7 @@ public slots:
      void dumpObj();
      void compile();
      void install();
+     void transferfw();
 
      void duplicateObj(QAction*);
      void moveObj(QAction*);
@@ -244,6 +264,9 @@ public slots:
      
 public:
 
+     ObjectManipulator( QWidget *parent);
+     ~ObjectManipulator();
+
      void libChangedById(int id);
      void changeFirstNotSystemLib();
      std::vector<QTreeWidget*> getTreeWidgets() { return idxToTrees;};
@@ -251,13 +274,21 @@ public:
      void filterFirewallsFromSelection(
          std::vector<libfwbuilder::FWObject*> &so,
          std::set<libfwbuilder::Firewall*> &fo);
-     void autorename(libfwbuilder::FWObject *obj,
+
+     QString getStandardName(libfwbuilder::FWObject *parent,
+                             const std::string &objtype,
+                             const std::string &namesuffix);
+
+     QString makeNameUnique(libfwbuilder::FWObject* parent,
+                            const QString &obj_name, const QString &obj_type);
+     
+     void autorename(std::list<libfwbuilder::FWObject*> &obj_list,
                      const std::string &objtype,
                      const std::string &namesuffix);
-    
-     ObjectManipulator( QWidget *parent);
-     ~ObjectManipulator();
+     void autorenameVlans(std::list<libfwbuilder::FWObject*> &obj_list);
 
+     void guessSubInterfaceTypeAndAttributes(libfwbuilder::Interface *intf);
+     
      void loadObjects();
      void clearObjects();
     
@@ -284,6 +315,7 @@ public:
 
      libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                      libfwbuilder::FWObject *obj);
+     void relocateTo(libfwbuilder::FWObject *target, libfwbuilder::FWObject *obj);
      
      libfwbuilder::FWObject* getOpened() { return currentObj; }
 
@@ -297,6 +329,7 @@ public:
                         const QString &oldName,
                         const QString &oldLabel,
                         bool  askForAutorename=true);
+    void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
     
      ObjectTreeView* getCurrentObjectTree();
      libfwbuilder::FWObject* getSelectedObject();
@@ -355,14 +388,15 @@ public:
                        bool &newMenuItem,
                        bool &inDeletedObjects);
     
-     void updateLastModifiedTimestampForOneFirewall(libfwbuilder::FWObject *o);
-     void updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o);
      void updateLastInstalledTimestamp(libfwbuilder::FWObject *o);
      void updateLastCompiledTimestamp(libfwbuilder::FWObject *o);
     
      std::list<libfwbuilder::Firewall*> findFirewallsForObject(
          libfwbuilder::FWObject *o);
-     void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
+     void findAllFirewalls(std::list<libfwbuilder::Firewall*> &fws);
+
+     std::list<libfwbuilder::Cluster*> findClustersUsingFirewall(libfwbuilder::FWObject *fw);
+     void findAllClusters(std::list<libfwbuilder::Cluster*> &fws);
 
      void loadExpandedTreeItems();
      void saveExpandedTreeItems();

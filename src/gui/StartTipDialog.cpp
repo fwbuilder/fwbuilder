@@ -33,6 +33,7 @@
 #include "Help.h"
 
 #include <QCheckBox>
+#include <QLocale>
 
 #include <stdlib.h>
 
@@ -52,34 +53,48 @@ StartTipDialog::StartTipDialog()
     m_dialog = new Ui::StartTipDialog_q;
     m_dialog->setupUi(this);
 
+    QString locale = QLocale::system().name(); //"en_US";
+    QStringList paths;
+    paths.append(QString(respath.c_str()) + "/help/" + locale);
+    paths.append(QString(respath.c_str()) + "/help/" + "en_US");
+
+    m_dialog->textview->setSearchPaths(paths);
+    m_dialog->textview->setOpenLinks(true);
+    m_dialog->textview->setOpenExternalLinks(true);
+
     current_tip = -1;
 
     // preload tips that come with the package
+    Help *h = new Help(NULL, "");
     int tip_no = 1;
     while (true)
     {
         char buf[64];
-        sprintf(buf, "tip%02d", tip_no);
+        sprintf(buf, "tip%02d.html", tip_no);
         QString tip_file = QString(buf);
         QString contents;
         if (fwbdebug)
             qDebug("Trying tip file %s", tip_file.toAscii().constData());
-        if (Help::getHelpFileContents(tip_file, contents))
+
+        QString help_file = h->findHelpFile(tip_file);
+        if (!help_file.isEmpty())
         {
-            tips.append(contents);
+            tips.append("file:" + tip_file);
             tip_no++;
         } else
             break;
     }
+    delete h;
     current_tip = tips.size() - 1;
 
     if (fwbdebug) qDebug("Have %d tips", tips.size());
 
     first_run = st->getBool("UI/FirstRun");
-
-    //m_dialog->textview->setText(Help::getHelpFileContents("main"));
 }
 
+/*
+ * Returns file name for a random tip
+ */
 QString StartTipDialog::getRandomTip()
 {
     if (tips.size())
@@ -137,18 +152,26 @@ void StartTipDialog::downloadComplete(const QString &txt)
 
 void StartTipDialog::showTip(const QString &txt, bool new_tip)
 {
+    if (fwbdebug) qDebug("Show tip  %s", txt.toStdString().c_str());
     if (new_tip)
     {
         tips.append(txt);
         current_tip = tips.size() - 1;
     }
-    m_dialog->textview->setText(txt);
+
+    QUrl url(txt);
+    if (url.isValid() && (url.scheme() == "file" || url.scheme() == "http"))
+        m_dialog->textview->setSource(url);
+    else
+        m_dialog->textview->setText(txt);
+
     show();
     raise();
 }
 
 void StartTipDialog::showTip(int tip_idx)
 {
+    if (fwbdebug) qDebug("Show tip #%d", tip_idx);
     showTip(tips[tip_idx], false);
 }
 

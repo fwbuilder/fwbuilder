@@ -1,0 +1,17 @@
+## -*- mode: shell-script; -*- 
+##
+prolog_commands() {
+    echo "Running prolog script"
+{{$prolog_script}}
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+{{$epilog_script}}
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+

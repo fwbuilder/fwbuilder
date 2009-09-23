@@ -58,7 +58,9 @@ namespace fwcompiler {
 	 * in the code regarding "pass_all_out" option
 	 */
 	void addDefaultPolicyRule();
-
+        void insertCarpRule();
+        void insertPfsyncRule();
+        
 	protected:
 
 	/**
@@ -127,6 +129,18 @@ namespace fwcompiler {
 	 * NOT IMPLEMENTED 
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(doSrvNegation);
+
+        /**
+         *  Replace carp interface in the "Interface" rule element
+         *  with firewall's real interface
+         */
+        class replaceFailoverInterfaceInItf : public replaceFailoverInterfaceInRE
+        {
+            public:
+            replaceFailoverInterfaceInItf(const std::string &n) :
+                replaceFailoverInterfaceInRE(n, libfwbuilder::RuleElementItf::TYPENAME) {}
+        };
+
 
 
         /**
@@ -454,12 +468,12 @@ namespace fwcompiler {
 	public:
 
 	PolicyCompiler_pf(libfwbuilder::FWObjectDatabase *_db,
-			  const std::string &fwname,
+			  libfwbuilder::Firewall *fw,
                           bool ipv6_policy,
 			  fwcompiler::OSConfigurator *_oscnf,
                           const std::list<NATCompiler_pf::redirectRuleInfo> *rri,
                           TableFactory *tbf = NULL) :
-        PolicyCompiler(_db, fwname, ipv6_policy, _oscnf) 
+        PolicyCompiler(_db, fw, ipv6_policy, _oscnf) 
         {
             redirect_rules_info = rri;
             tables = tbf;

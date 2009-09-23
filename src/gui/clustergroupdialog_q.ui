@@ -1,0 +1,463 @@
+<ui version="4.0" >
+ <class>ClusterGroupDialog_q</class>
+ <widget class="QWidget" name="ClusterGroupDialog_q" >
+  <property name="enabled" >
+   <bool>true</bool>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>843</width>
+    <height>332</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Cluster</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="0" >
+    <widget class="QFrame" name="frame3" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize" >
+      <size>
+       <width>16</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="autoFillBackground" >
+      <bool>true</bool>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>2</number>
+      </property>
+      <property name="spacing" >
+       <number>2</number>
+      </property>
+      <item row="0" column="2" >
+       <widget class="QLabel" name="editorTitle" >
+        <property name="font" >
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text" >
+         <string>Cluster-Members</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLabel" name="label" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text" >
+         <string/>
+        </property>
+        <property name="pixmap" >
+         <pixmap resource="MainRes.qrc" >:/Icons/StateSyncClusterGroup/icon</pixmap>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QFrame" name="frame20" >
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3" >
+      <item row="0" column="0" >
+       <layout class="QVBoxLayout" name="verticalLayout_2" >
+        <item>
+         <widget class="QFrame" name="frame7_2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="textLabel1_4_2" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>32767</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Name:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QLineEdit" name="obj_name" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>200</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="textLabel1_3_2_2" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>32767</width>
+               <height>32767</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Type:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QComboBox" name="type" />
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer" >
+          <property name="orientation" >
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>287</width>
+            <height>18</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout" >
+          <item>
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>38</width>
+              <height>24</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="editParameters" >
+            <property name="text" >
+             <string>Edit protocol parameters ...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer" >
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>48</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1" >
+       <layout class="QVBoxLayout" name="verticalLayout" >
+        <item>
+         <widget class="QTreeWidget" name="fwMemberTree" >
+          <property name="toolTip" >
+           <string>List of current members of this cluster.
+Double click on an entry to load it.</string>
+          </property>
+          <property name="showDropIndicator" stdset="0" >
+           <bool>false</bool>
+          </property>
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <column>
+           <property name="text" >
+            <string>Firewall</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Interface</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Master</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Status</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="manageMembers" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>32767</width>
+            <height>32767</height>
+           </size>
+          </property>
+          <property name="toolTip" >
+           <string>Click here to manage member firewalls of this cluster group.</string>
+          </property>
+          <property name="text" >
+           <string>Manage Members</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="2" >
+       <layout class="QVBoxLayout" >
+        <property name="spacing" >
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="textLabel2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>Comment:</string>
+          </property>
+          <property name="wordWrap" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="comment" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="tabChangesFocus" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>manageMembers</tabstop>
+  <tabstop>comment</tabstop>
+ </tabstops>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>comment</sender>
+   <signal>textChanged()</signal>
+   <receiver>ClusterGroupDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>manageMembers</sender>
+   <signal>clicked()</signal>
+   <receiver>ClusterGroupDialog_q</receiver>
+   <slot>openClusterConfDialog()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fwMemberTree</sender>
+   <signal>itemActivated(QTreeWidgetItem*,int)</signal>
+   <receiver>ClusterGroupDialog_q</receiver>
+   <slot>openObject(QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>262</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>411</x>
+     <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>obj_name</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ClusterGroupDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>169</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>411</x>
+     <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editParameters</sender>
+   <signal>clicked()</signal>
+   <receiver>ClusterGroupDialog_q</receiver>
+   <slot>openParametersEditor()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>149</x>
+     <y>286</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>421</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>type</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>ClusterGroupDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>196</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>421</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>changed()</slot>
+  <slot>openParametersEditor()</slot>
+ </slots>
+</ui>

@@ -114,6 +114,7 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->compiler, fwoptions, "compiler");
     data.registerOption(m_dialog->compilerArgs, fwoptions, "cmdline");
     data.registerOption(m_dialog->outputFileName, fwoptions, "output_file");
+    data.registerOption(m_dialog->fileNameOnFw, fwoptions, "script_name_on_firewall");
     data.registerOption(m_dialog->assumeFwIsPartOfAny,
                         fwoptions, "firewall_is_part_of_any_and_networks");
     data.registerOption(m_dialog->acceptSessions,
@@ -140,8 +141,16 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->mgmt_addr, fwoptions, "mgmt_addr");
     data.registerOption(m_dialog->addVirtualsforNAT,
                         fwoptions, "manage_virtual_addr");
+
     data.registerOption(m_dialog->configureInterfaces,
                         fwoptions, "configure_interfaces");
+    data.registerOption(m_dialog->configure_vlan_interfaces,
+                        fwoptions, "configure_vlan_interfaces");
+    data.registerOption(m_dialog->configure_bridge_interfaces,
+                        fwoptions, "configure_bridge_interfaces");
+    data.registerOption(m_dialog->configure_bonding_interfaces,
+                        fwoptions, "configure_bonding_interfaces");
+
     data.registerOption(m_dialog->iptDebug, fwoptions, "debug");
     data.registerOption(m_dialog->verifyInterfaces, fwoptions, "verify_interfaces");
     data.registerOption(m_dialog->loadModules, fwoptions, "load_modules");
@@ -165,17 +174,31 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->prolog_script, fwoptions,
                         "prolog_script");
 
-    slm = getPrologPlaces( obj->getStr("platform").c_str());
+    QStringList prologPlaces_ipt;
+    prologPlaces_ipt.push_back(QObject::tr("on top of the script"));
+    prologPlaces_ipt.push_back("top");
+    prologPlaces_ipt.push_back(QObject::tr("after interface configuration"));
+    prologPlaces_ipt.push_back("after_interfaces");
+
+    // bug #2820840: can't put prolog "after policy reset" if iptables-restore
+    if (!fwoptions->getBool("use_iptables_restore"))
+    {
+        prologPlaces_ipt.push_back(QObject::tr("after policy reset"));
+        prologPlaces_ipt.push_back("after_flush");
+    }
+
     m_dialog->prologPlace->clear();
-    m_dialog->prologPlace->addItems(getScreenNames(slm));
+    m_dialog->prologPlace->addItems(getScreenNames(prologPlaces_ipt));
     data.registerOption(m_dialog-> prologPlace, fwoptions,
-                        "prolog_place", slm);
+                        "prolog_place", prologPlaces_ipt);
 
     data.registerOption(m_dialog->epilog_script, fwoptions,
                         "epilog_script");
 
     data.loadAll();
     switchLOG_ULOG();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 void iptAdvancedDialog::switchLOG_ULOG()
@@ -211,7 +234,7 @@ void iptAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData());
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData());
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 
@@ -240,11 +263,12 @@ void iptAdvancedDialog::editEpilog()
 
 void iptAdvancedDialog::help()
 {
-    Help *h = new Help(this, "iptAdvancedDialog", "Firewall platform: iptables");
-    h->show();
     QString tab_title = m_dialog->tabWidget->tabText(
         m_dialog->tabWidget->currentIndex());
-    h->scrollToAnchor(tab_title.replace('/', '-').replace(' ', '-').toLower());
+    QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
+    Help *h = new Help(this, "Firewall platform: iptables");
+    h->setSource(QUrl("iptAdvancedDialog.html#" + anchor));
+    h->show();
 }
 
 

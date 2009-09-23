@@ -42,6 +42,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/DNSName.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 #include <iostream>
 
@@ -248,9 +249,9 @@ void PolicyCompiler_ipfw::PrintRule::_printAction(PolicyRule *rule)
 
     default:
         compiler->abort(
-            string("Unknown action ") + rule->getActionAsString()
-            + " in rule " + rule->getLabel()
-        );
+            
+                rule, 
+                string("Unknown action ") + rule->getActionAsString());
 
 //   compiler->output << rule->getActionAsString() << " ";
     }
@@ -340,7 +341,7 @@ void PolicyCompiler_ipfw::PrintRule::_printInterface(PolicyRule *r)
         default: break;
         }
 
-	Interface *rule_iface = compiler->getCachedFwInterface( iface_id );
+	FWObject *rule_iface = compiler->dbcopy->findInIndex( iface_id );
 	compiler->output << rule_iface->getName() << " ";
     }
 }
@@ -486,26 +487,31 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
 
     string quote = "\"";
 
-    string rl=rule->getLabel();
-    if (rl!=current_rule_label) 
+    if (!compiler->inSingleRuleCompileMode())
     {
-        compiler->output << "# " << endl;
-        compiler->output << "# Rule " << rl << endl;
-
-        string    comm=rule->getComment();
-        string::size_type c1,c2;
-        c1=0;
-        while ( (c2=comm.find('\n',c1))!=string::npos ) 
+        string rl=rule->getLabel();
+        if (rl!=current_rule_label) 
         {
-            compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
-            c1=c2+1;
-        }
-        compiler->output << "# " << comm.substr(c1) << endl;
-        compiler->output << "# " << endl;
+            compiler->output << "# " << endl;
+            compiler->output << "# Rule " << rl << endl;
 
-        current_rule_label=rl;
+            string    comm=rule->getComment();
+            string::size_type c1,c2;
+            c1=0;
+            while ( (c2=comm.find('\n',c1))!=string::npos ) 
+            {
+                compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
+                c1=c2+1;
+            }
+            compiler->output << "# " << comm.substr(c1) << endl;
+            compiler->output << "# " << endl;
+
+            current_rule_label=rl;
+        }
     }
 
+    string err = rule->getStr(".error_msg");
+    if (!err.empty()) compiler->output << "# " << err << endl;
 
     RuleElementSrc *srcrel=rule->getSrc();
     Address        *src   =compiler->getFirstSrc(rule);  assert(src);

@@ -51,21 +51,22 @@ namespace libfwbuilder
     class Firewall;
 }
 
-enum instJobType {COPY_FILE, EXECUTE_COMMAND, ACTIVATE_POLICY};
+enum instJobType {COPY_FILE, EXECUTE_COMMAND, ACTIVATE_POLICY, RUN_EXTERNAL_SCRIPT};
 
 class instJob
 {
 public:
     instJobType job;
-    QString argument;
+    QString argument1;
+    QString argument2;
 
-    instJob(instJobType jt, const QString &a) { job=jt; argument=a; }
+    instJob(instJobType jt, const QString &a1, const QString &a2)
+    { job = jt; argument1 = a1; argument2 = a2; }
 };
 
 class FirewallInstaller : public QObject
 {
     Q_OBJECT
-
 
 protected:
 
@@ -80,7 +81,15 @@ protected:
     void runSSHSession(SSHSession *s, bool intermediate=false);
     QString getFullPath(const QString &file );
 
-    void executeInstallScript();
+    bool parseManifestLine(const QString &line,
+                           QString *local_file_name,
+                           QString *remote_file_name,
+                           bool *main_script);
+
+    bool readManifest(const QString &conffie, QMap<QString, QString> *all_files);
+
+    void executeExternalInstallScript(const QString &script,
+                                      const QString &script_args);
     
 public:
 
@@ -92,14 +101,14 @@ public:
     }
 
     void packSSHArgs(QStringList &args);
-    void packSCPArgs(const QString &file_name, QStringList &args);
+    void packSCPArgs(const QString &local_name, const QString &remote_name, QStringList &args);
     QString getActivationCmd();
-    QString getDestinationDir();
+    QString getDestinationDir(const QString &dir);
 
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
-    virtual void copyFile(const QString &file_name);
+    virtual void copyFile(const QString &local_name, const QString &remote_name);
     virtual void executeCommand(const QString &cmd);
-    virtual void activatePolicy();
+    virtual void activatePolicy(const QString &script, const QString &args);
 
     static QString getGeneratedFileFullPath(libfwbuilder::Firewall *fw);
 

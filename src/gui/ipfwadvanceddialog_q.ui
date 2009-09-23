@@ -91,7 +91,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2" >
+       <item row="0" column="2" colspan="2" >
         <widget class="QLineEdit" name="compiler" >
          <property name="maximumSize" >
           <size>
@@ -120,7 +120,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2" >
+       <item row="1" column="2" colspan="2" >
         <widget class="QLineEdit" name="compilerArgs" >
          <property name="maximumSize" >
           <size>
@@ -130,7 +130,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2" >
+       <item row="2" column="0" colspan="4" >
         <widget class="QLabel" name="textLabel1_5" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -149,7 +149,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="2" >
+       <item row="3" column="2" colspan="2" >
         <widget class="QLineEdit" name="outputFileName" >
          <property name="maximumSize" >
           <size>
@@ -159,7 +159,34 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1" >
+       <item row="4" column="0" colspan="4" >
+        <widget class="QLabel" name="label_4" >
+         <property name="text" >
+          <string>Generated script can be copied to the firewall machine under different name. If this field is left blank, the file name does not change.</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2" >
+        <widget class="QLabel" name="label_3" >
+         <property name="text" >
+          <string>Script name on the firewall</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" colspan="2" >
+        <widget class="QLineEdit" name="fileNameOnFw" >
+         <property name="maximumSize" >
+          <size>
+           <width>32767</width>
+           <height>22</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -175,7 +202,7 @@
          </property>
         </spacer>
        </item>
-       <item rowspan="2" row="4" column="0" >
+       <item rowspan="2" row="7" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -191,7 +218,7 @@
          </property>
         </spacer>
        </item>
-       <item row="4" column="1" colspan="2" >
+       <item row="7" column="1" colspan="3" >
         <widget class="QCheckBox" name="ipfw_add_check_state_rule" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
@@ -205,7 +232,7 @@ known sessions on top of the policy (action 'check-state')</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" colspan="2" >
+       <item row="8" column="1" colspan="3" >
         <widget class="QCheckBox" name="ipfw_check_shadowing" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -221,7 +248,7 @@ known sessions on top of the policy (action 'check-state')</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" colspan="2" >
+       <item row="9" column="1" colspan="3" >
         <widget class="QCheckBox" name="ipfw_ignore_empty_groups" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -237,7 +264,7 @@ known sessions on top of the policy (action 'check-state')</string>
          </property>
         </widget>
        </item>
-       <item rowspan="2" row="7" column="1" colspan="2" >
+       <item row="10" column="1" colspan="2" >
         <widget class="QCheckBox" name="mgmt_ssh" >
          <property name="text" >
           <string>Always permit ssh access from
@@ -246,7 +273,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="2" >
+       <item row="10" column="3" >
         <widget class="QLineEdit" name="mgmt_addr" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -262,7 +289,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="2" >
+       <item row="11" column="2" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>

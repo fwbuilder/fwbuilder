@@ -50,6 +50,8 @@
 #include "GroupObjectDialog.h"
 #include "HostDialog.h"
 #include "FirewallDialog.h"
+#include "ClusterDialog.h"
+#include "ClusterGroupDialog.h"
 #include "InterfaceDialog.h"
 #include "TimeDialog.h"
 #include "TagServiceDialog.h"
@@ -61,6 +63,14 @@
 #include "pixAdvancedDialog.h"
 #include "iosaclAdvancedDialog.h"
 #include "ipcopAdvancedDialog.h"
+
+#include "secuwallAdvancedDialog.h"
+#include "linux24IfaceOptsDialog.h"
+#include "secuwallIfaceOptsDialog.h"
+#include "vlanOnlyIfaceOptsDialog.h"
+#include "openbsdIfaceOptsDialog.h"
+
+#include "clusterMembersDialog.h"
 
 #include "linux24AdvancedDialog.h"
 #include "linksysAdvancedDialog.h"
@@ -76,9 +86,18 @@
 #include "RoutingRuleOptionsDialog.h"
 #include "NATRuleOptionsDialog.h"
 
+#include "vrrpOptionsDialog.h"
+#include "carpOptionsDialog.h"
+#include "conntrackOptionsDialog.h"
+#include "heartbeatOptionsDialog.h"
+#include "openaisOptionsDialog.h"
+#include "pfsyncOptionsDialog.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
@@ -137,6 +156,12 @@ QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,cons
     if (objType==AddressRange::TYPENAME)  return new AddressRangeDialog(project, parent);
 
     if (objType==Firewall::TYPENAME)      return new FirewallDialog(project, parent);
+
+    if (objType==Cluster::TYPENAME)       return new ClusterDialog(project, parent);
+
+    if (objType==StateSyncClusterGroup::TYPENAME)  return new ClusterGroupDialog(project, parent);
+
+    if (objType==FailoverClusterGroup::TYPENAME)  return new ClusterGroupDialog(project, parent);
 
     if (objType==Host::TYPENAME)          return new HostDialog(project, parent);
 
@@ -241,9 +266,86 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
     if (dlgname=="pix_os")    return new pixosAdvancedDialog(parent, o);
     if (dlgname=="ios")       return new iosAdvancedDialog(parent, o);
     if (dlgname=="ipcop")     return new ipcoposAdvancedDialog(parent, o);
+    if (dlgname=="secuwall")  return new secuwallAdvancedDialog(parent, o);
 
     cerr << "OS settings dialog for " << dlgname
          << " is not implemented" << endl;
+
+    return NULL;
+}
+
+QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
+    throw(FWException)
+{
+    FWObject *h = Interface::cast(o)->getParentHost();
+
+    string host_OS = h->getStr("host_OS");
+    Resources *os = Resources::os_res[host_OS];
+    if (os==NULL)
+        throw FWException((const char*)(
+                              QObject::tr("Support module for %1 is not available").
+                              arg(host_OS.c_str()).toLocal8Bit().constData()));
+
+    string dlgname = os->Resources::getResourceStr("/FWBuilderResources/Target/interface_dialog");
+
+    // add further dlgname support here ...
+
+    if (dlgname=="secuwall")  return new secuwallIfaceOptsDialog(parent, o);
+    if (dlgname=="linux24")  return new linux24IfaceOptsDialog(parent, o);
+    if (dlgname=="openbsd")  return new openbsdIfaceOptsDialog(parent, o);
+    if (dlgname=="vlan_only")  return new vlanOnlyIfaceOptsDialog(parent, o);
+
+    cerr << "Interface settings dialog for OS " << host_OS
+         << " is not implemented" << endl;
+
+    return NULL;
+}
+
+QWidget *DialogFactory::createClusterConfDialog(QWidget *parent, FWObject *o)
+    throw(FWException)
+{
+    FWObject *objparent = o->getParent();
+    while (objparent && objparent->getTypeName()!="Cluster")
+        objparent = objparent->getParent();
+    assert(objparent);
+
+    string host_OS = objparent->getStr("host_OS");
+    Resources *os = Resources::os_res[host_OS];
+
+    string dlgname = os->Resources::getResourceStr("/FWBuilderResources/Target/cluster_dialog");
+
+    // add further dlgname support here ...
+
+    if (dlgname == "basic")  return new clusterMembersDialog(parent, o);
+
+    cerr << "Cluster configuration dialog for OS " << host_OS
+         << " is not implemented" << endl;
+
+    return NULL;
+}
+
+/*
+ *  Create cluster group options dialog; dialog class depends on the
+ *  cluster group type. Argument <o> is FWOptions object which is
+ *  a child of ClusterGroup object
+ */
+QWidget *DialogFactory::createClusterGroupOptionsDialog(QWidget *parent,
+                                                        FWObject *o)
+        throw(libfwbuilder::FWException)
+{
+    FWObject *cluster_group = o->getParent();
+    assert(ClusterGroup::cast(cluster_group)!=NULL);
+
+    string type = ClusterGroup::cast(cluster_group)->getStr("type");
+
+    if (type == "conntrack")  return new conntrackOptionsDialog(parent, o);
+    if (type == "pfsync")  return new pfsyncOptionsDialog(parent, o);
+
+    if (type == "vrrp")  return new vrrpOptionsDialog(parent, o);
+    if (type == "carp")  return new carpOptionsDialog(parent, o);
+    if (type == "heartbeat")  return new heartbeatOptionsDialog(parent, o);
+    if (type == "openais")  return new openaisOptionsDialog(parent, o);
+    // Add more cluster group options dialog here
 
     return NULL;
 }

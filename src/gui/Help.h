@@ -30,25 +30,21 @@
 #include "../../config.h"
 #include "SimpleTextView.h"
 
-#include <QFile>
-
+#include <QStringList>
+#include <QUrl>
 
 class Help : public SimpleTextView
 {
+
+    QStringList paths;
     
 public:
     
-    Help(QWidget *parent, const QString &_file, const QString &title);
-    
+    Help(QWidget *parent, const QString &title);
     virtual ~Help() {};
 
-    void scrollToAnchor(const QString &anchor);
-
-    static bool getHelpFileContents(const QString &help_file,
-                                    QString &contents);
-    static bool getFile(const QString &help_file, const QString &locale,
-                        QFile &file);
-
+    void setSource(const QUrl &url) { m_dialog->textview->setSource(url); }
+    QString findHelpFile(const QString &file_base_name);
 };
 
 #endif 

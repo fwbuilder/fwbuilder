@@ -52,7 +52,7 @@ public:
         FirewallInstaller(_dlg, _cnf, _p) {}
 
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
-    virtual void activatePolicy();
+    virtual void activatePolicy(const QString &script, const QString &args);
     
 };
 

@@ -89,9 +89,9 @@ macosxAdvancedDialog::macosxAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->macosx_path_sysctl,
                           fwopt,
                           "macosx_path_sysctl");
-
-
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -107,7 +107,7 @@ void macosxAdvancedDialog::accept()
 
     data.saveAll();
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

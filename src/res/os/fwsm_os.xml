@@ -1,7 +1,8 @@
 <?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
-<FWBuilderResources version="3.1.0-">
+<FWBuilderResources>
     <Target name="pix_os">
       <description>Cisco FWSM</description>
+      <status>active</status>
       <compiler>fwb_pix</compiler>
       <family>fwsm_os</family>
       <dialog>pix_os</dialog>
@@ -15,6 +16,23 @@
       <capabilities>
         <supports_routing>False</supports_routing>
       </capabilities>
+
+      <interfaces>
+        <cluster>
+        </cluster>
+        <firewall>
+          <string>ethernet,Ethernet</string>
+        </firewall>
+      </interfaces>
+
+      <subinterfaces>
+        <ethernet>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </ethernet>
+      </subinterfaces>
+
+
 
     </Target>
 

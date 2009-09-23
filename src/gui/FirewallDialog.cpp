@@ -148,8 +148,8 @@ void FirewallDialog::fillVersion()
 {
     m_dialog->version->clear();
 
-    list<QStringPair> vl = getVersionsForPlatform(
-        readPlatform(m_dialog->platform) );
+    list<QStringPair> vl;
+    getVersionsForPlatform(readPlatform(m_dialog->platform), vl);
     QString v = obj->getStr("version").c_str();
     int cp = 0;
     for (list<QStringPair>::iterator i1=vl.begin(); i1!=vl.end(); i1++,cp++)
@@ -167,8 +167,9 @@ void FirewallDialog::saveVersion()
 {
     QString pl = readPlatform(m_dialog->platform);
 
-    list<QStringPair> vl=getVersionsForPlatform( pl.toLatin1().constData() );
-    QString           v = m_dialog->version->currentText();
+    list<QStringPair> vl;
+    getVersionsForPlatform( pl.toLatin1().constData(), vl);
+    QString v = m_dialog->version->currentText();
     list<QStringPair>::iterator li =
         std::find_if(vl.begin(),vl.end(),findSecondInQStringPair(v));
     if (li!=vl.end())
@@ -210,6 +211,31 @@ void FirewallDialog::validate(bool *res)
         *res=false;
         return;
     }
+
+    QString platform = readPlatform(m_dialog->platform);
+    if (platform.isEmpty())
+    {
+        *res=false;
+        QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("Platform setting can not be empty"),
+            tr("&Continue"), 0, 0,
+            0 );
+        return;
+    }
+
+    QString ho = readHostOS(m_dialog->hostOS);
+    if (ho.isEmpty())
+    {
+        *res=false;
+        QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("Host OS setting can not be empty"),
+            tr("&Continue"), 0, 0,
+            0 );
+        return;
+    }
+
     if (!validateName(this,obj,m_dialog->obj_name->text()))
     {
         *res = false;
@@ -258,7 +284,7 @@ void FirewallDialog::applyChanges()
 
     string new_version = obj->getStr("version");
 
-    mw->updateObjName(obj,QString::fromUtf8(old_name.c_str()));
+    m_project->updateObjName(obj, QString::fromUtf8(old_name.c_str()));
 
     if (old_platform!=new_platform || old_host_os!=new_host_os ||
         old_name!=new_name || old_version!=new_version)
@@ -266,7 +292,7 @@ void FirewallDialog::applyChanges()
         if (fwbdebug)
             qDebug("FirewallDialog::applyChanges() scheduling call "
                    "to reopenFirewall()");
-        mw->scheduleRuleSetRedraw();
+        m_project->scheduleRuleSetRedraw();
     }
 
     if (old_platform!=new_platform)
@@ -294,8 +320,10 @@ void FirewallDialog::applyChanges()
         Resources::setDefaultTargetOptions(new_host_os, s);
     }
 
-    mw->updateLastModifiedTimestampForAllFirewalls(s);
+//    mw->updateLastModifiedTimestampForAllFirewalls(s);
     modified = false;
+
+    emit notify_changes_applied_sign();
 }
 
 void FirewallDialog::discardChanges()

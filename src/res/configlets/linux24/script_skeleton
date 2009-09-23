@@ -1,0 +1,69 @@
+## -*- mode: shell-script; -*- 
+##
+{{$top_comment}}
+
+{{$errors_and_warnings}}
+
+{{$shell_debug}}
+FWBDEBUG=""
+
+{{$path}}
+
+{{$constants}}
+
+{{$tools}}
+
+{{$shell_functions}}
+
+{{$prolog_epilog}}
+
+configure_interfaces() {
+{{$configure_interfaces}}
+}
+
+script_body() {
+  {{$script_body}}
+}
+
+reset_all() {
+  {{$reset_all}}
+}
+
+# See how we were called.
+# For backwards compatibility missing argument is equivalent to 'start'
+
+test -z "$1" && {
+  $0 start
+  exit $?
+}
+
+case "$1" in
+  start)
+    log "Activating firewall script generated {{$timestamp}} by {{$user}}"
+    check_tools
+    {{$prolog_top}}
+    {{$load_modules}}
+    configure_interfaces
+    {{$verify_interfaces}}
+    {{$prolog_after_interfaces}}
+    {{$call_reset}}
+    {{$prolog_after_flush}}
+    script_body
+    epilog_commands
+  ;;
+
+  stop)
+    reset_all
+  ;;
+
+  interfaces)
+    configure_interfaces
+  ;;
+
+  test_interfaces)
+    FWBDEBUG="echo"
+    configure_interfaces
+  ;;
+
+esac
+

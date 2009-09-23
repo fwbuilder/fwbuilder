@@ -98,6 +98,8 @@ pixosAdvancedDialog::pixosAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->tcpmss_value,       fwoptions,  "pix_tcpmss_value");
 
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -106,7 +108,7 @@ pixosAdvancedDialog::pixosAdvancedDialog(QWidget *parent,FWObject *o)
 void pixosAdvancedDialog::accept()
 {
     data.saveAll();
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

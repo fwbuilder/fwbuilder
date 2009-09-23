@@ -2,7 +2,7 @@
 
 
 XMLFILE=$1
-DIFFCMD="diff -C 1 -c -b -B -I \"#  Generated\" -I 'Activating ' -I '#  Firewall Builder  fwb_ipt v' -I 'Can not find file' -I '====' -I 'log '"
+DIFFCMD="diff -C 1 -c -b -B -I \"#  Generated\" -I 'Activating ' -I '#  Firewall Builder  fwb_pf v' -I 'Can not find file' -I '====' -I 'log '"
 
 for f in *.conf
 do

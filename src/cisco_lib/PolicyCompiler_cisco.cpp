@@ -61,10 +61,10 @@ using namespace std;
 string PolicyCompiler_cisco::myPlatformName() { return ""; }
 
 PolicyCompiler_cisco::PolicyCompiler_cisco(FWObjectDatabase *_db,
-                                           const std::string &fwname,
+                                           Firewall *fw,
                                            bool ipv6_policy,
                                            OSConfigurator *_oscnf) :
-    PolicyCompiler(_db, fwname, ipv6_policy, _oscnf) , helper(this)
+    PolicyCompiler(_db, fw, ipv6_policy, _oscnf) , helper(this)
 {
 }
 
@@ -88,13 +88,17 @@ string PolicyCompiler_cisco::createRuleLabel(const string &txt,
 
 string PolicyCompiler_cisco::debugPrintRule(Rule *r)
 {
+    ostringstream str;
     PolicyRule *rule=PolicyRule::cast(r);
-    Interface  *rule_iface = getCachedFwInterface(rule->getInterfaceId());
-    string iname=(rule_iface!=NULL)?rule_iface->getName():"";
+    FWObject *rule_iface = dbcopy->findInIndex(rule->getInterfaceId());
+    string iname = (rule_iface!=NULL)?rule_iface->getName():"";
     string dir= rule->getDirectionAsString();
 
-    return PolicyCompiler::debugPrintRule(rule)+
-        " "+dir+" "+iname+" "+rule->getStr("acl");
+    str << PolicyCompiler::debugPrintRule(rule) <<
+        " " << dir << " " << iname << " " << rule->getStr("acl") <<
+        " intfId=" << rule->getInterfaceId() <<
+        " intfstr=" << rule->getInterfaceStr();
+    return str.str();
 }
 
 
@@ -111,14 +115,12 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
         ssh->setDstRangeStart(22);
         ssh->setDstRangeEnd(22);
         dbcopy->add(ssh,false);
-        cacheObj(ssh); // to keep cache consistent
 
         Network *mgmt_workstation = dbcopy->createNetwork();
         mgmt_workstation->setAddressNetmask(
             getCachedFwOpt()->getStr("mgmt_addr"));
 
         dbcopy->add(mgmt_workstation, false);
-        cacheObj(mgmt_workstation); // to keep cache consistent
 
         r= dbcopy->createPolicyRule();
         temp_ruleset->add(r);
@@ -126,7 +128,7 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
         r->setLogging(false);
         r->setDirection(PolicyRule::Inbound);
         r->setPosition(-1);
-        r->setComment("   backup ssh access rule ");
+//        r->setComment("   backup ssh access rule ");
         r->setHidden(true);
         r->setFallback(false);
         r->setLabel("backup ssh access rule");
@@ -437,7 +439,7 @@ bool PolicyCompiler_cisco::specialCaseWithDynInterface::dropDynamicInterface(
     PolicyRule  *rule, PolicyRule::Direction cmp_dir, RuleElement *re)
 {
     PolicyRule::Direction dir=rule->getDirection();
-    Interface  *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
 
     list<FWObject*> cl;
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
@@ -570,7 +572,7 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
 bool PolicyCompiler_cisco::replaceFWinSRCInterfacePolicy::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    Interface  *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
 
     if (rule_iface!=NULL && rule->getDirection()==PolicyRule::Outbound)
     {
@@ -590,7 +592,7 @@ bool PolicyCompiler_cisco::replaceFWinSRCInterfacePolicy::processNext()
 bool PolicyCompiler_cisco::replaceFWinDSTInterfacePolicy::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    Interface  *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
 
     if (rule_iface!=NULL && rule->getDirection()==PolicyRule::Inbound)
     {
@@ -615,7 +617,7 @@ bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
 {
     Helper helper(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    Interface  *rule_iface = compiler->getCachedFwInterface(rule->getInterfaceId());
+    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
 
     if (rule_iface==NULL)
     {
@@ -628,7 +630,7 @@ bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
             {
                 int iface_id = helper.findInterfaceByNetzone(
                     compiler->getFirstSrc(rule));
-                Interface *iface = compiler->getCachedFwInterface(iface_id);
+                FWObject *iface = compiler->dbcopy->findInIndex(iface_id);
 
                 dst->clearChildren();
                 dst->addRef(iface);
@@ -636,10 +638,8 @@ bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
             {
                 ostringstream str;
                 str << "Address " << addr
-                    << " does not match address or network zone of any interface. Rule " 
-                    << rule->getLabel()
-                    << endl;
-                compiler->abort(str.str());
+                    << " does not match address or network zone of any interface." ;
+                compiler->abort(rule, str.str());
             }
         }
     }
@@ -710,7 +710,7 @@ bool PolicyCompiler_cisco::splitByNetworkZonesForRE::processNext()
                     compiler->fw->getStr("platform"), "network_zones");
 
             if (supports_network_zones)
-                compiler->warning(err + " Rule " + rule->getLabel());
+                compiler->warning(rule, err);
 
             FWObjectTypedChildIterator i =
                 compiler->fw->findByType(Interface::TYPENAME);
@@ -796,7 +796,10 @@ bool PolicyCompiler_cisco::processMultiAddressObjectsInRE::processNext()
         if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
         MultiAddress *atrt = MultiAddress::cast(o);
         if (atrt!=NULL && atrt->isRunTime())
-            compiler->abort("Run-time AddressTable and DNSName objects are not supported. Rule " + rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    "Run-time AddressTable and DNSName objects are not supported.");
     }
 
     tmp_queue.push_back(rule);

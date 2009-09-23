@@ -75,9 +75,8 @@ void MetricEditorPanel::changed()
 
 void MetricEditorPanel::applyChanges()
 {
-    mw->updateLastModifiedTimestampForAllFirewalls(rule);
     rule->setMetric( value() );
-    mw->updateRuleSetView();
+    emit notify_changes_applied_sign();
 }
 
 void MetricEditorPanel::discardChanges()

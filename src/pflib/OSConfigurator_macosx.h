@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2002 NetCitadel, LLC
+                 Copyright (C) 2002,2009 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
@@ -23,39 +23,31 @@
 
 */
 
-#ifndef _OSNETWORKCONFIGURATOR_MACOSX_HH
-#define _OSNETWORKCONFIGURATOR_MACOSX_HH
+#ifndef _OSCONFIGURATOR_MACOSX_HH
+#define _OSCONFIGURATOR_MACOSX_HH
 
 #include "config.h"
 
-#include "fwcompiler/OSConfigurator.h"
-
+#include "OSConfigurator_bsd.h"
 #include "OSData.h"
 
 namespace fwcompiler {
 
-    class OSConfigurator_macosx : public OSConfigurator {
-
-        OSData   os_data;
-
-	std::vector<libfwbuilder::InetAddr> virtual_addresses;
+    class OSConfigurator_macosx : public OSConfigurator_bsd {
 
 	public:
 
 	virtual ~OSConfigurator_macosx() {};
 	OSConfigurator_macosx(libfwbuilder::FWObjectDatabase *_db,
-			      const std::string &fwname,
-                              bool ipv6_policy) : 
-        OSConfigurator(_db, fwname, ipv6_policy) , os_data() {}
+                               libfwbuilder::Firewall *fw,
+                               bool ipv6_policy) : 
+        OSConfigurator_bsd(_db, fw, ipv6_policy) {}
 
         virtual int prolog();
 
 	virtual std::string myPlatformName();
 	virtual void processFirewallOptions();
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr);
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Network   *nw);
-        void         printPathForAllTools(const std::string &os);
-        void         configureInterfaces();
+        virtual void printPathForAllTools(const std::string &os);
     };
 };
 

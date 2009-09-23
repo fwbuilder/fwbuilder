@@ -40,6 +40,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Group.h"
+#include "fwbuilder/Interface.h"
 
 #include <QAbstractItemView>
 #include <QHeaderView>
@@ -192,15 +193,9 @@ bool ObjectTreeView::event( QEvent *event )
     return QTreeWidget::event(event);
 }
 
-
-void ObjectTreeView::currentItemChanged(QTreeWidgetItem *cur)
+void ObjectTreeView::currentItemChanged(QTreeWidgetItem*)
 {
-    if (fwbdebug) qDebug("ObjectTreeView::currentChanged  itm=%s",
-                         cur->text(0).toAscii().constData());
     expandOrCollapse = false;
-
-//    lastSelected = ovi;
-//    lastSelected = currentItem();
 }
 
 void ObjectTreeView::itemCollapsed(QTreeWidgetItem* itm)
@@ -214,7 +209,6 @@ void ObjectTreeView::itemCollapsed(QTreeWidgetItem* itm)
     {
         int id = o->getId();
         expanded_objects.erase(id);
-        if (fwbdebug) qDebug("Tree item for object id=%d collapsed", id);
     }
 }
 
@@ -229,7 +223,6 @@ void ObjectTreeView::itemExpanded(QTreeWidgetItem* itm)
     {
         int id = o->getId();
         expanded_objects.insert(id);
-        if (fwbdebug) qDebug("Tree item for object id=%d expanded", id);
     }
 }
 
@@ -261,7 +254,7 @@ FWObject* ObjectTreeView::getCurrentObject()
 {
     QTreeWidgetItem *ovi = currentItem();
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(ovi);
-    assert(otvi!=NULL);
+    if (otvi==NULL) return NULL;
     return otvi->getFWObject();
 }
 
@@ -289,9 +282,9 @@ void ObjectTreeView::focusOutEvent(QFocusEvent* ev)
     if (ci) repaint();
 }
 
-void ObjectTreeView::updateTreeItems()
+void ObjectTreeView::updateTreeIcons()
 {
-    if (fwbdebug) qDebug("ObjectTreeView::updateTreeItems 1");
+    if (fwbdebug) qDebug("ObjectTreeView::updateTreeIcons ");
     QTreeWidgetItemIterator it(this);
     QTreeWidgetItem *itm;
     ObjectTreeViewItem *otvi;
@@ -312,9 +305,9 @@ void ObjectTreeView::updateTreeItems()
         obj=otvi->getFWObject();
 
         if (m_project->isSystem(obj))
-            icn=":/Icons/folder1.png";
+        icn = ":/Icons/SystemGroup/icon-tree";
         else
-            icn=(":/Icons/"+obj->getTypeName()+"/icon-tree").c_str();
+            icn = (":/Icons/"+obj->getTypeName()+"/icon-tree").c_str();
 
         QPixmap pm_obj;
         if ( ! QPixmapCache::find( icn, pm_obj) )
@@ -323,22 +316,13 @@ void ObjectTreeView::updateTreeItems()
             QPixmapCache::insert( icn, pm_obj);
         }
 
-        if (obj->getRO())  itm->setIcon(0, pm_lock);//setPixmap(0, pm_lock );
+        if (obj->getRO())  itm->setIcon(0, pm_lock);
         else               itm->setIcon(0, pm_obj );
-
-        Firewall *fw=Firewall::cast(obj);
-        if (fw!=NULL)
-        {
-            itm->setText(0,(fw->needsInstall())?
-                    QString::fromUtf8(fw->getName().c_str())+" *":
-                    QString::fromUtf8(fw->getName().c_str()));
-        }
 
         ++it;
     }
 
-    update(); //for replacement as previous string
-    if (fwbdebug) qDebug("ObjectTreeView::updateTreeItems 2");
+    update();
 }
 
 void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
@@ -376,6 +360,14 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
         if (fwbdebug)
             qDebug("ObjectTreeView::startDrag: adding object to drag list: %s",
                    (*v)->getName().c_str());
+
+        // while obj is still part of the tree, do some clean up
+        // to avoid problems in the future.  Create
+        // InterfaceOptions objects for interfaces because we'll
+        // need them for various validations during paste/drop
+        // operation.
+        Interface *intf = Interface::cast(*v);
+        if (intf) intf->getOptionsObject();
 
         dragobj.push_back( *v );
     }
@@ -536,7 +528,10 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
         ev->setAccepted(false);
         return;
     }
-   
+
+    FWObject *target = getDropTarget(ev, NULL);
+    if (target == NULL) return;
+
     list<FWObject*> dragol;
     if (FWObjectDrag::decode(ev, dragol))
     {
@@ -564,12 +559,21 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
                 //ProjectPanel * ppsource =  otvsource->m_project ;
             }
 
-            FWObject *target = getDropTarget(ev, dragobj);
             if (fwbdebug)
                 qDebug("ObjectTreeView::dropEvent  paste %s -> %s",
                        dragobj->getName().c_str(), target->getName().c_str());
 
-            m_project->pasteTo(target, dragobj);
+            // On Mac OS X Qt::ControlModifier corresponds to the "Command" key
+            if (ev->keyboardModifiers() & Qt::ControlModifier)
+            {
+                // Drag&drop with Ctrl pressed makes a copy
+                m_project->pasteTo(target, dragobj);
+            }else
+            {
+                // else it moves the object
+                m_project->relocateTo(target, dragobj);
+            }
+
         }
     }
     if (fwbdebug) qDebug("ObjectTreeView::dropEvent done");
@@ -580,7 +584,8 @@ FWObject *ObjectTreeView::getDropTarget(QDropEvent *ev, FWObject*)
     QTreeWidgetItem *ovi = itemAt(ev->pos());
 
     ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(ovi);
-    return otvi->getFWObject();
+    if (otvi) return otvi->getFWObject();
+    else return NULL;
 }
 
 void ObjectTreeView::dragLeaveEvent( QDragLeaveEvent *ev)
@@ -725,18 +730,20 @@ void ObjectTreeView::editCurrentObject()
 void ObjectTreeView::keyPressEvent( QKeyEvent* ev )
 {
     FWObject *obj = getCurrentObject();
-
-    if (ev->key()==Qt::Key_Enter || ev->key()==Qt::Key_Return)
+    if (obj)
     {
-        editCurrentObject();
-        ev->accept();
-        return;
-    }
-    if (ev->key()==Qt::Key_Delete)
-    {
-        emit deleteObject_sign(obj);
-        ev->accept();
-        return;
+        if (ev->key()==Qt::Key_Enter || ev->key()==Qt::Key_Return)
+        {
+            editCurrentObject();
+            ev->accept();
+            return;
+        }
+        if (ev->key()==Qt::Key_Delete)
+        {
+            emit deleteObject_sign(obj);
+            ev->accept();
+            return;
+        }
     }
     QTreeWidget::keyPressEvent(ev);
 }
@@ -789,11 +796,14 @@ void ObjectTreeView::clearLastSelected()
 
 void ObjectTreeView::resetSelection()
 {
-    if (fwbdebug)
-        qDebug(QString("ObjectTreeView::resetSelection :: lastSelected=%1").arg(lastSelected->text(0)).toAscii().constData());
+    if (lastSelected)
+    {
+        if (fwbdebug)
+            qDebug(QString("ObjectTreeView::resetSelection :: lastSelected=%1").arg(lastSelected->text(0)).toAscii().constData());
 
-    setCurrentItem(lastSelected);
-    lastSelected->setSelected(true);
+        setCurrentItem(lastSelected);
+        lastSelected->setSelected(true);
+    }
 }
 
 void ObjectTreeView::itemSelectionChanged()

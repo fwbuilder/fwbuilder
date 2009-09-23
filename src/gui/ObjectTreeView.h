@@ -148,7 +148,7 @@ protected:
     void itemCollapsed(QTreeWidgetItem *itm);
     void itemExpanded(QTreeWidgetItem *itm);
     void itemOpened ();
-    virtual void updateTreeItems();
+    virtual void updateTreeIcons();
 
  signals:
 

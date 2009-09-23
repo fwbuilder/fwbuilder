@@ -53,26 +53,29 @@ using namespace libfwbuilder;
 bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
 {
     if (fwbdebug)
-        qDebug("FirewallInstallerCisco::packInstallJobList  conffile=%s",
-               cnf->conffile.toAscii().constData());
+        qDebug("FirewallInstallerCisco::packInstallJobList  script=%s",
+               cnf->script.toAscii().constData());
     job_list.clear();
-    job_list.push_back(instJob(ACTIVATE_POLICY, cnf->conffile));
-    return true;
-}
 
-void FirewallInstallerCisco::activatePolicy()
-{
-    // Someone may have external expect script to talk to PIX or a router
-    // Let them run it too.
     Management *mgmt = cnf->fwobj->getManagementObject();
     assert(mgmt!=NULL);
     PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
-    if (pis->getCommand()!="" )
+    if (pis->getCommand()!="")
     {
-        executeInstallScript();
-        return;
+        QString cmd = pis->getCommand().c_str();
+        QString args = pis->getArguments().c_str();
+        job_list.push_back(
+            instJob(RUN_EXTERNAL_SCRIPT, cmd, args));
+        inst_dlg->addToLog(QString("Run script %1 %2\n").arg(cmd).arg(args));
+        return true;
     }
 
+    job_list.push_back(instJob(ACTIVATE_POLICY, cnf->script, ""));
+    return true;
+}
+
+void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
+{
     QStringList args;
 
     packSSHArgs(args);

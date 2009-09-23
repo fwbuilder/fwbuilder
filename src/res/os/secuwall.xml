@@ -1,0 +1,198 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources>
+    <Target name="secuwall">
+      <description>secunet wall</description>
+      <status>active</status>
+      <family>secuwall</family>
+      <dialog>secuwall</dialog>
+      <cluster_dialog>basic</cluster_dialog>
+      <interface_dialog>secuwall</interface_dialog>
+      <transfer_agent>transfer_secuwall</transfer_agent>
+
+      <options>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
+        <default>
+          <secuwall_add_files>False</secuwall_add_files>
+          <secuwall_add_files_dir>/opt/secuwall/templates/default</secuwall_add_files_dir>
+          <secuwall_dns_reso1>files</secuwall_dns_reso1>
+          <linux24_ip_forward>1</linux24_ip_forward>
+          <loopback_interface>lo</loopback_interface>
+          <flush_and_set_default_policy>True</flush_and_set_default_policy>
+          <modules_dir>/lib/modules/`uname -r`/kernel/net/</modules_dir>
+        </default>
+
+        <interface>
+          <iface_mtu>1500</iface_mtu>
+          <iface_type>ethernet</iface_type>
+        </interface>
+
+        <activation>
+
+          <fwdir>/etc/fw</fwdir>
+
+          <fwdir_test>/tmp</fwdir_test>
+
+          <timeout_units>min</timeout_units>
+
+          <reg_user>
+            <run>
+              <copy>
+echo '%FWBPROMPT%';
+cat > %FWDIR%/%FWSCRIPT% &#38;&#38;
+chmod +x %FWDIR%/%FWSCRIPT%;
+echo Done;
+              </copy>
+
+              <compression>
+echo '%FWBPROMPT%';
+sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; sudo -S pkill shutdown; echo 'Policy activated' )
+              </compression>
+              <no_compression>
+echo '%FWBPROMPT%';
+sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; sudo -S pkill shutdown; echo 'Policy activated' )
+              </no_compression>
+            </run>
+
+            <test>
+              <copy>
+echo '%FWBPROMPT%';
+mkdir -p %FWDIR%/tmp;
+cat > %FWDIR%/tmp/%FWSCRIPT% &#38;&#38;
+chmod +x %FWDIR%/tmp/%FWSCRIPT%;
+echo Done;
+              </copy>
+
+              <rollback>
+echo '%FWBPROMPT%';
+echo 'sudo -S /sbin/shutdown -r +%RBTIMEOUT%'|batch;
+sudo -S %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </rollback>
+              <no_rollback>
+echo '%FWBPROMPT%';
+sudo -S %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </no_rollback>
+            </test>
+          </reg_user>
+
+          <root>
+            <run>
+              <copy>
+echo '%FWBPROMPT%';
+cat > %FWDIR%/%FWSCRIPT% &#38;&#38;
+chmod +x %FWDIR%/%FWSCRIPT%;
+echo Done;
+              </copy>
+
+              <compression>
+echo '%FWBPROMPT%';
+sh %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; pkill shutdown; echo 'Policy activated' )
+              </compression>
+              <no_compression>
+echo '%FWBPROMPT%';
+sh %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; pkill shutdown; echo 'Policy activated' )
+              </no_compression>
+            </run>
+
+            <test>
+              <copy>
+echo '%FWBPROMPT%';
+mkdir -p %FWDIR%/tmp;
+cat > %FWDIR%/tmp/%FWSCRIPT% &#38;&#38;
+chmod +x %FWDIR%/tmp/%FWSCRIPT%;
+echo Done;
+              </copy>
+
+              <rollback>
+echo '%FWBPROMPT%';
+echo '/sbin/shutdown -r +%RBTIMEOUT%'|batch;
+sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </rollback>
+              <no_rollback>
+echo '%FWBPROMPT%';
+sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
+              </no_rollback>
+            </test>
+
+          </root>
+        </activation>
+
+<!-- set to True if you want to suppress comments in the generated script -->
+        <suppress_comments>False</suppress_comments>
+<!-- set to True if you do not need the script to load kernel modules -->
+        <suppress_modules>False</suppress_modules>
+
+      </options>
+
+      <capabilities>
+        <supports_routing>True</supports_routing>
+        <supports_subinterfaces>True</supports_subinterfaces>
+        <supports_cluster>True</supports_cluster>
+      </capabilities>
+
+      <protocols>
+        <failover>
+          <string>vrrp,VRRP</string>
+        </failover>
+        <state_sync>
+          <string>conntrack,conntrack</string>
+        </state_sync>
+
+        <conntrack>
+          <needs_master>True</needs_master>
+          <default_address>225.0.0.50</default_address>
+          <default_port>3780</default_port>
+        </conntrack>
+
+        <vrrp>
+          <needs_master>True</needs_master>
+          <manage_addresses>True</manage_addresses>
+        </vrrp>
+      </protocols>
+
+      <interfaces>
+        <cluster>
+          <string>vrrp,VRRP</string>
+        </cluster>
+        <firewall>
+          <string>ethernet,Ethernet</string>
+          <string>bridge,Bridge</string>
+          <string>bonding,Bonding</string>
+        </firewall>
+      </interfaces>
+
+      <subinterfaces>
+        <ethernet>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </ethernet>
+        <bridge>
+          <string>ethernet,Ethernet</string>
+          <string>unknown,Unknown</string>
+        </bridge>
+        <bonding>
+          <string>ethernet,Ethernet</string>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </bonding>
+      </subinterfaces>
+
+      <tools>
+        <secuwall>
+          <path_lsmod>/bin/lsmod</path_lsmod>
+          <path_modprobe>/sbin/modprobe</path_modprobe>
+          <path_iptables>/sbin/iptables</path_iptables>
+          <path_ip6tables>/sbin/ip6tables</path_ip6tables>
+          <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
+          <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
+          <path_ip>/sbin/ip</path_ip>
+          <path_logger>/usr/bin/logger</path_logger>
+          <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+        </secuwall>
+      </tools>
+    </Target>
+
+</FWBuilderResources>

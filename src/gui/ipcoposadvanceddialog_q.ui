@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
-    <height>480</height>
+    <width>499</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -19,7 +19,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab0" >
       <attribute name="title" >
@@ -423,9 +423,6 @@
        <property name="margin" >
         <number>6</number>
        </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
        <item row="1" column="0" colspan="4" >
         <widget class="QLabel" name="network_tab_txt2" >
          <property name="text" >
@@ -753,7 +750,7 @@
       <attribute name="title" >
        <string>Path</string>
       </attribute>
-      <layout class="QGridLayout" >
+      <layout class="QGridLayout" name="gridLayout" >
        <item row="0" column="1" >
         <spacer>
          <property name="orientation" >
@@ -829,6 +826,54 @@
         <widget class="QLineEdit" name="linux24_path_ip" />
        </item>
        <item row="5" column="0" >
+        <widget class="QLabel" name="label455_3" >
+         <property name="text" >
+          <string>vconfig</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" colspan="2" >
+        <widget class="QLineEdit" name="linux24_path_vconfig" />
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label455_4" >
+         <property name="text" >
+          <string>brctl</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" colspan="2" >
+        <widget class="QLineEdit" name="linux24_path_brctl" />
+       </item>
+       <item row="7" column="0" >
+        <widget class="QLabel" name="label455_2" >
+         <property name="text" >
+          <string>ifenslave</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" colspan="2" >
+        <widget class="QLineEdit" name="linux24_path_ifenslave" />
+       </item>
+       <item row="8" column="0" >
         <widget class="QLabel" name="label455" >
          <property name="text" >
           <string>logger:</string>
@@ -841,10 +886,10 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="1" colspan="2" >
+       <item row="8" column="1" colspan="2" >
         <widget class="QLineEdit" name="linux24_path_logger" />
        </item>
-       <item row="6" column="0" >
+       <item row="9" column="0" >
         <widget class="QLabel" name="label458" >
          <property name="text" >
           <string>modprobe:</string>
@@ -857,10 +902,10 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="1" colspan="2" >
+       <item row="9" column="1" colspan="2" >
         <widget class="QLineEdit" name="linux24_path_modprobe" />
        </item>
-       <item row="7" column="0" >
+       <item row="10" column="0" >
         <widget class="QLabel" name="label459" >
          <property name="text" >
           <string>lsmod</string>
@@ -873,10 +918,10 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="1" colspan="2" >
+       <item row="10" column="1" colspan="2" >
         <widget class="QLineEdit" name="linux24_path_lsmod" />
        </item>
-       <item row="8" column="0" >
+       <item row="11" column="0" >
         <widget class="QLabel" name="label453_2" >
          <property name="text" >
           <string>iptables-restore:</string>
@@ -889,10 +934,10 @@
          </property>
         </widget>
        </item>
-       <item row="8" column="1" colspan="2" >
+       <item row="11" column="1" colspan="2" >
         <widget class="QLineEdit" name="linux24_path_iptables_restore" />
        </item>
-       <item row="9" column="0" >
+       <item row="12" column="0" >
         <widget class="QLabel" name="label_2" >
          <property name="layoutDirection" >
           <enum>Qt::RightToLeft</enum>
@@ -902,26 +947,10 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="1" colspan="2" >
+       <item row="12" column="1" colspan="2" >
         <widget class="QLineEdit" name="linux24_path_ip6tables_restore" />
        </item>
-       <item row="10" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>150</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="10" column="2" >
+       <item row="13" column="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -1024,12 +1053,16 @@
   <tabstop>linux24_path_iptables</tabstop>
   <tabstop>linux24_path_ip6tables</tabstop>
   <tabstop>linux24_path_ip</tabstop>
+  <tabstop>linux24_path_vconfig</tabstop>
+  <tabstop>linux24_path_brctl</tabstop>
+  <tabstop>linux24_path_ifenslave</tabstop>
   <tabstop>linux24_path_logger</tabstop>
   <tabstop>linux24_path_modprobe</tabstop>
   <tabstop>linux24_path_lsmod</tabstop>
   <tabstop>linux24_path_iptables_restore</tabstop>
   <tabstop>linux24_path_ip6tables_restore</tabstop>
   <tabstop>tabWidget</tabstop>
+  <tabstop>buttonHelp</tabstop>
  </tabstops>
  <resources/>
  <connections>

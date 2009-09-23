@@ -39,6 +39,7 @@
 #include <qstackedwidget.h>
 #include <qpushbutton.h>
 
+#include "FWWindow.h"
 #include "DialogFactory.h"
 #include "FWBTree.h"
 #include "ProjectPanel.h"
@@ -47,12 +48,16 @@
 #include "ActionsDialog.h"
 #include "MetricEditorPanel.h"
 #include "CommentEditorPanel.h"
+#include "CompilerOutputPanel.h"
 #include "ObjectManipulator.h"
 #include "Help.h"
-
+#include "events.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
@@ -155,6 +160,18 @@ ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
     stackIds[Firewall::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Firewall::TYPENAME]] = w;
 
+    w= DialogFactory::createDialog(m_project, parent,Cluster::TYPENAME);
+    stackIds[Cluster::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[Cluster::TYPENAME]] = w;
+
+    w= DialogFactory::createDialog(m_project, parent, StateSyncClusterGroup::TYPENAME);
+    stackIds[StateSyncClusterGroup::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[StateSyncClusterGroup::TYPENAME]] = w;
+
+    w= DialogFactory::createDialog(m_project, parent, FailoverClusterGroup::TYPENAME);
+    stackIds[FailoverClusterGroup::TYPENAME]  = parentWidget->addWidget(w);
+    dialogs[stackIds[FailoverClusterGroup::TYPENAME]] = w;
+
     w= DialogFactory::createDialog(m_project, parent,Host::TYPENAME);
     stackIds[Host::TYPENAME]  = parentWidget->addWidget(w);
     dialogs[stackIds[Host::TYPENAME]] = w;
@@ -241,20 +258,24 @@ ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
     dialogs[stackIds[TagService::TYPENAME]] = w;
 
 
-    w= new ActionsDialog(parent);
+    w = new ActionsDialog(parent);
     stackIds[getOptDialogName(optAction)]  = parentWidget->addWidget(w);
     dialogs[stackIds[getOptDialogName(optAction)]] = w;
 
-    w= new CommentEditorPanel(parent,false);
+    w = new CommentEditorPanel(parent,false);
     stackIds[getOptDialogName(optComment)]  = parentWidget->addWidget(w);
     dialogs[stackIds[getOptDialogName(optComment)]] = w;
 
 
-    w= new MetricEditorPanel(parent);
+    w = new MetricEditorPanel(parent);
     stackIds[getOptDialogName(optMetric)]  = parentWidget->addWidget(w);
     dialogs[stackIds[getOptDialogName(optMetric)]] = w;
 
-    w=new QWidget(parent);
+    w = new CompilerOutputPanel(m_project, parent);
+    stackIds[getOptDialogName(optRuleCompile)]  = parentWidget->addWidget(w);
+    dialogs[stackIds[getOptDialogName(optRuleCompile)]] = w;
+
+    w = new QWidget(parent);
     stackIds["BLANK"]  = parentWidget->addWidget(w);
     dialogs[stackIds["BLANK"]] = w;
 
@@ -333,6 +354,10 @@ void ObjectEditor::openOpt(FWObject *obj,OptType t)
             this,
             SLOT(changed()));
 
+    connect(dialogs[ current_dialog_idx ], SIGNAL(notify_changes_applied_sign()),
+            this,
+            SLOT(notifyChangesApplied()));
+
     connect(this, SIGNAL(getHelpName_sign(QString*)),
             dialogs[ current_dialog_idx ],
             SLOT(getHelpName(QString*)));
@@ -396,6 +421,10 @@ void ObjectEditor::open(FWObject *obj)
         connect(dialogs[ current_dialog_idx ], SIGNAL(changed_sign()),
                 this,
                 SLOT(changed()));
+
+        connect(dialogs[ current_dialog_idx ], SIGNAL(notify_changes_applied_sign()),
+                this,
+                SLOT(notifyChangesApplied()));
 
         connect(this, SIGNAL(getHelpName_sign(QString*)),
                 dialogs[ current_dialog_idx ],
@@ -558,20 +587,27 @@ void ObjectEditor::close()
     validateAndClose(NULL);
 }
 
+// Object dialog emits signal notify_changes_applied_sign() when it
+// applies changes to the object
+void ObjectEditor::notifyChangesApplied()
+{
+    applyButton->setEnabled(false);
+    // send event so other project panels can reload themselves
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(opened->getRoot()->getFileName().c_str(),
+                                  opened->getId()));
+}
+
+// this method is connected to the "Apply" button
 void ObjectEditor::apply()
 {
     if (fwbdebug) qDebug("ObjectEditor::apply");
 
-    bool isgood=true;
+    bool isgood = true;
     emit validate_sign( &isgood );
 
     if (isgood)
-    {
-        emit applyChanges_sign();
-        applyButton->setEnabled(false);
-        m_project->updateRuleSetView( );
-        m_project->updateTreeViewItemOrder();
-    }
+        emit applyChanges_sign(); // eventually emits notify_changes_applied_sign()
 }
 
 void ObjectEditor::help()
@@ -580,7 +616,8 @@ void ObjectEditor::help()
     emit getHelpName_sign(&help_name);
     if (fwbdebug)
         qDebug("ObjectEditor::help: %s", help_name.toStdString().c_str());
-    Help *h = new Help(parentWidget, help_name, "");
+    Help *h = new Help(parentWidget, "");
+    h->setSource(QUrl(help_name + ".html"));
     h->show();
 }
 
@@ -589,20 +626,10 @@ void ObjectEditor::findAndLoadHelp()
     QString help_name;
     emit getHelpName_sign(&help_name);
 
-    if (help_available_cache.count(help_name)==0)
-    {
-        QString contents;
-        help_available_cache[help_name] = Help::getHelpFileContents(help_name, contents);
-    }
-
-    if (fwbdebug)
-        qDebug("ObjectEditor::findAndLoadHelp: %s: %d",
-               help_name.toStdString().c_str(),
-               help_available_cache[help_name]);
-
-
     // is help available?
-    helpButton->setEnabled(help_available_cache[help_name]);
+    Help *h = new Help(parentWidget, "");
+    helpButton->setEnabled(!h->findHelpFile(help_name + ".html").isEmpty());
+    delete h;
 }
 
 void ObjectEditor::discard()

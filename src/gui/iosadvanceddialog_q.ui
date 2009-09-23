@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
+    <width>597</width>
     <height>188</height>
    </rect>
   </property>
@@ -16,23 +16,45 @@
    <string>IOS Advanced Configuration Options</string>
   </property>
   <layout class="QGridLayout" >
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>151</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ok_button" >
+       <property name="text" >
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancel_button" >
+       <property name="text" >
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="notebook305" >
+    <widget class="QTabWidget" name="tabWidget" >
      <widget class="QWidget" name="TabPage" >
       <attribute name="title" >
        <string>General</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item row="0" column="0" >
@@ -57,7 +79,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -69,43 +91,12 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>151</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="ok_button" >
-       <property name="text" >
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancel_button" >
-       <property name="text" >
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
   <tabstop>ios_set_host_name</tabstop>
-  <tabstop>notebook305</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>ios_ip_address</tabstop>
   <tabstop>ok_button</tabstop>
   <tabstop>cancel_button</tabstop>

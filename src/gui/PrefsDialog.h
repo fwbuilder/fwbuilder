@@ -31,7 +31,6 @@
 #include <ui_prefsdialog_q.h>
 
 #include "FWBSettings.h"
-#include "listOfLibraries.h"
 #include "HttpGet.h"
 
 #include <list>
@@ -59,6 +58,7 @@ class PrefsDialog : public QDialog
     QFont rulesFont;
     QFont treeFont;
     QFont uiFont;
+    QFont compilerOutputFont;
     void changeFont(QFont &font);
 
 public:
@@ -84,6 +84,7 @@ public slots:
     virtual void changeShowIcons();
     virtual void changeRulesFont();
     virtual void changeTreeFont();
+    virtual void changeCompilerOutputFont();
     virtual void checkSwUpdates();
     virtual void checkForUpgrade(const QString&);
 };

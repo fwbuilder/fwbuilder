@@ -136,11 +136,13 @@ void LibraryDialog::applyChanges()
         obj->setName( oldname );
     }
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-    mw->updateLibName(obj);
-    if (color!=oldcolor) mw->updateLibColor(obj);
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+//    m_project->updateLibName(obj);
+    if (color!=oldcolor) m_project->updateLibColor(obj);
 
     //apply->setEnabled( false );
+
+    emit notify_changes_applied_sign();
 }
 
 void LibraryDialog::discardChanges()

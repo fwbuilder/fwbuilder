@@ -1,6 +1,6 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
-######### fwbuilder/qmake.inc.in
+########## fwbuilder/qmake.inc.in
 #
 QTDIR = $$(QTDIR)
 TEMPLATE = app
@@ -20,6 +20,7 @@ unix {
     ANTLR_INCLUDEPATH =  @ANTLR_INCLUDEPATH@
     ANTLR_LIBS =  @ANTLR_LIBS@
     FWBPARSER_LIB = ../parsers/libfwbparser.a
+    FWTRANSFER_LIB = ../fwtransfer/libfwtransfer.a
 
     QMAKE_CXX = @CCACHE@ g++
 
@@ -47,8 +48,10 @@ unix {
         res.path = @RES_DIR@
         res_os.path = @RES_DIR@/os/
         res_platform.path = @RES_DIR@/platform/
-        res_help.path = @RES_DIR@/help/
         res_desktop.path = @DATADIR@/applications/
+        res_help_C.path = @RES_DIR@/help/C
+        res_help_en_US.path = @RES_DIR@/help/en_US
+		res_configlets_linux24.path = @RES_DIR@/configlets/linux24
 
         INSTALLS += res 
         INSTALLS += res_os
@@ -57,6 +60,8 @@ unix {
         LIBS += $$LIBS_FWBUILDER @LIBS@
 
         PKGLOCALEDIR = $$res.path/locale
+
+        LIBS += $$LIBS_FWBUILDER @LIBS@
 
         CONFIG += warn_on debug
         QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter

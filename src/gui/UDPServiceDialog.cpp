@@ -169,10 +169,10 @@ void UDPServiceDialog::applyChanges()
     TCPUDPService::cast(obj)->setDstRangeStart(m_dialog->ds->value());
     TCPUDPService::cast(obj)->setDstRangeEnd(m_dialog->de->value());
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void UDPServiceDialog::discardChanges()

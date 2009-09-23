@@ -28,8 +28,12 @@
 #ifndef  OBJECTLISTVIEWITEM_H
 #define  OBJECTLISTVIEWITEM_H
 
+#include "global.h"
+
 #include <qtreewidget.h>
 #include "FWWindow.h"
+#include "fwbuilder/FWObjectDatabase.h"
+
 #include <string>
 #include <map>
 
@@ -41,26 +45,38 @@ class ObjectTreeView;
 
 class ObjectListViewItem : public QTreeWidgetItem {
 
-    libfwbuilder::FWObject *objptr;
+    libfwbuilder::FWObjectDatabase *db;
     QMap<QString, QString>  props;
-    QString                 lib;
-    int                     ID;  
+    QString lib;
+    int ID;  
     
  public:
 
-    ObjectListViewItem(QTreeWidget *parent) : QTreeWidgetItem(parent) {
-        objptr=NULL;
-        ID=-1;
+    ObjectListViewItem(QTreeWidget *parent) : QTreeWidgetItem(parent)
+    {
+        db = NULL;
+        ID = -1;
     }
 
-    ObjectListViewItem(QTreeWidgetItem *parent) : QTreeWidgetItem(parent){
-        objptr=NULL;
-        ID=-1;
+    ObjectListViewItem(QTreeWidgetItem *parent) : QTreeWidgetItem(parent)
+    {
+        db = NULL;
+        ID = -1;
     }
 
-    libfwbuilder::FWObject *getFWObject() const {return mw->db()->getById(ID,true); }
+    libfwbuilder::FWObject *getFWObject() const
+    {
+        if (ID > -1) return db->getById(ID, true);
+        else return NULL;
+    }
+    
     int getFWObjectID() {return ID; }
-    void setFWObject(libfwbuilder::FWObject *obj) { ID=obj->getId(); }
+
+    void setFWObject(libfwbuilder::FWObject *obj)
+    {
+        db = obj->getRoot();
+        ID = obj->getId();
+    }
 
     ObjectTreeView* getTree();
 

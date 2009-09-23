@@ -35,6 +35,7 @@
 #include "FWWindow.h"
 #include "FWBSettings.h"
 
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
@@ -658,6 +659,8 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
     loadFixups();
     updateFixupCommandsDisplay();
     scriptACLModeChanged();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 pixAdvancedDialog::~pixAdvancedDialog()
@@ -787,7 +790,7 @@ void pixAdvancedDialog::displayCommands()
 
     xmlChar  *buffer;
     int       bufsize;
-    mw->db()->saveToBuffer(&buffer,&bufsize);
+    obj->getRoot()->saveToBuffer(&buffer, &bufsize);
     proc_buffer = (char*)buffer;
     FREEXMLBUFF(buffer);
 
@@ -894,7 +897,7 @@ void pixAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

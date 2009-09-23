@@ -111,25 +111,23 @@ ipfwAdvancedDialog::ipfwAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->compiler, fwopt, "compiler" );
     data.registerOption( m_dialog->compilerArgs, fwopt, "cmdline");
     data.registerOption( m_dialog->outputFileName, fwopt, "output_file");
+    data.registerOption( m_dialog->fileNameOnFw, fwopt, "script_name_on_firewall");
 
     data.registerOption( m_dialog->mgmt_ssh, fwopt, "mgmt_ssh"  );
     data.registerOption( m_dialog->mgmt_addr, fwopt, "mgmt_addr" );
 
-    PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
+    PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
 
-    m_dialog->installScript->setText(     pis->getCommand().c_str() );
-    m_dialog->installScriptArgs->setText( pis->getArguments().c_str() );
+    m_dialog->installScript->setText(pis->getCommand().c_str());
+    m_dialog->installScriptArgs->setText(pis->getArguments().c_str());
 
 /* page "Prolog/Epilog" */
-    data.registerOption( m_dialog->prolog_script, fwopt,
-                         "prolog_script"  );
-
-    data.registerOption( m_dialog->epilog_script, fwopt,
-                         "epilog_script"  );
-
-
+    data.registerOption( m_dialog->prolog_script, fwopt, "prolog_script"  );
+    data.registerOption( m_dialog->epilog_script, fwopt, "epilog_script"  );
 
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -149,7 +147,7 @@ void ipfwAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>857</width>
-    <height>317</height>
+    <width>804</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -107,7 +107,7 @@
      <property name="frameShadow" >
       <enum>QFrame::Sunken</enum>
      </property>
-     <layout class="QGridLayout" >
+     <layout class="QGridLayout" name="gridLayout_2" >
       <item rowspan="2" row="0" column="0" >
        <widget class="QFrame" name="frame26" >
         <property name="sizePolicy" >
@@ -118,8 +118,8 @@
         </property>
         <property name="minimumSize" >
          <size>
-          <width>170</width>
-          <height>107</height>
+          <width>167</width>
+          <height>105</height>
          </size>
         </property>
         <property name="frameShape" >
@@ -257,7 +257,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
        </widget>
       </item>
       <item rowspan="5" row="0" column="1" >
-       <widget class="QGroupBox" name="buttonGroup1" >
+       <widget class="QGroupBox" name="interfaceOptionsGroup" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
           <horstretch>0</horstretch>
@@ -267,38 +267,10 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
         <property name="title" >
          <string/>
         </property>
-        <layout class="QGridLayout" >
-         <property name="leftMargin" >
-          <number>8</number>
-         </property>
-         <property name="topMargin" >
-          <number>2</number>
-         </property>
-         <property name="rightMargin" >
-          <number>8</number>
-         </property>
-         <property name="bottomMargin" >
-          <number>2</number>
-         </property>
-         <property name="horizontalSpacing" >
-          <number>8</number>
-         </property>
+        <layout class="QGridLayout" name="gridLayout" >
          <property name="verticalSpacing" >
-          <number>2</number>
+          <number>12</number>
          </property>
-         <item row="1" column="0" >
-          <widget class="QCheckBox" name="ext" >
-           <property name="toolTip" >
-            <string>&lt;p>One interface of the firewall must be marked as 'external'. This interface should be connected to the least secure network, usually the Internet.&lt;/p></string>
-           </property>
-           <property name="whatsThis" >
-            <string>One interface of the firewall must be marked as 'external'. This interface should be connected to the least secure network, usually the Internet.</string>
-           </property>
-           <property name="text" >
-            <string>This interface is external (insecure)</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0" >
           <widget class="QCheckBox" name="management" >
            <property name="toolTip" >
@@ -309,28 +281,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
            </property>
           </widget>
          </item>
-         <item row="5" column="0" >
-          <widget class="QRadioButton" name="unnumbered" >
-           <property name="text" >
-            <string>Unnumbered interface</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" >
-          <widget class="QRadioButton" name="dynamic" >
-           <property name="text" >
-            <string>Address is assigned dynamically</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0" >
-          <widget class="QRadioButton" name="regular" >
-           <property name="text" >
-            <string>Regular interface</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
+         <item row="1" column="0" >
           <widget class="QCheckBox" name="unprotected" >
            <property name="toolTip" >
             <string>Skip this interface while assigning policy rules</string>
@@ -340,10 +291,47 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
            </property>
           </widget>
          </item>
-         <item row="6" column="0" >
-          <widget class="QRadioButton" name="bridgeport" >
+         <item row="2" column="0" >
+          <widget class="QRadioButton" name="regular" >
            <property name="text" >
-            <string>Bridge port</string>
+            <string>Regular interface</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" >
+          <widget class="QRadioButton" name="dynamic" >
+           <property name="text" >
+            <string>Address is assigned dynamically</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" >
+          <widget class="QRadioButton" name="unnumbered" >
+           <property name="text" >
+            <string>Unnumbered interface</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" >
+          <widget class="QLabel" name="bridge_port_label" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>Bridge Port Interface</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" >
+          <widget class="QPushButton" name="advancedconfig" >
+           <property name="text" >
+            <string>Advanced Interface Settings ...</string>
            </property>
           </widget>
          </item>
@@ -451,11 +439,9 @@ If network zone for this interface consists of only one subnet, you can simply c
   <tabstop>label</tabstop>
   <tabstop>seclevel</tabstop>
   <tabstop>management</tabstop>
-  <tabstop>ext</tabstop>
   <tabstop>regular</tabstop>
   <tabstop>dynamic</tabstop>
   <tabstop>unnumbered</tabstop>
-  <tabstop>bridgeport</tabstop>
   <tabstop>comment</tabstop>
   <tabstop>netzone</tabstop>
  </tabstops>
@@ -463,22 +449,6 @@ If network zone for this interface consists of only one subnet, you can simply c
   <include location="MainRes.qrc" />
  </resources>
  <connections>
-  <connection>
-   <sender>bridgeport</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>InterfaceDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>comment</sender>
    <signal>textChanged()</signal>
@@ -498,22 +468,6 @@ If network zone for this interface consists of only one subnet, you can simply c
   <connection>
    <sender>dynamic</sender>
    <signal>toggled(bool)</signal>
-   <receiver>InterfaceDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ext</sender>
-   <signal>clicked()</signal>
    <receiver>InterfaceDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -652,6 +606,22 @@ If network zone for this interface consists of only one subnet, you can simply c
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>advancedconfig</sender>
+   <signal>clicked()</signal>
+   <receiver>InterfaceDialog_q</receiver>
+   <slot>openIfaceDialog()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>428</x>
+     <y>232</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>428</x>
+     <y>133</y>
     </hint>
    </hints>
   </connection>

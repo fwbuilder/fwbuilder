@@ -34,10 +34,12 @@
 #include "InstallFirewallViewItem.h"
 #include "instOptionsDialog.h"
 #include "instBatchOptionsDialog.h"
+#include "events.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
@@ -229,10 +231,33 @@ Can't compile firewall policy."),
     // encoding and locale. This caused problems, such as installer
     // could not then find file created by the compiler if fw name had
     // non-ascii characters.
-    args.push_back("-o");
-    args.push_back(
-        FirewallInstaller::getGeneratedFileFullPath(fw));
- 
+
+    // If object being compiled is a Cluster, use -O instead of
+    // -o. The parameter is a list of pairs:
+    // member_fw_id_1,output_file_name_1,member_fw_id_2,output_file_name_2
+    // (all separated by commas)
+
+    if (Cluster::isA(fw))
+    {
+        args.push_back("-O");
+        QStringList name_pairs;
+        list<Firewall*> members;
+        Cluster::cast(fw)->getMembersList(members);
+        for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
+        {
+            QString fw_id = mw->db()->getStringId((*it)->getId()).c_str();
+            name_pairs.push_back(
+                fw_id + "," + FirewallInstaller::getGeneratedFileFullPath(*it)
+            );
+        }
+        args.push_back(name_pairs.join(","));
+    } else 
+    {
+        args.push_back("-o");
+        args.push_back(
+            FirewallInstaller::getGeneratedFileFullPath(fw));
+    }
+
     args.push_back("-i");
 
     args.push_back( mw->db()->getStringId(fw->getId()).c_str() );
@@ -257,7 +282,25 @@ void instDialog::compilerFinished(int ret_code, QProcess::ExitStatus status)
     if (ret_code==0 && status==QProcess::NormalExit)
     {
         opSuccess(cnf.fwobj);
-        mw->updateLastCompiledTimestamp(cnf.fwobj);
+//        mw->updateLastCompiledTimestamp(cnf.fwobj);
+
+        QCoreApplication::postEvent(
+            mw, new updateLastCompiledTimestampEvent(
+                mw->db()->getFileName().c_str(), cnf.fwobj->getId()));
+
+        if (Cluster::isA(cnf.fwobj))
+        {
+
+            list<Firewall*> members;
+            Cluster::cast(cnf.fwobj)->getMembersList(members);
+            for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
+            {
+//                mw->updateLastCompiledTimestamp(*it);
+                QCoreApplication::postEvent(
+                    mw, new updateLastCompiledTimestampEvent(
+                        mw->db()->getFileName().c_str(), (*it)->getId()));
+            }
+        }
     }
     else
     {

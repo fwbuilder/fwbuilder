@@ -32,6 +32,7 @@
 #include "fwbuilder/FWReference.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Resources.h"
 
@@ -65,6 +66,12 @@ void findFirewalls(FWObject *o, std::list<FWObject*> &fwlist,
                    bool skip_system_libs)
 {
     findByObjectType(o,Firewall::TYPENAME,fwlist,skip_system_libs);
+}
+
+void findClusters(FWObject *o, std::list<FWObject*> &fwlist,
+                  bool skip_system_libs)
+{
+    findByObjectType(o, Cluster::TYPENAME, fwlist, skip_system_libs);
 }
 
 void findHosts(FWObject *o, std::list<FWObject*> &fwlist,
@@ -127,12 +134,6 @@ string strip(const string &s)
     n2++;
 
     return s.substr(n1, n2-n1);
-}
-
-void join::operator()(string &s)
-{
-    if (!result->empty()) *result += separator;
-    *result += s;
 }
 
 string getPathToBinary(const string &pgm_name)

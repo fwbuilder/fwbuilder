@@ -50,7 +50,7 @@ class QTextEdit;
 
 class newFirewallDialog : public QDialog, public FakeWizard
 {
-    Q_OBJECT
+    Q_OBJECT;
     
     Ui::newFirewallDialog_q            *m_dialog;
 
@@ -59,7 +59,9 @@ class newFirewallDialog : public QDialog, public FakeWizard
     libfwbuilder::Logger               *logger;
     libfwbuilder::SNMP_interface_query *q;
     QTimer                             *timer;
+    libfwbuilder::FWObjectDatabase     *db;
     libfwbuilder::FWObjectDatabase     *tmpldb;
+    libfwbuilder::FWObject             *parent;
     std::map<QListWidgetItem*, libfwbuilder::FWObject*> templates;
     bool                                unloadTemplatesLib;
     bool                                getInterfacesBusy;
@@ -73,7 +75,7 @@ class newFirewallDialog : public QDialog, public FakeWizard
     void fillInterfaceSLList();
 
  public:
-    newFirewallDialog();
+    newFirewallDialog(libfwbuilder::FWObject *parent);
     virtual ~newFirewallDialog();
 
     libfwbuilder::Firewall* getNewFirewall() { return nfw; };

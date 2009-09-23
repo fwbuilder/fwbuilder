@@ -40,6 +40,7 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qprocess.h>
+#include <QRegExp>
 
 #include <fstream>
 #include <set>
@@ -55,25 +56,33 @@ class QCheckListItem;
 class QPushButton;
 class QProgressBar;
 class QStringList;
+class QTreeWidgetItem;
+class QTextCharFormat;
 //class QCheckTableItem;
 
 namespace libfwbuilder
 {
     class Firewall;
+    class Cluster;
 }
 
 enum BatchOperation {BATCH_INSTALL, BATCH_COMPILE} ;
 enum Page1Operation {INST_DLG_COMPILE, INST_DLG_INSTALL};
 
-typedef std::map<libfwbuilder::Firewall *,QTableWidgetItem *> t_tableMap;
-typedef std::list<libfwbuilder::Firewall *> t_fwList;
 typedef std::pair<QString,QString> t_procMess; // first - compilation result, second - installation result;
-typedef std::set<libfwbuilder::Firewall*> t_fwSet;
+
+#define FIREWALL_NAME_COLUMN 0
+#define COMPILE_CHECKBOX_COLUMN 1
+#define INSTALL_CHECKBOX_COLUMN 2
+#define LAST_MODIFIED_COLUMN 3
+#define LAST_COMPILED_COLUMN 4
+#define LAST_INSTALLED_COLUMN 5
+
 
 class instDialog : public QDialog, public FakeWizard
 {
 
-    Q_OBJECT
+    Q_OBJECT;
 
     Ui::instDialog_q *m_dialog;
     instConf cnf;
@@ -86,9 +95,10 @@ class instDialog : public QDialog, public FakeWizard
 
     QString fwb_prompt;
     
-    t_fwSet reqFirewalls;
+    std::set<libfwbuilder::Firewall*> reqFirewalls;
 
-    t_fwList firewalls;
+    std::list<libfwbuilder::Firewall*> firewalls;
+    std::list<libfwbuilder::Cluster*> clusters;
     
     std::list<libfwbuilder::Firewall*> compile_fw_list;
     std::list<libfwbuilder::Firewall*>::size_type compile_list_initial_size;
@@ -96,10 +106,9 @@ class instDialog : public QDialog, public FakeWizard
     std::list<libfwbuilder::Firewall*>::size_type install_list_initial_size;
     
     std::map<int,QTreeWidgetItem*> opListMapping;
-    
-    t_tableMap compileMapping;
-    t_tableMap installMapping;
-    
+    std::list<QRegExp> error_re;
+    std::list<QRegExp> warning_re;
+
     QString path; //path of the program to execute
 //    QStringList args; //arguments for that program
         
@@ -116,6 +125,11 @@ class instDialog : public QDialog, public FakeWizard
     bool showSelectedFlag;
 
     QTextEdit *currentLog;
+    QTextCharFormat normal_format;
+    QTextCharFormat error_format;
+    QTextCharFormat warning_format;
+    QTextCharFormat highlight_format;
+    
     QPushButton *currentSaveButton;
     QPushButton *currentStopButton;
     QProgressBar *currentProgressBar;
@@ -126,8 +140,7 @@ class instDialog : public QDialog, public FakeWizard
 
     
     void fillCompileSelectList();
-    void selectAll(t_tableMap &mapping);
-    void deselectAll(t_tableMap &mappin);
+    void setSelectStateAll(int column, Qt::CheckState);
 
     void fillCompileOpList();
     void fillCompileUIList();
@@ -136,18 +149,22 @@ class instDialog : public QDialog, public FakeWizard
 
     bool checkSSHPathConfiguration(libfwbuilder::Firewall*);
     
-    //void analyseInstallQueue(bool &fPix, bool &fCustInst);
-    libfwbuilder::Firewall *findFirewallbyListItem(QTreeWidgetItem* item);
-    libfwbuilder::Firewall *findFirewallbyTableItem(QTableWidgetItem *item);
+    //libfwbuilder::Firewall *findFirewallbyTableItem(QTableWidgetItem *item);
     
     void setSuccessState(QTreeWidgetItem *item);
     void setFailureState(QTreeWidgetItem *item);
     void setErrorState(QTreeWidgetItem *item);
     void setInProcessState(QTreeWidgetItem *item);
 
+    bool checkIfNeedToCompile(libfwbuilder::Firewall *fw);
+    bool checkIfNeedToInstall(libfwbuilder::Firewall *fw);
+    QTreeWidgetItem *createTreeItem(QTreeWidgetItem* parent,
+                                    libfwbuilder::Firewall *fw);
+    
  public:
    
-    instDialog(QWidget* p, BatchOperation op, t_fwSet reqFirewalls_);
+    instDialog(QWidget* p, BatchOperation op,
+               std::set<libfwbuilder::Firewall*> reqFirewalls_);
     virtual ~instDialog();
     
     void summary();
@@ -162,7 +179,7 @@ class instDialog : public QDialog, public FakeWizard
     bool runInstaller(libfwbuilder::Firewall *fw);
 
     QStringList prepareArgForCompiler(libfwbuilder::Firewall *fw);
-    bool tableHasChecked();
+    bool tableHasCheckedItems();
     void clearReqFirewalls();
     void addReqFirewall(libfwbuilder::Firewall *f);
     QString replaceMacrosInCommand(const QString &cmd);
@@ -191,7 +208,7 @@ protected:
     void readInstallerOptionsFromFirewallObject(libfwbuilder::Firewall *fw);
     void readInstallerOptionsFromDialog(libfwbuilder::Firewall *fw,
                                                 instOptionsDialog *dlg);
-    void completeInstallerOptions();
+    bool verifyManagementAddress();
 
     void storeInstallerOptions();
     void findFirewalls();
@@ -221,7 +238,6 @@ public slots:
     void togleDetailMC();
 
     void readFromStdout();
-    //virtual void readFromStderr();
     void selectAllFirewalls();
     void deselectAllFirewalls();
     
@@ -233,10 +249,9 @@ public slots:
     
     void stopCompile();
     void stopInstall();
-    void findFirewallInCompileLog(QTreeWidgetItem*);
-    void showSelected();
-    void tableValueChanged(int row, int col);
-    
+
+    void tableItemChanged(QTreeWidgetItem * item, int column);
+    void findFirewallInCompileLog(QTreeWidgetItem* item);
 };
 
 

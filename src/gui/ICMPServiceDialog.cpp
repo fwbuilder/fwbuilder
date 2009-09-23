@@ -142,10 +142,10 @@ void ICMPServiceDialog::applyChanges()
     obj->setInt("type", m_dialog->icmpType->value() );
     obj->setInt("code", m_dialog->icmpCode->value() );
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void ICMPServiceDialog::discardChanges()

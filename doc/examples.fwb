@@ -1,446 +1,1406 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.1.5" lastModified="1150430669" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="11" id="root">
   <Library color="#d2ffd0" id="id449356F828075" name="User">
     <ObjectGroup id="id449356F928075" name="Objects">
-      <ObjectGroup id="id449356FA28075" name="Addresses"/>
-      <ObjectGroup id="id449356FB28075" name="DNS Names"/>
-      <ObjectGroup id="id449356FC28075" name="Address Tables"/>
-      <ObjectGroup id="id449356FD28075" name="Groups"/>
-      <ObjectGroup id="id449356FE28075" name="Hosts">
+      <ObjectGroup id="id449356F928075_clusters" name="Clusters"/>
+      <ObjectGroup id="id449356FA28075" name="Addresses"/><ObjectGroup id="id449356FB28075" name="DNS Names"/><ObjectGroup id="id449356FC28075" name="Address Tables"/><ObjectGroup id="id449356FD28075" name="Groups"/><ObjectGroup id="id449356FE28075" name="Hosts">
         <Host comment="This object represents a PC with a single network interface" id="id44935FEF28075" name="server">
           <Interface bridgeport="False" dyn="False" id="id44935FF128075" label="" name="eth0" security_level="0" unnum="False">
             <IPv4 address="192.168.1.1" comment="" id="id44935FF228075" name="server:eth0:ip" netmask="255.255.255.0"/>
+
+
+
           </Interface>
+
+
+
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+
+
+
             <FWBDManagement enabled="False" identity="" port="-1"/>
+
+
+
             <PolicyInstallScript arguments="" command="" enabled="False"/>
+
+
+
           </Management>
+
+
+
           <HostOptions>
             <Option name="use_mac_addr_filter">False</Option>
+
+
+
           </HostOptions>
+
+
+
         </Host>
+
+
+
+      </ObjectGroup><ObjectGroup id="id449356FF28075" name="Networks"/><ObjectGroup id="id4493570028075" name="Address Ranges"/>
       </ObjectGroup>
-      <ObjectGroup id="id449356FF28075" name="Networks"/>
-      <ObjectGroup id="id4493570028075" name="Address Ranges"/>
-    </ObjectGroup>
+
+
+
     <ServiceGroup id="id4493570128075" name="Services">
-      <ServiceGroup id="id4493570228075" name="Groups"/>
-      <ServiceGroup id="id4493570328075" name="ICMP"/>
-      <ServiceGroup id="id4493570428075" name="IP"/>
-      <ServiceGroup id="id4493570528075" name="TCP"/>
-      <ServiceGroup id="id4493570628075" name="UDP"/>
-      <ServiceGroup id="id4493570728075" name="Custom"/>
+      <ServiceGroup id="id4493570128075_userservices" name="Users"/>
+
+
+
+        <ServiceGroup id="id4493570228075" name="Groups"/>
+
+
+<ServiceGroup id="id4493570328075" name="ICMP"/>
+
+
+<ServiceGroup id="id4493570428075" name="IP"/>
+
+
+<ServiceGroup id="id4493570528075" name="TCP"/>
+
+
+<ServiceGroup id="id4493570628075" name="UDP"/>
+
+
+<ServiceGroup id="id4493570728075" name="Custom"/>
+
+
+
       <ServiceGroup id="id4493570828075" name="TagServices">
         <TagService comment="" id="id44935FFA28075" name="tag-isp1" tagcode="1"/>
-        <TagService comment="" id="id44935FFB28075" name="tag-isp2" ro="False" tagcode="2"/>
+
+
+<TagService comment="" id="id44935FFB28075" name="tag-isp2" ro="False" tagcode="2"/>
+
+
+
+      
+      
+      
       </ServiceGroup>
-    </ServiceGroup>
+
+
+      </ServiceGroup>
+
+
+
     <ObjectGroup id="id4493570928075" name="Firewalls">
       <Firewall comment="this firewall demonstrates technique for the redundant Internet connection through two different ISPs. Firewall provides outgoing access for hosts on internal network through ISP1 and allows access to a server on internal net using NAT through IP addresses provided by both ISPs." host_OS="linux24" id="id44935AA428075" inactive="False" lastCompiled="1150429960" lastInstalled="0" lastModified="1150430669" name="example1" platform="iptables" ro="False" version="">
-        <NAT id="id44935B3E28075">
+        <NAT top_rule_set="True" id="id44935B3E28075" name="NAT">
           <NATRule comment="Translate source address&#10;for outgoing connections" disabled="False" id="id44935B4D28075" position="0">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
+
+
+
             </OSrc>
+
+
+
             <ODst neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </ODst>
+
+
+
             <OSrv neg="False">
               <ServiceRef ref="sysid1"/>
+
+
+
             </OSrv>
+
+
+
             <TSrc neg="False">
               <ObjectRef ref="id44935B6E28075"/>
+
+
+
             </TSrc>
+
+
+
             <TDst neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </TDst>
+
+
+
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
+
+
+
             </TSrv>
+
+
+
             <NATRuleOptions/>
+
+
+
           </NATRule>
-          <NATRule disabled="False" id="id44935B5C28075" position="1">
+
+
+<NATRule disabled="False" id="id44935B5C28075" position="1">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </OSrc>
+
+
+
             <ODst neg="False">
               <ObjectRef ref="id44935B7428075"/>
+
+
+
             </ODst>
+
+
+
             <OSrv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
+
+
+
               <ServiceRef ref="tcp-SMTP"/>
+
+
+
             </OSrv>
+
+
+
             <TSrc neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </TSrc>
+
+
+
             <TDst neg="False">
               <ObjectRef ref="id44935FEF28075"/>
+
+
+
             </TDst>
+
+
+
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
+
+
+
             </TSrv>
+
+
+
             <NATRuleOptions/>
+
+
+
           </NATRule>
-          <NATRule disabled="False" id="id4493621228075" position="2">
+
+
+<NATRule disabled="False" id="id4493621228075" position="2">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </OSrc>
+
+
+
             <ODst neg="False">
               <ObjectRef ref="id44935B6E28075"/>
+
+
+
             </ODst>
+
+
+
             <OSrv neg="False">
               <ServiceRef ref="tcp-SMTP"/>
+
+
+
               <ServiceRef ref="tcp-HTTP"/>
+
+
+
             </OSrv>
+
+
+
             <TSrc neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </TSrc>
+
+
+
             <TDst neg="False">
               <ObjectRef ref="id44935FEF28075"/>
+
+
+
             </TDst>
+
+
+
             <TSrv neg="False">
               <ServiceRef ref="sysid1"/>
+
+
+
             </TSrv>
+
+
+
             <NATRuleOptions/>
+
+
+
           </NATRule>
-        </NAT>
-        <Policy id="id44935AAA28075">
+
+
+</NAT>
+    
+
+
+          <Policy top_rule_set="True" id="id44935AAA28075" name="Policy">
           <PolicyRule action="Tag" direction="Inbound" disabled="False" id="id44935B8828075" log="False" position="0">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Src>
-            <Dst neg="False">
+
+
+<Dst neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Dst>
-            <Srv neg="False">
+
+
+<Srv neg="False">
               <ServiceRef ref="sysid1"/>
+
+
+
             </Srv>
-            <Itf neg="False">
+
+
+<Itf neg="False">
               <ObjectRef ref="id44935B6E28075"/>
+
+
+
             </Itf>
-            <When neg="False">
+
+
+<When neg="False">
               <IntervalRef ref="sysid2"/>
+
+
+
             </When>
+
+
+
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="branch_anchor_name"></Option>
-              <Option name="branch_chain_name"></Option>
-              <Option name="classify_str"></Option>
-              <Option name="custom_str"></Option>
-              <Option name="ipf_route_opt_addr"></Option>
-              <Option name="ipf_route_opt_if"></Option>
+              <Option name="action_on_reject"/>
+
+
+
+              <Option name="branch_anchor_name"/>
+
+
+
+              <Option name="branch_chain_name"/>
+
+
+
+              <Option name="classify_str"/>
+
+
+
+              <Option name="custom_str"/>
+
+
+
+              <Option name="ipf_route_opt_addr"/>
+
+
+
+              <Option name="ipf_route_opt_if"/>
+
+
+
               <Option name="ipf_route_option">Route through</Option>
+
+
+
               <Option name="ipfw_classify_method">2</Option>
+
+
+
               <Option name="ipfw_pipe_port_num">0</Option>
+
+
+
               <Option name="ipfw_pipe_queue_num">0</Option>
+
+
+
               <Option name="ipt_continue">False</Option>
-              <Option name="ipt_gw"></Option>
-              <Option name="ipt_iif"></Option>
+
+
+
+              <Option name="ipt_gw"/>
+
+
+
+              <Option name="ipt_iif"/>
+
+
+
               <Option name="ipt_mark_connections">True</Option>
-              <Option name="ipt_oif"></Option>
+
+
+
+              <Option name="ipt_oif"/>
+
+
+
               <Option name="ipt_tee">False</Option>
+
+
+
               <Option name="pf_fastroute">False</Option>
-              <Option name="pf_route_opt_addr"></Option>
-              <Option name="pf_route_opt_if"></Option>
+
+
+
+              <Option name="pf_route_opt_addr"/>
+
+
+
+              <Option name="pf_route_opt_if"/>
+
+
+
               <Option name="pf_route_option">Route through</Option>
-              <Option name="rule_name_accounting"></Option>
-              <Option name="tagvalue">1</Option>
+
+
+
+              <Option name="rule_name_accounting"/>
+
+
+
+              <Option name="tagobject_id">id44935FFA28075</Option>
+
+      
+      
+
             </PolicyRuleOptions>
+
+
+
           </PolicyRule>
+
+
+
           <PolicyRule action="Tag" direction="Inbound" disabled="False" id="id44935FFD28075" log="False" position="1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Src>
-            <Dst neg="False">
+
+
+<Dst neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Dst>
-            <Srv neg="False">
+
+
+<Srv neg="False">
               <ServiceRef ref="sysid1"/>
+
+
+
             </Srv>
-            <Itf neg="False">
+
+
+<Itf neg="False">
               <ObjectRef ref="id44935B7428075"/>
+
+
+
             </Itf>
-            <When neg="False">
+
+
+<When neg="False">
               <IntervalRef ref="sysid2"/>
+
+
+
             </When>
+
+
+
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="branch_anchor_name"></Option>
-              <Option name="branch_chain_name"></Option>
-              <Option name="classify_str"></Option>
-              <Option name="custom_str"></Option>
-              <Option name="ipf_route_opt_addr"></Option>
-              <Option name="ipf_route_opt_if"></Option>
+              <Option name="action_on_reject"/>
+
+
+
+              <Option name="branch_anchor_name"/>
+
+
+
+              <Option name="branch_chain_name"/>
+
+
+
+              <Option name="classify_str"/>
+
+
+
+              <Option name="custom_str"/>
+
+
+
+              <Option name="ipf_route_opt_addr"/>
+
+
+
+              <Option name="ipf_route_opt_if"/>
+
+
+
               <Option name="ipf_route_option">Route through</Option>
+
+
+
               <Option name="ipfw_classify_method">2</Option>
+
+
+
               <Option name="ipfw_pipe_port_num">0</Option>
+
+
+
               <Option name="ipfw_pipe_queue_num">0</Option>
+
+
+
               <Option name="ipt_continue">False</Option>
-              <Option name="ipt_gw"></Option>
-              <Option name="ipt_iif"></Option>
+
+
+
+              <Option name="ipt_gw"/>
+
+
+
+              <Option name="ipt_iif"/>
+
+
+
               <Option name="ipt_mark_connections">True</Option>
-              <Option name="ipt_oif"></Option>
+
+
+
+              <Option name="ipt_oif"/>
+
+
+
               <Option name="ipt_tee">False</Option>
+
+
+
               <Option name="pf_fastroute">False</Option>
-              <Option name="pf_route_opt_addr"></Option>
-              <Option name="pf_route_opt_if"></Option>
+
+
+
+              <Option name="pf_route_opt_addr"/>
+
+
+
+              <Option name="pf_route_opt_if"/>
+
+
+
               <Option name="pf_route_option">Route through</Option>
-              <Option name="rule_name_accounting"></Option>
-              <Option name="tagvalue">2</Option>
+
+
+
+              <Option name="rule_name_accounting"/>
+
+
+
+              <Option name="tagobject_id">id44935FFB28075</Option>
+
+      
+      
+
             </PolicyRuleOptions>
+
+
+
           </PolicyRule>
+
+
+
           <PolicyRule action="Route" direction="Both" disabled="False" id="id4493608A28075" log="False" position="2">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Src>
-            <Dst neg="False">
+
+
+<Dst neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Dst>
-            <Srv neg="False">
+
+
+<Srv neg="False">
               <ServiceRef ref="id44935FFA28075"/>
+
+
+
             </Srv>
-            <Itf neg="False">
+
+
+<Itf neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Itf>
-            <When neg="False">
+
+
+<When neg="False">
               <IntervalRef ref="sysid2"/>
+
+
+
             </When>
+
+
+
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="branch_anchor_name"></Option>
-              <Option name="branch_chain_name"></Option>
-              <Option name="classify_str"></Option>
-              <Option name="custom_str"></Option>
-              <Option name="ipf_route_opt_addr"></Option>
-              <Option name="ipf_route_opt_if"></Option>
-              <Option name="ipf_route_option">Route through</Option>
-              <Option name="ipfw_classify_method">2</Option>
-              <Option name="ipfw_pipe_port_num">0</Option>
-              <Option name="ipfw_pipe_queue_num">0</Option>
-              <Option name="ipt_continue">False</Option>
-              <Option name="ipt_gw"></Option>
-              <Option name="ipt_iif"></Option>
-              <Option name="ipt_mark_connections">False</Option>
-              <Option name="ipt_oif">eth1</Option>
-              <Option name="ipt_tee">False</Option>
-              <Option name="pf_fastroute">False</Option>
-              <Option name="pf_route_opt_addr"></Option>
-              <Option name="pf_route_opt_if"></Option>
-              <Option name="pf_route_option">Route through</Option>
-              <Option name="rule_name_accounting"></Option>
+              <Option name="action_on_reject"/>
+
+
+<Option name="branch_anchor_name"/>
+
+
+<Option name="branch_chain_name"/>
+
+
+<Option name="classify_str"/>
+
+
+<Option name="custom_str"/>
+
+
+<Option name="ipf_route_opt_addr"/>
+
+
+<Option name="ipf_route_opt_if"/>
+
+
+<Option name="ipf_route_option">Route through</Option>
+
+
+<Option name="ipfw_classify_method">2</Option>
+
+
+<Option name="ipfw_pipe_port_num">0</Option>
+
+
+<Option name="ipfw_pipe_queue_num">0</Option>
+
+
+<Option name="ipt_continue">False</Option>
+
+
+<Option name="ipt_gw"/>
+
+
+<Option name="ipt_iif"/>
+
+
+<Option name="ipt_mark_connections">False</Option>
+
+
+<Option name="ipt_oif">eth1</Option>
+
+
+<Option name="ipt_tee">False</Option>
+
+
+<Option name="pf_fastroute">False</Option>
+
+
+<Option name="pf_route_opt_addr"/>
+
+
+<Option name="pf_route_opt_if"/>
+
+
+<Option name="pf_route_option">Route through</Option>
+
+
+<Option name="rule_name_accounting"/>
+
+
+
+              <Option name="stateless">True</Option>
+
+
+
             </PolicyRuleOptions>
+
+
+
           </PolicyRule>
+
+
+
           <PolicyRule action="Route" direction="Both" disabled="False" id="id4493609728075" log="False" position="3">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Src>
-            <Dst neg="False">
+
+
+<Dst neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Dst>
-            <Srv neg="False">
+
+
+<Srv neg="False">
               <ServiceRef ref="id44935FFB28075"/>
+
+
+
             </Srv>
-            <Itf neg="False">
+
+
+<Itf neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Itf>
-            <When neg="False">
+
+
+<When neg="False">
               <IntervalRef ref="sysid2"/>
+
+
+
             </When>
+
+
+
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="branch_anchor_name"></Option>
-              <Option name="branch_chain_name"></Option>
-              <Option name="classify_str"></Option>
-              <Option name="custom_str"></Option>
-              <Option name="ipf_route_opt_addr"></Option>
-              <Option name="ipf_route_opt_if"></Option>
-              <Option name="ipf_route_option">Route through</Option>
-              <Option name="ipfw_classify_method">2</Option>
-              <Option name="ipfw_pipe_port_num">0</Option>
-              <Option name="ipfw_pipe_queue_num">0</Option>
-              <Option name="ipt_continue">False</Option>
-              <Option name="ipt_gw"></Option>
-              <Option name="ipt_iif"></Option>
-              <Option name="ipt_mark_connections">False</Option>
-              <Option name="ipt_oif">eth2</Option>
-              <Option name="ipt_tee">False</Option>
-              <Option name="pf_fastroute">False</Option>
-              <Option name="pf_route_opt_addr"></Option>
-              <Option name="pf_route_opt_if"></Option>
-              <Option name="pf_route_option">Route through</Option>
-              <Option name="rule_name_accounting"></Option>
+              <Option name="action_on_reject"/>
+
+
+<Option name="branch_anchor_name"/>
+
+
+<Option name="branch_chain_name"/>
+
+
+<Option name="classify_str"/>
+
+
+<Option name="custom_str"/>
+
+
+<Option name="ipf_route_opt_addr"/>
+
+
+<Option name="ipf_route_opt_if"/>
+
+
+<Option name="ipf_route_option">Route through</Option>
+
+
+<Option name="ipfw_classify_method">2</Option>
+
+
+<Option name="ipfw_pipe_port_num">0</Option>
+
+
+<Option name="ipfw_pipe_queue_num">0</Option>
+
+
+<Option name="ipt_continue">False</Option>
+
+
+<Option name="ipt_gw"/>
+
+
+<Option name="ipt_iif"/>
+
+
+<Option name="ipt_mark_connections">False</Option>
+
+
+<Option name="ipt_oif">eth2</Option>
+
+
+<Option name="ipt_tee">False</Option>
+
+
+<Option name="pf_fastroute">False</Option>
+
+
+<Option name="pf_route_opt_addr"/>
+
+
+<Option name="pf_route_opt_if"/>
+
+
+<Option name="pf_route_option">Route through</Option>
+
+
+<Option name="rule_name_accounting"/>
+
+
+
+              <Option name="stateless">True</Option>
+
+
+
             </PolicyRuleOptions>
+
+
+
           </PolicyRule>
+
+
+
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id4493613C28075" log="False" position="4">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Src>
-            <Dst neg="False">
+
+
+<Dst neg="False">
               <ObjectRef ref="id44935FEF28075"/>
+
+
+
             </Dst>
-            <Srv neg="False">
+
+
+<Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
+
+
+
             </Srv>
-            <Itf neg="False">
+
+
+<Itf neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Itf>
-            <When neg="False">
+
+
+<When neg="False">
               <IntervalRef ref="sysid2"/>
+
+
+
             </When>
+
+
+
             <PolicyRuleOptions/>
+
+
+
           </PolicyRule>
+
+
+
           <PolicyRule action="Accept" direction="Both" disabled="False" id="id4493615428075" log="False" position="5">
             <Src neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
+
+
+
             </Src>
-            <Dst neg="False">
+
+
+<Dst neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Dst>
-            <Srv neg="False">
+
+
+<Srv neg="False">
               <ServiceRef ref="sysid1"/>
+
+
+
             </Srv>
-            <Itf neg="False">
+
+
+<Itf neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Itf>
-            <When neg="False">
+
+
+<When neg="False">
               <IntervalRef ref="sysid2"/>
+
+
+
             </When>
+
+
+
             <PolicyRuleOptions/>
+
+
+
           </PolicyRule>
+
+
+
           <PolicyRule action="Deny" disabled="False" id="id44935B3228075" log="True" position="6">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Src>
-            <Dst neg="False">
+
+
+<Dst neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Dst>
-            <Srv neg="False">
+
+
+<Srv neg="False">
               <ServiceRef ref="sysid1"/>
+
+
+
             </Srv>
-            <Itf neg="False">
+
+
+<Itf neg="False">
               <ObjectRef ref="sysid0"/>
+
+
+
             </Itf>
-            <When neg="False">
+
+
+<When neg="False">
               <IntervalRef ref="sysid2"/>
+
+
+
             </When>
-            <PolicyRuleOptions/>
+
+
+
+            <PolicyRuleOptions>
+              
+              <Option name="stateless">True</Option>
+
+
+
+            </PolicyRuleOptions>
+
+
+
           </PolicyRule>
-        </Policy>
-        <Routing id="id44935B6A28075"/>
-        <Interface bridgeport="False" comment="this interface is internal, it is connected to LAN behind the firewall" dyn="False" id="id44935B6B28075" label="" mgmt="True" name="eth0" security_level="100" unnum="False">
+
+
+
+          </Policy>
+    
+
+
+          
+          
+          <Routing top_rule_set="True" id="id44935B6A28075" name="Routing">
+          </Routing>
+    
+
+
+          <Interface bridgeport="False" comment="this interface is internal, it is connected to LAN behind the firewall" dyn="False" id="id44935B6B28075" label="" mgmt="True" name="eth0" security_level="100" unnum="False">
           <IPv4 address="192.168.1.1" comment="" id="id44935B6D28075" name="example1:eth0:ip" netmask="255.255.255.0"/>
+
+
+
         </Interface>
-        <Interface bridgeport="False" comment="first external interface connected to ISP1" dyn="False" id="id44935B6E28075" label="" mgmt="False" name="eth1" security_level="0" unnum="False">
+
+
+<Interface bridgeport="False" comment="first external interface connected to ISP1" dyn="False" id="id44935B6E28075" label="" mgmt="False" name="eth1" security_level="0" unnum="False">
           <IPv4 address="192.0.2.1" comment="" id="id44935B7028075" name="example1:eth1:ip" netmask="255.255.255.0"/>
+
+
+
         </Interface>
-        <Interface bridgeport="False" comment="loopback interface" dyn="False" id="id44935B7128075" label="" mgmt="False" name="lo" security_level="100" unnum="False">
+
+
+<Interface bridgeport="False" comment="loopback interface" dyn="False" id="id44935B7128075" label="" mgmt="False" name="lo" security_level="100" unnum="False">
           <IPv4 address="127.0.0.1" comment="" id="id44935B7328075" name="example1:lo:ip" netmask="255.0.0.0"/>
+
+
+
         </Interface>
-        <Interface bridgeport="False" comment="the second external interface, connected to ISP2" dyn="False" id="id44935B7428075" label="" mgmt="False" name="eth2" security_level="0" unnum="False">
+
+
+<Interface bridgeport="False" comment="the second external interface, connected to ISP2" dyn="False" id="id44935B7428075" label="" mgmt="False" name="eth2" security_level="0" unnum="False">
           <IPv4 address="192.0.3.1" comment="" id="id44935B7628075" name="example1:eth2:ip" netmask="255.255.255.0"/>
+
+
+
         </Interface>
-        <Management address="192.168.1.1">
+
+
+
+          <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+
+
+
           <FWBDManagement enabled="False" identity="" port="-1"/>
+
+
+
           <PolicyInstallScript arguments="" command="" enabled="False"/>
+
+
+
         </Management>
-        <FirewallOptions>
+
+
+
+          <FirewallOptions>
           <Option name="accept_established">True</Option>
+
+
+
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+
+
+
+          <Option name="action_on_reject"/>
+
+
+
+          <Option name="activationCmd"/>
+
+
+
+          <Option name="admUser"/>
+
+
+
+          <Option name="altAddress"/>
+
+
+
           <Option name="bridging_fw">False</Option>
+
+
+
           <Option name="check_shading">True</Option>
+
+
+
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+
+
+
+          <Option name="cmdline"/>
+
+
+
+          <Option name="compiler"/>
+
+
+
           <Option name="configure_interfaces">True</Option>
+
+
+
           <Option name="debug">False</Option>
+
+
+
           <Option name="drop_invalid">False</Option>
+
+
+
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+
+
+
+          <Option name="epilog_script"/>
+
+
+
           <Option name="firewall_dir">/etc</Option>
+
+
+
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
+
+
+
           <Option name="freebsd_ip_forward">1</Option>
+
+
+
           <Option name="ignore_empty_groups">False</Option>
+
+
+
           <Option name="in_out_code">true</Option>
-          <Option name="limit_suffix"></Option>
+
+
+
+          <Option name="limit_suffix"/>
+
+
+
           <Option name="limit_value">0</Option>
+
+
+
           <Option name="linux24_ip_forward">1</Option>
+
+
+
           <Option name="load_modules">True</Option>
+
+
+
           <Option name="local_nat">False</Option>
+
+
+
           <Option name="log_all">False</Option>
+
+
+
           <Option name="log_invalid">False</Option>
+
+
+
           <Option name="log_ip_opt">False</Option>
+
+
+
           <Option name="log_level">info</Option>
+
+
+
           <Option name="log_prefix">RULE %N -- %A </Option>
+
+
+
           <Option name="log_tcp_opt">False</Option>
+
+
+
           <Option name="log_tcp_seq">False</Option>
+
+
+
           <Option name="loopback_interface">lo0</Option>
+
+
+
           <Option name="macosx_ip_forward">1</Option>
+
+
+
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+
+
+
+          <Option name="mgmt_addr"/>
+
+
+
           <Option name="mgmt_ssh">False</Option>
+
+
+
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+
+
+
+          <Option name="output_file"/>
+
+
+
           <Option name="pass_all_out">false</Option>
+
+
+
           <Option name="pf_limit_frags">5000</Option>
+
+
+
           <Option name="pf_limit_states">10000</Option>
+
+
+
           <Option name="pf_scrub_maxmss">1460</Option>
+
+
+
           <Option name="pf_timeout_frag">30</Option>
+
+
+
           <Option name="pf_timeout_interval">10</Option>
+
+
+
           <Option name="pix_add_clear_statements">true</Option>
+
+
+
           <Option name="pix_assume_fw_part_of_any">true</Option>
+
+
+
           <Option name="pix_default_logint">300</Option>
+
+
+
           <Option name="pix_emblem_log_format">false</Option>
+
+
+
           <Option name="pix_emulate_out_acl">true</Option>
+
+
+
           <Option name="pix_floodguard">true</Option>
+
+
+
           <Option name="pix_include_comments">true</Option>
+
+
+
           <Option name="pix_route_dnat_supported">true</Option>
+
+
+
           <Option name="pix_rule_syslog_settings">false</Option>
+
+
+
           <Option name="pix_security_fragguard_supported">true</Option>
+
+
+
           <Option name="pix_syslog_device_id_supported">false</Option>
+
+
+
           <Option name="pix_use_acl_remarks">true</Option>
+
+
+
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+
+
+
+          <Option name="prolog_script"/>
+
+
+
           <Option name="prompt1">$ </Option>
+
+
+
           <Option name="prompt2"> # </Option>
+
+
+
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+
+
+
+          <Option name="sshArgs"/>
+
+
+
           <Option name="ulog_cprange">0</Option>
+
+
+
           <Option name="ulog_nlgroup">1</Option>
+
+
+
           <Option name="ulog_qthreshold">1</Option>
+
+
+
           <Option name="use_ULOG">False</Option>
+
+
+
           <Option name="use_iptables_restore">False</Option>
+
+
+
           <Option name="use_numeric_log_levels">False</Option>
+
+
+
           <Option name="verify_interfaces">True</Option>
+
+
+
         </FirewallOptions>
-      </Firewall>
+
+
+
+          </Firewall>
+
+
+
     </ObjectGroup>
+
+
+
     <IntervalGroup id="id4493570A28075" name="Time"/>
+
+
+
   </Library>
   <Library id="sysid99" name="Deleted Objects" ro="False">
     <ObjectRef ref="id3DC75CE7-2"/>
+
+
+
   </Library>
   <Library color="#d4f8ff" comment="Standard objects" id="syslib000" name="Standard" ro="False">
     <AnyNetwork comment="Any Network" id="sysid0" name="Any" address="0.0.0.0" netmask="0.0.0.0"/>
+
+
+
     <AnyIPService comment="Any IP Service" id="sysid1" name="Any" protocol_num="0"/>
+
+
+
     <AnyInterval comment="Any Interval" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" id="sysid2" name="Any" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1"/>
+
+
+
     <ServiceGroup id="stdid05" name="Services">
-      <ServiceGroup id="stdid09" name="TCP">
+      <ServiceGroup id="stdid05_userservices" name="Users"/>
+
+
+
+        <ServiceGroup id="stdid09" name="TCP">
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="80" dst_range_start="80" fin_flag="False" fin_flag_mask="False" id="tcp-HTTP" name="http" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
+
+
+
         <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="25" dst_range_start="25" fin_flag="False" fin_flag_mask="False" id="tcp-SMTP" name="smtp" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
+
+
+
       </ServiceGroup>
-    </ServiceGroup>
+
+
+
+      </ServiceGroup>
+
+
+
     <ObjectGroup id="stdid01" name="Objects">
+      <ObjectGroup id="stdid01_clusters" name="Clusters"/>
       <ObjectGroup id="stdid03" name="Networks">
         <Network comment="192.168.1.0/24 - Address often used for home and small office networks.&#10;" id="id3DC75CE7-1" name="net-192.168.1.0" address="192.168.1.0" netmask="255.255.255.0"/>
+
+
+
         <Network comment="192.168.2.0/24 - Address often used for home and small office networks.&#10;" id="id3DC75CE7-2" name="net-192.168.2.0" address="192.168.2.0" netmask="255.255.255.0"/>
+
+
+
       </ObjectGroup>
-    </ObjectGroup>
+      </ObjectGroup>
+
+
+
   </Library>
 </FWObjectDatabase>

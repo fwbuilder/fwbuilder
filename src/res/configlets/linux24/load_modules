@@ -1,0 +1,17 @@
+## -*- mode: shell-script; -*- 
+##
+## This function will be called with one parameter. If this parameter
+## is non-empty string, the function should also load modules for nat.
+load_modules() {
+  HAVE_NAT=$1
+  MODULES_DIR="{{$modules_dir}}"
+  MODULES=`find $MODULES_DIR -name '*conntrack*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/'`
+  test -n "$HAVE_NAT" && {
+    MODULES="$MODULES `find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/'`"
+  }
+  for module in $MODULES; do 
+    if $LSMOD | grep ${module} >/dev/null; then continue; fi
+    $MODPROBE ${module} ||  exit 1 
+  done
+}
+

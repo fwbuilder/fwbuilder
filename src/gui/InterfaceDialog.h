@@ -67,6 +67,7 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void isChanged(bool*);
+    virtual void openIfaceDialog();
     virtual void getHelpName(QString*);
 
  signals:
@@ -77,7 +78,8 @@ public slots:
  */
     void close_sign(QCloseEvent *e);
     void changed_sign();
-    
+    void notify_changes_applied_sign();
+
 };
 
 #endif // INTERFACEDIALOG_H

@@ -78,7 +78,7 @@ void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)
 //    rsv=rv;
 
     FWObject *p=obj;
-    while ( !Firewall::isA(p) ) p=p->getParent();
+    while ( !Firewall::cast(p) ) p=p->getParent();
     platform=p->getStr("platform").c_str();
 
     Rule      *rule = dynamic_cast<Rule*>(o);
@@ -145,10 +145,10 @@ void RoutingRuleOptionsDialog::applyChanges()
     data.saveAll();
     init=false;
 
-    mw->updateRuleOptions();
+//    mw->updateRuleOptions();
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void RoutingRuleOptionsDialog::discardChanges()

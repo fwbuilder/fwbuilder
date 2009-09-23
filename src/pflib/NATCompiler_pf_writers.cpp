@@ -81,25 +81,30 @@ bool NATCompiler_pf::PrintRule::processNext()
 
     tmp_queue.push_back(rule);
 
-    string rl=rule->getLabel();
-    if (rl!=current_rule_label) {
+    if (!compiler->inSingleRuleCompileMode())
+    {
+        string rl=rule->getLabel();
+        if (rl!=current_rule_label) {
 
-        compiler->output << "# " << endl;
-        compiler->output << "# Rule  " << rl << endl;
+            compiler->output << "# " << endl;
+            compiler->output << "# Rule  " << rl << endl;
 
-        string    comm=rule->getComment();
-        string::size_type c1,c2;
-        c1=0;
-        while ( (c2=comm.find('\n',c1))!=string::npos ) {
-            compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
-            c1=c2+1;
+            string    comm=rule->getComment();
+            string::size_type c1,c2;
+            c1=0;
+            while ( (c2=comm.find('\n',c1))!=string::npos ) {
+                compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
+                c1=c2+1;
+            }
+            compiler->output << "# " << comm.substr(c1) << endl;
+            compiler->output << "# " << endl;
+
+            current_rule_label=rl;
         }
-        compiler->output << "# " << comm.substr(c1) << endl;
-        compiler->output << "# " << endl;
-
-        current_rule_label=rl;
     }
 
+    string err = rule->getStr(".error_msg");
+    if (!err.empty()) compiler->output << "# " << err << endl;
 
     RuleElementOSrc *osrcrel=rule->getOSrc();
     RuleElementODst *odstrel=rule->getODst();
@@ -143,10 +148,10 @@ bool NATCompiler_pf::PrintRule::processNext()
         if (tsrv==NULL)
             sprintf(errstr,"NAT rule %s: tsrv==NULL", rule->getLabel().c_str());
 
-        compiler->abort(errstr);
+        compiler->abort(rule, errstr);
     }
 
-    string     iface_name = rule->getInterfaceStr();
+    string  iface_name = rule->getInterfaceStr();
 //    Interface *iface = compiler->getCachedFwInterface(iface_id);
 //    string iface_name= (iface!=NULL) ? iface->getName() : "";
     if (iface_name=="nil") iface_name="";
@@ -304,8 +309,8 @@ void NATCompiler_pf::PrintRule::_printSrcPort(libfwbuilder::Service *srv)
             {
                 compiler->output << ":" << sre;
             }
+            compiler->output  << " ";
         }
-        compiler->output  << " ";
     }
 }
 

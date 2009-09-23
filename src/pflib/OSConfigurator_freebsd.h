@@ -23,41 +23,31 @@
 
 */
 
-#ifndef _OSNETWORKCONFIGURATOR_FREEBSD_HH
-#define _OSNETWORKCONFIGURATOR_FREEBSD_HH
+#ifndef _OSCONFIGURATOR_FREEBSD_HH
+#define _OSCONFIGURATOR_FREEBSD_HH
 
 #include "config.h"
 
-#include "fwcompiler/OSConfigurator.h"
-
+#include "OSConfigurator_bsd.h"
 #include "OSData.h"
 
 namespace fwcompiler {
 
-    class OSConfigurator_freebsd : public OSConfigurator {
+    class OSConfigurator_freebsd : public OSConfigurator_bsd {
 
-        OSData   os_data;
-
-	std::vector<libfwbuilder::InetAddr> virtual_addresses;
-
-        std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
-        
 	public:
 
 	virtual ~OSConfigurator_freebsd() {};
 	OSConfigurator_freebsd(libfwbuilder::FWObjectDatabase *_db,
-                               const std::string &fwname,
+                               libfwbuilder::Firewall *fw,
                                bool ipv6_policy) : 
-        OSConfigurator(_db, fwname, ipv6_policy) , os_data() {}
+        OSConfigurator_bsd(_db, fw, ipv6_policy) {}
 
         virtual int prolog();
 
 	virtual std::string myPlatformName();
 	virtual void processFirewallOptions();
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr);
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Network   *nw);
-        void         printPathForAllTools(const std::string &os);
-        void         configureInterfaces();
+        virtual void printPathForAllTools(const std::string &os);
     };
 };
 

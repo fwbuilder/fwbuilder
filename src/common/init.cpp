@@ -1,6 +1,8 @@
 
 #include "../../config.h"
 
+#include <qglobal.h>
+
 #if defined(Q_OS_MACX) || defined(Q_OS_WIN32)
 #  include <qsettings.h>
 #  include <QDir>

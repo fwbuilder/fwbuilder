@@ -66,6 +66,9 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/UserService.h"
 #include "fwbuilder/physAddress.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Cluster.h"
 
 #include <sstream>
 #include <iostream>
@@ -121,7 +124,7 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             str << ar->getRangeStart().toString().c_str();
             str << " - ";
             str << ar->getRangeEnd().toString().c_str();
-        } else if (Firewall::isA(obj))
+        } else if (Firewall::cast(obj))
         {
             QString platform = obj->getStr("platform").c_str();
             QString version  = obj->getStr("version").c_str();
@@ -172,12 +175,29 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             str << "/";
             str << QString("%1").arg(n->getNetmaskPtr()->getLength());
 
+        } else if (ClusterGroup::cast(obj)!=NULL)
+        {
+            ClusterGroup *g = ClusterGroup::cast(obj);
+            str << QObject::tr("type: ") << g->getStr("type").c_str() << "<br>";
+            FWObjectTypedChildIterator j = obj->findByType(FWObjectReference::TYPENAME);
+            for ( ; j!=j.end(); ++j)
+            {
+                FWObject *obj = FWReference::getObject(*j);
+                if (Interface::cast(obj))
+                {
+                    FWObject *fw = obj->getParent();
+                    str << QObject::tr("Group member")
+                        << " " << fw->getName().c_str() 
+                        << ":" << obj->getName().c_str()
+                        << "<br>";
+                }
+            }
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
             Group *g=Group::cast(obj);
             str << g->size() << " " << QObject::tr(" objects");
 
-        } else if (Firewall::isA(obj))
+        } else if (Firewall::cast(obj))
         {
 
         } else if (Interface::isA(obj))
@@ -189,10 +209,12 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
                 str << getObjectProperties(*j);
                 str << "<br>";
             }
-            str << " MAC: ";
             physAddress *paddr = intf->getPhysicalAddress();
             if (paddr!=NULL) 
-                str <<  paddr->getPhysAddress().c_str();
+                str << " MAC: " << paddr->getPhysAddress().c_str() << "<br>";
+            string intf_type = intf->getOptionsObject()->getStr("type");
+            if (!intf_type.empty())
+                str << " Interface Type: " << intf_type.c_str();
 
         } else if (IPService::isA(obj))
         {
@@ -361,10 +383,26 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += n->getAddressPtr()->toString().c_str();
             str += "/";
             str += QString("%1").arg(n->getNetmaskPtr()->getLength());
+        } else if (ClusterGroup::cast(obj)!=NULL)
+        {
+            if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
+            ClusterGroup *g = ClusterGroup::cast(obj);
+            str += QObject::tr("type: %1<br>").arg(g->getStr("type").c_str());
+            FWObjectTypedChildIterator j = obj->findByType(FWObjectReference::TYPENAME);
+            for ( ; j!=j.end(); ++j)
+            {
+                FWObject *obj = FWReference::getObject(*j);
+                if (Interface::cast(obj))
+                {
+                    FWObject *fw = obj->getParent();
+                    str += QObject::tr("Group member %1:%2<br>").
+                        arg(fw->getName().c_str()).arg(obj->getName().c_str());
+                }
+            }
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
-            Group *g=Group::cast(obj);
+            Group *g = Group::cast(obj);
             str += QObject::tr("%1 objects<br>\n").arg(g->size());
             int n = 0;
             list<FWObject*> ll = *g;
@@ -385,8 +423,9 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                         + "  <b>" + QString::fromUtf8(o1->getName().c_str()) + "</b><br>\n";
                 }
             }
-        } else if (Firewall::isA(obj))
+        } else if (Firewall::cast(obj)) 
         {
+            // Note: Firewall::cast(obj) matched Firewall and Cluster
             QString platform = obj->getStr("platform").c_str();
             QString version  = obj->getStr("version").c_str();
             QString readableVersion = getVersionString(platform,version);
@@ -430,7 +469,8 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += "</table>";
         } else if (Interface::isA(obj))
         {
-            str += QObject::tr("<b>Path:</b> ")+ path +"<br>\n";
+            Interface *intf = Interface::cast(obj);
+            //str += QObject::tr("<b>Path:</b> ")+ path +"<br>\n";
 
             FWObjectTypedChildIterator j = obj->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j)
@@ -438,7 +478,21 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                 str += getObjectProperties(*j);
                 str += "<br>";
             }
-            physAddress *paddr=(Interface::cast(obj))->getPhysicalAddress();
+
+            string intf_type = intf->getOptionsObject()->getStr("type");
+            if (!intf_type.empty())
+            {
+                str += "<b>Interface Type: </b>";
+                str += intf_type.c_str();
+                if (intf_type == "8021q")
+                {
+                    int vlan_id = intf->getOptionsObject()->getInt("vlan_id");
+                    str += QString(" VLAN ID=%1").arg(vlan_id);
+                }
+                str += "<br>";
+            }
+
+            physAddress *paddr = intf->getPhysicalAddress();
             if (paddr!=NULL) 
             {
                 str += "MAC: ";
@@ -447,22 +501,19 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             }
 
             QString q;
-            if (Interface::constcast(obj)->isDyn())        q=" dyn";
-            if (Interface::constcast(obj)->isUnnumbered()) q=" unnum";
-            if (Interface::constcast(obj)->isBridgePort()) q=" bridge port";
+            if (intf->isDyn())        q=" dyn";
+            if (intf->isUnnumbered()) q=" unnum";
+            if (intf->isBridgePort()) q=" bridge port";
             
             FWObject *p=obj;
-            while (p!=NULL && !Firewall::isA(p)) p=p->getParent();
+            while (p!=NULL && !Firewall::cast(p)) p=p->getParent();
             if (p!=NULL && (p->getStr("platform")=="pix" || p->getStr("platform")=="fwsm"))
             {
-                int sl=Interface::constcast(obj)->getSecurityLevel();
+                int sl = intf->getSecurityLevel();
                 q=q+QString("sec.level %1").arg(sl);
-            } else
-            {
-                if (Interface::constcast(obj)->isExt())        q=q+" ext";
             }
 
-            if (Interface::constcast(obj)->isUnprotected())    q=q+" unp";
+            if (intf->isUnprotected())    q=q+" unp";
             
             if (q!="") str += " (" + q + ")";
             str += "<br>\n";
@@ -667,7 +718,7 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
 QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(PolicyRule *rule)
 {
     FWObject *p=rule;
-    while (p!=NULL && !Firewall::isA(p)) p=p->getParent();
+    while (p!=NULL && !Firewall::cast(p)) p=p->getParent();
     assert(p!=NULL);
     string platform=p->getStr("platform"); 
     QString act = getActionNameForPlatform(rule->getAction(),platform.c_str());

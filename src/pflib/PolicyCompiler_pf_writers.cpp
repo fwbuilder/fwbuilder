@@ -122,8 +122,10 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
     {
         RuleSet *ruleset = rule->getBranch();
         if (ruleset==NULL)
-            compiler->abort(string("Branching rule ") + rule->getLabel() +
-                            " refers ruleset that does not exist");
+            compiler->abort(
+                
+                    rule, 
+                    "Branching rule refers ruleset that does not exist");
         string ruleset_name = ruleset->getName();
         if (ruleset_name.find("/*")!=string::npos)
             compiler->output << "anchor \"" << ruleset_name << "\" ";
@@ -133,9 +135,9 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
     }
     default:
         compiler->abort(
-            string("Unknown action '") + rule->getActionAsString()
-            + "' in rule " + rule->getLabel()
-        );
+            
+                rule, 
+                string("Unknown action ") + rule->getActionAsString());
 //        compiler->output << rule->getActionAsString() << " ";
     }
 }
@@ -147,22 +149,33 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
     if (rule->getAction() == PolicyRule::Route)
     {
 	string prefix = "pf";
-	if (compiler->myPlatformName()=="ipf")
-		prefix="ipf";
+	if (compiler->myPlatformName()=="ipf") prefix="ipf";
+
 	string ro = ruleopt->getStr(prefix+"_route_option");
         if (ruleopt->getBool("pf_fastroute") && ro != "none")
 	{
-            compiler->abort("Cannot use fastroute and route method in same rule they are mutually exclusive in rule "+rule->getLabel());
-	} else if (ruleopt->getBool("pf_fastroute") && ro == "none" ) {
+            compiler->abort(
+                
+                    rule, 
+                    "Cannot use fastroute and route methods in "
+                    "the same rule because they are mutually "
+                    "exclusive.");
+	} else if (ruleopt->getBool("pf_fastroute") && ro == "none")
+        {
             compiler->output << "fastroute ";
-	} else {
+	} else
+        {
             string roif = ruleopt->getStr(prefix+"_route_opt_if");
             string roaddr_list = ruleopt->getStr(prefix+"_route_opt_addr");
             string roload = ruleopt->getStr("pf_route_load_option");
             if (!ro.empty())
             {
                 if (roif.empty())
-                    compiler->abort("Interface specification is required for action Route in rule "+rule->getLabel());
+                    compiler->abort(
+                        
+                            rule, 
+                            "Interface specification is required "
+                            "for action Route.");
 
                 if (ro == "route_through")
                     compiler->output << "route-to ";
@@ -171,8 +184,11 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                 else if (ro == "route_copy_through")
                     compiler->output << "dup-to ";
                 else
-                    compiler->abort("Unknown option for rule action Route: '" + 
-                                    ro + "' in rule "+rule->getLabel());
+                    compiler->abort(
+                        
+                            rule, 
+                            "Unknown option for rule action Route: '" + 
+                            ro + "'");
             		
                 compiler->output << "{ ";
 
@@ -203,7 +219,9 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                             } catch (FWException &ex)
                             {
                                 compiler->abort(
-        "Illegal IP address for next hop in rule "+rule->getLabel());
+                                    
+                                        rule, 
+                                        "Illegal IP address for next hop");
                             }
                             try
                             {
@@ -229,7 +247,9 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                             } catch (FWException &ex)
                             {
                                 compiler->abort(
-        "Illegal netmask for next hop in rule "+rule->getLabel());
+                                    
+                                        rule, 
+                                        "Illegal netmask for next hop");
                             }
                         } else
                         {
@@ -240,7 +260,9 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                             } catch (FWException &ex)
                             {
                                 compiler->abort(
-        "Illegal IP address for next hop in rule "+rule->getLabel());
+                                    
+                                        rule, 
+                                        "Illegal IP address for next hop");
                             }
                             route_member++;
                         }
@@ -248,18 +270,27 @@ void PolicyCompiler_pf::PrintRule::_printRouteOptions(PolicyRule *rule)
                 }
                 if (route_member < 1)
                 {
-                    compiler->abort("No router specified rule action Route: '"+ 
-                                    ro + "' in rule "+rule->getLabel());
+                    compiler->abort(
+                        
+                            rule, 
+                            "No router specified rule action Route: '"+ 
+                            ro + "'");
                 }
                 if (route_member >= 2 && (roload.empty() || roload == "none"))
                 {
-                    compiler->abort("More than one router specified without load balancing for rule action Route: '" + 
-                                    ro + "' in rule "+rule->getLabel());
+                    compiler->abort(
+                        
+                            rule, 
+                            "More than one router specified without load balancing for rule action Route: '" + 
+                            ro + "'");
                 }
                 if (route_member == 1 && ((!roload.empty()) && roload != "none"))
                 {
-                    compiler->abort("Only one router specified with load balancing for rule action Route: '" + 
-                                    ro + "' in rule "+rule->getLabel());
+                    compiler->abort(
+                        
+                            rule, 
+                            "Only one router specified with load balancing for rule action Route: '" + 
+                            ro + "'");
                 }
 
                 compiler->output << "} ";
@@ -334,8 +365,8 @@ void PolicyCompiler_pf::PrintRule::_printTag(PolicyRule *rule)
 
 void PolicyCompiler_pf::PrintRule::_printDirection(PolicyRule *rule)
 {
-    if (rule->getDirection()==PolicyRule::Outbound)  compiler->output << "out "; 
-    else	                                     compiler->output << "in  "; 
+    if (rule->getDirection()==PolicyRule::Outbound) compiler->output << "out ";
+    if (rule->getDirection()==PolicyRule::Inbound) compiler->output << "in  ";
 }
 
 void PolicyCompiler_pf::PrintRule::_printLogging(PolicyRule *rule)
@@ -582,7 +613,9 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElementSrv  *rel)
             string dscp = ip->getDSCPCode();
             if (!tos.empty()) compiler->output << " tos " << tos << " ";
             if (!dscp.empty())
-                compiler->abort("PF does not support DSCP matching");
+                compiler->abort(
+                                    rel->getParent(),
+                                    "PF does not support DSCP matching");
         }
     } else 
     {
@@ -761,7 +794,7 @@ void PolicyCompiler_pf::PrintRule::_printSrcAddr(RuleElementSrc  *rel)
                << rule->getLabel()
                << "'  rel->front(): "
                << oref->getPointerId();
-        compiler->abort(errstr.str());
+        compiler->abort(rel->getParent(), errstr.str());
     }
 
     if (rel->size()==1 && ! o->getBool("pf_table") )
@@ -800,7 +833,7 @@ void PolicyCompiler_pf::PrintRule::_printDstAddr(RuleElementDst  *rel)
                << rule->getLabel()
                <<  "'  rel->front(): "
                << oref->getPointerId();
-        compiler->abort(errstr.str());
+        compiler->abort(rel->getParent(), errstr.str());
     }
 
     if (rel->size()==1 && ! o->getBool("pf_table") )
@@ -841,29 +874,31 @@ bool PolicyCompiler_pf::PrintRule::processNext()
 
     tmp_queue.push_back(rule);
 
-    string rl=rule->getLabel();
-    if (rl!=current_rule_label)
+    if (!compiler->inSingleRuleCompileMode())
     {
+        string rl = rule->getLabel();
+        if (rl!=current_rule_label)
+        {
         
-        compiler->output << "# " << endl;
-        compiler->output << "# Rule  " << rl << endl;
+            compiler->output << "# " << endl;
+            compiler->output << "# Rule  " << rl << endl;
 
-        string    comm=rule->getComment();
-        string::size_type c1,c2;
-        c1=0;
-        while ( (c2=comm.find('\n',c1))!=string::npos ) {
-            compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
-            c1=c2+1;
+            string comm = rule->getComment();
+            string::size_type c1,c2;
+            c1=0;
+            while ( (c2=comm.find('\n',c1))!=string::npos ) {
+                compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
+                c1=c2+1;
+            }
+            compiler->output << "# " << comm.substr(c1) << endl;
+            compiler->output << "# " << endl;
+
+            current_rule_label=rl;
         }
-        compiler->output << "# " << comm.substr(c1) << endl;
-        compiler->output << "# " << endl;
-
-        current_rule_label=rl;
     }
 
-//    cerr << "CP 1" << endl;
-
-
+    string err = rule->getStr(".error_msg");
+    if (!err.empty()) compiler->output << "# " << err << endl;
 
     RuleElementSrc *srcrel=rule->getSrc();
 //    Address        *src   =compiler->getFirstSrc(rule);  assert(src);
@@ -949,9 +984,12 @@ bool PolicyCompiler_pf::PrintRule::processNext()
 	    compiler->output << "synproxy state ";
         else
         {
-            if (compiler->getCachedFwOpt()->getBool("pf_modulate_state") && tcpsrv!=NULL)
+            if ((ruleopt->getBool("pf_modulate_state") || 
+                 compiler->getCachedFwOpt()->getBool("pf_modulate_state")) &&
+                tcpsrv!=NULL) 
+            {
                 compiler->output << "modulate state ";
-            else
+            } else
             {
                 /*
                  * "flags S/SA keep state" is implicit in 4.x

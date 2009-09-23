@@ -36,6 +36,7 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPv4.h"
@@ -83,6 +84,7 @@ const char* systemObjects[] = {
     "Services/TagServices",
     "Services/Users",
     "Firewalls",
+    "Clusters",
 
     "Time",
 
@@ -117,6 +119,7 @@ FWBTree::FWBTree()
     systemGroupPaths[TagService::TYPENAME]    = "Services/TagServices";
 
     systemGroupPaths[Firewall::TYPENAME]      = "Firewalls";
+    systemGroupPaths[Cluster::TYPENAME]       = "Clusters";
 
     systemGroupPaths[Interval::TYPENAME]      = "Time";
 
@@ -124,6 +127,9 @@ FWBTree::FWBTree()
 
     systemGroupTypes[Firewall::TYPENAME]=      ObjectGroup::TYPENAME;
     systemGroupNames[Firewall::TYPENAME]=      "Firewalls"    ;
+
+    systemGroupTypes[Cluster::TYPENAME]=       ObjectGroup::TYPENAME;
+    systemGroupNames[Cluster::TYPENAME]=       "Clusters";
 
     systemGroupTypes[Host::TYPENAME]=          ObjectGroup::TYPENAME;
     systemGroupNames[Host::TYPENAME]=          "Hosts"          ;
@@ -238,6 +244,7 @@ FWBTree::FWBTree()
 
     copyMenuState[""] = false;
     copyMenuState["Firewalls"] = false;
+    copyMenuState["Clusters"] = false;
     copyMenuState["Objects"] = false;
     copyMenuState["Objects/Addresses"] = false;
     copyMenuState["Objects/DNS Names"] = false;
@@ -258,6 +265,7 @@ FWBTree::FWBTree()
 
     cutMenuState[""] = true;
     cutMenuState["Firewalls"] = false;
+    cutMenuState["Clusters"] = false;
     cutMenuState["Objects"] = false;
     cutMenuState["Objects/Addresses"] = false;
     cutMenuState["Objects/DNS Names"] = false;
@@ -279,6 +287,7 @@ FWBTree::FWBTree()
 
     pasteMenuState[""] = false;
     pasteMenuState["Firewalls"] = true;
+    pasteMenuState["Clusters"] = true;
     pasteMenuState["Objects"] = false;
     pasteMenuState["Objects/Addresses"] = true;
     pasteMenuState["Objects/DNS Names"] = true;
@@ -300,6 +309,7 @@ FWBTree::FWBTree()
 
     deleteMenuState[""] = true;
     deleteMenuState["Firewalls"] = false;
+    deleteMenuState["Clusters"] = false;
     deleteMenuState["Objects"] = false;
     deleteMenuState["Objects/Addresses"] = false;
     deleteMenuState["Objects/DNS Names"] = false;
@@ -488,6 +498,10 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
 
     o1 = db->create(ObjectGroup::TYPENAME);
     o1->setName("Firewalls");
+    nlib->add(o1);
+
+    o1 = db->create(ObjectGroup::TYPENAME);
+    o1->setName("Clusters");
     nlib->add(o1);
 
     o1 = db->create(IntervalGroup::TYPENAME);

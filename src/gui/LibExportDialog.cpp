@@ -31,6 +31,7 @@
 #include "LibExportDialog.h"
 #include "FWBSettings.h"
 #include "longTextDialog.h"
+#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -87,7 +88,7 @@ void LibExportDialog::init()
     m_dialog->exportRO->setChecked(true);
 
     m_dialog->libs->clear();
-    list<FWObject*> ll = mw->db()->getRoot()->getByType( Library::TYPENAME );
+    list<FWObject*> ll = mw->activeProject()->db()->getByType(Library::TYPENAME);
     int n=0;
     string libicn;
 

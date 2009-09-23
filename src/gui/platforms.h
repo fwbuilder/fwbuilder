@@ -56,9 +56,39 @@ bool isDefaultRoutingRuleOptions(libfwbuilder::FWOptions *opt);
 
 // using list of pairs instead of a map or QMap because maps are dictionaries
 // and do not preserve order of elements
-std::list<QStringPair> getVersionsForPlatform(const QString &platform);
+void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &list);
 
-QString getVersionString(const QString &platform,const QString &version);
+QString getVersionString(const QString &platform, const QString &version);
+
+/*
+ * Get list of supported state synchronization protocols for given
+ * cluster host OS. This is used for the "type" in StateSyncClusterGroup
+ */
+void getStateSyncTypesForOS(const QString &host_os, std::list<QStringPair> &list);
+
+/*
+ * Get list of supported failover protocols for given cluster
+ * host OS. This is used for the "type" in FailoverClusterGroup
+ */
+void getFailoverTypesForOS(const QString &host_os, std::list<QStringPair> &list);
+
+/*
+ * Get list of supported interface types for the "advanced" interface
+ * options dialog. Returns list of string pairs, <name, description>
+ */
+void getInterfaceTypes(libfwbuilder::Interface *iface, std::list<QStringPair> &list);
+
+/*
+ * Get list of allowed subinterface types for the given interface
+ */
+void getSubInterfaceTypes(libfwbuilder::Interface *iface, std::list<QStringPair> &list);
+
+/*
+ * Fill QComboBox widget with interface types
+ */
+void setInterfaceTypes(QComboBox *iface_type,
+                       libfwbuilder::Interface *iface,
+                       const QString &current_type);
 
 /**
  * !!! returns a list of log levels that can be used to populate qcombobox
@@ -87,11 +117,6 @@ const QStringList& getRouteOptions_pf_ipf(const QString &platform);
 const QStringList& getRouteLoadOptions_pf(const QString &platform);
 
 /**
- * returns a list of Prolog places (mapping list)
- */
-const QStringList& getPrologPlaces(const QString &platform);
-
-/**
  * returns a list of Limit Suffixes (mapping list)
  */
 const QStringList& getLimitSuffixes(const QString &platform);
@@ -117,17 +142,25 @@ QString getReadableRuleElementName(const std::string &rule_element_type_name);
 
 /*
  * convenience method that calls Resourcess::getPlatforms() and
- * converts the result to QMap<QString,QString>
+ * converts the result to QMap<QString,QString>. If @filter is true,
+ * platforms marked as disabled in global FWBSettings are dropped.
  */
-QMap<QString,QString> getAllPlatforms();
+QMap<QString,QString> getAllPlatforms(bool filter=true);
 
-QMap<QString,QString> getAllOS();
+QMap<QString,QString> getAllOS(bool filter=true);
 
 QString readPlatform(QComboBox *platform);
 QString readHostOS(QComboBox *hostOS);
 
 void setPlatform(QComboBox *platform, const QString &pl);
 void setHostOS(QComboBox *hostOS, const QString &platform, const QString &os);
+
+/*
+ * Internal: Auxiliary function that copies elements from the list returned by
+ * Resources::getResourceStrList()  to the list of string pairs
+ */
+void _repackStringList(std::list<std::string> &list1,
+                       std::list<QStringPair> &list2);
 
 #endif
 

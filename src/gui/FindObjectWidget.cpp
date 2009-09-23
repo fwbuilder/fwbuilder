@@ -39,6 +39,7 @@
 #include "RuleSetView.h"
 #include "ObjectEditor.h"
 #include "ProjectPanel.h"
+#include "events.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWReference.h"
@@ -68,8 +69,10 @@ using namespace libfwbuilder;
 
 #define MAX_SEARCH_ITEMS_COUNT 10
 
-FindObjectWidget::FindObjectWidget(QWidget*p, const char * n, Qt::WindowFlags f) : QWidget(p,f)
+FindObjectWidget::FindObjectWidget(QWidget*p, ProjectPanel *pp,
+                                   const char * n, Qt::WindowFlags f) : QWidget(p,f)
 {
+    project_panel = pp;
     m_widget = new Ui::findObjectWidget_q;
     m_widget->setupUi(this);
 
@@ -123,7 +126,7 @@ void FindObjectWidget::reset()
 {
     lastFound=NULL;
     lastAttrSearch="";
-    treeSeeker = mw->db()->tree_begin();
+    treeSeeker = project_panel->db()->tree_begin();
 }
 
 
@@ -286,7 +289,7 @@ void FindObjectWidget::findNext()
 
     // if scope is "policies of opened firewall" then we need to get 
     // pointer to the currently opened firewall object
-    RuleSet* current_rule_set = mw->activeProject()->getCurrentRuleSet();
+    RuleSet* current_rule_set = project_panel->getCurrentRuleSet();
     if (current_rule_set)
         selectedFirewall = Firewall::cast(current_rule_set->getParent());
     else
@@ -299,7 +302,7 @@ loop:
 
     QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
 
-    for (; treeSeeker!=mw->db()->tree_end(); ++treeSeeker)
+    for (; treeSeeker != project_panel->db()->tree_end(); ++treeSeeker)
     {
         o = *treeSeeker;
 
@@ -337,7 +340,7 @@ loop:
 
     QApplication::restoreOverrideCursor();
 
-    if (treeSeeker==mw->db()->tree_end())
+    if (treeSeeker == project_panel->db()->tree_end())
     {
         reset();
         if (m_widget->srScope->currentIndex()==3) // scope ==selected firewalls
@@ -407,6 +410,7 @@ bool FindObjectWidget::validateReplaceObject()
     }
     return true;
 }
+
 void FindObjectWidget::replace()
 {
     if(!validateReplaceObject())  return;
@@ -419,9 +423,8 @@ void FindObjectWidget::replace()
     }
 
     QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-    FWObject *res=_replaceCurrent();
-    mw->updateRuleSetView();
-    mw->info();
+    FWObject *res = _replaceCurrent();
+
     if (res)
     {
         showObject(res);
@@ -446,7 +449,7 @@ void FindObjectWidget::replaceAll()
     QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
     while (f)
     {
-        for (; treeSeeker!=mw->db()->tree_end(); ++treeSeeker)
+        for (; treeSeeker != project_panel->db()->tree_end(); ++treeSeeker)
         {
             o = *treeSeeker;
             if( RuleElement::cast(o->getParent())!=NULL)
@@ -461,7 +464,7 @@ void FindObjectWidget::replaceAll()
                 } else if (m_widget->srScope->currentIndex()==0) continue ; // scope == tree only
             } else
             {
-    /* if not in rules, then in the tree. */
+                /* if not in rules, then in the tree. */
                 if (m_widget->srScope->currentIndex()>1) continue; // scope in (firewalls only , selected firewalls)
             }
 
@@ -476,7 +479,7 @@ void FindObjectWidget::replaceAll()
                     matchID( o->getId() )) break;
             }
         }
-        if (treeSeeker==mw->db()->tree_end())
+        if (treeSeeker == project_panel->db()->tree_end())
         {
             f=false;
 
@@ -488,14 +491,14 @@ void FindObjectWidget::replaceAll()
             _replaceCurrent();
         }
     }
-    mw->updateRuleSetView();
-    mw->info();
+
     QApplication::restoreOverrideCursor();
     QMessageBox::information(
-              this,"Firewall Builder",
+              this, "Firewall Builder",
               tr("Replaced %1 objects.").arg(count));
 
 }
+
 FWObject* FindObjectWidget::_replaceCurrent()
 {
     FWObject *o=lastFound;
@@ -504,13 +507,17 @@ FWObject* FindObjectWidget::_replaceCurrent()
     if (p==NULL || o==NULL) return NULL;
     if (FWReference::cast(o)==NULL) return NULL;
 
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(project_panel->getFileName(), p->getId()));
+
     p->removeRef(FWReference::cast(o)->getPointer());
-    //chack for duplicates --------
+
+    // check for duplicates --------
 
     FWObject *ro=m_widget->replaceDropArea->getObject();
     if (RuleElement::cast(p)==NULL || !RuleElement::cast(p)->isAny())
     {
-/* avoid duplicates */
+        // avoid duplicates
         int cp_id = ro->getId();
         FWObject *oo;
         FWReference *ref;
@@ -547,7 +554,7 @@ FWObject* FindObjectWidget::_replaceCurrent()
 bool FindObjectWidget::inSelectedFirewall( RuleElement* r)
 {
     FWObject *f=r;
-    while (f!=NULL && !Firewall::isA(f)) f=f->getParent();
+    while (f!=NULL && Firewall::cast(f)==NULL) f=f->getParent();
     if (f==NULL) return false;
 
     return selectedFirewall==(Firewall::cast(f));
@@ -576,26 +583,26 @@ void FindObjectWidget::showObject(FWObject* o)
     FWReference* ref=FWReference::cast(o);
     if (ref!=NULL && RuleElement::cast(o->getParent())!=NULL)
     {
-        mw->closeEditor();
-        mw->clearManipulatorFocus();
-        mw->ensureObjectVisibleInRules( ref );
+        project_panel->closeEditor();
+        project_panel->clearManipulatorFocus();
+        project_panel->ensureObjectVisibleInRules( ref );
         return;
     }
 
-    mw->unselectRules();
+    project_panel->unselectRules();
 
     if (Group::cast(o->getParent())!=NULL &&
-        !mw->isSystem(o->getParent()))
+        !project_panel->isSystem(o->getParent()))
     {
-        mw->openObject( o->getParent() );
-        mw->editObject( o->getParent() );
-        mw->selectObjectInEditor( (ref) ? ref->getPointer() : o );
+        project_panel->openObject( o->getParent() );
+        project_panel->editObject( o->getParent() );
+        project_panel->selectObjectInEditor( (ref) ? ref->getPointer() : o );
         return;
     }
 
-    mw->closeEditor();
-    mw->openObject( o );
-    mw->select();  // selects an item in the tree and assigns kbd focus to it
+    project_panel->closeEditor();
+    project_panel->openObject( o );
+    project_panel->select();  // selects an item in the tree and assigns kbd focus to it
 }
 
 void FindObjectWidget::init()

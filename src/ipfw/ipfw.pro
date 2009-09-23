@@ -4,14 +4,7 @@ include(../../qmake.inc)
 #
 SOURCES	 =  ipfw.cpp
 
-HEADERS	 = ../../config.h \
-		../pflib/OSData.h \
-		../pflib/NATCompiler_ipfw.h \
-		../pflib/NATCompiler_pf.h \
-		../pflib/OSConfigurator_freebsd.h \
-		../pflib/OSConfigurator_macosx.h \
-		../pflib/PolicyCompiler_ipfw.h \
-		../pflib/PolicyCompiler_pf.h
+HEADERS	 = ../../config.h
 
 !win32 {
     QMAKE_COPY    = ../../install.sh -m 0755 -s
@@ -19,13 +12,15 @@ HEADERS	 = ../../config.h \
 
 win32:CONFIG += console
 
-unix { !macx: CONFIG -= qt }
+INCLUDEPATH += ../pflib ../compiler_lib
+DEPENDPATH   = ../pflib
 
-INCLUDEPATH += "../pflib"
-DEPENDPATH   = "../pflib"
+win32:LIBS  += ../pflib/release/fwbpf.lib ../compiler_lib/release/compilerdriver.lib
+!win32:LIBS += ../pflib/libfwbpf.a ../compiler_lib/libcompilerdriver.a
 
-win32:LIBS  += ../pflib/release/fwbpf.lib
-!win32:LIBS += ../pflib/libfwbpf.a
+win32:PRE_TARGETDEPS  = ../pflib/release/fwbpf.lib ../compiler_lib/release/compilerdriver.lib
+!win32:PRE_TARGETDEPS = ../pflib/libfwbpf.a ../compiler_lib/libcompilerdriver.a
+
 
 LIBS  += $$LIBS_FWCOMPILER
 

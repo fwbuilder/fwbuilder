@@ -130,10 +130,10 @@ void PhysicalAddressDialog::applyChanges()
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     s->setPhysAddress( m_dialog->pAddress->text().toLatin1().constData() );
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void PhysicalAddressDialog::discardChanges()

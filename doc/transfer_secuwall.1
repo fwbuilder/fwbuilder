@@ -1,0 +1,77 @@
+.\"     Title: transfer_secuwall
+.\"    Author:
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 06/23/2009
+.\"    Manual:
+.\"    Source:
+.\"
+.TH "TRANSFER_SECUWALL" "1" "06/23/2009" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+transfer_secuwall \- secunet wall configuration export utility
+.SH "SYNOPSIS"
+\fBtransfer_secuwall\fR [\-l] [\-h] [\-a] \-v \fIvolumeid\fR [\-f \fIfilename\&.xml\fR] [\-d \fIworkdir\fR] \fIfirewall_object_name\fR
+.sp
+The switches \-a, \-f and \-d are optional\&. If they are not specified, the appropriate defaults are used\&.
+.sp
+.SH "DESCRIPTION"
+transfer_secuwall(1) is a helper utility to compress and export secunet wall host OS specific firewall configuration to a portable device\&.
+.sp
+It is also capable of searching and displaying all transfer devices of a system which are suitable for config transfer\&.
+.sp
+.SH "OPTIONS"
+.PP
+\fB\-l\fR
+.RS 4
+List all portable devices of the system\&.
+.RE
+.PP
+\fB\-h\fR
+.RS 4
+Display help text\&.
+.RE
+.PP
+\fB\-a\fR
+.RS 4
+Append firewall object name to transfer tarball\&. The default is
+\fBfalse\fR\&.
+.RE
+.PP
+\fB\-v\fR
+.RS 4
+Transfer partition\&. Specifies the destination partition for firewall configuration export (e\&.g\&. /dev/sdc1)\&.
+.RE
+.PP
+\fB\-f\fR
+.RS 4
+Firewall Builder XML file with object definition of firewall to export config\&. If not specified, the filename will be constructed from the
+\fIworkdir\fR
+and
+\fIfirewall_object_name\fR
+values:
+\fIworkdir\fR
++
+\fIfwobjectname\fR
++ \&.fwb
+.RE
+.PP
+\fB\-d\fR
+.RS 4
+Defines the working directory\&. If not specified, the current directory will be used\&.
+.RE
+.PP
+\fIfirewall_object_name\fR
+.RS 4
+Firewall object name\&.
+.RE
+.SH "EXAMPLES"
+$ transfer_secuwall \-f /tmp/cluster\&.fwb \-d /tmp \-v /dev/sdc1 fw3
+.sp
+This will export the configuration of secunet wall firewall \fBfw3\fR to the partition \fB/dev/sdc1\fR, using the Firewall Builder XML file \fBcluster\&.fwb\fR in the working directory \fB/tmp\fR\&.
+.sp
+.SH "AUTHOR"
+Written by Reto Buerki <buerki@swiss\-it\&.ch>\&.
+.sp

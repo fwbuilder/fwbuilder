@@ -1,0 +1,13 @@
+## -*- mode: shell-script; -*- 
+##
+## this template is used for single rule compile, both
+## iptables-restore and regular, as well as for the regular
+## (not iptables-restore) script
+{{if reset}}{{$reset_script}}{{endif}}
+
+{{if nat}}{{$nat_script}}{{endif}}
+
+{{if mangle}}{{$mangle_script}}{{endif}}
+
+{{if filter}}{{$filter_script}}{{endif}}
+

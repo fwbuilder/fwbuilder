@@ -115,19 +115,23 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
                          "ignore_empty_groups");
 //    data.registerOption( pf_use_tables, fwopt, "use_tables");
     data.registerOption( m_dialog->pf_accept_new_tcp_with_no_syn,fwopt, "accept_new_tcp_with_no_syn");
-    data.registerOption( m_dialog->pf_modulate_state,fwopt, "modulate_state");
+    data.registerOption( m_dialog->pf_modulate_state,fwopt, "pf_modulate_state");
     data.registerOption( m_dialog->pf_scrub_random_id,fwopt, "pf_scrub_random_id");
 
     data.registerOption( m_dialog->pf_do_scrub,fwopt, "pf_do_scrub");
 
 // radio buttons
-    data.registerOption( m_dialog->pf_scrub_reassemble,fwopt, "pf_scrub_reassemble");
-    data.registerOption( m_dialog->pf_scrub_fragm_crop,fwopt, "pf_scrub_fragm_crop");
-    data.registerOption( m_dialog->pf_scrub_fragm_drop_ovl,fwopt, "pf_scrub_fragm_drop_ovl");
+    data.registerOption( m_dialog->pf_scrub_reassemble, fwopt,
+                         "pf_scrub_reassemble");
+    data.registerOption( m_dialog->pf_scrub_fragm_crop, fwopt,
+                         "pf_scrub_fragm_crop");
+    data.registerOption( m_dialog->pf_scrub_fragm_drop_ovl, fwopt,
+                         "pf_scrub_fragm_drop_ovl");
 
-
-    data.registerOption( m_dialog->pf_scrub_use_minttl,fwopt, "pf_scrub_use_minttl");
-    data.registerOption( m_dialog->pf_scrub_use_maxmss,fwopt, "pf_scrub_use_maxmss");
+    data.registerOption( m_dialog->pf_scrub_use_minttl, fwopt,
+                         "pf_scrub_use_minttl");
+    data.registerOption( m_dialog->pf_scrub_use_maxmss, fwopt,
+                         "pf_scrub_use_maxmss");
     data.registerOption( m_dialog->pf_scrub_maxmss,fwopt, "pf_scrub_maxmss");
     data.registerOption( m_dialog->pf_scrub_minttl,fwopt, "pf_scrub_minttl");
     data.registerOption( m_dialog->pf_scrub_no_df,fwopt, "pf_scrub_no_df");
@@ -138,50 +142,61 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->scpArgs, fwopt, "scpArgs");
     data.registerOption( m_dialog->activationCmd, fwopt, "activationCmd");
 
-    data.registerOption( m_dialog->pf_manage_virtual_addr,fwopt, "manage_virtual_addr");
-    data.registerOption( m_dialog->pf_configure_interfaces,fwopt, "configure_interfaces");
+    data.registerOption( m_dialog->pf_manage_virtual_addr, fwopt,
+                         "manage_virtual_addr");
+    data.registerOption( m_dialog->pf_configure_interfaces, fwopt,
+                         "configure_interfaces");
+    data.registerOption( m_dialog->pf_configure_carp_interfaces, fwopt,
+                         "configure_carp_interfaces");
+    data.registerOption( m_dialog->pf_configure_pfsync_interfaces, fwopt,
+                         "configure_pfsync_interfaces");
+    data.registerOption( m_dialog->pf_configure_vlan_interfaces, fwopt,
+                         "configure_vlan_interfaces");
+
     data.registerOption( m_dialog->pf_debug,fwopt, "debug");
     data.registerOption( m_dialog->pf_flush_states, fwopt, "pf_flush_states");
 
     data.registerOption( m_dialog->compiler,fwopt, "compiler");
     data.registerOption( m_dialog->compilerArgs,fwopt, "cmdline");
     data.registerOption( m_dialog->outputFileName, fwopt, "output_file");
+    data.registerOption( m_dialog->fileNameOnFw, fwopt, "script_name_on_firewall");
+    data.registerOption( m_dialog->confFileNameOnFw, fwopt, "conf_file_name_on_firewall");
 
     data.registerOption( m_dialog->mgmt_ssh,fwopt, "mgmt_ssh");
     data.registerOption( m_dialog->mgmt_addr,fwopt, "mgmt_addr");
 
-    data.registerOption( m_dialog->pf_set_tcp_first,fwopt, "pf_set_tcp_first");
-    data.registerOption( m_dialog->pf_tcp_first,fwopt, "pf_tcp_first");
-    data.registerOption( m_dialog->pf_set_tcp_opening,fwopt, "pf_set_tcp_opening");
-    data.registerOption( m_dialog->pf_tcp_opening,fwopt, "pf_tcp_opening");
-    data.registerOption( m_dialog->pf_set_tcp_established,fwopt, "pf_set_tcp_established");
-    data.registerOption( m_dialog->pf_tcp_established,fwopt, "pf_tcp_established");
-    data.registerOption( m_dialog->pf_set_tcp_closing,fwopt, "pf_set_tcp_closing");
-    data.registerOption( m_dialog->pf_tcp_closing,fwopt, "pf_tcp_closing");
-    data.registerOption( m_dialog->pf_set_tcp_finwait,fwopt, "pf_set_tcp_finwait");
-    data.registerOption( m_dialog->pf_tcp_finwait,fwopt, "pf_tcp_finwait");
-    data.registerOption( m_dialog->pf_set_tcp_closed,fwopt, "pf_set_tcp_closed");
-    data.registerOption( m_dialog->pf_tcp_closed,fwopt, "pf_tcp_closed");
-    data.registerOption( m_dialog->pf_set_udp_first,fwopt, "pf_set_udp_first");
-    data.registerOption( m_dialog->pf_udp_first,fwopt, "pf_udp_first");
-    data.registerOption( m_dialog->pf_set_udp_single,fwopt, "pf_set_udp_single");
-    data.registerOption( m_dialog->pf_udp_single,fwopt, "pf_udp_single");
-    data.registerOption( m_dialog->pf_set_udp_multiple,fwopt, "pf_set_udp_multiple");
-    data.registerOption( m_dialog->pf_udp_multiple,fwopt, "pf_udp_multiple");
-    data.registerOption( m_dialog->pf_set_icmp_first,fwopt, "pf_set_icmp_first");
-    data.registerOption( m_dialog->pf_icmp_first,fwopt, "pf_icmp_first");
-    data.registerOption( m_dialog->pf_set_icmp_error,fwopt, "pf_set_icmp_error");
-    data.registerOption( m_dialog->pf_icmp_error,fwopt, "pf_icmp_error");
-    data.registerOption( m_dialog->pf_set_other_first,fwopt, "pf_set_other_first");
-    data.registerOption( m_dialog->pf_other_first,fwopt, "pf_other_first");
-    data.registerOption( m_dialog->pf_set_other_single,fwopt, "pf_set_other_single");
-    data.registerOption( m_dialog->pf_other_single,fwopt, "pf_other_single");
-    data.registerOption( m_dialog->pf_set_other_multiple,fwopt, "pf_set_other_multiple");
-    data.registerOption( m_dialog->pf_other_multiple,fwopt, "pf_other_multiple");
+    data.registerOption( m_dialog->pf_set_tcp_first, fwopt, "pf_set_tcp_first");
+    data.registerOption( m_dialog->pf_tcp_first, fwopt, "pf_tcp_first");
+    data.registerOption( m_dialog->pf_set_tcp_opening, fwopt, "pf_set_tcp_opening");
+    data.registerOption( m_dialog->pf_tcp_opening, fwopt, "pf_tcp_opening");
+    data.registerOption( m_dialog->pf_set_tcp_established, fwopt, "pf_set_tcp_established");
+    data.registerOption( m_dialog->pf_tcp_established, fwopt, "pf_tcp_established");
+    data.registerOption( m_dialog->pf_set_tcp_closing, fwopt, "pf_set_tcp_closing");
+    data.registerOption( m_dialog->pf_tcp_closing, fwopt, "pf_tcp_closing");
+    data.registerOption( m_dialog->pf_set_tcp_finwait, fwopt, "pf_set_tcp_finwait");
+    data.registerOption( m_dialog->pf_tcp_finwait, fwopt, "pf_tcp_finwait");
+    data.registerOption( m_dialog->pf_set_tcp_closed, fwopt, "pf_set_tcp_closed");
+    data.registerOption( m_dialog->pf_tcp_closed, fwopt, "pf_tcp_closed");
+    data.registerOption( m_dialog->pf_set_udp_first, fwopt, "pf_set_udp_first");
+    data.registerOption( m_dialog->pf_udp_first, fwopt, "pf_udp_first");
+    data.registerOption( m_dialog->pf_set_udp_single, fwopt, "pf_set_udp_single");
+    data.registerOption( m_dialog->pf_udp_single, fwopt, "pf_udp_single");
+    data.registerOption( m_dialog->pf_set_udp_multiple, fwopt, "pf_set_udp_multiple");
+    data.registerOption( m_dialog->pf_udp_multiple, fwopt, "pf_udp_multiple");
+    data.registerOption( m_dialog->pf_set_icmp_first, fwopt, "pf_set_icmp_first");
+    data.registerOption( m_dialog->pf_icmp_first, fwopt, "pf_icmp_first");
+    data.registerOption( m_dialog->pf_set_icmp_error, fwopt, "pf_set_icmp_error");
+    data.registerOption( m_dialog->pf_icmp_error, fwopt, "pf_icmp_error");
+    data.registerOption( m_dialog->pf_set_other_first, fwopt, "pf_set_other_first");
+    data.registerOption( m_dialog->pf_other_first, fwopt, "pf_other_first");
+    data.registerOption( m_dialog->pf_set_other_single, fwopt, "pf_set_other_single");
+    data.registerOption( m_dialog->pf_other_single, fwopt, "pf_other_single");
+    data.registerOption( m_dialog->pf_set_other_multiple, fwopt, "pf_set_other_multiple");
+    data.registerOption( m_dialog->pf_other_multiple, fwopt, "pf_other_multiple");
 
-    data.registerOption( m_dialog->pf_set_adaptive,fwopt, "pf_set_adaptive");
-    data.registerOption( m_dialog->pf_adaptive_start,fwopt, "pf_adaptive_start");
-    data.registerOption( m_dialog->pf_adaptive_end,fwopt, "pf_adaptive_end");
+    data.registerOption( m_dialog->pf_set_adaptive, fwopt, "pf_set_adaptive");
+    data.registerOption( m_dialog->pf_adaptive_start, fwopt, "pf_adaptive_start");
+    data.registerOption( m_dialog->pf_adaptive_end, fwopt, "pf_adaptive_end");
 
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
@@ -190,10 +205,26 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
 
 /* page "Prolog/Epilog" */
 
-    slm = getPrologPlaces( obj->getStr("platform").c_str());
+    QStringList prologPlaces_pf;
+    prologPlaces_pf.push_back(QObject::tr("in the activation shell script"));
+    prologPlaces_pf.push_back("fw_file");
+
+    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, at the very top"));
+    prologPlaces_pf.push_back("pf_file_top");
+
+    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after set comamnds"));
+    prologPlaces_pf.push_back("pf_file_after_set");
+
+    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after scrub comamnds"));
+    prologPlaces_pf.push_back("pf_file_after_scrub");
+
+    prologPlaces_pf.push_back(QObject::tr("in the pf rule file, after table definitions"));
+    prologPlaces_pf.push_back("pf_file_after_tables");
+
     m_dialog->prologPlace->clear();
-    m_dialog->prologPlace->addItems(getScreenNames(slm));
-    data.registerOption( m_dialog->prologPlace, fwopt, "prolog_place", slm);
+    m_dialog->prologPlace->addItems(getScreenNames(prologPlaces_pf));
+    data.registerOption( m_dialog->prologPlace, fwopt, "prolog_place",
+                         prologPlaces_pf);
 
     data.registerOption( m_dialog->prolog_script, fwopt, "prolog_script");
     data.registerOption( m_dialog->epilog_script, fwopt, "epilog_script");
@@ -204,6 +235,8 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
 
     doScrubToggled();
     ltToggled();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 pfAdvancedDialog::~pfAdvancedDialog()
@@ -271,7 +304,7 @@ void pfAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData());
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData());
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 
@@ -300,11 +333,12 @@ void pfAdvancedDialog::editEpilog()
 
 void pfAdvancedDialog::help()
 {
-    Help *h = new Help(this, "pfAdvancedDialog", "Firewall platform: pf");
-    h->show();
     QString tab_title = m_dialog->tabWidget->tabText(
         m_dialog->tabWidget->currentIndex());
-    h->scrollToAnchor(tab_title.replace('/', '-').replace(' ', '-').toLower());
+    QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
+    Help *h = new Help(this, "Firewall platform: pf");
+    h->setSource(QUrl("pfAdvancedDialog.html#" + anchor));
+    h->show();
 }
 
 

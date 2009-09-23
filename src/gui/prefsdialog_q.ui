@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>669</width>
-    <height>422</height>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -22,7 +22,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tabGeneral" >
       <attribute name="title" >
@@ -582,6 +582,9 @@ p, li { white-space: pre-wrap; }
        </item>
        <item row="1" column="1" >
         <layout class="QGridLayout" >
+         <property name="verticalSpacing" >
+          <number>20</number>
+         </property>
          <item row="0" column="0" >
           <widget class="QPushButton" name="redBtn" >
            <property name="text" >
@@ -713,15 +716,15 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabIcons" >
+     <widget class="QWidget" name="tabAppearance" >
       <attribute name="title" >
-       <string>Icons</string>
+       <string>Appearance</string>
       </attribute>
       <attribute name="toolTip" >
        <string>Icons settings</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_7" >
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>20</number>
        </property>
        <item row="0" column="0" >
@@ -741,6 +744,123 @@ p, li { white-space: pre-wrap; }
         </spacer>
        </item>
        <item row="1" column="0" >
+        <layout class="QHBoxLayout" name="horizontalLayout_2" >
+         <item>
+          <widget class="QPushButton" name="btRulesFont" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>250</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip" >
+            <string>Choose font for rules sets</string>
+           </property>
+           <property name="text" >
+            <string>Rules font </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rulesFontDescr" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>rules font description</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0" >
+        <layout class="QHBoxLayout" name="horizontalLayout_3" >
+         <item>
+          <widget class="QPushButton" name="btTreeFont" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>250</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip" >
+            <string>Choose font for tree</string>
+           </property>
+           <property name="text" >
+            <string>Tree font</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="treeFontDescr" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>tree font description</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0" >
+        <layout class="QHBoxLayout" name="horizontalLayout_4" >
+         <item>
+          <widget class="QPushButton" name="btCompilerOutputFont" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>250</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip" >
+            <string>Choose font for tree</string>
+           </property>
+           <property name="text" >
+            <string>Compiler Output Panel font</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="compilerOutputFontDescr" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>compiler output font description</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0" >
         <widget class="QCheckBox" name="chShowIcons" >
          <property name="text" >
           <string>Show icons in rules</string>
@@ -750,14 +870,14 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="2" column="0" >
+       <item row="5" column="0" >
         <widget class="QCheckBox" name="showDirectionText" >
          <property name="text" >
           <string>Show text descriptions in columns "Direction", "Action"</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" >
+       <item row="6" column="0" >
         <widget class="QGroupBox" name="groupBox" >
          <property name="title" >
           <string>Icon size:</string>
@@ -789,7 +909,7 @@ p, li { white-space: pre-wrap; }
          </layout>
         </widget>
        </item>
-       <item row="4" column="0" >
+       <item row="7" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -804,101 +924,94 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabFonts" >
+     <widget class="QWidget" name="tabPlatforms" >
       <attribute name="title" >
-       <string>Fonts</string>
+       <string>Platforms and OS</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_8" >
-       <property name="verticalSpacing" >
-        <number>20</number>
-       </property>
-       <item row="0" column="1" >
+       <item row="0" column="0" colspan="2" >
+        <widget class="QLabel" name="label_6" >
+         <property name="text" >
+          <string>If you disable firewall platform or host OS here, it will not appear in the drop-down lists of platforms and host OS anywhere in the program. This helps avoid clutter in lists of platforms and OS if you only work with one or two of them.</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
         <spacer name="verticalSpacer_8" >
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
          <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
-           <height>20</height>
+           <height>11</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" >
-        <widget class="QPushButton" name="btRulesFont" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize" >
-          <size>
-           <width>200</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="toolTip" >
-          <string>Choose font for rules sets</string>
-         </property>
-         <property name="text" >
-          <string>Rules font </string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" >
-        <widget class="QLabel" name="rulesFontDescr" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>rules font description</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0" >
-        <widget class="QPushButton" name="btTreeFont" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize" >
-          <size>
-           <width>200</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="toolTip" >
-          <string>Choose font for tree</string>
-         </property>
+        <widget class="QLabel" name="label_4" >
          <property name="text" >
-          <string>Tree font</string>
+          <string>Supported firewall platforms</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1" >
-        <widget class="QLabel" name="treeFontDescr" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QLabel" name="label_5" >
          <property name="text" >
-          <string>tree font description</string>
+          <string>Supported host OS</string>
          </property>
         </widget>
        </item>
        <item row="3" column="0" >
+        <widget class="QTableWidget" name="enabled_platforms" >
+         <property name="alternatingRowColors" >
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode" >
+          <enum>QAbstractItemView::NoSelection</enum>
+         </property>
+         <property name="showGrid" >
+          <bool>false</bool>
+         </property>
+         <property name="cornerButtonEnabled" >
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text" >
+           <string>Platform</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QTableWidget" name="enabled_os" >
+         <property name="editTriggers" >
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="alternatingRowColors" >
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode" >
+          <enum>QAbstractItemView::NoSelection</enum>
+         </property>
+         <property name="showGrid" >
+          <bool>false</bool>
+         </property>
+         <property name="cornerButtonEnabled" >
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text" >
+           <string>Host OS</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="4" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -1170,22 +1283,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>btRulesFont</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeRulesFont()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>chShowIcons</sender>
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
@@ -1234,22 +1331,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>btTreeFont</sender>
-   <signal>clicked()</signal>
-   <receiver>prefsDialog_q</receiver>
-   <slot>changeTreeFont()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>browseForSCP</sender>
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
@@ -1281,10 +1362,61 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btRulesFont</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeRulesFont()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>128</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>334</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btTreeFont</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeTreeFont()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>128</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>334</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btCompilerOutputFont</sender>
+   <signal>clicked()</signal>
+   <receiver>prefsDialog_q</receiver>
+   <slot>changeCompilerOutputFont()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>128</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>334</x>
+     <y>233</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>findSSH()</slot>
   <slot>findSCP()</slot>
   <slot>checkSwUpdates()</slot>
+  <slot>changeRulesFont()</slot>
+  <slot>changeTreeFont()</slot>
+  <slot>changeCompilerOutputFont()</slot>
  </slots>
 </ui>

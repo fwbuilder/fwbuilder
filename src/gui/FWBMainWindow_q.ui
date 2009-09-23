@@ -93,7 +93,7 @@
     <addaction name="ObjectLockAction" />
     <addaction name="ObjectUnlockAction" />
    </widget>
-   <widget class="QMenu" name="Tools" >
+   <widget class="QMenu" name="toolsMenu" >
     <property name="title" >
      <string>Tools</string>
     </property>
@@ -107,6 +107,7 @@
     <addaction name="helpAboutAction" />
     <addaction name="debugAction" />
     <addaction name="helpAction" />
+    <addaction name="release_Notes_Action" />
    </widget>
    <widget class="QMenu" name="RulesMenu" >
     <property name="title" >
@@ -165,7 +166,7 @@
    <addaction name="editMenu" />
    <addaction name="ObjectMenu" />
    <addaction name="RulesMenu" />
-   <addaction name="Tools" />
+   <addaction name="toolsMenu" />
    <addaction name="menuWindow" />
    <addaction name="helpMenu" />
   </widget>
@@ -728,6 +729,11 @@
    </property>
    <property name="iconText" >
     <string>New Object File</string>
+   </property>
+  </action>
+  <action name="release_Notes_Action" >
+   <property name="text" >
+    <string>Release Notes</string>
    </property>
   </action>
  </widget>
@@ -1488,8 +1494,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>release_Notes_Action</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>showReleaseNotes()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>370</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
+  <slot>showReleaseNotes()</slot>
  </slots>
 </ui>

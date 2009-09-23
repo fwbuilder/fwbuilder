@@ -30,67 +30,41 @@
 #include "Help.h"
 
 #include <QFile>
-#include <QDir>
-#include <QTextStream>
 #include <QLocale>
 
 
 using namespace std;
 
-
-Help::Help(QWidget *parent, const QString &help_file, const QString &title) :
-    SimpleTextView(parent)
+Help::Help(QWidget *parent, const QString &title) : SimpleTextView(parent)
 {
     setAttribute(Qt::WA_DeleteOnClose);
+
+    QString locale = QLocale::system().name(); //"en_US";
+
+    // Set up path to help qtextBrowser find contents, such as files for <img>
+    paths.append(QString(respath.c_str()) + "/help/" + locale);
+    paths.append(QString(respath.c_str()) + "/help/" + "en_US");
+    m_dialog->textview->setSearchPaths(paths);
+    m_dialog->textview->setOpenLinks(true);
+    m_dialog->textview->setOpenExternalLinks(true);
 
     setModal(false);
     setName(title);
     resize(500, 600);
     raise();
-
-    QString contents;
-    getHelpFileContents(help_file, contents);
-    setText(contents);
 };
 
-void Help::scrollToAnchor(const QString &anchor)
-{
-    m_dialog->textview->scrollToAnchor(anchor);
-}
-
-bool Help::getHelpFileContents(const QString &help_file, QString &contents)
+QString Help::findHelpFile(const QString &file_base_name)
 {
     QString locale = QLocale::system().name(); //"en_US";
-
-    bool res = false;
     QFile f;
-    QTextStream ts;
 
-    if (!Help::getFile(help_file, locale, f))
+    foreach(QString p, paths)
     {
-        // We do not have help file for this locale (including locale "C")
-        // Show English one as a default
-        locale = "en_US";
+        QString try_file_path = p + "/" + file_base_name;
+        if (fwbdebug) qDebug("Checking help file %s", try_file_path.toLatin1().constData());
+        if (QFile::exists(try_file_path)) return try_file_path;
     }
-
-    if (Help::getFile(help_file, locale, f) && f.open(QIODevice::ReadOnly ))
-    {
-        ts.setDevice(&f);
-        contents = ts.readAll();
-        f.close();
-        res = true;
-    } else
-    {
-        contents = QString("Help file %1 not found.").arg(f.fileName());
-    }
-    return res;
-}
-
-bool Help::getFile(const QString &help_file, const QString &locale, QFile &file)
-{
-    file.setFileName(QString(respath.c_str()) + "/help/" + help_file +
-                     "_" + locale + ".html");
-
-    return file.exists();
+    return "";
 }
 

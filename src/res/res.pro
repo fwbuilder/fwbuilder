@@ -28,13 +28,19 @@ macx:target.path = $$PREFIX/
 res.files = objects_init.xml templates.xml resources.xml
 res_os.files = os/*.xml
 res_platform.files = platform/*.xml
-res_help.files = help/*.html
+res_help_en_US.files = help/en_US/*.html help/en_US/*.png help/en_US/*.jpg
+res_configlets_linux24.files = configlets/linux24/*
+res_configlets_ipcop.files = configlets/ipcop/*
+res_configlets_sveasoft.files = configlets/sveasoft/*
 
 INSTALLS -= target
 INSTALLS += res 
 INSTALLS += res_os
 INSTALLS += res_platform
-INSTALLS += res_help
+INSTALLS += res_help_en_US
+INSTALLS += res_configlets_linux24
+INSTALLS += res_configlets_ipcop
+INSTALLS += res_configlets_sveasoft
 
 unix {
 !macx {

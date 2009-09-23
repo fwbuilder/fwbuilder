@@ -114,7 +114,8 @@ class GroupObjectDialog : public QWidget
  */
     void close_sign(QCloseEvent *e);
     void changed_sign();
-    
+    void notify_changes_applied_sign();
+
  private:
 
     static enum viewType vt;

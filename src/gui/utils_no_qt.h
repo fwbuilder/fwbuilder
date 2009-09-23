@@ -61,6 +61,10 @@ extern void findFirewalls(libfwbuilder::FWObject *o,
                           std::list<libfwbuilder::FWObject*> &fwlist,
                           bool skip_system_libs=true);
 
+extern void findClusters(libfwbuilder::FWObject *o,
+                         std::list<libfwbuilder::FWObject*> &fwlist,
+                         bool skip_system_libs=true);
+
 extern void findHosts(libfwbuilder::FWObject *o,
                       std::list<libfwbuilder::FWObject*> &fwlist,
                       bool skip_system_libs=true);
@@ -77,17 +81,6 @@ extern libfwbuilder::FWReference* findRef(libfwbuilder::FWObject *o,
 extern std::string strip(const std::string &s);
 
 extern std::string getPathToBinary(const std::string &pgm_name);
-
-// a functor to join list<string> into a string with separator sep
-class join : public std::unary_function<std::string, void>
-{
-    std::string *result;
-    std::string  separator;
-public:
-    join(std::string *res, const std::string &s)
-    { result = res; separator = s; }
-    void operator()(std::string &s);
-};
 
 
 #endif

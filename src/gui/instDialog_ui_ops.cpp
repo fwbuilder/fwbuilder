@@ -57,11 +57,21 @@
 #include <qtextcodec.h>
 #include <qfileinfo.h>
 #include <qtextstream.h>
+#include <qpixmapcache.h>
+
+#include <QPixmap>
 #include <QDateTime>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QTreeWidgetItemIterator>
+#include <QTextBlockFormat>
+#include <QBrush>
+#include <QTextFormat>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
@@ -87,6 +97,120 @@ void instDialog::disableStopButton()
     currentStopButton->setEnabled(false);
 }
 
+bool instDialog::checkIfNeedToCompile(Firewall *fw)
+{
+    return (fw->needsCompile() && reqFirewalls.empty() && !fw->getInactive()) ||
+           (!reqFirewalls.empty() && reqFirewalls.find(fw)!=reqFirewalls.end());
+}
+
+bool instDialog::checkIfNeedToInstall(Firewall *fw)
+{
+    return (operation==BATCH_INSTALL) &&
+        ((fw->needsInstall() && reqFirewalls.empty() && !fw->getInactive()) ||
+         (!reqFirewalls.empty() && reqFirewalls.find(fw)!=reqFirewalls.end()));
+}
+
+QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
+                                            Firewall *fw)
+{
+    time_t lm = fw->getInt("lastModified");
+    time_t lc = fw->getInt("lastCompiled");
+    time_t li = fw->getInt("lastInstalled");
+    QDateTime dt;
+
+    QTreeWidgetItem* item;
+    QStringList sl;
+    sl.push_back(fw->getName().c_str());
+
+    if (parent)
+        item = new QTreeWidgetItem(parent, sl);
+    else
+        item = new QTreeWidgetItem(sl);
+
+    QString icn_filename = (":/Icons/"+fw->getTypeName()+"/icon").c_str();
+    QPixmap pm;
+    if ( ! QPixmapCache::find( icn_filename, pm) )
+    {
+        pm.load( icn_filename );
+        QPixmapCache::insert( icn_filename, pm);
+    }
+    item->setIcon( 0, QIcon(pm) );
+
+    // Real firewalls get checkbox for install
+    if (Firewall::isA(fw))
+    {
+        bool checked = false;
+        if (operation==BATCH_INSTALL)
+        {
+            checked = checkIfNeedToInstall(fw);
+            if (parent)
+            {
+                // override if checkIfNeedToCompile() is true for the
+                // parent cluster
+                int obj_id = parent->data(0, Qt::UserRole).toInt();
+                Cluster *cluster = Cluster::cast(mw->db()->findInIndex(obj_id));
+                if (cluster && checkIfNeedToCompile(cluster))
+                    checked = true;
+            }
+            item->setCheckState(INSTALL_CHECKBOX_COLUMN,
+                                checked?Qt::Checked:Qt::Unchecked);
+        }
+
+        if (parent==NULL)
+        {
+            // If parent==NULL, we are adding firewall that is not
+            // cluster member, it needs "compile" checkbox
+            checked = checkIfNeedToCompile(fw);
+            item->setCheckState(COMPILE_CHECKBOX_COLUMN,
+                                checked?Qt::Checked:Qt::Unchecked);
+        }
+    }
+
+    int num_members = 0;
+    // Clusters only get checkbox for compile, and only if they have members.
+    if (Cluster::isA(fw))
+    {
+        list<Firewall*> members;
+        Cluster::cast(fw)->getMembersList(members);
+        num_members = members.size();
+        if (num_members)
+        {
+            bool checked = checkIfNeedToCompile(fw);
+            // if any of the member firewalls are in reqFirewalls, re-check
+            // if we need to compile the cluster. checkIfNeedToCompile()
+            // uses different condition if reqFirewalls is not empty.
+            for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
+            {
+                if (reqFirewalls.find(*it)!=reqFirewalls.end() &&
+                    fw->needsCompile() && !fw->getInactive())
+                    checked = true;
+            }
+            item->setCheckState(COMPILE_CHECKBOX_COLUMN,
+                                checked?Qt::Checked:Qt::Unchecked);
+        }
+    }
+
+    dt.setTime_t(lm);
+    item->setText(LAST_MODIFIED_COLUMN, (lm)?dt.toString():QString("Never"));
+
+    dt.setTime_t(lc);
+    item->setText(LAST_COMPILED_COLUMN, (lc)?dt.toString():QString("Never"));
+
+    dt.setTime_t(li);
+    item->setText(LAST_INSTALLED_COLUMN, (li)?dt.toString():QString("Never"));
+
+    item->setData(0, Qt::UserRole, QVariant(fw->getId()));
+
+    // Mark cluster members
+    // If parent!=NULL, new tree item corresponds to the cluster member
+    item->setData(1, Qt::UserRole, QVariant(parent!=NULL));
+
+    // it is useful to know how many members does this cluster have. If this is
+    // not a cluster, store 0
+    item->setData(2, Qt::UserRole, QVariant(num_members));
+
+    return item;
+}
 
 /*
  * The following color and font manipulations are subject to QT bug
@@ -223,137 +347,86 @@ void instDialog::storeInstallerOptions()
 
 void instDialog::summary()
 {
-    addToLog( "<hr>" + QObject::tr("<b>Summary:</b>\n") );
-    addToLog( QObject::tr("* firewall name : %1\n")
-              .arg(QString::fromUtf8(cnf.fwobj->getName().c_str())) );
-    addToLog( QObject::tr("* user name : %1\n")
-              .arg(cnf.user));
-    addToLog( QObject::tr("* management address : %1\n").arg(cnf.maddr) );
-    addToLog( QObject::tr("* platform : %1\n")
-              .arg(cnf.fwobj->getStr("platform").c_str())  );
-    addToLog( QObject::tr("* host OS : %1\n")
-              .arg(cnf.fwobj->getStr("host_OS").c_str()) );
-    addToLog( QObject::tr("* Loading configuration from file %1\n")
+    QStringList str;
+
+    str.append(QObject::tr("Summary:"));
+    str.append(QObject::tr("* firewall name : %1")
+               .arg(QString::fromUtf8(cnf.fwobj->getName().c_str())));
+    str.append(QObject::tr("* user name : %1").arg(cnf.user));
+    str.append(QObject::tr("* management address : %1").arg(cnf.maddr));
+    str.append(QObject::tr("* platform : %1")
+              .arg(cnf.fwobj->getStr("platform").c_str()));
+    str.append( QObject::tr("* host OS : %1")
+              .arg(cnf.fwobj->getStr("host_OS").c_str()));
+    str.append( QObject::tr("* Loading configuration from file %1")
               .arg(cnf.fwbfile));
 
     if (cnf.incremental)
-    {
-        addToLog( QObject::tr("* Incremental install\n"));
-    }
+        str.append(QObject::tr("* Incremental install"));
+
     if (cnf.save_diff && cnf.incremental)
-    {
-        addToLog(
-            QObject::tr("* Configuration diff will be saved in file %1\n").
-            arg(cnf.diff_file));
-    }
+        str.append(QObject::tr("* Configuration diff will be saved in file %1").
+                   arg(cnf.diff_file));
+
     if (cnf.dry_run)
-    {
-        addToLog(
-            QObject::tr(
-                "* Commands will not be executed on the firewall\n"));
-    }
-    addToLog("<hr>\n");
+        str.append(QObject::tr("* Commands will not be executed on the firewall"));
+
+    str.append("");
+
+    QTextCursor cursor = currentLog->textCursor();
+    cursor.insertBlock();
+    cursor.insertText(str.join("\n"), highlight_format);
 }
 
 void instDialog::fillCompileSelectList()
 {
     if (fwbdebug) qDebug("instDialog::fillCompileSelectList");
 
-    compileMapping.clear();
-    installMapping.clear();
-
-    m_dialog->selectTable->setRowCount(firewalls.size());
-
-
-    QTableWidgetItem * citem;
-
-    Firewall* f;
+    Firewall *fw;
+    Cluster *cl;
     QDateTime dt;
-    int row=0;
-
-    bool show_library=false;
-    string tmp_libname="";
 
     if (fwbdebug && reqFirewalls.empty())
         qDebug("instDialog::fillCompileSelectList reqFirewalls is empty");
 
     creatingTable = true;
-    for (std::list<libfwbuilder::Firewall *>::iterator i=firewalls.begin();
-            i!=firewalls.end(); ++i)
+
+    list<Firewall*> working_list_of_firewalls = firewalls;
+
+    for (list<Cluster *>::iterator i=clusters.begin(); i!=clusters.end(); ++i)
     {
-        f=*i;
+        cl = *i;
+        QTreeWidgetItem* cluster_item = createTreeItem(NULL, cl);
+        m_dialog->selectTable->addTopLevelItem(cluster_item);
 
-        time_t lm = f->getInt("lastModified");
-        time_t lc = f->getInt("lastCompiled");
-        time_t li = f->getInt("lastInstalled");
+        list<Firewall*> members;
+        cl->getMembersList(members);
 
-        citem = new QTableWidgetItem;
-        citem->setText(QString::fromUtf8(f->getName().c_str()));
+        for (list<Firewall*>::iterator member=members.begin();
+             member!=members.end(); ++member)
+        {
+            createTreeItem(cluster_item, *member);
+            working_list_of_firewalls.remove(*member);
+        }
+        cluster_item->setExpanded(true);
+    }
 
-        m_dialog->selectTable->setItem(row,2,citem);
-        //m_dialog->selectTable->setColumnReadOnly(2,true);
-
-        // in fact, if someone use same names for several libraries,
-        // additional collumn with library names doesn't help to
-        // identify a firewall
-        if (!show_library && tmp_libname != "" && tmp_libname != f->getLibraryName())
-            show_library = true;
-        tmp_libname = f->getLibraryName();
-
-        citem = new QTableWidgetItem;
-        citem->setText(QString::fromUtf8(tmp_libname.c_str()));
-        m_dialog->selectTable->setItem(row,3,citem);
-        //m_dialog->selectTable->setColumnReadOnly(3,true);
-
-        citem=new QTableWidgetItem; //usual type
-        bool checked = (f->needsCompile() && reqFirewalls.empty() && !f->getInactive()) ||
-                (!reqFirewalls.empty() && reqFirewalls.find(f)!=reqFirewalls.end());
-        citem->setCheckState(checked?Qt::Checked:Qt::Unchecked);
-        m_dialog->selectTable->setItem(row,0,citem);
-        compileMapping[f]=citem;
-
-        citem = new QTableWidgetItem; //usual type
-        checked = (operation==BATCH_INSTALL) &&
-                ((f->needsInstall() && reqFirewalls.empty() && !f->getInactive()) ||
-                (!reqFirewalls.empty() && reqFirewalls.find(f)!=reqFirewalls.end()));
-        citem->setCheckState(checked?Qt::Checked:Qt::Unchecked);
-        m_dialog->selectTable->setItem(row,1,citem);
-        installMapping[f]=citem;
-
-        dt.setTime_t(lm);
-        citem = new QTableWidgetItem;
-        citem->setText((lm)?dt.toString():QString("Never"));
-        m_dialog->selectTable->setItem(row,4,citem);
-
-        dt.setTime_t(lc);
-        citem = new QTableWidgetItem;
-        citem->setText((lc)?dt.toString():QString("Never"));
-        m_dialog->selectTable->setItem(row,5,citem);
-
-        dt.setTime_t(li);
-        citem = new QTableWidgetItem;
-        citem->setText((li)?dt.toString():QString("Never"));
-        m_dialog->selectTable->setItem(row,6,citem);
-
-        row++;
+    for (list<Firewall *>::iterator i=working_list_of_firewalls.begin();
+         i!=working_list_of_firewalls.end(); ++i)
+    {
+        fw = *i;
+        QTreeWidgetItem* fw_item = createTreeItem(NULL, fw);
+        m_dialog->selectTable->addTopLevelItem(fw_item);
     }
 
     creatingTable = false;
 
-    if (show_library) m_dialog->selectTable->showColumn(3);
-    else              m_dialog->selectTable->hideColumn(3);
+    for (int i=0; i<m_dialog->selectTable->columnCount(); i++)
+        m_dialog->selectTable->resizeColumnToContents(i);
 
-    for (int i=0;i<m_dialog->selectTable->columnCount();i++)
-    {
-        if (i<4)
-            m_dialog->selectTable->resizeColumnToContents(i);
-        else
-            m_dialog->selectTable->setColumnWidth(i,200);
-    }
+    setNextEnabled(0, tableHasCheckedItems());
 
-    //selectTable->setColumnStretchable(2,true);
-    //selectTable->sortColumn(2,true,true);
-    m_dialog->selectTable->resizeRowsToContents();
+    //m_dialog->selectTable->resizeRowsToContents();
 }
 
 void instDialog::displayCommand(const QStringList &args)
@@ -465,24 +538,52 @@ void instDialog::saveLog()
  */
 void instDialog::addToLog(const QString &line)
 {
-    if (fwbdebug) qDebug("instDialog::addToLog");
+    if (fwbdebug)
+        qDebug("instDialog::addToLog: '%s'", line.toLatin1().constData());
+
     if (line.isEmpty()) return;
 
     if (currentLog)
     {
-        QString txt = line;
-        txt.replace(QRegExp("(Error(:| )[^\n]*)\n"), 
-                    QString("<b><font color=\"red\">\\1</font></b>\n"));
-        txt.replace(QRegExp("(Abnormal[^\n]*)\n"), 
-                    QString("<b><font color=\"red\">\\1</font></b>\n"));
+        QString txt = line.trimmed();
 
-        // the following regex matches assertion errors
-        txt.replace(QRegExp("(fwb_[a-z]{1,}: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)"), 
-                    QString("<b><font color=\"red\">\\1</font></b>\n"));
+        QTextCharFormat format = normal_format;
 
-        txt.replace('\n', "<br>\n");
-        currentLog->insertHtml( txt );
+        list<QRegExp>::const_iterator it;
+        for (it=error_re.begin(); it!=error_re.end(); ++it)
+        {
+            if ((*it).indexIn(txt) != -1)
+            {
+                format = error_format;
+                break;
+            }
+        }
+
+        for (it=warning_re.begin(); it!=warning_re.end(); ++it)
+        {
+            if ((*it).indexIn(txt) != -1)
+            {
+                format = warning_format;
+                break;
+            }
+        }
+
+        /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
+         *
+         * QTextEditor::insertHtml() becomes incrementally slow as the
+         * amount of text already in the QTextEditor
+         * increases. Compiling ~10 firewalls with few dozen rules
+         * each slows the output to a crawl on Windows.  Keeping each
+         * line in a separate block makes it much faster.
+         */
+
+        QTextCursor cursor = currentLog->textCursor();
+        cursor.insertBlock();
+        cursor.insertText(txt, format);
+
         currentLog->ensureCursorVisible();
+
+        qApp->processEvents();
     }
 }
 
@@ -565,53 +666,57 @@ void instDialog::readFromStdout()
 void instDialog::selectAllFirewalls()
 {
     if (fwbdebug) qDebug("instDialog::selectAllFirewalls");
-    if (operation==BATCH_INSTALL)selectAll(installMapping);
-    selectAll(compileMapping);
-    tableValueChanged(0,0);
+    if (operation==BATCH_INSTALL)
+        setSelectStateAll(INSTALL_CHECKBOX_COLUMN, Qt::Checked);
+    setSelectStateAll(COMPILE_CHECKBOX_COLUMN, Qt::Checked);
+    tableItemChanged(NULL, 0);
 }
-
 
 void instDialog::deselectAllFirewalls()
 {
-    if (operation==BATCH_INSTALL)deselectAll(installMapping);
-    deselectAll(compileMapping);
-    tableValueChanged(0,0);
+    if (operation==BATCH_INSTALL)
+        setSelectStateAll(INSTALL_CHECKBOX_COLUMN, Qt::Unchecked);
+    setSelectStateAll(COMPILE_CHECKBOX_COLUMN, Qt::Unchecked);
+    tableItemChanged(NULL, 0);
 }
 
-void instDialog::selectAll(t_tableMap &mapping)
+void instDialog::setSelectStateAll(int column, Qt::CheckState select)
 {
-    if (fwbdebug) qDebug("instDialog::selectAll");
-
-    t_tableMap::iterator i;
-
-    QTableWidgetItem *item;
-
-    for(i=mapping.begin();i!=mapping.end();++i)
+    QTreeWidgetItemIterator it(m_dialog->selectTable);
+    while (*it)
     {
-        item=(*i).second;
-        item->setCheckState(Qt::Checked);
-    }
-}
-void instDialog::deselectAll(t_tableMap &mapping)
-{
-    if (fwbdebug) qDebug("instDialog::deselectAll");
-    t_tableMap::iterator i;
-    QTableWidgetItem *item;
-    for(i=mapping.begin();i!=mapping.end();++i)
-    {
-        item=(*i).second;
-        item->setCheckState(Qt::Unchecked);
+        int obj_id = (*it)->data(0, Qt::UserRole).toInt();
+        FWObject *o = mw->db()->findInIndex(obj_id);
+        bool cluster_member = (*it)->data(1, Qt::UserRole).toBool();
+        int num_members = (*it)->data(2, Qt::UserRole).toInt();
+
+        // firewalls only get checkboxes for install,
+        if (column == INSTALL_CHECKBOX_COLUMN && Firewall::isA(o))
+            (*it)->setCheckState(column, select);
+
+        // Cluster gets checkbox for compile. 
+        // Cluster should never get a checkbox if it has no members.
+        // Firewall that is not a cluster member gets compile checkbox
+        if ((column == COMPILE_CHECKBOX_COLUMN && Cluster::isA(o) && num_members) ||
+            (Firewall::isA(o) && !cluster_member))
+            (*it)->setCheckState(column, select);
+        ++it;
     }
 }
 
 void instDialog::fillCompileOpList()
 {
     compile_fw_list.clear();
-    t_fwList::iterator i;
-    for(i=firewalls.begin(); i!=firewalls.end(); ++i)
+    QTreeWidgetItemIterator it(m_dialog->selectTable);
+    while (*it)
     {
-        if(compileMapping[*i]->checkState() == Qt::Checked)
-            compile_fw_list.push_back(*i);
+        if ((*it)->checkState(COMPILE_CHECKBOX_COLUMN))
+        {
+            int obj_id = (*it)->data(0, Qt::UserRole).toInt();
+            FWObject *o = mw->db()->findInIndex(obj_id);
+            compile_fw_list.push_back(Firewall::cast(o));
+        }
+        ++it;
     }
     compile_list_initial_size = compile_fw_list.size();
 }
@@ -626,12 +731,13 @@ void instDialog::fillCompileUIList()
     list<Firewall*>::iterator i;
     for(i=compile_fw_list.begin(); i!=compile_fw_list.end(); ++i)
     {
-        f=(*i);
+        f = (*i);
         item = new InstallFirewallViewItem(
             NULL,//m_dialog->fwWorkList,
             QString::fromUtf8(f->getName().c_str()),
             false);
 
+        item->setData(0, Qt::UserRole, QVariant(f->getId()));
         m_dialog->fwWorkList->insertTopLevelItem(0, item);
 
         opListMapping[f->getId()] = item;
@@ -645,11 +751,18 @@ void instDialog::fillInstallOpList()
 {
     if (fwbdebug) qDebug("instDialog::fillInstallOpList");
     install_fw_list.clear();
-    t_fwList::iterator i;
-    for(i=firewalls.begin(); i!=firewalls.end(); ++i)
+    QTreeWidgetItemIterator it(m_dialog->selectTable);
+    while (*it)
     {
-        if (installMapping[*i]->checkState() == Qt::Checked)
-            install_fw_list.push_back(*i);
+        if ((*it)->checkState(INSTALL_CHECKBOX_COLUMN))
+        {
+            int obj_id = (*it)->data(0, Qt::UserRole).toInt();
+            FWObject *o = mw->db()->findInIndex(obj_id);
+            install_fw_list.push_back(Firewall::cast(o));
+            if (fwbdebug)
+                qDebug("fillInstallOpList: Install requested for %s", o->getName().c_str());
+        }
+        ++it;
     }
     install_list_initial_size = install_fw_list.size();
 }
@@ -681,163 +794,36 @@ void instDialog::fillInstallUIList()
 void instDialog::findFirewallInCompileLog(QTreeWidgetItem* item)
 {
     if (fwbdebug) qDebug("instDialog::findFirewallInCompileLog");
-    Firewall *fw;
-    //int p=1,i=0;
 
     m_dialog->detailMCframe->show();
     qApp->processEvents();
-    fw=findFirewallbyListItem(item);
+    QString fw_name = item->text(0);
+
     m_dialog->procLogDisplay->moveCursor( QTextCursor::End );
     m_dialog->procLogDisplay->find(currentSearchString +
-            QString::fromUtf8(fw->getName().c_str()),
+            fw_name,
             QTextDocument::FindWholeWords |
             QTextDocument::FindCaseSensitively |
             QTextDocument::FindBackward);
 }
 
-Firewall * instDialog::findFirewallbyListItem(QTreeWidgetItem *item)
+void instDialog::tableItemChanged(QTreeWidgetItem*, int)
 {
-    Firewall * res=NULL;
-    std::map<int,QTreeWidgetItem*>::iterator i;
-
-    for(i=opListMapping.begin(); i!=opListMapping.end(); ++i)
-    {
-        if ((*i).second==item)
-        {
-            int id = (*i).first;
-            res = Firewall::cast(mw->db()->findInIndex(id));
-            break;
-        }
-    }
-    return res;
+    if (!creatingTable)
+        setNextEnabled(0, tableHasCheckedItems());
 }
 
-Firewall * instDialog::findFirewallbyTableItem(QTableWidgetItem *item)
+bool instDialog::tableHasCheckedItems()
 {
-    Firewall * res=NULL;
-    t_tableMap::iterator i;
-
-    for(i=compileMapping.begin();i!=compileMapping.end();++i)
+    QTreeWidgetItemIterator it(m_dialog->selectTable);
+    while (*it)
     {
-        if ((*i).second==item)
-        {
-            res=(*i).first;
-            return res;
-        }
+        if ((*it)->checkState(COMPILE_CHECKBOX_COLUMN) || 
+            (*it)->checkState(INSTALL_CHECKBOX_COLUMN))
+            return true;
+        ++it;
     }
-
-    for(i=installMapping.begin();i!=installMapping.end();++i)
-    {
-        if ((*i).second==item)
-        {
-            res=(*i).first;
-            return res;
-        }
-    }
-
-    return res;
-}
-
-void instDialog::showSelected()
-{
-    QTableWidgetItem* item;
-    Firewall *f;
-
-    t_fwList::iterator i;
-    bool sel;
-
-    for(i=firewalls.begin();i!=firewalls.end();++i)
-    {
-        sel=false;
-
-        f=(*i);
-        item=compileMapping[f];
-        sel|=item->checkState()==Qt::Checked;
-
-        item=installMapping[f];
-        sel|=item->checkState()==Qt::Checked;
-
-        if(!sel )
-        {
-            if (showSelectedFlag)
-            {
-                m_dialog->selectTable->showRow(item->row());
-            }
-            else
-            {
-                m_dialog->selectTable->hideRow(item->row());
-            }
-        }
-    }
-    if (showSelectedFlag)
-    {
-        m_dialog->showSelButton->setText(tr("Show selected"));
-        m_dialog->pushButton16->setEnabled(true);
-        m_dialog->pushButton17->setEnabled(true);
-    }
-    else
-    {
-        m_dialog->showSelButton->setText(tr("Show all"));
-        m_dialog->pushButton16->setEnabled(false);
-        m_dialog->pushButton17->setEnabled(false);
-    }
-    showSelectedFlag = !showSelectedFlag;
-}
-
-void instDialog::tableValueChanged(int row, int col)
-{
-    if (creatingTable) return;
-    if (fwbdebug) qDebug("instDialog::tableValueChanged");
-    QTableWidgetItem *item;
-    Firewall *f;
-
-    item = m_dialog->selectTable->item(row,col);
-    f = findFirewallbyTableItem(item);
-
-    if (col==0)
-    { // Compilation flag has been changed
-        if (
-                (item->checkState()==Qt::Unchecked) &&
-                f->getInt("lastCompiled")==0 &&
-                (installMapping[f]->checkState()==Qt::Checked))
-        {
-            installMapping[f]->setCheckState(Qt::Unchecked);
-        }
-    }
-    else if (col==1)
-    { // Installation flag has been changed
-        if (
-                (item->checkState()==Qt::Checked) &&
-                f->getInt("lastCompiled")==0)
-        {
-            compileMapping[f]->setCheckState(Qt::Checked);
-        }
-    }
-
-    setNextEnabled(0, tableHasChecked());
-}
-
-bool instDialog::tableHasChecked()
-{
-    QTableWidgetItem *item;
-    Firewall *f;
-
-    t_fwList::iterator i;
-
-    bool res=false;
-
-    for(i=firewalls.begin();i!=firewalls.end();++i)
-    {
-        f=(*i);
-        item=compileMapping[f];
-        if(!item) return false;
-        if(item->checkState()==Qt::Checked) res = true;
-
-        item=installMapping[f];
-        if(!item) return false;
-        if(item->checkState()==Qt::Checked) res = true;
-    }
-    return res;
+    return false;
 }
 
 void instDialog::clearReqFirewalls()
@@ -871,8 +857,7 @@ bool instDialog::getInstOptions(Firewall *fw)
         readInstallerOptionsFromDialog(fw, inst_opt_dlg);
     }
 
-    completeInstallerOptions();
-    return true;
+    return verifyManagementAddress();
 }
 
 /*
@@ -896,8 +881,7 @@ bool instDialog::getBatchInstOptions()
     // clear aternative address in the dialog
     inst_opt_dlg->m_dialog->altAddress->setText("");
     readInstallerOptionsFromDialog(NULL, inst_opt_dlg);
-    completeInstallerOptions();
-    return true;
+    return verifyManagementAddress();
 }
 
 void instDialog::readInstallerOptionsFromSettings()
@@ -965,7 +949,8 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 
         cnf.fwdir = s;
 
-        cnf.conffile = FirewallInstaller::getGeneratedFileFullPath(fw);
+        cnf.script = FirewallInstaller::getGeneratedFileFullPath(fw);
+        cnf.remote_script = ""; // filled in FirewallInstaller::readManifest()
         cnf.fwbfile = mw->db()->getFileName().c_str();
         cnf.wdir = getFileDir( mw->getRCS()->getFileName() );
         cnf.diff_file = QString(cnf.fwobj->getName().c_str())+".diff";
@@ -1050,15 +1035,15 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
     storeInstallerOptions();
 }
 
-void instDialog::completeInstallerOptions()
+bool instDialog::verifyManagementAddress()
 {
-/* check for a common error when multiple interfaces are marked as
+/* check for a common error when none or multiple interfaces are marked as
  * 'management'
  */
     if (cnf.fwobj)
     {
         int nmi = 0;
-        list<FWObject*> ll = cnf.fwobj->getByType(Interface::TYPENAME);
+        list<FWObject*> ll = cnf.fwobj->getByTypeDeep(Interface::TYPENAME);
         for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
         {
             Interface *intf = Interface::cast( *i );
@@ -1066,28 +1051,38 @@ void instDialog::completeInstallerOptions()
         }
         if (nmi>1)
         {
-            addToLog(
-                QObject::tr("Only one interface of the firewall '%1' "
-                            "must be marked as management interface.\n")
-                .arg(QString::fromUtf8(cnf.fwobj->getName().c_str())) );
-            return;
+            QString err = QObject::tr("Only one interface of the firewall '%1' "
+                                      "must be marked as management interface.\n")
+                .arg(QString::fromUtf8(cnf.fwobj->getName().c_str()));
+
+            QMessageBox::critical(this, "Firewall Builder", err,
+                                  tr("&Continue") );
+            addToLog(err);
+            return false;
         }
         if (nmi==0)
         {
-            addToLog(
-                QObject::tr("One of the interfaces of the firewall '%1' "
-                            "must be marked as management interface.\n")
-                .arg(QString::fromUtf8(cnf.fwobj->getName().c_str())));
-            return;
+            QString err = QObject::tr("One of the interfaces of the firewall '%1' "
+                                      "must be marked as management interface.\n")
+                .arg(QString::fromUtf8(cnf.fwobj->getName().c_str()));
+
+            QMessageBox::critical(this, "Firewall Builder", err,
+                                  tr("&Continue") );
+            addToLog(err);
+            return false;
         }
         if (cnf.maddr == "" ||
             cnf.maddr == QString(InetAddr::getAny().toString().c_str()))
         {
-            addToLog(
-                QObject::tr("Management interface does not have IP address, "
-                            "can not communicate with the firewall.\n") );
-            return;
+            QString err = QObject::tr("Management interface does not have IP address, "
+                                      "can not communicate with the firewall.\n");
+
+            QMessageBox::critical(this, "Firewall Builder", err,
+                                  tr("&Continue") );
+            addToLog(err);
+            return false;
         }
     }
+    return true;
 }
 

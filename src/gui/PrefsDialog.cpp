@@ -28,20 +28,20 @@
 #include "global.h"
 #include "check_update_url.h"
 #include "../../VERSION.h"
-#include "../../build_num"
 
 #include "utils.h"
+#include "platforms.h"
 
 #include "PrefsDialog.h"
 #include "FWBSettings.h"
-#include "listOfLibraries.h"
 #include "FWWindow.h"
 #include "HttpGet.h"
+
+#include "fwbuilder/Resources.h"
 
 #include <qlineedit.h>
 #include <qfiledialog.h>
 #include <qcombobox.h>
-#include <qcheckbox.h>
 #include <qlistwidget.h>
 #include <qdir.h>
 #include <qlabel.h>
@@ -58,6 +58,10 @@
 
 #include <QTreeWidgetItem>
 #include <QUrl>
+#include <QCheckBox>
+#include <QFrame>
+#include <QTableWidget>
+#include <QHeaderView>
 
 #include <sstream>
 
@@ -183,9 +187,11 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     rulesFont = st->getRulesFont();
     treeFont = st->getTreeFont();
     uiFont = st->getUiFont();
+    compilerOutputFont = st->getCompilerOutputFont();
 
     m_dialog->rulesFontDescr->setText(getFontDescription(rulesFont));
     m_dialog->treeFontDescr->setText(getFontDescription(treeFont));
+    m_dialog->compilerOutputFontDescr->setText(getFontDescription(compilerOutputFont));
 
     m_dialog->chClipComment->setChecked(st->getClipComment() );
 
@@ -196,6 +202,56 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 #if !defined(Q_OS_WIN32)
     m_dialog->plink_hint->hide();
 #endif
+
+    // Fill lists of platforms and host OS
+
+    QMap<QString,QString> platforms = getAllPlatforms(false);
+    QMap<QString,QString> os = getAllOS(false);
+
+    m_dialog->enabled_platforms->setRowCount(platforms.size());
+    m_dialog->enabled_platforms->setColumnCount(1);
+    int row = 0;
+    QMap<QString,QString>::iterator it;
+    for (it=platforms.begin(); it!=platforms.end(); ++it)
+    {
+        QString name = it.key();
+        QString readable_name = it.value();
+        QTableWidgetItem *cb = new QTableWidgetItem(readable_name);
+        m_dialog->enabled_platforms->setItem(row, 0, cb);
+
+        QString res_status = Resources::platform_res[name.toStdString()]->getResourceStr(
+            "/FWBuilderResources/Target/status/").c_str();
+        QString prefs_status = st->getTargetStatus(name, res_status);
+        cb->setCheckState((prefs_status=="disabled") ? Qt::Unchecked : Qt::Checked);
+
+        cb->setData(Qt::UserRole, name);
+        row++;
+    }
+    m_dialog->enabled_platforms->horizontalHeader()->stretchLastSection();
+    m_dialog->enabled_platforms->sortItems(0);
+    m_dialog->enabled_platforms->update();
+
+    m_dialog->enabled_os->setRowCount(os.size());
+    m_dialog->enabled_os->setColumnCount(1);
+    row = 0;
+    for (it=os.begin(); it!=os.end(); ++it)
+    {
+        QString name = it.key();
+        QString readable_name = it.value();
+        QTableWidgetItem *cb = new QTableWidgetItem(readable_name);
+        m_dialog->enabled_os->setItem(row, 0, cb);
+
+        QString res_status = Resources::os_res[name.toStdString()]->getResourceStr(
+            "/FWBuilderResources/Target/status/").c_str();
+        QString prefs_status = st->getTargetStatus(name, res_status);
+        cb->setCheckState((prefs_status=="disabled") ? Qt::Unchecked : Qt::Checked);
+
+        cb->setData(Qt::UserRole, name);
+        row++;
+    }
+    m_dialog->enabled_os->horizontalHeader()->stretchLastSection();
+    m_dialog->enabled_os->sortItems(0);
+    m_dialog->enabled_os->update();
 }
 
 QString PrefsDialog::getFontDescription(const QFont &font)
@@ -279,6 +335,12 @@ void PrefsDialog::changeTreeFont()
 {
     changeFont(treeFont);
     m_dialog->treeFontDescr->setText(getFontDescription(treeFont));
+}
+
+void PrefsDialog::changeCompilerOutputFont()
+{
+    changeFont(compilerOutputFont);
+    m_dialog->compilerOutputFontDescr->setText(getFontDescription(compilerOutputFont));
 }
 
 void PrefsDialog::changeFont(QFont &font)
@@ -373,6 +435,23 @@ void PrefsDialog::accept()
 
     st->setSSHPath( m_dialog->sshPath->text() );
     st->setSCPPath( m_dialog->scpPath->text() );
+    
+    for (int row=0; row < m_dialog->enabled_platforms->rowCount(); ++row)
+    {
+        QTableWidgetItem *itm = m_dialog->enabled_platforms->item(row, 0);
+        st->setTargetStatus(itm->data(Qt::UserRole).toString(),
+                            (itm && itm->checkState() == Qt::Unchecked) ?
+                            "disabled" : "active");
+    }
+
+    QStringList disabled_os;
+    for (int row=0; row < m_dialog->enabled_os->rowCount(); ++row)
+    {
+        QTableWidgetItem *itm = m_dialog->enabled_os->item(row, 0);
+        st->setTargetStatus(itm->data(Qt::UserRole).toString(),
+                            (itm && itm->checkState() == Qt::Unchecked) ?
+                            "disabled" : "active");
+    }
 
     if (!wd.isEmpty())
     {
@@ -404,18 +483,22 @@ void PrefsDialog::checkForUpgrade(const QString& server_response)
 
     if (current_version_http_getter.getStatus())
     {
-
-        if (server_response.trimmed().isEmpty())
-        {
-            QMessageBox::information(
-                this,"Firewall Builder",
-                tr("Your version of Firewall Builder is up to date."));
-        } else
+        /*
+         * server response may be some html or other data in case
+         * connection goes via proxy, esp. with captive portals. We
+         * should not interpret that as "new version is available"
+         */
+        if (server_response.trimmed() == "update = 1")
         {
             QMessageBox::warning(
                 this,"Firewall Builder",
                 tr("A new version of Firewall Builder is available at"
                    " http://www.fwbuilder.org"));
+        } else
+        {
+            QMessageBox::information(
+                this,"Firewall Builder",
+                tr("Your version of Firewall Builder is up to date."));
         }
     } else
     {

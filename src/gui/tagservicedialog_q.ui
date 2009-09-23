@@ -24,9 +24,6 @@
      <property name="spacing" >
       <number>2</number>
      </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <item>
       <widget class="QFrame" name="frame3" >
        <property name="sizePolicy" >
@@ -85,7 +82,7 @@
            <string/>
           </property>
           <property name="pixmap" >
-           <pixmap resource="MainRes.qrc" >:/Icons/Tag</pixmap>
+           <pixmap resource="MainRes.qrc" >:/Icons/TagService/icon</pixmap>
           </property>
          </widget>
         </item>

@@ -1,0 +1,423 @@
+<ui version="4.0" >
+ <class>secuwallIfaceOptsDialog_q</class>
+ <widget class="QDialog" name="secuwallIfaceOptsDialog_q" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>347</width>
+    <height>438</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>secunet wall: interface settings</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QPushButton" name="buttonHelp" >
+       <property name="text" >
+        <string>Help</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>151</width>
+         <height>27</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk" >
+       <property name="text" >
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="tabShape" >
+      <enum>QTabWidget::Rounded</enum>
+     </property>
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>Options</string>
+      </attribute>
+      <attribute name="icon" >
+       <iconset resource="MainRes.qrc" >
+        <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2" >
+       <item row="0" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" colspan="3" >
+        <widget class="QLabel" name="network_tab_txt2_3" >
+         <property name="text" >
+          <string>Specify secunet wall advanced interface options below</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label" >
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>MTU</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QSpinBox" name="iface_mtu" >
+         <property name="minimum" >
+          <number>1</number>
+         </property>
+         <property name="maximum" >
+          <number>1500</number>
+         </property>
+         <property name="value" >
+          <number>1500</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>Options</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" >
+        <widget class="QLineEdit" name="iface_options" />
+       </item>
+       <item row="9" column="0" >
+        <widget class="QLabel" name="iface_type_label" >
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>Device Type</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1" >
+        <widget class="QComboBox" name="iface_type" />
+       </item>
+       <item row="9" column="2" >
+        <spacer name="horizontalSpacer_3" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="10" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="11" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item rowspan="2" row="11" column="1" >
+        <widget class="QStackedWidget" name="options_stack" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="currentIndex" >
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="page_0" />
+         <widget class="QWidget" name="page_1" >
+          <layout class="QGridLayout" name="gridLayout_1" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="vlan_label" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="text" >
+              <string>VLAN ID</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QSpinBox" name="vlan_id" >
+             <property name="maximum" >
+              <number>4095</number>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <spacer name="horizontalSpacer" >
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>140</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item row="12" column="2" >
+        <spacer name="horizontalSpacer1" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>141</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="2" >
+        <spacer name="horizontalSpacer_2" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="6" column="2" >
+        <spacer name="horizontalSpacer_4" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QCheckBox" name="iface_disableboot" >
+         <property name="text" >
+          <string>Disable at boot</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <widget class="QCheckBox" name="iface_disablearp" >
+         <property name="text" >
+          <string>Disable ARP on this interface</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1" >
+        <spacer name="verticalSpacer" >
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>secuwallIfaceOptsDialog_q</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>secuwallIfaceOptsDialog_q</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>397</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonHelp</sender>
+   <signal>clicked()</signal>
+   <receiver>secuwallIfaceOptsDialog_q</receiver>
+   <slot>help()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>68</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>231</x>
+     <y>245</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>iface_type</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>secuwallIfaceOptsDialog_q</receiver>
+   <slot>typeChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>287</x>
+     <y>196</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>286</x>
+     <y>261</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

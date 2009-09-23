@@ -270,11 +270,15 @@ else
 fi
 AC_DEFINE_UNQUOTED(HAVE_ANTLR_RUNTIME, 1, [antlr_runtime])
 AC_DEFINE_UNQUOTED(HAVE_EXTERNAL_ANTLR, $HAVE_EXTERNAL_ANTLR, [external_antlr])
-AC_SUBST(HAVE_ANTLR_RUNTIME) 
-AC_SUBST(HAVE_EXTERNAL_ANTLR) 
+AC_SUBST(HAVE_ANTLR_RUNTIME)
+AC_SUBST(HAVE_EXTERNAL_ANTLR)
 AC_SUBST(ANTLR_LIBS)
 AC_SUBST(ANTLR_INCLUDEPATH)
 
+# Need real test for this, but at least for now it seems Qt comes with
+# QtDBus support on all platforms except Windows
+AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 1, [qtdbus])
+AC_SUBST(HAVE_QTDBUS)
 
 
 dnl ********************************************************************
@@ -419,6 +423,7 @@ test -n "$OS_SOLARIS" && AC_DEFINE_UNQUOTED(OS_SOLARIS,"${OS_SOLARIS}",[solaris]
 test -n "$OS_FREEBSD" && AC_DEFINE_UNQUOTED(OS_FREEBSD,"${OS_FREEBSD}",[freebsd])
 test -n "$OS_OPENBSD" && AC_DEFINE_UNQUOTED(OS_OPENBSD,"${OS_OPENBSD}",[openbsd])
 test -n "$OS_LINUX" && AC_DEFINE_UNQUOTED(OS_LINUX, "${OS_LINUX}", [linux])
+test -n "$OS_SECUWALL" && AC_DEFINE_UNQUOTED(OS_SECUWALL, "${OS_SECUWALL}", [secuwall])
 test -n "$OS_UNKNOWN" && AC_DEFINE_UNQUOTED(OS_UNKNOWN,"${OS_UNKNOWN}",[unknown])
 
 AC_SUBST(DISTRO)
@@ -447,31 +452,7 @@ AC_CONFIG_FILES([ qmake.inc ])
 
 AC_CONFIG_FILES([ src/res/objects_init.xml ])
 AC_CONFIG_FILES([ src/res/templates.xml ])
-AC_CONFIG_FILES([ src/res/resources.xml ])
 
-AC_CONFIG_FILES([ src/res/os/endian.xml ])
-AC_CONFIG_FILES([ src/res/os/freebsd.xml ])
-AC_CONFIG_FILES([ src/res/os/fwsm_os.xml ])
-AC_CONFIG_FILES([ src/res/os/ios.xml ])
-AC_CONFIG_FILES([ src/res/os/ipcop.xml ])
-AC_CONFIG_FILES([ src/res/os/linksys.xml ])
-AC_CONFIG_FILES([ src/res/os/linux24.xml ])
-AC_CONFIG_FILES([ src/res/os/macosx.xml ])
-AC_CONFIG_FILES([ src/res/os/oneshield.xml ])
-AC_CONFIG_FILES([ src/res/os/openbsd.xml ])
-AC_CONFIG_FILES([ src/res/os/openwrt.xml ])
-AC_CONFIG_FILES([ src/res/os/pix_os.xml ])
-AC_CONFIG_FILES([ src/res/os/solaris.xml ])
-AC_CONFIG_FILES([ src/res/os/unknown_os.xml ])
-
-AC_CONFIG_FILES([ src/res/platform/fwsm.xml ])
-AC_CONFIG_FILES([ src/res/platform/iosacl.xml ])
-AC_CONFIG_FILES([ src/res/platform/ipf.xml ])
-AC_CONFIG_FILES([ src/res/platform/ipfw.xml ])
-AC_CONFIG_FILES([ src/res/platform/iptables.xml ])
-AC_CONFIG_FILES([ src/res/platform/pf.xml ])
-AC_CONFIG_FILES([ src/res/platform/pix.xml ])
-AC_CONFIG_FILES([ src/res/platform/unknown.xml ])
 
 
 AC_OUTPUT

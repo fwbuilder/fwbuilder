@@ -29,9 +29,6 @@
 #include "utils.h"
 
 #include "newGroupDialog.h"
-#include "FWWindow.h"
-
-#include "fwbuilder/FWObjectDatabase.h"
 
 #include <qlineedit.h>
 #include <qapplication.h>
@@ -46,12 +43,14 @@ newGroupDialog::~newGroupDialog()
     delete m_dialog;
 }
 
-newGroupDialog::newGroupDialog(QWidget *parent) : QDialog(parent)
+newGroupDialog::newGroupDialog(QWidget *parent, FWObjectDatabase *_db) : QDialog(parent)
 {
+    db = _db;
+
     m_dialog = new Ui::newGroupDialog_q;
     m_dialog->setupUi(this);
 
-    fillLibraries(m_dialog->libs,mw->db(),true);   // only read-write libs
+    fillLibraries(m_dialog->libs, db, true);   // only read-write libs
     m_dialog->obj_name->setFocus();
 }
 

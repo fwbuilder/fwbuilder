@@ -29,13 +29,15 @@
 
 #include <qstring.h>
 #include <qpainter.h>
-#include <qtableview.h>
+#include <QTreeView>
+#include <QTableView>
 
 #include <vector>
 
 #include "PrintingProgressDialog.h"
 
 class QPrinter;
+class RuleSetView;
 
 class printerStream {
     QPrinter *printer;
@@ -89,6 +91,8 @@ class printerStream {
     void printText(const QString &txt, bool newLine=true);
     void printPixmap(const QPixmap &pm, bool newLine=true);
     void printQTable(QTableView *tbl, bool left_margin=true, bool top_margin=true);
+    void printRuleSetView(RuleSetView *tbl, bool top_margin=true);
+
 
     int  getTextHeight(const QString &txt);
 

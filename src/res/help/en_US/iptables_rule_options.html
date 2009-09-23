@@ -1,0 +1,157 @@
+<h2>Rule options for iptables policy rules</h2>
+
+<a name="general">
+<h2>Tab General</h2>
+
+<h3>Assume firewall is part of 'any'</h3>
+
+<p>
+  This option overrides global setting of the option with the same
+name in the firewall object "advanced" settings dialog.
+</p>
+
+<p>
+  On some firewall platforms there is a difference in the
+  configuration command used to control access through the firewall
+  versus the command that controls access to the firewall itself. For
+  example, in iptables, packets headed for the firewall machine should
+  be inspected in the INPUT chain, while packets going through the
+  firewall are inspected in the FORWARD chain. If this option is ON,
+  the compiler generates code for both FORWARD and INPUT chains if it
+  sees ’any’ as the destination of the policy rule. In other words, it
+  assumes that the firewall is part of ’any’, and packets may either
+  go to or through the firewall. If this option is off, the compiler
+  only generates code for the FORWARD chain. Compiler treats ’any’ in
+  the source of the rule in a similar way, generating code either for
+  the OUTPUT and FORWARD, or only for the FORWARD chain.
+</p>
+
+<h3>Stateless rule</h3>
+<p>
+  Firewall Builder always uses stateful packet inspection if it is
+  available in the target firewall. In case of iptables, this means it
+  always uses module "state" by adding the following parameters to the
+  generated rules: "-m state --state NEW". It also adds a rule to
+  match states "ESTABLISHED,RELATED" on top of the policy. However,
+  sometimes it might be desirable to create a rule without state
+  matching. Checking this checkbox on makes the rule stateless, which
+  means parameters "-m state --state NEW" will not be added.
+</p>
+
+<p>
+  Rules with action Deny are always stateless by default and do not get
+  the "-m state --state NEW" parameters, although you can make them
+  stateful by checking this checkbox.
+</p>
+
+<a name="logging">
+<hr>
+<h2>Tab Logging</h2>
+
+<p>
+  Options in this tab override the same options configured globally in
+  the firewall object "advanced" settings dialog.
+</p>
+
+
+<h3>Log prefix</h3>
+
+<p>
+  Log records will be prefixed with a string you enter in this option.
+  Firewall Builder supports the following macros in the log prefix that
+  are expanded at the compile time: 
+</p>
+
+<p>
+  <ul>
+    <li>%N rule number in the GUI. </li>
+    <li>%A rule action </li>
+    <li>%I interface the rule is associated with </li>
+    <li>%C (iptables only) iptables chain that this rule generated 
+      code for. </li>
+  </ul>
+</p>
+
+
+<h3>Log level</h3>
+
+<p>
+  Choose one of the standard syslog log levels for the "--log-level"
+  option of the LOG iptables target.
+</p>
+
+
+<h3>Netlink group</h3>
+
+<p>
+  This specifies the netlink group (1-32) to which the packet is sent.
+  Used to add "--ulog-nlgroup" parameter if ULOG logging is chosen in
+  the firewall settings dialog, tab "Logging".
+</p>
+
+
+<a name="limit">
+<hr>
+<h2>Tab limit</h2>
+
+<p>
+  Options in this tab are used to configure parameters for the module
+  "limit".
+</p>
+
+<h3>Rate, burst</h3>
+
+<p>
+  These translate into " --limit rate" and "--limit-burst number"
+  options for the module "limit". If rate is set to 0 (the default),
+  parameter "-m limit --limit rate" is not added to the generated
+  iptables command.
+</p>
+
+
+<a name="connlimit">
+<hr>
+<h2>Tab connlimit</h2>
+
+<p>
+  Options in this tab are used to configure parameters for the module
+  "connlimit".
+</p>
+
+<h3>Number of allowed connections per client host</h3>
+
+<p>
+  If this option is set to non-zero value, it adds the following
+  clause to the generated iptables command: "-m
+  connlimit --connlimit-above ".
+</p>
+
+<h3>...per network with netmask of ... </h3>
+
+<p>
+  If this option is set to non-zero value, it adds the following
+  to the generated iptables command: " --connlimit-mask mask".
+</p>
+
+<p>
+  Note that <b>conntrack</b> module must be compiled into the kernel
+  and iptables in order for these options to work on the firewall.
+</p>
+
+
+<a name="hashlimit">
+<hr>
+<h2>Tab hashlimit</h2>
+
+<p>
+  Options in this tab are used to configure parameters for the module
+  "hashlimit". Please see man page for iptables, section "hashlimit"
+  for the explanation of all parameters it accepts. Note that on some
+  older Linux systems this module used to be called
+  "dstlimit". Checking corresponding checkbox in this dialog causes
+  compiler to generate parameter as "-m dstlimit" instead of "-m
+  hashlimit".
+</p>
+
+
+

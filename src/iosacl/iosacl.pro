@@ -8,19 +8,9 @@ include(../../qmake.inc)
 # QMAKE_CXXFLAGS_DEBUG += -DPACKAGE="\"$$PACKAGE\""
 # QMAKE_CXXFLAGS_RELEASE += -DPACKAGE="\"$$PACKAGE\""
 
-SOURCES	 =  OSConfigurator_ios.cpp             \
-			iosacl.cpp                         \
-			PolicyCompiler_iosacl.cpp          \
-			PolicyCompiler_iosacl_writers.cpp  \
-			RoutingCompiler_iosacl.cpp         \
-			RoutingCompiler_iosacl_writers.cpp
+SOURCES	 =  iosacl.cpp
 
-HEADERS	 = ../../config.h                      \
-			OSConfigurator_ios.h               \
-			PolicyCompiler_iosacl.h            \
-			../cisco_lib/PolicyCompiler_cisco.h \
-			../cisco_lib/ACL.h 				    \
-			../cisco_lib/Helper.h 
+HEADERS	 = ../../config.h
 
 !win32 {
 	QMAKE_COPY    = ../../install.sh -m 0755 -s
@@ -28,12 +18,14 @@ HEADERS	 = ../../config.h                      \
 
 win32:CONFIG += console
 
-unix { !macx: CONFIG -= qt }
+INCLUDEPATH += ../cisco_lib/ ../compiler_lib
 
-INCLUDEPATH += ../cisco_lib/
+win32:LIBS  += ../cisco_lib/release/fwbcisco.lib  ../compiler_lib/release/compilerdriver.lib
+!win32:LIBS += ../cisco_lib/libfwbcisco.a ../compiler_lib/libcompilerdriver.a
 
-win32:LIBS  += ../cisco_lib/release/fwbcisco.lib
-!win32:LIBS += ../cisco_lib/libfwbcisco.a
+win32:PRE_TARGETDEPS  = ../cisco_lib/release/fwbcisco.lib ../compiler_lib/release/compilerdriver.lib
+!win32:PRE_TARGETDEPS = ../cisco_lib/libfwbcisco.a ../compiler_lib/libcompilerdriver.a
+
 
 LIBS  += $$LIBS_FWCOMPILER
 

@@ -578,7 +578,6 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             Interface *o = Interface::cast(nobj);
             int sl = atoi(security.c_str());
             o->setSecurityLevel(sl);
-            o->setExt((sl==0)?true:false);
             o->setDyn(addrtype=="dynamic");
             o->setUnnumbered(addrtype=="unnumbered");
             o->setManagement(getBool(management));

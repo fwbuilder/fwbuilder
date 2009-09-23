@@ -30,13 +30,13 @@
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
-#include "FWBSettings.h"
 
-#include "FWObjectPropertiesFactory.h"
-#include "FWWindow.h"
+#include "ProjectPanel.h"
 #include "ObjectListView.h"
 #include "ObjectListViewItem.h"
 #include "FWObjectDrag.h"
+#include "FWBSettings.h"
+#include "FWObjectPropertiesFactory.h"
 
 #include <QHeaderView>
 #include <qdrag.h>
@@ -55,10 +55,10 @@ using namespace libfwbuilder;
  *
  ****************************************************************************/
 
-ObjectListView::ObjectListView(QWidget* parent, const char*,
-                               Qt::WindowFlags f) :
+ObjectListView::ObjectListView(QWidget* parent, const char*, Qt::WindowFlags f) :
     QTreeWidget(parent)
 {
+    db = NULL;
     setWindowFlags(f);
     /*setColumnWidthMode(0, QTreeWidget::Maximum);
     setColumnWidthMode(1, QTreeWidget::Maximum);
@@ -92,7 +92,7 @@ bool ObjectListView::event(QEvent *event)
             QTreeWidgetItem *itm = itemAt(QPoint(cx,cy - header()->height()));
             if (itm==NULL) return false;
             int obj_id = itm->data(0, Qt::UserRole).toInt();
-            obj = mw->db()->findInIndex(obj_id);
+            obj = db->findInIndex(obj_id);
             if (obj==NULL) return false;
 
             cr = visualItemRect(itm);
@@ -125,7 +125,7 @@ QDrag* ObjectListView::dragObject()
     if (ovi==NULL) return NULL;
 
     int obj_id = ovi->data(0, Qt::UserRole).toInt();
-    FWObject *obj = mw->db()->findInIndex(obj_id);
+    FWObject *obj = db->findInIndex(obj_id);
     QString icn = (":/Icons/"+obj->getTypeName()+"/icon-ref").c_str();
         //Resources::global_res->getObjResourceStr(obj, "icon-ref").c_str();
 

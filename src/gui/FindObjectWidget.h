@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_findobjectwidget_q.h>
+#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/RuleElement.h"
@@ -41,13 +42,15 @@ class QWidget;
 class FindObjectWidget : public QWidget
 {
     Q_OBJECT
- private:
 
-    QString                   lastAttrSearch;
-    libfwbuilder::FWObject   *lastFound;
-    libfwbuilder::FWObject::tree_iterator   treeSeeker;
+private:
+
+    QString lastAttrSearch;
+    libfwbuilder::FWObject *lastFound;
+    libfwbuilder::FWObject::tree_iterator  treeSeeker;
     libfwbuilder::Firewall* selectedFirewall;
-
+    ProjectPanel *project_panel;
+    
     bool matchName(const QString &name);
     bool matchID(int id);
     bool matchAttr(libfwbuilder::FWObject* obj);
@@ -57,7 +60,7 @@ class FindObjectWidget : public QWidget
     
  public:
     Ui::findObjectWidget_q *m_widget;
-    FindObjectWidget(QWidget*p, const char * n = 0, Qt::WindowFlags f = 0);
+    FindObjectWidget(QWidget*p, ProjectPanel *pp, const char * n = 0, Qt::WindowFlags f = 0);
     ~FindObjectWidget() { delete m_widget; };
     void findObject (libfwbuilder::FWObject *o);
     

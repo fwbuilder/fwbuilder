@@ -77,10 +77,12 @@ using namespace libfwbuilder;
 
 
 FindWhereUsedWidget::FindWhereUsedWidget(QWidget *p,
+                                         ProjectPanel *pp,
                                          const char * n,
                                          Qt::WindowFlags f,
                                          bool f_mini) : QWidget(p)
 {
+    project_panel = pp;
     m_widget = new Ui::findWhereUsedWidget_q;
     m_widget->setupUi(this);
 
@@ -139,7 +141,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     if (fwbdebug) qDebug("FindWhereUsedWidget: initiate search for %s",
                          obj->getName().c_str());
 
-    mw->db()->findWhereObjectIsUsed(obj, mw->db(), resset);
+    project_panel->db()->findWhereObjectIsUsed(obj, project_panel->db(), resset);
     humanizeSearchResults(resset);
 
     set<FWObject*>::iterator i=resset.begin();
@@ -184,48 +186,46 @@ void FindWhereUsedWidget::showObject(FWObject* o)
 
     if (RuleElement::cast(o)!=NULL)
     {
-        mw->activeProject()->openRuleSet(o->getParent()->getParent());
-        mw->clearManipulatorFocus();
-        RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
+        project_panel->openRuleSet(o->getParent()->getParent());
+        project_panel->clearManipulatorFocus();
+        RuleSetView *rsv = project_panel->getCurrentRuleSetView();
         rsv->selectRE(RuleElement::cast(o), object);
         rsv->setFocus(Qt::MouseFocusReason);
 
-        if (mw->isEditorVisible()) mw->editObject( object );
+        if (project_panel->isEditorVisible()) project_panel->editObject(object);
     } else
     {
         if (Rule::cast(o)!=NULL)
         {
-            mw->activeProject()->openRuleSet(o->getParent());
-            mw->clearManipulatorFocus();
-            RuleSetView *rsv = mw->activeProject()->getCurrentRuleSetView();
-            rsv->selectRE(Rule::cast(o),rsv->getColByType(RuleSetView::Action));
+            project_panel->openRuleSet(o->getParent());
+            project_panel->clearManipulatorFocus();
+            RuleSetView *rsv = project_panel->getCurrentRuleSetView();
+            rsv->selectRE(Rule::cast(o),rsv->getColByType(ColDesc::Action));
 
-            if (mw->isEditorVisible()) mw->editObject( object );
+            if (project_panel->isEditorVisible()) project_panel->editObject(object);
         } else
         {
-            mw->unselectRules();
+            project_panel->unselectRules();
 
             if (Group::cast(o)!=NULL)
             {
-                mw->openObject( o );
-                mw->unselectRules();
+                project_panel->openObject(o);
+                project_panel->unselectRules();
 
-                if (mw->isEditorVisible())
+                if (project_panel->isEditorVisible())
                 {
-                    mw->editObject( o );
-                    mw->selectObjectInEditor( object);
+                    project_panel->editObject(o);
+                    project_panel->selectObjectInEditor(object);
                 }
             } else
             {
-                mw->openObject( object );
-                mw->unselectRules();
+                project_panel->openObject( object );
+                project_panel->unselectRules();
 
-                if (mw->isEditorVisible()) mw->editObject( object );
+                if (project_panel->isEditorVisible()) project_panel->editObject( object );
             }
         }
     }
-    //mw->closeEditor();
-    //mw->openObject( o );
 }
 
 void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
@@ -258,13 +258,14 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
     RuleSet *rs = NULL;
     QPixmap object_icon;
     QPixmap parent_icon;
+    FWBTree tree_format;
 
-    if (mw->isSystem(container) || Library::cast(container)) return NULL;
+    if (tree_format.isSystem(container) || Library::cast(container)) return NULL;
 
     if (RuleElement::cast(container)!=NULL || Rule::cast(container)!=NULL)
     {
         fw = container;
-        while (fw!=NULL && !Firewall::isA(fw))
+        while (fw!=NULL && Firewall::cast(fw)==NULL) // Firewall::cast matches also Cluster
         {
             if (Rule::cast(fw)) r = Rule::cast(fw);
             if (RuleSet::cast(fw)) rs = RuleSet::cast(fw);

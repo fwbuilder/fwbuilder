@@ -111,9 +111,19 @@ linksysAdvancedDialog::linksysAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linksys_path_modprobe,
                          fwopt,
                          "linux24_path_modprobe" );
-
+    data.registerOption( m_dialog->linksys_path_vconfig,
+                         fwopt,
+                         "linksys_path_vconfig");
+    data.registerOption( m_dialog->linksys_path_brctl,
+                         fwopt,
+                         "linksys_path_brctl");
+    data.registerOption( m_dialog->linksys_path_ifenslave,
+                         fwopt,
+                         "linksys_path_ifenslave");
 
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -129,7 +139,7 @@ void linksysAdvancedDialog::accept()
 
     data.saveAll();
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

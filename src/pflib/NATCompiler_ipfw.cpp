@@ -61,7 +61,7 @@ int NATCompiler_ipfw::prolog()
 
 void NATCompiler_ipfw::compile()
 {
-    cout << _(" Compiling NAT rules for ") << fw->getName() << " ..." << endl << flush;
+    info(" Compiling NAT rules for " + fw->getName());
 
     try {
 
@@ -74,7 +74,8 @@ void NATCompiler_ipfw::compile()
 
         runRuleProcessors();
 
-    } catch (FWException &ex) {
+    } catch (FWException &ex)
+    {
 	error(ex.toString());
 	exit(1);
     }

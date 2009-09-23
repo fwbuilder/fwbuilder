@@ -116,7 +116,7 @@ void NetworkDialog::validate(bool *result)
     assert(s!=NULL);
     try
     {
-        InetAddr( m_dialog->address->text().toLatin1().constData() );
+        InetAddr( m_dialog->address->text().toStdString() );
     } catch (FWException &ex)
     {
         *result=false;
@@ -145,10 +145,13 @@ void NetworkDialog::validate(bool *result)
                     tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
                     tr("&Continue"), 0, 0,
                     0 );
-                
             }
         }
-        InetAddr( m_dialog->netmask->text().toLatin1().constData() );
+        InetAddr nm( m_dialog->netmask->text().toStdString() );
+        // Do not allow netmask of 0 bits See #251
+        if (nm.isAny())
+            throw FWException("Network object can not have netmask 0.0.0.0");
+
     } catch (FWException &ex)
     {
 
@@ -182,8 +185,7 @@ void NetworkDialog::applyChanges()
                         m_dialog->comment->toPlainText().toUtf8().constData()));
     try
     {
-        s->setAddress(
-            InetAddr(m_dialog->address->text().toLatin1().constData()) );
+        s->setAddress(InetAddr(m_dialog->address->text().toStdString()));
     } catch (FWException &ex)
     {
 // exception thrown if user types illegal m_dialog->address or
@@ -201,8 +203,7 @@ void NetworkDialog::applyChanges()
         }
         else
         {
-            s->setNetmask(
-                InetAddr(m_dialog->netmask->text().toLatin1().constData()) );
+            s->setNetmask(InetAddr(m_dialog->netmask->text().toStdString()));
         }
     } catch (FWException &ex)
     {
@@ -211,10 +212,10 @@ void NetworkDialog::applyChanges()
 //        bool ok = false ;
     }
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void NetworkDialog::discardChanges()
@@ -238,7 +239,7 @@ void NetworkDialog::addressEntered()
     try
     {
         QString addr = m_dialog->address->text();
-        InetAddrMask address_and_mask(string(addr.toLatin1().constData()));
+        InetAddrMask address_and_mask(string(addr.toStdString()));
         if (addr.contains('/'))
         {
             m_dialog->address->setText(

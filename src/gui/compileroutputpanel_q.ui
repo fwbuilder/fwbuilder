@@ -1,0 +1,36 @@
+<ui version="4.0" >
+ <class>CompilerOutputPanel_q</class>
+ <widget class="QWidget" name="CompilerOutputPanel_q" >
+  <property name="enabled" >
+   <bool>true</bool>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>527</width>
+    <height>222</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Script Editor</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" >
+   <property name="margin" >
+    <number>2</number>
+   </property>
+   <item row="0" column="0" >
+    <widget class="QTextEdit" name="compiler_output_panel" >
+     <property name="textInteractionFlags" >
+      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
+ <connections/>
+</ui>

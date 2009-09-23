@@ -68,7 +68,8 @@ public slots:
  */
     void close_sign(QCloseEvent *e);
     void changed_sign();
-    
+    void notify_changes_applied_sign();
+
 };
 
 #endif // ADDRESSRANGEDIALOG_H

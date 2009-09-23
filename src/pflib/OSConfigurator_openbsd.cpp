@@ -31,6 +31,8 @@
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
 
 #include <algorithm>
 #include <functional>
@@ -68,7 +70,7 @@ void OSConfigurator_openbsd::processFirewallOptions()
         if (s=="1" || s=="On" || s=="on") s="1";
         else                              s="0";
 
-	output << "$SYSCTL -w net.inet.ip6.forwarding=" << s << endl;
+	output << "$SYSCTL -w net.inet6.ip6.forwarding=" << s << endl;
     }
 
     s=options->getStr("openbsd_ip_sourceroute");
@@ -88,70 +90,10 @@ void OSConfigurator_openbsd::processFirewallOptions()
     }
 }
 
-void OSConfigurator_openbsd::addVirtualAddressForNAT(const Network*)
-{
-}
-
-void OSConfigurator_openbsd::addVirtualAddressForNAT(const Address *addr)
-{
-    if (virtual_addresses.empty() || 
-	find(virtual_addresses.begin(),
-             virtual_addresses.end(),
-             *(addr->getAddressPtr())) == virtual_addresses.end())
-    {
-        FWObject *iaddr = findAddressFor(addr, fw );
-        if (iaddr!=NULL)
-        {
-            Address *iaddr_addr = Address::cast(iaddr);
-            assert(iaddr_addr!=NULL);
-            Interface *iface = Interface::cast(iaddr->getParent());
-            assert(iface!=NULL);
-
-            output << "add_addr " << addr->getAddressPtr()->toString() << " "
-                   << iaddr_addr->getNetmaskPtr()->toString() <<  " "
-                   << iface->getName() << endl;
-        
-            virtual_addresses.push_back(*(addr->getAddressPtr()));
-        } else
-            warning(_("Can not add virtual address ") +
-                    addr->getAddressPtr()->toString() );
-    }
-}
-
-#if 0
-    if (virtual_addresses.empty() || 
-	find(virtual_addresses.begin(),virtual_addresses.end(),
-             *(addr->getAddressPtr())) == virtual_addresses.end()) {
-
-        FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
-        for ( ; i!=i.end(); ++i ) {
-	    Interface *iface=dynamic_cast<Interface*>(*i);
-	    assert(iface);
-
-	    FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
-	    for ( ; j!=j.end(); ++j )
-            {
-                Address *iaddr = Address::cast(*j);
-                if ( ipv4->belongs( *(addr->getAddressPtr()) ) )
-                {
-                    output << "ifconfig " 
-                           << iface->getName() << " "
-                           << addr->getAddressPtr()->toString()
-                           << " alias" << endl;
-                    virtual_addresses.push_back( *(addr->getAddressPtr()) );
-                    return;
-                }
-            }
-	}
-	warning(_("Can not add virtual address ") +
-                addr->getAddressPtr()->toString() );
-    }
-}
-#endif
-
 int OSConfigurator_openbsd::prolog()
 {
     printPathForAllTools("openbsd");
+    printFunctions();
 
     processFirewallOptions();
 
@@ -178,68 +120,9 @@ void  OSConfigurator_openbsd::printPathForAllTools(const string &os)
     if (!s.empty()) path_logger=s;
     else            path_logger=os_data.getPathForTool(os,OSData::LOGGER);
 
-
-
-    output                                                     << endl;
-    output << "log() {"                                        << endl;
-    output << "  test -x \"$LOGGER\" && $LOGGER -p info \"$1\"" << endl;
-    output << "}"                                              << endl;
-    output                                                     << endl;
-
-
-    output << "add_addr() {" << endl;
-    output << "  addr=$1"    << endl;
-    output << "  nm=$2"      << endl;
-    output << "  dev=$3"     << endl;
-    output << "  ( ifconfig $dev | egrep -q \"inet +${addr} \" ) || " << endl;
-    output << "    { "       << endl;
-    output << "      echo \"$dev: $addr/$nm\"" << endl;
-    output << "      ifconfig $dev inet $addr netmask $nm alias" << endl; 
-    output << "    } "       << endl;
-    output << "}"            << endl;
-    output << endl;
-    output << endl;
-
     output << "PFCTL=\""  + path_pfctl    + "\"\n";
     output << "SYSCTL=\"" + path_sysctl   + "\"\n";
     output << "LOGGER=\"" + path_logger + "\"\n";
     output << endl;
-
-
-    output << endl;
 }
-
-void  OSConfigurator_openbsd::configureInterfaces()
-{
-    FWOptions* options=fw->getOptionsObject();
-    if ( options->getBool("configure_interfaces") ) 
-    {
-        output << endl;
-
-        FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
-        for ( ; i!=i.end(); ++i ) 
-        {
-            Interface *iface=dynamic_cast<Interface*>(*i);
-            assert(iface);
-
-            if (!iface->isRegular()) continue;
-
-            FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
-            for ( ; j!=j.end(); ++j ) 
-            {
-                Address *iaddr = Address::cast(*j);
-                output << "add_addr "
-                       << iaddr->getAddressPtr()->toString() << " "
-                       << iaddr->getNetmaskPtr()->toString() << " "
-                       << iface->getName() << endl;
-        
-                virtual_addresses.push_back(*(iaddr->getAddressPtr()));
-            }
-        }
-        output << endl;
-    }
-}
-
-
-
 

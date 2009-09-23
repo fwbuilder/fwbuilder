@@ -1,0 +1,193 @@
+
+<h1>Important Information about Firewall Builder 3.1.0</h1>
+
+<!--
+<p>
+<b><i>This message is shown once, you will not see it again on
+    subsequent runs of the program.</i></b> You can find the same
+    information, and more, on the web site in the
+    section <a href="http://www.fwbuilder.org/docs/firewall_builder_release_notes.html">"Release
+    Notes"</a>.
+</p>
+-->
+
+<p>
+  <i>Firewall Builder v3.1.0 is internal testing release not intended
+  for publication. Please do not distribute it. This version is
+  preliminary, not suitable for production use, most likely has bugs
+  and is made available for download to make it possible for selected
+  users to test it and validate most important design decisions.</i>
+</p>
+
+<p>
+  <b><i>You can keep this window open while you are working with the
+  GUI or open it again using main menu Help/Release Notes.</i></b>
+</p>
+
+<p>
+  <ul>
+    <li><a href="#cluster">Support for High Availability configurations</a></li>
+    <li><a href="#bridge">Changes in the support for bridging firewalls</a></li>
+  </ul>
+</p>
+
+<a name="cluster"></a>
+<h2>Support for High Availability configurations</h2>
+
+<p>
+  Test data file <b>cluster.fwb</b> with examples of different cluster
+  configurations <a href="http://www.fwbuilder.org/examples/cluster.fwb">is available for download here</a>.
+</p>
+
+<p>
+New object type "Cluster" (currently it is under Objects in the tree)
+represents the HA pair.  You configure policy and NAT rules in the
+rule sets of this object rather than in the actual firewalls.
+</p>
+
+<p>
+  Here is what you need to do to set up HA configuration:
+</p>
+
+<p>
+  <ul>
+    <li>Create your firewall objects. Assign platform and host os and
+      name interfaces as usual. Do not add any policy or NAT
+      rules. These are your real (member) firewalls. Interfaces should
+      have their real IP addresses (not CARP or VRRP addresses).
+    </li>
+
+    <li>
+      Create a Cluster object which you configure with proper platform
+      and host OS. Use the usual "New Object" menu or toolbar button
+      to create this object. Note that in order for the firewall
+      object to become a member of a cluster, their platform and host
+      os settings must match.
+    </li>
+
+    <li>
+      The Cluster object gets carp or vrrp interfaces. Name them
+      "carp0", "carp1", "vrrp0", "vrrp1" or whatever indexes they have
+      on your machines. You can add these when you create new cluster
+      object if choose manual method in the new cluster wizard. You
+      can add CARP/VRRP password and VRID at the same time, but if you
+      don't, you can add them later.
+    </li>
+
+    <li>
+      Besides interfaces, the Cluster object has a new child object
+      "State Sync Group". this group represents state synchronization
+      protocol. Currently pfsync is supported for OpenBSD and
+      conntrackd for Linux. To configure, double click it in the tree
+      to open it in the dialog and click "Manage Members". Select
+      interfaces of the member firewalls in the panel on the left hand
+      side and click arrow button to add them to the list on the
+      right. Use checkbox to select master. Click OK when done. They
+      should appear in the "members" table in the State Sync Group
+      dialog. Note that platform and host OS of the cluster object and
+      members must match, otherwise firewall objects do not appear in
+      the "members" dialog panel.
+    </li>
+
+    <li>
+      Each interface of the Cluster also has new child object besides
+      IP address, called "firewall:carp0:members" or similar to
+      this. These objects represent failover groups. Double click on
+      them to open in the dialog. Just like with State Sync Group,
+      there is a table for members and a button "Manage
+      Members". Click this button to add interfaces of the member
+      firewalls to the failover group of each cluster interface. Do
+      not forget to select the master.
+    </li>
+
+    <li>
+      Button "Edit protocol parameters" allows you to edit CARP or
+      VRRP password, VHID and other parameters for the failover
+      protocol.
+    </li>
+
+    <li>
+      There are few new checkboxes in the "Script" tab of the firewall object
+      dialog. These allow you to control whether the program will add
+      shell commands to create and configure vrrp/carp interfaces.
+    </li>
+
+    <li>
+      Compile by clicking right mouse button on the cluster object and
+      using menu item "Compile". This will in fact compile each member
+      firewall separately so you'll get .fw and .conf files for both
+      of them.
+    </li>
+
+    <li>
+      Again, you configure all the rules in the policy and NAT rule
+      sets that belong to the cluster object. If you put cluster's
+      interfaces in rules, the program replaces them with interfaces
+      of the member firewall when it compiles rules. If you put
+      cluster object in a rule, it is like if you put member firewall
+      object there instead, except the program automatically picks the
+      member firewall it compiles the policy for.
+    </li>
+  </ul>
+</p>
+
+
+<a name="bridge"></a>
+<h2>Changes in the support for bridging firewalls</h2>
+
+<p>
+  Skip this if you do not use Firewall Builder to configure iptables
+  firewalls in bridging configuration. Otherwise, please read on.
+</p>
+
+<p>
+  Previous versions of Firewall Builder provided an attribute "bridge
+  port" in the dialog of the Interface object. If an interface marked
+  as "bridge port" was used in the "Interface" column of a policy
+  rule, fwbuilder policy compiler used "--physdev-in" or
+  "--physdev-out" option instead of conventional "-i" or "-o"
+  option. The attribute "bridge port" has been deprecated in the new
+  version. You need to make changes to your firewall and interface
+  objects manually in order to make your old configurations compile
+  properly with new version of Firewall Builder.
+</p>
+
+<p>
+  First, check if you have an interface object to represent the
+  bridge. Usually it will have a name <b>br0</b> or similar. If you
+  do not have this interface object in the firewall in Firewall
+  Builder, please create it. Regardless whether this object existed
+  before or you just created it, open it in the editor and click
+  <b>"Advanced Interface Settings"</b> button in the dialog. This
+  button and the dialog it opens are new in this version of the
+  program. In the dialog that appears use drop-down menu "Device Type"
+  to set its type to <b>"Bridge"</b>. Then click "OK" to close the
+  dialog and save configuration.
+</p>
+
+<p>
+  Next, find interface objects that should represent bridge ports and
+  simply drag them and drop under the interface <b>br0</b> (copy/paste
+  works too). In the end, these interfaces become "children"
+  of <b>br0</b> and should be located in the branch of the tree rooted
+  at <b>br0</b>. The program displays a comment "bridge port" next to
+  the name of an interface like this in the tree. Here is how it looks
+  like:
+</p>
+
+<img src="new_bridge_interfaces.png" style="float: left; margin: 10px;">
+
+<p>
+  In this configuration we have bridge interface <b>br0</b> and two
+  bridge ports <b>eth0</b> and <b>eth1</b>. Note how <b>eth0</b>
+  and <b>eth1</b> are located in the tree under <b>br0</b>, on the
+  same level as its ip address object.
+</p>
+
+<p>
+  This is it, bridge port interfaces will be recognized by the program
+  again and it will generate proper iptables configuration.
+</p>
+
+
+

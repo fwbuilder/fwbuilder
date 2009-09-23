@@ -1,3 +1,1159 @@
+2009-09-18  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (ItfNegation::processNext): (change in
+	libfwbuilder) fix for bug #2710034 "PF Compiler in 3.0.3
+	Unprotected Interface Bug". When we expand "interface" rule
+	element which uses negation, skip unprotected interfaces.
+
+2009-09-16  vadim  <vadim@vk.crocodile.org>
+
+ 	* RoutingCompiler_ipt_writers.cpp (PrintRule::processNext): Fixed
+	security issue with temporary file handling in the generated
+	iptables script. The problem only affects Linux systems where
+	Firewall Builder is used to generate static routing
+	configuration. The problem exists in Firewall Builder versions
+	3.0.4, 3.0.5, 3.0.6
+
+2009-09-14  vadim  <vadim@vk.crocodile.org>
+
+	* standardized compiler error and warning messages using format
+	fw_name:ruleset_name:rule_number: warning: message
+	fw_name:ruleset_name:rule_number: error: message
+
+	* dialogs that show compiler output recognize error and warning
+	messages and highlight them using different color and bold font.
+
+2009-09-07  vadim  <vadim@vk.crocodile.org>
+
+	* single rule compile feature implemented for all
+	platforms (iptables, ipfilter, pf, ipfw, iosacl, pix) and
+	integrated with the GUI. Currently using keyboard shortcut "x".
+	Fixes #23.
+
+2009-09-06  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView_single_rule_compile.cpp (RuleSetView::compileForCurrentRow):
+	Single rule compile implementation. Currently this is triggered by
+	hitting keyboard key 'x', the event is processed by RuleSetView
+	class which calls RuleSetView::compileForCurrentRow(). This
+	creates compiler driver object and calls it to compile currently
+	selected rule. The result is shown in the editor panel. User can
+	select parts or the whole of the generated script in the editor
+	panel but it is read-only.  Works only with iptables yet. Refs #23.
+
+	* src/iptlib/iptlib.pro (SOURCES): Moved all modules for fwb_ipt
+	except main module ipt.cpp to a separate library so that they can
+	be linked with either command line compiler fwb_ipt or the
+	GUI. Refs #23
+
+2009-09-05  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printDstService):
+	fixed bug (no #): policy compiler for Cisco IOS ACL did not add
+	icmp type to the generated ipv6 access-list statements for rules
+	that matched ICMPv6 services.
+
+2009-09-03  vadim  <vadim@vk.crocodile.org>
+
+	* src/res/configlets/linux24/update_bridge: configlet that updates
+	bridge interfaces will now completely synchronize interfaces with
+	configuration created in fwbuilder even if no bridge interfaces
+	are used in fwbuilder. Bridge interfaces that exist on the
+	firewall but not in fwbuilder will be deleted and those that exist
+	in fwbuilder but are missing on the machine will be added. Bridge
+	ports are deleted and added after bridge interfaces have been
+	synchronized.
+
+	* src/res/configlets/linux24/update_vlans: fixed command line in
+	the command that removed vlan interface
+
+2009-08-30  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::addToLog): fixed bug #2847263
+	"Batch compiling incrementally slow". The time it took to add a
+	log line to the progress window in the "Compile" dialog slowed
+	down a lot as amount of text in QTextEditor increased.
+
+2009-08-28  vadim  <vadim@vk.crocodile.org>
+
+	* ProjectPanel.cpp (ProjectPanel::event): instead of several
+	methods in FWWindow that scan all project panel windows and
+	execute some operation, using user defined events. Currently have
+	two events: dataModifiedEvent and updateObjectInTreeEvent. The
+	first one signals that some object has changed so that
+	ProjectPanel::event() can update timestamps and do other things.
+	It then posts the second event, which it will catch and process on
+	the next event processing run. The second event does UI updates.
+	Both events carry file name and object ID. Only those ProjectPanel
+	objects that have the same file process the event. Events are
+	dispatched to project panels in FWWindow::event(). Concentrating
+	all UI update logic in one place helps avoid unnecessary redraws.
+	This replaces FWWIndow::updateLastModifiedTimestampForOneFirewall,
+	FWWindow::updateLastModifiedTimestampForAllFirewalls,
+	FWWindow::reloadAllWindowsWithFile.
+
+	* interfaceProperties.cpp (interfaceProperties::manageIpAddresses):
+	this is a generic method that implements a policy to decide
+	whether generated script should manage ip addresses of a given
+	interface. It checks if it belongs to a cluster or a firewall and
+	failover protocol (if it belongs to a cluster). It fills two
+	lists: one is the list of addresses that the interface should have
+	and another is a list of interfaces the script must not remove
+	even if they are assigned to the interface. The method uses data
+	from host_os XML resource file.
+
+2009-08-27  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver.cpp (CompilerDriver::mergeRuleSets): See #372:
+	this change reverses the logic of the program when it merges rule
+	sets from the cluster into its member firewalls. In the original
+	Secunet implementation rule sets of members were ignored and only
+	one top level rule set from the cluster was ever used. Now we
+	check if member firewall has rule set of the same name as cluster
+	and use it if it is not empty and issue a warning. If rule set of
+	the member firewall with the same name is empty, rules from the
+	cluster are used. All rule sets of the cluster that do not match
+	anything in member firewalls are merged into firewalls and used
+	for compilation. This way, we can have multiple rule sets in the
+	cluster and can have slightly different rules in member firewalls
+	if necessary. See ticket #372 for more details and info for the
+	documentation.
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::addPredefinedPolicyRules):
+	fixes #388: "automatic rules are added to second rule set in
+	cluster member". IF a cluster member firewall had several policy
+	rule set objects, automatic rules for conntrackd, vrrp, heartbeat
+	were added multiple times.
+
+	* OSConfigurator_linux24_interfaces.cpp (printInterfaceConfigurationCommands):
+	fixes #387: add calls to update_addresses shell function in
+	generated script even for interfaces with no ip addresses. This
+	way, if such interface has an address on the machine, it will be
+	removed. This helps synchronize configuration with fwbuilder when
+	user removes all addresses from an interface and converts it to
+	"unnumbered". Note that update_addresses never removes scope link
+	and scope host addresses of the interface even if they are not
+	configured in fwbuilder GUI.
+
+	* PolicyCompiler_pf.cpp (SplitDirection::processNext): applied
+	patch per #2844561: "PF Compiler Direction Both Duplicate for
+	Route Action". Need to split the rule if direction is Both
+	and action is Route.
+
+	* newFirewallDialog.cpp (newFirewallDialog::templateSelected):
+	fixed bug #2844596: "Crash during newFirewallDialog". GUI crashed
+	if user clicked "next" in the new firewall dialog to open page
+	with templates, then clicked "Back" and then "Next" again.
+
+	* ObjectManipulator.cpp (ObjectManipulator::select): fixed bug
+	#2845667 "Crash after find object". When host object was found
+	using "Find object" function while searching by ip address,
+	clicking on the selected host in the tree caused crash.
+
+	* VERSION (LIBFWBUILDER_SOMAJOR): started 3.0.7
+
+2009-08-26  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::validateForPaste):
+	User should be able to add vlan interface to a bridge (vlan
+	interface becomes bridge port). Fixes #384
+
+	* CompilerDriver.cpp (CompilerDriver::populateClusterElements):
+	moved this method from class Compiler. fixes #367
+
+	* CompilerDriver_compile.cpp (compileSingleRule): entry point for
+	single rule compile. Takes one argument - rule ID and returns a
+	QMap<QString,QString> where key is firewall name and value is
+	generated script for this rule. Currently using this entry point
+	in the command line compilers via cli argument -s rule_id. Fully
+	implemented in fwb_ipt.  Fixes #358, #206
+
+	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): using
+	std::auto_ptr to protect OSConfigurator, PolicyCompiler and
+	NATCompiler objects and to properly delete them to avoid memory
+	leaks in fwb_ipt. fixes #371
+
+2009-08-24  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver.cpp (CompilerDriver::commonChecks2): refactored
+	bunch of common sense checks from compilers for ipt and pf into
+	common module. This also fixes #337 by checking if it is ok for
+	the cluster interface to have no ip address using xml resource
+	file for the fw host OS. Protocols such as heartbeat and openais
+	can operate when failover interface has no shared cluster address
+	because these protocls can use multicast address. However
+	configuration when cluster interface using one of these protocols
+	has shared IP is also legit. The check here only suppresses error
+	message when interface has no ip.
+
+	* platforms.cpp (setInterfaceTypes): Fixes #335 : if interface
+	name matches naming convention for vlan interfaces and vlan type
+	is in the list that came from the resource file, then leave only
+	vlan in the list we return.  Note that if resource file says this
+	subint can not be vlan, we dan't return vlan type on the list even
+	if its name looks like it could be one.
+
+	* ProjectPanel.cpp (ProjectPanel::updateTreeViewItemOrder):
+	Removed ProjectPanel::updateTreeViewItemOrder() and removed call
+	to it from ObjectEditor::notifyChangesApplied(). We take care of
+	QT bug workaround for improper sorting in other places. This
+	change fixes #329.
+
+2009-08-21  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::newInterface): If
+	newly created interface object is a top-level interface, always
+	set its type to "ethernet". If it is subinterface, call
+	guessInterfaceType() to guess.
+
+	* ObjectManipulator.cpp (guessInterfaceType): fixes #334.  the GUI
+	guesses correct subinterface type when it is created and when user
+	hits "Apply" in the interface object dialog after some changes
+	have been made. If inetrface name matches one of the patterns of
+	the vlan inetrface for the given OS, its type is set to "vlan" and
+	vlan ID is assigned. If its name does not match naming pattern of
+	a vlan interface but parent interface type is "bridge" or
+	"bonding", subinterface type is set to "ethernet". This covers
+	most of the use cases and makes subinterface type assignment
+	automatic.
+
+	* ObjectManipulator.cpp (ObjectManipulator::newInterfaceAddress):
+	fixes #330: the name of the ip address of an interface should
+	follow the schema "firewall:interface:subinterface:ip". The same
+	schema should be followed when address object is automatically
+	renamed when the user renames firewall or interface object.
+
+	* ObjectManipulator.cpp (ObjectManipulator::copyObj): call
+	Interface::getOptionsObject() at the beginning of copy and
+	dragStart operations to make sure interface has options object
+	later in paste and drop operations when we need it to do some
+	validation checks.
+
+2009-08-20  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::validateForPaste):
+	perform checks for the valid vlan subinterface configuration
+	for copy/paste and d&d drop operations; this uses the same
+	algorithms as the check done when user renames an interface.
+	This means user can not copy/paste or d&d interface "eth1.100"
+	to make it a subinterface of "eth0" or top-level interface.
+
+	* InterfaceDialog.cpp (InterfaceDialog::validate): Additional
+	checks for validity of interface name: the name can not contain
+	white space, if the name looks like vlan interface, checking
+	if it is valid (base name must match name of the parent interface
+	and vlan ID must be in the allowed range)
+
+	* InterfaceDialog.cpp (InterfaceDialog::applyChanges): Fixes #328:
+	"automatically assign vlan id to interface based on interface
+	name". The GUI automatically sets interface type to "vlan" and
+	configures vlan ID if user changes name of the interface to
+	something that matches regex for vlan interfaces on given OS.
+	This is done when user hits "Apply" button in the Interface object
+	dialog.
+
+	* src/compiler_lib/interfaceProperties.h (class
+	interfaceProperties): refactored class linux24Intrfaces into class
+	hierarchy with base class interfaceProperties and factory
+	class interfacePropertiesObjectFactory. These classes are now
+	part of the compiler extensions library in src/compiler_lib
+	and can be used by both the GUI and compilers.
+
+	* Configlet.cpp (Configlet::Configlet): New constructor for the
+	class Configlet accepts os name perifx and default os name prefix.
+	If configlet file is not found in the directory defined by the
+	first prefix, the program tries to find it in the default place
+	defined by the second prefix.
+
+	* src/res/configlets/sveasoft/script_skeleton: Using separate
+	configlets for Linksys/Sveasoft host os.
+
+2009-08-19  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::newInterfaceAddress):
+	fixes #318: New ip address of interface was always created with
+	the same name even if there was an address object with the same
+	name under the same interface.
+
+	* OSConfigurator_linux24_interfaces.cpp (validateInterfaces):
+	Tests for unsupported interface configurations, see #315, 324.
+
+	The first test scans all subinterfaces of each interface and tries
+	to find top level inetrfaces wth the same name, then checks their
+	type. For the combination some_interface/br1, we look for the top
+	level interface "br1" and if it exists and its type is "bridge",
+	then this is unsupported configuration. This test does not allow
+	subinterface to have the same name as a bridge interface
+	regardless of the type of the parent interface. So, bridge/bridge
+	or bonding/bridge combinations are not allowed. The test has to
+	search top level interfaces because bridge port subinterfaces can
+	be copies (e.g. when a vlan interface is at the same time a bridge
+	port).
+
+	The second test looks for the following combinations: 1) vlan
+	interfaces under bridge interface (e.g. br0 = [eth1, eth2], vlan
+	inetrface br0.100 is not supported) and 2) vlan interfaces as
+	slaves of bonding interfaces (e.g. eth0.100, eth1.100, bond0
+	= [eth0.100, eth1.100], note the difference between this and vlan
+	of bonding interface such as bond0.201). Only regular interfaces
+	can be slaves of bonding interface. If subinterface type is
+	"ethernet" but its name matches one of the vlan interface regexes,
+	assume this is vlan. Slave subintrfaces do not have to be copies,
+	one can have "eth4" only once, as a slave, so we cant search for a
+	top level interface with the same name and rely on the
+	subinterface type.
+
+2009-08-18  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::makeNameUnique): The
+	program should never change the name of vlan interface when such
+	interface is being copied/pasted or dropped to become a
+	subinterface. The name of the vlan interface carries vlan ID and
+	changing name is not allowed. One of the typical usage patterns is
+	to create vlan interface "eth0.101" and then immediately try to
+	copy/paste it to under br0 to make it bridge port. In this case
+	interface eth0.101 wont have type "8021q" just yet because the
+	user did not open interface "advanced" settings dialog to set its
+	type and VLAN ID. Users assume that if its name is "eth0.101",
+	then it must be vlan interface. We should follow this assumption
+	too. Also, check for names "vlanNNN" as well.
+
+	* ObjectManipulator.cpp (ObjectManipulator::actuallyPasteTo):
+	during "paste" operation, call makeNameUnique() to make the name
+	of the copy unique before actually adding the object to its
+	parent.  Otherwise makeNameUnique() finds it and changes the name.
+
+	* src/res/configlets/ipcop/script_skeleton: Using configlet to
+	define script structure for generated IPCOP script. IPCOP script
+	is executed as /etc/rc.d/rc.firewall.local and does not manage ip
+	addresses of interfaces or vlan/bond/bridge interfaces so it does
+	not need corresponding shell functions. Script can check if
+	interfaces configured in fwbuilder GUI match actual appliance, so
+	the shell code to do that is included. Since we should be able to
+	use interfaces with addresses assigned dynamically in rules, the
+	code that gets their addresses at run time is included. Code to
+	check if data files used by run time address table objects exist
+	is also included. Using configlets helps better manage what is
+	included for the given os family ("linux24" or "ipcop" or some
+	other in the future). Also, user can override our configlets by
+	placing file with the same name in "fwbuilder/configlets"
+	directory in their $HOME.
+
+2009-08-17  vadim  <vadim@vk.crocodile.org>
+
+	* src/res/configlets/linux24/shell_functions: cleaned up coding
+	style in shell functions in configlets: using uniform 4 spaces
+	indentation.
+
+	* src/res/configlets/linux24/script_skeleton: This configlet
+	defines structure of generated iptables script. Script recognizes
+	the following command line options: start|stop|interfaces
+
+	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): Building
+	whole iptables script from configlet.
+
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::configureInterfaces):
+	See #314. Need to update vlans and bond interfaces first and only
+	then deal with bridges because bridge may use bonding interface or
+	vlan created in the first step. Unsupported configurations: vlan
+	interfaces under bridge interface (e.g. br0 = [eth1, eth2], vlan
+	inetrface br0.100 is not supported), bridge interface as part of
+	bonding interface (e.g. bond0 = [br0, br1]), vlan interface as a
+	slave of bonding interface (e.g. eth0.100, eth1.100, bond0
+	= [eth0.100, eth1.100]). Only regular interfaces can be slaves of
+	bonding interface; vlans can be created under bonding interface
+	(e.g. bond0.100), both regular interfaces and vlans can be bridge
+	ports. Script first updates bonding interfaces, then updates all
+	vlans, including possibly those under bonding interfaces, and
+	finally updates bridge configurations using interfaces created in
+	first two steps.
+
+2009-08-12  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_ipt.cpp (splitSDNATRule::processNext): fixed bug
+	#2836321: "SNAT rule that changes Trans Src and Trans Port does
+	not work". Dual translation rule that changes source address and
+	destination port was not supported.
+
+2009-08-10  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): For bug
+	#2835193: "Modulate state doesnt work for PF". Check variable
+	"modulate state" in rule optiopns and global firewall options. If
+	checkbox is turned on in the firewall options, then we always use
+	"modulate state". This option can also be turned on for an
+	individual rule using rule options dialog.
+
+	* pfAdvancedDialog.cpp (pfAdvancedDialog::pfAdvancedDialog): Fixed
+	bug #2835193: "Modulate state doesnt work for PF".  The name Xml
+	attribute used to hold the value of "module state" option was
+	entered incorrectly in the dialog.
+
+2009-08-09  vadim  <vadim@vk.crocodile.org>
+
+	* ipfw.cpp (main): compiler for ipfw uses new manifest format
+	and supports remote file name for the generated .fw script
+	Fixes #308
+
+	* ipf.cpp (main): compiler for ipfilter uses new manifest format
+	and supports remote file names for generated .fw and .conf
+	files. Fixes #307
+
+	* CompilerDriver_pf.cpp (CompilerDriver_pf::getRemoteConfFileName):
+	compiler for PF uses new manifest format and supports remote file names
+	for generated .fw and .conf files. Fixes #306
+
+	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): compiler
+	for iptables uses new manifest format to implement support for
+	alternative name of the script on the firewall. Fixes #305
+
+2009-08-08  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog.cpp: Installation process is controlled by sevral
+	variables that the user can change in the "advanced" dialog
+	for the firewall platform:
+
+	Tab "Compiler":
+	 - output file name
+	 - script name on the firewall
+	 - for PF and ipfilter additionally .conf file name on the firewall
+
+	Tab "Installer":
+	 - directory on the firewall where script should be installed
+	 - command that installer should execute on the firewall
+
+	These variables have default values if input fields are left blank
+	in the dialog as follows:
+
+	output file name: the name of the firewall object, plus extension
+	".fw". For PF two files are generated: <firewall>.fw and
+	<firewall>.conf; for ipfilter files <firewall>.fw, <firewall>-ipf.conf
+	and <firewall>-nat.conf are generated.
+
+	script name on the firewall: the same as the output file name
+
+	directory on the firewall: "/etc"
+
+	command that installer executes to activate policy: installer runs
+	script <firewall>.fw
+
+	If user enters alternative name in the "script name on the
+	firewall", it is used when generated script is copied to the
+	firewall. There are two input fields in the dialogs for PF and ipf
+	where user can enter alternative name for the .fw script and .conf
+	file. The name can be relative or absolute path. If it is a
+	relative path or just a file name, it is treated as a file name in
+	the directory specified by the "directory on the firewall" input
+	field in the "Installer" tab. If the name is an absolute path, the
+	directory entered in "directory on the firewall..." input field is
+	ignored.  If user entered alternative name for the script on the
+	firewall, the command that installer should execute to activate it
+	must be entered as well. If the alternative name was entered as an
+	absolute path, activation command should take this into account
+	and use the same absolute path. The command can start with "sudo "
+	if user account used to copy and activate policy is not root.
+
+	* iptAdvancedDialog.cpp (iptAdvancedDialog::iptAdvancedDialog):
+	Added input fields to the "advanced" dialogs for iptables, pf,
+	ipfilter and ipfw to make it possible to specify the name of the
+	generated script on the firewall. With this change, fwbuilder can
+	generate the script using unique name but use standard common name
+	such as "rc.firewall" when the script is copied to the firewall
+	machine. This is important when two firewalls that are part of a
+	cluster are compiled at the same time. In this case we can not use
+	name such as "rc.firewall" for the output script because file
+	generated for the second firewall in the pair overwrites the one
+	generated earlier for the first. Now we can use unique names for
+	scripts generated for each member of the pair but copy them to the
+	firewall machines using the same common name. Fixes #304 The
+	implementation is not complete yet, I still need to make changes
+	in the installer and policy compilers.
+
+2009-08-07  vadim  <vadim@vk.crocodile.org>
+
+	* src/res/configlets/linux24/process_bridge: Configlets that
+	updated ip addresses, vlan, bridge and bonding interfaces bring
+	interfaces up using $IFCONFIG command. Fixes #301
+
+2009-08-06  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::actuallyPasteTo): When
+	a subinterface is copied to make a subinterface of another
+	interface, the type of the copy is reset to "ethernet". If the
+	type was retained, it was easy to create subinterface with invalid
+	type without obvious signs in the GUI that this has happened.  For
+	example, if vlan subinterface was copied to make subinterface of a
+	bridge interface, it retained type "8021q" but ended up as a child
+	of interface with the name that did not match. The intention was
+	to use vlan subinterface as a bridge port, but compiler issued an
+	error because of a subinterface having illegal name (name is only
+	checked for vlan subinterfaces). Fixes #299
+
+	* PrefsDialog.cpp: Added a page to the global Preferences dialog
+	where user can enable/disable target firewall platforms and host
+	OS. Disabled platforms and OS do not appear in the drop-down lists
+	in a "new firewall" and "new cluster" dialogs, as well as object
+	editor panel. This helps reduce clutter if user only works with a
+	couple of platforms and OS. Default setting of the status for each
+	platform and os comes from the corresponding XML resource
+	file. This way we can ship the program with some host OS or
+	platforms disabled by default, but the user can still enable them.
+	Settings in users preferences override default status setting
+	in the resource file. Fixes #262
+
+	* ObjectManipulator.cpp (ObjectManipulator::newAddressRange):
+	newly created objects get default name that is the same as the
+	type name with no "New ..." prefix.
+
+	* ObjectTreeView.cpp (ObjectTreeView::dropEvent): if user drags an
+	object in the tree and drops it beyond the last tree item, the
+	program should ignore this drop operation and do nothing (it used
+	to crash). Added checks for this condition. Fixes #294
+
+	* ObjectManipulator.cpp (ObjectManipulator::makeNameUnique): while
+	guessing the name of the new interface or trying to avoid
+	duplicate names during copy/paste, we should not change names of
+	the vlan interfaces. Fixes #296
+
+2009-08-05  vadim  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::prepareToolsMenu): disable
+	Tools/Discover menu if all internal windows were closed and there
+	is no active object tree where discovered objects could be
+	created. Fixes #291
+
+	* ObjectManipulator.cpp (ObjectManipulator::relocateTo): Added
+	check for when user tries to drag&drop an object onto itself in
+	the tree. Fixes #292
+
+2009-08-04  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::newInterface): when
+	user creates interfaces of a firewall or a cluster using context
+	menu "Add Interface" in the object tree, the program finds
+	interface that was created most recently and uses its name as a
+	prototype, automatically incrementing its number. For example, if
+	the user needs to create several "eth" interfaces, the program
+	will automatically create "eth0", "eth1", "eth2" etc. whithout the
+	need for the user to rename them. Fixes #277
+
+	* configure.in: Removed all .xml.in resource files in src/res/
+	src/res/os and src/res/platform. The only configurable attribute
+	in these was "version", which is not required and was not used
+	anywhere. Fixes #269
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printOptionalGlobalRules):
+	automatically added rule that matches packets in state INVALID
+	should use log prefix that says it is for state INVALID. The rule
+	now ignores user-defined global logging prefix and always uses
+	"INVALID state -- DENY ". Fixes #283
+
+2009-08-04  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* heartbeatOptionsDialog.cpp (heartbeatOptionsDialog::heartbeatOptionsDialog):
+	Added GUI elements to allow the user to change multicast address
+	for heartbeat. Deafault address is 224.0.10.100. Fixes #213
+
+	* clusterMembersDialog.cpp (clusterMembersDialog::firewallAdd):
+	enabled multiple object selection in the left panel of the cluster
+	member management dialog. User can select several interfaces using
+	Ctrl-click (or Command-Click on Mac OS X) and then move them all
+	to the right panel at once. Fixes #254
+
+	* ObjectEditor.cpp (ObjectEditor::notifyChangesApplied): Dialogs
+	that have buttons to open "advanced" settings dialogs now save
+	changes and disable "Apply" button when such additional dialog is
+	opened. This includes Firewall, Interface, cluster group and few
+	other objects. Previously changes were saved as well but the
+	"Apply" button was not disabled, making impression that changes
+	were not saved into the object. Fixes #286
+
+2009-08-03  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::autorename): See #273:
+	"child objects not getting renamed". Autorename function should
+	rename ip and mac addresses of interfaces and subinterfaces when
+	the host or parent interface name changes.
+
+	* newClusterDialog.cpp (newClusterDialog::finishClicked): See
+	#211: "interface type mismatch between member interfaces and
+	cluster interface". When cluster object was created manually and
+	failover type was set to "heartbeat" or "openais" for its
+	interfaces, the type was not properly set in created objects.
+
+2009-08-02  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectTreeView.cpp (ObjectTreeView::dropEvent): Dragging several
+	subinterfaces from one parent interface to another created
+	bizzarre tree-like structure where each of these subinterfaces
+	became subinterface of another. See #280. Fixed in r1254
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertConntrackRule):
+	Added test to make sure ip address entered by the user in the
+	StateSync group dialog for conntrack is valid. Fixes #220
+
+	* CompilerDriver_ipt_cluster.cpp (CompilerDriver_ipt::processStateSyncGroups):
+	The program did not find StateSync group member inetrfaces when
+	they were subinterfaces and as the result compiler did not
+	generate automatic policy rules for conntrack. Fixed in r1253
+
+	* ObjectManipulator.cpp (ObjectManipulator::prepareForInsertion):
+	DTD does not allow nested subinterfaces; only one level of
+	subinterfaces is supported.  Interface::validateChild() now checks
+	for this condition and the GUI shows detailed error message dialog
+	when user tries to move interface that has subinterfaces under
+	another interface using copy/paste or d&d. Fixes #275
+
+	* ObjectManipulator.cpp (ObjectManipulator::relocateTo): When user
+	dragged an interface that has child objects (ip address, MAC
+	address) and dropped it in a different place in the object tree,
+	the program would show only the interface object in the new place
+	but not its children. Should be using insertSubtree() to fix
+	this. Fixes #276
+
+2009-08-01  vadim  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::chooseNewFileName): If
+	user forgot to add .fwb suffix to the file name they entered in
+	the "Save As" function, the program automatically adds it.
+	See #234
+
+	* CompilerDriver.cpp (CompilerDriver::commonChecks): compiler
+	should check that cluster member firewalls are configured to use
+	different output file names. See #237
+
+	* OSConfigurator_linux24::printVerifyInterfacesCommands: function
+	verify_interfaces uses configlet "verify_interfaces" and checks if
+	all interfaces of the firewall defined in the GUI really exist,
+	including bonding, vlan and bridge interfaces.
+
+	* OSConfigurator_linux24::printInterfaceConfigurationCommands:
+	Using configlet process_addresses to implement shell commands that
+	incrementally add and remove addresses on interfaces. Added
+	support for IPv6 addresses. Addresses found on the actual
+	interfaces of the firewall are compared with those defined in
+	fwbuilder objects and missing ones are added and those not defined
+	in fwbuilder are deleted. If a firewall is a cluster member using
+	heratbeat for failover, ip addresses associated with heartbeat
+	failover groups are skipped. The script wont delete these on the
+	firewall that is active at the moment when script runs and wont
+	add them to the passive firewall because that would interfere with
+	operation of heartbeat. The same is done for OpenAIS
+	protocol. Fixes #270 , See #261
+
+2009-07-31  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_linux24_interfaces.cpp (OSConfigurator_linux24::printVlanInterfaceConfigurationCommands):
+	Using configlets to generate shell script that incrementally
+	updates (adds and removed) VLAN, bridge and bonding interfaces.
+	See #261
+
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::printShellFunctions):
+	Using configlets to generate iptables script.
+
+	* Configlet.cpp (Configlet::Configlet): generic class to read
+	fragment of generated script from an external file, possibly do
+	macro substitution and then insert the contents into generated
+	script. Configlets are stored in files in the resources directory
+	that is part if installed package (/usr/share/fwbuilder/configlets
+	on Linux, fwbuilder31.app/Contents/Resources/configlets on Mac OS
+	X, c:\FWBuilder31\resources\configlets on Windows) or in the
+	subdirectory "fwbuilder/configlets" in users home directory on all
+	OS. If configlet file is found in the home directory, it overrides
+	the one installed with the package. This provides for simple way
+	for users to override parts of the generated configuration
+	scripts. Currently configlets are only impletened for Linux-based
+	OS. Fixes #263
+
+2009-07-30  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::printShellFunctions):
+	fixes #259 Generated script should check if brctl, vconfig and
+	ifenslave tools are available before using them.
+
+	* Host.cpp (Host::getManagementAddress): the program failed to
+	retrieve ip address that should be used to talk to the fw when
+	management interface was subinterface. Fixes #260
+
+	* linux24advanceddialog_q.ui: Fixes #258 fixed tab order in the
+	dialog.
+
+2009-07-29  vadim  <vadim@vk.crocodile.org>
+
+	* linux24AdvancedDialog.cpp (linux24AdvancedDialog::linux24AdvancedDialog):
+	Added input fields for vconfig, brctl and ifenslave to the host
+	settings dialogs for linux24, linksys, ipcop, openwrt. See #256
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::addInterface): Removed
+	obsolete checkbox "Add virtual addresses", we always discover
+	virtual addresses. Instead added checkbox "Add interfaces with no
+	ip addresses". If this option is turned on, discovery druid
+	creates interfaces with no ip addresses as "unnumbered". Even when
+	this option is off, interfaces with no addresses are created if
+	they are discovered to have vlan, bridge or bodning subinterfaces.
+	Fixes #246 and 229
+
+	* NetworkDialog.cpp (NetworkDialog::validate): Fixes #251: do not
+	allow 0 bit netmask for Network and NetworkIPv6 objects.
+
+	* linux24Interfaces.cpp (linux24Interfaces::rearrangeInterfaces):
+	Special treatment of the vlan subinterface that are members of
+	bridge group: snmp discovery now creates subinterfaces for these
+	vlan interfaces twice, first time as a child of the bridge
+	interface and then also as a vlan subinterface of the parent
+	physical interface. For example, in the confgiuration such as the
+	following
+
+	bridge name bridge id    STP enabled    interfaces
+	br0  8000.000c29f6bebe   no             eth4.102
+	                                        eth5
+
+	We create interface  br0 with subinterfaces eth4.102, eth5, and
+	also we create interface eth4 with subinterface eth4.102
+
+	* ObjectManipulator.cpp (ObjectManipulator::makeNameUnique):
+	duplicate names are automatically fixed only if objects with the
+	same name belong to the same parent. Identical names on different
+	levels are allowed. For example, interface "eth0" can be direct
+	child of a Firewall object (so it can have vlan subinterfaces) and
+	a member of the bridge group where it is a child of another
+	interface.
+
+2009-07-28  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_pf_writers.cpp (PrintRule::_printSrcPort): remove
+	extra white space after tcp port spec if source port match was not
+	used in the rule.
+
+	* PolicyCompiler_pf.cpp (fillDirection::processNext): Applied
+	patch per bug report #2828633: "Patch: Warning when changing rule
+	direction in compiler". This adds warning when rule direction is
+	changed by the compiler because object in source or destination
+	was firewall itself.
+
+	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::compile): Implemented
+	change per bug #2828602: "PF Compiler Direction Both no
+	Duplication Patch". PF rules with direction "both" used to be
+	split to make two rules, one with direction "inbound" and another
+	with direction "outbound". This was an artefact of old rule
+	generation model where user could choose to permit everything
+	outbound and only generate inbound rules, or generate both inbound
+	and outbound rules. Since we now always generate both in abd out
+	rules and PF matches both directions when neither "in" or "out" is
+	specificed, this splitting has become redundant.
+
+	* Compiler_cluster.cpp (Compiler::populateClusterElements): while
+	scanning interfaces-members of a failover group, use only those
+	that are children of the firewall that we are compiling. fixes
+	#242 "fwb_ipt generates duplicate automatic rules for heartbeat
+	and other protocols"
+
+	* FWWindow.cpp (FWWindow::disableActions): Always enable toolbar
+	buttons "Compile" and "Install". Fixes #249
+
+	* FirewallDialog.cpp (FirewallDialog::validate): fixes #248
+	"setting firewall type as empty space crashes". Note that the
+	combobox with firewall platforms will have separators instead of
+	spaces if QT version is 4.5 or above. Separators are not
+	selectable so this problem can not happen with late versions of
+	QT. Old versions of QT do not support separators in QComboBox
+	widget, which is why spaces are inserted in the list. This change
+	makes the program validate platform and host os settings and not
+	allow empty strings.
+
+	* RoutingRuleOptionsDialog.cpp (RoutingRuleOptionsDialog::loadFWObject):
+	fixes #247 - "lusters->fw->routing->insert rule->options causes
+	segfault". Needed to check for Firewall and Cluster types here and
+	in a few other places.
+
+	* instDialog_ui_ops.cpp (instDialog::completeInstallerOptions):
+	fixes #244: "installer does not check subinterfaces when it is
+	looking for management interface"
+
+	* OSConfigurator_linux24_interfaces.cpp (OSConfigurator_linux24::printVlanInterfaceConfigurationCommands):
+	fixes #243 - need to set naming schema for vlan interfaces in
+	a separate command before creating vlan interface. Doing so in
+	one vconfig command causes error.
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::createRealObjects):
+	discovery druid guesses which interfaces from the list found by
+	SNMP crawler are vlan subinterfaces and creates them as children
+	of the corresponding top level interface. It also sets interface
+	type and vlan ID. Fixes #239  Bonding and bridge subinterfaces
+	are also recognized.
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::createRealObjects):
+	discovery druid sets firewall platform and host OS using
+	information from sysDescr OID. fixes #241
+
+	* linux24Interfaces.cpp (linux24Interfaces::rearrangeInterfaces):
+	this new class implements various algorithms used to guess which
+	interfaces discovered by SNMP crawler might be vlan subinterfaces.
+	It will also find bonding and bridge interfaces. Fixes #240
+
+2009-07-27  vadim  <vadim@vk.crocodile.org>
+
+	* clusterMembersDialog.cpp (clusterMembersDialog::createMember):
+	support for subinterfaces as cluster group members. Fixes #235
+
+2009-07-26  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt_optimizer.cpp (optimizeForMinusIOPlus::processNext):
+	Better way to do optimization for "-i +", "-o +" for bug #2822098:
+	check for interfaceStr equal to "*" instead of re->isAny()
+
+	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): check all
+	interfaces, including subinterfaces to make sure all the ones
+	marked as "regular" have IP addresses.
+
+	* DialogFactory.cpp (DialogFactory::createClusterGroupOptionsDialog):
+	fixed bug introduced in r1208 - clicking button "Edit protocol
+	settings" in the failover group with type "heartbeat" failed to
+	open the dialog.
+
+	* PolicyCompiler_ipt_optimizer.cpp (optimizeForMinusIOPlus::processNext):
+	Better way to do optimization for "-i +", "-o +" for bug #2822098:
+	check for interfaceStr equal to "*" instead of re->isAny()
+
+2009-07-25  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_linux24_interfaces.cpp (printInterfaceConfigurationCommands):
+	the program did not create commands to add ip addresses to VLAN
+	subinterfaces. Fixes #226
+
+	* openaisOptionsDialog.cpp (openaisOptionsDialog::openaisOptionsDialog):
+	Added support for OpenAIS failover protocol in the GUI and
+	policy compiler for iptables. Fixes #214
+
+	* newFirewallDialog.cpp (newFirewallDialog::finishClicked): the
+	program left platform and os settings undefined of the new
+	firewall object created from template. Fixes #210
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertFailoverRule):
+	Policy compiler for iptables adds automatic rules for heartbeat
+	protocol if it is used for failover. Rules permit all udp port 694
+	in and out on the given interface. Refs #213
+
+	* Cluster.cpp (Cluster::getMembersList): need to scan not only
+	StateSyncClusterGroup child objects but also all
+	FailoverClusterGroup objects in order to find all member
+	firewalls. The program used to look only at StateSyncClusterGroup
+	objects, which meant it did not recognize any members if state
+	sync group was empty. This fixes issue #4 in the bug #2826765:
+	"problems and suggestions for 3.1.0-b1187".
+
+2009-07-24  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (decideOnChainIfDstFW::processNext):
+	There was no rule in INPUT chain generated when cluster object was
+	in "destination". Fixes #215
+
+	* CompilerDriver_ipt.cpp (CompilerDriver_ipt::processPolicyRuleSet):
+	fixed problem #2 "duplicate rules" reported in the bug #2826765:
+	"problems and suggestions for 3.1.0-b1187". Compiler did not add a
+	call to the shell function reset_iptables_v4 to reset all chains.
+
+	* Rule.cpp (PolicyRule::getBranch): fixed problem #4 "GUI crash
+	when setting action to be a chain." reported in the bug #2826765:
+	"problems and suggestions for 3.1.0-b1187". The GUI crashed when
+	policy rule in the cluster policy was set to action "Chain".
+
+2009-07-23  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertConntrackRule):
+	automatically added rules that permit conntrackd messages use
+	address and port configured in the protocol options for the state
+	sync group for the cluster, or if these are empty, default values
+	from the host OS xml resource file. Generated rules are configured
+	to go into INPUT and OUTPUT chains. Refs #212
+
+	* conntrackOptionsDialog.cpp (conntrackOptionsDialog::conntrackOptionsDialog):
+	make conntrackd multicast address and udp port configurable in the
+	protocol options dialog for conntrackd state sync protocol. Default
+	address and port are stored in the host OS xml resource file. Refs #212
+
+2009-07-19  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (specialCaseWithFWInDstAndOutbound::processNext):
+	fixed bug #2823951: "unnecessary rules in FORWARD chain". Policy
+	rules that have interface object in "Interface" column and
+	direction "Both" generate unnecessary iptables commands in the
+	FORWARD chain when destination matches one of the addresses that
+	belong to the firewall.
+
+2009-07-18  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::moveRule): fixed bug #2823668:
+	"MDI window glitch". If the GUI had two or more MDI windows and
+	user moved rules in one of them, the GUI switched to another after
+	the operation was complete.
+
+	* resources.xml.in: Removed unused XML elements from the resource
+	file. A lot of the stuff was obsolete in there.
+
+	* ObjectTreeView.cpp (ObjectTreeView::updateTreeItems): New icons
+	for v4. Cleanup in the code to make sure we use proper icons
+	everywhere.
+
+2009-07-17  vadim  <vadim@vk.crocodile.org>
+
+	* linux24.xml.in: Moved tables of allowed failover and state sync
+	types as well as interface and subinterface types from the code in
+	platforms.cpp to the OS resource files in src/res/os/*.xml.in
+	Fixes #58
+
+	* fwbuilder.dtd.in (Library): fixed bug #2823424: "Deleting
+	UserService object breaks data file format". When user deleted
+	UserService object, it was moved to the "Deleted Objects" library
+	which broke XML file because DTD did not allow UserService element
+	as a child of Library
+
+2009-07-16  vadim  <vadim@vk.crocodile.org>
+
+	* newClusterDialog.cpp (newClusterDialog::shrinkListOfPlatforms):
+	clean-up in the newClusterDialog class. List of platforms shown on
+	the first page should include only platforms that support
+	clustering. Fixes #197
+
+	* FWBTree.cpp (systemObjects): system group "Clusters" moves to
+	the top level of the tree. Fixes #167
+
+2009-07-15  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt_optimizer.cpp (optimizeForMinusIOPlus::processNext):
+	fixed bug #2822098: "IPT: adds useless "-i +" iin some cases".
+	Added optimization to remove redundant "-i +" and "-o +" if
+	chain is INPUT or OUTPUT.
+
+2009-07-14  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (singleItfNegation::processNext): fixed
+	bug #2819901: "sub-optimal expansion of negated interface". Policy
+	rules with single interface object in "interface" rule element
+	with negation should generate iptables commands using "-i ! itf"
+	or "-o ! itf" rather than multiply the rule using all other
+	interfaces of the firewall. Note that for iptables v1.4.3 and
+	later, extrapositioned syntax is used, such as "! -i itf".
+
+	* PolicyCompiler_PrintRule.cpp, NATCompiler_PrintRule.cpp: fixed
+	bug #2821050: "loading new fw rules on iptables 1.4.3.2+ gives
+	warnings". starting with v1.4.3.1 iptables started giving warnings
+	when negation ("!")  is used after --option. This fix adds version
+	"1.4.3" to the list of recognized iptables versions in fwbuilder
+	and makes compiler generate extrapositioned version of the option
+	such as "!  --option arg".
+
+2009-07-13  vadim  <vadim@vk.crocodile.org>
+
+	* iptAdvancedDialog.cpp (iptAdvancedDialog::iptAdvancedDialog):
+	fixed bug #2820840: "IPT: prolog script+iptables-restore silent
+	incompatibility". With this fix the GUI does not allow for the
+	prolog script to be placed after policy reset if iptables-restore
+	is used to activate iptables rules. Also policy compiler for
+	iptables checks for this condition and aborts with an error
+	message if prolog place is set to "after reset" but
+	iptables-restore is used to activate policy. Configuration may end
+	up with this combination of options if user set prolog place to
+	"after reset" first and switched activation method to
+	iptables-restore later.
+
+	* ACL.cpp (ciscoACL::addRemark): fixed bug #1778536 "IOSACL -
+	remark command". Remarks now include rule comments; if comment
+	consists of several lines, each line is added using separate
+	remark statement. This works for both IOS ACL and PIX platforms.
+
+2009-07-12  vadim  <vadim@vk.crocodile.org>
+
+	* printerStream.cpp (printerStream::printQTable): fix bug
+	#2807724: "Print out FWB still not ok". Taking into account hidden
+	rable rows associated with rule groups while printing rule sets.
+	Before this fix some rules disappeared between pages in the
+	printout.
+
+2009-07-11  vadim  <vadim@vk.crocodile.org>
+
+	* PrintingController.cpp (PrintingController::printRuleSet): bug
+	#2807724: "Print out FWB still not ok". Rule groups were always
+	printed expanded, even if they were collapsed by the user in the
+	GUI.
+
+	* OSConfigurator_openbsd.cpp (processFirewallOptions): fixed bug
+	#2820162 "Bad sysctl name for OpenBSD pf" - the sysctl argument
+	for IPv6 forwarding was incorrect.
+
+	* AddressRange.h (libfwbuilder): fixed bug #2820152: "Address
+	ranges and other such need IPv4/v6 typing". AddressRange object
+	should be recognized and removed from the rule if it is used in
+	ipv6 rule set. To do this, add virtual method
+	hasInetAddress() (should return true) to indicate that this object
+	has an address. This works since virtual method getAddressPtr()
+	has been implemented anyway.
+
+	* VERSION (VERSION): started v3.0.6
+
+2009-07-11  vadim  <vadim@vk.crocodile.org>
+
+	* FindObjectWidget.cpp (FindObjectWidget::inSelectedFirewall):
+	Search and replace did not work in scope "policy of opened
+	firewall" for cluster policies. Fixes #185
+
+	* InterfaceDialog.cpp (InterfaceDialog::loadFWObject): since
+	current implementation can not generate configuration commands for
+	interfaces of the member firewalls using attributes of the cluster
+	interface, disable GUI controls in the interface object dialog if
+	it is an interface of a cluster. fixes #187
+
+	* Summary of changes in the "interface advanced options" dialogs
+	for cluster interfaces. The "Advanced settings" button is now
+	disabled in the dialog for the main cluster interface. The code
+	has been changed to always check the type of the failover group
+	instead of the interface type where it needs to determine failover
+	protocol (vrrp, heartbeat or carp). All parameters of the failover
+	protocol should be configured using failover group object. The
+	"advanced options" dialog is still available for interfaces of the
+	real firewalls and their subinterfaces. Fixes #109, refs #180,
+	#183, #181, #187, #179, #163
+
+2009-07-09  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_linux24_interfaces.cpp (printInterfaceConfigurationCommands):
+	user can now add loopback interface to the cluster object and use
+	it in rules. This interface does not have failover group and has
+	the usual 127.0.0.1/8 ip address. fixes #163
+
+	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
+	ref #181: using failover group type instead of cluster interface
+	type.
+
+	* newClusterDialog.cpp (newClusterDialog::finishClicked): ref
+	#183: set type of the cluster intrfaces to "cluster_intrface".
+	Before, new cluster wizard unconditionally set it to "vrrp". Still
+	need to add dialog elements to let user choose failover protocol.
+
+	* linux24IfaceOptsDialog.cpp (linux24IfaceOptsDialog::linux24IfaceOptsDialog):
+	fixes #180: hide "interface type" gui element from the "advanced"
+	interface options dialog for the main interfaces of cluster
+	objects. These interfaces have no parameters and their type always
+	matches the type of failover cluster group object. All parameters
+	of the failover protocol are set in the dialog of the failover
+	group.
+
+	* InterfaceDialog.cpp (InterfaceDialog::loadFWObject): ref #180 :
+	disable "Advanced settings" button in the interface object
+	dialog if it is main intrface of a cluster object.
+
+2009-06-29  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): Compiler
+	checks types of state sync and failover groups and aborts if
+	it finds unsupported type. Fixes #164
+
+	* ClusterDialog.cpp (ClusterDialog::resetClusterGroupTypes): fix
+	types of state sync and failover groups when user changes host OS
+	and/or platform. Fixes #164
+
+2009-06-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_linux24_interfaces.cpp (printBondingInterfaceConfigurationCommands):
+	Support for intrface bonding for generic Linux firewall.
+	"Advanced" interface settings dialog provides three interface types:
+	"vlan", "bridge", "bonding". For bonding interfaces, GUI controls
+	are provided for the following parameters: mode, xmit_hash_policy
+	and a free-style single line input field for other driver options.
+	Fixes #172
+
+	* platforms.cpp (getInterfaceTypes): Support for "heartbeat"
+	failover protocol in clusters: "heartbeat" interface type,
+	"heartbeat" failover group type. Compiler adds rules to permit
+	vrrp only when failover type is set to "vrrp". For "heartbeat"
+	failover no rules are added atm. Fixes #169
+
+        * Compiler_cluster.cpp (Compiler::processFailoverGroup): (change
+	in libfwbuilder) fixes #166: cluster should be allowed to have
+	interfaces with the same name as interfaces of the member
+	firewall (i.e. "eth0"). This is necessary to support failover
+	protocols that do not create virtual interfaces, but rather
+	operate over normal interfaces, such as heartbeat.
+
+2009-06-23  vadim  <vadim@vk.crocodile.org>
+
+	* pfAdvancedDialog.cpp (pfAdvancedDialog::pfAdvancedDialog): force
+	the tab widget to open tab 0 on creation of the dialog. Often
+	after the dialog was modified in Designer, it is left in the state
+	when it opens on some random page. This fixes #155 "pf advanced
+	settings dialog opens on tab "Script" by default"
+
+	* OSConfigurator_bsd.h: common class for all supported BSD-like
+	host OS (freebsd, openbsd, macosx). Using common base class to
+	avoid code duplication. This fixes #162 "ifconfig commands to
+	create carp and pfsync interfaces are not generated for FreeBSD".
+
+	* ClusterGroupDialog.cpp (ClusterGroupDialog::addIcon): fixes #161:
+	pfsync protocol does not require "master" setting in cluster group.
+
+	* clusterMembersDialog.cpp (clusterMembersDialog::availableClicked):
+	Let user click in any column of the list except the very first to
+	select interface to be added to the list of cluster group members.
+
+	* clusterMembersDialog.cpp (clusterMembersDialog::updateAvailableTree):
+	fixes #111 "Member dialog should keep the tree on the left hand
+	side expanded all the time". The left hand side panel used to
+	collapse all available firewalls, thus hiding their interfaces
+	from view every time user added an interface to the right hand
+	side panel.
+
+	* CompilerDriver.cpp (CompilerDriver::configure): Using separator
+	"," between fw object id and file name instead of ':' which was a
+	poor choice because it is part of the file path on Windows. Fixes #157
+
+	* CompilerDriver_pf.cpp (CompilerDriver_pf::getConfFileName): Using
+	QT classes QFileInfo and QDir to manipulate output file names
+	and paths portably.
+
+	* freebsd.xml.in: Support CARP/pfsync clusters on FreeBSD.
+
+2009-06-19  vadim  <vadim@vk.crocodile.org>
+
+	* release_notes_3.1.0_en_US.html: fixes #146: A warning telling
+	the user that the way bridging interfaces should be configured has
+	changed. Uses a one-time dialog created per #145. Refs #145 #147.
+
+	* FWWindow.cpp (FWWindow::startupLoad): Fixes #145: universal
+	facility for a one-time dialog shown to the user on program start.
+	These dialogs will have important information about the
+	release. Dialog is shown once for each version.
+
+2009-06-18  vadim  <vadim@vk.crocodile.org>
+
+	* newFirewallDialog.cpp (newFirewallDialog::newFirewallDialog):
+	Fixes #90: Interface attribute "bridgeport" has been deprecated,
+	removing GUI controls in the new firewall dialog and interface
+	dialog.
+
+	* InterfaceDialog.cpp (InterfaceDialog::loadFWObject): Fixes #143:
+	If inetrface is a bridge port, then GUI elemnts "regular",
+	"dynamic" "unnumbered" should be disabled b/c it can not have an
+	ip address. Instead, showing text label "Bridge Port Interface".
+
+	* ObjectManipulator.cpp (ObjectManipulator::relocateTo):
+	Implemented drag&drop function to move objects from one place in
+	the tree to another. Dragging with Ctrl button pressed creates a
+	copy. Fixes #141.
+
+2009-06-17  vadim  <vadim@vk.crocodile.org>
+
+	* v3.0.5 released in the main production branch
+
+2009-06-14  vadim  <vadim@vk.crocodile.org>
+
+	* InterfaceDialog.cpp (InterfaceDialog::loadFWObject): Ticket #55:
+	(libfwbuilder) deprecated isExt() and setExt() methods. Platforms
+	that care about interface being external should use security
+	levels. Currently this is only PIX and it uses sec. levels
+	already. Also removed dialog element in InterfaceDialog class
+	and references to these methods elsewhere. Compilers did not
+	use the flag "ext" already.
+
 2009-06-11  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printRule):
@@ -88,7 +1244,43 @@
 	care of the situation when group A referenced group B, which in
 	turn referenced group A again.
 
+	* OSConfigurator_linux24_interfaces.cpp (OSConfigurator_linux24::printBridgeInterfaceConfigurationCommands):
+	implemented support for bridge configuration on Linux using brctl
+	tool. Of bridge options only "stp on" is supported, it turns on
+	STP protocol support on the bridge.
+
+2009-06-02  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::configureInterfaces):
+	implemented support for VLAN interfaces for Linux24 host os.
+	Generated script uses "vconfig" to create and configure vlan
+	interfaces. GUI provides elements for VLAN ID and VLAN interface
+	name type (VLAN_PLUS_VID (vlan0005), VLAN_PLUS_VID_NO_PAD (vlan5),
+	DEV_PLUS_VID (eth0.0005), DEV_PLUS_VID_NO_PAD (eth0.5). Compiler
+	verifies that the name of the vlan interface object matches
+	requested name type.
+
 2009-06-01  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_openbsd.cpp (OSConfigurator_openbsd::configureInterfaces):
+	implemented support for pfsync interface configuration for
+	OpenBSD.  Unicast communication method can be configured using
+	checkbox in the pfsync protocol options dialog. Compiler generates
+	ifconfig commands to configure pfsync virtual interfaces if
+	checkbox "Configure pfsync interfaces" is turned on in the pf
+	"advanced" settings dialog. Only one pfsync interface per firewall
+	is supported (pfsync0), only with IPv4 addresses.
+
+	* OSConfigurator_openbsd.cpp (OSConfigurator_openbsd::configureInterfaces):
+	implemented support for CARP interface configuration for OpenBSD.
+	Generated script uses ifconfig to create and configure carpN
+	interfaces. The script is added only if option "Configure CARP
+	interfaces" is turned on in the "advanced" settings dialog for PF.
+	Currently only IPv4 addresses are supported and only one address
+	per CARP interface is configured. CARP password and VHID are
+	defined in the failover protocol settings dialog that user can open
+	by clicking "Protocol parameters" button in the Failover group
+	object dialog.
 
 	* newHostDialog.cpp (newHostDialog::selectedInterface): fixed the
 	same error reported in bug #2799163: "crash on correcting an
@@ -126,6 +1318,11 @@
 	user tried to drag and drop an object between two different
 	running copies. Copy/Paste and Drag&Drop between separate copies
 	are not supported at this time.
+
+2009-05-30  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_pf_run.cpp (CompilerDriver_pf::run): ref #22:
+	compiler for PF uses CompilerDriver class.
 
 2009-05-29  vadim  <vadim@vk.crocodile.org>
 
@@ -260,16 +1457,80 @@
 	support for Secuwall and is easier to maintain than separate
 	platform-os pairs for each appliance.
 
+2009-05-08  vadim  <vadim@vk.crocodile.org>
+
+	* clusterMembersDialog.h (class clusterMembersDialog): Renamed
+	class and module secuwallClusterConfDialog to
+	clusterMembersDialog. This dialog is generic and is not specific
+	to secunet wall in any way. This fixes #13.
+
+	* PolicyCompiler_ipt.cpp (removeFW::processNext): fixes #15: using
+	Compiler::isFirewallOrCluster to match object in rules to both
+	firewall or it parent cluster. This helps compiler idenitify
+	cluster in rules and choose correct chains (INPUT/OUTPUT) as if
+	firewall object was there.
+
+	* CompilerDriver.cpp (CompilerDriver::determineOutputFileName):
+	this method implements logic that extracts enforced output file
+	names from command line parameters of the compiler or determines
+	these names automatically.
+
+	* instDialog_compile.cpp (instDialog::prepareArgForCompiler):
+	While compiling firewall cluster, passing output file name to the
+	compiler using "-O" command line option. The old option "-o" is
+	preserved for backwards compatibility and is used while compiling
+	stand-alone firewall objects.
+
+2009-05-07  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::createTreeItem): dialog that
+	lists firewalls and clusters for compilation and installation puts
+	checkbox for compile next to a cluster and checkbox for install
+	next to a real firewall. Checkboxes are pre-checked if
+	corresponding objects require compilation and installtion. Mutual
+	dependencies between cluster and its members are tracked. this
+	fixes #19
+
+	* ipt.cpp (main): Policy compiler for iptables accepts either
+	Firewall or Cluster object as an argument. If Cluster is
+	specified, compiler runs itself several times, generating script
+	for each member firewall. Object can be defined by its name or ID
+	as before. This fixes #18.
+
+	* CompilerDriver.h (class CompilerDriver): Introduced class
+	CompilerDriver that controls invocation of Policy, Mangle, NAT and
+	Routing compilers for one firewall. The firewall may be part of a
+	cluster, in which case we create several objects of this class and
+	process each member firewall separately.
+
+	* PolicyCompiler_secuwall.cpp (PolicyCompiler_secuwall::addMgmtRule):
+	fixes #16: using RuleSet::insertRuleAtTop with arg hidden_rule to
+	make automatic rules added for secunet wall "hidden". This way,
+	these rules are ignored during shadowing detection and their
+	position numbers are forced negative so that position numbers of
+	regular rules do not change.
+
 2009-05-06  vadim  <vadim@vk.crocodile.org>
 
 	* FirewallInstallerCisco.cpp (FirewallInstallerCisco::activatePolicy):
 	fixed bug #2787932 "External install script is not supported for
 	PIX".
 
-	* fixed bug #2787857: "b847 crashes on Start". v3.0.5 build 847
-	links with QtDBus framework as part of the future development but
-	the framework file was not included in the bundle. This caused
-	crash on Mac OS X.
+2009-05-04  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::fillCompileSelectList):
+	dialog that shows list of firewalls for compilation and
+	installation now uses QTreeWidget and displays firewall clusters
+	and corresponding member firewalls as branches in the tree. The
+	rest of the functionality remains the same as before. If user
+	selected a cluster object in the object tree and clicked "Compile"
+	in its context menu, only member firewalls of this clusters are
+	going to be checked for compilation. Clicking "Compile" toolbar
+	button or main menu selects all firewalls for compilation as
+	before. Cluster objects can not be selected (do not have
+	checkboxes in the widget) because compiler and installer works
+	with actual firewall objects rather than cluster objects. This
+	fixes ticket #7.
 
 2009-05-02  vadim  <vadim@vk.crocodile.org>
 
@@ -311,6 +1572,16 @@
 	#2781952: "fwbuilder (3.0.4-b794) crashes when creating a new
 	group".  The GUI crashed if user clicked and dragged mouse inside
 	empty list of group members in the dialog of the new group object.
+
+2009-04-17  vadim  <vadim@vk.crocodile.org>
+
+	* ClusterDialog.cpp (ClusterDialog::ClusterDialog): Support for
+	clusters of firewalls
+
+	* Merging patches from Secunet Security Networks AG to add support
+	for Secuwall firewall.
+
+	* VERSION: start v3.1.0 branch v3_1_secunet
 
 2009-04-15  vadim  <vadim@vk.crocodile.org>
 

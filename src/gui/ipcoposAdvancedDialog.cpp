@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: ipcoposAdvancedDialog.cpp 454 2008-08-06 15:50:49Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -152,6 +152,15 @@ ipcoposAdvancedDialog::ipcoposAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_path_logger,
                          fwopt,
                          "linux24_path_logger");
+    data.registerOption( m_dialog->linux24_path_vconfig,
+                         fwopt,
+                         "linux24_path_vconfig");
+    data.registerOption( m_dialog->linux24_path_brctl,
+                         fwopt,
+                         "linux24_path_brctl");
+    data.registerOption( m_dialog->linux24_path_ifenslave,
+                         fwopt,
+                         "linux24_path_ifenslave");
     data.registerOption( m_dialog->linux24_path_modprobe,
                          fwopt,
                          "linux24_path_modprobe");
@@ -164,6 +173,8 @@ ipcoposAdvancedDialog::ipcoposAdvancedDialog(QWidget *parent,FWObject *o)
 
 
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -179,7 +190,7 @@ void ipcoposAdvancedDialog::accept()
 
     data.saveAll();
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 
@@ -190,11 +201,12 @@ void ipcoposAdvancedDialog::reject()
 
 void ipcoposAdvancedDialog::help()
 {
-    Help *h = new Help(this, "ipcoposAdvancedDialog", "Host type IPCOP");
-    h->show();
     QString tab_title = m_dialog->tabWidget->tabText(
         m_dialog->tabWidget->currentIndex());
-    h->scrollToAnchor(tab_title.replace('/', '-').replace(' ', '-').toLower());
+    QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
+    Help *h = new Help(this, "Host type IPCOP");
+    h->setSource(QUrl("ipcoposAdvancedDialog.html#" + anchor));
+    h->show();
 }
 
 

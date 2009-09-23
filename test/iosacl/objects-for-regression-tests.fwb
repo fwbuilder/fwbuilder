@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1237437243" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="12" lastModified="1252365164" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ServiceRef ref="id151F20845"/>
     <ServiceRef ref="id464147DA29061"/>
     <ServiceRef ref="id4226X64279"/>
-    <Interface id="id19433X65694" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+    <Interface id="id19433X65694" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
       <IPv4 id="id19434X65694" name="firewall-ipv6-1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
       <IPv6 id="id19435X65694" name="firewall-ipv6-1:lo:ipv6" comment="" ro="False" address="::1" netmask="128"/>
+      <InterfaceOptions/>
     </Interface>
     <ObjectRef ref="sysid0"/>
     <ServiceRef ref="sysid1"/>
@@ -22,6 +23,7 @@
     <ObjectRef ref="id19240X65694"/>
   </Library>
   <Library id="id4511636323682" color="#d2ffd0" name="User" comment="" ro="False">
+    <ObjectGroup id="id4511636423682_clusters" name="Clusters" comment="" ro="False"/>
     <ObjectGroup id="id4511636423682" name="Objects" comment="" ro="False">
       <ObjectGroup id="id4511636523682" name="Addresses" comment="" ro="False">
         <IPv4 id="id451164E423682" name="baby.vk.crocodile.org" comment="" ro="False" address="10.3.14.10" netmask="255.255.255.255"/>
@@ -65,13 +67,15 @@
       </ObjectGroup>
       <ObjectGroup id="id4511636923682" name="Hosts" comment="" ro="False">
         <Host id="id451164EB23682" name="beaver" comment="" ro="False">
-          <Interface id="id451164EF23682" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <Interface id="id451164EF23682" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
             <IPv4 id="id451164F023682" name="beaver:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+            <InterfaceOptions/>
           </Interface>
-          <Interface id="id451164F523682" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <Interface id="id451164F523682" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id451164F723682" name="beaver:eth0:ip1" comment="" ro="False" address="10.3.14.40" netmask="255.255.255.0"/>
             <IPv4 id="id451164F823682" name="beaver:eth0:ip2" comment="" ro="False" address="192.168.123.123" netmask="255.255.255.0"/>
             <physAddress id="id451164F623682" address="00:30:48:20:16:10" name="beaver:eth0:mac" comment="" ro="False"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="snmp_contact">Root &lt;root@localhost&gt; (configure /etc/snmp/snmp.local.conf)</Option>
@@ -172,7 +176,7 @@
       <ServiceGroup id="id4511636C23682_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls" comment="" ro="False">
-      <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1230498567" lastInstalled="0" lastModified="1237473570" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
+      <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1251228626" lastInstalled="0" lastModified="1237473570" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
         <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id46412B5526577" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464154BB29061" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
@@ -637,14 +641,17 @@
           </PolicyRule>
         </Policy>
         <Routing id="id46412B5726577" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id46412B5826577" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id46412B5826577" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id46412B5926577" name="testios1:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id46412B5A26577" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="True" name="ethernet1" comment="" ro="False">
+        <Interface id="id46412B5A26577" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="True" name="ethernet1" comment="" ro="False">
           <IPv4 id="id46412B5B26577" name="testios1:ethernet1:ip" comment="" ro="False" address="10.10.10.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4642828219184" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="True" name="ethernet2" comment="" ro="False">
+        <Interface id="id4642828219184" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="True" name="ethernet2" comment="" ro="False">
           <IPv4 id="id4642828319184" name="testios1:ethernet2:ip" comment="" ro="False" address="3.3.3.3" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="1.1.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -729,7 +736,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id464131E426611" host_OS="ios" inactive="False" lastCompiled="1215311660" lastInstalled="0" lastModified="1215311652" platform="iosacl" version="12.x" name="testios20" comment="" ro="False">
+      <Firewall id="id464131E426611" host_OS="ios" inactive="False" lastCompiled="1251228630" lastInstalled="0" lastModified="1215311652" platform="iosacl" version="12.x" name="testios20" comment="" ro="False">
         <NAT id="id4641320F26611" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id464131EA26611" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464131EB26611" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -961,11 +968,13 @@
           </PolicyRule>
         </Policy>
         <Routing id="id4641321026611" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4641321126611" bridgeport="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id4641321126611" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id4641321326611" name="testios20:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4641321426611" bridgeport="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id4641321426611" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id4641321626611" name="testios20:ethernet1:ip" comment="" ro="False" address="10.10.10.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="10.10.10.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1046,7 +1055,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id464264CC12807" host_OS="ios" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1237438938" platform="iosacl" version="12.x" name="testios2" comment="" ro="False">
+      <Firewall id="id464264CC12807" host_OS="ios" inactive="False" lastCompiled="1251228628" lastInstalled="0" lastModified="1237438938" platform="iosacl" version="12.x" name="testios2" comment="" ro="False">
         <NAT id="id464265C412807" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id464264D212807" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464264D312807" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
@@ -1469,11 +1478,13 @@
           </PolicyRule>
         </Policy>
         <Routing id="id464265C512807" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id464265C612807" bridgeport="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id464265C612807" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id464265C812807" name="testios2:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id464265C912807" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id464265C912807" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id464265CB12807" name="testios2:ethernet1:ip" comment="" ro="False" address="10.10.10.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="10.10.10.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1556,7 +1567,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1244751217" lastInstalled="0" lastModified="1244750432" platform="iosacl" version="12.x" name="c3620" comment="" ro="False">
+      <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1244751217" lastInstalled="0" lastModified="1252367946" platform="iosacl" version="12.x" name="c3620" comment="" ro="False">
         <NAT id="id46435A0216989" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id46435A0116989" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464D2B0E24319" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="interface eth 1/1 has only&#10;inbound access list">
@@ -1840,20 +1851,25 @@
             <RoutingRuleOptions/>
           </RoutingRule>
         </Routing>
-        <Interface id="id46435A0416989" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="Ethernet1/0" comment="" ro="False">
+        <Interface id="id46435A0416989" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="Ethernet1/0" comment="" ro="False">
           <IPv4 id="id46435A0516989" name="c3620:Ethernet1/0:ip" comment="" ro="False" address="192.168.171.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id46435A0616989" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="Ethernet1/1" comment="" ro="False">
+        <Interface id="id46435A0616989" dyn="False" label="" mgmt="False" security_level="100" unnum="True" unprotected="False" name="Ethernet1/1" comment="" ro="False">
           <IPv4 id="id46435A0716989" name="c3620:Ethernet1/1:ip" comment="" ro="False" address="0.0.0.0" netmask="255.255.255.255"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id46435A0816989" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0" comment="" ro="False">
+        <Interface id="id46435A0816989" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0" comment="" ro="False">
           <IPv4 id="id46435A0916989" name="c3620:FastEthernet0/0:ip" comment="" ro="False" address="10.3.14.201" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id46435A0A16989" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="True" name="Null0" comment="" ro="False">
+        <Interface id="id46435A0A16989" dyn="False" label="" mgmt="False" security_level="100" unnum="True" unprotected="True" name="Null0" comment="" ro="False">
           <IPv4 id="id46435A0B16989" name="c3620:Null0:ip" comment="" ro="False" address="0.0.0.0" netmask="255.255.255.255"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id46435A0C16989" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="True" name="Serial1/0" comment="" ro="False">
+        <Interface id="id46435A0C16989" dyn="False" label="" mgmt="False" security_level="100" unnum="True" unprotected="True" name="Serial1/0" comment="" ro="False">
           <IPv4 id="id46435A0D16989" name="c3620:Serial1/0:ip" comment="" ro="False" address="0.0.0.0" netmask="255.255.255.255"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="10.3.14.201">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1935,7 +1951,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id19020X65694" host_OS="ios" inactive="False" lastCompiled="1237437124" lastInstalled="0" lastModified="1237473586" platform="iosacl" version="12.x" name="firewall-ipv6-1" comment="" ro="False">
+      <Firewall id="id19020X65694" host_OS="ios" inactive="False" lastCompiled="1251228621" lastInstalled="0" lastModified="1237473586" platform="iosacl" version="12.x" name="firewall-ipv6-1" comment="" ro="False">
         <NAT id="id19428X65694" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id19026X65694" name="fw-ipv6-1-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
           <PolicyRule id="id19054X65694" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -2268,9 +2284,10 @@
           </PolicyRule>
         </Policy>
         <Routing id="id19429X65694" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id19430X65694" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
+        <Interface id="id19430X65694" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
           <IPv4 id="id19431X65694" name="firewall-ipv6-1:Ethernet0/0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id19432X65694" name="firewall-ipv6-1:Ethernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="1.1.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -2443,7 +2460,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id10507X97727" host_OS="ios" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1236920290" platform="iosacl" version="12.x" name="firewall-ipv6-2" comment="" ro="False">
+      <Firewall id="id10507X97727" host_OS="ios" inactive="False" lastCompiled="1251228623" lastInstalled="0" lastModified="1236920290" platform="iosacl" version="12.x" name="firewall-ipv6-2" comment="" ro="False">
         <NAT id="id10713X97727" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id10513X97727" name="fw-ipv6-2-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
           <PolicyRule id="id10514X97727" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -2776,9 +2793,10 @@
           </PolicyRule>
         </Policy>
         <Routing id="id10714X97727" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id10715X97727" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
+        <Interface id="id10715X97727" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
           <IPv4 id="id10718X97727" name="firewall-ipv6-2:Ethernet0/0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id10719X97727" name="firewall-ipv6-2:Ethernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="1.1.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -2951,7 +2969,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4881X21941" host_OS="ios" inactive="False" lastCompiled="1237438900" lastInstalled="0" lastModified="1237438894" platform="iosacl" version="12.x" name="ccie4u-r1" comment="CCIE4U router R1&#10;2600&#10;" ro="False">
+      <Firewall id="id4881X21941" host_OS="ios" inactive="False" lastCompiled="1251228619" lastInstalled="0" lastModified="1237438894" platform="iosacl" version="12.x" name="ccie4u-r1" comment="CCIE4U router R1&#10;2600&#10;" ro="False">
         <NAT id="id5087X21941" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id4887X21941" name="r1-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
           <PolicyRule id="id4888X21941" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -3307,12 +3325,14 @@
           </PolicyRule>
         </Policy>
         <Routing id="id5088X21941" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id5089X21941" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0" comment="" ro="False">
+        <Interface id="id5089X21941" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0" comment="" ro="False">
           <IPv4 id="id5092X21941" name="ccie4u-r1:FastEthernet0/0:ip" comment="" ro="False" address="10.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id5093X21941" name="ccie4u-r1:FastEthernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id8437X21941" bridgeport="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
+        <Interface id="id8437X21941" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
           <IPv4 id="id8438X21941" name="ccie4u-r1:FastEthernet0/1:ip" comment="" ro="False" address="10.1.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="10.1.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -3485,7 +3505,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id12133X53662" host_OS="ios" inactive="False" lastCompiled="1237438591" lastInstalled="0" lastModified="1237437327" platform="iosacl" version="12.x" name="firewall-ipv6-3" comment="test &quot;safety net&quot; install in case when there are many rulesets" ro="False">
+      <Firewall id="id12133X53662" host_OS="ios" inactive="False" lastCompiled="1251228625" lastInstalled="0" lastModified="1237437327" platform="iosacl" version="12.x" name="firewall-ipv6-3" comment="test &quot;safety net&quot; install in case when there are many rulesets" ro="False">
         <NAT id="id12339X53662" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id12139X53662" name="fw-ipv6-3-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id12140X53662" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -3596,9 +3616,10 @@
           </PolicyRule>
         </Policy>
         <Routing id="id12340X53662" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id12341X53662" bridgeport="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
+        <Interface id="id12341X53662" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
           <IPv4 id="id12344X53662" name="firewall-ipv6-3:Ethernet0/0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id12345X53662" name="firewall-ipv6-3:Ethernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="1.1.1.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>

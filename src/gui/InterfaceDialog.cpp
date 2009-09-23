@@ -28,16 +28,21 @@
 #include "utils.h"
 
 #include "InterfaceDialog.h"
+#include "DialogFactory.h"
 #include "ProjectPanel.h"
 #include "FWWindow.h"
 
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
+
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interface.h"
-#include "fwbuilder/Interface.h"
+#include "fwbuilder/InterfaceData.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/Resources.h"
 
@@ -90,12 +95,12 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->label->setText( QString::fromUtf8(s->getLabel().c_str()) );
 
-    m_dialog->regular->setChecked( ! s->isDyn() &&
-                         ! s->isUnnumbered() &&
-                         ! s->isBridgePort() );
+    m_dialog->regular->setChecked(! s->isDyn() &&
+                                  ! s->isUnnumbered() &&
+                                  ! s->isBridgePort() );
+
     m_dialog->dynamic->setChecked( s->isDyn() );
     m_dialog->unnumbered->setChecked( s->isUnnumbered() );
-    m_dialog->bridgeport->setChecked( s->isBridgePort() );
 
     m_dialog->management->setChecked( s->isManagement() );
 
@@ -119,17 +124,11 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     m_dialog->unnumbered->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->unnumbered);
 
-    m_dialog->bridgeport->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->bridgeport);
-
     m_dialog->management->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->management);
 
     m_dialog->unprotected->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->unprotected);
-
-    m_dialog->ext->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->ext);
 
     m_dialog->seclevel->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->seclevel);
@@ -137,50 +136,78 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     m_dialog->netzone->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->netzone);
 
-
-
-    FWObject *f=obj->getParent();
-
-/* if parent is a host, hide checkbox 'external', security level and netzone */
-    if (Host::isA( f ))
+    if (s->isBridgePort())
     {
-        m_dialog->ext->setEnabled(false);
+        m_dialog->regular->hide();
+        m_dialog->dynamic->hide();
+        m_dialog->unnumbered->hide();
+        m_dialog->management->hide();
+        m_dialog->unprotected->hide();
+        m_dialog->bridge_port_label->show();
+    } else
+    {
+        m_dialog->regular->show();
+        m_dialog->dynamic->show();
+        m_dialog->unnumbered->show();
+        m_dialog->management->show();
+        m_dialog->unprotected->show();
+        m_dialog->bridge_port_label->hide();
+    }
+
+    FWObject *f = s->getParentHost();
+
+/* if parent is a host, hide firewall related settings */
+    if (Host::isA(f))
+    {
         m_dialog->management->setEnabled(false);
         m_dialog->unprotected->setEnabled(false);
         m_dialog->seclevel->setEnabled(false);
         m_dialog->seclevelLabel->setEnabled(false);
         m_dialog->netzone->setEnabled(false);
         m_dialog->netzoneLabel->setEnabled(false);
+        // Can;t let user try to open "advanced interface settings"
+        // dialog because Host does not have "platform" and "host_OS"
+        // attributes but that dialog depends on them.
+        m_dialog->advancedconfig->setEnabled(false);
     }
 
     bool supports_security_levels = false;
     bool supports_network_zones   = false;
     bool supports_unprotected     = false;
+    bool supports_advanced_ifaces = false;
 
-    try  {
+    try 
+    {
+        // platform specific
         supports_security_levels =
             Resources::getTargetCapabilityBool(f->getStr("platform"), "security_levels");
         supports_network_zones =
             Resources::getTargetCapabilityBool(f->getStr("platform"), "network_zones");
         supports_unprotected =
             Resources::getTargetCapabilityBool(f->getStr("platform"), "unprotected_interfaces");
+
+        // OS specific
+        supports_advanced_ifaces =
+            Resources::getTargetCapabilityBool(f->getStr("host_OS"),
+                                               "supports_subinterfaces");
+        // disable advanced options dialog if this is main interface of a cluster
+        if (Cluster::isA(s->getParent()))
+            supports_advanced_ifaces = false;
+
     } catch (FWException &ex)  { }
 
-/* if parent is a firewall, it is more complex ... */
-    if (Firewall::isA( f ))
+/* if parent is a firewall or a fw cluster, it is more complex ... */
+    if (Firewall::isA( f ) || Cluster::isA( f ))
     {
         if (supports_security_levels)
         {
             m_dialog->seclevel->setEnabled(true);
             m_dialog->seclevelLabel->setEnabled(true);
-            m_dialog->ext->setEnabled(false);
             m_dialog->seclevel->setValue( obj->getInt("security_level") );
         } else
         {
             m_dialog->seclevel->setEnabled(false);
             m_dialog->seclevelLabel->setEnabled(false);
-            m_dialog->ext->setEnabled(true);
-            m_dialog->ext->setChecked( obj->getInt("security_level")==0 );
         }
 
         if (supports_unprotected)
@@ -191,6 +218,22 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         {
             m_dialog->unprotected->setEnabled(false);
         }
+
+        if (supports_advanced_ifaces)
+        {
+            m_dialog->advancedconfig->setEnabled(!o->isReadOnly());
+        } else
+        {
+            m_dialog->advancedconfig->setEnabled(false);
+        }
+
+        // disable interface options group if this is main interface
+        // of a cluster. This applies to subinterfaces as
+        // well. Current implementation can not generate configuration
+        // code for interfaces and subinterfaces of member firewalls
+        // from cluster interface or subinterface objects
+        m_dialog->interfaceOptionsGroup->setEnabled(
+            !Cluster::isA(s->getParentHost()));
 
         if (supports_network_zones)
         {
@@ -212,7 +255,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
 /* TODO: try to make this widget show object with appropriate icon */
 
-            list<FWObject*> libs=mw->db()->getByType( Library::TYPENAME );
+            list<FWObject*> libs = m_project->db()->getByType( Library::TYPENAME );
             for (list<FWObject*>::iterator l=libs.begin(); l!=libs.end(); ++l)
             {
                 FWObject *library= *l;
@@ -290,9 +333,58 @@ void InterfaceDialog::changed()
 
 void InterfaceDialog::validate(bool *res)
 {
-    *res=true;
-    if (!isTreeReadWrite(this,obj)) *res=false;
-    if (!validateName(this,obj,m_dialog->obj_name->text())) *res=false;
+    *res = true;
+    if (!isTreeReadWrite(this, obj)) *res = false;
+
+    QString obj_name = m_dialog->obj_name->text();
+
+    // validateName checks for name duplicates
+    if (!validateName(this, obj, obj_name))
+    {
+        *res = false;
+        return;
+    }
+
+    if (obj_name.indexOf(' ') != -1 || obj_name.indexOf('-') != -1)
+    {
+        QMessageBox::critical(
+            this,"Firewall Builder",
+            tr("Interface name can not contain white space and '-'"),
+            tr("&Continue"), QString::null,QString::null,
+            0, 1 );
+        *res = false;
+        return;
+    }
+
+    FWObject *f = Interface::cast(obj)->getParentHost();
+    interfaceProperties *int_prop =
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            f->getStr("host_OS"));
+    if (int_prop->looksLikeVlanInterface(obj_name))
+    {
+        QString parent_name = obj->getParent()->getName().c_str();
+        if (Cluster::isA(obj->getParent()))
+        {
+            // cluster is allowed to have top-level vlan interfaces,
+            // therefore we do not need to change the name of the
+            // interface against the name of the parent. This is
+            // signalled to isValidVlanInterfaceName() by passing
+            // empty string as parent_interface
+            parent_name = "";
+        }
+        QString err;
+        if ( ! int_prop->isValidVlanInterfaceName(obj_name, parent_name, err))
+        {
+            *res = false;
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                err,
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
+
+        }
+    }
+    delete int_prop;
 }
 
 void InterfaceDialog::isChanged(bool*)
@@ -307,7 +399,7 @@ void InterfaceDialog::libChanged()
 
 void InterfaceDialog::applyChanges()
 {
-    Interface *s = dynamic_cast<Interface*>(obj);
+    Interface *s = Interface::cast(obj);
     assert(s!=NULL);
 
     string oldname=obj->getName();
@@ -318,9 +410,8 @@ void InterfaceDialog::applyChanges()
     s->setLabel( string(m_dialog->label->text().toUtf8().constData()) );
     s->setDyn( m_dialog->dynamic->isChecked() );
     s->setUnnumbered( m_dialog->unnumbered->isChecked() );
-    s->setBridgePort( m_dialog->bridgeport->isChecked() );
 
-    FWObject *f = obj->getParent();
+    FWObject *f = s->getParentHost();
     bool supports_security_levels = false;
     bool supports_network_zones   = false;
     bool supports_unprotected     = false;
@@ -335,12 +426,10 @@ void InterfaceDialog::applyChanges()
     } catch (FWException &ex)  { }
 
 
-    if (Firewall::isA( f ))
+    if (Firewall::isA( f ) || Cluster::isA( f ))
     {
         if (supports_security_levels)
             obj->setInt("security_level", m_dialog->seclevel->value() );
-        else
-            obj->setInt("security_level", (m_dialog->ext->isChecked()) ? 0 : 100 );
 
         if (supports_unprotected)
             obj->setBool("unprotected",  m_dialog->unprotected->isChecked() );
@@ -354,12 +443,15 @@ void InterfaceDialog::applyChanges()
         s->setManagement( m_dialog->management->isChecked() );
     }
 
-    mw->updateObjName(obj,
+    m_project->updateObjName(obj,
                       QString::fromUtf8(oldname.c_str()),
                       QString::fromUtf8(oldlabel.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    // ticket #328: automatically assign vlan id to interface based on
+    // interface name
+    mw->activeProject()->m_panel->om->guessSubInterfaceTypeAndAttributes(s);
+
+    emit notify_changes_applied_sign();
 }
 
 void InterfaceDialog::discardChanges()
@@ -367,6 +459,39 @@ void InterfaceDialog::discardChanges()
     loadFWObject(obj);
 }
 
+void InterfaceDialog::openIfaceDialog()
+{
+    // TODO: applyChanges() call enabled results in problems with FWBTree ...
+    //applyChanges();
+
+    try
+    {
+        QWidget *w = DialogFactory::createIfaceDialog(this, obj);
+        if (w==NULL)   return;   // some dialogs may not be implemented yet
+        QDialog *d=dynamic_cast<QDialog*>(w);
+        assert(d!=NULL);
+
+        if (d->exec() == QDialog::Accepted)
+        {
+            // modal dialog, dialog saves data into the object
+            
+            // update object tree (if interface type has changed, the object properties
+            // summary text may have to change too)
+            mw->activeProject()->updateObjectInTree(obj, true);
+//            mw->updateLastModifiedTimestampForAllFirewalls(obj);
+            emit notify_changes_applied_sign();
+        }
+    }
+    catch (FWException &ex)
+    {
+        QMessageBox::critical(
+            this,"Firewall Builder",
+            tr("FWBuilder API error: %1").arg(ex.toString().c_str()),
+            tr("&Continue"), QString::null,QString::null,
+            0, 1 );
+        return;
+    }
+}
 
 /* ObjectEditor class connects its slot to this signal and does all
  * the verification for us, then accepts (or not) the event. So we do

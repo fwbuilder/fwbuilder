@@ -233,10 +233,10 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
         {
             Rule *rule = Rule::cast(re->getParent());
             compiler->abort(
+                re->getParent(), 
                 string("findInterfaceByNetzoneOrAll failed to retrieve first "
                        "object from the rule element; is argument not of "
-                       "the type RuleElementSrc or RuleElementDst ? Rule ") +
-                rule->getLabel());
+                       "the type RuleElementSrc or RuleElementDst ?"));
         }
         try
         {
@@ -253,7 +253,8 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
                 Resources::getTargetCapabilityBool(
                     compiler->fw->getStr("platform"), "network_zones");
 
-            if (supports_network_zones) compiler->warning(err);
+            if (supports_network_zones)
+                compiler->warning(err);
 
             FWObjectTypedChildIterator i = compiler->fw->findByType(
                 Interface::TYPENAME);

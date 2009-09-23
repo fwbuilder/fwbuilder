@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: ipcoposAdvancedDialog.h 438 2008-08-02 20:33:06Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

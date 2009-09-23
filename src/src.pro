@@ -8,7 +8,7 @@ TEMPLATE = subdirs
 CONFIG  += ordered
 
 TARGET   = src
-SUBDIRS  = res fwbedit
+SUBDIRS  = res fwbedit fwtransfer
 # NOTE: 2.1 does not install scripts from src/tools ( fwb_install , fwb_compile_all)
 
 contains( HAVE_ANTLR_RUNTIME, 1 ) {
@@ -18,5 +18,16 @@ contains( HAVE_ANTLR_RUNTIME, 1 ) {
   }
 }
 
-SUBDIRS += gui ipt pflib pf ipf ipfw cisco_lib iosacl pix
+SUBDIRS += compiler_lib \
+			iptlib \
+			pflib \
+			cisco_lib \
+			gui \
+			ipt \
+			pf \
+			ipf \
+			ipfw \
+			iosacl \
+			pix \
+			transfer_agents
 

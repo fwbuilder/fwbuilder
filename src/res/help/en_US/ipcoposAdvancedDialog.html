@@ -1,0 +1,187 @@
+
+<h2>Linux 2.4/2.6 kernel settings</h2>
+
+All of these parameters are controlled either with <b>sysctl</b>
+command line tool or via <b>/proc</b> file system. See file
+<b>ip-sysctl.txt</b> for description of these parameters, and more.
+The file can be found online for example here
+<ul>
+<li><a href="http://iptables-tutorial.frozentux.net/other/ip-sysctl.txt">
+    http://iptables-tutorial.frozentux.net/other/ip-sysctl.txt</a></li>
+
+<li><a href="http://tldp.org/HOWTO/Adv-Routing-HOWTO/lartc.kernel.obscure.html">http://tldp.org/HOWTO/Adv-Routing-HOWTO/lartc.kernel.obscure.html</a></li>
+</ul>
+
+<p>
+IPv6 related kernel settings are documented here:
+<ul>
+  <li><a href="http://tldp.org/HOWTO/Linux+IPv6-HOWTO/chapter-kernel-settings.html">http://tldp.org/HOWTO/Linux+IPv6-HOWTO/chapter-kernel-settings.html</a></li>
+</ul>
+
+
+
+<hr>
+<h2>Tab Options</h2>
+<p>
+
+<h3>IPv4 Packet Forwarding</h3>
+<p>
+  Enable IPv4 forwarding between all interfaces
+
+<h3>IPv6 Packet Forwarding</h3>
+<p>
+  Enable IPv6 forwarding between all interfaces
+
+<h3>Kernel anti-spoofing protection</h3>
+<p>
+<i>/proc/sys/net/ipv4/conf/all/rp_filter</i>
+<p>
+<ul>
+  <li>1 - do source validation by reversed path, as specified in RFC1812
+    Recommended option for single homed hosts and stub network
+    routers. Could cause troubles for complicated (not loop free)
+    networks running a slow unreliable protocol (sort of RIP),
+    or using static routes.
+  </li>
+  <li>0 - No source validation. 
+  </li>
+</ul>
+
+
+<h3>Ignore broadcast pings</h3>
+<p>
+<i> /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts</i> 
+<p>
+  If set to true, then the kernel will ignore ICMP echo requests sent to
+  broadcast/multicast addresses.
+
+
+<h3>Accept source route</h3>
+<p>
+  Accept packets with SRR option.
+
+
+<h3>Accept ICMP redirects</h3>
+<p>
+  Accept ICMP Redirects.
+
+
+<h3>Ignore bogus ICMP errors</h3>
+<p>
+  <i> /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses</i>
+<p>
+  Some routers violate RFC 1122 by sending bogus responses to broadcast
+  frames.  Such violations are normally logged via a kernel warning.  If
+  this is set to TRUE, the kernel will not give such warnings, which
+  will avoid log file clutter.
+
+<h3>Allow dynamic addresses</h3>
+<p>
+  <i>/proc/sys/net/ipv4/ip_dynaddr</i>
+<p>
+  If set, enables support for dynamic addresses.
+
+
+<h3>Log martians</h3>
+<p>
+  Log and drop "Martian" packets.  A "Martian" packet is one for which
+  the host does not have a route back to the source IP address (it
+  apparently dropped in from Mars).
+
+<hr>
+<h2>Tab TCP</h2>
+<p>
+
+
+  <h3>TCP FIN timeout</h3>
+<p>
+  <i> /proc/sys/net/ipv4/tcp_fin_timeout</i>
+<p>
+  Time to hold socket in state FIN-WAIT-2, if it was closed by our
+  side. Peer can be broken and never close its side, or even died
+  unexpectedly. Default value is 60sec.  Usual value used in 2.2 was 180
+  seconds, you may restore it, but remember that if your machine is even
+  underloaded WEB server, you risk to overflow memory with kilotons of
+  dead sockets, FIN-WAIT-2 sockets are less dangerous than FIN-WAIT-1,
+  because they eat maximum 1.5K of memory, but they tend to live longer.
+
+
+  <h3>TCP keepalive time</h3>
+<p>
+  <i>/proc/sys/net/ipv4/tcp_keepalive_intvl</i>
+<p>
+  How often TCP sends out keepalive messages when keepalive is enabled.
+  Default: 2hours.
+
+
+  <h3>TCP window scaling</h3>
+<p>
+  <i>/proc/sys/net/ipv4/tcp_window_scaling</i>
+<p>
+  Enable window scaling as defined in RFC1323.
+
+
+  <h3>TCP sack</h3>
+<p>
+  <i>/proc/sys/net/ipv4/tcp_sack</i>
+<p>
+  Enable select acknowledgments (SACKS).
+
+
+
+  <h3>TCP fack</h3>
+<p>
+  <i>/proc/sys/net/ipv4/tcp_fack</i>
+<p>
+  Enable FACK congestion avoidance and fast retransmission.
+  The value is not used, if tcp_sack is not enabled.
+
+
+  <h3>TCP ECN</h3>
+<p>
+  <i>/proc/sys/net/ipv4/tcp_ecn</i>
+<p>
+  Enable Explicit Congestion Notification in TCP.
+
+
+  <h3>TCP SYN cookies</h3>
+<p>
+  <i>/proc/sys/net/ipv4/tcp_syncookies</i>
+<p>
+  Only valid when the kernel was compiled with CONFIG_SYNCOOKIES
+  Send out syncookies when the syn backlog queue of a socket 
+  overflows. This is to prevent against the common 'syn flood attack'
+  Default: FALSE
+<p>
+  Note, that syncookies is fallback facility.
+  It MUST NOT be used to help highly loaded servers to stand
+  against legal connection rate. If you see synflood warnings
+  in your logs, but investigation	shows that they occur
+  because of overload with legal connections, you should tune
+  another parameters until this warning disappear.
+  See: tcp_max_syn_backlog, tcp_synack_retries, tcp_abort_on_overflow.
+<p>
+  syncookies seriously violate TCP protocol, do not allow
+  to use TCP extensions, can result in serious degradation
+  of some services (f.e. SMTP relaying), visible not by you,
+  but your clients and relays, contacting you. While you see
+  synflood warnings in logs not being really flooded, your server
+  is seriously misconfigured.
+
+
+  <h3>TCP timestamps</h3>
+<p>
+  <i>/proc/sys/net/ipv4/tcp_timestamps</i>
+<p>
+  Enable timestamps as defined in RFC1323.
+
+
+
+<hr>
+<h2>Tab Path</h2>
+<p>
+  In this tab you can set path to the system command line tools used
+  by generated iptables script. Use these if tools you expect to use
+  are located in non-standard directories (such as "/usr/local/bin",
+  "/use/local/sbin" etc.) Leave these blank if tools you expect to use
+  are in standard system directories.

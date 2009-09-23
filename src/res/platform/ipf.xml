@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
-<FWBuilderResources version="3.1.0">
+<FWBuilderResources>
     <Target name="ipf">
       <description>ipfilter</description>
+      <status>active</status>
       <group>Open Source Firewalls</group>
       <compiler>fwb_ipf</compiler>
       <dialog>ipf</dialog>
@@ -35,6 +36,7 @@
         <network_zones>False</network_zones>
         <unprotected_interfaces>False</unprotected_interfaces>
         <supports_prolog_epilog>True</supports_prolog_epilog>
+        <supports_cluster>False</supports_cluster>
         <actions>
             <Accept>
                 <supported>True</supported>

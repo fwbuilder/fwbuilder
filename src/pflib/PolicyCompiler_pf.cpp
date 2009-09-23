@@ -40,6 +40,8 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
 
 #include <algorithm>
 #include <functional>
@@ -74,7 +76,7 @@ int PolicyCompiler_pf::prolog()
                 sprintf(errstr,
                         _("Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored."),
                         iface->getName().c_str() );
-                warning( errstr );
+                warning(errstr );
                 for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
                     iface->remove(*j);
             }
@@ -191,9 +193,11 @@ bool PolicyCompiler_pf::processMultiAddressObjectsInRE::processNext()
             {
                 if (re->size()>1 && neg)
                 {
-                    string err = "AddressTable object can not be used with negation in combination with other objects in the same rule element. Rule ";
-                    err += rule->getLabel();
-                    compiler->abort(err);
+                    compiler->abort(
+                                        rule,
+                                        "AddressTable object can not be used "
+                                        "with negation in combination with "
+                                        "other objects in the same rule element.");
                 }
                 string tblname = o->getName();
                 string tblID = tblname + "_addressTableObject";
@@ -207,7 +211,7 @@ bool PolicyCompiler_pf::processMultiAddressObjectsInRE::processNext()
         string err;
         err = "Can not process MultiAddress object in rule " +
             rule->getLabel() + " : " + ex.toString();
-        compiler->abort( err );
+        compiler->abort(rule,  err );
     }
 
     if (!maddr_runtime.empty())
@@ -369,16 +373,24 @@ bool PolicyCompiler_pf::fillDirection::processNext()
         //int fwid = compiler->getFwId();
 
         if (src==NULL || dst==NULL)
-            compiler->abort("Broken src or dst in rule "+rule->getLabel());
+            compiler->abort(rule, "Broken src or dst");
 
         if (!src->isAny() && !dst->isAny() &&
             compiler->complexMatch(compiler->fw, src) &&
             compiler->complexMatch(compiler->fw, dst)) return true;
 
         if (!src->isAny() && compiler->complexMatch(compiler->fw, src))
+        {
             rule->setDirection( PolicyRule::Outbound );
+            compiler->warning(
+                                  rule, "Changing rule direction due to self reference");
+        }
         if (!dst->isAny() && compiler->complexMatch(compiler->fw, dst))
+        {
             rule->setDirection( PolicyRule::Inbound );
+            compiler->warning(
+                                  rule, "Changing rule direction due to self reference");
+        }
     }
     return true;
 }
@@ -389,10 +401,10 @@ bool PolicyCompiler_pf::fillDirection::processNext()
  */
 void PolicyCompiler_pf::addDefaultPolicyRule()
 {
-    if (getSourceRuleSet()->isTop())
+    if (getSourceRuleSet()->isTop() && !inSingleRuleCompileMode())
     {
-        if ( getCachedFwOpt()->getBool("mgmt_ssh") &&
-             !getCachedFwOpt()->getStr("mgmt_addr").empty() )
+        if (getCachedFwOpt()->getBool("mgmt_ssh") &&
+             !getCachedFwOpt()->getStr("mgmt_addr").empty())
         {
             PolicyRule *r;
             TCPService *ssh = dbcopy->createTCPService();
@@ -401,7 +413,6 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
 
             ssh->setName("mgmt_ssh");
             dbcopy->add(ssh,false);
-            cacheObj(ssh); // to keep cache consistent
 
             string mgmt_addr = getCachedFwOpt()->getStr("mgmt_addr");
             InetAddr  addr;
@@ -430,18 +441,17 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
                 char errstr[256];
                 sprintf(errstr,
                         _("Invalid address for the backup ssh access: '%s'"),
-                        mgmt_addr.c_str() );
-                abort( errstr );
+                        mgmt_addr.c_str());
+                abort(errstr);
             }
 
             Network *mgmt_workstation = dbcopy->createNetwork();
             mgmt_workstation->setName("mgmt_addr");
-            mgmt_workstation->setAddress( addr );
-            mgmt_workstation->setNetmask( netmask );
+            mgmt_workstation->setAddress(addr);
+            mgmt_workstation->setNetmask(netmask);
 //        IPv4 *mgmt_workstation = IPv4::cast(dbcopy->create(IPv4::TYPENAME));
-//        mgmt_workstation->setAddress( getCachedFwOpt()->getStr("mgmt_addr") );
+//        mgmt_workstation->setAddress(getCachedFwOpt()->getStr("mgmt_addr"));
             dbcopy->add(mgmt_workstation,false);
-            cacheObj(mgmt_workstation); // to keep cache consistent
 
 
             r= dbcopy->createPolicyRule();
@@ -471,11 +481,14 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             combined_ruleset->push_front(r);
         }
 
+        insertCarpRule();
+        insertPfsyncRule();
+
         PolicyRule *r = dbcopy->createPolicyRule();
         FWOptions *ruleopt;
         temp_ruleset->add(r);
         r->setAction(PolicyRule::Deny);
-        r->setLogging( getCachedFwOpt()->getBool("fallback_log") );
+        r->setLogging(getCachedFwOpt()->getBool("fallback_log"));
         r->setDirection(PolicyRule::Both);
         r->setPosition(10000);
         r->setComment("   fallback rule ");
@@ -515,7 +528,8 @@ bool PolicyCompiler_pf::SplitDirection::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    if (rule->getDirection()==PolicyRule::Both)
+    if (rule->getDirection()==PolicyRule::Both &&
+        rule->getAction()==PolicyRule::Route)
     {
 	PolicyRule *r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);
@@ -706,8 +720,10 @@ bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
 
     if (pf_comp->redirect_rules_info==NULL)
         compiler->abort(
-            "addLoopbackForRedirect needs a valid pointer to "
-            "the list<NATCompiler_pf::redirectRuleInfo> object");
+            
+                rule, 
+                "addLoopbackForRedirect needs a valid pointer to "
+                "the list<NATCompiler_pf::redirectRuleInfo> object");
 
     tmp_queue.push_back(rule);
 
@@ -937,7 +953,7 @@ bool PolicyCompiler_pf::separateServiceObject::processNext()
 
 bool PolicyCompiler_pf::separateSrcPort::condition(const Service *srv)
 {
-    if ( TCPService::isA(srv) || UDPService::isA(srv) )
+    if ( TCPService::isA(srv) || UDPService::isA(srv))
     {
         int srs = TCPUDPService::constcast(srv)->getSrcRangeStart();
         int sre = TCPUDPService::constcast(srv)->getSrcRangeEnd();
@@ -962,10 +978,10 @@ bool PolicyCompiler_pf::separateTOS::condition(const Service *srv)
 
 void PolicyCompiler_pf::compile()
 {
-    cout << " Compiling " << fw->getName();
-    if (!getRuleSetName().empty())  cout << " ruleset " << getRuleSetName();
-    if (ipv6) cout << ", IPv6";
-    cout <<  endl << flush;
+    string banner = " Compiling " + fw->getName();
+    if (!getRuleSetName().empty())  banner += " ruleset " + getRuleSetName();
+    if (ipv6) banner += ", IPv6";
+    info(banner);
 
     try 
     {
@@ -974,142 +990,151 @@ void PolicyCompiler_pf::compile()
 	addDefaultPolicyRule();
         bool check_for_recursive_groups=true;
 
-        if ( fw->getOptionsObject()->getBool ("check_shading") ) 
+        if (fw->getOptionsObject()->getBool("check_shading") &&
+            ! inSingleRuleCompileMode())
         {
-            add( new Begin                       ("Detecting rule shadowing" ));
-            add( new printTotalNumberOfRules     () );
+            add(new Begin("Detecting rule shadowing"));
+            add(new printTotalNumberOfRules());
 
-            add( new ItfNegation(            "process negation in Itf"  ) );
-            add( new InterfacePolicyRules(
+            add(new ItfNegation("process negation in Itf"));
+            add(new InterfacePolicyRules(
                      "process interface policy rules and store interface ids"));
 
-            add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
-            add( new recursiveGroupsInDst("check for recursive groups in DST"));
-            add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
+            add(new recursiveGroupsInSrc("check for recursive groups in SRC"));
+            add(new recursiveGroupsInDst("check for recursive groups in DST"));
+            add(new recursiveGroupsInSrv("check for recursive groups in SRV"));
             check_for_recursive_groups=false;
 
-            add( new ExpandGroups("expand groups"          ) );
-            add( new dropRuleWithEmptyRE(
+            add(new ExpandGroups("expand groups"));
+            add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+            add(new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
+            add(new eliminateDuplicatesInDST("eliminate duplicates in DST"));
+            add(new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
+
+            add(new swapAddressTableObjectsInSrc(
+                     "AddressTable -> MultiAddressRunTime in Src"));
+            add(new swapAddressTableObjectsInDst(
+                     "AddressTable -> MultiAddressRunTime in Dst"));
+
+            add(new swapMultiAddressObjectsInSrc(
+                     "MultiAddress -> MultiAddressRunTime in Src"));
+            add(new swapMultiAddressObjectsInDst(
+                     "MultiAddress -> MultiAddressRunTime in Dst"));
+
+            add(new ExpandMultipleAddressesInSRC(
+                     "expand objects with multiple addresses in SRC"));
+            add(new ExpandMultipleAddressesInDST(
+                     "expand objects with multiple addresses in DST"));
+            add(new dropRuleWithEmptyRE(
                      "drop rules with empty rule elements"));
-            add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC") );
-            add( new eliminateDuplicatesInDST("eliminate duplicates in DST") );
-            add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV") );
-
-            add( new swapAddressTableObjectsInSrc(
-                     "AddressTable -> MultiAddressRunTime in Src") );
-            add( new swapAddressTableObjectsInDst(
-                     "AddressTable -> MultiAddressRunTime in Dst") );
-
-            add( new swapMultiAddressObjectsInSrc(
-                     "MultiAddress -> MultiAddressRunTime in Src") );
-            add( new swapMultiAddressObjectsInDst(
-                     "MultiAddress -> MultiAddressRunTime in Dst") );
-
-            add( new ExpandMultipleAddressesInSRC(
-                     "expand objects with multiple addresses in SRC" ) );
-            add( new ExpandMultipleAddressesInDST(
-                     "expand objects with multiple addresses in DST" ) );
-            add( new dropRuleWithEmptyRE(
-                     "drop rules with empty rule elements"));
-            add( new ConvertToAtomic             ("convert to atomic rules") );
-            add( new DetectShadowing             ("Detect shadowing"       ) );
-            add( new simplePrintProgress         (                         ) );
+            add(new ConvertToAtomic("convert to atomic rules"));
+            add(new DetectShadowing("Detect shadowing"));
+            add(new simplePrintProgress());
 
             runRuleProcessors();
             deleteRuleProcessors();
         }
 
-        add( new Begin() );
-        add( new printTotalNumberOfRules() );
+        add(new Begin());
+        add(new printTotalNumberOfRules());
 
-//        add( new printScrubRule            (" Defragmentation"             ));
+        add( new singleRuleFilter());
+
+//        add(new printScrubRule(" Defragmentation"));
         if (check_for_recursive_groups)
         {
-            add( new recursiveGroupsInSrc("check for recursive groups in SRC"));
-            add( new recursiveGroupsInDst("check for recursive groups in DST"));
-            add( new recursiveGroupsInSrv("check for recursive groups in SRV"));
+            add(new recursiveGroupsInSrc("check for recursive groups in SRC"));
+            add(new recursiveGroupsInDst("check for recursive groups in DST"));
+            add(new recursiveGroupsInSrv("check for recursive groups in SRV"));
         }
 
-        add( new emptyGroupsInSrc(           "check for empty groups in SRC" ));
-        add( new emptyGroupsInDst(           "check for empty groups in DST" ));
-        add( new emptyGroupsInSrv(           "check for empty groups in SRV" ));
+        add(new emptyGroupsInSrc("check for empty groups in SRC"));
+        add(new emptyGroupsInDst("check for empty groups in DST"));
+        add(new emptyGroupsInSrv("check for empty groups in SRV"));
 
-//        add( new doSrcNegation(         "process negation in Src"          ));
-//        add( new doDstNegation(         "process negation in Dst"          ));
-	add( new doSrvNegation(         "process negation in Srv"            ));
+//        add(new doSrcNegation("process negation in Src"));
+//        add(new doDstNegation("process negation in Dst"));
+	add(new doSrvNegation("process negation in Srv"));
 
 // ExpandGroups opens groups, as well as groups in groups etc.
-        add( new ExpandGroups(          "expand groups"                      ));
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+        add(new ExpandGroups("expand groups"));
+        add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
-        add( new CheckForTCPEstablished(
-                 "check for TCPService objects with flag \"established\"") );
+        add(new CheckForTCPEstablished(
+                 "check for TCPService objects with flag \"established\""));
             
-        add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC"      ));
-        add( new eliminateDuplicatesInDST("eliminate duplicates in DST"      ));
-        add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV"      ));
+        add(new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
+        add(new eliminateDuplicatesInDST("eliminate duplicates in DST"));
+        add(new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
 
-        add( new swapAddressTableObjectsInSrc(
-                 "AddressTable -> MultiAddressRunTime in Src") );
-        add( new swapAddressTableObjectsInDst(
-                 "AddressTable -> MultiAddressRunTime in Dst") );
+        add(new swapAddressTableObjectsInSrc(
+                 "AddressTable -> MultiAddressRunTime in Src"));
+        add(new swapAddressTableObjectsInDst(
+                 "AddressTable -> MultiAddressRunTime in Dst"));
 
-        add( new swapMultiAddressObjectsInSrc(
-                 "MultiAddress -> MultiAddressRunTime in Src") );
-        add( new swapMultiAddressObjectsInDst(
-                 "MultiAddress -> MultiAddressRunTime in Dst") );
+        add(new swapMultiAddressObjectsInSrc(
+                 "MultiAddress -> MultiAddressRunTime in Src"));
+        add(new swapMultiAddressObjectsInDst(
+                 "MultiAddress -> MultiAddressRunTime in Dst"));
 
-        add( new processMultiAddressObjectsInSrc(
-                 "process MultiAddress objects in Src") );
-        add( new processMultiAddressObjectsInDst(
-                 "process MultiAddress objects in Dst") );
+        add(new processMultiAddressObjectsInSrc(
+                 "process MultiAddress objects in Src"));
+        add(new processMultiAddressObjectsInDst(
+                 "process MultiAddress objects in Dst"));
 
-        add( new ItfNegation(         "process negation in Itf"  ) );
-        add( new InterfacePolicyRules(
-                 "process interface policy rules and store interface ids") );
+        add(new replaceFailoverInterfaceInItf("replace carp interfaces"));
 
-	add( new splitIfFirewallInSrc("split rule if firewall is in Src"   ));
-	add( new splitIfFirewallInDst("split rule if firewall is in Dst"   ));
-	add( new fillDirection("determine directions"               ));
+        add(new ItfNegation("process negation in Itf"));
+
+        add(new InterfacePolicyRules("process interface policy rules and store interface ids"));
+
+	add(new splitIfFirewallInSrc("split rule if firewall is in Src"));
+	add(new splitIfFirewallInDst("split rule if firewall is in Dst"));
+	add(new fillDirection("determine directions"));
+
+// commented out for bug #2828602
+// ... and put back per #2844561
+// both bug reports/patches are by Tom Judge (tomjudge on sourceforge)
 	add( new SplitDirection("split rules with direction 'both'"  ));
-        add( new addLoopbackForRedirect(
-                 "add loopback to rules that permit redirected services" ) );
-	add( new ExpandMultipleAddresses(
-                 "expand objects with multiple addresses" ) );
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-        add( new checkForDynamicInterfacesOfOtherObjects(
-                 "check for dynamic interfaces of other hosts and firewalls" ));
-        add( new MACFiltering("verify for MAC address filtering"   ));
-        add( new checkForUnnumbered("check for unnumbered interfaces"    ));
-	add( new addressRanges("expand address range objects"       ));
-	add( new splitServices("split rules with different protocols"));
-	add( new separateTCPWithFlags("separate TCP services with flags"    ));
-        add( new separateSrcPort("split on TCP and UDP with source ports"));
-        add( new separateTagged("split on TagService"));
-        add( new separateTOS("split on IPService with TOS"));
+
+        add(new addLoopbackForRedirect(
+                 "add loopback to rules that permit redirected services"));
+	add(new ExpandMultipleAddresses(
+                 "expand objects with multiple addresses"));
+        add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+        add(new checkForDynamicInterfacesOfOtherObjects(
+                 "check for dynamic interfaces of other hosts and firewalls"));
+        add(new MACFiltering("verify for MAC address filtering"));
+        add(new checkForUnnumbered("check for unnumbered interfaces"));
+	add(new addressRanges("expand address range objects"));
+	add(new splitServices("split rules with different protocols"));
+	add(new separateTCPWithFlags("separate TCP services with flags"));
+        add(new separateSrcPort("split on TCP and UDP with source ports"));
+        add(new separateTagged("split on TagService"));
+        add(new separateTOS("split on IPService with TOS"));
 
         if (ipv6)
             add( new DropIPv4Rules("drop ipv4 rules"));
         else
             add( new DropIPv6Rules("drop ipv6 rules"));
 
-	add( new verifyCustomServices(
-                 "verify custom services for this platform"));
-//	add( new ProcessScrubOption(    "process 'scrub' option"         ));
-	add( new SpecialServices(       "check for special services"     ));
-	add( new setQuickFlag(          "set 'quick' flag"               ));
-        add( new checkForZeroAddr(      "check for zero addresses"       ));
-        add( new convertInterfaceIdToStr("prepare interface assignments" ));
+	add(new verifyCustomServices("verify custom services for this platform"));
+//	add(new ProcessScrubOption("process 'scrub' option"));
+	add(new SpecialServices("check for special services"));
+	add(new setQuickFlag("set 'quick' flag"));
+        add(new checkForZeroAddr("check for zero addresses"));
+        add(new convertInterfaceIdToStr("prepare interface assignments"));
 
-        add( new createTables(      "create tables"    ));
-//        add( new PrintTables(       "print tables"     ));
+        add(new createTables("create tables"));
+//        add(new PrintTables("print tables"));
 
-        add( new PrintRule(             "generate pf code" ));
-        add( new simplePrintProgress() );
+        add(new PrintRule("generate pf code"));
+        add(new simplePrintProgress());
 
         runRuleProcessors();
 
-    } catch (FWException &ex) {
+    } catch (FWException &ex)
+    {
 	error(ex.toString());
 	exit(1);
     }
@@ -1119,3 +1144,81 @@ void PolicyCompiler_pf::compile()
 void PolicyCompiler_pf::epilog()
 {
 }
+
+void PolicyCompiler_pf::insertCarpRule()
+{
+    /* Add CARP-Service to database */
+    IPService* carp_service = IPService::cast(dbcopy->create(IPService::TYPENAME));
+    carp_service->setComment("CARP service");
+    carp_service->setProtocolNumber(112);
+    dbcopy->add(carp_service);
+
+    FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
+    for (; interfaces != interfaces.end(); ++interfaces) 
+    {
+        Interface *iface = Interface::cast(*interfaces);
+
+        if (iface->isFailoverInterface())
+        {
+            FWObject *failover_group =
+                iface->getFirstByType(FailoverClusterGroup::TYPENAME);
+            if (failover_group->getStr("type") == "carp")
+            {
+                /* Add automatic rules for CARP 
+                 * Rule should be associated with physical interface
+                 */
+                
+                string phys_iface_name = iface->getOptionsObject()->getStr("base_device");
+                Interface *phys_iface = Interface::cast(
+                    fw->findObjectByName(Interface::TYPENAME, phys_iface_name));
+                if (phys_iface)
+                {
+                    PolicyRule *rule = 
+                        addMgmtRule(NULL, NULL, carp_service, phys_iface,
+                                    PolicyRule::Outbound, PolicyRule::Accept, "CARP");
+                    FWOptions *ruleopt = rule->getOptionsObject();
+                    assert(ruleopt!=NULL);
+                    ruleopt->setBool("firewall_is_part_of_any_and_networks", false);
+                } else
+                {
+                    warning(
+                        "Can not find interface " + phys_iface_name + 
+                        " for the CARP interface " + iface->getName() +
+                        " of the cluster");
+                }
+            }
+        }
+    }
+}
+
+void PolicyCompiler_pf::insertPfsyncRule()
+{
+    /* Add pfsync service to database */
+    IPService* pfsync_service = IPService::cast(dbcopy->create(IPService::TYPENAME));
+    pfsync_service->setComment("pfsync service");
+    pfsync_service->setProtocolNumber(240);
+    dbcopy->add(pfsync_service);
+
+    FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
+    for (; interfaces != interfaces.end(); ++interfaces) 
+    {
+        Interface *iface = Interface::cast(*interfaces);
+        if (iface->getOptionsObject()->getBool("state_sync_group_member"))
+        {
+            FWObject *state_sync_group = dbcopy->findInIndex(
+                dbcopy->getIntId(
+                    iface->getOptionsObject()->getStr("state_sync_group_id")));
+            assert(state_sync_group!=NULL);
+            if (state_sync_group && state_sync_group->getStr("type") == "pfsync")
+            {
+                PolicyRule *rule = addMgmtRule(NULL, NULL, pfsync_service, iface,
+                                               PolicyRule::Outbound,
+                                               PolicyRule::Accept, "pfsync");
+                FWOptions *ruleopt = rule->getOptionsObject();
+                assert(ruleopt!=NULL);
+                ruleopt->setBool("firewall_is_part_of_any_and_networks", false);
+            }
+        }
+    }
+}
+

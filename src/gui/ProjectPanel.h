@@ -52,7 +52,6 @@ class RCS;
 
 class FindObjectWidget;
 class FindWhereUsedWidget;
-class listOfLibraries;
 class FWBTree;
 
 #define DEFAULT_H_SPLITTER_POSITION 250
@@ -64,7 +63,6 @@ class ProjectPanel: public QWidget {
 
     FWWindow                               *mainW;
     RCS                                    *rcs;
-    listOfLibraries                        *addOnLibs;
     FWBTree                                *objectTreeFormat;
     bool                                    systemFile;
     bool                                    safeMode;
@@ -73,7 +71,6 @@ class ProjectPanel: public QWidget {
     bool                                    ruleSetRedrawPending;
     bool                                    closing ;
     bool                                    ready;
-    QString                                 startupFileName;
     
     libfwbuilder::FWObjectDatabase         *objdb;
     QWidget                                *editorOwner;
@@ -152,6 +149,7 @@ public:
                                          const QString &objName,
                                          libfwbuilder::FWObject *copyFrom=NULL);
 
+    void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
 
     FWWindow* getWindow (){ return mainW;}     
     void moveObject(libfwbuilder::FWObject *target,
@@ -159,10 +157,6 @@ public:
 
     void moveObject(const QString &targetLibName,
                     libfwbuilder::FWObject *obj);
-
-    void autorename(libfwbuilder::FWObject *obj,
-                    const std::string &objtype,
-                    const std::string &namesuffix);
 
     void updateLibColor(libfwbuilder::FWObject *lib);
     void updateLibName(libfwbuilder::FWObject *lib);
@@ -175,16 +169,15 @@ public:
                        const QString &oldLabel,
                        bool  askForAutorename=true);
 
-    void updateLastModifiedTimestampForOneFirewall(libfwbuilder::FWObject *o);
-    void updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o);   
-    void updateLastInstalledTimestamp(libfwbuilder::FWObject *o);
-    void updateLastCompiledTimestamp(libfwbuilder::FWObject *o);
+    void updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o);
        
     void loadDataFromFw(libfwbuilder::Firewall *fw);
     
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                     libfwbuilder::FWObject *obj);
     void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
+    void relocateTo(libfwbuilder::FWObject *target, libfwbuilder::FWObject *obj);
+
     ObjectTreeView* getCurrentObjectTree();
     void openObject(QTreeWidgetItem *otvi);
     void openObject(libfwbuilder::FWObject *obj);
@@ -238,16 +231,11 @@ public:
     
     void clearFirewallTabs();
     void ensureObjectVisibleInRules(libfwbuilder::FWReference *obj);
-    void ensureRuleIsVisible(libfwbuilder::Rule *rule, int col=0);
     
     libfwbuilder::FWObject* getVisibleFirewall() { return visibleFirewall; }
     RuleSetView* getRuleSetViews(libfwbuilder::FWObject *o) 
     {return ruleSetViews[o];};
 
-    void updateRuleSetViewSelection();
-    void updateRuleSetView();
-    void updateRuleOptions();
-    void updateTreeViewItemOrder();
     int  findFirewallInList(libfwbuilder::FWObject *f);
     void updateFirewallName();
     void scheduleRuleSetRedraw();
@@ -296,7 +284,6 @@ public:
 
     virtual void fileProp();
     virtual bool fileNew();
-    virtual bool fileOpen();
 
     virtual void fileClose();
     virtual void fileSave();
@@ -305,8 +292,6 @@ public:
     virtual void fileCommit();
     virtual void fileDiscard();
     virtual void fileAddToRCS();
-    
-    virtual void startupLoad();
     
     virtual void fileImport();
     virtual void fileCompare();
@@ -318,11 +303,13 @@ public:
     
     virtual void search();
 
-    virtual void compile(std::set<libfwbuilder::Firewall * > vf);
+    virtual void compile(std::set<libfwbuilder::Firewall*> vf);
     virtual void compile();
-    virtual void install(std::set<libfwbuilder::Firewall * > vf);
+    virtual void install(std::set<libfwbuilder::Firewall*> vf);
     virtual void install();
-     
+    virtual void transferfw(std::set<libfwbuilder::Firewall*> vf);
+    virtual void transferfw();
+
     virtual void rollBackSelectionSameWidget();
     virtual void rollBackSelectionDifferentWidget();
     void splitterMoved ( int pos, int index );
@@ -338,7 +325,7 @@ public:
     QString getFileName();
     bool editingLibrary();
     void createRCS( const QString &filename);
-    void loadFromRCS(RCS *rcs);
+    bool loadFromRCS(RCS *rcs);
     void loadStandardObjects();
     bool loadFile(const QString &fileName, bool load_rcs_head);
 
@@ -366,7 +353,6 @@ public:
                        std::list<libfwbuilder::FWReference*> &extRefs);
     
     void setSafeMode(bool f) { safeMode=f; }
-    void setStartupFileName(const QString &fn);
     void setupAutoSave();
     QString getCurrentFileName();
     RCS * getRCS();
@@ -389,6 +375,7 @@ public:
     bool getDeleteMenuState(libfwbuilder::FWObject *obj);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
+    void singleRuleCompile(libfwbuilder::Rule *rule);
 
 protected:
     int oldState ;
@@ -396,6 +383,7 @@ protected:
     virtual void hideEvent( QHideEvent *ev);
     virtual void closeEvent( QCloseEvent * );
     virtual void resizeEvent ( QResizeEvent * event );
+    virtual bool event(QEvent *event);
 
     void setMainSplitterPosition(int w1, int w2);
     void setObjInfoSplitterPosition(int w1, int w2);

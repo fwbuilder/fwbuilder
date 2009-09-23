@@ -29,6 +29,7 @@
 #include "utils_no_qt.h"
 
 #include "instDialog.h"
+#include "ProjectPanel.h"
 #include "FirewallInstaller.h"
 #include "FWBSettings.h"
 #include "SSHUnx.h"
@@ -65,9 +66,11 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
+#include "fwcompiler/BaseCompiler.h"
 
 #ifndef _WIN32
 #  include <unistd.h>     // for access(2) and getdomainname
@@ -78,11 +81,12 @@
 
 using namespace std;
 using namespace libfwbuilder;
+using namespace fwcompiler;
 
 
 instDialog::instDialog(QWidget* p,
                        BatchOperation op,
-                       t_fwSet reqFirewalls_) : QDialog(p)
+                       set<Firewall*> reqFirewalls_) : QDialog(p)
 {
     m_dialog = new Ui::instDialog_q;
     m_dialog->setupUi(this);
@@ -101,10 +105,39 @@ instDialog::instDialog(QWidget* p,
 
     page_1_op = INST_DLG_COMPILE;
 
-    showSelectedFlag = false;
     rejectDialogFlag = false;
 
+    list<string> err_re;
+    BaseCompiler::errorRegExp(&err_re);
+    err_re.push_back("(Abnormal[^\n]*)");
+    err_re.push_back("(fwb_[^:]*: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)");
+    foreach(string re, err_re)
+    {
+        error_re.push_back(QRegExp(re.c_str()));
+    }
+
+    list<string> warn_re;
+    BaseCompiler::warningRegExp(&warn_re);
+    foreach(string re, warn_re)
+    {
+        warning_re.push_back(QRegExp(re.c_str()));
+    }
+
+
     currentLog = m_dialog->procLogDisplay;
+    QTextCursor cursor(currentLog->textCursor());
+    normal_format = cursor.charFormat();
+    error_format = normal_format;
+    error_format.setForeground(QBrush(Qt::red));
+    // weight must be between 0 and 99. Qt 4.4.1 does not seem to mind if
+    // it is >99 (just caps it) but older versions assert
+    error_format.setProperty(QTextFormat::FontWeight, 99);
+    warning_format = normal_format;
+    warning_format.setForeground(QBrush(Qt::blue));
+    warning_format.setProperty(QTextFormat::FontWeight, 99);
+    highlight_format = normal_format;
+    highlight_format.setProperty(QTextFormat::FontWeight, 99);
+
     currentSaveButton = m_dialog->saveMCLogButton;
     currentSaveButton->setEnabled(true);
     currentStopButton = m_dialog->controlMCButton;
@@ -142,9 +175,11 @@ instDialog::instDialog(QWidget* p,
     }
     if (firewalls.size()==1) m_dialog->batchInstall->setEnabled(false);
     // setup wizard appropriate pages
-    operation=op;
+    operation = op;
 
     creatingTable = false;
+
+    m_dialog->selectTable->setFocus();
 
     showPage(0);
 
@@ -156,7 +191,7 @@ instDialog::instDialog(QWidget* p,
             tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls for compilation.</font></b></p>"));
         m_dialog->batchInstFlagFrame->hide();
         setAppropriate(2,false);
-        m_dialog->selectTable->hideColumn(1);
+        m_dialog->selectTable->hideColumn(INSTALL_CHECKBOX_COLUMN);
         break;
     }
 
@@ -278,7 +313,7 @@ void instDialog::showPage(const int page)
     case 0: // select firewalls for compiling and installing
     {
         if (lastPage<0) fillCompileSelectList();
-        setNextEnabled(0, tableHasChecked());
+        setNextEnabled(0, tableHasCheckedItems());
         break;
     }
 
@@ -352,15 +387,15 @@ QString instDialog::replaceMacrosInCommand(const QString &ocmd)
  *
  * %FWSCRIPT%, %FWDIR%, %FWBPROMPT%, %RBTIMEOUT%
  *
- * check if cnf.conffile is a full path. If it is, strip the path part
+ * check if cnf.script is a full path. If it is, strip the path part
  * and use only the file name for %FWSCRIPT%
  */
     QString cmd = ocmd;
-    QString fwbscript = QFileInfo(cnf.conffile).fileName();
+    QString fwbscript = QFileInfo(cnf.remote_script).fileName();
     if (fwbdebug)
     {
         qDebug("Macro substitutions:");
-        qDebug("  cnf.conffile=%s", cnf.conffile.toAscii().constData());
+        qDebug("  cnf.script=%s", cnf.script.toAscii().constData());
         qDebug("  %%FWSCRIPT%%=%s", fwbscript.toAscii().constData());
         qDebug("  %%FWDIR%%=%s", cnf.fwdir.toAscii().constData());
     }
@@ -380,23 +415,30 @@ QString instDialog::replaceMacrosInCommand(const QString &ocmd)
 
 void instDialog::testRunRequested()
 {
-#if 0
-#endif
 }
 
 void instDialog::findFirewalls()
 {
     firewalls.clear();
-    mw->findAllFirewalls(firewalls);
+    clusters.clear();
+    
+    ProjectPanel *active_project = mw->activeProject();
+
+    if (active_project)
+    {
+        active_project->m_panel->om->findAllFirewalls(firewalls);
+        active_project->m_panel->om->findAllClusters(clusters);
+    }
+
     firewalls.sort(FWObjectNameCmpPredicate());
+    clusters.sort(FWObjectNameCmpPredicate());
+
     m_dialog->saveMCLogButton->setEnabled(true);
 }
-
 
 bool instDialog::checkSSHPathConfiguration(Firewall *fw)
 {
     if (fwbdebug) qDebug("instDialog::checkSSHPathConfiguration");
-    FWOptions  *fwopt = fw->getOptionsObject();
     customScriptFlag = false;
 
     Management *mgmt = fw->getManagementObject();
@@ -435,7 +477,23 @@ bool instDialog::isCiscoFamily()
  */
 void instDialog::blockInstallForFirewall(Firewall *fw)
 {
-    installMapping[fw]->setCheckState(Qt::Unchecked);
+    if (Cluster::isA(fw))
+    {
+        list<Firewall*> members;
+        Cluster::cast(fw)->getMembersList(members);
+        for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
+            blockInstallForFirewall(*it);
+    } else
+    {
+        QList<QTreeWidgetItem*> items = m_dialog->selectTable->findItems("*", Qt::MatchWildcard);
+        QList<QTreeWidgetItem*>::iterator i;
+        for (i=items.begin(); i!=items.end(); ++i)
+        {
+            int obj_id = (*i)->data(0, Qt::UserRole).toInt();
+            if (obj_id == fw->getId())
+                (*i)->setCheckState(INSTALL_CHECKBOX_COLUMN, Qt::Unchecked);
+        }
+    }
 }
 
 void instDialog::setUpProcessToCompile()

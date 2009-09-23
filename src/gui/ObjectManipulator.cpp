@@ -29,6 +29,7 @@
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
+#include "platforms.h"
 
 #include "ObjectManipulator.h"
 #include "ObjectEditor.h"
@@ -37,15 +38,19 @@
 #include "FWObjectClipboard.h"
 #include "FWObjectPropertiesFactory.h"
 #include "FWBSettings.h"
-#include "listOfLibraries.h"
 #include "newFirewallDialog.h"
+#include "newClusterDialog.h"
 #include "newHostDialog.h"
 #include "findDialog.h"
 #include "newGroupDialog.h"
 #include "FindObjectWidget.h"
 #include "AskLibForCopyDialog.h"
 #include "FindWhereUsedWidget.h"
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
+#include "events.h"
 
+#include <QMessageBox>
 #include <QTextEdit>
 #include <QTime>
 #include <qobject.h>
@@ -62,7 +67,6 @@
 #include <qsplitter.h>
 #include <qtoolbutton.h>
 #include <qlayout.h>
-#include <qmessagebox.h>
 #include <qmenu.h>
 #include <qapplication.h>
 #include <qcursor.h>
@@ -74,6 +78,7 @@
 #include <QPixmap>
 #include <QMdiSubWindow>
 #include <QMdiArea>
+#include <QRegExp>
 
 #include "DialogFactory.h"
 #include "FWBTree.h"
@@ -83,6 +88,9 @@
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
@@ -119,6 +127,7 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <memory>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -168,6 +177,8 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
     newObjectPopup->addSeparator();
     newObjectPopup->addAction(QIcon(icon_path+Firewall::TYPENAME+"/icon-tree"), 
                               tr("New Firewall"), this, SLOT( newFirewall()));
+    newObjectPopup->addAction(QIcon(icon_path+Cluster::TYPENAME+"/icon-tree"),
+                              tr("New Cluster"), this, SLOT(newCluster()));
     newObjectPopup->addAction(QIcon(icon_path+Host::TYPENAME+"/icon-tree"),
                               tr("New Host"), this, SLOT( newHost() ));
     newObjectPopup->addAction(QIcon(icon_path+Interface::TYPENAME+"/icon-tree"),
@@ -227,64 +238,102 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
     newObjectPopup->addAction(QIcon(icon_path+Interval::TYPENAME+"/icon-tree"),
                               tr( "New Time Interval"), this,
                               SLOT( newInterval() ));
-
 //    QToolButton *btn = (QToolButton*)toolBar->child("newObjectAction_action_button");
 
     m_objectManipulator->newButton->setMenu( newObjectPopup );
-
-#if defined(Q_WS_X11)
-/* do something that makes sense only on X11 */
-
-#elif defined(Q_OS_WIN32) || defined(Q_OS_CYGWIN)
-/* do something that only works on windows */
-
-#elif defined(Q_OS_MAC)
-
-#endif
-
-//    backwardAction->setEnabled( false );
-
-//    setMinimumSize( QSize( 0, 174 ) );
-//    splitter3->setMinimumSize( QSize( 0, 118 ) );
-//    treeFrame->setMinimumSize( QSize( 200, 0 ) );
-//    splitter3->setResizeMode( treeFrame, QSplitter::KeepSize );
 }
-
 
 QString ObjectManipulator::getTreeLabel( FWObject *obj )
 {
-    QString name;
+    QString name = QString::fromUtf8(obj->getName().c_str());
     if (RuleSet::isA(obj))
     {
-        name=QString::fromUtf8(obj->getName().c_str());
         return name ;
     }
     if (Interface::isA(obj))
     {
-        name=Interface::constcast(obj)->getLabel().c_str();
+        // trigger late initialization of options object
+        // if its read-only or part of the read-only tree, I can't help it.
+        if (!obj->isReadOnly()) Interface::cast(obj)->getOptionsObject();
+        name =Interface::constcast(obj)->getLabel().c_str();
         if (name=="")  name=QString::fromUtf8(obj->getName().c_str());
         QString q;
-        if (Interface::constcast(obj)->isDyn())        q=" dyn";
-        if (Interface::constcast(obj)->isUnnumbered()) q=" unnum";
-        if (Interface::constcast(obj)->isBridgePort()) q=" bridge port";
-        if (Interface::constcast(obj)->isExt())        q=q+" ext";
-        if (Interface::constcast(obj)->isUnprotected())q=q+" unp";
-        if (q!="") name=name+" ("+q+")";
+        if (Interface::constcast(obj)->isDyn())         q =" dyn";
+        if (Interface::constcast(obj)->isUnnumbered())  q =" unnum";
+        if (Interface::constcast(obj)->isBridgePort())  q =" bridge port";
+        if (Interface::constcast(obj)->isSlave())       q =" slave";
+        if (Interface::constcast(obj)->isUnprotected()) q = q + " unp";
+        if (q!="") name = name+" (" + q + ")";
+        return name;
     }
-    else
+    if (Firewall::isA(obj))
     {
-        name=QString::fromUtf8(obj->getName().c_str());
-        if (Library::isA(obj) && obj->isReadOnly())
-	    name=name+QObject::tr(" ( read only )");
+        Firewall *fw = Firewall::cast(obj);
+        if (fw->needsInstall()) name += " *";
+        return name;
     }
+    if (Library::isA(obj) && obj->isReadOnly())
+        name += QObject::tr(" ( read only )");
 
-#if 0
-    if (name=="")
-    {  // no name, use type description string instead
-        name= Resources::global_res->getObjResourceStr(obj,"description").c_str();
-    }
-#endif
     return name;
+}
+
+void ObjectManipulator::refreshSubtree(QTreeWidgetItem *itm)
+{
+    if (fwbdebug)
+        qDebug("ObjectManipulator::refreshSubtree %s", itm->text(0).toLatin1().constData());
+
+    QTreeWidgetItem *parent = itm->parent();
+    if (parent)
+    {
+        /*
+         * re-sorting parent tree item causes havoc. If I do not
+         * collapse/expand it, I get strange glitches in display. If I
+         * collapse/expand it, it scrolls the tree up. If I use
+         * scrollToItem() to force scrolling position, I get problems
+         * when this method is called from ProjectPanel::updateLastModifiedTimestampForAllFirewalls
+         * (via event) since the user modified one object, but this method
+         * repositions the tree to show the firewall that uses it.
+         *
+         * To work around this I sort the parent and see if the item
+         * next to the itm has changed. If it has, then sorting order
+         * has changed and we need to collapse then expand and
+         * scroll. If sorting order has not changed, this means the
+         * update was only to the attributes of the object or the name
+         * sorted in the same order and we do not need to
+         * expand/collapse the subtree.
+         */
+
+        QTreeWidgetItemIterator old_neighbor_iter(itm);
+        old_neighbor_iter--;
+        QTreeWidgetItem *old_neighbor = *old_neighbor_iter;
+
+        parent->sortChildren(0, Qt::AscendingOrder);//();
+
+        QTreeWidgetItemIterator new_neighbor_iter(itm);
+        new_neighbor_iter--;
+        QTreeWidgetItem *new_neighbor = *new_neighbor_iter;
+
+        if (old_neighbor != new_neighbor)
+        {
+            if (fwbdebug)
+                qDebug("ObjectManipulator::refreshSubtree expand/collapse parent");
+            /*
+             * workaround for QT4 bug 
+             * http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=233975
+             * Affects QT 4.4.1
+             *
+             * This has a side effect in that the tree loses its scrollong
+             * position and scrolls all the way to the top. If the object
+             * being edited was in the middle or close to the bottom, it disappears
+             * from view. Call to scrollToItem() fixes this.
+             */
+            parent->setExpanded(false);
+            parent->setExpanded(true);
+            getCurrentObjectTree()->scrollToItem(itm, QAbstractItemView::EnsureVisible);
+            getCurrentObjectTree()->update();
+        }
+    }
 }
 
 void ObjectManipulator::insertObjectInTree(FWObject *parent, FWObject *obj)
@@ -302,10 +351,14 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     ObjectTreeViewItem *nitm = NULL;
     QString icn_filename;
 
+    if (fwbdebug)
+        qDebug("insertObject: obj=%p %s", obj, obj->getName().c_str());
+
     if (m_project->isSystem(obj))
-        icn_filename=":/Icons/folder1.png";
+        icn_filename = ":/Icons/SystemGroup/icon-tree";
+//        icn_filename = ":/Icons/folder1.png";
     else
-        icn_filename=(":/Icons/"+obj->getTypeName()+"/icon-tree").c_str();
+        icn_filename = (":/Icons/" + obj->getTypeName() + "/icon-tree").c_str();
 
     if (obj->getRO()) icn_filename = ":/Icons/lock.png";
 
@@ -337,6 +390,10 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     return nitm;
 }
 
+/**
+ * This method enforces certain order of items in the tree depending
+ * on the parent item type.
+ */
 void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 {
     ObjectTreeViewItem *nitm = insertObject(itm, obj);
@@ -344,30 +401,46 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 
     if ( m_project->isSystem(obj) ) nitm->setExpanded( st->getExpandTree() );
 
-    if (Firewall::isA(obj))
+    if (Cluster::isA(obj))
     {
-         for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(Interface::TYPENAME);
-              it != it.end(); ++it)
-         {
-             insertSubtree( nitm, *it );
-         }
-         for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(Policy::TYPENAME);
-              it != it.end(); ++it)
-         {
-             insertSubtree( nitm, *it );
-         }
-         for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(NAT::TYPENAME);
-              it != it.end(); ++it)
-         {
-             insertSubtree( nitm, *it );
-         }
-         for (FWObjectTypedChildIterator it = Firewall::cast(obj)->findByType(Routing::TYPENAME);
-              it != it.end(); ++it)
-         {
-             insertSubtree( nitm, *it );
-         }
+         for (FWObjectTypedChildIterator it = obj->findByType(StateSyncClusterGroup::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+    }
+
+    if (Cluster::isA(obj) || Firewall::isA(obj))
+    {
+         for (FWObjectTypedChildIterator it = obj->findByType(Interface::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+
+         for (FWObjectTypedChildIterator it = obj->findByType(Policy::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+
+         for (FWObjectTypedChildIterator it = obj->findByType(NAT::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+
+         for (FWObjectTypedChildIterator it = obj->findByType(Routing::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+
          return ;
     }
+
+    if (Interface::isA(obj))
+    {
+         for (FWObjectTypedChildIterator it = obj->findByType(Interface::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+         for (FWObjectTypedChildIterator it = obj->findByType(IPv4::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+         for (FWObjectTypedChildIterator it = obj->findByType(IPv6::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+         for (FWObjectTypedChildIterator it = obj->findByType(physAddress::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+         for (FWObjectTypedChildIterator it = obj->findByType(FailoverClusterGroup::TYPENAME);
+              it != it.end(); ++it) insertSubtree( nitm, *it );
+
+         return;
+    }
+
+
     for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++)
     {
         FWObject *o1=*m;
@@ -428,7 +501,7 @@ void ObjectManipulator::showDeletedObjects(bool f)
     }
 }
 
-void ObjectManipulator::removeObjectFromTreeView(FWObject *obj )
+void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
 {
 //    QTreeWidget *objTreeView = idxToTrees[ getIdxForLib(getCurrentLib()) ];
     int current_lib_idx = m_objectManipulator->libs->currentIndex();
@@ -467,17 +540,49 @@ int ObjectManipulator::getIdxForLib(FWObject* lib)
 
 void ObjectManipulator::updateLibName(FWObject *lib)
 {
-    int              oldidx = getIdxForLib(lib);
-    QTreeWidget  *objTreeView = idxToTrees[oldidx];
-    QString      newlibname = QString::fromUtf8(lib->getName().c_str());
+    int oldidx = getIdxForLib(lib);
+    QTreeWidget *objTreeView = idxToTrees[oldidx];
+    QString newlibname = QString::fromUtf8(lib->getName().c_str());
 
-    if (m_objectManipulator->libs->itemText(oldidx)!=newlibname)
+    if (m_objectManipulator->libs->itemText(oldidx) != newlibname)
     {
         removeLib(oldidx);
         addLib(lib, objTreeView);
     }
 }
 
+/*
+ * Update tree item for the given object, including its name and brief summary
+ * of properties. If @subtree=true, do the same for all its children as well.
+ */
+void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
+{
+    if (fwbdebug)
+        qDebug("ObjectManipulator::updateObjectInTree  obj=%s", obj->getName().c_str());
+
+    QTreeWidgetItem *itm = allItems[obj];
+    assert(itm!=NULL);
+    QString old_itm_text = itm->text(0);
+
+    itm->setText(0, getTreeLabel(obj));
+    getCurrentObjectTree()->updateTreeIcons();
+
+    if (subtree)
+    {
+        for (list<FWObject*>::iterator j=obj->begin(); j!=obj->end(); ++j)
+        {
+            FWObject *child_obj = *j;
+            // not all child objects are visible in the tree, so check
+            // if the tree item exists
+            if (allItems.count(child_obj) > 0)
+            {
+                updateObjectInTree(child_obj, subtree);
+            }
+        }
+    }
+
+    refreshSubtree(itm);
+}
 
 /*
  * TODO: make this signal/slot. Dialogs just emit signal
@@ -488,10 +593,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
                                       const QString &oldName,
                                       bool  askForAutorename)
 {
-    // update info in case user edited comments and other attributes.
-    info();
-
-    if (oldName == obj->getName().c_str()) return;
+    if (oldName == QString::fromUtf8(obj->getName().c_str())) return;
     
     if (obj!=currentObj) openObject(obj);
     
@@ -499,36 +601,20 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     assert(itm!=NULL);
     
     if (fwbdebug)
-    {
-        qDebug("ObjectManipulator::updateObjName  changing name %s -> %s",
-               oldName.toLatin1().constData(), QString::fromUtf8(obj->getName().c_str()).toLatin1().constData());
-    }
+        qDebug("ObjectManipulator::updateObjName  changing name '%s' -> '%s'",
+               oldName.toLatin1().constData(),
+               QString::fromUtf8(obj->getName().c_str()).toLatin1().constData());
     
     if ((QString::fromUtf8(obj->getName().c_str())!=oldName) &&
         (Host::isA(obj) || Firewall::isA(obj) || Interface::isA(obj)))
     {
-        if (fwbdebug)
-            qDebug("ObjectManipulator::updateObjName  autorename");
+        if (fwbdebug) qDebug("ObjectManipulator::updateObjName  autorename");
         autorename(obj, askForAutorename);
-        if (fwbdebug)
-            qDebug("ObjectManipulator::updateObjName  autorename done");
-    }
-    
-    itm->setText(0, getTreeLabel( obj ) );
-    
-    if (!Library::isA(obj))
-        itm->parent()->sortChildren(0, Qt::AscendingOrder);
-    
-    /* need to update name of the firewall in the drop-down list */
-    if (Firewall::isA(obj))
-    {
-        m_project->updateFirewallName();
+        if (fwbdebug) qDebug("ObjectManipulator::updateObjName  autorename done");
     }
 
-    if (RuleSet::cast(obj)!=NULL)
-    {
-        m_project->updateFirewallName();
-    }
+    QCoreApplication::postEvent(
+        mw, new objectNameChangedEvent(m_project->getFileName(), obj->getId()));
 }
 
 /*
@@ -550,37 +636,38 @@ void ObjectManipulator::updateObjName(FWObject *obj,
                oldName.toLatin1().constData(), QString::fromUtf8(obj->getName().c_str()).toLatin1().constData());
     }
 
-    if ((QString::fromUtf8(obj->getName().c_str())!=oldName) && Interface::isA(obj))
+    if ((QString::fromUtf8(obj->getName().c_str()) != oldName) &&
+        Interface::isA(obj))
         autorename(obj, askForAutorename);
 
-    itm->setText(0, getTreeLabel( obj ) );
-    itm->parent()->sortChildren(0, Qt::AscendingOrder);//();
+    // Do not call updateObjectInTree because it will be called
+    // from ProjectPanel::event when we process updateObjectInTree event
+    //updateObjectInTree(obj);
 
     Interface *i = Interface::cast(obj);
     if  ((i!=NULL && i->getLabel()!=oldLabel.toLatin1().constData()) ||
-         (QString::fromUtf8(obj->getName().c_str())!=oldName))
+         (QString::fromUtf8(obj->getName().c_str()) != oldName))
     {
-        //m_project->reopenFirewall();
-        m_project->scheduleRuleSetRedraw();
+        QCoreApplication::postEvent(
+            mw, new objectNameChangedEvent(m_project->getFileName(), obj->getId()));
+//        m_project->scheduleRuleSetRedraw();
     }
-
-    info();  // need to update info in case user edited comments and other attributes.
 }
 
 void ObjectManipulator::autorename(FWObject *obj, bool ask)
 {
-    if (Host::isA(obj) || Firewall::isA(obj))
+    if (Host::isA(obj) || Firewall::isA(obj) || Cluster::isA(obj))
     {
         QString dialog_txt = tr(
-"The name of the object '%1' has changed. The program can also\n"
-"rename IP address objects that belong to this object,\n"
-"using standard naming scheme 'host_name:interface_name:ip'.\n"
-"This makes it easier to distinguish what host or a firewall\n"
-"given IP address object belongs to when it is used in \n"
-"the policy or NAT rule. The program also renames MAC address\n"
-"objects using scheme 'host_name:interface_name:mac'.\n"
-"Do you want to rename child IP and MAC address objects now?\n"
-"(If you click 'No', names of all address objects that belong to\n"
+"The name of the object '%1' has changed. The program can also "
+"rename IP address objects that belong to this object, "
+"using standard naming scheme 'host_name:interface_name:ip'. "
+"This makes it easier to distinguish what host or a firewall "
+"given IP address object belongs to when it is used in "
+"the policy or NAT rule. The program also renames MAC address "
+"objects using scheme 'host_name:interface_name:mac'. "
+"Do you want to rename child IP and MAC address objects now? "
+"(If you click 'No', names of all address objects that belong to "
 "%2 will stay the same.)")
             .arg(QString::fromUtf8(obj->getName().c_str()))
             .arg(QString::fromUtf8(obj->getName().c_str()));
@@ -592,71 +679,130 @@ void ObjectManipulator::autorename(FWObject *obj, bool ask)
         {
             list<FWObject*> il = obj->getByType(Interface::TYPENAME);
             for (list<FWObject*>::iterator i=il.begin(); i!=il.end(); ++i)
-            {
-                
-                autorename(*i,IPv4::TYPENAME,"ip");
-                autorename(*i,IPv6::TYPENAME,"ip6");
-                autorename(*i,physAddress::TYPENAME,"mac");
-            }
+                autorename(*i, false);
         }
     }
  
     if (Interface::isA(obj))
     {
-        QString dialog_txt = tr(
-"The name of the interface '%1' has changed. The program can also\n"
-"rename IP address objects that belong to this interface,\n"
-"using standard naming scheme 'host_name:interface_name:ip'.\n"
-"This makes it easier to distinguish what host or a firewall\n"
-"given IP address object belongs to when it is used in \n"
-"the policy or NAT rule. The program also renames MAC address\n"
-"objects using scheme 'host_name:interface_name:mac'.\n"
-"Do you want to rename child IP and MAC address objects now?\n"
-"(If you click 'No', names of all address objects that belong to\n"
-"interface '%2' will stay the same.)")
-            .arg(QString::fromUtf8(obj->getName().c_str()))
-            .arg(QString::fromUtf8(obj->getName().c_str()));
-
-        if (!ask || QMessageBox::warning(
-                this,"Firewall Builder", dialog_txt,
-                tr("&Yes"), tr("&No"), QString::null,
-                0, 1 )==0 )
+        list<FWObject*> subinterfaces = obj->getByType(Interface::TYPENAME);
+        if (obj->getByType(IPv4::TYPENAME).size() ||
+            obj->getByType(IPv6::TYPENAME).size() ||
+            obj->getByType(physAddress::TYPENAME).size() ||
+            subinterfaces.size())
         {
-            autorename(obj,IPv4::TYPENAME,"ip");
-            autorename(obj,IPv6::TYPENAME,"ip6");
-            autorename(obj,physAddress::TYPENAME,"mac");
+            QString dialog_txt = tr(
+                "The name of the interface '%1' has changed. The program can also "
+                "rename IP address objects that belong to this interface, "
+                "using standard naming scheme 'host_name:interface_name:ip'. "
+                "This makes it easier to distinguish what host or a firewall "
+                "given IP address object belongs to when it is used in "
+                "the policy or NAT rule. The program also renames MAC address "
+                "objects using scheme 'host_name:interface_name:mac'. "
+                "Do you want to rename child IP and MAC address objects now? "
+                "(If you click 'No', names of all address objects that belong to "
+                "interface '%2' will stay the same.)")
+                .arg(QString::fromUtf8(obj->getName().c_str()))
+                .arg(QString::fromUtf8(obj->getName().c_str()));
+
+            if (!ask || QMessageBox::warning(
+                    this, "Firewall Builder", dialog_txt,
+                    tr("&Yes"), tr("&No"), QString::null,
+                    0, 1 )==0 )
+            {
+                list<FWObject*> vlans;
+                for (list<FWObject*>::iterator j=subinterfaces.begin();
+                     j!=subinterfaces.end(); ++j)
+                {
+                    Interface *intf = Interface::cast(*j);
+                    if (intf->getOptionsObject()->getStr("type") == "8021q")
+                        vlans.push_back(intf);
+                }
+
+                if (vlans.size()) autorenameVlans(vlans);
+
+                for (list<FWObject*>::iterator j=subinterfaces.begin();
+                     j!=subinterfaces.end(); ++j)
+                    autorename(*j, false);
+
+                list<FWObject*> obj_list = obj->getByType(IPv4::TYPENAME);
+                autorename(obj_list, IPv4::TYPENAME, "ip");
+                obj_list = obj->getByType(IPv6::TYPENAME);
+                autorename(obj_list, IPv6::TYPENAME, "ip6");
+                obj_list = obj->getByType(physAddress::TYPENAME);
+                autorename(obj_list, physAddress::TYPENAME, "mac");
+
+            }
+
         }
     }
 }
 
-void ObjectManipulator::autorename(FWObject *obj,
+void ObjectManipulator::autorename(list<FWObject*> &obj_list,
                                    const string &objtype,
                                    const string &namesuffix)
 {
-    FWObject      *hst = obj->getParent();
-    list<FWObject*> ol = obj->getByType(objtype);
-    int           sfxn = 1;
-
-    for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j,sfxn++)
+    for (list<FWObject*>::iterator j=obj_list.begin(); j!=obj_list.end(); ++j)
     {
-        QString sfx;
-        if (ol.size()==1) sfx="";
-        else              sfx.setNum(sfxn);
-        QString nn = QString("%1:%2:%3%4")
-            .arg(QString::fromUtf8(hst->getName().c_str()))
-            .arg(QString::fromUtf8(obj->getName().c_str()))
-            .arg(namesuffix.c_str())
-            .arg(sfx);
+        FWObject *obj = *j;
+        FWObject *parent = obj->getParent();
+        QString name = getStandardName(parent, objtype, namesuffix);
+        name = makeNameUnique(parent, name, objtype.c_str());
+        obj->setName(string(name.toUtf8()));
+        //QTreeWidgetItem *itm1 = allItems[obj];
+        //if (itm1!=NULL) updateObjectInTree(obj);
+    }
+}
 
-        (*j)->setName(string(nn.toUtf8()));
-        QTreeWidgetItem *itm1 = allItems[ *j ];
-        if (itm1!=NULL)
+void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
+{
+    for (list<FWObject*>::iterator j=obj_list.begin(); j!=obj_list.end(); ++j)
+    {
+        FWObject *obj = *j;
+        FWObject *parent = obj->getParent();
+        FWObject *fw = parent;
+        while (fw && Firewall::cast(fw)==NULL) fw = fw->getParent();
+        assert(fw);
+        QString obj_name = obj->getName().c_str();
+        std::auto_ptr<interfaceProperties> int_prop(
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                fw->getStr("host_OS")));
+        if (int_prop->looksLikeVlanInterface(obj_name))
         {
-            itm1->setText(0, getTreeLabel( *j ) );
-            itm1->parent()->sortChildren(0, Qt::AscendingOrder);//();
+            // even though we only call this function if the type of
+            // this interface is 8021q, need to check its naming
+            // schema as well. We can't automatically rename
+            // interfaces that do not follow known naming convention.
+
+            QString base_name;
+            int vlan_id;
+            int_prop->parseVlan(obj_name, &base_name, &vlan_id);
+            if (base_name != "vlan")
+            {
+                QString new_name("%1.%2");
+                obj->setName(new_name.arg(parent->getName().c_str()).arg(vlan_id).toStdString());
+                //QTreeWidgetItem *itm1 = allItems[obj];
+                //if (itm1!=NULL) updateObjectInTree(obj);
+            }
         }
     }
-    ol.clear();
+}
+
+QString ObjectManipulator::getStandardName(FWObject *parent,
+                                           const string&,
+                                           const string &namesuffix)
+{
+    QStringList names;
+    FWObject *po = parent;
+    while (po!=NULL)
+    {
+        names.push_front(QString::fromUtf8(po->getName().c_str()));
+        if (Host::cast(po)) break;
+        po = po->getParent();
+    }
+//    names.push_back(QString::fromUtf8(parent->getName().c_str()));
+    names.push_back(namesuffix.c_str());
+    return names.join(":");
 }
 
 void ObjectManipulator::clearObjects()
@@ -835,9 +981,9 @@ void ObjectManipulator::addTreePage( FWObject *lib)
         itm1->setIcon(0, pm );
     } else
     {
-        string icn=":/Icons/"+lib->getTypeName()+"/icon-tree";
+        string icn = ":/Icons/" + lib->getTypeName() + "/icon-tree";
         QPixmap pm;
-        if ( ! QPixmapCache::find( icn.c_str(), pm) )
+        if (!QPixmapCache::find( icn.c_str(), pm))
         {
             pm.load( icn.c_str() );
             QPixmapCache::insert( icn.c_str(), pm);
@@ -852,7 +998,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     for (list<FWObject*>::iterator m=lib->begin(); m!=lib->end(); m++)
         insertSubtree( itm1, (*m) );
 
-    objTreeView->updateTreeItems();
+    objTreeView->updateTreeIcons();
     // apparently sortByColumn does not work in QT 4.5, use sortItems
     objTreeView->sortItems(0, Qt::AscendingOrder);
 }
@@ -899,20 +1045,107 @@ void ObjectManipulator::switchingTrees(QWidget* w)
 
 }
 
-void ObjectManipulator::makeNameUnique(FWObject* parent,FWObject* obj)
+/*
+ * Make the name of the object @obj unique across all children of the
+ * given @target object. If this object is an interface, use pattern
+ * <ifname><ifnumber> and increment the number until the name becomes
+ * unique. For all other types use pattern <basename>-<number>
+ *
+ * This method has ugly side-effect: if @obj is an Interface, this
+ * method needs to check its type. To do that, it calls
+ * Interface::getOptionsObject() which creates options object if it
+ * does not exits. To do initial options configuration, it needs
+ * access to the parent. We call Interface::getOptionsObject() in copt
+ * and startDrag methods to make sure interfaces have options objects
+ * before copy or drag operation starts to avoid this problem here.
+ *
+ * In case of copy/paste or d&d of an interface, the naming
+ * conventions are dictated by the platform of the new parent firewall
+ * rather than the old one, which in this case is either <target> or
+ * its parent. So we'll use @target to get proper interfaceProperties
+ * object which will do checks for us.
+ */
+void ObjectManipulator::makeNameUnique(FWObject *target, FWObject *obj)
 {
-    int      suffix=1;
-    QString  basename=QString::fromUtf8(obj->getName().c_str());
-    QString  newname=basename;
-
-/* check if there is another object with the same name */
-    while (parent->findObjectByName(obj->getTypeName(),newname.toLatin1().constData())!=NULL)
+    Interface *intf = Interface::cast(obj);
+    if (intf)
     {
-/* there is a duplicate */
-        newname=QString("%1-%2").arg(basename).arg(suffix);
+        // check if this is vlan subinterface. We should not change
+        // names of those
+        if (intf->getOptionsObject()->getStr("type") == "8021q")
+            return;
+        // one of the typical usage patterns is to create vlan
+        // interface "eth0.101" and then immediately try to copy/paste
+        // it to under br0 to make it bridge port. In this case
+        // interface eth0.101 won't have type "8021q" just yet because
+        // the user did not open interface "advanced" settings dialog
+        // to set its type and VLAN ID. Users assume that if its name
+        // is "eth0.101", then it must be vlan interface. We should
+        // follow this assumption too. Also, check for names "vlanNNN"
+        // as well.
+        //
+        QString obj_name = obj->getName().c_str();
+        FWObject *fw = target;
+        while (fw && !Firewall::isA(fw)) fw = fw->getParent();
+
+        std::auto_ptr<interfaceProperties> int_prop(
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                fw->getStr("host_OS")));
+        if (int_prop->looksLikeVlanInterface(obj_name)) return;
+    }
+    QString newname = makeNameUnique(target,
+                                     QString::fromUtf8(obj->getName().c_str()),
+                                     obj->getTypeName().c_str());
+    obj->setName(string(newname.toUtf8()));
+}
+
+QString ObjectManipulator::makeNameUnique(FWObject* parent,
+                                          const QString &obj_name,
+                                          const QString &obj_type)
+{
+    int suffix = 1;
+    QString basename = obj_name;
+    QString newname = basename;
+
+    if (fwbdebug)
+        qDebug("ObjectManipulator::makeNameUnique parent=%s obj_name=%s",
+               parent->getName().c_str(),
+               obj_name.toStdString().c_str());
+
+    if (obj_type == Interface::TYPENAME)
+    {
+        QRegExp rx("([a-zA-Z-]+)(\\d{1,})");
+        if (rx.indexIn(obj_name) != -1)
+        {
+            basename = rx.cap(1);
+            suffix = rx.cap(2).toInt();
+        }
+    }
+
+/*
+ * Check if there is another object with the same name. Note that
+ * FWObject::findObjectByName() searches in depth, but we only need to
+ * scan child objects of the first level.
+ */
+    while (true)
+    {
+        if (fwbdebug)
+            qDebug("ObjectManipulator::makeNameUnique newname=%s basename=%s suffix=%d",
+                   newname.toStdString().c_str(),
+                   basename.toStdString().c_str(),
+                   suffix);
+
+        FWObject::const_iterator i = find_if(
+            parent->begin(), parent->end(),
+            FWObjectNameEQPredicate(newname.toStdString()));
+        if (i==parent->end()) break;
+        if (obj_type == Interface::TYPENAME)
+            newname = QString("%1%2").arg(basename).arg(suffix);
+        else
+            newname = QString("%1-%2").arg(basename).arg(suffix);
         suffix++;
     }
-    obj->setName(string(newname.toUtf8()));
+    return newname;
 }
 
 void ObjectManipulator::contextMenuRequested(const QPoint &pos)
@@ -1010,8 +1243,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     QAction * delID = popup->addAction( tr("Delete"), this,
                                         SLOT( deleteObj() ) );
 
-    QAction *newID1=NULL;
-    QAction *newID2=NULL;
+    QList<QAction*> AddObjectActions;
 
     if (getCurrentObjectTree()->getNumSelected()==1)
     {
@@ -1020,112 +1252,169 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         if ( (Firewall::isA(currentObj) || Host::isA(currentObj)) &&
              ! currentObj->isReadOnly() )
         {
-            newID1=popup->addAction( tr("Add Interface"), this,
-                               SLOT( newInterface() ) );
+            AddObjectActions.append(popup->addAction( tr("Add Interface"), this,
+                                                      SLOT( newInterface() ) ));
 
         }
-
-        if ((Firewall::isA(currentObj)  &&! currentObj->isReadOnly()))
+        if ((Firewall::isA(currentObj) || Cluster::isA(currentObj)) &&
+             ! currentObj->isReadOnly())
         {
-            newID1=popup->addAction( tr("Add Policy Rule Set"), this,
-                               SLOT( newPolicyRuleSet() ) );
-            newID1=popup->addAction( tr("Add NAT Rule Set"), this,
-                               SLOT( newNATRuleSet() ) );
+            AddObjectActions.append(popup->addAction( tr("Add Policy Rule Set"), this,
+                                                      SLOT( newPolicyRuleSet() ) ));
+            AddObjectActions.append(popup->addAction( tr("Add NAT Rule Set"), this,
+                                                      SLOT( newNATRuleSet() ) ));
         }
 
         if (Interface::isA(currentObj) && ! currentObj->isReadOnly())
         {
-            newID1=popup->addAction( tr("Add IP Address"), this,
-                               SLOT( newInterfaceAddress() ) );
-            newID1=popup->addAction( tr("Add IPv6 Address"), this,
-                               SLOT( newInterfaceAddressIPv6() ) );
-            newID2=popup->addAction( tr("Add MAC Address"), this,
-                               SLOT( newPhysicalAddress() ) );
+            Interface *iface = Interface::cast(currentObj);
+            FWObject *h = iface->getParentHost();
+
+            bool supports_advanced_ifaces = false;
+            try {
+                /*
+                 * ignore raised exception; this just means that the host_OS
+                 * option is undefined for this target (e.g. for a host).
+                 */
+                supports_advanced_ifaces = Resources::getTargetCapabilityBool
+                        (h->getStr("host_OS"), "supports_subinterfaces");
+            } catch (FWException &ex) { }
+
+            /* 
+             * check if this interface can have subinterfaces. Show "Add Interface"
+             * menu item only if host_os has attribute "supports_subinterfaces"
+             * and if parent interface (currentObj) has the type that can have
+             * subinterfaces. Also, cluster interfaces can't have subinterfaces
+             * and only one level of subinterfaces is allowed.
+             */
+            if (supports_advanced_ifaces && Firewall::isA(currentObj->getParent()))
+            {
+                list<QStringPair> subint_types;
+                getSubInterfaceTypes(iface, subint_types);
+                if (subint_types.size())
+                    popup->addAction(
+                        tr("Add Interface"), this, SLOT( newInterface() ) );
+            }
+
+            AddObjectActions.append(popup->addAction( tr("Add IP Address"), this,
+                                                      SLOT( newInterfaceAddress() ) ));
+            AddObjectActions.append(popup->addAction( tr("Add IPv6 Address"), this,
+                                                      SLOT( newInterfaceAddressIPv6() ) ));
+            AddObjectActions.append(popup->addAction( tr("Add MAC Address"), this,
+                                                      SLOT( newPhysicalAddress() ) ));
+            // Check if we should add menu item that creates failover
+            // group. if parent is a cluster, allow one vrrp type
+            // FailoverClusterGroup per Interface only
+            FWObject *parent = NULL;
+            parent = currentObj->getParent();
+            if (parent != NULL && Cluster::isA(parent))
+            {
+                QAction *failover_menu_id = popup->addAction(
+                    tr("Add Failover Group"), this,
+                    SLOT( newFailoverClusterGroup() ) );
+                failover_menu_id->setEnabled(
+                    currentObj->getFirstByType(FailoverClusterGroup::TYPENAME) == NULL);
+            }
+        }
+
+        if (Cluster::isA(currentObj) && ! currentObj->isReadOnly())
+        {
+            AddObjectActions.append(popup->addAction( tr("Add Cluster interface"), this,
+                                                      SLOT( newClusterIface() ) ));
+            // allow multiple state syncing groups per cluster
+            // Rationale: these groups may represent different state syncing
+            // protocols that can synchronize different things.
+            AddObjectActions.append(popup->addAction( tr("Add State Synchronization Group"), this,
+                                                      SLOT( newStateSyncClusterGroup() ) ));
         }
 
         if (currentObj->getPath(true)=="Firewalls")
-            newID1=popup->addAction( tr("New Firewall"), this,
-                               SLOT( newFirewall() ) );
+            AddObjectActions.append(popup->addAction( tr("New Firewall"), this,
+                                                      SLOT( newFirewall() ) ));
+
+        if (currentObj->getPath(true)=="Clusters")
+            AddObjectActions.append(popup->addAction( tr("New Cluster"), this,
+                                                      SLOT( newCluster() ) ));
 
         if (currentObj->getPath(true)=="Objects/Addresses")
         {
-            newID1=popup->addAction( tr("New Address"), this,
-                               SLOT( newAddress() ) );
-            newID1=popup->addAction( tr("New Address IPv6"), this,
-                               SLOT( newAddressIPv6() ) );
+            AddObjectActions.append(popup->addAction( tr("New Address"), this,
+                                                      SLOT( newAddress() ) ));
+            AddObjectActions.append(popup->addAction( tr("New Address IPv6"), this,
+                                                      SLOT( newAddressIPv6() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/DNS Names")
         {
-            newID1=popup->addAction( tr("New DNS Name"), this,
-                               SLOT( newDNSName() ) );
+            AddObjectActions.append(popup->addAction( tr("New DNS Name"), this,
+                                                      SLOT( newDNSName() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Address Tables")
         {
-            newID1=popup->addAction( tr("New Address Table"), this,
-                               SLOT( newAddressTable() ) );
+            AddObjectActions.append(popup->addAction( tr("New Address Table"), this,
+                                                      SLOT( newAddressTable() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Address Ranges")
-            newID1=popup->addAction( tr("New Address Range"), this,
-                               SLOT( newAddressRange() ) );
+            AddObjectActions.append(popup->addAction( tr("New Address Range"), this,
+                                                      SLOT( newAddressRange() ) ));
 
         if (currentObj->getPath(true)=="Objects/Hosts")
-            newID1=popup->addAction( tr("New Host"), this,
-                               SLOT( newHost() ) );
+            AddObjectActions.append(popup->addAction( tr("New Host"), this,
+                                                      SLOT( newHost() ) ));
 
         if (currentObj->getPath(true)=="Objects/Networks")
         {
-            newID1=popup->addAction( tr("New Network"), this,
-                               SLOT( newNetwork() ) );
-            newID1=popup->addAction( tr("New Network IPv6"), this,
-                               SLOT( newNetworkIPv6() ) );
+            AddObjectActions.append(popup->addAction( tr("New Network"), this,
+                                                      SLOT( newNetwork() ) ));
+            AddObjectActions.append(popup->addAction( tr("New Network IPv6"), this,
+                                                      SLOT( newNetworkIPv6() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Groups")
-            newID1=popup->addAction( tr("New Group"), this,
-                               SLOT( newObjectGroup() ) );
+            AddObjectActions.append(popup->addAction( tr("New Group"), this,
+                                                      SLOT( newObjectGroup() ) ));
 
         if (currentObj->getPath(true)=="Services/Custom")
-            newID1=popup->addAction( tr("New Custom Service"),this,
-                               SLOT( newCustom() ) );
+            AddObjectActions.append(popup->addAction( tr("New Custom Service"),this,
+                                                      SLOT( newCustom() ) ));
 
         if (currentObj->getPath(true)=="Services/IP")
-            newID1=popup->addAction( tr("New IP Service"), this,
-                               SLOT( newIP() ) );
+            AddObjectActions.append(popup->addAction( tr("New IP Service"), this,
+                                                      SLOT( newIP() ) ));
 
         if (currentObj->getPath(true)=="Services/ICMP")
         {
-            newID1=popup->addAction( tr("New ICMP Service"), this,
-                               SLOT( newICMP() ) );
-            newID2=popup->addAction( tr("New ICMP6 Service"), this,
-                               SLOT( newICMP6() ) );
+            AddObjectActions.append(popup->addAction( tr("New ICMP Service"), this,
+                                                      SLOT( newICMP() ) ));
+            AddObjectActions.append(popup->addAction( tr("New ICMP6 Service"), this,
+                                                      SLOT( newICMP6() ) ));
         }
 
         if (currentObj->getPath(true)=="Services/TCP")
-            newID1=popup->addAction( tr("New TCP Service"), this,
-                               SLOT( newTCP() ) );
+            AddObjectActions.append(popup->addAction( tr("New TCP Service"), this,
+                                                      SLOT( newTCP() ) ));
 
         if (currentObj->getPath(true)=="Services/UDP")
-            newID1=popup->addAction( tr("New UDP Service"), this,
-                               SLOT( newUDP() ) );
+            AddObjectActions.append(popup->addAction( tr("New UDP Service"), this,
+                                                      SLOT( newUDP() ) ));
 
         if (currentObj->getPath(true)=="Services/TagServices")
-            newID1=popup->addAction( tr("New TagService"), this,
-                               SLOT( newTagService() ) );
+            AddObjectActions.append(popup->addAction( tr("New TagService"), this,
+                                                      SLOT( newTagService() ) ));
 
         if (currentObj->getPath(true)=="Services/Groups")
-            newID1=popup->addAction( tr("New Group"), this,
-                               SLOT( newServiceGroup() ) );
+            AddObjectActions.append(popup->addAction( tr("New Group"), this,
+                                                      SLOT( newServiceGroup() ) ));
 
         if (currentObj->getPath(true)=="Services/Users")
-            newID1=popup->addAction(tr("New User Service"), this,
-                                    SLOT(newUserService() ));
+            AddObjectActions.append(popup->addAction(tr("New User Service"), this,
+                                                     SLOT(newUserService() )));
 
         if (currentObj->getPath(true)=="Time")
-            newID1=popup->addAction( tr("New Time Interval"), this,
-                               SLOT( newInterval() ) );
+            AddObjectActions.append(popup->addAction( tr("New Time Interval"), this,
+                                                      SLOT( newInterval() ) ));
 
         popup->addSeparator();
         popup->addAction( tr("Find"), this, SLOT( findObject()));
@@ -1144,6 +1433,28 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         popup->addAction( tr("Compile"), this, SLOT( compile()));
         popup->addAction( tr("Install"), this, SLOT( install()));
 
+        if (Firewall::cast(currentObj)!=NULL)
+        {
+            string transfer = Resources::os_res[currentObj->getStr("host_OS")]->getTransferAgent();
+            if (!transfer.empty())
+                popup->addAction( tr("Transfer"), this, SLOT(transferfw()));
+        }
+
+        if (ObjectGroup::cast(currentObj)!=NULL && currentObj->getName()=="Firewalls")
+        {
+            // Config transfer is currently only supported for Secuwall.
+            // Check if we have any
+            bool have_transfer_support = false;
+            for (FWObject::iterator it=currentObj->begin();
+                 it!=currentObj->end(); ++it)
+            {
+                FWObject *fw = *it;
+                string transfer = Resources::os_res[fw->getStr("host_OS")]->getTransferAgent();
+                have_transfer_support = have_transfer_support || (!transfer.empty());
+            }
+            if (have_transfer_support)
+                popup->addAction( tr("Transfer"), this, SLOT(transferfw()));
+        }
 //        popup->addSeparator();
 //        popup->addAction( tr("Simulate install"), this, SLOT( simulateInstall()));
     }
@@ -1189,8 +1500,9 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     cutID->setEnabled(delMenuItem);
     delID->setEnabled(delMenuItem);
 
-    if (newID1) newID1->setEnabled(newMenuItem);
-    if (newID2) newID2->setEnabled(newMenuItem);
+    QList<QAction*>::iterator iter;
+    for (iter=AddObjectActions.begin(); iter!=AddObjectActions.end(); iter++)
+        (*iter)->setEnabled(newMenuItem);
 
 //    if (inDeletedObjects) movID->setText( tr("Undelete...") );
 
@@ -1254,8 +1566,8 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                     //QString s2 = obj->getTypeName().c_str();
                 }
                 QString s3 = obj->getTypeName().c_str();
-                
-                bool validated = validateForPaste(obj, co);
+                QString err;
+                bool validated = validateForPaste(obj, co, err);
                 pasteMenuItem = pasteMenuItem && validated;
             }
         }
@@ -1343,29 +1655,47 @@ void ObjectManipulator::compile()
     vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
 
     set<Firewall*> fo;
-    filterFirewallsFromSelection(so,fo);
+    filterFirewallsFromSelection(so, fo);
 
-    //FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
-    //if (obj==NULL) return;
-    //m_project->showFirewall(obj);
     if (fwbdebug)
         qDebug("ObjectManipulator::compile filtered %d firewalls",
                int(fo.size()));
+
     m_project->compile(fo);
 }
-void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,set<Firewall*> &fo)
+
+void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,
+                                                     set<Firewall*> &fo)
 {
     Firewall *fw;
     ObjectGroup *gr;
+    Cluster *cl;
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
-        fw= Firewall::cast( *i );
+        cl = Cluster::cast(*i);
+        if (cl != NULL)
+        {
+            list<Firewall*> members;
+            cl->getMembersList(members);
+            // display warning if no firewalls could be extracted for a cluster
+            if (members.size() == 0)
+            {
+                QMessageBox::warning(this, "Firewall Builder",
+                        QObject::tr("No firewalls assigned to cluster '%1'").
+                                     arg(cl->getName().c_str()),
+                        "&Continue", QString::null, QString::null, 0, 1 );
+                continue;
+            }
+            fo.insert(cl);
+            continue;
+        }
+        fw = Firewall::cast(*i);
         if (fw!=NULL)
         {
             fo.insert(fw);
             continue;
         }
-        gr=ObjectGroup::cast( *i);
+        gr = ObjectGroup::cast(*i);
         if (gr!=NULL)
         {
             extractFirewallsFromGroup(gr,fo);
@@ -1373,19 +1703,18 @@ void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,set<F
     }
 
 }
-void ObjectManipulator::extractFirewallsFromGroup(ObjectGroup *gr,set<Firewall*> &fo)
+
+void ObjectManipulator::extractFirewallsFromGroup(ObjectGroup *gr,
+                                                  set<Firewall*> &fo)
 {
-   Firewall *f;
    set<FWObject*> oset;
-   m_project->db()->findObjectsInGroup(gr,oset);
+   m_project->db()->findObjectsInGroup(gr, oset);
 
    set<FWObject*>::iterator i;
    for(i=oset.begin();i!=oset.end();++i)
-   {
-       f=Firewall::cast(*i);
-       if (f!=NULL) fo.insert(f);
-   }
+       if (Firewall::cast(*i)) fo.insert(Firewall::cast(*i));
 }
+
 void ObjectManipulator::install()
 {
     if (getCurrentObjectTree()->getNumSelected()==0) return;
@@ -1401,6 +1730,17 @@ void ObjectManipulator::install()
 
 
     m_project->install(fo);
+}
+
+void ObjectManipulator::transferfw()
+{
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
+
+    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+    set<Firewall*> fo;
+    filterFirewallsFromSelection(so, fo);
+
+    m_project->transferfw(fo);
 }
 
 FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib,
@@ -1423,7 +1763,8 @@ FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib,
     {
       openObject(o);
       if (!o->isReadOnly() &&
-          (Host::isA(o) || Firewall::isA(o) || Interface::isA(o)) )
+          (Host::isA(o) || Firewall::isA(o) || Cluster::isA(o) ||
+           Interface::isA(o)) )
         autorename(o, askForAutorename);
       if (Firewall::isA(o))
       {
@@ -1594,9 +1935,12 @@ void ObjectManipulator::moveObj(QAction* action)
 
             moveObject(targetLib, obj);
         }
+
+        QCoreApplication::postEvent(
+            mw, new dataModifiedEvent(m_project->getFileName(), obj->getId()));
     }
     ot->freezeSelection(false);
-    mw->reloadAllWindowsWithFile(m_project);
+
 }
 
 void ObjectManipulator::copyObj()
@@ -1611,7 +1955,16 @@ void ObjectManipulator::copyObj()
     {
         obj = *i;
         if ( ! m_project->isSystem(obj) )
+        {
+            // while obj is still part of the tree, do some clean up
+            // to avoid problems in the future.  Create
+            // InterfaceOptions objects for interfaces because we'll
+            // need them for various validations during paste
+            // operation.
+            Interface *intf = Interface::cast(obj);
+            if (intf) intf->getOptionsObject();
             FWObjectClipboard::obj_clipboard->add(obj, m_project);
+        }
     }
 }
 
@@ -1619,7 +1972,6 @@ void ObjectManipulator::cutObj()
 {
     copyObj();
     deleteObj();   // works with the list getCurrentObjectTree()->getSelectedObjects()
-    mw->reloadAllWindowsWithFile(m_project);
 }
 
 void ObjectManipulator::pasteObj()
@@ -1686,29 +2038,120 @@ void ObjectManipulator::pasteObj()
     if (need_to_reload) loadObjects();
     openObject(last_object);
 
-    mw->reloadAllWindowsWithFile(m_project);
 }
 
-bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj)
+bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
+                                         QString &err)
 {
     FWObject *ta=target;
     if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
 
+    err = QObject::tr("Impossible to insert object %1 (type %2) into %3\n"
+                      "because of incompatible type.")
+        .arg(obj->getName().c_str())
+        .arg(obj->getTypeName().c_str())
+        .arg(ta->getName().c_str());
+    
     if (m_project->isSystem(ta))
-        return m_project->validateForInsertion(ta,obj);
+        return m_project->validateForInsertion(ta, obj);
 
     Host *hst = Host::cast(ta);
     Firewall *fw = Firewall::cast(ta);
     Interface *intf = Interface::cast(ta);
 
+    if (fw!=NULL)
+    {
+        // inserting some object into firewall
+        if (!fw->validateChild(obj)) return false;
+        if (Interface::isA(obj))
+        {
+            // check if obj is vlan interface
+            std::auto_ptr<interfaceProperties> int_prop(
+                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                    fw->getStr("host_OS")));
+            QString obj_name = obj->getName().c_str();
+            if (int_prop->looksLikeVlanInterface(obj_name))
+            {
+                err = QObject::tr("'%1' looks like a name of a vlan interface; "
+                                  "vlan can only be a subinterface of another interface, "
+                                  "it can not be a top-level interface.").arg(obj_name);
+                return false;
+            }
+        }
+        return true;
+    }
+
     if (hst!=NULL)  return (hst->validateChild(obj));
-    if (fw!=NULL)  return (fw->validateChild(obj));
-    if (intf!=NULL) return (intf->validateChild(obj));
+
+    if (intf!=NULL)
+    {
+        // inserting some object into interface
+        if (Interface::isA(obj))
+        {
+            if (!intf->validateChild(obj))
+            {
+                // See Interface::validateChild(). Currently the only
+                // condition when interface can not become a child of
+                // another interface is when interface has subinterfaces
+                // of its own.
+                err = QObject::tr("Interface %1 can not become subinterface of %2 "
+                                  "because only one level of subinterfaces is allowed.")
+                    .arg(obj->getName().c_str())
+                    .arg(ta->getName().c_str());
+                return false;
+            }
+            // check vlan conditions as well
+            FWObject *f = intf->getParentHost();
+            std::auto_ptr<interfaceProperties> int_prop(
+                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                    f->getStr("host_OS")));
+            QString obj_name = obj->getName().c_str();
+            if (int_prop->looksLikeVlanInterface(obj_name))
+            {
+                // vlan interface can be a child of a bridge, in which
+                // case its base name does not match the
+                // parent. Perform other checks except this, pass ""
+                // as parent name argument to isValidVlanInterfaceName()
+                if (Interface::cast(ta)->getOptionsObject()->getStr("type") ==
+                    "bridge")
+                    return int_prop->isValidVlanInterfaceName(obj_name, "", err);
+
+                QString parent_name = ta->getName().c_str();
+                return int_prop->isValidVlanInterfaceName(obj_name, parent_name, err);
+            }
+        } else
+        {
+            if (!intf->validateChild(obj)) return false;
+        }
+        return true;
+    }
 
     Group *grp=Group::cast(ta);
     if (grp!=NULL) return grp->validateChild(obj);
     
     return false;
+}
+
+FWObject* ObjectManipulator::prepareForInsertion(FWObject *target, FWObject *obj)
+{
+    if (fwbdebug)
+        qDebug("prepareForInsertion   %s --> %s", obj->getName().c_str(),
+               target->getName().c_str());
+
+    FWObject *ta = target;
+    if (IPv4::isA(ta) || IPv6::isA(ta)) ta = ta->getParent();
+    QString err;
+    if (!validateForPaste(ta, obj, err))
+    {
+        QMessageBox::critical(
+            this,"Firewall Builder",
+            err,
+            "&Continue", QString::null, QString::null,
+            0, 1 );
+
+        return NULL;
+    }
+    return ta;
 }
 
 FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj)
@@ -1721,30 +2164,14 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
                                               FWObject *obj,
                                               std::map<int,int> &map_ids)
 {
-    if (!validateForPaste(target, obj))
-    {
-        QMessageBox::warning(
-            this,"Firewall Builder",
-            QObject::tr("Impossible to insert object %1 (type %2) into %3\n"
-                        "because of incompatible type.")
-            .arg(obj->getName().c_str())
-            .arg(obj->getTypeName().c_str())
-            .arg(target->getName().c_str()),
-            "&Continue", QString::null, QString::null,
-            0, 1 );
+    FWObject *res = NULL;
 
-        return NULL;
-    }
-
-    FWObject *ta = target;
-
-
-    if (IPv4::isA(ta) || IPv6::isA(ta)) ta = ta->getParent();
+    FWObject *ta = prepareForInsertion(target, obj);
+    if (ta == NULL) return NULL;
 
     try
     {
 /* clipboard holds a copy of the object */
-
         if (obj->getRoot() != ta->getRoot())
         {
             if (fwbdebug) qDebug("Copy object %s (%d) to a different object tree",
@@ -1752,31 +2179,7 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
             return m_project->db()->recursivelyCopySubtree(target, obj, map_ids);
         }
 
-        if ( m_project->isSystem(ta) ||
-             (Firewall::isA(ta) && RuleSet::cast(obj)!=NULL) ||
-             (Interface::isA(ta) && (IPv4::cast(obj) || IPv6::cast(obj)))
-        )
-        {
-/* add a copy of the object to system group , or
- * add ruleset object to a firewall.
- */
-            if (fwbdebug)
-                qDebug("Copy object %s (%d) to a system group, a ruleset to a firewall or an address to an interface",
-                       obj->getName().c_str(), obj->getId());
-            FWObject *nobj= m_project->db()->create(obj->getTypeName());
-            assert (nobj!=NULL);
-            nobj->ref();
-            nobj->duplicate(obj, true);
-
-            makeNameUnique(ta,nobj);
-            ta->add( nobj );
-
-            insertSubtree( allItems[ta], nobj);
-            return nobj;
-        }
-
         Group *grp = Group::cast(ta);
-
         if (grp!=NULL)
         {
             if (fwbdebug) qDebug("Copy object %s (%d) to a group",
@@ -1793,10 +2196,43 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
                 if( (ref=FWReference::cast(o1))!=NULL &&
                     cp_id==ref->getPointerId()) return o1;
             }
-
             grp->addRef(obj);
-        }
+            res = obj;
+        } else
+        {
+/* add a copy of the object to system group , or
+ * add ruleset object to a firewall.
+ */
+            if (fwbdebug)
+                qDebug("Copy object %s (%d) to a system group, "
+                       "a ruleset to a firewall or an address to an interface",
+                       obj->getName().c_str(), obj->getId());
+            FWObject *nobj = m_project->db()->create(obj->getTypeName());
+            assert (nobj!=NULL);
+            nobj->ref();
+            nobj->duplicate(obj, true);
 
+            // make name unique before adding this object to the
+            // parent, otherwise makeNameUnique finds it and thinks
+            // the name is duplicate
+            makeNameUnique(ta, nobj);
+
+            ta->add(nobj);
+
+            // If we paste interface, reset the type of the copy
+            // See #299
+            if (Interface::isA(obj) && Interface::isA(ta))
+            {
+                Interface *new_intf = Interface::cast(nobj);
+                new_intf->getOptionsObject()->setStr("type", "ethernet");
+                // see #391 : need to reset "mamagement" flag in the copy
+                // to make sure we do not end up with two management interfaces
+                new_intf->setManagement(false);
+            }
+
+            insertSubtree( allItems[ta], nobj);
+            res = nobj;
+        }
     }
     catch(FWException &ex)
     {
@@ -1807,9 +2243,43 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
             0, 1 );
     }
 
-    return obj;
+    return res;
+}
 
-    //return ret;
+void ObjectManipulator::relocateTo(FWObject *target, FWObject *obj)
+{
+    FWObject *ta = prepareForInsertion(target, obj);
+    if (ta == NULL) return;
+
+    if (obj->getRoot() != ta->getRoot())
+    {
+        if (fwbdebug)
+            qDebug("Attempt to relocate object %s (%d) to a different object tree",
+                   obj->getName().c_str(), obj->getId());
+        return;
+    }
+    if (obj == ta) return;  // can't insert into intself
+
+    removeObjectFromTreeView(obj);
+
+    obj->ref();
+    obj->getParent()->remove(obj);
+    ta->add(obj);
+
+    // If we paste interface, reset the type of the copy
+    // See #299
+    if (Interface::isA(obj) && Interface::isA(ta))
+        Interface::cast(obj)->getOptionsObject()->setStr("type", "ethernet");
+
+    insertSubtree(allItems[ta], obj);
+
+    refreshSubtree(allItems[obj]);
+
+    m_project->db()->setDirty(true);
+
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(m_project->getFileName(), ta->getId()));
+
 }
 
 void ObjectManipulator::lockObject()
@@ -1834,8 +2304,10 @@ void ObjectManipulator::lockObject()
             obj->setReadOnly(true);
     }
     getCurrentObjectTree()->setLockFlags();
-    getCurrentObjectTree()->updateTreeItems();
-    mw->reloadAllWindowsWithFile(m_project);
+
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(m_project->getFileName(), 0));
+
 }
 
 void ObjectManipulator::unlockObject()
@@ -1858,8 +2330,10 @@ void ObjectManipulator::unlockObject()
             obj->setReadOnly(false);
     }
     getCurrentObjectTree()->setLockFlags();
-    getCurrentObjectTree()->updateTreeItems();
-    mw->reloadAllWindowsWithFile(m_project);
+
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(m_project->getFileName(), 0));
+
 }
 
 /*
@@ -2032,7 +2506,6 @@ void ObjectManipulator::deleteObj()
     {
     }
 
-    mw->reloadAllWindowsWithFile(m_project);
 }
 
 void ObjectManipulator::delObj(FWObject *obj, bool openobj)
@@ -2062,25 +2535,11 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
    
     m_project->findObjectWidget->reset();
 
-    if (RuleSet::cast(obj)!=NULL)
-    {
-        if (fwbdebug) qDebug("ObjectManipulator::delObj: call "
-                             "mw->closeRuleSetInAllWindowsWhereOpen");
-        mw->closeRuleSetInAllWindowsWhereOpen(RuleSet::cast(obj));
-    }
-
-    if (fwbdebug) qDebug("ObjectManipulator::delObj: call "
-                         "mw->closeObjectInAllWindowsWhereOpen");
-    mw->closeObjectInAllWindowsWhereOpen(obj);
+    QCoreApplication::postEvent(
+        mw, new closeObjectEvent(m_project->getFileName(), obj->getId()));
  
-
     try
     {    
-        if (!islib &&
-            !isDelObj &&
-            obj->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
-            updateLastModifiedTimestampForAllFirewalls(obj);
-    
         if (fwbdebug)
             qDebug("ObjectManipulator::delObj  delete islib=%d isfw=%d "
                    "isDelObj=%d", islib, isfw, isDelObj);
@@ -2127,6 +2586,9 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
         }
         
         QApplication::restoreOverrideCursor();
+
+        QCoreApplication::postEvent(
+            mw, new dataModifiedEvent(m_project->getFileName(), parent->getId()));
 
 //        removeObjectFromTreeView(obj);
         m_project->scheduleRuleSetRedraw();
@@ -2182,7 +2644,7 @@ void ObjectManipulator::groupObjects()
 
     FWObject *co = getCurrentObjectTree()->getSelectedObjects().front();
 
-    newGroupDialog ngd( this );
+    newGroupDialog ngd(this, m_project->db());
 
     if (ngd.exec()==QDialog::Accepted)
     {
@@ -2237,6 +2699,9 @@ void ObjectManipulator::groupObjects()
 
         openObject(newgrp);
         editObject(newgrp);
+
+        QCoreApplication::postEvent(
+            mw, new dataModifiedEvent(m_project->getFileName(), newgrp->getId()));
     }
 }
 
@@ -2261,7 +2726,7 @@ void ObjectManipulator::restoreSelection(bool same_widget)
         qDebug("ObjectManipulator::restoreSelection  same_widget=%d",
                same_widget);
 
-    select();
+//    select();
     openObject( m_project->getOpenedEditor(), false);
 }
 
@@ -2324,7 +2789,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 
     if (fwbdebug) qDebug("Calling select");
 
-    select();
+//    select();
     
     if (obj != m_project->getOpenedEditor())
     {
@@ -2355,7 +2820,8 @@ void ObjectManipulator::openObject(ObjectTreeViewItem *otvi,
 
 void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 {
-    if (fwbdebug) qDebug("ObjectManipulator::selectionChanged");
+    if (fwbdebug)
+        qDebug("ObjectManipulator::selectionChanged");
 
     QTreeWidget *qlv = getCurrentObjectTree();
     if (qlv==NULL) return;
@@ -2384,7 +2850,14 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     active=true;
 
     info();
-    select();
+    update();
+
+    // Send event to project panel object to cause update of currentObj
+    // display in rules. If this object is selected in the tree, it gets
+    // highlighted with a thin red border in the rules.
+    QCoreApplication::postEvent(
+        m_project, new updateObjectInRulesetEvent(m_project->getFileName(),
+                                                  currentObj->getId()));
 
     if (fwbdebug) qDebug("ObjectManipulator::selectionChanged done");
 }
@@ -2440,14 +2913,15 @@ void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
 
 void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
 {
-    if (fwbdebug) qDebug("ObjectManipulator::showObjectInTree");
+    if (fwbdebug)
+        qDebug("ObjectManipulator::showObjectInTree");
     if (otvi==NULL) return;
 
     ObjectTreeView* otv = otvi->getTree();
 
     if (fwbdebug) qDebug("ObjectManipulator::showObjectInTree  current_tree_view=%p  new_otv=%p",current_tree_view,otv);
 
-    otv->raise();
+//    otv->raise();
     m_objectManipulator->widgetStack->setCurrentWidget(otv);
 
     otvi->getTree()->clearSelection();
@@ -2465,18 +2939,10 @@ void ObjectManipulator::libChangedById(int id)
 {
     for (vector<FWObject*>::size_type i = 0 ; i < idxToLibs.size(); i++)
     {
-        if (fwbdebug)
-            qDebug("ObjectManipulator::libChangedById: id=%d -- i=%d idxToLibs[i]->getId()=%d", id, i, idxToLibs[i]->getId());
-
         if (idxToLibs[i]->getId()==id)
         {
             libChanged(i);
             m_objectManipulator->libs->setCurrentIndex(i);
-
-            if (fwbdebug)
-                qDebug("ObjectManipulator::libChangedById:  currentIndex=%d",
-                       m_objectManipulator->libs->currentIndex());
-
             return;
         }
     }
@@ -2571,7 +3037,14 @@ void ObjectManipulator::back()
 
 FWObject*  ObjectManipulator::getCurrentLib()
 {
-    return idxToLibs[ m_objectManipulator->libs->currentIndex() ];
+    int idx = m_objectManipulator->libs->currentIndex();
+    FWObject *lib = idxToLibs[idx];
+    if (fwbdebug)
+    {
+        qDebug("ObjectManipulator::getCurrentLib(): idx=%d  lib=%p", idx, lib);
+    }
+
+    return lib;
 }
 
 ObjectTreeView* ObjectManipulator::getCurrentObjectTree()
@@ -2706,7 +3179,6 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     if (copyFrom!=NULL) nobj->duplicate(copyFrom, true);
     if (nobj->isReadOnly()) nobj->setReadOnly(false);
     nobj->setName( string(objName.toUtf8().constData()) );
-    makeNameUnique(parent, nobj);
     parent->add(nobj);
 
     ObjectTreeViewItem* parent_item = allItems[parent];
@@ -2715,12 +3187,12 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
                parent->getName().c_str(), parent_item);
 
     insertSubtree(parent_item, nobj);
+    refreshSubtree(allItems[nobj]);
 
-    parent_item->treeWidget()->sortItems(0, Qt::AscendingOrder);
-    
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(m_project->getFileName(), parent->getId()));
 
     m_project->db()->setDirty(true);
-    mw->reloadAllWindowsWithFile(m_project);
     return nobj;
 }
 
@@ -2729,6 +3201,10 @@ void ObjectManipulator::newLibrary()
     if (!validateDialog()) return;
     FWObject *nlib = m_project->createNewLibrary(m_project->db());
     addTreePage( nlib );
+
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(m_project->getFileName(), nlib->getId()));
+
     openObject( nlib );
     editObject(nlib);
 }
@@ -2749,12 +3225,13 @@ void ObjectManipulator::newPolicyRuleSet ()
             name+=QString().setNum(count);
         }
     }
-    FWObject *o=createObject(currentObj,Policy::TYPENAME,name);
+    FWObject *o = createObject(currentObj,Policy::TYPENAME,name);
     if (o!=NULL)
     {
         openObject(o);
         editObject(o);
     }
+
     this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
 }
 
@@ -2775,32 +3252,155 @@ void ObjectManipulator::newNATRuleSet ()
             name += QString().setNum(count);
         }
     }
-    FWObject *o=createObject(currentObj,NAT::TYPENAME,name);
+    FWObject *o = createObject(currentObj,NAT::TYPENAME,name);
     if (o!=NULL)
     {
         openObject(o);
         editObject(o);
     }
+
     this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
 }
 
-
 void ObjectManipulator::newFirewall()
 {
-    newFirewallDialog *nfd=new newFirewallDialog();
+    FWObject *parent = 
+        FWBTree().getStandardSlotForObject(getCurrentLib(), Firewall::TYPENAME);
+    assert(parent);
+    ObjectTreeViewItem* parent_item = allItems[parent];
+    assert(parent_item);
+
+    newFirewallDialog *nfd = new newFirewallDialog(parent);
     if (m_project->isEditorVisible()) m_project->hideEditor();
     nfd->exec();
-    FWObject *o = nfd->getNewFirewall();
+    FWObject *nfw = nfd->getNewFirewall();
     delete nfd;
 
-    this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
-    
-    if (o!=NULL)
+    if (nfw!=NULL)
     {
-        openObject(o);
-        editObject(o);
+        insertSubtree(parent_item, nfw);
+        updateObjName(nfw, "", false);
+        openObject(nfw);
+        editObject(nfw);
+        QCoreApplication::postEvent(
+            mw, new dataModifiedEvent(m_project->getFileName(), nfw->getId()));
     }
-    mw->reloadAllWindowsWithFile(m_project);
+}
+
+void ObjectManipulator::newCluster()
+{
+    FWObject *parent = 
+        FWBTree().getStandardSlotForObject(getCurrentLib(), Cluster::TYPENAME);
+    assert(parent);
+    ObjectTreeViewItem* parent_item = allItems[parent];
+    assert(parent_item);
+
+    newClusterDialog *ncd = new newClusterDialog(parent);
+    if (m_project->isEditorVisible())  m_project->hideEditor();
+    ncd->exec();
+    FWObject *ncl = ncd->getNewCluster();
+    delete ncd;
+
+    if (ncl != NULL)
+    {
+        insertSubtree(parent_item, ncl);
+        updateObjName(ncl, "", false);
+        openObject(ncl);
+        editObject(ncl);
+        QCoreApplication::postEvent(
+            mw, new dataModifiedEvent(m_project->getFileName(), ncl->getId()));
+    }
+}
+
+void ObjectManipulator::newClusterIface()
+{
+    if (currentObj->isReadOnly()) return;
+
+    QString new_name = makeNameUnique(currentObj,
+                                      findNewestInterfaceName(currentObj),
+                                      Interface::TYPENAME);
+    FWObject *o = createObject(currentObj, Interface::TYPENAME, new_name);
+
+    // Do not call updateObjectInTree because it will be called
+    // from ProjectPanel::event when we process updateObjectInTree event
+    //updateObjectInTree(o);
+    openObject(o);
+
+//    updateLastModifiedTimestampForAllFirewalls(o);
+    editObject(o);
+}
+
+/*
+ * Creates new state sync group; this method is called by context menu item
+ * associated with Cluster object.
+ * By default assume conntrack protocol and set group type accordingly.
+ */
+void ObjectManipulator::newStateSyncClusterGroup()
+{
+    if ( currentObj->isReadOnly() ) return;
+
+    FWObject *o = NULL;
+
+    FWObject *cluster = currentObj;
+    while (cluster && !Cluster::isA(cluster)) cluster = cluster->getParent();
+    assert(cluster != NULL);
+    QString host_os = cluster->getStr("host_OS").c_str();
+
+    list<QStringPair> lst;
+    getStateSyncTypesForOS(host_os, lst);
+    if (lst.size() == 0)
+    {
+        // No state sync. protocols for this host OS
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Cluster host OS %1 does not support state synchronization").arg(host_os),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return;
+    }
+
+    QString group_type = lst.front().first;
+
+    o = createObject(currentObj, StateSyncClusterGroup::TYPENAME,
+                     tr("State Sync Group"));
+    o->setStr("type", group_type.toStdString());
+
+    openObject(o);
+
+//    updateLastModifiedTimestampForAllFirewalls(o);
+
+    editObject(o);
+}
+
+/*
+ * Creates new failover group; this method is called by context menu item
+ * associated with Interface object if its parent is a Cluster object
+ * By default assume VRRP protocol and set group type accordingly.
+ */
+void ObjectManipulator::newFailoverClusterGroup()
+{
+    if ( currentObj->isReadOnly() ) return;
+
+    FWObject *o = NULL;
+
+    QString group_type;
+    if (Interface::isA(currentObj))
+    {
+        group_type = "vrrp";
+    } else
+    {
+        qWarning("newClusterGroup: invalid currentObj");
+        return;
+    }
+
+    o = createObject(currentObj, FailoverClusterGroup::TYPENAME,
+                     tr("Failover group"));
+    o->setStr("type", group_type.toStdString());
+
+    openObject(o);
+
+//    updateLastModifiedTimestampForAllFirewalls(o);
+
+    editObject(o);
 }
 
 void ObjectManipulator::newHost()
@@ -2818,36 +3418,86 @@ void ObjectManipulator::newHost()
         openObject(o);
         editObject(o);
     }
-    mw->reloadAllWindowsWithFile(m_project);
+
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(m_project->getFileName(), o->getId()));
+
+}
+
+QString ObjectManipulator::findNewestInterfaceName(FWObject *parent)
+{
+    time_t newest_interface = 0;
+    QString newest_interface_name = "Interface";
+    // look for interfaces on the same level (do not use getByTypeDeep() because
+    // it also finds subinterfaces)
+    // find interface that was created last and use its name as a prototype
+    for (FWObjectTypedChildIterator it = parent->findByType(Interface::TYPENAME);
+         it != it.end(); ++it)
+    {
+        if (newest_interface < (*it)->getCreationTime())
+        {
+            newest_interface = (*it)->getCreationTime();
+            newest_interface_name = (*it)->getName().c_str();
+        }
+    }
+    return newest_interface_name;
 }
 
 void ObjectManipulator::newInterface()
 {
     if ( currentObj->isReadOnly() ) return;
 
-    FWObject *new_interface = NULL;
+    Interface *new_interface = NULL;
+    FWObject *parent = NULL;
 
     if (Host::isA(currentObj) || Firewall::isA(currentObj))
-        new_interface = createObject(currentObj,Interface::TYPENAME,tr("New Interface"));
+        parent = currentObj;
 
     if (Interface::isA(currentObj))
-        new_interface = createObject(currentObj->getParent(),Interface::TYPENAME,tr("New Interface"));
+    {
+        FWObject *h = Interface::cast(currentObj)->getParentHost();
 
-    if (new_interface==NULL) return;
+        bool supports_advanced_ifaces = false;
+        supports_advanced_ifaces =
+                Resources::getTargetCapabilityBool(h->getStr("host_OS"),
+                                                   "supports_subinterfaces");
+        if (supports_advanced_ifaces)
+        {
+            parent = currentObj;
+        } else {
+            parent = h;
+        }
+    }
 
-    if (fwbdebug)
-        qDebug("New interface: ext=%d", Interface::cast(new_interface)->isExt());
+    if (parent == NULL)
+    {
+        // since we can;t find quitable parent for the new interface,
+        // we can't create it.
+        return;
+    }
+
+    QString new_name = makeNameUnique(parent, findNewestInterfaceName(parent),
+                                      Interface::TYPENAME);
+    new_interface = Interface::cast(
+        createObject(parent, Interface::TYPENAME, new_name));
+
+    if (new_interface == NULL) return;
+
+    if (Interface::isA(parent))
+        guessSubInterfaceTypeAndAttributes(new_interface);
+    else
+        new_interface->getOptionsObject()->setStr("type", "ethernet");
 
     openObject(new_interface);
 
-    updateLastModifiedTimestampForAllFirewalls(new_interface);
+//    updateLastModifiedTimestampForAllFirewalls(new_interface);
 
     editObject(new_interface);
 }
 
 void ObjectManipulator::newNetwork()
 {
-    FWObject *o=createObject(Network::TYPENAME,tr("New Network"));
+    FWObject *o=createObject(Network::TYPENAME,tr("Network"));
     if (o!=NULL)
     {
         openObject(o);
@@ -2856,7 +3506,7 @@ void ObjectManipulator::newNetwork()
 }
 void ObjectManipulator::newNetworkIPv6()
 {
-    FWObject *o=createObject(NetworkIPv6::TYPENAME,tr("New Network IPv6"));
+    FWObject *o = createObject(NetworkIPv6::TYPENAME,tr("Network IPv6"));
     if (o!=NULL)
     {
         openObject(o);
@@ -2868,19 +3518,7 @@ void ObjectManipulator::newAddress()
 {
     if ( currentObj->isReadOnly() ) return;
 
-    FWObject *o;
-/*
- * Oleg reports that his expectation was that "New Address" should
- * always create an address object even if current selected object in
- * the tree is an interface. I tend to agree with him, this was a
- * usability issue because behavior of the program was different
- * depending on which object was selected in the tree. I am changing
- * it and will make it so "New Address" will always create a new
- * Address object uner Objects/Addresses. Interface address can be
- * created using context pop-up menu.
- *                                         12/19/04 --vk
- */
-    o=createObject(IPv4::TYPENAME,tr("New Address"));
+    FWObject *o = createObject(IPv4::TYPENAME, tr("Address"));
 
 #if 0
     if (Interface::isA(currentObj))
@@ -2896,7 +3534,7 @@ void ObjectManipulator::newAddress()
     }
     else
     {
-        o=createObject(IPv4::TYPENAME,tr("New Address"));
+        o=createObject(IPv4::TYPENAME,tr("Address"));
     }
 #endif
 
@@ -2913,7 +3551,7 @@ void ObjectManipulator::newAddressIPv6()
     if ( currentObj->isReadOnly() ) return;
 
     FWObject *o;
-    o=createObject(IPv6::TYPENAME,tr("New Address IPv6"));
+    o=createObject(IPv6::TYPENAME,tr("Address IPv6"));
 
     if (o!=NULL)
     {
@@ -2926,7 +3564,7 @@ void ObjectManipulator::newAddressIPv6()
 void ObjectManipulator::newDNSName()
 {
     FWObject *o;
-    o=createObject(DNSName::TYPENAME,tr("New DNS Name"));
+    o=createObject(DNSName::TYPENAME,tr("DNS Name"));
     if (o!=NULL)
     {
         openObject(o);
@@ -2937,14 +3575,13 @@ void ObjectManipulator::newDNSName()
 void ObjectManipulator::newAddressTable()
 {
     FWObject *o;
-    o=createObject(AddressTable::TYPENAME,tr("New Address Table"));
+    o=createObject(AddressTable::TYPENAME,tr("Address Table"));
     if (o!=NULL)
     {
         openObject(o);
         editObject(o);
     }
 }
-
 
 void ObjectManipulator::newInterfaceAddress()
 {
@@ -2956,15 +3593,14 @@ void ObjectManipulator::newInterfaceAddress()
         if (intf &&
             (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
         ) return;
-	QString iname=QString("%1:%2:ip")
-	    .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
-	    .arg(QString::fromUtf8(currentObj->getName().c_str()));
-        FWObject *o=createObject(currentObj, IPv4::TYPENAME, iname);
+        QString iname = getStandardName(currentObj, IPv4::TYPENAME, "ip");
+        iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
+        FWObject *o = createObject(currentObj, IPv4::TYPENAME, iname);
         if (o!=NULL)
         {
             openObject(o);
             editObject(o);
-            updateLastModifiedTimestampForAllFirewalls(o);
+//            updateLastModifiedTimestampForAllFirewalls(o);
         }
     }
 }
@@ -2979,15 +3615,14 @@ void ObjectManipulator::newInterfaceAddressIPv6()
         if (intf &&
             (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
         ) return;
-        QString iname=QString("%1:%2:ipv6")
-            .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
-            .arg(QString::fromUtf8(currentObj->getName().c_str()));
-        FWObject *o=createObject(currentObj, IPv6::TYPENAME, iname);
+        QString iname = getStandardName(currentObj, IPv4::TYPENAME, "ipv6");
+        iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
+        FWObject *o = createObject(currentObj, IPv6::TYPENAME, iname);
         if (o!=NULL)
         {
             openObject(o);
             editObject(o);
-            updateLastModifiedTimestampForAllFirewalls(o);
+//            updateLastModifiedTimestampForAllFirewalls(o);
         }
     }
 }
@@ -2995,7 +3630,7 @@ void ObjectManipulator::newInterfaceAddressIPv6()
 void ObjectManipulator::newTagService()
 {
     FWObject *o;
-    o=createObject(TagService::TYPENAME,tr("New TagService"));
+    o=createObject(TagService::TYPENAME,tr("TagService"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3005,7 +3640,7 @@ void ObjectManipulator::newTagService()
 void ObjectManipulator::newUserService()
 {
     FWObject *o;
-    o=createObject(UserService::TYPENAME,tr("New User Service"));
+    o=createObject(UserService::TYPENAME,tr("User Service"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3030,7 +3665,7 @@ void ObjectManipulator::newPhysicalAddress()
             {
                 openObject(o);
                 editObject(o);
-                updateLastModifiedTimestampForAllFirewalls(o);
+//                updateLastModifiedTimestampForAllFirewalls(o);
             }
         }
     }
@@ -3039,7 +3674,7 @@ void ObjectManipulator::newPhysicalAddress()
 void ObjectManipulator::newAddressRange()
 {
     FWObject *o;
-    o=createObject(AddressRange::TYPENAME,tr("New Address Range"));
+    o = createObject(AddressRange::TYPENAME,tr("Address Range"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3050,7 +3685,7 @@ void ObjectManipulator::newAddressRange()
 void ObjectManipulator::newObjectGroup()
 {
     FWObject *o;
-    o=createObject(ObjectGroup::TYPENAME,tr("New Object Group"));
+    o=createObject(ObjectGroup::TYPENAME,tr("Object Group"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3062,7 +3697,7 @@ void ObjectManipulator::newObjectGroup()
 void ObjectManipulator::newCustom()
 {
     FWObject *o;
-    o=createObject(CustomService::TYPENAME,tr("New Custom Service"));
+    o=createObject(CustomService::TYPENAME,tr("Custom Service"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3073,7 +3708,7 @@ void ObjectManipulator::newCustom()
 void ObjectManipulator::newIP()
 {
     FWObject *o;
-    o=createObject(IPService::TYPENAME,tr("New IP Service"));
+    o=createObject(IPService::TYPENAME,tr("IP Service"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3084,7 +3719,7 @@ void ObjectManipulator::newIP()
 void ObjectManipulator::newICMP()
 {
     FWObject *o;
-    o=createObject(ICMPService::TYPENAME,tr("New ICMP Service"));
+    o=createObject(ICMPService::TYPENAME,tr("ICMP Service"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3095,7 +3730,7 @@ void ObjectManipulator::newICMP()
 void ObjectManipulator::newICMP6()
 {
     FWObject *o;
-    o=createObject(ICMP6Service::TYPENAME,tr("New ICMP6 Service"));
+    o=createObject(ICMP6Service::TYPENAME,tr("ICMP6 Service"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3106,7 +3741,7 @@ void ObjectManipulator::newICMP6()
 void ObjectManipulator::newTCP()
 {
     FWObject *o;
-    o=createObject(TCPService::TYPENAME,tr("New TCP Service"));
+    o=createObject(TCPService::TYPENAME,tr("TCP Service"));
 
     if (o!=NULL)
     {
@@ -3118,7 +3753,7 @@ void ObjectManipulator::newTCP()
 void ObjectManipulator::newUDP()
 {
     FWObject *o;
-    o=createObject(UDPService::TYPENAME,tr("New UDP Service"));
+    o=createObject(UDPService::TYPENAME,tr("UDP Service"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3129,7 +3764,7 @@ void ObjectManipulator::newUDP()
 void ObjectManipulator::newServiceGroup()
 {
     FWObject *o;
-    o=createObject(ServiceGroup::TYPENAME,tr("New Service Group"));
+    o=createObject(ServiceGroup::TYPENAME,tr("Service Group"));
     if (o!=NULL)
     {
         openObject(o);
@@ -3141,15 +3776,13 @@ void ObjectManipulator::newServiceGroup()
 void ObjectManipulator::newInterval()
 {
     FWObject *o;
-    o=createObject(Interval::TYPENAME,tr("New Time Interval"));
+    o=createObject(Interval::TYPENAME,tr("Time Interval"));
     if (o!=NULL)
     {
         openObject(o);
         editObject(o);
     }
 }
-
-
 
 bool ObjectManipulator::validateDialog()
 {
@@ -3160,24 +3793,27 @@ bool ObjectManipulator::validateDialog()
 
 void ObjectManipulator::select()
 {
-    if (fwbdebug) qDebug("ObjectManipulator::select()");
+//    if (fwbdebug)
+        qDebug("ObjectManipulator::select()");
 
     if (currentObj==NULL) return;
 
     if (fwbdebug) qDebug("currentObj=%s", currentObj->getName().c_str());
 
+    m_objectManipulator->libs->setCurrentIndex(
+        getIdxForLib(currentObj->getLibrary()));
+
+    // TODO: I forget why do we need flag "active", check this.
     ObjectTreeViewItem *otvi = allItems[currentObj];
     if (otvi)
     {
-// Commented out 07/15/08 --vk
-//        otvi->setSelected(true);
         active = true;
-//        otvi->treeWidget()->setFocus();
-//        otvi->treeWidget()->update();
     }
 
-    m_project->updateRuleSetViewSelection();
-    
+    //QCoreApplication::postEvent(
+    //    m_project, new updateObjectInRulesetEvent(m_project->getFileName(),
+    //                                              currentObj->getId()));
+
     if (fwbdebug) qDebug("ObjectManipulator::select() done");
 }
 
@@ -3238,7 +3874,7 @@ void ObjectManipulator::findWhereUsedRecursively(FWObject *obj,
     }
 }
 
-list<Firewall *> ObjectManipulator::findFirewallsForObject(FWObject *o)
+list<Firewall*> ObjectManipulator::findFirewallsForObject(FWObject *o)
 {
     if (fwbdebug)
         qDebug("ObjectManipulator::findFirewallsForObject");
@@ -3249,7 +3885,7 @@ list<Firewall *> ObjectManipulator::findFirewallsForObject(FWObject *o)
     QTime tt;
     tt.start();
     FWObject *f=o;
-    while (f!=NULL && !Firewall::isA(f)) f=f->getParent();
+    while (f!=NULL && !Firewall::cast(f)) f=f->getParent();
     if (f) fws.push_back(Firewall::cast(f));
 
     findWhereUsedRecursively(o, m_project->db(), resset);
@@ -3270,7 +3906,9 @@ list<Firewall *> ObjectManipulator::findFirewallsForObject(FWObject *o)
             f=r;
             while (f!=NULL && !Firewall::isA(f)) f=f->getParent();
             if (f && std::find(fws.begin(),fws.end(),f)==fws.end())
+            {
                 fws.push_back(Firewall::cast(f));
+            }
         }
     }
 
@@ -3281,84 +3919,39 @@ list<Firewall *> ObjectManipulator::findFirewallsForObject(FWObject *o)
     return fws;
 }
 
-void ObjectManipulator::updateLastModifiedTimestampForOneFirewall(FWObject *o)
+list<Cluster*> ObjectManipulator::findClustersUsingFirewall(FWObject *fw)
 {
-    if (fwbdebug) qDebug("ObjectManipulator::updateLastModifiedTimestampForOneFirewall");
-
-    if (o==NULL) return;
-
-    Firewall *f = Firewall::cast(o);
-    if (f==NULL) return;
-
-    f->updateLastModifiedTimestamp();
-    getCurrentObjectTree()->updateTreeItems ();
-    info();
+    list<Cluster*> res;
+    list<Cluster*> all_clusters;
+    findAllClusters(all_clusters);
+    list<Cluster*>::iterator it;
+    for (it=all_clusters.begin(); it!=all_clusters.end(); ++it)
+    {
+        Cluster *cl = *it;
+        list<Firewall*> members;
+        cl->getMembersList(members);
+        if (std::find(members.begin(), members.end(), Firewall::cast(fw)) != members.end())
+            res.push_back(cl);
+    }
+    return res;
 }
 
-
-void ObjectManipulator::updateLastModifiedTimestampForAllFirewalls(FWObject *o)
+void ObjectManipulator::findAllFirewalls(list<Firewall*> &fws)
 {
-    if (fwbdebug) qDebug("ObjectManipulator::updateLastModifiedTimestampForAllFirewalls");
+    if (fwbdebug) qDebug("ObjectManipulator::findAllFirewalls");
 
-    if (o==NULL) return;
-
-    QStatusBar *sb = mw->statusBar();
-    sb->showMessage( tr("Searching for firewalls affected by the change...") );
-
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
-
-    if (fwbdebug) qDebug("ObjectManipulator::updateLastModifiedTimestampForAllFirewalls:   setOverrideCursor");
-    QApplication::setOverrideCursor(QCursor( Qt::WaitCursor));
-
-    list<Firewall *> fws = findFirewallsForObject(o);
-    if (fws.size())
-    {
-        Firewall *f;
-        for (list<Firewall *>::iterator i=fws.begin();
-                i!=fws.end();
-                ++i)
-        {
-            f=*i;
-            f->updateLastModifiedTimestamp();
-        }
-
-        getCurrentObjectTree()->updateTreeItems ();
-        info();
-    }
-    if (fwbdebug) qDebug("ObjectManipulator::updateLastModifiedTimestampForAllFirewalls:   restoreOverrideCursor");
-    QApplication::restoreOverrideCursor();
-    sb->clearMessage();
-
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+    list<FWObject*> fwlist;
+    findByObjectType(m_project->db(), Firewall::TYPENAME, fwlist);
+    for (list<FWObject*>::iterator m=fwlist.begin(); m!=fwlist.end(); m++)
+        fws.push_back(Firewall::cast(*m));
 }
 
-void ObjectManipulator::updateLastInstalledTimestamp(FWObject *o)
+void ObjectManipulator::findAllClusters(list<Cluster*> &clusters)
 {
-    if (fwbdebug) qDebug("ObjectManipulator::updateLastInstalledTimestamp");
-    if (o==NULL) return;
-    Firewall * f=(Firewall *)o;
-    if (f!=NULL)
-    {
-        bool visualUpdate=f->needsInstall();
-        f->updateLastInstalledTimestamp();
-        if (visualUpdate)
-        {
-            getCurrentObjectTree()->updateTreeItems ();
-        }
-        info();
-    }
-}
-void ObjectManipulator::updateLastCompiledTimestamp(FWObject *o)
-{
-    if (fwbdebug) qDebug("ObjectManipulator::updateLastCompiledTimestamp");
-
-    if (o==NULL) return;
-    Firewall * f=(Firewall *)o;
-    if (f!=NULL)
-    {
-        f->updateLastCompiledTimestamp();
-        info();
-    }
+    list<FWObject*> cllist;
+    findByObjectType(m_project->db(), Cluster::TYPENAME, cllist);
+    for (list<FWObject*>::iterator m=cllist.begin(); m!=cllist.end(); m++)
+        clusters.push_back(Cluster::cast(*m));
 }
 
 void ObjectManipulator::simulateInstall()
@@ -3379,18 +3972,6 @@ void ObjectManipulator::simulateInstall()
             fw->updateLastInstalledTimestamp();
         }
     }
-    getCurrentObjectTree()->updateTreeItems ();
-
-}
-
-void ObjectManipulator::findAllFirewalls (list<Firewall *> &fws)
-{
-    if (fwbdebug) qDebug("ObjectManipulator::findAllFirewalls");
-
-    std::list<FWObject*> fwlist;
-    findByObjectType(m_project->db(),Firewall::TYPENAME,fwlist);
-    for (list<FWObject*>::iterator m=fwlist.begin(); m!=fwlist.end(); m++)
-        fws.push_back( Firewall::cast(*m) );
 }
 
 FWObject* ObjectManipulator::getSelectedObject()
@@ -3410,15 +3991,13 @@ void ObjectManipulator::findWhereUsedSlot()
 
 void ObjectManipulator::reopenCurrentItemParent()
 {
-    QTreeWidgetItem *itm = current_tree_view->currentItem();
-    if (itm)
-        itm = itm->parent();
-    if (!itm)
-        return;
+    QTreeWidgetItem *itm = getCurrentObjectTree()->currentItem();
+    if (itm)  itm = itm->parent();
+    if (!itm) return;
     itm->parent()->setExpanded(false);
     itm->parent()->setExpanded(true);
-
-    current_tree_view->scrollToItem(itm);
+    getCurrentObjectTree()->scrollToItem(itm, QAbstractItemView::EnsureVisible);
+    getCurrentObjectTree()->update();
 }
 
 void ObjectManipulator::loadExpandedTreeItems()
@@ -3448,4 +4027,52 @@ void ObjectManipulator::saveExpandedTreeItems()
                                  objTreeView->getListOfExpandedObjectIds());
     }
 }
+
+/*
+ * This method tries to guess appropriate interface type and some other
+ * attributes for subinterfaces.
+ */
+void ObjectManipulator::guessSubInterfaceTypeAndAttributes(Interface *intf)
+{
+    Interface *parent_intf = Interface::cast(intf->getParent());
+
+    if (parent_intf == NULL) return;
+
+    FWObject *f = intf->getParentHost();
+    interfaceProperties *int_prop =
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            f->getStr("host_OS"));
+    QString err;
+    if (int_prop->looksLikeVlanInterface(intf->getName().c_str()) &&
+        int_prop->isValidVlanInterfaceName(intf->getName().c_str(),
+                                           intf->getParent()->getName().c_str(),
+                                           err)
+    )
+    {
+        InterfaceData *idata = new InterfaceData(*intf);
+        int_prop->parseVlan(idata);
+        if (!idata->interface_type.empty())
+        {
+            intf->getOptionsObject()->setStr("type", idata->interface_type);
+            if (idata->interface_type == "8021q")
+                intf->getOptionsObject()->setInt("vlan_id", idata->vlan_id);
+        }
+        delete idata;
+    } else
+    {
+        if (parent_intf->getOptionsObject()->getStr("type") == "bridge")
+        {
+            intf->getOptionsObject()->setStr("type", "ethernet");
+        }
+
+        if (parent_intf->getOptionsObject()->getStr("type") == "bonding")
+        {
+            intf->getOptionsObject()->setStr("type", "ethernet");
+            intf->setUnnumbered(true);
+        }
+    }
+
+    delete int_prop;
+}
+
 

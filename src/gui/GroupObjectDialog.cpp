@@ -27,9 +27,9 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
-#include "ProjectPanel.h"
+#include "events.h"
 
-#include "FWWindow.h"
+#include "ProjectPanel.h"
 #include "FWBTree.h"
 #include "FWBSettings.h"
 #include "FWObjectPropertiesFactory.h"
@@ -58,6 +58,7 @@
 #include <qtooltip.h>
 #include <qscrollarea.h>
 #include <qpixmapcache.h>
+#include <QCoreApplication>
 
 #include <iostream>
 #include <algorithm>
@@ -213,7 +214,7 @@ void GroupObjectDialog::iconViewCurrentChanged(QListWidgetItem *itm)
         return;
     }
     int obj_id = itm->data(Qt::UserRole).toInt();
-    FWObject *o = mw->db()->findInIndex(obj_id);
+    FWObject *o = m_project->db()->findInIndex(obj_id);
     selectedObject = o;
 }
 
@@ -226,7 +227,7 @@ void GroupObjectDialog::listViewCurrentChanged(QTreeWidgetItem *itm)
         return;
     }
     int obj_id = itm->data(0, Qt::UserRole).toInt();
-    FWObject *o = mw->db()->findInIndex(obj_id);
+    FWObject *o = m_project->db()->findInIndex(obj_id);
     selectedObject = o;
 }
 
@@ -333,8 +334,10 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     m_dialog->comment->setEnabled(  !m_project->isSystem(obj) );
 
     listView->clear();
-
     iconView->clear();
+
+    listView->setDB(o->getRoot());
+    iconView->setDB(o->getRoot());
 
     iconView->setResizeMode( QListWidget::Adjust );
     iconView->setGridSize ( QSize(50, 40) );
@@ -440,9 +443,9 @@ void GroupObjectDialog::applyChanges()
 
     for (set<int>::iterator k=diff.begin(); k!=diff.end(); ++k)
     {
-        FWObject *o = mw->db()->findInIndex(*k);
+        FWObject *o = m_project->db()->findInIndex(*k);
         if (m_project->isSystem(obj))
-            mw->delObj(o, false);
+            m_project->delObj(o, false);
         else
             obj->removeRef(o);
     }
@@ -457,17 +460,16 @@ void GroupObjectDialog::applyChanges()
 
     for (set<int>::iterator k1=diff.begin(); k1!=diff.end(); ++k1)
     {
-        FWObject *o = mw->db()->findInIndex(*k1);
+        FWObject *o = m_project->db()->findInIndex(*k1);
         if (m_project->isSystem(o))
-            mw->pasteTo(obj, o);
+            m_project->pasteTo(obj, o);
         else
             obj->addRef(o);
     }
 
-    mw->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
 
     if (fwbdebug) qDebug("GroupObjectDialog::applyChanges done");
 }
@@ -505,30 +507,33 @@ void GroupObjectDialog::openObject()
 {
     if (selectedObject!=NULL)
     {
-        mw->openObject( selectedObject );
-        mw->editObject( selectedObject );
+        QCoreApplication::postEvent(
+            m_project, new showObjectInTreeEvent(selectedObject->getRoot()->getFileName().c_str(),
+                                                 selectedObject->getId()));
     }
 }
 
 void GroupObjectDialog::openObject(QTreeWidgetItem *itm)
 {
     int obj_id = itm->data(0, Qt::UserRole).toInt();
-    FWObject *o = mw->db()->findInIndex(obj_id);
+    FWObject *o = m_project->db()->findInIndex(obj_id);
     if (o!=NULL)
     {
-        mw->openObject( o );
-        mw->editObject( o );
+        QCoreApplication::postEvent(
+            m_project, new showObjectInTreeEvent(o->getRoot()->getFileName().c_str(),
+                                                 o->getId()));
     }
 }
 
 void GroupObjectDialog::openObject(QListWidgetItem *itm)
 {
     int obj_id = itm->data(Qt::UserRole).toInt();
-    FWObject *o = mw->db()->findInIndex(obj_id);
+    FWObject *o = m_project->db()->findInIndex(obj_id);
     if (o!=NULL)
     {
-        mw->openObject( o );
-        mw->editObject( o );
+        QCoreApplication::postEvent(
+            m_project, new showObjectInTreeEvent(o->getRoot()->getFileName().c_str(),
+                                                 o->getId()));
     }
 }
 
@@ -547,7 +552,7 @@ void GroupObjectDialog::dropped(QDropEvent *ev)
 
         // see comment in ObjectTreeView.cpp explaining the purpose of
         // flag process_mouse_release_event
-        ObjectTreeView *otv = mw->getCurrentObjectTree();
+        ObjectTreeView *otv = m_project->getCurrentObjectTree();
         otv->ignoreNextMouseReleaseEvent();
 
     }
@@ -561,7 +566,7 @@ void GroupObjectDialog::iconContextMenu(const QPoint & pos)
     if (itm)
     {
         int obj_id = itm->data(Qt::UserRole).toInt();
-        o = mw->db()->findInIndex(obj_id);
+        o = m_project->db()->findInIndex(obj_id);
         selectedObject = o;
     }
     setupPopupMenu(iconView->mapToGlobal(pos));
@@ -575,7 +580,7 @@ void GroupObjectDialog::listContextMenu(const QPoint & pos)
     if (itm)
     {
         int obj_id = itm->data(0, Qt::UserRole).toInt();
-        o = mw->db()->findInIndex(obj_id);
+        o = m_project->db()->findInIndex(obj_id);
         selectedObject = o;
     }
     setupPopupMenu(listView->viewport()->mapToGlobal(pos));
@@ -618,7 +623,7 @@ void GroupObjectDialog::copyObj()
     for(vector<int>::iterator it=selectedObjects.begin(); 
         it!=selectedObjects.end(); ++it)
     {
-        FWObject* selectedObject = mw->db()->findInIndex(*it);
+        FWObject* selectedObject = m_project->db()->findInIndex(*it);
 
         if (selectedObject!=NULL && ! m_project->isSystem(selectedObject) )
         {
@@ -642,7 +647,7 @@ void GroupObjectDialog::pasteObj()
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        insertObject( mw->db()->findInIndex(i->first) );
+        insertObject( m_project->db()->findInIndex(i->first) );
     }
 }
 
@@ -658,7 +663,7 @@ void GroupObjectDialog::deleteObj()
         if (fwbdebug)
             qDebug("GroupObjectDialog::deleteObj()  (*it)=%d", (*it));
 
-        FWObject* selectedObject = mw->db()->findInIndex(*it);
+        FWObject* selectedObject = m_project->db()->findInIndex(*it);
         int o_id = selectedObject->getId();
 
         for (int it=0; it<listView->topLevelItemCount(); ++it)

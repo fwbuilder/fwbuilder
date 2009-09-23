@@ -118,4 +118,9 @@ extern QString getAddrByName(const QString &name, int af_type);
 extern QString getNameByAddr(const QString &addr);
 extern QString wordWrap(const QString& ,int);
 
+extern void LoadPixmap(const QString path, QPixmap &where);
+extern QPixmap LoadPixmap(const QString path);
+extern QString calculateIconName(const QString &_icn, bool negation);
+
+
 #endif

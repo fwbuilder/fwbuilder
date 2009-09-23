@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: ipcopAdvancedDialog.h 441 2008-08-03 02:24:37Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

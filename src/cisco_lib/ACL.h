@@ -73,9 +73,9 @@ class ciscoACL {
 
     /*
      * Adds remark to access list. Checks and adds each remark only
-     * once. We use rule labels for remarks
+     * once. We use rule labels and comments for remarks
      */
-    std::string addRemark(const std::string &rl);
+    std::string addRemark(const std::string &rl, const std::string &comment);
 
     void setName(const std::string &s) { _name=s; }
     std::string name() { return _name; }

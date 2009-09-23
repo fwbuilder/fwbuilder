@@ -1,0 +1,179 @@
+<h2>Rule options for PF policy rules</h2>
+
+<a name="general"/>
+<h2>Tab General</h2>
+
+<h3>Stateless rule</h3>
+
+<p>
+  Firewall Builder always uses stateful packet inspection if it is
+  available in the target firewall. In case of PF, this means using
+  "keep state" option for PF 3.x. In PF 4.x, combination "flags S/SA
+  keep state" is the default so fwbuilder does not add it explicitly
+  to the generated pf configuration. However, sometimes it might be
+  desirable to create a rule without state matching. Checking this
+  checkbox on makes the rule stateless and forces compiler to add
+  "no state" clause to the generated pf configuration line.
+</p>
+
+<h3>Add 'keep state'</h3>
+
+<p>
+In PF 4.x, "flags S/SA keep state" is the default. Compiler will omit
+these flags while generating code for stateful rules matching tcp
+services. However, according to the PF FAQ, care should be taken while
+dealing with states and interface enc0. To avoid leaking unencrypted
+traffic out, the FAQ recommends setting 'keep state' explicitly in all
+rules on the enc0 interface. This option applies only if version is
+set to 4.x.
+</p>
+
+<a name="logging"/>
+<hr/>
+<h2>Tab Logging</h2>
+
+<h3>Log prefix</h3>
+
+<p>
+  This option translates into "label " in the generated pf
+  configuration.  Firewall Builder supports the following macros in
+  the log prefix that are expanded at the compile time:
+</p>
+
+<p>
+  <ul>
+    <li>%N rule number in the GUI. </li>
+    <li>%A rule action </li>
+    <li>%I interface the rule is associated with </li>
+    <li>%C (iptables only) iptables chain that this rule generated 
+      code for. </li>
+  </ul>
+</p>
+
+<a name="tracking"/>
+<hr>
+<h2>Tab Tracking</h2>
+
+<h3>Activate source tracking</h3>
+
+<p>
+  This checkbox enables using <b>max-src-nodes</b>
+  and <b>max-src-states</b> options that can be configured using other
+  elements in this page of the dialog.
+</p>
+
+<h3>Maximum number of source addresses...</h3>
+
+<p>
+  This option translates into <b>max-src-nodes</b> parameter.  It
+  limits the maximum number of source addresses which can
+  simultaneously have state table entries.
+</p>
+
+
+<h3>Maximum number of simultaneous state entries...</h3>
+
+<p>
+  This option translates into <b>max-src-states</b> parameter. It
+  limits the maximum number of simultaneous state entries that a
+  single source address can create with this rule.
+</p>
+
+           
+
+<a name="limits"/>
+<hr>
+<h2>Tab Limits</h2>
+
+<h3>Maximum number of concurrent states...</h3>
+
+
+<p>
+  This parameter translates into "max &lt;number&gt;". It limits the
+  number of concurrent states the rule may create.  When this limit is
+  reached, further packets that would create state will not match this
+  rule until existing states time out.
+</p>
+
+
+<h3>Maximum number of simultaneous TCP connections...</h3>
+
+<p>
+  This parameter translates into "max-src-conn &lt;number&gt;". It
+  limits the maximum number of simultaneous TCP connections which have
+  completed the 3-way handshake that a single host can make.
+</p>
+
+
+<h3>The limit of new connections over a time interval ... / ... sec</h3>
+
+<p>
+  These parameters translate into "max-src-conn-rate &lt;number&gt; /
+  &lt;seconds&gt;". They limit the rate of new connections over a time
+  interval.  The connection rate is an approximation calculated as a
+  moving average.
+</p>
+
+
+<h3>Overload table</h3>
+
+<p>
+  this parameter translates into "overload" in the generated pf
+  configuration and can be used to create a table with given name.
+  Source IP addresses which hit either of the limits on established
+  connections will be added to the named table.  This table can be
+  used in the ruleset to block further activity from the offending
+  host, redirect it to a tarpit process, or restrict its bandwidth.
+</p>
+
+<p>
+  To use this table in the rules, create Address Table object with the
+  same name and leave the file name in that object blank. Then use
+  this object in policy rules of the firewall as usual.
+</p>
+
+
+<a name="tcp"/>
+<hr>
+<h2>Tab TCP</h2>
+
+<h3>Modulate state</h3>
+
+<p>
+  When this checkbox is checked, it makes compiler add "modulate
+  state" clause to generated pf configuration.
+</p>
+
+<p>
+  This option makes pf randomize TCP initial sequence numbers (ISN) of
+  the TCP sessions opened through the firewall, thus improving
+  protection against ISN guessing attacks. See man page for pf.conf
+  for more details.
+</p>
+
+
+<h3>synproxy</h3>
+
+<p>
+  This parameter translates to the "synproxy" option in generated pf
+  configuration. The synproxy state option can be used to cause pf
+  itself to complete the handshake with the active endpoint, perform a
+  handshake with the passive endpoint, and then forward packets
+  between the endpoints. See man page for pf.conf for more details.
+</p>
+
+
+<h3>Use sloppy TCP state tracker for this rule</h3>
+
+<p>
+  This parameter translates into "sloppy" parameter in generated pf
+  configuration.  From pf.conf man page:
+<blockquote>
+  This makes pf use sloppy TCP connection tracker that
+  does not check sequence numbers at all, which makes insertion and
+  ICMP teardown attacks way easier.  This is intended to be used in
+  situations where one does not see all packets of a connection,
+  e.g. in asymmetric routing situations.  Cannot be used with modulate
+  or synproxy state.
+</blockquote>
+</p>

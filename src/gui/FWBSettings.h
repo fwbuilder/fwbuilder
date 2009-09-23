@@ -175,12 +175,18 @@ class FWBSettings : public QSettings {
     QFont getUiFont();
     void setUiFont(const QFont &font);
 
+    QFont getCompilerOutputFont();
+    void setCompilerOutputFont(const QFont &font);
+
     bool getClipComment();
     void setClipComment(bool);
 
     bool getCheckUpdates();
     void setCheckUpdates(bool);
 
+    QString getTargetStatus(const QString &platform, const QString &default_stat);
+    void setTargetStatus(const QString &plaform, const QString &status);
+    
     QString getCheckUpdatesProxy();
     void setCheckUpdatesProxy(const QString &proxy_line);
 

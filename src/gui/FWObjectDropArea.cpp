@@ -28,6 +28,7 @@
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
+#include "events.h"
 
 #include "FWObjectDropArea.h"
 #include "FWObjectDrag.h"
@@ -48,6 +49,7 @@
 #include <QDropEvent>
 #include <QContextMenuEvent>
 #include <QPaintEvent>
+#include <QCoreApplication>
 
 #include <iostream>
 #include <stdlib.h>
@@ -227,7 +229,7 @@ void FWObjectDropArea::pasteObject()
     for( i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        FWObject *co= mw->db()->findInIndex(i->first);
+        FWObject *co= i->second->db()->findInIndex(i->first);
         insertObject(co);
     }
 
@@ -238,7 +240,9 @@ void FWObjectDropArea::showInTreeObject()
     ProjectPanel * pp = mw->activeProject();
     if (pp!=NULL)
     {
-        pp->m_panel->om->openObject(object);
+        QCoreApplication::postEvent(
+            pp, new showObjectInTreeEvent(object->getRoot()->getFileName().c_str(),
+                                          object->getId()));
     }
 }
 
@@ -247,8 +251,12 @@ void FWObjectDropArea::editObject()
     ProjectPanel * pp = mw->activeProject();
     if (pp!=NULL)
     {
-        pp->m_panel->om->openObject(object);
-        pp->openEditor(object);
+        QCoreApplication::postEvent(
+            pp, new showObjectInTreeEvent(object->getRoot()->getFileName().c_str(),
+                                          object->getId()));
+        QCoreApplication::postEvent(
+            pp, new openObjectInEditorEvent(object->getRoot()->getFileName().c_str(),
+                                            object->getId()));
     }
 
 }

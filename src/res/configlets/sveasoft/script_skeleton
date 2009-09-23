@@ -1,0 +1,71 @@
+## -*- mode: shell-script; -*- 
+##
+{{$top_comment}}
+
+{{$shell_debug}}
+
+{{$path}}
+
+{{$constants}}
+
+{{$tools}}
+
+{{$shell_functions}}
+
+{{$prolog_epilog}}
+
+script_body() {
+{{$script_body}}
+}
+
+reset_all() {
+{{$reset_all}}
+}
+
+# For backwards compatibility missing argument is equivalent to 'start'
+test -z "$1" && {
+  $0 start
+  exit $?
+}
+
+case "$1" in
+  start)
+    log "Activating firewall script generated {{$timestamp}} by {{$user}}"
+    check_tools
+    {{$prolog_top}}
+    {{$load_modules}}
+    configure_interfaces
+    {{$verify_interfaces}}
+    {{$prolog_after_interfaces}}
+    {{$call_reset}}
+    {{$prolog_after_flush}}
+    script_body
+    epilog_commands
+    ;;
+
+  stop)
+    # on IPCOP "/etc/rc.firewall stop" purges all tables and chains
+    # and then calls this script with command "stop", but there is
+    # nothing left for us to do here.
+    ;;
+
+  reload)
+    $0 stop
+    $0 start
+    ;;
+
+  interfaces)
+    configure_interfaces
+  ;;
+
+  test_interfaces)
+    FWBDEBUG="echo"
+    configure_interfaces
+  ;;
+
+  *)
+    echo "Usage $0 {start|stop|interfaces|test_interfaces}"
+    ;;
+
+esac
+

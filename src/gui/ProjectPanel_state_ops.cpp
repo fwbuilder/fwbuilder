@@ -48,8 +48,8 @@ using namespace std;
 // this slot is called when user hits "maximize" or "minimize" buttons
 // on the title bar of the internal window. Need to restore window
 // geometry and splitter position when window becomes normal (not maximized).
-void ProjectPanel::stateChanged(Qt::WindowStates oldState,
-                                Qt::WindowStates newState)
+void ProjectPanel::stateChanged(Qt::WindowStates ,
+                                Qt::WindowStates )
 {
 #if 0
 // vk 09/16
@@ -112,7 +112,7 @@ void ProjectPanel::saveState()
     if (fwbdebug) qDebug("ProjectPanel::saveState() done");
 }
 
-void ProjectPanel::loadState(bool open_objects)
+void ProjectPanel::loadState(bool)
 {
     int w1 = 0;
     int w2 = 0;
@@ -299,8 +299,9 @@ void ProjectPanel::loadLastOpenedLib()
                    filename.toAscii().constData(),
                    sid.toAscii().constData());
 
-        m_panel->om->libChangedById(
-            FWObjectDatabase::getIntId(sid.toStdString()));
+        int last_lib_id = FWObjectDatabase::getIntId(sid.toStdString());
+        if (last_lib_id > 0)
+            m_panel->om->libChangedById(last_lib_id);
     }
     else
     {

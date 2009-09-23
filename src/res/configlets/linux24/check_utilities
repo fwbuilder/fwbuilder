@@ -1,0 +1,20 @@
+## -*- mode: shell-script; -*- 
+
+find_program() {
+  PGM=$1
+## if shell can not find the program in any of the directories listed
+## in PATH it returns exit code 127
+  $PGM >/dev/null 2>&1; test $? = 127 && {
+    echo "$PGM not found"
+    exit 1
+  }
+}
+
+check_tools() {
+  find_program $MODPROBE 
+  find_program $IP 
+{{if need_vconfig}}  find_program $VCONFIG {{endif}}
+{{if need_brctl}}  find_program $BRCTL {{endif}}
+{{if need_ifenslave}}  find_program $IFENSLAVE {{endif}}
+}
+

@@ -219,10 +219,10 @@ void IPv4Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr());
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void IPv4Dialog::discardChanges()

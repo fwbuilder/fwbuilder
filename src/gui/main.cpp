@@ -64,7 +64,6 @@
 #include "FWObjectClipboard.h"
 #include "FWBTree.h"
 #include "platforms.h"
-#include "listOfLibraries.h"
 #include "ObjectEditor.h"
 #include "findDialog.h"
 #include "ProjectPanel.h"
@@ -700,23 +699,6 @@ int main( int argc, char *argv[] )
     app->exec();
 
     mw->hide();  // must do this before settings object is destroyed
-
-    if ( st->getStartupAction()==1 )
-    {
-/* save the state of the GUI (opened firewall, opened object tree page, etc */
-        FWObject *o=mw->getVisibleFirewalls();
-
-        if (fwbdebug) qDebug("Main: closing. VisibleFirewall = %p",o);
-
-        if (o) st->setStr("UI/visibleFirewall",
-                          FWObjectDatabase::getStringId(
-                              o->getId()).c_str());
-
-        o=mw->getOpened();
-        if (o) st->setStr("UI/visibleObject",
-                          FWObjectDatabase::getStringId(
-                              o->getId()).c_str());
-    }
 
     st->save();
     delete st;

@@ -96,6 +96,8 @@ freebsdAdvancedDialog::freebsdAdvancedDialog(QWidget *parent,FWObject *o)
 
 
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -110,7 +112,7 @@ void freebsdAdvancedDialog::accept()
     assert(mgmt!=NULL);
 
     data.saveAll();
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 
     QDialog::accept();
 }

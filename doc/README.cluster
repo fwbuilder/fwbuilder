@@ -1,0 +1,196 @@
+
+Firewall Builder Clustering Add-On
+==================================
+
+ Copyright (c) 2009 secunet Security Networks AG, Germany
+ Copyright (c) 2009 Adrian-Ken Rueegsegger <rueegsegger@swiss-it.ch>
+ Copyright (c) 2009 Reto Buerki <buerki@swiss-it.ch>
+
+
+Index
+-----
+
+1 - Introduction
+
+2 - Definition
+
+3 - Usage
+
+4 - Example
+
+5 - Things to consider
+
+6 - References
+
+
+Introduction
+------------
+
+The Firewall Builder Clustering Add-On provides the possibility to manage
+multiple firewall objects together as one Cluster object. Cluster objects are
+used to configure HA (High Availability) features like conntrack [1] and VRRP [2]
+(Virtual Router Redundancy Protocol).
+
+
+Definition
+----------
+
+In the context of this Add-On a 'cluster' object is regarded as a meta-object
+grouping multiple firewall objects. This allows for a much simpler and convenient
+configuration of a HA scenario. The configuration is done once for the meta-object
+'Cluster' and automatically compiled and distributed for each cluster member firewall.
+
+                     [cluster] (meta-object)
+                         |
+                         |
+       +-----------------+-----------------+
+       |                 |                 |
+     [fw1] (object)    [fw2] (object)    [fwX] (object)
+
+
+Usage
+-----
+
+To use the clustering feature, you need to create firewalls which will be part
+of a HA cluster and create the cluster itself. The following two sections
+describe the necessary steps.
+
+
+Firewall configuration
+~~~~~~~~~~~~~~~~~~~~~~
+
+Make sure that all firewalls of a cluster use the same host OS and platform. The
+host OS and platform of all cluster member firewalls must match the one
+specified for the cluster itself.
+
+The following diagram defines two firewalls configured appropriately as cluster
+members:
+
+ [fw1] [OS: secunet wall, Platform: iptables]
+   |
+   +---o eth0: outside (ext)
+   |   +---o IP: 172.24.0.2/255.255.0.0
+   |
+   +---o eth1: inside
+       +---o IP: 192.168.1.2/255.255.255.0
+
+ [fw2] [OS: secunet wall, Platform: iptables]
+   |
+   +---o eth0: outside (ext)
+   |   +---o IP: 172.24.0.3/255.255.0.0
+   |
+   +---o eth1: inside
+       +---o IP: 192.168.1.3/255.255.255.0
+
+Both firewalls have an outside and an inside interface. In a cluster scenario,
+these interfaces will be combined to a redundant VRRP cluster interface.
+VRRP requires all interfaces joined to a VRRP group to be in the same subnet,
+with unique IP addresses.
+
+
+Cluster configuration
+~~~~~~~~~~~~~~~~~~~~~
+
+Now it's time to create a Cluster object which will act as meta-object for fw1
+and fw2:
+
+ [cluster1] [OS: secunet wall, Platform: iptables]
+   |
+   +---o vrrp0: outside (ext)
+   |   +---o IP: 172.24.0.1/255.255.0.0
+   |   +---o Failover group0 (vrrp)
+   |
+   +---o vrrp1: inside (mgmt)
+   |   +---o IP: 192.168.1.1/255.255.255.0
+   |   +---o Failover group1 (vrrp)
+   |
+   +---o State synchronization group (conntrack)
+
+Use the 'Manage Members' button to add firewall interfaces to the failover and
+state synchronization groups of the cluster. Additionally you need to specify
+which firewall interface is to act as master of the group.
+
+The firewall interfaces added to the state synchronization group will be used to
+keep the state information of the cluster members in sync. Typically the
+internal management interfaces are chosen as members of the conntrack group.
+
+For all cluster groups the IP addresses of it's firewall member interfaces have
+to be in the same subnet and the subnet mask must be identical to the one of the
+cluster interface.
+
+The following table shows the mapping of interfaces to cluster groups for our
+example configuration:
+
+ +-----------------+--------------------+
+ | group           | mapped  interfaces |
+ +-----------------+--------------------+
+ | State sync      | fw1:eth1, fw2:eth1 |
+ | Failover group0 | fw1:eth0, fw2:eth0 |
+ | Failover group1 | fw1:eth1, fw2:eth1 |
+ +-----------------+--------------------+
+
+
+NAT/Policy/Routing Rules
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+NAT, policy and routing rules are configured on the cluster meta-object. Rules
+are specified in the usual manner. Use the cluster object or it's interfaces as
+rule elements as you would for a regular firewall.
+
+NOTE: Rules defined on cluster member firewalls will be ignored on compilation,
+      only the rules defined on the cluster object are considered.
+
+
+Compilation/Installation/Export
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's possible to compile, install and export firewalls which are part of a
+cluster the usual way by selecting a single firewall and the corresponding
+action (Compile/Install/Export).
+
+If you perform such an action on the cluster meta-object, all member firewalls
+will be selected automatically. Thus the cluster object provides a convenient
+way to perform actions on all cluster member firewalls.
+
+
+Cluster template
+~~~~~~~~~~~~~~~~
+
+This Add-On includes Cluster templates which can be used as starting point for
+complex cluster configurations. Enable the 'Use preconfigured template cluster
+object' checkbox when creating a new cluster object to use these templates.
+
+
+Example
+-------
+
+The scenario described in this README can be found as example Firewall Builder
+file here [3].
+
+
+Things to consider
+------------------
+
+* Host OS and platform of firewall members must match OS and platform of the
+  cluster.
+
+* Cluster member firewalls must have at least one physical interface attached.
+
+* Rules must be configured on the Cluster meta-object. Rules for cluster member
+  firewalls are ignored.
+
+* All IP addresses of interfaces added to a cluster group must be in the same
+  subnet.
+
+* All addresses of a cluster group must be unique.
+
+* Cluster interface names must be unique per cluster.
+
+
+References
+----------
+
+ [1] - http://conntrack-tools.netfilter.org/
+ [2] - RFC3768 - Virtual Router Redundancy Protocol (VRRP)
+ [3] - doc/cluster_examples.fwb
+

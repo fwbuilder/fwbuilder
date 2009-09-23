@@ -61,14 +61,12 @@ int NATCompiler_pf::prolog()
 
     if ( n>0 ) 
     {
-	bool found_ext=false;
 	list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
 	for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
         {
 	    Interface *iface=dynamic_cast<Interface*>(*i);
 	    assert(iface);
 
-	    if ( iface->isExt() ) found_ext=true;
             if ( iface->isDyn())
             {
                 iface->setBool("use_var_address",true);
@@ -82,11 +80,6 @@ int NATCompiler_pf::prolog()
                     iface->remove(*j);
             }
 	}
-
-	if (!found_ext)
-	    abort(
-                "At least one interface should be marked as external, "
-                "can not configure NAT");
     }
 
 /* pseudo-host with ip address 127.0.0.1  We'll use it for redirection
@@ -100,7 +93,6 @@ int NATCompiler_pf::prolog()
     IPv4::cast(loopback_address)->setAddress(InetAddr::getLoopbackAddr());
 
     dbcopy->add(loopback_address,false);
-    cacheObj(loopback_address);
 
     if (tables)
     {
@@ -115,13 +107,36 @@ int NATCompiler_pf::prolog()
 string NATCompiler_pf::debugPrintRule(libfwbuilder::Rule *r)
 {
     NATRule   *rule=NATRule::cast(r);
-    Interface *rule_iface = getCachedFwInterface(rule->getInterfaceId());
+    FWObject *rule_iface = dbcopy->findInIndex(rule->getInterfaceId());
 
     return NATCompiler::debugPrintRule(rule)+
         " "+string( (rule_iface!=NULL)?rule_iface->getName():"") +
         " (type="+rule->getRuleTypeAsString()+")";
 }
 
+bool NATCompiler_pf::assignInterfaceToNATRule(Rule *rule, Address *addr)
+{
+    if ( (Interface::isA(addr) || IPv4::isA(addr)) && addr->isChildOf(fw))
+    {
+        FWObject *p = addr;
+        while ( ! Interface::isA(p) ) p=p->getParent();
+        Interface *intf = Interface::cast(p);
+        if (intf->getOptionsObject()->getBool("cluster_interface"))
+        {
+            string base_interface_id = intf->getOptionsObject()->getStr("base_interface_id");
+            if (!base_interface_id.empty())
+            {
+                FWObject *base_interface = dbcopy->findInIndex(
+                    FWObjectDatabase::getIntId(base_interface_id));
+                if (base_interface) intf = Interface::cast(base_interface);
+            }
+        }
+        rule->setInterfaceId(intf->getId());
+        rule->setInterfaceStr(intf->getName());
+        return true;
+    }
+    return false;
+}
 
 bool NATCompiler_pf::NATRuleType::processNext()
 {
@@ -208,7 +223,7 @@ bool NATCompiler_pf::NATRuleType::processNext()
 	return true;
     }
 
-    compiler->abort(_("Unsupported translation. Rule: ")+rule->getLabel());
+    compiler->abort(rule, _("Unsupported translation."));
    
     return false;
 }
@@ -297,7 +312,6 @@ bool NATCompiler_pf::splitSDNATRule::processNext()
                         compiler->dbcopy->create(tsrv->getTypeName()));
                     match_service->setName(tsrv->getName() + "_dport");
                     compiler->dbcopy->add(match_service);
-                    compiler->cacheObj(match_service); // to keep cache consistent
                     match_service->setDstRangeStart(tu_tsrv->getDstRangeStart());
                     match_service->setDstRangeEnd(tu_tsrv->getDstRangeEnd());
                 }
@@ -337,13 +351,19 @@ bool NATCompiler_pf::VerifyRules::processNext()
 //        compiler->abort(_("Load balancing rules are not supported. Rule ")+rule->getLabel());
 
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
-	compiler->abort(_("There should be no more than one object in original destination in the rule ")+rule->getLabel());
+	compiler->abort(
+            
+                rule, 
+                _("There should be no more than one object in original destination"));
 
 //    if (rule->getRuleType()==NATRule::SNAT && tsrc->size()!=1)
 //	compiler->abort(_("There should be no more than one object in translated source in the rule ")+rule->getLabel());
 
     if (osrv->getNeg())
-        compiler->abort(_("Negation in original service is not supported. Rule ")+rule->getLabel());
+        compiler->abort(
+            
+                rule, 
+                _("Negation in original service is not supported."));
 
     /* bug #1276083: "Destination NAT rules". this restriction is not
      * true at least as of OpenBSD 3.5
@@ -353,25 +373,43 @@ bool NATCompiler_pf::VerifyRules::processNext()
     */
 
     if (rule->getRuleType()==NATRule::DNAT && osrv->isAny() && !tsrv->isAny())
-	compiler->abort(_("Can not translate 'any' into a specific service. Rule ")+rule->getLabel());
+	compiler->abort(
+            
+                rule, 
+                _("Can not translate 'any' into a specific service."));
 
     if (tsrc->getNeg())
-        compiler->abort(_("Can not use negation in translated source. Rule ")+rule->getLabel());
-
+        compiler->abort(
+            
+                rule, 
+                _("Can not use negation in translated source."));
+            
     if (tdst->getNeg())
-        compiler->abort(_("Can not use negation in translated destination. Rule ")+rule->getLabel());
+        compiler->abort(
+            
+                rule, 
+                _("Can not use negation in translated destination."));
 
     if (tsrv->getNeg())
-        compiler->abort(_("Can not use negation in translated service. Rule ")+rule->getLabel());
+        compiler->abort(
+            
+                rule, 
+                _("Can not use negation in translated service."));
 
     if (tsrv->size()!=1) 
-	compiler->abort(_("Translated service should be 'Original' or should contain single object. Rule: ")+rule->getLabel());
+	compiler->abort(
+            
+                rule, 
+                _("Translated service should be 'Original' or should contain single object."));
 
     FWObject *o=tsrv->front();
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     if ( Group::cast(o)!=NULL)
-	compiler->abort(_("Can not use group in translated service. Rule ")+rule->getLabel());
+	compiler->abort(
+            
+                rule, 
+                _("Can not use group in translated service."));
 
 #if 0
     if (rule->getRuleType()==NATRule::SNAT ) 
@@ -385,20 +423,32 @@ bool NATCompiler_pf::VerifyRules::processNext()
     if (rule->getRuleType()==NATRule::SNAT ) 
     {
         if (tsrc->isAny())
-            compiler->abort("Source translation rule needs an address in Translated Source. Rule " + rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    "Source translation rule needs an address in Translated Source.");
     }
 
     if (rule->getRuleType()==NATRule::DNAT || rule->getRuleType()==NATRule::Redirect ) 
     {
         if (tdst->isAny())
-            compiler->abort("Destination translation rule needs an address in Translated Destination. Rule " + rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    "Destination translation rule needs an address in Translated Destination.");
 
         if ( tdst->size()!=1)
-            compiler->abort(_("There should be no more than one object in translated destination in the rule ")+rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    _("There should be no more than one object in translated destination"));
 
         Address* o1=compiler->getFirstTDst(rule);
         if ( Network::cast(o1)!=NULL || AddressRange::cast(o1)!=NULL )
-            compiler->abort(_("Can not use network or address range object in translated destination. Rule ")+rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    _("Can not use network or address range object in translated destination."));
     }
 
 
@@ -408,7 +458,10 @@ bool NATCompiler_pf::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
-            compiler->abort(_("Original and translated source should both be networks of the same size . Rule ")+rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    _("Original and translated source should both be networks of the same size."));
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
@@ -417,7 +470,10 @@ bool NATCompiler_pf::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
-            compiler->abort(_("Original and translated destination should both be networks of the same size . Rule ")+rule->getLabel());
+            compiler->abort(
+                
+                    rule, 
+                    _("Original and translated destination should both be networks of the same size."));
     }
 
     return true;
@@ -546,6 +602,7 @@ bool NATCompiler_pf::splitForTSrc::processNext()
 
 bool NATCompiler_pf::AssignInterface::processNext()
 {
+    NATCompiler_pf *pf_comp=dynamic_cast<NATCompiler_pf*>(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
     if (regular_interfaces.empty())
@@ -572,21 +629,8 @@ bool NATCompiler_pf::AssignInterface::processNext()
     {
     case NATRule::SNAT:
     {
-	Address *a=compiler->getFirstTSrc(rule);
-#if 0
-        Interface *iface = compiler->findInterfaceFor(a,compiler->fw);
-        if (iface!=NULL)
+        if (pf_comp->assignInterfaceToNATRule(rule, compiler->getFirstTSrc(rule)))
         {
-            rule->setInterfaceId( iface->getId() );
-            tmp_queue.push_back(rule);
-            return true;
-        }
-#endif
-        if ( (Interface::isA(a) || IPv4::isA(a)) && a->isChildOf(compiler->fw))
-        {
-            FWObject *p=a;
-            while ( ! Interface::isA(p) ) p=p->getParent();
-            rule->setInterfaceId( p->getId() );
             tmp_queue.push_back(rule);
             return true;
         }
@@ -600,13 +644,8 @@ bool NATCompiler_pf::AssignInterface::processNext()
 
     case NATRule::DNAT:
     {
-	Address *a=compiler->getFirstODst(rule);
-
-        if ( (Interface::isA(a) || IPv4::isA(a)) && a->isChildOf(compiler->fw))
+        if (pf_comp->assignInterfaceToNATRule(rule, compiler->getFirstODst(rule)))
         {
-            FWObject *p=a;
-            while ( ! Interface::isA(p) ) p=p->getParent();
-            rule->setInterfaceId( p->getId() );
             tmp_queue.push_back(rule);
             return true;
         }
@@ -658,7 +697,6 @@ bool NATCompiler_pf::ReplaceFirewallObjectsODst::processNext()
  */
             if (! interface_->isLoopback() ) cl.push_back(interface_);
 
-//	    if (interface_->isExt()) cl.push_back(interface_);
 	}
 	if ( ! cl.empty() ) {
 	    rel->clearChildren();
@@ -725,7 +763,7 @@ bool NATCompiler_pf::ReplaceFirewallObjectsTSrc::processNext()
                     sprintf(errmsg,
 _("Could not find suitable interface for the NAT rule %s. Perhaps all interfaces are unnumbered?"), 
                             rule->getLabel().c_str() );
-                            compiler->abort(errmsg);
+                    compiler->abort(rule, errmsg);
                 }
             }
 	}
@@ -775,7 +813,7 @@ bool NATCompiler_pf::ReplaceObjectsTDst::processNext()
                 char errstr[1024];
                 sprintf(errstr, _("Can not configure redirection NAT rule %s because loopback interface is missing.") ,
                         rule->getLabel().c_str() );
-                compiler->abort(errstr);
+                compiler->abort(rule, errstr);
             }
 
             rel->clearChildren();
@@ -888,9 +926,10 @@ bool NATCompiler_pf::processMultiAddressObjectsInRE::processNext()
             {
                 if (re->size()>1 && neg)
                 {
-                    string err = "AddressTable object can not be used with negation in combination with other objects in the same rule element. Rule ";
-                    err += rule->getLabel();
-                    compiler->abort(err);
+                    string err = "AddressTable object can not be used with "
+                        "negation in combination with other objects "
+                        "in the same rule element.";
+                    compiler->abort(rule, err);
                 }
                 o->setBool("pf_table",true);
                 string tblname = o->getName();
@@ -903,8 +942,8 @@ bool NATCompiler_pf::processMultiAddressObjectsInRE::processNext()
     {
         string err;
         err = "Can not process MultiAddress object in rule " +
-            rule->getLabel() + " : " + ex.toString();
-        compiler->abort( err );
+            rule->getLabel() + ". Error: " + ex.toString();
+        compiler->abort(rule,  err);
     }
 
     if (!cl.empty())
@@ -952,12 +991,12 @@ void NATCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfa
         if (ifs!=NULL && ifs->isDyn() && ! ifs->isChildOf(compiler->fw))        
         {
             char errstr[2048];
-            sprintf(errstr,_("Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown. Rule %s"),
+            sprintf(errstr,
+                    _("Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown."),
                     ifs->getName().c_str(), 
-                    ifs->getParent()->getName().c_str(),
-                    rule->getLabel().c_str() );
+                    ifs->getParent()->getName().c_str());
 
-            compiler->abort(errstr);
+            compiler->abort(rule, errstr);
         }
     }
 }
@@ -1004,10 +1043,10 @@ void NATCompiler_pf::compile()
 {
     bool manage_virtual_addr=fwopt->getBool("manage_virtual_addr");
 
-    cout << " Compiling " << fw->getName();
-    if (!getRuleSetName().empty())  cout << " ruleset " << getRuleSetName();
-    if (ipv6) cout << ", IPv6";
-    cout <<  endl << flush;
+    string banner = " Compiling NAT rules for " + fw->getName();
+    if (!getRuleSetName().empty())  banner += " ruleset " + getRuleSetName();
+    if (ipv6) banner += ", IPv6";
+    info(banner);
 
     try {
 
@@ -1016,6 +1055,8 @@ void NATCompiler_pf::compile()
         add( new Begin());
         add( new printTotalNumberOfRules() );
 
+        add( new singleRuleFilter());
+    
         add( new recursiveGroupsInOSrc("check for recursive groups in OSRC") );
         add( new recursiveGroupsInODst("check for recursive groups in ODST") );
         add( new recursiveGroupsInOSrv("check for recursive groups in OSRV") );
@@ -1099,7 +1140,8 @@ void NATCompiler_pf::compile()
         runRuleProcessors();
 
 
-    } catch (FWException &ex) {
+    } catch (FWException &ex)
+    {
 	error(ex.toString());
 	exit(1);
     }

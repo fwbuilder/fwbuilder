@@ -47,9 +47,9 @@ namespace fwcompiler {
 
 	virtual ~OSConfigurator_solaris() {};
 	OSConfigurator_solaris(libfwbuilder::FWObjectDatabase *_db,
-                               const std::string &fwname,
+                               libfwbuilder::Firewall *fw,
                                bool ipv6_policy) : 
-        OSConfigurator(_db, fwname, ipv6_policy) , os_data() {}
+        OSConfigurator(_db, fw, ipv6_policy) , os_data() {}
 
         virtual int prolog();
 

@@ -94,6 +94,7 @@ const char* iconsInRulesSize = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize"
 const char* rulesFont = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
 const char* treeFont = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
 const char* uiFont = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
+const char* compilerOutputFont = SETTINGS_PATH_PREFIX "/UI/Fonts/CompilerOutputFont";
 
 const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 
@@ -101,8 +102,9 @@ const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
 
 const char* newFirewallPlatform = SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
-
 const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
+
+const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
 
 FWBSettings::FWBSettings() :
     QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
@@ -195,6 +197,15 @@ void FWBSettings::init()
 
     ok = contains(uiFont);
     if (!ok) setUiFont(QApplication::font());
+
+    ok = contains(compilerOutputFont);
+    if (!ok)
+    {
+        // make compiler output panel font smaller than regular font
+        QFont compiler_output_font(QApplication::font());
+        compiler_output_font.setPointSizeF(compiler_output_font.pointSizeF() * 0.75);
+        setCompilerOutputFont(compiler_output_font);
+    }
 
     if (fwbdebug)
         qDebug("Default application font: %s",
@@ -324,8 +335,6 @@ void FWBSettings::setSaveFileDir( const QString &d )
 
 void FWBSettings::save()
 {
-    if (mw->db()!=NULL)
-        setLastEdited( mw->db()->getFileName().c_str() );
 }
 
 bool FWBSettings::getRCSLogState() { return value( emptyRCSLog ).toBool(); }
@@ -657,7 +666,6 @@ void FWBSettings::setShowDirectionText(bool showText)
     setValue(showDirectionText, showText);
 }
 
-
 QFont FWBSettings::getRulesFont()
 {
     return getFontByType(rulesFont);
@@ -686,6 +694,16 @@ QFont FWBSettings::getUiFont()
 void FWBSettings::setUiFont(const QFont &font)
 {
     setValue(uiFont, font.toString());
+}
+
+QFont FWBSettings::getCompilerOutputFont()
+{
+    return getFontByType(compilerOutputFont);
+}
+
+void FWBSettings::setCompilerOutputFont(const QFont &font)
+{
+    setValue(compilerOutputFont, font.toString());
 }
 
 QFont FWBSettings::getFontByType(const char *type)
@@ -813,4 +831,21 @@ void FWBSettings::setNewFirewallPlatform(const QString &platform)
 {
     setValue(newFirewallPlatform, platform);
 }
+
+QString FWBSettings::getTargetStatus(const QString &platform,
+                                     const QString &default_stat)
+{
+    QString var_path = targetStatus + platform;
+    bool ok = contains(var_path);
+    if (!ok) return default_stat;
+    return value(var_path).toString();
+}
+
+void FWBSettings::setTargetStatus(const QString &platform, const QString &status)
+{
+    QString var_path = targetStatus + platform;
+    setValue(var_path, status);
+}
+
+    
 

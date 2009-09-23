@@ -71,7 +71,8 @@ class instConf {
     libfwbuilder::Firewall  *fwobj;
 
     QString   fwbfile;
-    QString   conffile;
+    QString   script;
+    QString   remote_script;
     QString   backup_file;
     QString   diff_file;
 

@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: ipcopAdvancedDialog.cpp 585 2008-10-09 05:08:41Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -158,6 +158,8 @@ ipcopAdvancedDialog::ipcopAdvancedDialog(QWidget *parent,FWObject *o)
 
     data.loadAll();
     switchLOG_ULOG();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 void ipcopAdvancedDialog::switchLOG_ULOG()
@@ -193,7 +195,7 @@ void ipcopAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData());
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData());
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 
@@ -222,11 +224,12 @@ void ipcopAdvancedDialog::editEpilog()
 
 void ipcopAdvancedDialog::help()
 {
-    Help *h = new Help(this, "ipcopAdvancedDialog", "Firewall platform: IPCOP");
-    h->show();
     QString tab_title = m_dialog->tabWidget->tabText(
         m_dialog->tabWidget->currentIndex());
-    h->scrollToAnchor(tab_title.replace('/', '-').replace(' ', '-').toLower());
+    QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
+    Help *h = new Help(this, "Firewall platform: IPCOP");
+    h->setSource(QUrl("ipcopAdvancedDialog.html#" + anchor));
+    h->show();
 }
 
 

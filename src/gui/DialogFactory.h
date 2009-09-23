@@ -23,13 +23,18 @@
 
 */
 
+#ifndef _DIALOGFACTORY_HH_
+#define _DIALOGFACTORY_HH_
+
 #include <qwidget.h>
 
 namespace libfwbuilder {
     class FWObject;
     class FWException;
 };
+
 class ProjectPanel;
+
 class DialogFactory {
 
  public:
@@ -39,5 +44,12 @@ class DialogFactory {
         throw(libfwbuilder::FWException);
     static QWidget *createOSDialog(QWidget *parent,libfwbuilder::FWObject *o)
         throw(libfwbuilder::FWException);
-    
+    static QWidget *createIfaceDialog(QWidget *parent,libfwbuilder::FWObject *o)
+        throw(libfwbuilder::FWException);
+    static QWidget *createClusterConfDialog(QWidget *parent, libfwbuilder::FWObject *o)
+        throw(libfwbuilder::FWException);
+    static QWidget *createClusterGroupOptionsDialog(QWidget *parent, libfwbuilder::FWObject *o)
+        throw(libfwbuilder::FWException);
 };
+
+#endif

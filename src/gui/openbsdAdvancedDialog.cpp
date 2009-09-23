@@ -95,9 +95,9 @@ openbsdAdvancedDialog::openbsdAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->openbsd_path_sysctl,
                           fwopt,
                           "openbsd_path_sysctl");
-
-
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -113,7 +113,7 @@ void openbsdAdvancedDialog::accept()
 
     data.saveAll();
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

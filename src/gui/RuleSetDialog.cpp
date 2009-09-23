@@ -38,6 +38,7 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Policy.h"
 
 #include <qlineedit.h>
@@ -97,7 +98,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     m_dialog->top_rule_set->setChecked(s->isTop());
 
     FWObject *fw = o;
-    while (fw && fw->getTypeName()!="Firewall") fw = fw->getParent();
+    while (fw && (!Firewall::isA(fw) && !Cluster::isA(fw))) fw = fw->getParent();
     assert(fw!=NULL);
     platform = fw->getStr("platform");
     fwopt = Firewall::cast(fw)->getOptionsObject();
@@ -174,6 +175,8 @@ void RuleSetDialog::validate(bool *res)
     if (!isTreeReadWrite(this, obj)) { *res = false; return; }
     if (!validateName(this, obj, m_dialog->obj_name->text())) { *res = false; return; }
 
+    // Do not allow ':' in the rule set names because this character is
+    // used as a separator in error and warning messages 
     QString pattern("([a-zA-Z0-9_-+=@%^]+)");
 
     // branch (anchor) names for PF may end with "/*"
@@ -242,13 +245,12 @@ void RuleSetDialog::applyChanges()
     fwopt->setStr("ipt_mangle_only_rulesets",
                   mangle_rulesets.join(" ").toAscii().constData());
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
-    init=true;
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=false;
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+    emit notify_changes_applied_sign();
+
 }
 
 void RuleSetDialog::discardChanges()

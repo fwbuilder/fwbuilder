@@ -32,15 +32,17 @@
 #include <QDialog>
 
 #include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 
 class newGroupDialog : public QDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
             
-
+    libfwbuilder::FWObjectDatabase *db;
+ 
  public:
-    newGroupDialog(QWidget *parent);
+    newGroupDialog(QWidget *parent, libfwbuilder::FWObjectDatabase *_db);
     ~newGroupDialog();
     
     Ui::newGroupDialog_q *m_dialog;

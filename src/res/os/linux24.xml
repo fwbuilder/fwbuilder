@@ -1,9 +1,12 @@
 <?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
-<FWBuilderResources version="3.1.0">
+<FWBuilderResources>
     <Target name="linux24">
       <description>Linux 2.4/2.6</description>
+      <status>active</status>
       <family>linux24</family>
       <dialog>linux24</dialog>
+      <interface_dialog>linux24</interface_dialog>
+      <cluster_dialog>basic</cluster_dialog>
 
       <options>
         <user_can_change_install_dir>true</user_can_change_install_dir>
@@ -103,7 +106,79 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
 
       <capabilities>
         <supports_routing>True</supports_routing>
+        <supports_subinterfaces>True</supports_subinterfaces>
+        <supports_cluster>True</supports_cluster>
       </capabilities>
+
+      <protocols>
+        <failover>
+          <string>vrrp,VRRP</string>
+          <string>heartbeat,heartbeat</string>
+          <string>openais,OpenAIS</string>
+          <string>none,None</string>
+        </failover>
+        <state_sync>
+          <string>conntrack,conntrack</string>
+        </state_sync>
+
+        <heartbeat>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <default_address>224.0.10.100</default_address>
+          <default_port>694</default_port>
+          <manage_addresses>False</manage_addresses>
+        </heartbeat>
+
+        <openais>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <default_address>226.94.1.1</default_address>
+          <default_port>5405</default_port>
+          <manage_addresses>False</manage_addresses>
+        </openais>
+
+        <conntrack>
+          <needs_master>False</needs_master>
+          <default_address>225.0.0.50</default_address>
+          <default_port>3780</default_port>
+          <manage_addresses>False</manage_addresses>
+        </conntrack>
+
+        <vrrp>
+          <needs_master>True</needs_master>
+          <no_ip_ok>False</no_ip_ok>
+          <manage_addresses>True</manage_addresses>
+        </vrrp>
+      </protocols>
+
+      <interfaces>
+        <cluster>
+          <string>vrrp,VRRP</string>
+          <string>heartbeat,heartbeat</string>
+        </cluster>
+        <firewall>
+          <string>ethernet,Ethernet</string>
+          <string>bridge,Bridge</string>
+          <string>bonding,Bonding</string>
+        </firewall>
+      </interfaces>
+
+      <subinterfaces>
+        <ethernet>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </ethernet>
+        <bridge>
+          <string>ethernet,Ethernet</string>
+          <string>unknown,Unknown</string>
+        </bridge>
+        <bonding>
+          <string>ethernet,Ethernet</string>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </bonding>
+      </subinterfaces>
+
 
       <tools>
         <RedHat>
@@ -116,6 +191,10 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/usr/bin/logger</path_logger>
           <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
         </RedHat>
         <Mandrake>
           <path_lsmod>/sbin/lsmod</path_lsmod>
@@ -127,6 +206,10 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/usr/bin/logger</path_logger>
           <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
         </Mandrake>
         <SuSE>
           <path_lsmod>/sbin/lsmod</path_lsmod>
@@ -138,6 +221,10 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/bin/logger</path_logger>
           <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
         </SuSE>
         <Debian>
           <path_lsmod>/sbin/lsmod</path_lsmod>
@@ -149,6 +236,10 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/usr/bin/logger</path_logger>
           <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
         </Debian>
         <Unknown>
           <path_lsmod>lsmod</path_lsmod>
@@ -156,10 +247,14 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_iptables>iptables</path_iptables>
           <path_ip6tables>ip6tables</path_ip6tables>
           <path_iptables_restore>iptables-restore</path_iptables_restore>
-          <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
+          <path_ip6tables_restore>ip6tables-restore</path_ip6tables_restore>
           <path_ip>ip</path_ip>
           <path_logger>logger</path_logger>
           <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>ifconfig</path_ifconfig>
+          <path_vconfig>vconfig</path_vconfig>
+          <path_brctl>brctl</path_brctl>
+          <path_ifenslave>ifenslave</path_ifenslave>
         </Unknown>
       </tools>
     </Target>

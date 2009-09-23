@@ -42,12 +42,6 @@ using namespace std;
 
 string OSConfigurator_freebsd::myPlatformName() { return "FreeBSD"; }
 
-string OSConfigurator_freebsd::getInterfaceVarName(FWObject *iface)
-{
-    return string("i_") + iface->getName();
-}
-
-
 void OSConfigurator_freebsd::processFirewallOptions() 
 {
     FWOptions* options=fw->getOptionsObject();
@@ -86,38 +80,10 @@ void OSConfigurator_freebsd::processFirewallOptions()
     }
 }
 
-void OSConfigurator_freebsd::addVirtualAddressForNAT(const Network*)
-{
-}
-
-void OSConfigurator_freebsd::addVirtualAddressForNAT(const Address *addr)
-{
-    if (virtual_addresses.empty() || 
-	find(virtual_addresses.begin(),virtual_addresses.end(),
-             *(addr->getAddressPtr())) == virtual_addresses.end()) 
-    {
-        FWObject *iaddr = findAddressFor(addr, fw );
-        if (iaddr!=NULL)
-        {
-            Address *iaddr_addr = Address::cast(iaddr);
-            assert(iaddr_addr!=NULL);
-            Interface *iface = Interface::cast(iaddr->getParent());
-            assert(iface!=NULL);
-
-            output << "add_addr " << addr->getAddressPtr()->toString() << " "
-                   << iaddr_addr->getNetmaskPtr()->toString() <<  " "
-                   << iface->getName() << endl;
-        
-            virtual_addresses.push_back(*(addr->getAddressPtr()));
-        } else
-            warning(_("Can not add virtual address ") +
-                    addr->getAddressPtr()->toString() );
-    }
-}
-
 int OSConfigurator_freebsd::prolog()
 {
     printPathForAllTools("freebsd");
+    printFunctions();
 
     processFirewallOptions();
 
@@ -156,44 +122,6 @@ void  OSConfigurator_freebsd::printPathForAllTools(const string &os)
     if (!s.empty()) path_logger=s;
     else            path_logger=os_data.getPathForTool(os,OSData::LOGGER);
 
-    output                                                     << endl;
-    output << "log() {"                                        << endl;
-    output << "  test -x \"$LOGGER\" && $LOGGER -p info \"$1\"" << endl;
-    output << "}"                                              << endl;
-    output                                                     << endl;
-
-
-
-    output << "add_addr() {" << endl;
-    output << "  addr=$1"    << endl;
-    output << "  nm=$2"      << endl;
-    output << "  dev=$3"     << endl;
-    output << "  ( ifconfig $dev | egrep -q \"inet +${addr} \" ) || " << endl;
-    output << "    { "       << endl;
-    output << "      echo \"$dev: $addr\"" << endl;
-    output << "      ifconfig $dev inet $addr netmask $nm alias" << endl; 
-    output << "    } "       << endl;
-    output << "}"            << endl;
-    output << endl;
-    output << endl;
-
-    if (options->getBool("dynAddr"))
-    {
-        output << "getaddr() {"                       << endl;
-        output << "  intf=$1"                         << endl;
-        output << "  varname=$2"                      << endl;
-        output << "  L=`ifconfig $1 | grep 'inet '`"  << endl;
-        output << "  if [ -z \"$L\" ]; then"          << endl;
-        output << "      L=\"inet 0.0.0.0/32\""       << endl;
-        output << "  fi"                              << endl;
-        output << "  set $L"                          << endl;
-        output << "  a=$2"                            << endl;
-        output << "  eval \"$varname=$a\""            << endl;
-        output << "}"                                 << endl;
-        output << endl;
-        output << endl;
-    }
-
     output << "IPF=\""    + path_ipf    + "\"\n";
     output << "IPNAT=\""  + path_ipnat  + "\"\n";
     output << "IPFW=\""   + path_ipfw   + "\"\n";
@@ -201,67 +129,5 @@ void  OSConfigurator_freebsd::printPathForAllTools(const string &os)
     output << "SYSCTL=\"" + path_sysctl + "\"\n";
     output << "LOGGER=\"" + path_logger + "\"\n";
     output << endl;
-
-    if (options->getBool("dynAddr"))
-    {
-/*
- * get addresses of dynamic interfaces
- */
-        FWObjectTypedChildIterator j=fw->findByType(Interface::TYPENAME);
-        for ( ; j!=j.end(); ++j ) 
-        {
-            Interface *iface=Interface::cast(*j);
-        
-            if ( iface->isDyn() )
-            {
-/* if interface name ends with '*', this is a wildcard interface. Do
- * not get its address at this time. 
- *
- * Do we support wildcard interfaces on *BSD at all ?
- */
-                if (iface->getName().find("*")==string::npos)
-                    output << "getaddr "
-                           << iface->getName()
-                           << "  "
-                           << getInterfaceVarName(iface)
-                           << endl;
-            }
-        }
-    }
-
-    output << endl;
 }
-
-void  OSConfigurator_freebsd::configureInterfaces()
-{
-    FWOptions* options=fw->getOptionsObject();
-    if ( options->getBool("configure_interfaces") ) 
-    {
-
-        output << endl;
-
-        FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
-        for ( ; i!=i.end(); ++i ) 
-        {
-            Interface *iface=dynamic_cast<Interface*>(*i);
-            assert(iface);
-
-            if (!iface->isRegular()) continue;
-
-            FWObjectTypedChildIterator j = iface->findByType(IPv4::TYPENAME);
-            for ( ; j!=j.end(); ++j ) 
-            {
-                Address *iaddr = Address::cast(*j);
-                output << "add_addr "
-                       << iaddr->getAddressPtr()->toString() << " "
-                       << iaddr->getNetmaskPtr()->toString() << " "
-                       << iface->getName() << endl;
-                virtual_addresses.push_back(*(iaddr->getAddressPtr()));
-            }
-        }
-        output << endl;
-    }
-}
-
-
 

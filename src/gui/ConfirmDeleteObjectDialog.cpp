@@ -101,7 +101,10 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
         QPixmapCache::insert( icn_file, pm0);
     }
 
-    mw->db()->findWhereObjectIsUsed(obj, mw->db(), resset);
+    FWObjectDatabase *db = obj->getRoot();
+    assert(db);
+
+    db->findWhereObjectIsUsed(obj, db, resset);
     FindWhereUsedWidget::humanizeSearchResults(resset);
 
     if (fwbdebug)

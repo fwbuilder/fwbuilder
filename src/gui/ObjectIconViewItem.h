@@ -38,32 +38,42 @@ namespace libfwbuilder {
     class FWObject;
 }
 
-class ObjectIconViewItem : public QListWidgetItem {
+class ObjectIconViewItem : public QListWidgetItem
+{
 
-    libfwbuilder::FWObject  *objptr;
-    QMap<QString, QString>   props;
-    int                      ID;  
+    libfwbuilder::FWObjectDatabase *db;
+    QMap<QString, QString> props;
+    int ID;  
     
  public:
 
-    ObjectIconViewItem(QListWidget *parent) : QListWidgetItem(parent) {
-        objptr=NULL;
-//        setDropEnabled(false);
+    ObjectIconViewItem(QListWidget *parent) : QListWidgetItem(parent)
+    {
+        db = NULL;
         ID=-1;
     }
 
     ObjectIconViewItem(QListWidget *parent, const QString &text, const QPixmap &icon ) : QListWidgetItem(parent) 
     {
-        objptr=NULL;
+        db = NULL;
         setText(text);
         setIcon(QIcon(icon));
-//        setDropEnabled(false);
         ID=-1;
     }
 
-    libfwbuilder::FWObject *getFWObject() { return mw->db()->getById(ID,true); }
+    libfwbuilder::FWObject *getFWObject()
+    {
+        if (ID > -1) return db->getById(ID, true);
+        else return NULL;
+    }
+    
     int getFWObjectID() {return ID; }
-    void setFWObject(libfwbuilder::FWObject *obj) {ID=obj->getId(); }
+
+    void setFWObject(libfwbuilder::FWObject *obj)
+    {
+        db = obj->getRoot();
+        ID = obj->getId();
+    }
 
     QString getProperty(const QString &name) { return props[name]; }
     void    setProperty(const QString &name,const QString &val) {

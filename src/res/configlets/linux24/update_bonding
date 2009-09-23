@@ -1,0 +1,100 @@
+## -*- mode: shell-script; -*- 
+##
+############ bonding ###########################################
+## cat /proc/net/bonding/bond0
+## Ethernet Channel Bonding Driver: v3.5.0 (November 4, 2008)
+##
+## Bonding Mode: load balancing (round-robin)
+## MII Status: up
+## MII Polling Interval (ms): 0
+## Up Delay (ms): 0
+## Down Delay (ms): 0
+##
+## Slave Interface: eth2
+## MII Status: up
+## Link Failure Count: 0
+## Permanent HW addr: 00:0c:29:f6:be:aa
+##
+## Slave Interface: eth3
+## MII Status: up
+## Link Failure Count: 0
+## Permanent HW addr: 00:0c:29:f6:be:b4
+##
+##
+
+missing_slave() {
+    slave=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $slave
+    intf=$1
+    bond_interface=$2
+    IFS=$oldIFS
+
+    test "$cmd" = "-d" && {
+      echo "# Delete bonding interface slave: $bond_interface $intf"
+      $FWBDEBUG $IFENSLAVE -d $bond_interface $intf
+    } || {
+      echo "# Add bonding interface slave: $bond_interface $intf"
+      $FWBDEBUG $IFCONFIG $bond_interface up
+      $FWBDEBUG $IFENSLAVE $bond_interface $intf
+    }
+}
+
+## update_bonding bond0 "mode=balance-alb miimon=50" "eth2 eth3"
+## Quotes are essential
+update_bonding() {
+    bond_interface=$1
+    module_parameters=$2
+    shift
+    shift
+
+    FWB_SLAVES=""
+    CURRENT_SLAVES=""
+
+    FWB_SLAVES=$(
+      for subint in $*; do
+        echo "${subint}@$bond_interface"
+      done | sort
+    )
+
+    # we can load the module and configure parameters at the same time as such:
+    # /sbin/modprobe bonding -obond1 mode=balance-alb miimon=50
+    # modprobe does not return error and terminates silently if the module is
+    # already loaded. It DOES NOT update module parameters though.
+    PROC_DIR="/proc/net/bonding/"
+    PROD_BOND_IFACE="${PROC_DIR}/$bond_interface"
+    test -f $PROD_BOND_IFACE || {
+        echo "# Installing bonding module for $bond_interface with parameters $module_parameters"
+        cmd="$MODPROBE bonding -o$bond_interface $module_parameters"
+        test -n "$FWBDEBUG" && echo "# $cmd"
+        $cmd || {
+            # we could not create bonding interface. Possible reason is that
+            # this is second (third) bonding interface which requires special
+            # configuration in /etc/modprobe.conf
+            cat <<EOF
+
+Could not create bonding interface $bond_interface
+If this is second bonding interface, then you need to
+add module parameters in the file /etc/modprobe.conf or
+/etc/modprobe.d/bond.conf
+EOF
+            echo "Installing bonding module failed. Bonding interface $bond_interface is not available."
+            # do not abort in test mode
+            test -z "$FWBDEBUG" && exit 1
+        }
+    }
+
+    CURRENT_SLAVES=$(
+        cat $PROD_BOND_IFACE | grep 'Slave Interface:' | \
+            while read a b slave; do
+              echo "${slave}@$bond_interface"
+            done | sort
+    )
+
+    diff_intf missing_slave "$FWB_SLAVES" "$CURRENT_SLAVES" "  "
+    diff_intf missing_slave "$CURRENT_SLAVES" "$FWB_SLAVES" "-d"
+}
+

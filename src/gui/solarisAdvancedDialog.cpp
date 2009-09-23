@@ -100,9 +100,9 @@ solarisAdvancedDialog::solarisAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(  m_dialog->solaris_path_ipnat,
                           fwopt,
                           "solaris_path_ipnat");
-
-
     data.loadAll();
+
+    m_dialog->tabWidget->setCurrentIndex(0);
 }
 
 /*
@@ -118,7 +118,7 @@ void solarisAdvancedDialog::accept()
 
     data.saveAll();
 
-    mw->updateLastModifiedTimestampForAllFirewalls(obj);
+//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

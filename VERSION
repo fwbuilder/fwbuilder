@@ -1,9 +1,10 @@
 #-*- mode: shell-script; tab-width: 4; -*-
-# $Id: VERSION,v 1.47 2007/07/21 23:44:19 vkurland Exp $
 
 FWB_MAJOR_VERSION=3
 FWB_MINOR_VERSION=1
 FWB_MICRO_VERSION=0
+
+# VERSION must be a string rather than $var because of the build scripts
 VERSION="3.1.0"
 SHORTVERSION="310"
 

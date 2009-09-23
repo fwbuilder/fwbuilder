@@ -1,7 +1,8 @@
 <?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
-<FWBuilderResources version="3.1.0">
+<FWBuilderResources>
     <Target name="ipcop_os">
       <description>IPCOP Firewall Appliance</description>
+      <status>active</status>
       <family>ipcop</family>
       <dialog>ipcop</dialog>
 
@@ -105,6 +106,32 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
         <supports_routing>True</supports_routing>
       </capabilities>
 
+      <interfaces>
+        <cluster>
+        </cluster>
+        <firewall>
+          <string>ethernet,Ethernet</string>
+          <string>bridge,Bridge</string>
+          <string>bonding,Bonding</string>
+        </firewall>
+      </interfaces>
+
+      <subinterfaces>
+        <ethernet>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </ethernet>
+        <bridge>
+          <string>ethernet,Ethernet</string>
+          <string>unknown,Unknown</string>
+        </bridge>
+        <bonding>
+          <string>ethernet,Ethernet</string>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </bonding>
+      </subinterfaces>
+
       <tools>
         <ipcop>
           <path_lsmod>/sbin/lsmod</path_lsmod>
@@ -116,6 +143,10 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <path_ip>/sbin/ip</path_ip>
           <path_logger>/usr/bin/logger</path_logger>
           <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
         </ipcop>
       </tools>
     </Target>

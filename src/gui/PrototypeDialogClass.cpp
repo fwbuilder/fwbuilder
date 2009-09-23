@@ -97,7 +97,7 @@ void PrototypeDialog::applyChanges()
     obj->setComment( string(comment->text().utf8()) );
 
 
-    mw->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     init=true;
 
@@ -107,6 +107,6 @@ void PrototypeDialog::applyChanges()
 
     init=false;
 
-    apply->setEnabled( false );
+    emit notify_changes_applied_sign();
 }
 

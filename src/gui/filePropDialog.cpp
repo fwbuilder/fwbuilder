@@ -32,6 +32,7 @@
 
 #include "filePropDialog.h"
 #include "FWWindow.h"
+#include "ProjectPanel.h"
 #include "PrintingProgressDialog.h"
 #include "printerStream.h"
 
@@ -70,7 +71,7 @@ filePropDialog::filePropDialog(QWidget *parent, RCS *rcs) :
     if (rcs->isRO()) m_dialog->fileRO->setText( tr("Opened read-only") );
     else             m_dialog->fileRO->setText("");
 
-    time_t lm = mw->db()->getTimeLastModified();
+    time_t lm = mw->activeProject()->db()->getTimeLastModified();
     QString s = ctime( &lm );
     s.truncate( s.length()-1 );   // chop newline
 

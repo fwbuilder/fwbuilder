@@ -29,10 +29,15 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
+#include <fwbuilder/Cluster.h>
+#include <fwbuilder/Firewall.h>
 #include <fwbuilder/RuleSet.h>
 #include <fwbuilder/Policy.h>
 #include <fwbuilder/NAT.h>
 #include <fwbuilder/Routing.h>
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleElement.h"
 
 #include "FWBSettings.h"
 #include "FWBTree.h"
@@ -44,7 +49,8 @@
 #include "RCS.h"
 #include "RuleSetView.h"
 #include "findDialog.h"
-#include "listOfLibraries.h"
+#include "events.h"
+#include "ObjectTreeView.h"
 
 #include <QMdiSubWindow>
 #include <QMdiArea>
@@ -61,6 +67,7 @@ void ProjectPanel::initMain(FWWindow *main)
 {
     mainW = main;
     closing = false ;
+    mdiWindow = NULL;
 
     // mdiWindow changes state several times right after it is opened,
     // but we call saveState to store splitter position and its geometry
@@ -89,14 +96,14 @@ void ProjectPanel::initMain(FWWindow *main)
     else m_panel->oi->hide();
     
     findObjectWidget = new FindObjectWidget(
-        m_panel->auxiliaryPanel, "findObjectWidget" );
+        m_panel->auxiliaryPanel, this, "findObjectWidget");
     findObjectWidget->setFocusPolicy( Qt::NoFocus );
     m_panel->auxiliaryPanel->layout()->addWidget( findObjectWidget );
     connect( findObjectWidget, SIGNAL( close() ),
              this, SLOT( closeAuxiliaryPanel() ) );
 
     findWhereUsedWidget = new FindWhereUsedWidget(
-        m_panel->auxiliaryPanel, "findWhereUsedWidget");
+        m_panel->auxiliaryPanel, this, "findWhereUsedWidget");
     findWhereUsedWidget->setFocusPolicy( Qt::NoFocus );
     m_panel->auxiliaryPanel->layout()->addWidget( findWhereUsedWidget );
     findWhereUsedWidget->hide();
@@ -126,7 +133,6 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     QWidget(parent), // , Qt::WindowSystemMenuHint|Qt::Window),
     mainW(0),
     rcs(0),
-    addOnLibs(new listOfLibraries()), 
     objectTreeFormat(new FWBTree),
     systemFile(true),
     safeMode(false),
@@ -185,10 +191,8 @@ void ProjectPanel::info(FWObject *obj, bool forced)
 
         shownInInfo = obj;
 
-        m_panel->oi->repaint();
+        m_panel->oi->update();
     }
-
-//    unselectRules();
 }
 
 QString ProjectPanel::getPageTitle()
@@ -203,11 +207,6 @@ QString ProjectPanel::getPageTitle()
         return caption;
     }
     else return default_caption;
-}
-
-void ProjectPanel::setStartupFileName(const QString &fn) 
-{ 
-    startupFileName = fn; 
 }
 
 RuleElement* ProjectPanel::getRE(Rule* r, int col )
@@ -309,61 +308,6 @@ void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
     getCurrentRuleSetView()->selectRE( obj );    
 }
 
-/*
- * Ensure rule is visible and highlight given column
- */
-void ProjectPanel::ensureRuleIsVisible(Rule *rule, int col)
-{
-    FWObject *p = rule;
-
-    while (p && RuleSet::cast(p)==NULL ) p=p->getParent();
-    if (p==NULL) return;  // something is broken
-
-    RuleSetView *rsv = ruleSetViews[p];
-
-    if (rsv==NULL)
-    {
-        if (fwbdebug)
-            qDebug("ProjectPanel::ensureRuleIsVisible : orphan rule set found");
-        return;
-    }
-
-    m_panel->ruleSets->setCurrentIndex(m_panel->ruleSets->indexOf(rsv));
-    rsv->selectRE( rule->getPosition(), col );
-}
-
-void ProjectPanel::updateRuleSetViewSelection()
-{
-    RuleSetView* rv = dynamic_cast<RuleSetView*>(
-        m_panel->ruleSets->currentWidget());
-    if (rv!=NULL)
-    {
-        rv->repaintSelection();
-    }
-}
-
-void ProjectPanel::updateRuleSetView()
-{
-    RuleSetView* rv=dynamic_cast<RuleSetView*>(
-        m_panel->ruleSets->currentWidget());
-    if (rv!=NULL) rv->updateAll();
-}
-
-void ProjectPanel::updateRuleOptions()
-{
-    RuleSetView* rv = dynamic_cast<RuleSetView*>(
-        m_panel->ruleSets->currentWidget());
-    if (rv!=NULL) rv->updateCurrentCell();
-}
-
-void ProjectPanel::updateTreeViewItemOrder()
-{
-    //this is for case when tree becomes to be resorted
-    //if we do not reopen parent item, some of child
-    //items mix incorrectly (maybe bug of QT?)
-    m_panel->om->reopenCurrentItemParent();
-}
-
 RuleSetView * ProjectPanel::getCurrentRuleSetView () 
 {
     return dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget ());
@@ -383,11 +327,12 @@ void ProjectPanel::reopenFirewall()
     if (ruleSetRedrawPending) return;
 
     int currentPage = m_panel->ruleSets->currentIndex();
-    int cur_row = 0;
-    int cur_col = 0;
+
+    SelectionMemento memento;
+
     RuleSetView* rv = dynamic_cast<RuleSetView*>(
         m_panel->ruleSets->currentWidget());
-    if (rv) rv->saveCurrentRowColumn(cur_row, cur_col);
+    if (rv) rv->saveCurrentRowColumn(memento);
 
     last_modified = db()->getTimeLastModified();
     if (fwbdebug)
@@ -429,17 +374,7 @@ void ProjectPanel::reopenFirewall()
                "dirty=%d last_modified=%s",
                db()->isDirty(), ctime(&last_modified));
     
-    Policy *rule = Policy::cast(visibleRuleSet);
-    if (rule!=NULL)
-        m_panel->ruleSets->addWidget( new PolicyView(this, rule,NULL) );
-
-    NAT *nat  = NAT::cast(visibleRuleSet);
-    if (nat!=NULL)
-        m_panel->ruleSets->addWidget( new NATView(this, nat,NULL) );
-
-    Routing *r = Routing::cast(visibleRuleSet);
-    if (r!=NULL)
-        m_panel->ruleSets->addWidget( new RoutingView(this, r,NULL) );
+    m_panel->ruleSets->addWidget(RuleSetView::getRuleSetViewByType(this, visibleRuleSet,NULL));
 
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
@@ -451,7 +386,7 @@ void ProjectPanel::reopenFirewall()
     
     m_panel->ruleSets->setCurrentIndex( currentPage );
     rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
-    rv->restoreCurrentRowColumn(cur_row, cur_col);
+    rv->restoreCurrentRowColumn(memento);
     
     sb->clearMessage();
 
@@ -611,6 +546,10 @@ FWObject* ProjectPanel::getCurrentLib()
     return m_panel->om->getCurrentLib();
 }
 
+void ProjectPanel::updateObjectInTree(FWObject *obj, bool subtree)
+{
+    m_panel->om->updateObjectInTree(obj, subtree);
+}
 
 void ProjectPanel::loadDataFromFw(Firewall *fw)
 {
@@ -655,14 +594,6 @@ void ProjectPanel::moveObject(const QString &targetLibName,
     m_panel->om->moveObject(targetLibName, obj);
 }
 
-void ProjectPanel::autorename(FWObject *obj,
-                              const std::string &objtype,
-                              const std::string &namesuffix)
-{
-    m_panel->om->autorename(obj, objtype, namesuffix);
-}
-
-
 void ProjectPanel::updateLibColor(FWObject *lib)
 {
     m_panel->om->updateLibColor(lib);
@@ -689,27 +620,6 @@ void ProjectPanel::updateObjName(FWObject *obj,
 }
 
 
-void ProjectPanel::updateLastModifiedTimestampForOneFirewall(FWObject *o)
-{
-    m_panel->om->updateLastModifiedTimestampForOneFirewall(o);
-}
-
-void ProjectPanel::updateLastModifiedTimestampForAllFirewalls(FWObject *o)
-{
-    m_panel->om->updateLastModifiedTimestampForAllFirewalls(o);
-}
-
-void ProjectPanel::updateLastInstalledTimestamp(FWObject *o)
-{
-    m_panel->om->updateLastInstalledTimestamp(o);
-}
-
-void ProjectPanel::updateLastCompiledTimestamp(FWObject *o)
-{
-    m_panel->om->updateLastCompiledTimestamp(o);
-}
-
-
 FWObject* ProjectPanel::pasteTo(FWObject *target, FWObject *obj)
 {
     return m_panel->om->pasteTo(target, obj);
@@ -718,6 +628,15 @@ FWObject* ProjectPanel::pasteTo(FWObject *target, FWObject *obj)
 void ProjectPanel::delObj(FWObject *obj,bool openobj)
 {
     m_panel->om->delObj(obj, openobj);
+}
+
+/*
+ * Move object @obj from its current position in the tree to the @target
+ * If successfull, returns pointer to @obj
+ */
+void ProjectPanel::relocateTo(FWObject *target, FWObject *obj)
+{
+    m_panel->om->relocateTo(target, obj);
 }
 
 ObjectTreeView* ProjectPanel::getCurrentObjectTree()
@@ -742,7 +661,7 @@ bool ProjectPanel::editObject(FWObject *obj)
 
 void ProjectPanel::findAllFirewalls (std::list<Firewall *> &fws)
 {
-    m_panel->om->findAllFirewalls (fws);
+    m_panel->om->findAllFirewalls(fws);
 }
 
 FWObject* ProjectPanel::duplicateObject(FWObject *target,
@@ -771,11 +690,6 @@ void ProjectPanel::unselect()
 void ProjectPanel::info()
 {
     info(m_panel->om->getSelectedObject(), true);
-}
-
-void ProjectPanel::setManipulatorFocus()
-{
-    m_panel->om->setFocus();
 }
 
 void ProjectPanel::clearManipulatorFocus()
@@ -990,39 +904,6 @@ void ProjectPanel::pasteRuleBelow()
     getCurrentRuleSetView()->pasteRuleBelow();
 }
 
-void ProjectPanel::startupLoad()
-{
-    if (fwbdebug)
-        qDebug("ProjectPanel::startupLoad: startup: load everything.");
-
-    loadStandardObjects();
-
-    QString id = st->getStr("UI/visibleFirewall");
-    int i_id = FWObjectDatabase::getIntId(id.toLatin1().constData());
-    FWObject *show_fw=NULL;
-    if ( !id.isEmpty() ) show_fw = db()->getById(i_id, true);
-
-    id = st->getStr("UI/visibleObject");
-    i_id = FWObjectDatabase::getIntId(id.toLatin1().constData());
-    FWObject *show_obj=NULL;
-    if ( !id.isEmpty() ) show_obj = db()->getById(i_id, true);
-    if ( !safeMode )
-    {
-        if (show_fw)
-        {
-            if (fwbdebug)
-                qDebug("open firewall %s",show_fw->getName().c_str());
-        }
-
-        if (show_obj)
-        {
-            if (fwbdebug)
-                qDebug("open object %s",show_obj->getName().c_str());
-        }
-    }
-}
-
-
 bool ProjectPanel::editingLibrary()
 {
     return (rcs!=NULL &&
@@ -1095,7 +976,7 @@ void ProjectPanel::compile()
 void ProjectPanel::compile(set<Firewall*> vf)
 {
     if (isEditorVisible() &&
-        !requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
+        !requestEditorOwnership(NULL, NULL, ObjectEditor::optNone, true))
         return;
 
     fileSave();
@@ -1110,6 +991,16 @@ void ProjectPanel::install(set<Firewall*> vf)
 void ProjectPanel::install()
 {
     mainW->install();
+}
+
+void ProjectPanel::transferfw(set<Firewall*> vf)
+{
+    mainW->transferfw(vf);
+}
+
+void ProjectPanel::transferfw()
+{
+    mainW->transferfw();
 }
 
 void ProjectPanel::rollBackSelectionSameWidget()
@@ -1369,14 +1260,12 @@ ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
 {
     cln->mainW = mainW;
     cln->rcs = rcs;
-    cln->addOnLibs = addOnLibs;
     //cln->objectTreeFormat = objectTreeFormat;
     cln->systemFile = systemFile;
     cln->safeMode = safeMode;
     cln->editingStandardLib = editingStandardLib;
     cln->editingTemplateLib = editingTemplateLib;
     cln->ruleSetRedrawPending = ruleSetRedrawPending;
-    cln->startupFileName = startupFileName;
     //cln->objdb = objdb;
     cln->editorOwner = editorOwner;
     cln->oe = oe;
@@ -1397,3 +1286,54 @@ ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
     cln->copySet = copySet;
     return cln;
 }
+
+void ProjectPanel::updateLastModifiedTimestampForAllFirewalls(FWObject *obj)
+{
+    if (fwbdebug)
+        qDebug("ProjectPanel::updateLastModifiedTimestampForAllFirewalls");
+
+    if (obj==NULL) return;
+
+    QStatusBar *sb = mw->statusBar();
+    sb->showMessage( tr("Searching for firewalls affected by the change...") );
+
+    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+
+    QApplication::setOverrideCursor(QCursor( Qt::WaitCursor));
+
+    list<Firewall *> fws = m_panel->om->findFirewallsForObject(obj);
+    if (fws.size())
+    {
+        Firewall *f;
+        for (list<Firewall *>::iterator i=fws.begin();
+                i!=fws.end();
+                ++i)
+        {
+            f = *i;
+            if (f==obj) continue;
+
+            f->updateLastModifiedTimestamp();
+            QCoreApplication::postEvent(
+                mw, new updateObjectInTreeEvent(getFileName(), f->getId()));
+
+            list<Cluster*> clusters = m_panel->om->findClustersUsingFirewall(f);
+            if (clusters.size() != 0)
+            {
+                list<Cluster*>::iterator it;
+                for (it=clusters.begin(); it!=clusters.end(); ++it)
+                {
+                    Cluster *cl = *it;
+                    cl->updateLastModifiedTimestamp();
+                    QCoreApplication::postEvent(
+                        mw, new updateObjectInTreeEvent(getFileName(), cl->getId()));
+                }
+            }
+        }
+
+        info();
+    }
+    QApplication::restoreOverrideCursor();
+    sb->clearMessage();
+    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+}
+

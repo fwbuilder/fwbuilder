@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="10" lastModified="1231213988" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="12" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id16325X21455"/>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
+    <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
       <ObjectGroup id="stdid01_1_og_ats_1" name="Address Tables" comment="" ro="False">
         <AddressTable id="id4389EE9018346" filename="addr-table-1.tbl" run_time="False" name="addr-table-1" comment="" ro="False"/>
@@ -118,8 +107,9 @@
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts" comment="" ro="False">
         <Host id="id3F8F9622" name="DMZhost1" comment="" ro="False">
-          <Interface id="id3F8F9624" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3F8F9624" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3F8F9625" name="DMZhost:interface1(ip)" comment="" ro="False" address="192.0.2.20" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.0.2.20">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -135,8 +125,9 @@
           </HostOptions>
         </Host>
         <Host id="id3F8F9692" name="DMZhost2" comment="" ro="False">
-          <Interface id="id3F8F9694" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3F8F9694" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3F8F9695" name="DMZhost2:interface1(ip)" comment="" ro="False" address="192.0.2.21" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -148,8 +139,9 @@
           </HostOptions>
         </Host>
         <Host id="id3F8F9698" name="DMZhost3" comment="" ro="False">
-          <Interface id="id3F8F969A" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3F8F969A" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3F8F969B" name="DMZhost3:interface1(ip)" comment="" ro="False" address="192.0.2.23" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -161,16 +153,18 @@
           </HostOptions>
         </Host>
         <Host id="id3B64FFAC" name="broadcast" comment="broadcast on internal subnet" ro="False">
-          <Interface id="id3B64FFAC-i" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3B64FFAC-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B64FFAC-i-ipv4" name="address" comment="" ro="False" address="192.168.1.255" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
           </HostOptions>
         </Host>
         <Host id="id3FA34F45" name="dest nat 1" comment="" ro="False">
-          <Interface id="id3FA34F47" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34F47" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34F48" name="dest nat 1:interface1(ip)" comment="" ro="False" address="209.165.201.11" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -182,8 +176,9 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34F4B" name="dest nat 2" comment="" ro="False">
-          <Interface id="id3FA34F4D" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34F4D" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34F4E" name="dest nat 1:interface1(ip)" comment="" ro="False" address="209.165.200.225" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="209.165.201.11">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -199,8 +194,9 @@
           </HostOptions>
         </Host>
         <Host id="id3AFC0F70" name="fw2-eth1" comment="this host has the same IP address as firewall1 and firewall2" ro="False">
-          <Interface id="id3AFC0F70-i" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFC0F70-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFC0F70-i-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="22.22.22.22">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -215,8 +211,9 @@
           </HostOptions>
         </Host>
         <Host id="id3D42052D" name="global-dmz" comment="global address on DMZ for firewall8" ro="False">
-          <Interface id="id3D42052D-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D42052D-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D42052D-i-1-addr" name="address" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.2.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -232,8 +229,9 @@
           </HostOptions>
         </Host>
         <Host id="id3D42051B" name="global-ext-1" comment="external global address for firewall8" ro="False">
-          <Interface id="id3D42051B-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D42051B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D42051B-i-1-addr" name="address" comment="" ro="False" address="10.50.70.21" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="10.50.70.21">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -249,8 +247,9 @@
           </HostOptions>
         </Host>
         <Host id="id3D420525" name="global-ext-2" comment="" ro="False">
-          <Interface id="id3D420525-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D420525-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D420525-i-1-addr" name="address" comment="" ro="False" address="10.50.70.22" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="10.50.70.22">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -266,8 +265,9 @@
           </HostOptions>
         </Host>
         <Host id="id3D42094E" name="global-ext-3" comment="" ro="False">
-          <Interface id="id3D42094E-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D42094E-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D42094E-i-1-addr" name="address" comment="" ro="False" address="10.50.70.23" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="10.50.70.23">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -283,8 +283,9 @@
           </HostOptions>
         </Host>
         <Host id="id3D436EA6" name="global-int" comment="" ro="False">
-          <Interface id="id3D436EA6-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D436EA6-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D436EA6-i-1-addr" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -300,8 +301,9 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34FCB" name="h1" comment="" ro="False">
-          <Interface id="id3FA34FCD" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34FCD" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34FCE" name="h1:interface1(ip)" comment="" ro="False" address="10.1.2.27" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -313,8 +315,9 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34D2F" name="h192.0.2.20" comment="" ro="False">
-          <Interface id="id3FA34D30" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34D30" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34D31" name="DMZhost:interface1(ip)" comment="" ro="False" address="192.0.2.20" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.0.2.20">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -330,8 +333,9 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34D37" name="h192.0.20.21" comment="" ro="False">
-          <Interface id="id3FA34D38" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34D38" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34D39" name="DMZhost2:interface1(ip)" comment="" ro="False" address="192.0.2.21" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.0.2.21">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -347,8 +351,9 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A53" name="h192.168.1.11" comment="" ro="False">
-          <Interface id="id3CD87A53-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A53-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A53-i-1-addr" name="address" comment="" ro="False" address="192.168.1.11" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.11">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -364,8 +369,9 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A5E" name="h192.168.1.12" comment="" ro="False">
-          <Interface id="id3CD87A5E-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A5E-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A5E-i-1-addr" name="address" comment="" ro="False" address="192.168.1.12" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.12">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -381,8 +387,9 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A6D" name="h192.168.1.13" comment="" ro="False">
-          <Interface id="id3CD87A6D-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A6D-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A6D-i-1-addr" name="address" comment="" ro="False" address="192.168.1.13" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.13">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -398,8 +405,9 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A7C" name="h192.168.1.14" comment="" ro="False">
-          <Interface id="id3CD87A7C-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A7C-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A7C-i-1-addr" name="address" comment="" ro="False" address="192.168.1.14" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.14">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -415,8 +423,9 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A8B" name="h192.168.1.15" comment="" ro="False">
-          <Interface id="id3CD87A8B-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A8B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A8B-i-1-addr" name="address" comment="" ro="False" address="192.168.1.15" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.15">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -446,9 +455,10 @@
           </HostOptions>
         </Host>
         <Host id="id3BF1B3E1" name="host-with_mac" comment="" ro="False">
-          <Interface id="id3BF1B3E2" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF1B3E2" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF1B3E2-ipv4" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.0"/>
             <physAddress id="id3BF1B3E2-pa" address="00:10:4b:de:e9:6f" name="unknown(MAC)" comment="" ro="False"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -460,9 +470,10 @@
           </HostOptions>
         </Host>
         <Host id="id3BF1B3E7" name="host-with_mac-2" comment="" ro="False">
-          <Interface id="id3BF1B3E8" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF1B3E8" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF1B3E8-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress id="id3BF1B3E8-pa" address="00:10:4b:de:e9:6f" name="unknown(MAC)" comment="" ro="False"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -477,8 +488,9 @@
           </HostOptions>
         </Host>
         <Host id="host-hostA" name="hostA" comment="" ro="False">
-          <Interface id="host-hostA-i" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="hostA:eth0" comment="" ro="False">
+          <Interface id="host-hostA-i" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="hostA:eth0" comment="" ro="False">
             <IPv4 id="host-hostA-i-ipv4" name="hostA:eth0" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -493,8 +505,9 @@
           </HostOptions>
         </Host>
         <Host id="id3B3D5A3B" name="hostA-2" comment="" ro="False">
-          <Interface id="id3B3D5A3B-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3B3D5A3B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3B3D5A3B-i-1-addr" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -509,8 +522,9 @@
           </HostOptions>
         </Host>
         <Host id="id3AFADBF9" name="hostA-NAT" comment="translated address for hostA" ro="False">
-          <Interface id="id3AFADBF9-i" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFADBF9-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFADBF9-i-ipv4" name="address" comment="" ro="False" address="22.22.22.23" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -522,8 +536,9 @@
           </HostOptions>
         </Host>
         <Host id="id3D1BFABC" name="hostA-NAT-DMZ" comment="" ro="False">
-          <Interface id="id3D1BFABC-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D1BFABC-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D1BFABC-i-1-addr" name="address" comment="" ro="False" address="192.168.2.23" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.2.23">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -539,8 +554,9 @@
           </HostOptions>
         </Host>
         <Host id="host-hostB" name="hostB" comment="" ro="False">
-          <Interface id="host-hostB-i" bridgeport="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="hostB:eth0" comment="" ro="False">
+          <Interface id="host-hostB-i" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="hostB:eth0" comment="" ro="False">
             <IPv4 id="host-hostB-i-ipv4" name="hostB:eth0" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.20">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -552,24 +568,27 @@
           </HostOptions>
         </Host>
         <Host id="id3BD6736B" name="hostB-NAT" comment="" ro="False">
-          <Interface id="id3BD6736B-i" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BD6736B-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BD6736B-i-ipv4" name="address" comment="" ro="False" address="22.22.23.24" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
           </HostOptions>
         </Host>
         <Host id="id3AFC191C" name="hostF-int" comment="the same address as internal iface of firewall1" ro="False">
-          <Interface id="id3AFC191C-i" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFC191C-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFC191C-i-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
           </HostOptions>
         </Host>
         <Host id="id3FA34EFB" name="nat1" comment="" ro="False">
-          <Interface id="id3FA34EFD" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34EFD" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34EFE" name="nat1:interface1(ip)" comment="" ro="False" address="209.165.202.129" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -581,8 +600,9 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34F01" name="nat2" comment="" ro="False">
-          <Interface id="id3FA34F03" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34F03" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34F04" name="nat1:interface1(ip)" comment="" ro="False" address="209.165.202.130" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="209.165.202.129">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -598,8 +618,9 @@
           </HostOptions>
         </Host>
         <Host id="id3B19C5EB" name="outside-host-1" comment="some host outside our network" ro="False">
-          <Interface id="id3B19C5EB-i" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3B19C5EB-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B19C5EB-i-ipv4" name="address" comment="" ro="False" address="200.200.200.200" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="200.200.200.200">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -614,8 +635,9 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34055" name="outside-host-2" comment="some host outside our network" ro="False">
-          <Interface id="id3FA34056" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3FA34056" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3FA34057" name="address" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="200.200.200.200">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -630,8 +652,9 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34B05" name="outside-host-3" comment="some host outside our network" ro="False">
-          <Interface id="id3FA34B06" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3FA34B06" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3FA34B07" name="address" comment="" ro="False" address="200.200.200.201" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="200.200.200.200">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -646,8 +669,9 @@
           </HostOptions>
         </Host>
         <Host id="host-secondary1-com" name="secondary1.com" comment="" ro="False">
-          <Interface id="host-secondary1-com-i" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="host-secondary1-com-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-secondary1-com-i-ipv4" name="address" comment="" ro="False" address="211.11.11.11" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="211.11.11.11">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -659,8 +683,9 @@
           </HostOptions>
         </Host>
         <Host id="host-secondary2-com" name="secondary2.com" comment="" ro="False">
-          <Interface id="host-secondary2-com-i" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="host-secondary2-com-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-secondary2-com-i-ipv4" name="address" comment="" ro="False" address="211.22.22.22" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="211.22.22.22">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -672,8 +697,9 @@
           </HostOptions>
         </Host>
         <Host id="id3D1966D8" name="vk" comment="" ro="False">
-          <Interface id="id3D1966D8-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D1966D8-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D1966D8-i-1-addr" name="address" comment="" ro="False" address="10.3.14.30" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="10.3.14.30">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -689,8 +715,9 @@
           </HostOptions>
         </Host>
         <Host id="id3D420521" name="websrv" comment="" ro="False">
-          <Interface id="id3D420521-i" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D420521-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D420521-i-1-addr" name="address" comment="" ro="False" address="192.168.2.100" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.2.100">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -706,9 +733,10 @@
           </HostOptions>
         </Host>
         <Host id="id3BF23930" name="z-host" comment="test" ro="False">
-          <Interface id="id3BF23931" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF23931" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF23931-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress id="id3BF23931-pa" address="00:a0:24:53:06:8c" name="unknown(MAC)" comment="" ro="False"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -723,8 +751,9 @@
           </HostOptions>
         </Host>
         <Host id="id47B7C6CD21818" name="testhost50" comment="This object represents a PC with a single network interface" ro="False">
-          <Interface id="id47B7C6CF21818" bridgeport="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <Interface id="id47B7C6CF21818" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id47B7C6D021818" name="testhost50:eth0:ip" comment="" ro="False" address="10.3.14.50" netmask="255.255.255.0"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1743,14 +1772,17 @@
             <RoutingRuleOptions/>
           </RoutingRule>
         </Routing>
-        <Interface id="if-FW-firewall2-eth1" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="if-FW-firewall2-eth1" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth1-ipv4" name="a1" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="if-FW-firewall2-eth0" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="if-FW-firewall2-eth0" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth0-ipv4" name="a0" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D19631F" bridgeport="False" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id3D19631F" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id3D19631F-ipv4" name="a2" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -2459,14 +2491,17 @@
           </PolicyRule>
         </Policy>
         <Routing id="id3AF5AA0A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3AF5AA96" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3AF5AA96" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5AA96-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AF5AA99" bridgeport="False" dyn="True" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3AF5AA99" dyn="True" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3AF5AA99-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0B4BC8" bridgeport="False" dyn="False" label="dmz" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0B4BC8" dyn="False" label="dmz" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0B4BC8-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -2508,6 +2543,7 @@
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="pass_all_out">False</Option>
+          <Option name="pix_acl_no_clear">True</Option>
           <Option name="pix_add_clear_statements">False</Option>
           <Option name="pix_assume_fw_part_of_any">False</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -3367,14 +3403,17 @@
           </PolicyRule>
         </Policy>
         <Routing id="id3DB0F914-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3DB0FA5B" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id3DB0FA5B" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id3DB0FA5C" name="a1" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DB0FA85" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id3DB0FA85" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id3DB0FA86" name="a0" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DB0FAA3" bridgeport="False" dyn="False" label="dmz" mgmt="False" network_zone="id3F93531C" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id3DB0FAA3" dyn="False" label="dmz" mgmt="False" network_zone="id3F93531C" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id3DB0FAA4" name="a2" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -3786,15 +3825,18 @@
           </PolicyRule>
         </Policy>
         <Routing id="id3DF45858-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3DF458DC" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3DF458DC" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3DF458DD" name="firewall11:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
           <IPv4 id="id414419C1" name="firewall11:eth0:ip-1" comment="" ro="False" address="10.5.80.20" netmask="255.255.240.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DF458DF" bridgeport="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3DF458DF" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3DF458E0" name="firewall11:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DF458E2" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3DF458E2" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3DF458E3" name="firewall11:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.20">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -3955,7 +3997,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3F8F9590" host_OS="pix_os" lastCompiled="1145688317" lastInstalled="0" lastModified="0" platform="pix" version="6.3" name="firewall12" comment="this firewall has DMZ using routable address&#10;" ro="False">
+      <Firewall id="id3F8F9590" host_OS="pix_os" lastCompiled="1145688317" lastInstalled="0" lastModified="1247498770" platform="pix" version="6.3" name="firewall12" comment="this firewall has DMZ using routable address&#10;" ro="False">
         <NAT id="id3F8F9591" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3F8F9592" disabled="False" position="0" comment="">
             <OSrc neg="False">
@@ -4055,7 +4097,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3F8F95CD" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3F8F95CD" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="this comment&#10;consists of&#10;3 lines of text">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4101,12 +4143,16 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3F8F9590-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3F8F95E1" bridgeport="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False"/>
-        <Interface id="id3F8F95E3" bridgeport="False" dyn="False" label="inside" network_zone="id3D385DEC" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
-          <IPv4 id="id3F8F95E4" name="inside" comment="" ro="False" address="10.3.14.20" netmask="255.255.255.0"/>
+        <Interface id="id3F8F95E1" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3F8F95E6" bridgeport="False" dyn="False" label="dmz50" mgmt="False" network_zone="id3F8F97BB" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id3F8F95E3" dyn="False" label="inside" network_zone="id3D385DEC" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+          <IPv4 id="id3F8F95E4" name="inside" comment="" ro="False" address="10.3.14.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id3F8F95E6" dyn="False" label="dmz50" mgmt="False" network_zone="id3F8F97BB" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id3F8F95E7" name="dmz" comment="suppose this is routable address ..." ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.0.2.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -4481,11 +4527,13 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3FA349A1-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3FA34A02" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3FA34A02" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3FA34A03" name="address" comment="" ro="False" address="209.165.202.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3FA34A08" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3FA34EFA" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3FA34A08" dyn="False" label="inside" mgmt="True" network_zone="id3FA34EFA" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3FA34A09" name="address" comment="" ro="False" address="10.1.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="10.1.2.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -4724,11 +4772,13 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3FA74E98-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3FA74F22" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3FA74F22" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3FA74F23" name="address" comment="" ro="False" address="209.165.202.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3FA74F25" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3FA34EFA" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3FA74F25" dyn="False" label="inside" mgmt="True" network_zone="id3FA34EFA" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3FA74F26" name="address" comment="" ro="False" address="10.1.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="10.1.2.1">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -5618,14 +5668,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3AFB66C6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3AFB6703" bridgeport="False" dyn="False" label="" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3AFB6703" dyn="False" label="" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AFB6703-ipv4" name="firewall2:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AFB6706" bridgeport="False" dyn="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3AFB6706" dyn="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3AFB6706-ipv4" name="firewall2:eth1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0221F1" bridgeport="False" dyn="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0221F1" dyn="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0221F1-ipv4" name="firewall2:eth2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -6018,14 +6071,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3D6A92A9-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3D6A940A" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3D6A940A" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3D6A940B" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D6A940D" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3D6A940D" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3D6A940E" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D6A9422" bridgeport="False" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3D6A9422" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3D6A9423" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -6349,17 +6405,21 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3B0C6380-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3B0C63DF" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3B0C63DF" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3B0C63DF-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0C63E1" bridgeport="False" dyn="False" label="dmz1" mgmt="False" network_zone="id3D385DED" security_level="40" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3B0C63E1" dyn="False" label="dmz1" mgmt="False" network_zone="id3D385DED" security_level="40" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3B0C63E1-ipv4" name="address" comment="" ro="False" address="10.2.2.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0C63F3" bridgeport="False" dyn="False" label="dmz2" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0C63F3" dyn="False" label="dmz2" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0C63F3-ipv4" name="fw4:dmz2" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3CD88A77" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+        <Interface id="id3CD88A77" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3CD88A77-ipv4" name="address" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -6589,14 +6649,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3C698F1D-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3C699013" bridgeport="False" dyn="False" label="inside" mgmt="False" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3C699013" dyn="False" label="inside" mgmt="False" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3C699013-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C69901D" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3C69901D" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3C69901D-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C699030" bridgeport="False" dyn="False" label="dmz" mgmt="False" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3C699030" dyn="False" label="dmz" mgmt="False" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3C699030-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.2.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -6829,11 +6892,13 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3C69BD4F-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3C69BD5C" bridgeport="False" dyn="False" label="" mgmt="False" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3C69BD5C" dyn="False" label="" mgmt="False" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3C69BD5C-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C69BD5E" bridgeport="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3C69BD5E" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3C69BD5E-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -7134,14 +7199,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3D4204D6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3D4204DF" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3D4204DF" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3D4204DF-ipv4" name="address" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D4204E2" bridgeport="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3D4204E2" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3D4204E2-ipv4" name="address" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D4204E5" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3D4204E5" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3D4204E5-ipv4" name="address" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.20">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -7302,14 +7370,17 @@ no sysopt nodnsalias outbound
         <NAT id="id3D8AAF44" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id3D8AAFA8" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id3D8AAF43-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3D8AAFA9" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3D8AAFA9" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3D8AAFAA" name="address" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D8AAFAC" bridgeport="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3D8AAFAC" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3D8AAFAD" name="address" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D8AAFAF" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3D8AAFAF" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3D8AAFB0" name="address" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.20">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -7603,11 +7674,13 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3AF5A2BA-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3AF5A2CB" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3AF5A2CB" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5A2CB-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AFB7090" bridgeport="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id3AFB7090" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3AFB7090-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -7801,9 +7874,12 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3D385DA9-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3D385DE3" bridgeport="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False"/>
-        <Interface id="id3D385DE6" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3D385DEC" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id3D385DE3" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id3D385DE6" dyn="False" label="inside" mgmt="True" network_zone="id3D385DEC" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id3D385DE6-ipv4" name="address" comment="" ro="False" address="10.3.14.204" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="10.3.14.204">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -8100,9 +8176,12 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id3F957BF2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3F957BF9" bridgeport="False" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False"/>
-        <Interface id="id3F957BFB" bridgeport="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id3F957BF9" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id3F957BFB" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id3F957BFD" name="test:ethernet1(ip)" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -9120,14 +9199,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id444A05A09567" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id444A05A19567" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id444A05A19567" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id444A05A39567" name="fwsm1:ethernet1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id444A05A49567" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id444A05A49567" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id444A05A69567" name="fwsm1:ethernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id444A05A79567" bridgeport="False" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id444A05A79567" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id444A05A99567" name="fwsm1:ethernet2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -9685,9 +9767,12 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id43867C5718346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id43867C5818346" bridgeport="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False"/>
-        <Interface id="id43867C5C18346" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id43867C5818346" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id43867C5C18346" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id43867C5E18346" name="firewall33:eth1:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -10042,9 +10127,12 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id4389EE8318346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4389EE8418346" bridgeport="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False"/>
-        <Interface id="id4389EE8818346" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id4389EE8418346" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id4389EE8818346" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4389EE8A18346" name="firewall34:eth1:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -11082,14 +11170,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id4514316828543" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4514316928543" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id4514316928543" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id4514316B28543" name="firewall50:ethernet1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4514316C28543" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id4514316C28543" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id4514316E28543" name="firewall50:ethernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4514316F28543" bridgeport="False" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id4514316F28543" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id4514317128543" name="firewall50:ethernet2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -11594,14 +11685,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id4528A58220039" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4528A58320039" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id4528A58320039" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id4528A58520039" name="firewall20:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4528A58620039" bridgeport="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id4528A58620039" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4528A58820039" name="firewall20:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4528A58920039" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id4528A58920039" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id4528A58B20039" name="firewall20:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.20">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -12325,14 +12419,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id45293F3B20039" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id45293F3C20039" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id45293F3C20039" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id45293F3E20039" name="firewall21:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id45293F3F20039" bridgeport="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id45293F3F20039" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id45293F4120039" name="firewall21:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id45293F4220039" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id45293F4220039" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id45293F4420039" name="firewall21:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.20">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -13056,14 +13153,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id4529E49B16799" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4529E49C16799" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id4529E49C16799" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id4529E49E16799" name="firewall22:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4529E49F16799" bridgeport="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id4529E49F16799" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4529E4A116799" name="firewall22:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4529E4A216799" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id4529E4A216799" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id4529E4A416799" name="firewall22:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.20">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -13789,14 +13889,17 @@ no sysopt nodnsalias outbound
           </PolicyRule>
         </Policy>
         <Routing id="id4529FEA616799" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4529FEA716799" bridgeport="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id4529FEA716799" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id4529FEA916799" name="firewall21-1:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4529FEAA16799" bridgeport="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id4529FEAA16799" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4529FEAC16799" name="firewall21-1:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id4529FEAD16799" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id4529FEAD16799" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id4529FEAF16799" name="firewall21-1:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.20">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -14153,11 +14256,13 @@ no sysopt nodnsalias outbound
             <RoutingRuleOptions/>
           </RoutingRule>
         </Routing>
-        <Interface id="id47B7A72321818" bridgeport="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id47B7A72321818" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id47B7A72F21818" name="pix515:ethernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id47B7A72421818" bridgeport="False" dyn="False" label="inside" mgmt="True" network_zone="id47B7C22921818" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id47B7A72421818" dyn="False" label="inside" mgmt="True" network_zone="id47B7C22921818" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id47B7A72621818" name="pix515:ethernet1:ip" comment="" ro="False" address="10.3.14.206" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="10.3.14.206">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -14309,6 +14414,7 @@ no sysopt nodnsalias outbound
     <IntervalGroup id="stdid11_1" name="Time" comment="" ro="False"/>
   </Library>
   <Library id="id4387B43718346" color="#FFFFFF" name="transfer" comment="" ro="False">
+    <ObjectGroup id="id4387B43818346_clusters" name="Clusters" comment="" ro="False"/>
     <ObjectGroup id="id4387B43818346" name="Objects" comment="" ro="False">
       <ObjectGroup id="id4387B43918346" name="Addresses" comment="" ro="False"/>
       <ObjectGroup id="id4387B43A18346" name="DNS Names" comment="" ro="False"/>
@@ -14407,8 +14513,9 @@ no sysopt nodnsalias outbound
     <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
       <ObjectGroup id="stdid02" name="Hosts" comment="" ro="False">
         <Host id="id3D84EECF" name="server on dmz" comment="This host is used in examples and template objects" ro="False">
-          <Interface id="id3D84EEE3" bridgeport="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <Interface id="id3D84EEE3" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id3D84EEE4" name="ip" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.0"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.2.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
