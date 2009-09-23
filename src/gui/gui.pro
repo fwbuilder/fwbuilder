@@ -304,7 +304,6 @@ SOURCES += ProjectPanel.cpp \
     HttpGet.cpp \
     StartTipDialog.cpp \
     FWBAboutDialog.cpp \
-    FWBAboutDialog2.cpp \
     vrrpOptionsDialog.cpp \
     carpOptionsDialog.cpp \
     conntrackOptionsDialog.cpp \
