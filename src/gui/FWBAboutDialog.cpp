@@ -44,7 +44,7 @@ FWBAboutDialog::FWBAboutDialog()
         tr("Using Firewall Builder API %1").arg(
             libfwbuilder::Constants::getLibraryVersion().c_str() ) );
 
-    fillTheBlanks();
+    //fillTheBlanks();
         
     setWindowTitle(QString("Firewall Builder: About..."));
     adjustSize();
