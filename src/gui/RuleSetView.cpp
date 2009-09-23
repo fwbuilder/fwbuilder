@@ -133,8 +133,6 @@ void RuleSetView::selectRE(QModelIndex index)
 {
     if (fwbdebug) qDebug() << "RuleSetView::selectRE(QModelIndex index)";
 
-    project->selectRules();
-
     if (fwosm->index != index)
     {
         fwosm->selectedObject = NULL;
