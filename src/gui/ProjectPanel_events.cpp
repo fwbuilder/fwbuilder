@@ -69,6 +69,7 @@ bool ProjectPanel::event(QEvent *event)
             switch (event->type() - QEvent::User)
             {
             case DATA_MODIFIED_EVENT:
+            {
                 // This event does not trigger any updates in the UI,
                 // this purely data structure update event. However,
                 // we post updateObjectInTreeEvent even here to
@@ -94,6 +95,7 @@ bool ProjectPanel::event(QEvent *event)
                 updateLastModifiedTimestampForAllFirewalls(obj);
                 ev->accept();
                 return true;
+            }
 
             case OBJECT_NAME_CHANGED_EVENT:
                 if (fwbdebug)
