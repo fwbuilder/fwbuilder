@@ -317,7 +317,7 @@ void SSHSession::sendLine()
     {
         string s = input.front();
         s = s + "\n";
-#if 0
+#if STATE_MACHINE_DEBUG
         if (fwbdebug)
             qDebug("SSHSession::sendLine : %d lines to go -- %s",
                    int(input.size()), s.c_str());
@@ -411,22 +411,14 @@ void SSHSession::readFromStdout()
 
         stdoutBuffer.append(buf);
 
+        if (fwbdebug)
+            qDebug("SSHSession::readFromStdout: '%s'", buf.toAscii().constData());
+
         bool endsWithLF = buf.endsWith("\n");
         QString lastLine = "";
 
         // split on LF
         QStringList bufLines = buf.split("\n", QString::KeepEmptyParts);
-
-#if 0
-        if (fwbdebug)
-        {
-            qDebug("- - - - - - - - - - - - - - - - - - - - - - - - - -");
-            qDebug("basize='%d'",basize);
-            qDebug("buffer='%s'",buf.toAscii().constData());
-            qDebug("endsWithLF=%d",endsWithLF);
-            qDebug("bufLines.size()=%d",bufLines.size());
-        }
-#endif
 
         // if buf ends with a LF character, the last element in the list is
         // an empty string
@@ -440,16 +432,27 @@ void SSHSession::readFromStdout()
             bufLines.pop_back();
         }
 
-        // elements that are left in the list  are all complete lines of text
-        for (QStringList::Iterator i=bufLines.begin(); i!=bufLines.end(); ++i)
+        if (bufLines.size() > 0)
         {
-            QString s = pendingLogLine + *i + "\n";
+            /*
+             * elements that are left in the list are all complete
+             * lines of text.
+             *
+             * IMPORTANT: QT processes events when we emit signal
+             * here. This means SSHSession::readFromStdout() (this
+             * method) gets called recursively. If we print log lines
+             * one by one, more log lines will be printed after the
+             * first and they end up appearing in a strange order.
+             *
+             * See bug #465
+             */
+            QString s = pendingLogLine + bufLines.join("\n");
+            pendingLogLine = "";
             if (!quiet)
             {
-                s.replace('\r',"");
+                s.replace('\r', "");
                 emit printStdout_sign(s);
             }
-            pendingLogLine = "";
         }
 
         pendingLogLine += lastLine;
@@ -514,9 +517,11 @@ void SSHSession::finished(int retcode)
 
 bool SSHSession::cmpPrompt(const QString &str, const QString &prompt)
 {
+#if STATE_MACHINE_DEBUG
     if (fwbdebug)
         qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s'",
                str.toAscii().constData(),prompt.toAscii().constData());
+#endif
 
     bool res = false;
     if (!str.isEmpty())
@@ -528,23 +533,26 @@ bool SSHSession::cmpPrompt(const QString &str, const QString &prompt)
             res = (s.lastIndexOf(prompt,-1) != -1);
         }
     }
+#if STATE_MACHINE_DEBUG
     if (fwbdebug) qDebug("SSHSession::cmpPrompt: res=%d",res);
+#endif
     return res;
 }
 
 bool SSHSession::cmpPrompt(const QString &str,const QRegExp &prompt)
 {
+#if STATE_MACHINE_DEBUG
     if (fwbdebug)
         qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s' (regexp)",
                str.toAscii().constData(),prompt.pattern().toAscii().constData());
-
+#endif
     if (str.isEmpty()) return false;
 
     bool res=(str.lastIndexOf(prompt,-1)!=-1);
-
+#if STATE_MACHINE_DEBUG
     if (fwbdebug)
         qDebug("SSHSession::cmpPrompt: res=%d",res);
-
+#endif
     return res;
 }
 

@@ -82,10 +82,12 @@ SSHUnx::~SSHUnx()
 
 bool SSHUnx::checkForErrors(QStringList *errptr)
 {
+#if STATE_MACHINE_DEBUG
     if (fwbdebug)
         qDebug(
             QString("SSHUnx::stateMachine:  Checking for errors. Buffer='%1'").
             arg(stdoutBuffer).toAscii().constData());
+#endif
 
     for (QStringList::const_iterator i=errptr->begin(); i!=errptr->end(); ++i)
     {
@@ -130,9 +132,10 @@ bool SSHUnx::checkForErrors()
 void SSHUnx::stateMachine()
 {
     if (checkForErrors()) return;
-
+#if STATE_MACHINE_DEBUG
     if (fwbdebug)
         qDebug("SSHUnx::stateMachine: state=%d",state);
+#endif
 
     //entry:
     switch (state)

@@ -579,6 +579,10 @@ void instDialog::addToLog(const QString &line)
          * line in a separate block makes it much faster.
          */
 
+        txt = line;
+        while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
+            txt.chop(1);
+
         QTextCursor cursor = currentLog->textCursor();
         cursor.insertBlock();
         cursor.insertText(txt, format);
