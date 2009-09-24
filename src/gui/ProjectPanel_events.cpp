@@ -4,8 +4,7 @@
 
                  Copyright (C) 2008 NetCitadel, LLC
 
-  Author:  alek@codeminders.com
-           refactoring and bugfixes: vadim@fwbuilder.org
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
 

@@ -154,7 +154,6 @@ HEADERS += ../../config.h \
     FakeWizard.h \
     AskLibForCopyDialog.h \
     FWBAboutDialog.h \
-    RuleRowInfo.h \
     Help.h \
     HttpGet.h \
     StartTipDialog.h \

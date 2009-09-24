@@ -31,7 +31,6 @@
 #include "instDialog.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
-#include "InstallFirewallViewItem.h"
 #include "instOptionsDialog.h"
 #include "instBatchOptionsDialog.h"
 #include "events.h"
@@ -43,10 +42,6 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
-
-#ifndef _WIN32
-#  include <unistd.h>     // for access(2) and getdomainname
-#endif
 
 #include <errno.h>
 #include <iostream>

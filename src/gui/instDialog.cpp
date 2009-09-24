@@ -36,7 +36,6 @@
 #include "SSHPIX.h"
 #include "SSHIOS.h"
 #include "FWWindow.h"
-#include "InstallFirewallViewItem.h"
 #include "instOptionsDialog.h"
 #include "instBatchOptionsDialog.h"
 
