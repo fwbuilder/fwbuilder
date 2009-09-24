@@ -391,9 +391,23 @@ void newFirewallDialog::showPage(const int page)
 
     int p = page;
 
+    if (fwbdebug)
+        qDebug("newFirewallDialog::showPage  page=%d", page);
+
 // p is a page number _after_ it changed
     switch (p)
     {
+    case 0:
+        // we get here if user hits "Back" on page 4 (where they
+        // choose template object)
+        if (tmpldb!=NULL)
+        {
+            m_dialog->templateList->clear();
+            delete tmpldb;
+            tmpldb = NULL;
+        }
+        break;
+
     case 1:
     {
         changed();  // to properly enable/disable widgets
@@ -972,12 +986,13 @@ void newFirewallDialog::finishClicked()
         }
 
     }
-    if (unloadTemplatesLib)
+
+    if (tmpldb!=NULL)
     {
         delete tmpldb;
         tmpldb = NULL;
-        unloadTemplatesLib=false;
     }
+
     QDialog::accept();
 }
 
