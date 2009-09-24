@@ -428,6 +428,7 @@ void PrefsDialog::accept()
     st->setRulesFont(rulesFont);
     st->setTreeFont(treeFont);
     st->setUiFont(uiFont);
+    st->setCompilerOutputFont(compilerOutputFont);
 
     st->setClipComment(m_dialog->chClipComment->isChecked());
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
