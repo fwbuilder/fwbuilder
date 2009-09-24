@@ -385,11 +385,21 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 }
 
 /*
- * take next job from job_list and execute it
+ * take next job from job_list and execute it.
+ *
+ * Note that this slot is called when SSHSession emits signal
+ * sessionFinished.  This happens outside of control of the
+ * instDialog. If user clicked Cancel or Finish button (even though
+ * Finish should not be active, but still), runJobs() should not
+ * continue. Check for this condition using instDialog::isFinished()
+ *
  */
 void FirewallInstaller::runJobs()
 {
     if (fwbdebug) qDebug("FirewallInstaller::runJobs");
+
+    if (inst_dlg->isFinished()) return;
+
     if (job_list.size()==0)
     {
         if (fwbdebug) qDebug("FirewallInstaller::runJobs:  job list is empty");

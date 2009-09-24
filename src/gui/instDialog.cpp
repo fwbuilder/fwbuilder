@@ -102,6 +102,7 @@ instDialog::instDialog(QWidget* p,
     setWindowFlags(Qt::Dialog | Qt::WindowSystemMenuHint);
 
     installer = NULL;
+    finished = false;
 
     page_1_op = INST_DLG_COMPILE;
 
@@ -235,6 +236,8 @@ instDialog::~instDialog()
  */
 void instDialog::mainLoopCompile()
 {
+    if (finished) return;
+
     // first compile all
     if (compile_fw_list.size())
     {
@@ -246,7 +249,7 @@ void instDialog::mainLoopCompile()
     } else
     {
         // Compile is done or there was no firewalls to compile to
-        // begin with Check if we have any firewalls to install. Note
+        // begin with. Check if we have any firewalls to install. Note
         // that we "uncheck" "install" checkboxes in the first page of
         // the wizard on compile failure, so we need to rebuild install_fw_list
         // here.
@@ -255,9 +258,13 @@ void instDialog::mainLoopCompile()
         {
             page_1_op = INST_DLG_INSTALL;
             setNextEnabled(1, true);
+            setFinishEnabled(currentPage(), false);
+        } else
+        {
+            finished = true;
+            setFinishEnabled(currentPage(), true);
         }
     }
-    setFinishEnabled(currentPage(), true);
 }
 
 void instDialog::mainLoopInstall()
@@ -265,6 +272,8 @@ void instDialog::mainLoopInstall()
     if (fwbdebug)
         qDebug("instDialog::mainLoopInstall:  %d firewalls to install",
                int(install_fw_list.size()));
+
+    if (finished) return;
 
     if (install_fw_list.size())
     {
@@ -282,6 +291,8 @@ void instDialog::mainLoopInstall()
         runInstaller(fw);
         return;
     }
+
+    finished = true;
     setFinishEnabled(currentPage(), true);
 }
 

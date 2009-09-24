@@ -458,6 +458,7 @@ void instDialog::updateProgressBar(int n, bool setsize)
 
 void instDialog::finishClicked()
 {
+    finished = true;
     accept();
 }
 
@@ -465,6 +466,7 @@ void instDialog::finishClicked()
 void instDialog::cancelClicked()
 {
     if (fwbdebug) qDebug("instDialog::cancelClicked()");
+    finished = true;
 
     if (proc.state() == QProcess::Running)
     {

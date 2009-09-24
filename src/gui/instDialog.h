@@ -123,6 +123,7 @@ class instDialog : public QDialog, public FakeWizard
     bool compileFlag;
     bool customScriptFlag;
     bool showSelectedFlag;
+    bool finished;
 
     QTextEdit *currentLog;
     QTextCharFormat normal_format;
@@ -191,6 +192,8 @@ class instDialog : public QDialog, public FakeWizard
     void setUpProcessToCompile();
     void setUpProcessToInstall();
     bool executeCommand(const QString &path, QStringList &args);
+
+    bool isFinished() { return finished; }
     
 protected:
     
