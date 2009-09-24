@@ -164,10 +164,8 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
         Resources::getResourceBool(
             "/FWBuilderResources/Target/options/suppress_comments");
 
-    if (compiler->inSingleRuleCompileMode()) return "";
-
     string rl=rule->getLabel();
-    if (rl!=current_rule_label)
+    if (!compiler->inSingleRuleCompileMode() && rl != current_rule_label)
     {
         if (!nocomm)
         {

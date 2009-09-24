@@ -86,6 +86,9 @@ bool RoutingCompiler_iosacl::PrintRule::processNext()
         compiler->output << "! " << endl;
     }
    
+    string err = rule->getStr(".error_msg");
+    if (!err.empty()) compiler->output << "# " << err << endl;
+
     if( rule->getRuleType() != RoutingRule::MultiPath )
     {
         if (!compiler->inSingleRuleCompileMode() && rl != current_rule_label)

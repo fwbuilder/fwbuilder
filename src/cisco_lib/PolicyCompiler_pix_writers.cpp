@@ -575,11 +575,10 @@ bool PolicyCompiler_pix::PrintRule::processNext()
             comment << "! " << comm.substr(c1) << endl;
             comment << "! " << endl;
 
-            current_rule_label1=rl;
+            current_rule_label1 = rl;
+            compiler->output << comment.str();
         }
     }
-
-    compiler->output << comment.str();
 
     string err = rule->getStr(".error_msg");
     if (!err.empty()) compiler->output << "! " << err << endl;

@@ -156,10 +156,8 @@ string NATCompiler_ipt::PrintRule::_printRuleLabel(NATRule *rule)
     bool nocomm =
         Resources::os_res[compiler->fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_comments");
 
-    if (compiler->inSingleRuleCompileMode()) return "";
-
     string rl=rule->getLabel();
-    if (rl!=current_rule_label)
+    if (!compiler->inSingleRuleCompileMode() && rl != current_rule_label)
     {
         if (!nocomm)
         {
