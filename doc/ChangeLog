@@ -1,3 +1,27 @@
+2009-09-23  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/res/configlets/linux24/update_bonding: Generated iptables
+	script incrementally updates bonding interfaces: it adds missing
+	slaves and removes those that are not configued in fwbuilder.  It
+	also tries to load module "bonding" with protocol parameters
+	defined in the GUI. Bonding interfaces that exist on the firewall
+	but are not configured in fwbuilder are cleared of all slaves and
+	brought down. They can not be removed because that requires
+	removing module which kills bond interfaces that should be there.
+
+	Limitation: currently all bonding interfaces will use the same
+	protocol parameters. This is because module loading with parameter
+	"-obond1" that is supposed to be the way to obtain more than one
+	bonding interface and also the way to specify different parameters
+	for different interfaces causes kernel panic in my tests. Tested
+	with bonding module v3.5.0 and kernel 2.6.29.4-167.fc11.i686.PAE
+	on Fedora Core 11. The only way to get two bonding interfaces that
+	works is to load the module with parameter max_bonds=2, but this
+	means all bonding interfaces work with the same protocol
+	parameters. If bond interfaces are configured with different
+	parameters in the GUI, compiler uses the first and issues warning
+	for others.
+
 2009-09-18  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (ItfNegation::processNext): (change in

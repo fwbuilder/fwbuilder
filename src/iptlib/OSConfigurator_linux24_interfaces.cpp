@@ -304,6 +304,8 @@ string OSConfigurator_linux24::printBondingInterfaceConfigurationCommands()
      */
 
     QStringList gencmd;
+    QStringList bonding_interfaces;
+    QString module_parameters;
 
     FWObjectTypedChildIterator i = fw->findByType(Interface::TYPENAME);
     for ( ; i!=i.end(); ++i ) 
@@ -313,25 +315,48 @@ string OSConfigurator_linux24::printBondingInterfaceConfigurationCommands()
         QStringList out;
         if (iface->getOptionsObject()->getStr("type") == "bonding")
         {
-            out.push_back("update_bonding");
-            out.push_back(iface->getName().c_str());
+            /*
+             * current implementation of function load_bonding_module()
+             * in the configlet loads the module once, which means we can
+             * only support the same parameters for all bonding interfaces.
+             * Take parameters from the first bonding interface and use that
+             * in the call to load_bonding_module()
+             *
+             * However, check if parameters for the subsequent bonding
+             * interfaces are different and issue warning.
+             */
 
             QString mode = iface->getOptionsObject()->getStr("bonding_policy").c_str();
             QString xmit_hash_policy = iface->getOptionsObject()->getStr("xmit_hash_policy").c_str();
             QString driver_opts = iface->getOptionsObject()->getStr("bondng_driver_options").c_str();
-
             QStringList params;
+
             if (!mode.isEmpty())
                 params.push_back("mode=" + mode);
             if (!xmit_hash_policy.isEmpty())
                 params.push_back("xmit_hash_policy=" + xmit_hash_policy);
             if (!driver_opts.isEmpty())
                 params.push_back(driver_opts);
-            // Function update_bonding in the configlet expects 3
-            // arguments. If there are no parameters for the bonding
-            // module, just put empty string in place of the argument
-            // 2.
-            out.push_back("\"" + params.join(" ") + "\"");
+
+            if (module_parameters.isEmpty())
+            {
+                module_parameters = params.join(" ");
+            } else
+            {
+                if (module_parameters != params.join(" "))
+                {
+                    warning(
+                        QString("Different protocol parameters for multiple "
+                                "bonding interfaces are not supported at "
+                                "this time. Module 'bonding' "
+                                "will be loaded with the following parameters: '%1'")
+                        .arg(module_parameters).toStdString());
+                }
+            }
+
+            out.push_back("update_bonding");
+            out.push_back(iface->getName().c_str());
+            bonding_interfaces.push_back(iface->getName().c_str());
 
             QStringList bonding_interfaces;
             FWObjectTypedChildIterator j = iface->findByType(Interface::TYPENAME);
@@ -342,10 +367,23 @@ string OSConfigurator_linux24::printBondingInterfaceConfigurationCommands()
                     subint->getOptionsObject()->getStr("type") == "ethernet")
                     bonding_interfaces.push_back(subint->getName().c_str());
             }
-            out.push_back("\"" + bonding_interfaces.join(" ") + "\"");
+            out.push_back(bonding_interfaces.join(" "));
             gencmd.push_back(out.join(" "));
         }
     }
+
+    if (bonding_interfaces.size())
+    {
+        gencmd.push_front(
+            QString("load_bonding_module \"%1\" max_bonds=%2 %3")
+            .arg(bonding_interfaces.join(" "))
+            .arg(bonding_interfaces.size())
+            .arg(module_parameters));
+        gencmd.push_back(
+            QString("clear_bonding_except_known %1")
+            .arg(bonding_interfaces.join(" ")));
+    } else
+        gencmd.push_front("unload_bonding_module");
 
     return gencmd.join("\n").toStdString() + "\n";
 }

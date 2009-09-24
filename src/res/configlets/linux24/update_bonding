@@ -22,6 +22,16 @@
 ##
 ##
 
+missing_bond() {
+    bond_intf=$1
+    cmd=$2
+
+    test "$cmd" = "down" && {
+      echo "# Bring unconfigured bonding interface $bond_intf down"
+      $FWBDEBUG $IFCONFIG $bond_intf down
+    }
+}
+
 missing_slave() {
     slave=$1
     cmd=$2
@@ -43,58 +53,117 @@ missing_slave() {
     }
 }
 
-## update_bonding bond0 "mode=balance-alb miimon=50" "eth2 eth3"
-## Quotes are essential
-update_bonding() {
-    bond_interface=$1
-    module_parameters=$2
+## verify that bonding module is loaded with parameters that provide
+## support for required number of bonding interfaces (bonding
+## interfaces get created when module is loaded and if we need 2 --
+## bond0 and bond1 -- then the way to get them is to load the module
+## with parameter max_bonds=2).
+##
+## Current implementation only supports identical bonding parameters
+## for all bonding interfaces. This is because in my tests command
+## "modprobe bonding -obond1" always causes kernel panic. This means I
+## could not find a way to load bonding module two times with
+## different parameters. Call for this function is generated in 
+## OSConfigurator_linux24::printBondingInterfaceConfigurationCommands()
+##
+## load_bonding_module "bond0 bond1" max_bonds=2 mode=balance-alb miimon=50
+##
+load_bonding_module() {
+    bonding_interfaces=$1
     shift
-    shift
+    module_parameters=$*
 
-    FWB_SLAVES=""
-    CURRENT_SLAVES=""
-
-    FWB_SLAVES=$(
-      for subint in $*; do
-        echo "${subint}@$bond_interface"
-      done | sort
-    )
-
-    # we can load the module and configure parameters at the same time as such:
-    # /sbin/modprobe bonding -obond1 mode=balance-alb miimon=50
-    # modprobe does not return error and terminates silently if the module is
-    # already loaded. It DOES NOT update module parameters though.
     PROC_DIR="/proc/net/bonding/"
-    PROD_BOND_IFACE="${PROC_DIR}/$bond_interface"
-    test -f $PROD_BOND_IFACE || {
-        echo "# Installing bonding module for $bond_interface with parameters $module_parameters"
-        cmd="$MODPROBE bonding -o$bond_interface $module_parameters"
-        test -n "$FWBDEBUG" && echo "# $cmd"
-        $cmd || {
-            # we could not create bonding interface. Possible reason is that
-            # this is second (third) bonding interface which requires special
-            # configuration in /etc/modprobe.conf
+    test -d $PROC_DIR || {
+## module is not loaded. Load it with appropriate max_bonds argument
+        cmd="$MODPROBE bonding $module_parameters"
+        test -n "$FWBDEBUG" && echo "# $cmd" || $cmd || {
+            # Module load failed.
             cat <<EOF
 
-Could not create bonding interface $bond_interface
-If this is second bonding interface, then you need to
-add module parameters in the file /etc/modprobe.conf or
-/etc/modprobe.d/bond.conf
+Could not load bonding interface module. Try to add 
+module parameters to the file /etc/modprobe.conf or
+/etc/modprobe.d/bond.conf and reboot
 EOF
-            echo "Installing bonding module failed. Bonding interface $bond_interface is not available."
             # do not abort in test mode
             test -z "$FWBDEBUG" && exit 1
         }
     }
-
-    CURRENT_SLAVES=$(
-        cat $PROD_BOND_IFACE | grep 'Slave Interface:' | \
-            while read a b slave; do
-              echo "${slave}@$bond_interface"
-            done | sort
-    )
-
-    diff_intf missing_slave "$FWB_SLAVES" "$CURRENT_SLAVES" "  "
-    diff_intf missing_slave "$CURRENT_SLAVES" "$FWB_SLAVES" "-d"
+    ## test that we now have bonding interfaces that we need
+    for bondint in $bonding_interfaces; do
+        PROD_BOND_IFACE="${PROC_DIR}/$bondint"
+        test -f $PROD_BOND_IFACE || {
+            echo "Bonding interface $bondint does not exist"
+            test -z "$FWBDEBUG" && exit 1
+        }
+    done
 }
 
+## If no bonding interfaces are configured in fwbuilder, unload the module
+## to kill any that might be present on the machine.
+unload_bonding_module() {
+    $MODPROBE -r bonding
+}
+
+## update_bonding bond0 eth2 eth3
+## Quotes are essential
+update_bonding() {
+    bond_interface=$1
+    shift
+
+    PROC_DIR="/proc/net/bonding/"
+    PROD_BOND_IFACE="${PROC_DIR}/$bond_interface"
+    test -f $PROD_BOND_IFACE && {
+
+        FWB_SLAVES=""
+        CURRENT_SLAVES=""
+
+        FWB_SLAVES=$(
+            for subint in $*; do
+                echo "${subint}@$bond_interface"
+            done | sort
+        )
+
+        CURRENT_SLAVES=$(
+            cat $PROD_BOND_IFACE | grep 'Slave Interface:' | \
+                while read a b slave; do
+                    echo "${slave}@$bond_interface"
+                done | sort
+        )
+
+        diff_intf missing_slave "$FWB_SLAVES" "$CURRENT_SLAVES" "  "
+        diff_intf missing_slave "$CURRENT_SLAVES" "$FWB_SLAVES" "-d"
+    }
+}
+
+## Since we can not remove bonding interface without unloading the
+## module (which kills other bonding interfaces), we'll just bridge
+## bonding interfaces that exist on the machine but not in fwbuilder
+## config down.
+##
+##  clear_bonding_except_known bond0 bond1
+##
+## If bond2 interface exist, it will be brought down.
+## 
+## Note that ifenslave fails to remove slave if bond interface is down
+## with error "Illegal operation; the specified master interface 'bond1' is not up."
+## Need to bring bond interface up before removing slaves. This makes
+## no sense, but still. This is with bonding module v3.5.0, tested on Fedora C11.
+##
+clear_bonding_except_known() {
+    PROC_DIR="/proc/net/bonding/"
+    ls $PROC_DIR | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (!($1 in ignored_dict)) {print $1;}' | \
+         while read bond_intf; do
+            echo "Removing slaves and bringing unconfigured bonding interface $bond_intf down"
+            PROD_BOND_IFACE="${PROC_DIR}/$bond_intf"
+            slaves=$(cat $PROD_BOND_IFACE | awk '/[sS]lave [iI]nterface:/ { printf "%s ",$NF;}')
+            $FWBDEBUG $IFCONFIG $bond_intf up
+            $FWBDEBUG $IFENSLAVE  -d $bond_intf $slaves
+            $FWBDEBUG $IFCONFIG $bond_intf down
+         done
+}
