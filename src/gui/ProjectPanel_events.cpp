@@ -77,27 +77,21 @@ bool ProjectPanel::event(QEvent *event)
                 // This should enable "Save" action since something has changed
                 mw->prepareFileMenu();
 
-                if (RuleElement::cast(obj) || Rule::cast(obj) || RuleSet::cast(obj))
+                FWObject *p = obj;
+                while (p && Firewall::cast(p)==NULL) p = p->getParent();
+                Firewall *f = Firewall::cast(p);
+                if (f)
                 {
-                    FWObject *p = obj;
-                    while (p && Firewall::cast(p)==NULL) p = p->getParent();
-                    Firewall *f = Firewall::cast(p);
-                    if (f)
-                    {
-                        f->updateLastModifiedTimestamp();
-                        QCoreApplication::postEvent(
-                            this, new updateObjectInTreeEvent(data_file,
-                                                              f->getId()));
-                    }
+                    f->updateLastModifiedTimestamp();
                     QCoreApplication::postEvent(
-                        this, new updateObjectInRulesetEvent(data_file,
-                                                             obj->getId()));
+                        this, new updateObjectInTreeEvent(data_file,
+                                                          f->getId()));
                 } else
                 {
                     QCoreApplication::postEvent(
                         this, new updateObjectInTreeEvent(data_file, obj->getId()));
-                    updateLastModifiedTimestampForAllFirewalls(obj);
                 }
+                updateLastModifiedTimestampForAllFirewalls(obj);
                 ev->accept();
                 return true;
 

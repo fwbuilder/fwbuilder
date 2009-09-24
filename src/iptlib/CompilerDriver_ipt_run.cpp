@@ -181,7 +181,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
             new OSConfigurator_ipcop(objdb , fw, false));
     }
 
-    if (os_family == "linux24" || os_family == "sveasoft")
+    if (os_family == "linux24")
         oscnf = std::auto_ptr<OSConfigurator_linux24>(
             new OSConfigurator_linux24(objdb , fw, false));
 

@@ -3,7 +3,7 @@
     <Target name="linksys">
       <description>Linksys/Sveasoft</description>
       <status>active</status>
-      <family>sveasoft</family>
+      <family>linux24</family>
       <dialog>linksys</dialog>
 
       <options>

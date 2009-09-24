@@ -1,13 +1,30 @@
 2009-09-23  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/res/configlets/linux24/update_bonding: Generated iptables
-	script incrementally updates bonding interfaces: it adds missing
-	slaves and removes those that are not configued in fwbuilder.  It
-	also tries to load module "bonding" with protocol parameters
-	defined in the GUI. Bonding interfaces that exist on the firewall
-	but are not configured in fwbuilder are cleared of all slaves and
-	brought down. They can not be removed because that requires
-	removing module which kills bond interfaces that should be there.
+	script incrementally updates bonding interfaces:
+
+	- It creates new bonding interfaces with parameters configured in
+	the GUI if module 'bonding' is not loaded. This is what happens
+	if fwbuilder script runs after reboot.
+
+	- if there are no bonding interfaces in fwbuilder configuration,
+	the script removes bonding module to kill any bonding interfaces
+	that might exist on the machine
+
+	- if you add new bonding interface in fwbuilder, the script checks
+	if it exists on the machine. It will not create it because to do
+	so, it would have to remove the module which kills other bonding
+	interfaces. If this second bonding interface exists, it will be
+	configured with slaves and addresses. If it does not exist, script
+	aborts. In this case you need to either 1) reload module manually
+	or 2) add max_bonds=2 to /etc/modules.conf and reboot or 3) unload
+	module and run fwbuilder script again (if module is not loaded,
+	the script loads it with correct max_bonds parameter)
+
+	- if a bonding interface exists on the machine but not in
+	fwbuilder configuration, the script removes all slaves from it and
+	brings it down. It can not delete it because to do so it would
+	need to remove the module, which kills other bonding interfaces.
 
 	Limitation: currently all bonding interfaces will use the same
 	protocol parameters. This is because module loading with parameter
@@ -15,12 +32,12 @@
 	bonding interface and also the way to specify different parameters
 	for different interfaces causes kernel panic in my tests. Tested
 	with bonding module v3.5.0 and kernel 2.6.29.4-167.fc11.i686.PAE
-	on Fedora Core 11. The only way to get two bonding interfaces that
-	works is to load the module with parameter max_bonds=2, but this
-	means all bonding interfaces work with the same protocol
-	parameters. If bond interfaces are configured with different
-	parameters in the GUI, compiler uses the first and issues warning
-	for others.
+	on Fedora Core 11. The only working way to get two bonding
+	interfaces I could find is to load the module with parameter
+	max_bonds=2, but this means all bonding interfaces work with the
+	same protocol parameters. If bond interfaces are configured with
+	different parameters in fwbuilder, compiler uses the first and
+	issues warning for others.
 
 2009-09-18  vadim  <vadim@vk.crocodile.org>
 

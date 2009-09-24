@@ -528,9 +528,14 @@ void setInterfaceTypes(QComboBox *iface_type,
     QString host_os = p->getStr("host_OS").c_str();
     QString obj_name = iface->getName().c_str();
 
+    Resources* os_res = Resources::os_res[p->getStr("host_OS")];
+    string os_family = p->getStr("host_OS");
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
     std::auto_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            host_os.toStdString()));
+            os_family));
     if (int_prop->looksLikeVlanInterface(obj_name))
     {
         QString parent_name = iface->getParent()->getName().c_str();

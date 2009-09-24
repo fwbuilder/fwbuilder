@@ -764,9 +764,15 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
         while (fw && Firewall::cast(fw)==NULL) fw = fw->getParent();
         assert(fw);
         QString obj_name = obj->getName().c_str();
+
+        Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
+        string os_family = fw->getStr("host_OS");
+        if (os_res!=NULL)
+            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
         std::auto_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                fw->getStr("host_OS")));
+                os_family));
         if (int_prop->looksLikeVlanInterface(obj_name))
         {
             // even though we only call this function if the type of
@@ -1088,9 +1094,14 @@ void ObjectManipulator::makeNameUnique(FWObject *target, FWObject *obj)
         FWObject *fw = target;
         while (fw && !Firewall::isA(fw)) fw = fw->getParent();
 
+        Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
+        string os_family = fw->getStr("host_OS");
+        if (os_res!=NULL)
+            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
         std::auto_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                fw->getStr("host_OS")));
+                os_family));
         if (int_prop->looksLikeVlanInterface(obj_name)) return;
     }
     QString newname = makeNameUnique(target,
@@ -2066,9 +2077,14 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
         if (Interface::isA(obj))
         {
             // check if obj is vlan interface
+            Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
+            string os_family = fw->getStr("host_OS");
+            if (os_res!=NULL)
+                os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
             std::auto_ptr<interfaceProperties> int_prop(
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                    fw->getStr("host_OS")));
+                    os_family));
             QString obj_name = obj->getName().c_str();
             if (int_prop->looksLikeVlanInterface(obj_name))
             {
@@ -2102,9 +2118,15 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
             }
             // check vlan conditions as well
             FWObject *f = intf->getParentHost();
+
+            Resources* os_res = Resources::os_res[f->getStr("host_OS")];
+            string os_family = f->getStr("host_OS");
+            if (os_res!=NULL)
+                os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
             std::auto_ptr<interfaceProperties> int_prop(
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                    f->getStr("host_OS")));
+                    os_family));
             QString obj_name = obj->getName().c_str();
             if (int_prop->looksLikeVlanInterface(obj_name))
             {
@@ -4039,9 +4061,15 @@ void ObjectManipulator::guessSubInterfaceTypeAndAttributes(Interface *intf)
     if (parent_intf == NULL) return;
 
     FWObject *f = intf->getParentHost();
+
+    Resources* os_res = Resources::os_res[f->getStr("host_OS")];
+    string os_family = f->getStr("host_OS");
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
     interfaceProperties *int_prop =
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            f->getStr("host_OS"));
+            os_family);
     QString err;
     if (int_prop->looksLikeVlanInterface(intf->getName().c_str()) &&
         int_prop->isValidVlanInterfaceName(intf->getName().c_str(),

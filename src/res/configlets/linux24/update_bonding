@@ -159,11 +159,13 @@ clear_bonding_except_known() {
          }
          (!($1 in ignored_dict)) {print $1;}' | \
          while read bond_intf; do
-            echo "Removing slaves and bringing unconfigured bonding interface $bond_intf down"
-            PROD_BOND_IFACE="${PROC_DIR}/$bond_intf"
-            slaves=$(cat $PROD_BOND_IFACE | awk '/[sS]lave [iI]nterface:/ { printf "%s ",$NF;}')
-            $FWBDEBUG $IFCONFIG $bond_intf up
-            $FWBDEBUG $IFENSLAVE  -d $bond_intf $slaves
-            $FWBDEBUG $IFCONFIG $bond_intf down
+             PROD_BOND_IFACE="${PROC_DIR}/$bond_intf"
+             slaves=$(cat $PROD_BOND_IFACE | awk '/[sS]lave [iI]nterface:/ { printf "%s ",$NF;}')
+             test -n "$slaves" && {
+                 echo "Removing slaves and bringing unconfigured bonding interface $bond_intf down"
+                 $FWBDEBUG $IFCONFIG $bond_intf up
+                 $FWBDEBUG $IFENSLAVE  -d $bond_intf $slaves
+                 $FWBDEBUG $IFCONFIG $bond_intf down
+             }
          done
 }

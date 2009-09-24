@@ -357,9 +357,15 @@ void InterfaceDialog::validate(bool *res)
     }
 
     FWObject *f = Interface::cast(obj)->getParentHost();
+
+    Resources* os_res = Resources::os_res[f->getStr("host_OS")];
+    string os_family = f->getStr("host_OS");
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
     interfaceProperties *int_prop =
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            f->getStr("host_OS"));
+            os_family);
     if (int_prop->looksLikeVlanInterface(obj_name))
     {
         QString parent_name = obj->getParent()->getName().c_str();
@@ -462,7 +468,7 @@ void InterfaceDialog::discardChanges()
 void InterfaceDialog::openIfaceDialog()
 {
     // TODO: applyChanges() call enabled results in problems with FWBTree ...
-    //applyChanges();
+    applyChanges();
 
     try
     {
@@ -478,7 +484,6 @@ void InterfaceDialog::openIfaceDialog()
             // update object tree (if interface type has changed, the object properties
             // summary text may have to change too)
             mw->activeProject()->updateObjectInTree(obj, true);
-//            mw->updateLastModifiedTimestampForAllFirewalls(obj);
             emit notify_changes_applied_sign();
         }
     }

@@ -33,9 +33,9 @@ using namespace std;
 
 
 interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-    const std::string &host_os)
+    const std::string &os_family)
 {
-    if (host_os == "linux24") return new linux24Interfaces();
+    if (os_family == "linux24") return new linux24Interfaces();
     // by default return object of the base class. It performs some
     // reasonable default actions.
     return new interfaceProperties();
