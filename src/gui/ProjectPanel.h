@@ -366,8 +366,6 @@ public:
     void releaseEditor();
     void connectEditor(QWidget *w);
 
-    bool isSystem(libfwbuilder::FWObject *obj);
-    bool isStandardId(libfwbuilder::FWObject *obj);    
     bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
     bool getCopyMenuState(const QString &objPath);
     bool getCutMenuState(const QString &objPath);

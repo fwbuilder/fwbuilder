@@ -256,7 +256,7 @@ void GroupObjectDialog::insertObject(FWObject *o)
 	if(obj_id==cp_id) return;
     }
 
-    addIcon(o, ! m_project->isSystem(obj) );
+    addIcon(o, ! FWBTree().isSystem(obj) );
 
     changed();
 }
@@ -330,8 +330,8 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     m_dialog->obj_name->setText( QString::fromUtf8(g->getName().c_str()) );
     m_dialog->comment->setText( QString::fromUtf8(g->getComment().c_str()) );
 
-    m_dialog->obj_name->setEnabled( !m_project->isSystem(obj) );
-    m_dialog->comment->setEnabled(  !m_project->isSystem(obj) );
+    m_dialog->obj_name->setEnabled( !FWBTree().isSystem(obj) );
+    m_dialog->comment->setEnabled(  !FWBTree().isSystem(obj) );
 
     listView->clear();
     iconView->clear();
@@ -361,10 +361,10 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
 
     //apply->setEnabled( false );
 
-    m_dialog->obj_name->setEnabled(!o->isReadOnly() && !m_project->isSystem(o));
+    m_dialog->obj_name->setEnabled(!o->isReadOnly() && !FWBTree().isSystem(o));
     setDisabledPalette(m_dialog->obj_name);
 
-    m_dialog->comment->setEnabled(!o->isReadOnly() && !m_project->isSystem(o));
+    m_dialog->comment->setEnabled(!o->isReadOnly() && !FWBTree().isSystem(o));
     setDisabledPalette(m_dialog->comment);
 
 //    listView->setEnabled(!o->isReadOnly());
@@ -444,7 +444,7 @@ void GroupObjectDialog::applyChanges()
     for (set<int>::iterator k=diff.begin(); k!=diff.end(); ++k)
     {
         FWObject *o = m_project->db()->findInIndex(*k);
-        if (m_project->isSystem(obj))
+        if (FWBTree().isSystem(obj))
             m_project->delObj(o, false);
         else
             obj->removeRef(o);
@@ -461,7 +461,7 @@ void GroupObjectDialog::applyChanges()
     for (set<int>::iterator k1=diff.begin(); k1!=diff.end(); ++k1)
     {
         FWObject *o = m_project->db()->findInIndex(*k1);
-        if (m_project->isSystem(o))
+        if (FWBTree().isSystem(o))
             m_project->pasteTo(obj, o);
         else
             obj->addRef(o);
@@ -604,14 +604,14 @@ void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
     QAction *delID =popup->addAction(tr("Delete"),this, SLOT(deleteObj()));
 
     copyID->setEnabled(selectedObject!=NULL &&
-                          ! m_project->isSystem(selectedObject) );
+                          ! FWBTree().isSystem(selectedObject) );
     cutID->setEnabled(selectedObject!=NULL &&
-                          ! m_project->isSystem(obj) &&
+                          ! FWBTree().isSystem(obj) &&
                           ! obj->isReadOnly() );
-    pasteID->setEnabled(! m_project->isSystem(obj) &&
+    pasteID->setEnabled(! FWBTree().isSystem(obj) &&
                           ! obj->isReadOnly() );
     delID->setEnabled(selectedObject!=NULL &&
-                          ! m_project->isSystem(obj) &&
+                          ! FWBTree().isSystem(obj) &&
                           ! obj->isReadOnly() );
 
     popup->exec( pos );
@@ -625,7 +625,7 @@ void GroupObjectDialog::copyObj()
     {
         FWObject* selectedObject = m_project->db()->findInIndex(*it);
 
-        if (selectedObject!=NULL && ! m_project->isSystem(selectedObject) )
+        if (selectedObject!=NULL && ! FWBTree().isSystem(selectedObject) )
         {
             FWObjectClipboard::obj_clipboard->add(selectedObject,
                                                   this->m_project );

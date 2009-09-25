@@ -26,8 +26,7 @@
 #include "../../config.h"
 #include "global.h"
 
-#include <qobject.h>
-#include <qmessagebox.h>
+#include <QtDebug>
 
 #include "FWBTree.h"
 
@@ -64,7 +63,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-const char* systemObjects[] = {
+const char* standardFolders[] = {
     "Objects",
     "Objects/Addresses",
     "Objects/DNS Names",
@@ -83,9 +82,9 @@ const char* systemObjects[] = {
     "Services/UDP",
     "Services/TagServices",
     "Services/Users",
+
     "Firewalls",
     "Clusters",
-
     "Time",
 
     NULL
@@ -346,12 +345,18 @@ bool FWBTree::isSystem(FWObject *obj)
 
     if (FWObjectDatabase::isA(obj)) return true;
 
-    string path=obj->getPath(true);  // relative path
+    return isStandardFolder(obj);
+}
 
-    for (const char **cptr=systemObjects; *cptr!=NULL; cptr++)
+/**
+ * returns true if @obj is a standard folder,e.g. "Firewalls", "Objects",
+ * "Objects/Hosts" etc.
+ */
+bool FWBTree::isStandardFolder(FWObject *obj)
+{
+    string path = obj->getPath(true);  // relative path
+    for (const char **cptr=standardFolders; *cptr!=NULL; cptr++)
         if (path== *cptr) return true;
-
-
     return false;
 }
 

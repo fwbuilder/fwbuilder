@@ -537,12 +537,6 @@ QString FWWindow::printHeader()
     return "";
 }
 
-bool FWWindow::isSystem(FWObject *obj)
-{
-    if (activeProject()) return activeProject()->isSystem(obj);
-    return false;
-}
-
 bool FWWindow::editingLibrary()
 {
     if (activeProject()) return activeProject()->editingLibrary();

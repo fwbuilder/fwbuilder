@@ -304,7 +304,7 @@ void ObjectTreeView::updateTreeIcons()
         otvi=dynamic_cast<ObjectTreeViewItem*>(itm);
         obj=otvi->getFWObject();
 
-        if (m_project->isSystem(obj))
+        if (FWBTree().isSystem(obj))
         icn = ":/Icons/SystemGroup/icon-tree";
         else
             icn = (":/Icons/"+obj->getTypeName()+"/icon-tree").c_str();
@@ -346,7 +346,7 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
     the end of void QListView::mouseMoveEvent( QMouseEvent * e)
     (See code after they decided that they do not need to call startDrag())
 
-    if (m_project->isSystem(obj)) return NULL;
+    if (FWBTree().isSystem(obj)) return NULL;
 */
     QString icn = (":/Icons/"+current_obj->getTypeName()+"/icon-ref").c_str();
 
@@ -506,7 +506,7 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
         FWObject *dragobj = *i;
         assert(dragobj!=NULL);
 
-        if (m_project->isSystem(dragobj))
+        if (FWBTree().isSystem(dragobj))
         {
 // can not drop system folder anywhere 
             ev->setAccepted(false);

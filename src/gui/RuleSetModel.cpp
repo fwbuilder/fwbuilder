@@ -274,7 +274,7 @@ QVariant RuleSetModel::getGroupDataForDisplayRole(const QModelIndex &index, Rule
 
 QVariant RuleSetModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::headerData";
+    //if (fwbdebug) qDebug() << "RuleSetModel::headerData";  // too chatty
     if (orientation == Qt::Vertical)
         return QVariant();
     if (role != Qt::DisplayRole)

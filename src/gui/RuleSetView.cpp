@@ -1476,8 +1476,6 @@ void RuleSetView::selectObject(FWObject *object, const QModelIndex &index)
 {
     if (fwbdebug) qDebug() << "select object:" << object->getName().c_str();
 
-    FWObject* oldObject = fwosm->selectedObject;
-
     fwosm->setSelected(object, index);
     setCurrentIndex(index);
     viewport()->update((viewport()->rect()));

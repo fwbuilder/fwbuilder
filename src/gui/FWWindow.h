@@ -302,8 +302,6 @@ public slots:
                                       QString outputFileName);
 
 
-    bool isSystem(libfwbuilder::FWObject *obj);
-
  protected:
 
     virtual void showEvent(QShowEvent *ev);

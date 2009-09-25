@@ -52,6 +52,7 @@
 #include "events.h"
 #include "ObjectTreeView.h"
 
+#include <QtDebug>
 #include <QMdiSubWindow>
 #include <QMdiArea>
 #include <QTimer>
@@ -1075,16 +1076,6 @@ bool ProjectPanel::requestEditorOwnership(QWidget *w,
     return true;
 }
 
-bool ProjectPanel::isSystem(FWObject *obj)
-{
-    return objectTreeFormat->isSystem(obj);
-}
-
-bool ProjectPanel::isStandardId(FWObject *obj)
-{
-    return objectTreeFormat->isStandardId(obj);
-}
-    
 bool ProjectPanel::validateForInsertion(FWObject *target, FWObject *obj)
 {
     return objectTreeFormat->validateForInsertion(target, obj);

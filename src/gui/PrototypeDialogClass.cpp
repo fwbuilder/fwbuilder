@@ -102,7 +102,7 @@ void PrototypeDialog::applyChanges()
     init=true;
 
 /* move to another lib if we have to */
-    if (! m_project->isSystem(obj) && libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
+    if (! FWBTree().isSystem(obj) && libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
         mw->moveObject(libs->currentText(), obj);
 
     init=false;

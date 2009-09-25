@@ -643,10 +643,19 @@ void ObjectEditor::changed()
     applyButton->setEnabled(true);
 }
 
+/*
+ * For groups, select object in the group dialog. Argument @o is the
+ * child object that has to be selected in the dialog, <opened> is
+ * currently opened object (which should be the parent of @o or hold
+ * reference to @o)
+ */
 void ObjectEditor::selectObject(FWObject *o)
 {
     qDebug("ObjectEditor::selectObject");
-    if (Group::cast(opened)==NULL || current_dialog_idx==-1) return;
+    // class Library inherits Group but has its own dialog where
+    // children objects are not shown.
+    if (Library::cast(opened)!=NULL || Group::cast(opened)==NULL || current_dialog_idx==-1)
+        return;
     ((GroupObjectDialog *) dialogs[current_dialog_idx])->selectObject(o);
 }
 

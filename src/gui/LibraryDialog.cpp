@@ -114,7 +114,7 @@ void LibraryDialog::changed()
 
 void LibraryDialog::changeIds(FWObject *root)
 {
-    if (m_project->isStandardId(root))
+    if (FWBTree().isStandardId(root))
         root->setId(FWObjectDatabase::generateUniqueId());
 
     for (FWObject::iterator i=root->begin(); i!=root->end(); i++)

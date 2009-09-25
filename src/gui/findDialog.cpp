@@ -289,7 +289,7 @@ loop:
     }
 
     if (Group::cast(o->getParent())!=NULL &&
-        !m_project->isSystem(o->getParent()))
+        !FWBTree().isSystem(o->getParent()))
     {
         m_project->openObject( o->getParent() );
         m_project->editObject( o->getParent() );

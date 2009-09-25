@@ -578,11 +578,14 @@ void FindObjectWidget::replaceDisable()
 
 void FindObjectWidget::showObject(FWObject* o)
 {
-    if (fwbdebug) qDebug("FindObjectWidget::showObject");
+    if (fwbdebug)
+        qDebug("FindObjectWidget::showObject  o: %s parent: %s",
+               o->getName().c_str(), o->getParent()->getName().c_str());
 
     FWReference* ref=FWReference::cast(o);
     if (ref!=NULL && RuleElement::cast(o->getParent())!=NULL)
     {
+        // found object in rules
         project_panel->closeEditor();
         project_panel->clearManipulatorFocus();
         project_panel->ensureObjectVisibleInRules( ref );
@@ -591,14 +594,21 @@ void FindObjectWidget::showObject(FWObject* o)
 
     project_panel->unselectRules();
 
-    if (Group::cast(o->getParent())!=NULL &&
-        !project_panel->isSystem(o->getParent()))
+    if (fwbdebug)
+        qDebug("FindObjectWidget::showObject  checkpoint #1");
+
+    if (!FWBTree().isStandardFolder(o) &&
+        Group::cast(o->getParent())!=NULL &&
+        !FWBTree().isStandardFolder(o->getParent()))
     {
         project_panel->openObject( o->getParent() );
         project_panel->editObject( o->getParent() );
         project_panel->selectObjectInEditor( (ref) ? ref->getPointer() : o );
         return;
     }
+
+    if (fwbdebug)
+        qDebug("FindObjectWidget::showObject  checkpoint #2");
 
     project_panel->closeEditor();
     project_panel->openObject( o );

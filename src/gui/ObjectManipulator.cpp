@@ -351,12 +351,8 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     ObjectTreeViewItem *nitm = NULL;
     QString icn_filename;
 
-    if (fwbdebug)
-        qDebug("insertObject: obj=%p %s", obj, obj->getName().c_str());
-
-    if (m_project->isSystem(obj))
+    if (FWBTree().isStandardFolder(obj))
         icn_filename = ":/Icons/SystemGroup/icon-tree";
-//        icn_filename = ":/Icons/folder1.png";
     else
         icn_filename = (":/Icons/" + obj->getTypeName() + "/icon-tree").c_str();
 
@@ -364,7 +360,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
 
     if (Resources::global_res->getResourceBool(
             string("/FWBuilderResources/Type/") +
-            obj->getTypeName() + "/hidden") ) return NULL;
+            obj->getTypeName() + "/hidden")) return NULL;
 
     nitm = new ObjectTreeViewItem( itm );
 
@@ -399,7 +395,7 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
     ObjectTreeViewItem *nitm = insertObject(itm, obj);
     if (nitm==NULL) return;
 
-    if ( m_project->isSystem(obj) ) nitm->setExpanded( st->getExpandTree() );
+    if ( FWBTree().isStandardFolder(obj) ) nitm->setExpanded( st->getExpandTree() );
 
     if (Cluster::isA(obj))
     {
@@ -1184,10 +1180,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         tr("Edit"), this, SLOT( editSelectedObject()));
 
     QMenu *duptargets  = NULL;
+    QAction *dupID = NULL;
     QMenu *movetargets = NULL;
     int moveTargetsCounter = 0;
 
-    if (!Interface::isA(currentObj) && RuleSet::cast(currentObj)==NULL)
+    if (!Interface::isA(currentObj) && RuleSet::cast(currentObj)==NULL &&
+        !Library::isA(currentObj) && !FWBTree().isStandardFolder(currentObj))
     {
         duptargets = popup->addMenu( tr("Duplicate ...") );
         movetargets = popup->addMenu( tr("Move ...") );
@@ -1221,10 +1219,10 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                  lib->isReadOnly())
                 continue;
 
-            QAction* dact = duptargets->addAction(
+            dupID = duptargets->addAction(
                 tr("place in library %1").arg(
                     QString::fromUtf8(lib->getName().c_str())));
-            dact->setData(libid);
+            dupID->setData(libid);
 
             /* can't move to the same library or if selected object is
              * a library
@@ -1242,12 +1240,9 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     popup->addSeparator();
 
-    QAction *copyID = popup->addAction( tr("Copy"), this,
-                                        SLOT( copyObj() ) );
-    QAction *cutID = popup->addAction( tr("Cut"), this,
-                                       SLOT( cutObj() ) );
-    QAction *pasteID = popup->addAction( tr("Paste"), this,
-                                         SLOT( pasteObj() ) );
+    QAction *copyID = popup->addAction(tr("Copy"), this, SLOT(copyObj()));
+    QAction *cutID = popup->addAction(tr("Cut"), this, SLOT(cutObj()));
+    QAction *pasteID = popup->addAction(tr("Paste"), this, SLOT(pasteObj()));
 
     popup->addSeparator();
 
@@ -1487,7 +1482,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     if (getCurrentObjectTree()->getNumSelected()==1)
     {
-        edtID->setEnabled(! m_project->isSystem(currentObj) );
+        edtID->setEnabled( !FWBTree().isStandardFolder(currentObj));
     } else
         edtID->setEnabled(false);
 
@@ -1503,8 +1498,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                   dupMenuItem, moveMenuItem, copyMenuItem, pasteMenuItem,
                   delMenuItem, newMenuItem, inDeletedObjects);
 
-//    dupID->setEnabled(dupMenuItem);
-//    movID->setEnabled(moveMenuItem);
+    if (dupID) dupID->setEnabled(dupMenuItem);
+//    movetargets->setEnabled(moveMenuItem);
     copyID->setEnabled(copyMenuItem);
     pasteID->setEnabled(pasteMenuItem);
 
@@ -1584,13 +1579,13 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
         }
 
         dupMenuItem=
-            (dupMenuItem && ! m_project->isSystem(obj) && ! Library::isA(obj) );
+            (dupMenuItem && ! FWBTree().isStandardFolder(obj) && ! Library::isA(obj) );
 
         inDeletedObjects = (del_obj_library!=NULL && obj->isChildOf(del_obj_library));
         dupMenuItem = dupMenuItem && !inDeletedObjects;
 
-// can't move system objects
-        moveMenuItem = moveMenuItem && ! m_project->isSystem(obj);
+// can't move system objects or libraries
+        moveMenuItem = moveMenuItem && ! FWBTree().isStandardFolder(obj) && ! Library::isA(obj);
 
 // can't move interfaces unless parent host object is also selected
         if ( Interface::isA(obj) &&
@@ -1616,9 +1611,9 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
         if (!haveMoveTargets && ! inDeletedObjects) moveMenuItem = false;
 
 //        copyMenuItem= (copyMenuItem &&
-//                       ! m_project->isSystem(currentObj) &&
+//                       ! FWBTree().isSystem(currentObj) &&
 //                       ! Library::isA(currentObj));
-//        delMenuItem= (delMenuItem && ! m_project->isSystem(currentObj));
+//        delMenuItem= (delMenuItem && ! FWBTree().isSystem(currentObj));
 
         newMenuItem= (newMenuItem && ! obj->isReadOnly() );
         Interface *intf = Interface::cast(obj);
@@ -1804,7 +1799,7 @@ void ObjectManipulator::duplicateObj(QAction *action)
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
         obj= *i;
-        if ( m_project->isSystem(obj) || Interface::isA(obj) ) continue;
+        if ( FWBTree().isSystem(obj) || Interface::isA(obj) ) continue;
         FWObject *cl = idxToLibs[libid];
         nobj = duplicateObject(cl, obj, "", false);
     }
@@ -1940,7 +1935,7 @@ void ObjectManipulator::moveObj(QAction* action)
         {
             if (obj->isChildOf(targetLib)) continue;
 
-            if ( m_project->isSystem(obj) ||
+            if ( FWBTree().isSystem(obj) ||
                  Interface::isA(obj)    ||
                  Interface::isA(obj->getParent())) continue;
 
@@ -1965,7 +1960,7 @@ void ObjectManipulator::copyObj()
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
         obj = *i;
-        if ( ! m_project->isSystem(obj) )
+        if ( ! FWBTree().isSystem(obj) )
         {
             // while obj is still part of the tree, do some clean up
             // to avoid problems in the future.  Create
@@ -2063,7 +2058,7 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
         .arg(obj->getTypeName().c_str())
         .arg(ta->getName().c_str());
     
-    if (m_project->isSystem(ta))
+    if (FWBTree().isSystem(ta))
         return m_project->validateForInsertion(ta, obj);
 
     Host *hst = Host::cast(ta);
@@ -2498,7 +2493,7 @@ void ObjectManipulator::deleteObj()
     
             //        openObject(obj,false);
     
-            if ( ! m_project->isSystem(obj) )
+            if ( ! FWBTree().isSystem(obj) )
             {
                 if (Library::isA(obj))
                 {
