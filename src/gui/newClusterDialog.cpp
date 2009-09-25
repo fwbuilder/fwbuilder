@@ -78,8 +78,8 @@ newClusterDialog::newClusterDialog(FWObject *_p)
     setPlatform(m_dialog->platform, "iptables");
     shrinkListOfPlatforms();
     
-    // fill in host OS (default: secuwall)
-    setHostOS(m_dialog->hostOS, "iptables", "secuwall");
+    // fill in host OS (default: the first item in the list)
+    setHostOS(m_dialog->hostOS, "iptables", "");
     shrinkListOfOS();
 
     setNextEnabled(OBJECT_NAME_PAGE, false);
