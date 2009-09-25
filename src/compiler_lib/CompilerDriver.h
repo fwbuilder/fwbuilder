@@ -119,6 +119,11 @@ public:
         virtual bool configure(const QStringList &args);
 
         /**
+         * Assign target object by its id
+         */
+        void setTargetId(const std::string &id);
+
+        /**
          * create right compiler objects and compile policy, nat and
          * routing rules for given firewall which can be a member of a
          * cluster. If firewall is standalone, @cluster_id is an empty

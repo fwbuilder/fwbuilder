@@ -35,6 +35,8 @@
 #include "FWWindow.h"
 #include "FWBSettings.h"
 
+#include "CompilerDriver_pix.h"
+
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -63,6 +65,7 @@
 
 using namespace std;
 using namespace libfwbuilder;
+using namespace fwcompiler;
 
 
 pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
@@ -788,6 +791,12 @@ void pixAdvancedDialog::displayCommands()
  */
     saveFixups();
 
+    CompilerDriver_pix driver(obj->getRoot());
+    driver.setTargetId(FWObjectDatabase::getStringId(obj->getId()));
+    string inspectors = driver.protocolInspectorCommands();
+    m_dialog->pix_generated_fixup->setText(inspectors.c_str());
+
+#if CALL_COMPILER_AS_EXT_PROCESS
     xmlChar  *buffer;
     int       bufsize;
     obj->getRoot()->saveToBuffer(&buffer, &bufsize);
@@ -802,6 +811,7 @@ void pixAdvancedDialog::displayCommands()
     }
 
     fwb_pix_proc->write(proc_buffer.toAscii());
+#endif
 }
 
 void pixAdvancedDialog::allXMLSent()

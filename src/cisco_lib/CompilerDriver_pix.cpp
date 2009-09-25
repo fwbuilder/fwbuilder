@@ -66,14 +66,11 @@ CompilerDriver* CompilerDriver_pix::clone()
     return new CompilerDriver_pix(objdb);
 }
 
-string CompilerDriver_pix::protocolInspectorCommands(Firewall *fw)
+string CompilerDriver_pix::protocolInspectorCommands()
 {
-    OSConfigurator_pix_os *oscnf =
-        new OSConfigurator_pix_os(objdb , fw, false);
-    oscnf->prolog();
-    string res = oscnf->getProtocolInspectionCommands();
-    delete oscnf;
-    return res;
+    OSConfigurator_pix_os oscnf(objdb , locateObject(), false);
+    oscnf.prolog();
+    return oscnf.getProtocolInspectionCommands();
 }
 
 void CompilerDriver_pix::printProlog(QTextStream &file, const string &prolog_code)

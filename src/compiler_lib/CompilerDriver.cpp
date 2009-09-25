@@ -406,6 +406,12 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
     }
 }
 
+void CompilerDriver::setTargetId(const string &id)
+{
+    fw_by_id = true;
+    fwobjectname = id.c_str();
+}
+
 Firewall* CompilerDriver::locateObject()
 {
     Firewall* obj;

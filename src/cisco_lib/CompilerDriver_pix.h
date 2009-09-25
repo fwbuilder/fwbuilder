@@ -64,7 +64,7 @@ public:
                                 const std::string &firewall_id,
                                 const std::string &single_rule_id);
 
-        std::string protocolInspectorCommands(libfwbuilder::Firewall *fw);
+        std::string protocolInspectorCommands();
     };
 };
 

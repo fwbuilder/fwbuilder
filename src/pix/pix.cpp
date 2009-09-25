@@ -173,7 +173,12 @@ int main(int argc, char **argv)
             usage(argv[0]);
             exit(1);
         }
-        driver.compile();
+        if (only_print_inspection_code)
+        {
+            cout << driver.protocolInspectorCommands();
+        } else
+            driver.compile();
+
         delete objdb;
         return 0;
 
