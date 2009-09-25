@@ -218,7 +218,7 @@ bool testPlatform(const string &pl, const string &os)
     string str;
     if (platforms.empty() || ( platforms.size()==1 && platforms.front()=="unknown" ))
     {
-        cout << _("Failed to load list of supported platforms") << endl;
+        cout << "Failed to load list of supported platforms" << endl;
         exit(1);
     }
     for (vector<std::string>::iterator i=platforms.begin();i!=platforms.end();i++)
@@ -331,7 +331,7 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             }
         }
 
-        cout << _("Address: ") << addr1 << endl;
+        cout << "Address: " << addr1 << endl;
         if (!addr2.empty()) cout << "Netmask: " << addr2 << endl;
 
         Address *o = Address::cast(nobj);
@@ -365,8 +365,8 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout << _("DNS Record: ") << dnsrec << endl;
-        cout << _("Run time: ") << runtime << endl;
+        cout << "DNS Record: " << dnsrec << endl;
+        cout << "Run time: " << runtime << endl;
                 
         DNSName *o=DNSName::cast(nobj);
         o->setSourceName(dnsrec);
@@ -384,8 +384,8 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout   << _("Range start: ") << addr1 << endl
-               << _("Range end: ") << addr2 << endl;
+        cout   << "Range start: " << addr1 << endl
+               << "Range end: " << addr2 << endl;
 
         AddressRange *o=AddressRange::cast(nobj);
         o->setRangeStart(InetAddr(addr1));
@@ -407,8 +407,8 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout   << _("Address: ") << addr1 << endl
-               << _("Netmask: ") << addr2 << endl;
+        cout   << "Address: " << addr1 << endl
+               << "Netmask: " << addr2 << endl;
 
         Network *o=Network::cast(nobj);
         o->setAddress(InetAddr(addr1));
@@ -425,8 +425,8 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout   << _("Address: ") << addr1 << endl
-               << _("Netmask: ") << addr2 << endl;
+        cout   << "Address: " << addr1 << endl
+               << "Netmask: " << addr2 << endl;
 
         NetworkIPv6 *o=NetworkIPv6::cast(nobj);
         o->setAddress(InetAddr(AF_INET6, addr1));
@@ -446,8 +446,8 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout    << _("Platform: ") << platform << endl
-                << _("Host OS: ") << hostOS << endl;
+        cout    << "Platform: " << platform << endl
+                << "Host OS: " << hostOS << endl;
 
         if (testPlatform(platform, hostOS))
         {
@@ -481,14 +481,14 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
         QDate date;
         int m,h,d,mn,y,dw;
                 
-        cout    << _("Activate a rule on:") << endl
-                << _("Time: ") << time1 << endl
-                << _("Date: ") << date1 << endl
-                << _("Day of week:") << day1 << endl
-                << _("Deactivate a rule on:") << endl
-                << _("Time: ") << time2 << endl
-                << _("Date: ") << date2 << endl
-                << _("Day of week:") << day2 << endl;
+        cout    << "Activate a rule on:" << endl
+                << "Time: " << time1 << endl
+                << "Date: " << date1 << endl
+                << "Day of week:" << day1 << endl
+                << "Deactivate a rule on:" << endl
+                << "Time: " << time2 << endl
+                << "Date: " << date2 << endl
+                << "Day of week:" << day2 << endl;
 
         Interval *o=Interval::cast(nobj);
         if (time1 == "")
@@ -567,13 +567,13 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
 
         if (security=="")
         {
-            cout << _("Security level is mandatory attribute.") << endl;
+            cout << "Security level is mandatory attribute." << endl;
         }
         else
         {
-            cout    << _("Security level: ") << security << endl
-                    << _("Address type: ") << addrtype << endl
-                    << _("Management interface: ") << management << endl;
+            cout    << "Security level: " << security << endl
+                    << "Address type: " << addrtype << endl
+                    << "Management interface: " << management << endl;
 
             Interface *o = Interface::cast(nobj);
             int sl = atoi(security.c_str());
@@ -603,15 +603,15 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout    << _("Source port range:") << endl
-                << _("Start: ") << addr1 << endl
-                << _("End: ") << addr2 << endl
-                << _("Destination port range:") << endl
-                << _("Start: ") << addr3 << endl
-                << _("End: ") << addr4 << endl
-                << _("TCP Flags: ") << endl
-                << _("Mask: ") << tcpflags_mask << endl
-                << _("Settings: ") << tcpflags_bits << endl;
+        cout    << "Source port range:" << endl
+                << "Start: " << addr1 << endl
+                << "End: " << addr2 << endl
+                << "Destination port range:" << endl
+                << "Start: " << addr3 << endl
+                << "End: " << addr4 << endl
+                << "TCP Flags: " << endl
+                << "Mask: " << tcpflags_mask << endl
+                << "Settings: " << tcpflags_bits << endl;
 
         TCPService *o=TCPService::cast(nobj);
 
@@ -671,12 +671,12 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout    << _("Source port range:") << endl
-                << _("Start: ") << addr1 << endl
-                << _("End: ") << addr2 << endl
-                << _("Destination port range:")  << endl
-                << _("Start: ") << addr3 << endl
-                << _("End: ") << addr4 << endl;
+        cout    << "Source port range:" << endl
+                << "Start: " << addr1 << endl
+                << "End: " << addr2 << endl
+                << "Destination port range:"  << endl
+                << "Start: " << addr3 << endl
+                << "End: " << addr4 << endl;
 
         UDPService *o=UDPService::cast(nobj);
 
@@ -697,8 +697,8 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout    << _("ICMP type: ") << ICMPtype << endl
-                << _("ICMP code: ") << ICMPcode << endl;
+        cout    << "ICMP type: " << ICMPtype << endl
+                << "ICMP code: " << ICMPcode << endl;
 
         ICMPService *o=ICMPService::cast(nobj);
         o->setInt("type",atoi(ICMPtype.c_str()));
@@ -715,8 +715,8 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
             notEnoughAttributesError();
         }
 
-        cout    << _("Protocol number: ") << protocol << endl
-                << _("Flags: ") << bitmap << endl;
+        cout    << "Protocol number: " << protocol << endl
+                << "Flags: " << bitmap << endl;
 
         IPService *o=IPService::cast(nobj);
         o->setInt("protocol_num",atoi(protocol.c_str()));
@@ -792,8 +792,8 @@ void newObject(FWObjectDatabase *objdb,
 
     cout << "Adding a new object to '"
          << parent <<"': " << endl
-         << _("Type: ") << objtype << endl
-         << _("Name: ") << name << endl;
+         << "Type: " << objtype << endl
+         << "Name: " << name << endl;
 
     FWObject *nobj = createObject(objdb, objtype, parent);
 
@@ -870,8 +870,8 @@ void delObject(FWObjectDatabase *objdb, const string &object)
     for (list<FWObject*>::iterator it=objects.begin(); it!=objects.end(); ++it)
     {
         FWObject *obj = *it;
-        cout << _("Removing object '") << obj->getName()
-             << _("' from the tree.") << endl;
+        cout << "Removing object '" << obj->getName()
+             << "' from the tree." << endl;
         objdb->removeAllInstances(obj);
     }
 }

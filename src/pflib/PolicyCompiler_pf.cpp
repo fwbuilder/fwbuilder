@@ -59,7 +59,7 @@ string PolicyCompiler_pf::myPlatformName() { return "pf"; }
 int PolicyCompiler_pf::prolog()
 {
     if (fw->getStr("platform")!=myPlatformName() ) 
-	abort(_("Unsupported platform ") + fw->getStr("platform") );
+	abort("Unsupported platform " + fw->getStr("platform") );
 
     list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
@@ -74,7 +74,7 @@ int PolicyCompiler_pf::prolog()
             {
                 char errstr[256];
                 sprintf(errstr,
-                        _("Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored."),
+                        "Dynamic interface %s should not have an IP address object attached to it. This IP address object will be ignored.",
                         iface->getName().c_str() );
                 warning(errstr );
                 for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
@@ -263,7 +263,7 @@ bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 	FWObject *obj = NULL;
 //	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
 	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-	if (obj==NULL)  throw FWException(_("Broken Src object in rule: ")+rule->getLabel());
+	if (obj==NULL)  throw FWException("Broken Src object in rule: "+rule->getLabel());
 
 	if (obj->getId()==compiler->getFwId()) {
 	    fw_in_src=o;   // can not remove right now because remove invalidates iterator
@@ -308,7 +308,7 @@ bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 	FWObject *obj = NULL;
 //	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
 	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-	if (obj==NULL) throw FWException(_("Broken Dst in rule: ")+rule->getLabel());
+	if (obj==NULL) throw FWException("Broken Dst in rule: "+rule->getLabel());
 
 	if (obj->getId()==compiler->getFwId()) {
 	    fw_in_dst=o;   // can not remove right now because remove invalidates iterator
@@ -440,7 +440,7 @@ void PolicyCompiler_pf::addDefaultPolicyRule()
             {
                 char errstr[256];
                 sprintf(errstr,
-                        _("Invalid address for the backup ssh access: '%s'"),
+                        "Invalid address for the backup ssh access: '%s'",
                         mgmt_addr.c_str());
                 abort(errstr);
             }
@@ -562,7 +562,7 @@ bool PolicyCompiler_pf::ProcessScrubOption::processNext()
 	    ruleopt->setBool("scrub",false);
 	    tmp_queue.push_back(rule);
 
-	    throw FWException(_("Rule option 'scrub' is supported only for rules with action 'Accept'. Rule: ")+rule->getLabel());
+	    throw FWException("Rule option 'scrub' is supported only for rules with action 'Accept'. Rule: "+rule->getLabel());
 
 	    return true;
 	}
@@ -701,7 +701,7 @@ bool PolicyCompiler_pf::doSrvNegation::processNext()
     RuleElementSrv *srv=rule->getSrv();
 
     if (srv->getNeg()) {
-	throw FWException(_("Negation in Srv is not implemented. Rule: ")+rule->getLabel());
+	throw FWException("Negation in Srv is not implemented. Rule: "+rule->getLabel());
 	return true;
     }
     tmp_queue.push_back(rule);
@@ -790,7 +790,7 @@ void PolicyCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInte
             ! ifs->getParent()->getBool("pf_table") )
         {
             char errstr[2048];
-            sprintf(errstr,_("Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown. Rule %s"),
+            sprintf(errstr,"Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown. Rule %s",
                     ifs->getName().c_str(), 
                     ifs->getParent()->getName().c_str(),
                     rule->getLabel().c_str() );

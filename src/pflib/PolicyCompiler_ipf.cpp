@@ -203,7 +203,7 @@ bool PolicyCompiler_ipf::doSrvNegation::processNext()
     RuleElementSrv *srv=rule->getSrv();
 
     if (srv->getNeg()) {
-	throw FWException(_("Negation in Srv is not implemented. Rule: ")+rule->getLabel());
+	throw FWException("Negation in Srv is not implemented. Rule: "+rule->getLabel());
 	return false;
     }
     tmp_queue.push_back(rule);

@@ -79,16 +79,16 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     public:
     virtual bool operator()(const string&) const 
     { 
-	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << endl;
+	cout << "Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it." << endl;
 	return false;
     }
 };
 
 void usage(const char *name)
 {
-    cout << _("Firewall Builder:  policy compiler for ipfw") << endl;
-    cout << _("Version ") << VERSION << RELEASE_NUM << endl;
-    cout << _("Usage: ") << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] firewall_object_name" << endl;
+    cout << "Firewall Builder:  policy compiler for ipfw" << endl;
+    cout << "Version " << VERSION << RELEASE_NUM << endl;
+    cout << "Usage: " << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] firewall_object_name" << endl;
 }
 
 int main(int argc, char **argv)
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 	/* load the data file */
 	UpgradePredicate upgrade_predicate; 
         
-	cout << _(" *** Loading data ...");
+	cout << " *** Loading data ...";
 
         objdb->setReadOnly( false );
         objdb->load( sysfname, &upgrade_predicate, librespath);
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
         objdb->setFileName(filename);
         objdb->reIndex();
 
-	cout << _(" done\n");
+	cout << " done\n";
 
         FWObject *slib = objdb->getById(FWObjectDatabase::STANDARD_LIB_ID);
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
@@ -194,7 +194,7 @@ int main(int argc, char **argv)
 	cerr << ex.what();
         return 1;
     } catch (...) {
-	cerr << _("Unsupported exception");
+	cerr << "Unsupported exception";
         return 1;
     }
 

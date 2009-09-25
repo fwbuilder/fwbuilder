@@ -120,18 +120,18 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     virtual bool operator()(const string&) const 
     {
         bool res=false;
-        cout << _("Data file has been created in the old version of Firewall Builder.") << endl << flush;
+        cout << "Data file has been created in the old version of Firewall Builder." << endl << flush;
         if (autoupgrade_flag)
         {
-            cout << _("Do you want to convert it? (Y)") << endl;
+            cout << "Do you want to convert it? (Y/n)" << endl;
             int a = getchar();
             if (a=='y' || a=='Y' || a=='\n' ) res= true;
         }
         else
         {
-            cout << _("Use option '-u' to upgrade the file. Alternatively,\nfwbuilder GUI can convert it.") << endl;
+            cout << "Use option '-u' to upgrade the file. Alternatively,\nfwbuilder GUI can convert it." << endl;
         }
-        if (res) cout << _("Upgrading the file now ...") << endl;
+        if (res) cout << "Upgrading the file now ..." << endl;
         return res;
     }
 };
@@ -574,7 +574,7 @@ int main(int argc, char * const *argv)
         }
         else if (cmd == UPGRADE)
         {
-            cout << _("File upgraded; current data format version: ")
+            cout << "File upgraded; current data format version: "
                  << libfwbuilder::Constants::getDataFormatVersion() << endl;
         }
         else  if (cmd == NEWOBJECT)
@@ -615,8 +615,8 @@ int main(int argc, char * const *argv)
                         exit(-1);
                     }
                     FWObject *grp = groups.front();
-                    cout << _("Adding object '") << obj->getName()
-                         << _("' to the group '") << grp->getName()
+                    cout << "Adding object '" << obj->getName()
+                         << "' to the group '" << grp->getName()
                          << "'" << endl;
                     grp->addRef(obj);
                 }
@@ -630,8 +630,8 @@ int main(int argc, char * const *argv)
                         exit(-1);
                     }
                     FWObject *grp = groups.front();
-                    cout << _("Removing object '") << obj->getName()
-                         << _("' from the group '") << grp->getName()
+                    cout << "Removing object '" << obj->getName()
+                         << "' from the group '" << grp->getName()
                          << "'" << endl;
                     grp->removeRef(obj);
                 }
@@ -658,7 +658,7 @@ int main(int argc, char * const *argv)
     cerr << ex.what();
         exit(1);
     } catch (...) {
-    cerr << _("Unsupported exception");
+    cerr << "Unsupported exception";
         exit(1);
     }
 

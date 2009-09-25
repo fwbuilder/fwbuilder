@@ -223,7 +223,7 @@ bool NATCompiler_pf::NATRuleType::processNext()
 	return true;
     }
 
-    compiler->abort(rule, _("Unsupported translation."));
+    compiler->abort(rule, "Unsupported translation.");
    
     return false;
 }
@@ -348,59 +348,59 @@ bool NATCompiler_pf::VerifyRules::processNext()
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
 //    if (rule->getRuleType()==NATRule::LB)
-//        compiler->abort(_("Load balancing rules are not supported. Rule ")+rule->getLabel());
+//        compiler->abort("Load balancing rules are not supported. Rule "+rule->getLabel());
 
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
 	compiler->abort(
             
                 rule, 
-                _("There should be no more than one object in original destination"));
+                "There should be no more than one object in original destination");
 
 //    if (rule->getRuleType()==NATRule::SNAT && tsrc->size()!=1)
-//	compiler->abort(_("There should be no more than one object in translated source in the rule ")+rule->getLabel());
+//	compiler->abort("There should be no more than one object in translated source in the rule "+rule->getLabel());
 
     if (osrv->getNeg())
         compiler->abort(
             
                 rule, 
-                _("Negation in original service is not supported."));
+                "Negation in original service is not supported.");
 
     /* bug #1276083: "Destination NAT rules". this restriction is not
      * true at least as of OpenBSD 3.5
      *
     if (rule->getRuleType()==NATRule::DNAT && osrv->isAny()) 
-	compiler->abort(_("Service must be specified for destination translation rule. Rule ")+rule->getLabel());
+	compiler->abort("Service must be specified for destination translation rule. Rule "+rule->getLabel());
     */
 
     if (rule->getRuleType()==NATRule::DNAT && osrv->isAny() && !tsrv->isAny())
 	compiler->abort(
             
                 rule, 
-                _("Can not translate 'any' into a specific service."));
+                "Can not translate 'any' into a specific service.");
 
     if (tsrc->getNeg())
         compiler->abort(
             
                 rule, 
-                _("Can not use negation in translated source."));
+                "Can not use negation in translated source.");
             
     if (tdst->getNeg())
         compiler->abort(
             
                 rule, 
-                _("Can not use negation in translated destination."));
+                "Can not use negation in translated destination.");
 
     if (tsrv->getNeg())
         compiler->abort(
             
                 rule, 
-                _("Can not use negation in translated service."));
+                "Can not use negation in translated service.");
 
     if (tsrv->size()!=1) 
 	compiler->abort(
             
                 rule, 
-                _("Translated service should be 'Original' or should contain single object."));
+                "Translated service should be 'Original' or should contain single object.");
 
     FWObject *o=tsrv->front();
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
@@ -409,14 +409,14 @@ bool NATCompiler_pf::VerifyRules::processNext()
 	compiler->abort(
             
                 rule, 
-                _("Can not use group in translated service."));
+                "Can not use group in translated service.");
 
 #if 0
     if (rule->getRuleType()==NATRule::SNAT ) 
     {
         Address* o1=compiler->getFirstTSrc(rule);
         if ( Network::cast(o1)!=NULL || AddressRange::cast(o1)!=NULL )
-            compiler->abort(_("Can not use network or address range object in translated source. Rule ")+rule->getLabel());
+            compiler->abort("Can not use network or address range object in translated source. Rule "+rule->getLabel());
     }
 #endif
 
@@ -441,14 +441,14 @@ bool NATCompiler_pf::VerifyRules::processNext()
             compiler->abort(
                 
                     rule, 
-                    _("There should be no more than one object in translated destination"));
+                    "There should be no more than one object in translated destination");
 
         Address* o1=compiler->getFirstTDst(rule);
         if ( Network::cast(o1)!=NULL || AddressRange::cast(o1)!=NULL )
             compiler->abort(
                 
                     rule, 
-                    _("Can not use network or address range object in translated destination."));
+                    "Can not use network or address range object in translated destination.");
     }
 
 
@@ -461,7 +461,7 @@ bool NATCompiler_pf::VerifyRules::processNext()
             compiler->abort(
                 
                     rule, 
-                    _("Original and translated source should both be networks of the same size."));
+                    "Original and translated source should both be networks of the same size.");
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
@@ -473,7 +473,7 @@ bool NATCompiler_pf::VerifyRules::processNext()
             compiler->abort(
                 
                     rule, 
-                    _("Original and translated destination should both be networks of the same size."));
+                    "Original and translated destination should both be networks of the same size.");
     }
 
     return true;
@@ -761,7 +761,7 @@ bool NATCompiler_pf::ReplaceFirewallObjectsTSrc::processNext()
                 {
                     char errmsg[1024];
                     sprintf(errmsg,
-_("Could not find suitable interface for the NAT rule %s. Perhaps all interfaces are unnumbered?"), 
+"Could not find suitable interface for the NAT rule %s. Perhaps all interfaces are unnumbered?", 
                             rule->getLabel().c_str() );
                     compiler->abort(rule, errmsg);
                 }
@@ -811,7 +811,7 @@ bool NATCompiler_pf::ReplaceObjectsTDst::processNext()
             if (loopback_address==NULL)
             {
                 char errstr[1024];
-                sprintf(errstr, _("Can not configure redirection NAT rule %s because loopback interface is missing.") ,
+                sprintf(errstr, "Can not configure redirection NAT rule %s because loopback interface is missing." ,
                         rule->getLabel().c_str() );
                 compiler->abort(rule, errstr);
             }
@@ -992,7 +992,7 @@ void NATCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfa
         {
             char errstr[2048];
             sprintf(errstr,
-                    _("Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown."),
+                    "Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown.",
                     ifs->getName().c_str(), 
                     ifs->getParent()->getName().c_str());
 

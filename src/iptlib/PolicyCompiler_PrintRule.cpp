@@ -541,7 +541,7 @@ string PolicyCompiler_ipt::PrintRule::_printLogPrefix(const string &rule_num,
 						      const string &interf,
 						      const string &chain,
                                                       const string &ruleset,
-						      const string &rule_label,
+						      const string& ,
 						      const string &prefix)
 {
     string s = prefix;
@@ -1397,19 +1397,19 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
     ref=srcrel->front();
     Address        *src=Address::cast(FWReference::cast(ref)->getPointer());
     if(src==NULL)
-        throw FWException(_("Broken SRC in ")+rule->getLabel());
+        throw FWException(string("Broken SRC in ") + rule->getLabel());
 
     RuleElementDst *dstrel=rule->getDst();
     ref=dstrel->front();
     Address        *dst=Address::cast(FWReference::cast(ref)->getPointer());
     if(dst==NULL)
-        throw FWException(_("Broken DST in ")+rule->getLabel());
+        throw FWException(string("Broken DST in ") + rule->getLabel());
 
     RuleElementSrv *srvrel=rule->getSrv();
     ref=srvrel->front();
     Service        *srv=Service::cast(FWReference::cast(ref)->getPointer());
     if(srv==NULL)
-        throw FWException(_("Broken SRV in ")+rule->getLabel());
+        throw FWException(string("Broken SRV in ") + rule->getLabel());
 
 
     std::ostringstream  command_line;

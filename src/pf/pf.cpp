@@ -58,16 +58,16 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     public:
     virtual bool operator()(const string&) const 
     { 
-	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << endl;
+	cout << "Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it." << endl;
 	return false;
     }
 };
 
 void usage(const char *name)
 {
-    cout << _("Firewall Builder:  policy compiler for OpenBSD PF") << endl;
-    cout << _("Version ") << VERSION << RELEASE_NUM << endl;
-    cout << _("Usage: ") << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] [-4|-6] firewall_object_name" << endl;
+    cout << "Firewall Builder:  policy compiler for OpenBSD PF" << endl;
+    cout << "Version " << VERSION << RELEASE_NUM << endl;
+    cout << "Usage: " << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] [-4|-6] firewall_object_name" << endl;
 }
 
 
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
 	cerr << ex.what();
         return 1;
     } catch (...) {
-	cerr << _("Unsupported exception");
+	cerr << "Unsupported exception";
         return 1;
     }
 

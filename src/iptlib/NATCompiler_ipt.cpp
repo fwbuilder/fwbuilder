@@ -498,33 +498,33 @@ bool NATCompiler_ipt::VerifyRules::processNext()
     if (tsrc->getNeg())
 	compiler->abort(
             rule, 
-            _("Can not use negation in translated source "));
+            "Can not use negation in translated source ");
 
     if (tdst->getNeg())
 	compiler->abort(
             rule,
-            _("Can not use negation in translated destination."));
+            "Can not use negation in translated destination.");
 
     if (tsrv->getNeg())
 	compiler->abort(
             rule,
-            _("Can not use negation in translated service."));
+            "Can not use negation in translated service.");
 
     if (tsrv->size()!=1) 
 	compiler->abort(
             rule, 
-            _("Translated service should be 'Original' or should contain single object."));
+            "Translated service should be 'Original' or should contain single object.");
 
     if ( Group::cast( compiler->getFirstTSrv(rule) )!=NULL)
 	compiler->abort(
             rule, 
-            _("Can not use group in translated service."));
+            "Can not use group in translated service.");
 
 
     if (rule->getRuleType()==NATRule::LB)
         compiler->abort(
             rule, 
-            _("Load balancing rules are not supported."));
+            "Load balancing rules are not supported.");
 
 
     if (rule->getRuleType()==NATRule::SNAT ) 
@@ -533,7 +533,7 @@ bool NATCompiler_ipt::VerifyRules::processNext()
         if ( ! tsrc->isAny() && Network::cast(o1)!=NULL)
             compiler->abort(
                 rule, 
-                _("Can not use network object in translated source."));
+                "Can not use network object in translated source.");
     }
 
 
@@ -545,7 +545,7 @@ bool NATCompiler_ipt::VerifyRules::processNext()
              a1->getNetmaskPtr()->getLength() != a2->getNetmaskPtr()->getLength() )
             compiler->abort(
                 rule, 
-                _("Original and translated source should both be networks of the same size."));
+                "Original and translated source should both be networks of the same size.");
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
@@ -556,11 +556,11 @@ bool NATCompiler_ipt::VerifyRules::processNext()
              a1->getNetmaskPtr()->getLength() != a2->getNetmaskPtr()->getLength() )
             compiler->abort(
                 rule, 
-                _("Original and translated destination should both be networks of the same size ."));
+                "Original and translated destination should both be networks of the same size .");
     }
 
-    Service  *osrv_obj = compiler->getFirstOSrv(rule);
-    Service  *tsrv_obj = compiler->getFirstTSrv(rule);
+//    Service  *osrv_obj = compiler->getFirstOSrv(rule);
+//    Service  *tsrv_obj = compiler->getFirstTSrv(rule);
 
     return true;
 }
@@ -587,12 +587,12 @@ bool NATCompiler_ipt::VerifyRules2::processNext()
         if (osrv->isAny() && ! tsrv->isAny())
             compiler->abort(
                 rule, 
-                _("Can not use service object in Translated Service if Original Service is 'Any'."));
+                "Can not use service object in Translated Service if Original Service is 'Any'.");
         
         if (!tsrv->isAny() && s1->getProtocolNumber()!=s2->getProtocolNumber())
             compiler->abort(
                 rule, 
-                _("Translated Service should be either 'Original' or should contain object of the same type as Original Service."));
+                "Translated Service should be either 'Original' or should contain object of the same type as Original Service.");
     }
     return true;
 }
@@ -764,7 +764,7 @@ bool NATCompiler_ipt::addVirtualAddress::processNext()
                 compiler->warning(
                     
                         rule, 
-                        string(_("Adding of virtual address for address range is not implemented (object ")) +
+                        string("Adding of virtual address for address range is not implemented (object ") +
                         a->getName() + ")" );
             } else
                 compiler->osconfigurator->addVirtualAddressForNAT( a );
@@ -995,7 +995,8 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
                 {
                     char errmsg[1024];
                     sprintf(errmsg,
-_("Could not find suitable interface for the NAT rule %s. Perhaps all interfaces are unnumbered?"), 
+                            "Could not find suitable interface for the NAT rule %s. "
+                            "Perhaps all interfaces are unnumbered?", 
                             rule->getLabel().c_str() );
                     compiler->abort(rule, errmsg);
                 }
@@ -1165,7 +1166,8 @@ void NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterf
             cerr << endl;
 #endif
             char errstr[2048];
-            sprintf(errstr,_("Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown."),
+            sprintf(errstr, "Can not build rule using dynamic interface '%s' "
+                    "of the object '%s' because its address in unknown.",
                     ifs->getName().c_str(), 
                     ifs->getParent()->getName().c_str());
 

@@ -66,7 +66,7 @@ void OSConfigurator_freebsd::processFirewallOptions()
     s=options->getStr("freebsd_ip_sourceroute");
     if (!s.empty()) {
 	if (s!="0" && s!="1")
-	    throw FWException(_("Illegal value for OS parameter freebsd_ip_sourceroute: '")+s+"'");
+	    throw FWException("Illegal value for OS parameter freebsd_ip_sourceroute: '"+s+"'");
 
 	output << "$SYSCTL -w net.inet.ip.sourceroute=" << s << endl;
     }
@@ -74,7 +74,7 @@ void OSConfigurator_freebsd::processFirewallOptions()
     s=options->getStr("freebsd_ip_redirect");
     if (!s.empty()) {
 	if (s!="0" && s!="1")
-	    throw FWException(_("Illegal value for OS parameter freebsd_ip_redirect: '")+s+"'");
+	    throw FWException("Illegal value for OS parameter freebsd_ip_redirect: '"+s+"'");
 
 	output << "$SYSCTL -w net.inet.ip.redirect=" << s << endl;
     }

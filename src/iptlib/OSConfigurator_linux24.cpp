@@ -181,9 +181,9 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)
                 virtual_addresses.push_back( *(nw->getAddressPtr()) );
                 registerVirtualAddressForNat();
             } else
-                warning(_("Can not add virtual address ") +
+                warning("Can not add virtual address " +
                         nw->getAddressPtr()->toString() +
-                        _(" (object ") + nw->getName() + ")" );
+                        " (object " + nw->getName() + ")" );
         }
     }
 }
@@ -220,9 +220,9 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
                 virtual_addresses.push_back(*(addr->getAddressPtr()));
                 registerVirtualAddressForNat();
             } else
-                warning(_("Can not add virtual address ") + 
+                warning("Can not add virtual address " + 
                         addr->getAddressPtr()->toString() +
-                        _(" (object ") + addr->getName() + ")" );
+                        " (object " + addr->getName() + ")" );
         }
         return;
     }

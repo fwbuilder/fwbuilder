@@ -78,7 +78,7 @@ void OSConfigurator_bsd::addVirtualAddressForNAT(const Address *addr)
         
             virtual_addresses.push_back(*(addr->getAddressPtr()));
         } else
-            warning(_("Can not add virtual address ") +
+            warning("Can not add virtual address " +
                     addr->getAddressPtr()->toString() );
     }
 }

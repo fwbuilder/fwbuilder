@@ -130,7 +130,7 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
         oscnf = std::auto_ptr<OSConfigurator>(new OSConfigurator_freebsd(objdb , fw, false));
 
     if (oscnf.get()==NULL)
-        throw FWException(_("Unrecognized host OS ")+fw->getStr("host_OS")+"  (family "+family+")");
+        throw FWException("Unrecognized host OS "+fw->getStr("host_OS")+"  (family "+family+")");
 
     oscnf->prolog();
 
@@ -327,12 +327,12 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
 
     script << "#!/bin/sh " << shell_dbg << endl << endl;
 
-    script << _("#\n\
+    script << "#\n\
 #  This is automatically generated file. DO NOT MODIFY !\n\
 #\n\
-#  Firewall Builder  fwb_ipfw v") << VERSION << "-" << RELEASE_NUM << _(" \n\
+#  Firewall Builder  fwb_ipfw v" << VERSION << "-" << RELEASE_NUM << " \n\
 #\n\
-#  Generated ") << timestr << " " << tzname[stm->tm_isdst] << _(" by ") 
+#  Generated " << timestr << " " << tzname[stm->tm_isdst] << " by " 
             << user_name << "\n#\n";
 
     script << MANIFEST_MARKER << "* " << QFileInfo(fw_file_name).fileName();

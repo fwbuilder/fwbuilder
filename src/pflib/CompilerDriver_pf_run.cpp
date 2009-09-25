@@ -151,7 +151,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                                                   objdb , fw, false));
 
     if (oscnf.get()==NULL)
-        throw FWException(_("Unrecognized host OS ") + 
+        throw FWException("Unrecognized host OS " + 
                           fw->getStr("host_OS")+"  (family "+family+")");
 
     oscnf->prolog();
@@ -489,12 +489,12 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
     script << "#!/bin/sh ";
     script << shell_dbg << "\n";
 
-    script << _("#\n\
+    script << "#\n\
 #  This is automatically generated file. DO NOT MODIFY !\n\
 #\n\
-#  Firewall Builder  fwb_pf v") << VERSION << "-" << RELEASE_NUM << _(" \n\
+#  Firewall Builder  fwb_pf v" << VERSION << "-" << RELEASE_NUM << " \n\
 #\n\
-#  Generated ") << timestr << " " << tzname[stm->tm_isdst] << _(" by ") 
+#  Generated " << timestr << " " << tzname[stm->tm_isdst] << " by " 
             << user_name << "\n#\n";
 
     info("Output file name: " + fw_file_name.toStdString());
@@ -541,8 +541,8 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
     script << "\n";
 
     script << "log '";
-    script << _("Activating firewall script generated ")
-            << timestr << " " << _(" by ")
+    script << "Activating firewall script generated "
+            << timestr << " " << " by "
             << user_name;
     script << "'" << "\n";
 

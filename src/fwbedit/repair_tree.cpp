@@ -65,7 +65,7 @@ void testAndFix(FWObjectDatabase *objdb,
 
 void checkAndRepairTree(FWObjectDatabase *objdb)
 {
-    cout << _("Check and repair tree structure:") << endl;
+    cout << "Check and repair tree structure:" << endl;
     FWObject *root=objdb;
     FWObject *nlib;
     string lib_name;

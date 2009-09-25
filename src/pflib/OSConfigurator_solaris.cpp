@@ -58,7 +58,7 @@ void OSConfigurator_solaris::processFirewallOptions()
     s=options->getStr("solaris_ip_ignore_redirect");
     if (!s.empty()) {
 	if (s!="0" && s!="1")
-	    throw FWException(_("Illegal value for OS parameter solaris_ip_ignore_redirect: '")+s+"'");
+	    throw FWException("Illegal value for OS parameter solaris_ip_ignore_redirect: '"+s+"'");
 
 	output << "ndd -set /dev/ip ip_ignore_redirect " << s << endl;
     }
@@ -66,7 +66,7 @@ void OSConfigurator_solaris::processFirewallOptions()
     s=options->getStr("solaris_ip_respond_to_echo_broadcast");
     if (!s.empty()) {
 	if (s!="0" && s!="1")
-	    throw FWException(_("Illegal value for OS parameter solaris_ip_respond_to_echo_broadcast: '")+s+"'");
+	    throw FWException("Illegal value for OS parameter solaris_ip_respond_to_echo_broadcast: '"+s+"'");
 
 	output << "ndd -set /dev/ip ip_respond_to_echo_broadcast " << s << endl;
     }
@@ -74,7 +74,7 @@ void OSConfigurator_solaris::processFirewallOptions()
     s=options->getStr("solaris_ip_forward_directed_broadcasts");
     if (!s.empty()) {
 	if (s!="0" && s!="1")
-	    throw FWException(_("Illegal value for OS parameter solaris_ip_forward_directed_broadcasts: '")+s+"'");
+	    throw FWException("Illegal value for OS parameter solaris_ip_forward_directed_broadcasts: '"+s+"'");
 
 	output << "ndd -set /dev/ip ip_forward_directed_broadcasts " << s << endl;
     }
@@ -82,7 +82,7 @@ void OSConfigurator_solaris::processFirewallOptions()
     s=options->getStr("solaris_ip_forward_src_routed");
     if (!s.empty()) {
 	if (s!="0" && s!="1")
-	    throw FWException(_("Illegal value for OS parameter solaris_ip_forward_src_routed: '")+s+"'");
+	    throw FWException("Illegal value for OS parameter solaris_ip_forward_src_routed: '"+s+"'");
 
 	output << "ndd -set /dev/ip ip_forward_src_routed " << s << endl;
     }
@@ -113,7 +113,7 @@ void OSConfigurator_solaris::addVirtualAddressForNAT(const Address *addr)
         
             virtual_addresses.push_back(*(addr->getAddressPtr()));
         } else
-            warning(_("Can not add virtual address ") +
+            warning("Can not add virtual address " +
                     addr->getAddressPtr()->toString() );
     }
 }

@@ -74,32 +74,32 @@ bool NATCompiler_ipf::VerifyRules::processNext()
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
-	throw FWException(_("There should be no more than one object in original destination in the rule ")+rule->getLabel());
+	throw FWException("There should be no more than one object in original destination in the rule "+rule->getLabel());
 
 //    if (rule->getRuleType()==NATRule::SNAT && tsrc->size()!=1)
-//	throw FWException(_("There should be no more than one object in translated source in the rule ")+rule->getLabel());
+//	throw FWException("There should be no more than one object in translated source in the rule "+rule->getLabel());
 
     if (rule->getRuleType()==NATRule::DNAT && osrv->isAny()) 
-	throw FWException(_("Service must be specified for destination translation rule. Rule ")+rule->getLabel());
+	throw FWException("Service must be specified for destination translation rule. Rule "+rule->getLabel());
 
     if (tsrv->size()!=1) 
-	throw FWException(_("Translated service should be 'Original' or should contain single object. Rule: ")+rule->getLabel());
+	throw FWException("Translated service should be 'Original' or should contain single object. Rule: "+rule->getLabel());
 
     FWObject *o=tsrv->front();
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     if ( Group::cast(o)!=NULL)
-	throw FWException(_("Can not use group in translated service. Rule ")+rule->getLabel());
+	throw FWException("Can not use group in translated service. Rule "+rule->getLabel());
 
 #if 0
     if (rule->getRuleType()==NATRule::SNAT ) 
     {
         if ( tsrc->size()!=1)
-            throw FWException(_("There should be no more than one object in translated source in the rule ")+rule->getLabel());
+            throw FWException("There should be no more than one object in translated source in the rule "+rule->getLabel());
 
 //        Address* o1=tsrc->getFirst(true);
 //        if ( ! tsrc->isAny() && Network::cast(o1)!=NULL)
-//            throw FWException(_("Can not use network object in translated source. Rule ")+rule->getLabel());
+//            throw FWException("Can not use network object in translated source. Rule "+rule->getLabel());
     }
 #endif
 
@@ -108,7 +108,7 @@ bool NATCompiler_ipf::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
-            throw FWException(_("Original and translated source should both be networks of the same size . Rule ")+rule->getLabel());
+            throw FWException("Original and translated source should both be networks of the same size . Rule "+rule->getLabel());
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) {
@@ -116,17 +116,17 @@ bool NATCompiler_ipf::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
-            throw FWException(_("Original and translated destination should both be networks of the same size . Rule ")+rule->getLabel());
+            throw FWException("Original and translated destination should both be networks of the same size . Rule "+rule->getLabel());
     }
 
 
 
 
     if (osrc->getNeg() || odst->getNeg() || osrv->getNeg())
-        throw FWException(_("Negation in NAT rules is not supported. Rule ")+rule->getLabel());
+        throw FWException("Negation in NAT rules is not supported. Rule "+rule->getLabel());
 
 //    if (rule->getRuleType()==NATRule::NONAT)
-//        throw FWException(_("Unsupported translation. Rule ")+rule->getLabel());
+//        throw FWException("Unsupported translation. Rule "+rule->getLabel());
 
     return true;
 }
@@ -302,9 +302,9 @@ bool NATCompiler_ipf::AssignInterface::processNext()
     default: ;
     }
 
-    throw FWException(_("Could not assign NAT rule to the interface. Perhaps one of the \n\
+    throw FWException("Could not assign NAT rule to the interface. Perhaps one of the \n\
  objects has address which does not belong to any subnet the firewall has interface on. \n\
- Rule: ")+rule->getLabel());
+ Rule: "+rule->getLabel());
     
     return true;
 }
