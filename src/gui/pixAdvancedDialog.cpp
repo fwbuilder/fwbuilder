@@ -55,13 +55,10 @@
 #include <qtabwidget.h>
 #include <qlistwidget.h>
 #include <qlabel.h>
-#include <qprocess.h>
-#include <qfile.h>
 
 #include <iostream>
 #include <sstream>
 
-#include <libxml/xmlmemory.h>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -76,46 +73,6 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
 
     Firewall  *fw=Firewall::cast(obj);
     FWOptions *fwopt=fw->getOptionsObject();
-    string compiler=fwopt->getStr("compiler");
-    if (compiler=="")
-    {
-        compiler=Resources::platform_res[fw->getStr("platform")]->getCompiler();
-    }
-/*
- * On Unix compilers are installed in the standard place and are
- * accessible via PATH. On Windows and Mac they get installed in
- * unpredictable directories and need to be found
- *
- * first, check if user specified an absolute path for the compiler,
- * then check  if compiler is registsred in preferences, and if not,
- * look for it in appRootDir and if it is not there, rely on PATH
- */
-#if defined(Q_OS_WIN32) ||  defined(Q_OS_MACX)
-
-    if ( ! QFile::exists( compiler.c_str() ) )
-    {
-        string ts = string("Compilers/")+compiler;
-        QString cmppath = st->getStr( ts.c_str() );
-        if (!cmppath.isEmpty()) compiler=cmppath.toLatin1().constData();
-        else
-        {
-            /* try to find compiler in appRootDir. */
-            string ts =  getPathToBinary(compiler);
-            if ( QFile::exists( ts.c_str() ) )
-                compiler = ts;
-        }
-    }
-#endif
-
-    fwb_pix_proc = new QProcess();
-
-    connect(fwb_pix_proc, SIGNAL(readyReadStandardOutput()), this,  SLOT(readFromStdout() ) );
-    connect(fwb_pix_proc, SIGNAL(readyReadStandardError()), this,  SLOT(readFromStderr() ) );
-    connect(fwb_pix_proc, SIGNAL(stateChanged( QProcess::ProcessState )),   this,  SLOT(fwb_pix_Finished( QProcess::ProcessState ) ) );
-    connect(fwb_pix_proc, SIGNAL(bytesWritten(qint64)),   this,  SLOT(allXMLSent() ) );
-
-    compilerPath = compiler.c_str();
-    argumentList << "-f" << "-" << "-I" << fw->getName().c_str();
 
     string vers="version_"+obj->getStr("version");
     string platform = obj->getStr("platform");   // could be 'pix' or 'fwsm'
@@ -210,9 +167,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
     syslogFacilityMapping.push_back("LOCAL7");
     syslogFacilityMapping.push_back("23");
 
-
-
-    FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
+    FWOptions *fwoptions = (Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
 
     bool f1=fwoptions->getBool("pix_acl_basic");
@@ -239,7 +194,8 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
 /* Page "Compiler Options" */
 
     bool outboundACLSupported= (Resources::platform_res[platform]->getResourceBool(
-                  "/FWBuilderResources/Target/options/"+vers+"/pix_outbound_acl_supported") );
+                  "/FWBuilderResources/Target/options/" +
+                  vers + "/pix_outbound_acl_supported"));
 
     if (outboundACLSupported)
         m_dialog->pix_emulate_out_acl->hide();
@@ -247,8 +203,9 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
         m_dialog->pix_generate_out_acl->hide();
 
     m_dialog->tabWidget->setTabEnabled(8,false); //Disable tab
-    data.registerOption(m_dialog->ipv4before_2,    fwoptions, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first");
-
+    data.registerOption(m_dialog->ipv4before_2, fwoptions,
+                        "ipv4_6_order",
+                        QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first");
 
     data.registerOption( m_dialog->outputFileName, fwoptions,
                          "output_file");
@@ -795,63 +752,11 @@ void pixAdvancedDialog::displayCommands()
     driver.setTargetId(FWObjectDatabase::getStringId(obj->getId()));
     string inspectors = driver.protocolInspectorCommands();
     m_dialog->pix_generated_fixup->setText(inspectors.c_str());
-
-#if CALL_COMPILER_AS_EXT_PROCESS
-    xmlChar  *buffer;
-    int       bufsize;
-    obj->getRoot()->saveToBuffer(&buffer, &bufsize);
-    proc_buffer = (char*)buffer;
-    FREEXMLBUFF(buffer);
-
-    fwb_pix_proc->start(compilerPath, argumentList);
-    if ( !fwb_pix_proc->waitForStarted() )
-    {
-        m_dialog->pix_generated_fixup->append(
-            tr("Error: Policy compiler for PIX is not installed") );
-    }
-
-    fwb_pix_proc->write(proc_buffer.toAscii());
-#endif
 }
-
-void pixAdvancedDialog::allXMLSent()
-{
-    fwb_pix_proc->closeWriteChannel();
-}
-
-void pixAdvancedDialog::readFromStdout()
-{
-    m_dialog->pix_generated_fixup->append( QString( fwb_pix_proc->readAllStandardOutput() ) );
-}
-
-void pixAdvancedDialog::readFromStderr()
-{
-    m_dialog->pix_generated_fixup->append( QString( fwb_pix_proc->readAllStandardError() ) );
-}
-
-void pixAdvancedDialog::fwb_pix_Finished( QProcess::ProcessState newState )
-{
-    if (newState != QProcess::NotRunning) return;
-
-    if (fwb_pix_proc->exitStatus() != QProcess::NormalExit)
-        m_dialog->pix_generated_fixup->append( tr("Compiler error") );
-}
-
 
 void pixAdvancedDialog::updateFixupCommandsDisplay()
 {
-
-    m_dialog->pix_generated_fixup->setText("");
-    return;
-
-    QString stdoutBuffer;
-
-    fwb_pix_proc->start(compilerPath, argumentList);
-    if ( !fwb_pix_proc->waitForStarted() )
-    {
-        m_dialog->pix_generated_fixup->append(  tr("Error: Policy compiler for PIX is not installed") );
-    }
-    return;
+    displayCommands();
 }
 
 void pixAdvancedDialog::fixupCmdChanged()

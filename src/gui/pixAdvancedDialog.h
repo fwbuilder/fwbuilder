@@ -30,7 +30,6 @@
 
 #include <ui_pixadvanceddialog_q.h>
 #include "DialogData.h"
-#include <qprocess.h>
 
 #include <string>
 
@@ -38,7 +37,6 @@ class QWidget;
 class QSpinBox;
 class QComboBox;
 class QCheckBox;
-class QProcess;
 
 namespace libfwbuilder {
     class FWObject;
@@ -74,10 +72,6 @@ class pixAdvancedDialog : public QDialog
     DialogData                       data;
     std::list<struct fixupControl>   allFixups;
     bool                             syslogDeviceIdSupported;
-    QProcess                        *fwb_pix_proc;
-    QString                          proc_buffer;
-    QStringList                      argumentList;
-    QString                          compilerPath;
     
     Ui::pixAdvancedDialog_q         *m_dialog;
     
@@ -111,11 +105,6 @@ protected slots:
     virtual void scriptACLModeChanged();
     virtual void displayCommands();
     
-public slots:
-     virtual void readFromStdout();
-     virtual void readFromStderr();
-     virtual void fwb_pix_Finished( QProcess::ProcessState );
-     virtual void allXMLSent();
 };
 
 #endif // __PIXADVANCEDDIALOG_H
