@@ -585,6 +585,7 @@ void FindObjectWidget::showObject(FWObject* o)
     FWReference* ref=FWReference::cast(o);
     if (ref!=NULL && RuleElement::cast(o->getParent())!=NULL)
     {
+
         // found object in rules
         project_panel->closeEditor();
         project_panel->clearManipulatorFocus();
@@ -592,7 +593,7 @@ void FindObjectWidget::showObject(FWObject* o)
         return;
     }
 
-    project_panel->unselectRules();
+//    project_panel->unselectRules();
 
     if (fwbdebug)
         qDebug("FindObjectWidget::showObject  checkpoint #1");

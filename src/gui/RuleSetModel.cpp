@@ -328,11 +328,13 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, libfwbuilder::RuleElem
 
 QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col)
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col)";
+    if (fwbdebug)
+        qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
 
     if (col < 0 || rule == 0) return QModelIndex();
     QModelIndex parent;
-    QString groupName = rule->getRuleGroupName().c_str();
+    QString groupName = QString::fromUtf8(rule->getRuleGroupName().c_str());
+
     if (!groupName.isEmpty())
     {
         QList<RuleNode *> topLevel = root->children;
@@ -340,9 +342,11 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col)
         int row = 0;
         foreach (RuleNode * node, topLevel)
         {
+
             if (node->type == RuleNode::Group && node->name == groupName)
             {
                 parent = createIndex(row, 0, node);
+                break;
             }
             row++;
         }
@@ -351,7 +355,7 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col)
     RuleNode *parentNode = nodeFromIndex(parent);
 
     int row = 0;
-    RuleNode* child = 0;
+    RuleNode* child = NULL;
     foreach(RuleNode *node, parentNode->children)
     {
         if (node->type == RuleNode::Rule && node->rule == rule)
@@ -362,7 +366,7 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col)
         row++;
     }
 
-    if (child == 0) return QModelIndex();
+    if (child == NULL) return QModelIndex();
 
     return createIndex(row, col, child);
 }

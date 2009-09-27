@@ -302,10 +302,12 @@ void ProjectPanel::clearFirewallTabs()
 
 void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
 {
+    if (fwbdebug) qDebug("ProjectPanel::ensureObjectVisibleInRules");
     FWObject *p=obj;
     while (p && RuleSet::cast(p)==NULL ) p=p->getParent();
     if (p==NULL) return;  // something is broken
     openRuleSet(p);
+    getCurrentRuleSetView()->setFocus();
     getCurrentRuleSetView()->selectRE( obj );    
 }
 
