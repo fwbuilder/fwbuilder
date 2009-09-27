@@ -2786,7 +2786,6 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
             qDebug("in editor: %s", edt_obj->getName().c_str());
     }
 
-    m_project->unselectRules();
     if (RuleSet::cast(obj)!=NULL)
     {
         if (obj!=m_project->getCurrentRuleSet()) 
@@ -2805,8 +2804,6 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
     }
 
     if (fwbdebug) qDebug("Calling select");
-
-//    select();
     
     if (obj != m_project->getOpenedEditor())
     {
