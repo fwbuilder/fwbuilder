@@ -198,7 +198,7 @@ private:
     void setEnabledRow(bool flag);
 
     QModelIndexList getSelectedRows() const;
-    bool isOnlyTopLevelRules(const QModelIndexList &list);
+    bool isOnlyTopLevelRules(const QModelIndexList &list) const;
     bool isOneLevelRules(const QModelIndexList &list);
 
     void editSelected(const QModelIndex &index);

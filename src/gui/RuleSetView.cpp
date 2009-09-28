@@ -579,7 +579,9 @@ void RuleSetView::addChangeColorSubmenu(QMenu *menu) const
 void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) const
 {
     QString label;
-    int selectionSize = getSelectedRows().size();
+    RuleSetModel* md = ((RuleSetModel*)model());
+    QModelIndexList selectedIndexes = getSelectedRows();
+    int selectionSize = selectedIndexes.size();
 
     if (node->isInGroup())
     {
@@ -587,21 +589,22 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
         if (node->isOutermost())
             menu->addAction( tr("Remove from the group"), this, SLOT( removeFromGroup() ));
     }
-    else
+    else if (isOnlyTopLevelRules(selectedIndexes))
     {
         menu->addAction( tr("New group"), this, SLOT( newGroup() ));
 
-        QString nn = node->nameOfPredecessorGroup();
 
-        if (!nn.isNull() && !nn.isEmpty())
+        QString nn = md->nodeFromIndex(selectedIndexes.first())->nameOfPredecessorGroup();
+
+        if (!nn.isEmpty())
         {
             label = tr("Add to the group ") + nn;
             menu->addAction( label, this, SLOT( addToGroupAbove() ));
         }
 
-        nn = node->nameOfSuccessorGroup();
+        nn = md->nodeFromIndex(selectedIndexes.last())->nameOfSuccessorGroup();
 
-        if (!nn.isNull() && !nn.isEmpty())
+        if (!nn.isEmpty())
         {
             label = tr("Add to the group ") + nn;
             menu->addAction( label, this, SLOT( addToGroupBelow() ));
@@ -1130,7 +1133,7 @@ void RuleSetView::moveRuleDown()
     }
 }
 
-bool RuleSetView::isOnlyTopLevelRules(const QModelIndexList &list)
+bool RuleSetView::isOnlyTopLevelRules(const QModelIndexList &list) const
 {
     foreach (QModelIndex index, list)
     {
