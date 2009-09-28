@@ -6,7 +6,7 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
-  $Id: ColDesc.h 1487 2009-09-23 17:00:48Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
