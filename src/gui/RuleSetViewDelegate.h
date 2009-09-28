@@ -98,6 +98,7 @@ private:
     void paintAction(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const;
     void paintOptions(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const;
     void paintComment(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const;
+    void paintMetric(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const;
 };
 
 #endif // RULESETVIEWDELEGATE_H

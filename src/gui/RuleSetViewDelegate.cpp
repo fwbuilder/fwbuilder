@@ -201,6 +201,9 @@ void RuleSetViewDelegate::paintRule(QPainter *painter, const QStyleOptionViewIte
         case ColDesc::Comment :
             paintComment(painter, option, v);
             break;
+        case ColDesc::Metric :
+            paintMetric(painter, option, v);
+            break;
         default:
             QItemDelegate::paint(painter, option, index);
     }
@@ -245,6 +248,15 @@ void RuleSetViewDelegate::paintComment(QPainter *painter, const QStyleOptionView
     QString comment = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
     painter->drawText( ctx.drawRect, Qt::AlignLeft|Qt::AlignTop, comment);
+}
+
+void RuleSetViewDelegate::paintMetric(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
+{
+    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintMetric";
+    DrawingContext ctx = initContext(option.rect, true);
+    QString metric = v.value<QString>();
+    drawSelectedFocus(painter, option, ctx.objectRect);
+    drawIconAndText(painter, ctx.drawRect, QString(), metric);
 }
 
 void RuleSetViewDelegate::paintObject(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
