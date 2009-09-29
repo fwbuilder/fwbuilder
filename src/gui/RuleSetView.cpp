@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2003-2009 NetCitadel, LLC
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
@@ -20,6 +20,9 @@
 
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+  This module has been completely rewritten by yalovoy@gmail.com in 2009
 
 */
 
@@ -120,11 +123,14 @@ void RuleSetView::init()
     setUpdatesEnabled(false);
     QTime t; t.start();
     configureGroups();
-    qDebug("RuleSetView configureGroups: %d ms", t.restart());
+    if (fwbdebug)
+        qDebug("RuleSetView configureGroups: %d ms", t.restart());
     restoreCollapsedGroups();
-    qDebug("RuleSetView restoreCollapsedGroups: %d ms", t.restart());
+    if (fwbdebug)
+        qDebug("RuleSetView restoreCollapsedGroups: %d ms", t.restart());
     resizeColumns();
-    qDebug("RuleSetView resizeColumns: %d ms", t.restart());
+    if (fwbdebug)
+        qDebug("RuleSetView resizeColumns: %d ms", t.restart());
     setUpdatesEnabled(true);
 }
 
@@ -921,6 +927,9 @@ void RuleSetView::renameGroup()
             md->renameGroup(index, newGroupName);
         }
     }
+
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
 void RuleSetView::setRuleColor(const QString &c)
@@ -1395,6 +1404,8 @@ void RuleSetView::removeFromGroup()
         md->removeFromGroup(group, itemsInGroups[group].first(), itemsInGroups[group].last());
     }
 
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
 FWObject *RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)
@@ -1742,6 +1753,7 @@ void RuleSetView::deleteSelectedObject()
         fwosm->reset();
 
         project->findObjectWidget->reset();
+
         QCoreApplication::postEvent(
             mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
     }
@@ -1794,7 +1806,6 @@ void RuleSetView::pasteObject()
     }
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
-
 }
 
 void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
@@ -1861,6 +1872,10 @@ void RuleSetView::dropEvent(QDropEvent *ev)
             }
         }
     }
+
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+
     setCurrentIndex(index);
     ev->accept();
 }
@@ -2025,26 +2040,32 @@ void RuleSetView::restoreCollapsedGroups()
     RuleSetModel* md = ((RuleSetModel*)model());
     QStringList collapsed_groups;
     QString filename = project->getRCS()->getFileName();
-    qDebug("restoreCollapsedGroups begin: %d ms", t.restart());
+    if (fwbdebug)
+        qDebug("restoreCollapsedGroups begin: %d ms", t.restart());
     st->getCollapsedRuleGroups(
         filename,
         md->getFirewall()->getName().c_str(),
         md->getRuleSet()->getName().c_str(),
         collapsed_groups);
-    qDebug("restoreCollapsedGroups getCollapsedRuleGroups: %d ms", t.restart());
+    if (fwbdebug)
+        qDebug("restoreCollapsedGroups getCollapsedRuleGroups: %d ms", t.restart());
     QList<QModelIndex> groups;
     md->getGroups(groups);
 
-    qDebug("restoreCollapsedGroups getGroups: %d ms", t.restart());
-    qDebug() << "Groups:" << groups.size();
+    if (fwbdebug)
+    {
+        qDebug("restoreCollapsedGroups getGroups: %d ms", t.restart());
+        qDebug() << "Groups:" << groups.size();
+    }
 
     foreach (QModelIndex index, groups)
     {
         RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
         setExpanded(index,  !collapsed_groups.contains(node->name) );
     }
-    qDebug("restoreCollapsedGroups foreach setExpanded: %d ms", t.restart());
 
+    if (fwbdebug)
+        qDebug("restoreCollapsedGroups foreach setExpanded: %d ms", t.restart());
 }
 
 int RuleSetView::rowHeight(const QModelIndex& index) const

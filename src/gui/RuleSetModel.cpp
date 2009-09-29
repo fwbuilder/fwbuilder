@@ -207,7 +207,8 @@ void RuleSetModel::initModel()
         }
 
     }
-    qDebug("Model init: %d ms", t.elapsed());
+    if (fwbdebug)
+        qDebug("Model init: %d ms", t.elapsed());
 }
 
 int RuleSetModel::rowCount(const QModelIndex &parent) const
