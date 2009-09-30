@@ -57,12 +57,12 @@ using namespace std;
 
 RuleSetViewDelegate::RuleSetViewDelegate(QObject *parent, FWObjectSelectionModel *selectionModel) : QItemDelegate(parent)
 {
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::RuleSetViewDelegate";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::RuleSetViewDelegate";
     this->sectionModel = selectionModel;
 }
 void RuleSetViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paint";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paint";
     RuleNode * node;
     if (index.isValid())
     {
@@ -92,7 +92,7 @@ void RuleSetViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 void RuleSetViewDelegate::paintRowHeader (QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, RuleNode * node) const
 {
-    Q_UNUSED(node)
+    Q_UNUSED(node);
     QStyleOptionViewItem newOpt = option;
     newOpt.displayAlignment = Qt::AlignRight;
     QItemDelegate::paint(painter, newOpt, index);
@@ -102,8 +102,8 @@ void RuleSetViewDelegate::paintRowHeader (QPainter *painter, const QStyleOptionV
 
 void RuleSetViewDelegate::paintGroup(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, RuleNode * node) const
 {
-    Q_UNUSED(node)
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintGroup";
+    Q_UNUSED(node);
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintGroup";
     painter->fillRect(option.rect,QColor("lightgray"));
     QItemDelegate::paint(painter, option, index);
 }
@@ -168,8 +168,7 @@ void RuleSetViewDelegate::drawSelectedFocus(QPainter *painter, const QStyleOptio
 
 void RuleSetViewDelegate::paintRule(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, RuleNode * node) const
 {
-    if (fwbdebug)
-        qDebug() << "RuleSetViewDelegate::paintRule";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintRule";
     QVariant v = index.data(Qt::DisplayRole);
     if (!v.isValid()) return;
 
@@ -213,7 +212,7 @@ void RuleSetViewDelegate::paintRule(QPainter *painter, const QStyleOptionViewIte
 
 void RuleSetViewDelegate::paintDirection(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintDirection";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintDirection";
     DrawingContext ctx = initContext(option.rect);
     QString dir = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
@@ -223,7 +222,7 @@ void RuleSetViewDelegate::paintDirection(QPainter *painter, const QStyleOptionVi
 
 void RuleSetViewDelegate::paintAction(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintAction";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintAction";
     DrawingContext ctx = initContext(option.rect);
     QString action = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
@@ -233,7 +232,7 @@ void RuleSetViewDelegate::paintAction(QPainter *painter, const QStyleOptionViewI
 
 void RuleSetViewDelegate::paintOptions(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintOptions";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintOptions";
     DrawingContext ctx = initContext(option.rect);
     QStringList options = v.value<QStringList>();
     drawSelectedFocus(painter, option, ctx.objectRect);
@@ -243,7 +242,7 @@ void RuleSetViewDelegate::paintOptions(QPainter *painter, const QStyleOptionView
 
 void RuleSetViewDelegate::paintComment(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintComment";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintComment";
     DrawingContext ctx = initContext(option.rect, true);
     QString comment = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
@@ -252,7 +251,7 @@ void RuleSetViewDelegate::paintComment(QPainter *painter, const QStyleOptionView
 
 void RuleSetViewDelegate::paintMetric(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintMetric";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintMetric";
     DrawingContext ctx = initContext(option.rect, true);
     QString metric = v.value<QString>();
     drawSelectedFocus(painter, option, ctx.objectRect);
@@ -261,7 +260,7 @@ void RuleSetViewDelegate::paintMetric(QPainter *painter, const QStyleOptionViewI
 
 void RuleSetViewDelegate::paintObject(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintObject";
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintObject";
     RuleElement *re = (RuleElement *)v.value<void *>();
 
     if (re==NULL) return;
@@ -409,9 +408,9 @@ QSize RuleSetViewDelegate::getTextSize(QString s, int flag)
 
 QSize RuleSetViewDelegate::calculateCellSizeForRule(const QStyleOptionViewItem & option, const QModelIndex & index, RuleNode * node ) const
 {
-    Q_UNUSED(option)
-    Q_UNUSED(node)
-    if (fwbdebug) qDebug() << "RuleSetViewDelegate::calculateCellSizeForRule";
+    Q_UNUSED(option);
+    Q_UNUSED(node);
+    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::calculateCellSizeForRule";
 
     QSize iconSize = getIconSize();
     int itemHeight = getItemHeight();

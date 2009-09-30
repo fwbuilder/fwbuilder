@@ -218,7 +218,7 @@ int RuleSetView::getColByType(ColDesc::ColumnType type) const
 
 void RuleSetView::mousePressEvent( QMouseEvent* ev )
 {
-    if (fwbdebug) qDebug() << "RuleSetView::mousePressEvent";
+    //if (fwbdebug) qDebug() << "RuleSetView::mousePressEvent";
 
     //TODO: provide custom implementation of QTreeView::mousePressEvent( ev ); for column != 0
     QTreeView::mousePressEvent( ev );
@@ -229,9 +229,9 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
 
     FWObject *object = getObject(ev->pos(), index);
 
-    if (fwbdebug) qDebug("RuleSetView::contentsMousePressEvent  "
-           "obj=%s  row=%d  col=%d",
-           (object)?object->getName().c_str():"NULL", index.row(), index.column());
+    // if (fwbdebug) qDebug("RuleSetView::contentsMousePressEvent  "
+    //        "obj=%s  row=%d  col=%d",
+    //        (object)?object->getName().c_str():"NULL", index.row(), index.column());
 
     if (object)
     {
@@ -244,7 +244,7 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
 
 void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
 {
-    if (fwbdebug) qDebug() << "RuleSetView::mouseReleaseEvent";
+    //if (fwbdebug) qDebug() << "RuleSetView::mouseReleaseEvent";
     QTreeView::mouseReleaseEvent(ev);
 
     const QModelIndex index = indexAt (ev->pos());
@@ -263,7 +263,6 @@ void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
 
 void RuleSetView::showContextMenu(const QPoint& pos)
 {
-    if (fwbdebug) qDebug() << "Context menu";
     QMenu* menu = new QMenu(this);
 
     const QModelIndex index = indexAt ( pos);
@@ -307,7 +306,6 @@ void RuleSetView::addCommonRowItemsToContextMenu(QMenu *menu) const
 
 void RuleSetView::mouseMoveEvent( QMouseEvent* ev )
 {
-    if (fwbdebug) qDebug() << "RuleSetView::mouseMoveEvent";
     if (startingDrag)
     {
         QDrag* drag = dragObject();
@@ -321,7 +319,6 @@ void RuleSetView::mouseMoveEvent( QMouseEvent* ev )
 
 QDrag* RuleSetView::dragObject()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::dragObject";
     FWObject *obj = fwosm->selectedObject;
 
     if (obj==NULL) return NULL;
@@ -689,21 +686,17 @@ void RuleSetView::itemDoubleClicked(const QModelIndex& index)
 
 void RuleSetView::editSelected(const QModelIndex& index)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::editSelected";
     if (!project->isEditorVisible()) project->showEditor();
     switchObjectInEditor(index);
 }
 
 void RuleSetView::editSelected()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::editSelected";
     editSelected(currentIndex());
 }
 
 bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
 {
-    if (fwbdebug) qDebug("RuleSetView::switchObjectInEditor  col=%d  validate=%d", index.column(),validate);
-
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return false;
 
@@ -781,9 +774,6 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
     if (!project->requestEditorOwnership(this,object,operation,validate))
         return false;
 
-    if (fwbdebug)
-        qDebug("RuleSetView::switchObjectInEditor  editor ownership granted");
-
     if (object==project->getOpenedEditor() &&
         operation==project->getOpenedOptEditor())
     {
@@ -791,9 +781,6 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
             qDebug("RuleSetView::switchObjectInEditor  same object is already opened in the editor");
         return true;
     }
-
-    if (fwbdebug)
-        qDebug("RuleSetView::switchObjectInEditor  opening object in the editor");
 
     if (object == NULL)
     {
@@ -805,8 +792,6 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
     {
         project->openOptEditor(object,operation);
     }
-
-    if (fwbdebug) qDebug("RuleSetView::switchObjectInEditor  done");
 
     return true;
 }
@@ -827,7 +812,6 @@ QModelIndexList RuleSetView::getSelectedRows() const
 
 void RuleSetView::removeRule()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::removeRule";
     RuleSetModel* md = ((RuleSetModel*)model());
     
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
@@ -900,7 +884,6 @@ void RuleSetView::removeRule()
 
 void RuleSetView::renameGroup()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::renameGroup";
     RuleSetModel* md = ((RuleSetModel*)model());
 
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
@@ -935,7 +918,6 @@ void RuleSetView::renameGroup()
 
 void RuleSetView::setRuleColor(const QString &c)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::setRuleColor";
     RuleSetModel* md = ((RuleSetModel*)model());
 
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
@@ -1034,7 +1016,6 @@ void RuleSetView::disableRule()
 
 void RuleSetView::setEnabledRow(bool flag)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::setEnabledRow()" << flag;
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
 
@@ -1058,7 +1039,6 @@ void RuleSetView::setEnabledRow(bool flag)
 
 void RuleSetView::newGroup()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::newGroup()";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
 
@@ -1090,7 +1070,6 @@ void RuleSetView::newGroup()
 
 void RuleSetView::addToGroupAbove()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::addToGroupAbove()";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
 
@@ -1110,7 +1089,6 @@ void RuleSetView::addToGroupAbove()
 
 void RuleSetView::addToGroupBelow()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::addToGroupBelow()";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
 
@@ -1130,7 +1108,6 @@ void RuleSetView::addToGroupBelow()
 
 void RuleSetView::moveRuleUp()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::moveRuleUp()";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
 
@@ -1150,7 +1127,6 @@ void RuleSetView::moveRuleUp()
 
 void RuleSetView::moveRuleDown()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::moveRuleDown()";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
 
@@ -1206,7 +1182,6 @@ bool RuleSetView::isOneLevelRules(const QModelIndexList &list)
 
 void RuleSetView::copyRule()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::copyRule()";
     RuleSetModel* md = ((RuleSetModel*)model());
 
     QModelIndexList selection = getSelectedRows();
@@ -1219,8 +1194,6 @@ void RuleSetView::copyRule()
             RuleNode *node = md->nodeFromIndex(index);
             if (node->type != RuleNode::Rule) continue;
             FWObject *rule = node->rule;
-
-            if (fwbdebug) qDebug("Adding rule to clipboard, rule=%p", rule);
 
             if (rule) FWObjectClipboard::obj_clipboard->add( rule, project );
         }
@@ -1235,8 +1208,6 @@ void RuleSetView::cutRule()
 
 void RuleSetView::pasteRuleAbove()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::pasteRuleAbove";
-
     RuleSetModel* md = ((RuleSetModel*)model());
 
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
@@ -1281,8 +1252,6 @@ void RuleSetView::pasteRuleAbove()
 
 void RuleSetView::pasteRuleBelow()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::pasteRuleBelow";
-
     RuleSetModel* md = ((RuleSetModel*)model());
 
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
@@ -1325,7 +1294,6 @@ void RuleSetView::pasteRuleBelow()
 
 void RuleSetView::insertRule()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::insertRule()";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
     if (md->getFirewall()==NULL) return;
@@ -1347,7 +1315,6 @@ void RuleSetView::insertRule()
 
 void RuleSetView::addRuleAfterCurrent()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::addRuleAfterCurrent";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
     if (md->getFirewall()==NULL) return;
@@ -1369,7 +1336,6 @@ void RuleSetView::addRuleAfterCurrent()
 
 void RuleSetView::removeFromGroup()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::removeFromGroup";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
     if (md->getFirewall()==NULL) return;
@@ -1411,8 +1377,6 @@ void RuleSetView::removeFromGroup()
 
 FWObject *RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)";
-
     if (!index.isValid() || index.column() == 0) return 0;
 
     RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
@@ -1454,8 +1418,6 @@ FWObject *RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)
 
 FWObject *RuleSetView::getObject(int number, const QModelIndex &index)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::getObject(int number, const QModelIndex &index)";
-
     if (!index.isValid() || index.column() == 0) return 0;
 
     RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
@@ -1488,8 +1450,6 @@ FWObject *RuleSetView::getObject(int number, const QModelIndex &index)
 
 int RuleSetView::getObjectNumber(FWObject *object, const QModelIndex &index)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::getObjectNumber(FWObject *object, const QModelIndex &index)";
-
     if (!index.isValid() || index.column() == 0) return 0;
 
     RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
@@ -1515,8 +1475,6 @@ int RuleSetView::getObjectNumber(FWObject *object, const QModelIndex &index)
 
 void RuleSetView::selectObject(FWObject *object, const QModelIndex &index)
 {
-    if (fwbdebug) qDebug() << "select object:" << object->getName().c_str();
-
     fwosm->setSelected(object, index);
     setCurrentIndex(index);
     viewport()->update((viewport()->rect()));
@@ -1531,7 +1489,6 @@ void RuleSetView::restoreSelection(bool sameWidget)
 
 void RuleSetView::openObjectInTree(FWObject *obj)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::openObjectInTree(FWObject *obj)";
     if (gui_experiment1) return;
     RuleSetModel* md = ((RuleSetModel*)model());
     FWObject *oo = obj;
@@ -1786,7 +1743,6 @@ void RuleSetView::cutSelectedObject()
 
 void RuleSetView::pasteObject()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::pasteObject";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
     if (md->getFirewall()==NULL) return;
@@ -1811,13 +1767,11 @@ void RuleSetView::pasteObject()
 
 void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
 {
-    if (fwbdebug) qDebug("RuleSetView::dragEnterEvent");
     ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
 }
 
 void RuleSetView::dropEvent(QDropEvent *ev)
 {
-    if (fwbdebug) qDebug("RuleSetView::dropEvent");
 
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
@@ -1825,14 +1779,6 @@ void RuleSetView::dropEvent(QDropEvent *ev)
 
     QModelIndex index = indexAt (ev->pos());
     if (!index.isValid()) return;
-
-    if (fwbdebug)
-    {
-        qDebug("RuleSetView::dropEvent  drop event mode=%d",
-               ev->proposedAction());
-        qDebug("                        src widget = %p", ev->source());
-        qDebug("                              this = %p", this   );
-    }
 
     list<FWObject*> dragol;
     if (!FWObjectDrag::decode(ev, dragol)) return;
@@ -1909,8 +1855,6 @@ void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
 
 void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::dragMoveEvent";
-
     RuleSetModel* md = ((RuleSetModel*)model());
 
     QWidget *fromWidget = ev->source();
@@ -1967,8 +1911,6 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 
 void RuleSetView::unselect()
 {
-    if (fwbdebug)
-        qDebug() << "RuleSetView::unselect()";
 //    clearSelection();
 //    setCurrentIndex(QModelIndex());
 //    selectionModel->setSelected(NULL, QModelIndex());
@@ -1976,7 +1918,6 @@ void RuleSetView::unselect()
 
 FWObject* RuleSetView::getSelectedObject()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::getSelectedObject()";
     return fwosm->selectedObject;
 }
 
@@ -1996,7 +1937,6 @@ void RuleSetView::saveCurrentRowColumn(SelectionMemento &memento)
 
 void RuleSetView::restoreCurrentRowColumn(SelectionMemento &memento)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::restoreCurrentRowColumn";
     RuleSetModel* md = ((RuleSetModel*)model());
     QModelIndex index = md->index(memento.row, memento.column, memento.groupName);
     selectRE(index);
@@ -2004,7 +1944,6 @@ void RuleSetView::restoreCurrentRowColumn(SelectionMemento &memento)
 
 void RuleSetView::updateCurrentCell()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::updateCurrentCell()";
     RuleSetModel* md = ((RuleSetModel*)model());
     md->rowChanged(fwosm->index);
     updateColumnSizeForIndex(fwosm->index);
@@ -2012,7 +1951,6 @@ void RuleSetView::updateCurrentCell()
 
 void RuleSetView::saveCollapsedGroups()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::saveCollapsedGroups()";
     QStringList collapsed_groups;
     QString filename = project->getRCS()->getFileName();
     RuleSetModel* md = ((RuleSetModel*)model());
@@ -2037,7 +1975,6 @@ void RuleSetView::restoreCollapsedGroups()
 {
     QTime t;
     t.start();
-    if (fwbdebug) qDebug() << "RuleSetView::restoreCollapsedGroups";
     RuleSetModel* md = ((RuleSetModel*)model());
     QStringList collapsed_groups;
     QString filename = project->getRCS()->getFileName();
@@ -2198,9 +2135,6 @@ void RuleSetView::setModel(QAbstractItemModel *model)
 
 void RuleSetView::repaintSelection()
 {
-    if (fwbdebug)
-        qDebug() << "RuleSetView::repaintSelection";
-
     QModelIndex index = currentIndex();
     fwosm->setSelected(project->getSelectedObject(), index);
     viewport()->update((viewport()->rect()));
@@ -2208,8 +2142,6 @@ void RuleSetView::repaintSelection()
 
 void RuleSetView::updateAll()
 {
-    if (fwbdebug)
-        qDebug() << "RuleSetView::updateAll";
     // May be it needs to invalidate all precalculated sizes.
     ((RuleSetModel*)model())->resetAllSizes();
 
@@ -2381,8 +2313,6 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
 
 void RuleSetView::compileCurrentRule()
 {
-    if (fwbdebug) qDebug() << "RuleSetView::compileRule()";
-
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
     if (md->getFirewall()==NULL) return;
@@ -2405,7 +2335,6 @@ void RuleSetView::compileCurrentRule()
 
 PolicyView::PolicyView(ProjectPanel *project, Policy *p, QWidget *parent):RuleSetView(project, parent)
 {
-    if (fwbdebug) qDebug() << "PolicyView::PolicyView";
     QItemSelectionModel *sm = QTreeView::selectionModel();
     RuleSetModel* model = new PolicyModel(p,this);
     setModel(model);
@@ -2420,7 +2349,6 @@ PolicyView::PolicyView(ProjectPanel *project, Policy *p, QWidget *parent):RuleSe
 
 NATView::NATView(ProjectPanel *project, NAT *p, QWidget *parent):RuleSetView(project, parent)
 {
-    if (fwbdebug) qDebug() << "NatView::NatView";
     QItemSelectionModel *sm = QTreeView::selectionModel();
     RuleSetModel* model = new NatModel(p,this);
     setModel(model);
@@ -2435,7 +2363,6 @@ NATView::NATView(ProjectPanel *project, NAT *p, QWidget *parent):RuleSetView(pro
 
 RoutingView::RoutingView(ProjectPanel *project, Routing *p, QWidget *parent):RuleSetView(project, parent)
 {
-    if (fwbdebug) qDebug() << "RoutingView::RoutingView";
     QItemSelectionModel *sm = QTreeView::selectionModel();
     RuleSetModel* model = new RoutingModel(p,this);
     setModel(model);

@@ -2023,7 +2023,7 @@ void ObjectManipulator::pasteObj()
 bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
                                          QString &err)
 {
-    FWObject *ta=target;
+    FWObject *ta = target;
     if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
 
     err = QObject::tr("Impossible to insert object %1 (type %2) into %3\n"
@@ -2041,7 +2041,7 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
 
     if (fw!=NULL)
     {
-        // inserting some object into firewall
+        // inserting some object into firewall or cluster
         if (!fw->validateChild(obj)) return false;
         if (Interface::isA(obj))
         {
@@ -4089,11 +4089,7 @@ void ObjectManipulator::setObjectIcon(FWObject *obj, QPixmap *pm)
             icn_alias = QString(":/Icons/") + obj->getTypeName().c_str() + "/icon-tree";
     }
 
-    if ( ! QPixmapCache::find(icn_alias, *pm) )
-    {
-        pm->load(icn_alias );
-        QPixmapCache::insert(icn_alias, *pm);
-    }
+    LoadPixmap(icn_alias, *pm);  // in utils.cpp
 }
 
 

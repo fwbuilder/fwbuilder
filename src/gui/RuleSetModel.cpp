@@ -162,7 +162,7 @@ RuleSetModel::RuleSetModel(RuleSet *ruleset, QObject *parent) : QAbstractItemMod
 
 void RuleSetModel::initModel()
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::initModel";
+    //if (fwbdebug) qDebug() << "RuleSetModel::initModel";
     if (root) delete root;
 
     root = new RuleNode(RuleNode::Root,"root");
@@ -207,8 +207,7 @@ void RuleSetModel::initModel()
         }
 
     }
-    if (fwbdebug)
-        qDebug("Model init: %d ms", t.elapsed());
+    //if (fwbdebug) qDebug("Model init: %d ms", t.elapsed());
 }
 
 int RuleSetModel::rowCount(const QModelIndex &parent) const
@@ -260,7 +259,7 @@ QVariant RuleSetModel::getDecoration(const QModelIndex &index) const
 
 QVariant RuleSetModel::getColumnDesc(const QModelIndex &index) const
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::getColumnDesc "<< index.column();
+    //if (fwbdebug) qDebug() << "RuleSetModel::getColumnDesc "<< index.column();
     QVariant res;
     if (index.column()>0 && index.column()<=header.size())
     {
@@ -270,7 +269,7 @@ QVariant RuleSetModel::getColumnDesc(const QModelIndex &index) const
 }
 
 QVariant RuleSetModel::getDataForDisplayRole(const QModelIndex &index) const {
-    if (fwbdebug) qDebug() << "RuleSetModel::getDataForDisplayRole";
+    //if (fwbdebug) qDebug() << "RuleSetModel::getDataForDisplayRole";
     RuleNode *node = nodeFromIndex(index);
     if (!node)
         return QVariant();
@@ -285,7 +284,7 @@ QVariant RuleSetModel::getDataForDisplayRole(const QModelIndex &index) const {
 }
 
 QVariant RuleSetModel::getGroupDataForDisplayRole(const QModelIndex &index, RuleNode* node) const {
-    if (fwbdebug) qDebug() << "RuleSetModel::getGroupDataForDisplayRole";
+    //if (fwbdebug) qDebug() << "RuleSetModel::getGroupDataForDisplayRole";
 
     int first = node->children.first()->rule->getPosition();
     int last = node->children.last()->rule->getPosition();
@@ -313,7 +312,7 @@ QVariant RuleSetModel::headerData(int section, Qt::Orientation orientation, int 
 
 QModelIndex RuleSetModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::index(int row, int column, const QModelIndex &parent)";
+    //if (fwbdebug) qDebug() << "RuleSetModel::index(int row, int column, const QModelIndex &parent)";
     if (row < 0 || column < 0)
         return QModelIndex();
     RuleNode *parentNode = nodeFromIndex(parent);
@@ -326,7 +325,7 @@ QModelIndex RuleSetModel::index(int row, int column, const QModelIndex &parent) 
 
 QModelIndex RuleSetModel::index(int row, int column, QString groupName) const
 {
-    if (fwbdebug) qDebug() << " RuleSetModel::index(int row, int column, QString groupName)";
+    //if (fwbdebug) qDebug() << " RuleSetModel::index(int row, int column, QString groupName)";
 
     //Find parent index
     RuleNode *parent = root;
@@ -347,15 +346,14 @@ QModelIndex RuleSetModel::index(int row, int column, QString groupName) const
 
 QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re)
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col)";
+    //if (fwbdebug) qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col)";
     int col = columnForRuleElementType(re->getTypeName().c_str());
     return index(rule, col);
 }
 
 QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col)
 {
-    if (fwbdebug)
-        qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
+    //if (fwbdebug) qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
 
     if (col < 0 || rule == 0) return QModelIndex();
     QModelIndex parent;
@@ -399,7 +397,7 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col)
 
 int RuleSetModel::columnForRuleElementType(QString typeName)
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::columnForRuleElementType(QString typeName)";
+    //if (fwbdebug) qDebug() << "RuleSetModel::columnForRuleElementType(QString typeName)";
     int col = 1;
     foreach (ColDesc cd, header)
     {
@@ -413,7 +411,7 @@ int RuleSetModel::columnForRuleElementType(QString typeName)
 
 int RuleSetModel::columnByType(ColDesc::ColumnType type)
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::columnByType(ColDesc::ColumnType type)";
+    //if (fwbdebug) qDebug() << "RuleSetModel::columnByType(ColDesc::ColumnType type)";
     int col = 1;
     foreach (ColDesc cd, header)
     {
@@ -544,7 +542,7 @@ void RuleSetModel::removeRow(int row,const QModelIndex &parent)
 
 bool RuleSetModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::removeRows " << row << " , " << count ;
+    //if (fwbdebug) qDebug() << "RuleSetModel::removeRows " << row << " , " << count ;
 
     if (count < 1 || row < 0 || (row + count > rowCount(parent)))
         return false;
@@ -780,14 +778,14 @@ QString RuleSetModel::findUniqueNameForGroup(const QString &groupName)
 
     QString uniqueGroupName = (exactNameExists)? groupName + "-" + QString::number(++count):groupName;
 
-    if (fwbdebug) qDebug() << "uniqueGroupName" << uniqueGroupName ;
+    //if (fwbdebug) qDebug() << "uniqueGroupName" << uniqueGroupName ;
 
     return uniqueGroupName;
 }
 
 QModelIndex RuleSetModel::createNewGroup(QString groupName, int first, int last)
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::createNewGroup" << groupName << first << last;
+    //if (fwbdebug) qDebug() << "RuleSetModel::createNewGroup" << groupName << first << last;
     QString uniqueGroupName = findUniqueNameForGroup(groupName);
 
     RuleNode *group = new RuleNode(RuleNode::Group, uniqueGroupName);
@@ -821,7 +819,7 @@ void RuleSetModel::removeFromGroup(QModelIndex group, int first, int last)
     if (!group.isValid()) return;
     RuleNode *groupNode = nodeFromIndex(group);
     if (groupNode->type != RuleNode::Group) return;
-    if (fwbdebug) qDebug() << "RuleSetModel::removeFromGroup " << groupNode->name << first << "-" << last;
+    //if (fwbdebug) qDebug() << "RuleSetModel::removeFromGroup " << groupNode->name << first << "-" << last;
 
     /*
         if items touch bottom of the group or we are going to move all items from the group
@@ -888,7 +886,7 @@ void RuleSetModel::addToGroupBelow(int first, int last)
 
 void RuleSetModel::moveToGroup(RuleNode *targetGroup, int first, int last, bool append)
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::moveToGroup " << targetGroup->name << first << last << append;
+    //if (fwbdebug) qDebug() << "RuleSetModel::moveToGroup " << targetGroup->name << first << last << append;
     // Remove nodes from the tree
     QList<RuleNode*> rules;
     emit beginRemoveRows(QModelIndex(), first, last);
@@ -926,7 +924,7 @@ void RuleSetModel::setEnabled(const QModelIndex &index, bool flag)
     if (!index.isValid()) return;
     RuleNode *node = nodeFromIndex(index);
     if (node->type != RuleNode::Rule) return;
-    if (fwbdebug) qDebug() << "RuleSetModel::setEnabled " << index.row() << "->" << flag;
+    //if (fwbdebug) qDebug() << "RuleSetModel::setEnabled " << index.row() << "->" << flag;
 
     if (flag)
         node->rule->enable();
@@ -968,33 +966,33 @@ void RuleSetModel::deleteObject(QModelIndex &index, FWObject* obj)
     if (re==NULL || re->isAny()) return;
     int id = obj->getId();
 
-    if (fwbdebug)
-    {
-        qDebug("RuleSetView::deleteObject row=%d col=%d id=%s",
-               index.row(), index.column(), FWObjectDatabase::getStringId(id).c_str());
-        qDebug("obj = %p",re->getRoot()->findInIndex(id));
-        int rc = obj->ref()-1;  obj->unref();
-        qDebug("obj->ref_counter=%d",rc);
-    }
+    // if (fwbdebug)
+    // {
+    //     qDebug("RuleSetView::deleteObject row=%d col=%d id=%s",
+    //            index.row(), index.column(), FWObjectDatabase::getStringId(id).c_str());
+    //     qDebug("obj = %p",re->getRoot()->findInIndex(id));
+    //     int rc = obj->ref()-1;  obj->unref();
+    //     qDebug("obj->ref_counter=%d",rc);
+    // }
 
     re->removeRef(obj);
 
     if (re->isAny()) re->setNeg(false);
     rowChanged(index);
 
-    if (fwbdebug)
-    {
-        qDebug("RuleSetView::deleteObject re->size()=%d", int(re->size()));
-        qDebug("obj = %p",re->getRoot()->findInIndex(id));
-        int rc = obj->ref()-1;  obj->unref();
-        qDebug("obj->ref_counter=%d",rc);
-    }
+    // if (fwbdebug)
+    // {
+    //     qDebug("RuleSetView::deleteObject re->size()=%d", int(re->size()));
+    //     qDebug("obj = %p",re->getRoot()->findInIndex(id));
+    //     int rc = obj->ref()-1;  obj->unref();
+    //     qDebug("obj->ref_counter=%d",rc);
+    // }
 }
 
 bool RuleSetModel::insertObject(QModelIndex &index, FWObject *obj)
 {
-    if (fwbdebug) qDebug("RuleSetModel::insertObject  -- insert object %s",
-               obj->getName().c_str());
+    // if (fwbdebug) qDebug("RuleSetModel::insertObject  -- insert object %s",
+    //            obj->getName().c_str());
 
 
     ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
@@ -1103,7 +1101,7 @@ void RuleSetModel::resetAllSizes()
 
 void PolicyModel::configure()
 {
-    if (fwbdebug) qDebug() << "PolicyModel::initModel";
+    //if (fwbdebug) qDebug() << "PolicyModel::initModel";
 
     supports_logging      = false;
     supports_rule_options = false;
@@ -1200,7 +1198,7 @@ QString PolicyModel::getRuleAction(Rule* r) const
 }
 void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
 {
-    if (fwbdebug) qDebug() << "PolicyModel::initRule";
+    //if (fwbdebug) qDebug() << "PolicyModel::initRule";
     PolicyRule *newrule_as_policy_rule = PolicyRule::cast(new_rule);
 
     if (newrule_as_policy_rule)
@@ -1230,7 +1228,7 @@ bool PolicyModel::checkRuleType(libfwbuilder::Rule *rule)
 
 void NatModel::configure()
 {
-    if (fwbdebug) qDebug() << "NatModel::configure";
+    //if (fwbdebug) qDebug() << "NatModel::configure";
 
     header  << ColDesc(RuleElementOSrc::TYPENAME, ColDesc::Object)   // 1
             << ColDesc(RuleElementODst::TYPENAME, ColDesc::Object)   // 2
@@ -1244,7 +1242,7 @@ void NatModel::configure()
 
 QVariant NatModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const
 {
-    if (fwbdebug) qDebug() << "NatModel::getRuleDataForDisplayRole";
+    //if (fwbdebug) qDebug() << "NatModel::getRuleDataForDisplayRole";
 
     QVariant res;
 
@@ -1284,7 +1282,7 @@ QStringList NatModel::getRuleOptions(Rule* r) const
 
 void NatModel::initRule(Rule *new_rule, Rule *old_rule)
 {
-    if (fwbdebug) qDebug() << "NatModel::initRule";
+    //if (fwbdebug) qDebug() << "NatModel::initRule";
     if (old_rule!=NULL)  copyRuleContent(new_rule, old_rule);
 }
 
@@ -1299,7 +1297,7 @@ bool NatModel::checkRuleType(libfwbuilder::Rule *rule)
 
 void RoutingModel::configure()
 {
-    if (fwbdebug) qDebug() << "RoutingModel::configure";
+    //if (fwbdebug) qDebug() << "RoutingModel::configure";
     supports_routing_itf  = false;
 
     if (getFirewall())
@@ -1324,7 +1322,7 @@ void RoutingModel::configure()
 
 QVariant RoutingModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const
 {
-    if (fwbdebug) qDebug() << "RoutingModel::getRuleDataForDisplayRole";
+    //if (fwbdebug) qDebug() << "RoutingModel::getRuleDataForDisplayRole";
 
     QVariant res;
 
@@ -1367,7 +1365,7 @@ QStringList RoutingModel::getRuleOptions(Rule* r) const
 
 void RoutingModel::initRule(Rule *new_rule, Rule *old_rule)
 {
-    if (fwbdebug) qDebug() << "RoutingModel::initRule";
+    //if (fwbdebug) qDebug() << "RoutingModel::initRule";
     if (old_rule!=NULL)  copyRuleContent(new_rule, old_rule);
 }
 

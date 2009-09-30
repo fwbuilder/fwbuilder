@@ -451,7 +451,6 @@ void loadIcon(QPixmap &pm, libfwbuilder::FWObject *obj)
 
 void LoadPixmap(const QString path, QPixmap &where)
 {
-    if (fwbdebug) qDebug() << "Pixmap: " << path;
     if ( ! QPixmapCache::find( path, where ) )
     {
         where.load( path );
