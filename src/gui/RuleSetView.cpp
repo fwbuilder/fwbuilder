@@ -233,12 +233,13 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
            "obj=%s  row=%d  col=%d",
            (object)?object->getName().c_str():"NULL", index.row(), index.column());
 
-    selectObject(object, index);
-
-    startingDrag = (fwosm->index.row()==index.row() &&
-                fwosm->index.column()==index.column() &&
-                fwosm->selectedObject==object);
-
+    if (object)
+    {
+        selectObject(object, index);
+        startingDrag = (fwosm->index.row()==index.row() &&
+                        fwosm->index.column()==index.column() &&
+                        fwosm->selectedObject==object);
+    }
 }
 
 void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
@@ -1410,7 +1411,7 @@ void RuleSetView::removeFromGroup()
 
 FWObject *RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::getObject";
+    if (fwbdebug) qDebug() << "RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)";
 
     if (!index.isValid() || index.column() == 0) return 0;
 
@@ -1453,7 +1454,7 @@ FWObject *RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)
 
 FWObject *RuleSetView::getObject(int number, const QModelIndex &index)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::getObject";
+    if (fwbdebug) qDebug() << "RuleSetView::getObject(int number, const QModelIndex &index)";
 
     if (!index.isValid() || index.column() == 0) return 0;
 
@@ -1487,7 +1488,7 @@ FWObject *RuleSetView::getObject(int number, const QModelIndex &index)
 
 int RuleSetView::getObjectNumber(FWObject *object, const QModelIndex &index)
 {
-    if (fwbdebug) qDebug() << "RuleSetView::getObjectNumber";
+    if (fwbdebug) qDebug() << "RuleSetView::getObjectNumber(FWObject *object, const QModelIndex &index)";
 
     if (!index.isValid() || index.column() == 0) return 0;
 
