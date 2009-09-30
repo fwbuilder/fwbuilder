@@ -720,7 +720,14 @@ void FWWindow::hideEvent(QHideEvent *ev)
 
 void FWWindow::prepareEditMenu()
 {
-    if (!activeProject()) return;
+    if (!activeProject())
+    {
+        m_mainWindow->editCopyAction->setEnabled(false);
+        m_mainWindow->editDeleteAction->setEnabled(false);
+        m_mainWindow->editCutAction->setEnabled(false);
+        m_mainWindow->editPasteAction->setEnabled(false);
+        return;
+    }
 
     bool dupMenuItem=true;
     bool moveMenuItem=true;
@@ -812,16 +819,16 @@ void FWWindow::prepareWindowsMenu()
     windowsPainters.clear();
     windowsTitles.clear();
     m_mainWindow->menuWindow->clear();
-    QAction * close = m_mainWindow->menuWindow->addAction ("Close");
-    QAction * closeAll = m_mainWindow->menuWindow->addAction ("Close All");
-    QAction * tile = m_mainWindow->menuWindow->addAction ("Tile");
-    QAction * cascade = m_mainWindow->menuWindow->addAction ("Cascade");
-    QAction * next = m_mainWindow->menuWindow->addAction ("Next");
-    QAction * previous = m_mainWindow->menuWindow->addAction ("Previous");
+    QAction *close = m_mainWindow->menuWindow->addAction("Close");
+    QAction *closeAll = m_mainWindow->menuWindow->addAction("Close All");
+    QAction *tile = m_mainWindow->menuWindow->addAction("Tile");
+    QAction *cascade = m_mainWindow->menuWindow->addAction("Cascade");
+    QAction *next = m_mainWindow->menuWindow->addAction("Next");
+    QAction *previous = m_mainWindow->menuWindow->addAction("Previous");
 
-    QAction * minimize = m_mainWindow->menuWindow->addAction ("Minimize");
-    QAction * maximize = m_mainWindow->menuWindow->addAction ("Maximize");
-    m_mainWindow->menuWindow->addSeparator ();
+    QAction *minimize = m_mainWindow->menuWindow->addAction("Minimize");
+    QAction *maximize = m_mainWindow->menuWindow->addAction("Maximize");
+    m_mainWindow->menuWindow->addSeparator();
 
     connect(minimize, SIGNAL(triggered()), this, SLOT(minimize()));
     connect(maximize, SIGNAL(triggered()), this, SLOT(maximize()));
@@ -833,6 +840,16 @@ void FWWindow::prepareWindowsMenu()
     connect(previous, SIGNAL(triggered()),m_space, SLOT(activatePreviousSubWindow()));
 
     QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+
+    minimize->setEnabled(subWindowList.size() > 0);
+    maximize->setEnabled(subWindowList.size() > 0);
+    close->setEnabled(subWindowList.size() > 0);
+    closeAll->setEnabled(subWindowList.size() > 0);
+    tile->setEnabled(subWindowList.size() > 0);
+    cascade->setEnabled(subWindowList.size() > 0);
+    next->setEnabled(subWindowList.size() > 0);
+    previous->setEnabled(subWindowList.size() > 0);
+
     QActionGroup * ag = new QActionGroup(this);
     ag->setExclusive (true);
     for (int i = 0 ; i < subWindowList.size(); i++)
@@ -854,10 +871,8 @@ void FWWindow::prepareWindowsMenu()
             QAction * act = m_mainWindow->menuWindow->addAction(text);
             ag->addAction(act);
             act->setCheckable ( true );
-            if (subWindowList[i]==m_space->activeSubWindow())
-                act->setChecked(true);
-            connect(act, SIGNAL(triggered()),
-                    this, SLOT(selectActiveSubWindow()));
+            if (subWindowList[i]==m_space->activeSubWindow()) act->setChecked(true);
+            connect(act, SIGNAL(triggered()), this, SLOT(selectActiveSubWindow()));
         }
     }
 }
@@ -952,7 +967,7 @@ bool FWWindow::event(QEvent *event)
     return QMainWindow::event(event);
 }
 
-void FWWindow::selectActiveSubWindow (/*const QString & text*/)
+void FWWindow::selectActiveSubWindow(/*const QString & text*/)
 {
     QObject * sender_ = sender ();
     QAction * act = (QAction*) sender_ ;
@@ -971,33 +986,39 @@ void FWWindow::selectActiveSubWindow (/*const QString & text*/)
 void FWWindow::minimize()
 {
     if (fwbdebug) qDebug("FWWindow::minimize");
-    m_space->activeSubWindow ()->showMinimized ();
-    st->setInt("Window/maximized", 0);
-
-    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
-    for (int i = 0 ; i < subWindowList.size();i++)
+    if (m_space->activeSubWindow())
     {
-        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
-            subWindowList[i]->widget());
+        m_space->activeSubWindow()->showMinimized ();
+        st->setInt("Window/maximized", 0);
 
-        if (pp!=NULL)
+        QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+        for (int i = 0 ; i < subWindowList.size();i++)
         {
-            pp->loadState(false);
+            ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
+                subWindowList[i]->widget());
+
+            if (pp!=NULL)
+            {
+                pp->loadState(false);
+            }
         }
     }
 }
 
-void FWWindow::maximize ()
+void FWWindow::maximize()
 {
     if (fwbdebug) qDebug("FWWindow::maximize");
-    m_space->activeSubWindow()->showMaximized ();
-    st->setInt("Window/maximized", 1);
+    if (m_space->activeSubWindow())
+    {
+        m_space->activeSubWindow()->showMaximized ();
+        st->setInt("Window/maximized", 1);
+    }
 }
 
 void FWWindow::updateTreeFont ()
 {
     QFont font = st->getTreeFont();
-   QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
