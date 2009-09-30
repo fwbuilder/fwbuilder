@@ -1505,10 +1505,16 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             current_library->getId() != FWObjectDatabase::STANDARD_LIB_ID &&
             current_library->getId() != FWObjectDatabase::TEMPLATE_LIB_ID;
 
+#if DISABLE_PASTE_MENU_ITEM_IF_PASTE_IS_ILLEGAL
         if (pasteMenuItem)
         {
             /*
-             *  enable Paste menu item only if object can be pasted
+             * We used to enable Paste menu item only if object can be
+             * pasted. The problem with this is that there was no
+             * indication why Paste operation was not allowed. Since
+             * we call validateForPaste during actual Paste operation
+             * anyway, so is more user friendly to let them try and
+             * actually see the error if it fails.
              */
             vector<std::pair<int,ProjectPanel*> >::iterator i;
             for (i= FWObjectClipboard::obj_clipboard->begin();
@@ -1526,6 +1532,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                 pasteMenuItem = pasteMenuItem && validated;
             }
         }
+#endif
 
         dupMenuItem=
             (dupMenuItem && ! FWBTree().isStandardFolder(obj) && ! Library::isA(obj) );

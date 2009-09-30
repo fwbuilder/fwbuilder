@@ -153,14 +153,14 @@ bool interfaceProperties::manageIpAddresses(Interface *intf,
     return true;
 }
 
-bool interfaceProperties::validateInterface(FWObject *parent,
+bool interfaceProperties::validateInterface(FWObject *target,
                                             FWObject *intf,
                                             bool check_types,
                                             QString &err)
 {
-    if (Interface::cast(parent) && Interface::cast(intf))
+    if (Interface::cast(target) && Interface::cast(intf))
     {
-        if (!Interface::cast(parent)->validateChild(intf))
+        if (!Interface::cast(target)->validateChild(intf))
         {
             // See Interface::validateChild(). Currently the only
             // condition when interface can not become a child of
@@ -169,23 +169,23 @@ bool interfaceProperties::validateInterface(FWObject *parent,
             err = QObject::tr("Interface %1 can not become subinterface of %2 "
                               "because only one level of subinterfaces is allowed.")
                 .arg(intf->getName().c_str())
-                .arg(parent->getName().c_str());
+                .arg(target->getName().c_str());
             return false;
         }
 
         if (check_types)
         {
             // We check types when this method is called from a compiler
-            string parent_interface_type =
-                Interface::cast(parent)->getOptionsObject()->getStr("type");
-            if (parent_interface_type.empty()) parent_interface_type = "ethernet";
+            string target_interface_type =
+                Interface::cast(target)->getOptionsObject()->getStr("type");
+            if (target_interface_type.empty()) target_interface_type = "ethernet";
 
-            FWObject *fw = Interface::cast(parent)->getParentHost();
+            FWObject *fw = Interface::cast(target)->getParentHost();
             QString host_os = fw->getStr("host_OS").c_str();
             Resources* os_res = Resources::os_res[host_os.toStdString()];
             list<string> interface_type_pairs;
             os_res->getResourceStrList(
-                "/FWBuilderResources/Target/subinterfaces/" + parent_interface_type,
+                "/FWBuilderResources/Target/subinterfaces/" + target_interface_type,
                 interface_type_pairs);
             list<string> interface_types;
             for (list<string>::iterator it=interface_type_pairs.begin();
@@ -206,14 +206,54 @@ bool interfaceProperties::validateInterface(FWObject *parent,
                                   "of interface %3 (type '%4')")
                     .arg(intf->getName().c_str())
                     .arg(interface_type.c_str())
-                    .arg(parent->getName().c_str())
-                    .arg(parent_interface_type.c_str());
-
+                    .arg(target->getName().c_str())
+                    .arg(target_interface_type.c_str());
                 return false;
             }
         }
     }
-    return validateInterface(intf->getParent(), intf->getName().c_str(), err);
+
+    if (Cluster::cast(target) && Interface::cast(intf))
+    {
+        // per ticket #487
+        if (Interface::cast(intf)->isUnnumbered())
+        {
+            err = QObject::tr("Interface %1 is unnumbered, "
+                              "it can not belong to a cluster")
+                .arg(intf->getName().c_str());
+            return false;
+        }
+
+        // Note that @target may not be actually a parent of @intf at
+        // the time of call to this function. We use this function to
+        // validate operation of making @intf a child of @target. @intf
+        // can have some other parent at the moment.
+        FWObject *parent_interface = intf->getParent();
+        if (Interface::isA(parent_interface))
+        {
+            string interface_type = Interface::cast(intf)->getOptionsObject()->getStr("type");
+            if (interface_type.empty()) interface_type = "ethernet";
+            string parent_interface_type =
+                Interface::cast(parent_interface)->getOptionsObject()->getStr("type");
+            if (parent_interface_type.empty()) parent_interface_type = "ethernet";
+            if (parent_interface_type == "bridge" && interface_type == "ethernet")
+            {
+                err = QObject::tr("Interface %1 is a bridge port, "
+                                  "it can not belong to a cluster")
+                    .arg(intf->getName().c_str());
+                return false;
+            }
+            if (parent_interface_type == "bonding" && interface_type == "ethernet")
+            {
+                err = QObject::tr("Interface %1 is a bonding interface slave, "
+                                  "it can not belong to a cluster")
+                    .arg(intf->getName().c_str());
+                return false;
+            }
+        }
+    }
+
+    return validateInterface(target, intf->getName().c_str(), err);
 }
 
 /**
@@ -221,33 +261,33 @@ bool interfaceProperties::validateInterface(FWObject *parent,
  * can given interface be a child of a cluster or a firewall or
  * another interface.
  */
-bool interfaceProperties::validateInterface(FWObject *parent,
+bool interfaceProperties::validateInterface(FWObject *target,
                                             const QString &interface_name,
                                             QString &err)
 {
-    if (Firewall::cast(parent))
+    if (Firewall::cast(target))
     {
         if (looksLikeVlanInterface(interface_name))
         {
-            QString parent_name = parent->getName().c_str();
-            if (Cluster::isA(parent))
+            QString target_name = target->getName().c_str();
+            if (Cluster::isA(target))
             {
                 // cluster is allowed to have top-level vlan interfaces,
                 // therefore we do not need to check the name of the
                 // interface against the name of the parent. This is
                 // signalled to isValidVlanInterfaceName() by passing
-                // empty string as parent_interface
-                parent_name = "";
+                // empty string as target_interface
+                target_name = "";
             }
-            return isValidVlanInterfaceName(interface_name, parent_name, err);
+            return isValidVlanInterfaceName(interface_name, target_name, err);
         }
         return true;
     }
 
-    if (Interface::cast(parent))
+    if (Interface::cast(target))
     {
-        string parent_interface_type =
-            Interface::cast(parent)->getOptionsObject()->getStr("type");
+        string target_interface_type =
+            Interface::cast(target)->getOptionsObject()->getStr("type");
         // check vlan conditions as well
         if (looksLikeVlanInterface(interface_name))
         {
@@ -255,21 +295,27 @@ bool interfaceProperties::validateInterface(FWObject *parent,
             // case its base name does not match the
             // parent. Perform other checks except this, pass ""
             // as parent name argument to isValidVlanInterfaceName()
-            if (parent_interface_type == "bridge")
+            if (target_interface_type == "bridge")
                 return isValidVlanInterfaceName(interface_name, "", err);
 
-            QString parent_name = parent->getName().c_str();
-            return isValidVlanInterfaceName(interface_name, parent_name, err);
+            QString target_name = target->getName().c_str();
+            return isValidVlanInterfaceName(interface_name, target_name, err);
         }
 
         // interface_name is not a vlan
         // regular interface can only be a child of bond or bridge
-        return (parent_interface_type == "bridge" || parent_interface_type == "bonding");
+        if (target_interface_type != "bridge" || target_interface_type != "bonding")
+        {
+            err = QObject::tr("Interface %1 which is not a vlan can only "
+                              "be a subinterface of a bridge or bonding interface")
+                .arg(interface_name);
+            return false;
+        }
     }
 
-    // parent is not firewall (cluster) and not interface
+    // target is not firewall (cluster) and not interface
     err = QObject::tr("Interface can not be a child object of %1").arg(
-        parent->getTypeName().c_str());
+        target->getTypeName().c_str());
     return false;
 }
 
