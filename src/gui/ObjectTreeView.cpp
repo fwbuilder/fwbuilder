@@ -517,66 +517,13 @@ void ObjectTreeView::dragMoveEvent( QDragMoveEvent *ev)
     ev->setAccepted(true);
 }
 
+/*
+ * See ticket #483: d&d of objects inside the tree should not be allowed
+ */
 void ObjectTreeView::dropEvent(QDropEvent *ev)
 {
-    if (fwbdebug) qDebug("ObjectTreeView::dropEvent");
-    QWidget *fromWidget = ev->source();
-
-    // The source of DnD object must be the same instance of fwbuilder
-    if (!fromWidget)
-    {
-        ev->setAccepted(false);
-        return;
-    }
-
-    FWObject *target = getDropTarget(ev, NULL);
-    if (target == NULL) return;
-
-    list<FWObject*> dragol;
-    if (FWObjectDrag::decode(ev, dragol))
-    {
-        for (list<FWObject*>::iterator i=dragol.begin(); i!=dragol.end(); ++i)
-        {
-            FWObject *dragobj = *i;
-            assert(dragobj);
-
-            ObjectTreeView * otvsource =
-                dynamic_cast<ObjectTreeView *>(ev->source());
-            if (otvsource!=NULL)
-            {
-                FWObjectDatabase* root =
-                    otvsource->getCurrentObject()->getRoot();
-
-                int id = dragobj->getId();
-                FWObject * item = root->getById(id, true);
-                if (fwbdebug)
-                {
-                    qDebug("%d", item->getId());
-                    qDebug(item->getTypeName().c_str());
-                    qDebug("%d", dragobj->getId());
-                    qDebug(dragobj->getTypeName().c_str());
-                }
-                //ProjectPanel * ppsource =  otvsource->m_project ;
-            }
-
-            if (fwbdebug)
-                qDebug("ObjectTreeView::dropEvent  paste %s -> %s",
-                       dragobj->getName().c_str(), target->getName().c_str());
-
-            // On Mac OS X Qt::ControlModifier corresponds to the "Command" key
-            if (ev->keyboardModifiers() & Qt::ControlModifier)
-            {
-                // Drag&drop with Ctrl pressed makes a copy
-                m_project->pasteTo(target, dragobj);
-            }else
-            {
-                // else it moves the object
-                m_project->relocateTo(target, dragobj);
-            }
-
-        }
-    }
-    if (fwbdebug) qDebug("ObjectTreeView::dropEvent done");
+    ev->setAccepted(false);
+    return;
 }
 
 FWObject *ObjectTreeView::getDropTarget(QDropEvent *ev, FWObject*)
