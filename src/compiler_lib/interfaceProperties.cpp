@@ -37,6 +37,7 @@
 
 #include <string>
 #include <list>
+#include <algorithm>
 
 #include <QObject>
 #include <QStringList>
