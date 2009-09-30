@@ -349,14 +349,6 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     if (Resources::global_res->getObjResourceBool(obj,"hidden") ) return NULL;
 
     ObjectTreeViewItem *nitm = NULL;
-    QString icn_filename;
-
-    if (FWBTree().isStandardFolder(obj))
-        icn_filename = ":/Icons/SystemGroup/icon-tree";
-    else
-        icn_filename = (":/Icons/" + obj->getTypeName() + "/icon-tree").c_str();
-
-    if (obj->getRO()) icn_filename = ":/Icons/lock.png";
 
     if (Resources::global_res->getResourceBool(
             string("/FWBuilderResources/Type/") +
@@ -366,12 +358,10 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
 
     nitm->setLib("");
     nitm->setText( 0, getTreeLabel(obj) );
+
     QPixmap pm;
-    if ( ! QPixmapCache::find( icn_filename, pm) )
-    {
-        pm.load( icn_filename );
-        QPixmapCache::insert( icn_filename, pm);
-    }
+    setObjectIcon(obj, &pm);
+
     nitm->setIcon( 0, QIcon(pm) );
     nitm->setIcon( 1, QIcon(pm) );
     nitm->setFlags(nitm->flags() | Qt::ItemIsDragEnabled);
@@ -971,27 +961,11 @@ void ObjectManipulator::addTreePage( FWObject *lib)
 
     itm1->setFlags(itm1->flags() | Qt::ItemIsDragEnabled);
 
-    itm1->setText( 0, getTreeLabel( lib ) );
-    if (lib->isReadOnly())
-    {
-        QPixmap pm;
-        if ( ! QPixmapCache::find( ":/Icons/lock.png", pm) )
-        {
-            pm.load( ":/Icons/lock.png" );
-            QPixmapCache::insert( ":/Icons/lock.png", pm);
-        }
-        itm1->setIcon(0, pm );
-    } else
-    {
-        string icn = ":/Icons/" + lib->getTypeName() + "/icon-tree";
-        QPixmap pm;
-        if (!QPixmapCache::find( icn.c_str(), pm))
-        {
-            pm.load( icn.c_str() );
-            QPixmapCache::insert( icn.c_str(), pm);
-        }
-        itm1->setIcon( 0, pm);
-    }
+    itm1->setText(0, getTreeLabel(lib));
+
+    QPixmap pm;
+    setObjectIcon(lib, &pm);
+    itm1->setIcon( 0, pm);
 
     itm1->setProperty("type", lib->getTypeName().c_str() );
     itm1->setFWObject( lib );
@@ -2318,7 +2292,10 @@ void ObjectManipulator::lockObject()
         // lock objects inside because they won't be able to unlock them.
         if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
             lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
+        {
             obj->setReadOnly(true);
+            updateObjectInTree(obj, false);
+        }
     }
     getCurrentObjectTree()->setLockFlags();
 
@@ -2345,7 +2322,10 @@ void ObjectManipulator::unlockObject()
         FWObject *lib = obj->getLibrary();
         if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
             lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
+        {
             obj->setReadOnly(false);
+            updateObjectInTree(obj, false);
+        }
     }
     getCurrentObjectTree()->setLockFlags();
 
@@ -4093,6 +4073,27 @@ void ObjectManipulator::guessSubInterfaceTypeAndAttributes(Interface *intf)
     }
 
     delete int_prop;
+}
+
+void ObjectManipulator::setObjectIcon(FWObject *obj, QPixmap *pm)
+{
+    QString icn_alias;
+
+    if (obj->getRO())
+        icn_alias = ":/Icons/lock";
+    else
+    {
+        if (FWBTree().isStandardFolder(obj))
+            icn_alias = ":/Icons/SystemGroup/icon-tree";
+        else
+            icn_alias = QString(":/Icons/") + obj->getTypeName().c_str() + "/icon-tree";
+    }
+
+    if ( ! QPixmapCache::find(icn_alias, *pm) )
+    {
+        pm->load(icn_alias );
+        QPixmapCache::insert(icn_alias, *pm);
+    }
 }
 
 

@@ -49,7 +49,10 @@ class ObjectTreeView;
 class ObjectTreeViewItem;
 class QComboBox;
 class QMenu;
+class QPixmap;
+
 class ProjectPanel;
+
 
 namespace libfwbuilder 
 {
@@ -57,6 +60,7 @@ namespace libfwbuilder
     class Cluster;
     class Library;
 }
+
 
 class HistoryItem {
     ObjectTreeViewItem *itm;
@@ -69,18 +73,9 @@ class HistoryItem {
     int  id()   { return objId; }
 };
 
-/*class ObjToolTip : public QToolTip {
-
-    ObjectTreeView *otv;
- public:
-    ObjToolTip(ObjectTreeView *widget);
-    virtual ~ObjToolTip() {}
-    virtual void maybeTip(const QPoint &p);
-};*/
-
-class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
-
-    Q_OBJECT
+class ObjectManipulator : public QWidget
+{
+    Q_OBJECT;
 
     std::vector<libfwbuilder::FWObject*>          idxToLibs;
     std::vector<QTreeWidget*>                     idxToTrees;
@@ -116,6 +111,8 @@ class ObjectManipulator : public QWidget/*ObjectManipulator_q*/ {
     void addTreePage(libfwbuilder::FWObject *lib);
     void showObjectInTree(ObjectTreeViewItem *otvi);
 
+    void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm);
+    
     int  getIdxForLib(libfwbuilder::FWObject*);
     void addLib( libfwbuilder::FWObject *lib, QTreeWidget* otv=NULL);
     void removeLib(libfwbuilder::FWObject*);

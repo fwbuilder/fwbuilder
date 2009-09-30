@@ -292,10 +292,10 @@ void ObjectTreeView::updateTreeIcons()
     QString icn;
 
     QPixmap pm_lock;
-    if ( ! QPixmapCache::find( ":/Icons/lock.png", pm_lock) )
+    if ( ! QPixmapCache::find( ":/Icons/lock", pm_lock) )
     {
-        pm_lock.load( ":/Icons/lock.png" );
-        QPixmapCache::insert( ":/Icons/lock.png", pm_lock);
+        pm_lock.load( ":/Icons/lock" );
+        QPixmapCache::insert( ":/Icons/lock", pm_lock);
     }
 
     while ( *it )
