@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "../../build_num"
 
 #include <fstream>
 #include <iostream>
@@ -32,16 +31,7 @@
 #include <set>
 #include <algorithm>
 #include <functional>
-
-#ifndef _WIN32
-#  include <unistd.h>
-#  include <pwd.h>
-#else
-#  include <direct.h>
-#  include <stdlib.h>
-#  include <io.h>
-#endif
-
+#include <memory>
 
 #include "CompilerDriver.h"
 #include "interfaceProperties.h"

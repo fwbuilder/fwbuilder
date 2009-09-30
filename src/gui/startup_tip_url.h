@@ -28,7 +28,6 @@
 #define STARTUP_TIP_URL_HH
 
 #include "../../VERSION.h"
-#include "../../build_num"
 
 #define STARTUP_TIP_URL "http://update.fwbuilder.org/tips/gettip.cgi?v="VERSION
 

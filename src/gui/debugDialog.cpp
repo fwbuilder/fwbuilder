@@ -25,10 +25,10 @@
 
 
 #include "../../config.h"
+#include "../../build_num"
 #include "global.h"
 #include "utils.h"
 #include "VERSION.h"
-#include "build_num"
 
 #include "debugDialog.h"
 #include "RCS.h"
