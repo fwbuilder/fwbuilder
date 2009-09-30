@@ -197,6 +197,14 @@ class FWBSettings : public QSettings {
                               const QString &lib,
                               const std::set<int> &ids);
 
+    int getTreeSectionSize(const QString &filename,
+                           const QString &lib,
+                           int section_index);
+    void setTreeSectionSize(const QString &filename,
+                            const QString &lib,
+                            int section_index,
+                            int size);
+    
     int getVisibleRuleSetId(const QString &filename,
                             const QString &lib);
     void setVisibleRuleSet(const QString &filename,

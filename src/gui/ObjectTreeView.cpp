@@ -84,7 +84,7 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 {
     setObjectName(name);
     this->setParent(parent, f);
-    setFont (st->getTreeFont());
+    setFont(st->getTreeFont());
 //    setAcceptDrops( TRUE );
     item_before_drag_started=NULL;
     lastSelected = NULL;
@@ -124,13 +124,16 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)),
             this, SLOT(itemExpanded(QTreeWidgetItem*)));
 
-    setColumnCount(1);
-
     QStringList qsl;
     qsl.push_back(tr("Object"));
+    qsl.push_back(tr("Attributes"));
     setHeaderLabels(qsl);
 
-    header()->hide();
+    //header()->hide();
+
+    header()->setResizeMode(QHeaderView::Interactive);
+
+    showOrHideAttributesColumn();
 
     setMinimumSize( QSize( 100, 0 ) );
 
@@ -849,5 +852,13 @@ void ObjectTreeView::ExpandTreeItems(const set<int> &ids)
             itm->setExpanded(true);
         ++it;
     }
+}
+
+void ObjectTreeView::showOrHideAttributesColumn()
+{
+    if (st->getBool("UI/ShowObjectsAttributesInTree"))
+        setColumnCount(2);
+    else
+        setColumnCount(1);
 }
 

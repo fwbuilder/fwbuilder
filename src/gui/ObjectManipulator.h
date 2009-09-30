@@ -398,6 +398,11 @@ public:
      void loadExpandedTreeItems();
      void saveExpandedTreeItems();
 
+     void loadSectionSizes();
+     void saveSectionSizes();
+
+     void setAttributesColumnEnabled(bool f);
+     
 signals:
 /**
  * the dialog class should have a slot that can load object's data

@@ -243,39 +243,16 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
     m_objectManipulator->newButton->setMenu( newObjectPopup );
 }
 
+/*
+ * This method decides what should be shown in the column #1 of the
+ * tree for the given object
+ */
 QString ObjectManipulator::getTreeLabel( FWObject *obj )
 {
-    QString name = QString::fromUtf8(obj->getName().c_str());
-    if (RuleSet::isA(obj))
-    {
-        return name ;
-    }
-    if (Interface::isA(obj))
-    {
-        // trigger late initialization of options object
-        // if its read-only or part of the read-only tree, I can't help it.
-        if (!obj->isReadOnly()) Interface::cast(obj)->getOptionsObject();
-        name =Interface::constcast(obj)->getLabel().c_str();
-        if (name=="")  name=QString::fromUtf8(obj->getName().c_str());
-        QString q;
-        if (Interface::constcast(obj)->isDyn())         q =" dyn";
-        if (Interface::constcast(obj)->isUnnumbered())  q =" unnum";
-        if (Interface::constcast(obj)->isBridgePort())  q =" bridge port";
-        if (Interface::constcast(obj)->isSlave())       q =" slave";
-        if (Interface::constcast(obj)->isUnprotected()) q = q + " unp";
-        if (q!="") name = name+" (" + q + ")";
-        return name;
-    }
-    if (Firewall::isA(obj))
-    {
-        Firewall *fw = Firewall::cast(obj);
-        if (fw->needsInstall()) name += " *";
-        return name;
-    }
-    if (Library::isA(obj) && obj->isReadOnly())
-        name += QObject::tr(" ( read only )");
+    QString name;
+    if (RuleSet::cast(obj)) return "";
 
-    return name;
+    return FWObjectPropertiesFactory::getObjectPropertiesBrief(obj);
 }
 
 void ObjectManipulator::refreshSubtree(QTreeWidgetItem *itm)
@@ -330,6 +307,7 @@ void ObjectManipulator::refreshSubtree(QTreeWidgetItem *itm)
              */
             parent->setExpanded(false);
             parent->setExpanded(true);
+            //getCurrentObjectTree()->header()->resizeSections(QHeaderView::ResizeToContents);
             getCurrentObjectTree()->scrollToItem(itm, QAbstractItemView::EnsureVisible);
             getCurrentObjectTree()->update();
         }
@@ -357,13 +335,14 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     nitm = new ObjectTreeViewItem( itm );
 
     nitm->setLib("");
-    nitm->setText( 0, getTreeLabel(obj) );
+    nitm->setText( 0, obj->getName().c_str() );
+    nitm->setText( 1, getTreeLabel(obj) );
 
     QPixmap pm;
     setObjectIcon(obj, &pm);
 
     nitm->setIcon( 0, QIcon(pm) );
-    nitm->setIcon( 1, QIcon(pm) );
+//    nitm->setIcon( 1, QIcon(pm) );
     nitm->setFlags(nitm->flags() | Qt::ItemIsDragEnabled);
 
     nitm->setProperty("type", obj->getTypeName().c_str() );
@@ -385,7 +364,7 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
     ObjectTreeViewItem *nitm = insertObject(itm, obj);
     if (nitm==NULL) return;
 
-    if ( FWBTree().isStandardFolder(obj) ) nitm->setExpanded( st->getExpandTree() );
+    if (FWBTree().isStandardFolder(obj)) nitm->setExpanded( st->getExpandTree());
 
     if (Cluster::isA(obj))
     {
@@ -550,7 +529,9 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
     assert(itm!=NULL);
     QString old_itm_text = itm->text(0);
 
-    itm->setText(0, getTreeLabel(obj));
+    itm->setText( 0, obj->getName().c_str() );
+    itm->setText( 1, getTreeLabel(obj) );
+
     getCurrentObjectTree()->updateTreeIcons();
 
     if (subtree)
@@ -917,21 +898,13 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     m_objectManipulator->widgetStack->show();
     objTreeView->show();
 
-//    objTreeView->setSelectionMode( QListView::Extended );
-
     updateLibColor( lib );
-//    updateLibName( lib );
-
-    //objTreeView->setContextMenuPolicy( Qt::CustomContextMenu );
 
     connect(m_objectManipulator->widgetStack, SIGNAL( currentChanged(int) ),
              this, SLOT( currentTreePageChanged(int) ) );
 
     connect(objTreeView, SIGNAL( editCurrentObject_sign() ),
             this, SLOT( editSelectedObject()) );
-
-//    connect(objTreeView,SIGNAL( editCurrentObject_sign() ),
-//             this, SLOT( editSelectedObject()) );
 
     connect(objTreeView,
             SIGNAL( switchObjectInEditor_sign(libfwbuilder::FWObject*) ),
@@ -961,7 +934,8 @@ void ObjectManipulator::addTreePage( FWObject *lib)
 
     itm1->setFlags(itm1->flags() | Qt::ItemIsDragEnabled);
 
-    itm1->setText(0, getTreeLabel(lib));
+    itm1->setText( 0, lib->getName().c_str() );
+    itm1->setText( 1, getTreeLabel(lib) );
 
     QPixmap pm;
     setObjectIcon(lib, &pm);
@@ -977,6 +951,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     objTreeView->updateTreeIcons();
     // apparently sortByColumn does not work in QT 4.5, use sortItems
     objTreeView->sortItems(0, Qt::AscendingOrder);
+    objTreeView->header()->resizeSections(QHeaderView::ResizeToContents);
 }
 
 void ObjectManipulator::removeLib(FWObject* lib)
@@ -3947,6 +3922,40 @@ void ObjectManipulator::reopenCurrentItemParent()
     getCurrentObjectTree()->update();
 }
 
+void ObjectManipulator::loadSectionSizes()
+{
+    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    {
+        ObjectTreeView *objTreeView =
+            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
+        FWObject *lib = idxToLibs[i];
+        objTreeView->header()->resizeSection(
+            0, 
+            st->getTreeSectionSize(
+                m_project->getFileName(), lib->getName().c_str(), 0));
+        objTreeView->header()->resizeSection(
+            1, 
+            st->getTreeSectionSize(
+                m_project->getFileName(), lib->getName().c_str(), 1));
+    }
+}
+
+void ObjectManipulator::saveSectionSizes()
+{
+    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    {
+        ObjectTreeView *objTreeView =
+            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
+        FWObject *lib = idxToLibs[i];
+        st->setTreeSectionSize(
+            m_project->getFileName(), lib->getName().c_str(), 0,
+            objTreeView->header()->sectionSize(0));
+        st->setTreeSectionSize(
+            m_project->getFileName(), lib->getName().c_str(), 1,
+            objTreeView->header()->sectionSize(1));
+    }
+}
+
 void ObjectManipulator::loadExpandedTreeItems()
 {
     for (int i=0; i<m_objectManipulator->libs->count(); i++)
@@ -3959,6 +3968,9 @@ void ObjectManipulator::loadExpandedTreeItems()
                                  lib->getName().c_str(),
                                  expanded_objects);
         objTreeView->ExpandTreeItems(expanded_objects);
+        // there is no need to resize columns because call to
+        //loadExpandedTreeItems is usually followed by the call to loadSectionSizes
+        //objTreeView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 }
 
@@ -3972,6 +3984,16 @@ void ObjectManipulator::saveExpandedTreeItems()
         st->setExpandedObjectIds(m_project->getFileName(),
                                  lib->getName().c_str(),
                                  objTreeView->getListOfExpandedObjectIds());
+    }
+}
+
+void ObjectManipulator::setAttributesColumnEnabled(bool f)
+{
+    for (int i=0; i<m_objectManipulator->libs->count(); i++)
+    {
+        ObjectTreeView *objTreeView =
+            dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
+        objTreeView->showOrHideAttributesColumn();
     }
 }
 

@@ -22,7 +22,7 @@
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>5</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral" >
       <attribute name="title" >
@@ -296,13 +296,20 @@
         </widget>
        </item>
        <item row="4" column="0" colspan="5" >
+        <widget class="QCheckBox" name="attributesInTree" >
+         <property name="text" >
+          <string>Show object attributes in the tree</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="5" >
         <widget class="QCheckBox" name="chClipComment" >
          <property name="text" >
           <string>Clip comments in rules</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="2" >
+       <item row="6" column="2" >
         <spacer name="verticalSpacer" >
          <property name="orientation" >
           <enum>Qt::Vertical</enum>

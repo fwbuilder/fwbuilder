@@ -140,6 +140,8 @@ protected:
     void ExpandTreeItems(const std::set<int> &ids);
     const std::set<int>& getListOfExpandedObjectIds() { return expanded_objects; }
 
+    void showOrHideAttributesColumn();
+ 
  public slots:
 
     void itemSelectionChanged();

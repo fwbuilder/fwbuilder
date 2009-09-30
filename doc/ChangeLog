@@ -1,3 +1,17 @@
+2009-09-30  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::setAttributesColumnEnabled):
+	New feature: the GUI can show brief summary of object attributes
+	in the second column in the object tree. This is controlled by a
+	checkbox in the global preferences dialog, tab "Objects". This is
+	off by default. The first column always shows object icon and its
+	name, the second (optional) column shows its attributes. Interface
+	label is shown in the second column. The width of both columns in
+	the tree is set automatically to accommodate all the text, then
+	can be adjusted by the user using mouse. Column width is saved in
+	settings and will be restored upon program restart. Column width
+	is saved per-file, per-library.
+
 2009-09-23  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/res/configlets/linux24/update_bonding: Generated iptables

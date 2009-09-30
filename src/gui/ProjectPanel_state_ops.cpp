@@ -105,6 +105,7 @@ void ProjectPanel::saveState()
         st->setStr("Window/" + FileName + "/ObjInfoSplitter", arg );
 
     m_panel->om->saveExpandedTreeItems();
+    m_panel->om->saveSectionSizes();
 
     saveLastOpenedLib();
     saveOpenedRuleSet();
@@ -189,6 +190,7 @@ void ProjectPanel::loadState(bool)
     setObjInfoSplitterPosition(w1, w2);
 
     m_panel->om->loadExpandedTreeItems();
+    m_panel->om->loadSectionSizes();
 
     loadLastOpenedLib();
     loadOpenedRuleSet();

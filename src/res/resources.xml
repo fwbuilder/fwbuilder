@@ -83,14 +83,17 @@
     
     <Management>
       <description>Management</description>
+      <hidden>true</hidden>
     </Management>
 
     <SNMPManagement>
       <description>Management</description>
+      <hidden>true</hidden>
     </SNMPManagement>
 
     <FWBDManagement>
       <description>Management</description>
+      <hidden>true</hidden>
     </FWBDManagement>
 
     <IPService>

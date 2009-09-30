@@ -35,6 +35,7 @@
 #include "PrefsDialog.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
+#include "ProjectPanel.h"
 #include "HttpGet.h"
 
 #include "fwbuilder/Resources.h"
@@ -115,6 +116,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->tooltipDelay->setValue( st->getTooltipDelay() );
 
     m_dialog->deletedObj->setChecked( st->getBool("UI/ShowDeletedObjects") );
+    m_dialog->attributesInTree->setChecked( st->getBool("UI/ShowObjectsAttributesInTree") );
 
     m_dialog->emptyRCSLog->setChecked( st->getRCSLogState() );
     m_dialog->autosave->setChecked( st->getAutoSave() );
@@ -389,7 +391,13 @@ void PrefsDialog::accept()
     st->setObjTooltips( m_dialog->objTooltips->isChecked() );
     st->setTooltipDelay( m_dialog->tooltipDelay->value() );
 
-    st->setBool("UI/ShowDeletedObjects", m_dialog->deletedObj->isChecked() );
+    st->setBool("UI/ShowDeletedObjects", m_dialog->deletedObj->isChecked());
+    st->setBool("UI/ShowObjectsAttributesInTree", m_dialog->attributesInTree->isChecked());
+
+    ProjectPanel *pp = mw->activeProject();
+    if (pp)
+        pp->m_panel->om->setAttributesColumnEnabled(
+            m_dialog->attributesInTree->isChecked());
 
 //  QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 

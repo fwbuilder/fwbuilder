@@ -42,6 +42,8 @@ class FWObjectPropertiesFactory {
  * returns a one line property of the object for the second column of
  * the tree view
  */
+    static QString getObjectPropertiesBrief(libfwbuilder::FWObject *obj);
+
     static QString getObjectProperties(libfwbuilder::FWObject *obj);
 
     static QString getObjectPropertiesDetailed(libfwbuilder::FWObject *obj,

@@ -772,6 +772,28 @@ void FWBSettings::setExpandedObjectIds(const QString &filename,
         strl.join(","));
 }
 
+int FWBSettings::getTreeSectionSize(const QString &filename,
+                                    const QString &lib,
+                                    int section_index)
+{
+    int v = value(
+        QString(SETTINGS_PATH_PREFIX "/Window/%1/%2/TreeSection/%3")
+        .arg(filename).arg(lib).arg(section_index)).toInt();
+    if (v <= 0) v = 300;
+    return v;
+}
+
+void FWBSettings::setTreeSectionSize(const QString &filename,
+                                     const QString &lib,
+                                     int section_index,
+                                     int size)
+{
+    setValue(
+        QString(SETTINGS_PATH_PREFIX "/Window/%1/%2/TreeSection/%3")
+        .arg(filename).arg(lib).arg(section_index),
+        size);
+}
+
 int FWBSettings::getVisibleRuleSetId(const QString &filename,
                                      const QString &lib)
 {

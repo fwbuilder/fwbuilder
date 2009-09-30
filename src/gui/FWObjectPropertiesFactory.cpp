@@ -79,10 +79,148 @@ using namespace std;
 using namespace libfwbuilder;
 
 /*
- * API methods return STL string, so it is easier to use STL class
- * ostringstream to assemble text and then convert it to QString
- * rather than convert piece by piece.
+ * This method returns brief summary of properties, guaranteed to be 1
+ * line of text
  */
+QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
+{
+    QString res;
+    QTextStream str(&res, QIODevice::WriteOnly);
+    FWObject *parent_obj = obj->getParent();
+
+    try
+    {
+        if (Library::isA(obj))
+        {
+            if (obj->isReadOnly()) str << "(read only)";
+
+        } else if (IPv4::isA(obj))
+        {
+            str <<  IPv4::cast(obj)->getAddressPtr()->toString().c_str();
+            if (parent_obj && Interface::isA(parent_obj))
+            {
+                str << "/";
+                str << IPv4::cast(obj)->getNetmaskPtr()->toString().c_str();
+            }
+        } else if (IPv6::isA(obj))
+        {
+            str <<  IPv6::cast(obj)->getAddressPtr()->toString().c_str();
+            if (parent_obj && Interface::isA(parent_obj))
+            {
+                str << "/";
+                str << QString("%1").arg(IPv6::cast(obj)->getNetmaskPtr()->getLength());
+            }
+        } else if (physAddress::isA(obj))
+        {
+            str <<  physAddress::cast(obj)->getPhysAddress().c_str();
+        } else if (DNSName::isA(obj))
+        {
+            str << DNSName::cast(obj)->getSourceName().c_str();
+        } else if (AddressTable::isA(obj))  
+        {
+            str << AddressTable::cast(obj)->getSourceName().c_str();
+        } else if (AddressRange::isA(obj))
+        {
+            AddressRange *ar=AddressRange::cast(obj);
+            str << ar->getRangeStart().toString().c_str();
+            str << " - ";
+            str << ar->getRangeEnd().toString().c_str();
+        } else if (Firewall::cast(obj))
+        {
+            if (Firewall::cast(obj)->needsInstall()) str << " * ";
+            QString platform = obj->getStr("platform").c_str();
+            QString version  = obj->getStr("version").c_str();
+            QString readableVersion = getVersionString(platform,version);
+            QString hostOS = obj->getStr("host_OS").c_str();
+            str <<  platform << "(" << readableVersion << ") / " << hostOS;
+
+        } else if (Host::isA(obj))
+        {
+            const InetAddr *addr = Address::cast(obj)->getAddressPtr();
+            if (addr)
+                str <<  addr->toString().c_str();
+            else
+                str << "(no ip address)";
+        } else if (Network::isA(obj))
+        {
+            Network *n=Network::cast(obj);
+            str << n->getAddressPtr()->toString().c_str();
+            str << "/";
+            str << n->getNetmaskPtr()->toString().c_str();
+
+        } else if (NetworkIPv6::isA(obj))
+        {
+            NetworkIPv6 *n=NetworkIPv6::cast(obj);
+            str << n->getAddressPtr()->toString().c_str();
+            str << "/";
+            str << QString("%1").arg(n->getNetmaskPtr()->getLength());
+
+        } else if (ClusterGroup::cast(obj)!=NULL)
+        {
+            ClusterGroup *g = ClusterGroup::cast(obj);
+            str << QObject::tr("type: ") << g->getStr("type").c_str();
+        } else if (Group::cast(obj)!=NULL)   // just any group
+        {
+            Group *g=Group::cast(obj);
+            str << g->size() << " " << QObject::tr(" objects");
+
+        } else if (Interface::isA(obj))
+        {
+            Interface *intf = Interface::cast(obj);
+            // trigger late initialization of options object
+            // if its read-only or part of the read-only tree, I can't help it.
+            if (!obj->isReadOnly()) intf->getOptionsObject();
+            str << intf->getLabel().c_str();
+
+            QString q;
+            if (intf->isDyn())         q =" dyn";
+            if (intf->isUnnumbered())  q =" unnum";
+            if (intf->isBridgePort())  q =" bridge port";
+            if (intf->isSlave())       q =" slave";
+            if (intf->isUnprotected()) q = q + " unp";
+            if (q!="") str << " (" + q + ")";
+
+        } else if (IPService::isA(obj))
+        {
+            str << QObject::tr("protocol: %1").arg(obj->getStr("protocol_num").c_str());
+
+        } else if (ICMPService::isA(obj) || ICMP6Service::isA(obj))
+        {
+            str << QObject::tr("type: %1").arg(obj->getStr("type").c_str())
+                << "  "
+                << QObject::tr("code: %1").arg(obj->getStr("code").c_str());
+
+        } else if (TCPService::isA(obj) || UDPService::isA(obj))
+        {
+            int sps,spe,dps,dpe;
+
+            sps=TCPUDPService::cast(obj)->getSrcRangeStart();
+            spe=TCPUDPService::cast(obj)->getSrcRangeEnd();
+            dps=TCPUDPService::cast(obj)->getDstRangeStart();
+            dpe=TCPUDPService::cast(obj)->getDstRangeEnd();
+
+            str << sps << ":" << spe << " / ";
+            str << dps << ":" << dpe;
+        } else if (TagService::isA(obj)) 
+        {
+            str << "Pattern: \"" << obj->getStr("tagcode").c_str() << "\"" ;
+        } else if (UserService::isA(obj)) 
+        {
+            const UserService* user_srv = UserService::constcast(obj);
+            str << "User id: \"" << user_srv->getUserId().c_str() << "\"" ;
+        } else if (Interval::isA(obj))
+        {
+
+        }
+    } catch (FWException &ex)
+    {
+        cerr << ex.toString() << endl;
+    }
+
+    return res;
+}
+
+
 QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 {
     QString res;
