@@ -2322,9 +2322,10 @@ void ObjectManipulator::lockObject()
     }
     getCurrentObjectTree()->setLockFlags();
 
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(m_project->getFileName(), 0));
-
+    // Arguably, locking an object should not change lastModified timestamp
+    // because none of the attributes that affect generated policy change.
+    //QCoreApplication::postEvent(
+    //    mw, new dataModifiedEvent(m_project->getFileName(), 0));
 }
 
 void ObjectManipulator::unlockObject()
@@ -2348,9 +2349,8 @@ void ObjectManipulator::unlockObject()
     }
     getCurrentObjectTree()->setLockFlags();
 
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(m_project->getFileName(), 0));
-
+    //QCoreApplication::postEvent(
+    //    mw, new dataModifiedEvent(m_project->getFileName(), 0));
 }
 
 /*
