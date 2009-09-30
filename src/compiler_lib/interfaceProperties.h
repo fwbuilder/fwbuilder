@@ -77,6 +77,14 @@ public:
     virtual bool looksLikeVlanInterface(libfwbuilder::InterfaceData*) { return false; }
     virtual bool looksLikeVlanInterface(const QString&) { return false; }
 
+    virtual bool validateInterface(libfwbuilder::FWObject *parent,
+                                   const QString &inetrface_name,
+                                   QString &err);
+    virtual bool validateInterface(libfwbuilder::FWObject *parent,
+                                   libfwbuilder::FWObject *intf,
+                                   bool check_types,
+                                   QString &err);
+    
     /**
      * for the given interface return list of its ip addresses that we
      * should manage using update_addresses shell function and list of

@@ -364,32 +364,18 @@ void InterfaceDialog::validate(bool *res)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     interfaceProperties *int_prop =
-        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            os_family);
-    if (int_prop->looksLikeVlanInterface(obj_name))
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
+    QString err;
+    if ( ! int_prop->validateInterface(obj->getParent(), obj_name, err))
     {
-        QString parent_name = obj->getParent()->getName().c_str();
-        if (Cluster::isA(obj->getParent()))
-        {
-            // cluster is allowed to have top-level vlan interfaces,
-            // therefore we do not need to change the name of the
-            // interface against the name of the parent. This is
-            // signalled to isValidVlanInterfaceName() by passing
-            // empty string as parent_interface
-            parent_name = "";
-        }
-        QString err;
-        if ( ! int_prop->isValidVlanInterfaceName(obj_name, parent_name, err))
-        {
-            *res = false;
-            QMessageBox::critical(
-                this,"Firewall Builder",
-                err,
-                tr("&Continue"), QString::null,QString::null,
-                0, 1 );
-
-        }
+        *res = false;
+        QMessageBox::critical(
+            this,"Firewall Builder",
+            err,
+            tr("&Continue"), QString::null,QString::null,
+            0, 1 );
     }
+
     delete int_prop;
 }
 

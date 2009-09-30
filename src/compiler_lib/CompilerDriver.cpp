@@ -44,6 +44,8 @@
 
 
 #include "CompilerDriver.h"
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -358,6 +360,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
             }
         } else
         {
+            // Regular interface (should have an ip address)
             bool no_addr_ok = false;
             if (iface->getOptionsObject()->getBool("cluster_interface"))
             {
@@ -400,6 +403,62 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                           .arg(FWObjectDatabase::getStringId(
                                    iface->getId()).c_str())
                           .arg(ip_addr->toString().c_str()).toStdString());
+                }
+            }
+        }
+
+        FWObject *parent = iface->getParent();
+
+        if (Interface::isA(parent))
+        {
+            Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
+            string os_family = fw->getStr("host_OS");
+            if (os_res!=NULL)
+                os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+            std::auto_ptr<interfaceProperties> int_prop(
+                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                    os_family));
+
+            QString err;
+            if (!int_prop->validateInterface(parent, iface, true, err))
+                abort(fw, NULL, NULL, err.toStdString());
+
+            string interface_type = iface->getOptionsObject()->getStr("type");
+            if (interface_type.empty()) interface_type = "ethernet";
+
+            string parent_interface_type =
+                Interface::cast(parent)->getOptionsObject()->getStr("type");
+
+            if (parent_interface_type == "bridge" &&
+                interface_type == "ethernet" &&
+                int_prop->looksLikeVlanInterface(iface->getName().c_str()))
+            {
+                // if vlan interface is used as a bridge port, it
+                // should be a copy of the top-level interface object
+                // with the same name
+                bool have_top_level_copy = false;
+                for (list<FWObject*>::iterator i2=interfaces.begin();
+                     i2!=interfaces.end(); ++i2)
+                {
+                    Interface *in = Interface::cast(*i2);
+                    assert(in);
+                    if (in == iface) continue;
+                    if (in->getName() == iface->getName())
+                    {
+                        have_top_level_copy = true;
+                        break;
+                    }
+                }
+                if (!have_top_level_copy)
+                {
+                    QString err("Interface %1 looks like Vlan interface and is "
+                                "used as a bridge port. This configuration "
+                                "is only allowed if this object is a copy of another "
+                                "top-level interface with the same name"
+                    );
+                    abort(fw, NULL, NULL,
+                          err.arg(iface->getName().c_str()).toStdString());
                 }
             }
         }

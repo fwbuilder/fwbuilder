@@ -2038,31 +2038,27 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
     Host *hst = Host::cast(ta);
     Firewall *fw = Firewall::cast(ta);
     Interface *intf = Interface::cast(ta);
+    FWObject *parent_fw = ta;
+    while (parent_fw && Firewall::cast(parent_fw)==NULL) parent_fw = parent_fw->getParent();
+
+    if (parent_fw && Interface::isA(obj))
+    {
+        Resources* os_res = Resources::os_res[parent_fw->getStr("host_OS")];
+        string os_family = parent_fw->getStr("host_OS");
+        if (os_res!=NULL)
+            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+        std::auto_ptr<interfaceProperties> int_prop(
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                os_family));
+
+        return int_prop->validateInterface(ta, obj, false, err);
+    }
 
     if (fw!=NULL)
     {
         // inserting some object into firewall or cluster
         if (!fw->validateChild(obj)) return false;
-        if (Interface::isA(obj))
-        {
-            // check if obj is vlan interface
-            Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
-            string os_family = fw->getStr("host_OS");
-            if (os_res!=NULL)
-                os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
-            std::auto_ptr<interfaceProperties> int_prop(
-                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                    os_family));
-            QString obj_name = obj->getName().c_str();
-            if (int_prop->looksLikeVlanInterface(obj_name))
-            {
-                err = QObject::tr("'%1' looks like a name of a vlan interface; "
-                                  "vlan can only be a subinterface of another interface, "
-                                  "it can not be a top-level interface.").arg(obj_name);
-                return false;
-            }
-        }
         return true;
     }
 
@@ -2070,50 +2066,7 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
 
     if (intf!=NULL)
     {
-        // inserting some object into interface
-        if (Interface::isA(obj))
-        {
-            if (!intf->validateChild(obj))
-            {
-                // See Interface::validateChild(). Currently the only
-                // condition when interface can not become a child of
-                // another interface is when interface has subinterfaces
-                // of its own.
-                err = QObject::tr("Interface %1 can not become subinterface of %2 "
-                                  "because only one level of subinterfaces is allowed.")
-                    .arg(obj->getName().c_str())
-                    .arg(ta->getName().c_str());
-                return false;
-            }
-            // check vlan conditions as well
-            FWObject *f = intf->getParentHost();
-
-            Resources* os_res = Resources::os_res[f->getStr("host_OS")];
-            string os_family = f->getStr("host_OS");
-            if (os_res!=NULL)
-                os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
-            std::auto_ptr<interfaceProperties> int_prop(
-                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                    os_family));
-            QString obj_name = obj->getName().c_str();
-            if (int_prop->looksLikeVlanInterface(obj_name))
-            {
-                // vlan interface can be a child of a bridge, in which
-                // case its base name does not match the
-                // parent. Perform other checks except this, pass ""
-                // as parent name argument to isValidVlanInterfaceName()
-                if (Interface::cast(ta)->getOptionsObject()->getStr("type") ==
-                    "bridge")
-                    return int_prop->isValidVlanInterfaceName(obj_name, "", err);
-
-                QString parent_name = ta->getName().c_str();
-                return int_prop->isValidVlanInterfaceName(obj_name, parent_name, err);
-            }
-        } else
-        {
-            if (!intf->validateChild(obj)) return false;
-        }
+        if (!intf->validateChild(obj)) return false;
         return true;
     }
 

@@ -30,6 +30,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 
@@ -122,8 +124,6 @@ bool interfaceProperties::manageIpAddresses(Interface *intf,
 
         getListOfAddresses(intf, update_addresses);
 
-        FWObject *parent_fw = intf->getParentHost();
-
         list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
         list<FWObject*>::iterator i;
         for (i=interfaces.begin(); i!=interfaces.end(); ++i )
@@ -152,4 +152,123 @@ bool interfaceProperties::manageIpAddresses(Interface *intf,
     return true;
 }
 
+bool interfaceProperties::validateInterface(FWObject *parent,
+                                            FWObject *intf,
+                                            bool check_types,
+                                            QString &err)
+{
+    if (Interface::cast(parent) && Interface::cast(intf))
+    {
+        if (!Interface::cast(parent)->validateChild(intf))
+        {
+            // See Interface::validateChild(). Currently the only
+            // condition when interface can not become a child of
+            // another interface is when interface has subinterfaces
+            // of its own.
+            err = QObject::tr("Interface %1 can not become subinterface of %2 "
+                              "because only one level of subinterfaces is allowed.")
+                .arg(intf->getName().c_str())
+                .arg(parent->getName().c_str());
+            return false;
+        }
+
+        if (check_types)
+        {
+            // We check types when this method is called from a compiler
+            string parent_interface_type =
+                Interface::cast(parent)->getOptionsObject()->getStr("type");
+            if (parent_interface_type.empty()) parent_interface_type = "ethernet";
+
+            FWObject *fw = Interface::cast(parent)->getParentHost();
+            QString host_os = fw->getStr("host_OS").c_str();
+            Resources* os_res = Resources::os_res[host_os.toStdString()];
+            list<string> interface_type_pairs;
+            os_res->getResourceStrList(
+                "/FWBuilderResources/Target/subinterfaces/" + parent_interface_type,
+                interface_type_pairs);
+            list<string> interface_types;
+            for (list<string>::iterator it=interface_type_pairs.begin();
+                 it!=interface_type_pairs.end(); ++it)
+            {
+                QString p = it->c_str();
+                interface_types.push_back(p.split(",")[0].toStdString());
+            }
+
+            // Implement interface type checks here
+            string interface_type = Interface::cast(intf)->getOptionsObject()->getStr("type");
+            if (interface_type.empty()) interface_type = "ethernet";
+
+            if (std::find(interface_types.begin(), interface_types.end(),
+                          interface_type) == interface_types.end())
+            {
+                err = QObject::tr("Interface %1 (type '%2') can not be a child "
+                                  "of interface %3 (type '%4')")
+                    .arg(intf->getName().c_str())
+                    .arg(interface_type.c_str())
+                    .arg(parent->getName().c_str())
+                    .arg(parent_interface_type.c_str());
+
+                return false;
+            }
+        }
+    }
+    return validateInterface(intf->getParent(), intf->getName().c_str(), err);
+}
+
+/**
+ * this method implements policy for the interface hierarchy, that is,
+ * can given interface be a child of a cluster or a firewall or
+ * another interface.
+ */
+bool interfaceProperties::validateInterface(FWObject *parent,
+                                            const QString &interface_name,
+                                            QString &err)
+{
+    if (Firewall::cast(parent))
+    {
+        if (looksLikeVlanInterface(interface_name))
+        {
+            QString parent_name = parent->getName().c_str();
+            if (Cluster::isA(parent))
+            {
+                // cluster is allowed to have top-level vlan interfaces,
+                // therefore we do not need to check the name of the
+                // interface against the name of the parent. This is
+                // signalled to isValidVlanInterfaceName() by passing
+                // empty string as parent_interface
+                parent_name = "";
+            }
+            return isValidVlanInterfaceName(interface_name, parent_name, err);
+        }
+        return true;
+    }
+
+    if (Interface::cast(parent))
+    {
+        string parent_interface_type =
+            Interface::cast(parent)->getOptionsObject()->getStr("type");
+        // check vlan conditions as well
+        if (looksLikeVlanInterface(interface_name))
+        {
+            // vlan interface can be a child of a bridge, in which
+            // case its base name does not match the
+            // parent. Perform other checks except this, pass ""
+            // as parent name argument to isValidVlanInterfaceName()
+            if (parent_interface_type == "bridge")
+                return isValidVlanInterfaceName(interface_name, "", err);
+
+            QString parent_name = parent->getName().c_str();
+            return isValidVlanInterfaceName(interface_name, parent_name, err);
+        }
+
+        // interface_name is not a vlan
+        // regular interface can only be a child of bond or bridge
+        return (parent_interface_type == "bridge" || parent_interface_type == "bonding");
+    }
+
+    // parent is not firewall (cluster) and not interface
+    err = QObject::tr("Interface can not be a child object of %1").arg(
+        parent->getTypeName().c_str());
+    return false;
+}
 
