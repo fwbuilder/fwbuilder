@@ -1088,7 +1088,7 @@ void ObjectManipulator::makeNameUnique(FWObject *target, FWObject *obj)
         //
         QString obj_name = obj->getName().c_str();
         FWObject *fw = target;
-        while (fw && !Firewall::isA(fw)) fw = fw->getParent();
+        while (fw && !Firewall::cast(fw)) fw = fw->getParent();
 
         Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
         string os_family = fw->getStr("host_OS");
@@ -2232,7 +2232,7 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
             // make name unique before adding this object to the
             // parent, otherwise makeNameUnique finds it and thinks
             // the name is duplicate
-            makeNameUnique(ta, nobj);
+            // makeNameUnique(ta, nobj);
 
             ta->add(nobj);
 
