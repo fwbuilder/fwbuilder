@@ -320,9 +320,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
             }
         }
 
-        if ( iface->isUnnumbered())   continue;
-
-        if ( iface->isDyn())  
+        if (iface->isDyn())  
         {
             have_dynamic_interfaces=true;
 
@@ -348,7 +346,9 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
                     iface->remove(*j);
             }
-        } else
+        } 
+
+        if (iface->isRegular())
         {
             // Regular interface (should have an ip address)
             bool no_addr_ok = false;
