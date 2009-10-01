@@ -33,6 +33,15 @@
 #include <functional>
 #include <memory>
 
+// for chdir
+#ifndef _WIN32
+#  include <unistd.h>
+#else
+#  include <direct.h>
+#  include <stdlib.h>
+#  include <io.h>
+#endif
+
 #include "CompilerDriver.h"
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
