@@ -167,6 +167,9 @@ void Interface::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
+/*
+ * <!ELEMENT Interface (IPv4*, IPv6*, physAddress?, InterfaceOptions?, Interface*, FailoverClusterGroup?)>
+ */
 xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
@@ -199,12 +202,6 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
     if (o) o->toXML(me);
 
     /*
-     * serialize ClusterGroup members (if any)
-     */
-    o = getFirstByType(FailoverClusterGroup::TYPENAME);
-    if (o) o->toXML(me);
-
-    /*
      * serialize sub-interfaces (only for interfaces with advanced interface
      * config mode enabled)
      */
@@ -214,6 +211,12 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
         if((o=(*j1))!=NULL)
             o->toXML(me);
     }
+
+    /*
+     * serialize ClusterGroup members (if any)
+     */
+    o = getFirstByType(FailoverClusterGroup::TYPENAME);
+    if (o) o->toXML(me);
 
     return me;
 }
