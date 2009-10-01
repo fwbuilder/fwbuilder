@@ -326,7 +326,7 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
     script << "!\n\
 !  This is automatically generated file. DO NOT MODIFY !\n\
 !\n\
-!  Firewall Builder  fwb_iosacl v" << VERSION << "-" << RELEASE_NUM << " \n\
+!  Firewall Builder  fwb_iosacl v" << VERSION << "-" << BUILD_NUM << " \n\
 !\n\
 !  Generated " << timestr
           << " "

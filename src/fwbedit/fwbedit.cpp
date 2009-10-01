@@ -24,6 +24,8 @@
 */
 
 #include "../../config.h"
+#include "../../build_num"
+
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Constants.h"
 
@@ -140,7 +142,7 @@ void usage()
 {
     cout << "Firewall Builder:  general purpose object tree editing tool"
          << endl;
-    cout << "Version " << VERSION << "-" << RELEASE_NUM << endl;
+    cout << "Version " << VERSION << "-" << BUILD_NUM << endl;
     cout << endl;
     cout << "Usage: fwbedit command [options]" << endl;
     cout << endl;

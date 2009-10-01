@@ -39,7 +39,7 @@ FWBAboutDialog::FWBAboutDialog()
     m_aboutDialog->titleLbl->setText(
         QString("Firewall Builder v%1").arg(VERSION) );
     m_aboutDialog->revLbl->setText(
-        tr("Revision: %1 ( Build: %2 )").arg(RELEASE_NUM).arg(BUILD_NUM) );
+        tr("Build: %1").arg(BUILD_NUM) );
     m_aboutDialog->apiLbl->setText(
         tr("Using Firewall Builder API %1").arg(
             libfwbuilder::Constants::getLibraryVersion().c_str() ) );

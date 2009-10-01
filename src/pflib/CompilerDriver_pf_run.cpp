@@ -492,7 +492,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
     script << "#\n\
 #  This is automatically generated file. DO NOT MODIFY !\n\
 #\n\
-#  Firewall Builder  fwb_pf v" << VERSION << "-" << RELEASE_NUM << " \n\
+#  Firewall Builder  fwb_pf v" << VERSION << "-" << BUILD_NUM << " \n\
 #\n\
 #  Generated " << timestr << " " << tzname[stm->tm_isdst] << " by " 
             << user_name << "\n#\n";

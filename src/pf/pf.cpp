@@ -24,6 +24,7 @@
 */
 
 #include "../../config.h"
+#include "../../build_num"
 
 #include <fstream>
 #include <iostream>
@@ -66,7 +67,7 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 void usage(const char *name)
 {
     cout << "Firewall Builder:  policy compiler for OpenBSD PF" << endl;
-    cout << "Version " << VERSION << RELEASE_NUM << endl;
+    cout << "Version " << VERSION << "-" << BUILD_NUM << endl;
     cout << "Usage: " << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] [-4|-6] firewall_object_name" << endl;
 }
 

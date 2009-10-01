@@ -24,14 +24,9 @@ AC_SUBST(FWB_VERSION)
 SHORTVERSION=${FWB_MAJOR_VERSION}${FWB_MINOR_VERSION}${FWB_MICRO_VERSION}
 AC_SUBST(SHORTVERSION)
 
-AC_SUBST(RELEASE_NUM)
-AC_DEFINE_UNQUOTED(RELEASE_NUM, "$RELEASE_NUM", [release_num])
-
 echo "Creating VERSION.h file..."
 
 echo "#define VERSION      \"$VERSION\""      > VERSION.h
-echo "#define RELEASE_NUM  \"$RELEASE_NUM\"" >> VERSION.h
-
 
 dnl try to find QT
 dnl
@@ -297,15 +292,7 @@ else
   DATADIR="${PREFIX}/share/"
 fi
 
-
 ICONSDIR=""
-
-if test -z ${RELEASE_NUM}; then
-  RPMRELEASE="1"
-else
-  RPMRELEASE="${RELEASE_NUM}";
-fi
-AC_SUBST(RPMRELEASE)
 
 AC_MSG_CHECKING(what OS this is)
 
