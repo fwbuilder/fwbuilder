@@ -396,8 +396,12 @@ void PrefsDialog::accept()
 
     ProjectPanel *pp = mw->activeProject();
     if (pp)
+    {
         pp->m_panel->om->setAttributesColumnEnabled(
             m_dialog->attributesInTree->isChecked());
+        if (m_dialog->attributesInTree->isChecked())
+            pp->m_panel->om->loadSectionSizes();
+    }
 
 //  QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 

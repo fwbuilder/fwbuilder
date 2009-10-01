@@ -131,6 +131,7 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
     //header()->hide();
 
+    header()->setDefaultAlignment(Qt::AlignHCenter);
     header()->setResizeMode(QHeaderView::Interactive);
 
     showOrHideAttributesColumn();
