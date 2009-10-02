@@ -80,8 +80,6 @@ public:
                                                libfwbuilder::FWObject* container);
     
 public slots:
-    virtual void hidePanel() {emit close();}; 
-   
     virtual void find();
     virtual void find(libfwbuilder::FWObject *obj);
     virtual void _find(libfwbuilder::FWObject *obj);

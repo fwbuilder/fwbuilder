@@ -66,7 +66,7 @@
      <x>0</x>
      <y>0</y>
      <width>741</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="editMenu">
@@ -170,7 +170,6 @@
     <addaction name="actionObject_Tree"/>
     <addaction name="actionRules"/>
     <addaction name="actionEditor_panel"/>
-    <addaction name="actionSearch_panel"/>
    </widget>
    <addaction name="fileMenu"/>
    <addaction name="editMenu"/>
@@ -769,14 +768,6 @@
    </property>
    <property name="text">
     <string>Editor panel</string>
-   </property>
-  </action>
-  <action name="actionSearch_panel">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Search panel</string>
    </property>
   </action>
  </widget>
@@ -1590,22 +1581,6 @@
    <signal>triggered()</signal>
    <receiver>FWBMainWindow_q</receiver>
    <slot>toggleViewEditor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>370</x>
-     <y>359</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionSearch_panel</sender>
-   <signal>triggered()</signal>
-   <receiver>FWBMainWindow_q</receiver>
-   <slot>toggleViewSearch()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

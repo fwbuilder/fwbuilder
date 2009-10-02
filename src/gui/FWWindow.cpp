@@ -759,23 +759,19 @@ void FWWindow::prepareViewMenu()
         m_mainWindow->actionObject_Tree->setEnabled(false);
         m_mainWindow->actionRules->setEnabled(false);
         m_mainWindow->actionEditor_panel->setEnabled(false);
-        m_mainWindow->actionSearch_panel->setEnabled(false);
         return;
     }
 
     m_mainWindow->actionObject_Tree->setEnabled(true);
     m_mainWindow->actionRules->setEnabled(true);
     m_mainWindow->actionEditor_panel->setEnabled(true);
-    m_mainWindow->actionSearch_panel->setEnabled(true);
 
     m_mainWindow->actionObject_Tree->setChecked(
         activeProject()->m_panel->treeDockWidget->isVisible());
     m_mainWindow->actionRules->setChecked(
         activeProject()->m_panel->rulesDockWidget->isVisible());
     m_mainWindow->actionEditor_panel->setChecked(
-        activeProject()->m_panel->editorDockWidget->isVisible());
-    m_mainWindow->actionSearch_panel->setChecked(
-        activeProject()->m_panel->auxDockWidget->isVisible());
+        activeProject()->m_panel->bottomDockWidget->isVisible());
 }
 
 void FWWindow::prepareObjectMenu()

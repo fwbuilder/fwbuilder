@@ -64,6 +64,8 @@ using namespace Ui;
 using namespace libfwbuilder;
 using namespace std;
 
+
+
 void ProjectPanel::initMain(FWWindow *main)
 {
     mainW = main;
@@ -96,30 +98,29 @@ void ProjectPanel::initMain(FWWindow *main)
         m_panel->auxiliaryPanel, this, "findObjectWidget");
     findObjectWidget->setFocusPolicy( Qt::NoFocus );
     m_panel->auxiliaryPanel->layout()->addWidget( findObjectWidget );
-    connect( findObjectWidget, SIGNAL( close() ),
-             this, SLOT( closeAuxiliaryPanel() ) );
 
     findWhereUsedWidget = new FindWhereUsedWidget(
         m_panel->auxiliaryPanel, this, "findWhereUsedWidget");
     findWhereUsedWidget->setFocusPolicy( Qt::NoFocus );
     m_panel->auxiliaryPanel->layout()->addWidget( findWhereUsedWidget );
     findWhereUsedWidget->hide();
-    connect( findWhereUsedWidget, SIGNAL( close() ),
-             this, SLOT( closeAuxiliaryPanel() ) );
 
-    m_panel->auxDockWidget->hide();
+    m_panel->bottomDockWidget->hide();
 
     oe  = new ObjectEditor((QWidget*)m_panel->objectEditorStack, this);
     //oe->setCloseButton(m_panel->closeObjectEditorButton);
     oe->setApplyButton(m_panel->applyObjectEditorButton);
     oe->setHelpButton(m_panel->helpObjectEditorButton);
-    m_panel->editorDockWidget->setupEditor(oe);
+    m_panel->bottomDockWidget->setupEditor(oe);
     closeEditorPanel();
 
     connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
-            this, SLOT(topLevelChanged(bool)));
-    connect(m_panel->rulesDockWidget, SIGNAL(topLevelChanged(bool)),
-            this, SLOT(topLevelChanged(bool)));
+            this, SLOT(topLevelChangedForTreePanel(bool)));
+    connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+            this, SLOT(visibilityChangedForTreePanel(bool)));
+
+    connect(m_panel->bottomDockWidget, SIGNAL(topLevelChanged(bool)),
+            this, SLOT(topLevelChangedForBottomPanel(bool)));
 
     fd  = new findDialog(this, this);
     fd->hide();
@@ -691,7 +692,7 @@ void ProjectPanel::unlockObject()
 //wrapers for some Object Editor functions
 bool ProjectPanel::isEditorVisible()
 {
-    return m_panel->editorDockWidget->isVisible();
+    return m_panel->bottomDockWidget->isVisible(); // editor
 }
 
 bool ProjectPanel::isEditorModified()
@@ -703,7 +704,8 @@ void ProjectPanel::showEditor()
 {
     openEditorPanel();
     m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    m_panel->editorDockWidget->show();
+    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
+    m_panel->bottomDockWidget->show(); // editor
 }
 
 void ProjectPanel::hideEditor()
@@ -713,13 +715,14 @@ void ProjectPanel::hideEditor()
 
 void ProjectPanel::closeEditor()
 {
-    m_panel->editorDockWidget->close();
+    m_panel->bottomDockWidget->close(); // editor
 }
 
 void ProjectPanel::openEditor(FWObject *o)
 {
     QSize old_size = m_panel->objectEditorStack->size();
-    m_panel->editorDockWidget->show();
+    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
+    m_panel->bottomDockWidget->show(); // editor
     oe->open(o);
     m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
     //m_panel->objectEditorFrame->show();
@@ -729,7 +732,8 @@ void ProjectPanel::openEditor(FWObject *o)
 void ProjectPanel::openOptEditor(FWObject *o, ObjectEditor::OptType t)
 {
     QSize old_size = m_panel->objectEditorStack->size();
-    m_panel->editorDockWidget->show();
+    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
+    m_panel->bottomDockWidget->show(); // editor
     oe->openOpt(o, t);
     m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
     //m_panel->objectEditorFrame->show();
@@ -867,19 +871,15 @@ void ProjectPanel::findObject(FWObject *o)
     findWhereUsedWidget->hide();
     if (fwbdebug) qDebug("ProjectPanel::findObject");
     findObjectWidget->findObject(o);
-    m_panel->auxDockWidget->show();
+    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
+    m_panel->bottomDockWidget->show();
 
-}
-
-void ProjectPanel::closeAuxiliaryPanel()
-{
-    m_panel->auxDockWidget->hide();
 }
 
 void ProjectPanel::closeEditorPanel()
 {
     //m_panel->objectEditorFrame->hide();
-    m_panel->editorDockWidget->hide();
+    m_panel->bottomDockWidget->hide(); // editor
 }
 
 void ProjectPanel::openEditorPanel()
@@ -891,7 +891,8 @@ void ProjectPanel::openEditorPanel()
 void ProjectPanel::search()
 {
     findWhereUsedWidget->hide();
-    m_panel->auxDockWidget->show();
+    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
+    m_panel->bottomDockWidget->show();
     findObjectWidget->show();
 }
 
@@ -1078,7 +1079,8 @@ void ProjectPanel::redrawRuleSets()
 void ProjectPanel::findWhereUsed(FWObject * obj)
 {
     findObjectWidget->hide();
-    m_panel->auxDockWidget->show();
+    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
+    m_panel->bottomDockWidget->show();
     findWhereUsedWidget->find(obj);
 }
 
@@ -1244,57 +1246,105 @@ void ProjectPanel::toggleViewEditor(bool f)
     if (f)
     {
         openEditor(m_panel->om->getOpened());
-    } else m_panel->editorDockWidget->hide();
+    } else m_panel->bottomDockWidget->hide(); // editor
 }
-
-void ProjectPanel::toggleViewSearch(bool f)
-{
-    if (f) m_panel->auxDockWidget->show();
-    else m_panel->auxDockWidget->hide();
-}
-
 
 /*
  * Signal QDockWidget::topLevelChanged is called after dock widget
  * is made floating or docked.
  */
-void ProjectPanel::topLevelChanged(bool f)
+void ProjectPanel::topLevelChangedForTreePanel(bool f)
 {
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::topLevelChangedForTreePanel  f=" << f;
+
     QList<int> sizes = m_panel->topSplitter->sizes();
 
-    if (fwbdebug)
-        qDebug("ProjectPanel::topLevelChanged  f=%d"
-               "  treeDockWidget->isWindow()=%d "
-               "  rulesDockWidget->isWindow()=%d "
-               "  sizes[0]=%d sizes[1]=%d",
-               f, 
-               m_panel->treeDockWidget->isWindow(),
-               m_panel->rulesDockWidget->isWindow(),
-               sizes[0],  sizes[1]);
+#if defined(Q_WS_X11) 
+    /*
+     * QDockWidget object uses native decorators on Windows and Mac
+     * and therefore gets window title bar there. On X11 QT emulates
+     * title bar and allows dragging of the floating dock widget only
+     * if its parent is QMainWindow. Here is a hack: we reparent the
+     * widget in order to satisfy their requirements and make floating
+     * panel widget draggable on all platforms. Need to reparent it
+     * back and stick it into the layout of the ProjectPanel when it
+     * is docked.
+     */
+    m_panel->treeDockWidget->disconnect(SIGNAL(topLevelChanged(bool)));
+    m_panel->treeDockWidget->disconnect(SIGNAL(visibilityChanged(bool)));
+    
+    if (f)
+    {
+        m_panel->treeDockWidget->setParent(mw);
+        mw->addDockWidget(Qt::LeftDockWidgetArea, m_panel->treeDockWidget);
+        m_panel->treeDockWidget->show();
+    } else
+    {
+        mw->removeDockWidget(m_panel->treeDockWidget);
+        m_panel->treeDockWidget->setParent(m_panel->treeDockWidgetParentFrame);
+        m_panel->treeDockWidgetParentFrameLayout->addWidget(m_panel->treeDockWidget, 0, 0, 1, 1);
+        m_panel->treeDockWidget->show();
+    }
+    m_panel->treeDockWidget->setFloating(f);
 
-    if (!m_panel->treeDockWidget->isWindow() &&
-        !m_panel->rulesDockWidget->isWindow())
+    connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
+            this, SLOT(topLevelChangedForTreePanel(bool)));
+    connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
+            this, SLOT(visibilityChangedForTreePanel(bool)));
+#endif
+
+    if (!m_panel->treeDockWidget->isWindow())
     {
         loadMainSplitter();
     } else
     {
-
         if (m_panel->treeDockWidget->isWindow())
         {
             // expand rules 
             collapseTree();
-            m_panel->treeDockWidget->widget()->resize(
-                sizes[0], m_panel->treeDockWidget->height());
             m_panel->treeDockWidget->widget()->update();
         }
-
-        if (m_panel->rulesDockWidget->isWindow())
-        {
-            // expand tree panel 
-            collapseRules();
-            m_panel->rulesDockWidget->resize(sizes[1], m_panel->rulesDockWidget->height());
-        }
     }
+}
 
+void ProjectPanel::visibilityChangedForTreePanel(bool f)
+{
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::visibilityChangedForTreePanel  f="
+                 << f
+                 << " m_panel->treeDockWidget->isWindow()="
+                 << m_panel->treeDockWidget->isWindow();
+
+    QList<int> sizes = m_panel->topSplitter->sizes();
+
+    if (f && !m_panel->treeDockWidget->isWindow())  // visible and not floating
+    {
+        loadMainSplitter();
+    } else
+    {
+        // expand rules 
+        collapseTree();
+        m_panel->treeDockWidget->widget()->update();
+    }
+}
+
+void ProjectPanel::topLevelChangedForBottomPanel(bool f)
+{
+#if defined(Q_WS_X11) 
+    if (f)
+    {
+        m_panel->bottomDockWidget->setParent(mw);
+        mw->addDockWidget(Qt::BottomDockWidgetArea, m_panel->bottomDockWidget);
+        m_panel->bottomDockWidget->show();
+    } else
+    {
+        mw->removeDockWidget(m_panel->bottomDockWidget);
+        m_panel->bottomDockWidget->setParent(this);
+        layout()->addWidget(m_panel->bottomDockWidget);
+        m_panel->bottomDockWidget->show();
+    }
+    m_panel->bottomDockWidget->setFloating(f);
+#endif
 }
 

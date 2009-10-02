@@ -620,7 +620,6 @@ void FindObjectWidget::init()
 {
     m_widget->findDropArea->deleteObject();
     m_widget->replaceDropArea->deleteObject();
-    hidePanel();
 }
 
 void FindObjectWidget::firewallOpened(Firewall *f)

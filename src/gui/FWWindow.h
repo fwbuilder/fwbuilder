@@ -120,7 +120,6 @@ public slots:
     virtual void toggleViewObjectTree();
     virtual void toggleViewRules();
     virtual void toggleViewEditor();
-    virtual void toggleViewSearch();
 
     virtual void helpContents();
     virtual void helpContentsAction();
@@ -189,7 +188,6 @@ public slots:
     virtual void prepareFileOpenRecentMenu();
 
     virtual void toolsDiscoveryDruid();
-    virtual void closeAuxiliaryPanel();
 
     virtual void killInstDialog();
 

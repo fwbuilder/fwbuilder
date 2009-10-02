@@ -66,7 +66,6 @@ private:
     
 
 public slots:
-    virtual void hidePanel() {reset();emit close();}; 
     virtual void enableAll();
     virtual void disableAll();
     virtual void objectInserted();

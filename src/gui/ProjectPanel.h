@@ -57,41 +57,42 @@ class FWBTree;
 #define DEFAULT_H_SPLITTER_POSITION 250
 #define DEFAULT_V_SPLITTER_POSITION 450
 
+#define EDITOR_PANEL_EDITOR_TAB 0
+#define EDITOR_PANEL_SEARCH_TAB 1
+
 
 class ProjectPanel: public QWidget {
-    Q_OBJECT
+    Q_OBJECT;
 
-    FWWindow                               *mainW;
-    RCS                                    *rcs;
-    FWBTree                                *objectTreeFormat;
-    bool                                    systemFile;
-    bool                                    safeMode;
-    bool                                    editingStandardLib;
-    bool                                    editingTemplateLib;
-    bool                                    ruleSetRedrawPending;
-    bool                                    closing ;
-    bool                                    ready;
+    FWWindow *mainW;
+    RCS *rcs;
+    FWBTree *objectTreeFormat;
+    bool systemFile;
+    bool safeMode;
+    bool editingStandardLib;
+    bool editingTemplateLib;
+    bool ruleSetRedrawPending;
+    bool closing ;
+    bool ready;
     
-    libfwbuilder::FWObjectDatabase         *objdb;
-    QWidget                                *editorOwner;
+    libfwbuilder::FWObjectDatabase *objdb;
+    QWidget *editorOwner;
     
-    //QTextEdit                              *oi;
-    //ObjectManipulator                      *om; 
-    ObjectEditor                           *oe;
-    findDialog                             *fd;
+    ObjectEditor *oe;
+    findDialog *fd;
         
-    QTimer                                 *autosaveTimer;
+    QTimer *autosaveTimer;
     std::map<libfwbuilder::FWObject*, RuleSetView*> ruleSetViews;
-    int                                     ruleSetTabIndex;
+    int ruleSetTabIndex;
     
-    libfwbuilder::FWObject                 *visibleFirewall;
-    libfwbuilder::RuleSet                  *visibleRuleSet ;
-    std::vector<libfwbuilder::FWObject*>    firewalls;
+    libfwbuilder::FWObject *visibleFirewall;
+    libfwbuilder::RuleSet *visibleRuleSet ;
+    std::vector<libfwbuilder::FWObject*> firewalls;
 
-    int                                     lastFirewallIdx;
-    bool                                    changingTabs;
-    QString                                 noFirewalls;
-    bool                                    enableAvtoSaveState;
+    int lastFirewallIdx;
+    bool changingTabs;
+    QString noFirewalls;
+    bool enableAvtoSaveState;
     
 public:
 
@@ -258,7 +259,10 @@ public:
  public slots:
     void newObject();
 
-    void topLevelChanged(bool topLevel);
+    void topLevelChangedForTreePanel(bool topLevel);
+    void visibilityChangedForTreePanel(bool topLevel);
+    
+    void topLevelChangedForBottomPanel(bool topLevel);
     
     virtual void back();
     virtual void lockObject();
@@ -295,7 +299,6 @@ public:
     virtual void fileCompare();
     virtual void fileExport();
     
-    virtual void closeAuxiliaryPanel();
     virtual void closeEditorPanel();
     virtual void openEditorPanel();
     
@@ -379,7 +382,6 @@ public:
     void toggleViewTree(bool f);
     void toggleViewRules(bool f);
     void toggleViewEditor(bool f);
-    void toggleViewSearch(bool f);
 
 protected:
     int oldState ;

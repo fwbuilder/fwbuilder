@@ -1,3 +1,24 @@
+2009-10-02  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel.cpp (topLevelChangedForTreePanel): Main window
+	layout redesign: Panels that show object tree and object editor
+	now use docked widget and are detachable. User can "float" these
+	panels to be able to rearrange information on the screen. When
+	panel showing objects tree is detached, it can be expanded to show
+	multiple columns of information comfortably. Also, when the tree
+	is detached, panel showing rules expands to occupy whole window
+	which helps to see rules using objects with long names. This
+	provides easy way to see attrivbutes of many objects at
+	once. Panel that shows object editor dialogs also shows "find" and
+	"find where used" dialogs in a Tab widget. This panel can not be
+	detached (because currently there is one such panel for each MDI
+	subwindow). Editor panel now occupies whole bottom part of the
+	window. Since editor dialogs show all relevant information about
+	the object, the "Info" panel has been deprecated. Since the editor
+	and search dialogs are now placed inside docked widget that has
+	its own "close" button, "Close" buttons in these dialogs have been
+	removed.
+
 2009-09-30  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::setAttributesColumnEnabled):

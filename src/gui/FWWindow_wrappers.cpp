@@ -308,19 +308,11 @@ void FWWindow::toggleViewEditor()
     }
 }
 
-void FWWindow::toggleViewSearch()
-{
-    if (activeProject())
-    {
-        activeProject()->toggleViewSearch(m_mainWindow->actionSearch_panel->isChecked());
-    }
-}
-
 void FWWindow::search()
 {
     if (activeProject())
     {
-        m_mainWindow->actionSearch_panel->setChecked(true);
+        m_mainWindow->actionEditor_panel->setChecked(true);
         // call ProjectPanel::search() to actually open search panel
         // and reset it to normal search box rather than "find where
         // used"
@@ -430,11 +422,6 @@ RCS * FWWindow::getRCS()
 void FWWindow::findObject(FWObject *o)
 {
     if (activeProject()) activeProject()->findObject(o);
-}
-
-void FWWindow::closeAuxiliaryPanel()
-{
-    if (activeProject()) activeProject()->closeAuxiliaryPanel();
 }
 
 /*
