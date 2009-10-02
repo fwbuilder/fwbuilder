@@ -304,13 +304,14 @@ bool interfaceProperties::validateInterface(FWObject *target,
 
         // interface_name is not a vlan
         // regular interface can only be a child of bond or bridge
-        if (target_interface_type != "bridge" || target_interface_type != "bonding")
+        if (target_interface_type != "bridge" && target_interface_type != "bonding")
         {
             err = QObject::tr("Interface %1 which is not a vlan can only "
                               "be a subinterface of a bridge or bonding interface")
                 .arg(interface_name);
             return false;
         }
+        return true;
     }
 
     // target is not firewall (cluster) and not interface
