@@ -54,7 +54,6 @@ class ObjectEditor : public QObject {
     int current_dialog_idx;
     QString current_dialog_name;
     QStackedWidget *parentWidget;
-    QPushButton *closeButton;
     QPushButton *applyButton;
     QPushButton *helpButton;
     ProjectPanel *m_project;
@@ -87,7 +86,6 @@ public:
     void purge();
 
     bool validateAndSave();
-    void setCloseButton(QPushButton * b);
     void setApplyButton(QPushButton * b);
     void setHelpButton(QPushButton * b);
     void selectObject(libfwbuilder::FWObject *o);
@@ -102,7 +100,6 @@ public slots:
     void apply();
     void help();
     void discard();
-    void close();
     void changed();
     void blank();
 

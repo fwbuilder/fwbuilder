@@ -154,8 +154,6 @@ public slots:
 
      void selectionChanged(QTreeWidgetItem *cur);
 
-     void info();
-
      /**
       * open object obj in the editor. Does not open editor panel
       * if it is closed. Asks FWWindow permission to own editor.
@@ -261,9 +259,11 @@ public slots:
      
 public:
 
-     ObjectManipulator( QWidget *parent);
+     ObjectManipulator(QWidget *parent);
      ~ObjectManipulator();
 
+     void setupProject(ProjectPanel *project);
+     
      void libChangedById(int id);
      void changeFirstNotSystemLib();
      std::vector<QTreeWidget*> getTreeWidgets() { return idxToTrees;};

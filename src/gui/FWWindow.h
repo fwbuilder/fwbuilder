@@ -111,12 +111,17 @@ public slots:
     void maximize();
     virtual void search();
 
-    virtual void changeInfoStyle();
     virtual void restoreRuleSetTab();
 
     virtual void editFind();
     virtual void editRedo();
     virtual void editUndo();
+
+    virtual void toggleViewObjectTree();
+    virtual void toggleViewRules();
+    virtual void toggleViewEditor();
+    virtual void toggleViewSearch();
+
     virtual void helpContents();
     virtual void helpContentsAction();
     virtual void helpIndex();
@@ -176,6 +181,7 @@ public slots:
     virtual void unlockObject();
 
     virtual void prepareEditMenu();
+    virtual void prepareViewMenu();
     virtual void prepareObjectMenu();
     virtual void prepareFileMenu();
     virtual void prepareToolsMenu();

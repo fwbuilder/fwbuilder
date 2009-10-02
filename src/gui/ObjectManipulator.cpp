@@ -142,18 +142,15 @@ ObjectManipulator::~ObjectManipulator()
     delete m_objectManipulator;
 }
 
-ObjectManipulator::ObjectManipulator( QWidget *parent):
-  QWidget(parent), currentObj(0), current_tree_view(0)
+ObjectManipulator::ObjectManipulator(QWidget *parent):
+    QWidget(parent), currentObj(0), current_tree_view(0)
 {
     m_objectManipulator = new Ui::ObjectManipulator_q;
     m_objectManipulator->setupUi(this);
     setObjectName(tr("Object Manipulator"));
-    QObject* par = parent;
-    while(! (m_project = dynamic_cast<ProjectPanel*>(par)))
-    {
-        par = par->parent();
-    }
-  
+
+    m_project = NULL;
+
     treeWidth    = -1;
     treeHeight   = -1;
     currentObj   = NULL;
@@ -241,6 +238,11 @@ ObjectManipulator::ObjectManipulator( QWidget *parent):
 //    QToolButton *btn = (QToolButton*)toolBar->child("newObjectAction_action_button");
 
     m_objectManipulator->newButton->setMenu( newObjectPopup );
+}
+
+void ObjectManipulator::setupProject(ProjectPanel *project)
+{
+    m_project = project;
 }
 
 /*
@@ -1738,7 +1740,6 @@ FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib,
           m_project->openRuleSet(o->getFirstByType(Policy::TYPENAME));
       }
     }
-    m_project->info(o);
     return o;
 }
 
@@ -2637,21 +2638,6 @@ void ObjectManipulator::groupObjects()
     }
 }
 
-void ObjectManipulator::info()
-{
-    if (fwbdebug) qDebug("ObjectManipulator::info()");
-
-    if (currentObj)
-    {
-        if (fwbdebug) qDebug("currentObj=%s", currentObj->getName().c_str());
-
-        m_project->info(currentObj, true); //forcing info window update
-        active=true;
-    }
-    if (fwbdebug) qDebug("/ObjectManipulator::info()");
-}
-
-
 void ObjectManipulator::restoreSelection(bool same_widget)
 {
     if (fwbdebug)
@@ -2778,7 +2764,6 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 
     active=true;
 
-    info();
     update();
 
     // Send event to project panel object to cause update of currentObj
@@ -2913,8 +2898,6 @@ void ObjectManipulator::libChanged(int ln)
     }
     currentObj=otvi->getFWObject();
     showObjectInTree( otvi );
-
-    info();
 
     updateCreateObjectMenu( idxToLibs[ln] );
     return;

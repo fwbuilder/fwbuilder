@@ -153,7 +153,6 @@ bool ProjectPanel::event(QEvent *event)
                     qDebug("ProjectPanel::event  updateObjectInTreeEvent  obj: %s",
                            obj->getName().c_str());
                 m_panel->om->updateObjectInTree(obj, true);
-                m_panel->om->info();
                 mdiWindow->update();
                 ev->accept();
                 return true;
@@ -184,8 +183,6 @@ bool ProjectPanel::event(QEvent *event)
                 m_panel->om->openObject(obj);
                 if (isEditorVisible()) editObject(obj);
 
-                m_panel->om->info();
-//                mdiWindow->update();
                 ev->accept();
                 return true;
 

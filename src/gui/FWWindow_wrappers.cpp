@@ -284,9 +284,48 @@ void FWWindow::editPaste()
     }
 }
 
-void FWWindow::changeInfoStyle()
+void FWWindow::toggleViewObjectTree()
 {
-    if (activeProject()) activeProject()->changeInfoStyle();
+    if (activeProject())
+    {
+        activeProject()->toggleViewTree(m_mainWindow->actionObject_Tree->isChecked());
+    }
+}
+
+void FWWindow::toggleViewRules()
+{
+    if (activeProject())
+    {
+        activeProject()->toggleViewRules(m_mainWindow->actionRules->isChecked());
+    }
+}
+
+void FWWindow::toggleViewEditor()
+{
+    if (activeProject())
+    {
+        activeProject()->toggleViewEditor(m_mainWindow->actionEditor_panel->isChecked());
+    }
+}
+
+void FWWindow::toggleViewSearch()
+{
+    if (activeProject())
+    {
+        activeProject()->toggleViewSearch(m_mainWindow->actionSearch_panel->isChecked());
+    }
+}
+
+void FWWindow::search()
+{
+    if (activeProject())
+    {
+        m_mainWindow->actionSearch_panel->setChecked(true);
+        // call ProjectPanel::search() to actually open search panel
+        // and reset it to normal search box rather than "find where
+        // used"
+        activeProject()->search();
+    }
 }
 
 void FWWindow::insertRule()
@@ -338,11 +377,6 @@ void FWWindow::pasteRuleAbove()
 void FWWindow::pasteRuleBelow()
 {
     if (activeProject()) activeProject()->pasteRuleBelow();
-}
-
-void FWWindow::search()
-{
-    if (activeProject()) activeProject()->search();
 }
 
 void FWWindow::findWhereUsed(FWObject * obj)

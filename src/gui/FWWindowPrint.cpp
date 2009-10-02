@@ -307,7 +307,7 @@ void FWWindow::printFirewallFromFile(QString fileName,
     {   
         QString errmes = "Error: can't find firewall ";
         errmes += firewallName ;
-        qDebug (errmes.toAscii().data());
+        qDebug (errmes.toAscii().constData());
     }
 }
 

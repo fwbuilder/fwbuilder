@@ -88,14 +88,10 @@ void ProjectPanel::initMain(FWWindow *main)
 
     setMainSplitterPosition(DEFAULT_H_SPLITTER_POSITION,
                             total_width - DEFAULT_H_SPLITTER_POSITION);
-    setObjInfoSplitterPosition(DEFAULT_V_SPLITTER_POSITION,
-                               total_height - DEFAULT_V_SPLITTER_POSITION);
 
     enableAvtoSaveState=true ;
     oldState=-1;
-    if (st->getInfoStyle()!=0) m_panel->oi->show();
-    else m_panel->oi->hide();
-    
+
     findObjectWidget = new FindObjectWidget(
         m_panel->auxiliaryPanel, this, "findObjectWidget");
     findObjectWidget->setFocusPolicy( Qt::NoFocus );
@@ -110,21 +106,20 @@ void ProjectPanel::initMain(FWWindow *main)
     findWhereUsedWidget->hide();
     connect( findWhereUsedWidget, SIGNAL( close() ),
              this, SLOT( closeAuxiliaryPanel() ) );
-    connect( m_panel->infoStyleButton, SIGNAL( clicked() ),
-             this, SLOT( changeInfoStyle() ) );
-    connect(m_panel->mainSplitter, SIGNAL(splitterMoved(int,int)),
-            this,SLOT(splitterMoved(int,int)));
-    connect(m_panel->objInfoSplitter, SIGNAL(splitterMoved(int,int)),
-            this,SLOT(splitterMoved(int,int)));
 
-    m_panel->auxiliaryPanel->hide();
+    m_panel->auxDockWidget->hide();
 
     oe  = new ObjectEditor((QWidget*)m_panel->objectEditorStack, this);
-    oe->setCloseButton(m_panel->closeObjectEditorButton);
+    //oe->setCloseButton(m_panel->closeObjectEditorButton);
     oe->setApplyButton(m_panel->applyObjectEditorButton);
     oe->setHelpButton(m_panel->helpObjectEditorButton);
+    m_panel->editorDockWidget->setupEditor(oe);
     closeEditorPanel();
-    oe->hide();
+
+    connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
+            this, SLOT(topLevelChanged(bool)));
+    connect(m_panel->rulesDockWidget, SIGNAL(topLevelChanged(bool)),
+            this, SLOT(topLevelChanged(bool)));
 
     fd  = new findDialog(this, this);
     fd->hide();
@@ -144,7 +139,6 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     editorOwner(0), 
     oe(0),
     fd(0),
-    shownInInfo(0),
     autosaveTimer(new QTimer(static_cast<QObject*>(this))), ruleSetTabIndex(0),
     visibleFirewall(0),
     visibleRuleSet(0),
@@ -158,6 +152,7 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     if (fwbdebug) qDebug("ProjectPanel constructor");
     m_panel = new Ui::ProjectPanel_q();
     m_panel->setupUi(this);
+    m_panel->om->setupProject(this);
 
     setWindowTitle(getPageTitle());
 
@@ -168,32 +163,6 @@ ProjectPanel::~ProjectPanel()
 {
     if (rcs) delete rcs;
     delete m_panel;
-}
-
-void ProjectPanel::info(FWObject *obj, bool forced)
-{
-    if (obj==NULL) return ;
-
-    if (st->getInfoStyle()!=0 && (shownInInfo!=obj || forced))
-    {
-        m_panel->oi->clear();
-
-        QString s="";
-        if (st->getInfoStyle()==2)
-        {
-            s = FWObjectPropertiesFactory::getObjectPropertiesDetailed(obj) +
-                QString("<hr height=\"0\">");
-            m_panel->oi->setText(s);
-        }
-
-        s = QString::fromUtf8(obj->getComment().c_str());
-        m_panel->oi->append(s);
-        m_panel->oi->moveCursor(QTextCursor::Start);
-
-        shownInInfo = obj;
-
-        m_panel->oi->update();
-    }
 }
 
 QString ProjectPanel::getPageTitle()
@@ -224,40 +193,6 @@ RuleElement* ProjectPanel::getRE(Rule* r, int col )
     }
 
     return RuleElement::cast( r->getFirstByType(ret) );
-}
-
-/*
- * info styles go like this:
- * 0 - collapsed
- * 1 - opened
- * 2 - opened, more information
- *  etc.
- *
- */
-void ProjectPanel::changeInfoStyle()
-{
-    shownInInfo = NULL;
-    switch (st->getInfoStyle())
-    {
-    case 0:
-        st->setInfoStyle(1);
-        m_panel->oi->show();
-        break;
-    case 1:
-        st->setInfoStyle(2);
-        m_panel->oi->show();
-        break;
-    case 2:
-        st->setInfoStyle(0);
-        m_panel->oi->hide();
-        break;
-    }
-
-/* TODO: now need to send signal to the dialog telling it to change
- * according to the style
- */
-
-    info();
 }
 
 void ProjectPanel::restoreRuleSetTab()
@@ -690,11 +625,6 @@ void ProjectPanel::unselect()
     m_panel->om->unselect();
 }
 
-void ProjectPanel::info()
-{
-    info(m_panel->om->getSelectedObject(), true);
-}
-
 void ProjectPanel::clearManipulatorFocus()
 {
     m_panel->om->clearFocus();
@@ -761,7 +691,7 @@ void ProjectPanel::unlockObject()
 //wrapers for some Object Editor functions
 bool ProjectPanel::isEditorVisible()
 {
-    return oe->isVisible();
+    return m_panel->editorDockWidget->isVisible();
 }
 
 bool ProjectPanel::isEditorModified()
@@ -773,35 +703,36 @@ void ProjectPanel::showEditor()
 {
     openEditorPanel();
     m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    oe->show();
+    m_panel->editorDockWidget->show();
 }
 
 void ProjectPanel::hideEditor()
 {
     closeEditorPanel();
-    oe->hide();
 }
 
 void ProjectPanel::closeEditor()
 {
-    oe->close();
+    m_panel->editorDockWidget->close();
 }
 
 void ProjectPanel::openEditor(FWObject *o)
 {
     QSize old_size = m_panel->objectEditorStack->size();
+    m_panel->editorDockWidget->show();
     oe->open(o);
     m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    m_panel->objectEditorFrame->show();
+    //m_panel->objectEditorFrame->show();
     m_panel->objectEditorStack->resize(old_size);
 }
 
 void ProjectPanel::openOptEditor(FWObject *o, ObjectEditor::OptType t)
 {
     QSize old_size = m_panel->objectEditorStack->size();
+    m_panel->editorDockWidget->show();
     oe->openOpt(o, t);
     m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    m_panel->objectEditorFrame->show();
+    //m_panel->objectEditorFrame->show();
     m_panel->objectEditorStack->resize(old_size);
 }
 
@@ -936,32 +867,31 @@ void ProjectPanel::findObject(FWObject *o)
     findWhereUsedWidget->hide();
     if (fwbdebug) qDebug("ProjectPanel::findObject");
     findObjectWidget->findObject(o);
-    m_panel->auxiliaryPanel->show();
+    m_panel->auxDockWidget->show();
 
 }
 
 void ProjectPanel::closeAuxiliaryPanel()
 {
-    m_panel->auxiliaryPanel->hide();
+    m_panel->auxDockWidget->hide();
 }
 
 void ProjectPanel::closeEditorPanel()
 {
-    m_panel->objectEditorFrame->hide();
+    //m_panel->objectEditorFrame->hide();
+    m_panel->editorDockWidget->hide();
 }
 
 void ProjectPanel::openEditorPanel()
 {
-//    m_panel->objectEditorStack->adjustSize();
-//    m_panel->objectEditorFrame->adjustSize();
-    m_panel->objectEditorFrame->show();
+    //m_panel->objectEditorFrame->show();
 
 }
 
 void ProjectPanel::search()
 {
     findWhereUsedWidget->hide();
-    m_panel->auxiliaryPanel->show();
+    m_panel->auxDockWidget->show();
     findObjectWidget->show();
 }
 
@@ -1148,7 +1078,7 @@ void ProjectPanel::redrawRuleSets()
 void ProjectPanel::findWhereUsed(FWObject * obj)
 {
     findObjectWidget->hide();
-    m_panel->auxiliaryPanel->show();
+    m_panel->auxDockWidget->show();
     findWhereUsedWidget->find(obj);
 }
 
@@ -1159,14 +1089,12 @@ void ProjectPanel::showEvent(QShowEvent *ev)
     QWidget::showEvent(ev);
 }
 
-
 void ProjectPanel::hideEvent(QHideEvent *ev)
 {
     if (fwbdebug) qDebug("ProjectPanel::hideEvent %p title=%s",
                          this, getPageTitle().toAscii().constData());
     QWidget::hideEvent(ev);
 }
-
 
 void ProjectPanel::closeEvent(QCloseEvent * ev)
 {   
@@ -1194,34 +1122,6 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
 
     saveState();
     fileClose();
-
-#if 0
-
-//    if (!closing)
-    saveState();
-    //storeLastOpenedLib();
-
-    if (fwbdebug)
-        qDebug("ProjectPanel::closeEvent check in and delete RCS object");
-
-    if (saveIfModified() && checkin(true))
-    {
-        if (rcs)
-        { 
-            delete rcs;
-            rcs = 0;
-        }
-    } else
-    {
-        ev->ignore();
-        return;
-    }
-    closing = true ;
-    QWidget::closeEvent(ev);
-
-    if (fwbdebug)
-        qDebug("ProjectPanel::closeEvent main window houskeeping tasks");
-#endif
 
     mw->updateWindowTitle();
 
@@ -1263,7 +1163,6 @@ ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
     cln->editorOwner = editorOwner;
     cln->oe = oe;
     cln->fd = fd;
-    cln->shownInInfo = shownInInfo;
     cln->autosaveTimer = autosaveTimer;
     //cln->ruleSetViews = ruleSetViews;
     cln->ruleSetTabIndex = ruleSetTabIndex;
@@ -1322,11 +1221,80 @@ void ProjectPanel::updateLastModifiedTimestampForAllFirewalls(FWObject *obj)
                 }
             }
         }
-
-        info();
     }
     QApplication::restoreOverrideCursor();
     sb->clearMessage();
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+}
+
+void ProjectPanel::toggleViewTree(bool f)
+{
+    if (f) m_panel->treeDockWidget->show();
+    else m_panel->treeDockWidget->hide();
+}
+
+void ProjectPanel::toggleViewRules(bool f)
+{
+    if (f) m_panel->rulesDockWidget->show();
+    else m_panel->rulesDockWidget->hide();
+}
+
+void ProjectPanel::toggleViewEditor(bool f)
+{
+    if (f)
+    {
+        openEditor(m_panel->om->getOpened());
+    } else m_panel->editorDockWidget->hide();
+}
+
+void ProjectPanel::toggleViewSearch(bool f)
+{
+    if (f) m_panel->auxDockWidget->show();
+    else m_panel->auxDockWidget->hide();
+}
+
+
+/*
+ * Signal QDockWidget::topLevelChanged is called after dock widget
+ * is made floating or docked.
+ */
+void ProjectPanel::topLevelChanged(bool f)
+{
+    QList<int> sizes = m_panel->topSplitter->sizes();
+
+    if (fwbdebug)
+        qDebug("ProjectPanel::topLevelChanged  f=%d"
+               "  treeDockWidget->isWindow()=%d "
+               "  rulesDockWidget->isWindow()=%d "
+               "  sizes[0]=%d sizes[1]=%d",
+               f, 
+               m_panel->treeDockWidget->isWindow(),
+               m_panel->rulesDockWidget->isWindow(),
+               sizes[0],  sizes[1]);
+
+    if (!m_panel->treeDockWidget->isWindow() &&
+        !m_panel->rulesDockWidget->isWindow())
+    {
+        loadMainSplitter();
+    } else
+    {
+
+        if (m_panel->treeDockWidget->isWindow())
+        {
+            // expand rules 
+            collapseTree();
+            m_panel->treeDockWidget->widget()->resize(
+                sizes[0], m_panel->treeDockWidget->height());
+            m_panel->treeDockWidget->widget()->update();
+        }
+
+        if (m_panel->rulesDockWidget->isWindow())
+        {
+            // expand tree panel 
+            collapseRules();
+            m_panel->rulesDockWidget->resize(sizes[1], m_panel->rulesDockWidget->height());
+        }
+    }
+
 }
 

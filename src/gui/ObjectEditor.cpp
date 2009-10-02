@@ -102,7 +102,6 @@ using namespace libfwbuilder;
 ObjectEditor::ObjectEditor( QWidget *parent, ProjectPanel *project):
     QObject(parent), opened(0), current_dialog_idx(-1), current_dialog_name(""),
     parentWidget(dynamic_cast<QStackedWidget*>(parent)),
-    closeButton(0),
     applyButton(0),
     helpButton(0),
     m_project(project),
@@ -561,12 +560,6 @@ bool ObjectEditor::validateAndSave()
     return true;
 }
 
-void ObjectEditor::setCloseButton(QPushButton * b)
-{
-    closeButton=b;
-    connect((QWidget*)closeButton,SIGNAL(clicked()),this,SLOT(close()));
-}
-
 void ObjectEditor::setApplyButton(QPushButton * b)
 {
     applyButton=b;
@@ -579,12 +572,6 @@ void ObjectEditor::setHelpButton(QPushButton * b)
     helpButton=b;
     helpButton->setEnabled(true);
     connect((QWidget*)helpButton,SIGNAL(clicked()),this,SLOT(help()));
-}
-
-void ObjectEditor::close()
-{
-    if (fwbdebug) qDebug("ObjectEditor::close");
-    validateAndClose(NULL);
 }
 
 // Object dialog emits signal notify_changes_applied_sign() when it

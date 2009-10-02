@@ -68,7 +68,7 @@ void ProjectPanel::singleRuleCompile(Rule *rule)
     QSize old_size = m_panel->objectEditorStack->size();
     oe->openOpt(rule, ObjectEditor::optRuleCompile);
     m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    m_panel->objectEditorFrame->show();
+    //m_panel->objectEditorFrame->show();
     m_panel->objectEditorStack->resize(old_size);
 
 }

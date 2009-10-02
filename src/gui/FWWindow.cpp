@@ -212,6 +212,9 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     connect( m_mainWindow->editMenu, SIGNAL (aboutToShow() ),
             this,  SLOT( prepareEditMenu()  ));
 
+    connect( m_mainWindow->viewMenu, SIGNAL (aboutToShow() ),
+            this,  SLOT( prepareViewMenu()  ));
+
     connect( m_mainWindow->ObjectMenu, SIGNAL (aboutToShow() ),
             this,  SLOT( prepareObjectMenu()  ));
 
@@ -747,6 +750,32 @@ void FWWindow::prepareEditMenu()
     m_mainWindow->editDeleteAction->setEnabled(delMenuItem);
     m_mainWindow->editCutAction->setEnabled(delMenuItem);
     m_mainWindow->editPasteAction->setEnabled(pasteMenuItem);
+}
+
+void FWWindow::prepareViewMenu()
+{
+    if (!activeProject())
+    {
+        m_mainWindow->actionObject_Tree->setEnabled(false);
+        m_mainWindow->actionRules->setEnabled(false);
+        m_mainWindow->actionEditor_panel->setEnabled(false);
+        m_mainWindow->actionSearch_panel->setEnabled(false);
+        return;
+    }
+
+    m_mainWindow->actionObject_Tree->setEnabled(true);
+    m_mainWindow->actionRules->setEnabled(true);
+    m_mainWindow->actionEditor_panel->setEnabled(true);
+    m_mainWindow->actionSearch_panel->setEnabled(true);
+
+    m_mainWindow->actionObject_Tree->setChecked(
+        activeProject()->m_panel->treeDockWidget->isVisible());
+    m_mainWindow->actionRules->setChecked(
+        activeProject()->m_panel->rulesDockWidget->isVisible());
+    m_mainWindow->actionEditor_panel->setChecked(
+        activeProject()->m_panel->editorDockWidget->isVisible());
+    m_mainWindow->actionSearch_panel->setChecked(
+        activeProject()->m_panel->auxDockWidget->isVisible());
 }
 
 void FWWindow::prepareObjectMenu()

@@ -63,6 +63,7 @@ HEADERS += ../../config.h \
     FWObjectPropertiesFactory.h \
     ObjectManipulator.h \
     ObjectEditor.h \
+    ObjectEditorDockWidget.h \
     FWObjectDrag.h \
     ObjectTreeView.h \
     ObjectListView.h \

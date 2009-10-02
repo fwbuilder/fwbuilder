@@ -79,7 +79,6 @@ class ProjectPanel: public QWidget {
     //ObjectManipulator                      *om; 
     ObjectEditor                           *oe;
     findDialog                             *fd;
-    libfwbuilder::FWObject                 *shownInInfo;
         
     QTimer                                 *autosaveTimer;
     std::map<libfwbuilder::FWObject*, RuleSetView*> ruleSetViews;
@@ -226,7 +225,6 @@ public:
     //find dialog functions wrapers
     void setFDObject(libfwbuilder::FWObject *o);
     
-    void info(libfwbuilder::FWObject *o, bool forced = false);    
     void resetFD();
     
     void clearFirewallTabs();
@@ -259,7 +257,8 @@ public:
     
  public slots:
     void newObject();
-    void info();
+
+    void topLevelChanged(bool topLevel);
     
     virtual void back();
     virtual void lockObject();
@@ -279,7 +278,6 @@ public:
 
     virtual void reopenFirewall();
     virtual void redrawRuleSets();
-    virtual void changeInfoStyle();
     virtual void restoreRuleSetTab();
 
     virtual void fileProp();
@@ -334,6 +332,9 @@ public:
     void saveState();
     void loadState(bool open_objects=true);
 
+    void saveMainSplitter();
+    void loadMainSplitter();
+    
     void loadOpenedRuleSet();
     void saveOpenedRuleSet();
 
@@ -375,6 +376,11 @@ public:
 
     void singleRuleCompile(libfwbuilder::Rule *rule);
 
+    void toggleViewTree(bool f);
+    void toggleViewRules(bool f);
+    void toggleViewEditor(bool f);
+    void toggleViewSearch(bool f);
+
 protected:
     int oldState ;
     virtual void showEvent( QShowEvent *ev);
@@ -384,7 +390,8 @@ protected:
     virtual bool event(QEvent *event);
 
     void setMainSplitterPosition(int w1, int w2);
-    void setObjInfoSplitterPosition(int w1, int w2);
+    void collapseTree();
+    void collapseRules();
 };
 
 #endif

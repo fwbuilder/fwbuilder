@@ -163,8 +163,18 @@
      <string>Window</string>
     </property>
    </widget>
+   <widget class="QMenu" name="viewMenu">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionObject_Tree"/>
+    <addaction name="actionRules"/>
+    <addaction name="actionEditor_panel"/>
+    <addaction name="actionSearch_panel"/>
+   </widget>
    <addaction name="fileMenu"/>
    <addaction name="editMenu"/>
+   <addaction name="viewMenu"/>
    <addaction name="ObjectMenu"/>
    <addaction name="RulesMenu"/>
    <addaction name="toolsMenu"/>
@@ -735,6 +745,38 @@
   <action name="release_Notes_Action">
    <property name="text">
     <string>Release Notes</string>
+   </property>
+  </action>
+  <action name="actionObject_Tree">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Object Tree</string>
+   </property>
+  </action>
+  <action name="actionRules">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Rules</string>
+   </property>
+  </action>
+  <action name="actionEditor_panel">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Editor panel</string>
+   </property>
+  </action>
+  <action name="actionSearch_panel">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Search panel</string>
    </property>
   </action>
  </widget>
@@ -1511,9 +1553,77 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionObject_Tree</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>toggleViewObjectTree()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>370</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRules</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>toggleViewRules()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>370</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEditor_panel</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>toggleViewEditor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>370</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSearch_panel</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>toggleViewSearch()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>370</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
   <slot>showReleaseNotes()</slot>
+  <slot>toggleViewObjectTree()</slot>
+  <slot>toggleViewRules()</slot>
+  <slot>toggleViewEditor()</slot>
+  <slot>toggleViewSearch()</slot>
  </slots>
 </ui>
