@@ -1309,12 +1309,12 @@ string PolicyCompiler::debugPrintRule(Rule *r)
     return str.str();
 }
 
-PolicyRule* PolicyCompiler::addMgmtRule(Address* const src,
-                                        Address* const dst,
-                                        Service* const service,
-                                        Interface* const iface,
-                                        PolicyRule::Direction direction,
-                                        PolicyRule::Action action,
+PolicyRule* PolicyCompiler::addMgmtRule(Address* src,
+                                        Address* dst,
+                                        Service* service,
+                                        Interface* iface,
+                                        const PolicyRule::Direction direction,
+                                        const PolicyRule::Action action,
                                         const string &label)
 {
     assert(combined_ruleset != NULL);

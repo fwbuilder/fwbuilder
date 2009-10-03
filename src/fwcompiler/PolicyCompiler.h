@@ -123,12 +123,12 @@ namespace fwcompiler {
          * Insert rule on top of the policy. Use this to add implied
          * rules.
          */
-        libfwbuilder::PolicyRule* addMgmtRule(libfwbuilder::Address* const src,
-                                              libfwbuilder::Address* const dst,
-                                              libfwbuilder::Service* const service,
-                                              libfwbuilder::Interface* const iface,
-                                              libfwbuilder::PolicyRule::Direction direction,
-                                              libfwbuilder::PolicyRule::Action action,
+        libfwbuilder::PolicyRule* addMgmtRule(libfwbuilder::Address* src,
+                                              libfwbuilder::Address* dst,
+                                              libfwbuilder::Service* service,
+                                              libfwbuilder::Interface* iface,
+                                              const libfwbuilder::PolicyRule::Direction direction,
+                                              const libfwbuilder::PolicyRule::Action action,
                                               const std::string &label);
 
 
