@@ -434,6 +434,9 @@ then
         ccache -s
 fi
 
+AC_PATH_PROG(DISTCC, distcc, , )
+AC_SUBST(DISTCC)
+
 dnl AC_CONFIG_FILES([ Main.make ])
 AC_CONFIG_FILES([ qmake.inc ])
 
