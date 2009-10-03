@@ -22,7 +22,7 @@ unix {
     FWBPARSER_LIB = ../parsers/libfwbparser.a
     FWTRANSFER_LIB = ../fwtransfer/libfwtransfer.a
 
-    QMAKE_CXX = @CCACHE@ g++
+    QMAKE_CXX = @CCACHE@ @DISTCC@ g++
 
     !macx {
 
