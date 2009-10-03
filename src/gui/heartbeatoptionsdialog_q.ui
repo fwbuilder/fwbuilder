@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>402</width>
-    <height>282</height>
+    <height>263</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -79,17 +79,33 @@
         <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
       </attribute>
       <layout class="QGridLayout" name="gridLayout" >
-       <item row="0" column="0" >
-        <widget class="QLabel" name="label" >
+       <item row="0" column="0" colspan="4" >
+        <widget class="QCheckBox" name="use_unicast" >
+         <property name="toolTip" >
+          <string>Heartbeat should be configured to use unicast address
+of each firewall member for health checks. Firewall Builder
+will add policy rules to permit these automatically.</string>
+         </property>
+         <property name="text" >
+          <string>Use unicast address for heartbeat</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="heartbeat_address_label" >
          <property name="text" >
           <string>Address:</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1" colspan="2" >
-        <widget class="QLineEdit" name="heartbeat_address" />
+       <item row="1" column="1" colspan="2" >
+        <widget class="QLineEdit" name="heartbeat_address" >
+         <property name="toolTip" >
+          <string>Enter multicat address used for heartbeat health checks here.</string>
+         </property>
+        </widget>
        </item>
-       <item row="0" column="3" >
+       <item row="1" column="3" >
         <spacer name="horizontalSpacer_2" >
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -102,21 +118,21 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" >
+       <item row="2" column="0" >
         <widget class="QLabel" name="label_2" >
          <property name="text" >
           <string>Port number (udp):</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1" >
+       <item row="2" column="1" >
         <widget class="QSpinBox" name="heartbeat_port" >
          <property name="maximum" >
           <number>65535</number>
          </property>
         </widget>
        </item>
-       <item row="1" column="2" colspan="2" >
+       <item row="2" column="2" colspan="2" >
         <spacer name="horizontalSpacer" >
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -129,7 +145,7 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0" colspan="4" >
+       <item row="3" column="0" colspan="4" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -190,5 +206,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>use_unicast</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>heartbeatOptionsDialog_q</receiver>
+   <slot>toggleUseUnicast()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>204</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>200</x>
+     <y>131</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>toggleUseUnicast()</slot>
+ </slots>
 </ui>

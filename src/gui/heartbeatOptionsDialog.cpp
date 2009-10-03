@@ -68,6 +68,9 @@ heartbeatOptionsDialog::heartbeatOptionsDialog(QWidget *parent, FWObject *o)
     string port = gropt->getStr("heartbeat_port");
     if (port.empty()) gropt->setStr("heartbeat_port", default_port);
 
+    data.registerOption(m_dialog->use_unicast,
+                        gropt,
+                        "heartbeat_unicast");
     data.registerOption(m_dialog->heartbeat_address,
                         gropt,
                         "heartbeat_address");
@@ -75,6 +78,8 @@ heartbeatOptionsDialog::heartbeatOptionsDialog(QWidget *parent, FWObject *o)
                         gropt,
                         "heartbeat_port");
     data.loadAll();
+
+    toggleUseUnicast();
 }
 
 heartbeatOptionsDialog::~heartbeatOptionsDialog()
@@ -116,5 +121,12 @@ bool heartbeatOptionsDialog::validate()
         }
     }
     return true;
+}
+
+void heartbeatOptionsDialog::toggleUseUnicast()
+{
+    bool onoff = m_dialog->use_unicast->isChecked();
+    m_dialog->heartbeat_address->setEnabled( ! onoff );
+    m_dialog->heartbeat_address_label->setEnabled( ! onoff );
 }
 

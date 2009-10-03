@@ -53,6 +53,7 @@ private:
 protected slots:
     virtual void accept();
     virtual void reject();
+    virtual void toggleUseUnicast();
 };
 
 #endif // __HEARTBEATOPTIONSDIALOG_H_

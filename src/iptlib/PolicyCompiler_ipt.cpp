@@ -74,9 +74,13 @@
 
 #include <assert.h>
 
+#include <QString>
+
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
+
 
 static int chain_no=0;
 static std::list<std::string> standard_chains;
@@ -4748,6 +4752,29 @@ void PolicyCompiler_ipt::insertFailoverRule()
 
             if (failover_group->getStr("type") == "heartbeat")
             {
+                /*
+                 * Note that iface is a copy of the cluster inetrface.
+                 * Find interface of the member firewall fw that corresponds
+                 * to the cluster interface iface
+                 */
+
+                string fw_iface_id = iface->getOptionsObject()->getStr("base_interface_id");
+                Interface *fw_iface =
+                    Interface::cast(
+                        dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_iface_id)));
+                if (fw_iface == NULL)
+                {
+                    warning(
+                        QString("Can not find interface of the firewall "
+                                "for the cluster failover group %1. "
+                                "Falling back using cluster interface object.")
+                        .arg(failover_group->getName().c_str()).toStdString());
+                    fw_iface = iface;
+                }
+
+                bool ucast = FailoverClusterGroup::cast(failover_group)->
+                    getOptionsObject()->getBool("heartbeat_unicast");
+
                 string addr = FailoverClusterGroup::cast(failover_group)->
                     getOptionsObject()->getStr("heartbeat_address");
                 if (addr.empty()) addr = default_heartbeat_address;
@@ -4774,12 +4801,35 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 heartbeat_srv->setComment("HEARTBEAT UDP port");
                 dbcopy->add(heartbeat_srv);
 
-                rule = addMgmtRule(NULL, heartbeat_dst, heartbeat_srv, iface,
-                                   PolicyRule::Inbound, PolicyRule::Accept,
-                                   "heartbeat");
-                rule = addMgmtRule(fw, heartbeat_dst, heartbeat_srv, iface,
-                                   PolicyRule::Outbound, PolicyRule::Accept,
-                                   "heartbeat");
+                // Heartbeat can use either multicast or unicast
+                if (ucast)
+                {
+                    for (FWObjectTypedChildIterator it =
+                             failover_group->findByType(FWObjectReference::TYPENAME);
+                         it != it.end(); ++it)
+                    {
+                        Interface *other_iface =
+                            Interface::cast(FWObjectReference::getObject(*it));
+                        assert(other_iface);
+                        rule = addMgmtRule(other_iface,
+                                           fw_iface,
+                                           heartbeat_srv,
+                                           fw_iface,
+                                           PolicyRule::Inbound,
+                                           PolicyRule::Accept,
+                                           "heartbeat");
+                    }
+                } else
+                {
+                    rule = addMgmtRule(NULL, heartbeat_dst, heartbeat_srv,
+                                       fw_iface,
+                                       PolicyRule::Inbound, PolicyRule::Accept,
+                                       "heartbeat");
+                    rule = addMgmtRule(fw, heartbeat_dst, heartbeat_srv,
+                                       fw_iface,
+                                       PolicyRule::Outbound, PolicyRule::Accept,
+                                       "heartbeat");
+                }
             }
 
             if (failover_group->getStr("type") == "openais")
@@ -4830,12 +4880,12 @@ void PolicyCompiler_ipt::insertFailoverRule()
 
 
 /* TODO: Add error-handling (exceptions) */
-PolicyRule* PolicyCompiler_ipt::addMgmtRule(Address* const src,
-                                            Address* const dst,
-                                            Service* const service,
-                                            Interface* const iface,
-                                            PolicyRule::Direction direction,
-                                            PolicyRule::Action action,
+PolicyRule* PolicyCompiler_ipt::addMgmtRule(Address* src,
+                                            Address* dst,
+                                            Service* service,
+                                            Interface* iface,
+                                            const PolicyRule::Direction direction,
+                                            const PolicyRule::Action action,
                                             const string label,
                                             const bool related)
 {

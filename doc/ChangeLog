@@ -1,3 +1,14 @@
+2009-10-03  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertFailoverRule):
+	Added support for heartbeat over unicast. Protocol options dialog
+	for heartbeat offers checkbox "Use unicast" (off by default, when
+	checked, address input field for the multicast heartbeat address
+	becomes disabled). When checkbox is checked, compiler
+	automatically adds rules to permit unicast heartbeat health checks
+	between addresses of interfaces which are members of the failover
+	group.
+
 2009-09-30  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::setAttributesColumnEnabled):
