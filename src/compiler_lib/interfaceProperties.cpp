@@ -265,7 +265,7 @@ bool interfaceProperties::validateInterface(FWObject *target,
                                             const QString &interface_name,
                                             QString &err)
 {
-    if (Firewall::cast(target))
+    if (Firewall::cast(target) || Host::cast(target))
     {
         if (looksLikeVlanInterface(interface_name))
         {
