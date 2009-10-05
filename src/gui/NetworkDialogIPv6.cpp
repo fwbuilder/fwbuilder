@@ -146,15 +146,7 @@ void NetworkDialogIPv6::validate(bool *res)
     }
 }
 
-void NetworkDialogIPv6::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void NetworkDialogIPv6::libChanged()
-{
-    changed();
-}
 
 void NetworkDialogIPv6::applyChanges()
 {
@@ -183,27 +175,13 @@ void NetworkDialogIPv6::applyChanges()
     }
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    //apply->setEnabled( false );
-    //mw->updateLastModifiedTimestampForAllFirewalls(obj);
-
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 
 }
 
 void NetworkDialogIPv6::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void NetworkDialogIPv6::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 
 void NetworkDialogIPv6::addressEntered()

@@ -106,12 +106,6 @@ void UDPServiceDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void UDPServiceDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void UDPServiceDialog::validate(bool *res)
 {
     if (fwbdebug) qDebug("UDPServiceDialog::validate");
@@ -145,15 +139,7 @@ void UDPServiceDialog::validate(bool *res)
     }
 }
 
-void UDPServiceDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void UDPServiceDialog::libChanged()
-{
-    changed();
-}
 
 void UDPServiceDialog::applyChanges()
 {
@@ -171,23 +157,11 @@ void UDPServiceDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void UDPServiceDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void UDPServiceDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

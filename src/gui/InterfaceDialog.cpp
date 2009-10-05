@@ -31,6 +31,7 @@
 #include "DialogFactory.h"
 #include "ProjectPanel.h"
 #include "FWWindow.h"
+#include "FWBSettings.h"
 
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
@@ -57,7 +58,8 @@
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include "FWBSettings.h"
+#include <QtDebug>
+#include <QTime>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -322,15 +324,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void InterfaceDialog::changed()
-{
-    if (fwbdebug)
-        qDebug("InterfaceDialog::changed()");
-
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void InterfaceDialog::validate(bool *res)
 {
     *res = true;
@@ -379,15 +372,7 @@ void InterfaceDialog::validate(bool *res)
     delete int_prop;
 }
 
-void InterfaceDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void InterfaceDialog::libChanged()
-{
-    changed();
-}
 
 void InterfaceDialog::applyChanges()
 {
@@ -443,7 +428,7 @@ void InterfaceDialog::applyChanges()
     // interface name
     mw->activeProject()->m_panel->om->guessSubInterfaceTypeAndAttributes(s);
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void InterfaceDialog::discardChanges()
@@ -453,8 +438,7 @@ void InterfaceDialog::discardChanges()
 
 void InterfaceDialog::openIfaceDialog()
 {
-    // TODO: applyChanges() call enabled results in problems with FWBTree ...
-    applyChanges();
+    if (isDataChanged()) applyChanges();
 
     try
     {
@@ -470,7 +454,7 @@ void InterfaceDialog::openIfaceDialog()
             // update object tree (if interface type has changed, the object properties
             // summary text may have to change too)
             mw->activeProject()->updateObjectInTree(obj, true);
-            emit notify_changes_applied_sign();
+            BaseObjectDialog::applyChanges();
         }
     }
     catch (FWException &ex)
@@ -483,15 +467,3 @@ void InterfaceDialog::openIfaceDialog()
         return;
     }
 }
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void InterfaceDialog::closeEvent(QCloseEvent *e)
-{
-    if (fwbdebug)
-        qDebug("InterfaceDialog::coseEvent  got close event: %p",e);
-    emit close_sign(e);
-}
-

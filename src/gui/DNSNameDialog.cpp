@@ -103,12 +103,6 @@ void DNSNameDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void DNSNameDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void DNSNameDialog::validate(bool *res)
 {
     *res=true;
@@ -119,15 +113,7 @@ void DNSNameDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void DNSNameDialog::isChanged(bool*)
-{
-   // *res=(!init && apply->isEnabled());
-}
 
-void DNSNameDialog::libChanged()
-{
-    changed();
-}
 
 void DNSNameDialog::applyChanges()
 {
@@ -143,7 +129,7 @@ void DNSNameDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 
 }
 
@@ -153,10 +139,4 @@ void DNSNameDialog::discardChanges()
 }
 
 
-void DNSNameDialog::closeEvent(QCloseEvent *e)
-{
-    if (fwbdebug)
-        qDebug("DNSNameDialog::closeEvent  got close event: %p",e);
-    emit close_sign(e);
-}
 

@@ -71,8 +71,6 @@ public slots:
  * and to store its position on the screen
  */
     void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 };
 
 #endif

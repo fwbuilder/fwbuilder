@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
@@ -28,11 +28,11 @@
 #define  __BASEOBJECTDIALOG_H_
 
 #include <QWidget>
+#include <QCloseEvent>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
-
 
 class BaseObjectDialog : public QWidget
 {
@@ -41,13 +41,53 @@ class BaseObjectDialog : public QWidget
 protected:
     libfwbuilder::FWObject *obj;
     bool init;
+    bool data_changed;
     ProjectPanel *m_project;
 
+    virtual void closeEvent(QCloseEvent *e)
+    {
+        emit close_sign(e);
+    }
+    
 public:
-    BaseObjectDialog(QWidget *parent) : QWidget(parent) {obj = 0; init = false; m_project = NULL;}
+    BaseObjectDialog(QWidget *parent) : QWidget(parent)
+    {
+        obj = 0;
+        init = false;
+        data_changed = false;
+        m_project = NULL;
+    }
     virtual ~BaseObjectDialog() {};
 
     void attachToProjectWindow(ProjectPanel *pp) { m_project = pp; }
+
+    bool isDataChanged() { return data_changed; }
+
+public slots:
+    virtual void changed()
+    {
+        if (!init)
+        {
+            data_changed = true;
+            emit changed_sign();
+        }
+    }
+
+    virtual void applyChanges()
+    {
+        data_changed = false;
+        emit notify_changes_applied_sign();
+    }
+    
+signals:
+    void changed_sign();
+    void notify_changes_applied_sign();
+    /**
+     * This signal is emitted from closeEvent, ObjectEditor connects
+     * to this signal to make checks before the object editor can be
+     * closed and to store its position on the screen
+     */
+    void close_sign(QCloseEvent *e);
 
 };
 

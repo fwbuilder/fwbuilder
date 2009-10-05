@@ -72,13 +72,10 @@ class GroupObjectDialog : public BaseObjectDialog
     enum viewType { Icon, List };
 
  public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
     virtual void switchToIconView();
     virtual void switchToListView();
     virtual void openObject();
@@ -87,8 +84,6 @@ class GroupObjectDialog : public BaseObjectDialog
     virtual void dropped(QDropEvent *ev);
     virtual void iconContextMenu(const QPoint & pos);
     virtual void listContextMenu(const QPoint & pos);
-    virtual void closeEvent(QCloseEvent *e);
-    virtual void hideEvent(QHideEvent *e);
     virtual void getHelpName(QString*);
     
     void copyObj();
@@ -103,16 +98,6 @@ class GroupObjectDialog : public BaseObjectDialog
     void listViewSelectionChanged();
     
     void selectObject(libfwbuilder::FWObject *o);
-
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
  private:
 

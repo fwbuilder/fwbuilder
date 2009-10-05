@@ -110,26 +110,12 @@ void NATRuleOptionsDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void NATRuleOptionsDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void NATRuleOptionsDialog::validate(bool *res)
 {
     *res=true;
 }
 
-void NATRuleOptionsDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void NATRuleOptionsDialog::libChanged()
-{
-    changed();
-}
 
 void NATRuleOptionsDialog::applyChanges()
 {
@@ -141,25 +127,11 @@ void NATRuleOptionsDialog::applyChanges()
 
 //    mw->updateRuleOptions();
 
-    //apply->setEnabled( false );
-
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void NATRuleOptionsDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void NATRuleOptionsDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

@@ -49,28 +49,15 @@ class IPv6Dialog : public BaseObjectDialog
  public:
     IPv6Dialog(QWidget *parent);
     ~IPv6Dialog();
-    virtual void closeEvent(QCloseEvent *e);
     
 public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
     virtual void DNSlookup();
     virtual void getHelpName(QString*);
     
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

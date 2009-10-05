@@ -150,9 +150,8 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
 void IPServiceDialog::changed()
 {
-    //apply->setEnabled( true );
     setCodeLabel();
-    emit changed_sign();
+    BaseObjectDialog::changed();
 }
 
 void IPServiceDialog::validate(bool *res)
@@ -162,15 +161,7 @@ void IPServiceDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void IPServiceDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void IPServiceDialog::libChanged()
-{
-    changed();
-}
 
 void IPServiceDialog::applyChanges()
 {
@@ -199,23 +190,11 @@ void IPServiceDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void IPServiceDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void IPServiceDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

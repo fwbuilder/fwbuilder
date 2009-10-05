@@ -134,12 +134,6 @@ void IPv4Dialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void IPv4Dialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void IPv4Dialog::validate(bool *result)
 {
     *result=true;
@@ -183,15 +177,7 @@ void IPv4Dialog::validate(bool *result)
     }
 }
 
-void IPv4Dialog::isChanged(bool *)
-{
-    //*result=(!init && apply->isEnabled());
-}
 
-void IPv4Dialog::libChanged()
-{
-    changed();
-}
 
 void IPv4Dialog::applyChanges()
 {
@@ -221,8 +207,7 @@ void IPv4Dialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void IPv4Dialog::discardChanges()
@@ -286,11 +271,3 @@ void IPv4Dialog::DNSlookup()
         return;
     }
 }
-
-void IPv4Dialog::closeEvent(QCloseEvent *e)
-{
-    if (fwbdebug)
-        qDebug("IPv4Dialog::closeEvent  got close event: %p",e);
-    emit close_sign(e);
-}
-

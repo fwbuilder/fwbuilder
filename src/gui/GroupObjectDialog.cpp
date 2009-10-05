@@ -377,13 +377,6 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void GroupObjectDialog::changed()
-{
-    //if (!init) apply->setEnabled( true );
-
-    emit changed_sign();
-}
-
 void GroupObjectDialog::validate(bool *res)
 {
     *res=true;
@@ -395,15 +388,7 @@ void GroupObjectDialog::validate(bool *res)
     }
 }
 
-void GroupObjectDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void GroupObjectDialog::libChanged()
-{
-    changed();
-}
 
 void GroupObjectDialog::applyChanges()
 {
@@ -469,9 +454,9 @@ void GroupObjectDialog::applyChanges()
 
     m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
+    saveColumnWidths();
 
-    if (fwbdebug) qDebug("GroupObjectDialog::applyChanges done");
+    BaseObjectDialog::applyChanges();
 }
 
 void GroupObjectDialog::discardChanges()
@@ -699,21 +684,6 @@ void GroupObjectDialog::saveColumnWidths()
         .arg(listView->columnWidth(1));
 
     st->setGroupViewColumns(s);
-}
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void GroupObjectDialog::closeEvent(QCloseEvent *e)
-{
-    saveColumnWidths();
-    emit close_sign(e);
-}
-
-void GroupObjectDialog::hideEvent(QHideEvent *)
-{
-    saveColumnWidths();
 }
 
 void GroupObjectDialog::selectObject(FWObject *o)

@@ -63,15 +63,6 @@ public slots:
     virtual void getHelpName(QString*);
     virtual void closeEvent(QCloseEvent *e);
     
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

@@ -110,12 +110,6 @@ void ICMPServiceDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void ICMPServiceDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void ICMPServiceDialog::validate(bool *res)
 {
     *res=true;
@@ -123,15 +117,7 @@ void ICMPServiceDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void ICMPServiceDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void ICMPServiceDialog::libChanged()
-{
-    changed();
-}
 
 void ICMPServiceDialog::applyChanges()
 {
@@ -144,24 +130,11 @@ void ICMPServiceDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void ICMPServiceDialog::discardChanges()
 {
     loadFWObject(obj);
 }
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void ICMPServiceDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
-}
-
 

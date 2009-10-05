@@ -110,14 +110,6 @@ void AddressTableDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void AddressTableDialog::changed()
-{
-    //BrowseButton->setEnabled(r_compiletime->isChecked() );
-    //apply->setEnabled( true );
-    emit changed_sign();
-
-}
-
 void AddressTableDialog::validate(bool *res)
 {
     *res=true;
@@ -128,15 +120,7 @@ void AddressTableDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void AddressTableDialog::isChanged(bool *)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void AddressTableDialog::libChanged()
-{
-    changed();
-}
 
 void AddressTableDialog::applyChanges()
 {
@@ -152,20 +136,12 @@ void AddressTableDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void AddressTableDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-void AddressTableDialog::closeEvent(QCloseEvent *e)
-{
-    if (fwbdebug)
-        qDebug("AddressTableDialog::closeEvent  got close event: %p",e);
-    emit close_sign(e);
 }
 
 void AddressTableDialog::browse()

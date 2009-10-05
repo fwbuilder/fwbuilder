@@ -164,12 +164,6 @@ void TCPServiceDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void TCPServiceDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void TCPServiceDialog::validate(bool *res)
 {
     if (fwbdebug) qDebug("TCPServiceDialog::validate");
@@ -203,15 +197,7 @@ void TCPServiceDialog::validate(bool *res)
     }
 }
 
-void TCPServiceDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void TCPServiceDialog::libChanged()
-{
-    changed();
-}
 
 void TCPServiceDialog::applyChanges()
 {
@@ -246,24 +232,12 @@ void TCPServiceDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void TCPServiceDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void TCPServiceDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 
 void TCPServiceDialog::toggleEstablished()

@@ -101,12 +101,6 @@ void TagServiceDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void TagServiceDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void TagServiceDialog::validate(bool *res)
 {
     *res=true;
@@ -117,15 +111,7 @@ void TagServiceDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void TagServiceDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void TagServiceDialog::libChanged()
-{
-    changed();
-}
 
 void TagServiceDialog::applyChanges()
 {
@@ -140,20 +126,11 @@ void TagServiceDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void TagServiceDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-void TagServiceDialog::closeEvent(QCloseEvent *e)
-{
-    if (fwbdebug)
-        qDebug("TagServiceDialog::closeEvent  got close event: %p",e);
-    emit close_sign(e);
 }
 

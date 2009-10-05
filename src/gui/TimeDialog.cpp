@@ -196,12 +196,6 @@ void TimeDialog::enableAllWidgets()
 
 }
 
-void TimeDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void TimeDialog::useStartOrEndDate()
 {
     enableAllWidgets();
@@ -213,15 +207,7 @@ void TimeDialog::validate(bool *res)
     *res=true;
 }
 
-void TimeDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void TimeDialog::libChanged()
-{
-    changed();
-}
 
 void TimeDialog::applyChanges()
 {
@@ -281,22 +267,10 @@ void TimeDialog::applyChanges()
 
     m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void TimeDialog::discardChanges()
 {
     loadFWObject(obj);
 }
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void TimeDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
-}
-

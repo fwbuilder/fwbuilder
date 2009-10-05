@@ -70,33 +70,21 @@ class ActionsDialog : public BaseObjectDialog
     Ui::ActionsDialog_q *m_dialog;
      
     ActionsDialog(QWidget *parent);
-    
     ~ActionsDialog();
-    virtual void closeEvent(QCloseEvent *e);
+
     void fillInterfaces(QComboBox *);
 
 
 public slots:
-    virtual void changed();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void tagvalueChanged(int);
     virtual void iptRouteContinueToggled();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
     virtual void getHelpName(QString*);
     void setRule(libfwbuilder::PolicyRule*);
     
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

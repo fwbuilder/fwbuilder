@@ -68,7 +68,7 @@ void CompilerOutputPanel::changed()
 
 void CompilerOutputPanel::applyChanges()
 {
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void CompilerOutputPanel::discardChanges()

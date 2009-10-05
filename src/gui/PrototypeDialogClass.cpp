@@ -78,15 +78,7 @@ void PrototypeDialog::validate(bool *res)
     *res=true;
 }
 
-void PrototypeDialog::isChanged(bool *res)
-{
-    *res=(!init && apply->isEnabled());
-}
 
-void PrototypeDialog::libChanged()
-{
-    changed();
-}
 
 void PrototypeDialog::applyChanges()
 {
@@ -99,14 +91,6 @@ void PrototypeDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    init=true;
-
-/* move to another lib if we have to */
-    if (! FWBTree().isSystem(obj) && libs->currentText() != QString(obj->getLibrary()->getName().c_str()))
-        mw->moveObject(libs->currentText(), obj);
-
-    init=false;
-
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 

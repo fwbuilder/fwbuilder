@@ -120,7 +120,7 @@ void CommentEditorPanel::applyChanges()
         string(m_widget->editor->toPlainText().toUtf8().constData())
     );
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void CommentEditorPanel::getHelpName(QString *str)

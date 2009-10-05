@@ -111,12 +111,6 @@ void ActionsDialog::getHelpName(QString *str)
     *str = help_name;
 }
 
-void ActionsDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void ActionsDialog::validate(bool *res)
 {
     FWOptions *ruleopt =rule->getOptionsObject();
@@ -147,10 +141,6 @@ void ActionsDialog::validate(bool *res)
     }
 }
 
-void ActionsDialog::isChanged(bool*)
-{
-    //*res=apply->isEnabled();
-}
 
 
 void ActionsDialog::applyChanges()
@@ -211,9 +201,7 @@ void ActionsDialog::applyChanges()
     else
         ropt->setInt("ipfw_classify_method",DUMMYNETQUEUE);
 
-    emit notify_changes_applied_sign();
-
-//    mw->updateLastModifiedTimestampForAllFirewalls(rule);
+    BaseObjectDialog::applyChanges();
 }
 
 void ActionsDialog::discardChanges()
@@ -444,11 +432,4 @@ void ActionsDialog::fillInterfaces(QComboBox* cb)
 
 }
 
-void ActionsDialog::closeEvent(QCloseEvent *e)
-{
-    if (fwbdebug)
-        qDebug("ActionsDialog::closeEvent  got close event: %p",e);
-    emit close_sign(e);
-    //hide();
-}
 

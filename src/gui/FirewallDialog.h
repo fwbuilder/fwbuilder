@@ -41,7 +41,6 @@ class FirewallDialog : public BaseObjectDialog
     Q_OBJECT;
 
     Ui::FirewallDialog_q   *m_dialog;
-    bool modified;
     
     void fillVersion();
     void saveVersion();
@@ -52,29 +51,16 @@ class FirewallDialog : public BaseObjectDialog
      ~FirewallDialog();
      
 public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void platformChanged();
     virtual void hostOSChanged();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
     virtual void openFWDialog();
     virtual void openOSDialog();
-    virtual void closeEvent(QCloseEvent *e);
     virtual void getHelpName(QString*);
     
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
     
 };
 

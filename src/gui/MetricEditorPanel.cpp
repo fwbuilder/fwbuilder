@@ -76,7 +76,7 @@ void MetricEditorPanel::changed()
 void MetricEditorPanel::applyChanges()
 {
     rule->setMetric( value() );
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void MetricEditorPanel::discardChanges()

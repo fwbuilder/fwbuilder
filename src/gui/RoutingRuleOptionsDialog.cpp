@@ -116,26 +116,12 @@ void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void RoutingRuleOptionsDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void RoutingRuleOptionsDialog::validate(bool *res)
 {
     *res=true;
 }
 
-void RoutingRuleOptionsDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void RoutingRuleOptionsDialog::libChanged()
-{
-    changed();
-}
 
 void RoutingRuleOptionsDialog::applyChanges()
 {
@@ -145,25 +131,11 @@ void RoutingRuleOptionsDialog::applyChanges()
     data.saveAll();
     init=false;
 
-//    mw->updateRuleOptions();
-
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void RoutingRuleOptionsDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void RoutingRuleOptionsDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

@@ -75,7 +75,7 @@ void HostDialog::loadFWObject(FWObject *o)
     assert(s!=NULL);
 
     init = true;
-    modified = false;
+    data_changed = false;
 
     Management *mgmt=s->getManagementObject();
     assert(mgmt!=NULL);
@@ -106,12 +106,6 @@ void HostDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void HostDialog::changed()
-{
-    if (!init) modified = true;
-    emit changed_sign();
-}
-
 void HostDialog::validate(bool *res)
 {
     *res = true;
@@ -127,15 +121,7 @@ void HostDialog::validate(bool *res)
     }
 }
 
-void HostDialog::isChanged(bool *m)
-{
-    *m = modified;
-}
 
-void HostDialog::libChanged()
-{
-    changed();
-}
 
 void HostDialog::applyChanges()
 {
@@ -155,25 +141,11 @@ void HostDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    modified = false;
-
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void HostDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void HostDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 
