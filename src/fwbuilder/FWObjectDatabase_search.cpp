@@ -137,136 +137,6 @@ bool FWObjectDatabase::_isInIgnoreList(FWObject *o)
     return false;
 }
 
-#if 0
-
-/**
- *  Finds which firewalls and groups use object 'o' in a subtree
- *  rooted at object 'p'. Skips 'deleted objects' library. Avoids
- *  circular group references using temporary flags set in objects
- *  this method visits.
- */
-void FWObjectDatabase::findWhereUsed(FWObject *o,
-                                     FWObject *p,
-                                     set<FWObject *> &resset)
-{
-    set<FWObject*> results;
-    searchId++;
-    _findWhereUsed(o, p, results);
-    for (set<FWObject*>::iterator it=results.begin(); it!=results.end(); ++it)
-    {
-        FWObject *obj = *it;
-        if (RuleSet::cast(obj))
-        {
-            resset.insert(obj->getParent());
-            continue;
-        }
-        resset.insert(obj);
-    }
-}
-
-bool FWObjectDatabase::_findWhereUsed(FWObject *o,
-                                      FWObject *p,
-                                      set<FWObject *> &resset)
-{
-    bool res=false;
-    if ( _isInIgnoreList(p)) return res;
-
-#if DEBUG_WHERE_USED
-    cerr << "_findWhereUsed"
-         << "  o=" << o
-         << "  " << o->getName()
-         << "  p=" << p
-         << "  " << p->getName()
-         << " (" << p->getTypeName() << ")"
-         << "  resset.size()=" << resset.size()
-         << "  p->getInt(\".searchId\")=" << p->getInt(".searchId")
-         << "  searchId=" << searchId
-         << endl;
-#endif        
-
-    if (o==p)
-    {
-        resset.insert(p);
-        res = true;
-    }
-
-    if (p->size()==0) return res;
-
-    if (p->getInt(".searchId")==searchId)
-    {
-        res=p->getBool(".searchResult");
-        return res;
-    }
-
-// set flags to break indefinite recursion in case we encounter circular groups
-    p->setInt(".searchId", searchId);
-    p->setBool(".searchResult", res);   // res==false at this time
- 
-    PolicyRule *rule = PolicyRule::cast(p);
-    if (rule)
-    {
-        switch (rule->getAction()) {
-        case PolicyRule::Tag:
-        {
-            FWObject *tagobj = rule->getTagObject();
-            if (o==tagobj)
-            {
-                resset.insert(p);
-                res = true;
-                break;
-            }
-            break;
-        }
-        case PolicyRule::Branch:
-        {
-            FWObject *ruleset = rule->getBranch();
-            if (o==ruleset)
-            {
-                resset.insert(p);
-                res = true;
-                break;
-            }
-            break;
-        }
-        default: ;
-        }
-    }
-   
-    FWObject::iterator i1 = p->begin();
-    for ( ; i1!=p->end(); ++i1)
-    {
-        if ((*i1)->getId()==FWObjectDatabase::DELETED_OBJECTS_ID) continue;
-
-        FWReference  *ref = FWReference::cast(*i1);
-        if (ref!=NULL)
-        {  // child is a reference
-            FWObject *g = ref->getPointer();
-            if (_findWhereUsed(o, g, resset))
-            {
-                resset.insert(p);
-                res = true;
-            }
-        }
-        else    // child is a regular object, not a reference
-        {
-            if (_findWhereUsed(o, *i1, resset))
-            {
-                // do not add rule to the results if rule element
-                // matches because rule element should already be there.
-                if (Rule::cast(p) && RuleElement::cast(*i1)==NULL)
-                    resset.insert(p);
-                res = true;
-            }
-        }
-    }
-
-    p->setBool(".searchResult",res);
-    //if (res) resset.insert(p);
-    return res;
-}
-#endif
-
-
 
 /*
  ***********************************************************************
@@ -357,10 +227,10 @@ bool FWObjectDatabase::_findWhereObjectIsUsed(FWObject *o,
             {
                 resset.insert(p);
                 res = true;
-            } else
-            {
-                _findWhereObjectIsUsed(o, *i1, resset, search_id);
+                // still run search recursively, the same object could be
+                // used in rules if it is a firewall
             }
+            _findWhereObjectIsUsed(o, *i1, resset, search_id);
         }
     }
 
