@@ -31,6 +31,9 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
+#include <ui_FWBMainWindow_q.h>
+#include <ui_pagesetupdialog_q.h>
+
 #include "FWWindow.h"
 #include "ProjectPanel.h"
 #include "ObjectTreeView.h"
@@ -148,6 +151,7 @@
 #include <QMdiSubWindow>
 #include <QSignalMapper>
 #include <QUrl>
+#include <QDockWidget>
 
 
 using namespace libfwbuilder;
@@ -156,37 +160,52 @@ using namespace Ui;
 
 FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
                        m_space(0),
+                       previous_subwindow(0),
                        instd(0),
                        instDialogOnScreenTimer(
                            new QTimer(static_cast<QObject*>(this))), 
+                       editorOwner(0),
                        printer(0), searchObject(0), replaceObject(0),
-                       auto_load_from_rcs_head_revision(0)
+                       auto_load_from_rcs_head_revision(0),
+                       oe(0), findObjectWidget(0), findWhereUsedWidget(0)
 {
-    if (fwbdebug)
-    {
-        qDebug("FWWindow constructor");
-        qDebug("windowFlags=%x", int(windowFlags()));
-    }
-
     setUnifiedTitleAndToolBarOnMac(true);
 
     m_mainWindow = new Ui::FWBMainWindow_q();
     m_mainWindow->setupUi(dynamic_cast<QMainWindow*>(this));
 
+    //setCentralWidget(m_space);
+
     psd = NULL;
 
     prepareFileOpenRecentMenu();
 
-    m_space = new QMdiArea(this);
-    setCentralWidget(m_space);
-    ProjectPanel *proj = newProjectPanel();
-    showSub(proj);
+    // ProjectPanel *proj = newProjectPanel();
+    // showSub(proj);
     
-    setSafeMode(false);
-
 #ifdef Q_OS_MACX
-    m_space->setViewMode(QMdiArea::TabbedView);
+    m_mainWindow->m_space->setViewMode(QMdiArea::TabbedView);
 #endif    
+
+    findObjectWidget = new FindObjectWidget(
+        m_mainWindow->auxiliaryPanel, NULL, "findObjectWidget");
+    findObjectWidget->setFocusPolicy( Qt::NoFocus );
+    m_mainWindow->auxiliaryPanel->layout()->addWidget( findObjectWidget );
+    findObjectWidget->show();
+
+    findWhereUsedWidget = new FindWhereUsedWidget(
+        m_mainWindow->auxiliaryPanel, NULL, "findWhereUsedWidget");
+    findWhereUsedWidget->setFocusPolicy( Qt::NoFocus );
+    m_mainWindow->auxiliaryPanel->layout()->addWidget( findWhereUsedWidget );
+    findWhereUsedWidget->hide();
+
+    oe  = new ObjectEditor((QWidget*)m_mainWindow->objectEditorStack);
+    //oe->setCloseButton(m_panel->closeObjectEditorButton);
+    oe->setApplyButton(m_mainWindow->applyObjectEditorButton);
+    oe->setHelpButton(m_mainWindow->helpObjectEditorButton);
+
+    m_mainWindow->editorDockWidget->setupEditor(oe);
+    m_mainWindow->editorDockWidget->hide();
 
     printer = new QPrinter(QPrinter::HighResolution);
 
@@ -212,6 +231,9 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     connect( m_mainWindow->editMenu, SIGNAL (aboutToShow() ),
             this,  SLOT( prepareEditMenu()  ));
 
+    connect( m_mainWindow->viewMenu, SIGNAL (aboutToShow() ),
+            this,  SLOT( prepareViewMenu()  ));
+
     connect( m_mainWindow->ObjectMenu, SIGNAL (aboutToShow() ),
             this,  SLOT( prepareObjectMenu()  ));
 
@@ -224,10 +246,15 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     connect( m_mainWindow->menuWindow, SIGNAL (aboutToShow() ),
             this,  SLOT( prepareWindowsMenu()  ));
 
-    connect( m_space, SIGNAL(subWindowActivated(QMdiSubWindow*)),
+    connect( m_mainWindow->m_space, SIGNAL(subWindowActivated(QMdiSubWindow*)),
              this, SLOT(subWindowActivated(QMdiSubWindow*))); 
 
     disableActions(false);
+
+    ProjectPanel *proj = newProjectPanel();
+    showSub(proj);
+
+    setSafeMode(false);
 
 //    findObject->setMinimumSize( QSize( 0, 0 ) );
 }
@@ -323,33 +350,46 @@ void FWWindow::registerAutoOpenDocFile(const QString &filename,
 
 ProjectPanel *FWWindow::newProjectPanel()
 {
-    ProjectPanel *projectW = new ProjectPanel(m_space);
+    ProjectPanel *projectW = new ProjectPanel(m_mainWindow->m_space);
     projectW->initMain(this);
     return projectW;
 }
 
-void FWWindow::showSub(ProjectPanel *projectW)
+void FWWindow::showSub(ProjectPanel *pp)
 {
     QMdiSubWindow *sub = new QMdiSubWindow;
-    projectW->mdiWindow = sub;
-    sub->setWidget(projectW);
+    pp->mdiWindow = sub;
+    sub->setWidget(pp);
     sub->setAttribute(Qt::WA_DeleteOnClose);
-    m_space->addSubWindow(sub);
-
-    connect(sub,
-            SIGNAL(windowStateChanged(Qt::WindowStates,Qt::WindowStates)),
-            projectW,
-            SLOT(stateChanged(Qt::WindowStates, Qt::WindowStates )));
+    m_mainWindow->m_space->addSubWindow(sub);
 
     if (st->getInt("Window/maximized"))
-        projectW->setWindowState(Qt::WindowMaximized);
+        pp->setWindowState(Qt::WindowMaximized);
 
     sub->show();
+    /*
+     * for reasons I do not understand, QMdiArea does not send signal
+     * subWindowActivated when the very first subwindow comes up. I
+     * think it should, but at least QT 4.4.1 on Mac does not do
+     * it. Calling the slot manually so that editor panel can be
+     * attached to the current project panel.
+     */
+    attachEditorToProjectPanel(pp);
 }
 
 ProjectPanel* FWWindow::activeProject()
 {
-    QMdiSubWindow *w = m_space->currentSubWindow();
+    QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
+        QMdiArea::StackingOrder);
+    if (subwindows.size() == 0) return NULL;
+    QMdiSubWindow *w = subwindows.last(); // last item is the topmost window
+
+    // QMdiSubWindow *w = m_mainWindow->m_space->currentSubWindow();
+    // if (w) return dynamic_cast<ProjectPanel*>(w->widget());
+    // if (fwbdebug)
+    //     qDebug() << "FWWindow::activeProject(): currentSubWindow() returns NULL, trying activeSubWindow()";
+    // w = m_mainWindow->m_space->activeSubWindow();
+
     if (w) return dynamic_cast<ProjectPanel*>(w->widget());
     return NULL;
 }
@@ -385,6 +425,10 @@ void FWWindow::startupLoad()
         current_version_http_getter->get(QUrl(url));
     }
 
+    if (fwbdebug)
+        qDebug() << "FWWindow::startupLoad 1 "
+                 << " activeProject()=" << activeProject();
+
     if (activeProject())
     {
         activeProject()->loadStandardObjects();
@@ -392,12 +436,23 @@ void FWWindow::startupLoad()
         activeProject()->loadState(true);
     }
 
+    if (fwbdebug)
+        qDebug() << "FWWindow::startupLoad 2 "
+                 << " activeProject()=" << activeProject();
+
     // foreach is QT macro
     foreach (QString file, openDocFiles)
     {
         loadFile(file, auto_load_from_rcs_head_revision);
         updateOpenRecentMenu(file);
     }
+
+//    m_mainWindow->m_space->setActiveSubWindow(
+//        m_mainWindow->m_space->currentSubWindow());
+
+    if (fwbdebug)
+        qDebug() << "FWWindow::startupLoad 3 "
+                 << " activeProject()=" << activeProject();
 
     QString release_notes_flag = QString("UI/%1/ReleaseNotesShown").arg(VERSION);
 //    if (!st->getBool(release_notes_flag))
@@ -415,7 +470,15 @@ void FWWindow::startupLoad()
         //stdlg->raise();
     }
 
+    if (fwbdebug)
+        qDebug() << "FWWindow::startupLoad 4 "
+                 << " activeProject()=" << activeProject();
+
     prepareFileMenu();
+
+    if (fwbdebug)
+        qDebug() << "FWWindow::startupLoad 5 "
+                 << " activeProject()=" << activeProject();
 }
 
 void FWWindow::helpAbout()
@@ -453,7 +516,7 @@ void FWWindow::fileNew()
 void FWWindow::fileOpen()
 {
     QString dir;
-    QMdiSubWindow *last_active_window = m_space->activeSubWindow();
+    QMdiSubWindow *last_active_window = m_mainWindow->m_space->activeSubWindow();
 
 /*
  * Pick default directory where to look for the file to open.
@@ -484,7 +547,7 @@ void FWWindow::fileOpen()
     
     if (fileName.isEmpty())
     {
-        m_space->setActiveSubWindow(last_active_window);
+        m_mainWindow->m_space->setActiveSubWindow(last_active_window);
         return ;
     }
 
@@ -495,7 +558,7 @@ void FWWindow::fileOpen()
         // be inactive
         prepareFileMenu();
     } else
-        m_space->setActiveSubWindow(last_active_window);
+        m_mainWindow->m_space->setActiveSubWindow(last_active_window);
 }
 
 bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
@@ -538,7 +601,7 @@ void FWWindow::fileClose()
     }
 
     if (fwbdebug) qDebug("subWindowList().size()=%d",
-                         m_space->subWindowList().size());
+                         m_mainWindow->m_space->subWindowList().size());
 
 }
 
@@ -546,7 +609,7 @@ void FWWindow::fileExit()
 {
     if (activeProject())
     {
-        QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+        QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
         for (int i = 0 ; i < subWindowList.size(); i++)
         {
             ProjectPanel * project =
@@ -749,6 +812,24 @@ void FWWindow::prepareEditMenu()
     m_mainWindow->editPasteAction->setEnabled(pasteMenuItem);
 }
 
+void FWWindow::prepareViewMenu()
+{
+    if (!activeProject())
+    {
+        m_mainWindow->actionObject_Tree->setEnabled(false);
+        m_mainWindow->actionEditor_panel->setEnabled(false);
+        return;
+    }
+
+    m_mainWindow->actionObject_Tree->setEnabled(true);
+    m_mainWindow->actionEditor_panel->setEnabled(true);
+
+    m_mainWindow->actionObject_Tree->setChecked(
+        activeProject()->m_panel->treeDockWidget->isVisible());
+    m_mainWindow->actionEditor_panel->setChecked(
+        m_mainWindow->editorDockWidget->isVisible());
+}
+
 void FWWindow::prepareObjectMenu()
 {
     if (!activeProject())
@@ -786,13 +867,13 @@ void FWWindow::prepareFileMenu()
                    activeProject()->getRCS()->isCheckedOut());
     bool needs_saving = (db() && db()->isDirty());
 
-    if (fwbdebug)
-        qDebug("FWWindow::prepareFileMenu(): activeProject()=%p"
-               "  activeProject()->getFileName()='%s'"
-               "  real_file_opened=%d  needs_saving=%d",
-               activeProject(),
-               activeProject()->getFileName().toAscii().constData(),
-               real_file_opened, needs_saving);
+    // if (fwbdebug)
+    //     qDebug("FWWindow::prepareFileMenu(): activeProject()=%p"
+    //            "  activeProject()->getFileName()='%s'"
+    //            "  real_file_opened=%d  needs_saving=%d",
+    //            activeProject(),
+    //            activeProject()->getFileName().toAscii().constData(),
+    //            real_file_opened, needs_saving);
     
     m_mainWindow->fileSaveAction->setEnabled(real_file_opened && needs_saving);
     m_mainWindow->fileCloseAction->setEnabled(real_file_opened);
@@ -832,14 +913,14 @@ void FWWindow::prepareWindowsMenu()
 
     connect(minimize, SIGNAL(triggered()), this, SLOT(minimize()));
     connect(maximize, SIGNAL(triggered()), this, SLOT(maximize()));
-    connect(close, SIGNAL(triggered()),m_space, SLOT(closeActiveSubWindow()));
-    connect(closeAll, SIGNAL(triggered()),m_space, SLOT(closeAllSubWindows()));
-    connect(tile, SIGNAL(triggered()), m_space, SLOT(tileSubWindows()));
-    connect(cascade, SIGNAL(triggered()), m_space, SLOT(cascadeSubWindows()));
-    connect(next, SIGNAL(triggered()),m_space, SLOT(activateNextSubWindow()));
-    connect(previous, SIGNAL(triggered()),m_space, SLOT(activatePreviousSubWindow()));
+    connect(close, SIGNAL(triggered()), m_mainWindow->m_space, SLOT(closeActiveSubWindow()));
+    connect(closeAll, SIGNAL(triggered()), m_mainWindow->m_space, SLOT(closeAllSubWindows()));
+    connect(tile, SIGNAL(triggered()), m_mainWindow->m_space, SLOT(tileSubWindows()));
+    connect(cascade, SIGNAL(triggered()), m_mainWindow->m_space, SLOT(cascadeSubWindows()));
+    connect(next, SIGNAL(triggered()), m_mainWindow->m_space, SLOT(activateNextSubWindow()));
+    connect(previous, SIGNAL(triggered()), m_mainWindow->m_space, SLOT(activatePreviousSubWindow()));
 
-    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+    QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
 
     minimize->setEnabled(subWindowList.size() > 0);
     maximize->setEnabled(subWindowList.size() > 0);
@@ -871,23 +952,68 @@ void FWWindow::prepareWindowsMenu()
             QAction * act = m_mainWindow->menuWindow->addAction(text);
             ag->addAction(act);
             act->setCheckable ( true );
-            if (subWindowList[i]==m_space->activeSubWindow()) act->setChecked(true);
+            if (subWindowList[i] == m_mainWindow->m_space->activeSubWindow()) act->setChecked(true);
             connect(act, SIGNAL(triggered()), this, SLOT(selectActiveSubWindow()));
         }
     }
 }
 
+void FWWindow::activatePreviousSubWindow()
+{
+    m_mainWindow->m_space->setActiveSubWindow(previous_subwindow);
+    //previous_subwindow->raise();
+}
+ 
 /**
  * QMdiArea emits this signal after window has been activated. When
  * window is 0, QMdiArea has just deactivated its last active window,
- * and there are no active windows on the workspace.
+ * and there are no active windows on the workspace. 
+ *
+ * During the call to this method @subwindow is already current (equal
+ * to the pointer returned by m_mainWindow->m_space->currentSubWindow())
  */
 void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
 {
     if (subwindow==NULL) return;
+
+    if (fwbdebug)
+        qDebug() << "FWWindow::subWindowActivated subwindow="
+                 << subwindow
+                 << " " 
+                 << subwindow->windowTitle();
+
+    if (previous_subwindow == subwindow) return;
+
+    if (isEditorVisible() && !oe->validateAndSave())
+    {
+        // editor has unsaved data and user clicked "Continue editing"
+        // Roll back switch of subwindows
+
+        if (fwbdebug)
+            qDebug() << "Activating previous subwindow " 
+                     << previous_subwindow
+                     << " "
+                     << previous_subwindow->windowTitle();
+        QTimer::singleShot(0, this, SLOT(activatePreviousSubWindow()));
+        return;
+    }
+
+    previous_subwindow = subwindow;
+
     ProjectPanel *pp = dynamic_cast<ProjectPanel*>(subwindow->widget());
     if (pp)
+    {
         prepareFileMenu();
+        attachEditorToProjectPanel(pp);
+    }
+}
+
+void FWWindow::attachEditorToProjectPanel(ProjectPanel *pp)
+{
+    findObjectWidget->attachToProjectWindow(pp);
+    findWhereUsedWidget->attachToProjectWindow(pp);
+    oe->attachToProjectWindow(pp);
+    if (isEditorVisible()) oe->open(pp->getSelectedObject());
 }
 
 void FWWindow::editPrefs()
@@ -933,7 +1059,7 @@ void FWWindow::closeEvent(QCloseEvent* ev)
     if (activeProject())
         st->setInt("Window/maximized", activeProject()->isMaximized());
 
-    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+    QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
@@ -957,7 +1083,7 @@ bool FWWindow::event(QEvent *event)
     if (event->type() >= QEvent::User)
     {
         // dispatch event to all projectpanel windows
-        QList<QMdiSubWindow*> subWindowList = m_space->subWindowList();
+        QList<QMdiSubWindow*> subWindowList = m_mainWindow->m_space->subWindowList();
         for (int i = 0 ; i < subWindowList.size(); i++)
             QCoreApplication::sendEvent(subWindowList[i]->widget(), event);
 
@@ -978,7 +1104,7 @@ void FWWindow::selectActiveSubWindow(/*const QString & text*/)
     {
         if (windowsTitles[i]==text)
         {
-            m_space->setActiveSubWindow(windowsPainters[i]);
+            m_mainWindow->m_space->setActiveSubWindow(windowsPainters[i]);
         }
     }
 }
@@ -986,12 +1112,12 @@ void FWWindow::selectActiveSubWindow(/*const QString & text*/)
 void FWWindow::minimize()
 {
     if (fwbdebug) qDebug("FWWindow::minimize");
-    if (m_space->activeSubWindow())
+    if (m_mainWindow->m_space->activeSubWindow())
     {
-        m_space->activeSubWindow()->showMinimized ();
+        m_mainWindow->m_space->activeSubWindow()->showMinimized ();
         st->setInt("Window/maximized", 0);
 
-        QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+        QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
         for (int i = 0 ; i < subWindowList.size();i++)
         {
             ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
@@ -1008,9 +1134,9 @@ void FWWindow::minimize()
 void FWWindow::maximize()
 {
     if (fwbdebug) qDebug("FWWindow::maximize");
-    if (m_space->activeSubWindow())
+    if (m_mainWindow->m_space->activeSubWindow())
     {
-        m_space->activeSubWindow()->showMaximized ();
+        m_mainWindow->m_space->activeSubWindow()->showMaximized ();
         st->setInt("Window/maximized", 1);
     }
 }
@@ -1018,7 +1144,7 @@ void FWWindow::maximize()
 void FWWindow::updateTreeFont ()
 {
     QFont font = st->getTreeFont();
-    QList<QMdiSubWindow *> subWindowList = m_space->subWindowList();
+    QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
@@ -1109,3 +1235,7 @@ void FWWindow::showReleaseNotes()
     }
 }
 
+void FWWindow::enableBackAction()
+{
+    m_mainWindow->backAction->setEnabled(true);
+}

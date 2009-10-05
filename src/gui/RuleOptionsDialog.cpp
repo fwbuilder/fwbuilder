@@ -61,8 +61,8 @@ RuleOptionsDialog::~RuleOptionsDialog()
     delete m_dialog;
 }
 
-RuleOptionsDialog::RuleOptionsDialog(ProjectPanel *project, QWidget *parent) :
-    QWidget(parent), m_project(project)
+RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) :
+    BaseObjectDialog(parent)
 {
     m_dialog = new Ui::RuleOptionsDialog_q;
     m_dialog->setupUi(this);
@@ -280,7 +280,7 @@ void RuleOptionsDialog::changed()
     m_dialog->pf_flush->setEnabled(enable_overload_options);
     m_dialog->pf_global->setEnabled(enable_overload_options);
 
-    emit changed_sign();
+    BaseObjectDialog::changed();
 }
 
 void RuleOptionsDialog::validate(bool *res)
@@ -288,15 +288,7 @@ void RuleOptionsDialog::validate(bool *res)
     *res=true;
 }
 
-void RuleOptionsDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void RuleOptionsDialog::libChanged()
-{
-    changed();
-}
 
 void RuleOptionsDialog::applyChanges()
 {
@@ -306,10 +298,7 @@ void RuleOptionsDialog::applyChanges()
     data.saveAll();
     init=false;
 
-//    mw->updateRuleOptions();
-
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void RuleOptionsDialog::cancelChanges()
@@ -321,16 +310,5 @@ void RuleOptionsDialog::cancelChanges()
 void RuleOptionsDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void RuleOptionsDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

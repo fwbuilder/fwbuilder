@@ -52,7 +52,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-PhysicalAddressDialog::PhysicalAddressDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+PhysicalAddressDialog::PhysicalAddressDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::PhysAddressDialog_q;
     m_dialog->setupUi(this);
@@ -96,12 +96,6 @@ void PhysicalAddressDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void PhysicalAddressDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void PhysicalAddressDialog::validate(bool *res)
 {
     *res=true;
@@ -110,15 +104,7 @@ void PhysicalAddressDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void PhysicalAddressDialog::isChanged(bool *)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void PhysicalAddressDialog::libChanged()
-{
-    changed();
-}
 
 void PhysicalAddressDialog::applyChanges()
 {
@@ -132,23 +118,11 @@ void PhysicalAddressDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void PhysicalAddressDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void PhysicalAddressDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

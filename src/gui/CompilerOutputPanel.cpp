@@ -49,10 +49,9 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-CompilerOutputPanel::CompilerOutputPanel(ProjectPanel *project, QWidget *parent) :
-    QWidget(parent)
+CompilerOutputPanel::CompilerOutputPanel(QWidget *parent) :
+    BaseObjectDialog(parent)
 {
-    m_project = project;
     m_widget = new Ui::CompilerOutputPanel_q;
     m_widget->setupUi(this);
 }
@@ -69,7 +68,7 @@ void CompilerOutputPanel::changed()
 
 void CompilerOutputPanel::applyChanges()
 {
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void CompilerOutputPanel::discardChanges()

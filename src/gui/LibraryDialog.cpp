@@ -51,7 +51,7 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-LibraryDialog::LibraryDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+LibraryDialog::LibraryDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::LibraryDialog_q;
     m_dialog->setupUi(this);
@@ -106,12 +106,6 @@ void LibraryDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void LibraryDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void LibraryDialog::changeIds(FWObject *root)
 {
     if (FWBTree().isStandardId(root))
@@ -140,9 +134,7 @@ void LibraryDialog::applyChanges()
 //    m_project->updateLibName(obj);
     if (color!=oldcolor) m_project->updateLibColor(obj);
 
-    //apply->setEnabled( false );
-
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void LibraryDialog::discardChanges()
@@ -157,10 +149,6 @@ void LibraryDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
-void LibraryDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
 void LibraryDialog::changeColor()
 {
@@ -183,16 +171,5 @@ void LibraryDialog::fillColor()
     QPainter p( &pm );
     p.drawRect( pm.rect() );
     m_dialog->colorButton->setIcon(QIcon(pm));
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void LibraryDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

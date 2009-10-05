@@ -48,8 +48,8 @@
 using namespace std;
 using namespace libfwbuilder;
 
-AddressRangeDialog::AddressRangeDialog(ProjectPanel *project, QWidget *parent):
-        QWidget(parent), m_project(project)
+AddressRangeDialog::AddressRangeDialog(QWidget *parent):
+        BaseObjectDialog(parent)
 {
     m_dialog = new Ui::AddressRangeDialog_q;
     m_dialog->setupUi(this);
@@ -97,12 +97,6 @@ void AddressRangeDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void AddressRangeDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void AddressRangeDialog::validate(bool *res)
 {
     *res=true;
@@ -136,15 +130,7 @@ void AddressRangeDialog::validate(bool *res)
     }
 }
 
-void AddressRangeDialog::isChanged(bool *)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void AddressRangeDialog::libChanged()
-{
-    changed();
-}
 
 
 void AddressRangeDialog::applyChanges()
@@ -165,7 +151,7 @@ void AddressRangeDialog::applyChanges()
     }
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void AddressRangeDialog::discardChanges()
@@ -174,14 +160,4 @@ void AddressRangeDialog::discardChanges()
 }
 
 
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void AddressRangeDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
-}
 

@@ -34,6 +34,7 @@
 #include "RCS.h"
 #include "RuleSetView.h"
 
+#include <QtDebug>
 #include <QMdiSubWindow>
 #include <QMdiArea>
 
@@ -44,23 +45,6 @@
 using namespace Ui;
 using namespace libfwbuilder;
 using namespace std;
-
-// this slot is called when user hits "maximize" or "minimize" buttons
-// on the title bar of the internal window. Need to restore window
-// geometry and splitter position when window becomes normal (not maximized).
-void ProjectPanel::stateChanged(Qt::WindowStates ,
-                                Qt::WindowStates )
-{
-#if 0
-// vk 09/16
-    bool is_maximized = ((newState & Qt::WindowMaximized) != 0);
-    bool was_maximized = ((oldState & Qt::WindowMaximized) != 0);
-    st->setInt("Window/maximized", is_maximized);
-    if (!was_maximized && is_maximized) saveState();
-#endif
-
-}
-
 
 
 void ProjectPanel::saveState()
@@ -86,23 +70,7 @@ void ProjectPanel::saveState()
         st->setInt("Window/" + FileName + "/height", mdiWindow->height ());
     }
 
-    // Save position of splitters regardless of the window state
-    QList<int> sl = m_panel->mainSplitter->sizes();
-    QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
-    if (sl[0] || sl[1])
-        st->setStr("Window/" + FileName + "/MainWindowSplitter", arg );
-
-    if (fwbdebug)
-    {
-        QString out1 = " save Window/" + FileName + "/MainWindowSplitter";
-        out1+= " " + arg;
-        qDebug(out1.toAscii().data());
-    }
-
-    sl = m_panel->objInfoSplitter->sizes();
-    arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
-    if (sl[0] || sl[1])
-        st->setStr("Window/" + FileName + "/ObjInfoSplitter", arg );
+    saveMainSplitter();
 
     m_panel->om->saveExpandedTreeItems();
     m_panel->om->saveSectionSizes();
@@ -115,11 +83,6 @@ void ProjectPanel::saveState()
 
 void ProjectPanel::loadState(bool)
 {
-    int w1 = 0;
-    int w2 = 0;
-    QString w1s, w2s;
-    bool ok = false;
-
     if (rcs==NULL) return;
     QString filename = rcs->getFileName();
 
@@ -156,38 +119,7 @@ void ProjectPanel::loadState(bool)
         mdiWindow->setGeometry(x,y,width,height);
     }
 
-    QString h_splitter_setting = "Window/" + filename + "/MainWindowSplitter";
-    QString val = st->getStr(h_splitter_setting);
-    
-    w1s = val.split(',')[0];
-    ok = false;
-    w1 = w1s.toInt(&ok, 10);
-    if (!ok || w1 == 0) w1 = DEFAULT_H_SPLITTER_POSITION;
-
-    w2 = mdiWindow->width() - w1;
-
-    if (fwbdebug)
-        qDebug(QString("%1: %2x%3").arg(h_splitter_setting).
-               arg(w1).arg(w2).toAscii().data());
-
-    setMainSplitterPosition(w1, w2);
-
-    if (fwbdebug) qDebug("Restore info window splitter position");
-
-    QString v_splitter_setting = "Window/" + filename + "/ObjInfoSplitter";
-    val = st->getStr(v_splitter_setting);
-
-    w1s = val.split(',')[0];
-    ok = false;
-    w1 = w1s.toInt(&ok, 10);
-    if (!ok || w1 == 0) w1 = DEFAULT_V_SPLITTER_POSITION;
-    w2 = mdiWindow->height() - w1;
-
-    if (fwbdebug)
-        qDebug(QString("%1: %2x%3").arg(v_splitter_setting).
-               arg(w1).arg(w2).toAscii().data());
-
-    setObjInfoSplitterPosition(w1, w2);
+    loadMainSplitter();
 
     m_panel->om->loadExpandedTreeItems();
     m_panel->om->loadSectionSizes();
@@ -202,6 +134,52 @@ void ProjectPanel::loadState(bool)
                db()->isDirty(), ctime(&last_modified));
 }
 
+void ProjectPanel::saveMainSplitter()
+{
+    QString FileName ;
+    if (rcs!=NULL) FileName = rcs->getFileName();
+    // Save position of splitters regardless of the window state
+    // Do not save if one of tree panel is floating
+    if (!m_panel->treeDockWidget->isWindow())
+    {
+        QList<int> sl = m_panel->topSplitter->sizes();
+        QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
+        if (sl[0] || sl[1])
+            st->setStr("Window/" + FileName + "/MainWindowSplitter", arg );
+
+        if (fwbdebug)
+        {
+            QString out1 = " save Window/" + FileName + "/MainWindowSplitter";
+            out1+= " " + arg;
+            qDebug(out1.toAscii().constData());
+        }
+    }
+}
+
+void ProjectPanel::loadMainSplitter()
+{
+    QString FileName ;
+    if (rcs!=NULL) FileName = rcs->getFileName();
+    QString h_splitter_setting = "Window/" + FileName + "/MainWindowSplitter";
+    QString val = st->getStr(h_splitter_setting);
+    
+    int w1 = 0;
+    int w2 = 0;
+    QString w1s, w2s;
+    w1s = val.split(',')[0];
+    bool ok = false;
+    w1 = w1s.toInt(&ok, 10);
+    if (!ok || w1 == 0) w1 = DEFAULT_H_SPLITTER_POSITION;
+
+    w2 = mdiWindow->width() - w1;
+
+    if (fwbdebug)
+        qDebug(QString("%1: %2x%3").arg(h_splitter_setting).
+               arg(w1).arg(w2).toAscii().constData());
+
+    setMainSplitterPosition(w1, w2);
+}    
+
 void ProjectPanel::setMainSplitterPosition(int w1, int w2)
 {
     if (w1 && w2)
@@ -210,20 +188,24 @@ void ProjectPanel::setMainSplitterPosition(int w1, int w2)
         sl.push_back(w1);
         sl.push_back(w2);
         if (fwbdebug) qDebug("Setting main splitter position: %d,%d", w1, w2);
-        m_panel->mainSplitter->setSizes( sl );
+        m_panel->topSplitter->setSizes( sl );
     }
 }
 
-void ProjectPanel::setObjInfoSplitterPosition(int w1, int w2)
+void ProjectPanel::collapseTree()
 {
-    if (w1 && w2) 
-    {
-        QList<int> sl;
-        sl.clear();
-        sl.push_back(w1);
-        sl.push_back(w2);
-        m_panel->objInfoSplitter->setSizes( sl );
-    }
+    QList<int> sl;
+    sl.push_back(0);
+    sl.push_back(mdiWindow->width());
+    m_panel->topSplitter->setSizes( sl );
+}
+
+void ProjectPanel::collapseRules()
+{
+    QList<int> sl;
+    sl.push_back(mdiWindow->width());
+    sl.push_back(0);
+    m_panel->topSplitter->setSizes( sl );
 }
 
 void ProjectPanel::loadOpenedRuleSet()

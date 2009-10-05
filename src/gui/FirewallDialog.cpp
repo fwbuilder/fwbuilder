@@ -68,8 +68,8 @@ FirewallDialog::~FirewallDialog()
     delete m_dialog;
 }
 
-FirewallDialog::FirewallDialog(ProjectPanel *project, QWidget *parent) :
-    QWidget(parent), m_project(project)
+FirewallDialog::FirewallDialog(QWidget *parent) :
+    BaseObjectDialog(parent)
 {
     m_dialog = new Ui::FirewallDialog_q;
     m_dialog->setupUi(this);
@@ -88,7 +88,6 @@ void FirewallDialog::loadFWObject(FWObject *o)
     assert(s!=NULL);
 
     init = true;
-    modified = false;
 
     QString platform = obj->getStr("platform").c_str();
 /* fill in platform */
@@ -196,13 +195,6 @@ void FirewallDialog::hostOSChanged()
     m_dialog->osAdvanced->setEnabled( ho!="unknown_os" );
 }
 
-void FirewallDialog::changed()
-{
-    if (fwbdebug) qDebug("FirewallDialog::changed init=%d", init);
-    if (!init) modified = true;
-    emit changed_sign();
-}
-
 void FirewallDialog::validate(bool *res)
 {
     *res = true;
@@ -243,15 +235,7 @@ void FirewallDialog::validate(bool *res)
     }
 }
 
-void FirewallDialog::isChanged(bool *m)
-{
-    *m = modified;
-}
 
-void FirewallDialog::libChanged()
-{
-    changed();
-}
 
 void FirewallDialog::applyChanges()
 {
@@ -320,10 +304,7 @@ void FirewallDialog::applyChanges()
         Resources::setDefaultTargetOptions(new_host_os, s);
     }
 
-//    mw->updateLastModifiedTimestampForAllFirewalls(s);
-    modified = false;
-
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void FirewallDialog::discardChanges()
@@ -334,9 +315,9 @@ void FirewallDialog::discardChanges()
 void FirewallDialog::openFWDialog()
 {
     if (fwbdebug)
-        qDebug("FirewallDialog::openFWDialog: modified=%d", modified);
+        qDebug("FirewallDialog::openFWDialog: modified=%d", isDataChanged());
 
-    if (modified) applyChanges();
+    if (isDataChanged()) applyChanges();
 
 //    if (obj->getStr("version").empty()) saveVersion();
 
@@ -363,7 +344,7 @@ void FirewallDialog::openFWDialog()
 
 void FirewallDialog::openOSDialog()
 {
-    if (modified) applyChanges();
+    if (isDataChanged()) applyChanges();
 
     try
     {
@@ -385,12 +366,4 @@ void FirewallDialog::openOSDialog()
     }
 }
 
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void FirewallDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-}
 

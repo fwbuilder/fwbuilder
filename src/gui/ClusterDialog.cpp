@@ -44,8 +44,8 @@ void ClusterDialog::getHelpName(QString *str)
     *str = "ClusterDialog";
 }
 
-ClusterDialog::ClusterDialog(ProjectPanel *project, QWidget *parent)
-    : QWidget(parent), m_project(project), config_changed(false)
+ClusterDialog::ClusterDialog(QWidget *parent)
+    : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::ClusterDialog_q;
     m_dialog->setupUi(this);
@@ -160,11 +160,6 @@ void ClusterDialog::resetSingleClusterGroupType(FWObject *grp,
     if (!match) grp->setStr("type", first_allowed_type);
 }
 
-void ClusterDialog::changed()
-{
-    emit changed_sign();
-}
-
 void ClusterDialog::validate(bool *res)
 {
     *res = true;
@@ -180,10 +175,6 @@ void ClusterDialog::validate(bool *res)
     }
 }
 
-void ClusterDialog::libChanged()
-{
-    changed();
-}
 
 void ClusterDialog::applyChanges()
 {
@@ -211,7 +202,7 @@ void ClusterDialog::applyChanges()
         m_project->scheduleRuleSetRedraw();
     }
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 
 }
 
@@ -219,14 +210,3 @@ void ClusterDialog::discardChanges()
 {
     loadFWObject(obj);
 }
-
-/**
- * ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void ClusterDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-}
-

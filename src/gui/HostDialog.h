@@ -29,46 +29,29 @@
 
 #include "../../config.h"
 #include <ui_hostdialog_q.h>
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
 
-class HostDialog : public QWidget
+class HostDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
-    bool modified;
     Ui::HostDialog_q *m_dialog;
-    ProjectPanel *m_project;
 
  public:
-    HostDialog(ProjectPanel *project, QWidget *parent);
+    HostDialog(QWidget *parent);
     ~HostDialog();
     
 public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
-    virtual void closeEvent(QCloseEvent *e);
     virtual void getHelpName(QString*);
-
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign(); 
-    void notify_changes_applied_sign();
 
 };
 

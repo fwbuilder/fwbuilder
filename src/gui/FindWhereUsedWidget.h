@@ -58,6 +58,7 @@ private:
     Ui::findWhereUsedWidget_q *m_widget;
     
     void showObject(libfwbuilder::FWObject*);
+    void _find(libfwbuilder::FWObject *obj);
 
 public:
     FindWhereUsedWidget(QWidget*p, ProjectPanel* pp, const char * n = 0,
@@ -65,6 +66,7 @@ public:
     ~FindWhereUsedWidget();
 
     void setShowObject(bool fl);
+    void attachToProjectWindow(ProjectPanel *pp) { project_panel = pp; }
 
     /**
      * Post-process set of FWObject* returned by
@@ -80,11 +82,8 @@ public:
                                                libfwbuilder::FWObject* container);
     
 public slots:
-    virtual void hidePanel() {emit close();}; 
-   
     virtual void find();
     virtual void find(libfwbuilder::FWObject *obj);
-    virtual void _find(libfwbuilder::FWObject *obj);
     void init();
     void itemActivated(QTreeWidgetItem*);
     void findFromDrop();

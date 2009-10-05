@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_ipv6dialog_q.h>
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
@@ -36,43 +37,27 @@
 class QDns;
 
 class ProjectPanel;
-class IPv6Dialog : public QWidget
+class IPv6Dialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     bool showNetmask;
     bool dnsBusy;
     //QDns                   *lookup;
     Ui::IPv6Dialog_q       *m_dialog;
-    ProjectPanel *m_project;
 
  public:
-    IPv6Dialog(ProjectPanel *project, QWidget *parent);
+    IPv6Dialog(QWidget *parent);
     ~IPv6Dialog();
-    virtual void closeEvent(QCloseEvent *e);
     
 public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
     virtual void DNSlookup();
     virtual void getHelpName(QString*);
     
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

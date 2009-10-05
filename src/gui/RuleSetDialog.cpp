@@ -55,9 +55,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-RuleSetDialog::RuleSetDialog(ProjectPanel *project,
-                             QWidget *parent) : QWidget(parent),
-                                                m_project(project)
+RuleSetDialog::RuleSetDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::RuleSetDialog_q;
     m_dialog->setupUi(this);
@@ -163,12 +161,6 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void RuleSetDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void RuleSetDialog::validate(bool *res)
 {
     *res = true;
@@ -199,14 +191,7 @@ void RuleSetDialog::validate(bool *res)
     }
 }
 
-void RuleSetDialog::isChanged(bool *)
-{
-}
 
-void RuleSetDialog::libChanged()
-{
-    changed();
-}
 
 void RuleSetDialog::applyChanges()
 {
@@ -247,25 +232,11 @@ void RuleSetDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    init=false;
-
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void RuleSetDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void RuleSetDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

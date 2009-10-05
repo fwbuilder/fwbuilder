@@ -68,6 +68,7 @@
 #include <qlineedit.h>
 #include <qgroupbox.h>
 #include <qpixmapcache.h>
+#include <QtDebug>
 
 #include <iostream>
 #include <stdlib.h>
@@ -138,8 +139,15 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     m_widget->resListView->clear();
     resset.clear();
 
-    if (fwbdebug) qDebug("FindWhereUsedWidget: initiate search for %s",
-                         obj->getName().c_str());
+    if (fwbdebug)
+        qDebug() << "FindWhereUsedWidget "
+                 << this
+                 << ": initiate search for "
+                 << obj->getName().c_str()
+                 << "  project_panel "
+                 << project_panel;
+
+    if (project_panel==NULL) return;
 
     project_panel->db()->findWhereObjectIsUsed(obj, project_panel->db(), resset);
     humanizeSearchResults(resset);
@@ -192,7 +200,7 @@ void FindWhereUsedWidget::showObject(FWObject* o)
         rsv->selectRE(RuleElement::cast(o), object);
         rsv->setFocus(Qt::MouseFocusReason);
 
-        if (project_panel->isEditorVisible()) project_panel->editObject(object);
+        if (mw->isEditorVisible()) project_panel->editObject(object);
     } else
     {
         if (Rule::cast(o)!=NULL)
@@ -202,7 +210,7 @@ void FindWhereUsedWidget::showObject(FWObject* o)
             RuleSetView *rsv = project_panel->getCurrentRuleSetView();
             rsv->selectRE(Rule::cast(o),rsv->getColByType(ColDesc::Action));
 
-            if (project_panel->isEditorVisible()) project_panel->editObject(object);
+            if (mw->isEditorVisible()) project_panel->editObject(object);
         } else
         {
             project_panel->unselectRules();
@@ -212,17 +220,17 @@ void FindWhereUsedWidget::showObject(FWObject* o)
                 project_panel->openObject(o);
                 project_panel->unselectRules();
 
-                if (project_panel->isEditorVisible())
+                if (mw->isEditorVisible())
                 {
                     project_panel->editObject(o);
-                    project_panel->selectObjectInEditor(object);
+                    mw->selectObjectInEditor(object);
                 }
             } else
             {
                 project_panel->openObject( object );
                 project_panel->unselectRules();
 
-                if (project_panel->isEditorVisible()) project_panel->editObject( object );
+                if (mw->isEditorVisible()) project_panel->editObject( object );
             }
         }
     }
@@ -234,16 +242,18 @@ void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
     set<FWObject*>::iterator i = resset.begin();
     for (;i!=resset.end();++i)
     {
+        FWObject *obj = NULL;
         FWReference  *ref = FWReference::cast(*i);
         if (ref)
         {
-            FWObject *o = ref->getParent();  // NB! We need parent of this ref.
-            tmp_res.insert(o);
-            if (fwbdebug)
-                qDebug("humanizeSearchResults: adding %s (%s)",
-                       o->getName().c_str(), o->getTypeName().c_str());
+            obj = ref->getParent();  // NB! We need parent of this ref.
         } else
-            tmp_res.insert(*i);
+            obj = *i;
+        if (fwbdebug)
+            qDebug() << "humanizeSearchResults: adding "
+                     << obj->getName().c_str()
+                     << " (" << obj->getTypeName().c_str() << ")";
+        tmp_res.insert(obj);
     }
     resset.clear();
     resset = tmp_res;

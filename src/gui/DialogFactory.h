@@ -26,20 +26,21 @@
 #ifndef _DIALOGFACTORY_HH_
 #define _DIALOGFACTORY_HH_
 
-#include <qwidget.h>
+#include "BaseObjectDialog.h"
+
+#include <QWidget>
 
 namespace libfwbuilder {
     class FWObject;
     class FWException;
 };
 
-class ProjectPanel;
 
 class DialogFactory {
-
  public:
 
-    static QWidget *createDialog(ProjectPanel *project, QWidget *parent,const QString &objType);
+    static BaseObjectDialog *createDialog(QWidget *parent,const QString &objType);
+
     static QWidget *createFWDialog(QWidget *parent,libfwbuilder::FWObject *o)
         throw(libfwbuilder::FWException);
     static QWidget *createOSDialog(QWidget *parent,libfwbuilder::FWObject *o)

@@ -49,16 +49,7 @@ class instOptionsDialog : public QDialog
     
     Ui::instOptionsDialog_q *m_dialog;
 
- public slots:
-    
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-   // void close_sign(QCloseEvent *e);
-    
+   
 };
 
 #endif 

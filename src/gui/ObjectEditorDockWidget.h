@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
@@ -24,36 +24,39 @@
 */
 
 
-#ifndef __ICMPSERVICEDIALOG_H_
-#define __ICMPSERVICEDIALOG_H_
+#ifndef  __OBJECTEDITORDOCKWIDGET_H_
+#define  __OBJECTEDITORDOCKWIDGET_H_
 
 #include "../../config.h"
-#include <ui_icmpservicedialog_q.h>
-#include "BaseObjectDialog.h"
-#include <QWidget>
 
-#include "fwbuilder/FWObject.h"
+#include <QDockWidget>
+#include <QCloseEvent>
 
+class ObjectEditor;
 
-class ProjectPanel;
-class ICMPServiceDialog : public BaseObjectDialog
-{
-    Q_OBJECT;
+class ObjectEditorDockWidget : public QDockWidget {
 
-    Ui::ICMPServiceDialog_q *m_dialog;
+    Q_OBJECT ;
+
+    ObjectEditor *editor;
+
+public:
+
+    ObjectEditorDockWidget(const QString &title,
+                           QWidget *parent = 0,
+                           Qt::WindowFlags flags = 0);
+
+    ObjectEditorDockWidget(QWidget *parent = 0,
+                           Qt::WindowFlags flags = 0);
+
+    void setupEditor(ObjectEditor *ed);
     
- public:
-     ICMPServiceDialog(QWidget *parent);
-     ~ICMPServiceDialog();
-    
+    virtual void closeEvent(QCloseEvent *event);
+
 public slots:
-    virtual void applyChanges();
-    virtual void discardChanges();
-    virtual void loadFWObject(libfwbuilder::FWObject *obj);
-    virtual void validate(bool*);
-    virtual void getHelpName(QString*);
-    
 
+    void topLevelChanged(bool topLevel);
+    
 };
 
-#endif // ICMPSERVICEDIALOG_H
+#endif

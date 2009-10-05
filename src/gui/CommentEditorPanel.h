@@ -27,6 +27,7 @@
 #define __COMMENTEDITORPANEL_H__
 
 #include "../../config.h"
+#include "BaseObjectDialog.h"
 #include <ui_commenteditorpanel_q.h>
 #include <QWidget>
 
@@ -35,9 +36,9 @@
 #include "fwbuilder/Firewall.h"
 
 
-class CommentEditorPanel : public QWidget
+class CommentEditorPanel : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
     Ui::CommentEditorPanel_q *m_widget;
 
  public:
@@ -70,8 +71,6 @@ public slots:
  * and to store its position on the screen
  */
     void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 };
 
 #endif

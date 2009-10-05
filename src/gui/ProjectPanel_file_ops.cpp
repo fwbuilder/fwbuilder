@@ -224,8 +224,7 @@ void ProjectPanel::fileClose()
 
     closing = true ;
 
-    findObjectWidget->init();
-    if (isEditorVisible()) hideEditor();
+    if (mw->isEditorVisible()) mw->hideEditor();
 
     if (!saveIfModified() || !checkin(true))  return;
 
@@ -275,7 +274,7 @@ void ProjectPanel::fileSave()
 
 void ProjectPanel::fileSaveAs()
 {
-    if (isEditorVisible()) hideEditor();
+    if (mw->isEditorVisible()) mw->hideEditor();
 
 /* we need to save data into the current file before we save it into a
  * new file, provided we do have current file
@@ -356,8 +355,7 @@ void ProjectPanel::fileDiscard()
         /* do everything fileClose() does except do not close mdiWindow
          * because we'll need it again to reopen the file into
          */
-        findObjectWidget->init();
-        if (isEditorVisible()) hideEditor();
+        if (mw->isEditorVisible()) mw->hideEditor();
 
         if (rcs) delete rcs;
         rcs=NULL;

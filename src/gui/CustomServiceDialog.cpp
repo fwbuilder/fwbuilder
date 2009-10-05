@@ -51,7 +51,7 @@
 using namespace libfwbuilder;
 using namespace std;
 
-CustomServiceDialog::CustomServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+CustomServiceDialog::CustomServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::CustomServiceDialog_q;
     m_dialog->setupUi(this);
@@ -163,13 +163,10 @@ void CustomServiceDialog::changed()
 {
     if (!init)
     {
-        QString  pl   = platformReverseMap[m_dialog->platform->currentText()];
+        QString pl = platformReverseMap[m_dialog->platform->currentText()];
         allCodes[pl] = m_dialog->code->text().toUtf8().constData();
-
-        //apply->setEnabled( true );
-        emit changed_sign();
-
     }
+    BaseObjectDialog::changed();
 }
 
 void CustomServiceDialog::validate(bool *res)
@@ -183,15 +180,7 @@ void CustomServiceDialog::validate(bool *res)
     }
 }
 
-void CustomServiceDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void CustomServiceDialog::libChanged()
-{
-    changed();
-}
 
 void CustomServiceDialog::platformChanged()
 {
@@ -232,22 +221,12 @@ void CustomServiceDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void CustomServiceDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void CustomServiceDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 
 void CustomServiceDialog::fillDialogInputFields()

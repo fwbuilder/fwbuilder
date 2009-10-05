@@ -56,7 +56,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-IPv6Dialog::IPv6Dialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+IPv6Dialog::IPv6Dialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPv6Dialog_q;
     m_dialog->setupUi(this);
@@ -138,12 +138,6 @@ void IPv6Dialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void IPv6Dialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void IPv6Dialog::validate(bool *res)
 {
     *res=true;
@@ -183,16 +177,7 @@ void IPv6Dialog::validate(bool *res)
     }
 }
 
-void IPv6Dialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
 
-}
-
-void IPv6Dialog::libChanged()
-{
-    changed();
-}
 
 void IPv6Dialog::applyChanges()
 {
@@ -223,8 +208,7 @@ void IPv6Dialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void IPv6Dialog::discardChanges()
@@ -296,11 +280,3 @@ void IPv6Dialog::DNSlookup()
         return;
     }
 }
-
-void IPv6Dialog::closeEvent(QCloseEvent *e)
-{
-    if (fwbdebug)
-        qDebug("IPv6Dialog::closeEvent  got close event: %p",e);
-    emit close_sign(e);
-}
-

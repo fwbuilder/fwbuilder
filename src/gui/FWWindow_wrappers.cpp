@@ -26,6 +26,7 @@
 #include "../../config.h"
 #include "global.h"
 
+#include <ui_FWBMainWindow_q.h>
 #include "FWWindow.h"
 #include "ProjectPanel.h"
 #include "ObjectManipulator.h"
@@ -284,9 +285,24 @@ void FWWindow::editPaste()
     }
 }
 
-void FWWindow::changeInfoStyle()
+void FWWindow::toggleViewObjectTree()
 {
-    if (activeProject()) activeProject()->changeInfoStyle();
+    if (activeProject())
+    {
+        activeProject()->toggleViewTree(m_mainWindow->actionObject_Tree->isChecked());
+    }
+}
+
+void FWWindow::toggleViewEditor()
+{
+    if (m_mainWindow->actionEditor_panel->isChecked())
+    {
+        if (activeProject())
+            openEditor(activeProject()->m_panel->om->getOpened());
+        else
+            m_mainWindow->editorDockWidget->show();
+    } else
+        m_mainWindow->editorDockWidget->hide();
 }
 
 void FWWindow::insertRule()
@@ -340,16 +356,6 @@ void FWWindow::pasteRuleBelow()
     if (activeProject()) activeProject()->pasteRuleBelow();
 }
 
-void FWWindow::search()
-{
-    if (activeProject()) activeProject()->search();
-}
-
-void FWWindow::findWhereUsed(FWObject * obj)
-{
-    if (activeProject()) activeProject()->findWhereUsed(obj);
-}
-
 void FWWindow::back()
 {
     if (activeProject()) activeProject()->back();
@@ -391,16 +397,6 @@ RCS * FWWindow::getRCS()
 {
     if (activeProject()) return activeProject()->getRCS();
     return 0;
-}
-
-void FWWindow::findObject(FWObject *o)
-{
-    if (activeProject()) activeProject()->findObject(o);
-}
-
-void FWWindow::closeAuxiliaryPanel()
-{
-    if (activeProject()) activeProject()->closeAuxiliaryPanel();
 }
 
 /*

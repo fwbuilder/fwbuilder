@@ -53,8 +53,8 @@ void ClusterGroupDialog::getHelpName(QString *str)
     *str = "ClusterGroupDialog";
 }
 
-ClusterGroupDialog::ClusterGroupDialog(ProjectPanel *project, QWidget *parent)
-    : QWidget(parent), m_project(project), reload(false)
+ClusterGroupDialog::ClusterGroupDialog(QWidget *parent)
+    : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::ClusterGroupDialog_q;
     m_dialog->setupUi(this);
@@ -66,6 +66,8 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
     obj = o;
     ClusterGroup *g = dynamic_cast<ClusterGroup*>(obj);
     assert(g != NULL);
+
+    init = true;
 
     // disable manage members if host OS does not support clustering.
     // Parent is either 'Cluster' or 'Interface', call getParent() approprietly
@@ -166,6 +168,7 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
     m_dialog->fwMemberTree->resizeColumnToContents(2);
     m_dialog->fwMemberTree->resizeColumnToContents(3);
 
+    init = false;
 }
 
 void ClusterGroupDialog::saveGroupType()
@@ -245,10 +248,7 @@ void ClusterGroupDialog::addIcon(FWObject *o, bool master)
 
 void ClusterGroupDialog::changed()
 {
-    if (!reload)
-    {
-        emit changed_sign();
-    }
+    if (!reload) BaseObjectDialog::changed();
 }
 
 void ClusterGroupDialog::validate(bool *res)
@@ -277,7 +277,7 @@ void ClusterGroupDialog::applyChanges()
 
     m_project->updateObjName(obj, oldname);
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void ClusterGroupDialog::discardChanges()
@@ -293,7 +293,7 @@ void ClusterGroupDialog::openClusterConfDialog()
 {
     try
     {
-        applyChanges();
+        if (isDataChanged()) applyChanges();
 
         QWidget *w = DialogFactory::createClusterConfDialog(this, obj);
         if (w == NULL)
@@ -318,16 +318,6 @@ void ClusterGroupDialog::openClusterConfDialog()
             tr("&Continue"), QString::null, QString::null, 0, 1);
         return;
     }
-}
-
-/**
- * ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void ClusterGroupDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
 }
 
 void ClusterGroupDialog::openObject(QTreeWidgetItem *item)
@@ -358,7 +348,7 @@ void ClusterGroupDialog::objectChanged()
  */
 void ClusterGroupDialog::openParametersEditor()
 {
-    applyChanges();
+    if (isDataChanged()) applyChanges();
 
     FWOptions *gr_opt = ClusterGroup::cast(obj)->getOptionsObject();
 

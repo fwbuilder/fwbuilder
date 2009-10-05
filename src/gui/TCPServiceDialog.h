@@ -29,46 +29,30 @@
 
 #include "../../config.h"
 #include <ui_tcpservicedialog_q.h>
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
 
-class TCPServiceDialog : public QWidget
+class TCPServiceDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     Ui::TCPServiceDialog_q *m_dialog;
-    bool init;
-    ProjectPanel *m_project;
 
  public:
-    TCPServiceDialog(ProjectPanel *project, QWidget *parent);
+    TCPServiceDialog(QWidget *parent);
     ~TCPServiceDialog();
     
 public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
-    virtual void closeEvent(QCloseEvent *e);
     virtual void toggleEstablished();
     virtual void getHelpName(QString*);
-
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

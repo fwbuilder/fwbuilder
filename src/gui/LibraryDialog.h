@@ -29,15 +29,16 @@
 
 #include "../../config.h"
 #include <ui_librarydialog_q.h>
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class LibraryDialog : public QWidget
+class LibraryDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     libfwbuilder::FWObject *obj;
     bool init;
@@ -50,29 +51,17 @@ class LibraryDialog : public QWidget
  public:
     Ui::LibraryDialog_q *m_dialog;
      
-    LibraryDialog(ProjectPanel *project, QWidget *parent);
+    LibraryDialog(QWidget *parent);
     ~LibraryDialog();
     
 public slots:
-    virtual void changed();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
     virtual void changeColor();
-    virtual void closeEvent(QCloseEvent *e);
     virtual void getHelpName(QString*);
     
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

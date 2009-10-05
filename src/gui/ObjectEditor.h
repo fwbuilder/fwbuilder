@@ -42,19 +42,20 @@ class ObjectTreeViewItem;
 class QComboBox;
 class QMenu;
 class QStackedWidget;
+
 class ProjectPanel;
+class BaseObjectDialog;
 
 class ObjectEditor : public QObject {
 
-    Q_OBJECT
+    Q_OBJECT;
 
     QMap<QString, int> stackIds;
-    QMap<int, QWidget*> dialogs;
+    QMap<int, BaseObjectDialog*> dialogs;
     libfwbuilder::FWObject *opened;
     int current_dialog_idx;
     QString current_dialog_name;
     QStackedWidget *parentWidget;
-    QPushButton *closeButton;
     QPushButton *applyButton;
     QPushButton *helpButton;
     ProjectPanel *m_project;
@@ -70,8 +71,10 @@ private:
 
 public:
    
-    ObjectEditor(QWidget *parent, ProjectPanel *project);
+    ObjectEditor(QWidget *parent);
     virtual ~ObjectEditor() {}
+
+    void attachToProjectWindow(ProjectPanel *pp);
 
     QString getOptDialogName(OptType t);
     void open(libfwbuilder::FWObject *o);
@@ -87,7 +90,6 @@ public:
     void purge();
 
     bool validateAndSave();
-    void setCloseButton(QPushButton * b);
     void setApplyButton(QPushButton * b);
     void setHelpButton(QPushButton * b);
     void selectObject(libfwbuilder::FWObject *o);
@@ -102,7 +104,6 @@ public slots:
     void apply();
     void help();
     void discard();
-    void close();
     void changed();
     void blank();
 

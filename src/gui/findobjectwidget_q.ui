@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>findObjectWidget_q</class>
- <widget class="QWidget" name="findObjectWidget_q" >
-  <property name="geometry" >
+ <widget class="QWidget" name="findObjectWidget_q">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,22 +10,22 @@
     <height>184</height>
    </rect>
   </property>
-  <property name="font" >
+  <property name="font">
    <font/>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form1</string>
   </property>
-  <layout class="QGridLayout" >
-   <item row="2" column="2" colspan="3" >
+  <layout class="QGridLayout">
+   <item row="2" column="2" colspan="3">
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeType" >
+     <property name="sizeType">
       <enum>QSizePolicy::MinimumExpanding</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>75</width>
        <height>1</height>
@@ -32,51 +33,51 @@
      </property>
     </spacer>
    </item>
-   <item row="1" column="4" >
-    <widget class="QPushButton" name="repNextButton" >
-     <property name="text" >
+   <item row="1" column="4">
+    <widget class="QPushButton" name="repNextButton">
+     <property name="text">
       <string>Replace &amp;&amp; Find</string>
      </property>
-     <property name="shortcut" >
+     <property name="shortcut">
       <string/>
      </property>
     </widget>
    </item>
-   <item rowspan="2" row="0" column="1" >
-    <widget class="QGroupBox" name="groupBox5" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+   <item row="0" column="1" rowspan="2">
+    <widget class="QGroupBox" name="groupBox5">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="font" >
+     <property name="font">
       <font>
        <pointsize>9</pointsize>
       </font>
      </property>
-     <property name="title" >
+     <property name="title">
       <string> Replace object </string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
+     <layout class="QVBoxLayout">
+      <property name="margin">
        <number>6</number>
       </property>
       <item>
-       <widget class="FWObjectDropArea" native="1" name="replaceDropArea" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <widget class="FWObjectDropArea" name="replaceDropArea" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>100</width>
           <height>80</height>
          </size>
         </property>
-        <property name="font" >
+        <property name="font">
          <font>
           <pointsize>9</pointsize>
          </font>
@@ -86,28 +87,15 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="5" >
-    <widget class="QPushButton" name="closeButton" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text" >
-      <string>Close</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="6" >
+   <item row="1" column="6">
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeType" >
+     <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>110</width>
        <height>20</height>
@@ -115,15 +103,15 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="6" >
+   <item row="0" column="6">
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeType" >
+     <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>100</width>
        <height>20</height>
@@ -131,45 +119,45 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="2" colspan="3" >
-    <widget class="QGroupBox" name="buttonGroup2" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+   <item row="0" column="2" colspan="3">
+    <widget class="QGroupBox" name="buttonGroup2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="font" >
+     <property name="font">
       <font>
        <pointsize>9</pointsize>
       </font>
      </property>
-     <property name="title" >
+     <property name="title">
       <string>Scope for search and replace :</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
+     <layout class="QGridLayout">
+      <property name="margin">
        <number>4</number>
       </property>
-      <item row="0" column="0" >
-       <widget class="QComboBox" name="srScope" >
+      <item row="0" column="0">
+       <widget class="QComboBox" name="srScope">
         <item>
-         <property name="text" >
+         <property name="text">
           <string>Tree only</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>Tree and policy of all firewalls</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>Policy of all firewalls</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>policy of the opened firewall</string>
          </property>
         </item>
@@ -178,117 +166,117 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="3" >
-    <widget class="QPushButton" name="replaceButton" >
-     <property name="text" >
+   <item row="1" column="3">
+    <widget class="QPushButton" name="replaceButton">
+     <property name="text">
       <string>Replace</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="2" >
-    <widget class="QPushButton" name="replaceAllButton" >
-     <property name="text" >
+   <item row="1" column="2">
+    <widget class="QPushButton" name="replaceAllButton">
+     <property name="text">
       <string>Replace all</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="5" >
-    <widget class="QPushButton" name="findButton" >
-     <property name="text" >
+   <item row="1" column="5">
+    <widget class="QPushButton" name="findButton">
+     <property name="text">
       <string>Next</string>
      </property>
-     <property name="default" >
+     <property name="default">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item rowspan="2" row="0" column="0" >
-    <widget class="QGroupBox" name="groupBox4" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+   <item row="0" column="0" rowspan="2">
+    <widget class="QGroupBox" name="groupBox4">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="font" >
+     <property name="font">
       <font>
        <pointsize>9</pointsize>
       </font>
      </property>
-     <property name="title" >
+     <property name="title">
       <string> Find object</string>
      </property>
-     <layout class="QGridLayout" >
-      <item rowspan="2" row="0" column="1" >
-       <widget class="FWObjectDropArea" native="1" name="findDropArea" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <layout class="QGridLayout">
+      <item row="0" column="1" rowspan="2">
+       <widget class="FWObjectDropArea" name="findDropArea" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>100</width>
           <height>80</height>
          </size>
         </property>
-        <property name="font" >
+        <property name="font">
          <font>
           <pointsize>9</pointsize>
          </font>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" >
-       <widget class="QComboBox" name="attribute" >
-        <property name="font" >
+      <item row="0" column="0">
+       <widget class="QComboBox" name="attribute">
+        <property name="font">
          <font>
           <pointsize>9</pointsize>
          </font>
         </property>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>Name</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>Address</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>TCP/UDP port</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>Protocol number</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>ICMP type</string>
          </property>
         </item>
        </widget>
       </item>
-      <item row="1" column="0" >
-       <widget class="QComboBox" name="findAttr" >
-        <property name="font" >
+      <item row="1" column="0">
+       <widget class="QComboBox" name="findAttr">
+        <property name="font">
          <font>
           <pointsize>9</pointsize>
          </font>
         </property>
-        <property name="editable" >
+        <property name="editable">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
-       <widget class="QCheckBox" name="useRegexp" >
-        <property name="text" >
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="useRegexp">
+        <property name="text">
          <string>Use regular expressions</string>
         </property>
        </widget>
@@ -298,7 +286,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
    <class>FWObjectDropArea</class>
@@ -315,37 +303,20 @@
   <tabstop>replaceButton</tabstop>
   <tabstop>repNextButton</tabstop>
   <tabstop>findButton</tabstop>
-  <tabstop>closeButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>closeButton</sender>
-   <signal>clicked()</signal>
-   <receiver>findObjectWidget_q</receiver>
-   <slot>hidePanel()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>findDropArea</sender>
    <signal>objectDeleted()</signal>
    <receiver>findObjectWidget_q</receiver>
    <slot>enableAll()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -357,11 +328,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>objectInserted()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -373,11 +344,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>find()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -389,11 +360,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>findAttrChanged(QString)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -405,11 +376,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>findAttrChanged(QString)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -421,11 +392,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>findAttrChanged(QString)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -437,11 +408,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>replace()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -453,11 +424,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>replaceAll()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -469,11 +440,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>reset()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -485,11 +456,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>replaceDisable()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -501,11 +472,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>replaceEnable()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -517,11 +488,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>replaceNext()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -533,11 +504,11 @@
    <receiver>findObjectWidget_q</receiver>
    <slot>scopeChanged()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>

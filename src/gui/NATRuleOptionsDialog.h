@@ -27,6 +27,7 @@
 
 #include "../../config.h"
 #include <ui_natruleoptionsdialog_q.h>
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 #include "DialogData.h"
@@ -36,43 +37,25 @@
 class RuleSetView;
 
 class ProjectPanel;
-class NATRuleOptionsDialog : public QWidget
+class NATRuleOptionsDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     DialogData              data;
     QString                 platform;
     RuleSetView            *rsv;
     Ui::NATRuleOptionsDialog_q *m_dialog;
-    ProjectPanel *m_project;
     
-    bool init;
-
  public:
-    NATRuleOptionsDialog(ProjectPanel *project, QWidget *parent);
+    NATRuleOptionsDialog(QWidget *parent);
     ~NATRuleOptionsDialog();
     
 public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
-    virtual void closeEvent(QCloseEvent *e);
     virtual void getHelpName(QString*);
-
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

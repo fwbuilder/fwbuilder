@@ -50,7 +50,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-NetworkDialog::NetworkDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+NetworkDialog::NetworkDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::NetworkDialog_q;
     m_dialog->setupUi(this);
@@ -93,12 +93,6 @@ void NetworkDialog::loadFWObject(FWObject *o)
 
 
     init=false;
-}
-
-void NetworkDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
 }
 
 void NetworkDialog::validate(bool *result)
@@ -164,15 +158,7 @@ void NetworkDialog::validate(bool *result)
     }
 }
 
-void NetworkDialog::isChanged(bool*)
-{
-    //*result=(!init && apply->isEnabled());
-}
 
-void NetworkDialog::libChanged()
-{
-    changed();
-}
 
 void NetworkDialog::applyChanges()
 {
@@ -214,24 +200,12 @@ void NetworkDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
-
+    BaseObjectDialog::applyChanges();
 }
 
 void NetworkDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void NetworkDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 
 void NetworkDialog::addressEntered()

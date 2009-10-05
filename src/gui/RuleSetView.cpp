@@ -254,7 +254,7 @@ void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
     RuleSetModel* md = ((RuleSetModel*)model());
 
     if (md->getRuleSet()->size()!=0 &&
-        project->isEditorVisible() && !switchObjectInEditor( currentIndex()) )
+        mw->isEditorVisible() && !switchObjectInEditor( currentIndex()) )
     {
         ev->accept();
     };
@@ -686,7 +686,7 @@ void RuleSetView::itemDoubleClicked(const QModelIndex& index)
 
 void RuleSetView::editSelected(const QModelIndex& index)
 {
-    if (!project->isEditorVisible()) project->showEditor();
+    if (!mw->isEditorVisible()) mw->showEditor();
     switchObjectInEditor(index);
 }
 
@@ -771,11 +771,11 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
         }
     }
 
-    if (!project->requestEditorOwnership(this,object,operation,validate))
+    if (!mw->requestEditorOwnership(this,object,operation,validate))
         return false;
 
-    if (object==project->getOpenedEditor() &&
-        operation==project->getOpenedOptEditor())
+    if (object==mw->getOpenedEditor() &&
+        operation==mw->getOpenedOptEditor())
     {
         if (fwbdebug)
             qDebug("RuleSetView::switchObjectInEditor  same object is already opened in the editor");
@@ -784,13 +784,13 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
 
     if (object == NULL)
     {
-        project->blankEditor();
+        mw->blankEditor();
     } else if (operation==ObjectEditor::optNone)
     {
-        project->openEditor(object);
+        mw->openEditor(object);
     } else if(Rule::cast(object)!=NULL)
     {
-        project->openOptEditor(object,operation);
+        mw->openOptEditor(object,operation);
     }
 
     return true;
@@ -817,7 +817,7 @@ void RuleSetView::removeRule()
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
     if (md->getFirewall()==NULL) return;
 
-    project->findObjectWidget->reset();
+    mw->findObjectWidget->reset();
 
     QModelIndexList selection = getSelectedRows();
 
@@ -831,8 +831,8 @@ void RuleSetView::removeRule()
         {
             if (!index.isValid() || !md->isIndexRule(index)) continue;
 
-            if (project->isEditorVisible() && project->getOpenedEditor()==md->nodeFromIndex(index)->rule)
-                project->closeEditor();
+            if (mw->isEditorVisible() && mw->getOpenedEditor()==md->nodeFromIndex(index)->rule)
+                mw->closeEditor();
 
             QModelIndex parent = index.parent();
             if (parent.isValid())
@@ -1572,7 +1572,7 @@ void RuleSetView::changeAction(PolicyRule::Action act)
     ruleopt->setBool("stateless", getStatelessFlagForAction(rule));
     updateColumnSizeForIndex(index);
 
-    project->actionChangedEditor(rule);
+    mw->actionChangedEditor(rule);
 }
 
 void RuleSetView::changeActionToAccept()
@@ -1692,7 +1692,7 @@ void RuleSetView::revealObjectInTree()
 void RuleSetView::findWhereUsedSlot()
 {
     if ( fwosm->selectedObject!=NULL)
-        mw->findWhereUsed(fwosm->selectedObject);
+        mw->findWhereUsed(fwosm->selectedObject, project);
 }
 
 void RuleSetView::deleteSelectedObject()
@@ -1710,7 +1710,7 @@ void RuleSetView::deleteSelectedObject()
         md->deleteObject(index, fwosm->selectedObject);
         fwosm->reset();
 
-        project->findObjectWidget->reset();
+        mw->findObjectWidget->reset();
 
         QCoreApplication::postEvent(
             mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
@@ -2182,7 +2182,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         if (re==NULL)
         {
             fwosm->setSelected(NULL, newIndex);
-            if (project->isEditorVisible() && !switchObjectInEditor(newIndex))
+            if (mw->isEditorVisible() && !switchObjectInEditor(newIndex))
             {
                 ev->accept();
             }
@@ -2195,7 +2195,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
 
         selectObject(newObj, newIndex);
 
-        if (project->isEditorVisible() && !switchObjectInEditor(newIndex))
+        if (mw->isEditorVisible() && !switchObjectInEditor(newIndex))
         {
             ev->accept();
         }
@@ -2214,7 +2214,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         {
             object=re->front();
             if (FWReference::cast(object)!=NULL) object=FWReference::cast(object)->getPointer();
-            if (project->isEditorVisible() && !switchObjectInEditor(newIndex)) ev->accept();
+            if (mw->isEditorVisible() && !switchObjectInEditor(newIndex)) ev->accept();
         }
         selectObject(object == NULL ? md->getFirewall() : object, newIndex);
         return;
@@ -2298,7 +2298,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         }
 
         selectObject(object, newIndex);
-        if (project->isEditorVisible()) switchObjectInEditor(newIndex);
+        if (mw->isEditorVisible()) switchObjectInEditor(newIndex);
         ev->accept();
         return;
     }
@@ -2322,11 +2322,11 @@ void RuleSetView::compileCurrentRule()
     RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
     if (node == 0 || node->type != RuleNode::Rule || node->rule == 0) return;
 
-    if (project->isEditorVisible() &&
-        !project->requestEditorOwnership(this, node->rule, ObjectEditor::optRuleCompile, true))
+    if (mw->isEditorVisible() &&
+        !mw->requestEditorOwnership(this, node->rule, ObjectEditor::optRuleCompile, true))
         return;
 
-    project->singleRuleCompile(node->rule);
+    mw->singleRuleCompile(node->rule);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////

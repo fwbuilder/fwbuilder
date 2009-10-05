@@ -36,29 +36,27 @@
 #include "fwbuilder/FWObject.h"
 #include "ObjectListView.h"
 #include "ObjectIconView.h"
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 class ObjectIconViewItem;
 class ObjectListViewItem;
 class ProjectPanel;
 
-class GroupObjectDialog : public QWidget
+class GroupObjectDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
 
-    Ui::GroupObjectDialog_q*m_dialog;
-    ObjectIconView         *iconView;
-    ObjectListView         *listView;
+    Ui::GroupObjectDialog_q *m_dialog;
+    ObjectIconView          *iconView;
+    ObjectListView          *listView;
 
     std::vector<int> selectedObjects;
 
     libfwbuilder::FWObject *selectedObject;
 
-    bool init;
 
-    ProjectPanel *m_project;
     void addIcon(libfwbuilder::FWObject *o);
     void addIcon(libfwbuilder::FWObject *o, bool ref);
 
@@ -68,19 +66,16 @@ class GroupObjectDialog : public QWidget
     void saveColumnWidths();
 
  public:
-    GroupObjectDialog(ProjectPanel *project, QWidget *parent);
+    GroupObjectDialog(QWidget *parent);
     ~GroupObjectDialog();
 
     enum viewType { Icon, List };
 
  public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
     virtual void switchToIconView();
     virtual void switchToListView();
     virtual void openObject();
@@ -89,8 +84,6 @@ class GroupObjectDialog : public QWidget
     virtual void dropped(QDropEvent *ev);
     virtual void iconContextMenu(const QPoint & pos);
     virtual void listContextMenu(const QPoint & pos);
-    virtual void closeEvent(QCloseEvent *e);
-    virtual void hideEvent(QHideEvent *e);
     virtual void getHelpName(QString*);
     
     void copyObj();
@@ -105,16 +98,6 @@ class GroupObjectDialog : public QWidget
     void listViewSelectionChanged();
     
     void selectObject(libfwbuilder::FWObject *o);
-
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
  private:
 

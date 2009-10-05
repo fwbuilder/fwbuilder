@@ -26,7 +26,6 @@
 #ifndef PROJECTPANEL_H
 #define PROJECTPANEL_H
 
-#include "ObjectEditor.h"
 #include "ui_projectpanel_q.h"
 
 namespace libfwbuilder {
@@ -50,8 +49,6 @@ class FWWindow;
 class RuleSetView;
 class RCS;
 
-class FindObjectWidget;
-class FindWhereUsedWidget;
 class FWBTree;
 
 #define DEFAULT_H_SPLITTER_POSITION 250
@@ -59,47 +56,40 @@ class FWBTree;
 
 
 class ProjectPanel: public QWidget {
-    Q_OBJECT
+    Q_OBJECT;
 
-    FWWindow                               *mainW;
-    RCS                                    *rcs;
-    FWBTree                                *objectTreeFormat;
-    bool                                    systemFile;
-    bool                                    safeMode;
-    bool                                    editingStandardLib;
-    bool                                    editingTemplateLib;
-    bool                                    ruleSetRedrawPending;
-    bool                                    closing ;
-    bool                                    ready;
+    FWWindow *mainW;
+    RCS *rcs;
+    FWBTree *objectTreeFormat;
+    bool systemFile;
+    bool safeMode;
+    bool editingStandardLib;
+    bool editingTemplateLib;
+    bool ruleSetRedrawPending;
+    bool closing ;
+    bool ready;
     
-    libfwbuilder::FWObjectDatabase         *objdb;
-    QWidget                                *editorOwner;
+    libfwbuilder::FWObjectDatabase *objdb;
     
-    //QTextEdit                              *oi;
-    //ObjectManipulator                      *om; 
-    ObjectEditor                           *oe;
-    findDialog                             *fd;
-    libfwbuilder::FWObject                 *shownInInfo;
+    findDialog *fd;
         
-    QTimer                                 *autosaveTimer;
+    QTimer *autosaveTimer;
     std::map<libfwbuilder::FWObject*, RuleSetView*> ruleSetViews;
-    int                                     ruleSetTabIndex;
+    int ruleSetTabIndex;
     
-    libfwbuilder::FWObject                 *visibleFirewall;
-    libfwbuilder::RuleSet                  *visibleRuleSet ;
-    std::vector<libfwbuilder::FWObject*>    firewalls;
+    libfwbuilder::FWObject *visibleFirewall;
+    libfwbuilder::RuleSet *visibleRuleSet ;
+    std::vector<libfwbuilder::FWObject*> firewalls;
 
-    int                                     lastFirewallIdx;
-    bool                                    changingTabs;
-    QString                                 noFirewalls;
-    bool                                    enableAvtoSaveState;
+    int lastFirewallIdx;
+    bool changingTabs;
+    QString noFirewalls;
+    bool enableAvtoSaveState;
     
 public:
 
     QMdiSubWindow *mdiWindow;
     Ui::ProjectPanel_q *m_panel;
-    FindObjectWidget *findObjectWidget;
-    FindWhereUsedWidget *findWhereUsedWidget;
     QSet<QString> copySet;
 
     
@@ -204,29 +194,9 @@ public:
     void setManipulatorFocus();
     void clearManipulatorFocus();
     
-    //wrapers for some Object Editor functions
-    bool isEditorVisible();
-    bool isEditorModified();
-    
-    void showEditor();
-    void hideEditor();
-    void closeEditor();
-    
-    void openEditor(libfwbuilder::FWObject *o);
-    void openOptEditor(libfwbuilder::FWObject *, ObjectEditor::OptType t);
-    void blankEditor();
-    
-    libfwbuilder::FWObject* getOpenedEditor();
-    ObjectEditor::OptType getOpenedOptEditor();
-    
-    void selectObjectInEditor(libfwbuilder::FWObject *o);
-
-    void actionChangedEditor(libfwbuilder::FWObject *o);
-    bool validateAndSaveEditor();
     //find dialog functions wrapers
     void setFDObject(libfwbuilder::FWObject *o);
     
-    void info(libfwbuilder::FWObject *o, bool forced = false);    
     void resetFD();
     
     void clearFirewallTabs();
@@ -259,7 +229,9 @@ public:
     
  public slots:
     void newObject();
-    void info();
+
+    void topLevelChangedForTreePanel(bool topLevel);
+    void visibilityChangedForTreePanel(bool topLevel);
     
     virtual void back();
     virtual void lockObject();
@@ -279,7 +251,6 @@ public:
 
     virtual void reopenFirewall();
     virtual void redrawRuleSets();
-    virtual void changeInfoStyle();
     virtual void restoreRuleSetTab();
 
     virtual void fileProp();
@@ -297,12 +268,6 @@ public:
     virtual void fileCompare();
     virtual void fileExport();
     
-    virtual void closeAuxiliaryPanel();
-    virtual void closeEditorPanel();
-    virtual void openEditorPanel();
-    
-    virtual void search();
-
     virtual void compile(std::set<libfwbuilder::Firewall*> vf);
     virtual void compile();
     virtual void install(std::set<libfwbuilder::Firewall*> vf);
@@ -310,17 +275,10 @@ public:
     virtual void transferfw(std::set<libfwbuilder::Firewall*> vf);
     virtual void transferfw();
 
-    virtual void rollBackSelectionSameWidget();
-    virtual void rollBackSelectionDifferentWidget();
     void splitterMoved ( int pos, int index );
-    void stateChanged(Qt::WindowStates oldState, Qt::WindowStates newState);
 
     virtual void autoSave();
     
- signals:
-     void restoreSelection_sign(bool same_widget);
-
-
 public:
     QString getFileName();
     bool editingLibrary();
@@ -334,6 +292,9 @@ public:
     void saveState();
     void loadState(bool open_objects=true);
 
+    void saveMainSplitter();
+    void loadMainSplitter();
+    
     void loadOpenedRuleSet();
     void saveOpenedRuleSet();
 
@@ -356,15 +317,7 @@ public:
     void setupAutoSave();
     QString getCurrentFileName();
     RCS * getRCS();
-    void findObject(libfwbuilder::FWObject *);
-    void findWhereUsed(libfwbuilder::FWObject *);
     QString printHeader();
-    bool requestEditorOwnership(QWidget *w,
-                                libfwbuilder::FWObject *o,
-                                ObjectEditor::OptType   otype,
-                                bool validate = true);
-    void releaseEditor();
-    void connectEditor(QWidget *w);
 
     bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
     bool getCopyMenuState(const QString &objPath);
@@ -373,18 +326,19 @@ public:
     bool getDeleteMenuState(libfwbuilder::FWObject *obj);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
-    void singleRuleCompile(libfwbuilder::Rule *rule);
+    void toggleViewTree(bool f);
 
 protected:
     int oldState ;
-    virtual void showEvent( QShowEvent *ev);
-    virtual void hideEvent( QHideEvent *ev);
-    virtual void closeEvent( QCloseEvent * );
-    virtual void resizeEvent ( QResizeEvent * event );
-    virtual bool event(QEvent *event);
+    virtual void showEvent(QShowEvent *ev);
+    virtual void hideEvent(QHideEvent *ev);
+    virtual void closeEvent(QCloseEvent *ev);
+    virtual void resizeEvent(QResizeEvent *ev);
+    virtual bool event(QEvent *ev);
 
     void setMainSplitterPosition(int w1, int w2);
-    void setObjInfoSplitterPosition(int w1, int w2);
+    void collapseTree();
+    void collapseRules();
 };
 
 #endif

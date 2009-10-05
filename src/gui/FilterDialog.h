@@ -108,7 +108,6 @@ class FilterDialog : public QDialog
     ~FilterDialog();
     void setFilter(Filter *);
     
-    //virtual void closeEvent(QCloseEvent *e);
 
 
 public slots:
@@ -121,13 +120,6 @@ public slots:
     virtual void updateData();
 
     
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-   // void close_sign(QCloseEvent *e);
     
 };
 

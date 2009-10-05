@@ -29,6 +29,8 @@
 #include "utils.h"
 #include "platforms.h"
 
+#include <ui_FWBMainWindow_q.h>
+#include <ui_pagesetupdialog_q.h>
 #include "FWWindow.h"
 #include "FWBSettings.h"
 #include "PrintingProgressDialog.h"
@@ -307,7 +309,7 @@ void FWWindow::printFirewallFromFile(QString fileName,
     {   
         QString errmes = "Error: can't find firewall ";
         errmes += firewallName ;
-        qDebug (errmes.toAscii().data());
+        qDebug (errmes.toAscii().constData());
     }
 }
 

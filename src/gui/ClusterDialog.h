@@ -19,6 +19,7 @@
 
 #include "../../config.h"
 #include <ui_clusterdialog_q.h>
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 #include "utils.h"
@@ -28,21 +29,18 @@
 class ProjectPanel;
 
 
-class ClusterDialog : public QWidget
+class ClusterDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     Ui::ClusterDialog_q *m_dialog;
-
-    ProjectPanel *m_project;
 
     void resetSingleClusterGroupType(libfwbuilder::FWObject *grp,
                                      std::list<QStringPair> &allowed_types);
     void resetClusterGroupTypes();
     
 public:
-    ClusterDialog(ProjectPanel *project, QWidget *parent);
+    ClusterDialog(QWidget *parent);
     ~ClusterDialog();
 
 private:
@@ -50,26 +48,13 @@ private:
     bool config_changed;
 
 public slots:
-    virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void discardChanges();
     virtual void platformChanged();
     virtual void hostOSChanged();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void closeEvent(QCloseEvent *e);
     virtual void getHelpName(QString*);
-
-signals:
-    /**
-     * This signal is emitted from closeEvent, ObjectEditor connects
-     * to this signal to make checks before the object editor can be closed
-     * and to store its position on the screen
-     */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 };
 
 #endif /* __CLUSTERDIALOG_H_ */

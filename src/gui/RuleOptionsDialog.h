@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_ruleoptionsdialog_q.h>
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 #include "DialogData.h"
@@ -38,45 +39,29 @@
 class RuleSetView;
 class ProjectPanel;
 
-class RuleOptionsDialog : public QWidget
+class RuleOptionsDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     DialogData              data;
     QString                 platform;
     RuleSetView            *rsv;
     Ui::RuleOptionsDialog_q*m_dialog;
     
-    bool init;
     QString help_name;
-    ProjectPanel *m_project;
 
 public:
-    RuleOptionsDialog(ProjectPanel *project, QWidget *parent);
+    RuleOptionsDialog(QWidget *parent);
     ~RuleOptionsDialog();
     
 public slots:
     virtual void changed();
-    virtual void libChanged();
     virtual void applyChanges();
     virtual void cancelChanges();
     virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
-    virtual void isChanged(bool*);
-    virtual void closeEvent(QCloseEvent *e);
     virtual void getHelpName(QString*);
-
- signals:
-/**
- * This signal is emitted from closeEvent, ObjectEditor connects
- * to this signal to make checks before the object editor can be closed
- * and to store its position on the screen
- */
-    void close_sign(QCloseEvent *e);
-    void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

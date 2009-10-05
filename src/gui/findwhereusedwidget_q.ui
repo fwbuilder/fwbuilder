@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>findWhereUsedWidget_q</class>
- <widget class="QWidget" name="findWhereUsedWidget_q" >
-  <property name="geometry" >
+ <widget class="QWidget" name="findWhereUsedWidget_q">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,56 +10,56 @@
     <height>164</height>
    </rect>
   </property>
-  <property name="sizePolicy" >
-   <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form1</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout">
+   <property name="margin">
     <number>6</number>
    </property>
-   <item row="0" column="0" >
-    <widget class="QGroupBox" name="dropBox" >
-     <property name="title" >
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="dropBox">
+     <property name="title">
       <string>Object:</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
+     <layout class="QVBoxLayout">
+      <property name="margin">
        <number>6</number>
       </property>
       <item>
-       <widget class="FWObjectDropArea" native="1" name="dropArea" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <widget class="FWObjectDropArea" name="dropArea" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>100</width>
           <height>80</height>
          </size>
         </property>
-        <property name="font" >
+        <property name="font">
          <font/>
         </property>
        </widget>
       </item>
       <item>
        <spacer>
-        <property name="orientation" >
+        <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeType" >
+        <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint" stdset="0" >
+        <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
           <height>31</height>
@@ -69,68 +70,67 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="1" >
-    <widget class="QGroupBox" name="groupBox4" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="groupBox4">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="title" >
+     <property name="title">
       <string>Object is found in :</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
+     <layout class="QGridLayout">
+      <property name="margin">
        <number>6</number>
       </property>
-      <item row="0" column="0" >
-       <widget class="QTreeWidget" name="resListView" >
-        <property name="allColumnsShowFocus" >
+      <item row="0" column="0">
+       <widget class="QTreeWidget" name="resListView">
+        <property name="allColumnsShowFocus">
          <bool>true</bool>
         </property>
         <column>
-         <property name="text" >
+         <property name="text">
           <string>Object</string>
          </property>
         </column>
         <column>
-         <property name="text" >
+         <property name="text">
           <string>Parent</string>
          </property>
         </column>
         <column>
-         <property name="text" >
+         <property name="text">
           <string>Details</string>
          </property>
         </column>
        </widget>
       </item>
      </layout>
-     <zorder>resListView</zorder>
     </widget>
    </item>
-   <item row="0" column="2" >
-    <widget class="QFrame" name="buttonsBox" >
-     <property name="frameShape" >
+   <item row="0" column="2">
+    <widget class="QFrame" name="buttonsBox">
+     <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
-     <property name="frameShadow" >
+     <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
+     <layout class="QGridLayout">
+      <property name="margin">
        <number>0</number>
       </property>
-      <item row="0" column="0" >
+      <item row="0" column="0">
        <spacer>
-        <property name="orientation" >
+        <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeType" >
+        <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint" stdset="0" >
+        <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
           <height>20</height>
@@ -138,17 +138,10 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="0" >
-       <widget class="QPushButton" name="pushButton2" >
-        <property name="text" >
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pushButton2">
+        <property name="text">
          <string>Find</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" >
-       <widget class="QPushButton" name="pushButton8" >
-        <property name="text" >
-         <string>Close</string>
         </property>
        </widget>
       </item>
@@ -157,7 +150,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
    <class>FWObjectDropArea</class>
@@ -168,38 +161,21 @@
  </customwidgets>
  <tabstops>
   <tabstop>resListView</tabstop>
-  <tabstop>pushButton8</tabstop>
   <tabstop>pushButton2</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>pushButton8</sender>
-   <signal>clicked()</signal>
-   <receiver>findWhereUsedWidget_q</receiver>
-   <slot>hidePanel()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>resListView</sender>
    <signal>itemActivated(QTreeWidgetItem*, int)</signal>
    <receiver>findWhereUsedWidget_q</receiver>
    <slot>itemActivated(QTreeWidgetItem*)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -211,11 +187,11 @@
    <receiver>findWhereUsedWidget_q</receiver>
    <slot>find()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>

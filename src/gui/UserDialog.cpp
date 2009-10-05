@@ -46,10 +46,12 @@
 #include "FWBSettings.h"
 
 #include "FWWindow.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
-UserDialog::UserDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+
+UserDialog::UserDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::UserDialog_q;
     m_dialog->setupUi(this);
@@ -90,12 +92,6 @@ void UserDialog::loadFWObject(FWObject *o)
     init=false;
 }
 
-void UserDialog::changed()
-{
-    //apply->setEnabled( true );
-    emit changed_sign();
-}
-
 void UserDialog::validate(bool *res)
 {
     *res=true;
@@ -107,15 +103,7 @@ void UserDialog::validate(bool *res)
     assert(s!=NULL);
 }
 
-void UserDialog::isChanged(bool*)
-{
-    //*res=(!init && apply->isEnabled());
-}
 
-void UserDialog::libChanged()
-{
-    changed();
-}
 
 void UserDialog::applyChanges()
 {
@@ -129,22 +117,11 @@ void UserDialog::applyChanges()
 
     m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
-    emit notify_changes_applied_sign();
+    BaseObjectDialog::applyChanges();
 }
 
 void UserDialog::discardChanges()
 {
     loadFWObject(obj);
-}
-
-
-/* ObjectEditor class connects its slot to this signal and does all
- * the verification for us, then accepts (or not) the event. So we do
- * nothing here and defer all the processing to ObjectEditor
- */
-void UserDialog::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-
 }
 

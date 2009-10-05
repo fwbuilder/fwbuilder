@@ -33,6 +33,7 @@ HEADERS += ../../config.h \
     events.h \
     FWWindow.h \
     ProjectPanel.h \
+	BaseObjectDialog.h \
     utils.h \
     utils_no_qt.h \
     Importer.h \
@@ -63,6 +64,7 @@ HEADERS += ../../config.h \
     FWObjectPropertiesFactory.h \
     ObjectManipulator.h \
     ObjectEditor.h \
+    ObjectEditorDockWidget.h \
     FWObjectDrag.h \
     ObjectTreeView.h \
     ObjectListView.h \
@@ -170,10 +172,12 @@ SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
     ProjectPanel_state_ops.cpp \
-    ProjectPanel_single_rule_compile.cpp \
     FWWindow.cpp \
+    FWWindow_editor.cpp \
+    FWWindow_single_rule_compile.cpp \
     FWWindow_wrappers.cpp \
     FWWindowPrint.cpp \
+    ObjectEditorDockWidget.cpp \
     main.cpp \
     utils.cpp \
     utils_no_qt.cpp \
