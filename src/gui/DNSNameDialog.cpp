@@ -54,7 +54,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-DNSNameDialog::DNSNameDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+DNSNameDialog::DNSNameDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::DNSNameDialog_q;
     m_dialog->setupUi(this);

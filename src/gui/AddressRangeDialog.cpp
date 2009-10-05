@@ -48,8 +48,8 @@
 using namespace std;
 using namespace libfwbuilder;
 
-AddressRangeDialog::AddressRangeDialog(ProjectPanel *project, QWidget *parent):
-        QWidget(parent), m_project(project)
+AddressRangeDialog::AddressRangeDialog(QWidget *parent):
+        BaseObjectDialog(parent)
 {
     m_dialog = new Ui::AddressRangeDialog_q;
     m_dialog->setupUi(this);

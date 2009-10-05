@@ -30,26 +30,24 @@
 #include "../../config.h"
 
 #include <ui_ipservicedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class IPServiceDialog : public QWidget
+class IPServiceDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     Ui::IPServiceDialog_q *m_dialog;
 
-    ProjectPanel *m_project;
 
     void setCodeLabel();
 
 public:
-    IPServiceDialog(ProjectPanel *project, QWidget *parent);
+    IPServiceDialog(QWidget *parent);
     ~IPServiceDialog();
     
 public slots:

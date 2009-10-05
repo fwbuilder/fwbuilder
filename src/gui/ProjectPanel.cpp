@@ -43,8 +43,6 @@
 #include "FWBTree.h"
 #include "FWObjectPropertiesFactory.h"
 #include "FWWindow.h"
-#include "FindObjectWidget.h"
-#include "FindWhereUsedWidget.h"
 #include "ProjectPanel.h"
 #include "RCS.h"
 #include "RuleSetView.h"
@@ -94,33 +92,14 @@ void ProjectPanel::initMain(FWWindow *main)
     enableAvtoSaveState=true ;
     oldState=-1;
 
-    findObjectWidget = new FindObjectWidget(
-        m_panel->auxiliaryPanel, this, "findObjectWidget");
-    findObjectWidget->setFocusPolicy( Qt::NoFocus );
-    m_panel->auxiliaryPanel->layout()->addWidget( findObjectWidget );
-
-    findWhereUsedWidget = new FindWhereUsedWidget(
-        m_panel->auxiliaryPanel, this, "findWhereUsedWidget");
-    findWhereUsedWidget->setFocusPolicy( Qt::NoFocus );
-    m_panel->auxiliaryPanel->layout()->addWidget( findWhereUsedWidget );
-    findWhereUsedWidget->hide();
-
-    m_panel->bottomDockWidget->hide();
-
-    oe  = new ObjectEditor((QWidget*)m_panel->objectEditorStack, this);
-    //oe->setCloseButton(m_panel->closeObjectEditorButton);
-    oe->setApplyButton(m_panel->applyObjectEditorButton);
-    oe->setHelpButton(m_panel->helpObjectEditorButton);
-    m_panel->bottomDockWidget->setupEditor(oe);
-    closeEditorPanel();
 
     connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
             this, SLOT(topLevelChangedForTreePanel(bool)));
     connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
             this, SLOT(visibilityChangedForTreePanel(bool)));
 
-    connect(m_panel->bottomDockWidget, SIGNAL(topLevelChanged(bool)),
-            this, SLOT(topLevelChangedForBottomPanel(bool)));
+//    connect(m_panel->bottomDockWidget, SIGNAL(topLevelChanged(bool)),
+//            this, SLOT(topLevelChangedForBottomPanel(bool)));
 
     fd  = new findDialog(this, this);
     fd->hide();
@@ -137,8 +116,6 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     editingTemplateLib(false),
     ruleSetRedrawPending(false),
     objdb(0),
-    editorOwner(0), 
-    oe(0),
     fd(0),
     autosaveTimer(new QTimer(static_cast<QObject*>(this))), ruleSetTabIndex(0),
     visibleFirewall(0),
@@ -146,9 +123,7 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     lastFirewallIdx(-2),
     changingTabs(false),
     noFirewalls(tr("No firewalls defined")),
-    m_panel(0),
-    findObjectWidget(0), 
-    findWhereUsedWidget(0)
+    m_panel(0)
 {
     if (fwbdebug) qDebug("ProjectPanel constructor");
     m_panel = new Ui::ProjectPanel_q();
@@ -363,7 +338,7 @@ void ProjectPanel::updateFirewallName()
 
 void ProjectPanel::openRuleSet(FWObject * obj)
 {
-    blankEditor();
+    mw->blankEditor();
     RuleSet * rs = RuleSet::cast(obj);
     if (rs!= visibleRuleSet)
     {
@@ -687,90 +662,6 @@ void ProjectPanel::unlockObject()
     m_panel->om->unlockObject();
 }
 
-
-
-//wrapers for some Object Editor functions
-bool ProjectPanel::isEditorVisible()
-{
-    return m_panel->bottomDockWidget->isVisible(); // editor
-}
-
-bool ProjectPanel::isEditorModified()
-{
-    return oe->isModified();
-}
-
-void ProjectPanel::showEditor()
-{
-    openEditorPanel();
-    m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
-    m_panel->bottomDockWidget->show(); // editor
-}
-
-void ProjectPanel::hideEditor()
-{
-    closeEditorPanel();
-}
-
-void ProjectPanel::closeEditor()
-{
-    m_panel->bottomDockWidget->close(); // editor
-}
-
-void ProjectPanel::openEditor(FWObject *o)
-{
-    QSize old_size = m_panel->objectEditorStack->size();
-    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
-    m_panel->bottomDockWidget->show(); // editor
-    oe->open(o);
-    m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    //m_panel->objectEditorFrame->show();
-    m_panel->objectEditorStack->resize(old_size);
-}
-
-void ProjectPanel::openOptEditor(FWObject *o, ObjectEditor::OptType t)
-{
-    QSize old_size = m_panel->objectEditorStack->size();
-    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
-    m_panel->bottomDockWidget->show(); // editor
-    oe->openOpt(o, t);
-    m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    //m_panel->objectEditorFrame->show();
-    m_panel->objectEditorStack->resize(old_size);
-}
-
-void ProjectPanel::blankEditor()
-{
-    oe->blank();
-}
-
-
-FWObject* ProjectPanel::getOpenedEditor()
-{
-    return oe->getOpened();
-}
-
-ObjectEditor::OptType ProjectPanel::getOpenedOptEditor()
-{
-    return oe->getOpenedOpt();
-}
-
-void ProjectPanel::selectObjectInEditor(FWObject *o)
-{
-    oe->selectObject(o);
-}
-
-void ProjectPanel::actionChangedEditor(FWObject *o)
-{
-    oe->actionChanged(o);
-}
-
-bool ProjectPanel::validateAndSaveEditor()
-{
-    return oe->validateAndSave();
-}
-
 void ProjectPanel::setFDObject(FWObject *o)
 {
     fd->setObject(o);
@@ -780,7 +671,6 @@ void ProjectPanel::resetFD()
 {
     fd->reset();
 }
-
 
 void ProjectPanel::insertRule()
 {
@@ -866,41 +756,10 @@ RCS * ProjectPanel::getRCS()
     return rcs;
 }
 
-void ProjectPanel::findObject(FWObject *o)
-{
-    findWhereUsedWidget->hide();
-    if (fwbdebug) qDebug("ProjectPanel::findObject");
-    findObjectWidget->findObject(o);
-    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
-    m_panel->bottomDockWidget->show();
-
-}
-
-void ProjectPanel::closeEditorPanel()
-{
-    //m_panel->objectEditorFrame->hide();
-    m_panel->bottomDockWidget->hide(); // editor
-}
-
-void ProjectPanel::openEditorPanel()
-{
-    //m_panel->objectEditorFrame->show();
-
-}
-
-void ProjectPanel::search()
-{
-    findWhereUsedWidget->hide();
-    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
-    m_panel->bottomDockWidget->show();
-    findObjectWidget->show();
-}
-
-
 void ProjectPanel::compile()
 {
-    if (isEditorVisible() &&
-        !requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
+    if (mw->isEditorVisible() &&
+        !mw->requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
         return;
 
     fileSave();
@@ -909,8 +768,8 @@ void ProjectPanel::compile()
 
 void ProjectPanel::compile(set<Firewall*> vf)
 {
-    if (isEditorVisible() &&
-        !requestEditorOwnership(NULL, NULL, ObjectEditor::optNone, true))
+    if (mw->isEditorVisible() &&
+        !mw->requestEditorOwnership(NULL, NULL, ObjectEditor::optNone, true))
         return;
 
     fileSave();
@@ -937,76 +796,12 @@ void ProjectPanel::transferfw()
     mainW->transferfw();
 }
 
-void ProjectPanel::rollBackSelectionSameWidget()
-{
-    editorOwner->setFocus();
-    emit restoreSelection_sign(true);
-}
-
-void ProjectPanel::rollBackSelectionDifferentWidget()
-{
-    editorOwner->setFocus();
-    emit restoreSelection_sign(false);
-}
-
-
 QString ProjectPanel::printHeader()
 {
     QString headerText = rcs->getFileName().section("/",-1,-1);
     if (rcs->isInRCS())
         headerText = headerText + ", rev " + rcs->getSelectedRev();
     return headerText;
-}
-
-void ProjectPanel::releaseEditor()
-{
-    disconnect( SIGNAL(restoreSelection_sign(bool)) );
-}
-
-void ProjectPanel::connectEditor(QWidget *w)
-{
-    connect(this, SIGNAL(restoreSelection_sign(bool)),
-            w, SLOT(restoreSelection(bool)));
-}
-
-bool ProjectPanel::requestEditorOwnership(QWidget *w,
-                                          FWObject *obj,
-                                          ObjectEditor::OptType otype,
-                                          bool validate)
-{
-    if (!isEditorVisible()) return false;
-
-    if(obj == getOpenedEditor() &&
-       otype == getOpenedOptEditor() &&
-       w == editorOwner )
-    {
-        releaseEditor();
-        editorOwner = w;
-        connectEditor(editorOwner);
-        return true;
-    }
-
-    if (validate && !validateAndSaveEditor())
-    {
-        /*
-         * roll back selection in the widget that currently
-         * owns the editor. Signal restoreSelection_sign
-         * is still connected to the previous owner
-         */
-        if (w == editorOwner )
-            QTimer::singleShot(0, this, SLOT(rollBackSelectionSameWidget()));
-        else
-            QTimer::singleShot(0,this,SLOT(rollBackSelectionDifferentWidget()));
-        return false;
-    }
-
-    if (w)
-    {
-        releaseEditor();
-        editorOwner = w;
-        connectEditor(editorOwner);
-    }
-    return true;
 }
 
 bool ProjectPanel::validateForInsertion(FWObject *target, FWObject *obj)
@@ -1076,14 +871,6 @@ void ProjectPanel::redrawRuleSets()
     reopenFirewall();
 }
 
-void ProjectPanel::findWhereUsed(FWObject * obj)
-{
-    findObjectWidget->hide();
-    m_panel->bottomPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
-    m_panel->bottomDockWidget->show();
-    findWhereUsedWidget->find(obj);
-}
-
 void ProjectPanel::showEvent(QShowEvent *ev)
 { 
     if (fwbdebug) qDebug("ProjectPanel::showEvent %p title=%s",
@@ -1100,20 +887,21 @@ void ProjectPanel::hideEvent(QHideEvent *ev)
 
 void ProjectPanel::closeEvent(QCloseEvent * ev)
 {   
-    if (fwbdebug) qDebug("ProjectPanel::closeEvent %p title=%s",
-                         this, getPageTitle().toAscii().constData());
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::closeEvent title="
+                 << getPageTitle();
 
     // Can't just call fileClose() because I need to ignore event in
     // case user clicks Cancel in dialog if some data has not been
     // saved.
-    if (isEditorVisible())
+    if (mw->isEditorVisible())
     {
-        if (!oe->validateAndSave())
+        if (!mw->oe->validateAndSave())
         {
             ev->ignore();
             return;
         }
-        closeEditorPanel();
+        mw->closeEditorPanel();
     }
 
     if (!saveIfModified() || !checkin(true))
@@ -1128,8 +916,6 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
     mw->updateWindowTitle();
 
     QTimer::singleShot( 0, mw, SLOT(projectWindowClosed()) );
-
-    if (fwbdebug) qDebug("ProjectPanel::closeEvent all done");
 }
 
 QString ProjectPanel::getFileName()
@@ -1162,8 +948,6 @@ ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
     cln->editingTemplateLib = editingTemplateLib;
     cln->ruleSetRedrawPending = ruleSetRedrawPending;
     //cln->objdb = objdb;
-    cln->editorOwner = editorOwner;
-    cln->oe = oe;
     cln->fd = fd;
     cln->autosaveTimer = autosaveTimer;
     //cln->ruleSetViews = ruleSetViews;
@@ -1175,8 +959,6 @@ ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
     cln->noFirewalls = noFirewalls;
     cln->mdiWindow = mdiWindow ;
     cln->m_panel = m_panel;
-    cln->findObjectWidget = findObjectWidget;
-    cln->findWhereUsedWidget = findWhereUsedWidget;
     cln->copySet = copySet;
     return cln;
 }
@@ -1233,20 +1015,6 @@ void ProjectPanel::toggleViewTree(bool f)
 {
     if (f) m_panel->treeDockWidget->show();
     else m_panel->treeDockWidget->hide();
-}
-
-void ProjectPanel::toggleViewRules(bool f)
-{
-    if (f) m_panel->rulesDockWidget->show();
-    else m_panel->rulesDockWidget->hide();
-}
-
-void ProjectPanel::toggleViewEditor(bool f)
-{
-    if (f)
-    {
-        openEditor(m_panel->om->getOpened());
-    } else m_panel->bottomDockWidget->hide(); // editor
 }
 
 /*
@@ -1327,24 +1095,5 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
         collapseTree();
         m_panel->treeDockWidget->widget()->update();
     }
-}
-
-void ProjectPanel::topLevelChangedForBottomPanel(bool f)
-{
-#if defined(Q_WS_X11) 
-    if (f)
-    {
-        m_panel->bottomDockWidget->setParent(mw);
-        mw->addDockWidget(Qt::BottomDockWidgetArea, m_panel->bottomDockWidget);
-        m_panel->bottomDockWidget->show();
-    } else
-    {
-        mw->removeDockWidget(m_panel->bottomDockWidget);
-        m_panel->bottomDockWidget->setParent(this);
-        layout()->addWidget(m_panel->bottomDockWidget);
-        m_panel->bottomDockWidget->show();
-    }
-    m_panel->bottomDockWidget->setFloating(f);
-#endif
 }
 

@@ -46,10 +46,12 @@
 #include "FWBSettings.h"
 
 #include "FWWindow.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
-UserDialog::UserDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+
+UserDialog::UserDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::UserDialog_q;
     m_dialog->setupUi(this);

@@ -53,8 +53,8 @@ void ClusterGroupDialog::getHelpName(QString *str)
     *str = "ClusterGroupDialog";
 }
 
-ClusterGroupDialog::ClusterGroupDialog(ProjectPanel *project, QWidget *parent)
-    : QWidget(parent), m_project(project), reload(false)
+ClusterGroupDialog::ClusterGroupDialog(QWidget *parent)
+    : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::ClusterGroupDialog_q;
     m_dialog->setupUi(this);

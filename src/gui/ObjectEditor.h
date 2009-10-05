@@ -42,14 +42,16 @@ class ObjectTreeViewItem;
 class QComboBox;
 class QMenu;
 class QStackedWidget;
+
 class ProjectPanel;
+class BaseObjectDialog;
 
 class ObjectEditor : public QObject {
 
-    Q_OBJECT
+    Q_OBJECT;
 
     QMap<QString, int> stackIds;
-    QMap<int, QWidget*> dialogs;
+    QMap<int, BaseObjectDialog*> dialogs;
     libfwbuilder::FWObject *opened;
     int current_dialog_idx;
     QString current_dialog_name;
@@ -69,8 +71,10 @@ private:
 
 public:
    
-    ObjectEditor(QWidget *parent, ProjectPanel *project);
+    ObjectEditor(QWidget *parent);
     virtual ~ObjectEditor() {}
+
+    void attachToProjectWindow(ProjectPanel *pp);
 
     QString getOptDialogName(OptType t);
     void open(libfwbuilder::FWObject *o);

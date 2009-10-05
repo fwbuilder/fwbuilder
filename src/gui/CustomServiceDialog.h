@@ -29,7 +29,8 @@
 
 #include "../../config.h"
 #include <ui_customservicedialog_q.h>
-#include <QDialog>
+#include "BaseObjectdialog.h"
+#include <QWidget>
 
 #include <qstring.h>
 #include <qmap.h>
@@ -39,23 +40,21 @@ namespace libfwbuilder {
 };
 
 class ProjectPanel;
-class CustomServiceDialog : public QWidget
+
+class CustomServiceDialog : public BaseObjectDialog
 {
     Q_OBJECT
 
-    libfwbuilder::FWObject    *obj;
-    bool                       init;
     QMap<QString, QString>     platformReverseMap;
     QMap<QString, QString>     allCodes;
     QString                    showPlatform;
     Ui::CustomServiceDialog_q *m_dialog;
-    ProjectPanel *m_project;
 
 protected:
     void fillDialogInputFields();
 
 public:
-    CustomServiceDialog(ProjectPanel *project, QWidget *parent);
+    CustomServiceDialog(QWidget *parent);
     ~CustomServiceDialog();
     
 public slots:

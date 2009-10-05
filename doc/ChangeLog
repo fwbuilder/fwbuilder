@@ -21,14 +21,14 @@
 	which helps to see rules using objects with long names. This
 	provides easy way to see attrivbutes of many objects at
 	once. Panel that shows object editor dialogs also shows "find" and
-	"find where used" dialogs in a Tab widget. This panel can not be
-	detached (because currently there is one such panel for each MDI
-	subwindow). Editor panel now occupies whole bottom part of the
-	window. Since editor dialogs show all relevant information about
-	the object, the "Info" panel has been deprecated. Since the editor
-	and search dialogs are now placed inside docked widget that has
-	its own "close" button, "Close" buttons in these dialogs have been
-	removed.
+	"find where used" dialogs in a Tab widget. This panel is part of
+	the main window (it used to be part of the internal MDI subwindow)
+	and also can be detached. Editor panel now occupies whole bottom
+	part of the main window. Since editor dialogs show all relevant
+	information about the object, the "Info" panel has been
+	deprecated. Since the editor and search dialogs are now placed
+	inside docked widget that has its own "close" button, "Close"
+	buttons in these dialogs have been removed.
 
 2009-09-30  vadim  <vadim@vk.crocodile.org>
 

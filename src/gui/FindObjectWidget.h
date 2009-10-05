@@ -63,7 +63,7 @@ private:
     FindObjectWidget(QWidget*p, ProjectPanel *pp, const char * n = 0, Qt::WindowFlags f = 0);
     ~FindObjectWidget() { delete m_widget; };
     void findObject (libfwbuilder::FWObject *o);
-    
+    void attachToProjectWindow(ProjectPanel *pp) { project_panel = pp; }
 
 public slots:
     virtual void enableAll();

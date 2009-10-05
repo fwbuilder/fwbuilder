@@ -49,7 +49,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-TCPServiceDialog::TCPServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+TCPServiceDialog::TCPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::TCPServiceDialog_q;
     m_dialog->setupUi(this);

@@ -51,7 +51,7 @@
 using namespace libfwbuilder;
 using namespace std;
 
-CustomServiceDialog::CustomServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+CustomServiceDialog::CustomServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::CustomServiceDialog_q;
     m_dialog->setupUi(this);

@@ -50,7 +50,7 @@
 using namespace libfwbuilder;
 using namespace std;
 
-IPServiceDialog::IPServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+IPServiceDialog::IPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPServiceDialog_q;
     m_dialog->setupUi(this);

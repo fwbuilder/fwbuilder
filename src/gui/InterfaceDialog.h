@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_interfacedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
@@ -37,12 +38,10 @@
 #include <qstring.h>
 
 class ProjectPanel;
-class InterfaceDialog : public QWidget
+class InterfaceDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
 
     // netzoneObjectIDs : key - object id, value - number in the list
     QMap<int,int> netzoneObjectIDs;
@@ -51,10 +50,9 @@ class InterfaceDialog : public QWidget
     QMap<int,int> netzoneObjectNos;
 
     Ui::InterfaceDialog_q *m_dialog;
-    ProjectPanel *m_project;
 
  public:
-    InterfaceDialog(ProjectPanel *project, QWidget *parent);
+    InterfaceDialog(QWidget *parent);
     ~InterfaceDialog();
     
     virtual void closeEvent(QCloseEvent *e);

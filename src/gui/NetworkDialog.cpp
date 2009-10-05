@@ -50,7 +50,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-NetworkDialog::NetworkDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+NetworkDialog::NetworkDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::NetworkDialog_q;
     m_dialog->setupUi(this);

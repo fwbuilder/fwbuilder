@@ -61,8 +61,8 @@ RuleOptionsDialog::~RuleOptionsDialog()
     delete m_dialog;
 }
 
-RuleOptionsDialog::RuleOptionsDialog(ProjectPanel *project, QWidget *parent) :
-    QWidget(parent), m_project(project)
+RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) :
+    BaseObjectDialog(parent)
 {
     m_dialog = new Ui::RuleOptionsDialog_q;
     m_dialog->setupUi(this);

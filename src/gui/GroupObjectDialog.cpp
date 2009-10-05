@@ -73,8 +73,8 @@ enum GroupObjectDialog::viewType GroupObjectDialog::vt = GroupObjectDialog::Icon
 #define ICON_VIEW_MODE "icon"
 
 
-GroupObjectDialog::GroupObjectDialog(ProjectPanel *project, QWidget *parent) :
-        QWidget(parent), m_project(project)
+GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
+        BaseObjectDialog(parent)
 {
     m_dialog = new Ui::GroupObjectDialog_q;
     m_dialog->setupUi(this);

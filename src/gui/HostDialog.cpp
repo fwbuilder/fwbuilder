@@ -51,7 +51,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-HostDialog::HostDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+HostDialog::HostDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::HostDialog_q;
     m_dialog->setupUi(this);

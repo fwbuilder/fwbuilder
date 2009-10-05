@@ -29,24 +29,22 @@
 
 #include "../../config.h"
 #include <ui_physaddressdialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
 
-class PhysicalAddressDialog : public QWidget
+class PhysicalAddressDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     bool showNetmask;
     Ui::PhysAddressDialog_q *m_dialog;
-    ProjectPanel *m_project;
     
  public:
-     PhysicalAddressDialog(ProjectPanel *project, QWidget *parent);
+     PhysicalAddressDialog(QWidget *parent);
      ~PhysicalAddressDialog();
     
 public slots:

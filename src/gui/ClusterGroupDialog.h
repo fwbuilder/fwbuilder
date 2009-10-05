@@ -19,6 +19,7 @@
 
 #include "../../config.h"
 #include <ui_clustergroupdialog_q.h>
+#include "BaseObjectdialog.h"
 
 #include "fwbuilder/FWObject.h"
 
@@ -28,22 +29,18 @@ namespace libfwbuilder {
     class Cluster;
 }
 
-class ClusterGroupDialog : public QWidget
+class ClusterGroupDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     libfwbuilder::Cluster *cluster;
     Ui::ClusterGroupDialog_q *m_dialog;
-    bool init;
     bool enable_master_column;
     
-    ProjectPanel *m_project;
-
     void saveGroupType();
 
 public:
-    ClusterGroupDialog(ProjectPanel *project, QWidget *parent);
+    ClusterGroupDialog(QWidget *parent);
     ~ClusterGroupDialog();
 
 private:

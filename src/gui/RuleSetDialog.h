@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_rulesetdialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
@@ -36,19 +37,16 @@
 
 class ProjectPanel;
 
-class RuleSetDialog : public QWidget
+class RuleSetDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     std::string platform;
     libfwbuilder::FWOptions *fwopt;
     Ui::RuleSetDialog_q *m_dialog;
-    ProjectPanel *m_project;
 
- public:
-    RuleSetDialog(ProjectPanel *project, QWidget *parent);
+public:
+    RuleSetDialog(QWidget *parent);
     ~RuleSetDialog();
     
 public slots:

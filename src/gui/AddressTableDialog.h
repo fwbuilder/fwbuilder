@@ -29,23 +29,21 @@
 
 #include "../../config.h"
 #include <ui_addresstabledialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class AddressTableDialog : public QWidget
+class AddressTableDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     Ui::AddressTableDialog_q *m_dialog;
-    ProjectPanel *m_project;
 
  public:
-     AddressTableDialog(ProjectPanel *project, QWidget *parent);
+     AddressTableDialog(QWidget *parent);
      ~AddressTableDialog();
     virtual void closeEvent(QCloseEvent *e);
     

@@ -51,7 +51,7 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-LibraryDialog::LibraryDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+LibraryDialog::LibraryDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::LibraryDialog_q;
     m_dialog->setupUi(this);

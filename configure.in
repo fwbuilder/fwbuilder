@@ -434,8 +434,16 @@ then
         ccache -s
 fi
 
-AC_PATH_PROG(DISTCC, distcc, , )
-AC_SUBST(DISTCC)
+AC_PATH_PROG(HAVE_DISTCC, distcc, , )
+if test -n "$HAVE_DISTCC"; then
+   M_J=$(distcc -j 2>/dev/null)
+   if test -n "$M_J"; then
+      DISTCC=$HAVE_DISTCC
+      AC_SUBST(DISTCC)
+      PARALLEL_MAKE_COUNT=$M_J
+      AC_SUBST(PARALLEL_MAKE_COUNT)
+   fi
+fi
 
 dnl AC_CONFIG_FILES([ Main.make ])
 AC_CONFIG_FILES([ qmake.inc ])

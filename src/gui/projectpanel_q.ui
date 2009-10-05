@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>962</width>
-    <height>791</height>
+    <width>835</width>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -16,7 +16,7 @@
    <iconset resource="MainRes.qrc" >
     <normaloff>:/Images/fwbuilder3.png</normaloff>:/Images/fwbuilder3.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
+  <layout class="QGridLayout" name="gridLayout_2" >
    <item row="0" column="0" >
     <widget class="QSplitter" name="topSplitter" >
      <property name="orientation" >
@@ -48,7 +48,7 @@
           <set>Qt::LeftDockWidgetArea</set>
          </property>
          <property name="windowTitle" >
-          <string>Objects Tree</string>
+          <string/>
          </property>
          <widget class="QWidget" name="dockWidgetContents" >
           <layout class="QGridLayout" name="gridLayout_4" >
@@ -96,291 +96,46 @@
       <property name="frameShadow" >
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QGridLayout" name="rulesDockWidgetParentFrameLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout" name="gridLayout" >
+       <property name="leftMargin" >
+        <number>0</number>
+       </property>
+       <property name="topMargin" >
+        <number>10</number>
+       </property>
+       <property name="rightMargin" >
+        <number>0</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>0</number>
+       </property>
+       <property name="horizontalSpacing" >
         <number>0</number>
        </property>
        <item row="0" column="0" >
-        <widget class="QDockWidget" name="rulesDockWidget" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <widget class="QLabel" name="rulesetname" >
+         <property name="font" >
+          <font>
+           <pointsize>14</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
-         <property name="floating" >
-          <bool>false</bool>
+         <property name="text" >
+          <string>Firewall / ruleset</string>
          </property>
-         <property name="features" >
-          <set>QDockWidget::NoDockWidgetFeatures</set>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
          </property>
-         <property name="allowedAreas" >
-          <set>Qt::AllDockWidgetAreas</set>
-         </property>
-         <property name="windowTitle" >
-          <string>Rules</string>
-         </property>
-         <widget class="QWidget" name="dockWidgetContents_2" >
-          <layout class="QGridLayout" name="gridLayout_3" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
-           <item row="0" column="0" >
-            <widget class="QLabel" name="rulesetname" >
-             <property name="font" >
-              <font>
-               <pointsize>14</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text" >
-              <string>Firewall / ruleset</string>
-             </property>
-             <property name="alignment" >
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QFrame" name="ruleSets2" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>144</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="frameShape" >
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow" >
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QGridLayout" name="_2" >
-              <property name="margin" >
-               <number>0</number>
-              </property>
-              <property name="spacing" >
-               <number>0</number>
-              </property>
-              <item row="0" column="0" >
-               <widget class="QStackedWidget" name="ruleSets" >
-                <property name="currentIndex" >
-                 <number>1</number>
-                </property>
-                <widget class="QWidget" name="page" />
-                <widget class="QWidget" name="page_2" />
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
         </widget>
        </item>
-      </layout>
-     </widget>
-    </widget>
-   </item>
-   <item row="1" column="0" >
-    <widget class="ObjectEditorDockWidget" name="bottomDockWidget" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize" >
-      <size>
-       <width>524287</width>
-       <height>250</height>
-      </size>
-     </property>
-     <property name="features" >
-      <set>QDockWidget::DockWidgetClosable</set>
-     </property>
-     <property name="allowedAreas" >
-      <set>Qt::BottomDockWidgetArea</set>
-     </property>
-     <widget class="QWidget" name="dockWidgetContents_5" >
-      <layout class="QGridLayout" name="gridLayout_6" >
-       <property name="rightMargin" >
-        <number>9</number>
-       </property>
-       <item row="0" column="0" >
-        <widget class="QTabWidget" name="bottomPanelTabWidget" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize" >
-          <size>
-           <width>16777215</width>
-           <height>250</height>
-          </size>
-         </property>
-         <property name="tabPosition" >
-          <enum>QTabWidget::West</enum>
-         </property>
+       <item row="1" column="0" >
+        <widget class="QStackedWidget" name="ruleSets" >
          <property name="currentIndex" >
-          <number>0</number>
+          <number>1</number>
          </property>
-         <property name="tabsClosable" stdset="0" >
-          <bool>false</bool>
-         </property>
-         <widget class="QWidget" name="tab_editor" >
-          <attribute name="title" >
-           <string>Editor</string>
-          </attribute>
-          <layout class="QGridLayout" name="gridLayout_5" >
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>10</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>0</number>
-           </property>
-           <item row="0" column="0" >
-            <widget class="QStackedWidget" name="objectEditorStack" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>200</width>
-               <height>200</height>
-              </size>
-             </property>
-             <property name="maximumSize" >
-              <size>
-               <width>16777215</width>
-               <height>1677215</height>
-              </size>
-             </property>
-             <property name="focusPolicy" >
-              <enum>Qt::StrongFocus</enum>
-             </property>
-             <property name="frameShape" >
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <widget class="QWidget" name="WStackPage" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </widget>
-           </item>
-           <item row="0" column="1" >
-            <layout class="QVBoxLayout" name="verticalLayout" >
-             <property name="topMargin" >
-              <number>20</number>
-             </property>
-             <property name="bottomMargin" >
-              <number>20</number>
-             </property>
-             <item>
-              <widget class="QPushButton" name="applyObjectEditorButton" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize" >
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text" >
-                <string>Apply</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer" >
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="helpObjectEditorButton" >
-               <property name="text" >
-                <string>Help</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="tab_find" >
-          <attribute name="title" >
-           <string>Find</string>
-          </attribute>
-          <layout class="QGridLayout" name="gridLayout_7" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
-           <item row="0" column="0" >
-            <widget class="QFrame" name="auxiliaryPanel" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>0</width>
-               <height>160</height>
-              </size>
-             </property>
-             <property name="maximumSize" >
-              <size>
-               <width>32767</width>
-               <height>32767</height>
-              </size>
-             </property>
-             <property name="frameShape" >
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow" >
-              <enum>QFrame::Plain</enum>
-             </property>
-             <layout class="QHBoxLayout" name="_3" >
-              <property name="spacing" >
-               <number>0</number>
-              </property>
-              <property name="margin" >
-               <number>11</number>
-              </property>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+         <widget class="QWidget" name="page" />
+         <widget class="QWidget" name="page_2" />
         </widget>
        </item>
       </layout>
@@ -394,12 +149,6 @@
    <class>ObjectManipulator</class>
    <extends>QWidget</extends>
    <header>ObjectManipulator.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ObjectEditorDockWidget</class>
-   <extends>QDockWidget</extends>
-   <header location="global" >ObjectEditorDockWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

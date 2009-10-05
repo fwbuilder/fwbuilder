@@ -34,6 +34,7 @@
 #include "RCS.h"
 #include "RuleSetView.h"
 
+#include <QtDebug>
 #include <QMdiSubWindow>
 #include <QMdiArea>
 
@@ -44,23 +45,6 @@
 using namespace Ui;
 using namespace libfwbuilder;
 using namespace std;
-
-// this slot is called when user hits "maximize" or "minimize" buttons
-// on the title bar of the internal window. Need to restore window
-// geometry and splitter position when window becomes normal (not maximized).
-void ProjectPanel::stateChanged(Qt::WindowStates ,
-                                Qt::WindowStates )
-{
-#if 0
-// vk 09/16
-    bool is_maximized = ((newState & Qt::WindowMaximized) != 0);
-    bool was_maximized = ((oldState & Qt::WindowMaximized) != 0);
-    st->setInt("Window/maximized", is_maximized);
-    if (!was_maximized && is_maximized) saveState();
-#endif
-
-}
-
 
 
 void ProjectPanel::saveState()
@@ -155,9 +139,8 @@ void ProjectPanel::saveMainSplitter()
     QString FileName ;
     if (rcs!=NULL) FileName = rcs->getFileName();
     // Save position of splitters regardless of the window state
-    // Do not save if one of both panels are floating
-    if (!m_panel->treeDockWidget->isWindow() &&
-        !m_panel->rulesDockWidget->isWindow())
+    // Do not save if one of tree panel is floating
+    if (!m_panel->treeDockWidget->isWindow())
     {
         QList<int> sl = m_panel->topSplitter->sizes();
         QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);

@@ -53,7 +53,7 @@ MetricEditorPanel::~MetricEditorPanel()
     delete m_widget;
 }
 
-MetricEditorPanel::MetricEditorPanel(QWidget *p):QWidget(p)
+MetricEditorPanel::MetricEditorPanel(QWidget *p) : BaseObjectDialog(p)
 {
     m_widget = new Ui::MetricEditorPanel_q;
     m_widget->setupUi(this);

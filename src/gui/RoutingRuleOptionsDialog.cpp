@@ -61,7 +61,7 @@ RoutingRuleOptionsDialog::~RoutingRuleOptionsDialog()
     delete m_dialog;
 }
 
-RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+RoutingRuleOptionsDialog::RoutingRuleOptionsDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::RoutingRuleOptionsDialog_q;
     m_dialog->setupUi(this);

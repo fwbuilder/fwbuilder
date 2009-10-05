@@ -2,11 +2,11 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2009 NetCitadel, LLC
+                 Copyright (C) 2003 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
+  $Id: ObjectEditor.h 1537 2009-10-02 00:36:43Z vadim $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -24,39 +24,31 @@
 */
 
 
-#ifndef  __OBJECTEDITORDOCKWIDGET_H_
-#define  __OBJECTEDITORDOCKWIDGET_H_
+#ifndef  __BASEOBJECTDIALOG_H_
+#define  __BASEOBJECTDIALOG_H_
 
-#include "../../config.h"
+#include <QWidget>
 
-#include <QDockWidget>
-#include <QCloseEvent>
+#include "fwbuilder/FWObject.h"
 
-class ObjectEditor;
+class ProjectPanel;
 
-class ObjectEditorDockWidget : public QDockWidget {
 
-    Q_OBJECT ;
+class BaseObjectDialog : public QWidget
+{
+    Q_OBJECT;
 
-    ObjectEditor *editor;
+protected:
+    libfwbuilder::FWObject *obj;
+    bool init;
+    ProjectPanel *m_project;
 
 public:
+    BaseObjectDialog(QWidget *parent) : QWidget(parent) {obj = 0; init = false; m_project = NULL;}
+    virtual ~BaseObjectDialog() {};
 
-    ObjectEditorDockWidget(const QString &title,
-                           QWidget *parent = 0,
-                           Qt::WindowFlags flags = 0);
+    void attachToProjectWindow(ProjectPanel *pp) { m_project = pp; }
 
-    ObjectEditorDockWidget(QWidget *parent = 0,
-                           Qt::WindowFlags flags = 0);
-
-    void setupEditor(ObjectEditor *ed);
-    
-    virtual void closeEvent(QCloseEvent *event);
-
-public slots:
-
-    void topLevelChanged(bool topLevel);
-    
 };
 
 #endif

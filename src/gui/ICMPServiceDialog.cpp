@@ -50,8 +50,8 @@
 using namespace std;
 using namespace libfwbuilder;
 
-ICMPServiceDialog::ICMPServiceDialog(ProjectPanel *project, QWidget *parent) :
-        QWidget(parent), m_project(project)
+ICMPServiceDialog::ICMPServiceDialog(QWidget *parent) :
+        BaseObjectDialog(parent)
 {
     m_dialog = new Ui::ICMPServiceDialog_q;
     m_dialog->setupUi(this);

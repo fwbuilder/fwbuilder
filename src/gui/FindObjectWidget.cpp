@@ -587,7 +587,7 @@ void FindObjectWidget::showObject(FWObject* o)
     {
 
         // found object in rules
-        project_panel->closeEditor();
+        //mw->closeEditor();
         project_panel->clearManipulatorFocus();
         project_panel->ensureObjectVisibleInRules( ref );
         return;
@@ -604,14 +604,14 @@ void FindObjectWidget::showObject(FWObject* o)
     {
         project_panel->openObject( o->getParent() );
         project_panel->editObject( o->getParent() );
-        project_panel->selectObjectInEditor( (ref) ? ref->getPointer() : o );
+        mw->selectObjectInEditor( (ref) ? ref->getPointer() : o );
         return;
     }
 
     if (fwbdebug)
         qDebug("FindObjectWidget::showObject  checkpoint #2");
 
-    project_panel->closeEditor();
+    //mw->closeEditor();
     project_panel->openObject( o );
     project_panel->select();  // selects an item in the tree and assigns kbd focus to it
 }

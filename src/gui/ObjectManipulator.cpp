@@ -1600,7 +1600,7 @@ void ObjectManipulator::findObject()
 
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
-    m_project->findObject( obj );
+    mw->findObject( obj );
 }
 
 void ObjectManipulator::dumpObj()
@@ -2428,8 +2428,8 @@ void ObjectManipulator::deleteObj()
                             0, 1 )!=0 ) continue;
                 }
     
-                if (m_project->isEditorVisible() &&
-                    m_project->getOpenedEditor()==obj) m_project->hideEditor();
+                if (mw->isEditorVisible() &&
+                    mw->getOpenedEditor()==obj) mw->hideEditor();
                     
                 delObj(obj);
             }
@@ -2466,7 +2466,7 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
     bool isfw   = Firewall::isA(obj);
     bool isDelObj = (delObjLib!=NULL && obj->isChildOf(delObjLib));
    
-    m_project->findObjectWidget->reset();
+    mw->findObjectWidget->reset();
 
     QCoreApplication::postEvent(
         mw, new closeObjectEvent(m_project->getFileName(), obj->getId()));
@@ -2645,7 +2645,7 @@ void ObjectManipulator::restoreSelection(bool same_widget)
                same_widget);
 
 //    select();
-    openObject( m_project->getOpenedEditor(), false);
+    openObject( mw->getOpenedEditor(), false);
 }
 
 void ObjectManipulator::editSelectedObject()
@@ -2671,7 +2671,7 @@ void ObjectManipulator::editSelectedObject()
 bool ObjectManipulator::editObject(FWObject *obj)
 {
     if (fwbdebug) qDebug("ObjectManipulator::editObject");
-    if (!m_project->isEditorVisible()) m_project->showEditor();
+    if (!mw->isEditorVisible()) mw->showEditor();
     return switchObjectInEditor(obj);
 }
 
@@ -2682,7 +2682,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
     if (obj && fwbdebug)
     {
         qDebug("obj: %s", obj->getName().c_str());
-        FWObject *edt_obj = m_project->getOpenedEditor();
+        FWObject *edt_obj = mw->getOpenedEditor();
         if (edt_obj)
             qDebug("in editor: %s", edt_obj->getName().c_str());
     }
@@ -2695,9 +2695,9 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
         }
     
     }
-    if (!m_project->isEditorVisible()) return false;
+    if (!mw->isEditorVisible()) return false;
 
-    if (!m_project->requestEditorOwnership(
+    if (!mw->requestEditorOwnership(
             this, obj, ObjectEditor::optNone, true))
     {
         if (fwbdebug) qDebug("Can not get editor panel ownership");
@@ -2706,10 +2706,10 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 
     if (fwbdebug) qDebug("Calling select");
     
-    if (obj != m_project->getOpenedEditor())
+    if (obj != mw->getOpenedEditor())
     {
         if (fwbdebug) qDebug("Open object in editor");
-        m_project->openEditor(obj);
+        mw->openEditor(obj);
         currentObj = obj;
         active = true;
         openObject(obj);  // position the tree so that obj is visible
@@ -2724,7 +2724,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 void ObjectManipulator::closeObject()
 {
     currentObj = NULL;
-    if (m_project->isEditorVisible()) m_project->hideEditor();
+    if (mw->isEditorVisible()) mw->hideEditor();
 }
 
 void ObjectManipulator::openObject(ObjectTreeViewItem *otvi,
@@ -2756,7 +2756,7 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 
     if (history.empty() || otvi!=history.top().item() )
     {
-        mw->m_mainWindow->backAction->setEnabled( true );
+        mw->enableBackAction();
         history.push( HistoryItem(otvi, o->getId()) );
     }
 
@@ -2933,13 +2933,13 @@ void ObjectManipulator::back()
 
         if (history.empty())
         {
-            mw->m_mainWindow->backAction->setEnabled( false );
+            mw->enableBackAction();
             return;
         }
 
         openObject( history.top().item(), false );
 
-        if (m_project->isEditorVisible())
+        if (mw->isEditorVisible())
         {
             ObjectTreeViewItem *otvi=history.top().item();
             switchObjectInEditor(otvi->getFWObject());
@@ -3183,7 +3183,7 @@ void ObjectManipulator::newFirewall()
     assert(parent_item);
 
     newFirewallDialog *nfd = new newFirewallDialog(parent);
-    if (m_project->isEditorVisible()) m_project->hideEditor();
+    if (mw->isEditorVisible()) mw->hideEditor();
     nfd->exec();
     FWObject *nfw = nfd->getNewFirewall();
     delete nfd;
@@ -3208,7 +3208,7 @@ void ObjectManipulator::newCluster()
     assert(parent_item);
 
     newClusterDialog *ncd = new newClusterDialog(parent);
-    if (m_project->isEditorVisible())  m_project->hideEditor();
+    if (mw->isEditorVisible())  mw->hideEditor();
     ncd->exec();
     FWObject *ncl = ncd->getNewCluster();
     delete ncd;
@@ -3318,7 +3318,7 @@ void ObjectManipulator::newFailoverClusterGroup()
 void ObjectManipulator::newHost()
 {
     newHostDialog *nhd = new newHostDialog();
-    if (m_project->isEditorVisible()) m_project->hideEditor();
+    if (mw->isEditorVisible()) mw->hideEditor();
     nhd->exec();
     FWObject *o = nhd->getNewHost();
     delete nhd;
@@ -3699,8 +3699,8 @@ void ObjectManipulator::newInterval()
 bool ObjectManipulator::validateDialog()
 {
     if (currentObj==NULL) return true;
-    if (!m_project->isEditorVisible()) return true;
-    return m_project->validateAndSaveEditor();
+    if (!mw->isEditorVisible()) return true;
+    return mw->validateAndSaveEditor();
 }
 
 void ObjectManipulator::select()
@@ -3897,7 +3897,7 @@ void ObjectManipulator::findWhereUsedSlot()
 
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
-    m_project->findWhereUsed(obj);
+    mw->findWhereUsed(obj, m_project);
 
 }
 

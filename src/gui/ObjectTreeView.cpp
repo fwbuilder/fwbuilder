@@ -28,6 +28,7 @@
 #include "global.h"
 #include "utils.h"
 
+#include "FWWindow.h"
 #include "FWBTree.h"
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
@@ -435,9 +436,9 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
     if (fwbdebug) qDebug("ObjectTreeView::dragObject()  this=%p visible=%d",
                          this,visible);
 
-    FWObject *edit_obj = m_project->getOpenedEditor();
+    FWObject *edit_obj = mw->getOpenedEditor();
 
-    if (m_project->isEditorVisible() &&
+    if (mw->isEditorVisible() &&
         dragobj.size()==1 &&
         edit_obj!=NULL &&
         current_obj->getLibrary()==edit_obj->getLibrary() )
@@ -455,7 +456,7 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
      * we are dragging one object, and
      * object opened in editor is not the same as the one we are dragging
      */
-    if (m_project->isEditorVisible() && dragobj.size()==1 && m_project->getOpenedEditor()!=obj)
+    if (mw->isEditorVisible() && dragobj.size()==1 && mw->getOpenedEditor()!=obj)
     {
         setSelected(otvi,false);
         resetSelection();
@@ -641,10 +642,10 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
         // user selected multiple objects
         // do not let them if editor has unsaved changes
         //
-        if (m_project->isEditorVisible() && m_project->isEditorModified())
+        if (mw->isEditorVisible() && mw->isEditorModified())
             emit switchObjectInEditor_sign( getCurrentObject() );
         else
-            m_project->blankEditor();
+            mw->blankEditor();
     }
 }
 
@@ -713,10 +714,10 @@ void ObjectTreeView::keyReleaseEvent( QKeyEvent* ev )
         // user selected multiple objects
         // do not let them if editor has unsaved changes
         //
-        if (m_project->isEditorVisible() && m_project->isEditorModified())
+        if (mw->isEditorVisible() && mw->isEditorModified())
             emit switchObjectInEditor_sign( getCurrentObject() );
         else
-            m_project->blankEditor();
+            mw->blankEditor();
     }
 }
 

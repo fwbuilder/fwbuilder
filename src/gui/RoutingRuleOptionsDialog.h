@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_routingruleoptionsdialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "DialogData.h"
@@ -38,21 +39,18 @@
 class RuleSetView;
 class ProjectPanel;
 
-class RoutingRuleOptionsDialog : public QWidget
+class RoutingRuleOptionsDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     DialogData              data;
     QString                 platform;
     RuleSetView            *rsv;
     Ui::RoutingRuleOptionsDialog_q *m_dialog;
     
-    bool init;
-    ProjectPanel *m_project;
 
  public:
-    RoutingRuleOptionsDialog(ProjectPanel *project, QWidget *parent);
+    RoutingRuleOptionsDialog(QWidget *parent);
     ~RoutingRuleOptionsDialog();
     
 public slots:

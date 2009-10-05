@@ -53,7 +53,7 @@ NATRuleOptionsDialog::~NATRuleOptionsDialog()
     delete m_dialog;
 }
 
-NATRuleOptionsDialog::NATRuleOptionsDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+NATRuleOptionsDialog::NATRuleOptionsDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::NATRuleOptionsDialog_q;
     m_dialog->setupUi(this);

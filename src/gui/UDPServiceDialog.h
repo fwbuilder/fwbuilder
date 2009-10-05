@@ -29,23 +29,21 @@
 
 #include "../../config.h"
 #include <ui_udpservicedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class UDPServiceDialog : public QWidget
+class UDPServiceDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     Ui::UDPServiceDialog_q *m_dialog;
-    ProjectPanel *m_project;
 
  public:
-    UDPServiceDialog(ProjectPanel *project, QWidget *parent);
+    UDPServiceDialog(QWidget *parent);
     ~UDPServiceDialog();
     
 public slots:

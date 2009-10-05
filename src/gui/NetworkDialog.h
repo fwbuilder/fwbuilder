@@ -29,23 +29,21 @@
 
 #include "../../config.h"
 #include <ui_networkdialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class NetworkDialog : public QWidget
+class NetworkDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     Ui::NetworkDialog_q *m_dialog;
-    bool init;
-    ProjectPanel *m_project;
 
  public:
-    NetworkDialog(ProjectPanel *project, QWidget *parent);
+    NetworkDialog(QWidget *parent);
     ~NetworkDialog();
     
 public slots:

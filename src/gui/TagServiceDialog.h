@@ -29,24 +29,22 @@
 
 #include "../../config.h"
 #include <ui_tagservicedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
 
-class TagServiceDialog : public QWidget
+class TagServiceDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     Ui::TagServiceDialog_q *m_dialog;
-    bool init;
-    ProjectPanel *m_project;
 
  public:
     ~TagServiceDialog();
-    TagServiceDialog(ProjectPanel *project, QWidget *parent);
+    TagServiceDialog(QWidget *parent);
     virtual void closeEvent(QCloseEvent *e);
     
 public slots:

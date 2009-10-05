@@ -55,9 +55,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-RuleSetDialog::RuleSetDialog(ProjectPanel *project,
-                             QWidget *parent) : QWidget(parent),
-                                                m_project(project)
+RuleSetDialog::RuleSetDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::RuleSetDialog_q;
     m_dialog->setupUi(this);

@@ -68,8 +68,8 @@ FirewallDialog::~FirewallDialog()
     delete m_dialog;
 }
 
-FirewallDialog::FirewallDialog(ProjectPanel *project, QWidget *parent) :
-    QWidget(parent), m_project(project)
+FirewallDialog::FirewallDialog(QWidget *parent) :
+    BaseObjectDialog(parent)
 {
     m_dialog = new Ui::FirewallDialog_q;
     m_dialog->setupUi(this);

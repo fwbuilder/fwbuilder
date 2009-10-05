@@ -29,25 +29,23 @@
 
 #include "../../config.h"
 #include <ui_timedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
 
-class TimeDialog : public QWidget
+class TimeDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     Ui::TimeDialog_q *m_dialog;
 
     void enableAllWidgets();
     
-    ProjectPanel *m_project;
  public:
-    TimeDialog(ProjectPanel *project, QWidget *parent);
+    TimeDialog(QWidget *parent);
     ~TimeDialog();
     
 public slots:

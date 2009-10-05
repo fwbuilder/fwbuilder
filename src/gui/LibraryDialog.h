@@ -29,15 +29,16 @@
 
 #include "../../config.h"
 #include <ui_librarydialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class LibraryDialog : public QWidget
+class LibraryDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     libfwbuilder::FWObject *obj;
     bool init;
@@ -50,7 +51,7 @@ class LibraryDialog : public QWidget
  public:
     Ui::LibraryDialog_q *m_dialog;
      
-    LibraryDialog(ProjectPanel *project, QWidget *parent);
+    LibraryDialog(QWidget *parent);
     ~LibraryDialog();
     
 public slots:

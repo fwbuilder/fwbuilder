@@ -29,24 +29,22 @@
 
 #include "../../config.h"
 #include <ui_addressrangedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class AddressRangeDialog : public QWidget
+class AddressRangeDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     
     Ui::AddressRangeDialog_q *m_dialog;
 
-    ProjectPanel *m_project;
  public:
-    AddressRangeDialog(ProjectPanel *project, QWidget *parent);
+    AddressRangeDialog(QWidget *parent);
     ~AddressRangeDialog();
     
 public slots:

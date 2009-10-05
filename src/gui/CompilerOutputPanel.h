@@ -27,6 +27,7 @@
 #define __COMPILEROUTPUTPANEL_H__
 
 #include "../../config.h"
+#include "BaseObjectDialog.h"
 #include <ui_compileroutputpanel_q.h>
 
 #include "fwbuilder/FWObject.h"
@@ -40,7 +41,7 @@
 
 class ProjectPanel;
 
-class CompilerOutputPanel : public QWidget
+class CompilerOutputPanel : public BaseObjectDialog
 {
     Q_OBJECT;
 
@@ -52,7 +53,7 @@ class CompilerOutputPanel : public QWidget
     
  public:
 
-    CompilerOutputPanel(ProjectPanel *project, QWidget* parent);
+    CompilerOutputPanel(QWidget* parent);
     ~CompilerOutputPanel();
     
 public slots:

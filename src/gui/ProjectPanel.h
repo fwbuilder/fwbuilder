@@ -26,7 +26,6 @@
 #ifndef PROJECTPANEL_H
 #define PROJECTPANEL_H
 
-#include "ObjectEditor.h"
 #include "ui_projectpanel_q.h"
 
 namespace libfwbuilder {
@@ -50,15 +49,10 @@ class FWWindow;
 class RuleSetView;
 class RCS;
 
-class FindObjectWidget;
-class FindWhereUsedWidget;
 class FWBTree;
 
 #define DEFAULT_H_SPLITTER_POSITION 250
 #define DEFAULT_V_SPLITTER_POSITION 450
-
-#define EDITOR_PANEL_EDITOR_TAB 0
-#define EDITOR_PANEL_SEARCH_TAB 1
 
 
 class ProjectPanel: public QWidget {
@@ -76,9 +70,7 @@ class ProjectPanel: public QWidget {
     bool ready;
     
     libfwbuilder::FWObjectDatabase *objdb;
-    QWidget *editorOwner;
     
-    ObjectEditor *oe;
     findDialog *fd;
         
     QTimer *autosaveTimer;
@@ -98,8 +90,6 @@ public:
 
     QMdiSubWindow *mdiWindow;
     Ui::ProjectPanel_q *m_panel;
-    FindObjectWidget *findObjectWidget;
-    FindWhereUsedWidget *findWhereUsedWidget;
     QSet<QString> copySet;
 
     
@@ -204,25 +194,6 @@ public:
     void setManipulatorFocus();
     void clearManipulatorFocus();
     
-    //wrapers for some Object Editor functions
-    bool isEditorVisible();
-    bool isEditorModified();
-    
-    void showEditor();
-    void hideEditor();
-    void closeEditor();
-    
-    void openEditor(libfwbuilder::FWObject *o);
-    void openOptEditor(libfwbuilder::FWObject *, ObjectEditor::OptType t);
-    void blankEditor();
-    
-    libfwbuilder::FWObject* getOpenedEditor();
-    ObjectEditor::OptType getOpenedOptEditor();
-    
-    void selectObjectInEditor(libfwbuilder::FWObject *o);
-
-    void actionChangedEditor(libfwbuilder::FWObject *o);
-    bool validateAndSaveEditor();
     //find dialog functions wrapers
     void setFDObject(libfwbuilder::FWObject *o);
     
@@ -262,8 +233,6 @@ public:
     void topLevelChangedForTreePanel(bool topLevel);
     void visibilityChangedForTreePanel(bool topLevel);
     
-    void topLevelChangedForBottomPanel(bool topLevel);
-    
     virtual void back();
     virtual void lockObject();
     virtual void unlockObject();
@@ -299,11 +268,6 @@ public:
     virtual void fileCompare();
     virtual void fileExport();
     
-    virtual void closeEditorPanel();
-    virtual void openEditorPanel();
-    
-    virtual void search();
-
     virtual void compile(std::set<libfwbuilder::Firewall*> vf);
     virtual void compile();
     virtual void install(std::set<libfwbuilder::Firewall*> vf);
@@ -311,17 +275,10 @@ public:
     virtual void transferfw(std::set<libfwbuilder::Firewall*> vf);
     virtual void transferfw();
 
-    virtual void rollBackSelectionSameWidget();
-    virtual void rollBackSelectionDifferentWidget();
     void splitterMoved ( int pos, int index );
-    void stateChanged(Qt::WindowStates oldState, Qt::WindowStates newState);
 
     virtual void autoSave();
     
- signals:
-     void restoreSelection_sign(bool same_widget);
-
-
 public:
     QString getFileName();
     bool editingLibrary();
@@ -360,15 +317,7 @@ public:
     void setupAutoSave();
     QString getCurrentFileName();
     RCS * getRCS();
-    void findObject(libfwbuilder::FWObject *);
-    void findWhereUsed(libfwbuilder::FWObject *);
     QString printHeader();
-    bool requestEditorOwnership(QWidget *w,
-                                libfwbuilder::FWObject *o,
-                                ObjectEditor::OptType   otype,
-                                bool validate = true);
-    void releaseEditor();
-    void connectEditor(QWidget *w);
 
     bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
     bool getCopyMenuState(const QString &objPath);
@@ -377,19 +326,15 @@ public:
     bool getDeleteMenuState(libfwbuilder::FWObject *obj);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
-    void singleRuleCompile(libfwbuilder::Rule *rule);
-
     void toggleViewTree(bool f);
-    void toggleViewRules(bool f);
-    void toggleViewEditor(bool f);
 
 protected:
     int oldState ;
-    virtual void showEvent( QShowEvent *ev);
-    virtual void hideEvent( QHideEvent *ev);
-    virtual void closeEvent( QCloseEvent * );
-    virtual void resizeEvent ( QResizeEvent * event );
-    virtual bool event(QEvent *event);
+    virtual void showEvent(QShowEvent *ev);
+    virtual void hideEvent(QHideEvent *ev);
+    virtual void closeEvent(QCloseEvent *ev);
+    virtual void resizeEvent(QResizeEvent *ev);
+    virtual bool event(QEvent *ev);
 
     void setMainSplitterPosition(int w1, int w2);
     void collapseTree();

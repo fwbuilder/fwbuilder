@@ -26,34 +26,11 @@
 
 #include "../../config.h"
 #include "global.h"
-#include "utils.h"
-#include "utils_no_qt.h"
 
-#include <fwbuilder/Cluster.h>
-#include <fwbuilder/Firewall.h>
-#include <fwbuilder/RuleSet.h>
-#include <fwbuilder/Policy.h>
-#include <fwbuilder/NAT.h>
-#include <fwbuilder/Routing.h>
-#include "fwbuilder/RuleSet.h"
-#include "fwbuilder/Rule.h"
-#include "fwbuilder/RuleElement.h"
-
-#include "FWBSettings.h"
-#include "FWBTree.h"
-#include "FWObjectPropertiesFactory.h"
+#include <ui_FWBMainWindow_q.h>
 #include "FWWindow.h"
-#include "FindObjectWidget.h"
-#include "FindWhereUsedWidget.h"
-#include "ProjectPanel.h"
-#include "RCS.h"
-#include "RuleSetView.h"
-#include "findDialog.h"
-#include "events.h"
 
-#include <QTimer>
-#include <QStatusBar>
-#include <QFileInfo>
+#include "fwbuilder/Rule.h"
 
 
 using namespace Ui;
@@ -62,14 +39,14 @@ using namespace std;
 
 
 
-void ProjectPanel::singleRuleCompile(Rule *rule)
+void FWWindow::singleRuleCompile(Rule *rule)
 {
     showEditor();
-    QSize old_size = m_panel->objectEditorStack->size();
+    QSize old_size = m_mainWindow->objectEditorStack->size();
     oe->openOpt(rule, ObjectEditor::optRuleCompile);
-    m_panel->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
+    m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
     //m_panel->objectEditorFrame->show();
-    m_panel->objectEditorStack->resize(old_size);
+    m_mainWindow->objectEditorStack->resize(old_size);
 
 }
 

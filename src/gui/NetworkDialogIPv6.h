@@ -29,23 +29,21 @@
 
 #include "../../config.h"
 #include <ui_networkdialogipv6_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class NetworkDialogIPv6 : public QWidget
+class NetworkDialogIPv6 : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     Ui::NetworkDialogIPv6_q *m_dialog;
-    bool init;
-    ProjectPanel *m_project;
 
  public:
-    NetworkDialogIPv6(ProjectPanel *project, QWidget *parent);
+    NetworkDialogIPv6(QWidget *parent);
     ~NetworkDialogIPv6();
     
 public slots:

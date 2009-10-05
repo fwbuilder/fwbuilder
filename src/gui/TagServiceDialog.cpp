@@ -59,7 +59,7 @@ TagServiceDialog::~TagServiceDialog()
     delete m_dialog;
 }
 
-TagServiceDialog::TagServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+TagServiceDialog::TagServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::TagServiceDialog_q;
     m_dialog->setupUi(this);

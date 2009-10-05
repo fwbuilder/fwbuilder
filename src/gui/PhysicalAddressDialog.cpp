@@ -52,7 +52,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-PhysicalAddressDialog::PhysicalAddressDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+PhysicalAddressDialog::PhysicalAddressDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::PhysAddressDialog_q;
     m_dialog->setupUi(this);

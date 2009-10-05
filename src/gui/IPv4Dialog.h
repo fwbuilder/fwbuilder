@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_ipv4dialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
@@ -36,20 +37,17 @@
 class QDns;
 
 class ProjectPanel;
-class IPv4Dialog : public QWidget
+class IPv4Dialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     bool showNetmask;
     bool dnsBusy;
     //QDns                   *lookup;
     Ui::IPv4Dialog_q       *m_dialog;
-    ProjectPanel *m_project;
 
  public:
-    IPv4Dialog(ProjectPanel *project, QWidget *parent);
+    IPv4Dialog(QWidget *parent);
     ~IPv4Dialog();
     virtual void closeEvent(QCloseEvent *e);
     

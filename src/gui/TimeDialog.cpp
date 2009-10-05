@@ -52,7 +52,7 @@
 using namespace libfwbuilder;
 using namespace std;
 
-TimeDialog::TimeDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+TimeDialog::TimeDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::TimeDialog_q;
     m_dialog->setupUi(this);

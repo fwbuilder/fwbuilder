@@ -50,7 +50,7 @@ CommentEditorPanel::~CommentEditorPanel()
 }
 
 CommentEditorPanel::CommentEditorPanel(QWidget *p,
-                                   bool enableLoadFromFile):QWidget(p)
+                                       bool enableLoadFromFile) : BaseObjectDialog(p)
 {
     m_widget = new Ui::CommentEditorPanel_q;
     m_widget->setupUi(this);

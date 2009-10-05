@@ -56,7 +56,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-IPv6Dialog::IPv6Dialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+IPv6Dialog::IPv6Dialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPv6Dialog_q;
     m_dialog->setupUi(this);

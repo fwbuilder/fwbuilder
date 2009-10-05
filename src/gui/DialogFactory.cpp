@@ -131,72 +131,72 @@
 using namespace std;
 using namespace libfwbuilder;
 
-QWidget *DialogFactory::createDialog(ProjectPanel *project, QWidget *parent,const QString &objType)
+BaseObjectDialog *DialogFactory::createDialog(QWidget *parent, const QString &objType)
 {
-    if (objType==UserService::TYPENAME)   return new UserDialog(project, parent);
+    if (objType==UserService::TYPENAME)   return new UserDialog(parent);
 
-    if (objType==Policy::TYPENAME)        return new RuleSetDialog(project, parent);
+    if (objType==Policy::TYPENAME)        return new RuleSetDialog(parent);
 
-    if (objType==NAT::TYPENAME)           return new RuleSetDialog(project, parent);
+    if (objType==NAT::TYPENAME)           return new RuleSetDialog(parent);
 
-    if (objType==Routing::TYPENAME)       return new RuleSetDialog(project, parent);
+    if (objType==Routing::TYPENAME)       return new RuleSetDialog(parent);
 
-    if (objType==Library::TYPENAME)       return new LibraryDialog(project, parent);
+    if (objType==Library::TYPENAME)       return new LibraryDialog(parent);
 
-    if (objType==IPv4::TYPENAME)          return new IPv4Dialog(project, parent);
+    if (objType==IPv4::TYPENAME)          return new IPv4Dialog(parent);
 
-    if (objType==IPv6::TYPENAME)          return new IPv6Dialog(project, parent);
+    if (objType==IPv6::TYPENAME)          return new IPv6Dialog(parent);
 
-    if (objType==physAddress::TYPENAME)   return new PhysicalAddressDialog(project, parent);
+    if (objType==physAddress::TYPENAME)   return new PhysicalAddressDialog(parent);
 
-    if (objType==DNSName::TYPENAME)       return new DNSNameDialog(project, parent);
+    if (objType==DNSName::TYPENAME)       return new DNSNameDialog(parent);
 
-    if (objType==AddressTable::TYPENAME)  return new AddressTableDialog(project, parent);
+    if (objType==AddressTable::TYPENAME)  return new AddressTableDialog(parent);
 
-    if (objType==AddressRange::TYPENAME)  return new AddressRangeDialog(project, parent);
+    if (objType==AddressRange::TYPENAME)  return new AddressRangeDialog(parent);
 
-    if (objType==Firewall::TYPENAME)      return new FirewallDialog(project, parent);
+    if (objType==Firewall::TYPENAME)      return new FirewallDialog(parent);
 
-    if (objType==Cluster::TYPENAME)       return new ClusterDialog(project, parent);
+    if (objType==Cluster::TYPENAME)       return new ClusterDialog(parent);
 
-    if (objType==StateSyncClusterGroup::TYPENAME)  return new ClusterGroupDialog(project, parent);
+    if (objType==StateSyncClusterGroup::TYPENAME)  return new ClusterGroupDialog(parent);
 
-    if (objType==FailoverClusterGroup::TYPENAME)  return new ClusterGroupDialog(project, parent);
+    if (objType==FailoverClusterGroup::TYPENAME)  return new ClusterGroupDialog(parent);
 
-    if (objType==Host::TYPENAME)          return new HostDialog(project, parent);
+    if (objType==Host::TYPENAME)          return new HostDialog(parent);
 
-    if (objType==Interface::TYPENAME)     return new InterfaceDialog(project, parent);
+    if (objType==Interface::TYPENAME)     return new InterfaceDialog(parent);
 
-    if (objType==Network::TYPENAME)       return new NetworkDialog(project, parent);
+    if (objType==Network::TYPENAME)       return new NetworkDialog(parent);
 
-    if (objType==NetworkIPv6::TYPENAME)   return new NetworkDialogIPv6(project, parent);
+    if (objType==NetworkIPv6::TYPENAME)   return new NetworkDialogIPv6(parent);
 
-    if (objType==CustomService::TYPENAME) return new CustomServiceDialog(project, parent);
+    if (objType==CustomService::TYPENAME) return new CustomServiceDialog(parent);
 
-    if (objType==IPService::TYPENAME)     return new IPServiceDialog(project, parent);
+    if (objType==IPService::TYPENAME)     return new IPServiceDialog(parent);
 
-    if (objType==ICMPService::TYPENAME)   return new ICMPServiceDialog(project, parent);
+    if (objType==ICMPService::TYPENAME)   return new ICMPServiceDialog(parent);
 
-    if (objType==ICMP6Service::TYPENAME)  return new ICMPServiceDialog(project, parent);
+    if (objType==ICMP6Service::TYPENAME)  return new ICMPServiceDialog(parent);
 
-    if (objType==TCPService::TYPENAME)    return new TCPServiceDialog(project, parent);
+    if (objType==TCPService::TYPENAME)    return new TCPServiceDialog(parent);
 
-    if (objType==UDPService::TYPENAME)    return new UDPServiceDialog(project, parent);
+    if (objType==UDPService::TYPENAME)    return new UDPServiceDialog(parent);
 
-    if (objType==ObjectGroup::TYPENAME)   return new GroupObjectDialog(project, parent);
+    if (objType==ObjectGroup::TYPENAME)   return new GroupObjectDialog(parent);
 
-    if (objType==ServiceGroup::TYPENAME)  return new GroupObjectDialog(project, parent);
+    if (objType==ServiceGroup::TYPENAME)  return new GroupObjectDialog(parent);
 
-    if (objType==TagService::TYPENAME)          return new TagServiceDialog(project, parent);
+    if (objType==TagService::TYPENAME) return new TagServiceDialog(parent);
 
-    if (objType==IntervalGroup::TYPENAME) return new GroupObjectDialog(project, parent);
+    if (objType==IntervalGroup::TYPENAME) return new GroupObjectDialog(parent);
 
-    if (objType==Interval::TYPENAME)      return new TimeDialog(project, parent);
+    if (objType==Interval::TYPENAME)      return new TimeDialog(parent);
 
-    if (objType==RoutingRule::TYPENAME)   return new RoutingRuleOptionsDialog(project, parent);
-    if (objType==Rule::TYPENAME)          return new RuleOptionsDialog(project, parent);
-    if (objType==PolicyRule::TYPENAME)    return new RuleOptionsDialog(project, parent);
-    if (objType==NATRule::TYPENAME)       return new NATRuleOptionsDialog(project, parent);
+    if (objType==RoutingRule::TYPENAME)   return new RoutingRuleOptionsDialog(parent);
+    if (objType==Rule::TYPENAME)          return new RuleOptionsDialog(parent);
+    if (objType==PolicyRule::TYPENAME)    return new RuleOptionsDialog(parent);
+    if (objType==NATRule::TYPENAME)       return new NATRuleOptionsDialog(parent);
 
     return NULL;
 }

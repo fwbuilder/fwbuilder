@@ -19,6 +19,7 @@
 
 #include "../../config.h"
 #include <ui_clusterdialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "utils.h"
@@ -28,21 +29,18 @@
 class ProjectPanel;
 
 
-class ClusterDialog : public QWidget
+class ClusterDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     Ui::ClusterDialog_q *m_dialog;
-
-    ProjectPanel *m_project;
 
     void resetSingleClusterGroupType(libfwbuilder::FWObject *grp,
                                      std::list<QStringPair> &allowed_types);
     void resetClusterGroupTypes();
     
 public:
-    ClusterDialog(ProjectPanel *project, QWidget *parent);
+    ClusterDialog(QWidget *parent);
     ~ClusterDialog();
 
 private:

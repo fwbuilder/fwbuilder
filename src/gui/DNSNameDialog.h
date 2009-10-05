@@ -29,23 +29,21 @@
 
 #include "../../config.h"
 #include <ui_dnsnamedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
 
-class DNSNameDialog : public QWidget
+class DNSNameDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     Ui::DNSNameDialog_q *m_dialog;
-    ProjectPanel *m_project;
 
  public:
-     DNSNameDialog(ProjectPanel *project, QWidget *parent);
+     DNSNameDialog(QWidget *parent);
      ~DNSNameDialog();
     virtual void closeEvent(QCloseEvent *e);
     

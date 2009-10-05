@@ -29,6 +29,7 @@
 
 #include "../../config.h"
 #include <ui_actionsdialog_q.h>
+#include "BaseObjectDialog.h"
 #include "DialogData.h"
 #include <QWidget>
 
@@ -45,7 +46,9 @@ namespace libfwbuilder
 class QLineEdit;
 class QComboBox;
 class FWObjectDropArea;
-class ActionsDialog : public QWidget
+
+
+class ActionsDialog : public BaseObjectDialog
 {
     Q_OBJECT
  private:

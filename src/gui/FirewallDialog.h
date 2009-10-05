@@ -29,28 +29,26 @@
 
 #include "../../config.h"
 #include <ui_firewalldialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class FirewallDialog : public QWidget
+class FirewallDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     Ui::FirewallDialog_q   *m_dialog;
-    bool init;
     bool modified;
     
     void fillVersion();
     void saveVersion();
-    ProjectPanel *m_project;
 
     
  public:
-     FirewallDialog(ProjectPanel *project, QWidget *parent);
+     FirewallDialog(QWidget *parent);
      ~FirewallDialog();
      
 public slots:

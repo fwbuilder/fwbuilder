@@ -27,30 +27,22 @@
 #ifndef  __FWWINDOW_H_
 #define  __FWWINDOW_H_
 
-#include <ui_FWBMainWindow_q.h>
-#include <ui_pagesetupdialog_q.h>
+//#include <ui_FWBMainWindow_q.h>
+//#include <ui_pagesetupdialog_q.h>
 
 #include "RCS.h"
 #include "HttpGet.h"
 #include "printerStream.h"
+#include "ObjectEditor.h"
 
-#include <qstring.h>
+#include <QString>
 #include <QShowEvent>
 #include <QHideEvent>
+#include <QMainWindow>
 
 #include <vector>
 #include <list>
 #include <set>
-
-namespace libfwbuilder {
-    class FWObjectDatabase;
-    class Firewall;
-    class PolicyRule;
-    class RuleSet;
-    class Rule;
-    class FWObject;
-    class FWReference;
-};
 
 class ObjectManipulator;
 class ObjectTreeView;
@@ -63,23 +55,50 @@ class QTabWidget;
 class QTextEdit;
 class QTimer;
 class QTreeWidgetItem;
+class QDockWidget;
+
 class RuleSetView;
 class findDialog;
+class FindObjectWidget;
+class FindWhereUsedWidget;
+
+namespace Ui {
+    class FWBMainWindow_q;
+    class pageSetupDialog_q;
+};
+
+namespace libfwbuilder {
+    class FWObjectDatabase;
+    class Firewall;
+    class PolicyRule;
+    class RuleSet;
+    class Rule;
+    class FWObject;
+    class FWReference;
+};
+
 
 #define MAXRECENTFILES 5
+#define EDITOR_PANEL_SEARCH_TAB 0
+#define EDITOR_PANEL_EDITOR_TAB 1
+
 
 class FWWindow : public QMainWindow {
 
-    Q_OBJECT
+    Q_OBJECT;
 
     Ui::pageSetupDialog_q *psd;
         
     QMdiArea *m_space;
+    QMdiSubWindow *previous_subwindow;
     QWidget *instd;
     HttpGet *current_version_http_getter;
     
     QTimer *instDialogOnScreenTimer;
     QString noFirewalls;
+
+    QWidget *editorOwner;
+
     QPrinter *printer;
     libfwbuilder::FWObject *searchObject;
     libfwbuilder::FWObject *replaceObject;
@@ -92,10 +111,15 @@ class FWWindow : public QMainWindow {
     void clearFirewallTabs();
     ProjectPanel *newProjectPanel();
     void showSub(ProjectPanel *projectW);
-    
+    void attachEditorToProjectPanel(ProjectPanel *pp);
+
 public:
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
+
+    ObjectEditor *oe;
+    FindObjectWidget *findObjectWidget;
+    FindWhereUsedWidget *findWhereUsedWidget;
 
     ProjectPanel* activeProject();
     void updateWindowTitle();
@@ -103,6 +127,8 @@ public:
     void updateRecentFileActions();
     void updateOpenRecentMenu(const QString &fileName);
 
+    void enableBackAction();
+    
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);
     void subWindowActivated(QMdiSubWindow*);
@@ -118,7 +144,6 @@ public slots:
     virtual void editUndo();
 
     virtual void toggleViewObjectTree();
-    virtual void toggleViewRules();
     virtual void toggleViewEditor();
 
     virtual void helpContents();
@@ -196,6 +221,9 @@ public slots:
     virtual void projectWindowClosed();
 
     void tableResolutionSettingChanged(int );
+
+    virtual void rollBackSelectionSameWidget();
+    virtual void rollBackSelectionDifferentWidget();
     
  public:
     Ui::FWBMainWindow_q *m_mainWindow;
@@ -234,9 +262,9 @@ public slots:
     QString getCurrentFileName();
     
     void setupAutoSave();
-    void findObject(libfwbuilder::FWObject *);
 
-    void findWhereUsed(libfwbuilder::FWObject *);
+    void findObject(libfwbuilder::FWObject *);
+    void findWhereUsed(libfwbuilder::FWObject *obj, ProjectPanel *pp);
     
     bool exportLibraryTest(std::list<libfwbuilder::FWObject*> &selectedLibs);
     void exportLibraryTo(QString fname,std::list<libfwbuilder::FWObject*> &selectedLibs, bool rof);
@@ -305,13 +333,52 @@ public slots:
                                       QString firewallName,
                                       QString outputFileName);
 
+    //wrapers for some Object Editor functions
+    bool isEditorVisible();
+    bool isEditorModified();
+    
+    void showEditor();
+    void hideEditor();
+    void closeEditor();
+    
+    void openEditor(libfwbuilder::FWObject *o);
+    void openOptEditor(libfwbuilder::FWObject *, ObjectEditor::OptType t);
+    void blankEditor();
+    
+    libfwbuilder::FWObject* getOpenedEditor();
+    ObjectEditor::OptType getOpenedOptEditor();
+    
+    void selectObjectInEditor(libfwbuilder::FWObject *o);
+    void actionChangedEditor(libfwbuilder::FWObject *o);
+    bool validateAndSaveEditor();
 
+    virtual void closeEditorPanel();
+    virtual void openEditorPanel();
+    
+    bool requestEditorOwnership(QWidget *w,
+                                libfwbuilder::FWObject *o,
+                                ObjectEditor::OptType   otype,
+                                bool validate = true);
+    void releaseEditor();
+    void connectEditor(QWidget *w);
+
+    void singleRuleCompile(libfwbuilder::Rule *rule);
+
+    
  protected:
 
     virtual void showEvent(QShowEvent *ev);
     virtual void hideEvent(QHideEvent *ev);
     virtual void closeEvent(QCloseEvent *ev);
     virtual bool event(QEvent *event);
+
+ protected slots:
+    void activatePreviousSubWindow();
+ 
+ signals:
+    void restoreSelection_sign(bool same_widget);
+
+
 };
 
 #endif

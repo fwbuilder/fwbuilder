@@ -29,23 +29,21 @@
 
 #include "../../config.h"
 #include <ui_tcpservicedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
 
-class TCPServiceDialog : public QWidget
+class TCPServiceDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     Ui::TCPServiceDialog_q *m_dialog;
-    bool init;
-    ProjectPanel *m_project;
 
  public:
-    TCPServiceDialog(ProjectPanel *project, QWidget *parent);
+    TCPServiceDialog(QWidget *parent);
     ~TCPServiceDialog();
     
 public slots:

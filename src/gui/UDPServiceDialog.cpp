@@ -48,7 +48,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-UDPServiceDialog::UDPServiceDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+UDPServiceDialog::UDPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::UDPServiceDialog_q;
     m_dialog->setupUi(this);

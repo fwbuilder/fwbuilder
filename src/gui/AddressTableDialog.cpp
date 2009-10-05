@@ -61,7 +61,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-AddressTableDialog::AddressTableDialog(ProjectPanel *project, QWidget *parent) : QWidget(parent), m_project(project)
+AddressTableDialog::AddressTableDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::AddressTableDialog_q;
     m_dialog->setupUi(this);

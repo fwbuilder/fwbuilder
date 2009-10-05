@@ -60,7 +60,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-ActionsDialog::ActionsDialog(QWidget *parent) : QWidget(parent)
+ActionsDialog::ActionsDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::ActionsDialog_q;
     m_dialog->setupUi(this);

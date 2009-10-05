@@ -62,8 +62,8 @@
 using namespace std;
 using namespace libfwbuilder;
 
-InterfaceDialog::InterfaceDialog(ProjectPanel *project, QWidget *parent) :
-        QWidget(parent), m_project(project)
+InterfaceDialog::InterfaceDialog(QWidget *parent) :
+        BaseObjectDialog(parent)
 {
     m_dialog = new Ui::InterfaceDialog_q;
     m_dialog->setupUi(this);

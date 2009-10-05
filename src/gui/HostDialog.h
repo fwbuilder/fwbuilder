@@ -29,24 +29,22 @@
 
 #include "../../config.h"
 #include <ui_hostdialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 class ProjectPanel;
 
-class HostDialog : public QWidget
+class HostDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     bool modified;
     Ui::HostDialog_q *m_dialog;
-    ProjectPanel *m_project;
 
  public:
-    HostDialog(ProjectPanel *project, QWidget *parent);
+    HostDialog(QWidget *parent);
     ~HostDialog();
     
 public slots:

@@ -29,23 +29,21 @@
 
 #include "../../config.h"
 #include <ui_icmpservicedialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"
 
 
 class ProjectPanel;
-class ICMPServiceDialog : public QWidget
+class ICMPServiceDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
-    bool init;
     Ui::ICMPServiceDialog_q *m_dialog;
     
-    ProjectPanel *m_project;
  public:
-     ICMPServiceDialog(ProjectPanel *project, QWidget *parent);
+     ICMPServiceDialog(QWidget *parent);
      ~ICMPServiceDialog();
     
 public slots:

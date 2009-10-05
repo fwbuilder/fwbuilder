@@ -27,6 +27,7 @@
 
 #include "../../config.h"
 #include <ui_natruleoptionsdialog_q.h>
+#include "BaseObjectdialog.h"
 #include <QWidget>
 
 #include "DialogData.h"
@@ -36,21 +37,17 @@
 class RuleSetView;
 
 class ProjectPanel;
-class NATRuleOptionsDialog : public QWidget
+class NATRuleOptionsDialog : public BaseObjectDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-    libfwbuilder::FWObject *obj;
     DialogData              data;
     QString                 platform;
     RuleSetView            *rsv;
     Ui::NATRuleOptionsDialog_q *m_dialog;
-    ProjectPanel *m_project;
     
-    bool init;
-
  public:
-    NATRuleOptionsDialog(ProjectPanel *project, QWidget *parent);
+    NATRuleOptionsDialog(QWidget *parent);
     ~NATRuleOptionsDialog();
     
 public slots:
