@@ -30,7 +30,7 @@
 #include "../../config.h"
 
 #include <ui_ipservicedialog_q.h>
-#include "BaseObjectdialog.h"
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 #include "fwbuilder/FWObject.h"

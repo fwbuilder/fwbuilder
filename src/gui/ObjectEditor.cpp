@@ -40,7 +40,7 @@
 #include <qpushbutton.h>
 
 #include "FWWindow.h"
-#include "BaseObjectdialog.h"
+#include "BaseObjectDialog.h"
 #include "DialogFactory.h"
 #include "FWBTree.h"
 #include "ProjectPanel.h"

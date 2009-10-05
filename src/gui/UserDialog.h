@@ -29,7 +29,7 @@
 
 #include "../../config.h"
 #include <ui_userdialog_q.h>
-#include "BaseObjectdialog.h"
+#include "BaseObjectDialog.h"
 
 #include <QWidget>
 

@@ -36,7 +36,7 @@
 #include "fwbuilder/FWObject.h"
 #include "ObjectListView.h"
 #include "ObjectIconView.h"
-#include "BaseObjectdialog.h"
+#include "BaseObjectDialog.h"
 #include <QWidget>
 
 class ObjectIconViewItem;
