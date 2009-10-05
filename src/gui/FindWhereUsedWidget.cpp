@@ -242,16 +242,18 @@ void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
     set<FWObject*>::iterator i = resset.begin();
     for (;i!=resset.end();++i)
     {
+        FWObject *obj = NULL;
         FWReference  *ref = FWReference::cast(*i);
         if (ref)
         {
-            FWObject *o = ref->getParent();  // NB! We need parent of this ref.
-            tmp_res.insert(o);
-            if (fwbdebug)
-                qDebug("humanizeSearchResults: adding %s (%s)",
-                       o->getName().c_str(), o->getTypeName().c_str());
+            obj = ref->getParent();  // NB! We need parent of this ref.
         } else
-            tmp_res.insert(*i);
+            obj = *i;
+        if (fwbdebug)
+            qDebug() << "humanizeSearchResults: adding "
+                     << obj->getName().c_str()
+                     << " (" << obj->getTypeName().c_str() << ")";
+        tmp_res.insert(obj);
     }
     resset.clear();
     resset = tmp_res;
