@@ -199,6 +199,18 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     m_mainWindow->auxiliaryPanel->layout()->addWidget( findWhereUsedWidget );
     findWhereUsedWidget->hide();
 
+
+#if defined(Q_WS_X11) 
+    // Designer adds editorDockWidget to the child widget of the main
+    // window and I can't seem to be able to get rid of this
+    // intermediatery child widget (named "widget"). Reparent editor
+    // dock panel.
+    m_mainWindow->editorDockWidget->setParent(this);
+    addDockWidget(Qt::BottomDockWidgetArea, m_mainWindow->editorDockWidget);
+    m_mainWindow->editorDockWidget->hide();
+#endif
+
+
     oe  = new ObjectEditor((QWidget*)m_mainWindow->objectEditorStack);
     //oe->setCloseButton(m_panel->closeObjectEditorButton);
     oe->setApplyButton(m_mainWindow->applyObjectEditorButton);
@@ -418,6 +430,8 @@ void FWWindow::updateWindowTitle()
 
 void FWWindow::startupLoad()
 {
+
+
     if (st->getCheckUpdates())
     {
         // start http query to get latest version from the web site
