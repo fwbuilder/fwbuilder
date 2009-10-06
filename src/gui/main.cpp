@@ -48,8 +48,6 @@
 #include <QDir>
 #include <QTranslator>
 #include <QLibraryInfo>
-#include <QStyle>
-#include <QMacStyle>
 #include <QtDebug>
 
 /*
