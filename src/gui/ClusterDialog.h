@@ -38,6 +38,7 @@ class ClusterDialog : public BaseObjectDialog
     void resetSingleClusterGroupType(libfwbuilder::FWObject *grp,
                                      std::list<QStringPair> &allowed_types);
     void resetClusterGroupTypes();
+    void updateTimeStamps();
     
 public:
     ClusterDialog(QWidget *parent);

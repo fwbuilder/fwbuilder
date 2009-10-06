@@ -30,6 +30,7 @@
 #include "fwbuilder/Interface.h"
 
 #include <qmessagebox.h>
+#include <QDateTime>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -65,6 +66,8 @@ void ClusterDialog::loadFWObject(FWObject *o)
     // fill in host OS
     setHostOS(m_dialog->hostOS, platform, obj->getStr("host_OS").c_str());
 
+    updateTimeStamps();
+
     /*
       Management *mgmt = s->getManagementObject();
       assert(mgmt != NULL);
@@ -98,6 +101,24 @@ void ClusterDialog::loadFWObject(FWObject *o)
 
     m_dialog->inactive->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->inactive);
+}
+
+void ClusterDialog::updateTimeStamps()
+{
+    QDateTime dt;
+    time_t t;
+            
+    t = obj->getInt("lastModified");
+    dt.setTime_t(t);
+    m_dialog->last_modified->setText((t)? dt.toString():"-");
+            
+    t = obj->getInt("lastCompiled");
+    dt.setTime_t(t);
+    m_dialog->last_compiled->setText((t)? dt.toString():"-");
+            
+    t = obj->getInt("lastInstalled");
+    dt.setTime_t(t);
+    m_dialog->last_installed->setText((t)? dt.toString():"-");
 }
 
 void ClusterDialog::platformChanged()
@@ -203,7 +224,7 @@ void ClusterDialog::applyChanges()
     }
 
     BaseObjectDialog::applyChanges();
-
+    updateTimeStamps();
 }
 
 void ClusterDialog::discardChanges()

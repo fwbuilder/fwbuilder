@@ -57,6 +57,7 @@
 #include <qtabwidget.h>
 #include <qlabel.h>
 #include <qtimer.h>
+#include <QDateTime>
 
 #include <iostream>
 
@@ -99,6 +100,7 @@ void FirewallDialog::loadFWObject(FWObject *o)
     setHostOS(m_dialog->hostOS, platform, obj->getStr("host_OS").c_str());
 
 /* ---------------- */
+    updateTimeStamps();
 
     Management *mgmt=s->getManagementObject();
     assert(mgmt!=NULL);
@@ -140,6 +142,24 @@ void FirewallDialog::loadFWObject(FWObject *o)
 
 
     init=false;
+}
+
+void FirewallDialog::updateTimeStamps()
+{
+    QDateTime dt;
+    time_t t;
+            
+    t = obj->getInt("lastModified");
+    dt.setTime_t(t);
+    m_dialog->last_modified->setText((t)? dt.toString():"-");
+            
+    t = obj->getInt("lastCompiled");
+    dt.setTime_t(t);
+    m_dialog->last_compiled->setText((t)? dt.toString():"-");
+            
+    t = obj->getInt("lastInstalled");
+    dt.setTime_t(t);
+    m_dialog->last_installed->setText((t)? dt.toString():"-");
 }
 
 /* fill in version */
@@ -305,6 +325,7 @@ void FirewallDialog::applyChanges()
     }
 
     BaseObjectDialog::applyChanges();
+    updateTimeStamps();
 }
 
 void FirewallDialog::discardChanges()

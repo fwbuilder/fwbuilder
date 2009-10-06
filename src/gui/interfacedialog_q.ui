@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>956</width>
-    <height>275</height>
+    <width>922</width>
+    <height>262</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -23,27 +23,30 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2" >
    <property name="margin" >
-    <number>0</number>
+    <number>12</number>
    </property>
    <item row="0" column="0" >
     <widget class="QFrame" name="frame7" >
      <property name="sizePolicy" >
-      <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="frameShape" >
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Box</enum>
      </property>
      <property name="frameShadow" >
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_4" >
+      <property name="spacing" >
+       <number>12</number>
+      </property>
       <item rowspan="2" row="0" column="0" >
        <widget class="QFrame" name="frame26" >
         <property name="sizePolicy" >
-         <sizepolicy vsizetype="Expanding" hsizetype="Fixed" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -51,7 +54,7 @@
         <property name="minimumSize" >
          <size>
           <width>300</width>
-          <height>105</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize" >
@@ -66,75 +69,82 @@
         <property name="frameShadow" >
          <enum>QFrame::Sunken</enum>
         </property>
-        <layout class="QGridLayout" name="gridLayout_3" >
-         <property name="margin" >
-          <number>8</number>
+        <layout class="QGridLayout" name="gridLayout_5" >
+         <property name="horizontalSpacing" >
+          <number>-1</number>
          </property>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="textLabel1" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text" >
-            <string>Name:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" colspan="2" >
-          <widget class="QLineEdit" name="obj_name" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-             <horstretch>200</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>0</width>
-             <height>23</height>
-            </size>
-           </property>
-          </widget>
+         <property name="verticalSpacing" >
+          <number>4</number>
+         </property>
+         <item row="0" column="0" colspan="2" >
+          <layout class="QGridLayout" name="gridLayout_3" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="textLabel1" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Name:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QLineEdit" name="obj_name" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>200</width>
+               <height>23</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="textLabel2_2" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Label:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QLineEdit" name="label" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>200</width>
+               <height>23</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item row="1" column="0" >
-          <widget class="QLabel" name="textLabel2_2" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text" >
-            <string>Label:</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" colspan="2" >
-          <widget class="QLineEdit" name="label" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>0</width>
-             <height>23</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="2" >
           <widget class="QLabel" name="seclevelLabel" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -156,7 +166,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="2" >
+         <item row="1" column="1" >
           <widget class="QSpinBox" name="seclevel" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -185,7 +195,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="3" >
+         <item row="2" column="0" colspan="2" >
           <widget class="QLabel" name="netzoneLabel" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -201,7 +211,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
            </property>
           </widget>
          </item>
-         <item row="4" column="1" colspan="2" >
+         <item row="3" column="0" colspan="2" >
           <widget class="QComboBox" name="netzone" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -212,7 +222,7 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
            <property name="minimumSize" >
             <size>
              <width>0</width>
-             <height>0</height>
+             <height>26</height>
             </size>
            </property>
            <property name="toolTip" >
@@ -227,19 +237,6 @@ If network zone for this interface consists of only one subnet, you can simply c
            </property>
           </widget>
          </item>
-         <item row="5" column="1" >
-          <spacer name="verticalSpacer" >
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0" >
-            <size>
-             <width>20</width>
-             <height>70</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
        </widget>
       </item>
@@ -251,6 +248,12 @@ If network zone for this interface consists of only one subnet, you can simply c
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize" >
+         <size>
+          <width>250</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="title" >
          <string/>
         </property>
@@ -258,8 +261,14 @@ If network zone for this interface consists of only one subnet, you can simply c
          <bool>false</bool>
         </property>
         <layout class="QGridLayout" name="gridLayout" >
+         <property name="topMargin" >
+          <number>6</number>
+         </property>
+         <property name="bottomMargin" >
+          <number>6</number>
+         </property>
          <property name="verticalSpacing" >
-          <number>12</number>
+          <number>6</number>
          </property>
          <item row="0" column="0" >
           <widget class="QCheckBox" name="management" >
@@ -305,7 +314,7 @@ If network zone for this interface consists of only one subnet, you can simply c
          <item row="5" column="0" >
           <widget class="QLabel" name="bridge_port_label" >
            <property name="sizePolicy" >
-            <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -356,6 +365,12 @@ If network zone for this interface consists of only one subnet, you can simply c
          <size>
           <width>200</width>
           <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>16777215</width>
+          <height>180</height>
          </size>
         </property>
         <property name="tabChangesFocus" >

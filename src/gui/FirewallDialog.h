@@ -44,7 +44,7 @@ class FirewallDialog : public BaseObjectDialog
     
     void fillVersion();
     void saveVersion();
-
+    void updateTimeStamps();
     
  public:
      FirewallDialog(QWidget *parent);
