@@ -104,4 +104,7 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>changed()</slot>
+ </slots>
 </ui>

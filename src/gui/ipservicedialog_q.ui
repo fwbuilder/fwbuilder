@@ -21,249 +21,235 @@
   <property name="windowTitle" >
    <string>IP</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>2</number>
-   </property>
-   <property name="spacing" >
-    <number>2</number>
-   </property>
+  <layout class="QGridLayout" name="gridLayout" >
    <item row="0" column="0" >
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
-      <number>2</number>
+    <widget class="QFrame" name="frame7" >
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
      </property>
-     <item>
-      <widget class="QFrame" name="frame7" >
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QGridLayout" >
-        <item rowspan="2" row="0" column="0" >
-         <widget class="QFrame" name="frame35" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>300</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>300</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="frameShape" >
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow" >
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <layout class="QGridLayout" >
-           <property name="spacing" >
-            <number>12</number>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <item rowspan="2" row="0" column="0" >
+       <widget class="QFrame" name="frame35" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>300</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>300</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <layout class="QGridLayout" >
+         <property name="spacing" >
+          <number>12</number>
+         </property>
+         <item row="0" column="0" >
+          <widget class="QLabel" name="textLabel1" >
+           <property name="text" >
+            <string>Name:</string>
            </property>
-           <item row="0" column="0" >
-            <widget class="QLabel" name="textLabel1" >
-             <property name="text" >
-              <string>Name:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1" colspan="2" >
-            <widget class="QLineEdit" name="obj_name" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-               <horstretch>200</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2" >
-            <widget class="QLabel" name="textLabel3" >
-             <property name="text" >
-              <string>Protocol number: (0=any)</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2" >
-            <widget class="QSpinBox" name="protocolNum" >
-             <property name="maximum" >
-              <number>255</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="3" >
-            <widget class="QGroupBox" name="groupBox" >
-             <property name="title" >
-              <string>DiffServ</string>
-             </property>
-             <layout class="QGridLayout" >
-              <item row="0" column="0" >
-               <widget class="QRadioButton" name="use_dscp" >
-                <property name="text" >
-                 <string>Use DSCP</string>
-                </property>
-                <property name="checked" >
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" >
-               <widget class="QRadioButton" name="use_tos" >
-                <property name="text" >
-                 <string>Use TOS</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" >
-               <widget class="QLabel" name="code_label" >
-                <property name="text" >
-                 <string>DSCP or TOS code
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="2" >
+          <widget class="QLineEdit" name="obj_name" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+             <horstretch>200</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2" >
+          <widget class="QLabel" name="textLabel3" >
+           <property name="text" >
+            <string>Protocol number: (0=any)</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2" >
+          <widget class="QSpinBox" name="protocolNum" >
+           <property name="maximum" >
+            <number>255</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="3" >
+          <widget class="QGroupBox" name="groupBox" >
+           <property name="title" >
+            <string>DiffServ</string>
+           </property>
+           <layout class="QGridLayout" >
+            <item row="0" column="0" >
+             <widget class="QRadioButton" name="use_dscp" >
+              <property name="text" >
+               <string>Use DSCP</string>
+              </property>
+              <property name="checked" >
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1" >
+             <widget class="QRadioButton" name="use_tos" >
+              <property name="text" >
+               <string>Use TOS</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" >
+             <widget class="QLabel" name="code_label" >
+              <property name="text" >
+               <string>DSCP or TOS code
 (numerical, dec or hex):</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1" >
-               <widget class="QLineEdit" name="code" />
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item rowspan="2" row="0" column="1" >
-         <widget class="QFrame" name="frame34" >
-          <property name="frameShape" >
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow" >
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <layout class="QGridLayout" >
-           <item row="0" column="0" >
-            <widget class="QGroupBox" name="buttonGroup2" >
-             <property name="title" >
-              <string/>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-             <layout class="QGridLayout" >
-              <item row="0" column="0" >
-               <widget class="QCheckBox" name="lsrr" >
-                <property name="text" >
-                 <string>lsrr (loose source route)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" >
-               <widget class="QCheckBox" name="ssrr" >
-                <property name="text" >
-                 <string>ssrr (strict source route)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0" >
-               <widget class="QCheckBox" name="rr" >
-                <property name="text" >
-                 <string>rr (record route)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0" >
-               <widget class="QCheckBox" name="timestamp" >
-                <property name="text" >
-                 <string>timestamp</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0" >
-               <widget class="QCheckBox" name="all_fragments" >
-                <property name="text" >
-                 <string>all fragments</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0" >
-               <widget class="QCheckBox" name="short_fragments" >
-                <property name="text" >
-                 <string>'short' fragments</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="2" >
-         <widget class="QLabel" name="textLabel2" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>Comment:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2" >
-         <widget class="QTextEdit" name="comment" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-            <horstretch>0</horstretch>
-            <verstretch>100</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="tabChangesFocus" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1" >
+             <widget class="QLineEdit" name="code" />
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item rowspan="2" row="0" column="1" >
+       <widget class="QFrame" name="frame34" >
+        <property name="frameShape" >
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <layout class="QGridLayout" >
+         <item row="0" column="0" >
+          <widget class="QGroupBox" name="buttonGroup2" >
+           <property name="title" >
+            <string/>
+           </property>
+           <property name="flat" >
+            <bool>true</bool>
+           </property>
+           <layout class="QGridLayout" >
+            <item row="0" column="0" >
+             <widget class="QCheckBox" name="lsrr" >
+              <property name="text" >
+               <string>lsrr (loose source route)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" >
+             <widget class="QCheckBox" name="ssrr" >
+              <property name="text" >
+               <string>ssrr (strict source route)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" >
+             <widget class="QCheckBox" name="rr" >
+              <property name="text" >
+               <string>rr (record route)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" >
+             <widget class="QCheckBox" name="timestamp" >
+              <property name="text" >
+               <string>timestamp</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0" >
+             <widget class="QCheckBox" name="all_fragments" >
+              <property name="text" >
+               <string>all fragments</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0" >
+             <widget class="QCheckBox" name="short_fragments" >
+              <property name="text" >
+               <string>'short' fragments</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QLabel" name="textLabel2" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text" >
+         <string>Comment:</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QTextEdit" name="comment" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>100</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="tabChangesFocus" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>protocolNum</tabstop>
@@ -278,6 +264,7 @@
   <tabstop>short_fragments</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
+ <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>

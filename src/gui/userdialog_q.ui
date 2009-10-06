@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>859</width>
-    <height>267</height>
+    <height>272</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -23,7 +23,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout" >
    <property name="margin" >
-    <number>0</number>
+    <number>12</number>
    </property>
    <item row="0" column="0" >
     <widget class="QFrame" name="frame7" >
@@ -34,7 +34,7 @@
       </sizepolicy>
      </property>
      <property name="frameShape" >
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Box</enum>
      </property>
      <property name="frameShadow" >
       <enum>QFrame::Sunken</enum>
@@ -172,12 +172,12 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>userid</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
+ <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>

@@ -15,447 +15,433 @@
   <property name="windowTitle" >
    <string>Time</string>
   </property>
-  <layout class="QHBoxLayout" >
-   <property name="spacing" >
-    <number>2</number>
-   </property>
-   <property name="margin" >
-    <number>2</number>
-   </property>
-   <item>
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
-      <number>2</number>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="0" >
+    <widget class="QFrame" name="frame7" >
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
      </property>
-     <item>
-      <widget class="QFrame" name="frame7" >
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QGridLayout" >
-        <item rowspan="2" row="0" column="0" >
-         <widget class="QFrame" name="frame32" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>300</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>300</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="frameShape" >
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow" >
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <layout class="QGridLayout" >
-           <item row="0" column="0" >
-            <widget class="QLabel" name="textLabel1" >
-             <property name="text" >
-              <string>Name:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1" >
-            <widget class="QLineEdit" name="obj_name" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-               <horstretch>200</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::MinimumExpanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>20</width>
-               <height>5</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item rowspan="2" row="0" column="1" >
-         <widget class="QFrame" name="frame18" >
-          <property name="minimumSize" >
-           <size>
-            <width>350</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="frameShape" >
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow" >
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <layout class="QVBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <item rowspan="2" row="0" column="0" >
+       <widget class="QFrame" name="frame32" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>300</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>300</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <layout class="QGridLayout" >
+         <item row="0" column="0" >
+          <widget class="QLabel" name="textLabel1" >
+           <property name="text" >
+            <string>Name:</string>
            </property>
-           <item>
-            <widget class="QGroupBox" name="groupBox2" >
-             <property name="title" >
-              <string/>
-             </property>
-             <layout class="QGridLayout" >
-              <property name="verticalSpacing" >
-               <number>2</number>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" >
+          <widget class="QLineEdit" name="obj_name" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+             <horstretch>200</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType" >
+            <enum>QSizePolicy::MinimumExpanding</enum>
+           </property>
+           <property name="sizeHint" stdset="0" >
+            <size>
+             <width>20</width>
+             <height>5</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item rowspan="2" row="0" column="1" >
+       <widget class="QFrame" name="frame18" >
+        <property name="minimumSize" >
+         <size>
+          <width>350</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <layout class="QVBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QGroupBox" name="groupBox2" >
+           <property name="title" >
+            <string/>
+           </property>
+           <layout class="QGridLayout" >
+            <property name="verticalSpacing" >
+             <number>2</number>
+            </property>
+            <property name="margin" >
+             <number>2</number>
+            </property>
+            <item row="0" column="0" >
+             <widget class="QCheckBox" name="useStartDate" >
+              <property name="text" >
+               <string/>
               </property>
-              <property name="margin" >
-               <number>2</number>
+             </widget>
+            </item>
+            <item row="0" column="1" >
+             <widget class="QLabel" name="label" >
+              <property name="text" >
+               <string>Start date:</string>
               </property>
-              <item row="0" column="0" >
-               <widget class="QCheckBox" name="useStartDate" >
-                <property name="text" >
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" >
-               <widget class="QLabel" name="label" >
-                <property name="text" >
-                 <string>Start date:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2" >
-               <widget class="QDateEdit" name="startDate" >
-                <property name="minimumSize" >
-                 <size>
-                  <width>0</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="displayFormat" >
-                 <string>M/d/yyyy</string>
-                </property>
-                <property name="calendarPopup" >
-                 <bool>true</bool>
-                </property>
-                <property name="date" >
-                 <date>
-                  <year>2000</year>
-                  <month>1</month>
-                  <day>1</day>
-                 </date>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3" >
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0" >
-                 <size>
-                  <width>101</width>
-                  <height>25</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="1" column="1" >
-               <widget class="QLabel" name="textLabel1_3" >
-                <property name="text" >
-                 <string>Start time:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2" >
-               <widget class="QTimeEdit" name="startTime" >
-                <property name="minimumSize" >
-                 <size>
-                  <width>0</width>
-                  <height>25</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="3" >
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0" >
-                 <size>
-                  <width>111</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox1" >
-             <property name="title" >
-              <string/>
-             </property>
-             <layout class="QGridLayout" >
-              <property name="verticalSpacing" >
-               <number>2</number>
+             </widget>
+            </item>
+            <item row="0" column="2" >
+             <widget class="QDateEdit" name="startDate" >
+              <property name="minimumSize" >
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
               </property>
-              <property name="margin" >
-               <number>2</number>
+              <property name="displayFormat" >
+               <string>M/d/yyyy</string>
               </property>
-              <item row="0" column="0" >
-               <widget class="QCheckBox" name="useEndDate" >
-                <property name="text" >
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" >
-               <widget class="QLabel" name="label_2" >
-                <property name="text" >
-                 <string>End date:  </string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2" >
-               <widget class="QDateEdit" name="endDate" >
-                <property name="minimumSize" >
-                 <size>
-                  <width>0</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="displayFormat" >
-                 <string>M/d/yyyy</string>
-                </property>
-                <property name="calendarPopup" >
-                 <bool>true</bool>
-                </property>
-                <property name="date" >
-                 <date>
-                  <year>2000</year>
-                  <month>1</month>
-                  <day>1</day>
-                 </date>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3" >
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0" >
-                 <size>
-                  <width>101</width>
-                  <height>25</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="1" column="1" >
-               <widget class="QLabel" name="textLabel1_3_2" >
-                <property name="text" >
-                 <string>End time:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2" >
-               <widget class="QTimeEdit" name="endTime" >
-                <property name="minimumSize" >
-                 <size>
-                  <width>0</width>
-                  <height>25</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="3" >
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0" >
-                 <size>
-                  <width>101</width>
-                  <height>25</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox" >
-             <property name="title" >
-              <string/>
-             </property>
-             <property name="flat" >
-              <bool>false</bool>
-             </property>
-             <layout class="QGridLayout" >
-              <property name="topMargin" >
-               <number>2</number>
+              <property name="calendarPopup" >
+               <bool>true</bool>
               </property>
-              <property name="bottomMargin" >
-               <number>2</number>
+              <property name="date" >
+               <date>
+                <year>2000</year>
+                <month>1</month>
+                <day>1</day>
+               </date>
               </property>
-              <property name="verticalSpacing" >
-               <number>0</number>
+             </widget>
+            </item>
+            <item row="0" column="3" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
               </property>
-              <item row="0" column="0" >
-               <widget class="QFrame" name="frame_2" >
-                <property name="frameShape" >
-                 <enum>QFrame::NoFrame</enum>
-                </property>
-                <property name="frameShadow" >
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" >
-                 <property name="margin" >
-                  <number>0</number>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>101</width>
+                <height>25</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1" >
+             <widget class="QLabel" name="textLabel1_3" >
+              <property name="text" >
+               <string>Start time:</string>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2" >
+             <widget class="QTimeEdit" name="startTime" >
+              <property name="minimumSize" >
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>111</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox1" >
+           <property name="title" >
+            <string/>
+           </property>
+           <layout class="QGridLayout" >
+            <property name="verticalSpacing" >
+             <number>2</number>
+            </property>
+            <property name="margin" >
+             <number>2</number>
+            </property>
+            <item row="0" column="0" >
+             <widget class="QCheckBox" name="useEndDate" >
+              <property name="text" >
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1" >
+             <widget class="QLabel" name="label_2" >
+              <property name="text" >
+               <string>End date:  </string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2" >
+             <widget class="QDateEdit" name="endDate" >
+              <property name="minimumSize" >
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="displayFormat" >
+               <string>M/d/yyyy</string>
+              </property>
+              <property name="calendarPopup" >
+               <bool>true</bool>
+              </property>
+              <property name="date" >
+               <date>
+                <year>2000</year>
+                <month>1</month>
+                <day>1</day>
+               </date>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>101</width>
+                <height>25</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1" >
+             <widget class="QLabel" name="textLabel1_3_2" >
+              <property name="text" >
+               <string>End time:</string>
+              </property>
+              <property name="wordWrap" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2" >
+             <widget class="QTimeEdit" name="endTime" >
+              <property name="minimumSize" >
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>101</width>
+                <height>25</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox" >
+           <property name="title" >
+            <string/>
+           </property>
+           <property name="flat" >
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" >
+            <property name="topMargin" >
+             <number>2</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>2</number>
+            </property>
+            <property name="verticalSpacing" >
+             <number>0</number>
+            </property>
+            <item row="0" column="0" >
+             <widget class="QFrame" name="frame_2" >
+              <property name="frameShape" >
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow" >
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" >
+               <property name="margin" >
+                <number>0</number>
+               </property>
+               <property name="spacing" >
+                <number>0</number>
+               </property>
+               <item row="0" column="0" >
+                <widget class="QCheckBox" name="cbStart1_2" >
+                 <property name="text" >
+                  <string>Mon</string>
                  </property>
-                 <property name="spacing" >
-                  <number>0</number>
+                </widget>
+               </item>
+               <item row="0" column="1" >
+                <widget class="QCheckBox" name="cbStart2_2" >
+                 <property name="text" >
+                  <string>Tue</string>
                  </property>
-                 <item row="0" column="0" >
-                  <widget class="QCheckBox" name="cbStart1_2" >
-                   <property name="text" >
-                    <string>Mon</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1" >
-                  <widget class="QCheckBox" name="cbStart2_2" >
-                   <property name="text" >
-                    <string>Tue</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="2" >
-                  <widget class="QCheckBox" name="cbStart3_2" >
-                   <property name="text" >
-                    <string>Wed</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="3" >
-                  <widget class="QCheckBox" name="cbStart4_2" >
-                   <property name="text" >
-                    <string>Thu</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="4" >
-                  <widget class="QCheckBox" name="cbStart5_2" >
-                   <property name="text" >
-                    <string>Fri</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="5" >
-                  <widget class="QCheckBox" name="cbStart6_2" >
-                   <property name="text" >
-                    <string>Sat</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="6" >
-                  <widget class="QCheckBox" name="cbStart7_2" >
-                   <property name="text" >
-                    <string>Sun</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="2" >
-         <widget class="QLabel" name="textLabel2" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>Comment:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2" >
-         <widget class="QTextEdit" name="comment" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-            <horstretch>0</horstretch>
-            <verstretch>100</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>50</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="tabChangesFocus" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
+                </widget>
+               </item>
+               <item row="0" column="2" >
+                <widget class="QCheckBox" name="cbStart3_2" >
+                 <property name="text" >
+                  <string>Wed</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3" >
+                <widget class="QCheckBox" name="cbStart4_2" >
+                 <property name="text" >
+                  <string>Thu</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="4" >
+                <widget class="QCheckBox" name="cbStart5_2" >
+                 <property name="text" >
+                  <string>Fri</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="5" >
+                <widget class="QCheckBox" name="cbStart6_2" >
+                 <property name="text" >
+                  <string>Sat</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="6" >
+                <widget class="QCheckBox" name="cbStart7_2" >
+                 <property name="text" >
+                  <string>Sun</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QLabel" name="textLabel2" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text" >
+         <string>Comment:</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QTextEdit" name="comment" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>100</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="tabChangesFocus" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>startDate</tabstop>
@@ -464,6 +450,7 @@
   <tabstop>endTime</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
+ <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>

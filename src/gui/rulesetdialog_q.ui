@@ -267,11 +267,11 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="2" margin="2" />
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
+ <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>

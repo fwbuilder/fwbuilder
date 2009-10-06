@@ -402,7 +402,6 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>platform</tabstop>
@@ -413,6 +412,7 @@
   <tabstop>inactive</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
+ <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>
