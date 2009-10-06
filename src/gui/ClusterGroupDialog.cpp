@@ -357,7 +357,16 @@ void ClusterGroupDialog::openParametersEditor()
 
     if (dlg)
     {
-        dlg->exec();
+        if (dlg->exec() == QDialog::Accepted)
+        {
+            // modal dialog, dialog saves data into the object
+            
+            // update object tree (if protocol type has changed, the
+            // object properties summary text may have to change too)
+            mw->activeProject()->updateObjectInTree(obj, true);
+            changed();
+            BaseObjectDialog::applyChanges();
+        }
         delete dlg;
     }
 }

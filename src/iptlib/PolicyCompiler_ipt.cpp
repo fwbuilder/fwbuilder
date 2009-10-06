@@ -4811,6 +4811,7 @@ void PolicyCompiler_ipt::insertFailoverRule()
                         Interface *other_iface =
                             Interface::cast(FWObjectReference::getObject(*it));
                         assert(other_iface);
+                        if (other_iface->getId() == fw_iface->getId()) continue;
                         rule = addMgmtRule(other_iface,
                                            fw_iface,
                                            heartbeat_srv,

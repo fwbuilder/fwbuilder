@@ -321,7 +321,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     //apply->setEnabled( false );
 
-    init=false;
+    init = false;
 }
 
 void InterfaceDialog::validate(bool *res)
@@ -371,8 +371,6 @@ void InterfaceDialog::validate(bool *res)
 
     delete int_prop;
 }
-
-
 
 void InterfaceDialog::applyChanges()
 {
@@ -451,11 +449,13 @@ void InterfaceDialog::openIfaceDialog()
         {
             // modal dialog, dialog saves data into the object
             
-            // update object tree (if interface type has changed, the object properties
-            // summary text may have to change too)
+            // update object tree (if interface type has changed, the
+            // object properties summary text may have to change too)
             mw->activeProject()->updateObjectInTree(obj, true);
+            changed();
             BaseObjectDialog::applyChanges();
         }
+        delete w;
     }
     catch (FWException &ex)
     {
