@@ -43,13 +43,14 @@ class CommentEditorPanel : public BaseObjectDialog
 
  public:
 
-    CommentEditorPanel(QWidget *p,bool enableLoadFromFile);
+    CommentEditorPanel(QWidget *p);
     ~CommentEditorPanel();
     libfwbuilder::Rule *rule;
 
+    void setFileInput(bool enableLoadFromFile);
+
     QString text();
     void setText(QString s);
-    void setTitle(QString s);
 
 public slots:
      virtual void loadFromFile();

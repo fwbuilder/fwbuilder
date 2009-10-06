@@ -13,22 +13,10 @@
    <string>NAT Rule Options</string>
   </property>
   <layout class="QGridLayout" >
-   <property name="leftMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>2</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>2</number>
-   </property>
-   <property name="verticalSpacing" >
+   <property name="spacing" >
     <number>2</number>
    </property>
    <item row="0" column="0" >
@@ -36,76 +24,6 @@
      <property name="spacing" >
       <number>2</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QFrame" name="frame3" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>16</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>2</number>
-        </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="editorTitle" >
-          <property name="font" >
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text" >
-           <string>fw/rule num</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
      <item>
       <widget class="QStackedWidget" name="widgetStack" >
        <property name="frameShape" >
@@ -114,21 +32,15 @@
        <property name="frameShadow" >
         <enum>QFrame::Sunken</enum>
        </property>
+       <property name="currentIndex" >
+        <number>0</number>
+       </property>
        <widget class="QWidget" name="WStackPage" >
         <layout class="QVBoxLayout" >
          <property name="spacing" >
           <number>2</number>
          </property>
-         <property name="leftMargin" >
-          <number>2</number>
-         </property>
-         <property name="topMargin" >
-          <number>2</number>
-         </property>
-         <property name="rightMargin" >
-          <number>2</number>
-         </property>
-         <property name="bottomMargin" >
+         <property name="margin" >
           <number>2</number>
          </property>
          <item>
@@ -140,22 +52,10 @@
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QGridLayout" >
-            <property name="leftMargin" >
+            <property name="margin" >
              <number>2</number>
             </property>
-            <property name="topMargin" >
-             <number>2</number>
-            </property>
-            <property name="rightMargin" >
-             <number>2</number>
-            </property>
-            <property name="bottomMargin" >
-             <number>2</number>
-            </property>
-            <property name="horizontalSpacing" >
-             <number>2</number>
-            </property>
-            <property name="verticalSpacing" >
+            <property name="spacing" >
              <number>2</number>
             </property>
             <item row="2" column="0" colspan="3" >
@@ -176,7 +76,7 @@
               <property name="sizeType" >
                <enum>QSizePolicy::MinimumExpanding</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>0</height>
@@ -191,22 +91,13 @@
        </widget>
        <widget class="QWidget" name="pfNATRuleOptions" >
         <layout class="QGridLayout" >
-         <property name="leftMargin" >
-          <number>2</number>
-         </property>
-         <property name="topMargin" >
-          <number>2</number>
-         </property>
-         <property name="rightMargin" >
-          <number>2</number>
-         </property>
-         <property name="bottomMargin" >
-          <number>2</number>
-         </property>
          <property name="horizontalSpacing" >
-          <number>2</number>
+          <number>12</number>
          </property>
          <property name="verticalSpacing" >
+          <number>2</number>
+         </property>
+         <property name="margin" >
           <number>2</number>
          </property>
          <item row="3" column="0" >
@@ -217,7 +108,7 @@
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>20</width>
              <height>20</height>
@@ -238,13 +129,13 @@
            </property>
            <layout class="QGridLayout" >
             <property name="leftMargin" >
-             <number>0</number>
+             <number>12</number>
             </property>
             <property name="topMargin" >
              <number>0</number>
             </property>
             <property name="rightMargin" >
-             <number>0</number>
+             <number>12</number>
             </property>
             <property name="bottomMargin" >
              <number>0</number>
@@ -253,7 +144,7 @@
              <number>2</number>
             </property>
             <property name="verticalSpacing" >
-             <number>2</number>
+             <number>8</number>
             </property>
             <item row="0" column="0" >
              <widget class="QRadioButton" name="pf_pool_type_none" >
@@ -304,7 +195,7 @@
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>81</width>
              <height>20</height>
@@ -320,7 +211,7 @@
            <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>20</width>
              <height>130</height>
@@ -343,7 +234,7 @@
            <property name="sizeType" >
             <enum>QSizePolicy::Fixed</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>20</width>
              <height>10</height>
@@ -365,7 +256,7 @@
      <property name="sizeType" >
       <enum>QSizePolicy::MinimumExpanding</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>0</width>
        <height>20</height>

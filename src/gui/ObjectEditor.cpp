@@ -31,6 +31,11 @@
 
 #include "ObjectEditor.h"
 
+#include <FirewallDialog.h>
+#include <InterfaceDialog.h>
+
+
+
 #include <qobject.h>
 #include <qpixmap.h>
 #include <qmessagebox.h>
@@ -38,6 +43,8 @@
 #include <qlayout.h>
 #include <qstackedwidget.h>
 #include <qpushbutton.h>
+#include <QtDebug>
+#include <QCoreApplication>
 
 #include "FWWindow.h"
 #include "BaseObjectDialog.h"
@@ -108,178 +115,115 @@ ObjectEditor::ObjectEditor( QWidget *parent):
     m_project(0),
     openedOpt(optNone)
 {
+    /*
+     * To add a dialog for the new object type:
+     *
+     * - In Designer:
+     *   - create new dialog, inherit from QWidget, e.g. class FooDialog
+     *   - add new page to objectEditorStack in FWBMainWindow_q
+     *   - drop QWidget into this page
+     *   - promote this widget to class FooDialog, include file FooDialog.h
+     *   - set name of this widget to "w_FooDialog"
+     *   - add grid layout to the stack page, set all margins to 0
+     * - Add call to registerObjectDialog() here using name "w_FooDialog"
+     */
+    registerObjectDialog(parentWidget, Firewall::TYPENAME, "w_FirewallDialog");
+    registerObjectDialog(parentWidget, Interface::TYPENAME, "w_InterfaceDialog");
+    registerObjectDialog(parentWidget, UserService::TYPENAME, "w_UserDialog");
+    registerObjectDialog(parentWidget, Policy::TYPENAME, "w_PolicyDialog");
+    registerObjectDialog(parentWidget, NAT::TYPENAME, "w_NATDialog");
+    registerObjectDialog(parentWidget, Routing::TYPENAME, "w_RoutingDialog");
 
-#if defined(Q_WS_X11)
-/* do something that makes sense only on X11 */
+    registerObjectDialog(parentWidget, Library::TYPENAME, "w_LibraryDialog");
+    registerObjectDialog(parentWidget, IPv4::TYPENAME, "w_IPv4Dialog");
+    registerObjectDialog(parentWidget, IPv6::TYPENAME, "w_IPv6Dialog");
+    registerObjectDialog(parentWidget, physAddress::TYPENAME, "w_PhysicalAddressDialog");
+    registerObjectDialog(parentWidget, AddressRange::TYPENAME, "w_AddressRangeDialog");
+    registerObjectDialog(parentWidget, Cluster::TYPENAME, "w_ClusterDialog");
+    registerObjectDialog(parentWidget, FailoverClusterGroup::TYPENAME,
+                         "w_FailoverClusterGroupDialog");
+    registerObjectDialog(parentWidget, StateSyncClusterGroup::TYPENAME,
+                         "w_StateSyncClusterGroupDialog");
+    registerObjectDialog(parentWidget, Host::TYPENAME, "w_HostDialog");
+    registerObjectDialog(parentWidget, Network::TYPENAME, "w_NetworkDialog");
+    registerObjectDialog(parentWidget, NetworkIPv6::TYPENAME, "w_NetworkDialogIPv6");
+    registerObjectDialog(parentWidget, CustomService::TYPENAME, "w_CustomServiceDialog");
+    registerObjectDialog(parentWidget, IPService::TYPENAME, "w_IPServiceDialog");
+    registerObjectDialog(parentWidget, ICMPService::TYPENAME, "w_ICMPServiceDialog");
+    registerObjectDialog(parentWidget, ICMP6Service::TYPENAME, "w_ICMP6ServiceDialog");
+    registerObjectDialog(parentWidget, TCPService::TYPENAME, "w_TCPServiceDialog");
+    registerObjectDialog(parentWidget, UDPService::TYPENAME, "w_UDPServiceDialog");
+    registerObjectDialog(parentWidget, TagService::TYPENAME, "w_TagServiceDialog");
+    registerObjectDialog(parentWidget, ServiceGroup::TYPENAME, "w_ServiceGroupDialog");
+    registerObjectDialog(parentWidget, ObjectGroup::TYPENAME, "w_ObjectGroupDialog");
+    registerObjectDialog(parentWidget, IntervalGroup::TYPENAME, "w_IntervalGroupDialog");
+    registerObjectDialog(parentWidget, Interval::TYPENAME, "w_TimeDialog");
 
-#elif defined(Q_OS_WIN32) || defined(Q_OS_CYGWIN)
-/* do something that only works on windows */
+    registerObjectDialog(parentWidget, RoutingRule::TYPENAME, "w_RoutingRuleOptionsDialog");
+    registerObjectDialog(parentWidget, PolicyRule::TYPENAME, "w_RuleOptionsDialog");
+    registerObjectDialog(parentWidget, NATRule::TYPENAME, "w_NATRuleOptionsDialog");
 
-#elif defined(Q_OS_MAC)
+    registerObjectDialog(parentWidget, AddressTable::TYPENAME, "w_AddressTableDialog");
+    registerObjectDialog(parentWidget, DNSName::TYPENAME, "w_DNSNameDialog");
 
-#endif
+    registerOptDialog(parentWidget, optAction, "w_ActionsDialog");
+    registerOptDialog(parentWidget, optComment, "w_CommentEditorPanel");
+    registerOptDialog(parentWidget, optMetric, "w_MetricEditorPanel");
+    registerOptDialog(parentWidget, optRuleCompile, "w_CompilerOutputPanel");
 
-    BaseObjectDialog *w;
-    w= DialogFactory::createDialog(parent,UserService::TYPENAME);
-    stackIds[UserService::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[UserService::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Policy::TYPENAME);
-    stackIds[Policy::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Policy::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,NAT::TYPENAME);
-    stackIds[NAT::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[NAT::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Routing::TYPENAME);
-    stackIds[Routing::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Routing::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Library::TYPENAME);
-    stackIds[Library::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Library::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,IPv4::TYPENAME);
-    stackIds[IPv4::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[IPv4::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,IPv6::TYPENAME);
-    stackIds[IPv6::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[IPv6::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,physAddress::TYPENAME);
-    stackIds[physAddress::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[physAddress::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,AddressRange::TYPENAME);
-    stackIds[AddressRange::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[AddressRange::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Firewall::TYPENAME);
-    stackIds[Firewall::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Firewall::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Cluster::TYPENAME);
-    stackIds[Cluster::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Cluster::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent, StateSyncClusterGroup::TYPENAME);
-    stackIds[StateSyncClusterGroup::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[StateSyncClusterGroup::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent, FailoverClusterGroup::TYPENAME);
-    stackIds[FailoverClusterGroup::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[FailoverClusterGroup::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Host::TYPENAME);
-    stackIds[Host::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Host::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Interface::TYPENAME);
-    stackIds[Interface::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Interface::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Network::TYPENAME);
-    stackIds[Network::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Network::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,NetworkIPv6::TYPENAME);
-    stackIds[NetworkIPv6::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[NetworkIPv6::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,CustomService::TYPENAME);
-    stackIds[CustomService::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[CustomService::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,IPService::TYPENAME);
-    stackIds[IPService::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[IPService::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,ICMPService::TYPENAME);
-    stackIds[ICMPService::TYPENAME] = parentWidget->addWidget(w);
-    dialogs[stackIds[ICMPService::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,ICMP6Service::TYPENAME);
-    stackIds[ICMP6Service::TYPENAME] = parentWidget->addWidget(w);
-    dialogs[stackIds[ICMP6Service::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,TCPService::TYPENAME);
-    stackIds[TCPService::TYPENAME] = parentWidget->addWidget(w);
-    dialogs[stackIds[TCPService::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,UDPService::TYPENAME);
-    stackIds[UDPService::TYPENAME] = parentWidget->addWidget(w);
-    dialogs[stackIds[UDPService::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,ObjectGroup::TYPENAME);
-    stackIds[ObjectGroup::TYPENAME] = parentWidget->addWidget(w);
-    dialogs[stackIds[ObjectGroup::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,ServiceGroup::TYPENAME);
-    stackIds[ServiceGroup::TYPENAME] = parentWidget->addWidget(w);
-    dialogs[stackIds[ServiceGroup::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,IntervalGroup::TYPENAME);
-    stackIds[IntervalGroup::TYPENAME] = parentWidget->addWidget(w);
-    dialogs[stackIds[IntervalGroup::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Interval::TYPENAME);
-    stackIds[Interval::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Interval::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,Rule::TYPENAME);
-    stackIds[Rule::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[Rule::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,RoutingRule::TYPENAME);
-    stackIds[RoutingRule::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[RoutingRule::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,PolicyRule::TYPENAME);
-    stackIds[PolicyRule::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[PolicyRule::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,NATRule::TYPENAME);
-    stackIds[NATRule::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[NATRule::TYPENAME]] = w;
-
-
-    w= DialogFactory::createDialog(parent,DNSName::TYPENAME);
-    stackIds[DNSName::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[DNSName::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,AddressTable::TYPENAME);
-    stackIds[AddressTable::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[AddressTable::TYPENAME]] = w;
-
-    w= DialogFactory::createDialog(parent,TagService::TYPENAME);
-    stackIds[TagService::TYPENAME]  = parentWidget->addWidget(w);
-    dialogs[stackIds[TagService::TYPENAME]] = w;
-
-
-    w = new ActionsDialog(parent);
-    stackIds[getOptDialogName(optAction)]  = parentWidget->addWidget(w);
-    dialogs[stackIds[getOptDialogName(optAction)]] = w;
-
-    w = new CommentEditorPanel(parent,false);
-    stackIds[getOptDialogName(optComment)]  = parentWidget->addWidget(w);
-    dialogs[stackIds[getOptDialogName(optComment)]] = w;
-
-
-    w = new MetricEditorPanel(parent);
-    stackIds[getOptDialogName(optMetric)]  = parentWidget->addWidget(w);
-    dialogs[stackIds[getOptDialogName(optMetric)]] = w;
-
-    w = new CompilerOutputPanel(parent);
-    stackIds[getOptDialogName(optRuleCompile)]  = parentWidget->addWidget(w);
-    dialogs[stackIds[getOptDialogName(optRuleCompile)]] = w;
-
-    w = new BaseObjectDialog(parent);
+    BaseObjectDialog *w = new BaseObjectDialog(parent);
     stackIds["BLANK"]  = parentWidget->addWidget(w);
     dialogs[stackIds["BLANK"]] = w;
+}
 
+void ObjectEditor::registerObjectDialog(QStackedWidget *stack,
+                                        const QString &obj_type,
+                                        const QString &dialog_name)
+{
+    BaseObjectDialog *w = qFindChild<BaseObjectDialog*>(stack, dialog_name);
+    if (w==NULL)
+    {
+        qDebug() << "Dialog widget missing for the object type "
+                 << obj_type
+                 << "  Expected the following name for the dialog object: "
+                 << dialog_name;
+    }
+    assert(w);
+    int dlg_id = stack->indexOf(w->parentWidget());
+    if (fwbdebug)
+        qDebug() << "Register object dialog for type "
+                 << obj_type
+                 << ": "
+                 << " w=" << w
+                 << " id=" << dlg_id
+                 << " name=" << w->objectName();
+    stackIds[obj_type]  = dlg_id;
+    dialogs[dlg_id] = w;
+}
 
+void ObjectEditor::registerOptDialog(QStackedWidget *stack,
+                                     ObjectEditor::OptType opt_type,
+                                     const QString &dialog_name)
+{
+    BaseObjectDialog *w = qFindChild<BaseObjectDialog*>(stack, dialog_name);
+    if (w==NULL)
+    {
+        qDebug() << "Dialog widget missing for the option "
+                 << opt_type
+                 << "  Expected the following name for the dialog object: "
+                 << dialog_name;
+    }
+    assert(w);
+    int dlg_id = stack->indexOf(w->parentWidget());
+    if (fwbdebug)
+        qDebug() << "Register object dialog for option "
+                 << opt_type
+                 << ": "
+                 << " w=" << w
+                 << " id=" << dlg_id
+                 << " name=" << w->objectName();
+    stackIds[getOptDialogName(opt_type)]  = dlg_id;
+    dialogs[dlg_id] = w;
 }
 
 void ObjectEditor::attachToProjectWindow(ProjectPanel *pp)

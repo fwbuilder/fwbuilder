@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>885</width>
-    <height>222</height>
+    <height>256</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -23,102 +23,16 @@
   </property>
   <layout class="QHBoxLayout" >
    <property name="spacing" >
-    <number>2</number>
+    <number>-1</number>
    </property>
-   <property name="leftMargin" >
-    <number>2</number>
-   </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
    <item>
     <layout class="QVBoxLayout" >
      <property name="spacing" >
-      <number>2</number>
+      <number>-1</number>
      </property>
-     <item>
-      <widget class="QFrame" name="frame3" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>16</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="autoFillBackground" >
-        <bool>true</bool>
-       </property>
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QGridLayout" >
-        <property name="leftMargin" >
-         <number>2</number>
-        </property>
-        <property name="topMargin" >
-         <number>2</number>
-        </property>
-        <property name="rightMargin" >
-         <number>2</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>2</number>
-        </property>
-        <property name="horizontalSpacing" >
-         <number>2</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>2</number>
-        </property>
-        <item row="0" column="2" >
-         <widget class="QLabel" name="editorTitle" >
-          <property name="font" >
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text" >
-           <string>TCP Service</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" >
-         <widget class="QLabel" name="label" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string/>
-          </property>
-          <property name="pixmap" >
-           <pixmap resource="MainRes.qrc" >:/Icons/TCPService/icon</pixmap>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
      <item>
       <widget class="QFrame" name="frame7" >
        <property name="frameShape" >
@@ -131,10 +45,22 @@
         <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame35" >
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
           </property>
           <property name="frameShape" >
            <enum>QFrame::Box</enum>
@@ -143,22 +69,10 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>8</number>
            </property>
-           <property name="topMargin" >
-            <number>8</number>
-           </property>
-           <property name="rightMargin" >
-            <number>8</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>8</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>8</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>8</number>
            </property>
            <item row="0" column="0" >
@@ -202,7 +116,7 @@
               </sizepolicy>
              </property>
              <property name="styleSheet" >
-              <string>QGroupBox {
+              <string notr="true" >QGroupBox {
     margin-top: 0px;
 	padding-top: 1ex;
     padding-bottom: 0px;
@@ -542,7 +456,7 @@ by the target firewall platform</string>
                 <property name="sizeType" >
                  <enum>QSizePolicy::Expanding</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>172</width>
                   <height>16</height>
@@ -587,12 +501,12 @@ by the target firewall platform</string>
             <number>2</number>
            </property>
            <property name="verticalSpacing" >
-            <number>0</number>
+            <number>-1</number>
            </property>
            <item row="0" column="0" >
             <widget class="QGroupBox" name="groupBox1" >
              <property name="styleSheet" >
-              <string>QGroupBox {
+              <string notr="true" >QGroupBox {
 	margin-top: 1ex;
 	padding-top: 1ex;
 	padding-bottom: 0px;
@@ -615,22 +529,10 @@ QSpinBox {
               <string>Source Port Range</string>
              </property>
              <layout class="QGridLayout" >
-              <property name="leftMargin" >
+              <property name="margin" >
                <number>2</number>
               </property>
-              <property name="topMargin" >
-               <number>2</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>2</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
+              <property name="spacing" >
                <number>2</number>
               </property>
               <item row="0" column="1" >
@@ -685,7 +587,7 @@ QSpinBox {
            <item row="1" column="0" >
             <widget class="QGroupBox" name="groupBox1_2" >
              <property name="styleSheet" >
-              <string>QGroupBox {
+              <string notr="true" >QGroupBox {
 	margin-top: 1ex;
 	padding-top: 1ex;
 	padding-bottom: 0px;
@@ -708,22 +610,10 @@ QSpinBox {
               <string>Destination Port Range</string>
              </property>
              <layout class="QGridLayout" >
-              <property name="leftMargin" >
+              <property name="margin" >
                <number>2</number>
               </property>
-              <property name="topMargin" >
-               <number>2</number>
-              </property>
-              <property name="rightMargin" >
-               <number>2</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>2</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>2</number>
-              </property>
-              <property name="verticalSpacing" >
+              <property name="spacing" >
                <number>2</number>
               </property>
               <item row="0" column="1" >

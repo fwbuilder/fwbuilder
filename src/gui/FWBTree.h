@@ -32,6 +32,8 @@ namespace libfwbuilder {
     class FWObjectDatabase;
 };
 
+class QPixmap;
+
 class FWBTree {
 
     std::map<QString,QString>  systemGroupTypes;
@@ -90,5 +92,6 @@ class FWBTree {
                                                             const QString &objType);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
+    void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, bool small_icon=true);
 };
 

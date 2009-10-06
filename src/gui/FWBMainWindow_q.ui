@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" >
  <class>FWBMainWindow_q</class>
- <widget class="QMainWindow" name="FWBMainWindow_q">
-  <property name="enabled">
+ <widget class="QMainWindow" name="FWBMainWindow_q" >
+  <property name="enabled" >
    <bool>true</bool>
   </property>
-  <property name="geometry">
+  <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
@@ -13,117 +12,120 @@
     <height>846</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="minimumSize">
+  <property name="minimumSize" >
    <size>
     <width>0</width>
     <height>0</height>
    </size>
   </property>
-  <property name="windowTitle">
+  <property name="windowTitle" >
    <string>Firewall Builder</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="MainRes.qrc">
+  <property name="windowIcon" >
+   <iconset resource="MainRes.qrc" >
     <normaloff>:/Images/fwbuilder3.png</normaloff>:/Images/fwbuilder3.png</iconset>
   </property>
-  <widget class="QWidget" name="widget">
-   <layout class="QGridLayout" name="gridLayout_3">
-    <property name="verticalSpacing">
+  <widget class="QWidget" name="widget" >
+   <layout class="QGridLayout" name="gridLayout_3" >
+    <property name="verticalSpacing" >
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="margin" >
      <number>0</number>
     </property>
-    <item row="0" column="0">
-     <widget class="QMdiArea" name="m_space"/>
+    <item row="0" column="0" >
+     <widget class="QMdiArea" name="m_space" />
     </item>
-    <item row="1" column="0">
-     <widget class="ObjectEditorDockWidget" name="editorDockWidget">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <item row="1" column="0" >
+     <widget class="ObjectEditorDockWidget" name="editorDockWidget" >
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="maximumSize">
+      <property name="maximumSize" >
        <size>
         <width>524287</width>
-        <height>270</height>
+        <height>300</height>
        </size>
       </property>
-      <property name="allowedAreas">
+      <property name="allowedAreas" >
        <set>Qt::BottomDockWidgetArea</set>
       </property>
-      <widget class="QWidget" name="dockWidgetContents">
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QTabWidget" name="editorPanelTabWidget">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+      <widget class="QWidget" name="dockWidgetContents" >
+       <layout class="QGridLayout" name="gridLayout" >
+        <item row="0" column="0" >
+         <widget class="QTabWidget" name="editorPanelTabWidget" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
+          <property name="minimumSize" >
            <size>
             <width>1000</width>
             <height>200</height>
            </size>
           </property>
-          <property name="maximumSize">
+          <property name="maximumSize" >
            <size>
-            <width>1000</width>
-            <height>1000</height>
+            <width>10000</width>
+            <height>10000</height>
            </size>
           </property>
-          <property name="tabPosition">
+          <property name="tabPosition" >
            <enum>QTabWidget::West</enum>
           </property>
-          <property name="currentIndex">
+          <property name="currentIndex" >
            <number>1</number>
           </property>
-          <widget class="QWidget" name="tab_find">
-           <attribute name="title">
+          <widget class="QWidget" name="tab_find" >
+           <attribute name="title" >
             <string>Find</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_2">
-            <item row="0" column="0">
-             <widget class="QFrame" name="auxiliaryPanel">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <layout class="QGridLayout" name="gridLayout_2" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <item row="0" column="0" >
+             <widget class="QFrame" name="auxiliaryPanel" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="minimumSize">
+              <property name="minimumSize" >
                <size>
                 <width>0</width>
                 <height>160</height>
                </size>
               </property>
-              <property name="maximumSize">
+              <property name="maximumSize" >
                <size>
                 <width>32767</width>
                 <height>32767</height>
                </size>
               </property>
-              <property name="frameShape">
+              <property name="frameShape" >
                <enum>QFrame::NoFrame</enum>
               </property>
-              <property name="frameShadow">
+              <property name="frameShadow" >
                <enum>QFrame::Plain</enum>
               </property>
-              <layout class="QHBoxLayout" name="_3">
-               <property name="spacing">
+              <layout class="QHBoxLayout" name="_3" >
+               <property name="spacing" >
                 <number>0</number>
                </property>
-               <property name="margin">
+               <property name="margin" >
                 <number>11</number>
                </property>
               </layout>
@@ -131,111 +133,530 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_editor">
-           <attribute name="title">
+          <widget class="QWidget" name="tab_editor" >
+           <attribute name="title" >
             <string>Editor</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_5">
-            <property name="margin">
+           <layout class="QGridLayout" name="gridLayout_4" >
+            <property name="margin" >
              <number>0</number>
             </property>
-            <property name="horizontalSpacing">
-             <number>-1</number>
-            </property>
-            <item row="0" column="0">
-             <layout class="QVBoxLayout" name="verticalLayout">
-              <property name="spacing">
-               <number>20</number>
+            <item row="0" column="0" >
+             <layout class="QVBoxLayout" name="verticalLayout" >
+              <property name="topMargin" >
+               <number>12</number>
               </property>
-              <property name="leftMargin">
-               <number>10</number>
-              </property>
-              <property name="rightMargin">
-               <number>10</number>
-              </property>
-              <property name="bottomMargin">
-               <number>10</number>
+              <property name="bottomMargin" >
+               <number>12</number>
               </property>
               <item>
-               <spacer name="verticalSpacer">
-                <property name="orientation">
+               <widget class="QLabel" name="objectTypeIcon" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize" >
+                 <size>
+                  <width>80</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize" >
+                 <size>
+                  <width>80</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text" >
+                 <string/>
+                </property>
+                <property name="pixmap" >
+                 <pixmap resource="MainRes.qrc" >:/Icons/Cluster/icon</pixmap>
+                </property>
+                <property name="alignment" >
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer" >
+                <property name="orientation" >
                  <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" stdset="0">
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>63</width>
-                  <height>28</height>
+                  <height>58</height>
                  </size>
                 </property>
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="applyObjectEditorButton">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <widget class="QPushButton" name="applyObjectEditorButton" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
-                <property name="minimumSize">
+                <property name="minimumSize" >
                  <size>
                   <width>0</width>
                   <height>0</height>
                  </size>
                 </property>
-                <property name="text">
+                <property name="text" >
                  <string>Apply</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="helpObjectEditorButton">
-                <property name="text">
+               <widget class="QPushButton" name="helpObjectEditorButton" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text" >
                  <string>Help</string>
                 </property>
                </widget>
               </item>
              </layout>
             </item>
-            <item row="0" column="1">
-             <widget class="QStackedWidget" name="objectEditorStack">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <item row="0" column="1" >
+             <widget class="QStackedWidget" name="objectEditorStack" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="minimumSize">
+              <property name="minimumSize" >
                <size>
                 <width>200</width>
                 <height>200</height>
                </size>
               </property>
-              <property name="maximumSize">
+              <property name="maximumSize" >
                <size>
                 <width>16777215</width>
-                <height>1677721</height>
+                <height>16777215</height>
                </size>
               </property>
-              <property name="focusPolicy">
+              <property name="focusPolicy" >
                <enum>Qt::StrongFocus</enum>
               </property>
-              <property name="frameShape">
+              <property name="frameShape" >
                <enum>QFrame::NoFrame</enum>
               </property>
-              <widget class="QWidget" name="WStackPage">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <property name="frameShadow" >
+               <enum>QFrame::Sunken</enum>
+              </property>
+              <property name="currentIndex" >
+               <number>36</number>
+              </property>
+              <widget class="QWidget" name="page" >
+               <layout class="QGridLayout" name="gridLayout_6" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="FirewallDialog" native="1" name="w_FirewallDialog" >
+                  <property name="sizePolicy" >
+                   <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_2" >
+               <layout class="QGridLayout" name="gridLayout_7" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="UserDialog" native="1" name="w_UserDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="WStackPage" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <property name="maximumSize">
+               <property name="maximumSize" >
                 <size>
                  <width>16777215</width>
-                 <height>250</height>
+                 <height>16777215</height>
                 </size>
                </property>
+               <layout class="QGridLayout" name="gridLayout_5" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="InterfaceDialog" native="1" name="w_InterfaceDialog" >
+                  <property name="sizePolicy" >
+                   <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_3" >
+               <layout class="QGridLayout" name="gridLayout_8" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="RuleSetDialog" native="1" name="w_PolicyDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_4" >
+               <layout class="QGridLayout" name="gridLayout_9" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="RuleSetDialog" native="1" name="w_NATDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_5" >
+               <layout class="QGridLayout" name="gridLayout_10" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="RuleSetDialog" native="1" name="w_RoutingDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_6" >
+               <layout class="QGridLayout" name="gridLayout_11" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="LibraryDialog" native="1" name="w_LibraryDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_7" >
+               <layout class="QGridLayout" name="gridLayout_12" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="IPv4Dialog" native="1" name="w_IPv4Dialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_8" >
+               <layout class="QGridLayout" name="gridLayout_13" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="IPv6Dialog" native="1" name="w_IPv6Dialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_9" >
+               <layout class="QGridLayout" name="gridLayout_14" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="PhysicalAddressDialog" native="1" name="w_PhysicalAddressDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_10" >
+               <layout class="QGridLayout" name="gridLayout_15" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="AddressRangeDialog" native="1" name="w_AddressRangeDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_11" >
+               <layout class="QGridLayout" name="gridLayout_16" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="ClusterDialog" native="1" name="w_ClusterDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_12" >
+               <layout class="QGridLayout" name="gridLayout_17" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="ClusterGroupDialog" native="1" name="w_FailoverClusterGroupDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_13" >
+               <layout class="QGridLayout" name="gridLayout_18" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="ClusterGroupDialog" native="1" name="w_StateSyncClusterGroupDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_14" >
+               <layout class="QGridLayout" name="gridLayout_19" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="HostDialog" native="1" name="w_HostDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_15" >
+               <layout class="QGridLayout" name="gridLayout_20" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="NetworkDialog" native="1" name="w_NetworkDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_16" >
+               <layout class="QGridLayout" name="gridLayout_21" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="NetworkDialogIPv6" native="1" name="w_NetworkDialogIPv6" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_17" >
+               <layout class="QGridLayout" name="gridLayout_22" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="CustomServiceDialog" native="1" name="w_CustomServiceDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_18" >
+               <layout class="QGridLayout" name="gridLayout_23" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="IPServiceDialog" native="1" name="w_IPServiceDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_19" >
+               <layout class="QGridLayout" name="gridLayout_24" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="ICMPServiceDialog" native="1" name="w_ICMPServiceDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_20" >
+               <layout class="QGridLayout" name="gridLayout_25" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="ICMPServiceDialog" native="1" name="w_ICMP6ServiceDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_21" >
+               <layout class="QGridLayout" name="gridLayout_26" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="TCPServiceDialog" native="1" name="w_TCPServiceDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_22" >
+               <layout class="QGridLayout" name="gridLayout_27" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="UDPServiceDialog" native="1" name="w_UDPServiceDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_23" >
+               <layout class="QGridLayout" name="gridLayout_28" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="TagServiceDialog" native="1" name="w_TagServiceDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_24" >
+               <layout class="QGridLayout" name="gridLayout_29" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="GroupObjectDialog" native="1" name="w_ServiceGroupDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_25" >
+               <layout class="QGridLayout" name="gridLayout_30" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="GroupObjectDialog" native="1" name="w_ObjectGroupDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_26" >
+               <layout class="QGridLayout" name="gridLayout_31" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="GroupObjectDialog" native="1" name="w_IntervalGroupDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_27" >
+               <layout class="QGridLayout" name="gridLayout_32" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="TimeDialog" native="1" name="w_TimeDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_28" >
+               <layout class="QGridLayout" name="gridLayout_33" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="RoutingRuleOptionsDialog" native="1" name="w_RoutingRuleOptionsDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_29" >
+               <layout class="QGridLayout" name="gridLayout_34" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="RuleOptionsDialog" native="1" name="w_RuleOptionsDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_30" >
+               <layout class="QGridLayout" name="gridLayout_35" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="NATRuleOptionsDialog" native="1" name="w_NATRuleOptionsDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_31" >
+               <layout class="QGridLayout" name="gridLayout_36" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="DNSNameDialog" native="1" name="w_DNSNameDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_32" >
+               <layout class="QGridLayout" name="gridLayout_37" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="AddressTableDialog" native="1" name="w_AddressTableDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_33" >
+               <layout class="QGridLayout" name="gridLayout_38" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="ActionsDialog" native="1" name="w_ActionsDialog" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_34" >
+               <layout class="QGridLayout" name="gridLayout_39" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="CommentEditorPanel" native="1" name="w_CommentEditorPanel" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_35" >
+               <layout class="QGridLayout" name="gridLayout_40" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <property name="horizontalSpacing" >
+                 <number>-1</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="MetricEditorPanel" native="1" name="w_MetricEditorPanel" />
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_36" >
+               <layout class="QGridLayout" name="gridLayout_41" >
+                <property name="margin" >
+                 <number>0</number>
+                </property>
+                <item row="0" column="0" >
+                 <widget class="CompilerOutputPanel" native="1" name="w_CompilerOutputPanel" />
+                </item>
+               </layout>
               </widget>
              </widget>
             </item>
@@ -243,12 +664,12 @@
           </widget>
          </widget>
         </item>
-        <item row="0" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
+        <item row="0" column="1" >
+         <spacer name="horizontalSpacer" >
+          <property name="orientation" >
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0">
+          <property name="sizeHint" stdset="0" >
            <size>
             <width>55</width>
             <height>20</height>
@@ -262,745 +683,928 @@
     </item>
    </layout>
   </widget>
-  <widget class="QToolBar" name="toolBar">
-   <property name="orientation">
+  <widget class="QToolBar" name="toolBar" >
+   <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea">
+   <attribute name="toolBarArea" >
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak">
+   <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
-   <addaction name="toolbarFileOpen"/>
-   <addaction name="toolbarFileSave"/>
-   <addaction name="separator"/>
-   <addaction name="findAction"/>
-   <addaction name="separator"/>
-   <addaction name="compileAction"/>
-   <addaction name="installAction"/>
+   <addaction name="toolbarFileOpen" />
+   <addaction name="toolbarFileSave" />
+   <addaction name="separator" />
+   <addaction name="findAction" />
+   <addaction name="separator" />
+   <addaction name="compileAction" />
+   <addaction name="installAction" />
   </widget>
-  <widget class="QMenuBar" name="MenuBar">
-   <property name="geometry">
+  <widget class="QMenuBar" name="MenuBar" >
+   <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
      <width>1082</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="editMenu">
-    <property name="title">
+   <widget class="QMenu" name="editMenu" >
+    <property name="title" >
      <string>&amp;Edit</string>
     </property>
-    <addaction name="editUndoAction"/>
-    <addaction name="editRedoAction"/>
-    <addaction name="separator"/>
-    <addaction name="editCutAction"/>
-    <addaction name="editCopyAction"/>
-    <addaction name="editPasteAction"/>
-    <addaction name="separator"/>
-    <addaction name="editDeleteAction"/>
-    <addaction name="separator"/>
-    <addaction name="editPrefsAction"/>
+    <addaction name="editUndoAction" />
+    <addaction name="editRedoAction" />
+    <addaction name="separator" />
+    <addaction name="editCutAction" />
+    <addaction name="editCopyAction" />
+    <addaction name="editPasteAction" />
+    <addaction name="separator" />
+    <addaction name="editDeleteAction" />
+    <addaction name="separator" />
+    <addaction name="editPrefsAction" />
    </widget>
-   <widget class="QMenu" name="ObjectMenu">
-    <property name="title">
+   <widget class="QMenu" name="ObjectMenu" >
+    <property name="title" >
      <string>Object</string>
     </property>
-    <addaction name="newObjectAction"/>
-    <addaction name="findAction"/>
-    <addaction name="separator"/>
-    <addaction name="ObjectLockAction"/>
-    <addaction name="ObjectUnlockAction"/>
+    <addaction name="newObjectAction" />
+    <addaction name="findAction" />
+    <addaction name="separator" />
+    <addaction name="ObjectLockAction" />
+    <addaction name="ObjectUnlockAction" />
    </widget>
-   <widget class="QMenu" name="toolsMenu">
-    <property name="title">
+   <widget class="QMenu" name="toolsMenu" >
+    <property name="title" >
      <string>Tools</string>
     </property>
-    <addaction name="fileCompareAction"/>
-    <addaction name="DiscoveryDruidAction"/>
+    <addaction name="fileCompareAction" />
+    <addaction name="DiscoveryDruidAction" />
    </widget>
-   <widget class="QMenu" name="helpMenu">
-    <property name="title">
+   <widget class="QMenu" name="helpMenu" >
+    <property name="title" >
      <string>&amp;Help</string>
     </property>
-    <addaction name="helpAboutAction"/>
-    <addaction name="debugAction"/>
-    <addaction name="helpAction"/>
-    <addaction name="release_Notes_Action"/>
+    <addaction name="helpAboutAction" />
+    <addaction name="debugAction" />
+    <addaction name="helpAction" />
+    <addaction name="release_Notes_Action" />
    </widget>
-   <widget class="QMenu" name="RulesMenu">
-    <property name="title">
+   <widget class="QMenu" name="RulesMenu" >
+    <property name="title" >
      <string>Rules</string>
     </property>
-    <addaction name="insertRuleAction"/>
-    <addaction name="addRuleAfterCurrentAction"/>
-    <addaction name="removeRuleAction"/>
-    <addaction name="moveRuleAction"/>
-    <addaction name="separator"/>
-    <addaction name="copyRuleAction"/>
-    <addaction name="cutRuleAction"/>
-    <addaction name="pasteRuleAboveAction"/>
-    <addaction name="pasteRuleBelowAction"/>
-    <addaction name="separator"/>
-    <addaction name="compileAction"/>
-    <addaction name="installAction"/>
+    <addaction name="insertRuleAction" />
+    <addaction name="addRuleAfterCurrentAction" />
+    <addaction name="removeRuleAction" />
+    <addaction name="moveRuleAction" />
+    <addaction name="separator" />
+    <addaction name="copyRuleAction" />
+    <addaction name="cutRuleAction" />
+    <addaction name="pasteRuleAboveAction" />
+    <addaction name="pasteRuleBelowAction" />
+    <addaction name="separator" />
+    <addaction name="compileAction" />
+    <addaction name="installAction" />
    </widget>
-   <widget class="QMenu" name="fileMenu">
-    <property name="title">
+   <widget class="QMenu" name="fileMenu" >
+    <property name="title" >
      <string>&amp;File</string>
     </property>
-    <widget class="QMenu" name="menuOpen_Recent">
-     <property name="title">
+    <widget class="QMenu" name="menuOpen_Recent" >
+     <property name="title" >
       <string>Open Recent</string>
      </property>
     </widget>
-    <addaction name="fileNewAction"/>
-    <addaction name="fileOpenAction"/>
-    <addaction name="menuOpen_Recent"/>
-    <addaction name="separator"/>
-    <addaction name="fileSaveAction"/>
-    <addaction name="fileSaveAsAction"/>
-    <addaction name="fileCloseAction"/>
-    <addaction name="filePropAction"/>
-    <addaction name="separator"/>
-    <addaction name="addToRCSAction"/>
-    <addaction name="fileCommitAction"/>
-    <addaction name="fileDiscardAction"/>
-    <addaction name="separator"/>
-    <addaction name="policyImportAction"/>
-    <addaction name="separator"/>
-    <addaction name="libImportAction"/>
-    <addaction name="libExportAction"/>
-    <addaction name="separator"/>
-    <addaction name="filePrintAction"/>
-    <addaction name="separator"/>
-    <addaction name="fileExitAction"/>
+    <addaction name="fileNewAction" />
+    <addaction name="fileOpenAction" />
+    <addaction name="menuOpen_Recent" />
+    <addaction name="separator" />
+    <addaction name="fileSaveAction" />
+    <addaction name="fileSaveAsAction" />
+    <addaction name="fileCloseAction" />
+    <addaction name="filePropAction" />
+    <addaction name="separator" />
+    <addaction name="addToRCSAction" />
+    <addaction name="fileCommitAction" />
+    <addaction name="fileDiscardAction" />
+    <addaction name="separator" />
+    <addaction name="policyImportAction" />
+    <addaction name="separator" />
+    <addaction name="libImportAction" />
+    <addaction name="libExportAction" />
+    <addaction name="separator" />
+    <addaction name="filePrintAction" />
+    <addaction name="separator" />
+    <addaction name="fileExitAction" />
    </widget>
-   <widget class="QMenu" name="menuWindow">
-    <property name="title">
+   <widget class="QMenu" name="menuWindow" >
+    <property name="title" >
      <string>Window</string>
     </property>
    </widget>
-   <widget class="QMenu" name="viewMenu">
-    <property name="title">
+   <widget class="QMenu" name="viewMenu" >
+    <property name="title" >
      <string>View</string>
     </property>
-    <addaction name="actionObject_Tree"/>
-    <addaction name="actionEditor_panel"/>
+    <addaction name="actionObject_Tree" />
+    <addaction name="actionEditor_panel" />
    </widget>
-   <addaction name="fileMenu"/>
-   <addaction name="editMenu"/>
-   <addaction name="viewMenu"/>
-   <addaction name="ObjectMenu"/>
-   <addaction name="RulesMenu"/>
-   <addaction name="toolsMenu"/>
-   <addaction name="menuWindow"/>
-   <addaction name="helpMenu"/>
+   <addaction name="fileMenu" />
+   <addaction name="editMenu" />
+   <addaction name="viewMenu" />
+   <addaction name="ObjectMenu" />
+   <addaction name="RulesMenu" />
+   <addaction name="toolsMenu" />
+   <addaction name="menuWindow" />
+   <addaction name="helpMenu" />
   </widget>
-  <action name="fileNewAction">
-   <property name="enabled">
+  <action name="fileNewAction" >
+   <property name="enabled" >
     <bool>true</bool>
    </property>
-   <property name="icon">
+   <property name="icon" >
     <iconset>
-     <normaloff/>
-    </iconset>
+     <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>&amp;New Object File</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>New Object File</string>
    </property>
   </action>
-  <action name="fileOpenAction">
-   <property name="icon">
+  <action name="fileOpenAction" >
+   <property name="icon" >
     <iconset>
-     <normaloff/>
-    </iconset>
+     <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>&amp;Open...</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Open</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="fileSaveAction">
-   <property name="icon">
+  <action name="fileSaveAction" >
+   <property name="icon" >
     <iconset>
-     <normaloff/>
-    </iconset>
+     <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>&amp;Save</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Save</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="fileSaveAsAction">
-   <property name="text">
+  <action name="fileSaveAsAction" >
+   <property name="text" >
     <string>Save &amp;As...</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Save As</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string/>
    </property>
   </action>
-  <action name="filePrintAction">
-   <property name="enabled">
+  <action name="filePrintAction" >
+   <property name="enabled" >
     <bool>true</bool>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>&amp;Print...</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Print</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="fileExitAction">
-   <property name="text">
+  <action name="fileExitAction" >
+   <property name="text" >
     <string>E&amp;xit</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Exit</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string/>
    </property>
   </action>
-  <action name="editUndoAction">
-   <property name="enabled">
+  <action name="editUndoAction" >
+   <property name="enabled" >
     <bool>false</bool>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>&amp;Undo</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Undo</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+Z</string>
    </property>
   </action>
-  <action name="editRedoAction">
-   <property name="enabled">
+  <action name="editRedoAction" >
+   <property name="enabled" >
     <bool>false</bool>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>&amp;Redo</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Redo</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+Y</string>
    </property>
   </action>
-  <action name="editCutAction">
-   <property name="text">
+  <action name="editCutAction" >
+   <property name="text" >
     <string>&amp;Cut</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Cut</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+X</string>
    </property>
   </action>
-  <action name="editCopyAction">
-   <property name="checkable">
+  <action name="editCopyAction" >
+   <property name="checkable" >
     <bool>false</bool>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>C&amp;opy</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Copy</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+C</string>
    </property>
   </action>
-  <action name="editPasteAction">
-   <property name="text">
+  <action name="editPasteAction" >
+   <property name="text" >
     <string>&amp;Paste</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Paste</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="editFindAction">
-   <property name="text">
+  <action name="editFindAction" >
+   <property name="text" >
     <string/>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string/>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+F</string>
    </property>
   </action>
-  <action name="helpContentsAction">
-   <property name="text">
+  <action name="helpContentsAction" >
+   <property name="text" >
     <string>&amp;Contents...</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Contents</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string/>
    </property>
   </action>
-  <action name="helpIndexAction">
-   <property name="text">
+  <action name="helpIndexAction" >
+   <property name="text" >
     <string>&amp;Index...</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Index</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string/>
    </property>
   </action>
-  <action name="helpAboutAction">
-   <property name="text">
+  <action name="helpAboutAction" >
+   <property name="text" >
     <string>&amp;About</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>About</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string/>
    </property>
   </action>
-  <action name="toolbarFileNew">
-   <property name="icon">
+  <action name="toolbarFileNew" >
+   <property name="icon" >
     <iconset>
-     <normaloff>newfile_25.png</normaloff>newfile_25.png</iconset>
+     <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup/newfile_25.png</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup/newfile_25.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>New</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>New</string>
    </property>
   </action>
-  <action name="toolbarFileOpen">
-   <property name="icon">
-    <iconset resource="MainRes.qrc">
+  <action name="toolbarFileOpen" >
+   <property name="icon" >
+    <iconset resource="MainRes.qrc" >
      <normaloff>:/Icons/openfile_25.png</normaloff>:/Icons/openfile_25.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Open</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Open</string>
    </property>
   </action>
-  <action name="toolbarFileSave">
-   <property name="icon">
-    <iconset resource="MainRes.qrc">
+  <action name="toolbarFileSave" >
+   <property name="icon" >
+    <iconset resource="MainRes.qrc" >
      <normaloff>:/Icons/save_25.png</normaloff>:/Icons/save_25.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Save</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Save</string>
    </property>
   </action>
-  <action name="fileCloseAction">
-   <property name="text">
+  <action name="fileCloseAction" >
+   <property name="text" >
     <string>&amp;Close</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Close</string>
    </property>
   </action>
-  <action name="compileAction">
-   <property name="icon">
-    <iconset resource="MainRes.qrc">
+  <action name="compileAction" >
+   <property name="icon" >
+    <iconset resource="MainRes.qrc" >
      <normaloff>:/Icons/compile_25.png</normaloff>:/Icons/compile_25.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Compile</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Compile</string>
    </property>
-   <property name="toolTip">
+   <property name="toolTip" >
     <string>Compile rules</string>
    </property>
   </action>
-  <action name="installAction">
-   <property name="icon">
-    <iconset resource="MainRes.qrc">
+  <action name="installAction" >
+   <property name="icon" >
+    <iconset resource="MainRes.qrc" >
      <normaloff>:/Icons/install_25.png</normaloff>:/Icons/install_25.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Install</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Install</string>
    </property>
-   <property name="toolTip">
+   <property name="toolTip" >
     <string>Install firewall policy</string>
    </property>
   </action>
-  <action name="backAction">
-   <property name="enabled">
+  <action name="backAction" >
+   <property name="enabled" >
     <bool>false</bool>
    </property>
-   <property name="icon">
+   <property name="icon" >
     <iconset>
-     <normaloff>back_25.png</normaloff>back_25.png</iconset>
+     <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup/back_25.png</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup/back_25.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Back</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Back</string>
    </property>
-   <property name="toolTip">
+   <property name="toolTip" >
     <string>Move back to the previous object</string>
    </property>
-   <property name="statusTip">
+   <property name="statusTip" >
     <string>Move back to the previous object</string>
    </property>
   </action>
-  <action name="newObjectAction">
-   <property name="icon">
+  <action name="newObjectAction" >
+   <property name="icon" >
     <iconset>
-     <normaloff/>
-    </iconset>
+     <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>&amp;New Object</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>New Object</string>
    </property>
-   <property name="toolTip">
+   <property name="toolTip" >
     <string>Create New Object</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="findAction">
-   <property name="icon">
-    <iconset resource="MainRes.qrc">
+  <action name="findAction" >
+   <property name="icon" >
+    <iconset resource="MainRes.qrc" >
      <normaloff>:/Icons/search_25.png</normaloff>:/Icons/search_25.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>&amp;Find Object</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Find Object</string>
    </property>
-   <property name="toolTip">
+   <property name="toolTip" >
     <string>Find object in the tree</string>
    </property>
-   <property name="statusTip">
+   <property name="statusTip" >
     <string>Find object in the tree</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+F</string>
    </property>
   </action>
-  <action name="editPrefsAction">
-   <property name="text">
+  <action name="editPrefsAction" >
+   <property name="text" >
     <string>P&amp;references...</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Preferences...</string>
    </property>
-   <property name="toolTip">
+   <property name="toolTip" >
     <string>Edit Preferences</string>
    </property>
   </action>
-  <action name="insertRuleAction">
-   <property name="text">
+  <action name="insertRuleAction" >
+   <property name="text" >
     <string>Insert Rule</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Insert Rule</string>
    </property>
   </action>
-  <action name="moveRuleUpAction">
-   <property name="text">
+  <action name="moveRuleUpAction" >
+   <property name="text" >
     <string>Move Rule Up</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Move Rule Up</string>
    </property>
   </action>
-  <action name="moveRuleDownAction">
-   <property name="text">
+  <action name="moveRuleDownAction" >
+   <property name="text" >
     <string>Move Rule Down</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Move Rule Down</string>
    </property>
   </action>
-  <action name="addRuleAfterCurrentAction">
-   <property name="text">
+  <action name="addRuleAfterCurrentAction" >
+   <property name="text" >
     <string>Add Rule Below</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Add Rule Below</string>
    </property>
   </action>
-  <action name="removeRuleAction">
-   <property name="text">
+  <action name="removeRuleAction" >
+   <property name="text" >
     <string>Remove Rule</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Remove Rule</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+Del</string>
    </property>
   </action>
-  <action name="copyRuleAction">
-   <property name="text">
+  <action name="copyRuleAction" >
+   <property name="text" >
     <string>Copy Rule</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Copy Rule</string>
    </property>
   </action>
-  <action name="cutRuleAction">
-   <property name="text">
+  <action name="cutRuleAction" >
+   <property name="text" >
     <string>Cut Rule</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Cut Rule</string>
    </property>
   </action>
-  <action name="pasteRuleAboveAction">
-   <property name="text">
+  <action name="pasteRuleAboveAction" >
+   <property name="text" >
     <string>Paste Rule Above</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Paste Rule Above</string>
    </property>
   </action>
-  <action name="pasteRuleBelowAction">
-   <property name="text">
+  <action name="pasteRuleBelowAction" >
+   <property name="text" >
     <string>Paste Rule Below</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Paste Rule Below</string>
    </property>
   </action>
-  <action name="addToRCSAction">
-   <property name="text">
+  <action name="addToRCSAction" >
+   <property name="text" >
     <string>Add File to &amp;RCS</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Add File to RCS</string>
    </property>
   </action>
-  <action name="editDeleteAction">
-   <property name="text">
+  <action name="editDeleteAction" >
+   <property name="text" >
     <string>Delete</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Delete</string>
    </property>
   </action>
-  <action name="libExportAction">
-   <property name="text">
+  <action name="libExportAction" >
+   <property name="text" >
     <string>&amp;Export Library</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Export Library To a File</string>
    </property>
   </action>
-  <action name="libImportAction">
-   <property name="text">
+  <action name="libImportAction" >
+   <property name="text" >
     <string>Import &amp;Library</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Import Library From a File</string>
    </property>
   </action>
-  <action name="debugAction">
-   <property name="text">
+  <action name="debugAction" >
+   <property name="text" >
     <string>&amp;Debug</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Debug</string>
    </property>
   </action>
-  <action name="filePropAction">
-   <property name="text">
+  <action name="filePropAction" >
+   <property name="text" >
     <string>Propert&amp;ies</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Propert&amp;ies</string>
    </property>
-   <property name="statusTip">
+   <property name="statusTip" >
     <string>Show File Properties</string>
    </property>
-   <property name="shortcut">
+   <property name="shortcut" >
     <string>Ctrl+I</string>
    </property>
   </action>
-  <action name="moveRuleAction">
-   <property name="text">
+  <action name="moveRuleAction" >
+   <property name="text" >
     <string>Move Selected Rules</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Move Selected Rules</string>
    </property>
   </action>
-  <action name="fileDiscardAction">
-   <property name="text">
+  <action name="fileDiscardAction" >
+   <property name="text" >
     <string>&amp;Discard</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Discard</string>
    </property>
-   <property name="toolTip">
+   <property name="toolTip" >
     <string>Discard Changes and Overwrite With Clean Copy Of The Head Revision From RCS</string>
    </property>
   </action>
-  <action name="fileCommitAction">
-   <property name="text">
+  <action name="fileCommitAction" >
+   <property name="text" >
     <string>Co&amp;mmit</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Commit</string>
    </property>
-   <property name="statusTip">
+   <property name="statusTip" >
     <string>Commit Opened File to RCS and Continue Editing</string>
    </property>
   </action>
-  <action name="ObjectLockAction">
-   <property name="text">
+  <action name="ObjectLockAction" >
+   <property name="text" >
     <string>Lock</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Lock</string>
    </property>
   </action>
-  <action name="ObjectUnlockAction">
-   <property name="text">
+  <action name="ObjectUnlockAction" >
+   <property name="text" >
     <string>Unlock</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Unlock</string>
    </property>
   </action>
-  <action name="DiscoveryDruidAction">
-   <property name="text">
+  <action name="DiscoveryDruidAction" >
+   <property name="text" >
     <string>Discovery Druid</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Discovery Druid</string>
    </property>
   </action>
-  <action name="new_itemAction">
-   <property name="text">
+  <action name="new_itemAction" >
+   <property name="text" >
     <string>new item</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>new item</string>
    </property>
   </action>
-  <action name="fileCompareAction">
-   <property name="text">
+  <action name="fileCompareAction" >
+   <property name="text" >
     <string>Find Conflicting Objects in Two Files</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Find Conflicting Objects in Two Files</string>
    </property>
   </action>
-  <action name="policyImportAction">
-   <property name="text">
+  <action name="policyImportAction" >
+   <property name="text" >
     <string>Import Po&amp;licy</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>Import Policy</string>
    </property>
   </action>
-  <action name="helpAction">
-   <property name="text">
+  <action name="helpAction" >
+   <property name="text" >
     <string>Firewall Builder Help</string>
    </property>
   </action>
-  <action name="actionClearRecentFiles">
-   <property name="enabled">
+  <action name="actionClearRecentFiles" >
+   <property name="enabled" >
     <bool>true</bool>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Clear Menu</string>
    </property>
-   <property name="iconText">
+   <property name="iconText" >
     <string>New Object File</string>
    </property>
   </action>
-  <action name="release_Notes_Action">
-   <property name="text">
+  <action name="release_Notes_Action" >
+   <property name="text" >
     <string>Release Notes</string>
    </property>
   </action>
-  <action name="actionObject_Tree">
-   <property name="checkable">
+  <action name="actionObject_Tree" >
+   <property name="checkable" >
     <bool>true</bool>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Object Tree</string>
    </property>
   </action>
-  <action name="actionRules">
-   <property name="checkable">
+  <action name="actionRules" >
+   <property name="checkable" >
     <bool>true</bool>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Rules</string>
    </property>
   </action>
-  <action name="actionEditor_panel">
-   <property name="checkable">
+  <action name="actionEditor_panel" >
+   <property name="checkable" >
     <bool>true</bool>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Editor panel</string>
    </property>
   </action>
  </widget>
- <layoutdefault spacing="0" margin="11"/>
+ <layoutdefault spacing="0" margin="11" />
  <customwidgets>
   <customwidget>
    <class>ObjectEditorDockWidget</class>
    <extends>QDockWidget</extends>
-   <header location="global">ObjectEditorDockWidget.h</header>
+   <header>ObjectEditorDockWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>InterfaceDialog</class>
+   <extends>QWidget</extends>
+   <header>InterfaceDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>FirewallDialog</class>
+   <extends>QWidget</extends>
+   <header>FirewallDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>UserDialog</class>
+   <extends>QWidget</extends>
+   <header>UserDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RuleSetDialog</class>
+   <extends>QWidget</extends>
+   <header>RuleSetDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LibraryDialog</class>
+   <extends>QWidget</extends>
+   <header>LibraryDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>IPv4Dialog</class>
+   <extends>QWidget</extends>
+   <header>IPv4Dialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>IPv6Dialog</class>
+   <extends>QWidget</extends>
+   <header>IPv6Dialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PhysicalAddressDialog</class>
+   <extends>QWidget</extends>
+   <header>PhysicalAddressDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AddressRangeDialog</class>
+   <extends>QWidget</extends>
+   <header>AddressRangeDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ClusterDialog</class>
+   <extends>QWidget</extends>
+   <header>ClusterDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ClusterGroupDialog</class>
+   <extends>QWidget</extends>
+   <header>ClusterGroupDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>HostDialog</class>
+   <extends>QWidget</extends>
+   <header>HostDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NetworkDialog</class>
+   <extends>QWidget</extends>
+   <header>NetworkDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NetworkDialogIPv6</class>
+   <extends>QWidget</extends>
+   <header>NetworkDialogIPv6.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CustomServiceDialog</class>
+   <extends>QWidget</extends>
+   <header>CustomServiceDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>IPServiceDialog</class>
+   <extends>QWidget</extends>
+   <header>IPServiceDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ICMPServiceDialog</class>
+   <extends>QWidget</extends>
+   <header>ICMPServiceDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TCPServiceDialog</class>
+   <extends>QWidget</extends>
+   <header>TCPServiceDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>UDPServiceDialog</class>
+   <extends>QWidget</extends>
+   <header>UDPServiceDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TagServiceDialog</class>
+   <extends>QWidget</extends>
+   <header>TagServiceDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GroupObjectDialog</class>
+   <extends>QWidget</extends>
+   <header>GroupObjectDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TimeDialog</class>
+   <extends>QWidget</extends>
+   <header>TimeDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RoutingRuleOptionsDialog</class>
+   <extends>QWidget</extends>
+   <header>RoutingRuleOptionsDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RuleOptionsDialog</class>
+   <extends>QWidget</extends>
+   <header>RuleOptionsDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NATRuleOptionsDialog</class>
+   <extends>QWidget</extends>
+   <header>NATRuleOptionsDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DNSNameDialog</class>
+   <extends>QWidget</extends>
+   <header>DNSNameDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AddressTableDialog</class>
+   <extends>QWidget</extends>
+   <header>AddressTableDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ActionsDialog</class>
+   <extends>QWidget</extends>
+   <header>ActionsDialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CommentEditorPanel</class>
+   <extends>QWidget</extends>
+   <header>CommentEditorPanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MetricEditorPanel</class>
+   <extends>QWidget</extends>
+   <header>MetricEditorPanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CompilerOutputPanel</class>
+   <extends>QWidget</extends>
+   <header>CompilerOutputPanel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="MainRes.qrc"/>
+  <include location="MainRes.qrc" />
+  <include location="MainRes.qrc" />
  </resources>
  <connections>
   <connection>
@@ -1009,11 +1613,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>addRuleAfterCurrent()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1025,11 +1629,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileAddToRCS()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1041,11 +1645,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>compile()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1057,11 +1661,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>copyRule()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1073,11 +1677,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>cutRule()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1089,11 +1693,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>debug()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1105,11 +1709,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>toolsDiscoveryDruid()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1121,11 +1725,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>editCopy()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1137,11 +1741,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>editCut()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1153,11 +1757,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>editDelete()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1169,11 +1773,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>editFind()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1185,11 +1789,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>editPaste()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1201,11 +1805,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>editPrefs()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1217,11 +1821,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>editRedo()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1233,11 +1837,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>editUndo()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1249,11 +1853,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileClose()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1265,11 +1869,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileCommit()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1281,11 +1885,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileCompare()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1297,11 +1901,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileDiscard()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1313,11 +1917,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileExit()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1329,11 +1933,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileNew()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1345,11 +1949,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileOpen()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1361,11 +1965,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>filePrint()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1377,11 +1981,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileProp()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1393,11 +1997,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileSave()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1409,11 +2013,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileSaveAs()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1425,11 +2029,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>helpAbout()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1441,11 +2045,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>helpContents()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1457,11 +2061,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>helpIndex()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1473,11 +2077,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>insertRule()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1489,11 +2093,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>install()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1505,11 +2109,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileExport()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1521,11 +2125,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileImport()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1537,11 +2141,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>moveRule()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1553,11 +2157,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>moveRuleUp()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1569,11 +2173,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>newObject()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1585,11 +2189,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>lockObject()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1601,11 +2205,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>unlockObject()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1617,11 +2221,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>pasteRuleAbove()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1633,11 +2237,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>pasteRuleBelow()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1649,11 +2253,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>removeRule()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1665,11 +2269,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileNew()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1681,11 +2285,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileOpen()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1697,11 +2301,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>fileSave()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1713,11 +2317,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>importPolicy()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1729,11 +2333,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>help()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>370</x>
      <y>359</y>
     </hint>
@@ -1745,11 +2349,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>clearRecentFilesMenu()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>370</x>
      <y>359</y>
     </hint>
@@ -1761,11 +2365,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>showReleaseNotes()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>370</x>
      <y>359</y>
     </hint>
@@ -1777,11 +2381,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>toggleViewObjectTree()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>370</x>
      <y>359</y>
     </hint>
@@ -1793,11 +2397,11 @@
    <receiver>FWBMainWindow_q</receiver>
    <slot>toggleViewEditor()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>370</x>
      <y>359</y>
     </hint>

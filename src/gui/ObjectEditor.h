@@ -69,6 +69,13 @@ public:
 private: 
    OptType  openedOpt;
 
+    void registerObjectDialog(QStackedWidget *stack,
+                              const QString &obj_type,
+                              const QString &dialog_name);
+    void registerOptDialog(QStackedWidget *stack,
+                           ObjectEditor::OptType opt_type,
+                           const QString &dialog_name);
+   
 public:
    
     ObjectEditor(QWidget *parent);

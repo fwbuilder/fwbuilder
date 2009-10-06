@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>848</width>
-    <height>260</height>
+    <width>798</width>
+    <height>234</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -28,80 +28,6 @@
       <number>2</number>
      </property>
      <item>
-      <widget class="QFrame" name="frame3" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>16</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="autoFillBackground" >
-        <bool>true</bool>
-       </property>
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QGridLayout" >
-        <property name="margin" >
-         <number>2</number>
-        </property>
-        <property name="spacing" >
-         <number>2</number>
-        </property>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="icon" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="pixmap" >
-           <pixmap resource="MainRes.qrc" >:/Icons/Policy/icon</pixmap>
-          </property>
-          <property name="scaledContents" >
-           <bool>true</bool>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" >
-         <widget class="QLabel" name="editorTitle" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font" >
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text" >
-           <string>Rule set</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
       <widget class="QFrame" name="frame7" >
        <property name="frameShape" >
         <enum>QFrame::Box</enum>
@@ -112,15 +38,33 @@
        <layout class="QGridLayout" name="gridLayout_4" >
         <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame27" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="frameShape" >
            <enum>QFrame::Box</enum>
           </property>
           <property name="frameShadow" >
            <enum>QFrame::Sunken</enum>
           </property>
-          <layout class="QGridLayout" name="gridLayout_3" >
+          <layout class="QGridLayout" name="gridLayout" >
            <property name="spacing" >
-            <number>10</number>
+            <number>12</number>
            </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
@@ -132,7 +76,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="2" >
+           <item row="0" column="1" >
             <widget class="QLineEdit" name="obj_name" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -149,40 +93,54 @@
             </widget>
            </item>
            <item row="1" column="0" colspan="2" >
-            <widget class="QGroupBox" name="groupBox" >
-             <property name="title" >
-              <string/>
+            <widget class="QComboBox" name="ipv4_6_rule_set" >
+             <property name="frame" >
+              <bool>false</bool>
              </property>
-             <layout class="QGridLayout" name="gridLayout" >
-              <item row="0" column="0" >
-               <widget class="QComboBox" name="ipv4_6_rule_set" >
-                <property name="frame" >
-                 <bool>false</bool>
-                </property>
-                <item>
-                 <property name="text" >
-                  <string>This is IPv4 rule set</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>This is IPv6 rule set</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text" >
-                  <string>This is combined IPv4 and IPv6 rule set</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-             </layout>
+             <item>
+              <property name="text" >
+               <string>This is IPv4 rule set</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>This is IPv6 rule set</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>This is combined IPv4 and IPv6 rule set</string>
+              </property>
+             </item>
             </widget>
            </item>
-           <item row="1" column="2" >
+           <item row="2" column="0" colspan="2" >
+            <widget class="QCheckBox" name="top_rule_set" >
+             <property name="text" >
+              <string>Top ruleset</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" >
+            <spacer name="verticalSpacer" >
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>28</width>
+               <height>1</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="0" colspan="2" >
             <widget class="QGroupBox" name="iptables_only" >
              <property name="title" >
               <string/>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
              </property>
              <layout class="QGridLayout" name="gridLayout_2" >
               <property name="leftMargin" >
@@ -217,26 +175,6 @@
              </layout>
             </widget>
            </item>
-           <item row="2" column="0" colspan="3" >
-            <widget class="QCheckBox" name="top_rule_set" >
-             <property name="text" >
-              <string>Top ruleset</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" >
-            <spacer name="verticalSpacer" >
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>20</width>
-               <height>13</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
           </layout>
          </widget>
         </item>
@@ -268,6 +206,12 @@
            <size>
             <width>200</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>180</height>
            </size>
           </property>
           <property name="tabChangesFocus" >
@@ -378,12 +322,12 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>130</x>
-     <y>125</y>
+     <x>166</x>
+     <y>73</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>423</x>
-     <y>129</y>
+     <x>398</x>
+     <y>116</y>
     </hint>
    </hints>
   </connection>

@@ -49,31 +49,28 @@ CommentEditorPanel::~CommentEditorPanel()
     delete m_widget;
 }
 
-CommentEditorPanel::CommentEditorPanel(QWidget *p,
-                                       bool enableLoadFromFile) : BaseObjectDialog(p)
+CommentEditorPanel::CommentEditorPanel(QWidget *p) : BaseObjectDialog(p)
 {
     m_widget = new Ui::CommentEditorPanel_q;
     m_widget->setupUi(this);
+    m_widget->inputFromFileButton->hide();
+    rule=NULL;
+}
 
+void CommentEditorPanel::setFileInput(bool enableLoadFromFile)
+{
     if (enableLoadFromFile) m_widget->inputFromFileButton->show();
     else                    m_widget->inputFromFileButton->hide();
-
-    //m_widget->editor->setTextFormat(QTextEdit::PlainText);
-    rule=NULL;
-    //editor->setText(txt);
 }
 
 QString CommentEditorPanel::text()
 {
     return m_widget->editor->toPlainText();
 }
+
 void CommentEditorPanel::setText(QString s)
 {
     m_widget->editor->setText(s);
-}
-void CommentEditorPanel::setTitle(QString s)
-{
-    m_widget->editorTitle->setText(s);
 }
 
 void CommentEditorPanel::loadFromFile()
@@ -140,10 +137,6 @@ void CommentEditorPanel::loadFWObject(FWObject *obj)
     Firewall *f=Firewall::cast(o);
 
     setText(QString::fromUtf8(r->getComment().c_str()));
-    setTitle(QString("%1 / %2 / %3 ( Comment )")
-            .arg(QString::fromUtf8(f->getName().c_str()))
-            .arg(r->getTypeName().c_str())
-            .arg(r->getPosition()));
 }
 
 void CommentEditorPanel::discardChanges()

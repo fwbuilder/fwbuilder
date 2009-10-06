@@ -47,10 +47,8 @@ class MetricEditorPanel : public BaseObjectDialog
 
     MetricEditorPanel(QWidget* p);
     ~MetricEditorPanel();
-    
-    
+
     int value();
-    void setTitle(QString s);
 
 public slots:
 

@@ -25,15 +25,24 @@
 
 #include "../../config.h"
 #include "global.h"
+#include "utils.h"
 
 #include <ui_FWBMainWindow_q.h>
 
 #include "FWWindow.h"
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
+#include "FWBTree.h"
+
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/Library.h"
 
 #include <QtDebug>
 #include <QTimer>
+#include <QMdiSubWindow>
+#include <QPixmap>
 
 
 using namespace libfwbuilder;
@@ -74,30 +83,100 @@ void FWWindow::closeEditor()
     m_mainWindow->editorDockWidget->close(); // editor
 }
 
-void FWWindow::openEditor(FWObject *o)
+void FWWindow::openEditor(FWObject *obj)
 {
+    if (fwbdebug)
+        qDebug() << "FWWindow::openEditor "
+                 << " obj: "
+                 << " " << obj->getName().c_str()
+                 << " " << obj->getTypeName().c_str();
+
+    QString title_txt;
+    QPixmap title_icon;
+    buildEditorTitleAndIcon(obj, ObjectEditor::optNone, &title_txt, &title_icon);
+
     QSize old_size = m_mainWindow->objectEditorStack->size();
     m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
+    m_mainWindow->editorDockWidget->setWindowTitle(title_txt);
+    //m_mainWindow->editorDockWidget->setWindowIcon(title_icon);
+    m_mainWindow->objectTypeIcon->setPixmap(title_icon);
     m_mainWindow->editorDockWidget->show(); // editor
-    oe->open(o);
+    oe->open(obj);
     m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
     //m_mainWindow->objectEditorFrame->show();
     m_mainWindow->objectEditorStack->resize(old_size);
 }
 
-void FWWindow::openOptEditor(FWObject *o, ObjectEditor::OptType t)
+void FWWindow::openOptEditor(FWObject *obj, ObjectEditor::OptType t)
 {
+    if (fwbdebug)
+        qDebug() << "FWWindow::openOptEditor "
+                 << " obj: "
+                 << " " << obj->getName().c_str()
+                 << " " << obj->getTypeName().c_str()
+                 << " option: " << t;
+
+    QString title_txt;
+    QPixmap title_icon;
+    buildEditorTitleAndIcon(obj, t, &title_txt, &title_icon);
+
     QSize old_size = m_mainWindow->objectEditorStack->size();
     m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
+    m_mainWindow->editorDockWidget->setWindowTitle(title_txt);
+    //m_mainWindow->editorDockWidget->setWindowIcon(title_icon);
+    m_mainWindow->objectTypeIcon->setPixmap(title_icon);
     m_mainWindow->editorDockWidget->show(); // editor
-    oe->openOpt(o, t);
+    oe->openOpt(obj, t);
     m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    //m_mainWindow->objectEditorFrame->show();
     m_mainWindow->objectEditorStack->resize(old_size);
+}
+
+void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
+                                       ObjectEditor::OptType t,
+                                       QString *title_txt,
+                                       QPixmap *pm)
+{
+    QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
+        QMdiArea::StackingOrder);
+    QMdiSubWindow *top_subw = subwindows.last(); // last item is the topmost window
+    ProjectPanel *top_pp = dynamic_cast<ProjectPanel*>(top_subw->widget());
+
+    QStringList editor_title;
+    FWObject *o = obj;
+    Rule *rule = NULL;
+    FWObject *ruleset = NULL;
+    while (o)
+    {
+        if (Rule::cast(o))
+        {
+            rule = Rule::cast(o);
+            editor_title.push_front(QString("rule #%1").arg(rule->getPosition()));
+        } else
+            editor_title.push_front(o->getName().c_str());
+        if (Library::cast(o)) break;
+        if (RuleSet::cast(o)) ruleset = o;
+        o = o->getParent();
+    }
+
+    if (subwindows.size() > 1)
+        editor_title.push_front(top_pp->getFileName());
+
+    *title_txt = editor_title.join(" / ");
+
+    FWObject *obj_for_icon = obj;
+    if (ruleset) obj_for_icon = ruleset;
+    if (rule && PolicyRule::isA(rule) && t == ObjectEditor::optAction)
+    {
+        QString icn = ":/Icons/" ;
+        icn += PolicyRule::cast(rule)->getActionAsString().c_str();
+        LoadPixmap(icn, *pm);  // in utils.cpp
+    } else
+        FWBTree().setObjectIcon(obj_for_icon, pm, false);
 }
 
 void FWWindow::blankEditor()
 {
+    m_mainWindow->editorDockWidget->setWindowTitle("");
     oe->blank();
 }
 

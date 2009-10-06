@@ -40,17 +40,17 @@
 #  endif
 #endif
 
-#include <qapplication.h>
-#include <qmainwindow.h>
-#include <qtextcodec.h>
-#include <qtooltip.h>
-#include <qtimer.h>
-#include <qpixmapcache.h>
+#include <QApplication>
+#include <QTimer>
+#include <QPixmapCache>
 #include <QTextCodec>
 #include <QLocale>
 #include <QDir>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QStyle>
+#include <QMacStyle>
+#include <QtDebug>
 
 /*
 #ifdef _WIN32
@@ -674,20 +674,14 @@ int main( int argc, char *argv[] )
                        qt_resource_dir);
     app->installTranslator (&qt_translator);
 
-
-/* must build list of available libraries _after_ creation of
- * FWObjectDatabase and settings */
-
-    if (fwbdebug) qDebug("loading libraries ...");
-
     mw  = new FWWindow();
     //mw->setSafeMode(safemode);
-    if (filename!="")
+    if (filename != "")
         mw->registerAutoOpenDocFile(filename, auto_load_from_rcs_head_revision);
 
     mw->show();
 
-    app->connect(app, SIGNAL( lastWindowClosed() ), app, SLOT( quit()));
+    app->connect(app, SIGNAL(lastWindowClosed()), app, SLOT(quit()));
 
 #if defined(Q_WS_MAC)
     connectOdocHandler();

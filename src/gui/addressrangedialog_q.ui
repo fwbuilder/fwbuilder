@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>712</width>
-    <height>251</height>
+    <width>711</width>
+    <height>202</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -33,80 +33,6 @@
      <property name="spacing" >
       <number>2</number>
      </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QFrame" name="frame3" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>16</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="autoFillBackground" >
-        <bool>true</bool>
-       </property>
-       <property name="frameShape" >
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <layout class="QHBoxLayout" >
-        <property name="spacing" >
-         <number>2</number>
-        </property>
-        <property name="margin" >
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="label" >
-          <property name="text" >
-           <string/>
-          </property>
-          <property name="pixmap" >
-           <pixmap resource="MainRes.qrc" >:/Icons/AddressRange/icon</pixmap>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="editorTitle" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>254</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font" >
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text" >
-           <string>Address Range</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
      <item>
       <widget class="QFrame" name="frame7" >
        <property name="frameShape" >
@@ -118,6 +44,24 @@
        <layout class="QGridLayout" >
         <item rowspan="2" row="0" column="0" >
          <widget class="QFrame" name="frame7_2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="frameShape" >
            <enum>QFrame::Box</enum>
           </property>
@@ -125,6 +69,9 @@
            <enum>QFrame::Sunken</enum>
           </property>
           <layout class="QGridLayout" >
+           <property name="margin" >
+            <number>8</number>
+           </property>
            <item row="0" column="0" >
             <widget class="QLabel" name="textLabel1" >
              <property name="text" >
@@ -260,6 +207,12 @@
            <size>
             <width>200</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>180</height>
            </size>
           </property>
           <property name="tabChangesFocus" >

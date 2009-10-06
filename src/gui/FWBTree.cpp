@@ -27,11 +27,12 @@
 #include "global.h"
 
 #include <QtDebug>
+#include <QPixmap>
 
 #include "FWBTree.h"
+#include "utils.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
-
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
@@ -515,3 +516,22 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
 
     return nlib;
 }
+
+void FWBTree::setObjectIcon(FWObject *obj, QPixmap *pm, bool small_icon)
+{
+    QString icn_alias;
+    QString icn_sfx = (small_icon)?"icon-tree":"icon";
+    if (obj->getRO())
+        icn_alias = ":/Icons/lock";
+    else
+    {
+        if (FWBTree().isStandardFolder(obj))
+            icn_alias = ":/Icons/SystemGroup/" + icn_sfx;
+        else
+            icn_alias = QString(":/Icons/") + obj->getTypeName().c_str() + "/" + icn_sfx;
+    }
+
+    LoadPixmap(icn_alias, *pm);  // in utils.cpp
+}
+
+

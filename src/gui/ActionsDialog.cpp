@@ -240,15 +240,15 @@ void ActionsDialog::setRule(PolicyRule *r )
 
     platform=f->getStr("platform");
 
-    QString icn = ":/Icons/" ;
-    icn+=r->getActionAsString().c_str();
-    m_dialog->icon->setPixmap(QIcon(icn).pixmap(25,25));
+    // QString icn = ":/Icons/" ;
+    // icn += r->getActionAsString().c_str();
+    // m_dialog->icon->setPixmap(QIcon(icn).pixmap(25,25));
 
-    QString title=QString("%3 %1 / %2")
-        .arg(QString::fromUtf8(f->getName().c_str()))
-        .arg(rule->getPosition())
-        .arg(rule->getActionAsString().c_str());
-    m_dialog->action->setText(title);
+    // QString title=QString("%3 %1 / %2")
+    //     .arg(QString::fromUtf8(f->getName().c_str()))
+    //     .arg(rule->getPosition())
+    //     .arg(rule->getActionAsString().c_str());
+    // m_dialog->action->setText(title);
 
     string act = rule->getActionAsString();
     help_name = string(platform + "_" + act).c_str();

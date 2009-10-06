@@ -103,19 +103,13 @@ void MetricEditorPanel::loadFWObject(libfwbuilder::FWObject *obj)
     m_widget->spin_box->setMaximum( 255);
     m_widget->spin_box->setValue( r->getMetric());
 
-    setTitle(QString("%1 / %2 / %3 ( Metric )")
-            .arg(QString::fromUtf8(f->getName().c_str()))
-            .arg(r->getTypeName().c_str())
-            .arg(r->getPosition()));
 }
-void MetricEditorPanel::setTitle(QString s)
-{
-    m_widget->editorTitle->setText(s);
-}
+
 void MetricEditorPanel::validate(bool* b )
 {
     *b=true;
 }
+
 void MetricEditorPanel::isChanged(bool *)
 {
 }

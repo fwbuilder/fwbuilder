@@ -83,11 +83,10 @@ void RoutingRuleOptionsDialog::loadFWObject(FWObject *o)
 
     Rule      *rule = dynamic_cast<Rule*>(o);
     FWOptions *ropt = rule->getOptionsObject();
-
-    m_dialog->editorTitle->setText(QString("%1 / %2 / %3 ")
-            .arg(QString::fromUtf8(p->getName().c_str()))
-            .arg(rule->getTypeName().c_str())
-            .arg(rule->getPosition()));
+    // m_dialog->editorTitle->setText(QString("%1 / %2 / %3 ")
+    //         .arg(QString::fromUtf8(p->getName().c_str()))
+    //         .arg(rule->getTypeName().c_str())
+    //         .arg(rule->getPosition()));
 
     int wid=0;
     if (platform=="iptables") wid=0;

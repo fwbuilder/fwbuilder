@@ -112,7 +112,11 @@ class FWWindow : public QMainWindow {
     ProjectPanel *newProjectPanel();
     void showSub(ProjectPanel *projectW);
     void attachEditorToProjectPanel(ProjectPanel *pp);
-
+    void buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
+                                 ObjectEditor::OptType t,
+                                 QString *title_txt,
+                                 QPixmap *pm);
+    
 public:
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;

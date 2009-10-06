@@ -341,7 +341,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     nitm->setText( 1, getTreeLabel(obj) );
 
     QPixmap pm;
-    setObjectIcon(obj, &pm);
+    FWBTree().setObjectIcon(obj, &pm);
 
     nitm->setIcon( 0, QIcon(pm) );
 //    nitm->setIcon( 1, QIcon(pm) );
@@ -940,7 +940,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     itm1->setText( 1, getTreeLabel(lib) );
 
     QPixmap pm;
-    setObjectIcon(lib, &pm);
+    FWBTree().setObjectIcon(lib, &pm);
     itm1->setIcon( 0, pm);
 
     itm1->setProperty("type", lib->getTypeName().c_str() );
@@ -4039,22 +4039,4 @@ void ObjectManipulator::guessSubInterfaceTypeAndAttributes(Interface *intf)
 
     delete int_prop;
 }
-
-void ObjectManipulator::setObjectIcon(FWObject *obj, QPixmap *pm)
-{
-    QString icn_alias;
-
-    if (obj->getRO())
-        icn_alias = ":/Icons/lock";
-    else
-    {
-        if (FWBTree().isStandardFolder(obj))
-            icn_alias = ":/Icons/SystemGroup/icon-tree";
-        else
-            icn_alias = QString(":/Icons/") + obj->getTypeName().c_str() + "/icon-tree";
-    }
-
-    LoadPixmap(icn_alias, *pm);  // in utils.cpp
-}
-
 
