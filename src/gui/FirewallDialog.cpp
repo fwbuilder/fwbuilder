@@ -349,7 +349,14 @@ void FirewallDialog::openFWDialog()
         QDialog *d=dynamic_cast<QDialog*>(w);
         assert(d!=NULL);
 
-        d->exec();   // modal dialog, dialog saves data into the object
+        if (d->exec() == QDialog::Accepted)
+        {
+            // modal dialog, dialog saves data into the object
+            // mark as modified
+            changed();
+            BaseObjectDialog::applyChanges();
+        }
+        delete d;
     }
     catch (FWException &ex)
     {
@@ -374,7 +381,14 @@ void FirewallDialog::openOSDialog()
         QDialog *d=dynamic_cast<QDialog*>(w);
         assert(d!=NULL);
 
-        d->exec();   // modal dialog, dialog saves data into the object
+        if (d->exec() == QDialog::Accepted)
+        {
+            // modal dialog, dialog saves data into the object
+            // mark as modified
+            changed();
+            BaseObjectDialog::applyChanges();
+        }
+        delete d;
     }
     catch (FWException &ex)
     {

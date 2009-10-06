@@ -304,10 +304,23 @@ void ClusterGroupDialog::openClusterConfDialog()
         assert(d != NULL);
 
         // connect obj changed signal
-        connect(d, SIGNAL(membersChanged()), this, SLOT(objectChanged()));
+        //connect(d, SIGNAL(membersChanged()), this, SLOT(objectChanged()));
 
-        d->exec();
-        
+        if (d->exec() == QDialog::Accepted)
+        {
+            // modal dialog, dialog saves data into the object
+            
+            // update object tree (if members have changed, the object
+            // properties summary text may have to change too)
+            mw->activeProject()->updateObjectInTree(obj, true);
+
+            // reload object to reflect changes in members
+            loadFWObject(obj);
+
+            // mark as modified
+            changed();
+            BaseObjectDialog::applyChanges();
+        }
         delete d;
     }
     catch (FWException &ex)
