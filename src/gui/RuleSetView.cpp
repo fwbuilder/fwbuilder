@@ -618,12 +618,12 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
         if (node->isOutermost())
             menu->addAction( tr("Remove from the group"), this, SLOT( removeFromGroup() ));
     }
-    else if (isOnlyTopLevelRules(selectedIndexes))
+    else if (selectedIndexes.size() > 0 && isOnlyTopLevelRules(selectedIndexes))
     {
         menu->addAction( tr("New group"), this, SLOT( newGroup() ));
 
-
-        QString nn = md->nodeFromIndex(selectedIndexes.first())->nameOfPredecessorGroup();
+        QString nn =
+            md->nodeFromIndex(selectedIndexes.first())->nameOfPredecessorGroup();
 
         if (!nn.isEmpty())
         {
