@@ -60,7 +60,7 @@
     <file alias="Icons/Interval/icon-tree" >Icons/clock_16.png</file>
     <file alias="Icons/Interval/icon" >Icons/clock_25.png</file>
     <file>Icons/close.png</file>
-    <file>Icons/compile_25.png</file>
+    <file alias="Icons/Compile" >Icons/compile_25.png</file>
     <file alias="Icons/Continue-tree" >Icons/continue_16.png</file>
     <file alias="Icons/Continue" >Icons/continue_25.png</file>
     <file alias="Icons/Custom-tree" >Icons/custom_16.png</file>
@@ -97,7 +97,7 @@
     <file alias="Icons/Inbound" >Icons/inbound_25.png</file>
     <file alias="Icons/Inbound-tree" >Icons/inbound_16.png</file>
     <file>Icons/info_25.png</file>
-    <file>Icons/install_25.png</file>
+    <file alias="Icons/Install" >Icons/install_25.png</file>
     <file alias="Icons/Interface/icon-neg-tree" >Icons/interface-neg_16.png</file>
     <file alias="Icons/Interface/icon-neg" >Icons/interface-neg_25.png</file>
     <file alias="Icons/Interface/icon-ref" >Icons/interface-ref_25.png</file>

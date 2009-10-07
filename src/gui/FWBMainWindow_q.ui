@@ -1056,7 +1056,7 @@
   <action name="compileAction" >
    <property name="icon" >
     <iconset resource="MainRes.qrc" >
-     <normaloff>:/Icons/compile_25.png</normaloff>:/Icons/compile_25.png</iconset>
+     <normaloff>:/Icons/Compile</normaloff>:/Icons/Compile</iconset>
    </property>
    <property name="text" >
     <string>Compile</string>
@@ -1067,11 +1067,17 @@
    <property name="toolTip" >
     <string>Compile rules</string>
    </property>
+   <property name="statusTip" >
+    <string>Compile rules</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Compile rules</string>
+   </property>
   </action>
   <action name="installAction" >
    <property name="icon" >
     <iconset resource="MainRes.qrc" >
-     <normaloff>:/Icons/install_25.png</normaloff>:/Icons/install_25.png</iconset>
+     <normaloff>:/Icons/Install</normaloff>:/Icons/Install</iconset>
    </property>
    <property name="text" >
     <string>Install</string>
@@ -1080,6 +1086,12 @@
     <string>Install</string>
    </property>
    <property name="toolTip" >
+    <string>Install firewall policy</string>
+   </property>
+   <property name="statusTip" >
+    <string>Install firewall policy</string>
+   </property>
+   <property name="whatsThis" >
     <string>Install firewall policy</string>
    </property>
   </action>
@@ -1603,7 +1615,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="MainRes.qrc" />
   <include location="MainRes.qrc" />
  </resources>
  <connections>

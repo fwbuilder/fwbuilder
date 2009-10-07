@@ -278,7 +278,9 @@ public:
     void splitterMoved ( int pos, int index );
 
     virtual void autoSave();
-    
+    virtual void compileThis();
+    virtual void installThis();
+
 public:
     QString getFileName();
     bool editingLibrary();

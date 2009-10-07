@@ -97,37 +97,96 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
-       <property name="topMargin" >
-        <number>10</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>0</number>
-       </property>
-       <property name="horizontalSpacing" >
+       <property name="spacing" >
         <number>0</number>
        </property>
        <item row="0" column="0" >
-        <widget class="QLabel" name="rulesetname" >
-         <property name="font" >
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
+        <layout class="QHBoxLayout" name="horizontalLayout" >
+         <property name="spacing" >
+          <number>12</number>
          </property>
-         <property name="text" >
-          <string>Firewall / ruleset</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+         <item>
+          <widget class="QToolButton" name="compile_this_fw" >
+           <property name="toolTip" >
+            <string>Compile this firewall</string>
+           </property>
+           <property name="statusTip" >
+            <string>Compile this firewall</string>
+           </property>
+           <property name="whatsThis" >
+            <string>Compile this firewall</string>
+           </property>
+           <property name="text" >
+            <string>...</string>
+           </property>
+           <property name="icon" >
+            <iconset resource="MainRes.qrc" >
+             <normaloff>:/Icons/Compile</normaloff>:/Icons/Compile</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="checkable" >
+            <bool>false</bool>
+           </property>
+           <property name="popupMode" >
+            <enum>QToolButton::DelayedPopup</enum>
+           </property>
+           <property name="arrowType" >
+            <enum>Qt::NoArrow</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="install_this_fw" >
+           <property name="toolTip" >
+            <string>Compile and install this firewall</string>
+           </property>
+           <property name="statusTip" >
+            <string>Compile and install this firewall</string>
+           </property>
+           <property name="whatsThis" >
+            <string>Compile and install this firewall</string>
+           </property>
+           <property name="text" >
+            <string>...</string>
+           </property>
+           <property name="icon" >
+            <iconset resource="MainRes.qrc" >
+             <normaloff>:/Icons/Install</normaloff>:/Icons/Install</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rulesetname" >
+           <property name="font" >
+            <font>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text" >
+            <string>Firewall / ruleset</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="1" column="0" >
         <widget class="QStackedWidget" name="ruleSets" >
@@ -155,5 +214,42 @@
  <resources>
   <include location="MainRes.qrc" />
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>compile_this_fw</sender>
+   <signal>clicked()</signal>
+   <receiver>ProjectPanel_q</receiver>
+   <slot>compileThis()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>344</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>417</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>install_this_fw</sender>
+   <signal>clicked()</signal>
+   <receiver>ProjectPanel_q</receiver>
+   <slot>installThis()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>391</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>417</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>compileThis()</slot>
+  <slot>installThis()</slot>
+ </slots>
 </ui>

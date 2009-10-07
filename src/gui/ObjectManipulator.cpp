@@ -1665,7 +1665,6 @@ void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,
             extractFirewallsFromGroup(gr,fo);
         }
     }
-
 }
 
 void ObjectManipulator::extractFirewallsFromGroup(ObjectGroup *gr,
@@ -1683,15 +1682,9 @@ void ObjectManipulator::install()
 {
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
-    //FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
-    //if (obj==NULL) return;
-    //m_project->showFirewall(obj);
-
     vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
     set<Firewall*> fo;
     filterFirewallsFromSelection(so,fo);
-
-
 
     m_project->install(fo);
 }

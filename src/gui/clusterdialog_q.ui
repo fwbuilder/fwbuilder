@@ -252,10 +252,22 @@
       <item row="1" column="1" >
        <widget class="QCheckBox" name="inactive" >
         <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>215</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>215</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="toolTip" >
          <string>Skip this firewall for batch compile and install operations</string>
@@ -268,7 +280,7 @@
       <item row="1" column="2" >
        <widget class="QTextEdit" name="comment" >
         <property name="sizePolicy" >
-         <sizepolicy vsizetype="Expanding" hsizetype="Fixed" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -308,7 +320,6 @@
   <tabstop>inactive</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
- <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>

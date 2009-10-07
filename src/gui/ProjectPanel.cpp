@@ -222,9 +222,9 @@ void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
     getCurrentRuleSetView()->selectRE( obj );    
 }
 
-RuleSetView * ProjectPanel::getCurrentRuleSetView () 
+RuleSetView * ProjectPanel::getCurrentRuleSetView() 
 {
-    return dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget ());
+    return dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
 }
 
 
@@ -324,8 +324,7 @@ int  ProjectPanel::findFirewallInList(FWObject *f)
 
 void ProjectPanel::updateFirewallName()
 {
-    if (visibleRuleSet==NULL)
-        return ;
+    if (visibleRuleSet==NULL) return ;
 
     QString name = "<B>";
     FWObject * p = visibleRuleSet->getParent();
@@ -754,6 +753,30 @@ QString ProjectPanel::getCurrentFileName()
 RCS * ProjectPanel::getRCS()
 {
     return rcs;
+}
+
+void ProjectPanel::compileThis()
+{
+    if (visibleRuleSet==NULL) return ;
+    set<Firewall*> fw;
+    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+    if (f)
+    {
+        fw.insert(f);
+        compile(fw);
+    }
+}
+
+void ProjectPanel::installThis()
+{
+    if (visibleRuleSet==NULL) return ;
+    set<Firewall*> fw;
+    Firewall *f = Firewall::cast(visibleRuleSet->getParent());
+    if (f)
+    {
+        fw.insert(f);
+        install(fw);
+    }
 }
 
 void ProjectPanel::compile()
