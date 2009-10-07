@@ -275,8 +275,14 @@ QString ObjectEditor::getOptDialogName(OptType t)
     return QString("OptionDialog_%1").arg(t);
 }
 
-void ObjectEditor::openOpt(FWObject *obj,OptType t)
+void ObjectEditor::openOpt(FWObject *obj, OptType t)
 {
+    if (fwbdebug) 
+        qDebug() << "ObjectEditor::openOpt obj=" << obj
+                 << QString((obj)?obj->getName().c_str():"")
+                 << QString((obj)?obj->getTypeName().c_str():"")
+                 << "t=" << t;
+
     if (Rule::cast(obj)==NULL) return;
 
     disconnectSignals();
@@ -332,21 +338,15 @@ void ObjectEditor::open(FWObject *obj)
     openedOpt = optNone;
     if (stackIds.count(obj->getTypeName().c_str())!=0)
     {
+        if (fwbdebug) 
+            qDebug() << "ObjectEditor::open obj=" << obj
+                     << QString((obj)?obj->getName().c_str():"")
+                     << QString((obj)?obj->getTypeName().c_str():"");
+
         disconnectSignals();
 
         current_dialog_name = obj->getTypeName().c_str();
         current_dialog_idx = stackIds[current_dialog_name];
-
-//        disconnect( SIGNAL(loadObject_sign(libfwbuilder::FWObject*)) );
-//        disconnect( SIGNAL(validate_sign(bool*)) );
-//        disconnect( SIGNAL(isChanged_sign(bool*)) );
-//        disconnect( SIGNAL(applyChanges_sign()) );
-//        disconnect( SIGNAL(discardChanges_sign()) );
-//        disconnect( SIGNAL(close_sign(QCloseEvent*)) );
-
-        //hide();
-
-
 
         show();
 
@@ -357,10 +357,6 @@ void ObjectEditor::open(FWObject *obj)
         connect(this, SIGNAL(validate_sign(bool*)),
                 dialogs[ current_dialog_idx ],
                 SLOT(validate(bool*)));
-
-        //connect(this, SIGNAL(isChanged_sign(bool*)),
-        //        dialogs[ current_dialog_idx ],
-        //        SLOT(isChanged(bool*)));
 
         connect(this, SIGNAL(applyChanges_sign()),
                 dialogs[ current_dialog_idx ],
@@ -388,10 +384,10 @@ void ObjectEditor::open(FWObject *obj)
 
         emit loadObject_sign(obj);
         findAndLoadHelp();
-    }
 
-    opened = obj;
-    applyButton->setEnabled(false);
+        opened = obj;
+        applyButton->setEnabled(false);
+    }
 }
 
 void ObjectEditor::disconnectSignals()

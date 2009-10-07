@@ -48,22 +48,36 @@
 using namespace libfwbuilder;
 
 /*
- * when ProjectPanel is created, it send bunch of stateChange events
- * which leads to calls to ProjectPanel::changeEvent() method. This
- * method checks if editr is visible and contains modified data. Since
- * we create defaulr ProjectPanel object in the constructor of
+ * when ProjectPanel is created, it sends bunch of stateChange events
+ * which lead to calls to ProjectPanel::changeEvent() method. This
+ * method checks if editor is visible and contains modified data. Since
+ * we create default ProjectPanel object in the constructor of
  * FWWindow, the first call to ProjectPanel::changeEvent() comes when
  * object editor has not been create yet. This is why we need to check
  * for oe != NULL here and below.
  */
 bool FWWindow::isEditorVisible()
 {
-    return oe != NULL && m_mainWindow->editorDockWidget->isVisible(); // editor
+    return oe != NULL && m_mainWindow->editorDockWidget->isVisible() &&
+        m_mainWindow->editorPanelTabWidget->currentIndex() == EDITOR_PANEL_EDITOR_TAB;
 }
 
 bool FWWindow::isEditorModified()
 {
     return oe != NULL && oe->isModified();
+}
+
+void FWWindow::editorPanelTabChanged(int idx)
+{
+    if (idx == EDITOR_PANEL_EDITOR_TAB)
+    {
+        ProjectPanel *pp = activeProject();
+        if (pp)
+        {
+            oe->open(pp->getSelectedObject());
+            m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
+        }
+    }
 }
 
 void FWWindow::showEditor()

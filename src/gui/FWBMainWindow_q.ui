@@ -2418,6 +2418,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>editorPanelTabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>editorPanelTabChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>511</x>
+     <y>708</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>540</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
@@ -2426,5 +2442,6 @@
   <slot>toggleViewRules()</slot>
   <slot>toggleViewEditor()</slot>
   <slot>toggleViewSearch()</slot>
+  <slot>editorPanelTabChanged(int)</slot>
  </slots>
 </ui>

@@ -1,3 +1,11 @@
+2009-10-07  vadim  <vadim@vk.crocodile.org>
+
+	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::itemClicked):
+	"find where used" panel selects object in the tree or in rules on
+	single click in the list of the results. To open the object in the
+	editor user needs to switch to the editor tab in the bottom docked
+	panel.
+
 2009-10-03  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertFailoverRule):

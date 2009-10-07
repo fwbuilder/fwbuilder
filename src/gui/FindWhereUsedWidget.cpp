@@ -112,7 +112,31 @@ void FindWhereUsedWidget::setShowObject(bool fl)
     flShowObject=fl;
 }
 
-void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item)
+/**
+ * This signal is emitted when the user activates an item by single-
+ * or double-clicking (depending on the platform, i.e. on the
+ * QStyle::SH_ItemView_ActivateItemOnSingleClick style hint) or
+ * pressing a special key (e.g., Enter).
+ */
+void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item, int)
+{
+    FWObject *container = (FWObject*)(qVariantValue<void*>(item->data(1, Qt::UserRole)));
+
+    if (flShowObject && container!=NULL)
+    {
+        showObject(container);
+    }
+}
+
+/**
+ * This signal is emitted when the user clicks inside the widget.
+ *
+ * The specified item is the item that was clicked, or 0 if no item
+ * was clicked. The column is the item's column that was clicked. If
+ * no item was clicked, no signal will be emitted.
+ * 
+ */
+void FindWhereUsedWidget::itemClicked(QTreeWidgetItem* item, int)
 {
     FWObject *container = (FWObject*)(qVariantValue<void*>(item->data(1, Qt::UserRole)));
 
