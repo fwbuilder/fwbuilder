@@ -27,6 +27,9 @@
 
 #include "Configlet.h"
 
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/Resources.h"
+
 #include <QRegExp>
 #include <QTextStream>
 #include <QDir>
@@ -36,6 +39,7 @@
 
 extern std::string     respath;
 
+using namespace libfwbuilder;
 using namespace std;
 
 
@@ -58,6 +62,18 @@ Configlet::Configlet(const std::string &prefix,
     comment_str = "##";
     collapse_empty_strings = false;
     if (!reload(prefix, file_name)) reload(default_prefix, file_name);
+}
+
+Configlet::Configlet(FWObject *fw, const std::string &default_prefix,
+                     const QString &file_name)
+{
+    string host_os = fw->getStr("host_OS");
+    string os_family = Resources::os_res[host_os]->
+        getResourceStr("/FWBuilderResources/Target/family");
+    remove_comments = true;
+    comment_str = "##";
+    collapse_empty_strings = false;
+    if (!reload(os_family, file_name)) reload(default_prefix, file_name);
 }
 
 Configlet::~Configlet()

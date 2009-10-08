@@ -42,10 +42,6 @@ OSConfigurator_ipcop::OSConfigurator_ipcop(FWObjectDatabase *_db,
 {
 }
 
-void OSConfigurator_ipcop::processFirewallOptions() 
-{
-}
-
 void OSConfigurator_ipcop::addVirtualAddressForNAT(const Network*)
 {
 }
@@ -54,38 +50,9 @@ void OSConfigurator_ipcop::addVirtualAddressForNAT(const Address*)
 {
 }
 
-void OSConfigurator_ipcop::printCommandsToAddVirtualAddressesForNAT()
-{
-}
-
-string OSConfigurator_ipcop::printConfigureInterfacesCommands()
-{
-    return "";
-}
-
-int  OSConfigurator_ipcop::prolog()
+int OSConfigurator_ipcop::prolog()
 {
     return 0;
-}
-
-string OSConfigurator_ipcop::printShellFunctions()
-{
-    return OSConfigurator_linux24::printShellFunctions();
-}
-
-string  OSConfigurator_ipcop::printPathForAllTools(const string &os)
-{
-    return OSConfigurator_linux24::printPathForAllTools(os);
-}
-
-string OSConfigurator_ipcop::generateCodeForProtocolHandlers(bool)
-{
-    return "";
-}
-
-string OSConfigurator_ipcop::printIPForwardingCommands()
-{
-    return "";
 }
 
 void OSConfigurator_ipcop::epilog()

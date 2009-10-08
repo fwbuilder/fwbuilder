@@ -118,9 +118,7 @@ void OSConfigurator_linux24::setConfigletMacroForOptionInt(
 
 void OSConfigurator_linux24::processFirewallOptions() 
 {
-    string os_family = Resources::os_res[fw->getStr("host_OS")]->
-        getResourceStr("/FWBuilderResources/Target/family");
-    Configlet kernel_vars(os_family, "linux24", "kernel_vars");
+    Configlet kernel_vars(fw, "linux24", "kernel_vars");
     kernel_vars.removeComments();
     kernel_vars.collapseEmptyStrings(true);
 
@@ -150,7 +148,7 @@ void OSConfigurator_linux24::processFirewallOptions()
 void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)
 {
     FWOptions* options=fw->getOptionsObject();
-    if ( options->getBool("manage_virtual_addr") ) 
+    if (options->getBool("manage_virtual_addr"))
     {
         if (virtual_addresses.empty() || 
             find(virtual_addresses.begin(),virtual_addresses.end(),
@@ -246,30 +244,6 @@ void OSConfigurator_linux24::printChecksForRunTimeMultiAddress()
     }
 }
 
-string OSConfigurator_linux24::printConfigureInterfacesCommands()
-{
-    ostringstream ostr;
-    FWOptions* options = fw->getOptionsObject();
-
-    ostr << "# Configure interfaces" << endl;
-
-    if ( options->getBool("configure_bonding_interfaces") ) 
-        ostr << printBondingInterfaceConfigurationCommands();
-
-    if ( options->getBool("configure_vlan_interfaces")) 
-        ostr << printVlanInterfaceConfigurationCommands();
-
-    if ( options->getBool("configure_bridge_interfaces") ) 
-        ostr << printBridgeInterfaceConfigurationCommands();
-
-    if ( options->getBool("configure_interfaces") ) 
-        ostr << printInterfaceConfigurationCommands();
-
-    ostr << printDynamicAddressesConfigurationCommands();
-    return ostr.str();
-}
-
-
 int  OSConfigurator_linux24::prolog()
 {
     return 0;
@@ -284,11 +258,11 @@ string OSConfigurator_linux24::printShellFunctions()
     ostringstream str;
     FWOptions* options = fw->getOptionsObject();
 
-    string host_os = fw->getStr("host_OS");
-    string os_family = Resources::os_res[host_os]->
-        getResourceStr("/FWBuilderResources/Target/family");
+    // string host_os = fw->getStr("host_OS");
+    // string os_family = Resources::os_res[host_os]->
+    //     getResourceStr("/FWBuilderResources/Target/family");
 
-    Configlet shell_functions(os_family, "linux24", "shell_functions");
+    Configlet shell_functions(fw, "linux24", "shell_functions");
     str << shell_functions.expand().toStdString();
 
 /* check if package iproute2 is installed, but do this only if
@@ -298,7 +272,7 @@ string OSConfigurator_linux24::printShellFunctions()
         options->getBool("manage_virtual_addr") ||
         options->getBool("configure_interfaces") )
     {
-        Configlet configlet(os_family, "linux24", "check_utilities");
+        Configlet configlet(fw, "linux24", "check_utilities");
         configlet.removeComments();
 
         configlet.setVariable("need_vconfig", 
@@ -315,65 +289,35 @@ string OSConfigurator_linux24::printShellFunctions()
      * Generate commands to reset all tables and chains and set
      * default policy
      */
-    Configlet reset_iptables(os_family, "linux24", "reset_iptables");
+    Configlet reset_iptables(fw, "linux24", "reset_iptables");
     str << reset_iptables.expand().toStdString();
 
-    // See ticket #2
-    string modules_dir = Resources::os_res[fw->getStr("host_OS")]->
-        Resources::getResourceStr("/FWBuilderResources/Target/options/default/modules_dir");
-
-    Configlet load_modules(os_family, "linux24", "load_modules");
-    load_modules.removeComments();
-    load_modules.setVariable("modules_dir", modules_dir.c_str());
-    str << load_modules.expand().toStdString();
-
-    Configlet addr_conf(os_family, "linux24", "update_addresses");
+    Configlet addr_conf(fw, "linux24", "update_addresses");
     str << addr_conf.expand().toStdString();
     str << "\n";
 
     if (options->getBool("configure_vlan_interfaces"))
     {
-        Configlet conf(os_family, "linux24", "update_vlans");
+        Configlet conf(fw, "linux24", "update_vlans");
         str << conf.expand().toStdString();
         str << "\n";
     }
 
     if (options->getBool("configure_bridge_interfaces"))
     {
-        Configlet conf(os_family, "linux24", "update_bridge");
+        Configlet conf(fw, "linux24", "update_bridge");
         str << conf.expand().toStdString();
         str << "\n";
     }
 
     if (options->getBool("configure_bonding_interfaces"))
     {
-        Configlet conf(os_family, "linux24", "update_bonding");
+        Configlet conf(fw, "linux24", "update_bonding");
         str << conf.expand().toStdString();
         str << "\n";
     }
 
-/*
- * check if all interfaces configured for the firewall are present
- */
-    if (options->getBool("verify_interfaces")) 
-        str << printVerifyInterfacesCommands();
-
     return str.str();
-}
-
-string OSConfigurator_linux24::printPrologEpilogFunctions()
-{
-    string os_family = Resources::os_res[fw->getStr("host_OS")]->
-        getResourceStr("/FWBuilderResources/Target/family");
-    Configlet prolog_epilog(os_family, "linux24", "prolog_epilog_functions");
-    prolog_epilog.removeComments();
-    prolog_epilog.setVariable(
-        "prolog_script", 
-        fw->getOptionsObject()->getStr("prolog_script").c_str());
-    prolog_epilog.setVariable(
-        "epilog_script", 
-        fw->getOptionsObject()->getStr("epilog_script").c_str());
-    return prolog_epilog.expand().toStdString();
 }
 
 string OSConfigurator_linux24::getPathForATool(const std::string &os_variant, OSData::tools tool_name)
@@ -407,20 +351,28 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
     return res.str();
 }
 
-string OSConfigurator_linux24::generateCodeForProtocolHandlers(bool have_nat)
+string OSConfigurator_linux24::generateCodeForProtocolHandlers()
 {
     ostringstream ostr;
     FWOptions* options = fw->getOptionsObject();
     bool nomod = Resources::os_res[fw->getStr("host_OS")]->
         Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_modules");
 
-/* there is no need to load modules on linksys */
-    if (options->getBool("load_modules") && !nomod)
-    {
-        ostr << "load_modules ";
-        if (have_nat) ostr << "\"with_nat\"";
-        else ostr << "\"\"";
-    }
+    // string host_os = fw->getStr("host_OS");
+    // string os_family = Resources::os_res[host_os]->
+    //     getResourceStr("/FWBuilderResources/Target/family");
+    Configlet load_modules(fw, "linux24", "load_modules");
+    load_modules.removeComments();
+
+    // See ticket #2
+    string modules_dir = Resources::os_res[fw->getStr("host_OS")]->
+        Resources::getResourceStr("/FWBuilderResources/Target/options/default/modules_dir");
+
+/* there is no need to load modules on some platforms */
+    load_modules.setVariable("load_modules", options->getBool("load_modules") && !nomod);
+    load_modules.setVariable("modules_dir", modules_dir.c_str());
+    ostr << load_modules.expand().toStdString();
+
     return ostr.str();
 }
 
@@ -531,10 +483,10 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
 string OSConfigurator_linux24::printIPForwardingCommands()
 {
 /* Turn on packet forwarding if we have to */
-    string os_family = Resources::os_res[fw->getStr("host_OS")]->
-        getResourceStr("/FWBuilderResources/Target/family");
+    // string os_family = Resources::os_res[fw->getStr("host_OS")]->
+    //     getResourceStr("/FWBuilderResources/Target/family");
     FWOptions* options = fw->getOptionsObject();
-    Configlet ip_forwarding(os_family, "linux24", "ip_forwarding");
+    Configlet ip_forwarding(fw, "linux24", "ip_forwarding");
     ip_forwarding.removeComments();
     ip_forwarding.collapseEmptyStrings(true);
 

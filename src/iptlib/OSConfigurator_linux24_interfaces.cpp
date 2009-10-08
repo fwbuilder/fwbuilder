@@ -73,8 +73,8 @@ using namespace std;
 
 string OSConfigurator_linux24::printVerifyInterfacesCommands()
 {
-    string os_family = Resources::os_res[fw->getStr("host_OS")]->
-        getResourceStr("/FWBuilderResources/Target/family");
+    // string os_family = Resources::os_res[fw->getStr("host_OS")]->
+    //     getResourceStr("/FWBuilderResources/Target/family");
     QStringList interfaces_to_check;
     list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
     list<FWObject*>::iterator i;
@@ -82,14 +82,11 @@ string OSConfigurator_linux24::printVerifyInterfacesCommands()
     {
         interfaces_to_check.push_back((*i)->getName().c_str());
     }
-    if (interfaces_to_check.size() > 0)
-    {
-        Configlet verify_interfaces(os_family, "linux24", "verify_interfaces");
-        verify_interfaces.setVariable("interfaces",
-                                      interfaces_to_check.join(" "));
-        return verify_interfaces.expand().toStdString();
-    }
-    return "";
+
+    Configlet verify_interfaces(fw, "linux24", "verify_interfaces");
+    verify_interfaces.setVariable("have_interfaces", interfaces_to_check.size());
+    verify_interfaces.setVariable("interfaces", interfaces_to_check.join(" "));
+    return verify_interfaces.expand().toStdString();
 }
 
 string OSConfigurator_linux24::printInterfaceConfigurationCommands()

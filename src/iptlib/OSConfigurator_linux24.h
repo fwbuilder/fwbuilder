@@ -81,7 +81,7 @@ public:
         virtual bool validateInterfaces();
 
 	virtual void processFirewallOptions();
-        virtual std::string generateCodeForProtocolHandlers(bool have_nat);
+        virtual std::string generateCodeForProtocolHandlers();
 
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr);
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Network *nw);
@@ -89,10 +89,8 @@ public:
         virtual void registerMultiAddressObject(libfwbuilder::MultiAddressRunTime *at);
         virtual void printChecksForRunTimeMultiAddress();
         virtual std::string printShellFunctions();
-        virtual std::string printPrologEpilogFunctions();
         virtual std::string printPathForAllTools(const std::string &os);
         virtual std::string printIPForwardingCommands();
-        virtual std::string printConfigureInterfacesCommands();
         virtual std::string printRunTimeWrappers(libfwbuilder::FWObject *rule,
                                                  const std::string &command,
                                                  bool ipv6=false);

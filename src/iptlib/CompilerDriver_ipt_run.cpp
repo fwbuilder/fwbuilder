@@ -456,10 +456,8 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
  * These store generated configuration internally, extract it later using
  * OSConfiguration::getGeneratedFiles();
  */
-//    oscnf->generateCodeForProtocolHandlers(have_nat);
     oscnf->printChecksForRunTimeMultiAddress();
     oscnf->processFirewallOptions();
-//    oscnf->configureInterfaces();
 
 /*
  * now write generated scripts to files
@@ -494,7 +492,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
  * assemble the script and then perhaps post-process it if it should
  * run on Linksys device with sveasoft firmware
  */
-    Configlet script_skeleton(os_family, "linux24", "script_skeleton");
+    Configlet script_skeleton(fw, "linux24", "script_skeleton");
     script_skeleton.removeComments();
 
     QString script_buffer;
@@ -509,7 +507,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
     script_skeleton.setVariable("path", script_buffer);
     script_buffer = "";
 
-    Configlet script_constants(os_family, "linux24", "constants");
+    Configlet script_constants(fw, "linux24", "constants");
     script_skeleton.setVariable("constants", script_constants.expand());
 
     /*
@@ -524,12 +522,40 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
     script_skeleton.setVariable("shell_functions",
                              oscnf->printShellFunctions().c_str());
     if (supports_prolog_epilog)
-        script_skeleton.setVariable("prolog_epilog",
-                                 oscnf->printPrologEpilogFunctions().c_str());
+    {
+        //script_skeleton.setVariable("prolog_epilog",
+        //                         oscnf->printPrologEpilogFunctions().c_str());
+
+        script_skeleton.setVariable(
+            "prolog_script", 
+            fw->getOptionsObject()->getStr("prolog_script").c_str());
+        script_skeleton.setVariable(
+            "epilog_script", 
+            fw->getOptionsObject()->getStr("epilog_script").c_str());
+    }
+
+    ostringstream ostr;
+
+    ostr << "# Configure interfaces" << endl;
+
+    if ( options->getBool("configure_bonding_interfaces") ) 
+        ostr << oscnf->printBondingInterfaceConfigurationCommands();
+
+    if ( options->getBool("configure_vlan_interfaces")) 
+        ostr << oscnf->printVlanInterfaceConfigurationCommands();
+
+    if ( options->getBool("configure_bridge_interfaces") ) 
+        ostr << oscnf->printBridgeInterfaceConfigurationCommands();
+
+    if ( options->getBool("configure_interfaces") ) 
+        ostr << oscnf->printInterfaceConfigurationCommands();
+
+    ostr << oscnf->printDynamicAddressesConfigurationCommands();
 
     script_skeleton.setVariable(
-        "configure_interfaces",
-        indent(4, QString(oscnf->printConfigureInterfacesCommands().c_str())));
+        "configure_interfaces", indent(4, QString(ostr.str().c_str())));
+
+
 
     // verify_interfaces checks bridge interfaces so run it
     // after those have been created
@@ -540,7 +566,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
             script_skeleton.setVariable("verify_interfaces", QString());
         else
             script_skeleton.setVariable("verify_interfaces",
-                                        QString("verify_interfaces"));
+                                        oscnf->printVerifyInterfacesCommands().c_str());
     } else
         script_skeleton.setVariable("verify_interfaces", QString());
     
@@ -558,30 +584,34 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
          (prolog_place == "after_flush" && 
           fw->getOptionsObject()->getBool("use_iptables_restore"))))
     {
-        script_skeleton.setVariable("prolog_top", "prolog_commands");
-        script_skeleton.setVariable("prolog_after_interfaces", "");
-        script_skeleton.setVariable("prolog_after_flush", "");
+        script_skeleton.setVariable("prolog_top", 1);
+        script_skeleton.setVariable("prolog_after_interfaces", 0);
+        script_skeleton.setVariable("prolog_after_flush", 0);
         prolog_done = true;
     }
 
     if (!prolog_done && prolog_place == "after_interfaces")
     {
-        script_skeleton.setVariable("prolog_top", "");
-        script_skeleton.setVariable("prolog_after_interfaces", "prolog_commands");
-        script_skeleton.setVariable("prolog_after_flush", "");
+        script_skeleton.setVariable("prolog_top", 0);
+        script_skeleton.setVariable("prolog_after_interfaces", 1);
+        script_skeleton.setVariable("prolog_after_flush", 0);
         prolog_done = true;
     }
 
     if (!prolog_done && prolog_place == "after_flush")
     {
-        script_skeleton.setVariable("prolog_top", "");
-        script_skeleton.setVariable("prolog_after_interfaces", "");
-        script_skeleton.setVariable("prolog_after_flush", "prolog_commands");
+        script_skeleton.setVariable("prolog_top", 0);
+        script_skeleton.setVariable("prolog_after_interfaces", 0);
+        script_skeleton.setVariable("prolog_after_flush", 1);
         prolog_done = true;
     }
 
     script_skeleton.setVariable("load_modules",
-                             oscnf->generateCodeForProtocolHandlers(have_nat).c_str());
+                             oscnf->generateCodeForProtocolHandlers().c_str());
+    script_skeleton.setVariable("load_modules_with_nat", (have_nat)?"\"nat\"":"");
+
+    script_skeleton.setVariable("ip_forward_commands",
+                                oscnf->printIPForwardingCommands().c_str());
 
     /*
      * script body begins here
@@ -599,8 +629,6 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
     script << generated_script;
     script << routing_compiler->getCompiledScript();
     script << endl;
-    script << oscnf->printIPForwardingCommands();
-    script << endl;
 
     script_skeleton.setVariable("script_body", indent(4, script_buffer));
 
@@ -614,11 +642,8 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
      * of iptables-restore script in the latter case and commands are
      * added in PolicyCompiler_ipt::flushAndSetDefaultPolicy()
      */
-    if (fw->getOptionsObject()->getBool("use_iptables_restore"))
-        script_skeleton.setVariable("call_reset", "");
-    else
-        script_skeleton.setVariable("call_reset", "reset_all");
-
+    script_skeleton.setVariable("not_using_iptables_restore",
+                                ! fw->getOptionsObject()->getBool("use_iptables_restore"));
 
     script_buffer = "";
     script << "  reset_iptables_v4" << endl;
@@ -627,7 +652,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
 
     script_buffer = "";
 
-    Configlet top_comment(os_family, "linux24", "top_comment");
+    Configlet top_comment(fw, "linux24", "top_comment");
 
     top_comment.setVariable("version", VERSION);
     QString build_num;

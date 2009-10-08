@@ -150,22 +150,18 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
     Configlet *conf = NULL;
     bool have_reset = !reset_script.empty();
 
-    string host_os = fw->getStr("host_OS");
-    string os_family = Resources::os_res[host_os]->
-        getResourceStr("/FWBuilderResources/Target/family");
-
     if (single_rule_compile_on)
     {
         have_reset = false;
-        conf = new Configlet(os_family, "linux24", "script_body_single_rule");
+        conf = new Configlet(fw, "linux24", "script_body_single_rule");
         conf->collapseEmptyStrings(true);
     } else
     {
         if (fw->getOptionsObject()->getBool("use_iptables_restore"))
         {
-            conf = new Configlet(os_family, "linux24", "script_body_iptables_restore");
+            conf = new Configlet(fw, "linux24", "script_body_iptables_restore");
         } else
-            conf = new Configlet(os_family, "linux24", "script_body_single_rule");
+            conf = new Configlet(fw, "linux24", "script_body_single_rule");
     }
 
     conf->setVariable("reset", have_reset);

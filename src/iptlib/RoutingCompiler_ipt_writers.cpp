@@ -136,9 +136,9 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
     
     if (print_once_on_top && !compiler->inSingleRuleCompileMode())
     {
-        string os_family = Resources::os_res[compiler->fw->getStr("host_OS")]->
-            getResourceStr("/FWBuilderResources/Target/family");
-        Configlet routing_functions(os_family, "linux24", "routing_functions");
+        // string os_family = Resources::os_res[compiler->fw->getStr("host_OS")]->
+        //     getResourceStr("/FWBuilderResources/Target/family");
+        Configlet routing_functions(compiler->fw, "linux24", "routing_functions");
 
         // we should delete default route if we have a new one to
         // install. IF user did not define any routes that look like

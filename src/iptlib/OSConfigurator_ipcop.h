@@ -46,17 +46,8 @@ public:
         virtual int  prolog();
         virtual void epilog();
 
-	virtual void processFirewallOptions();
-        virtual std::string generateCodeForProtocolHandlers(bool have_nat);
-
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr);
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Network *nw);
-
-        virtual std::string printShellFunctions();
-        virtual std::string printPathForAllTools(const std::string &os);
-        virtual std::string printIPForwardingCommands();
-        virtual std::string printConfigureInterfacesCommands();
-        virtual void printCommandsToAddVirtualAddressesForNAT();
 
     };
 }

@@ -1,5 +1,7 @@
 ## -*- mode: shell-script; -*- 
 ##
+## Double '##' comments are removed when configlet is processed.
+## Single '#' comments stay.
 {{$top_comment}}
 
 {{$errors_and_warnings}}
@@ -15,55 +17,90 @@ FWBDEBUG=""
 
 {{$shell_functions}}
 
-{{$prolog_epilog}}
+load_modules() {
+    {{$load_modules}}
+}
+
+verify_interfaces() {
+    {{$verify_interfaces}}
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    {{$prolog_script}}
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    {{$epilog_script}}
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
 
 configure_interfaces() {
-{{$configure_interfaces}}
+    {{$configure_interfaces}}
 }
 
 script_body() {
-  {{$script_body}}
+    {{$script_body}}
+}
+
+ip_forward() {
+    {{$ip_forward_commands}}
 }
 
 reset_all() {
-  {{$reset_all}}
+    {{$reset_all}}
 }
 
 # See how we were called.
 # For backwards compatibility missing argument is equivalent to 'start'
 
 test -z "$1" && {
-  $0 start
-  exit $?
+    $0 start
+    exit $?
 }
 
 case "$1" in
-  start)
-    log "Activating firewall script generated {{$timestamp}} by {{$user}}"
-    check_tools
-    {{$prolog_top}}
-    {{$load_modules}}
-    configure_interfaces
-    {{$verify_interfaces}}
-    {{$prolog_after_interfaces}}
-    {{$call_reset}}
-    {{$prolog_after_flush}}
-    script_body
-    epilog_commands
-  ;;
+    start)
+        log "Activating firewall script generated {{$timestamp}} by {{$user}}"
+        check_tools
+        {{if prolog_top}} prolog_commands {{endif}}
+        load_modules {{$load_modules_with_nat}}
+        configure_interfaces
+        verify_interfaces
+        {{if prolog_after_interfaces}} prolog_commands {{endif}}
+        {{if not_using_iptables_restore}} reset_all {{endif}}
+        {{if prolog_after_flush}} prolog_commands {{endif}}
+        script_body
+        ip_forward
+        epilog_commands
+        ;;
 
-  stop)
-    reset_all
-  ;;
+    stop)
+        reset_all
+        ;;
 
-  interfaces)
-    configure_interfaces
-  ;;
+    reload)
+        $0 stop
+        $0 start
+        ;;
 
-  test_interfaces)
-    FWBDEBUG="echo"
-    configure_interfaces
-  ;;
+    interfaces)
+        configure_interfaces
+        ;;
+
+    test_interfaces)
+        FWBDEBUG="echo"
+        configure_interfaces
+        ;;
+
+    *)
+        echo "Usage $0 {start|stop|reload|interfaces|test_interfaces}"
+        ;;
 
 esac
 

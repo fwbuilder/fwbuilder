@@ -30,6 +30,11 @@
 #include <QStringList>
 #include <QMap>
 
+namespace libfwbuilder {
+    class FWObject;
+};
+
+
 class Configlet {
 
     bool processIf(QString &stream, int pos);
@@ -49,6 +54,8 @@ public:
 
     Configlet(const std::string &prefix, const QString &filename);
     Configlet(const std::string &prefix, const std::string &default_prefix,
+              const QString &filename);
+    Configlet(libfwbuilder::FWObject *fw, const std::string &default_prefix,
               const QString &filename);
     virtual ~Configlet();
 

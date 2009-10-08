@@ -103,7 +103,7 @@ add_vlans() {
 ## This function removes vlan interfaces not configured in fwbuilder.
 ## Missing vlans are added using function update_vlans
 ##
-## remove_unconfigured_vlans eth1.100@eth1 eth1.101@eth1 vlan200@eth2
+##  clear_vlans_except_known eth1.100@eth1 eth1.101@eth1 vlan200@eth2
 ##
 ## Call shown above would keep listed vlans but remove eth3.300
 ##

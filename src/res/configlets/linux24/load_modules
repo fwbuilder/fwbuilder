@@ -1,17 +1,26 @@
 ## -*- mode: shell-script; -*- 
 ##
-## This function will be called with one parameter. If this parameter
-## is non-empty string, the function should also load modules for nat.
-load_modules() {
-  HAVE_NAT=$1
-  MODULES_DIR="{{$modules_dir}}"
-  MODULES=`find $MODULES_DIR -name '*conntrack*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/'`
-  test -n "$HAVE_NAT" && {
-    MODULES="$MODULES `find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/'`"
-  }
-  for module in $MODULES; do 
-    if $LSMOD | grep ${module} >/dev/null; then continue; fi
-    $MODPROBE ${module} ||  exit 1 
-  done
-}
+## This is the body of the shell function load_modules(). I keep
+## function definition in the script_skeleton configlet to make it
+## more readable (the function and call to it are in the file, both
+## clearly visible). I could put the code for the body of load_modules
+## function in the script_skeleton configlet as well, but I keep it
+## separate to make script_skeleton small and clean.
+##
+## Function load_modules is called with one parameter. If this
+## parameter is non-empty string, the function should also load
+## modules for nat.
+
+{{if load_modules}}
+    HAVE_NAT=$1
+    MODULES_DIR="{{$modules_dir}}"
+    MODULES=`find $MODULES_DIR -name '*conntrack*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/'`
+    test -n "$HAVE_NAT" && {
+        MODULES="$MODULES `find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/'`"
+    }
+    for module in $MODULES; do 
+        if $LSMOD | grep ${module} >/dev/null; then continue; fi
+        $MODPROBE ${module} ||  exit 1 
+    done
+{{endif}}
 

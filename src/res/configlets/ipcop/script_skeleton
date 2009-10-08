@@ -12,39 +12,56 @@
 
 {{$shell_functions}}
 
-{{$prolog_epilog}}
+verify_interfaces() {
+    {{$verify_interfaces}}
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    {{$prolog_script}}
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    {{$epilog_script}}
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
 
 script_body() {
-  {{$script_body}}
+    {{$script_body}}
 }
 
 reset_all() {
-  {{$reset_all}}
+    {{$reset_all}}
 }
 
 case "$1" in
-  start)
-    check_tools
-    {{$verify_interfaces}}
-    prolog_commands
-    script_body
-    epilog_commands
-    ;;
+    start)
+        check_tools
+        verify_interfaces
+        prolog_commands
+        script_body
+        epilog_commands
+        ;;
 
-  stop)
+    stop)
     # on IPCOP "/etc/rc.firewall stop" purges all tables and chains
     # and then calls this script with command "stop", but there is
     # nothing left for us to do here.
-    ;;
+        ;;
+    
+    reload)
+        $0 stop
+        $0 start
+        ;;
 
-  reload)
-    $0 stop
-    $0 start
-    ;;
-
-  *)
-    echo "Usage $0 {start|stop|reload}"
-    ;;
-
+    *)
+        echo "Usage $0 {start|stop|reload}"
+        ;;
+    
 esac
 
