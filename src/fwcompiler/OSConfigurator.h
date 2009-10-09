@@ -48,13 +48,15 @@ public:
 	OSConfigurator(libfwbuilder::FWObjectDatabase *_db,
                        libfwbuilder::Firewall *fw, bool ipv6_policy);
 
-	virtual void processFirewallOptions() =0;
-	virtual void addVirtualAddressForNAT(
-            const libfwbuilder::Address   *addr) =0;
-	virtual void addVirtualAddressForNAT(
-            const libfwbuilder::Network   *nw)   =0;
+	virtual void processFirewallOptions() {}
+	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr) {};
+	virtual void addVirtualAddressForNAT(const libfwbuilder::Network *nw) {};
         void registerVirtualAddressForNat() { num_virtual_addresses_for_nat++; }
         int getNumOfVirtualAddressesForNat() { return num_virtual_addresses_for_nat; }
+
+        virtual std::string printFunctions() { return ""; }
+	virtual std::string printKernelVarsCommands() { return ""; }
+        virtual std::string configureInterfaces() { return ""; }
     };
 }
 
