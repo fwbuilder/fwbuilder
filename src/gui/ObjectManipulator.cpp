@@ -1392,9 +1392,13 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
         if (Firewall::cast(currentObj)!=NULL)
         {
-            string transfer = Resources::os_res[currentObj->getStr("host_OS")]->getTransferAgent();
-            if (!transfer.empty())
-                popup->addAction( tr("Transfer"), this, SLOT(transferfw()));
+            Resources* os_res = Resources::os_res[currentObj->getStr("host_OS")];
+            if (os_res)
+            {
+                string transfer = os_res->getTransferAgent();
+                if (!transfer.empty())
+                    popup->addAction( tr("Transfer"), this, SLOT(transferfw()));
+            }
         }
 
         if (ObjectGroup::cast(currentObj)!=NULL && currentObj->getName()=="Firewalls")
@@ -1406,8 +1410,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                  it!=currentObj->end(); ++it)
             {
                 FWObject *fw = *it;
-                string transfer = Resources::os_res[fw->getStr("host_OS")]->getTransferAgent();
-                have_transfer_support = have_transfer_support || (!transfer.empty());
+                Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
+                if (os_res)
+                {
+                    string transfer = os_res->getTransferAgent();
+                    have_transfer_support = have_transfer_support || (!transfer.empty());
+                }
             }
             if (have_transfer_support)
                 popup->addAction( tr("Transfer"), this, SLOT(transferfw()));
