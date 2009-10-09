@@ -105,6 +105,8 @@ void FWWindow::openEditor(FWObject *obj)
                  << " " << obj->getName().c_str()
                  << " " << obj->getTypeName().c_str();
 
+    attachEditorToProjectPanel(activeProject());
+
     QString title_txt;
     QPixmap title_icon;
     buildEditorTitleAndIcon(obj, ObjectEditor::optNone, &title_txt, &title_icon);
@@ -233,22 +235,25 @@ void FWWindow::openEditorPanel()
 
 void FWWindow::findObject(FWObject *o)
 {
-    findWhereUsedWidget->hide();
-    findObjectWidget->attachToProjectWindow(activeProject());
-    findObjectWidget->findObject(o);
-    m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
-    findObjectWidget->show();
-    m_mainWindow->editorDockWidget->show();
+    if (activeProject())
+    {
+        attachEditorToProjectPanel(activeProject());
+        findWhereUsedWidget->hide();
+        findObjectWidget->findObject(o);
+        m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
+        findObjectWidget->show();
+        m_mainWindow->editorDockWidget->show();
+    }
 }
 
 void FWWindow::search()
 {
     if (activeProject())
     {
+        attachEditorToProjectPanel(activeProject());
         m_mainWindow->actionEditor_panel->setChecked(true);
         findWhereUsedWidget->hide();
         m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
-        findObjectWidget->attachToProjectWindow(activeProject());
         findObjectWidget->show();
         m_mainWindow->editorDockWidget->show();
     }
@@ -262,7 +267,7 @@ void FWWindow::findWhereUsed(FWObject * obj, ProjectPanel *pp)
                  << " project panel: " 
                  << pp;
 
-    findWhereUsedWidget->attachToProjectWindow(pp);
+    attachEditorToProjectPanel(pp);
     findObjectWidget->hide();
     m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_SEARCH_TAB); // search tab
     findWhereUsedWidget->show();

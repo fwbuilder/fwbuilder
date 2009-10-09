@@ -47,7 +47,6 @@ class CompilerOutputPanel : public BaseObjectDialog
 
     libfwbuilder::RoutingRule *rule;
     Ui::CompilerOutputPanel_q *m_widget;
-    ProjectPanel *m_project;
     std::list<QRegExp> error_re;
     std::list<QRegExp> warning_re;
     

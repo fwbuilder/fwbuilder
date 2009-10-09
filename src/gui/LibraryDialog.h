@@ -46,7 +46,6 @@ class LibraryDialog : public BaseObjectDialog
     
     void fillColor();
     void changeIds(libfwbuilder::FWObject *root);
-    ProjectPanel *m_project;
     
  public:
     Ui::LibraryDialog_q *m_dialog;

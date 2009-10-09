@@ -228,6 +228,9 @@ void ObjectEditor::registerOptDialog(QStackedWidget *stack,
 
 void ObjectEditor::attachToProjectWindow(ProjectPanel *pp)
 { 
+    if (fwbdebug)
+        qDebug() << "ObjectEditor::attachToProjectWindow pp=" << pp;
+
     m_project = pp;
 
     QMapIterator<int, BaseObjectDialog*> it(dialogs);

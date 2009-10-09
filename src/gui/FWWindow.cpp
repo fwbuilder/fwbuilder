@@ -382,6 +382,7 @@ void FWWindow::showSub(ProjectPanel *pp)
      * attached to the current project panel.
      */
     attachEditorToProjectPanel(pp);
+    if (isEditorVisible()) oe->open(pp->getSelectedObject());
 }
 
 ProjectPanel* FWWindow::activeProject()
@@ -1014,6 +1015,7 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     {
         prepareFileMenu();
         attachEditorToProjectPanel(pp);
+        if (isEditorVisible()) oe->open(pp->getSelectedObject());
     }
 }
 
@@ -1022,7 +1024,6 @@ void FWWindow::attachEditorToProjectPanel(ProjectPanel *pp)
     findObjectWidget->attachToProjectWindow(pp);
     findWhereUsedWidget->attachToProjectWindow(pp);
     oe->attachToProjectWindow(pp);
-    if (isEditorVisible()) oe->open(pp->getSelectedObject());
 }
 
 void FWWindow::editPrefs()

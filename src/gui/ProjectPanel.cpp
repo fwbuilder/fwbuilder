@@ -57,6 +57,8 @@
 #include <QStatusBar>
 #include <QFileInfo>
 
+#include <iostream>
+
 
 using namespace Ui;
 using namespace libfwbuilder;

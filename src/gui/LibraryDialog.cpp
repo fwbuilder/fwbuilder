@@ -31,6 +31,8 @@
 
 #include "FWBTree.h"
 #include "LibraryDialog.h"
+#include "FWBSettings.h"
+#include "FWWindow.h"
 
 #include "fwbuilder/Library.h"
 
@@ -41,10 +43,11 @@
 #include <qcolordialog.h>
 #include <qpixmapcache.h>
 #include <qpushbutton.h>
-#include <qpainter.h>
-#include "FWBSettings.h"
 
-#include "FWWindow.h"
+#include <QPainter>
+#include <QtDebug>
+
+#include <iostream>
 
 
 using namespace std;
@@ -119,19 +122,14 @@ void LibraryDialog::applyChanges()
 {
     string oldname=obj->getName();
     QString oldcolor=obj->getStr("color").c_str();
+
+    if (FWBTree().isSystem(obj)) return;
+
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     obj->setStr("color", color.toLatin1().constData());
 
-/* just for fool-proof'ness, do not allow changing name of the 'Standard' lib */
-    if (oldname!=obj->getName() &&
-        obj->getId()==FWObjectDatabase::STANDARD_LIB_ID)
-    {
-        obj->setName( oldname );
-    }
-
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-//    m_project->updateLibName(obj);
+    m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
     if (color!=oldcolor) m_project->updateLibColor(obj);
 
     BaseObjectDialog::applyChanges();

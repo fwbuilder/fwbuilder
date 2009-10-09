@@ -562,17 +562,17 @@ void ObjectManipulator::updateObjName(FWObject *obj,
                                       const QString &oldName,
                                       bool  askForAutorename)
 {
+    if (fwbdebug)
+        qDebug("ObjectManipulator::updateObjName  changing name '%s' -> '%s'",
+               oldName.toLatin1().constData(),
+               QString::fromUtf8(obj->getName().c_str()).toLatin1().constData());
+    
     if (oldName == QString::fromUtf8(obj->getName().c_str())) return;
     
     if (obj!=currentObj) openObject(obj);
     
     QTreeWidgetItem *itm = allItems[obj];
     assert(itm!=NULL);
-    
-    if (fwbdebug)
-        qDebug("ObjectManipulator::updateObjName  changing name '%s' -> '%s'",
-               oldName.toLatin1().constData(),
-               QString::fromUtf8(obj->getName().c_str()).toLatin1().constData());
     
     if ((QString::fromUtf8(obj->getName().c_str())!=oldName) &&
         (Host::isA(obj) || Firewall::isA(obj) || Interface::isA(obj)))
@@ -3115,10 +3115,10 @@ void ObjectManipulator::newLibrary()
     FWObject *nlib = m_project->createNewLibrary(m_project->db());
     addTreePage( nlib );
 
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(m_project->getFileName(), nlib->getId()));
+    //QCoreApplication::postEvent(
+    //    mw, new dataModifiedEvent(m_project->getFileName(), nlib->getId()));
 
-    openObject( nlib );
+    openObject(nlib);
     editObject(nlib);
 }
 

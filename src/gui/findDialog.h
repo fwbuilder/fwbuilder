@@ -35,7 +35,7 @@ class ProjectPanel;
 
 class findDialog : public QDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     QString                   lastTextSearch;
     QString                   lastAttrSearch;
@@ -45,7 +45,8 @@ class findDialog : public QDialog
     bool matchName(const QString &name);
     bool matchAttr(libfwbuilder::FWObject* obj);
     ProjectPanel *m_project;
- public:
+
+public:
     Ui::findDialog_q *m_dialog;
     findDialog(QWidget *p, ProjectPanel *project);
 
