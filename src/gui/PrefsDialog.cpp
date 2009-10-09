@@ -229,7 +229,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
         cb->setData(Qt::UserRole, name);
         row++;
     }
-    m_dialog->enabled_platforms->horizontalHeader()->stretchLastSection();
+    m_dialog->enabled_platforms->horizontalHeader()->setStretchLastSection(true);
     m_dialog->enabled_platforms->sortItems(0);
     m_dialog->enabled_platforms->update();
 
@@ -251,7 +251,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
         cb->setData(Qt::UserRole, name);
         row++;
     }
-    m_dialog->enabled_os->horizontalHeader()->stretchLastSection();
+    m_dialog->enabled_os->horizontalHeader()->setStretchLastSection(true);
     m_dialog->enabled_os->sortItems(0);
     m_dialog->enabled_os->update();
 }
