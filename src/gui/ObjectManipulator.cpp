@@ -53,6 +53,8 @@
 #include <QMessageBox>
 #include <QTextEdit>
 #include <QTime>
+#include <QtDebug>
+
 #include <qobject.h>
 #include <qobject.h>
 #include <qimage.h>
@@ -1949,7 +1951,11 @@ void ObjectManipulator::pasteObj()
     FWObject *last_object = NULL;
     bool need_to_reload = false;
     map<int,int> map_ids;
-    if (fwbdebug) qDebug("**************** pasteObj loop starts");
+    if (fwbdebug)
+    {
+        qDebug() << "**************** pasteObj loop starts";
+        qDebug() << "Target object: " << target_object->getPath().c_str();
+    }
 
 // If we copy many objects in the following loop, and some of them are
 // groups that refer other objects in the same batch, then it is
@@ -2088,7 +2094,7 @@ FWObject*  ObjectManipulator::pasteTo(FWObject *target, FWObject *obj)
     return actuallyPasteTo(target, obj, map_ids);
 }
 
-FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
+FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
                                               FWObject *obj,
                                               std::map<int,int> &map_ids)
 {
@@ -2096,6 +2102,9 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
 
     FWObject *ta = prepareForInsertion(target, obj);
     if (ta == NULL) return NULL;
+
+    qDebug() << "ObjectManipulator::actuallyPasteTo"
+             << "Target object: " << target->getPath().c_str();
 
     try
     {
@@ -2108,9 +2117,9 @@ FWObject*  ObjectManipulator::actuallyPasteTo(FWObject *target,
         }
 
         Group *grp = Group::cast(ta);
-        if (grp!=NULL)
+        if (grp!=NULL && !FWBTree().isSystem(ta))
         {
-            if (fwbdebug) qDebug("Copy object %s (%d) to a group",
+            if (fwbdebug) qDebug("Copy object %s (%d) to a regular group",
                                  obj->getName().c_str(), obj->getId());
 /* check for duplicates. We just won't add an object if it is already there */
             int cp_id = obj->getId();
