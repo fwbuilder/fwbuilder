@@ -27,6 +27,18 @@
      <layout class="QGridLayout" >
       <item rowspan="2" row="0" column="0" >
        <widget class="QFrame" name="frame56" >
+        <property name="minimumSize" >
+         <size>
+          <width>300</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>300</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="frameShape" >
          <enum>QFrame::Box</enum>
         </property>
@@ -166,7 +178,6 @@
   <tabstop>colorButton</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
- <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>

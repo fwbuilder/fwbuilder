@@ -158,6 +158,7 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
     currentObj   = NULL;
     active       = false;
     current_tree_view=NULL;
+    previous_lib_index = -1;
 
     // used in duplicateWithDependencies()
     dedup_marker_global_counter = time(NULL);
@@ -2893,11 +2894,20 @@ void ObjectManipulator::changeFirstNotSystemLib()
 
 void ObjectManipulator::libChanged(int ln)
 {
+    if (previous_lib_index != -1 &&
+        mw->isEditorVisible() && !mw->validateAndSaveEditor())
+    {
+        // Editor does not allow us to switch libraries, switch back
+        m_objectManipulator->libs->setCurrentIndex(previous_lib_index);
+        return;
+    }
+
+    previous_lib_index = ln;
+
     QTreeWidget *lv = idxToTrees[ln];
     assert(lv!=NULL);
 
-    ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(lv->currentItem());
-
+    ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(lv->currentItem());
     if (otvi == NULL)
     {
         if (lv->invisibleRootItem()->childCount() > 0)
@@ -2906,16 +2916,16 @@ void ObjectManipulator::libChanged(int ln)
         else
             assert(FALSE);
     }
-    currentObj=otvi->getFWObject();
+    currentObj = otvi->getFWObject();
     showObjectInTree( otvi );
-
+    if (mw->isEditorVisible()) mw->openEditor(currentObj);
     updateCreateObjectMenu( idxToLibs[ln] );
     return;
 }
 
 void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
 {
-    bool      f   =
+    bool f =
         lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
         lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
         lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||

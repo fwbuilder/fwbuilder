@@ -77,19 +77,20 @@ class ObjectManipulator : public QWidget
 {
     Q_OBJECT;
 
-    std::vector<libfwbuilder::FWObject*>          idxToLibs;
-    std::vector<QTreeWidget*>                     idxToTrees;
+    std::vector<libfwbuilder::FWObject*> idxToLibs;
+    std::vector<QTreeWidget*> idxToTrees;
+    int previous_lib_index;
     QSet<int> ids ;     
-    std::stack<HistoryItem>                       history;
+    std::stack<HistoryItem> history;
     int cacheHits;
 
-    libfwbuilder::FWObject                        *currentObj;
-    ObjectTreeView                                *current_tree_view;
+    libfwbuilder::FWObject *currentObj;
+    ObjectTreeView *current_tree_view;
     
-    int                                            treeWidth;
-    int                                            treeHeight;
+    int treeWidth;
+    int treeHeight;
 
-    bool                                           active;
+    bool active;
     
 /* this is a reverse idex of all objects in all trees. We use it to
  * quickly locate given object in the tree and open it
