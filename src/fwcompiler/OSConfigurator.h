@@ -49,8 +49,8 @@ public:
                        libfwbuilder::Firewall *fw, bool ipv6_policy);
 
 	virtual void processFirewallOptions() {}
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr) {};
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Network *nw) {};
+	virtual void addVirtualAddressForNAT(const libfwbuilder::Address*) {};
+	virtual void addVirtualAddressForNAT(const libfwbuilder::Network*) {};
         void registerVirtualAddressForNat() { num_virtual_addresses_for_nat++; }
         int getNumOfVirtualAddressesForNat() { return num_virtual_addresses_for_nat; }
 
