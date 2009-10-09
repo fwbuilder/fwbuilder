@@ -3339,11 +3339,9 @@ void ObjectManipulator::newHost()
     {
         openObject(o);
         editObject(o);
+        QCoreApplication::postEvent(
+            mw, new dataModifiedEvent(m_project->getFileName(), o->getId()));
     }
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(m_project->getFileName(), o->getId()));
-
 }
 
 QString ObjectManipulator::findNewestInterfaceName(FWObject *parent)
