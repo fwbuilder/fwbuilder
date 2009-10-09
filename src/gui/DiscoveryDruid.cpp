@@ -89,7 +89,7 @@ using namespace std;
 using namespace libfwbuilder;
 
 DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
-    QDialog(parent, Qt::CustomizeWindowHint|Qt::WindowSystemMenuHint)
+    QDialog(parent)
 {
     m_dialog = new Ui::DiscoveryDruid_q;
     m_dialog->setupUi(this);
