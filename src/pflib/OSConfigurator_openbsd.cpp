@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include "OSConfigurator_openbsd.h"
+#include "Configlet.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/FWOptions.h"
@@ -33,6 +34,8 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
+
+#include "Configlet.h"
 
 #include <algorithm>
 #include <functional>
@@ -44,85 +47,28 @@ using namespace std;
 
 string OSConfigurator_openbsd::myPlatformName() { return "OpenBSD"; }
 
-void OSConfigurator_openbsd::processFirewallOptions() 
+string OSConfigurator_openbsd::printKernelVarsCommands() 
 {
-    FWOptions* options=fw->getOptionsObject();
-    string s;
+    Configlet kernel_vars(fw, "bsd", "kernel_vars");
+    kernel_vars.removeComments();
 
-    s=options->getStr("openbsd_ip_directed_broadcast");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter openbsd_ip_directed_broadcast: '"+s+"'");
-
-	output << "$SYSCTL -w net.inet.ip.directed-broadcast=" << s << endl;
-    }
-
-    s=options->getStr("openbsd_ip_forward");
-    if (!s.empty()) {
-        if (s=="1" || s=="On" || s=="on") s="1";
-        else                              s="0";
-
-	output << "$SYSCTL -w net.inet.ip.forwarding=" << s << endl;
-    }
-
-    s=options->getStr("openbsd_ipv6_forward");
-    if (!s.empty()) {
-        if (s=="1" || s=="On" || s=="on") s="1";
-        else                              s="0";
-
-	output << "$SYSCTL -w net.inet6.ip6.forwarding=" << s << endl;
-    }
-
-    s=options->getStr("openbsd_ip_sourceroute");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter openbsd_ip_sourceroute: '"+s+"'");
-
-	output << "$SYSCTL -w net.inet.ip.sourceroute=" << s << endl;
-    }
-
-    s=options->getStr("openbsd_ip_redirect");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter openbsd_ip_redirect: '"+s+"'");
-
-	output << "$SYSCTL -w net.inet.ip.redirect=" << s << endl;
-    }
+    setKernelVariable(fw, "openbsd_ip_directed_broadcast", &kernel_vars);
+    setKernelVariable(fw, "openbsd_ip_forward", &kernel_vars);
+    setKernelVariable(fw, "openbsd_ipv6_forward", &kernel_vars);
+    setKernelVariable(fw, "openbsd_ip_sourceroute", &kernel_vars);
+    setKernelVariable(fw, "openbsd_ip_redirect", &kernel_vars);
+    return kernel_vars.expand().toStdString();
 }
 
 int OSConfigurator_openbsd::prolog()
 {
-    printPathForAllTools("openbsd");
-    printFunctions();
+    //printPathForAllTools("openbsd");
+    //printFunctions();
 
-    processFirewallOptions();
+    //processFirewallOptions();
 
-    configureInterfaces();
+    //configureInterfaces();
 
     return 0;
-}
-
-void  OSConfigurator_openbsd::printPathForAllTools(const string &os)
-{
-    FWOptions* options=fw->getOptionsObject();
-    
-    string s, path_pfctl, path_sysctl, path_logger;
-
-    s=options->getStr("openbsd_path_pfctl");
-    if (!s.empty()) path_pfctl=s;
-    else            path_pfctl=os_data.getPathForTool(os,OSData::PFCTL);
-
-    s=options->getStr("openbsd_path_sysctl");
-    if (!s.empty()) path_sysctl=s;
-    else            path_sysctl=os_data.getPathForTool(os,OSData::SYSCTL);
-
-    s=options->getStr("openbsd_path_logger");
-    if (!s.empty()) path_logger=s;
-    else            path_logger=os_data.getPathForTool(os,OSData::LOGGER);
-
-    output << "PFCTL=\""  + path_pfctl    + "\"\n";
-    output << "SYSCTL=\"" + path_sysctl   + "\"\n";
-    output << "LOGGER=\"" + path_logger + "\"\n";
-    output << endl;
 }
 

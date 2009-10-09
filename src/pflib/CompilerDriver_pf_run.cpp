@@ -46,6 +46,7 @@
 #include <cstring>
 #include <iomanip>
 
+#include "Configlet.h"
 #include "CompilerDriver_pf.h"
 
 #include "PolicyCompiler_pf.h"
@@ -84,11 +85,110 @@
 #include <QFile>
 #include <QTextStream>
 
-
-
 using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
+
+
+QString CompilerDriver_pf::composeActivationCommand(Firewall *fw,
+                                                    const string &pfctl_debug,
+                                                    const string &anchor_name,
+                                                    const string &pf_version,
+                                                    const string &remote_file_name)
+{
+    Configlet act(fw, "bsd", "pf_activation");
+    act.removeComments();
+    act.setVariable("pfctl_debug", pfctl_debug.c_str());
+    act.setVariable("anchor", !anchor_name.empty());
+    act.setVariable("anchor_name", anchor_name.c_str());
+    if (pf_version == "obsd_lt_3.2")
+    {
+        act.setVariable("pf_version_lt_3_2", 1);
+        act.setVariable("pf_version_ge_3_2", 0);
+    } else
+    {
+        act.setVariable("pf_version_lt_3_2", 0);
+        act.setVariable("pf_version_ge_3_2", 1);
+    }
+    act.setVariable("remote_file", remote_file_name.c_str());
+    return act.expand();
+}
+
+QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
+{
+    FWOptions* options = fw->getOptionsObject();
+    bool debug = options->getBool("debug");
+    string pfctl_dbg = (debug)?"-v ":"";
+
+    QStringList activation_commands;
+    string remote_file = remote_conf_files["__main__"];
+    if (remote_file.empty()) remote_file = conf_files["__main__"];
+    if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
+
+    activation_commands.push_back(
+        composeActivationCommand(
+            fw, pfctl_dbg, "", fw->getStr("version"), remote_file));
+
+    for (map<string,string>::iterator i=conf_files.begin();
+         i!=conf_files.end(); ++i)
+    {
+        string remote_file = remote_conf_files[i->first];
+        if (remote_file.empty()) remote_file = i->second;
+        if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
+
+        if (i->first != "__main__")
+            activation_commands.push_back(
+                composeActivationCommand(
+                    fw, pfctl_dbg, i->first, fw->getStr("version"), remote_file));
+    }
+    return activation_commands.join("\n");
+}
+
+QString CompilerDriver_pf::assembleManifest(Firewall* fw)
+{
+    QFileInfo fw_file_info(fw_file_name);
+    QString script_buffer;
+    QTextStream script(&script_buffer, QIODevice::WriteOnly);
+
+    script << MANIFEST_MARKER << "* " << fw_file_info.fileName();
+    string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
+    if (!remote_name.empty()) script << " " << remote_name;
+    script << "\n";
+
+    for (map<string,string>::iterator i=conf_files.begin();
+         i!=conf_files.end(); ++i)
+    {
+        string ruleset_name = i->first;
+        QString file_name = QFileInfo(i->second.c_str()).fileName();
+        QString remote_file_name = remote_conf_files[ruleset_name].c_str();
+        script << MANIFEST_MARKER << "  " << file_name;
+        if (!remote_file_name.isEmpty() && remote_file_name != file_name)
+            script << " " << remote_file_name;
+        script << "\n";
+    }
+    return script_buffer;
+}
+
+QString CompilerDriver_pf::assembleFwScript(Firewall* fw, OSConfigurator *oscnf)
+{
+    FWOptions* options = fw->getOptionsObject();
+    Configlet script_skeleton(fw, "bsd", "pf_script_skeleton");
+    Configlet top_comment(fw, "bsd", "top_comment");
+
+    assembleFwScriptInternal(fw, oscnf, &script_skeleton, &top_comment);
+
+    if (fw->getStr("platform") == "pf")
+    {
+        script_skeleton.setVariable("pf_flush_states", options->getBool("pf_flush_states"));
+        script_skeleton.setVariable("pf_version_ge_4_x", fw->getStr("version")=="4.x");
+    } else
+    {
+        script_skeleton.setVariable("pf_flush_states", 0);
+        script_skeleton.setVariable("pf_version_ge_4_x", 0);
+    }
+
+    return script_skeleton.expand();
+}
 
 string CompilerDriver_pf::run(const std::string &cluster_id,
                               const std::string &firewall_id,
@@ -124,35 +224,35 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
     string pre_hook = fw->getOptionsObject()->getStr("prolog_script");
 
     bool debug = options->getBool("debug");
-    string shell_dbg = (debug)?"-x":"" ;
+    string shell_dbg = (debug)?"set -x":"" ;
     string pfctl_dbg = (debug)?"-v ":"";
 
-    string pfctl_f_option = "-f ";
-//        if (fw->getStr("version")=="obsd_3.2")    pfctl_f_option="-f ";
-    if (fw->getStr("version")=="obsd_lt_3.2") pfctl_f_option="-R ";
         
 /*
  * Process firewall options, build OS network configuration script
  */
-    std::auto_ptr<OSConfigurator> oscnf;
-    string family = Resources::os_res[fw->getStr("host_OS")
+    std::auto_ptr<OSConfigurator_bsd> oscnf;
+    string platform = fw->getStr("platform");
+    string fw_version = fw->getStr("version");
+    string host_os = fw->getStr("host_OS");
+    string family = Resources::os_res[host_os
       ]->Resources::getResourceStr("/FWBuilderResources/Target/family");
 
-    if (family=="solaris")
-        oscnf = std::auto_ptr<OSConfigurator>(new OSConfigurator_solaris(
-                                                  objdb , fw, false));
+    if (host_os == "solaris")
+        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(
+                                                      objdb , fw, false));
 
-    if (family=="openbsd")
-        oscnf = std::auto_ptr<OSConfigurator>(new OSConfigurator_openbsd(
-                                                  objdb , fw, false));
-
-    if (family=="freebsd")
-        oscnf = std::auto_ptr<OSConfigurator>(new OSConfigurator_freebsd(
-                                                  objdb , fw, false));
+    if (host_os == "openbsd")
+        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(
+                                                      objdb , fw, false));
+    
+    if (host_os == "freebsd")
+        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(
+                                                      objdb , fw, false));
 
     if (oscnf.get()==NULL)
         throw FWException("Unrecognized host OS " + 
-                          fw->getStr("host_OS")+"  (family "+family+")");
+                          host_os + "  (family " + family + ")");
 
     oscnf->prolog();
 
@@ -165,8 +265,6 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
     findImportedRuleSets(fw, all_policies);
 
     vector<int> ipv4_6_runs;
-    bool have_nat = false;
-    bool have_pf = false;
 
     // command line options -4 and -6 control address family for which
     // script will be generated. If "-4" is used, only ipv4 part will 
@@ -348,7 +446,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                 c.compile();
                 c.epilog();
             }
-            have_pf = (have_pf || (pf_rules_count > 0));
+            have_filter = (have_filter || (pf_rules_count > 0));
 
             if (policy->isTop())
             {
@@ -456,152 +554,16 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
         }
 
     }
-
-    char          *timestr;
-    time_t         tm;
-    struct tm     *stm;
-
-    tm=time(NULL);
-    stm=localtime(&tm);
-    timestr=strdup(ctime(&tm));
-    timestr[ strlen(timestr)-1 ]='\0';
-    
-#ifdef _WIN32
-    char* user_name=getenv("USERNAME");
-#else
-    struct passwd *pwd=getpwuid(getuid());
-    assert(pwd);
-    char *user_name=pwd->pw_name;
-#endif
-    if (user_name==NULL)
-    {
-        user_name=getenv("LOGNAME");
-        if (user_name==NULL)
-            abort("Can't figure out your user name");
-    }
-
 /*
  * assemble the script and then perhaps post-process it if needed
  */
-    QString script_buffer;
-    QTextStream script(&script_buffer, QIODevice::WriteOnly);
-
-    script << "#!/bin/sh ";
-    script << shell_dbg << "\n";
-
-    script << "#\n\
-#  This is automatically generated file. DO NOT MODIFY !\n\
-#\n\
-#  Firewall Builder  fwb_pf v" << VERSION << "-" << BUILD_NUM << " \n\
-#\n\
-#  Generated " << timestr << " " << tzname[stm->tm_isdst] << " by " 
-            << user_name << "\n#\n";
-
-    info("Output file name: " + fw_file_name.toStdString());
-
-    QFileInfo fw_file_info(fw_file_name);
-
-    script << MANIFEST_MARKER << "* " << fw_file_info.fileName();
-    string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << remote_name;
-    script << "\n";
-
-    for (map<string,string>::iterator i=conf_files.begin();
-         i!=conf_files.end(); ++i)
-    {
-        string ruleset_name = i->first;
-        QString file_name = QFileInfo(i->second.c_str()).fileName();
-        QString remote_file_name = remote_conf_files[ruleset_name].c_str();
-        script << MANIFEST_MARKER << "  " << file_name;
-        if (!remote_file_name.isEmpty() && remote_file_name != file_name)
-            script << " " << remote_file_name;
-        script << "\n";
-    }
-
-    script << "#" << "\n";
-    script << "#" << "\n";
-
-    string fwcomment=fw->getComment();
-    string::size_type n1,n2;
-    n1=n2=0;
-    while ( (n2=fwcomment.find("\n",n1))!=string::npos )
-    {
-        script << "#  " << fwcomment.substr(n1,n2-n1) << "\n";
-        n1=n2+1;
-    }
-    script << "#  " << fwcomment.substr(n1) << "\n";
-    script << "#\n#\n#\n";
-
-    script << prepend("# ", all_errors.join("\n")).toStdString() << endl;
-
-    script << "FWDIR=`dirname $0`" << "\n" << "\n";
-
-    script << oscnf->getCompiledScript();
-
-    script << "\n";
-
-    script << "log '";
-    script << "Activating firewall script generated "
-            << timestr << " " << " by "
-            << user_name;
-    script << "'" << "\n";
-
-    script << "\n";
-
-    if (prolog_place == "fw_file")
-        printProlog(script, pre_hook);
-
-    script << "\n";
-
-    string remote_file = remote_conf_files["__main__"];
-    if (remote_file.empty()) remote_file = conf_files["__main__"];
-    if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
-
-    script << "$PFCTL " << pfctl_dbg << pfctl_f_option
-           << remote_file
-           << " || exit 1"
-           << "\n";
-
-    for (map<string,string>::iterator i=conf_files.begin();
-         i!=conf_files.end(); ++i)
-    {
-        string remote_file = remote_conf_files[i->first];
-        if (remote_file.empty()) remote_file = i->second;
-        if (remote_file[0] != '/') remote_file = "${FWDIR}/" + remote_file;
-
-        if (i->first != "__main__")
-            script << "$PFCTL " << pfctl_dbg
-                   << "-a " << i->first << " "
-                   << pfctl_f_option
-                   << remote_file
-                   << " || exit 1"
-                   << "\n";
-    }
-
-    if (options->getBool("pf_flush_states") && fw->getStr("version")=="4.x")
-        script << "$PFCTL -F states" << "\n";
-
-    script << "\n";
-    script << "#" << "\n";
-    script << "# Epilog script" << "\n";
-    script << "#" << "\n";
-
-    string post_hook= fw->getOptionsObject()->getStr("epilog_script");
-    script << post_hook << "\n";
-
-    script << "\n";
-    script << "# End of epilog script" << "\n";
-    script << "#" << "\n";
-
-    script << "\n";
-
-
+    QString script_buffer = assembleFwScript(fw, oscnf.get());
 
     // clear() calls destructors of all elements in the container
     table_factories.clear();
     generated_scripts.clear();
 
-
+    info("Output file name: " + fw_file_name.toStdString());
 
     QFile fw_file(fw_file_name);
     if (fw_file.open(QIODevice::WriteOnly))
@@ -651,3 +613,4 @@ void MapTableFactory::clear()
         delete it->second;
     std::map<std::string, fwcompiler::TableFactory*>::clear();
 }
+

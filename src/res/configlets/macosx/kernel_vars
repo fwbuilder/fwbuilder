@@ -1,0 +1,6 @@
+## -*- mode: shell-script; -*- 
+
+{{if have_macosx_ip_forward}}$SYSCTL -w net.inet.ip.forwarding={{$macosx_ip_forward}}{{endif}}
+{{if have_macosx_ip_sourceroute}}$SYSCTL -w net.inet.ip.sourceroute={{$macosx_ip_sourceroute}}{{endif}}
+{{if have_macosx_ip_redirect}}$SYSCTL -w net.inet.ip.redirect={{$macosx_ip_redirect}}{{endif}}
+

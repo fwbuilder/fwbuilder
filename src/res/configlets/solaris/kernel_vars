@@ -1,0 +1,8 @@
+## -*- mode: shell-script; -*- 
+
+{{if have_solaris_ip_forward}}ndd -set /dev/ip ip_forwarding {{$solaris_ip_forward}}{{endif}}
+{{if have_solaris_ip_ignore_redirect}}ndd -set /dev/ip ip_ignore_redirect  {{$solaris_ip_ignore_redirect}}{{endif}}
+{{if have_solaris_ip_respond_to_echo_broadcast}}ndd -set /dev/ip ip_respond_to_echo_broadcast  {{$solaris_ip_respond_to_echo_broadcast}}{{endif}}
+{{if have_solaris_ip_forward_directed_broadcasts}}ndd -set /dev/ip ip_forward_directed_broadcasts  {{$solaris_ip_forward_directed_broadcasts}}{{endif}}
+{{if have_solaris_ip_forward_src_routed}}ndd -set /dev/ip ip_forward_src_routed  {{$solaris_ip_forward_src_routed}}{{endif}}
+

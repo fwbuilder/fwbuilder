@@ -27,8 +27,10 @@
 #define __COMPILER_DRIVER_PF_HH__
 
 #include "CompilerDriver.h"
-
+#include "OSConfigurator_bsd.h"
 #include "TableFactory.h"
+#include "OSData.h"
+#include "Configlet.h"
 
 #include <string>
 #include <sstream>
@@ -85,9 +87,20 @@ namespace fwcompiler {
 //    std::map<std::string, fwcompiler::TableFactory*> table_factories;
         MapTableFactory table_factories;
 
-    
-protected:
+        void setToolPathVar(libfwbuilder::Firewall* fw,
+                            const std::string &os,
+                            const std::string &var_path_suffix,
+                            OSData::tools osdata_tool_type,
+                            Configlet *configlet);
 
+        QString composeActivationCommand(libfwbuilder::Firewall *fw,
+                                         const std::string &pfctl_debug,
+                                         const std::string &anchor_name,
+                                         const std::string &pf_version,
+                                         const std::string &remote_file_name);
+
+protected:
+        
         std::string getConfFileName(const std::string &ruleset_name,
                                     const std::string &fwobjectname,
                                     const std::string &fw_file_name);
@@ -102,8 +115,15 @@ protected:
         void printProlog(QTextStream &file, const std::string &prolog_code);
         void printStaticOptions(QTextStream &file, libfwbuilder::Firewall* fw);
 
+        virtual QString printPathForAllTools(libfwbuilder::Firewall* fw,
+                                             const std::string &os);
 
-    
+        virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
+
+        virtual QString assembleFwScript(libfwbuilder::Firewall* fw,
+                                         OSConfigurator *ocsnf);
+        virtual QString assembleManifest(libfwbuilder::Firewall* fw);
+
 public:
 
         CompilerDriver_pf(libfwbuilder::FWObjectDatabase *db);

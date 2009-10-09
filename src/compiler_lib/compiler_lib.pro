@@ -9,6 +9,7 @@ TEMPLATE = lib
 
 SOURCES	 =  CompilerDriver.cpp \
 			CompilerDriver_compile.cpp \
+			CompilerDriver_generators.cpp \
 			Configlet.cpp \
 			interfaceProperties.cpp \
 			linux24Interfaces.cpp \

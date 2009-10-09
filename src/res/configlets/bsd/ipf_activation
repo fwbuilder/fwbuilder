@@ -1,0 +1,21 @@
+## -*- mode: shell-script; -*- 
+##
+{{if dyn_addr}}
+{{if filter}}
+cat {{$remote_file}} | grep -v '#' | {{$interface_name_substitution_commands}} | $IPF {{$ipf_debug}} -I -f -
+{{endif}}
+
+{{if nat}}
+cat {{$remote_file}} | grep -v '#' | {{$interface_name_substitution_commands}} | $IPNAT {{$ipf_debug}} -f -
+{{endif}}
+{{endif}}
+
+{{if not_dyn_addr}}
+{{if filter}}
+$IPF {{$ipf_debug}} -I -f {{$remote_file}}
+{{endif}}
+
+{{if nat}}
+$IPNAT {{$ipf_debug}} -f {{$remote_file}}
+{{endif}}
+{{endif}}

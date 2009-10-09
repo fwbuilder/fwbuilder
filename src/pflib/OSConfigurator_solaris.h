@@ -28,16 +28,24 @@
 
 #include "config.h"
 
-#include "fwcompiler/OSConfigurator.h"
 #include "fwbuilder/InetAddr.h"
 
 #include <vector>
 
+#include "OSConfigurator_bsd.h"
 #include "OSData.h"
+
+/*
+ * Of course Solaris has nothing to do with BSD. Class
+ * OSConfigurator_solaris inherits OSConfigurator_bsd only because the
+ * latter is the base class for all OSConfigurator classes for the
+ * pf-ipf-ipfw family. TODO: rename OSConfigurator_bsd to use more
+ * generic name, something like OSConfigurator_generic_pf_ipf_family
+ */
 
 namespace fwcompiler {
 
-    class OSConfigurator_solaris : public OSConfigurator {
+    class OSConfigurator_solaris : public OSConfigurator_bsd {
 
         OSData   os_data;
 
@@ -49,16 +57,17 @@ namespace fwcompiler {
 	OSConfigurator_solaris(libfwbuilder::FWObjectDatabase *_db,
                                libfwbuilder::Firewall *fw,
                                bool ipv6_policy) : 
-        OSConfigurator(_db, fw, ipv6_policy) , os_data() {}
+        OSConfigurator_bsd(_db, fw, ipv6_policy) , os_data() {}
 
         virtual int prolog();
 
 	virtual std::string myPlatformName();
-	virtual void processFirewallOptions();
+	virtual std::string printKernelVarsCommands();
+        
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr);
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Network   *nw);
-        void         printPathForAllTools(const std::string &os);
-        void         configureInterfaces();
+
+        virtual std::string configureInterfaces();
     };
 };
 

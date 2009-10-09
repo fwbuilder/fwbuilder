@@ -1,0 +1,7 @@
+## -*- mode: shell-script; -*- 
+
+{{if have_freebsd_ip_forward}}$SYSCTL -w net.inet.ip.forwarding={{$freebsd_ip_forward}}{{endif}}
+{{if have_freebsd_ipv6_forward}}$SYSCTL -w net.inet6.ip6.forwarding={{$freebsd_ipv6_forward}}{{endif}}
+{{if have_freebsd_ip_sourceroute}}$SYSCTL -w net.inet.ip.sourceroute={{$freebsd_ip_sourceroute}}{{endif}}
+{{if have_freebsd_ip_redirect}}$SYSCTL -w net.inet.ip.redirect={{$freebsd_ip_redirect}}{{endif}}
+

@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include "OSConfigurator_solaris.h"
+#include "Configlet.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/FWOptions.h"
@@ -42,51 +43,16 @@ using namespace std;
 
 string OSConfigurator_solaris::myPlatformName() { return "Solaris"; }
 
-void OSConfigurator_solaris::processFirewallOptions() 
+string OSConfigurator_solaris::printKernelVarsCommands() 
 {
-    FWOptions* options=fw->getOptionsObject();
-    string s;
-
-    s=options->getStr("solaris_ip_forward");
-    if (!s.empty()) {
-        if (s=="1" || s=="On" || s=="on") s="1";
-        else                              s="0";
-
-	output << "ndd -set /dev/ip ip_forwarding " << s << endl;
-    }
-
-    s=options->getStr("solaris_ip_ignore_redirect");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter solaris_ip_ignore_redirect: '"+s+"'");
-
-	output << "ndd -set /dev/ip ip_ignore_redirect " << s << endl;
-    }
-
-    s=options->getStr("solaris_ip_respond_to_echo_broadcast");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter solaris_ip_respond_to_echo_broadcast: '"+s+"'");
-
-	output << "ndd -set /dev/ip ip_respond_to_echo_broadcast " << s << endl;
-    }
-
-    s=options->getStr("solaris_ip_forward_directed_broadcasts");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter solaris_ip_forward_directed_broadcasts: '"+s+"'");
-
-	output << "ndd -set /dev/ip ip_forward_directed_broadcasts " << s << endl;
-    }
-
-    s=options->getStr("solaris_ip_forward_src_routed");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter solaris_ip_forward_src_routed: '"+s+"'");
-
-	output << "ndd -set /dev/ip ip_forward_src_routed " << s << endl;
-    }
-
+    Configlet kernel_vars(fw, "bsd", "kernel_vars");
+    kernel_vars.removeComments();
+    setKernelVariable(fw, "solaris_ip_forward", &kernel_vars);
+    setKernelVariable(fw, "solaris_ip_ignore_redirect", &kernel_vars);
+    setKernelVariable(fw, "solaris_ip_respond_to_echo_broadcast", &kernel_vars);
+    setKernelVariable(fw, "solaris_ip_forward_directed_broadcasts", &kernel_vars);
+    setKernelVariable(fw, "solaris_ip_forward_src_routed", &kernel_vars);
+    return kernel_vars.expand().toStdString();
 }
 
 void OSConfigurator_solaris::addVirtualAddressForNAT(const Network*)
@@ -120,68 +86,23 @@ void OSConfigurator_solaris::addVirtualAddressForNAT(const Address *addr)
 
 int OSConfigurator_solaris::prolog()
 {
-    printPathForAllTools("solaris");
+    //printPathForAllTools("solaris");
 
-    processFirewallOptions();
+    //processFirewallOptions();
 
-    configureInterfaces();
+    //configureInterfaces();
 
     return 0;
 }
 
-void  OSConfigurator_solaris::printPathForAllTools(const string &os)
+string  OSConfigurator_solaris::configureInterfaces()
 {
-    FWOptions* options=fw->getOptionsObject();
-    
-    string s, path_ipf, path_ipnat, path_logger;
-
-    s=options->getStr("solaris_path_ipf");
-    if (!s.empty()) path_ipf=s;
-    else            path_ipf=os_data.getPathForTool(os,OSData::IPF);
-
-    s=options->getStr("solaris_path_ipnat");
-    if (!s.empty()) path_ipnat=s;
-    else            path_ipnat=os_data.getPathForTool(os,OSData::IPNAT);
-
-    s=options->getStr("solaris_path_logger");
-    if (!s.empty()) path_logger=s;
-    else            path_logger=os_data.getPathForTool(os,OSData::LOGGER);
-
-    output                                                     << endl;
-    output << "log() {"                                        << endl;
-    output << "  test -x \"$LOGGER\" && $LOGGER -p info \"$1\"" << endl;
-    output << "}"                                              << endl;
-    output                                                     << endl;
-
-
-    output << "add_addr() {" << endl;
-    output << "  addr=$1"    << endl;
-    output << "  nm=$2"      << endl;
-    output << "  dev=$3"     << endl;
-    output << "  ( ifconfig $dev | egrep -s \"inet +${addr} \" ) || " << endl;
-    output << "    { "       << endl;
-    output << "      echo \"$dev: $addr\"" << endl;
-    output << "      ifconfig $dev $addr alias" << endl; 
-    output << "    } "       << endl;
-    output << "}"            << endl;
-    output << endl;
-    output << endl;
-
-    output << "IPF=\""    + path_ipf    + "\"\n";
-    output << "IPNAT=\""  + path_ipnat  + "\"\n";
-    output << "LOGGER=\"" + path_logger + "\"\n";
-    output << endl;
-
-    output << endl;
-}
-
-void  OSConfigurator_solaris::configureInterfaces()
-{
+    ostringstream ostr;
     FWOptions* options=fw->getOptionsObject();
     if ( options->getBool("configure_interfaces") ) 
     {
 
-        output << endl;
+        ostr << endl;
 
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
         for ( ; i!=i.end(); ++i ) 
@@ -195,7 +116,7 @@ void  OSConfigurator_solaris::configureInterfaces()
             for ( ; j!=j.end(); ++j ) 
             {
                 Address *iaddr = Address::cast(*j);
-                output << "add_addr "
+                ostr << "add_addr "
                        << iaddr->getAddressPtr()->toString() << " "
                        << iaddr->getNetmaskPtr()->toString() << " "
                        << iface->getName() << endl;
@@ -203,8 +124,9 @@ void  OSConfigurator_solaris::configureInterfaces()
                 virtual_addresses.push_back(*(iaddr->getAddressPtr()));
             }
         }
-        output << endl;
+        ostr << endl;
     }
+    return ostr.str();
 }
 
 

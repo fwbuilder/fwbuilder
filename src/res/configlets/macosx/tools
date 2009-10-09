@@ -1,0 +1,7 @@
+## -*- mode: shell-script; -*- 
+##
+## Set path to all utilities that we need
+
+IPFW="{{$path_ipfw}}"
+SYSCTL="{{$path_sysctl}}"
+LOGGER="{{$path_logger}}"

@@ -84,6 +84,34 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
+
+QString CompilerDriver_ipfw::assembleManifest(Firewall* fw)
+{
+    QString script_buffer;
+    QTextStream script(&script_buffer, QIODevice::WriteOnly);
+    script << MANIFEST_MARKER << "* " << QFileInfo(fw_file_name).fileName();
+    string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
+    if (!remote_name.empty()) script << " " << remote_name;
+    script << "\n";
+    script << "#" << endl;
+    script << "#" << endl;
+    return script_buffer;
+}
+
+QString CompilerDriver_ipfw::printActivationCommands(Firewall *fw)
+{
+    return activation_commands.join("\n");
+}
+
+QString CompilerDriver_ipfw::assembleFwScript(Firewall* fw, OSConfigurator *oscnf)
+{
+    Configlet script_skeleton(fw, "bsd", "ipfw_script_skeleton");
+    Configlet top_comment(fw, "bsd", "top_comment");
+
+    assembleFwScriptInternal(fw, oscnf, &script_skeleton, &top_comment);
+    return script_skeleton.expand();
+}
+
 string CompilerDriver_ipfw::run(const std::string &cluster_id,
                                 const std::string &firewall_id,
                                 const std::string &single_rule_id)
@@ -121,16 +149,17 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
 /*
  * Process firewall options, build OS network configuration script
  */
-    std::auto_ptr<OSConfigurator> oscnf;
-    string family=Resources::os_res[fw->getStr("host_OS")]->Resources::getResourceStr("/FWBuilderResources/Target/family");
-    if ( family=="macosx")
-        oscnf = std::auto_ptr<OSConfigurator>(new OSConfigurator_macosx(objdb , fw, false));
+    std::auto_ptr<OSConfigurator_bsd> oscnf;
+    string host_os = fw->getStr("host_OS");
+    string family = Resources::os_res[host_os]->Resources::getResourceStr("/FWBuilderResources/Target/family");
+    if ( host_os == "macosx")
+        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_macosx(objdb , fw, false));
 
-    if ( family=="freebsd")
-        oscnf = std::auto_ptr<OSConfigurator>(new OSConfigurator_freebsd(objdb , fw, false));
+    if ( host_os == "freebsd")
+        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
     if (oscnf.get()==NULL)
-        throw FWException("Unrecognized host OS "+fw->getStr("host_OS")+"  (family "+family+")");
+        throw FWException("Unrecognized host OS " + host_os + "  (family " + family + ")");
 
     oscnf->prolog();
 
@@ -258,29 +287,6 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
         generated_script += c_str.str();
     }
 
-
-#if NO_IPV6
-/*
- * create compilers and run the whole thing 
- */
-    PolicyCompiler_ipfw c( objdb , fw, false , oscnf.get() );
-
-    c.setDebugLevel( dl );
-    if (rule_debug_on) c.setDebugRule(  drp );
-    c.setVerbose( verbose );
-    if (inTestMode()) c.setTestMode();
-    if (inEmbeddedMode()) c.setEmbeddedMode();
-
-    bool     have_ipfw=false;
-    if ( c.prolog() > 0 ) 
-    {
-        have_ipfw=true;
-
-        c.compile();
-        c.epilog();
-    }
-#endif
-
     if (haveErrorsAndWarnings())
     {
         all_errors.push_front(getErrors("").c_str());
@@ -293,6 +299,18 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
             generated_script;
     }
 
+    PolicyCompiler_ipfw c(objdb, fw, false, oscnf.get());
+    activation_commands.push_back(c.defaultRules().c_str());
+    activation_commands.push_back(generated_script.c_str());
+
+/*
+ * assemble the script and then perhaps post-process it if needed
+ */
+    QString script_buffer = assembleFwScript(fw, oscnf.get());
+
+
+/*********************************************************************/
+#if OLD_SCHOOL
 /*
  * now write generated scripts to files
  */
@@ -422,6 +440,11 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
     script << "\"$IPFW\" delete set 1" << endl;
 
     script << endl;
+
+#endif
+
+
+    info("Output file name: " + fw_file_name.toStdString());
 
     QFile fw_file(fw_file_name);
     if (fw_file.open(QIODevice::WriteOnly))

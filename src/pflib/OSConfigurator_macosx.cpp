@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include "OSConfigurator_macosx.h"
+#include "Configlet.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/FWOptions.h"
@@ -42,69 +43,25 @@ using namespace std;
 
 string OSConfigurator_macosx::myPlatformName() { return "Macosx"; }
 
-void OSConfigurator_macosx::processFirewallOptions() 
+string OSConfigurator_macosx::printKernelVarsCommands() 
 {
-    FWOptions* options=fw->getOptionsObject();
-    string s;
-
-    s=options->getStr("macosx_ip_forward");
-    if (!s.empty()) {
-        if (s=="1" || s=="On" || s=="on") s="1";
-        else                              s="0";
-
-	output << "$SYSCTL -w net.inet.ip.forwarding=" << s << endl;
-    }
-
-    s=options->getStr("macosx_ip_sourceroute");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter macosx_ip_sourceroute: '"+s+"'");
-
-	output << "$SYSCTL -w net.inet.ip.sourceroute=" << s << endl;
-    }
-
-    s=options->getStr("macosx_ip_redirect");
-    if (!s.empty()) {
-	if (s!="0" && s!="1")
-	    throw FWException("Illegal value for OS parameter macosx_ip_redirect: '"+s+"'");
-
-	output << "$SYSCTL -w net.inet.ip.redirect=" << s << endl;
-    }
+    Configlet kernel_vars(fw, "bsd", "kernel_vars");
+    kernel_vars.removeComments();
+    setKernelVariable(fw, "macosx_ip_forward", &kernel_vars);
+    setKernelVariable(fw, "macosx_ip_sourceroute", &kernel_vars);
+    setKernelVariable(fw, "macosx_ip_redirect", &kernel_vars);
+    return kernel_vars.expand().toStdString();
 }
 
 int OSConfigurator_macosx::prolog()
 {
-    printPathForAllTools("macosx");
-    printFunctions();
+    //printPathForAllTools("macosx");
+    //printFunctions();
 
-    processFirewallOptions();
+    //processFirewallOptions();
 
-    configureInterfaces();
+    //configureInterfaces();
 
     return 0;
-}
-
-void  OSConfigurator_macosx::printPathForAllTools(const string &os)
-{
-    FWOptions* options=fw->getOptionsObject();
-    
-    string s, path_ipfw, path_sysctl, path_logger;
-
-    s=options->getStr("macosx_path_ipfw");
-    if (!s.empty()) path_ipfw=s;
-    else            path_ipfw=os_data.getPathForTool(os,OSData::IPFW);
-
-    s=options->getStr("macosx_path_sysctl");
-    if (!s.empty()) path_sysctl=s;
-    else            path_sysctl=os_data.getPathForTool(os,OSData::SYSCTL);
-
-    s=options->getStr("macosx_path_logger");
-    if (!s.empty()) path_logger=s;
-    else            path_logger=os_data.getPathForTool(os,OSData::LOGGER);
-
-    output << "IPFW=\""   + path_ipfw   + "\"\n";
-    output << "SYSCTL=\"" + path_sysctl + "\"\n";
-    output << "LOGGER=\"" + path_logger + "\"\n";
-    output << endl;
 }
 

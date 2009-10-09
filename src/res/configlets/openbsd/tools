@@ -1,0 +1,7 @@
+## -*- mode: shell-script; -*- 
+##
+## Set path to all utilities that we need
+
+PFCTL="{{$path_pfctl}}"
+SYSCTL="{{$path_sysctl}}"
+LOGGER="{{$path_logger}}"

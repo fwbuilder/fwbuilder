@@ -30,36 +30,43 @@
 
 #include "fwcompiler/OSConfigurator.h"
 
-#include "OSData.h"
+#include <QString>
+
+
+class Configlet;
+
 
 namespace fwcompiler {
 
     class OSConfigurator_bsd : public OSConfigurator {
 
 protected:
-        OSData   os_data;
 	std::vector<libfwbuilder::InetAddr> virtual_addresses;
 
+        void setKernelVariable(libfwbuilder::Firewall *fw,
+                               const std::string &var_name,
+                               Configlet *configlet);
 public:
 
 	virtual ~OSConfigurator_bsd() {};
         OSConfigurator_bsd(libfwbuilder::FWObjectDatabase *_db,
                            libfwbuilder::Firewall *fw,
                            bool ipv6_policy) : 
-        OSConfigurator(_db, fw, ipv6_policy) , os_data() {}
+        OSConfigurator(_db, fw, ipv6_policy) {}
 
         virtual int prolog();
 
 	virtual std::string myPlatformName();
-	virtual void processFirewallOptions();
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Address *addr);
 	virtual void addVirtualAddressForNAT(const libfwbuilder::Network   *nw);
-        virtual void printPathForAllTools(const std::string &os);
-        virtual void printFunctions();
-        virtual void configureInterfaces();
+
+        virtual std::string printFunctions();
+	virtual std::string printKernelVarsCommands();
+        virtual std::string configureInterfaces();
 
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface);
 
+        virtual void processFirewallOptions() {}
     };
 };
 

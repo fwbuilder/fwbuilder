@@ -53,8 +53,10 @@ using namespace fwcompiler;
 
 
 CompilerDriver_ipf::CompilerDriver_ipf(FWObjectDatabase *db) :
-    CompilerDriver(db)
+    CompilerDriver_pf(db)
 {
+    have_nat = false;
+    have_filter = false;
 }
 
 // create a copy of itself, including objdb
@@ -63,24 +65,21 @@ CompilerDriver* CompilerDriver_ipf::clone()
     return new CompilerDriver_ipf(objdb);
 }
 
-QString CompilerDriver_ipf::printActivationCommandWithSubstitution(
-    Firewall *fw, const QString &filePath, const QString &cmd)
+QString CompilerDriver_ipf::printActivationCommandWithSubstitution(Firewall *fw)
 {
     QString script_buffer;
     QTextStream str(&script_buffer, QIODevice::WriteOnly);
 
-    str << "cat " << filePath << " | grep -v '#' ";
     FWObjectTypedChildIterator j=fw->findByType(Interface::TYPENAME);
     for ( ; j!=j.end(); ++j ) 
     {
         Interface *iface=Interface::cast(*j);
         if ( iface->isDyn() )
         {
-            str << "| sed \"s/ (" << iface->getName() << ") "
+            str << "sed \"s/ (" << iface->getName() << ") "
                 << "/ $i_" << iface->getName() << " /\"";
         }
     }
-    str << " | " << cmd << endl;
     return script_buffer;
 }
 

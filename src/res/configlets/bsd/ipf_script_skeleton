@@ -1,0 +1,59 @@
+## -*- mode: shell-script; -*- 
+##
+## Double '##' comments are removed when configlet is processed.
+## Single '#' comments stay.
+{{$top_comment}}
+
+{{$errors_and_warnings}}
+
+FWDIR=`dirname $0`
+
+{{$shell_debug}}
+
+{{$tools}}
+
+{{$shell_functions}}
+
+verify_interfaces() {
+    {{$verify_interfaces}}
+}
+
+set_kernel_vars() {
+    {{$kernel_vars_commands}}
+}
+
+prolog_commands() {
+    {{$prolog_script}}
+}
+
+epilog_commands() {
+    {{$epilog_script}}
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    {{$configure_interfaces}}
+}
+
+log "Activating firewall script generated {{$timestamp}} by {{$user}}"
+
+set_kernel_vars
+configure_interfaces
+prolog_commands
+
+$IPF -Fa
+$IPNAT -C
+
+{{$activation_commands}}
+
+{{if have_filter}}
+$IPF -s
+{{endif}}
+
+epilog_commands
+
+/sbin/kldstat -n ipl.ko > /dev/null 2>&1 || $IPF -E

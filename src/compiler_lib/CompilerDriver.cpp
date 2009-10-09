@@ -93,6 +93,8 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     objdb = new FWObjectDatabase(*db);
     prolog_done = false;
     epilog_done = false;
+    have_filter = false;
+    have_nat = false;
 }
 
 CompilerDriver::~CompilerDriver()
@@ -961,5 +963,4 @@ bool CompilerDriver::isReachable(const Address* const client,
     }
     return false;
 }
-
 

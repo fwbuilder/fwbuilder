@@ -55,6 +55,8 @@ using namespace fwcompiler;
 CompilerDriver_pf::CompilerDriver_pf(FWObjectDatabase *db) :
     CompilerDriver(db)
 {
+    have_nat = false;
+    have_filter = false;
 }
 
 // create a copy of itself, including objdb
@@ -312,5 +314,35 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
     //if (prolog_place == "pf_file_after_tables")
     //    printProlog(file, pre_hook);
 
+}
+
+void CompilerDriver_pf::setToolPathVar(Firewall* fw,
+                                       const string &os,
+                                       const string &var_path_suffix,
+                                       OSData::tools osdata_tool_type,
+                                       Configlet *configlet)
+{
+    OSData os_data;
+    FWOptions* options = fw->getOptionsObject();
+    string s;
+    string path;
+    s = options->getStr(os + "_" + var_path_suffix);
+    if (!s.empty()) path = s;
+    else            path = os_data.getPathForTool(os, osdata_tool_type);
+    configlet->setVariable(var_path_suffix.c_str(), path.c_str());
+}
+
+QString CompilerDriver_pf::printPathForAllTools(Firewall* fw, const string &os)
+{
+    Configlet tools = Configlet(fw, "bsd", "tools");
+    tools.removeComments();
+
+    setToolPathVar(fw, os, "path_ipf", OSData::IPF, &tools);
+    setToolPathVar(fw, os, "path_ipnat", OSData::IPNAT, &tools);
+    setToolPathVar(fw, os, "path_ipfw", OSData::IPFW, &tools);
+    setToolPathVar(fw, os, "path_pfctl", OSData::PFCTL, &tools);
+    setToolPathVar(fw, os, "path_sysctl", OSData::SYSCTL, &tools);
+    setToolPathVar(fw, os, "path_logger", OSData::LOGGER, &tools);
+    return tools.expand();
 }
 

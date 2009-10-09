@@ -25,6 +25,7 @@
 
 #include <assert.h>
 
+#include "Configlet.h"
 #include "OSConfigurator_bsd.h"
 
 #include "fwbuilder/Firewall.h"
@@ -33,6 +34,9 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
+
+#include <QTextStream>
+#include <QString>
 
 #include <algorithm>
 #include <functional>
@@ -49,8 +53,9 @@ string OSConfigurator_bsd::getInterfaceVarName(FWObject *iface)
     return string("i_") + iface->getName();
 }
 
-void OSConfigurator_bsd::processFirewallOptions() 
+string OSConfigurator_bsd::printKernelVarsCommands() 
 {
+    return "";
 }
 
 void OSConfigurator_bsd::addVirtualAddressForNAT(const Network*)
@@ -88,52 +93,21 @@ int OSConfigurator_bsd::prolog()
     return 0;
 }
 
-void  OSConfigurator_bsd::printPathForAllTools(const string &)
-{
-}
-
-void  OSConfigurator_bsd::printFunctions()
+string OSConfigurator_bsd::printFunctions()
 {
     FWOptions* options=fw->getOptionsObject();
 
-    output                                                     << endl;
-    output << "log() {"                                        << endl;
-    output << "  test -x \"$LOGGER\" && $LOGGER -p info \"$1\"" << endl;
-    output << "}"                                              << endl;
-    output                                                     << endl;
-
-    output << "add_addr() {" << endl;
-    output << "  addr=$1"    << endl;
-    output << "  nm=$2"      << endl;
-    output << "  dev=$3"     << endl;
-    output << "  ( ifconfig $dev | egrep -q \"inet +${addr} \" ) || " << endl;
-    output << "    { "       << endl;
-    output << "      echo \"$dev: $addr/$nm\"" << endl;
-    output << "      ifconfig $dev inet $addr netmask $nm alias" << endl; 
-    output << "    } "       << endl;
-    output << "}"            << endl;
-    output << endl;
-    output << endl;
+    Configlet functions(fw, "bsd", "shell_functions");
+    functions.removeComments();
+    functions.setVariable("dyn_addr", options->getBool("dynAddr"));
 
     if (options->getBool("dynAddr"))
     {
-        output << "getaddr() {"                       << endl;
-        output << "  intf=$1"                         << endl;
-        output << "  varname=$2"                      << endl;
-        output << "  L=`ifconfig $1 | grep 'inet '`"  << endl;
-        output << "  if [ -z \"$L\" ]; then"          << endl;
-        output << "      L=\"inet 0.0.0.0/32\""       << endl;
-        output << "  fi"                              << endl;
-        output << "  set $L"                          << endl;
-        output << "  a=$2"                            << endl;
-        output << "  eval \"$varname=$a\""            << endl;
-        output << "}"                                 << endl;
-        output << endl;
-        output << endl;
-
 /*
  * get addresses of dynamic interfaces
  */
+        QString script_buffer;
+        QTextStream ostr(&script_buffer, QIODevice::WriteOnly);
         FWObjectTypedChildIterator j=fw->findByType(Interface::TYPENAME);
         for ( ; j!=j.end(); ++j ) 
         {
@@ -147,25 +121,28 @@ void  OSConfigurator_bsd::printFunctions()
  * Do we support wildcard interfaces on *BSD at all ?
  */
                 if (iface->getName().find("*")==string::npos)
-                    output << "getaddr "
-                           << iface->getName()
-                           << "  "
-                           << getInterfaceVarName(iface)
-                           << endl;
+                    ostr << "getaddr "
+                         << iface->getName().c_str()
+                         << "  "
+                         << getInterfaceVarName(iface).c_str()
+                         << "\n";
             }
         }
-    }
+        functions.setVariable("get_dyn_addr_commands", script_buffer);
+    } else
+        functions.setVariable("get_dyn_addr_commands", "");
 
-    output << endl;
+    return functions.expand().toStdString();
 }
 
-void  OSConfigurator_bsd::configureInterfaces()
+string OSConfigurator_bsd::configureInterfaces()
 {
-    FWOptions* options=fw->getOptionsObject();
+    ostringstream ostr;
+    FWOptions* options = fw->getOptionsObject();
 
     if ( options->getBool("configure_interfaces") ) 
     {
-        output << endl;
+        ostr << endl;
 
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
         for ( ; i!=i.end(); ++i ) 
@@ -180,14 +157,14 @@ void  OSConfigurator_bsd::configureInterfaces()
             for ( ; j!=j.end(); ++j ) 
             {
                 Address *iaddr = Address::cast(*j);
-                output << "add_addr "
+                ostr << "add_addr "
                        << iaddr->getAddressPtr()->toString() << " "
                        << iaddr->getNetmaskPtr()->toString() << " "
                        << iface->getName() << endl;
                 virtual_addresses.push_back(*(iaddr->getAddressPtr()));
             }
         }
-        output << endl;
+        ostr << endl;
     }
 
     if ( options->getBool("configure_carp_interfaces") ) 
@@ -284,8 +261,8 @@ void  OSConfigurator_bsd::configureInterfaces()
         }
         if (have_carp_interfaces)
         {
-            output << "$SYSCTL -w net.inet.carp.allow=1" << endl;
-            output << carp_output.str() << endl;
+            ostr << "$SYSCTL -w net.inet.carp.allow=1" << endl;
+            ostr << carp_output.str() << endl;
         }
     }
 
@@ -347,7 +324,7 @@ void  OSConfigurator_bsd::configureInterfaces()
         }
         if (have_pfsync_interfaces)
         {
-            output << pfsync_output.str() << endl;
+            ostr << pfsync_output.str() << endl;
         }
     }
 
@@ -388,8 +365,24 @@ void  OSConfigurator_bsd::configureInterfaces()
         }
         if (have_vlan_interfaces)
         {
-            output << vlan_output.str() << endl;
+            ostr << vlan_output.str() << endl;
         }
+    }
+    return ostr.str();
+}
+
+void OSConfigurator_bsd::setKernelVariable(Firewall *fw,
+                                           const string &var_name,
+                                           Configlet *configlet)
+{
+    FWOptions* options = fw->getOptionsObject();
+    string s;
+
+    s = options->getStr(var_name);
+    if (!s.empty())
+    {
+        configlet->setVariable(QString("have_") + var_name.c_str(), 1);
+        configlet->setVariable(var_name.c_str(), s=="1" || s=="on" || s=="On");
     }
 }
 

@@ -28,6 +28,8 @@
 
 #include "fwcompiler/BaseCompiler.h"
 
+#include "Configlet.h"
+
 #include <string>
 #include <sstream>
 
@@ -52,7 +54,10 @@ namespace libfwbuilder {
 
 namespace fwcompiler {
 
-    class CompilerDriver : public BaseCompiler {
+    class OSConfigurator;
+    
+    class CompilerDriver : public BaseCompiler
+    {
 
 protected:
 
@@ -85,7 +90,9 @@ protected:
         bool fw_by_id;
         bool prolog_done;
         bool epilog_done;
-
+        bool have_filter;
+        bool have_nat;
+        
         std::map<std::string,libfwbuilder::RuleSet*> branches;
 
         libfwbuilder::FWObjectDatabase *objdb;
@@ -105,6 +112,19 @@ protected:
         static bool isReachable(const libfwbuilder::Address* const subnet,
                                 const libfwbuilder::InetAddr* const addr);
 
+        /* Virtual methods used to compose generated script */
+        virtual QString printPathForAllTools(libfwbuilder::Firewall* fw,
+                                             const std::string &os);
+
+        virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
+
+        virtual QString assembleManifest(libfwbuilder::Firewall* fw);
+
+        virtual void assembleFwScriptInternal(libfwbuilder::Firewall* fw,
+                                              OSConfigurator *ocsnf,
+                                              Configlet *script_skeleton,
+                                              Configlet *top_comment);
+        
 public:
 
         CompilerDriver(libfwbuilder::FWObjectDatabase *db);

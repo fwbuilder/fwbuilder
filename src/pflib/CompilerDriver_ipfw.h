@@ -26,7 +26,7 @@
 #ifndef __COMPILER_DRIVER_IPFW_HH__
 #define __COMPILER_DRIVER_IPFW_HH__
 
-#include "../compiler_lib/CompilerDriver.h"
+#include "CompilerDriver_pf.h"
 
 #include "TableFactory.h"
 
@@ -48,7 +48,15 @@ namespace libfwbuilder {
 
 namespace fwcompiler {
 
-    class CompilerDriver_ipfw : public CompilerDriver {
+    class CompilerDriver_ipfw : public CompilerDriver_pf
+    {
+        QStringList activation_commands;
+
+protected:
+        virtual QString assembleManifest(libfwbuilder::Firewall* fw);
+        virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
+        virtual QString assembleFwScript(libfwbuilder::Firewall* fw,
+                                         OSConfigurator *ocsnf);
 
 public:
 

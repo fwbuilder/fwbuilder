@@ -1,0 +1,10 @@
+## -*- mode: shell-script; -*- 
+##
+## Set path to all utilities that we need
+
+PFCTL="{{$path_pfctl}}"
+IPFW="{{$path_ipfw}}"
+IPF="{{$path_ipf}}"
+IPNAT="{{$path_ipnat}}"
+SYSCTL="{{$path_sysctl}}"
+LOGGER="{{$path_logger}}"

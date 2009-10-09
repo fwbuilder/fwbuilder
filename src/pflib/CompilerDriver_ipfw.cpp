@@ -37,7 +37,7 @@ using namespace fwcompiler;
 
 
 CompilerDriver_ipfw::CompilerDriver_ipfw(FWObjectDatabase *db) :
-    CompilerDriver(db)
+    CompilerDriver_pf(db)
 {
 }
 

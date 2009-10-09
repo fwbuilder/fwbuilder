@@ -1,0 +1,8 @@
+## -*- mode: shell-script; -*- 
+
+{{if have_openbsd_ip_directed_broadcast}}$SYSCTL -w net.inet.ip.directed-broadcast={{$openbsd_ip_directed_broadcast}}{{endif}}
+{{if have_openbsd_ip_forward}}$SYSCTL -w net.inet.ip.forwarding={{$openbsd_ip_forward}}{{endif}}
+{{if have_openbsd_ipv6_forward}}$SYSCTL -w net.inet6.ip6.forwarding={{$openbsd_ipv6_forward}}{{endif}}
+{{if have_openbsd_ip_sourceroute}}$SYSCTL -w net.inet.ip.sourceroute={{$openbsd_ip_sourceroute}}{{endif}}
+{{if have_openbsd_ip_redirect}}$SYSCTL -w net.inet.ip.redirect={{$openbsd_ip_redirect}}{{endif}}
+

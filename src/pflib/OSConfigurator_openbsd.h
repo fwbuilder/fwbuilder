@@ -46,8 +46,7 @@ namespace fwcompiler {
         virtual int prolog();
 
 	virtual std::string myPlatformName();
-	virtual void processFirewallOptions();
-        virtual void printPathForAllTools(const std::string &os);
+	virtual std::string printKernelVarsCommands();
     };
 };
 

@@ -26,14 +26,14 @@
 #ifndef __COMPILER_DRIVER_IPF_HH__
 #define __COMPILER_DRIVER_IPF_HH__
 
-#include "../compiler_lib/CompilerDriver.h"
+#include "CompilerDriver_pf.h"
 
 #include "TableFactory.h"
 
 #include <string>
 
 #include <QString>
-#include <QTextStream>
+#include <QStringList>
 
 
 namespace libfwbuilder {
@@ -48,13 +48,24 @@ namespace libfwbuilder {
 
 namespace fwcompiler {
 
-    class CompilerDriver_ipf : public CompilerDriver {
+    class CompilerDriver_ipf : public CompilerDriver_pf
+    {
+        QStringList activation_commands;
 
+        QString composeActivationCommand(libfwbuilder::Firewall *fw,
+                                         bool filter,
+                                         const std::string &debug,
+                                         const std::string &version,
+                                         const std::string &remote_file_name);
 protected:
 
-        QString printActivationCommandWithSubstitution(
-            libfwbuilder::Firewall *fw, const QString &filePath, const QString &cmd);
+        QString printActivationCommandWithSubstitution(libfwbuilder::Firewall *fw);
     
+        virtual QString assembleManifest(libfwbuilder::Firewall* fw);
+        virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
+        virtual QString assembleFwScript(libfwbuilder::Firewall* fw,
+                                         OSConfigurator *ocsnf);
+
 public:
 
         CompilerDriver_ipf(libfwbuilder::FWObjectDatabase *db);

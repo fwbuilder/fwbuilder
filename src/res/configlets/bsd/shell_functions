@@ -1,0 +1,34 @@
+## -*- mode: shell-script; -*- 
+
+log() {
+    echo "$1"
+    test -x "$LOGGER" && $LOGGER -p info "$1"
+}
+
+add_addr() {
+  addr=$1
+  nm=$2
+  dev=$3
+  ( ifconfig $dev | egrep -q "inet +${addr} " ) || 
+    { 
+      echo "$dev: $addr/$nm"
+      ifconfig $dev inet $addr netmask $nm alias
+    } 
+}
+
+{{if dyn_addr}}
+getaddr() {
+  intf=$1
+  varname=$2
+  L=`ifconfig $1 | grep 'inet '`
+  if [ -z "$L" ]; then
+      L="inet 0.0.0.0/32"
+  fi
+  set $L
+  a=$2
+  eval "$varname=$a"
+}
+
+{{$get_dyn_addr_commands}}
+
+{{endif}}
