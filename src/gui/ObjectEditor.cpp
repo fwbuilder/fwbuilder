@@ -31,11 +31,6 @@
 
 #include "ObjectEditor.h"
 
-#include <FirewallDialog.h>
-#include <InterfaceDialog.h>
-
-
-
 #include <qobject.h>
 #include <qpixmap.h>
 #include <qmessagebox.h>
@@ -48,6 +43,8 @@
 
 #include "FWWindow.h"
 #include "BaseObjectDialog.h"
+#include "FirewallDialog.h"
+#include "InterfaceDialog.h"
 #include "DialogFactory.h"
 #include "FWBTree.h"
 #include "ProjectPanel.h"
