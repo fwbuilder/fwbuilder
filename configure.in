@@ -290,7 +290,6 @@ if test $? -eq 0; then
   AC_MSG_RESULT(ok)
   AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 1, [qtdbus])
 else
-  HAVE_QTDBUS="0"
   AC_MSG_RESULT(not available)
   AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 0, [qtdbus])
 fi
