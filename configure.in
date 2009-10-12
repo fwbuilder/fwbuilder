@@ -288,10 +288,9 @@ AC_MSG_CHECKING(QT DBus framework)
 if test $? -eq 0; then
   HAVE_QTDBUS="1"
   AC_MSG_RESULT(ok)
-  AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 1, [qtdbus])
+  AC_DEFINE(HAVE_QTDBUS)
 else
   AC_MSG_RESULT(not available)
-  AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 0, [qtdbus])
 fi
 AC_SUBST(HAVE_QTDBUS)
 
