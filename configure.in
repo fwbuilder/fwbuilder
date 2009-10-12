@@ -272,9 +272,10 @@ AC_SUBST(ANTLR_INCLUDEPATH)
 
 # Need real test for this, but at least for now it seems Qt comes with
 # QtDBus support on all platforms except Windows
-AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 1, [qtdbus])
-AC_SUBST(HAVE_QTDBUS)
-
+AC_CHECK_HEADERS([QtDBus/QtDBus], [
+  AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 1, [qtdbus])
+  AC_SUBST(HAVE_QTDBUS)
+])
 
 dnl ********************************************************************
 

@@ -23,7 +23,6 @@
 #include <QDebug>
 #include <QString>
 #include <QStringList>
-#include <QtDBus/QtDBus>
 
 #include "TransferDevice.h"
 
@@ -31,6 +30,8 @@ using namespace fwtransfer;
 using namespace libfwbuilder;
 
 #ifdef HAVE_QTDBUS
+
+#include <QtDBus/QtDBus>
 
 QVariant getProperty(QDBusInterface &interface, QString prop)
     throw(FWException)
