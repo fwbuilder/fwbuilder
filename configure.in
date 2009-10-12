@@ -275,6 +275,15 @@ AC_MSG_CHECKING(QT DBus framework)
 ( cd config_tests
   cat <<EOF > test.pro
   TEMPLATE = app
+  unix {
+    macx {
+        LIBS += -framework QtDBus
+    }
+    !macx {
+        # workaround for QT += dbus not working atm
+        LIBS += -lQtDBus
+    }
+  }
   SOURCES = qtdbus_test.cpp
   TARGET = qtdbus_test
 EOF
@@ -282,7 +291,7 @@ EOF
   test -n "$QMAKESPEC" && C="$C -spec $QMAKESPEC "
   $QMAKE $C test.pro
   test -f Makefile || exit 1
-  make >/dev/null 2>&1 ) && {
+  make >config.log 2>&1 ) && {
   AC_MSG_RESULT(ok)
   AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 1, [qtdbus])
   AC_SUBST(HAVE_QTDBUS)
