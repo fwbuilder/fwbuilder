@@ -7,10 +7,15 @@ SOURCES = transfer_secuwall.cpp
 
 HEADERS = ../../../config.h
 
-unix {
-  !macx {
-# workaround for QT += dbus not working atm
+contains( HAVE_QTDBUS, 1 ) { 
+  unix {
+    macx {
+        LIBS += -framework QtDBus
+    }
+    !macx {
+        # workaround for QT += dbus not working atm
         LIBS += -lQtDBus
+    }
   }
 }
 

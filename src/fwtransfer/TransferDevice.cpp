@@ -32,6 +32,7 @@ using namespace libfwbuilder;
 #ifdef HAVE_QTDBUS
 
 #include <QtDBus/QtDBus>
+#include <QtDBus/QDBusConnection>
 
 QVariant getProperty(QDBusInterface &interface, QString prop)
     throw(FWException)

@@ -13,10 +13,15 @@ include(../../qmake.inc)
 
 exists(qmake.inc):include( qmake.inc)
 
-unix {
-  !macx {
-# workaround for QT += dbus not working atm
+contains( HAVE_QTDBUS, 1 ) { 
+  unix {
+    macx {
+        LIBS += -framework QtDBus
+    }
+    !macx {
+        # workaround for QT += dbus not working atm
         LIBS += -lQtDBus
+    }
   }
 }
 
