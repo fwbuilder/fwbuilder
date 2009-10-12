@@ -1076,7 +1076,7 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
     {
         mw->removeDockWidget(m_panel->treeDockWidget);
         m_panel->treeDockWidget->setParent(m_panel->treeDockWidgetParentFrame);
-        m_panel->treeDockWidgetParentFrameLayout->addWidget(m_panel->treeDockWidget, 0, 0, 1, 1);
+        m_panel->treeDockWidget->layout()->addWidget(m_panel->treeDockWidget, 0, 0, 1, 1);
         m_panel->treeDockWidget->show();
     }
     m_panel->treeDockWidget->setFloating(f);
