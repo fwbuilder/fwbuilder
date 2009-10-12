@@ -270,12 +270,25 @@ AC_SUBST(HAVE_EXTERNAL_ANTLR)
 AC_SUBST(ANTLR_LIBS)
 AC_SUBST(ANTLR_INCLUDEPATH)
 
-# Need real test for this, but at least for now it seems Qt comes with
-# QtDBus support on all platforms except Windows
-AC_CHECK_HEADERS([QtDBus/QtDBus], [
+# TODO: Probably need to repackage this as Autoconf macro
+AC_MSG_CHECKING(QT DBus framework)
+( cd config_tests
+  cat <<EOF > test.pro
+  TEMPLATE = app
+  SOURCES = qtdbus_test.cpp
+  TARGET = qtdbus_test
+EOF
+  C=""
+  test -n "$QMAKESPEC" && C="$C -spec $QMAKESPEC "
+  $QMAKE $C test.pro
+  test -f Makefile || exit 1
+  make >/dev/null 2>&1 ) && {
+  AC_MSG_RESULT(ok)
   AC_DEFINE_UNQUOTED(HAVE_QTDBUS, 1, [qtdbus])
   AC_SUBST(HAVE_QTDBUS)
-])
+} || {
+  AC_MSG_RESULT(not available)
+}
 
 dnl ********************************************************************
 
