@@ -65,6 +65,10 @@ namespace fwcompiler {
          */
         virtual std::string debugPrintRule(libfwbuilder::Rule *rule);
         
+	/**
+	 * split rules if direction is "Both"
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(SplitDirectionIpfilter);
 
 	/**
 	 * splits rules with service 'any' because ipf can keep state

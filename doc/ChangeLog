@@ -1,5 +1,11 @@
 2009-10-13  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipf.cpp (SplitDirectionIpfilter::processNext):
+	fixed bug #2874571: "ipfilter version 3.4.29 issues after
+	introduction of 282860". Optimizations added for PF broke rule
+	generation for ipfilter which does not allow rule without explicit
+	direction specification.
+
 	* FWBSettings.cpp (FWBSettings::getCollapsedRuleGroups): fixed bug
 	#2872365: "problem with group names containing comma". State of
 	the rule group with a comma in the name could not be saved in
