@@ -63,7 +63,6 @@ pfsyncOptionsDialog::~pfsyncOptionsDialog()
 void pfsyncOptionsDialog::accept()
 {
     data.saveAll();
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

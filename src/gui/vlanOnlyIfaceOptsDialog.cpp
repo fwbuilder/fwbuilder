@@ -100,7 +100,6 @@ void vlanOnlyIfaceOptsDialog::accept()
 
     ifopt->setInt("vlan_id", m_dialog->vlan_id->value());
 
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

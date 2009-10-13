@@ -113,7 +113,6 @@ void openbsdAdvancedDialog::accept()
 
     data.saveAll();
 
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

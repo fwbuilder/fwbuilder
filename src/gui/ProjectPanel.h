@@ -28,6 +28,9 @@
 
 #include "ui_projectpanel_q.h"
 
+#include <set>
+#include <map>
+
 namespace libfwbuilder {
     class FWObjectDatabase;
     class Firewall;
@@ -85,6 +88,17 @@ class ProjectPanel: public QWidget {
     bool changingTabs;
     QString noFirewalls;
     bool enableAvtoSaveState;
+
+    // set of object IDs for objects that have been modified recently.
+    // Method updateLastModifiedTimestampForAllFirewalls() uses this
+    // to update lastModified timestamp of all firewalls using these objects.
+    std::set<int> lastModifiedTimestampChangePool;
+
+    // IDs of objects that need to be updated in the tree. Method
+    // updateObjectInTree() processes them. The key in the map is object ID,
+    // value is a boolean flag, true means need to update the object and 
+    // subtree under it.
+    std::map<int, bool> updateObjectsInTreePool;
     
 public:
 
@@ -159,8 +173,9 @@ public:
                        const QString &oldLabel,
                        bool  askForAutorename=true);
 
-    void updateLastModifiedTimestampForAllFirewalls(libfwbuilder::FWObject *o);
-       
+    void registerModifiedObject(libfwbuilder::FWObject *o);
+    void registerObjectToUpdateInTree(libfwbuilder::FWObject *o, bool update_subtree);
+
     void loadDataFromFw(libfwbuilder::Firewall *fw);
     
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
@@ -280,6 +295,9 @@ public:
     virtual void autoSave();
     virtual void compileThis();
     virtual void installThis();
+
+    void updateLastModifiedTimestampForAllFirewalls();
+    void updateObjectInTree();
 
 public:
     QString getFileName();

@@ -37,13 +37,14 @@
 
 #define DATA_MODIFIED_EVENT  1
 #define UPDATE_OBJECT_IN_TREE_EVENT  2
-#define UPDATE_OBJECT_IN_RULESET_EVENT  3
-#define UPDATE_LAST_COMPILED_TIMESTAMP_EVENT 4
-#define UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT 5
-#define SHOW_OBJECT_IN_TREE_EVENT 6
-#define OPEN_OBJECT_IN_EDITOR_EVENT 7
-#define CLOSE_OBJECT_EVENT 8
-#define OBJECT_NAME_CHANGED_EVENT  9
+#define UPDATE_OBJECT_AND_SUBTREE_IN_TREE_EVENT  3
+#define UPDATE_OBJECT_IN_RULESET_EVENT  4
+#define UPDATE_LAST_COMPILED_TIMESTAMP_EVENT 5
+#define UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT 6
+#define SHOW_OBJECT_IN_TREE_EVENT 7
+#define OPEN_OBJECT_IN_EDITOR_EVENT 8
+#define CLOSE_OBJECT_EVENT 9
+#define OBJECT_NAME_CHANGED_EVENT  10
 
 
 class fwbUpdateEvent : public QEvent {
@@ -74,6 +75,15 @@ public:
     updateObjectInTreeEvent(const QString &file_name, int obj_id) :
       fwbUpdateEvent(file_name, obj_id,
                      QEvent::Type(QEvent::User + UPDATE_OBJECT_IN_TREE_EVENT))
+      {}
+};
+
+
+class updateObjectAndSubtreeInTreeEvent : public fwbUpdateEvent {
+public:
+    updateObjectAndSubtreeInTreeEvent(const QString &file_name, int obj_id) :
+      fwbUpdateEvent(file_name, obj_id,
+                     QEvent::Type(QEvent::User + UPDATE_OBJECT_AND_SUBTREE_IN_TREE_EVENT))
       {}
 };
 

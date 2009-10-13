@@ -528,7 +528,9 @@ void ObjectManipulator::updateLibName(FWObject *lib)
 void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::updateObjectInTree  obj=%s", obj->getName().c_str());
+        qDebug() << "ObjectManipulator::updateObjectInTree"
+                 << "obj=" << obj->getName().c_str()
+                 << "subtree=" << subtree;
 
     QTreeWidgetItem *itm = allItems[obj];
     assert(itm!=NULL);
@@ -566,9 +568,10 @@ void ObjectManipulator::updateObjName(FWObject *obj,
                                       bool  askForAutorename)
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::updateObjName  changing name '%s' -> '%s'",
-               oldName.toLatin1().constData(),
-               QString::fromUtf8(obj->getName().c_str()).toLatin1().constData());
+        qDebug() << "ObjectManipulator::updateObjName  changing name "
+                 << oldName.toLatin1()
+                 << "->"
+                 << QString::fromUtf8(obj->getName().c_str());
     
     if (oldName == QString::fromUtf8(obj->getName().c_str())) return;
     
@@ -2441,10 +2444,18 @@ void ObjectManipulator::deleteObj()
     
                 if (mw->isEditorVisible() &&
                     mw->getOpenedEditor()==obj) mw->hideEditor();
-                    
-                delObj(obj);
+
+                int parent_id = obj->getParent()->getId();
+
+                delObj(obj, false);
+
+                QCoreApplication::postEvent(
+                    mw, new updateObjectAndSubtreeInTreeEvent(
+                        m_project->getFileName(), parent_id));
             }
         }
+
+        m_project->scheduleRuleSetRedraw();
     }
     catch(FWException &ex)
     {
@@ -2521,7 +2532,7 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
         {
             if (fwbdebug)
                 qDebug("ObjectManipulator::delObj:   "
-                       "recursively deleting library and all its objects");
+                       "recursively deleting object from the tree");
             m_project->db()->recursivelyRemoveObjFromTree(obj,
                                                           false);
             if (islib)
@@ -2534,8 +2545,7 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
         QCoreApplication::postEvent(
             mw, new dataModifiedEvent(m_project->getFileName(), parent->getId()));
 
-//        removeObjectFromTreeView(obj);
-        m_project->scheduleRuleSetRedraw();
+        //m_project->scheduleRuleSetRedraw();
     
         if (!isDelObj)
         {
@@ -3258,7 +3268,6 @@ void ObjectManipulator::newClusterIface()
     //updateObjectInTree(o);
     openObject(o);
 
-//    updateLastModifiedTimestampForAllFirewalls(o);
     editObject(o);
 }
 
@@ -3297,9 +3306,6 @@ void ObjectManipulator::newStateSyncClusterGroup()
     o->setStr("type", group_type.toStdString());
 
     openObject(o);
-
-//    updateLastModifiedTimestampForAllFirewalls(o);
-
     editObject(o);
 }
 
@@ -3329,9 +3335,6 @@ void ObjectManipulator::newFailoverClusterGroup()
     o->setStr("type", group_type.toStdString());
 
     openObject(o);
-
-//    updateLastModifiedTimestampForAllFirewalls(o);
-
     editObject(o);
 }
 
@@ -3419,9 +3422,6 @@ void ObjectManipulator::newInterface()
         new_interface->getOptionsObject()->setStr("type", "ethernet");
 
     openObject(new_interface);
-
-//    updateLastModifiedTimestampForAllFirewalls(new_interface);
-
     editObject(new_interface);
 }
 
@@ -3530,7 +3530,6 @@ void ObjectManipulator::newInterfaceAddress()
         {
             openObject(o);
             editObject(o);
-//            updateLastModifiedTimestampForAllFirewalls(o);
         }
     }
 }
@@ -3552,7 +3551,6 @@ void ObjectManipulator::newInterfaceAddressIPv6()
         {
             openObject(o);
             editObject(o);
-//            updateLastModifiedTimestampForAllFirewalls(o);
         }
     }
 }
@@ -3595,7 +3593,6 @@ void ObjectManipulator::newPhysicalAddress()
             {
                 openObject(o);
                 editObject(o);
-//                updateLastModifiedTimestampForAllFirewalls(o);
             }
         }
     }

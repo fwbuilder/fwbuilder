@@ -69,6 +69,9 @@ bool ProjectPanel::event(QEvent *event)
             {
             case DATA_MODIFIED_EVENT:
             {
+                if (fwbdebug)
+                    qDebug("ProjectPanel::event  dataModified  obj: %s",
+                           obj->getName().c_str());
                 // This event does not trigger any updates in the UI,
                 // this purely data structure update event. However,
                 // we post updateObjectInTreeEvent even here to
@@ -91,7 +94,7 @@ bool ProjectPanel::event(QEvent *event)
                     QCoreApplication::postEvent(
                         this, new updateObjectInTreeEvent(data_file, obj->getId()));
                 }
-                updateLastModifiedTimestampForAllFirewalls(obj);
+                registerModifiedObject(obj);
                 ev->accept();
                 return true;
             }
@@ -103,7 +106,7 @@ bool ProjectPanel::event(QEvent *event)
                 // when object name changes we need to update the tree
                 // and ruleset
                 QCoreApplication::postEvent(
-                    this, new updateObjectInTreeEvent(data_file, obj_id));
+                    this, new updateObjectAndSubtreeInTreeEvent(data_file, obj_id));
                 QCoreApplication::postEvent(
                     this, new updateObjectInRulesetEvent(data_file, obj_id));
                 if (Library::cast(obj))
@@ -152,8 +155,15 @@ bool ProjectPanel::event(QEvent *event)
                 if (fwbdebug)
                     qDebug("ProjectPanel::event  updateObjectInTreeEvent  obj: %s",
                            obj->getName().c_str());
-                m_panel->om->updateObjectInTree(obj, true);
-                mdiWindow->update();
+                registerObjectToUpdateInTree(obj, false);
+                ev->accept();
+                return true;
+
+            case UPDATE_OBJECT_AND_SUBTREE_IN_TREE_EVENT:
+                if (fwbdebug)
+                    qDebug("ProjectPanel::event  updateObjectAndSubtreeInTreeEvent  obj: %s",
+                           obj->getName().c_str());
+                registerObjectToUpdateInTree(obj, true);
                 ev->accept();
                 return true;
 
@@ -170,8 +180,6 @@ bool ProjectPanel::event(QEvent *event)
                 }
                 // update rule set title as well
                 updateFirewallName();
-                // redraw window
-//                mdiWindow->update();
                 ev->accept();
                 return true;
             }

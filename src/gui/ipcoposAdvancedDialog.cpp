@@ -190,7 +190,6 @@ void ipcoposAdvancedDialog::accept()
 
     data.saveAll();
 
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

@@ -108,7 +108,6 @@ void linux24IfaceOptsDialog::accept()
 
     data.saveAll();
 
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

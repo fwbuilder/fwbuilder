@@ -118,7 +118,6 @@ void solarisAdvancedDialog::accept()
 
     data.saveAll();
 
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

@@ -112,7 +112,6 @@ void freebsdAdvancedDialog::accept()
     assert(mgmt!=NULL);
 
     data.saveAll();
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
 
     QDialog::accept();
 }

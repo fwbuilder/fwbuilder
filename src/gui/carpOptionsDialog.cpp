@@ -85,7 +85,6 @@ void carpOptionsDialog::accept()
 {
     if (!validate()) return;
     data.saveAll();
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

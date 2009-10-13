@@ -108,7 +108,6 @@ pixosAdvancedDialog::pixosAdvancedDialog(QWidget *parent,FWObject *o)
 void pixosAdvancedDialog::accept()
 {
     data.saveAll();
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

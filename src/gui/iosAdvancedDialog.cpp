@@ -80,7 +80,6 @@ iosAdvancedDialog::iosAdvancedDialog(QWidget *parent,FWObject *o)
 void iosAdvancedDialog::accept()
 {
     data.saveAll();
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

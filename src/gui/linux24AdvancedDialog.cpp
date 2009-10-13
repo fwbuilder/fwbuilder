@@ -188,7 +188,6 @@ void linux24AdvancedDialog::accept()
 
     data.saveAll();
 
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

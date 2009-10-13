@@ -167,7 +167,6 @@ void ipfAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-//    mw->updateLastModifiedTimestampForAllFirewalls(obj);
     QDialog::accept();
 }
 

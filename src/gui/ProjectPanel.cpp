@@ -988,52 +988,108 @@ ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
     return cln;
 }
 
-void ProjectPanel::updateLastModifiedTimestampForAllFirewalls(FWObject *obj)
+void ProjectPanel::registerObjectToUpdateInTree(FWObject *o, bool update_subtree)
+{
+    updateObjectsInTreePool[o->getId()] = update_subtree;
+    QTimer::singleShot(0, this, SLOT(updateObjectInTree()));
+}
+
+void ProjectPanel::updateObjectInTree()
 {
     if (fwbdebug)
-        qDebug("ProjectPanel::updateLastModifiedTimestampForAllFirewalls");
+        qDebug() << "ProjectPanel::updateObjectInTree()"
+                 << "updateObjectsInTreePool.size()=" << updateObjectsInTreePool.size();
 
-    if (obj==NULL) return;
+    while (updateObjectsInTreePool.size() > 0)
+    {
+        map<int, bool>::iterator it = updateObjectsInTreePool.begin();
+        FWObject *obj = db()->findInIndex(it->first);
+        m_panel->om->updateObjectInTree(obj, it->second);
+        updateObjectsInTreePool.erase(it);
+    }
+    mdiWindow->update();
+}
+
+void ProjectPanel::registerModifiedObject(FWObject *o)
+{
+    lastModifiedTimestampChangePool.insert(o->getId());
+    QTimer::singleShot(0, this, SLOT(updateLastModifiedTimestampForAllFirewalls()));
+}
+
+void ProjectPanel::updateLastModifiedTimestampForAllFirewalls()
+{
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::updateLastModifiedTimestampForAllFirewalls"
+                 << "lastModifiedTimestampChangePool.size()="
+                 << lastModifiedTimestampChangePool.size();
+
+    if (lastModifiedTimestampChangePool.size() == 0) return;
 
     QStatusBar *sb = mw->statusBar();
     sb->showMessage( tr("Searching for firewalls affected by the change...") );
 
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+    //QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 
     QApplication::setOverrideCursor(QCursor( Qt::WaitCursor));
 
-    list<Firewall *> fws = m_panel->om->findFirewallsForObject(obj);
-    if (fws.size())
+    set<Firewall*> firewalls_to_update;
+
+    while (lastModifiedTimestampChangePool.size() > 0)
     {
-        Firewall *f;
-        for (list<Firewall *>::iterator i=fws.begin();
-                i!=fws.end();
-                ++i)
+        set<int>::iterator it = lastModifiedTimestampChangePool.begin();
+        FWObject *obj = db()->findInIndex(*it);
+        lastModifiedTimestampChangePool.erase(it);
+
+        if (fwbdebug)
+            qDebug() << "Modified object: " << obj->getName().c_str();
+
+        if (FWBTree().isSystem(obj)) continue;
+
+        list<Firewall *> fws = m_panel->om->findFirewallsForObject(obj);
+        if (fws.size())
         {
-            f = *i;
-            if (f==obj) continue;
-
-            f->updateLastModifiedTimestamp();
-            QCoreApplication::postEvent(
-                mw, new updateObjectInTreeEvent(getFileName(), f->getId()));
-
-            list<Cluster*> clusters = m_panel->om->findClustersUsingFirewall(f);
-            if (clusters.size() != 0)
+            Firewall *f;
+            for (list<Firewall *>::iterator i=fws.begin();
+                 i!=fws.end();
+                 ++i)
             {
-                list<Cluster*>::iterator it;
-                for (it=clusters.begin(); it!=clusters.end(); ++it)
-                {
-                    Cluster *cl = *it;
-                    cl->updateLastModifiedTimestamp();
-                    QCoreApplication::postEvent(
-                        mw, new updateObjectInTreeEvent(getFileName(), cl->getId()));
-                }
+                f = *i;
+                if (f==obj) continue;
+
+                firewalls_to_update.insert(f);
             }
         }
     }
+
+    if (fwbdebug)
+        qDebug() << "Will update " << firewalls_to_update.size() << " firewalls";
+
+    for (set<Firewall*>::iterator it=firewalls_to_update.begin();
+         it!=firewalls_to_update.end(); ++it)
+    {
+        Firewall * f = *it;
+
+        f->updateLastModifiedTimestamp();
+        QCoreApplication::postEvent(
+            mw, new updateObjectInTreeEvent(getFileName(), f->getId()));
+
+        list<Cluster*> clusters = m_panel->om->findClustersUsingFirewall(f);
+        if (clusters.size() != 0)
+        {
+            list<Cluster*>::iterator it;
+            for (it=clusters.begin(); it!=clusters.end(); ++it)
+            {
+                Cluster *cl = *it;
+                cl->updateLastModifiedTimestamp();
+                QCoreApplication::postEvent(
+                    mw, new updateObjectInTreeEvent(getFileName(), cl->getId()));
+            }
+        }
+    }
+
     QApplication::restoreOverrideCursor();
     sb->clearMessage();
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+//    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 }
 
 void ProjectPanel::toggleViewTree(bool f)
