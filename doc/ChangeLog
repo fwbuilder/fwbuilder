@@ -1,5 +1,9 @@
 2009-10-13  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::toolsDiscoveryDruid): fixed bug
+	#2867550: "Discovery Druid dieswhen there is no active'project
+	window".
+
 	* debugDialog.cpp (debugDialog::debugDialog),
 	DiscoveryDruid.cpp (DiscoveryDruid::DiscoveryDruid) Reversing the
 	change made in 3.0.7 in the debug and discovery druid windows, the
