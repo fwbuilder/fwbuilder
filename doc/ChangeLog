@@ -1,3 +1,43 @@
+2009-10-13  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipf.cpp (SplitDirectionIpfilter::processNext):
+	fixed bug #2874571: "ipfilter version 3.4.29 issues after
+	introduction of 282860". Optimizations added for PF broke rule
+	generation for ipfilter which does not allow rule without explicit
+	direction specification.
+
+	* FWBSettings.cpp (FWBSettings::getCollapsedRuleGroups): fixed bug
+	#2872365: "problem with group names containing comma". State of
+	the rule group with a comma in the name could not be saved in
+	program settings and the group could not be expanded once it was
+	collapsed.
+
+	* CustomServiceDialog.cpp (CustomServiceDialog::loadFWObject):
+	fixed bug #2870562: "custom service - protocol name
+	options". Added protocol "ipv6-icmp" to the list of predefined
+	protocols in the CustomService object and fixed the dialog to make
+	it properly save protocol name entered by the user (the widget
+	where user choses protocol name also supports editing so the user
+	can enter any protocol name not offered in the list of standard
+	protocols).
+
+	* FWWindow.cpp (FWWindow::toolsDiscoveryDruid): fixed bug
+	#2867550: "Discovery Druid dieswhen there is no active'project
+	window".
+
+	* debugDialog.cpp (debugDialog::debugDialog),
+	DiscoveryDruid.cpp (DiscoveryDruid::DiscoveryDruid) Reversing the
+	change made in 3.0.7 in the debug and discovery druid windows, the
+	change was intended to make the window title bar show "close"
+	button on Mac OS X. Unfortunately the caused the title bar to
+	disappear all together on Linux under some window managers. Modal
+	QT dialogs do not have title bar buttons on Mac OS X, but since
+	they always have "OK", "Finish", "Close" or "Cancel" buttons as
+	part of the dialog contents, absense of the "close" button in the
+	title bar is not critical.
+
+	* VERSION (VERSION): started v3.0.8
+
 2009-10-07  vadim  <vadim@vk.crocodile.org>
 
 	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::itemClicked):

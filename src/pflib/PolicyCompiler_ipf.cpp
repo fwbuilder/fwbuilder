@@ -379,6 +379,31 @@ bool PolicyCompiler_ipf::processMultiAddressObjectsInRE::processNext()
     return true;
 }
 
+bool PolicyCompiler_ipf::SplitDirectionIpfilter::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    if (rule->getDirection()==PolicyRule::Both)
+    {
+	PolicyRule *r= compiler->dbcopy->createPolicyRule();
+	compiler->temp_ruleset->add(r);
+	r->duplicate(rule);
+	r->setDirection(PolicyRule::Inbound);
+	tmp_queue.push_back(r);
+
+	r= compiler->dbcopy->createPolicyRule();
+	compiler->temp_ruleset->add(r);
+	r->duplicate(rule);
+	r->setDirection(PolicyRule::Outbound);
+	tmp_queue.push_back(r);
+
+    } else 
+	tmp_queue.push_back(rule);
+
+    return true;
+}
+
+
 
 void PolicyCompiler_ipf::compile()
 {
@@ -478,7 +503,7 @@ void PolicyCompiler_ipf::compile()
         add( new splitIfFirewallInSrc("split rule if firewall is in Src") );
         add( new splitIfFirewallInDst("split rule if firewall is in Dst") );
         add( new fillDirection("determine directions") );
-        add( new SplitDirection("split rules with direction 'both'" ) );
+        add( new SplitDirectionIpfilter("split rules with direction 'both'" ) );
         add( new ExpandMultipleAddresses(
                  "expand objects with multiple addresses") );
         add( new checkForDynamicInterfacesOfOtherObjects(

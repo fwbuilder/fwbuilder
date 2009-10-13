@@ -638,14 +638,20 @@ void FWWindow::fileExit()
 
 void FWWindow::toolsDiscoveryDruid()
 {
-    DiscoveryDruid druid(this);
-    druid.exec();
+    if (activeProject()) 
+    {
+        DiscoveryDruid druid(this);
+        druid.exec();
+    }
 }
 
 void FWWindow::importPolicy()
 {
-    DiscoveryDruid druid(this, true);
-    druid.exec();
+    if (activeProject()) 
+    {
+        DiscoveryDruid druid(this, true);
+        druid.exec();
+    }
 }
 
 void FWWindow::setActionsEnabled(bool en)

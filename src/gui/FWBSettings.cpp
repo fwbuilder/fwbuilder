@@ -38,6 +38,8 @@
 #include <QDir>
 #include <QDesktopWidget>
 #include <QUuid>
+#include <QRegExp>
+#include <QtDebug>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -817,10 +819,29 @@ void FWBSettings::getCollapsedRuleGroups(const QString &filename,
                                          const QString &ruleset,
                                          QStringList &collapsed_groups)
 {
-    QString strl = value(QString(SETTINGS_PATH_PREFIX "/") +
-                         "Window/" + filename + "/" + firewall + "/" +
-                         ruleset + "/CollapsedRuleGroups").toString();
-    collapsed_groups = strl.split(",");
+    QString key = "Window/" + filename + "/" + firewall + "/" +
+        ruleset + "/CollapsedRuleGroups";
+    QString strl = value(QString(SETTINGS_PATH_PREFIX "/") + key).toString();
+    // QT regexp does not support negative lookbehind that we need to
+    // find all "," if they are not preceded by a "\". Will split the
+    // string on all commas, then find elements of the array that end
+    // with "\" and combine them with the following ones.
+    QStringList lst = strl.split(",");
+
+    QStringListIterator i(lst);
+    while (i.hasNext())
+    {
+        QString group_name = i.next();
+        while (group_name.endsWith("\\") && i.hasNext())
+            group_name += QString(",") + i.next();
+        group_name.replace("\\,", ",");
+        collapsed_groups.push_back(group_name);
+    }
+
+    if (fwbdebug)
+        qDebug() << "FWBSettings::getCollapsedRuleGroups"
+                 << key
+                 << collapsed_groups.join(" ||| ");
 }
 
 void FWBSettings::setCollapsedRuleGroups(const QString &filename,
@@ -828,10 +849,20 @@ void FWBSettings::setCollapsedRuleGroups(const QString &filename,
                                          const QString &ruleset,
                                          const QStringList &collapsed_groups)
 {
-    setValue(QString(SETTINGS_PATH_PREFIX "/") +
-             "Window/" + filename + "/" + firewall + "/" + ruleset +
-             "/CollapsedRuleGroups",
-             collapsed_groups.join(","));
+    QStringList lst;
+    foreach(QString group_name, collapsed_groups)
+    {
+        group_name.replace(",", "\\,");
+        lst.push_back(group_name);
+    }
+    QString key = "Window/" + filename + "/" + firewall + "/" + ruleset +
+        "/CollapsedRuleGroups";
+    QString val = lst.join(",");
+    if (fwbdebug)
+        qDebug() << "FWBSettings::setCollapsedRuleGroups"
+                 << key
+                 << val;
+    setValue(QString(SETTINGS_PATH_PREFIX "/") + key, val);
 }
 
 QStringList FWBSettings::getRecentFiles()
