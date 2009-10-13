@@ -1,5 +1,14 @@
 2009-10-13  vadim  <vadim@vk.crocodile.org>
 
+	* CustomServiceDialog.cpp (CustomServiceDialog::loadFWObject):
+	fixed bug #2870562: "custom service - protocol name
+	options". Added protocol "ipv6-icmp" to the list of predefined
+	protocols in the CustomService object and fixed the dialog to make
+	it properly save protocol name entered by the user (the widget
+	where user choses protocol name also supports editing so the user
+	can enter any protocol name not offered in the list of standard
+	protocols).
+
 	* FWWindow.cpp (FWWindow::toolsDiscoveryDruid): fixed bug
 	#2867550: "Discovery Druid dieswhen there is no active'project
 	window".

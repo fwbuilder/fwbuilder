@@ -117,6 +117,7 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
     m_dialog->protocol->addItem("tcp");
     m_dialog->protocol->addItem("udp");
     m_dialog->protocol->addItem("icmp");
+    m_dialog->protocol->addItem("ipv6-icmp");
 
     bool standard_protocol = false;
     int proto_index = 0;
@@ -219,12 +220,7 @@ void CustomServiceDialog::applyChanges()
         s->setCodeForPlatform( platform.toUtf8().constData(),
                                string(code.toUtf8().constData()));
     }
-    int protocol_index = m_dialog->protocol->currentIndex();
-    QString protocol;
-    if (protocol_index >= 0)
-        protocol = m_dialog->protocol->itemText(protocol_index).toUtf8().constData();
-    else
-        protocol = m_dialog->protocol->lineEdit()->text();
+    QString protocol = m_dialog->protocol->lineEdit()->text();
     s->setProtocol(string(protocol.toUtf8().constData()));
     int af = (m_dialog->ipv6->isChecked()) ? AF_INET6 : AF_INET;
     s->setAddressFamily(af);
