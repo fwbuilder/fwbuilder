@@ -1,5 +1,16 @@
 2009-10-13  vadim  <vadim@vk.crocodile.org>
 
+	* debugDialog.cpp (debugDialog::debugDialog),
+	DiscoveryDruid.cpp (DiscoveryDruid::DiscoveryDruid) Reversing the
+	change made in 3.0.7 in the debug and discovery druid windows, the
+	change was intended to make the window title bar show "close"
+	button on Mac OS X. Unfortunately the caused the title bar to
+	disappear all together on Linux under some window managers. Modal
+	QT dialogs do not have title bar buttons on Mac OS X, but since
+	they always have "OK", "Finish", "Close" or "Cancel" buttons as
+	part of the dialog contents, absense of the "close" button in the
+	title bar is not critical.
+
 	* VERSION (VERSION): started v3.0.8
 
 2009-09-18  vadim  <vadim@vk.crocodile.org>
