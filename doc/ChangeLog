@@ -1,5 +1,11 @@
 2009-10-13  vadim  <vadim@vk.crocodile.org>
 
+	* FWBSettings.cpp (FWBSettings::getCollapsedRuleGroups): fixed bug
+	#2872365: "problem with group names containing comma". State of
+	the rule group with a comma in the name could not be saved in
+	program settings and the group could not be expanded once it was
+	collapsed.
+
 	* CustomServiceDialog.cpp (CustomServiceDialog::loadFWObject):
 	fixed bug #2870562: "custom service - protocol name
 	options". Added protocol "ipv6-icmp" to the list of predefined
