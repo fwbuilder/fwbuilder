@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<FWBuilderResources version="3.0.7-">
+<FWBuilderResources version="3.0.8-">
     <Target name="iosacl">
       <description>IOS ACL</description>
       <compiler>fwb_iosacl</compiler>
