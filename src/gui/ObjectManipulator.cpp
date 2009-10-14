@@ -169,6 +169,8 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
 
     QString icon_path=":/Icons/";
 
+    popup_menu = new QMenu(this);
+
     QMenu* newObjectPopup = new QMenu( this );
 
     newObjectPopup->addAction(QIcon(icon_path+Library::TYPENAME+"/icon-tree"),
@@ -1131,9 +1133,9 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     if (currentObj==NULL)  currentObj=otvi->getFWObject();
 
-    QMenu *popup = new QMenu(this);
+    popup_menu->clear();
 
-    QAction *edtID = popup->addAction(
+    QAction *edtID = popup_menu->addAction(
         tr("Edit"), this, SLOT( editSelectedObject()));
 
     QMenu *duptargets  = NULL;
@@ -1144,8 +1146,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (!Interface::isA(currentObj) && RuleSet::cast(currentObj)==NULL &&
         !Library::isA(currentObj) && !FWBTree().isStandardFolder(currentObj))
     {
-        duptargets = popup->addMenu( tr("Duplicate ...") );
-        movetargets = popup->addMenu( tr("Move ...") );
+        duptargets = popup_menu->addMenu( tr("Duplicate ...") );
+        movetargets = popup_menu->addMenu( tr("Move ...") );
 
         connect ( duptargets, SIGNAL ( triggered(QAction*) ),
                   this, SLOT( duplicateObj(QAction*) ) );
@@ -1195,36 +1197,36 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         }
     }
 
-    popup->addSeparator();
+    popup_menu->addSeparator();
 
-    QAction *copyID = popup->addAction(tr("Copy"), this, SLOT(copyObj()));
-    QAction *cutID = popup->addAction(tr("Cut"), this, SLOT(cutObj()));
-    QAction *pasteID = popup->addAction(tr("Paste"), this, SLOT(pasteObj()));
+    QAction *copyID = popup_menu->addAction(tr("Copy"), this, SLOT(copyObj()));
+    QAction *cutID = popup_menu->addAction(tr("Cut"), this, SLOT(cutObj()));
+    QAction *pasteID = popup_menu->addAction(tr("Paste"), this, SLOT(pasteObj()));
 
-    popup->addSeparator();
+    popup_menu->addSeparator();
 
-    QAction * delID = popup->addAction( tr("Delete"), this,
+    QAction * delID = popup_menu->addAction( tr("Delete"), this,
                                         SLOT( deleteObj() ) );
 
     QList<QAction*> AddObjectActions;
 
     if (getCurrentObjectTree()->getNumSelected()==1)
     {
-        popup->addSeparator();
+        popup_menu->addSeparator();
 
         if ( (Firewall::isA(currentObj) || Host::isA(currentObj)) &&
              ! currentObj->isReadOnly() )
         {
-            AddObjectActions.append(popup->addAction( tr("Add Interface"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("Add Interface"), this,
                                                       SLOT( newInterface() ) ));
 
         }
         if ((Firewall::isA(currentObj) || Cluster::isA(currentObj)) &&
              ! currentObj->isReadOnly())
         {
-            AddObjectActions.append(popup->addAction( tr("Add Policy Rule Set"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("Add Policy Rule Set"), this,
                                                       SLOT( newPolicyRuleSet() ) ));
-            AddObjectActions.append(popup->addAction( tr("Add NAT Rule Set"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("Add NAT Rule Set"), this,
                                                       SLOT( newNATRuleSet() ) ));
         }
 
@@ -1255,15 +1257,15 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 list<QStringPair> subint_types;
                 getSubInterfaceTypes(iface, subint_types);
                 if (subint_types.size())
-                    popup->addAction(
+                    popup_menu->addAction(
                         tr("Add Interface"), this, SLOT( newInterface() ) );
             }
 
-            AddObjectActions.append(popup->addAction( tr("Add IP Address"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("Add IP Address"), this,
                                                       SLOT( newInterfaceAddress() ) ));
-            AddObjectActions.append(popup->addAction( tr("Add IPv6 Address"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("Add IPv6 Address"), this,
                                                       SLOT( newInterfaceAddressIPv6() ) ));
-            AddObjectActions.append(popup->addAction( tr("Add MAC Address"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("Add MAC Address"), this,
                                                       SLOT( newPhysicalAddress() ) ));
             // Check if we should add menu item that creates failover
             // group. if parent is a cluster, allow one vrrp type
@@ -1272,7 +1274,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             parent = currentObj->getParent();
             if (parent != NULL && Cluster::isA(parent))
             {
-                QAction *failover_menu_id = popup->addAction(
+                QAction *failover_menu_id = popup_menu->addAction(
                     tr("Add Failover Group"), this,
                     SLOT( newFailoverClusterGroup() ) );
                 failover_menu_id->setEnabled(
@@ -1282,119 +1284,119 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
         if (Cluster::isA(currentObj) && ! currentObj->isReadOnly())
         {
-            AddObjectActions.append(popup->addAction( tr("Add Cluster interface"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("Add Cluster interface"), this,
                                                       SLOT( newClusterIface() ) ));
             // allow multiple state syncing groups per cluster
             // Rationale: these groups may represent different state syncing
             // protocols that can synchronize different things.
-            AddObjectActions.append(popup->addAction( tr("Add State Synchronization Group"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("Add State Synchronization Group"), this,
                                                       SLOT( newStateSyncClusterGroup() ) ));
         }
 
         if (currentObj->getPath(true)=="Firewalls")
-            AddObjectActions.append(popup->addAction( tr("New Firewall"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Firewall"), this,
                                                       SLOT( newFirewall() ) ));
 
         if (currentObj->getPath(true)=="Clusters")
-            AddObjectActions.append(popup->addAction( tr("New Cluster"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Cluster"), this,
                                                       SLOT( newCluster() ) ));
 
         if (currentObj->getPath(true)=="Objects/Addresses")
         {
-            AddObjectActions.append(popup->addAction( tr("New Address"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Address"), this,
                                                       SLOT( newAddress() ) ));
-            AddObjectActions.append(popup->addAction( tr("New Address IPv6"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Address IPv6"), this,
                                                       SLOT( newAddressIPv6() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/DNS Names")
         {
-            AddObjectActions.append(popup->addAction( tr("New DNS Name"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New DNS Name"), this,
                                                       SLOT( newDNSName() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Address Tables")
         {
-            AddObjectActions.append(popup->addAction( tr("New Address Table"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Address Table"), this,
                                                       SLOT( newAddressTable() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Address Ranges")
-            AddObjectActions.append(popup->addAction( tr("New Address Range"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Address Range"), this,
                                                       SLOT( newAddressRange() ) ));
 
         if (currentObj->getPath(true)=="Objects/Hosts")
-            AddObjectActions.append(popup->addAction( tr("New Host"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Host"), this,
                                                       SLOT( newHost() ) ));
 
         if (currentObj->getPath(true)=="Objects/Networks")
         {
-            AddObjectActions.append(popup->addAction( tr("New Network"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Network"), this,
                                                       SLOT( newNetwork() ) ));
-            AddObjectActions.append(popup->addAction( tr("New Network IPv6"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Network IPv6"), this,
                                                       SLOT( newNetworkIPv6() ) ));
         }
 
         if (currentObj->getPath(true)=="Objects/Groups")
-            AddObjectActions.append(popup->addAction( tr("New Group"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Group"), this,
                                                       SLOT( newObjectGroup() ) ));
 
         if (currentObj->getPath(true)=="Services/Custom")
-            AddObjectActions.append(popup->addAction( tr("New Custom Service"),this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Custom Service"),this,
                                                       SLOT( newCustom() ) ));
 
         if (currentObj->getPath(true)=="Services/IP")
-            AddObjectActions.append(popup->addAction( tr("New IP Service"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New IP Service"), this,
                                                       SLOT( newIP() ) ));
 
         if (currentObj->getPath(true)=="Services/ICMP")
         {
-            AddObjectActions.append(popup->addAction( tr("New ICMP Service"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New ICMP Service"), this,
                                                       SLOT( newICMP() ) ));
-            AddObjectActions.append(popup->addAction( tr("New ICMP6 Service"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New ICMP6 Service"), this,
                                                       SLOT( newICMP6() ) ));
         }
 
         if (currentObj->getPath(true)=="Services/TCP")
-            AddObjectActions.append(popup->addAction( tr("New TCP Service"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New TCP Service"), this,
                                                       SLOT( newTCP() ) ));
 
         if (currentObj->getPath(true)=="Services/UDP")
-            AddObjectActions.append(popup->addAction( tr("New UDP Service"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New UDP Service"), this,
                                                       SLOT( newUDP() ) ));
 
         if (currentObj->getPath(true)=="Services/TagServices")
-            AddObjectActions.append(popup->addAction( tr("New TagService"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New TagService"), this,
                                                       SLOT( newTagService() ) ));
 
         if (currentObj->getPath(true)=="Services/Groups")
-            AddObjectActions.append(popup->addAction( tr("New Group"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Group"), this,
                                                       SLOT( newServiceGroup() ) ));
 
         if (currentObj->getPath(true)=="Services/Users")
-            AddObjectActions.append(popup->addAction(tr("New User Service"), this,
+            AddObjectActions.append(popup_menu->addAction(tr("New User Service"), this,
                                                      SLOT(newUserService() )));
 
         if (currentObj->getPath(true)=="Time")
-            AddObjectActions.append(popup->addAction( tr("New Time Interval"), this,
+            AddObjectActions.append(popup_menu->addAction( tr("New Time Interval"), this,
                                                       SLOT( newInterval() ) ));
 
-        popup->addSeparator();
-        popup->addAction( tr("Find"), this, SLOT( findObject()));
+        popup_menu->addSeparator();
+        popup_menu->addAction( tr("Find"), this, SLOT( findObject()));
 
-        popup->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
+        popup_menu->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
     } else
     {
-        popup->addAction( tr("Group"), this, SLOT( groupObjects() ) );
+        popup_menu->addAction( tr("Group"), this, SLOT( groupObjects() ) );
     }
 
     if (Firewall::cast(currentObj)!=NULL ||
         (ObjectGroup::cast(currentObj)!=NULL &&
          currentObj->getName()=="Firewalls"))
     {
-        popup->addSeparator();
-        popup->addAction( tr("Compile"), this, SLOT( compile()));
-        popup->addAction( tr("Install"), this, SLOT( install()));
+        popup_menu->addSeparator();
+        popup_menu->addAction( tr("Compile"), this, SLOT( compile()));
+        popup_menu->addAction( tr("Install"), this, SLOT( install()));
 
         if (Firewall::cast(currentObj)!=NULL)
         {
@@ -1403,7 +1405,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             {
                 string transfer = os_res->getTransferAgent();
                 if (!transfer.empty())
-                    popup->addAction( tr("Transfer"), this, SLOT(transferfw()));
+                    popup_menu->addAction( tr("Transfer"), this, SLOT(transferfw()));
             }
         }
 
@@ -1424,16 +1426,16 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 }
             }
             if (have_transfer_support)
-                popup->addAction( tr("Transfer"), this, SLOT(transferfw()));
+                popup_menu->addAction( tr("Transfer"), this, SLOT(transferfw()));
         }
-//        popup->addSeparator();
-//        popup->addAction( tr("Simulate install"), this, SLOT( simulateInstall()));
+//        popup_menu->addSeparator();
+//        popup_menu->addAction( tr("Simulate install"), this, SLOT( simulateInstall()));
     }
 
-    popup->addSeparator();
-    QAction* lcID=popup->addAction( tr("Lock"), this,
+    popup_menu->addSeparator();
+    QAction* lcID=popup_menu->addAction( tr("Lock"), this,
                        SLOT( lockObject() ) );
-    QAction* unlcID=popup->addAction( tr("Unlock"), this,
+    QAction* unlcID=popup_menu->addAction( tr("Unlock"), this,
                        SLOT( unlockObject() ) );
     lcID->setEnabled(getCurrentObjectTree()->isLockable());
     unlcID->setEnabled(getCurrentObjectTree()->isUnlockable());
@@ -1441,8 +1443,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (fwbdebug)
     {
 /* keep this for debugging  */
-        popup->addSeparator();
-        popup->addAction( tr("dump"), this, SLOT( dumpObj()));
+        popup_menu->addSeparator();
+        popup_menu->addAction( tr("dump"), this, SLOT( dumpObj()));
     }
 
     if (getCurrentObjectTree()->getNumSelected()==1)
@@ -1477,7 +1479,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
 //    if (inDeletedObjects) movID->setText( tr("Undelete...") );
 
-    popup->exec( objTreeView->mapToGlobal( pos ) );
+    popup_menu->exec( objTreeView->mapToGlobal( pos ) );
 }
 
 void ObjectManipulator::getMenuState(bool haveMoveTargets,

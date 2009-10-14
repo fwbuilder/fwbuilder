@@ -48,7 +48,6 @@
 class ObjectTreeView;
 class ObjectTreeViewItem;
 class QComboBox;
-class QMenu;
 class QPixmap;
 
 class ProjectPanel;
@@ -91,7 +90,9 @@ class ObjectManipulator : public QWidget
     int treeHeight;
 
     bool active;
-    
+
+    QMenu *popup_menu;
+
 /* this is a reverse idex of all objects in all trees. We use it to
  * quickly locate given object in the tree and open it
  */

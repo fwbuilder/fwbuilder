@@ -106,7 +106,7 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
               this, SLOT(compileCurrentRule()));
 
     addAction(compileRuleAction );
-
+    popup_menu = new QMenu(this);
 }
 
 RuleSetView::~RuleSetView()
@@ -261,9 +261,21 @@ void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
 
 }
 
+/*
+ * Why using persistent QMenu object for the popup menu:
+ *
+ * If user hits Cmd-Q on Mac while popup menu is open, we get a
+ * crash. The problem is that when close event propagates and
+ * eventually closes the popup menu, RuleSetView::showContextMenu()
+ * tries to delete QMenu object and we get the following error and
+ * crash: "QObject: Do not delete object, 'qt_scrollarea_viewport',
+ * during its event handler!". Instead of making sure we do not delete
+ * the object in some circumstances, or find a way to delete it
+ * safely, it is much easier to just avoid having to delete it at all.
+ */
 void RuleSetView::showContextMenu(const QPoint& pos)
 {
-    QMenu* menu = new QMenu(this);
+    popup_menu->clear();
 
     const QModelIndex index = indexAt ( pos);
     if (index.isValid())
@@ -273,29 +285,29 @@ void RuleSetView::showContextMenu(const QPoint& pos)
 
         if (node->type == RuleNode::Group)
         {
-            addGroupMenuItemsToContextMenu(menu);
+            addGroupMenuItemsToContextMenu(popup_menu);
         }
         else
         {
             if (column < 1)
             {
-                addRowMenuItemsToContextMenu(menu, node);
+                addRowMenuItemsToContextMenu(popup_menu, node);
             }
             else
             {
-                addColumnRelatedMenu(menu, index, node, pos);
+                addColumnRelatedMenu(popup_menu, index, node, pos);
             }
 
-            addCommonRowItemsToContextMenu(menu);
+            addCommonRowItemsToContextMenu(popup_menu);
         }
     }
     else
     {
-        addGenericMenuItemsToContextMenu(menu);
+        addGenericMenuItemsToContextMenu(popup_menu);
     }
 
-    menu->exec(mapToGlobal(pos));
-    delete menu;
+    popup_menu->exec(mapToGlobal(pos));
+//    delete menu;
 }
 
 void RuleSetView::addCommonRowItemsToContextMenu(QMenu *menu) const

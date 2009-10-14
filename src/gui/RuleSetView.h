@@ -27,6 +27,7 @@
 #define RULESETVIEW_H
 
 #include <QtGui/QTreeView>
+
 #include "fwbuilder/Rule.h"
 #include "ColDesc.h"
 
@@ -206,6 +207,7 @@ private:
     //but not when he just clicks selected record
     bool startingDrag;
     QAction *compileRuleAction;
+    QMenu *popup_menu;
 
     libfwbuilder::FWObject *getObject(const QPoint &pos, const QModelIndex &index);
     libfwbuilder::FWObject *getObject(int number, const QModelIndex &index);

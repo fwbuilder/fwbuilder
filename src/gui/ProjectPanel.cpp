@@ -56,6 +56,7 @@
 #include <QTimer>
 #include <QStatusBar>
 #include <QFileInfo>
+#include <QApplication>
 
 #include <iostream>
 
@@ -913,8 +914,7 @@ void ProjectPanel::hideEvent(QHideEvent *ev)
 void ProjectPanel::closeEvent(QCloseEvent * ev)
 {   
     if (fwbdebug)
-        qDebug() << "ProjectPanel::closeEvent title="
-                 << getPageTitle();
+        qDebug() << "ProjectPanel::closeEvent title=" << getPageTitle();
 
     // Can't just call fileClose() because I need to ignore event in
     // case user clicks Cancel in dialog if some data has not been
