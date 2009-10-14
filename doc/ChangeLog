@@ -1,3 +1,17 @@
+2009-10-14  vadim  <vadim@vk.crocodile.org>
+
+	* src/res/configlets/linux24/conntrack: Implemented support for
+	conntrack performance tuning parameters and tcp window tracking
+	option. Parameters CONNTRACK_MAX and HASHSIZE are described at
+	http://www.wallfire.org/misc/netfilter_conntrack_perf.txt.  The
+	conntrack_tcp_be_liberal option is described at
+	http://conntrack-tools.netfilter.org/manual.html . Parameters can
+	be set in the host OS dialog for Linux (added new tab
+	"conntrack").  Commands that will be added to the generated script
+	come from the new configlet "conntrack". Commands are different
+	for iptables versions <1.4.0 and >=1.4.0. User can customize the
+	commands by substituting the configlet if necessary. Fixes #198, #511.
+
 2009-10-13  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipf.cpp (SplitDirectionIpfilter::processNext):

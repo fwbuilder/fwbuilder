@@ -1,0 +1,13 @@
+## -*- mode: shell-script; -*- 
+
+{{if iptables_version_lt_1_4}}
+{{if if_conntrack_max}}echo {{$conntrack_max}} > /proc/sys/net/ipv4/netfilter/ip_conntrack_max{{endif}}
+{{if if_conntrack_hashsize}}echo {{$conntrack_hashsize}} > /sys/module/ip_conntrack/parameters/hashsize{{endif}}
+{{if if_conntrack_tcp_be_liberal}}echo {{$conntrack_tcp_be_liberal}} > /proc/sys/net/ipv4/netfilter/ip_conntrack_tcp_be_liberal {{endif}}
+{{endif}}
+
+{{if iptables_version_ge_1_4}}
+{{if if_conntrack_max}}echo {{$conntrack_max}} > /proc/sys/net/netfilter/nf_conntrack_max {{endif}}
+{{if if_conntrack_hashsize}}echo {{$conntrack_hashsize}} > /sys/module/nf_conntrack/parameters/hashsize{{endif}}
+{{if if_conntrack_tcp_be_liberal}}echo {{$conntrack_tcp_be_liberal}} > /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal {{endif}}
+{{endif}}

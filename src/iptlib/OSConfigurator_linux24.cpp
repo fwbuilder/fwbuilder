@@ -39,6 +39,7 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/MultiAddress.h"
 #include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
 
 #include "Configlet.h"
 
@@ -85,9 +86,8 @@ string OSConfigurator_linux24::getInterfaceVarName(FWObject *iface, bool v6)
 }
 
 void OSConfigurator_linux24::setConfigletMacroForOptionStr(
-    FWOptions *opt, Configlet *c, const char *option_name)
+    const string &s, Configlet *c, const char *option_name)
 {
-    const string s = opt->getStr(option_name);
     // "" means no change, do not include the command in the script
     if (!s.empty())
     {
@@ -101,9 +101,8 @@ void OSConfigurator_linux24::setConfigletMacroForOptionStr(
 }
 
 void OSConfigurator_linux24::setConfigletMacroForOptionInt(
-    FWOptions *opt, Configlet *c, const char *option_name)
+    int val, Configlet *c, const char *option_name)
 {
-    int val = opt->getInt(option_name);
     // -1 means no change, do not include the command in the script
     if (val >= 0)
     {
@@ -124,25 +123,56 @@ void OSConfigurator_linux24::processFirewallOptions()
 
     FWOptions* options = fw->getOptionsObject();
 
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_ip_dynaddr");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_rp_filter");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_accept_source_route");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_accept_redirects");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_log_martians");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_icmp_echo_ignore_broadcasts");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_icmp_echo_ignore_all");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_icmp_ignore_bogus_error_responses");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_tcp_window_scaling");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_tcp_sack");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_tcp_fack");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_tcp_syncookies");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_tcp_ecn");
-    setConfigletMacroForOptionStr(options, &kernel_vars, "linux24_tcp_timestamps");
+    setConfigletMacroForOptionStr(options->getStr("linux24_ip_dynaddr"), &kernel_vars, "linux24_ip_dynaddr");
+    setConfigletMacroForOptionStr(options->getStr("linux24_rp_filter"), &kernel_vars, "linux24_rp_filter");
+    setConfigletMacroForOptionStr(options->getStr("linux24_accept_source_route"), &kernel_vars, "linux24_accept_source_route");
+    setConfigletMacroForOptionStr(options->getStr("linux24_accept_redirects"), &kernel_vars, "linux24_accept_redirects");
+    setConfigletMacroForOptionStr(options->getStr("linux24_log_martians"), &kernel_vars, "linux24_log_martians");
+    setConfigletMacroForOptionStr(options->getStr("linux24_icmp_echo_ignore_broadcasts"), &kernel_vars, "linux24_icmp_echo_ignore_broadcasts");
+    setConfigletMacroForOptionStr(options->getStr("linux24_icmp_echo_ignore_all"), &kernel_vars, "linux24_icmp_echo_ignore_all");
+    setConfigletMacroForOptionStr(options->getStr("linux24_icmp_ignore_bogus_error_responses"), &kernel_vars, "linux24_icmp_ignore_bogus_error_responses");
+    setConfigletMacroForOptionStr(options->getStr("linux24_tcp_window_scaling"), &kernel_vars, "linux24_tcp_window_scaling");
+    setConfigletMacroForOptionStr(options->getStr("linux24_tcp_sack"), &kernel_vars, "linux24_tcp_sack");
+    setConfigletMacroForOptionStr(options->getStr("linux24_tcp_fack"), &kernel_vars, "linux24_tcp_fack");
+    setConfigletMacroForOptionStr(options->getStr("linux24_tcp_syncookies"), &kernel_vars, "linux24_tcp_syncookies");
+    setConfigletMacroForOptionStr(options->getStr("linux24_tcp_ecn"), &kernel_vars, "linux24_tcp_ecn");
+    setConfigletMacroForOptionStr(options->getStr("linux24_tcp_timestamps"), &kernel_vars, "linux24_tcp_timestamps");
 
-    setConfigletMacroForOptionInt(options, &kernel_vars, "linux24_tcp_fin_timeout");
-    setConfigletMacroForOptionInt(options, &kernel_vars, "linux24_tcp_keepalive_interval");
+    int opt = options->getInt("linux24_tcp_fin_timeout");
+    setConfigletMacroForOptionInt((opt==0)?-1:opt, &kernel_vars, "linux24_tcp_fin_timeout");
+    opt = options->getInt("linux24_tcp_keepalive_interval");
+    setConfigletMacroForOptionInt((opt==0)?-1:opt, &kernel_vars, "linux24_tcp_keepalive_interval");
+
+    Configlet conntrack_vars(fw, "linux24", "conntrack");
+    conntrack_vars.removeComments();
+    conntrack_vars.collapseEmptyStrings(true);
+
+    string version = fw->getStr("version");
+    bool version_ge_1_4 = XMLTools::version_compare(version, "1.4.0") >= 0;
+    conntrack_vars.setVariable("iptables_version_ge_1_4", version_ge_1_4);
+    conntrack_vars.setVariable("iptables_version_lt_1_4", !version_ge_1_4);
+
+    // if conntrack_max and conntrack_hashsize are equal to 0, we do
+    // not add commands from the configlet (so the kernel defaults are
+    // used). Options above assume -1 is the default. Need to pass -1
+    // instead of 0 for the conntrack vars
+    opt = options->getInt("linux24_conntrack_max");
+    setConfigletMacroForOptionInt(
+        (opt==0)?-1:opt,
+        &conntrack_vars, "conntrack_max");
+    opt = options->getInt("linux24_conntrack_hashsize");
+    setConfigletMacroForOptionInt(
+        (opt==0)?-1:opt,
+        &conntrack_vars, "conntrack_hashsize");
+
+    // This option uses three-state control and assumes empty string is the default
+    setConfigletMacroForOptionStr(
+        options->getStr("linux24_conntrack_tcp_be_liberal"),
+        &conntrack_vars, "conntrack_tcp_be_liberal");
 
     output << kernel_vars.expand().toStdString();
+    output << endl;
+    output << conntrack_vars.expand().toStdString();
 }
 
 void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)

@@ -170,6 +170,17 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_path_ip6tables_restore,
                          fwopt,
                          "linux24_path_ip6tables_restore");
+
+    data.registerOption(m_dialog->conntrack_max,
+                        fwopt,
+                        "linux24_conntrack_max");
+    data.registerOption(m_dialog->conntrack_hashsize,
+                        fwopt,
+                        "linux24_conntrack_hashsize");
+    data.registerOption(m_dialog->conntrack_tcp_be_liberal,
+                        fwopt,
+                        "linux24_conntrack_tcp_be_liberal", threeStateMapping);
+
     data.loadAll();
 
     m_dialog->tabWidget->setCurrentIndex(0);

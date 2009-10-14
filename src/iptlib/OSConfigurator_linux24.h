@@ -56,10 +56,10 @@ namespace fwcompiler {
                                         bool v6=false);
 
         std::string getPathForATool(const std::string &os_variant, OSData::tools tool_name);
-        void setConfigletMacroForOptionStr(libfwbuilder::FWOptions *opt,
+        void setConfigletMacroForOptionStr(const std::string &opt,
                                            Configlet *c,
                                            const char *option_name);
-        void setConfigletMacroForOptionInt(libfwbuilder::FWOptions *opt,
+        void setConfigletMacroForOptionInt(int opt,
                                            Configlet *c,
                                            const char *option_name);
 
