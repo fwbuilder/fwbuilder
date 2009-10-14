@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
-    <height>587</height>
+    <width>609</width>
+    <height>733</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -1011,36 +1011,15 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_2" >
           <item row="0" column="0" colspan="3" >
-           <widget class="QTextEdit" name="textEdit" >
+           <widget class="QTextBrowser" name="textBrowser_2" >
             <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+             <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="minimumSize" >
-             <size>
-              <width>0</width>
-              <height>100</height>
-             </size>
-            </property>
-            <property name="maximumSize" >
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
-            </property>
             <property name="frameShape" >
              <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="verticalScrollBarPolicy" >
-             <enum>Qt::ScrollBarAsNeeded</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy" >
-             <enum>Qt::ScrollBarAsNeeded</enum>
             </property>
             <property name="html" >
              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
@@ -1054,6 +1033,9 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Explanation of these parameters can be found at &lt;a href="http://www.wallfire.org/misc/netfilter_conntrack_perf.txt">&lt;span style=" text-decoration: underline; color:#0000ff;">http://www.wallfire.org/misc/netfilter_conntrack_perf.txt&lt;/span>&lt;/a>&lt;/p>
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0000ff;">&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Set both to zero to use default values&lt;span style=" text-decoration: underline; color:#0000ff;">.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="openExternalLinks" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -1136,24 +1118,15 @@ that can be handled simultaneously by netfilter in kernel memory.</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3" >
           <item row="0" column="0" colspan="3" >
-           <widget class="QTextEdit" name="textEdit_2" >
+           <widget class="QTextBrowser" name="textBrowser" >
             <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+             <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="minimumSize" >
-             <size>
-              <width>0</width>
-              <height>100</height>
-             </size>
-            </property>
-            <property name="maximumSize" >
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
+            <property name="frameShape" >
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="html" >
              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
@@ -1166,6 +1139,9 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Explanation of this parameter can be found at&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;a href="http://conntrack-tools.netfilter.org/manual.html">&lt;span style=" text-decoration: underline; color:#0000ff;">http://conntrack-tools.netfilter.org/manual.html&lt;/span>&lt;/a>&lt;/p>
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="openExternalLinks" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
