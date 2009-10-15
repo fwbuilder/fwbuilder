@@ -535,7 +535,8 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
                  << "subtree=" << subtree;
 
     QTreeWidgetItem *itm = allItems[obj];
-    assert(itm!=NULL);
+    if (itm==NULL) return;
+
     QString old_itm_text = itm->text(0);
 
     itm->setText( 0, obj->getName().c_str() );
