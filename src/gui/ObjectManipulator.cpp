@@ -2491,26 +2491,28 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
     bool firstAction = true ;
 
     if (fwbdebug)
-        qDebug("ObjectManipulator::delObj  delete obj %p %s openobj=%d",
-               obj,obj->getName().c_str(),openobj);
+        qDebug() << "ObjectManipulator::delObj"
+                 << "obj=" << obj
+                 << "name=" << obj->getName().c_str()
+                 << "openobj=" << openobj;
 
-    FWObject *obj_library = obj->getLibrary();
+    FWObject *object_library = obj->getLibrary();
     FWObject *parent = obj->getParent();
-    FWObject *delObjLib = m_project->db()->findInIndex(
+    FWObject *deleted_objects_lib = m_project->db()->findInIndex(
         FWObjectDatabase::DELETED_OBJECTS_ID );
 
-    if (obj_library->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
-        obj_library->getId() == FWObjectDatabase::TEMPLATE_LIB_ID)
+    if (object_library->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
+        object_library->getId() == FWObjectDatabase::TEMPLATE_LIB_ID)
         return;
 
     if (obj->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
         obj->getId() == FWObjectDatabase::DELETED_OBJECTS_ID) return;
     
-    bool islib  = Library::isA(obj);
-//        bool isintf = (Interface::isA(obj) && Firewall::isA(parent));
-    bool isfw   = Firewall::isA(obj);
-    bool isDelObj = (delObjLib!=NULL && obj->isChildOf(delObjLib));
-   
+    bool is_library = Library::isA(obj);
+    bool is_firewall = Firewall::cast(obj) != NULL; // includes Cluster too
+    bool is_deleted_object = (deleted_objects_lib!=NULL && obj->isChildOf(deleted_objects_lib));
+    bool ruleset_visible = is_firewall && m_project->getCurrentRuleSet()->isChildOf(obj);
+
     mw->findObjectWidget->reset();
 
     QCoreApplication::postEvent(
@@ -2519,8 +2521,11 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
     try
     {    
         if (fwbdebug)
-            qDebug("ObjectManipulator::delObj  delete islib=%d isfw=%d "
-                   "isDelObj=%d", islib, isfw, isDelObj);
+            qDebug() << "ObjectManipulator::delObj"
+                     << "is_library=" << is_library
+                     << "is_firewall= " << is_firewall
+                     << "ruleset_visible=" << ruleset_visible
+                     << "is_deleted_object="<< is_deleted_object;
     
         /*
          * TODO: we have to remove not only the object, but also all
@@ -2532,7 +2537,7 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
         /* remove from our internal tables before it is removed from the
          * object tree so we could use obj->getId()
          */
-        if (islib && !isDelObj)
+        if (is_library && !is_deleted_object)
         {
             int idx = getIdxForLib(obj);
             QTreeWidget *otv = idxToTrees[idx];
@@ -2544,7 +2549,7 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
 
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
     
-        if (islib && obj->isReadOnly()) obj->setReadOnly(false);
+        if (is_library && obj->isReadOnly()) obj->setReadOnly(false);
         if (obj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID) // special case
         {
             if (fwbdebug)
@@ -2558,7 +2563,7 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
                        "recursively deleting object from the tree");
             m_project->db()->recursivelyRemoveObjFromTree(obj,
                                                           false);
-            if (islib)
+            if (is_library)
                 parent = m_project->db()->getFirstByType(
                     Library::TYPENAME);
         }
@@ -2570,32 +2575,15 @@ void ObjectManipulator::delObj(FWObject *obj, bool openobj)
 
         //m_project->scheduleRuleSetRedraw();
     
-        if (!isDelObj)
+        if (!is_deleted_object)
         {
-            if (allItems[delObjLib]!=NULL)
-                insertSubtree( allItems[delObjLib], obj );
+            if (allItems[deleted_objects_lib]!=NULL)
+                insertSubtree( allItems[deleted_objects_lib], obj );
         } else
             FWObjectClipboard::obj_clipboard->clear();
     
-        if (openobj)
-        {
-            if (isfw && !isDelObj)
-            {
-                std::list<Firewall*> fwlist;
-                findAllFirewalls(fwlist);
-                if (fwlist.size()>0)
-                {
-                    FWObject *first_fw = fwlist.front();
-                    if (first_fw!=NULL)
-                    {
-                        openObject( first_fw );
-                    }
-                }
-                //QTimer::singleShot( 0, m_project, SLOT(reopenFirewall()) );
-            } else {
-                openObject(parent);
-            }
-        }
+        if (ruleset_visible) m_project->closeRuleSetPanel();
+        if (openobj) openObject(parent);
     }
     catch(FWException &ex)
     {

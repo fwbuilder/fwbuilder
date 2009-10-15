@@ -215,6 +215,7 @@ public:
     void resetFD();
     
     void clearFirewallTabs();
+    void closeRuleSetPanel();
     void ensureObjectVisibleInRules(libfwbuilder::FWReference *obj);
     
     libfwbuilder::FWObject* getVisibleFirewall() { return visibleFirewall; }

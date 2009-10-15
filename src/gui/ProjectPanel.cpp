@@ -198,7 +198,7 @@ void ProjectPanel::clearObjects()
 
 void ProjectPanel::clearFirewallTabs()
 {
-    if (fwbdebug) qDebug("ProjectPanel::clearFirewallTabs");
+    if (fwbdebug) qDebug() << "ProjectPanel::clearFirewallTabs";
 
     m_panel->ruleSets->hide();
 
@@ -214,9 +214,16 @@ void ProjectPanel::clearFirewallTabs()
     ruleSetViews.clear();
 }
 
+void ProjectPanel::closeRuleSetPanel()
+{
+    if (fwbdebug) qDebug() << "ProjectPanel::closeRuleSetPanel";
+    clearFirewallTabs();
+    visibleRuleSet = NULL;
+}
+
 void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
 {
-    if (fwbdebug) qDebug("ProjectPanel::ensureObjectVisibleInRules");
+    if (fwbdebug) qDebug() << "ProjectPanel::ensureObjectVisibleInRules";
     FWObject *p=obj;
     while (p && RuleSet::cast(p)==NULL ) p=p->getParent();
     if (p==NULL) return;  // something is broken
@@ -265,10 +272,6 @@ void ProjectPanel::reopenFirewall()
 
     changingTabs = true;
 
-    QStatusBar *sb = mainW->statusBar();
-    sb->showMessage( tr("Building policy view...") );
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-
     clearFirewallTabs();
 
     last_modified = db()->getTimeLastModified();
@@ -293,8 +296,6 @@ void ProjectPanel::reopenFirewall()
     
     m_panel->ruleSets->addWidget(RuleSetView::getRuleSetViewByType(this, visibleRuleSet,NULL));
 
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
-
     last_modified = db()->getTimeLastModified();
     if (fwbdebug)
         qDebug("ProjectPanel::reopenFirewall(): checkpoint 5: "
@@ -305,8 +306,6 @@ void ProjectPanel::reopenFirewall()
     rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
     rv->restoreCurrentRowColumn(memento);
     
-    sb->clearMessage();
-
     changingTabs = false;
     mainW->setEnabledAfterRF();
 
