@@ -6085,7 +6085,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3E853CBE" host_OS="freebsd" inactive="False" lastCompiled="1244147946" lastInstalled="0" lastModified="1200415214" platform="pf" version="" name="firewall9" comment="testing rules with broadcasts" ro="False">
+      <Firewall id="id3E853CBE" host_OS="freebsd" inactive="False" lastCompiled="1255644798" lastInstalled="0" lastModified="1255644788" platform="pf" version="" name="firewall9" comment="testing rules with broadcasts" ro="False">
         <NAT id="id3E853CBF" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3E853EF8" disabled="True" position="0" comment="">
             <OSrc neg="False">
@@ -6257,8 +6257,13 @@
           <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="freebsd_ip_forward"></Option>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
+          <Option name="freebsd_ipv6_forward"></Option>
           <Option name="freebsd_path_ipf"></Option>
           <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_pfctl">/usr/local/bin/pfctl</Option>
           <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
