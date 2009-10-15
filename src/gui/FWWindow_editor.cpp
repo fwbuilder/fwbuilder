@@ -109,7 +109,10 @@ void FWWindow::openEditor(FWObject *obj)
 
     QString title_txt;
     QPixmap title_icon;
-    buildEditorTitleAndIcon(obj, ObjectEditor::optNone, &title_txt, &title_icon);
+    buildEditorTitleAndIcon(
+        obj, ObjectEditor::optNone,
+        &title_txt, &title_icon,
+        m_mainWindow->m_space->subWindowList(QMdiArea::StackingOrder).size() > 1);
 
     QSize old_size = m_mainWindow->objectEditorStack->size();
     m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
@@ -134,7 +137,10 @@ void FWWindow::openOptEditor(FWObject *obj, ObjectEditor::OptType t)
 
     QString title_txt;
     QPixmap title_icon;
-    buildEditorTitleAndIcon(obj, t, &title_txt, &title_icon);
+    buildEditorTitleAndIcon(
+        obj, t,
+        &title_txt, &title_icon,
+        m_mainWindow->m_space->subWindowList(QMdiArea::StackingOrder).size() > 1);
 
     QSize old_size = m_mainWindow->objectEditorStack->size();
     m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
@@ -150,7 +156,8 @@ void FWWindow::openOptEditor(FWObject *obj, ObjectEditor::OptType t)
 void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
                                        ObjectEditor::OptType t,
                                        QString *title_txt,
-                                       QPixmap *pm)
+                                       QPixmap *pm,
+                                       bool include_file_name)
 {
     QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
         QMdiArea::StackingOrder);
@@ -174,20 +181,22 @@ void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
         o = o->getParent();
     }
 
-    if (subwindows.size() > 1)
-        editor_title.push_front(top_pp->getFileName());
+    if (include_file_name) editor_title.push_front(top_pp->getFileName());
 
-    *title_txt = editor_title.join(" / ");
+    *title_txt = QString("/ ") + editor_title.join(" / ");
 
-    FWObject *obj_for_icon = obj;
-    if (ruleset) obj_for_icon = ruleset;
-    if (rule && PolicyRule::isA(rule) && t == ObjectEditor::optAction)
+    if (pm)
     {
-        QString icn = ":/Icons/" ;
-        icn += PolicyRule::cast(rule)->getActionAsString().c_str();
-        LoadPixmap(icn, *pm);  // in utils.cpp
-    } else
-        FWBTree().setObjectIcon(obj_for_icon, pm, false);
+        FWObject *obj_for_icon = obj;
+        if (ruleset) obj_for_icon = ruleset;
+        if (rule && PolicyRule::isA(rule) && t == ObjectEditor::optAction)
+        {
+            QString icn = ":/Icons/" ;
+            icn += PolicyRule::cast(rule)->getActionAsString().c_str();
+            LoadPixmap(icn, *pm);  // in utils.cpp
+        } else
+            FWBTree().setObjectIcon(obj_for_icon, pm, false);
+    }
 }
 
 void FWWindow::blankEditor()

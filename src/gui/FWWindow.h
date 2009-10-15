@@ -112,10 +112,6 @@ class FWWindow : public QMainWindow {
     ProjectPanel *newProjectPanel();
     void showSub(ProjectPanel *projectW);
     void attachEditorToProjectPanel(ProjectPanel *pp);
-    void buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
-                                 ObjectEditor::OptType t,
-                                 QString *title_txt,
-                                 QPixmap *pm);
     
 public:
     QVector <QString> windowsTitles;
@@ -368,6 +364,11 @@ public slots:
 
     void singleRuleCompile(libfwbuilder::Rule *rule);
 
+    void buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
+                                 ObjectEditor::OptType t,
+                                 QString *title_txt,
+                                 QPixmap *pm,
+                                 bool include_file_name);
     
  protected:
 

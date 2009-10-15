@@ -328,13 +328,10 @@ int  ProjectPanel::findFirewallInList(FWObject *f)
 void ProjectPanel::updateFirewallName()
 {
     if (visibleRuleSet==NULL) return ;
-
-    QString name = "<B>";
-    FWObject * p = visibleRuleSet->getParent();
-    name += QString::fromUtf8(p->getName().c_str());
-    name += " / ";
-    name += QString::fromUtf8(visibleRuleSet->getName().c_str());
-    name += "</B>";
+    QString name;
+    mw->buildEditorTitleAndIcon(visibleRuleSet, ObjectEditor::optNone,
+                                &name, NULL, false);
+    name = "<b>" + name  + "</b>";
     m_panel->rulesetname->setText(name );
 }
 
