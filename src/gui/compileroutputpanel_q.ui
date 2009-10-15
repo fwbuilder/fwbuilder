@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
-    <height>222</height>
+    <width>740</width>
+    <height>262</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -21,8 +21,11 @@
    </property>
    <item row="0" column="0" >
     <widget class="QTextEdit" name="compiler_output_panel" >
+     <property name="readOnly" >
+      <bool>true</bool>
+     </property>
      <property name="textInteractionFlags" >
-      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+      <set>Qt::TextSelectableByMouse</set>
      </property>
     </widget>
    </item>

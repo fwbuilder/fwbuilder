@@ -47,47 +47,7 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/FWObject.h"
 
-/*
-#include <qaction.h>
-#include <qlistwidget.h>
-#include <qmessagebox.h>
-#include <qapplication.h>
-#include <qfileinfo.h>
-#include <qfile.h>
-#include <qfiledialog.h>
-#include <qpixmap.h>
-#include <qpixmapcache.h>
-#include <qheaderview.h>
-#include <qtabwidget.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qtextedit.h>
-#include <qstringlist.h>
-#include <qmenu.h>
-#include <qtoolbutton.h>
-
-#include <qlayout.h>
-#include <qapplication.h>
-#include <qcursor.h>
-#include <qsplitter.h>
-#include <qtimer.h>
-#include <qstatusbar.h>
-#include <qlabel.h>
-#include <qradiobutton.h>
-#include <qprinter.h>
-#include <qstackedwidget.h>
-#include <qlistwidget.h>
-#include <qeventloop.h>
-#include <qtextstream.h>
-#include <QCloseEvent>
-#include <QShowEvent>
-#include <QList>
-#include <QHideEvent>
-#include <QMdiArea>
-#include <QMdiSubWindow>
-#include <QSignalMapper>
-#include <QUrl>
-*/
+#include <QtDebug>
 
 /*
  *  Methods in this module are just wrappers and call the same method
@@ -256,9 +216,30 @@ int  FWWindow::findFirewallInList(FWObject *f)
     return -1;
 }
 
+/*
+ * There is a problem with using QTextBrowser widget or QTextEdit in
+ * read-only mode in that QT for some reason disables Ctrl-C and other
+ * basic copy/paste keyboard shortcuts when these widgets are
+ * read-only. When user hits Ctrl-C when one of such widgets is
+ * active, the program tries to copy object instead of expected effect
+ * of copying text from the QTextEdit.
+ */
 void FWWindow::editCopy()
 {
-    if (activeProject()) activeProject()->editCopy();
+    QWidget *w = QApplication::focusWidget();
+    if (fwbdebug)
+        qDebug() << "FWWindow::editCopy" << w;
+
+    if (w->inherits("QTextEdit"))
+    {
+        dynamic_cast<QTextEdit*>(w)->copy();
+        return;
+    }
+
+    if (activeProject())
+    {
+        activeProject()->editCopy();
+    }
 }
 
 void FWWindow::editCut()
