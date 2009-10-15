@@ -833,9 +833,41 @@ void FWObject::removeAllInstances(FWObject *rm)
     _removeAll(rm);
 
     if (!deletedObject) _moveToDeletedObjects(rm);
+}
+
+void FWObject::removeRef(FWObject *obj)
+{
+    int  obj_id=obj->getId();
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    {
+        FWObject *o=*m;
+        FWReference *oref = FWReference::cast(o);
+        if (oref && oref->getPointerId()==obj_id)
+        {
+            // do not delete object even if this reference was the last one (?)
+            obj->unref();  
+            // remove will delete o because reference counter goes to zero
+            FWObject::remove(o); 
+            return;
+        }
+    }
+}
+
+void FWObject::_removeAllRef(FWObject *rm)
+{
+    // Do not delete references to the same object from its children
+    // such as references to the firewall or cluster in its own rules
+    if (this == rm || this->isChildOf(rm)) return;
+
+    for (FWObject::iterator i=begin(); i!=end(); i++)
+        (*i)->_removeAllRef(rm);
     
-//    if(!rm->ref_counter) 
-//        delete rm;
+    removeRef(rm);
+}
+
+void FWObject::removeAllReferences(FWObject *rm)
+{
+    _removeAllRef(rm);
 }
 
 void FWObject::findAllReferences(const FWObject *obj, std::set<FWReference*> &res)
@@ -861,38 +893,6 @@ set<FWReference*> FWObject::findAllReferences(const FWObject *obj)
     set<FWReference*> res;
     findAllReferences(obj, res);
     return res;
-}
-
-void FWObject::removeRef(FWObject *obj)
-{
-    int  obj_id=obj->getId();
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
-    {
-        FWObject *o=*m;
-        FWReference *oref = FWReference::cast(o);
-        if (oref && oref->getPointerId()==obj_id)
-        {
-            // do not delete object even if this reference was the last one (?)
-            obj->unref();  
-            // remove will delete o because reference counter goes to zero
-            FWObject::remove(o); 
-            return;
-        }
-    }
-}
-
-void FWObject::_removeAllRef(FWObject *rm)
-{
-    for (FWObject::iterator i=begin(); i!=end(); i++)
-        (*i)->_removeAllRef(rm);
-    
-    removeRef(rm);
-}
-
-void FWObject::removeAllReferences(FWObject *rm)
-{
-    _removeAllRef(rm);
-//    std::for_each(begin(), end(), RemoveReference(obj) );
 }
 
 bool FWObject::validateChild(FWObject *obj)
