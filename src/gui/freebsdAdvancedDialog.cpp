@@ -91,6 +91,8 @@ freebsdAdvancedDialog::freebsdAdvancedDialog(QWidget *parent,FWObject *o)
                         fwopt,"freebsd_path_sysctl");
     data.registerOption(m_dialog->freebsd_path_ipf,
                         fwopt, "freebsd_path_ipf");
+    data.registerOption(m_dialog->freebsd_path_ipfw,
+                        fwopt, "freebsd_path_ipfw");
     data.registerOption(m_dialog->freebsd_path_pfctl,
                         fwopt, "freebsd_path_pfctl");
 
