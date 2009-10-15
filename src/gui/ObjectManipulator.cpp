@@ -1963,16 +1963,17 @@ void ObjectManipulator::pasteObj()
         qDebug() << "Target object: " << target_object->getPath().c_str();
     }
 
-// If we copy many objects in the following loop, and some of them are
-// groups that refer other objects in the same batch, then it is
-// possible that an object would be copied by
-// FWObjectDatabase::recursivelyCopySubtree() by the way of a
-// reference from a group, and then the same object is found in the
-// list of objects to be copied AGAIN. Since this object is already
-// present in the target object tree by the time it needs to be copied
-// again, actuallyPasteTo() chooses the path for copying of objects
-// inside the same tree and creates a copy.  To avoid this, prepare a
-// list of objects to be copied before copy operation starts.
+    // If we copy many objects in the following loop, and some of them
+    // are groups that refer other objects in the same batch, then it
+    // is possible that an object would be copied by
+    // FWObjectDatabase::recursivelyCopySubtree() by the way of a
+    // reference from a group, and then the same object is found in
+    // the list of objects to be copied AGAIN. Since this object is
+    // already present in the target object tree by the time it needs
+    // to be copied again, actuallyPasteTo() chooses the path for
+    // copying of objects inside the same tree and creates a copy.  To
+    // avoid this, prepare a list of objects to be copied before copy
+    // operation starts.
 
     list<FWObject*> copy_objects;
 
@@ -2013,7 +2014,6 @@ void ObjectManipulator::pasteObj()
 
     if (need_to_reload) loadObjects();
     openObject(last_object);
-
 }
 
 bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
@@ -2109,8 +2109,15 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
     FWObject *ta = prepareForInsertion(target, obj);
     if (ta == NULL) return NULL;
 
-    qDebug() << "ObjectManipulator::actuallyPasteTo"
-             << "Target object: " << target->getPath().c_str();
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::actuallyPasteTo"
+                 << "target=" << target->getPath().c_str()
+                 << "ta=" << ta->getPath().c_str();
+
+    // What if the target is currently opened in the editor and has unsaved
+    // changes ? 
+    if (mw->isEditorVisible() && mw->getOpenedEditor()==ta && !mw->validateAndSaveEditor())
+        return NULL;
 
     try
     {
@@ -2176,6 +2183,19 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
             insertSubtree( allItems[ta], nobj);
             res = nobj;
         }
+        QCoreApplication::postEvent(
+            mw, new updateObjectInTreeEvent(m_project->getFileName(),
+                                            ta->getId()));
+        // What if the target is currently opened in the editor? Need
+        // to reload
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::actuallyPasteTo"
+                     << "mw->isEditorVisible()=" << mw->isEditorVisible()
+                     << "mw->getOpenedEditor()=" << mw->getOpenedEditor()->getPath().c_str();
+
+        if (mw->isEditorVisible() && mw->getOpenedEditor()==ta)
+            editObject(ta);
+        
     }
     catch(FWException &ex)
     {
@@ -2222,7 +2242,6 @@ void ObjectManipulator::relocateTo(FWObject *target, FWObject *obj)
 
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(m_project->getFileName(), ta->getId()));
-
 }
 
 void ObjectManipulator::lockObject()
@@ -2246,7 +2265,9 @@ void ObjectManipulator::lockObject()
             lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
         {
             obj->setReadOnly(true);
-            updateObjectInTree(obj, false);
+            QCoreApplication::postEvent(
+                mw, new updateObjectInTreeEvent(m_project->getFileName(),
+                                                obj->getId()));
         }
     }
     getCurrentObjectTree()->setLockFlags();
@@ -2276,13 +2297,12 @@ void ObjectManipulator::unlockObject()
             lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
         {
             obj->setReadOnly(false);
-            updateObjectInTree(obj, false);
+            QCoreApplication::postEvent(
+                mw, new updateObjectInTreeEvent(m_project->getFileName(),
+                                                obj->getId()));
         }
     }
     getCurrentObjectTree()->setLockFlags();
-
-    //QCoreApplication::postEvent(
-    //    mw, new dataModifiedEvent(m_project->getFileName(), 0));
 }
 
 /*
@@ -2720,24 +2740,17 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
     }
     if (!mw->isEditorVisible()) return false;
 
-    if (!mw->requestEditorOwnership(
-            this, obj, ObjectEditor::optNone, true))
+    if (!mw->requestEditorOwnership(this, obj, ObjectEditor::optNone, true))
     {
         if (fwbdebug) qDebug("Can not get editor panel ownership");
         return false;
     }
 
-    if (fwbdebug) qDebug("Calling select");
-    
-    if (obj != mw->getOpenedEditor())
-    {
-        if (fwbdebug) qDebug("Open object in editor");
-        mw->openEditor(obj);
-        currentObj = obj;
-        active = true;
-        openObject(obj);  // position the tree so that obj is visible
-        if (fwbdebug) qDebug("Done");
-    }
+    if (fwbdebug) qDebug("Open object in editor");
+    mw->openEditor(obj); // opens object in the editor
+    currentObj = obj;
+    active = true;
+    openObject(obj);  // position the tree so that obj is visible
 
     if (fwbdebug) qDebug("ObjectManipulator::switchObjectInEditor done");
     
@@ -3269,7 +3282,6 @@ void ObjectManipulator::newClusterIface()
     // from ProjectPanel::event when we process updateObjectInTree event
     //updateObjectInTree(o);
     openObject(o);
-
     editObject(o);
 }
 

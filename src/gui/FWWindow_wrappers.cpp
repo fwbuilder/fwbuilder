@@ -469,12 +469,6 @@ void FWWindow::moveObject(const QString &targetLibName, FWObject *obj)
     }
 }
 
-FWObject* FWWindow::pasteTo(FWObject *target, FWObject *obj)
-{
-    if (activeProject()) return activeProject()->pasteTo(target, obj);
-    return 0;
-}
-
 void FWWindow::delObj(FWObject *obj,bool openobj)
 {
     if (activeProject())
