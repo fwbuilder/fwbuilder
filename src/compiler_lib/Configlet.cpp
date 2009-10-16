@@ -75,6 +75,11 @@ Configlet::Configlet(FWObject *fw, const std::string &default_prefix,
     comment_str = "##";
     collapse_empty_strings = false;
     if (!reload(os_family, file_name)) reload(default_prefix, file_name);
+    if (code.size() == 0)
+        qCritical() << "Could not open configlet file"
+                    << os_family.c_str() << "/" << file_name
+                    << "or"
+                    << default_prefix.c_str() << "/" << file_name;
 }
 
 Configlet::~Configlet()
@@ -89,10 +94,8 @@ bool Configlet::reload(const std::string &_prefix, const QString &file_name)
 
     file_path = getConfigletPath(file_name);
 
-    if (!QFile(file_path).exists())
-    {
-        qCritical() << "Configlet file" << file_path << "does not exist";
-    } else
+    if (!QFile(file_path).exists())  return false;
+    else
     {
         QFile file(file_path);
         if (file.open(QFile::ReadOnly))
@@ -104,9 +107,6 @@ bool Configlet::reload(const std::string &_prefix, const QString &file_name)
                 code.push_back(line);
             } while (!ts.atEnd());
             return true;
-        } else
-        {
-            qCritical() << "Can not open configlet file" << file_path;
         }
     }
     return false;
