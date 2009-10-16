@@ -36,6 +36,7 @@
 #include <qmessagebox.h>
 #include <qdialog.h>
 #include <QCoreApplication>
+#include <QtDebug>
 
 #include <algorithm>
 #include <iostream>
@@ -59,6 +60,7 @@ ClusterGroupDialog::ClusterGroupDialog(QWidget *parent)
     m_dialog = new Ui::ClusterGroupDialog_q;
     m_dialog->setupUi(this);
     obj = NULL;
+    reload = false;
 }
 
 void ClusterGroupDialog::loadFWObject(FWObject *o)
@@ -248,6 +250,8 @@ void ClusterGroupDialog::addIcon(FWObject *o, bool master)
 
 void ClusterGroupDialog::changed()
 {
+    if (fwbdebug)
+        qDebug() << "ClusterGroupDialog::changed()";
     if (!reload) BaseObjectDialog::changed();
 }
 
