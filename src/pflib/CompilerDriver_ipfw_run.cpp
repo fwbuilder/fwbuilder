@@ -85,7 +85,7 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-QString CompilerDriver_ipfw::assembleManifest(Firewall* fw)
+QString CompilerDriver_ipfw::assembleManifest(Firewall* fw, bool )
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
@@ -98,17 +98,18 @@ QString CompilerDriver_ipfw::assembleManifest(Firewall* fw)
     return script_buffer;
 }
 
-QString CompilerDriver_ipfw::printActivationCommands(Firewall *fw)
+QString CompilerDriver_ipfw::printActivationCommands(Firewall*)
 {
     return activation_commands.join("\n");
 }
 
-QString CompilerDriver_ipfw::assembleFwScript(Firewall* fw, OSConfigurator *oscnf)
+QString CompilerDriver_ipfw::assembleFwScript(Firewall* fw, bool cluster_member, OSConfigurator *oscnf)
 {
     Configlet script_skeleton(fw, "bsd", "ipfw_script_skeleton");
     Configlet top_comment(fw, "bsd", "top_comment");
 
-    assembleFwScriptInternal(fw, oscnf, &script_skeleton, &top_comment);
+    assembleFwScriptInternal(
+        fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
     return script_skeleton.expand();
 }
 
@@ -306,143 +307,7 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
 /*
  * assemble the script and then perhaps post-process it if needed
  */
-    QString script_buffer = assembleFwScript(fw, oscnf.get());
-
-
-/*********************************************************************/
-#if OLD_SCHOOL
-/*
- * now write generated scripts to files
- */
-
-
-    char          *timestr;
-    time_t         tm;
-    struct tm     *stm;
-
-    tm=time(NULL);
-    stm=localtime(&tm);
-    timestr=strdup(ctime(&tm));
-    timestr[ strlen(timestr)-1 ]='\0';
-    
-#ifdef _WIN32
-    char* user_name=getenv("USERNAME");
-#else
-    struct passwd *pwd=getpwuid(getuid());
-    assert(pwd);
-    char *user_name=pwd->pw_name;
-#endif
-    if (user_name==NULL)
-    {
-        user_name=getenv("LOGNAME");
-        if (user_name==NULL)
-            abort("Can't figure out your user name");
-
-    }
-
-    QString script_buffer;
-    QTextStream script(&script_buffer, QIODevice::WriteOnly);
-
-    script << "#!/bin/sh " << shell_dbg << endl << endl;
-
-    script << "#\n\
-#  This is automatically generated file. DO NOT MODIFY !\n\
-#\n\
-#  Firewall Builder  fwb_ipfw v" << VERSION << "-" << BUILD_NUM << " \n\
-#\n\
-#  Generated " << timestr << " " << tzname[stm->tm_isdst] << " by " 
-            << user_name << "\n#\n";
-
-    script << MANIFEST_MARKER << "* " << QFileInfo(fw_file_name).fileName();
-    string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << remote_name;
-    script << "\n";
-    script << "#" << endl;
-    script << "#" << endl;
-
-    string fwcomment=fw->getComment();
-    string::size_type n1,n2;
-    n1=n2=0;
-    while ( (n2=fwcomment.find("\n",n1))!=string::npos )
-    {
-        script << "#  " << fwcomment.substr(n1,n2-n1) << endl;
-        n1=n2+1;
-    }
-    script << "#  " << fwcomment.substr(n1) << endl;
-    script << "#\n#\n#\n";
-
-    script << prepend("# ", all_errors.join("\n")).toStdString() << endl;
-
-    script << "cd " << firewall_dir << " || exit 1" << endl << endl;
-
-    script << endl;
-    script << "#" << endl;
-    script << "# Prolog script" << endl;
-    script << "#" << endl;
-
-    string pre_hook= fw->getOptionsObject()->getStr("prolog_script");
-    script << pre_hook << endl;
-
-    script << "#" << endl;
-    script << "# End of prolog script" << endl;
-    script << "#" << endl;
-
-    script << oscnf->getCompiledScript();
-
-    script << endl;
-
-    script << "log '";
-    script << "Activating firewall script generated "
-            << timestr << " " << " by "
-            << user_name;
-    script << "'" << endl;
-
-    script << endl;
-
-
-
-/* commented out since we now use sets
-   script << "\"$IPFW\" -f -q flush" << endl;
-*/
-    script << endl;
-
-#if NO_IPV6
-    if (have_ipfw)
-    {
-        if (c.haveErrorsAndWarnings())
-        {
-            script << "# Policy compiler errors and warnings:"
-                    << endl;
-            script << c.getErrors("# ");
-        }
-
-        script << c.getCompiledScript();
-    }
-#else
-    PolicyCompiler_ipfw c(objdb, fw, false, oscnf.get());
-    script << c.defaultRules();
-    script << generated_script;
-#endif
-
-    script << endl;
-    script << "#" << endl;
-    script << "# Epilog script" << endl;
-    script << "#" << endl;
-
-    string post_hook= fw->getOptionsObject()->getStr("epilog_script");
-    script << post_hook << endl;
-
-    script << endl;
-    script << "# End of epilog script" << endl;
-    script << "#" << endl;
-
-    script << "\"$IPFW\" set swap 0 1 || exit 1" << endl;
-    script << "\"$IPFW\" delete set 1" << endl;
-
-    script << endl;
-
-#endif
-
+    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
 
     info("Output file name: " + fw_file_name.toStdString());
 

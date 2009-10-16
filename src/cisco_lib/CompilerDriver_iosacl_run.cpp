@@ -86,6 +86,41 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
+
+QString CompilerDriver_iosacl::assembleManifest(Firewall* fw, bool cluster_member)
+{
+    QString script_buffer;
+    QTextStream script(&script_buffer, QIODevice::WriteOnly);
+    QString ofname = determineOutputFileName(fw, cluster_member, ".fw");
+    script << "!" << MANIFEST_MARKER << "* " << ofname << endl;
+    return script_buffer;
+}
+
+QString CompilerDriver_iosacl::printActivationCommands(Firewall*)
+{
+    return "";
+}
+
+QString CompilerDriver_iosacl::assembleFwScript(Firewall *fw,
+                                                bool cluster_member,
+                                                OSConfigurator *oscnf)
+{
+    Configlet script_skeleton(fw, "cisco", "script_skeleton");
+    Configlet top_comment(fw, "cisco", "top_comment");
+
+    script_skeleton.setVariable("system_configuration_script", system_configuration_script.c_str());
+    script_skeleton.setVariable("policy_script", policy_script.c_str());
+    script_skeleton.setVariable("nat_script", nat_script.c_str());
+    script_skeleton.setVariable("routing_script", routing_script.c_str());
+
+    FWOptions* options = fw->getOptionsObject();
+    options->setStr("prolog_script", options->getStr("iosacl_prolog_script"));
+    options->setStr("epilog_script", options->getStr("iosacl_epilog_script"));
+
+    assembleFwScriptInternal(fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
+    return script_skeleton.expand();
+}
+
 string CompilerDriver_iosacl::run(const std::string &cluster_id,
                                   const std::string &firewall_id,
                                   const std::string &single_rule_id)
@@ -141,23 +176,6 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
 
     Helper helper(NULL);
 
-    char           timestr[256];
-    time_t         tm;
-
-    tm=time(NULL);
-    strcpy(timestr,ctime(&tm));
-    timestr[ strlen(timestr)-1 ]='\0';
-    
-#ifdef _WIN32
-    char* user_name=getenv("USERNAME");
-#else
-    char* user_name=getenv("USER");
-#endif
-    if (user_name==NULL) 
-        throw FWException("Can't figure out your user name, aborting");
-
-
-
     std::auto_ptr<OSConfigurator_ios> oscnf(new OSConfigurator_ios(objdb, fw, false));
 
     oscnf->prolog();
@@ -172,10 +190,9 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
     int policy_rules_count  = 0;
 
     vector<int> ipv4_6_runs;
-    string generated_script;
 
     if (!single_rule_compile_on)
-        generated_script = safetyNetInstall(fw);
+        system_configuration_script = safetyNetInstall(fw);
 
 
     // command line options -4 and -6 control address family for which
@@ -245,26 +262,22 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
                 {
                     if (ipv6_policy)
                     {
-                        generated_script += "\n\n";
-                        generated_script += "! ================ IPv6\n";
-                        generated_script += "\n\n";
+                        policy_script += "\n\n";
+                        policy_script += "! ================ IPv6\n";
+                        policy_script += "\n\n";
                     } else
                     {
-                        generated_script += "\n\n";
-                        generated_script += "! ================ IPv4\n";
-                        generated_script += "\n\n";
+                        policy_script += "\n\n";
+                        policy_script += "! ================ IPv4\n";
+                        policy_script += "\n\n";
                     }
                 }
 
                 if (c.haveErrorsAndWarnings())
                 {
                     all_errors.push_back(c.getErrors("").c_str());
-                    // generated_script +=
-                    //     "! Policy compiler errors and warnings:";
-                    // generated_script += "\n";
-                    // generated_script +=  c.getErrors("! ");
                 }
-                generated_script +=  c.getCompiledScript();
+                policy_script +=  c.getCompiledScript();
 
             } else
                 info(" Nothing to compile in Policy");
@@ -296,13 +309,9 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
                 if (r.haveErrorsAndWarnings())
                 {
                     all_errors.push_back(r.getErrors("").c_str());
-                    // generated_script +=
-                    //     "! Routing compiler errors and warnings:";
-                    // generated_script += "\n";
-                    // generated_script += r.getErrors("! ");
                 }
 
-                generated_script += r.getCompiledScript();
+                routing_script += r.getCompiledScript();
             } else
                 info(" Nothing to compile in Routing");
         }
@@ -313,71 +322,16 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
         all_errors.push_front(getErrors("").c_str());
     }
 
+
     if (single_rule_compile_on)
     {
-        return
-            all_errors.join("\n").toStdString() + 
-            generated_script;
+        return all_errors.join("\n").toStdString() +
+            policy_script + routing_script;
     }
 
-    QString script_buffer;
-    QTextStream script(&script_buffer, QIODevice::WriteOnly);
+    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
 
-    script << "!\n\
-!  This is automatically generated file. DO NOT MODIFY !\n\
-!\n\
-!  Firewall Builder  fwb_iosacl v" << VERSION << "-" << BUILD_NUM << " \n\
-!\n\
-!  Generated " << timestr
-          << " "
-          << tzname[0]
-          << " by " 
-          << user_name;
-
-    script << endl;
-
-    script << "!" << endl;
-    script << "!" << " Compiled for " << platform << " " << fwvers << endl;
-
-    script << "!" << endl;
-    script << "!" << MANIFEST_MARKER << "* " << ofname << endl;
-    script << "!" << endl;
-
-    script << prepend("! ", all_errors.join("\n")) << endl;
-
-    script << endl;
-    script << "!" << endl;
-    script << "! Prolog script:" << endl;
-    script << "!" << endl;
-
-    string pre_hook= fw->getOptionsObject()->getStr("iosacl_prolog_script");
-    script << pre_hook << endl;
-
-    script << "!" << endl;
-    script << "! End of prolog script:" << endl;
-    script << "!" << endl;
-
-
-    script << oscnf->getCompiledScript();
-    script << endl;
-
-    script << generated_script;
-
-    script << endl;
-        
-    script << endl;
-    script << "!" << endl;
-    script << "! Epilog script:" << endl;
-    script << "!" << endl;
-
-    string post_hook= fw->getOptionsObject()->getStr("iosacl_epilog_script");
-    script << post_hook << endl;
-
-    script << endl;
-    script << "! End of epilog script:" << endl;
-    script << "!" << endl;
-
-
+    info("Output file name: " + ofname.toStdString());
 
     QFile fw_file(ofname);
     if (fw_file.open(QIODevice::WriteOnly))

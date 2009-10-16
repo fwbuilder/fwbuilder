@@ -144,7 +144,7 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     return activation_commands.join("\n");
 }
 
-QString CompilerDriver_pf::assembleManifest(Firewall* fw)
+QString CompilerDriver_pf::assembleManifest(Firewall* fw, bool )
 {
     QFileInfo fw_file_info(fw_file_name);
     QString script_buffer;
@@ -169,13 +169,14 @@ QString CompilerDriver_pf::assembleManifest(Firewall* fw)
     return script_buffer;
 }
 
-QString CompilerDriver_pf::assembleFwScript(Firewall* fw, OSConfigurator *oscnf)
+QString CompilerDriver_pf::assembleFwScript(Firewall* fw, bool cluster_member, OSConfigurator *oscnf)
 {
     FWOptions* options = fw->getOptionsObject();
     Configlet script_skeleton(fw, "bsd", "pf_script_skeleton");
     Configlet top_comment(fw, "bsd", "top_comment");
 
-    assembleFwScriptInternal(fw, oscnf, &script_skeleton, &top_comment);
+    assembleFwScriptInternal(
+        fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
 
     if (fw->getStr("platform") == "pf")
     {
@@ -557,7 +558,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
 /*
  * assemble the script and then perhaps post-process it if needed
  */
-    QString script_buffer = assembleFwScript(fw, oscnf.get());
+    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
 
     // clear() calls destructors of all elements in the container
     table_factories.clear();

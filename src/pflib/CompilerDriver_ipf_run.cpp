@@ -92,7 +92,7 @@ using namespace fwcompiler;
 QString CompilerDriver_ipf::composeActivationCommand(libfwbuilder::Firewall *fw,
                                                      bool filter,
                                                      const std::string &debug,
-                                                     const std::string &version,
+                                                     const std::string &,
                                                      const std::string &remote_file)
 {
     Configlet act(fw, "bsd", "ipf_activation");
@@ -109,7 +109,7 @@ QString CompilerDriver_ipf::composeActivationCommand(libfwbuilder::Firewall *fw,
     return act.expand();
 }
 
-QString CompilerDriver_ipf::assembleManifest(Firewall* fw)
+QString CompilerDriver_ipf::assembleManifest(Firewall* fw, bool )
 {
     FWOptions* options = fw->getOptionsObject();
     QFileInfo fw_file_info(fw_file_name);
@@ -151,12 +151,13 @@ QString CompilerDriver_ipf::assembleManifest(Firewall* fw)
     return script_buffer;
 }
 
-QString CompilerDriver_ipf::assembleFwScript(Firewall* fw, OSConfigurator *oscnf)
+QString CompilerDriver_ipf::assembleFwScript(Firewall* fw, bool cluster_member, OSConfigurator *oscnf)
 {
     Configlet script_skeleton(fw, "bsd", "ipf_script_skeleton");
     Configlet top_comment(fw, "bsd", "top_comment");
 
-    assembleFwScriptInternal(fw, oscnf, &script_skeleton, &top_comment);
+    assembleFwScriptInternal(
+        fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
     return script_skeleton.expand();
 }
 
@@ -397,7 +398,7 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
 /*
  * assemble the script and then perhaps post-process it if needed
  */
-    QString script_buffer = assembleFwScript(fw, oscnf.get());
+    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
 
 
     info("Output file name: " + fw_file_name.toStdString());

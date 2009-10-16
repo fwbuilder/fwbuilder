@@ -1,0 +1,16 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_pix v{{$version}}-{{$build}}
+!
+!  Generated {{$timestamp}} {{$tz}} by {{$user}}
+!
+! Compiled for {{$platform}} {{$fw_version}}
+! Outbound ACLs: {{$outbound_acl_supported}}
+! Emulate outbound ACLs: {{$emulate_outb_acls}}
+! Generating outbound ACLs: {{$generate_outb_acls}}
+! Assume firewall is part of any: {{$afpa}}
+!
+{{$manifest}}
+!
+{{$comment}}

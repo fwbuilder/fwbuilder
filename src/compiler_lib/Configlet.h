@@ -49,6 +49,7 @@ protected:
     bool collapse_empty_strings;
 
     QString getFullPath(const QString &rel_path);
+    QString getConfigletPath(const QString &configlet_name);
     
 public:
 
@@ -60,8 +61,6 @@ public:
     virtual ~Configlet();
 
     bool reload(const std::string &prefix, const QString &filename);
-
-    QString getConfigletPath(const QString &configlet_name);
 
     void setVariable(const QString &name, const QString &value);
     void setVariable(const QString &name, int value);

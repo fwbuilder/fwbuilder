@@ -49,10 +49,20 @@ namespace fwcompiler {
     class CompilerDriver_pix : public CompilerDriver {
    
 protected:
+        std::string system_configuration_script;
+        std::string nat_script;
+        std::string policy_script;
+        std::string routing_script;
 
         std::string safetyNetInstall(libfwbuilder::Firewall *fw);
         void printProlog(QTextStream &file, const std::string &prolog_code);
     
+        virtual QString assembleManifest(libfwbuilder::Firewall* fw, bool cluster_member);
+        virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
+        virtual QString assembleFwScript(libfwbuilder::Firewall* fw,
+                                         bool cluster_member,
+                                         OSConfigurator *ocsnf);
+
 public:
 
         CompilerDriver_pix(libfwbuilder::FWObjectDatabase *db);

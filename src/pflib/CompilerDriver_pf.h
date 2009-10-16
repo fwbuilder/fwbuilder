@@ -121,8 +121,9 @@ protected:
         virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
 
         virtual QString assembleFwScript(libfwbuilder::Firewall* fw,
+                                         bool cluster_member,
                                          OSConfigurator *ocsnf);
-        virtual QString assembleManifest(libfwbuilder::Firewall* fw);
+        virtual QString assembleManifest(libfwbuilder::Firewall* fw, bool cluster_member);
 
 public:
 

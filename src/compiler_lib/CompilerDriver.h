@@ -118,12 +118,14 @@ protected:
 
         virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
 
-        virtual QString assembleManifest(libfwbuilder::Firewall* fw);
+        virtual QString assembleManifest(libfwbuilder::Firewall* fw, bool cluster_member);
 
         virtual void assembleFwScriptInternal(libfwbuilder::Firewall* fw,
+                                              bool cluster_member,
                                               OSConfigurator *ocsnf,
                                               Configlet *script_skeleton,
-                                              Configlet *top_comment);
+                                              Configlet *top_comment,
+                                              const QString &comment_char);
         
 public:
 

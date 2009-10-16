@@ -105,6 +105,55 @@ class sort_by_net_zone {
     }
 };
 
+QString CompilerDriver_pix::assembleManifest(Firewall* fw, bool cluster_member)
+{
+    QString script_buffer;
+    QTextStream script(&script_buffer, QIODevice::WriteOnly);
+    QString ofname = determineOutputFileName(fw, cluster_member, ".fw");
+    script << "!" << MANIFEST_MARKER << "* " << ofname << endl;
+    return script_buffer;
+}
+
+QString CompilerDriver_pix::printActivationCommands(Firewall*)
+{
+    return "";
+}
+
+QString CompilerDriver_pix::assembleFwScript(Firewall* fw,
+                                             bool cluster_member,
+                                             OSConfigurator *oscnf)
+{
+    Configlet script_skeleton(fw, "cisco", "script_skeleton");
+    Configlet top_comment(fw, "cisco", "top_comment");
+
+    FWOptions* options = fw->getOptionsObject();
+    options->setStr("prolog_script", options->getStr("pix_prolog_script"));
+    options->setStr("epilog_script", options->getStr("pix_epilog_script"));
+
+    string vers = fw->getStr("version");
+    string platform = fw->getStr("platform");
+    bool outbound_acl_supported = Resources::platform_res[platform]->getResourceBool(
+        string("/FWBuilderResources/Target/options/")+
+        "version_"+vers+
+        "/pix_outbound_acl_supported");
+    bool afpa = options->getBool("pix_assume_fw_part_of_any");
+    bool emulate_outb_acls = options->getBool("pix_emulate_out_acl");
+    bool generate_outb_acls = options->getBool("pix_generate_out_acl");
+
+    top_comment.setVariable("outbound_acl_supported", QString((outbound_acl_supported)?"supported":"not supported"));
+    top_comment.setVariable("emulate_outb_acls", QString((emulate_outb_acls)?"yes":"no"));
+    top_comment.setVariable("generate_outb_acls", QString((generate_outb_acls)?"yes":"no"));
+    top_comment.setVariable("afpa", QString((afpa)?"yes":"no"));
+
+    script_skeleton.setVariable("system_configuration_script", system_configuration_script.c_str());
+    script_skeleton.setVariable("policy_script", policy_script.c_str());
+    script_skeleton.setVariable("nat_script", nat_script.c_str());
+    script_skeleton.setVariable("routing_script", routing_script.c_str());
+
+    assembleFwScriptInternal(fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
+    return script_skeleton.expand();
+}
+
 string CompilerDriver_pix::run(const std::string &cluster_id,
                                const std::string &firewall_id,
                                const std::string &single_rule_id)
@@ -301,20 +350,6 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
  std::sort(fw->begin(), fw->end(), sort_by_net_zone() );
 */
 
-    char           timestr[256];
-    time_t         tm;
-
-    tm=time(NULL);
-    strcpy(timestr,ctime(&tm));
-    timestr[ strlen(timestr)-1 ]='\0';
-    
-#ifdef _WIN32
-    char* user_name=getenv("USERNAME");
-#else
-    char* user_name=getenv("USER");
-#endif
-    if (user_name==NULL) 
-        abort("Can't figure out your user name");
 
     std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
     prep->compile();
@@ -405,43 +440,45 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
         all_errors.push_front(getErrors("").c_str());
     }
 
+    system_configuration_script = oscnf->getCompiledScript();
+    policy_script = c->getCompiledScript();
+    nat_script = n->getCompiledScript();
+    routing_script = r->getCompiledScript();
+
+    if (c->haveErrorsAndWarnings())
+        all_errors.push_back(c->getErrors("C ").c_str());
+    if (n->haveErrorsAndWarnings())
+        all_errors.push_back(n->getErrors("N ").c_str());
+    if (r->haveErrorsAndWarnings())
+        all_errors.push_back(r->getErrors("R ").c_str());
+
+
     if (single_rule_compile_on)
     {
-        ostringstream ostr;
-        if (c->haveErrorsAndWarnings())
-        {
-            all_errors.push_back(c->getErrors("").c_str());
-            // ostr << "! Policy compiler errors and warnings:"
-            //      << endl;
-            // ostr << c->getErrors("! ");
-        }
-        ostr << c->getCompiledScript();
-
-        if (n->haveErrorsAndWarnings())
-        {
-            all_errors.push_back(n->getErrors("").c_str());
-            // ostr << "! NAT compiler errors and warnings:"
-            //      << endl;
-            // ostr << n->getErrors("! ");
-        }
-        ostr << n->getCompiledScript();
-
-        if (r->haveErrorsAndWarnings())
-        {
-            all_errors.push_back(r->getErrors("").c_str());
-            // ostr << "! Routing compiler errors and warnings:"
-            //      << endl;
-            // ostr << r->getErrors("! ");
-        }
-        ostr << r->getCompiledScript();
-
-        return
-            all_errors.join("\n").toStdString() + 
-            ostr.str();
+        return all_errors.join("\n").toStdString() +
+            policy_script + nat_script + routing_script;
     }
 
 
 
+    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
+
+#ifdef OLD_SCHOOL
+
+    char           timestr[256];
+    time_t         tm;
+
+    tm=time(NULL);
+    strcpy(timestr,ctime(&tm));
+    timestr[ strlen(timestr)-1 ]='\0';
+    
+#ifdef _WIN32
+    char* user_name=getenv("USERNAME");
+#else
+    char* user_name=getenv("USER");
+#endif
+    if (user_name==NULL) 
+        abort("Can't figure out your user name");
 
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
@@ -566,6 +603,10 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     script << endl;
     script << "! End of epilog script:" << endl;
     script << "!" << endl;
+
+#endif
+
+    info("Output file name: " + ofname.toStdString());
 
     QFile fw_file(ofname);
     if (fw_file.open(QIODevice::WriteOnly))

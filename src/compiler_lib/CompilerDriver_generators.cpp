@@ -68,15 +68,17 @@ QString CompilerDriver::printActivationCommands(Firewall*)
     return "";
 }
 
-QString CompilerDriver::assembleManifest(Firewall*)
+QString CompilerDriver::assembleManifest(Firewall*, bool)
 {
     return "";
 }
 
 void CompilerDriver::assembleFwScriptInternal(Firewall* fw,
+                                              bool cluster_member,
                                               OSConfigurator *oscnf,
                                               Configlet *script_skeleton,
-                                              Configlet *top_comment)
+                                              Configlet *top_comment,
+                                              const QString &comment_char)
 {
     FWOptions* options = fw->getOptionsObject();
     string platform = fw->getStr("platform");
@@ -134,17 +136,17 @@ void CompilerDriver::assembleFwScriptInternal(Firewall* fw,
 
     QFileInfo fw_file_info(fw_file_name);
 
-    top_comment->setVariable("manifest", assembleManifest(fw));
+    top_comment->setVariable("manifest", assembleManifest(fw, cluster_member));
     top_comment->setVariable("platform", platform.c_str());
     top_comment->setVariable("fw_version", fw_version.c_str());
-    top_comment->setVariable("comment", prepend("# ", fw->getComment().c_str()));
+    top_comment->setVariable("comment", prepend(comment_char + " ", fw->getComment().c_str()));
 
     script_skeleton->setVariable("have_nat", have_nat);
     script_skeleton->setVariable("have_filter", have_filter);
 
     script_skeleton->setVariable("top_comment", top_comment->expand());
     script_skeleton->setVariable("errors_and_warnings",
-                                prepend("# ", all_errors.join("\n")));
+                                prepend(comment_char + " ", all_errors.join("\n")));
     script_skeleton->setVariable("tools", printPathForAllTools(fw, family));
 
     script_skeleton->setVariable("timestamp", timestr);

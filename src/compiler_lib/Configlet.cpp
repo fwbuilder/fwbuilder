@@ -34,6 +34,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QFile>
+#include <QtDebug>
 
 #include <iostream>
 
@@ -86,15 +87,15 @@ bool Configlet::reload(const std::string &_prefix, const QString &file_name)
 
     code.clear();
 
-    if (QDir::isAbsolutePath(file_name))
-        file_path = file_name;
-    else
-        file_path = getConfigletPath(file_name);
+    file_path = getConfigletPath(file_name);
 
-    if (!file_path.isEmpty())
+    if (!QFile(file_path).exists())
+    {
+        qCritical() << "Configlet file" << file_path << "does not exist";
+    } else
     {
         QFile file(file_path);
-        if (file.exists() && file.open(QFile::ReadOnly))
+        if (file.open(QFile::ReadOnly))
         {
             QTextStream ts(&file);
             do
@@ -103,6 +104,9 @@ bool Configlet::reload(const std::string &_prefix, const QString &file_name)
                 code.push_back(line);
             } while (!ts.atEnd());
             return true;
+        } else
+        {
+            qCritical() << "Can not open configlet file" << file_path;
         }
     }
     return false;
@@ -118,6 +122,8 @@ QString Configlet::getFullPath(const QString &path)
 
 QString Configlet::getConfigletPath(const QString &configlet_name)
 {
+    if (QDir::isAbsolutePath(configlet_name)) return configlet_name;
+
     QString home = QDir::homePath();
     QString file_path;
 
@@ -125,8 +131,7 @@ QString Configlet::getConfigletPath(const QString &configlet_name)
     if (QFile(file_path).exists()) return file_path;
 
     file_path = getFullPath(prefix + "/" + configlet_name);
-    if (QFile(file_path).exists()) return file_path;
-    return "";
+    return file_path;
 }
 
 // ************************************************************************

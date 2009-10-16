@@ -1,0 +1,31 @@
+## -*- mode: shell-script; -*- 
+##
+## Double '##' comments are removed when configlet is processed.
+## Single '#' comments stay.
+{{$top_comment}}
+
+{{$errors_and_warnings}}
+
+!
+! Prolog script:
+!
+{{$prolog_script}}
+!
+! End of prolog script:
+!
+
+{{$system_configuration_script}}
+
+{{$policy_script}}
+
+{{$nat_script}}
+
+{{$routing_script}}
+
+!
+! Epilog script:
+!
+{{$epilog_script}}
+! End of epilog script:
+!
+
