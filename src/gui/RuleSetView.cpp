@@ -218,7 +218,7 @@ int RuleSetView::getColByType(ColDesc::ColumnType type) const
 
 void RuleSetView::mousePressEvent( QMouseEvent* ev )
 {
-    //if (fwbdebug) qDebug() << "RuleSetView::mousePressEvent";
+    if (fwbdebug) qDebug() << "RuleSetView::mousePressEvent";
 
     //TODO: provide custom implementation of QTreeView::mousePressEvent( ev ); for column != 0
     QTreeView::mousePressEvent( ev );
@@ -239,7 +239,10 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
         startingDrag = (fwosm->index.row()==index.row() &&
                         fwosm->index.column()==index.column() &&
                         fwosm->selectedObject==object);
+    } else {
+        fwosm->setSelected(NULL, index);
     }
+
 }
 
 void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
@@ -709,6 +712,7 @@ void RuleSetView::editSelected()
 
 bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
 {
+//    qDebug() << "RuleSetView::switchObjectInEditor";
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return false;
 
@@ -2194,12 +2198,11 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         if (re==NULL)
         {
             fwosm->setSelected(NULL, newIndex);
+            setCurrentIndex(newIndex);
             if (mw->isEditorVisible() && !switchObjectInEditor(newIndex))
             {
                 ev->accept();
             }
-            selectObject(md->getFirewall(), newIndex);
-
             return;
         }
 
@@ -2226,9 +2229,14 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         {
             object=re->front();
             if (FWReference::cast(object)!=NULL) object=FWReference::cast(object)->getPointer();
-            if (mw->isEditorVisible() && !switchObjectInEditor(newIndex)) ev->accept();
+            selectObject(object, newIndex);
         }
-        selectObject(object == NULL ? md->getFirewall() : object, newIndex);
+        else
+        {
+            fwosm->setSelected(NULL, newIndex);
+            setCurrentIndex(newIndex);
+        }
+        if (mw->isEditorVisible() && !switchObjectInEditor(newIndex)) ev->accept();
         return;
     }
 
@@ -2244,6 +2252,14 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
             // Non-object column. Just move focus up or down;
             QTreeView::keyPressEvent(ev);
             newIndex = md->index(currentIndex().row(), oldIndex.column(), currentIndex().parent());
+            if (!md->isGroup(newIndex)) 
+            {
+                setCurrentIndex(newIndex);
+                fwosm->setSelected(NULL, newIndex);
+                if (mw->isEditorVisible()) switchObjectInEditor(newIndex);
+                ev->accept();
+            }
+            return;
         }
         else
         {
@@ -2297,7 +2313,14 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                     }
                     else
                     {
-                        // It's a group
+                        if (!md->isGroup(newIndex))
+                        {
+                            setCurrentIndex(newIndex);
+                            fwosm->setSelected(NULL, newIndex);
+                            if (mw->isEditorVisible()) switchObjectInEditor(newIndex);
+                            ev->accept();
+                            return;
+                        }
                         object = md->getFirewall();
                     }
 
