@@ -533,8 +533,9 @@ void ObjectEditor::notifyChangesApplied()
 {
     applyButton->setEnabled(false);
     // send event so other project panels can reload themselves
+
     QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(opened->getRoot()->getFileName().c_str(),
+        mw, new dataModifiedEvent(QString::fromUtf8(opened->getRoot()->getFileName().c_str()),
                                   opened->getId()));
 }
 

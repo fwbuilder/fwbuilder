@@ -540,7 +540,7 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
 
     QString old_itm_text = itm->text(0);
 
-    itm->setText( 0, obj->getName().c_str() );
+    itm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
     itm->setText( 1, getTreeLabel(obj) );
 
     getCurrentObjectTree()->updateTreeIcons();
@@ -742,7 +742,7 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
         FWObject *fw = parent;
         while (fw && Firewall::cast(fw)==NULL) fw = fw->getParent();
         assert(fw);
-        QString obj_name = obj->getName().c_str();
+        QString obj_name = QString::fromUtf8(obj->getName().c_str());
 
         Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
         string os_family = fw->getStr("host_OS");
@@ -765,7 +765,7 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
             if (base_name != "vlan")
             {
                 QString new_name("%1.%2");
-                obj->setName(new_name.arg(parent->getName().c_str()).arg(vlan_id).toStdString());
+                obj->setName(new_name.arg(QString::fromUtf8(parent->getName().c_str())).arg(vlan_id).toStdString());
                 //QTreeWidgetItem *itm1 = allItems[obj];
                 //if (itm1!=NULL) updateObjectInTree(obj);
             }
@@ -946,7 +946,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
 
     itm1->setFlags(itm1->flags() | Qt::ItemIsDragEnabled);
 
-    itm1->setText( 0, lib->getName().c_str() );
+    itm1->setText( 0, QString::fromUtf8(lib->getName().c_str()) );
     itm1->setText( 1, getTreeLabel(lib) );
 
     QPixmap pm;
@@ -1047,7 +1047,7 @@ void ObjectManipulator::makeNameUnique(FWObject *target, FWObject *obj)
         // follow this assumption too. Also, check for names "vlanNNN"
         // as well.
         //
-        QString obj_name = obj->getName().c_str();
+        QString obj_name = QString::fromUtf8(obj->getName().c_str());
         FWObject *fw = target;
         while (fw && !Firewall::cast(fw)) fw = fw->getParent();
 
