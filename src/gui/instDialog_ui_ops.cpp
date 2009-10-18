@@ -583,9 +583,14 @@ void instDialog::addToLog(const QString &line)
         while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
             txt.chop(1);
 
+        if (format == error_format || format == warning_format )
+            format.setAnchorHref(txt);
+
         QTextCursor cursor = currentLog->textCursor();
         cursor.insertBlock();
         cursor.insertText(txt, format);
+
+        //m_dialog->procLogDisplayList->addItem(txt);
 
         currentLog->ensureCursorVisible();
 
@@ -1092,3 +1097,9 @@ bool instDialog::verifyManagementAddress()
     return true;
 }
 
+void instDialog::logItemClicked(QUrl data)
+{
+    QStringList parts = data.toString().split(':');
+    if (parts[0] == 'Error') return;
+    emit activateRule(parts[0], parts[1], parts[2].toInt());
+}

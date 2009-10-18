@@ -125,7 +125,7 @@ class instDialog : public QDialog, public FakeWizard
     bool showSelectedFlag;
     bool finished;
 
-    QTextEdit *currentLog;
+    QTextBrowser *currentLog;
     QTextCharFormat normal_format;
     QTextCharFormat error_format;
     QTextCharFormat warning_format;
@@ -255,6 +255,11 @@ public slots:
 
     void tableItemChanged(QTreeWidgetItem * item, int column);
     void findFirewallInCompileLog(QTreeWidgetItem* item);
+
+    void logItemClicked(QUrl);
+
+signals:
+    void activateRule(QString, QString, int);
 };
 
 

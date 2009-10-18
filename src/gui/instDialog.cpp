@@ -129,12 +129,16 @@ instDialog::instDialog(QWidget* p,
     normal_format = cursor.charFormat();
     error_format = normal_format;
     error_format.setForeground(QBrush(Qt::red));
+    error_format.setAnchorHref("http://somewhere.com");
+    error_format.setAnchor(true);
     // weight must be between 0 and 99. Qt 4.4.1 does not seem to mind if
     // it is >99 (just caps it) but older versions assert
     error_format.setProperty(QTextFormat::FontWeight, 99);
     warning_format = normal_format;
     warning_format.setForeground(QBrush(Qt::blue));
     warning_format.setProperty(QTextFormat::FontWeight, 99);
+    warning_format.setAnchor(true);
+    warning_format.setAnchorHref("http://somewhere.com");
     highlight_format = normal_format;
     highlight_format.setProperty(QTextFormat::FontWeight, 99);
 
