@@ -131,7 +131,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 
     m_dialog->sshPath->setText( st->getSSHPath() );
     m_dialog->scpPath->setText( st->getSCPPath() );
-   
+
+    m_dialog->showTips->setChecked(st->getBool("UI/NoStartTip"));
 
 // set label icons colors and text strings using user's settings
 
@@ -476,6 +477,7 @@ void PrefsDialog::accept()
     mw->showDeletedObjects(st->getBool("UI/ShowDeletedObjects"));
     mw->updateTreeFont();
 //    app->setFont(st->getTreeFont());
+    st->setBool("UI/NoStartTip", m_dialog->showTips->isChecked());
     QDialog::accept();
 }
 
