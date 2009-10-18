@@ -330,7 +330,7 @@ void ObjectManipulator::insertObjectInTree(FWObject *parent, FWObject *obj)
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {
-    qDebug() << "ObjectManipulator::insertObject";
+    if (fwbdebug) qDebug() << "ObjectManipulator::insertObject";
     if (FWReference::cast(obj)!=NULL) return NULL;
     if (Resources::global_res->getObjResourceBool(obj,"hidden") ) return NULL;
 
