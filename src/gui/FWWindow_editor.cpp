@@ -175,7 +175,7 @@ void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
             rule = Rule::cast(o);
             editor_title.push_front(QString("rule #%1").arg(rule->getPosition()));
         } else
-            editor_title.push_front(o->getName().c_str());
+            editor_title.push_front(QString::fromUtf8(o->getName().c_str()));
         if (Library::cast(o)) break;
         if (RuleSet::cast(o)) ruleset = o;
         o = o->getParent();

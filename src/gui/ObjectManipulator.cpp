@@ -330,6 +330,7 @@ void ObjectManipulator::insertObjectInTree(FWObject *parent, FWObject *obj)
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {
+    qDebug() << "ObjectManipulator::insertObject";
     if (FWReference::cast(obj)!=NULL) return NULL;
     if (Resources::global_res->getObjResourceBool(obj,"hidden") ) return NULL;
 
@@ -342,7 +343,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     nitm = new ObjectTreeViewItem( itm );
 
     nitm->setLib("");
-    nitm->setText( 0, obj->getName().c_str() );
+    nitm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
     nitm->setText( 1, getTreeLabel(obj) );
 
     QPixmap pm;
