@@ -1100,6 +1100,6 @@ bool instDialog::verifyManagementAddress()
 void instDialog::logItemClicked(QUrl data)
 {
     QStringList parts = data.toString().split(':');
-    if (parts[0] == 'Error') return;
+    if (parts[0] == "Error") return;
     emit activateRule(parts[0], parts[1], parts[2].toInt());
 }
