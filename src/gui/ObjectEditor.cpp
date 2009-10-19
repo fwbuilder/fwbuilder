@@ -106,7 +106,7 @@ using namespace libfwbuilder;
 
 ObjectEditor::ObjectEditor( QWidget *parent):
     QObject(parent), opened(0), current_dialog_idx(-1), current_dialog_name(""),
-    parentWidget(dynamic_cast<QStackedWidget*>(parent)),
+    editorStack(dynamic_cast<QStackedWidget*>(parent)),
     applyButton(0),
     helpButton(0),
     m_project(0),
@@ -124,53 +124,55 @@ ObjectEditor::ObjectEditor( QWidget *parent):
      *   - add grid layout to the stack page, set all margins to 0
      * - Add call to registerObjectDialog() here using name "w_FooDialog"
      */
-    registerObjectDialog(parentWidget, Firewall::TYPENAME, "w_FirewallDialog");
-    registerObjectDialog(parentWidget, Interface::TYPENAME, "w_InterfaceDialog");
-    registerObjectDialog(parentWidget, UserService::TYPENAME, "w_UserDialog");
-    registerObjectDialog(parentWidget, Policy::TYPENAME, "w_PolicyDialog");
-    registerObjectDialog(parentWidget, NAT::TYPENAME, "w_NATDialog");
-    registerObjectDialog(parentWidget, Routing::TYPENAME, "w_RoutingDialog");
+    registerObjectDialog(editorStack, Firewall::TYPENAME, "w_FirewallDialog");
+    registerObjectDialog(editorStack, Interface::TYPENAME, "w_InterfaceDialog");
+    registerObjectDialog(editorStack, UserService::TYPENAME, "w_UserDialog");
+    registerObjectDialog(editorStack, Policy::TYPENAME, "w_PolicyDialog");
+    registerObjectDialog(editorStack, NAT::TYPENAME, "w_NATDialog");
+    registerObjectDialog(editorStack, Routing::TYPENAME, "w_RoutingDialog");
 
-    registerObjectDialog(parentWidget, Library::TYPENAME, "w_LibraryDialog");
-    registerObjectDialog(parentWidget, IPv4::TYPENAME, "w_IPv4Dialog");
-    registerObjectDialog(parentWidget, IPv6::TYPENAME, "w_IPv6Dialog");
-    registerObjectDialog(parentWidget, physAddress::TYPENAME, "w_PhysicalAddressDialog");
-    registerObjectDialog(parentWidget, AddressRange::TYPENAME, "w_AddressRangeDialog");
-    registerObjectDialog(parentWidget, Cluster::TYPENAME, "w_ClusterDialog");
-    registerObjectDialog(parentWidget, FailoverClusterGroup::TYPENAME,
+    registerObjectDialog(editorStack, Library::TYPENAME, "w_LibraryDialog");
+    registerObjectDialog(editorStack, IPv4::TYPENAME, "w_IPv4Dialog");
+    registerObjectDialog(editorStack, IPv6::TYPENAME, "w_IPv6Dialog");
+    registerObjectDialog(editorStack, physAddress::TYPENAME, "w_PhysicalAddressDialog");
+    registerObjectDialog(editorStack, AddressRange::TYPENAME, "w_AddressRangeDialog");
+    registerObjectDialog(editorStack, Cluster::TYPENAME, "w_ClusterDialog");
+    registerObjectDialog(editorStack, FailoverClusterGroup::TYPENAME,
                          "w_FailoverClusterGroupDialog");
-    registerObjectDialog(parentWidget, StateSyncClusterGroup::TYPENAME,
+    registerObjectDialog(editorStack, StateSyncClusterGroup::TYPENAME,
                          "w_StateSyncClusterGroupDialog");
-    registerObjectDialog(parentWidget, Host::TYPENAME, "w_HostDialog");
-    registerObjectDialog(parentWidget, Network::TYPENAME, "w_NetworkDialog");
-    registerObjectDialog(parentWidget, NetworkIPv6::TYPENAME, "w_NetworkDialogIPv6");
-    registerObjectDialog(parentWidget, CustomService::TYPENAME, "w_CustomServiceDialog");
-    registerObjectDialog(parentWidget, IPService::TYPENAME, "w_IPServiceDialog");
-    registerObjectDialog(parentWidget, ICMPService::TYPENAME, "w_ICMPServiceDialog");
-    registerObjectDialog(parentWidget, ICMP6Service::TYPENAME, "w_ICMP6ServiceDialog");
-    registerObjectDialog(parentWidget, TCPService::TYPENAME, "w_TCPServiceDialog");
-    registerObjectDialog(parentWidget, UDPService::TYPENAME, "w_UDPServiceDialog");
-    registerObjectDialog(parentWidget, TagService::TYPENAME, "w_TagServiceDialog");
-    registerObjectDialog(parentWidget, ServiceGroup::TYPENAME, "w_ServiceGroupDialog");
-    registerObjectDialog(parentWidget, ObjectGroup::TYPENAME, "w_ObjectGroupDialog");
-    registerObjectDialog(parentWidget, IntervalGroup::TYPENAME, "w_IntervalGroupDialog");
-    registerObjectDialog(parentWidget, Interval::TYPENAME, "w_TimeDialog");
+    registerObjectDialog(editorStack, Host::TYPENAME, "w_HostDialog");
+    registerObjectDialog(editorStack, Network::TYPENAME, "w_NetworkDialog");
+    registerObjectDialog(editorStack, NetworkIPv6::TYPENAME, "w_NetworkDialogIPv6");
+    registerObjectDialog(editorStack, CustomService::TYPENAME, "w_CustomServiceDialog");
+    registerObjectDialog(editorStack, IPService::TYPENAME, "w_IPServiceDialog");
+    registerObjectDialog(editorStack, ICMPService::TYPENAME, "w_ICMPServiceDialog");
+    registerObjectDialog(editorStack, ICMP6Service::TYPENAME, "w_ICMP6ServiceDialog");
+    registerObjectDialog(editorStack, TCPService::TYPENAME, "w_TCPServiceDialog");
+    registerObjectDialog(editorStack, UDPService::TYPENAME, "w_UDPServiceDialog");
+    registerObjectDialog(editorStack, TagService::TYPENAME, "w_TagServiceDialog");
+    registerObjectDialog(editorStack, ServiceGroup::TYPENAME, "w_ServiceGroupDialog");
+    registerObjectDialog(editorStack, ObjectGroup::TYPENAME, "w_ObjectGroupDialog");
+    registerObjectDialog(editorStack, IntervalGroup::TYPENAME, "w_IntervalGroupDialog");
+    registerObjectDialog(editorStack, Interval::TYPENAME, "w_TimeDialog");
 
-    registerObjectDialog(parentWidget, RoutingRule::TYPENAME, "w_RoutingRuleOptionsDialog");
-    registerObjectDialog(parentWidget, PolicyRule::TYPENAME, "w_RuleOptionsDialog");
-    registerObjectDialog(parentWidget, NATRule::TYPENAME, "w_NATRuleOptionsDialog");
+    registerObjectDialog(editorStack, RoutingRule::TYPENAME, "w_RoutingRuleOptionsDialog");
+    registerObjectDialog(editorStack, PolicyRule::TYPENAME, "w_RuleOptionsDialog");
+    registerObjectDialog(editorStack, NATRule::TYPENAME, "w_NATRuleOptionsDialog");
 
-    registerObjectDialog(parentWidget, AddressTable::TYPENAME, "w_AddressTableDialog");
-    registerObjectDialog(parentWidget, DNSName::TYPENAME, "w_DNSNameDialog");
+    registerObjectDialog(editorStack, AddressTable::TYPENAME, "w_AddressTableDialog");
+    registerObjectDialog(editorStack, DNSName::TYPENAME, "w_DNSNameDialog");
 
-    registerOptDialog(parentWidget, optAction, "w_ActionsDialog");
-    registerOptDialog(parentWidget, optComment, "w_CommentEditorPanel");
-    registerOptDialog(parentWidget, optMetric, "w_MetricEditorPanel");
-    registerOptDialog(parentWidget, optRuleCompile, "w_CompilerOutputPanel");
+    registerOptDialog(editorStack, optAction, "w_ActionsDialog");
+    registerOptDialog(editorStack, optComment, "w_CommentEditorPanel");
+    registerOptDialog(editorStack, optMetric, "w_MetricEditorPanel");
+    registerOptDialog(editorStack, optRuleCompile, "w_CompilerOutputPanel");
 
-    BaseObjectDialog *w = new BaseObjectDialog(parent);
-    stackIds["BLANK"]  = parentWidget->addWidget(w);
-    dialogs[stackIds["BLANK"]] = w;
+    registerObjectDialog(editorStack, "BLANK", "w_BlankDialog");
+
+    // BaseObjectDialog *w = new BaseObjectDialog(parent);
+    // stackIds["BLANK"]  = editorStack->addWidget(w);
+    // dialogs[stackIds["BLANK"]] = w;
 }
 
 void ObjectEditor::registerObjectDialog(QStackedWidget *stack,
@@ -262,7 +264,7 @@ void ObjectEditor::hide()
 
 bool ObjectEditor::isVisible()
 {
-    return (parentWidget->isVisible());
+    return (editorStack->isVisible());
 }
 
 bool ObjectEditor::isModified()
@@ -275,20 +277,14 @@ QString ObjectEditor::getOptDialogName(OptType t)
     return QString("OptionDialog_%1").arg(t);
 }
 
-void ObjectEditor::openOpt(FWObject *obj, OptType t)
+void ObjectEditor::activateDialog(const QString &dialog_name,
+                                  FWObject *obj, enum OptType opt)
 {
-    if (fwbdebug) 
-        qDebug() << "ObjectEditor::openOpt obj=" << obj
-                 << QString((obj)?obj->getName().c_str():"")
-                 << QString((obj)?obj->getTypeName().c_str():"")
-                 << "t=" << t;
-
-    if (Rule::cast(obj)==NULL) return;
-
     disconnectSignals();
 
-    current_dialog_name = getOptDialogName(t);
+    current_dialog_name = dialog_name;
     current_dialog_idx = stackIds[current_dialog_name];
+    editorStack->setCurrentIndex(current_dialog_idx);
 
     show();
 
@@ -326,16 +322,14 @@ void ObjectEditor::openOpt(FWObject *obj, OptType t)
 
     emit loadObject_sign(obj);
     findAndLoadHelp();
-
-    opened = obj;
-    openedOpt = t;
     applyButton->setEnabled(false);
 
+    opened = obj;
+    openedOpt = opt;
 }
 
 void ObjectEditor::open(FWObject *obj)
 {
-    openedOpt = optNone;
     if (stackIds.count(obj->getTypeName().c_str())!=0)
     {
         if (fwbdebug) 
@@ -343,51 +337,26 @@ void ObjectEditor::open(FWObject *obj)
                      << QString((obj)?obj->getName().c_str():"")
                      << QString((obj)?obj->getTypeName().c_str():"");
 
-        disconnectSignals();
+        activateDialog(obj->getTypeName().c_str(), obj, optNone);
+    } else
+        blank();
+}
 
-        current_dialog_name = obj->getTypeName().c_str();
-        current_dialog_idx = stackIds[current_dialog_name];
+void ObjectEditor::openOpt(FWObject *obj, OptType t)
+{
+    if (stackIds.count(getOptDialogName(t))!=0)
+    {
+        if (fwbdebug) 
+            qDebug() << "ObjectEditor::openOpt obj=" << obj
+                     << QString((obj)?obj->getName().c_str():"")
+                     << QString((obj)?obj->getTypeName().c_str():"")
+                     << "t=" << t;
 
-        show();
+        if (Rule::cast(obj)==NULL) return;
 
-        connect(this, SIGNAL(loadObject_sign(libfwbuilder::FWObject*)),
-                dialogs[ current_dialog_idx ],
-                SLOT(loadFWObject(libfwbuilder::FWObject*)));
-
-        connect(this, SIGNAL(validate_sign(bool*)),
-                dialogs[ current_dialog_idx ],
-                SLOT(validate(bool*)));
-
-        connect(this, SIGNAL(applyChanges_sign()),
-                dialogs[ current_dialog_idx ],
-                SLOT(applyChanges()));
-
-        connect(this, SIGNAL(discardChanges_sign()),
-                dialogs[ current_dialog_idx ],
-                SLOT(discardChanges()));
-
-        connect(dialogs[ current_dialog_idx ], SIGNAL(close_sign(QCloseEvent*)),
-                this,
-                SLOT(validateAndClose(QCloseEvent*)));
-
-        connect(dialogs[ current_dialog_idx ], SIGNAL(changed_sign()),
-                this,
-                SLOT(changed()));
-
-        connect(dialogs[ current_dialog_idx ], SIGNAL(notify_changes_applied_sign()),
-                this,
-                SLOT(notifyChangesApplied()));
-
-        connect(this, SIGNAL(getHelpName_sign(QString*)),
-                dialogs[ current_dialog_idx ],
-                SLOT(getHelpName(QString*)));
-
-        emit loadObject_sign(obj);
-        findAndLoadHelp();
-
-        opened = obj;
-        applyButton->setEnabled(false);
-    }
+        activateDialog(getOptDialogName(t), obj, t);
+    } else
+        blank();
 }
 
 void ObjectEditor::disconnectSignals()
@@ -404,12 +373,7 @@ void ObjectEditor::disconnectSignals()
 void ObjectEditor::purge()
 {
     if (fwbdebug) qDebug("ObjectEditor::purge");
-
-    applyButton->setEnabled(false);
-    current_dialog_idx = stackIds["BLANK"];
-    current_dialog_name = "BLANK";
-    findAndLoadHelp();
-    opened = NULL;
+    activateDialog("BLANK", NULL, optNone);
     openedOpt = optNone;
 }
 
@@ -557,7 +521,7 @@ void ObjectEditor::help()
     emit getHelpName_sign(&help_name);
     if (fwbdebug)
         qDebug("ObjectEditor::help: %s", help_name.toStdString().c_str());
-    Help *h = new Help(parentWidget, "");
+    Help *h = new Help(editorStack, "");
     h->setSource(QUrl(help_name + ".html"));
     h->show();
 }
@@ -568,7 +532,7 @@ void ObjectEditor::findAndLoadHelp()
     emit getHelpName_sign(&help_name);
 
     // is help available?
-    Help *h = new Help(parentWidget, "");
+    Help *h = new Help(editorStack, "");
     helpButton->setEnabled(!h->findHelpFile(help_name + ".html").isEmpty());
     delete h;
 }
@@ -612,20 +576,12 @@ void ObjectEditor::actionChanged(FWObject *o)
         return;
     }
     //if (opened==o) return;
-    openOpt (o,ObjectEditor::optAction);
-
+    openOpt(o, ObjectEditor::optAction);
     show();
 }
 
 void ObjectEditor::blank()
 {
-    if (isVisible())
-    {
-        applyButton->setEnabled(false);
-        current_dialog_idx = stackIds["BLANK"];
-        current_dialog_name = "BLANK";
-        findAndLoadHelp();
-        opened = NULL;
-        show();
-    }
+    if (fwbdebug) qDebug() << "ObjectEditor::blank()";
+    if (isVisible()) purge();
 }

@@ -718,8 +718,8 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
 
     if ( index.column()<=0 || index.row()==-1 ) return false;
 
-    FWObject *object=NULL;
-    ObjectEditor::OptType operation=ObjectEditor::optNone;
+    FWObject *object = NULL;
+    ObjectEditor::OptType operation = ObjectEditor::optNone;
 
     /*
     *  We need to know WHAT we are going to edit
@@ -787,11 +787,10 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
         }
     }
 
-    if (!mw->requestEditorOwnership(this,object,operation,validate))
+    if (!mw->requestEditorOwnership(this, object, operation, validate))
         return false;
 
-    if (object==mw->getOpenedEditor() &&
-        operation==mw->getOpenedOptEditor())
+    if (object==mw->getOpenedEditor() && operation==mw->getOpenedOptEditor())
     {
         if (fwbdebug)
             qDebug("RuleSetView::switchObjectInEditor  same object is already opened in the editor");
@@ -806,7 +805,7 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
         mw->openEditor(object);
     } else if(Rule::cast(object)!=NULL)
     {
-        mw->openOptEditor(object,operation);
+        mw->openOptEditor(object, operation);
     }
 
     return true;

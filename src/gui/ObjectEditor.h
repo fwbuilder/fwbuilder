@@ -55,7 +55,7 @@ class ObjectEditor : public QObject {
     libfwbuilder::FWObject *opened;
     int current_dialog_idx;
     QString current_dialog_name;
-    QStackedWidget *parentWidget;
+    QStackedWidget *editorStack;
     QPushButton *applyButton;
     QPushButton *helpButton;
     ProjectPanel *m_project;
@@ -75,7 +75,10 @@ private:
     void registerOptDialog(QStackedWidget *stack,
                            ObjectEditor::OptType opt_type,
                            const QString &dialog_name);
-   
+    void activateDialog(const QString &dialog_name,
+                        libfwbuilder::FWObject *obj,
+                        enum OptType opt);
+
 public:
    
     ObjectEditor(QWidget *parent);

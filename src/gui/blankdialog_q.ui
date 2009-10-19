@@ -1,0 +1,33 @@
+<ui version="4.0" >
+ <class>BlankDialog_q</class>
+ <widget class="QWidget" name="BlankDialog_q" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>638</width>
+    <height>215</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string/>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="0" >
+    <widget class="QFrame" name="frame7" >
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" />
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
+ <connections/>
+</ui>

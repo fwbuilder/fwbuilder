@@ -149,6 +149,7 @@ HEADERS += ../../config.h \
     ActionsDialog.h \
     SimpleTextView.h \
     DiscoveryDruid.h \
+	BlankDialog.h \
     DNSNameDialog.h \
     instOptionsDialog.h \
     instBatchOptionsDialog.h \
@@ -294,6 +295,7 @@ SOURCES += ProjectPanel.cpp \
     ActionsDialog.cpp \
     SimpleTextView.cpp \
     DiscoveryDruid.cpp \
+	BlankDialog.cpp \
     DNSNameDialog.cpp \
     ObjectTreeViewItem.cpp \
     InstallFirewallViewItem.cpp \
@@ -387,6 +389,7 @@ FORMS = FWBMainWindow_q.ui \
     linksysadvanceddialog_q.ui \
     printingprogressdialog_q.ui \
     pagesetupdialog_q.ui \
+	blankdialog_q.ui \
     dnsnamedialog_q.ui \
     tagservicedialog_q.ui \
     actionsdialog_q.ui \

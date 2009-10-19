@@ -75,7 +75,6 @@ void FWWindow::editorPanelTabChanged(int idx)
         if (pp)
         {
             oe->open(pp->getSelectedObject());
-            m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
         }
     }
 }
@@ -121,8 +120,6 @@ void FWWindow::openEditor(FWObject *obj)
     m_mainWindow->objectTypeIcon->setPixmap(title_icon);
     m_mainWindow->editorDockWidget->show(); // editor
     oe->open(obj);
-    m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    //m_mainWindow->objectEditorFrame->show();
     m_mainWindow->objectEditorStack->resize(old_size);
 }
 
@@ -149,7 +146,6 @@ void FWWindow::openOptEditor(FWObject *obj, ObjectEditor::OptType t)
     m_mainWindow->objectTypeIcon->setPixmap(title_icon);
     m_mainWindow->editorDockWidget->show(); // editor
     oe->openOpt(obj, t);
-    m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
     m_mainWindow->objectEditorStack->resize(old_size);
 }
 
