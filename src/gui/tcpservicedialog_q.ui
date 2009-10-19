@@ -41,13 +41,13 @@
         </property>
         <property name="minimumSize" >
          <size>
-          <width>300</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize" >
          <size>
-          <width>300</width>
+          <width>350</width>
           <height>16777215</height>
          </size>
         </property>
@@ -720,7 +720,6 @@ QSpinBox {
   <tabstop>fin_s</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
- <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>

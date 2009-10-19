@@ -35,13 +35,13 @@
         </property>
         <property name="minimumSize" >
          <size>
-          <width>300</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize" >
          <size>
-          <width>300</width>
+          <width>350</width>
           <height>16777215</height>
          </size>
         </property>
@@ -69,7 +69,7 @@
           <widget class="QLineEdit" name="obj_name" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-             <horstretch>200</horstretch>
+             <horstretch>1</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
@@ -289,7 +289,6 @@ will only be used in ipv6 policies.
   <tabstop>code</tabstop>
   <tabstop>comment</tabstop>
  </tabstops>
- <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>
