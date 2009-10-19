@@ -3,66 +3,72 @@
 <context>
     <name>AboutDialog_q</name>
     <message>
-        <location filename="aboutdialog_q.ui" line="404"/>
+        <location filename="aboutdialog_q.ui" line="461"/>
         <source>Firewall Builder</source>
         <translation>ファイアウォールビルダー</translation>
     </message>
     <message>
-        <location filename="aboutdialog_q.ui" line="423"/>
+        <location filename="aboutdialog_q.ui" line="480"/>
         <source>Revision: </source>
         <translation>リビジョン: </translation>
     </message>
     <message>
-        <location filename="aboutdialog_q.ui" line="442"/>
+        <location filename="aboutdialog_q.ui" line="499"/>
         <source>Using libfwbuilder API v</source>
         <translation>使用中の libfwbuilder API バージョン</translation>
     </message>
     <message>
         <location filename="aboutdialog_q.ui" line="477"/>
         <source>Copyright 2002-2008  NetCitadel, LLC</source>
-        <translation>Copyright 2002-2008 NetCitadel, LLC</translation>
+        <translation type="obsolete">Copyright 2002-2008 NetCitadel, LLC</translation>
     </message>
     <message>
-        <location filename="aboutdialog_q.ui" line="523"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <location filename="aboutdialog_q.ui" line="428"/>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog_q.ui" line="552"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Monospace&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;&lt;a href=&quot;http://www.fwbuilder.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.fwbuilder.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.fwbuilder.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.fwbuilder.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="aboutdialog_q.ui" line="595"/>
-        <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <location filename="aboutdialog_q.ui" line="598"/>
+        <source>Copyright 2002-2009  NetCitadel, LLC</source>
+        <translation type="unfinished">Copyright 2002-2006  NetCitadel, LLC {2002-2009 ?}</translation>
     </message>
 </context>
 <context>
     <name>ActionsDialog</name>
     <message>
-        <location filename="ActionsDialog.cpp" line="138"/>
-        <source>&apos;Chabge inbound interface&apos;, &apos;Continue packet inspection&apos; and &apos;Make a copy&apos; options are mutually exclusive</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ActionsDialog.cpp" line="164"/>
+        <location filename="ActionsDialog.cpp" line="159"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="ActionsDialog.cpp" line="163"/>
+        <location filename="ActionsDialog.cpp" line="158"/>
         <source>Rule name for accounting is converted to the iptables
 chain name and therefore may not contain white space
 and special characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ActionsDialog.cpp" line="291"/>
+        <location filename="ActionsDialog.cpp" line="287"/>
         <source>Emulation of terminating behavior for MARK and CLASSIFY targets is currently ON, rule will be terminating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ActionsDialog.cpp" line="296"/>
+        <location filename="ActionsDialog.cpp" line="292"/>
         <source>Emulation of terminating behavior for MARK and CLASSIFY targets is currently OFF, rule will not be terminating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ActionsDialog.cpp" line="137"/>
+        <source>&apos;Change inbound interface&apos;, &apos;Continue packet inspection&apos; and &apos;Make a copy&apos; options are mutually exclusive</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -74,37 +80,32 @@ and special characters.</source>
         <translation>操作ダイアログ</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="82"/>
-        <source>fw/rule num/action</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="actionsdialog_q.ui" line="288"/>
+        <location filename="actionsdialog_q.ui" line="212"/>
         <source>Tag service object:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="193"/>
+        <location filename="actionsdialog_q.ui" line="117"/>
         <source>If rule action is &apos;Reject&apos;, this option defines firewall&apos;s reaction to the packet matching the rule</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="271"/>
+        <location filename="actionsdialog_q.ui" line="195"/>
         <source>This action has no parameters.</source>
         <translation>この操作はパラメーターがありません。.</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="335"/>
+        <location filename="actionsdialog_q.ui" line="259"/>
         <source>Requires CONNMARK target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="338"/>
+        <location filename="actionsdialog_q.ui" line="262"/>
         <source>Mark connections created by packets that match this rule</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="345"/>
+        <location filename="actionsdialog_q.ui" line="269"/>
         <source>Note: this action translates into MARK target for iptables.
 Normally this target is non-terminating, that is, other rules
 with Classify or Tag actions below this one will process
@@ -114,47 +115,47 @@ tab of the firewall object properties dialog activates emulation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="353"/>
+        <location filename="actionsdialog_q.ui" line="277"/>
         <source>Emulation of terminating behavior for MARK target is currently ON, the rule will be terminating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="389"/>
+        <location filename="actionsdialog_q.ui" line="313"/>
         <source>Rule name for accounting. (white spaces and special characters are not allowed)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="431"/>
+        <location filename="actionsdialog_q.ui" line="355"/>
         <source>Packet classification can be implemented in different ways:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="456"/>
+        <location filename="actionsdialog_q.ui" line="380"/>
         <source>use dummynet(4) &apos;pipe&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="463"/>
+        <location filename="actionsdialog_q.ui" line="387"/>
         <source>use dummynet(4) &apos;queue&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="473"/>
+        <location filename="actionsdialog_q.ui" line="397"/>
         <source>Pipe or queue number:</source>
         <translation>パイプもしくはキュー番号:</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="538"/>
+        <location filename="actionsdialog_q.ui" line="462"/>
         <source>Custom string:</source>
         <translation>カスタム文字列:</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="574"/>
+        <location filename="actionsdialog_q.ui" line="498"/>
         <source>Classify string:</source>
         <translation>分類文字列:</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="603"/>
+        <location filename="actionsdialog_q.ui" line="527"/>
         <source>Note:  CLASSIFY target in iptables is non-terminating,
 that is other rules with Classify or Mark
 target below this will process the same packet.
@@ -165,112 +166,112 @@ object properties dialog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="612"/>
+        <location filename="actionsdialog_q.ui" line="536"/>
         <source>Emulation is currently ON, rule will be terminating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="632"/>
+        <location filename="actionsdialog_q.ui" line="556"/>
         <source>Divert socket port number:</source>
         <translation type="unfinished">プロトコル番号:</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="691"/>
+        <location filename="actionsdialog_q.ui" line="615"/>
         <source>Policy ruleset object:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="722"/>
+        <location filename="actionsdialog_q.ui" line="646"/>
         <source>In addition to &apos;filter&apos;, create branching rule in &apos;mangle&apos; table as well</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="762"/>
+        <location filename="actionsdialog_q.ui" line="686"/>
         <source>Policy rule set object:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="904"/>
+        <location filename="actionsdialog_q.ui" line="833"/>
         <source>Route through</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="909"/>
+        <location filename="actionsdialog_q.ui" line="838"/>
         <source>Route reply through</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="914"/>
+        <location filename="actionsdialog_q.ui" line="843"/>
         <source>Route a copy through</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="922"/>
+        <location filename="actionsdialog_q.ui" line="851"/>
         <source>interface</source>
         <translation>インターフェース</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="935"/>
+        <location filename="actionsdialog_q.ui" line="864"/>
         <source>next hop</source>
         <translation>次のホップ</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="950"/>
+        <location filename="actionsdialog_q.ui" line="879"/>
         <source>Fastroute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="973"/>
+        <location filename="actionsdialog_q.ui" line="902"/>
         <source>Load Balancing:</source>
         <translation>ロードバランシング:</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="981"/>
+        <location filename="actionsdialog_q.ui" line="910"/>
         <source>None</source>
         <translation>なし</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="986"/>
+        <location filename="actionsdialog_q.ui" line="915"/>
         <source>Bitmask</source>
         <translation>ビットマスク</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="991"/>
+        <location filename="actionsdialog_q.ui" line="920"/>
         <source>Random</source>
         <translation>ランダム</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="996"/>
+        <location filename="actionsdialog_q.ui" line="925"/>
         <source>Source Hash</source>
         <translation>ソースハッシュ</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="1001"/>
+        <location filename="actionsdialog_q.ui" line="930"/>
         <source>Round Robin</source>
         <translation>ラウンドロビン</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="1048"/>
+        <location filename="actionsdialog_q.ui" line="977"/>
         <source>Change inbound interface to</source>
         <translation type="unfinished">インターフェンス管理</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="1058"/>
+        <location filename="actionsdialog_q.ui" line="987"/>
         <source>Route through gateway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="1071"/>
+        <location filename="actionsdialog_q.ui" line="1000"/>
         <source>Change outbound interface to</source>
         <translation type="unfinished">インターフェンス管理</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="1103"/>
+        <location filename="actionsdialog_q.ui" line="1032"/>
         <source>Continue packet inspection</source>
         <translation>パケット監査を続ける</translation>
     </message>
     <message>
-        <location filename="actionsdialog_q.ui" line="1110"/>
+        <location filename="actionsdialog_q.ui" line="1039"/>
         <source>Make a copy</source>
         <translation>コピーを作る</translation>
     </message>
@@ -278,12 +279,12 @@ object properties dialog.</source>
 <context>
     <name>AddressRangeDialog</name>
     <message>
-        <location filename="AddressRangeDialog.cpp" line="128"/>
+        <location filename="AddressRangeDialog.cpp" line="127"/>
         <source>Illegal IP address &apos;%1&apos;</source>
         <translation>不当な IP アドレス &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="AddressRangeDialog.cpp" line="129"/>
+        <location filename="AddressRangeDialog.cpp" line="128"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
@@ -291,27 +292,27 @@ object properties dialog.</source>
 <context>
     <name>AddressRangeDialog_q</name>
     <message>
-        <location filename="addressrangedialog_q.ui" line="100"/>
+        <location filename="addressrangedialog_q.ui" line="22"/>
         <source>Address Range</source>
         <translation>アドレスの範囲</translation>
     </message>
     <message>
-        <location filename="addressrangedialog_q.ui" line="131"/>
+        <location filename="addressrangedialog_q.ui" line="70"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="addressrangedialog_q.ui" line="157"/>
+        <location filename="addressrangedialog_q.ui" line="96"/>
         <source>Range Start:</source>
         <translation>範囲の開始:</translation>
     </message>
     <message>
-        <location filename="addressrangedialog_q.ui" line="177"/>
+        <location filename="addressrangedialog_q.ui" line="116"/>
         <source>Range End:</source>
         <translation>範囲の終了:</translation>
     </message>
     <message>
-        <location filename="addressrangedialog_q.ui" line="244"/>
+        <location filename="addressrangedialog_q.ui" line="183"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -319,44 +320,205 @@ object properties dialog.</source>
 <context>
     <name>AddressTableDialog_q</name>
     <message>
-        <location filename="addresstabledialog_q.ui" line="75"/>
+        <location filename="addresstabledialog_q.ui" line="19"/>
         <source>Address Table</source>
         <translation>アドレステーブル</translation>
     </message>
     <message>
-        <location filename="addresstabledialog_q.ui" line="137"/>
+        <location filename="addresstabledialog_q.ui" line="64"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="addresstabledialog_q.ui" line="169"/>
+        <location filename="addresstabledialog_q.ui" line="96"/>
         <source>Compile Time</source>
         <translation>コンパイル時間</translation>
     </message>
     <message>
-        <location filename="addresstabledialog_q.ui" line="182"/>
+        <location filename="addresstabledialog_q.ui" line="109"/>
         <source>Run Time</source>
         <translation>ランタイム</translation>
     </message>
     <message>
-        <location filename="addresstabledialog_q.ui" line="189"/>
+        <location filename="addresstabledialog_q.ui" line="116"/>
         <source>File name:</source>
         <translation>ファイル名:</translation>
     </message>
     <message>
-        <location filename="addresstabledialog_q.ui" line="232"/>
+        <location filename="addresstabledialog_q.ui" line="153"/>
         <source>Browse</source>
         <translation>参照</translation>
     </message>
     <message>
-        <location filename="addresstabledialog_q.ui" line="239"/>
+        <location filename="addresstabledialog_q.ui" line="160"/>
         <source>Preview</source>
         <translation>プレビュー</translation>
     </message>
     <message>
-        <location filename="addresstabledialog_q.ui" line="289"/>
+        <location filename="addresstabledialog_q.ui" line="210"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
+    </message>
+</context>
+<context>
+    <name>ClusterDialog_q</name>
+    <message>
+        <location filename="clusterdialog_q.ui" line="22"/>
+        <source>Cluster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="87"/>
+        <source>Name:</source>
+        <translation type="unfinished">名前:</translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="125"/>
+        <source>Platform:</source>
+        <translation type="unfinished">プラットフォーム:</translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="163"/>
+        <source>Host OS:</source>
+        <translation type="unfinished">ホスト OS:</translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="193"/>
+        <source>Modified:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="246"/>
+        <source>TextLabel</source>
+        <translation type="unfinished">テキストラベル</translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="213"/>
+        <source>Compiled:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="233"/>
+        <source>Installed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="264"/>
+        <source>Comment:</source>
+        <translation type="unfinished">コメント:</translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="292"/>
+        <source>Skip this firewall for batch compile and install operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clusterdialog_q.ui" line="295"/>
+        <source>Inactive cluster</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ClusterGroupDialog</name>
+    <message>
+        <location filename="ClusterGroupDialog.cpp" line="230"/>
+        <source>Master</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ClusterGroupDialog.cpp" line="231"/>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ClusterGroupDialog.cpp" line="238"/>
+        <source>Firewall %1 can be used as a member of this cluster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ClusterGroupDialog.cpp" line="241"/>
+        <source>Invalid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ClusterGroupDialog.cpp" line="243"/>
+        <source>Firewall %1 can not be used as a member of this cluster
+ because its host OS or platform does not match those of the cluster.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ClusterGroupDialog.cpp" line="334"/>
+        <source>FWBuilder API error: %1</source>
+        <translation type="unfinished">FWBuilder API エラー: %1</translation>
+    </message>
+    <message>
+        <location filename="ClusterGroupDialog.cpp" line="335"/>
+        <source>&amp;Continue</source>
+        <translation type="unfinished">続ける(&amp;C)</translation>
+    </message>
+</context>
+<context>
+    <name>ClusterGroupDialog_q</name>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="22"/>
+        <source>ClusterGroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="88"/>
+        <source>Name:</source>
+        <translation type="unfinished">名前:</translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="129"/>
+        <source>Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="183"/>
+        <source>Edit protocol parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="219"/>
+        <source>List of current members of this cluster.
+Double click on an entry to load it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="230"/>
+        <source>Firewall</source>
+        <translation type="unfinished">ファイアウォール</translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="235"/>
+        <source>Interface</source>
+        <translation type="unfinished">インターフェース</translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="240"/>
+        <source>Master</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="245"/>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="271"/>
+        <source>Click here to manage member firewalls of this cluster group.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="274"/>
+        <source>Manage Members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustergroupdialog_q.ui" line="291"/>
+        <source>Comment:</source>
+        <translation type="unfinished">コメント:</translation>
     </message>
 </context>
 <context>
@@ -370,17 +532,17 @@ object properties dialog.</source>
 <context>
     <name>CommentEditorPanel</name>
     <message>
-        <location filename="CommentEditorPanel.cpp" line="83"/>
+        <location filename="CommentEditorPanel.cpp" line="80"/>
         <source>Warning: loading from file discards current contents of the script.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="CommentEditorPanel.cpp" line="87"/>
+        <location filename="CommentEditorPanel.cpp" line="84"/>
         <source>Choose file that contains PIX commands</source>
         <translation>PIX コマンドを含むファイルを選択してください</translation>
     </message>
     <message>
-        <location filename="CommentEditorPanel.cpp" line="95"/>
+        <location filename="CommentEditorPanel.cpp" line="92"/>
         <source>Could not open file %1</source>
         <translation>ファイル %1 を開くことが出来ません</translation>
     </message>
@@ -393,12 +555,7 @@ object properties dialog.</source>
         <translation>コメントエディターパネル</translation>
     </message>
     <message>
-        <location filename="commenteditorpanel_q.ui" line="102"/>
-        <source>fw/rule num</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="commenteditorpanel_q.ui" line="161"/>
+        <location filename="commenteditorpanel_q.ui" line="73"/>
         <source>Import from file ...</source>
         <translation>ファイルからインポート ...</translation>
     </message>
@@ -419,6 +576,22 @@ object properties dialog.</source>
         <location filename="ObjConflictResolutionDialog.cpp" line="303"/>
         <source>Skip the rest but build report</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CompilerOutputPanel</name>
+    <message>
+        <location filename="CompilerOutputPanel.cpp" line="105"/>
+        <source>Compiling rule...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CompilerOutputPanel_q</name>
+    <message>
+        <location filename="compileroutputpanel_q.ui" line="16"/>
+        <source>Script Editor</source>
+        <translation type="unfinished">スクリプトエディター</translation>
     </message>
 </context>
 <context>
@@ -454,7 +627,7 @@ object properties dialog.</source>
         <translation type="obsolete">種類: </translation>
     </message>
     <message>
-        <location filename="ConfirmDeleteObjectDialog.cpp" line="135"/>
+        <location filename="ConfirmDeleteObjectDialog.cpp" line="138"/>
         <source>Not used anywhere</source>
         <translation type="unfinished"></translation>
     </message>
@@ -505,22 +678,22 @@ object properties dialog.</source>
 <context>
     <name>CustomServiceDialog_q</name>
     <message>
-        <location filename="customservicedialog_q.ui" line="69"/>
+        <location filename="customservicedialog_q.ui" line="16"/>
         <source>Custom Service</source>
         <translation>カスタムサービス</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="116"/>
+        <location filename="customservicedialog_q.ui" line="61"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="154"/>
+        <location filename="customservicedialog_q.ui" line="99"/>
         <source>Platform:</source>
         <translation>プラットフォーム:</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="178"/>
+        <location filename="customservicedialog_q.ui" line="123"/>
         <source>Code String:</source>
         <translation>コード文字列:</translation>
     </message>
@@ -530,23 +703,23 @@ object properties dialog.</source>
         <translation type="obsolete">プロトコル文字列:</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="310"/>
+        <location filename="customservicedialog_q.ui" line="255"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="200"/>
+        <location filename="customservicedialog_q.ui" line="145"/>
         <source>Custom service object has separate code string for each
 supported firewall platform.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="217"/>
+        <location filename="customservicedialog_q.ui" line="162"/>
         <source>Protocol Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="224"/>
+        <location filename="customservicedialog_q.ui" line="169"/>
         <source>Choose one of the standard protocols from the menu or enter custom
 protocol string. Policy compilers can use this information to add correct
 protocol-specific parameters to the generated configuration. For example,
@@ -556,12 +729,12 @@ REJECT only if service object belongs to protocol &quot;tcp&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="239"/>
+        <location filename="customservicedialog_q.ui" line="184"/>
         <source>Address Family:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="252"/>
+        <location filename="customservicedialog_q.ui" line="197"/>
         <source>Like with protocol, setting address family helps
 policy compiler generate more accurate configuration
 using this custom service object. For example, if
@@ -571,12 +744,12 @@ will only be used in ipv6 policies.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="278"/>
+        <location filename="customservicedialog_q.ui" line="223"/>
         <source>IPv4</source>
         <translation type="unfinished">IPv4</translation>
     </message>
     <message>
-        <location filename="customservicedialog_q.ui" line="288"/>
+        <location filename="customservicedialog_q.ui" line="233"/>
         <source>IPv6</source>
         <translation type="unfinished">IPv6</translation>
     </message>
@@ -584,32 +757,32 @@ will only be used in ipv6 policies.
 <context>
     <name>DNSNameDialog_q</name>
     <message>
-        <location filename="dnsnamedialog_q.ui" line="69"/>
+        <location filename="dnsnamedialog_q.ui" line="13"/>
         <source>DNS Name</source>
         <translation>DNS 名</translation>
     </message>
     <message>
-        <location filename="dnsnamedialog_q.ui" line="122"/>
+        <location filename="dnsnamedialog_q.ui" line="58"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="dnsnamedialog_q.ui" line="148"/>
+        <location filename="dnsnamedialog_q.ui" line="84"/>
         <source>DNS Record:</source>
         <translation>DNS レコード:</translation>
     </message>
     <message>
-        <location filename="dnsnamedialog_q.ui" line="174"/>
+        <location filename="dnsnamedialog_q.ui" line="110"/>
         <source>Compile Time</source>
         <translation>コンパイル時間</translation>
     </message>
     <message>
-        <location filename="dnsnamedialog_q.ui" line="181"/>
+        <location filename="dnsnamedialog_q.ui" line="117"/>
         <source>Run Time</source>
         <translation>ランタイム</translation>
     </message>
     <message>
-        <location filename="dnsnamedialog_q.ui" line="197"/>
+        <location filename="dnsnamedialog_q.ui" line="133"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -617,463 +790,480 @@ will only be used in ipv6 policies.
 <context>
     <name>DiscoveryDruid</name>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="641"/>
+        <location filename="DiscoveryDruid.cpp" line="650"/>
         <source>Hosts file parsing ...</source>
         <translation>hosts ファイルを解析しています ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="650"/>
+        <location filename="DiscoveryDruid.cpp" line="659"/>
         <source>DNS zone transfer ...</source>
         <translation>DNS ゾーン転送 ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="660"/>
+        <location filename="DiscoveryDruid.cpp" line="669"/>
         <source>Network discovery using SNMP ...</source>
         <translation>SNMP を用いたネットワーク検出 ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="670"/>
+        <location filename="DiscoveryDruid.cpp" line="679"/>
         <source>Import configuration from file ...</source>
         <translation>ファイルから構成のインポート ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1734"/>
+        <location filename="DiscoveryDruid.cpp" line="1742"/>
         <source>Discovery error</source>
         <translation>検出エラー</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="770"/>
+        <location filename="DiscoveryDruid.cpp" line="779"/>
         <source>Could not open file %1</source>
         <translation>ファイル %1 を開くことが出来ません</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1084"/>
+        <location filename="DiscoveryDruid.cpp" line="1093"/>
         <source>Adding objects ...</source>
         <translation>オブジェクトを追加しています ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1563"/>
+        <location filename="DiscoveryDruid.cpp" line="1571"/>
         <source>Cancel</source>
         <translation>取り消し</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1270"/>
+        <location filename="DiscoveryDruid.cpp" line="1279"/>
         <source>Prepare objects ...</source>
         <translation>オブジェクトの準備 ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1562"/>
+        <location filename="DiscoveryDruid.cpp" line="1570"/>
         <source>Copying results ...</source>
         <translation>結果をコピーしています ...</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1885"/>
+        <location filename="DiscoveryDruid.cpp" line="1893"/>
         <source>Incomlete network specification.</source>
         <translation>ネットワークの指定が完了していません。</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="1973"/>
+        <location filename="DiscoveryDruid.cpp" line="1981"/>
         <source>Empty community string</source>
         <translation>コミュニティ文字列が空です</translation>
+    </message>
+    <message>
+        <location filename="DiscoveryDruid.cpp" line="2322"/>
+        <source>Some discovered interfaces have been rearranged in fwbuilder objects and recreated as subinterfaces to reflect VLANs, bonding and bridging configurations. The algorithm used to guess correct relationship between interfaces and subinterfaces is imperfect because of the limited information provided by SNMP daemon. Pelase review created objects to make sure generated configuration is accurate. 
+
+The program expects MAC addresses of bonding, bridge and vlan interfaces to be the same. It is especially important to review and fix generated objects if you use MAC address spoofing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DiscoveryDruid.cpp" line="2323"/>
+        <source>&amp;Continue</source>
+        <translation type="unfinished">続ける(&amp;C)</translation>
     </message>
 </context>
 <context>
     <name>DiscoveryDruid_q</name>
     <message>
-        <location filename="discoverydruid_q.ui" line="43"/>
+        <location filename="discoverydruid_q.ui" line="37"/>
         <source>TextLabel</source>
         <translation>テキストラベル</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="75"/>
+        <location filename="discoverydruid_q.ui" line="69"/>
         <source>Choose discovery method used to collect information about network objects from the list below and click &apos;Next&apos; to continue.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="104"/>
+        <location filename="discoverydruid_q.ui" line="98"/>
         <source>Discovery method:</source>
         <translation>検出方法:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="119"/>
+        <location filename="discoverydruid_q.ui" line="113"/>
         <source>Read file in hosts format</source>
         <translation>hosts 形式のファイルを読み込む</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="129"/>
+        <location filename="discoverydruid_q.ui" line="123"/>
         <source>Import DNS zone</source>
         <translation>DNS ゾーンをインポートをする</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="136"/>
+        <location filename="discoverydruid_q.ui" line="130"/>
         <source>Perform network discovery using SNMP</source>
         <translation>SNMP を用いてネットワークの検出を実行する</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="143"/>
+        <location filename="discoverydruid_q.ui" line="137"/>
         <source>Import configuration of a firewall or a router</source>
         <translation>ファイアウォールもしくはルーターの設定のインポート</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="163"/>
+        <location filename="discoverydruid_q.ui" line="154"/>
         <source>Enter full path and file name below or click &quot;Browse&quot; to find it:</source>
         <translation>下にフルパスとファイル名を入力し、「参照」ボタンをクリックして検索してください:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="192"/>
+        <location filename="discoverydruid_q.ui" line="183"/>
         <source>File in hosts format</source>
         <translation>hosts 形式のファイル</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="231"/>
+        <location filename="discoverydruid_q.ui" line="213"/>
         <source>Browse ...</source>
         <translation>参照 ...</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="285"/>
+        <location filename="discoverydruid_q.ui" line="264"/>
         <source>All objects created during import will be placed in the library currently opened in the tree.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="314"/>
+        <location filename="discoverydruid_q.ui" line="293"/>
         <source>Policy import tries to parse given configuration file and preserve its logic as close as possible. However, very often target firewall configuration allows for more commands, options and their combinations than importer can understand. Rules that importer could not parse exactly are colored red in the rule sets it creates. Always inspect firewall policy created by the importer and compare it with the original. Manual changes and corrections may be required. Comments in the rules that could not be parsed show fragments of the original configuration parser did not understand.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="327"/>
+        <location filename="discoverydruid_q.ui" line="306"/>
         <source>Import from file: </source>
         <translation>ファイルからインポート:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="346"/>
+        <location filename="discoverydruid_q.ui" line="325"/>
         <source>Browse...</source>
         <translation>参照...</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="354"/>
+        <location filename="discoverydruid_q.ui" line="333"/>
         <source>Cisco IOS</source>
         <translation>Cisco IOS</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="359"/>
+        <location filename="discoverydruid_q.ui" line="338"/>
         <source>iptables</source>
         <translation>iptables</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="367"/>
+        <location filename="discoverydruid_q.ui" line="346"/>
         <source>Platform:</source>
         <translation>プラットフォーム:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="399"/>
+        <location filename="discoverydruid_q.ui" line="378"/>
         <source>textLabel1</source>
         <translation>テキストラベル 1</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="470"/>
+        <location filename="discoverydruid_q.ui" line="446"/>
         <source>This discovery method creates objects for all &apos;A&apos; records found in DNS domain. You will later have a chance to accept only those objects you wish and ignore others.
 Please enter the domain name below:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="500"/>
+        <location filename="discoverydruid_q.ui" line="476"/>
         <source>Domain name</source>
         <translation>ドメイン名</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="566"/>
+        <location filename="discoverydruid_q.ui" line="539"/>
         <source>Objects created using this method may have long or short names. long name consists of the host name and full domain name (this is called &lt;i&gt;Fully Qualified Domain Name&lt;/i&gt;). Short name consists of only host name. Check in the box below if you wish to use long name, then click next to continue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="579"/>
+        <location filename="discoverydruid_q.ui" line="552"/>
         <source>Use long names</source>
         <translation>長い名前を使う</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="596"/>
+        <location filename="discoverydruid_q.ui" line="566"/>
         <source>DNS zone information has to be transferred from the name server authoritative for the domain. Pick the name server:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="609"/>
+        <location filename="discoverydruid_q.ui" line="579"/>
         <source>Name server</source>
         <translation>ネームサーバー</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="621"/>
+        <location filename="discoverydruid_q.ui" line="588"/>
         <source>choose name server from the list below</source>
         <translation>下の一覧からネームサーバーを選択する</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="634"/>
+        <location filename="discoverydruid_q.ui" line="601"/>
         <source>server name or its IP address here if you wish to use different one:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="705"/>
+        <location filename="discoverydruid_q.ui" line="666"/>
         <source>DNS Query options</source>
         <translation>DNS 問い合わせオプション</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="717"/>
+        <location filename="discoverydruid_q.ui" line="675"/>
         <source>Timeout (sec)</source>
         <translation>タイムアウト (秒)</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="727"/>
+        <location filename="discoverydruid_q.ui" line="685"/>
         <source>Retries</source>
         <translation>再実行</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="818"/>
+        <location filename="discoverydruid_q.ui" line="773"/>
         <source>This discovery method scans networks looking for hosts or gateways responding to SNMP queries. It pulls host&apos;s ARP table and uses all the entries found in it to create objects. Scan starts from the host called &quot;seed&quot;. Enter &quot;seed&quot; host name or address below:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="831"/>
+        <location filename="discoverydruid_q.ui" line="786"/>
         <source>&apos;Seed&apos; host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="893"/>
+        <location filename="discoverydruid_q.ui" line="833"/>
         <source>Enter a valid host name or address.</source>
         <translation>正しいホスト名かアドレスを入力してください。</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="943"/>
+        <location filename="discoverydruid_q.ui" line="883"/>
         <source>The scanner process can be confined to a certain network, so it won&apos;t discover hosts on adjacent networks. If you leave these fields blank, scanner will visit all networks it can find:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="956"/>
+        <location filename="discoverydruid_q.ui" line="896"/>
         <source>Confine scan to this network:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1006"/>
+        <location filename="discoverydruid_q.ui" line="943"/>
         <source>Netmask:</source>
         <translation>ネットマスク:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1016"/>
+        <location filename="discoverydruid_q.ui" line="953"/>
         <source>Address:</source>
         <translation>アドレス:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1065"/>
+        <location filename="discoverydruid_q.ui" line="999"/>
         <source>The scanner process can repeat its algorithm recursively using each new host it finds as a new &quot;seed&quot;. This allows it to find as many objects on your network as possible. On the other hand, it takes more time and may find some objects you do not really need. You can turn recursive scanning on below:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1078"/>
+        <location filename="discoverydruid_q.ui" line="1012"/>
         <source>Run network scan recursively</source>
         <translation>ネットワークの再起スキャンを実行する</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1098"/>
+        <location filename="discoverydruid_q.ui" line="1032"/>
         <source>The scanner process can find nodes beyond the boundaries of your network by following point-to-point links connecting it to the Internet or other parts of WAN.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1111"/>
+        <location filename="discoverydruid_q.ui" line="1045"/>
         <source>Follow point-to-point links</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="discoverydruid_q.ui" line="1131"/>
-        <source>The scanner process can distinguish virtual IP addresses created on hosts as static &quot;published&quot; ARP entries or as secondary addresses on interfaces.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="discoverydruid_q.ui" line="1144"/>
         <source>Include virtual addresses</source>
-        <translation>バーチャルアドレスを含む</translation>
+        <translation type="obsolete">バーチャルアドレスを含む</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1164"/>
+        <location filename="discoverydruid_q.ui" line="1098"/>
         <source>Analysis of ARP table yields IP addresses for hosts on your network. In order to determine their names, scanner can run reverse name lookup queries using your name servers (DNS):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1177"/>
+        <location filename="discoverydruid_q.ui" line="1111"/>
         <source>Run reverse name lookup DNS queries to determine host names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1197"/>
+        <location filename="discoverydruid_q.ui" line="1128"/>
         <source>Enter parameters for SNMP and DNS reverse lookup queries below. (If unsure, just leave default values):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1210"/>
+        <location filename="discoverydruid_q.ui" line="1141"/>
         <source>SNMP query parameters:</source>
         <translation>SNMP 問い合わせパラメーター:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1222"/>
+        <location filename="discoverydruid_q.ui" line="1150"/>
         <source>SNMP &apos;read&apos; community string:</source>
         <translation>SNMP &apos;read&apos; コミュニティ文字列:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1358"/>
+        <location filename="discoverydruid_q.ui" line="1283"/>
         <source>number of retries:</source>
         <translation>再実行の回数:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1242"/>
+        <location filename="discoverydruid_q.ui" line="1170"/>
         <source>timeout (sec):</source>
         <translation>タイムアウト (秒):</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1272"/>
+        <location filename="discoverydruid_q.ui" line="1200"/>
         <source>public</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1330"/>
+        <location filename="discoverydruid_q.ui" line="1258"/>
         <source>DNS parameters:</source>
         <translation>DNS パラメーター:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1368"/>
+        <location filename="discoverydruid_q.ui" line="1293"/>
         <source>timeout (sec) :</source>
         <translation>タイムアウト (秒) :</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1378"/>
+        <location filename="discoverydruid_q.ui" line="1303"/>
         <source>Number of threads:</source>
         <translation>スレッドの数:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1479"/>
+        <location filename="discoverydruid_q.ui" line="1398"/>
         <source>Process name</source>
         <translation>処理名</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1511"/>
+        <location filename="discoverydruid_q.ui" line="1427"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1518"/>
+        <location filename="discoverydruid_q.ui" line="1434"/>
         <source>Save scan log to file</source>
         <translation>スキャンログをファイルに保存する</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1544"/>
+        <location filename="discoverydruid_q.ui" line="1460"/>
         <source>Process log:</source>
         <translation>処理ログ:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1576"/>
+        <location filename="discoverydruid_q.ui" line="1486"/>
         <source>These are the networks found by the scanner process. Choose the ones you wish to use from the list below, then click &apos;Next&apos;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1975"/>
+        <location filename="discoverydruid_q.ui" line="1837"/>
         <source>Select All</source>
         <translation>すべて選択する</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1952"/>
+        <location filename="discoverydruid_q.ui" line="1814"/>
         <source>Filter ...</source>
         <translation>フィルター ...</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1938"/>
+        <location filename="discoverydruid_q.ui" line="1800"/>
         <source>Unselect All</source>
         <translation>すべて選択を解除する</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1945"/>
+        <location filename="discoverydruid_q.ui" line="1807"/>
         <source>Remove Filter</source>
         <translation>フィルターを削除する</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1829"/>
+        <location filename="discoverydruid_q.ui" line="1706"/>
         <source>-&gt;</source>
         <translation>→</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1836"/>
+        <location filename="discoverydruid_q.ui" line="1713"/>
         <source>&lt;-</source>
         <translation>←</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1745"/>
+        <location filename="discoverydruid_q.ui" line="1634"/>
         <source>Choose objects you wish to use, then click &apos;Next&apos;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1982"/>
+        <location filename="discoverydruid_q.ui" line="1844"/>
         <source>Change type of selected objects:</source>
         <translation>選択されたオブジェクトの種類の変更:</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="1994"/>
+        <location filename="discoverydruid_q.ui" line="1853"/>
         <source>Address</source>
         <translation>アドレス</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2001"/>
+        <location filename="discoverydruid_q.ui" line="1860"/>
         <source>Host</source>
         <translation>ホスト</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2008"/>
+        <location filename="discoverydruid_q.ui" line="1867"/>
         <source>Firewall</source>
         <translation>ファイアウォール</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2027"/>
+        <location filename="discoverydruid_q.ui" line="1886"/>
         <source>Object</source>
         <translation>オブジェクト</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2032"/>
+        <location filename="discoverydruid_q.ui" line="1891"/>
         <source>Interfaces</source>
         <translation>インターフェース</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2037"/>
+        <location filename="discoverydruid_q.ui" line="1896"/>
         <source>Type</source>
         <translation>種類</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2045"/>
+        <location filename="discoverydruid_q.ui" line="1904"/>
         <source>Here you can change type of the objects to be created for each address discovered by the scanner. By default, an &quot;Address&quot; object is created for the host with just one interface with single IP address and &quot;Host&quot; object is created for the host with multiple interfaces, however you can change their types on this page.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2068"/>
+        <location filename="discoverydruid_q.ui" line="1924"/>
         <source>Select target library</source>
         <translation>ターゲットライブラリーを選択する</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2135"/>
+        <location filename="discoverydruid_q.ui" line="1985"/>
         <source>Adding new objects to library ...</source>
         <translation>ライブラリーに新しいオブジェクトを追加しています ...</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2215"/>
+        <location filename="discoverydruid_q.ui" line="2059"/>
         <source>&lt; &amp;Back</source>
         <translation>&lt; 戻る(&amp;B)</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2222"/>
+        <location filename="discoverydruid_q.ui" line="2066"/>
         <source>&amp;Next &gt;</source>
         <translation>次へ(&amp;N) &gt;</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2232"/>
+        <location filename="discoverydruid_q.ui" line="2076"/>
         <source>&amp;Finish</source>
         <translation>終了(&amp;F)</translation>
     </message>
     <message>
-        <location filename="discoverydruid_q.ui" line="2242"/>
+        <location filename="discoverydruid_q.ui" line="2086"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="discoverydruid_q.ui" line="1065"/>
+        <source>The scanner process normally ignores interfaces that have no IP addresses; checking this option makes it create such interfaces as &quot;Unnumbered&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="discoverydruid_q.ui" line="1078"/>
+        <source>Include interfaces with no ip addresses</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1081,21 +1271,31 @@ Please enter the domain name below:</source>
     <message>
         <location filename="FWBAboutDialog.h" line="28"/>
         <source>Revision: %1 ( Build: %2 )</source>
-        <translation>リビジョン: %1 ( ビルド: %2 )</translation>
+        <translation type="obsolete">リビジョン: %1 ( ビルド: %2 )</translation>
     </message>
     <message>
-        <location filename="FWBAboutDialog.h" line="31"/>
+        <location filename="FWBAboutDialog.cpp" line="44"/>
         <source>Using Firewall Builder API %1</source>
         <translation>使用中のファイアウォールビルダー API %1</translation>
     </message>
     <message>
-        <location filename="FWBAboutDialog.h" line="35"/>
+        <location filename="FWBAboutDialog2.cpp" line="46"/>
         <source>Registered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWBAboutDialog.h" line="36"/>
+        <location filename="FWBAboutDialog2.cpp" line="49"/>
         <source>Unregistered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBAboutDialog.cpp" line="42"/>
+        <source>Build: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBAboutDialog2.cpp" line="43"/>
+        <source>Invalid license</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1107,540 +1307,580 @@ Please enter the domain name below:</source>
         <translation>ファイアウォールビルダー</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="73"/>
+        <location filename="FWBMainWindow_q.ui" line="715"/>
         <source>&amp;Edit</source>
         <translation>編集(&amp;E)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="88"/>
+        <location filename="FWBMainWindow_q.ui" line="730"/>
         <source>Object</source>
         <translation>オブジェクト</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="98"/>
+        <location filename="FWBMainWindow_q.ui" line="740"/>
         <source>Tools</source>
         <translation>ツール</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="105"/>
+        <location filename="FWBMainWindow_q.ui" line="747"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="113"/>
+        <location filename="FWBMainWindow_q.ui" line="1410"/>
         <source>Rules</source>
         <translation>ルール</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="130"/>
+        <location filename="FWBMainWindow_q.ui" line="773"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="161"/>
+        <location filename="FWBMainWindow_q.ui" line="804"/>
         <source>Window</source>
         <translation>ウィンドウ</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="182"/>
+        <location filename="FWBMainWindow_q.ui" line="832"/>
         <source>&amp;New Object File</source>
         <translation>新規オブジェクトファイル(&amp;N)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="730"/>
+        <location filename="FWBMainWindow_q.ui" line="1389"/>
         <source>New Object File</source>
         <translation>新規オブジェクトファイル</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="195"/>
+        <location filename="FWBMainWindow_q.ui" line="844"/>
         <source>&amp;Open...</source>
         <translation>開く(&amp;O)...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="385"/>
+        <location filename="FWBMainWindow_q.ui" line="1033"/>
         <source>Open</source>
         <translation>開く</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="201"/>
+        <location filename="FWBMainWindow_q.ui" line="850"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="211"/>
+        <location filename="FWBMainWindow_q.ui" line="859"/>
         <source>&amp;Save</source>
         <translation>保存(&amp;S)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="397"/>
+        <location filename="FWBMainWindow_q.ui" line="1045"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="217"/>
+        <location filename="FWBMainWindow_q.ui" line="865"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="222"/>
+        <location filename="FWBMainWindow_q.ui" line="870"/>
         <source>Save &amp;As...</source>
         <translation>名前を付けて保存(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="225"/>
+        <location filename="FWBMainWindow_q.ui" line="873"/>
         <source>Save As</source>
         <translation>名前を付けて保存</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="236"/>
+        <location filename="FWBMainWindow_q.ui" line="884"/>
         <source>&amp;Print...</source>
         <translation>印刷(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="239"/>
+        <location filename="FWBMainWindow_q.ui" line="887"/>
         <source>Print</source>
         <translation>印刷</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="242"/>
+        <location filename="FWBMainWindow_q.ui" line="890"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="247"/>
+        <location filename="FWBMainWindow_q.ui" line="895"/>
         <source>E&amp;xit</source>
         <translation>終了(&amp;X)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="250"/>
+        <location filename="FWBMainWindow_q.ui" line="898"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="261"/>
+        <location filename="FWBMainWindow_q.ui" line="909"/>
         <source>&amp;Undo</source>
         <translation>取り消し(&amp;U)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="264"/>
+        <location filename="FWBMainWindow_q.ui" line="912"/>
         <source>Undo</source>
         <translation>取り消し</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="267"/>
+        <location filename="FWBMainWindow_q.ui" line="915"/>
         <source>Ctrl+Z</source>
         <translation>Ctrl+Z</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="275"/>
+        <location filename="FWBMainWindow_q.ui" line="923"/>
         <source>&amp;Redo</source>
         <translation>やり直し(&amp;R)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="278"/>
+        <location filename="FWBMainWindow_q.ui" line="926"/>
         <source>Redo</source>
         <translation>やり直し</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="281"/>
+        <location filename="FWBMainWindow_q.ui" line="929"/>
         <source>Ctrl+Y</source>
         <translation>Ctrl+Y</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="286"/>
+        <location filename="FWBMainWindow_q.ui" line="934"/>
         <source>&amp;Cut</source>
         <translation>切り取り(&amp;C)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="289"/>
+        <location filename="FWBMainWindow_q.ui" line="937"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="292"/>
+        <location filename="FWBMainWindow_q.ui" line="940"/>
         <source>Ctrl+X</source>
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="300"/>
+        <location filename="FWBMainWindow_q.ui" line="948"/>
         <source>C&amp;opy</source>
         <translation>コピー(&amp;O)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="303"/>
+        <location filename="FWBMainWindow_q.ui" line="951"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="306"/>
+        <location filename="FWBMainWindow_q.ui" line="954"/>
         <source>Ctrl+C</source>
         <translation>Ctrl+C</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="311"/>
+        <location filename="FWBMainWindow_q.ui" line="959"/>
         <source>&amp;Paste</source>
         <translation>貼り付け(&amp;P)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="314"/>
+        <location filename="FWBMainWindow_q.ui" line="962"/>
         <source>Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="317"/>
+        <location filename="FWBMainWindow_q.ui" line="965"/>
         <source>Ctrl+V</source>
         <translation>Ctrl+V</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="496"/>
+        <location filename="FWBMainWindow_q.ui" line="1155"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="333"/>
+        <location filename="FWBMainWindow_q.ui" line="981"/>
         <source>&amp;Contents...</source>
         <translation>内容(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="336"/>
+        <location filename="FWBMainWindow_q.ui" line="984"/>
         <source>Contents</source>
         <translation>内容</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="344"/>
+        <location filename="FWBMainWindow_q.ui" line="992"/>
         <source>&amp;Index...</source>
         <translation>インデックス(&amp;I)...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="347"/>
+        <location filename="FWBMainWindow_q.ui" line="995"/>
         <source>Index</source>
         <translation>インデックス</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="355"/>
+        <location filename="FWBMainWindow_q.ui" line="1003"/>
         <source>&amp;About</source>
         <translation>ファイアウォールビルダーについて(&amp;A)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="358"/>
+        <location filename="FWBMainWindow_q.ui" line="1006"/>
         <source>About</source>
         <translation>ファイアウォールビルダーについて</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="373"/>
+        <location filename="FWBMainWindow_q.ui" line="1021"/>
         <source>New</source>
         <translation>新規</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="402"/>
+        <location filename="FWBMainWindow_q.ui" line="1050"/>
         <source>&amp;Close</source>
         <translation>閉じる(&amp;C)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="405"/>
+        <location filename="FWBMainWindow_q.ui" line="1053"/>
         <source>Close</source>
         <translation>閉じる</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="417"/>
+        <location filename="FWBMainWindow_q.ui" line="1065"/>
         <source>Compile</source>
         <translation>コンパイル</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="420"/>
+        <location filename="FWBMainWindow_q.ui" line="1074"/>
         <source>Compile rules</source>
         <translation>コンパイルルール</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="432"/>
+        <location filename="FWBMainWindow_q.ui" line="1086"/>
         <source>Install</source>
         <translation>インストール</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="435"/>
+        <location filename="FWBMainWindow_q.ui" line="1095"/>
         <source>Install firewall policy</source>
         <translation>ファイアウォールポリシーのインストール</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="450"/>
+        <location filename="FWBMainWindow_q.ui" line="1110"/>
         <source>Back</source>
         <translation>戻る</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="456"/>
+        <location filename="FWBMainWindow_q.ui" line="1116"/>
         <source>Move back to the previous object</source>
         <translation type="unfinished">前のオブジェクトに戻る</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="466"/>
+        <location filename="FWBMainWindow_q.ui" line="1125"/>
         <source>&amp;New Object</source>
         <translation>新規オブジェクト(&amp;N)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="469"/>
+        <location filename="FWBMainWindow_q.ui" line="1128"/>
         <source>New Object</source>
         <translation>新規オブジェクト</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="472"/>
+        <location filename="FWBMainWindow_q.ui" line="1131"/>
         <source>Create New Object</source>
         <translation>新規オブジェクト作成</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="475"/>
+        <location filename="FWBMainWindow_q.ui" line="1134"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="484"/>
+        <location filename="FWBMainWindow_q.ui" line="1143"/>
         <source>&amp;Find Object</source>
         <translation>オブジェクト検索(&amp;F)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="487"/>
+        <location filename="FWBMainWindow_q.ui" line="1146"/>
         <source>Find Object</source>
         <translation>オブジェクト検索</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="493"/>
+        <location filename="FWBMainWindow_q.ui" line="1152"/>
         <source>Find object in the tree</source>
         <translation>ツリー中のオブジェクトを検索する</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="501"/>
+        <location filename="FWBMainWindow_q.ui" line="1160"/>
         <source>P&amp;references...</source>
         <translation>設定(&amp;E)...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="504"/>
+        <location filename="FWBMainWindow_q.ui" line="1163"/>
         <source>Preferences...</source>
         <translation>設定...</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="507"/>
+        <location filename="FWBMainWindow_q.ui" line="1166"/>
         <source>Edit Preferences</source>
         <translation>設定の編集</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="515"/>
+        <location filename="FWBMainWindow_q.ui" line="1174"/>
         <source>Insert Rule</source>
         <translation>ルール挿入</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="523"/>
+        <location filename="FWBMainWindow_q.ui" line="1182"/>
         <source>Move Rule Up</source>
         <translation>ルールを上に移動する</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="531"/>
+        <location filename="FWBMainWindow_q.ui" line="1190"/>
         <source>Move Rule Down</source>
         <translation>ルールを下に移動</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="539"/>
+        <location filename="FWBMainWindow_q.ui" line="1198"/>
         <source>Add Rule Below</source>
         <translation>下にルールを追加する</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="547"/>
+        <location filename="FWBMainWindow_q.ui" line="1206"/>
         <source>Remove Rule</source>
         <translation>ルール削除</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="550"/>
+        <location filename="FWBMainWindow_q.ui" line="1209"/>
         <source>Ctrl+Del</source>
         <translation>Ctrl+Del</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="558"/>
+        <location filename="FWBMainWindow_q.ui" line="1217"/>
         <source>Copy Rule</source>
         <translation>ルールのコピー</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="566"/>
+        <location filename="FWBMainWindow_q.ui" line="1225"/>
         <source>Cut Rule</source>
         <translation>ルール切り取り</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="574"/>
+        <location filename="FWBMainWindow_q.ui" line="1233"/>
         <source>Paste Rule Above</source>
         <translation>上にルールを貼り付け</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="582"/>
+        <location filename="FWBMainWindow_q.ui" line="1241"/>
         <source>Paste Rule Below</source>
         <translation>下にルールを貼り付け</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="587"/>
+        <location filename="FWBMainWindow_q.ui" line="1246"/>
         <source>Add File to &amp;RCS</source>
         <translation>RCS にファイルを追加する(&amp;R)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="590"/>
+        <location filename="FWBMainWindow_q.ui" line="1249"/>
         <source>Add File to RCS</source>
         <translation>RCS にファイルを追加する</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="598"/>
+        <location filename="FWBMainWindow_q.ui" line="1257"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="603"/>
+        <location filename="FWBMainWindow_q.ui" line="1262"/>
         <source>&amp;Export Library</source>
         <translation>ライブラリーのエクスポート(&amp;E)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="606"/>
+        <location filename="FWBMainWindow_q.ui" line="1265"/>
         <source>Export Library To a File</source>
         <translation>ファイルへライブラリーをエクスポートする</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="611"/>
+        <location filename="FWBMainWindow_q.ui" line="1270"/>
         <source>Import &amp;Library</source>
         <translation>ライブラリーをインポートする(&amp;L)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="614"/>
+        <location filename="FWBMainWindow_q.ui" line="1273"/>
         <source>Import Library From a File</source>
         <translation>ファイルからライブラリーをインポート</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="619"/>
+        <location filename="FWBMainWindow_q.ui" line="1278"/>
         <source>&amp;Debug</source>
         <translation>デバッグ(&amp;D)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="622"/>
+        <location filename="FWBMainWindow_q.ui" line="1281"/>
         <source>Debug</source>
         <translation>デバッグ</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="630"/>
+        <location filename="FWBMainWindow_q.ui" line="1289"/>
         <source>Propert&amp;ies</source>
         <translation>プロパティ(&amp;I)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="633"/>
+        <location filename="FWBMainWindow_q.ui" line="1292"/>
         <source>Show File Properties</source>
         <translation>ファイルのプロパティの表示</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="636"/>
+        <location filename="FWBMainWindow_q.ui" line="1295"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="644"/>
+        <location filename="FWBMainWindow_q.ui" line="1303"/>
         <source>Move Selected Rules</source>
         <translation>選択したルールを移動する</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="649"/>
+        <location filename="FWBMainWindow_q.ui" line="1308"/>
         <source>&amp;Discard</source>
         <translation>破棄する(&amp;D)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="652"/>
+        <location filename="FWBMainWindow_q.ui" line="1311"/>
         <source>Discard</source>
         <translation>破棄する</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="655"/>
+        <location filename="FWBMainWindow_q.ui" line="1314"/>
         <source>Discard Changes and Overwrite With Clean Copy Of The Head Revision From RCS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="660"/>
+        <location filename="FWBMainWindow_q.ui" line="1319"/>
         <source>Co&amp;mmit</source>
         <translation>コミットする(&amp;M)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="663"/>
+        <location filename="FWBMainWindow_q.ui" line="1322"/>
         <source>Commit</source>
         <translation>コミットする</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="666"/>
+        <location filename="FWBMainWindow_q.ui" line="1325"/>
         <source>Commit Opened File to RCS and Continue Editing</source>
         <translation>開いているファイルを RCS にコミットして編集を続ける</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="674"/>
+        <location filename="FWBMainWindow_q.ui" line="1333"/>
         <source>Lock</source>
         <translation>ロックする</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="682"/>
+        <location filename="FWBMainWindow_q.ui" line="1341"/>
         <source>Unlock</source>
         <translation>ロック解除する</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="690"/>
+        <location filename="FWBMainWindow_q.ui" line="1349"/>
         <source>Discovery Druid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="698"/>
+        <location filename="FWBMainWindow_q.ui" line="1357"/>
         <source>new item</source>
         <translation>新規項目</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="706"/>
+        <location filename="FWBMainWindow_q.ui" line="1365"/>
         <source>Find Conflicting Objects in Two Files</source>
         <translation>ふたつのファイルから衝突したオブジェクトを検索する</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="711"/>
+        <location filename="FWBMainWindow_q.ui" line="1370"/>
         <source>Import Po&amp;licy</source>
         <translation>ポリシーのインポート(&amp;L)</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="714"/>
+        <location filename="FWBMainWindow_q.ui" line="1373"/>
         <source>Import Policy</source>
         <translation>ポリシーをインポートする</translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="134"/>
+        <location filename="FWBMainWindow_q.ui" line="777"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="719"/>
+        <location filename="FWBMainWindow_q.ui" line="1378"/>
         <source>Firewall Builder Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWBMainWindow_q.ui" line="727"/>
+        <location filename="FWBMainWindow_q.ui" line="1386"/>
         <source>Clear Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="92"/>
+        <source>Find</source>
+        <translation type="unfinished">検索</translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="138"/>
+        <source>Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="211"/>
+        <source>Apply</source>
+        <translation type="unfinished">適用する</translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="224"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="809"/>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="1394"/>
+        <source>Release Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="1402"/>
+        <source>Object Tree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWBMainWindow_q.ui" line="1418"/>
+        <source>Editor panel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FWObjectDropArea</name>
     <message>
-        <location filename="FWObjectDropArea.cpp" line="71"/>
+        <location filename="FWObjectDropArea.cpp" line="73"/>
         <source>Drop object here.</source>
         <translation>ここにオブジェクトをドロップします。</translation>
     </message>
     <message>
-        <location filename="FWObjectDropArea.cpp" line="158"/>
+        <location filename="FWObjectDropArea.cpp" line="160"/>
         <source>Show in the tree</source>
         <translation>ツリーの中を表示する</translation>
     </message>
     <message>
-        <location filename="FWObjectDropArea.cpp" line="159"/>
+        <location filename="FWObjectDropArea.cpp" line="161"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="FWObjectDropArea.cpp" line="162"/>
+        <location filename="FWObjectDropArea.cpp" line="164"/>
         <source>Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="FWObjectDropArea.cpp" line="164"/>
+        <location filename="FWObjectDropArea.cpp" line="166"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
@@ -1656,7 +1896,7 @@ Please enter the domain name below:</source>
 <context>
     <name>FWWindow</name>
     <message>
-        <location filename="FWWindow.cpp" line="1746"/>
+        <location filename="FWWindow.cpp" line="1199"/>
         <source>A new version of Firewall Builder is available at http://www.fwbuilder.org</source>
         <translation>ファイアウォールビルダーの新しいバージョンを利用できます http://www.fwbuilder.org</translation>
     </message>
@@ -1681,24 +1921,29 @@ Please enter the domain name below:</source>
         <translation type="obsolete">空</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="201"/>
+        <location filename="FWWindowPrint.cpp" line="205"/>
         <source>Printing aborted</source>
         <translation>印刷を中断しました</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="202"/>
+        <location filename="FWWindowPrint.cpp" line="206"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="205"/>
+        <location filename="FWWindowPrint.cpp" line="209"/>
         <source>Printing completed</source>
         <translation>印刷を完了しました</translation>
     </message>
     <message>
-        <location filename="FWWindowPrint.cpp" line="209"/>
+        <location filename="FWWindowPrint.cpp" line="213"/>
         <source>Printing &lt;ed</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWWindow.cpp" line="554"/>
+        <source>Open File</source>
+        <translation type="unfinished">ファイルを開く</translation>
     </message>
 </context>
 <context>
@@ -1845,48 +2090,48 @@ Please enter the domain name below:</source>
 <context>
     <name>FindObjectWidget</name>
     <message>
-        <location filename="FindObjectWidget.cpp" line="327"/>
+        <location filename="FindObjectWidget.cpp" line="350"/>
         <source>Search hit the end of the policy rules.</source>
         <translation>検索のヒットがオブジェクトツリーの最後です。</translation>
     </message>
     <message>
-        <location filename="FindObjectWidget.cpp" line="336"/>
+        <location filename="FindObjectWidget.cpp" line="359"/>
         <source>&amp;Continue at top</source>
         <translation type="unfinished">続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="FindObjectWidget.cpp" line="336"/>
+        <location filename="FindObjectWidget.cpp" line="359"/>
         <source>&amp;Stop</source>
         <translation>停止(&amp;S)</translation>
     </message>
     <message>
-        <location filename="FindObjectWidget.cpp" line="335"/>
+        <location filename="FindObjectWidget.cpp" line="358"/>
         <source>Search hit the end of the object tree.</source>
         <translation>検索のヒットがオブジェクトツリーの最後です。</translation>
     </message>
     <message>
-        <location filename="FindObjectWidget.cpp" line="366"/>
+        <location filename="FindObjectWidget.cpp" line="389"/>
         <source>Search or Replace object ind&apos;t specified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FindObjectWidget.cpp" line="376"/>
+        <location filename="FindObjectWidget.cpp" line="399"/>
         <source>Cannot replace object by itself.</source>
         <translation>自分自身でオブジェクトを置換できません。</translation>
     </message>
     <message>
-        <location filename="FindObjectWidget.cpp" line="384"/>
+        <location filename="FindObjectWidget.cpp" line="407"/>
         <source>Search and Replace objects are incompatible.</source>
         <translation>オブジェクトの検索と置換は互換性がありません。
 </translation>
     </message>
     <message>
-        <location filename="FindObjectWidget.cpp" line="476"/>
+        <location filename="FindObjectWidget.cpp" line="498"/>
         <source>Replaced %1 objects.</source>
         <translation>%1 個のオブジェクトを置換しました。</translation>
     </message>
     <message>
-        <location filename="FindObjectWidget.cpp" line="593"/>
+        <location filename="FindObjectWidget.cpp" line="630"/>
         <source>Policy of firewall &apos;</source>
         <translation>ファイアウォールのポリシー</translation>
     </message>
@@ -1894,7 +2139,7 @@ Please enter the domain name below:</source>
 <context>
     <name>FindWhereUsedWidget</name>
     <message>
-        <location filename="FindWhereUsedWidget.cpp" line="322"/>
+        <location filename="FindWhereUsedWidget.cpp" line="344"/>
         <source>Type: </source>
         <translation>種類: </translation>
     </message>
@@ -1924,27 +2169,27 @@ Please enter the domain name below:</source>
         <translation type="obsolete">/ルール %1</translation>
     </message>
     <message>
-        <location filename="FindWhereUsedWidget.cpp" line="293"/>
+        <location filename="FindWhereUsedWidget.cpp" line="315"/>
         <source>NAT rule set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FindWhereUsedWidget.cpp" line="296"/>
+        <location filename="FindWhereUsedWidget.cpp" line="318"/>
         <source>Policy rule set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FindWhereUsedWidget.cpp" line="299"/>
+        <location filename="FindWhereUsedWidget.cpp" line="321"/>
         <source>Routing rule set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FindWhereUsedWidget.cpp" line="302"/>
+        <location filename="FindWhereUsedWidget.cpp" line="324"/>
         <source>Rule set of unknown type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FindWhereUsedWidget.cpp" line="313"/>
+        <location filename="FindWhereUsedWidget.cpp" line="335"/>
         <source>%1 &quot;%2&quot; / Rule %3 / %4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1952,67 +2197,110 @@ Please enter the domain name below:</source>
 <context>
     <name>FirewallDialog</name>
     <message>
-        <location filename="FirewallDialog.cpp" line="337"/>
+        <location filename="FirewallDialog.cpp" line="397"/>
         <source>FWBuilder API error: %1</source>
         <translation>FWBuilder API エラー: %1</translation>
     </message>
     <message>
-        <location filename="FirewallDialog.cpp" line="338"/>
+        <location filename="FirewallDialog.cpp" line="398"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="FirewallDialog.cpp" line="233"/>
+        <source>Platform setting can not be empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FirewallDialog.cpp" line="245"/>
+        <source>Host OS setting can not be empty</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FirewallDialog_q</name>
     <message>
-        <location filename="firewalldialog_q.ui" line="78"/>
+        <location filename="firewalldialog_q.ui" line="22"/>
         <source>Firewall</source>
         <translation>ファイアウォール</translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="157"/>
+        <location filename="firewalldialog_q.ui" line="87"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="195"/>
+        <location filename="firewalldialog_q.ui" line="125"/>
         <source>Platform:</source>
         <translation>プラットフォーム:</translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="227"/>
+        <location filename="firewalldialog_q.ui" line="163"/>
         <source>Version:</source>
         <translation>バージョン:</translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="259"/>
+        <location filename="firewalldialog_q.ui" line="201"/>
         <source>Host OS:</source>
         <translation>ホスト OS:</translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="318"/>
+        <location filename="firewalldialog_q.ui" line="332"/>
         <source>Host OS Settings ...</source>
         <translation>ホスト OS 設定 ...</translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="336"/>
+        <location filename="firewalldialog_q.ui" line="345"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="385"/>
+        <location filename="firewalldialog_q.ui" line="398"/>
         <source>Firewall Settings ...</source>
         <translation>ファイアウォール設定 ...</translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="398"/>
+        <location filename="firewalldialog_q.ui" line="423"/>
         <source>Skip this firewall for batch compile and install operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="firewalldialog_q.ui" line="401"/>
+        <location filename="firewalldialog_q.ui" line="426"/>
         <source>Inactive firewall</source>
         <translation type="unfinished">新規ファイアウォール</translation>
+    </message>
+    <message>
+        <location filename="firewalldialog_q.ui" line="237"/>
+        <source>Modified:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="firewalldialog_q.ui" line="302"/>
+        <source>TextLabel</source>
+        <translation type="unfinished">テキストラベル</translation>
+    </message>
+    <message>
+        <location filename="firewalldialog_q.ui" line="263"/>
+        <source>Compiled:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="firewalldialog_q.ui" line="289"/>
+        <source>Installed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FirewallInstaller</name>
+    <message>
+        <location filename="FirewallInstaller.cpp" line="262"/>
+        <source>Generated script file %1 not found.</source>
+        <translation type="unfinished">生成したスクリプトファイル %1 が見つかりません。</translation>
+    </message>
+    <message>
+        <location filename="FirewallInstaller.cpp" line="263"/>
+        <source>&amp;Continue</source>
+        <translation type="unfinished">続ける(&amp;C)</translation>
     </message>
 </context>
 <context>
@@ -2020,15 +2308,15 @@ Please enter the domain name below:</source>
     <message>
         <location filename="FirewallInstallerUnx.cpp" line="142"/>
         <source>Generated script file %1 not found.</source>
-        <translation>生成したスクリプトファイル %1 が見つかりません。</translation>
+        <translation type="obsolete">生成したスクリプトファイル %1 が見つかりません。</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="143"/>
+        <location filename="FirewallInstallerUnx.cpp" line="136"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="FirewallInstallerUnx.cpp" line="229"/>
+        <location filename="FirewallInstallerUnx.cpp" line="200"/>
         <source>Copying %1 -&gt; %2:%3
 </source>
         <translation>コピーしています %1 → %2:%3
@@ -2038,38 +2326,44 @@ Please enter the domain name below:</source>
     <message>
         <location filename="FirewallInstallerUnx.cpp" line="290"/>
         <source>Error: Failed to start program:</source>
-        <translation>エラー: プログラムの開始でエラー:</translation>
+        <translation type="obsolete">エラー: プログラムの開始でエラー:</translation>
+    </message>
+    <message>
+        <location filename="FirewallInstallerUnx.cpp" line="135"/>
+        <source>Incorrect manifest format in generated script. Line with &quot;*&quot; is missing, can not find any files to copy to the firewall.
+%1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>GroupObjectDialog</name>
     <message>
-        <location filename="GroupObjectDialog.cpp" line="586"/>
+        <location filename="GroupObjectDialog.cpp" line="582"/>
         <source>Open</source>
         <translation>開く</translation>
     </message>
     <message>
-        <location filename="GroupObjectDialog.cpp" line="588"/>
+        <location filename="GroupObjectDialog.cpp" line="584"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="GroupObjectDialog.cpp" line="591"/>
+        <location filename="GroupObjectDialog.cpp" line="587"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="GroupObjectDialog.cpp" line="592"/>
+        <location filename="GroupObjectDialog.cpp" line="588"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="GroupObjectDialog.cpp" line="593"/>
+        <location filename="GroupObjectDialog.cpp" line="589"/>
         <source>Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="GroupObjectDialog.cpp" line="594"/>
+        <location filename="GroupObjectDialog.cpp" line="590"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
@@ -2077,27 +2371,27 @@ Please enter the domain name below:</source>
 <context>
     <name>GroupObjectDialog_q</name>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="75"/>
+        <location filename="groupobjectdialog_q.ui" line="22"/>
         <source>Group</source>
         <translation>グループ</translation>
     </message>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="159"/>
+        <location filename="groupobjectdialog_q.ui" line="86"/>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="190"/>
+        <location filename="groupobjectdialog_q.ui" line="117"/>
         <source>L</source>
         <translation>L</translation>
     </message>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="232"/>
+        <location filename="groupobjectdialog_q.ui" line="159"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
     <message>
-        <location filename="groupobjectdialog_q.ui" line="292"/>
+        <location filename="groupobjectdialog_q.ui" line="237"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
@@ -2105,22 +2399,22 @@ Please enter the domain name below:</source>
 <context>
     <name>HostDialog_q</name>
     <message>
-        <location filename="hostdialog_q.ui" line="75"/>
+        <location filename="hostdialog_q.ui" line="16"/>
         <source>Host</source>
         <translation>ホスト</translation>
     </message>
     <message>
-        <location filename="hostdialog_q.ui" line="128"/>
+        <location filename="hostdialog_q.ui" line="64"/>
         <source>MAC matching</source>
         <translation>MAC 一致</translation>
     </message>
     <message>
-        <location filename="hostdialog_q.ui" line="151"/>
+        <location filename="hostdialog_q.ui" line="87"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="hostdialog_q.ui" line="186"/>
+        <location filename="hostdialog_q.ui" line="122"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -2135,30 +2429,30 @@ Please enter the domain name below:</source>
     <message>
         <location filename="icmpservicedialog_q.ui" line="78"/>
         <source>ICMP Service</source>
-        <translation>ICMP サービス</translation>
+        <translation type="obsolete">ICMP サービス</translation>
     </message>
     <message>
-        <location filename="icmpservicedialog_q.ui" line="137"/>
+        <location filename="icmpservicedialog_q.ui" line="73"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="icmpservicedialog_q.ui" line="163"/>
+        <location filename="icmpservicedialog_q.ui" line="99"/>
         <source>ICMP Type:</source>
         <translation>ICMP の種類:</translation>
     </message>
     <message>
-        <location filename="icmpservicedialog_q.ui" line="196"/>
+        <location filename="icmpservicedialog_q.ui" line="132"/>
         <source>any</source>
         <translation>どれか</translation>
     </message>
     <message>
-        <location filename="icmpservicedialog_q.ui" line="186"/>
+        <location filename="icmpservicedialog_q.ui" line="122"/>
         <source>ICMP Code:</source>
         <translation>ICMP コード:</translation>
     </message>
     <message>
-        <location filename="icmpservicedialog_q.ui" line="247"/>
+        <location filename="icmpservicedialog_q.ui" line="183"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -2186,10 +2480,10 @@ Please enter the domain name below:</source>
     <message>
         <location filename="ipservicedialog_q.ui" line="78"/>
         <source>IP Service</source>
-        <translation>IP サービス</translation>
+        <translation type="obsolete">IP サービス</translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="125"/>
+        <location filename="ipservicedialog_q.ui" line="67"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
@@ -2197,89 +2491,94 @@ Please enter the domain name below:</source>
         <location filename="ipservicedialog_q.ui" line="151"/>
         <source>Protocol number:
  (0- any protocol)</source>
-        <translation>プロトコル番号: (0: いくつかのプロトコル)</translation>
+        <translation type="obsolete">プロトコル番号: (0: いくつかのプロトコル)</translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="169"/>
+        <location filename="ipservicedialog_q.ui" line="110"/>
         <source>DiffServ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="175"/>
+        <location filename="ipservicedialog_q.ui" line="116"/>
         <source>Use DSCP</source>
         <translation>DSCP を使う</translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="185"/>
+        <location filename="ipservicedialog_q.ui" line="126"/>
         <source>Use TOS</source>
         <translation>TOS を使う</translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="192"/>
+        <location filename="ipservicedialog_q.ui" line="133"/>
         <source>DSCP or TOS code
 (numerical, dec or hex):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="227"/>
+        <location filename="ipservicedialog_q.ui" line="168"/>
         <source>lsrr (loose source route)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="234"/>
+        <location filename="ipservicedialog_q.ui" line="175"/>
         <source>ssrr (strict source route)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="241"/>
+        <location filename="ipservicedialog_q.ui" line="182"/>
         <source>rr (record route)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="248"/>
+        <location filename="ipservicedialog_q.ui" line="189"/>
         <source>timestamp</source>
         <translation>タイムスタンプ</translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="255"/>
+        <location filename="ipservicedialog_q.ui" line="196"/>
         <source>all fragments</source>
         <translation>すべてのフラグメント</translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="262"/>
+        <location filename="ipservicedialog_q.ui" line="203"/>
         <source>&apos;short&apos; fragments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipservicedialog_q.ui" line="281"/>
+        <location filename="ipservicedialog_q.ui" line="222"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
+    </message>
+    <message>
+        <location filename="ipservicedialog_q.ui" line="93"/>
+        <source>Protocol number: (0=any)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>IPv4Dialog</name>
     <message>
-        <location filename="IPv4Dialog.cpp" line="159"/>
+        <location filename="IPv4Dialog.cpp" line="158"/>
         <source>Illegal IP address &apos;%1&apos;</source>
         <translation>不当な IP アドレス 「%1」</translation>
     </message>
     <message>
-        <location filename="IPv4Dialog.cpp" line="175"/>
+        <location filename="IPv4Dialog.cpp" line="174"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="IPv4Dialog.cpp" line="174"/>
+        <location filename="IPv4Dialog.cpp" line="173"/>
         <source>Illegal netmask &apos;%1&apos;</source>
         <translation>不当なネットマスク 「%1」</translation>
     </message>
     <message>
-        <location filename="IPv4Dialog.cpp" line="272"/>
+        <location filename="IPv4Dialog.cpp" line="262"/>
         <source>DNS lookup failed for both names of the address object &apos;%1&apos; and the name of the host &apos;%2&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="IPv4Dialog.cpp" line="279"/>
+        <location filename="IPv4Dialog.cpp" line="269"/>
         <source>DNS lookup failed for name of the address object &apos;%1&apos;.</source>
         <translation>アドレスオブジェクト「%1」の名前のDNS 問い合わせに失敗しました。</translation>
     </message>
@@ -2294,30 +2593,30 @@ Please enter the domain name below:</source>
     <message>
         <location filename="ipv4dialog_q.ui" line="87"/>
         <source>Address</source>
-        <translation>アドレス</translation>
+        <translation type="obsolete">アドレス</translation>
     </message>
     <message>
-        <location filename="ipv4dialog_q.ui" line="143"/>
+        <location filename="ipv4dialog_q.ui" line="70"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="ipv4dialog_q.ui" line="169"/>
+        <location filename="ipv4dialog_q.ui" line="96"/>
         <source>Address:</source>
         <translation>アドレス:</translation>
     </message>
     <message>
-        <location filename="ipv4dialog_q.ui" line="189"/>
+        <location filename="ipv4dialog_q.ui" line="116"/>
         <source>Netmask:</source>
         <translation>ネットマスク:</translation>
     </message>
     <message>
-        <location filename="ipv4dialog_q.ui" line="233"/>
+        <location filename="ipv4dialog_q.ui" line="157"/>
         <source>DNS Lookup...</source>
         <translation>DNS 問い合わせ...</translation>
     </message>
     <message>
-        <location filename="ipv4dialog_q.ui" line="251"/>
+        <location filename="ipv4dialog_q.ui" line="175"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -2325,27 +2624,27 @@ Please enter the domain name below:</source>
 <context>
     <name>IPv6Dialog</name>
     <message>
-        <location filename="IPv6Dialog.cpp" line="159"/>
+        <location filename="IPv6Dialog.cpp" line="157"/>
         <source>Illegal IP address &apos;%1&apos;</source>
         <translation>不当な IP アドレス「%1」</translation>
     </message>
     <message>
-        <location filename="IPv6Dialog.cpp" line="176"/>
+        <location filename="IPv6Dialog.cpp" line="174"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="IPv6Dialog.cpp" line="175"/>
+        <location filename="IPv6Dialog.cpp" line="173"/>
         <source>Illegal netmask &apos;%1&apos;</source>
         <translation>不当なネットマスク 「%1」</translation>
     </message>
     <message>
-        <location filename="IPv6Dialog.cpp" line="283"/>
+        <location filename="IPv6Dialog.cpp" line="271"/>
         <source>DNS lookup failed for both names of the address object &apos;%1&apos; and the name of the host &apos;%2&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="IPv6Dialog.cpp" line="290"/>
+        <location filename="IPv6Dialog.cpp" line="278"/>
         <source>DNS lookup failed for name of the address object &apos;%1&apos;.</source>
         <translation>アドレスオブジェクト「%1」の名前のDNS 問い合わせに失敗しました。</translation>
     </message>
@@ -2360,30 +2659,30 @@ Please enter the domain name below:</source>
     <message>
         <location filename="ipv6dialog_q.ui" line="87"/>
         <source>Address IPv6</source>
-        <translation>IPv6 アドレス</translation>
+        <translation type="obsolete">IPv6 アドレス</translation>
     </message>
     <message>
-        <location filename="ipv6dialog_q.ui" line="161"/>
+        <location filename="ipv6dialog_q.ui" line="76"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="ipv6dialog_q.ui" line="199"/>
+        <location filename="ipv6dialog_q.ui" line="114"/>
         <source>Address:</source>
         <translation>アドレス:</translation>
     </message>
     <message>
-        <location filename="ipv6dialog_q.ui" line="243"/>
+        <location filename="ipv6dialog_q.ui" line="158"/>
         <source>Network (bit length)</source>
         <translation>ネットワーク (ビット長)</translation>
     </message>
     <message>
-        <location filename="ipv6dialog_q.ui" line="287"/>
+        <location filename="ipv6dialog_q.ui" line="202"/>
         <source>DNS Lookup...</source>
         <translation>DNS 問い合わせ...</translation>
     </message>
     <message>
-        <location filename="ipv6dialog_q.ui" line="305"/>
+        <location filename="ipv6dialog_q.ui" line="220"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -2391,103 +2690,108 @@ Please enter the domain name below:</source>
 <context>
     <name>InterfaceDialog</name>
     <message>
-        <location filename="InterfaceDialog.cpp" line="234"/>
+        <location filename="InterfaceDialog.cpp" line="284"/>
         <source>Group: </source>
         <translation>グループ: </translation>
     </message>
     <message>
-        <location filename="InterfaceDialog.cpp" line="253"/>
+        <location filename="InterfaceDialog.cpp" line="303"/>
         <source>Network: </source>
         <translation>ネットワーク: </translation>
+    </message>
+    <message>
+        <location filename="InterfaceDialog.cpp" line="345"/>
+        <source>Interface name can not contain white space and &apos;-&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InterfaceDialog.cpp" line="465"/>
+        <source>&amp;Continue</source>
+        <translation type="unfinished">続ける(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="InterfaceDialog.cpp" line="464"/>
+        <source>FWBuilder API error: %1</source>
+        <translation type="unfinished">FWBuilder API エラー: %1</translation>
     </message>
 </context>
 <context>
     <name>InterfaceDialog_q</name>
     <message>
-        <location filename="interfacedialog_q.ui" line="70"/>
+        <location filename="interfacedialog_q.ui" line="22"/>
         <source>Interface</source>
         <translation>インターフェース</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="150"/>
+        <location filename="interfacedialog_q.ui" line="90"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="182"/>
+        <location filename="interfacedialog_q.ui" line="122"/>
         <source>Label:</source>
         <translation>ラベル:</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="220"/>
+        <location filename="interfacedialog_q.ui" line="162"/>
         <source>Security level:</source>
         <translation>セキュリティレベル:</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="242"/>
+        <location filename="interfacedialog_q.ui" line="184"/>
         <source>&lt;p&gt;Each interface of the firewall must have security level associated with it.&lt;br&gt;Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="245"/>
+        <location filename="interfacedialog_q.ui" line="187"/>
         <source>&lt;p&gt;Each interface of the firewall must have security level associated with it.&lt;br&gt;
 Security level can be any number between 0 and 100, 0 being least secure and 100 being most secure levels. Interface with security level 0 ususally serves Internet connection.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="292"/>
-        <source>&lt;p&gt;One interface of the firewall must be marked as &apos;external&apos;. This interface should be connected to the least secure network, usually the Internet.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="interfacedialog_q.ui" line="295"/>
-        <source>One interface of the firewall must be marked as &apos;external&apos;. This interface should be connected to the least secure network, usually the Internet.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="interfacedialog_q.ui" line="298"/>
         <source>This interface is external (insecure)</source>
-        <translation>このインターフェースは外部です (セキュアではありません)</translation>
+        <translation type="obsolete">このインターフェースは外部です (セキュアではありません)</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="305"/>
+        <location filename="interfacedialog_q.ui" line="289"/>
         <source>&lt;p&gt;Check if this interface is used for management (SNMP queries, remote policy install etc.)&lt;p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="308"/>
+        <location filename="interfacedialog_q.ui" line="292"/>
         <source>Management interface</source>
         <translation>インターフェンス管理</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="315"/>
+        <location filename="interfacedialog_q.ui" line="323"/>
         <source>Unnumbered interface</source>
         <translation>アンナンバードインターフェース</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="322"/>
+        <location filename="interfacedialog_q.ui" line="316"/>
         <source>Address is assigned dynamically</source>
         <translation>アドレスは動的に割り当てました</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="329"/>
+        <location filename="interfacedialog_q.ui" line="309"/>
         <source>Regular interface</source>
         <translation>レギュラーインターフェース</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="336"/>
+        <location filename="interfacedialog_q.ui" line="299"/>
         <source>Skip this interface while assigning policy rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="339"/>
+        <location filename="interfacedialog_q.ui" line="302"/>
         <source>Unprotected interface</source>
         <translation>保護なしインターフェース</translation>
     </message>
     <message>
         <location filename="interfacedialog_q.ui" line="346"/>
         <source>Bridge port</source>
-        <translation>ブリッジポート</translation>
+        <translation type="obsolete">ブリッジポート</translation>
     </message>
     <message>
         <location filename="interfacedialog_q.ui" line="362"/>
@@ -2495,15 +2799,25 @@ Security level can be any number between 0 and 100, 0 being least secure and 100
         <translation>コメント:</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="410"/>
+        <location filename="interfacedialog_q.ui" line="207"/>
         <source>Network zone:</source>
         <translation>ネットワークゾーン:</translation>
     </message>
     <message>
-        <location filename="interfacedialog_q.ui" line="437"/>
+        <location filename="interfacedialog_q.ui" line="234"/>
         <source>&lt;p&gt;Network zone consists of hosts and networks that can be reached through this interface of the firewall. Subnet to which this interface is directly attached must be part of its network zone. Other subnets reachable by means of routing should alse be added to the network zone.
 &lt;br&gt;
 If network zone for this interface consists of only one subnet, you can simply choose that network&apos;s object in the pull-down below. If your network zone should include multiple subnets, you need to create an Object Group, then put all hosts and networks which are going to be part of the network zone into that group and finally choose this group in the pull-down below.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="interfacedialog_q.ui" line="336"/>
+        <source>Bridge Port Interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="interfacedialog_q.ui" line="346"/>
+        <source>Advanced Interface Settings ...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2548,22 +2862,22 @@ If network zone for this interface consists of only one subnet, you can simply c
 <context>
     <name>LibraryDialog_q</name>
     <message>
-        <location filename="librarydialog_q.ui" line="78"/>
+        <location filename="librarydialog_q.ui" line="16"/>
         <source>Library</source>
         <translation>ライブラリー</translation>
     </message>
     <message>
-        <location filename="librarydialog_q.ui" line="128"/>
+        <location filename="librarydialog_q.ui" line="55"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="librarydialog_q.ui" line="154"/>
+        <location filename="librarydialog_q.ui" line="81"/>
         <source>Color:</source>
         <translation>色:</translation>
     </message>
     <message>
-        <location filename="librarydialog_q.ui" line="202"/>
+        <location filename="librarydialog_q.ui" line="129"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -2578,7 +2892,7 @@ If network zone for this interface consists of only one subnet, you can simply c
     <message>
         <location filename="metriceditorpanel_q.ui" line="107"/>
         <source>textLabel2</source>
-        <translation>テキストラベル 2</translation>
+        <translation type="obsolete">テキストラベル 2</translation>
     </message>
 </context>
 <context>
@@ -2589,47 +2903,42 @@ If network zone for this interface consists of only one subnet, you can simply c
         <translation>NAT ルールオプション</translation>
     </message>
     <message>
-        <location filename="natruleoptionsdialog_q.ui" line="99"/>
-        <source>fw/rule num</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="natruleoptionsdialog_q.ui" line="164"/>
+        <location filename="natruleoptionsdialog_q.ui" line="53"/>
         <source>No options are available for this firewall platform</source>
         <translation>このファイアウォールプラットフォームで利用できるオプションはありません</translation>
     </message>
     <message>
-        <location filename="natruleoptionsdialog_q.ui" line="237"/>
+        <location filename="natruleoptionsdialog_q.ui" line="114"/>
         <source>Pool type</source>
         <translation>プールの種類</translation>
     </message>
     <message>
-        <location filename="natruleoptionsdialog_q.ui" line="261"/>
+        <location filename="natruleoptionsdialog_q.ui" line="126"/>
         <source>default</source>
         <translation>標準</translation>
     </message>
     <message>
-        <location filename="natruleoptionsdialog_q.ui" line="271"/>
+        <location filename="natruleoptionsdialog_q.ui" line="136"/>
         <source>bitmask</source>
         <translation>ビットマスク</translation>
     </message>
     <message>
-        <location filename="natruleoptionsdialog_q.ui" line="278"/>
+        <location filename="natruleoptionsdialog_q.ui" line="143"/>
         <source>random</source>
         <translation>ランダム</translation>
     </message>
     <message>
-        <location filename="natruleoptionsdialog_q.ui" line="285"/>
+        <location filename="natruleoptionsdialog_q.ui" line="150"/>
         <source>source-hash</source>
         <translation>ソースハッシュ</translation>
     </message>
     <message>
-        <location filename="natruleoptionsdialog_q.ui" line="292"/>
+        <location filename="natruleoptionsdialog_q.ui" line="157"/>
         <source>round-robin</source>
         <translation>ラウンドロビン</translation>
     </message>
     <message>
-        <location filename="natruleoptionsdialog_q.ui" line="334"/>
+        <location filename="natruleoptionsdialog_q.ui" line="199"/>
         <source>static-port</source>
         <translation>静的ポート</translation>
     </message>
@@ -2637,17 +2946,17 @@ If network zone for this interface consists of only one subnet, you can simply c
 <context>
     <name>NetworkDialog</name>
     <message>
-        <location filename="NetworkDialog.cpp" line="120"/>
+        <location filename="NetworkDialog.cpp" line="119"/>
         <source>Illegal IP address &apos;%1&apos;</source>
         <translation>不当な IP アドレス「%1」</translation>
     </message>
     <message>
-        <location filename="NetworkDialog.cpp" line="154"/>
+        <location filename="NetworkDialog.cpp" line="156"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="NetworkDialog.cpp" line="153"/>
+        <location filename="NetworkDialog.cpp" line="155"/>
         <source>Illegal netmask &apos;%1&apos;</source>
         <translation>不当なネットマスク 「%1」</translation>
     </message>
@@ -2655,17 +2964,17 @@ If network zone for this interface consists of only one subnet, you can simply c
 <context>
     <name>NetworkDialogIPv6</name>
     <message>
-        <location filename="NetworkDialogIPv6.cpp" line="121"/>
+        <location filename="NetworkDialogIPv6.cpp" line="126"/>
         <source>Illegal IPv6 address &apos;%1&apos;</source>
         <translation>不当な IPv6 アドレス「%1」</translation>
     </message>
     <message>
-        <location filename="NetworkDialogIPv6.cpp" line="138"/>
+        <location filename="NetworkDialogIPv6.cpp" line="144"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="NetworkDialogIPv6.cpp" line="136"/>
+        <location filename="NetworkDialogIPv6.cpp" line="142"/>
         <source>Illegal netmask &apos;%1&apos;</source>
         <translation>不当なネットマスク 「%1」</translation>
     </message>
@@ -2673,27 +2982,27 @@ If network zone for this interface consists of only one subnet, you can simply c
 <context>
     <name>NetworkDialogIPv6_q</name>
     <message>
-        <location filename="networkdialogipv6_q.ui" line="87"/>
+        <location filename="networkdialogipv6_q.ui" line="22"/>
         <source>Network</source>
         <translation>ネットワーク</translation>
     </message>
     <message>
-        <location filename="networkdialogipv6_q.ui" line="159"/>
+        <location filename="networkdialogipv6_q.ui" line="176"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
     <message>
-        <location filename="networkdialogipv6_q.ui" line="187"/>
+        <location filename="networkdialogipv6_q.ui" line="82"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="networkdialogipv6_q.ui" line="213"/>
+        <location filename="networkdialogipv6_q.ui" line="108"/>
         <source>Address:</source>
         <translation>アドレス:</translation>
     </message>
     <message>
-        <location filename="networkdialogipv6_q.ui" line="257"/>
+        <location filename="networkdialogipv6_q.ui" line="134"/>
         <source>Netmask (bit length)</source>
         <translation>ネットマスク (ビット長)</translation>
     </message>
@@ -2701,27 +3010,27 @@ If network zone for this interface consists of only one subnet, you can simply c
 <context>
     <name>NetworkDialog_q</name>
     <message>
-        <location filename="networkdialog_q.ui" line="90"/>
+        <location filename="networkdialog_q.ui" line="22"/>
         <source>Network</source>
         <translation>ネットワーク</translation>
     </message>
     <message>
-        <location filename="networkdialog_q.ui" line="152"/>
+        <location filename="networkdialog_q.ui" line="76"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="networkdialog_q.ui" line="178"/>
+        <location filename="networkdialog_q.ui" line="102"/>
         <source>Address:</source>
         <translation>アドレス:</translation>
     </message>
     <message>
-        <location filename="networkdialog_q.ui" line="198"/>
+        <location filename="networkdialog_q.ui" line="122"/>
         <source>Netmask:</source>
         <translation>ネットマスク:</translation>
     </message>
     <message>
-        <location filename="networkdialog_q.ui" line="237"/>
+        <location filename="networkdialog_q.ui" line="161"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -2801,18 +3110,18 @@ object if there is a conflict</source>
 <context>
     <name>ObjectEditor</name>
     <message>
-        <location filename="ObjectEditor.cpp" line="465"/>
+        <location filename="ObjectEditor.cpp" line="464"/>
         <source>Modifications done to this object can not be saved.
 Do you want to continue editing it ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectEditor.cpp" line="499"/>
+        <location filename="ObjectEditor.cpp" line="498"/>
         <source>&amp;Continue editing</source>
         <translation>編集を続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="ObjectEditor.cpp" line="467"/>
+        <location filename="ObjectEditor.cpp" line="466"/>
         <source>&amp;Discard changes</source>
         <translation>変更を破棄する(&amp;D)</translation>
     </message>
@@ -2824,17 +3133,17 @@ Do you want to save it ?</source>
 保存しますか?</translation>
     </message>
     <message>
-        <location filename="ObjectEditor.cpp" line="499"/>
+        <location filename="ObjectEditor.cpp" line="498"/>
         <source>&amp;Save</source>
         <translation>保存(&amp;S)</translation>
     </message>
     <message>
-        <location filename="ObjectEditor.cpp" line="499"/>
+        <location filename="ObjectEditor.cpp" line="498"/>
         <source>&amp;Discard</source>
         <translation>破棄する(&amp;D)</translation>
     </message>
     <message>
-        <location filename="ObjectEditor.cpp" line="498"/>
+        <location filename="ObjectEditor.cpp" line="497"/>
         <source>Object %1 has been modified but not saved.
 Do you want to save it ?</source>
         <translation type="unfinished"></translation>
@@ -2843,285 +3152,257 @@ Do you want to save it ?</source>
 <context>
     <name>ObjectManipulator</name>
     <message>
-        <location filename="ObjectManipulator.cpp" line="141"/>
+        <location filename="ObjectManipulator.cpp" line="152"/>
         <source>Object Manipulator</source>
         <translation>オブジェクトマニピュレーター</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="166"/>
+        <location filename="ObjectManipulator.cpp" line="177"/>
         <source>New &amp;Library</source>
         <translation>新規ライブラリー(&amp;L)</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1052"/>
+        <location filename="ObjectManipulator.cpp" line="1299"/>
         <source>New Firewall</source>
         <translation>新規ファイアウォール</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1079"/>
+        <location filename="ObjectManipulator.cpp" line="1331"/>
         <source>New Host</source>
         <translation>新規ホスト</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2817"/>
+        <location filename="ObjectManipulator.cpp" line="187"/>
         <source>New Interface</source>
         <translation>新規インターフェース</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2834"/>
+        <location filename="ObjectManipulator.cpp" line="1336"/>
         <source>New Network</source>
         <translation>新規ネットワーク</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2843"/>
+        <location filename="ObjectManipulator.cpp" line="1338"/>
         <source>New Network IPv6</source>
         <translation>新規 IPv6 ネットワーク</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2883"/>
+        <location filename="ObjectManipulator.cpp" line="1308"/>
         <source>New Address</source>
         <translation>新規アドレス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2900"/>
+        <location filename="ObjectManipulator.cpp" line="1310"/>
         <source>New Address IPv6</source>
         <translation>新規 IPv6 アドレス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2913"/>
+        <location filename="ObjectManipulator.cpp" line="1316"/>
         <source>New DNS Name</source>
         <translation>新規 DNS 名</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2924"/>
+        <location filename="ObjectManipulator.cpp" line="1322"/>
         <source>New Address Table</source>
         <translation>新規アドレステーブル</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3026"/>
+        <location filename="ObjectManipulator.cpp" line="1327"/>
         <source>New Address Range</source>
         <translation>新規アドレスの範囲</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3037"/>
+        <location filename="ObjectManipulator.cpp" line="207"/>
         <source>New Object Group</source>
         <translation>新規オブジェクトグループ</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3049"/>
+        <location filename="ObjectManipulator.cpp" line="1347"/>
         <source>New Custom Service</source>
         <translation>新規カスタムサービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3060"/>
+        <location filename="ObjectManipulator.cpp" line="1351"/>
         <source>New IP Service</source>
         <translation>新規 IP サービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3071"/>
+        <location filename="ObjectManipulator.cpp" line="1356"/>
         <source>New ICMP Service</source>
         <translation>新規 ICMP サービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3082"/>
+        <location filename="ObjectManipulator.cpp" line="1358"/>
         <source>New ICMP6 Service</source>
         <translation>新規 ICMP6 サービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="211"/>
+        <location filename="ObjectManipulator.cpp" line="224"/>
         <source>New TCP Serivce</source>
         <translation>新規 TCP サービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3104"/>
+        <location filename="ObjectManipulator.cpp" line="1367"/>
         <source>New UDP Service</source>
         <translation>新規 UDP サービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2982"/>
+        <location filename="ObjectManipulator.cpp" line="1371"/>
         <source>New TagService</source>
         <translation>新規タグサービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2992"/>
+        <location filename="ObjectManipulator.cpp" line="1379"/>
         <source>New User Service</source>
         <translation>新規ユーザーサービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3115"/>
+        <location filename="ObjectManipulator.cpp" line="236"/>
         <source>New Service Group</source>
         <translation>新規サービスグループ</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3127"/>
+        <location filename="ObjectManipulator.cpp" line="1383"/>
         <source>New Time Interval</source>
         <translation>新規時間間隔</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="589"/>
-        <source>The name of the object &apos;%1&apos; has changed. The program can also
-rename IP address objects that belong to this object,
-using standard naming scheme &apos;host_name:interface_name:ip&apos;.
-This makes it easier to distinguish what host or a firewall
-given IP address object belongs to when it is used in 
-the policy or NAT rule. The program also renames MAC address
-objects using scheme &apos;host_name:interface_name:mac&apos;.
-Do you want to rename child IP and MAC address objects now?
-(If you click &apos;No&apos;, names of all address objects that belong to
-%2 will stay the same.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ObjectManipulator.cpp" line="2005"/>
+        <location filename="ObjectManipulator.cpp" line="2465"/>
         <source>&amp;Yes</source>
         <translation>はい(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2005"/>
+        <location filename="ObjectManipulator.cpp" line="2465"/>
         <source>&amp;No</source>
         <translation>いいえ(&amp;N)</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="621"/>
-        <source>The name of the interface &apos;%1&apos; has changed. The program can also
-rename IP address objects that belong to this interface,
-using standard naming scheme &apos;host_name:interface_name:ip&apos;.
-This makes it easier to distinguish what host or a firewall
-given IP address object belongs to when it is used in 
-the policy or NAT rule. The program also renames MAC address
-objects using scheme &apos;host_name:interface_name:mac&apos;.
-Do you want to rename child IP and MAC address objects now?
-(If you click &apos;No&apos;, names of all address objects that belong to
-interface &apos;%2&apos; will stay the same.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ObjectManipulator.cpp" line="947"/>
+        <location filename="ObjectManipulator.cpp" line="1141"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="955"/>
+        <location filename="ObjectManipulator.cpp" line="1151"/>
         <source>Duplicate ...</source>
         <translation>複製 ...</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="956"/>
+        <location filename="ObjectManipulator.cpp" line="1152"/>
         <source>Move ...</source>
         <translation>移動 ...</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="988"/>
+        <location filename="ObjectManipulator.cpp" line="1184"/>
         <source>place in library %1</source>
         <translation>ライブラリー %1 の中の場所</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="999"/>
+        <location filename="ObjectManipulator.cpp" line="1195"/>
         <source>to library %1</source>
         <translation>ライブラリー %1 へ</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1008"/>
+        <location filename="ObjectManipulator.cpp" line="1204"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1010"/>
+        <location filename="ObjectManipulator.cpp" line="1205"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1012"/>
+        <location filename="ObjectManipulator.cpp" line="1206"/>
         <source>Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1017"/>
+        <location filename="ObjectManipulator.cpp" line="1210"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1030"/>
+        <location filename="ObjectManipulator.cpp" line="1263"/>
         <source>Add Interface</source>
         <translation>インターフェース追加</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1036"/>
+        <location filename="ObjectManipulator.cpp" line="1229"/>
         <source>Add Policy Rule Set</source>
         <translation>ポリシールールセット追加</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1038"/>
+        <location filename="ObjectManipulator.cpp" line="1231"/>
         <source>Add NAT Rule Set</source>
         <translation>NAT ルールセット追加</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1043"/>
+        <location filename="ObjectManipulator.cpp" line="1266"/>
         <source>Add IP Address</source>
         <translation>IP アドレス追加</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1045"/>
+        <location filename="ObjectManipulator.cpp" line="1268"/>
         <source>Add IPv6 Address</source>
         <translation>IPv6 アドレス追加</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1047"/>
+        <location filename="ObjectManipulator.cpp" line="1270"/>
         <source>Add MAC Address</source>
         <translation>MAC アドレス追加</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1122"/>
+        <location filename="ObjectManipulator.cpp" line="1375"/>
         <source>New Group</source>
         <translation>新規グループ</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="3093"/>
+        <location filename="ObjectManipulator.cpp" line="1363"/>
         <source>New TCP Service</source>
         <translation>新規 TCP サービス</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1130"/>
+        <location filename="ObjectManipulator.cpp" line="1387"/>
         <source>Find</source>
         <translation>検索</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1132"/>
+        <location filename="ObjectManipulator.cpp" line="1389"/>
         <source>Where used</source>
         <translation>使うとき</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1135"/>
+        <location filename="ObjectManipulator.cpp" line="1392"/>
         <source>Group</source>
         <translation>グループ</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1143"/>
+        <location filename="ObjectManipulator.cpp" line="1400"/>
         <source>Compile</source>
         <translation>コンパイル</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1144"/>
+        <location filename="ObjectManipulator.cpp" line="1401"/>
         <source>Install</source>
         <translation>インストール</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1151"/>
+        <location filename="ObjectManipulator.cpp" line="1438"/>
         <source>Lock</source>
         <translation>ロックする</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1153"/>
+        <location filename="ObjectManipulator.cpp" line="1440"/>
         <source>Unlock</source>
         <translation>ロック解除する</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1162"/>
+        <location filename="ObjectManipulator.cpp" line="1449"/>
         <source>dump</source>
         <translation>ダンプ</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1927"/>
+        <location filename="ObjectManipulator.cpp" line="2387"/>
         <source>Emptying the &apos;Deleted Objects&apos; in a library file is not recommended.
 When you remove deleted objects from a library file, Firewall Builder
 loses ability to track them. If a group or a policy rule in some
@@ -3131,7 +3412,7 @@ Do you want to delete selected objects anyway ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2004"/>
+        <location filename="ObjectManipulator.cpp" line="2464"/>
         <source>When you delete a library, all objects that belong to it
 disappear from the tree and all groups and rules that reference them.
 You won&apos;t be able to reverse this operation later.
@@ -3141,7 +3422,147 @@ Do you still want to delete library %1?</source>
     <message>
         <location filename="ObjectManipulator.cpp" line="3242"/>
         <source>Searching for firewalls affected by the change...</source>
-        <translation>変更に影響したファイアウォールを検索しています...</translation>
+        <translation type="obsolete">変更に影響したファイアウォールを検索しています...</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="1303"/>
+        <source>New Cluster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="651"/>
+        <source>The name of the object &apos;%1&apos; has changed. The program can also rename IP address objects that belong to this object, using standard naming scheme &apos;host_name:interface_name:ip&apos;. This makes it easier to distinguish what host or a firewall given IP address object belongs to when it is used in the policy or NAT rule. The program also renames MAC address objects using scheme &apos;host_name:interface_name:mac&apos;. Do you want to rename child IP and MAC address objects now? (If you click &apos;No&apos;, names of all address objects that belong to %2 will stay the same.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="684"/>
+        <source>The name of the interface &apos;%1&apos; has changed. The program can also rename IP address objects that belong to this interface, using standard naming scheme &apos;host_name:interface_name:ip&apos;. This makes it easier to distinguish what host or a firewall given IP address object belongs to when it is used in the policy or NAT rule. The program also renames MAC address objects using scheme &apos;host_name:interface_name:mac&apos;. Do you want to rename child IP and MAC address objects now? (If you click &apos;No&apos;, names of all address objects that belong to interface &apos;%2&apos; will stay the same.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="1280"/>
+        <source>Add Failover Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="1289"/>
+        <source>Add Cluster interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="1294"/>
+        <source>Add State Synchronization Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="1431"/>
+        <source>Transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3301"/>
+        <source>Cluster host OS %1 does not support state synchronization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3309"/>
+        <source>State Sync Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3338"/>
+        <source>Failover group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3434"/>
+        <source>Network</source>
+        <translation type="unfinished">ネットワーク</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3443"/>
+        <source>Network IPv6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3471"/>
+        <source>Address</source>
+        <translation type="unfinished">アドレス</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3488"/>
+        <source>Address IPv6</source>
+        <translation type="unfinished">IPv6 アドレス</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3501"/>
+        <source>DNS Name</source>
+        <translation type="unfinished">DNS 名</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3512"/>
+        <source>Address Table</source>
+        <translation type="unfinished">アドレステーブル</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3565"/>
+        <source>TagService</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3575"/>
+        <source>User Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3608"/>
+        <source>Address Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3619"/>
+        <source>Object Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3631"/>
+        <source>Custom Service</source>
+        <translation type="unfinished">カスタムサービス</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3642"/>
+        <source>IP Service</source>
+        <translation type="unfinished">IP サービス</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3653"/>
+        <source>ICMP Service</source>
+        <translation type="unfinished">ICMP サービス</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3664"/>
+        <source>ICMP6 Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3675"/>
+        <source>TCP Service</source>
+        <translation type="unfinished">TCP サービス</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3687"/>
+        <source>UDP Service</source>
+        <translation type="unfinished">UDP サービス</translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3698"/>
+        <source>Service Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3710"/>
+        <source>Time Interval</source>
+        <translation type="unfinished">時間間隔</translation>
     </message>
 </context>
 <context>
@@ -3179,6 +3600,11 @@ Do you still want to delete library %1?</source>
         <source>Object</source>
         <translation>オブジェクト</translation>
     </message>
+    <message>
+        <location filename="ObjectTreeView.cpp" line="130"/>
+        <source>Attributes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PhysAddressDialog_q</name>
@@ -3190,20 +3616,20 @@ Do you still want to delete library %1?</source>
     <message>
         <location filename="physaddressdialog_q.ui" line="78"/>
         <source>MAC Address</source>
-        <translation>MAC アドレス</translation>
+        <translation type="obsolete">MAC アドレス</translation>
     </message>
     <message>
-        <location filename="physaddressdialog_q.ui" line="125"/>
+        <location filename="physaddressdialog_q.ui" line="64"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="physaddressdialog_q.ui" line="151"/>
+        <location filename="physaddressdialog_q.ui" line="90"/>
         <source>Physical address (MAC):</source>
         <translation>物理アドレス (MAC):</translation>
     </message>
     <message>
-        <location filename="physaddressdialog_q.ui" line="196"/>
+        <location filename="physaddressdialog_q.ui" line="135"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -3211,32 +3637,32 @@ Do you still want to delete library %1?</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="PrefsDialog.cpp" line="293"/>
+        <location filename="PrefsDialog.cpp" line="361"/>
         <source>Find working directory</source>
         <translation>作業ディレクトリの検索</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="302"/>
+        <location filename="PrefsDialog.cpp" line="370"/>
         <source>Find Secure Shell utility</source>
         <translation>セキュアシェルユーティリティの検索</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="311"/>
+        <location filename="PrefsDialog.cpp" line="379"/>
         <source>Find SCP utility</source>
         <translation>SCP ユーティリティの検索</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="449"/>
+        <location filename="PrefsDialog.cpp" line="516"/>
         <source>Your version of Firewall Builder is up to date.</source>
         <translation>ファイアウォールビルダーのバージョンは最新です。</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="455"/>
+        <location filename="PrefsDialog.cpp" line="511"/>
         <source>A new version of Firewall Builder is available at http://www.fwbuilder.org</source>
         <translation>ファイアウォールビルダーの新しいバージョンを利用できます http://www.fwbuilder.org</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="462"/>
+        <location filename="PrefsDialog.cpp" line="523"/>
         <source>Error checking for software updates:
 %1</source>
         <translation>ソフトウェアの更新の確認中にエラー:
@@ -3269,67 +3695,67 @@ Do you still want to delete library %1?</source>
 <context>
     <name>ProjectPanel</name>
     <message>
-        <location filename="ProjectPanel.cpp" line="145"/>
+        <location filename="ProjectPanel.cpp" line="128"/>
         <source>No firewalls defined</source>
         <translation>ファイアウォールは未定義です</translation>
     </message>
     <message>
-        <location filename="ProjectPanel.cpp" line="195"/>
+        <location filename="ProjectPanel.cpp" line="149"/>
         <source>Untitled</source>
         <translation>名称未設定</translation>
     </message>
     <message>
-        <location filename="ProjectPanel.cpp" line="200"/>
+        <location filename="ProjectPanel.cpp" line="154"/>
         <source>(read-only)</source>
         <translation>(読み込み専用)</translation>
     </message>
     <message>
         <location filename="ProjectPanel.cpp" line="406"/>
         <source>Building policy view...</source>
-        <translation>ポリシービューを構築しています...</translation>
+        <translation type="obsolete">ポリシービューを構築しています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="88"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="91"/>
         <source>&amp;Save</source>
         <translation>保存(&amp;S)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="88"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="91"/>
         <source>&amp;Discard</source>
         <translation>破棄する(&amp;D)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="361"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="343"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="114"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="117"/>
         <source>FWB Files (*.fwb);;All Files (*)</source>
         <translation>FWB ファイル (*.fwb);;すべてのファイル (*)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1138"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1131"/>
         <source>Choose name and location for the new file</source>
         <translation>新規ファイルの名前とフォルダーを選択する</translation>
     </message>
     <message>
         <location filename="ProjectPanel_file_ops.cpp" line="184"/>
         <source>Open File</source>
-        <translation>ファイルを開く</translation>
+        <translation type="obsolete">ファイルを開く</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="290"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="267"/>
         <source>Saving data to file...</source>
         <translation>ファイルにデータを保存しています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="316"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="294"/>
         <source>Choose name and location for the file</source>
         <translation>ファイルの名前とフォルダーを選択する</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="359"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="341"/>
         <source>This operation discards all changes that have been saved
 into the file so far, closes it and replaces it with a clean
 copy of its head revision from RCS.
@@ -3340,107 +3766,107 @@ All changes will be lost if you do this.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="360"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="342"/>
         <source>&amp;Discard changes</source>
         <translation>変更を破棄する(&amp;D)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="410"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="395"/>
         <source>File %1 has been added to RCS.</source>
         <translation>ファイル %1 を RCS に追加しました。</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1415"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1413"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="419"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="404"/>
         <source>Error adding file to RCS:
 %1</source>
         <translation>RCS へのファイルの追加エラー:
 %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="433"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="422"/>
         <source>Choose a file to import</source>
         <translation>インポートするファイルを選んでください</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="450"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="443"/>
         <source>This operation inspects two data files (either .fwb or .fwl) and finds conflicting objects. Conflicting objects have the same internal ID but different attributes. Two data files can not be merged, or one imported into another, if they contain such objects. This operation also helps identify changes made to objects in two copies of the same data file.&lt;br&gt;&lt;br&gt;This operation does not find objects present in one file but not in the other, such objects present no problem for merge or import operations.&lt;br&gt;&lt;br&gt;This operation works with two external files, neither of which needs to be opened in the program. Currently opened data file is not affected by this operation and objects in the tree do not change.&lt;br&gt;&lt;br&gt;Do you want to proceed ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="459"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="452"/>
         <source>Choose the first file</source>
         <translation>1 つ目のファイルを選んでください</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="467"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="460"/>
         <source>Choose the second file</source>
         <translation>2 つ目のファイルを選んでください</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="511"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="504"/>
         <source>Error loading file %1:
 %2</source>
         <translation>ファイル %1 の読み込み中のエラー:
 %2</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="534"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="527"/>
         <source>Total number of conflicting objects: %1.
 Do you want to generate report?</source>
         <translation>衝突オブジェクトの総数: %1
 報告を生成しますか?</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="544"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="537"/>
         <source>Choose name and location for the report file</source>
         <translation>報告ファイルの場所と名前を選んでください</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="546"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="539"/>
         <source>TXT Files (*.txt);;All Files (*)</source>
         <translation>テキストファイル (*.txt);;すべてのファイル (*)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="571"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="564"/>
         <source>Can not open report file for writing. File &apos;%1&apos;</source>
         <translation>報告ファイルを書き込むために開けません。ファイル「%1」</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="583"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="576"/>
         <source>Unexpected error comparing files %1 and %2:
 %3</source>
         <translation>%1 と %2 のファイル比較で予期せぬエラー:
 %3</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="613"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="606"/>
         <source>Please select a library you want to export.</source>
         <translation>エクスポートしたいライブラリーを選択してください。</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="637"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="630"/>
         <source>The file %1 already exists.
 Do you want to overwrite it ?</source>
         <translation>ファイル %1 は既に存在します。
 上書きしますか?</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="638"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="631"/>
         <source>&amp;Yes</source>
         <translation>はい(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="638"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="631"/>
         <source>&amp;No</source>
         <translation>いいえ(&amp;N)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="770"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="763"/>
         <source>A library that you are trying to export contains references
 to objects in the other libraries and can not be exported.
 The following objects need to be moved outside of it or
@@ -3448,36 +3874,36 @@ objects that they refer to moved in it:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1217"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1210"/>
         <source>(Long error message was truncated)</source>
         <translation>(長いエラーメッセージを切り詰めました)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="880"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="873"/>
         <source>The program encountered error trying to load file %1.
 The file has not been loaded. Error:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="978"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="971"/>
         <source>Loading system objects...</source>
         <translation>システムオブジェクトを読み込んでいます...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="943"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="936"/>
         <source>Error loading file:
 %1</source>
         <translation>ファイルの読み込み中のエラー:
 %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="986"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="979"/>
         <source>Reading and parsing data file...</source>
         <translation>データファイルの読み込みと解析をしています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1025"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1018"/>
         <source>Merging with system objects...</source>
         <translation>システムオブジェクトと結合しています...</translation>
     </message>
@@ -3487,13 +3913,13 @@ The file has not been loaded. Error:
 needs to rename old data file &apos;%1&apos; to &apos;%2&apos;,
 but file &apos;%3&apos; already exists.
 Choose a different name for the new file.</source>
-        <translation>ファイアウォールビルダー 2 はファイル拡張子に「.fwb」を使っていましたが、
+        <translation type="obsolete">ファイアウォールビルダー 2 はファイル拡張子に「.fwb」を使っていましたが、
 古いデータファイル「%1」の名前を「%2」に変える必要があります。
 しかしファイル「%3」は既に存在します。
 新しいファイルのための違う名前を選んでください。</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1149"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1142"/>
         <source>Load operation cancelled and data file revertedto original version.</source>
         <translation>読み込み操作を取り消し、データファイルをオリジナルバージョンに戻しました。</translation>
     </message>
@@ -3501,61 +3927,80 @@ Choose a different name for the new file.</source>
         <location filename="ProjectPanel_file_ops.cpp" line="1166"/>
         <source>Firewall Builder 2 uses file extension &apos;.fwb&apos;. Your datafile &apos;%1&apos; 
 has been renamed &apos;%2&apos;</source>
-        <translation>ファイアウォールビルダー 2 はファイル拡張子に「.fwb」を使っていました。
+        <translation type="obsolete">ファイアウォールビルダー 2 はファイル拡張子に「.fwb」を使っていました。
 データファイル「%1」の名前を「%2」に変える必要があります</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1194"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1187"/>
         <source>Exception: %1</source>
         <translation>例外: %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1198"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1191"/>
         <source>Failed transformation : %1</source>
         <translation>変換に失敗しました : %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1203"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1196"/>
         <source>XML element : %1</source>
         <translation>XML 要素 : %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1223"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1216"/>
         <source>The program encountered error trying to load data file.
 The file has not been loaded. Error:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1238"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1231"/>
         <source>Building object tree...</source>
         <translation>オブジェクトツリーを構築しています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1244"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1237"/>
         <source>Indexing...</source>
         <translation>インデックスを作成しています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1278"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1272"/>
         <source>Checking file %1 in RCS</source>
         <translation>RCS にファイル %1 をチェックインしています</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1312"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1306"/>
         <source>Error checking in file %1:
 %2</source>
         <translation>ファイル %1 の検査中のエラー:%2</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1408"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1406"/>
         <source>File is read-only</source>
         <translation>ファイルは読み込み専用です</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1414"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1412"/>
         <source>Error saving file %1: %2</source>
         <translation>ファイル %1 の保存中のエラー: %2</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel.cpp" line="1025"/>
+        <source>Searching for firewalls affected by the change...</source>
+        <translation type="unfinished">変更に影響したファイアウォールを検索しています...</translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="1126"/>
+        <source>Firewall Builder uses file extension &apos;.fwb&apos; and
+needs to rename old data file &apos;%1&apos; to &apos;%2&apos;,
+but file &apos;%3&apos; already exists.
+Choose a different name for the new file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ProjectPanel_file_ops.cpp" line="1159"/>
+        <source>Firewall Builder uses file extension &apos;.fwb&apos;. Your datafile &apos;%1&apos; 
+has been renamed &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3566,127 +4011,137 @@ The file has not been loaded. Error:
         <translation>フォーム</translation>
     </message>
     <message>
-        <location filename="projectpanel_q.ui" line="173"/>
-        <source>Click here to change amount of information shown about object selected in the tree</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="projectpanel_q.ui" line="482"/>
         <source>Apply</source>
-        <translation>適用する</translation>
+        <translation type="obsolete">適用する</translation>
     </message>
     <message>
         <location filename="projectpanel_q.ui" line="495"/>
         <source>Close</source>
-        <translation>閉じる</translation>
+        <translation type="obsolete">閉じる</translation>
     </message>
     <message>
-        <location filename="projectpanel_q.ui" line="572"/>
+        <location filename="projectpanel_q.ui" line="204"/>
         <source>Firewall / ruleset</source>
         <translation>ファイアウォール / ルールセット</translation>
+    </message>
+    <message>
+        <location filename="projectpanel_q.ui" line="126"/>
+        <source>Compile this firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="projectpanel_q.ui" line="164"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="projectpanel_q.ui" line="161"/>
+        <source>Compile and install this firewall</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="DialogFactory.cpp" line="206"/>
+        <location filename="DialogFactory.cpp" line="287"/>
         <source>Support module for %1 is not available</source>
         <translation>%1 のサポートモジュールは利用できません</translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="2237"/>
+        <location filename="DiscoveryDruid.cpp" line="2404"/>
         <source>Firewall Builder can import Cisco IOS access lists from the router configuration saved using &apos;show run&apos; or any other command that saves running config. The name of the created firewall object, all of its interfaces and their addresses will be configured automatically if this information can be found in the configuration file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DiscoveryDruid.cpp" line="2247"/>
+        <location filename="DiscoveryDruid.cpp" line="2414"/>
         <source>Firewall Builder can import iptables rules from a file in iptables-save format. Firewall name and addresses of its interfaces need to be configured manually because iptables-save file does not have this information. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWBSettings.cpp" line="139"/>
+        <location filename="FWBSettings.cpp" line="158"/>
         <source>Working directory %1 does not exist and could not be created.
 Ignoring this setting.</source>
         <translation>作業ディレクトリ %1 が存在しない上に作成できませんでした。
 この設定は無効になります。</translation>
     </message>
     <message>
-        <location filename="FWBTree.cpp" line="419"/>
+        <location filename="FWBTree.cpp" line="435"/>
         <source>New Library</source>
         <translation>新規ライブラリー</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="113"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="254"/>
         <source>DNS record: </source>
         <translation>DNS レコード: </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="117"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="258"/>
         <source>Address Table: </source>
         <translation>アドレステーブル: </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="178"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="336"/>
         <source> objects</source>
         <translation> オブジェクト</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="199"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="359"/>
         <source>protocol: %1</source>
         <translation>プロトコル: %1</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="203"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="363"/>
         <source>type: %1</source>
         <translation>種類: %1</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="205"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="365"/>
         <source>code: %1</source>
         <translation>コード: %1</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="269"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="429"/>
         <source>&lt;b&gt;Library:&lt;/b&gt; </source>
         <translation>&lt;b&gt;ライブラリー:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="274"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="434"/>
         <source>&lt;b&gt;Object Id:&lt;/b&gt; </source>
         <translation>&lt;b&gt;オブジェクト ID:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="279"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="439"/>
         <source>&lt;b&gt;Object Type:&lt;/b&gt; </source>
         <translation>&lt;b&gt;オブジェクトの種類:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="283"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="443"/>
         <source>&lt;b&gt;Object Name:&lt;/b&gt; </source>
         <translation>&lt;b&lt;&gt;オブジェクト名:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="316"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="476"/>
         <source>&lt;b&gt;DNS record:&lt;/b&gt;</source>
         <translation>&lt;b&gt;DNS レコード:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="327"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="487"/>
         <source>Run-time</source>
         <translation>ランタイム</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="327"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="487"/>
         <source>Compile-time</source>
         <translation>コンパイル時間</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="324"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="484"/>
         <source>&lt;b&gt;Table file:&lt;/b&gt;</source>
         <translation>&lt;b&lt;&gt;テーブルファイル:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="368"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="544"/>
         <source>%1 objects&lt;br&gt;
 </source>
         <translation>%1 オブジェクト&lt;br&gt;
@@ -3695,262 +4150,262 @@ Ignoring this setting.</source>
     <message>
         <location filename="FWObjectPropertiesFactory.cpp" line="433"/>
         <source>&lt;b&gt;Path:&lt;/b&gt; </source>
-        <translation>&lt;b&gt;パス:&lt;/b&gt; </translation>
+        <translation type="obsolete">&lt;b&gt;パス:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="499"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="688"/>
         <source>protocol </source>
         <translation>プロトコル </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="504"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="693"/>
         <source>type: </source>
         <translation>種類: </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="506"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="695"/>
         <source>code: </source>
         <translation>コード: </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="526"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="715"/>
         <source>Pattern: &quot;%1&quot;</source>
         <translation>パターン: 「%1」</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="530"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="719"/>
         <source>User id: &quot;%1&quot;</source>
         <translation>ユーザー ID: 「%1」</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="676"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="865"/>
         <source>&lt;b&gt;Action   :&lt;/b&gt; </source>
         <translation>&lt;b&gt;操作     :&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="679"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="868"/>
         <source>&lt;b&gt;Parameter:&lt;/b&gt; </source>
         <translation>&lt;b&gt;パラメーター:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="702"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="891"/>
         <source>&lt;b&gt;Log prefix    :&lt;/b&gt; </source>
         <translation>&lt;b&gt;ログ接頭語    :&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="708"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="897"/>
         <source>&lt;b&gt;Log Level     :&lt;/b&gt; </source>
         <translation>&lt;b&gt;ログレベル    :&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="715"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="904"/>
         <source>&lt;b&gt;Netlink group :&lt;/b&gt; </source>
         <translation>&lt;b&gt;ネットリンクグループ :&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="721"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="910"/>
         <source>&lt;b&gt;Limit Value   :&lt;/b&gt; </source>
         <translation>&lt;b&gt;制限値        :&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="727"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="916"/>
         <source>&lt;b&gt;Limit suffix  :&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="734"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="923"/>
         <source>&lt;b&gt;Limit burst   :&lt;/b&gt; </source>
         <translation>&lt;b&gt;ライブラリー:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="741"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="930"/>
         <source>&lt;li&gt;&lt;b&gt;Part of Any&lt;/b&gt;&lt;/li&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="829"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1018"/>
         <source>&lt;li&gt;&lt;b&gt;Stateless&lt;/b&gt;&lt;/li&gt; </source>
         <translation>&lt;li&gt;&lt;b&gt;ステートレス&lt;/b&gt;&lt;/li&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="756"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="945"/>
         <source>&lt;b&gt;Log facility:&lt;/b&gt; </source>
         <translation>&lt;b&gt;ログファシリティ:&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="846"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1035"/>
         <source>&lt;b&gt;Log level   :&lt;/b&gt; </source>
         <translation>&lt;b&gt;ログレベル  :&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="771"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="960"/>
         <source>&lt;li&gt;&lt;b&gt;Send &apos;unreachable&apos;&lt;/b&gt;&lt;/li&gt;</source>
         <translation>&lt;li&gt;&lt;b&gt;「未到達(unreachable)」を送る&lt;/b&gt;&lt;/li&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="783"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="972"/>
         <source>&lt;li&gt;&lt;b&gt;Keep information on fragmented packets&lt;/b&gt;&lt;/li&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="793"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="982"/>
         <source>&lt;b&gt;Log prefix :&lt;/b&gt; </source>
         <translation>&lt;b&gt;ログ接頭語 :&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="799"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="988"/>
         <source>&lt;b&gt;Max state  :&lt;/b&gt; </source>
         <translation type="unfinished">&lt;b&gt;ライブラリー:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="812"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1001"/>
         <source>&lt;li&gt;&lt;b&gt;Source tracking&lt;/b&gt;&lt;/li&gt; </source>
         <translation>&lt;li&gt;&lt;b&gt;送信元の追跡&lt;/b&gt;&lt;/li&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="815"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1004"/>
         <source>&lt;b&gt;Max src nodes :&lt;/b&gt; </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="818"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1007"/>
         <source>&lt;b&gt;Max src states:&lt;/b&gt; </source>
         <translation type="unfinished">&lt;b&gt;ライブラリー:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="838"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1027"/>
         <source>&lt;u&gt;&lt;b&gt;Ver:%1&lt;/b&gt;&lt;/u&gt;&lt;br&gt;
 </source>
         <translation>&lt;u&gt;&lt;b&gt;バージョン:%1&lt;/b&gt;&lt;/u&gt;&lt;br&gt;
 </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="852"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1041"/>
         <source>&lt;b&gt;Log interval  :&lt;/b&gt; </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="859"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1048"/>
         <source>&lt;li&gt;&lt;b&gt;Disable logging for this rule&lt;/b&gt;&lt;/li&gt; </source>
         <translation>&lt;li&gt;&lt;b&gt;このルールのログ記録をの無効化&lt;/b&gt;&lt;/li&gt; </translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="891"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1080"/>
         <source>bitmask</source>
         <translation>ビットマスク</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="892"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1081"/>
         <source>random</source>
         <translation>ランダム</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="893"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1082"/>
         <source>source-hash</source>
         <translation>ソースハッシュ</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="894"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1083"/>
         <source>round-robin</source>
         <translation>ラウンドロビン</translation>
     </message>
     <message>
-        <location filename="FWObjectPropertiesFactory.cpp" line="896"/>
+        <location filename="FWObjectPropertiesFactory.cpp" line="1085"/>
         <source>static-port</source>
         <translation>静的ポート</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="78"/>
+        <location filename="PrintingController.cpp" line="79"/>
         <source>Firewall</source>
         <translation>ファイアウォール</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="79"/>
+        <location filename="PrintingController.cpp" line="80"/>
         <source>Host</source>
         <translation>ホスト</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="81"/>
+        <location filename="PrintingController.cpp" line="82"/>
         <source>Address</source>
         <translation>アドレス</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="82"/>
+        <location filename="PrintingController.cpp" line="83"/>
         <source>Addres Range</source>
         <translation>アドレス範囲</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="632"/>
+        <location filename="platforms.cpp" line="765"/>
         <source>Interface</source>
         <translation>インターフェース</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="84"/>
+        <location filename="PrintingController.cpp" line="85"/>
         <source>Network</source>
         <translation>ネットワーク</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="85"/>
+        <location filename="PrintingController.cpp" line="86"/>
         <source>Group of objects</source>
         <translation>オブジェクトのグループ</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="86"/>
+        <location filename="PrintingController.cpp" line="87"/>
         <source>Custom Service</source>
         <translation>カスタムサービス</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="87"/>
+        <location filename="PrintingController.cpp" line="88"/>
         <source>IP Service</source>
         <translation>IP サービス</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="89"/>
+        <location filename="PrintingController.cpp" line="90"/>
         <source>ICMP Service</source>
         <translation>ICMP サービス</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="90"/>
+        <location filename="PrintingController.cpp" line="91"/>
         <source>TCP Service</source>
         <translation>TCP サービス</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="91"/>
+        <location filename="PrintingController.cpp" line="92"/>
         <source>UDP Service</source>
         <translation>UDP サービス</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="92"/>
+        <location filename="PrintingController.cpp" line="93"/>
         <source>Group of services</source>
         <translation>サービスのグループ</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="93"/>
+        <location filename="PrintingController.cpp" line="94"/>
         <source>Time Interval</source>
         <translation>時間間隔</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="329"/>
+        <location filename="PrintingController.cpp" line="325"/>
         <source>Firewall name: %1</source>
         <translation>ファイアウォール名: %1</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="331"/>
+        <location filename="PrintingController.cpp" line="327"/>
         <source>Platform: </source>
         <translation>プラットフォーム: </translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="332"/>
+        <location filename="PrintingController.cpp" line="328"/>
         <source>Version: </source>
         <translation>バージョン: </translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="333"/>
+        <location filename="PrintingController.cpp" line="329"/>
         <source>Host OS: </source>
         <translation>ホスト OS: </translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="283"/>
+        <location filename="PrintingController.cpp" line="284"/>
         <source>Policy: </source>
         <translation>ポリシー:</translation>
     </message>
@@ -3960,50 +4415,43 @@ Ignoring this setting.</source>
         <translation type="obsolete">NAT:</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="580"/>
+        <location filename="platforms.cpp" line="713"/>
         <source>Routing</source>
         <translation>ルーティング</translation>
     </message>
     <message>
         <location filename="ObjectManipulator.cpp" line="278"/>
         <source> ( read only )</source>
-        <translation>( 読み込み専用 )</translation>
+        <translation type="obsolete">( 読み込み専用 )</translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="1724"/>
+        <location filename="ObjectManipulator.cpp" line="2029"/>
         <source>Impossible to insert object %1 (type %2) into %3
 because of incompatible type.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator.cpp" line="2638"/>
-        <source>Type &apos;%1&apos;: new object can not be created because
-corresponding branch is missing in the object tree.
-Please repair the tree using command &apos;fwbedit -s -f file.fwb&apos;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="733"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="726"/>
         <source>Library %1: Firewall &apos;%2&apos; (global policy rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="743"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="736"/>
         <source>Library %1: Firewall &apos;%2&apos; (NAT rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="753"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="746"/>
         <source>Library %1: Group &apos;%2&apos; uses object &apos;%3&apos; from library &apos;%4&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="809"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="802"/>
         <source>File is read-only</source>
         <translation>ファイルは読み込み専用です</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="814"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="807"/>
         <source>Error saving file %1: %2</source>
         <translation>ファイル %1 の保存中にエラー: %2</translation>
     </message>
@@ -4025,32 +4473,32 @@ Exit status %3</source>
         <translation>ファイル %1 のrcsdiff を実行中に致命的なエラー</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="358"/>
+        <location filename="SSHPIX.cpp" line="357"/>
         <source>Can not open file %1</source>
         <translation>ファイル %1 を開くことができません</translation>
     </message>
     <message>
-        <location filename="SSHSession.cpp" line="506"/>
+        <location filename="SSHSession.cpp" line="509"/>
         <source>ERROR</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="SSHSession.cpp" line="506"/>
+        <location filename="SSHSession.cpp" line="509"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="UDPServiceDialog.cpp" line="128"/>
+        <location filename="UDPServiceDialog.cpp" line="127"/>
         <source>Invalid range defined for the source port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="utils.cpp" line="237"/>
+        <location filename="utils.cpp" line="230"/>
         <source>&amp;Continue editing</source>
         <translation>編集を続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="UDPServiceDialog.cpp" line="136"/>
+        <location filename="UDPServiceDialog.cpp" line="135"/>
         <source>Invalid range defined for the destination port.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4070,13 +4518,13 @@ Exit status %3</source>
         <translation>オフ</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="92"/>
+        <location filename="instDialog_compile.cpp" line="89"/>
         <source>Compiling rule sets for firewall: %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="90"/>
+        <location filename="instDialog_installer.cpp" line="85"/>
         <source>Installing policy rules on firewall &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4084,137 +4532,110 @@ Exit status %3</source>
         <location filename="instDialog_ui_ops.cpp" line="226"/>
         <source>&lt;b&gt;Summary:&lt;/b&gt;
 </source>
-        <translation>&lt;b&gt;要約:&lt;/b&gt;
+        <translation type="obsolete">&lt;b&gt;要約:&lt;/b&gt;
 </translation>
     </message>
     <message>
         <location filename="instDialog_ui_ops.cpp" line="228"/>
         <source>* firewall name : %1
 </source>
-        <translation>* ファイアウォール名 : %1
+        <translation type="obsolete">* ファイアウォール名 : %1
 </translation>
     </message>
     <message>
         <location filename="instDialog_ui_ops.cpp" line="230"/>
         <source>* user name : %1
 </source>
-        <translation>* ユーザー名 : %1
+        <translation type="obsolete">* ユーザー名 : %1
 </translation>
     </message>
     <message>
         <location filename="instDialog_ui_ops.cpp" line="231"/>
         <source>* management address : %1
 </source>
-        <translation>* アドレス管理 : %1
+        <translation type="obsolete">* アドレス管理 : %1
 </translation>
     </message>
     <message>
         <location filename="instDialog_ui_ops.cpp" line="233"/>
         <source>* platform : %1
 </source>
-        <translation>* プラットフォーム : %1
+        <translation type="obsolete">* プラットフォーム : %1
 </translation>
     </message>
     <message>
         <location filename="instDialog_ui_ops.cpp" line="235"/>
         <source>* host OS : %1
 </source>
-        <translation>* ホスト OS : %1
+        <translation type="obsolete">* ホスト OS : %1
 </translation>
     </message>
     <message>
         <location filename="instDialog_ui_ops.cpp" line="237"/>
         <source>* Loading configuration from file %1
 </source>
-        <translation>* ファイル %1 からせって意を読み込んでいます</translation>
+        <translation type="obsolete">* ファイル %1 からせって意を読み込んでいます</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="241"/>
-        <source>* Incremental install
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="instDialog_ui_ops.cpp" line="247"/>
-        <source>* Configuration diff will be saved in file %1
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="instDialog_ui_ops.cpp" line="253"/>
-        <source>* Commands will not be executed on the firewall
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="instDialog_ui_ops.cpp" line="1055"/>
+        <location filename="instDialog_ui_ops.cpp" line="1067"/>
         <source>Only one interface of the firewall &apos;%1&apos; must be marked as management interface.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="1063"/>
+        <location filename="instDialog_ui_ops.cpp" line="1078"/>
         <source>One of the interfaces of the firewall &apos;%1&apos; must be marked as management interface.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="1071"/>
+        <location filename="instDialog_ui_ops.cpp" line="1089"/>
         <source>Management interface does not have IP address, can not communicate with the firewall.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="128"/>
+        <location filename="pixAdvancedDialog.cpp" line="89"/>
         <source>0 - System Unusable</source>
         <translation>0 - システム未使用</translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="133"/>
+        <location filename="pixAdvancedDialog.cpp" line="94"/>
         <source>1 - Take Immediate Action</source>
         <translation>1 - すぐさま処理をする</translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="138"/>
+        <location filename="pixAdvancedDialog.cpp" line="99"/>
         <source>2 - Critical Condition</source>
         <translation>2 - 危険な状態</translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="143"/>
+        <location filename="pixAdvancedDialog.cpp" line="104"/>
         <source>3 - Error Message</source>
         <translation>3 - エラーメッセージ</translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="148"/>
+        <location filename="pixAdvancedDialog.cpp" line="109"/>
         <source>4 - Warning Message</source>
         <translation>4 - 警告メッセージ</translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="153"/>
+        <location filename="pixAdvancedDialog.cpp" line="114"/>
         <source>5 - Normal but significant condition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="158"/>
+        <location filename="pixAdvancedDialog.cpp" line="119"/>
         <source>6 - Informational</source>
         <translation>6 - 情報</translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="163"/>
+        <location filename="pixAdvancedDialog.cpp" line="124"/>
         <source>7 - Debug Message</source>
         <translation>7 - デバッグメッセージ</translation>
     </message>
     <message>
-        <location filename="listOfLibraries.cpp" line="152"/>
-        <source>The library file you are trying to open
-has been saved in an older version of
-Firewall Builder and needs to be upgraded.
-To upgrade it, just load it in the Firewall
-Builder GUI and save back to file again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="utils.cpp" line="214"/>
+        <location filename="utils.cpp" line="207"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
@@ -4222,13 +4643,13 @@ Builder GUI and save back to file again.</source>
         <location filename="listOfLibraries.cpp" line="192"/>
         <source>Error loading file %1:
 %2</source>
-        <translation>ファイル %1 の読み込み中のエラー:
+        <translation type="obsolete">ファイル %1 の読み込み中のエラー:
 %2</translation>
     </message>
     <message>
         <location filename="listOfLibraries.cpp" line="219"/>
         <source>Duplicate library &apos;%1&apos;</source>
-        <translation>ライブラリー「%1」の複製</translation>
+        <translation type="obsolete">ライブラリー「%1」の複製</translation>
     </message>
     <message>
         <location filename="" line="0"/>
@@ -4256,530 +4677,642 @@ Builder GUI and save back to file again.</source>
         <translation>通常</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="61"/>
+        <location filename="platforms.cpp" line="68"/>
         <source>alert</source>
         <translation>alert</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="63"/>
+        <location filename="platforms.cpp" line="70"/>
         <source>crit</source>
         <translation>crit</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="65"/>
+        <location filename="platforms.cpp" line="72"/>
         <source>error</source>
         <translation>error</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="67"/>
+        <location filename="platforms.cpp" line="74"/>
         <source>warning</source>
         <translation>warning</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="69"/>
+        <location filename="platforms.cpp" line="76"/>
         <source>notice</source>
         <translation>notice</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="71"/>
+        <location filename="platforms.cpp" line="78"/>
         <source>info</source>
         <translation>info</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="73"/>
+        <location filename="platforms.cpp" line="80"/>
         <source>debug</source>
         <translation>debug</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="79"/>
+        <location filename="platforms.cpp" line="86"/>
         <source>kern</source>
         <translation>kern</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="81"/>
+        <location filename="platforms.cpp" line="88"/>
         <source>user</source>
         <translation>user</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="83"/>
+        <location filename="platforms.cpp" line="90"/>
         <source>mail</source>
         <translation>mail</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="85"/>
+        <location filename="platforms.cpp" line="92"/>
         <source>daemon</source>
         <translation>daemon</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="87"/>
+        <location filename="platforms.cpp" line="94"/>
         <source>auth</source>
         <translation>auth</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="89"/>
+        <location filename="platforms.cpp" line="96"/>
         <source>syslog</source>
         <translation>syslog</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="91"/>
+        <location filename="platforms.cpp" line="98"/>
         <source>lpr</source>
         <translation>lpr</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="93"/>
+        <location filename="platforms.cpp" line="100"/>
         <source>news</source>
         <translation>news</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="95"/>
+        <location filename="platforms.cpp" line="102"/>
         <source>uucp</source>
         <translation>uucp</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="97"/>
+        <location filename="platforms.cpp" line="104"/>
         <source>cron</source>
         <translation>cron</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="99"/>
+        <location filename="platforms.cpp" line="106"/>
         <source>authpriv</source>
         <translation>authpriv</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="101"/>
+        <location filename="platforms.cpp" line="108"/>
         <source>ftp</source>
         <translation>ftp</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="103"/>
+        <location filename="platforms.cpp" line="110"/>
         <source>local0</source>
         <translation>local0</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="105"/>
+        <location filename="platforms.cpp" line="112"/>
         <source>local1</source>
         <translation>local1</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="107"/>
+        <location filename="platforms.cpp" line="114"/>
         <source>local2</source>
         <translation>local2</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="109"/>
+        <location filename="platforms.cpp" line="116"/>
         <source>local3</source>
         <translation>local3</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="111"/>
+        <location filename="platforms.cpp" line="118"/>
         <source>local4</source>
         <translation>local4</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="113"/>
+        <location filename="platforms.cpp" line="120"/>
         <source>local5</source>
         <translation>local5</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="115"/>
+        <location filename="platforms.cpp" line="122"/>
         <source>local6</source>
         <translation>local6</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="117"/>
+        <location filename="platforms.cpp" line="124"/>
         <source>local7</source>
         <translation>local7</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="122"/>
+        <location filename="platforms.cpp" line="129"/>
         <source>ICMP admin prohibited</source>
         <translation>ICMP 管理は禁止されました</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="124"/>
+        <location filename="platforms.cpp" line="131"/>
         <source>ICMP host prohibited</source>
         <translation>ICMP ホストは禁止されました</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="126"/>
+        <location filename="platforms.cpp" line="133"/>
         <source>ICMP host unreachable</source>
         <translation>ICMP ホストに到達しません</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="128"/>
+        <location filename="platforms.cpp" line="135"/>
         <source>ICMP net prohibited</source>
         <translation>ICMP ネットは禁止されました</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="130"/>
+        <location filename="platforms.cpp" line="137"/>
         <source>ICMP net unreachable</source>
         <translation>ICMP ネットに到達しません</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="132"/>
+        <location filename="platforms.cpp" line="139"/>
         <source>ICMP port unreachable</source>
         <translation>ICMP ポートに到達しません</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="134"/>
+        <location filename="platforms.cpp" line="141"/>
         <source>ICMP protocol unreachable</source>
         <translation>ICMP プロトコルに到達しません</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="136"/>
+        <location filename="platforms.cpp" line="143"/>
         <source>TCP RST</source>
         <translation>TCP RST</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="148"/>
+        <location filename="platforms.cpp" line="155"/>
         <source>None</source>
         <translation>なし</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="141"/>
+        <location filename="platforms.cpp" line="148"/>
         <source>Route through</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="143"/>
+        <location filename="platforms.cpp" line="150"/>
         <source>Route reply through</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="145"/>
+        <location filename="platforms.cpp" line="152"/>
         <source>Route a copy through</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="150"/>
+        <location filename="platforms.cpp" line="159"/>
         <source>Random</source>
         <translation>ランダム</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="152"/>
+        <location filename="platforms.cpp" line="161"/>
         <source>Source Hash</source>
         <translation>ソースハッシュ</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="154"/>
+        <location filename="platforms.cpp" line="163"/>
         <source>Round Robin</source>
         <translation>ラウンドロビン</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="157"/>
+        <location filename="iptAdvancedDialog.cpp" line="178"/>
         <source>on top of the script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="159"/>
+        <location filename="iptAdvancedDialog.cpp" line="180"/>
         <source>after interface configuration</source>
         <translation>インターフェース設定の後</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="161"/>
+        <location filename="iptAdvancedDialog.cpp" line="186"/>
         <source>after policy reset</source>
         <translation>ポリシーリセットの後</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="164"/>
+        <location filename="pfAdvancedDialog.cpp" line="209"/>
         <source>in the activation shell script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="167"/>
+        <location filename="pfAdvancedDialog.cpp" line="212"/>
         <source>in the pf rule file, at the very top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="170"/>
+        <location filename="pfAdvancedDialog.cpp" line="215"/>
         <source>in the pf rule file, after set comamnds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="173"/>
+        <location filename="pfAdvancedDialog.cpp" line="218"/>
         <source>in the pf rule file, after scrub comamnds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="176"/>
+        <location filename="pfAdvancedDialog.cpp" line="221"/>
         <source>in the pf rule file, after table definitions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="181"/>
+        <location filename="platforms.cpp" line="168"/>
         <source>/day</source>
         <translation>/日</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="183"/>
+        <location filename="platforms.cpp" line="170"/>
         <source>/hour</source>
         <translation>/時</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="185"/>
+        <location filename="platforms.cpp" line="172"/>
         <source>/minute</source>
         <translation>/分</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="187"/>
+        <location filename="platforms.cpp" line="174"/>
         <source>/second</source>
         <translation>/秒</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="392"/>
+        <location filename="platforms.cpp" line="380"/>
         <source>- any -</source>
         <translation>- 任意 -</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="393"/>
+        <location filename="platforms.cpp" line="381"/>
         <source>1.2.5 or earlier</source>
         <translation>1.2.5 以上</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="394"/>
+        <location filename="platforms.cpp" line="382"/>
         <source>1.2.6 to 1.2.8</source>
         <translation>1.2.6 から 1.2.8</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="395"/>
+        <location filename="platforms.cpp" line="383"/>
         <source>1.2.9 to 1.2.11</source>
         <translation>1.2.9 から 1.2.11</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="396"/>
+        <location filename="platforms.cpp" line="384"/>
         <source>1.3.x</source>
         <translation>4.x {1.3.?}</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="397"/>
+        <location filename="platforms.cpp" line="385"/>
         <source>1.4.0 or later</source>
         <translation>1.3.0 以上 {1.4.0 ?}</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="415"/>
+        <location filename="platforms.cpp" line="404"/>
         <source>3.x</source>
         <translation>3.x</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="416"/>
+        <location filename="platforms.cpp" line="405"/>
         <source>3.7 to 3.9</source>
         <translation>3.7 から 3.9</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="417"/>
+        <location filename="platforms.cpp" line="406"/>
         <source>4.x</source>
         <translation>4.x</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="539"/>
+        <location filename="platforms.cpp" line="672"/>
         <source>Accept</source>
         <translation>受理</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="541"/>
+        <location filename="platforms.cpp" line="674"/>
         <source>Deny</source>
         <translation>破棄</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="543"/>
+        <location filename="platforms.cpp" line="676"/>
         <source>Reject</source>
         <translation>拒否</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="545"/>
+        <location filename="platforms.cpp" line="678"/>
         <source>Scrub</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="547"/>
+        <location filename="platforms.cpp" line="680"/>
         <source>Return</source>
         <translation>返す</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="549"/>
+        <location filename="platforms.cpp" line="682"/>
         <source>Skip</source>
         <translation>飛ばす</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="551"/>
+        <location filename="platforms.cpp" line="684"/>
         <source>Continue</source>
         <translation>続ける</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="553"/>
+        <location filename="platforms.cpp" line="686"/>
         <source>Modify</source>
         <translation>修正</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="555"/>
+        <location filename="platforms.cpp" line="688"/>
         <source>Classify</source>
         <translation>分類</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="557"/>
+        <location filename="platforms.cpp" line="690"/>
         <source>Custom</source>
         <translation>カスタム</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="560"/>
+        <location filename="platforms.cpp" line="693"/>
         <source>Branch</source>
         <translation>分岐</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="561"/>
+        <location filename="platforms.cpp" line="694"/>
         <source>Chain</source>
         <translation>連結</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="562"/>
+        <location filename="platforms.cpp" line="695"/>
         <source>Anchor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="566"/>
+        <location filename="platforms.cpp" line="699"/>
         <source>Accounting</source>
         <translation>アカウント</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="567"/>
+        <location filename="platforms.cpp" line="700"/>
         <source>Count</source>
         <translation>回数</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="571"/>
+        <location filename="platforms.cpp" line="704"/>
         <source>Tag</source>
         <translation>タグ</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="572"/>
+        <location filename="platforms.cpp" line="705"/>
         <source>Mark</source>
         <translation>マスク</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="576"/>
+        <location filename="platforms.cpp" line="709"/>
         <source>Pipe</source>
         <translation>パイプ</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="577"/>
+        <location filename="platforms.cpp" line="710"/>
         <source>Queue</source>
         <translation>キュー</translation>
     </message>
     <message>
-        <location filename="printerStream.cpp" line="156"/>
+        <location filename="printerStream.cpp" line="162"/>
         <source>Page %1</source>
         <translation>ページ %1</translation>
     </message>
     <message>
-        <location filename="utils.cpp" line="213"/>
+        <location filename="utils.cpp" line="206"/>
         <source>Impossible to apply changes because object is located in read-only
 part of the tee or data file was opened read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="utils.cpp" line="236"/>
+        <location filename="utils.cpp" line="229"/>
         <source>Object with name &apos;%1&apos; already exists, please choose different name.</source>
         <translation>オブジェクト名「%1」は既に存在します。別の名前を選択してください。</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="356"/>
+        <location filename="PrintingController.cpp" line="352"/>
         <source>Legend</source>
         <translation type="unfinished">凡例</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="434"/>
+        <location filename="PrintingController.cpp" line="430"/>
         <source>Objects</source>
         <translation type="unfinished">オブジェクト</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="522"/>
+        <location filename="PrintingController.cpp" line="518"/>
         <source>Groups</source>
         <translation type="unfinished">グループ</translation>
     </message>
     <message>
-        <location filename="PrintingController.cpp" line="564"/>
+        <location filename="PrintingController.cpp" line="560"/>
         <source>EMPTY</source>
         <translation type="unfinished">空</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="616"/>
+        <location filename="platforms.cpp" line="749"/>
         <source>Source</source>
         <translation type="unfinished">ソース</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="630"/>
+        <location filename="platforms.cpp" line="763"/>
         <source>Destination</source>
         <translation type="unfinished">ディスティネーション</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="618"/>
+        <location filename="platforms.cpp" line="751"/>
         <source>Service</source>
         <translation type="unfinished">サービス</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="620"/>
+        <location filename="platforms.cpp" line="753"/>
         <source>Time</source>
         <translation type="unfinished">時間</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="622"/>
+        <location filename="platforms.cpp" line="755"/>
         <source>Original Src</source>
         <translation type="unfinished">オリジナルソース</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="623"/>
+        <location filename="platforms.cpp" line="756"/>
         <source>Original Dst</source>
         <translation type="unfinished">オリジナルディスティネーション</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="624"/>
+        <location filename="platforms.cpp" line="757"/>
         <source>Original Srv</source>
         <translation type="unfinished">オリジナルサービス</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="626"/>
+        <location filename="platforms.cpp" line="759"/>
         <source>Translated Src</source>
         <translation type="unfinished">転送元ソース</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="627"/>
+        <location filename="platforms.cpp" line="760"/>
         <source>Translated Dst</source>
         <translation type="unfinished">転送先</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="628"/>
+        <location filename="platforms.cpp" line="761"/>
         <source>Translated Srv</source>
         <translation type="unfinished">転送サービス</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="631"/>
+        <location filename="platforms.cpp" line="764"/>
         <source>Gateway</source>
         <translation type="unfinished">ゲートウェイ</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="636"/>
+        <location filename="platforms.cpp" line="769"/>
         <source>Direction</source>
         <translation type="unfinished">方向</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="637"/>
+        <location filename="platforms.cpp" line="770"/>
         <source>Action</source>
         <translation type="unfinished">操作</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="638"/>
+        <location filename="platforms.cpp" line="771"/>
         <source>Options</source>
         <translation type="unfinished">オプション</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="639"/>
+        <location filename="platforms.cpp" line="772"/>
         <source>Metric</source>
         <translation type="unfinished">サービス</translation>
     </message>
     <message>
-        <location filename="platforms.cpp" line="640"/>
+        <location filename="platforms.cpp" line="773"/>
         <source>Comment</source>
         <translation type="unfinished">コメント</translation>
+    </message>
+    <message>
+        <location filename="FWObjectPropertiesFactory.cpp" line="328"/>
+        <source>Group member</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWObjectPropertiesFactory.cpp" line="528"/>
+        <source>type: %1&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="FWObjectPropertiesFactory.cpp" line="537"/>
+        <source>Group member %1:%2&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="1667"/>
+        <source>No firewalls assigned to cluster &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ObjectManipulator.cpp" line="3069"/>
+        <source>Type &apos;%1&apos;: new object can not be created because
+corresponding branch is missing in the object tree.
+Please repair the tree using command &apos;fwbedit checktree -f file.fwb&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="352"/>
+        <source>Summary:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="354"/>
+        <source>* firewall name : %1</source>
+        <translation type="unfinished">* ファイアウォール名: %1</translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="355"/>
+        <source>* user name : %1</source>
+        <translation type="unfinished">* ユーザー名: %1</translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="356"/>
+        <source>* management address : %1</source>
+        <translation type="unfinished">* 管理アドレス: %1</translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="358"/>
+        <source>* platform : %1</source>
+        <translation type="unfinished">* プラットフォーム: %1</translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="360"/>
+        <source>* host OS : %1</source>
+        <translation type="unfinished">* ホスト OS: %1</translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="362"/>
+        <source>* Loading configuration from file %1</source>
+        <translation type="unfinished">* ファイル %1 から設定を読み込んでいます</translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="365"/>
+        <source>* Incremental install</source>
+        <translation type="unfinished">* インクリメンタルインストール</translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="369"/>
+        <source>* Configuration diff will be saved in file %1</source>
+        <translation type="unfinished">* 設定の差分をファイル %1 に保存するでしょう</translation>
+    </message>
+    <message>
+        <location filename="instDialog_ui_ops.cpp" line="372"/>
+        <source>* Commands will not be executed on the firewall</source>
+        <translation type="unfinished">* コマンドはファイアウォール上で実行されないでしょう</translation>
+    </message>
+    <message>
+        <location filename="linux24AdvancedDialog.cpp" line="65"/>
+        <source>%1 advanced settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="157"/>
+        <source>Bitmask</source>
+        <translation type="unfinished">ビットマスク</translation>
+    </message>
+    <message>
+        <location filename="platforms.cpp" line="386"/>
+        <source>1.4.3 or later</source>
+        <translation type="unfinished">1.3.0 以上 {1.4.3 ?}</translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="189"/>
+        <source>Executing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="244"/>
+        <source>Using transfer agent &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="266"/>
+        <source>Appending fw object name to tarball</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="345"/>
+        <source>Could not transfer %1 config to &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4837,7 +5370,7 @@ after the program crashed.</source>
 <context>
     <name>RCSFilePreview</name>
     <message>
-        <location filename="RCSFilePreview.cpp" line="135"/>
+        <location filename="RCSFilePreview.cpp" line="142"/>
         <source>File is not in RCS</source>
         <translation>ファイルは RCS 内にありません</translation>
     </message>
@@ -4850,44 +5383,54 @@ after the program crashed.</source>
         <translation>RCS ファイルプレビュー</translation>
     </message>
     <message>
-        <location filename="rcsfilepreview_q.ui" line="59"/>
+        <location filename="rcsfilepreview_q.ui" line="62"/>
         <source>Revision</source>
         <translation>リビジョン</translation>
     </message>
     <message>
-        <location filename="rcsfilepreview_q.ui" line="64"/>
+        <location filename="rcsfilepreview_q.ui" line="67"/>
         <source>Date</source>
         <translation>日付</translation>
     </message>
     <message>
-        <location filename="rcsfilepreview_q.ui" line="69"/>
+        <location filename="rcsfilepreview_q.ui" line="72"/>
         <source>Author</source>
         <translation>著者</translation>
     </message>
     <message>
-        <location filename="rcsfilepreview_q.ui" line="74"/>
+        <location filename="rcsfilepreview_q.ui" line="77"/>
         <source>Locked by</source>
         <translation>ロックした人</translation>
     </message>
     <message>
-        <location filename="rcsfilepreview_q.ui" line="106"/>
+        <location filename="rcsfilepreview_q.ui" line="148"/>
         <source>RCS log:</source>
         <translation>RCS ログ:</translation>
     </message>
     <message>
-        <location filename="rcsfilepreview_q.ui" line="173"/>
+        <location filename="rcsfilepreview_q.ui" line="215"/>
         <source>Open</source>
         <translation>開く</translation>
     </message>
     <message>
-        <location filename="rcsfilepreview_q.ui" line="186"/>
+        <location filename="rcsfilepreview_q.ui" line="228"/>
         <source>Open read-only</source>
         <translation>読み込み専用で開く</translation>
     </message>
     <message>
-        <location filename="rcsfilepreview_q.ui" line="199"/>
+        <location filename="rcsfilepreview_q.ui" line="241"/>
         <source>Cancel</source>
         <translation>取り消し</translation>
+    </message>
+    <message>
+        <location filename="rcsfilepreview_q.ui" line="94"/>
+        <source>Tree View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="rcsfilepreview_q.ui" line="101"/>
+        <source>List View</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4936,17 +5479,12 @@ after the program crashed.</source>
         <translation>ルーティングのルールオプション</translation>
     </message>
     <message>
-        <location filename="routingruleoptionsdialog_q.ui" line="99"/>
-        <source>fw/rule num</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="routingruleoptionsdialog_q.ui" line="173"/>
+        <location filename="routingruleoptionsdialog_q.ui" line="59"/>
         <source>If installation of this routing rule fails, just carry on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="routingruleoptionsdialog_q.ui" line="248"/>
+        <location filename="routingruleoptionsdialog_q.ui" line="110"/>
         <source>No options available for routing rules of this firewall platform</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4959,390 +5497,390 @@ after the program crashed.</source>
         <translation>ipt 用ルールオプション</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="61"/>
-        <source>fw/rule num</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1237"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1175"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="162"/>
+        <location filename="ruleoptionsdialog_q.ui" line="97"/>
         <source>Assume firewall is part of &apos;any&apos; (this setting only affects code generated for this rule)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1816"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1774"/>
         <source>Stateless rule</source>
         <translation>ステートレスルール</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1829"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1787"/>
         <source>Normally policy compiler uses stateful inspection in each rule. Activating next option makes this rule stateless.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1296"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1247"/>
         <source>Logging</source>
         <translation>ログ記録</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="252"/>
+        <location filename="ruleoptionsdialog_q.ui" line="187"/>
         <source>alert</source>
         <translation>alert</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="257"/>
+        <location filename="ruleoptionsdialog_q.ui" line="192"/>
         <source>crit</source>
         <translation>crit</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="262"/>
+        <location filename="ruleoptionsdialog_q.ui" line="197"/>
         <source>error</source>
         <translation>error</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="267"/>
+        <location filename="ruleoptionsdialog_q.ui" line="202"/>
         <source>warning</source>
         <translation>warning</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="272"/>
+        <location filename="ruleoptionsdialog_q.ui" line="207"/>
         <source>notice</source>
         <translation>notice</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="277"/>
+        <location filename="ruleoptionsdialog_q.ui" line="212"/>
         <source>info</source>
         <translation>info</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="282"/>
+        <location filename="ruleoptionsdialog_q.ui" line="217"/>
         <source>debug</source>
         <translation>debug</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1311"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1262"/>
         <source>Log prefix:</source>
         <translation>ログ接頭語:</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1930"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1885"/>
         <source>Log level:</source>
         <translation>ログレベル:</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="345"/>
+        <location filename="ruleoptionsdialog_q.ui" line="280"/>
         <source>Netlink group (if using ULOG): </source>
         <translation>ネットリンクグループ (ULOG を使う場合):</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="382"/>
+        <location filename="ruleoptionsdialog_q.ui" line="317"/>
         <source>limit</source>
         <translation>制限</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="394"/>
+        <location filename="ruleoptionsdialog_q.ui" line="329"/>
         <source>Rate (rule matches if it hits this often or less):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="404"/>
+        <location filename="ruleoptionsdialog_q.ui" line="339"/>
         <source>Module limit</source>
         <translation>モジュール制限</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="769"/>
+        <location filename="ruleoptionsdialog_q.ui" line="704"/>
         <source>Burst:</source>
         <translation>バースト:</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="746"/>
+        <location filename="ruleoptionsdialog_q.ui" line="681"/>
         <source>/day</source>
         <translation>/日</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="751"/>
+        <location filename="ruleoptionsdialog_q.ui" line="686"/>
         <source>/hour</source>
         <translation>/時</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="756"/>
+        <location filename="ruleoptionsdialog_q.ui" line="691"/>
         <source>/minute</source>
         <translation>/分</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="761"/>
+        <location filename="ruleoptionsdialog_q.ui" line="696"/>
         <source>/second</source>
         <translation>/秒</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="517"/>
+        <location filename="ruleoptionsdialog_q.ui" line="452"/>
         <source>connlimit</source>
         <translation>接続制限</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="535"/>
+        <location filename="ruleoptionsdialog_q.ui" line="470"/>
         <source>bit</source>
         <translation>ビット</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="580"/>
+        <location filename="ruleoptionsdialog_q.ui" line="515"/>
         <source>per network with netmask of </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="619"/>
+        <location filename="ruleoptionsdialog_q.ui" line="554"/>
         <source>Number of allowed connections per client host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="629"/>
+        <location filename="ruleoptionsdialog_q.ui" line="564"/>
         <source>Module connlimit</source>
         <translation>モジュールの接続制限</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="656"/>
+        <location filename="ruleoptionsdialog_q.ui" line="591"/>
         <source>hashlimit</source>
         <translation>ハッシュ制限</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="668"/>
+        <location filename="ruleoptionsdialog_q.ui" line="603"/>
         <source>Module hashlimit</source>
         <translation>モジュールのハッシュ制限</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="678"/>
+        <location filename="ruleoptionsdialog_q.ui" line="613"/>
         <source>On some older systems this module has name &apos;dstlimit&apos;. Check here if you need to use this name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="685"/>
+        <location filename="ruleoptionsdialog_q.ui" line="620"/>
         <source>Rate:</source>
         <translation>日付:</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="695"/>
+        <location filename="ruleoptionsdialog_q.ui" line="630"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="779"/>
+        <location filename="ruleoptionsdialog_q.ui" line="714"/>
         <source>Mode:</source>
         <translation>モード:</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="802"/>
+        <location filename="ruleoptionsdialog_q.ui" line="737"/>
         <source>htable-size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="812"/>
+        <location filename="ruleoptionsdialog_q.ui" line="747"/>
         <source>The number of buckets of the hash table (omit this option in generated script if set to 0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="822"/>
+        <location filename="ruleoptionsdialog_q.ui" line="757"/>
         <source>htable-max:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="832"/>
+        <location filename="ruleoptionsdialog_q.ui" line="767"/>
         <source>Maximum number of entries in the hash (omit this option in generated script if set to 0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="842"/>
+        <location filename="ruleoptionsdialog_q.ui" line="777"/>
         <source>htable-expire:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="852"/>
+        <location filename="ruleoptionsdialog_q.ui" line="787"/>
         <source>After how many milliseconds do hash entries expire (omit this option in the generated script if set to 0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="862"/>
+        <location filename="ruleoptionsdialog_q.ui" line="797"/>
         <source>htable-gcinterval:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="872"/>
+        <location filename="ruleoptionsdialog_q.ui" line="807"/>
         <source>How many milliseconds between garbage collection intervals (omit this option in generated script if set to 0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="882"/>
+        <location filename="ruleoptionsdialog_q.ui" line="817"/>
         <source>Options below control size of the hash table and expiration time. They will be omitted from the generated script if set to zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="938"/>
+        <location filename="ruleoptionsdialog_q.ui" line="876"/>
         <source>srcip</source>
         <translation>接続元 IP</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="945"/>
+        <location filename="ruleoptionsdialog_q.ui" line="883"/>
         <source>dstip</source>
         <translation>接続先 IP</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="952"/>
+        <location filename="ruleoptionsdialog_q.ui" line="890"/>
         <source>srcport</source>
         <translation>接続元ポート</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="959"/>
+        <location filename="ruleoptionsdialog_q.ui" line="897"/>
         <source>dstport</source>
         <translation>接続先ポート</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1073"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1011"/>
         <source>Send ICMP &apos;unreachable&apos; packet masquerading as being from the original destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1080"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1018"/>
         <source>Keep information on fragmented packets, to be applied to later fragments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1100"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1038"/>
         <source>Log facility:</source>
         <translation>ログファシリティ:</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1275"/>
-        <source>In PF 4.x &quot;flags S/SA keep state&quot; is the default. Compiler will omit these flags while generating code for stateful rules matching tcp services. However, according to the PF FAQ, care should be taken while dealing with states and interface enc0. To avoid leaking unencrypted traffic out, the FAQ recommends setting &apos;keep state&apos; explicitly in all rules on the enc0 interface. This option applies only if version is set to 4.x.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1288"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1226"/>
         <source>Add &apos;keep state&apos; </source>
         <translation>「状態維持」を追加する</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1354"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1305"/>
         <source>Tracking</source>
         <translation>追跡</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1366"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1317"/>
         <source>When this option is checked, the number of states per source IP is tracked </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1369"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1320"/>
         <source>Activate source tracking</source>
         <translation>ソース追跡を有効にする</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1430"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1381"/>
         <source>Maximum number of source addresses which can simultaneously have state table entries (max-src-nodes):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1455"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1406"/>
         <source>Maximum number of simultaneous state entries that a single source address can create with this rule (max-src-states):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1501"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1452"/>
         <source>Limits</source>
         <translation>制限</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1513"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1464"/>
         <source>Maximum number of concurrent states this rule may create. Unlimited if set to zero  (option &apos;max&apos;).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1526"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1477"/>
         <source>When this limit is reached, further packets matching the rule that would create state are dropped, until existing states time out.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1552"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1503"/>
         <source>Maximum number of simultaneous TCP connections that a single host can make (max-src-conn):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1594"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1545"/>
         <source>The limit of new connections over a time interval (max-src-conn-rate):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1626"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1577"/>
         <source>/</source>
         <translation>/</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1655"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1606"/>
         <source>sec</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1671"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1622"/>
         <source>overload table:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1691"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1642"/>
         <source>flush</source>
         <translation>flush</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1698"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1649"/>
         <source>global</source>
         <translation>global</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1738"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1689"/>
         <source>TCP</source>
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1744"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1695"/>
         <source>Modulate state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1751"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1702"/>
         <source>synproxy</source>
         <translation>synproxy</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1886"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1844"/>
         <source>These options are only valid for PIX running software v6.3 or later</source>
         <translation>これらのオプションは実行中の PIX ソフトウェアバージョン 6.3 以上で有効です</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1915"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1873"/>
         <source>completely disable logging for this rule</source>
         <translation>このルールのログ記の無効化を完了しました</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="1969"/>
+        <location filename="ruleoptionsdialog_q.ui" line="1921"/>
         <source>Logging interval:</source>
         <translation>ログ記録間隔:</translation>
     </message>
     <message>
-        <location filename="ruleoptionsdialog_q.ui" line="2049"/>
+        <location filename="ruleoptionsdialog_q.ui" line="2001"/>
         <source>There are no options for this firewall platform</source>
         <translation>このファイアウォールプラットフォームでそのオプションはありません</translation>
+    </message>
+    <message>
+        <location filename="ruleoptionsdialog_q.ui" line="1213"/>
+        <source>The following option forces &quot;keep state&quot; to make the rule stateful regardless of the defaul</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ruleoptionsdialog_q.ui" line="1709"/>
+        <source>Use sloppy TCP state tracker for this rule</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>RuleSetDialog</name>
     <message>
-        <location filename="RuleSetDialog.cpp" line="176"/>
+        <location filename="RuleSetDialog.cpp" line="186"/>
         <source>Rule set name &apos;%1&apos; is invalid. Only &apos;[a-z][A-Z][0-9]_-+=@%^&apos; characters are allowed.</source>
         <translation>ルールセット名「%1」は正しくありません。英数字と一部の記号(「_」「-」「+」「=」「@」「%」のみ許可しています。</translation>
     </message>
     <message>
-        <location filename="RuleSetDialog.cpp" line="177"/>
+        <location filename="RuleSetDialog.cpp" line="187"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
@@ -5350,7 +5888,7 @@ after the program crashed.</source>
 <context>
     <name>RuleSetDialog_q</name>
     <message>
-        <location filename="RuleSetDialog.cpp" line="110"/>
+        <location filename="RuleSetDialog.cpp" line="114"/>
         <source>On iptables &quot;top&quot; rule set goes into 
 the built-in chains INPUT, OUTPUT,
 FORWARD; if this flag is unchecked,
@@ -5360,14 +5898,14 @@ the rule set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetDialog.cpp" line="139"/>
+        <location filename="RuleSetDialog.cpp" line="143"/>
         <source>If this flag is unchecked, rules go 
 into anchor with the name the same as
 the name of the rule set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetDialog.cpp" line="150"/>
+        <location filename="RuleSetDialog.cpp" line="154"/>
         <source>If this flag is unchecked, generated
 access list will not be assigned to
 interfaces with &quot;ip access-group&quot;
@@ -5377,52 +5915,52 @@ access access lists generated for it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="16"/>
+        <location filename="rulesetdialog_q.ui" line="22"/>
         <source>Ruleset</source>
         <translation>ルールセット</translation>
     </message>
     <message>
         <location filename="rulesetdialog_q.ui" line="94"/>
         <source>Rule set</source>
-        <translation>ルールセット</translation>
+        <translation type="obsolete">ルールセット</translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="128"/>
+        <location filename="rulesetdialog_q.ui" line="73"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="164"/>
+        <location filename="rulesetdialog_q.ui" line="121"/>
         <source>This is IPv4 rule set</source>
         <translation>これは IPv4 ルールセットです</translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="169"/>
+        <location filename="rulesetdialog_q.ui" line="126"/>
         <source>This is IPv6 rule set</source>
         <translation>これは IPv6 ルールセットです</translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="206"/>
+        <location filename="rulesetdialog_q.ui" line="194"/>
         <source>filter+mangle table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="213"/>
+        <location filename="rulesetdialog_q.ui" line="201"/>
         <source>mangle table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="223"/>
+        <location filename="rulesetdialog_q.ui" line="139"/>
         <source>Top ruleset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="252"/>
+        <location filename="rulesetdialog_q.ui" line="233"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
     <message>
-        <location filename="rulesetdialog_q.ui" line="174"/>
+        <location filename="rulesetdialog_q.ui" line="131"/>
         <source>This is combined IPv4 and IPv6 rule set</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5432,75 +5970,75 @@ access access lists generated for it.</source>
     <message>
         <location filename="RuleSetView.cpp" line="1412"/>
         <source>Outbound </source>
-        <translation>外向き</translation>
+        <translation type="obsolete">外向き</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="1499"/>
         <source>Original</source>
-        <translation>オリジナル</translation>
+        <translation type="obsolete">オリジナル</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="1500"/>
         <source>Default</source>
-        <translation>標準</translation>
+        <translation type="obsolete">標準</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="1503"/>
         <source>All</source>
-        <translation>すべて</translation>
+        <translation type="obsolete">すべて</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="1512"/>
         <source>Any</source>
-        <translation>どれか</translation>
+        <translation type="obsolete">どれか</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2847"/>
+        <location filename="RuleSetView.cpp" line="1072"/>
         <source>Enter group name:</source>
         <translation>グループ名の入力:</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3450"/>
+        <location filename="RuleSetView.cpp" line="664"/>
         <source>Insert Rule</source>
         <translation>ルール挿入</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3073"/>
+        <location filename="RuleSetView.cpp" line="567"/>
         <source>Paste Rule</source>
         <translation>ルール貼り付け</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3098"/>
+        <location filename="RuleSetView.cpp" line="638"/>
         <source>New group</source>
         <translation>新規グループ</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3111"/>
+        <location filename="RuleSetView.cpp" line="653"/>
         <source>Add to the group </source>
         <translation>グループに追加する</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3119"/>
+        <location filename="RuleSetView.cpp" line="634"/>
         <source>Remove from the group</source>
         <translation>グループから削除する</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="3127"/>
         <source>Insert Rule Above</source>
-        <translation>上にルールの挿入</translation>
+        <translation type="obsolete">上にルールの挿入</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3130"/>
+        <location filename="RuleSetView.cpp" line="572"/>
         <source>Rename group</source>
         <translation>グループ名を変更する</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3404"/>
+        <location filename="RuleSetView.cpp" line="579"/>
         <source>Change color</source>
         <translation>色変更</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3408"/>
+        <location filename="RuleSetView.cpp" line="583"/>
         <source>No color</source>
         <translation>色なし</translation>
     </message>
@@ -5540,263 +6078,311 @@ access access lists generated for it.</source>
         <translation type="obsolete">灰色</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3283"/>
+        <location filename="RuleSetView.cpp" line="453"/>
         <source>Parameters</source>
         <translation>パラメーター</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3299"/>
+        <location filename="RuleSetView.cpp" line="468"/>
         <source>Inbound</source>
         <translation>内向き</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3302"/>
+        <location filename="RuleSetView.cpp" line="471"/>
         <source>Outbound</source>
         <translation>外向き</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3305"/>
+        <location filename="RuleSetView.cpp" line="474"/>
         <source>Both</source>
         <translation>両方</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3313"/>
+        <location filename="RuleSetView.cpp" line="488"/>
         <source>Rule Options</source>
         <translation>ルールオプション</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3320"/>
+        <location filename="RuleSetView.cpp" line="494"/>
         <source>Logging On</source>
         <translation>記録する</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3323"/>
+        <location filename="RuleSetView.cpp" line="497"/>
         <source>Logging Off</source>
         <translation>記録しない</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3502"/>
+        <location filename="RuleSetView.cpp" line="558"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3338"/>
+        <location filename="RuleSetView.cpp" line="512"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3340"/>
+        <location filename="RuleSetView.cpp" line="514"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3341"/>
+        <location filename="RuleSetView.cpp" line="515"/>
         <source>Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3344"/>
+        <location filename="RuleSetView.cpp" line="518"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3347"/>
+        <location filename="RuleSetView.cpp" line="521"/>
         <source>Where used</source>
         <translation>使うとき</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3349"/>
+        <location filename="RuleSetView.cpp" line="523"/>
         <source>Reveal in tree</source>
         <translation type="unfinished">ツリーから検索</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3352"/>
+        <location filename="RuleSetView.cpp" line="526"/>
         <source>Negate</source>
         <translation>否定</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="3399"/>
         <source>Rules %1-%2</source>
-        <translation>ルール %1-%2</translation>
+        <translation type="obsolete">ルール %1-%2</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="3402"/>
         <source>Rule %1</source>
-        <translation>ルール %1</translation>
+        <translation type="obsolete">ルール %1</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3452"/>
+        <location filename="RuleSetView.cpp" line="665"/>
         <source>Add Rule Below</source>
         <translation>下にルール追加</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3455"/>
+        <location filename="RuleSetView.cpp" line="667"/>
         <source>Remove Rule</source>
         <translation>ルールの削除</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3456"/>
+        <location filename="RuleSetView.cpp" line="667"/>
         <source>Remove Rules</source>
         <translation>複数ルールの削除</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="3459"/>
         <source>Move Rule</source>
-        <translation>ルール移動</translation>
+        <translation type="obsolete">ルール移動</translation>
     </message>
     <message>
         <location filename="RuleSetView.cpp" line="3460"/>
         <source>Move Rules</source>
-        <translation>複数ルール移動</translation>
+        <translation type="obsolete">複数ルール移動</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3466"/>
+        <location filename="RuleSetView.cpp" line="676"/>
         <source>Copy Rule</source>
         <translation>ルールのコピー</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3468"/>
+        <location filename="RuleSetView.cpp" line="677"/>
         <source>Cut Rule</source>
         <translation>ルールの切り取り</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3470"/>
+        <location filename="RuleSetView.cpp" line="678"/>
         <source>Paste Rule Above</source>
         <translation>上にルールを貼り付け</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3472"/>
+        <location filename="RuleSetView.cpp" line="679"/>
         <source>Paste Rule Below</source>
         <translation>下にルールを貼り付け</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3479"/>
+        <location filename="RuleSetView.cpp" line="686"/>
         <source>Enable Rule</source>
         <translation>ルール有効</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3480"/>
+        <location filename="RuleSetView.cpp" line="686"/>
         <source>Enable Rules</source>
         <translation>ルール有効</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3484"/>
+        <location filename="RuleSetView.cpp" line="689"/>
         <source>Disable Rule</source>
         <translation>ルール無効</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="3485"/>
+        <location filename="RuleSetView.cpp" line="689"/>
         <source>Disable Rules</source>
         <translation>ルール無効</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2797"/>
-        <source></source>
+        <location filename="RuleSetView.cpp" line="102"/>
+        <source>Compile rule</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetView.cpp" line="669"/>
+        <source>Move Rule up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetView.cpp" line="669"/>
+        <source>Move Rules up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetView.cpp" line="671"/>
+        <source>Move Rule down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetView.cpp" line="671"/>
+        <source>Move Rules down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetView.cpp" line="1073"/>
+        <source>New Group</source>
+        <translation type="unfinished">新規グループ</translation>
+    </message>
+</context>
+<context>
+    <name>RuleSetViewDelegate</name>
+    <message>
+        <location filename="RuleSetViewDelegate.cpp" line="516"/>
+        <source>Any</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetViewDelegate.cpp" line="521"/>
+        <source>Original</source>
+        <translation type="unfinished">オリジナル</translation>
+    </message>
+    <message>
+        <location filename="RuleSetViewDelegate.cpp" line="522"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="RuleSetViewDelegate.cpp" line="525"/>
+        <source>All</source>
+        <translation type="unfinished">すべて</translation>
     </message>
 </context>
 <context>
     <name>SSHPIX</name>
     <message>
-        <location filename="SSHPIX.cpp" line="140"/>
+        <location filename="SSHPIX.cpp" line="139"/>
         <source>
 *** Fatal error :</source>
         <translation>
 *** 致命的なエラー :</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="174"/>
+        <location filename="SSHPIX.cpp" line="173"/>
         <source>Logged in</source>
         <translation>ログイン</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="175"/>
+        <location filename="SSHPIX.cpp" line="174"/>
         <source>Switching to enable mode...</source>
         <translation>有効モードに切り替え中...
 </translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="209"/>
+        <location filename="SSHPIX.cpp" line="208"/>
         <source>New RSA key</source>
         <translation>新規 RSA 鍵</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="210"/>
+        <location filename="SSHPIX.cpp" line="209"/>
         <source>Yes</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="210"/>
+        <location filename="SSHPIX.cpp" line="209"/>
         <source>No</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="256"/>
+        <location filename="SSHPIX.cpp" line="255"/>
         <source>In enable mode.</source>
         <translation>有効モード中です。</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="814"/>
+        <location filename="SSHPIX.cpp" line="813"/>
         <source>Pushing firewall configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="435"/>
+        <location filename="SSHPIX.cpp" line="434"/>
         <source>Rule %1</source>
         <translation>ルール %1</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="461"/>
+        <location filename="SSHPIX.cpp" line="460"/>
         <source>End</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="544"/>
+        <location filename="SSHPIX.cpp" line="543"/>
         <source>Making backup copy of the firewall configuration</source>
         <translation>ファイアウォール設定のバックアップコピーを作成しています</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="617"/>
+        <location filename="SSHPIX.cpp" line="616"/>
         <source>*** Clearing unused access lists</source>
         <translation>*** 未使用アクセス一覧の整理中</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="684"/>
+        <location filename="SSHPIX.cpp" line="683"/>
         <source>*** Clearing unused object groups</source>
         <translation>*** 未使用オブジェクトグループの整理中</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="706"/>
+        <location filename="SSHPIX.cpp" line="705"/>
         <source>*** End </source>
         <translation>*** 終了</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="717"/>
+        <location filename="SSHPIX.cpp" line="716"/>
         <source>Reading current firewall configuration</source>
         <translation>現在のファイアウォール設定を読み込んでいます</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="746"/>
+        <location filename="SSHPIX.cpp" line="745"/>
         <source>Generating configuration diff</source>
         <translation>設定の差分を生成しています</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="763"/>
+        <location filename="SSHPIX.cpp" line="762"/>
         <source>Fork failed for %1</source>
         <translation>%1 のフォークに失敗しました</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="769"/>
+        <location filename="SSHPIX.cpp" line="768"/>
         <source>Not enough memory.</source>
         <translation>メモリーがありません。</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="774"/>
+        <location filename="SSHPIX.cpp" line="773"/>
         <source>Too many opened file descriptors in the system.</source>
         <translation>システムでファイルディスクリプタを開きすぎています。</translation>
     </message>
     <message>
-        <location filename="SSHPIX.cpp" line="800"/>
+        <location filename="SSHPIX.cpp" line="799"/>
         <source>Empty configuration diff</source>
         <translation>設定の差分がありません</translation>
     </message>
@@ -5814,7 +6400,7 @@ access access lists generated for it.</source>
         <translation>ssh の開始に失敗しました</translation>
     </message>
     <message>
-        <location filename="SSHSession.cpp" line="508"/>
+        <location filename="SSHSession.cpp" line="511"/>
         <source>SSH session terminated, exit status: %1</source>
         <translation>SSH 接続が切断しました。終了ステータス: %1</translation>
     </message>
@@ -5822,39 +6408,39 @@ access access lists generated for it.</source>
 <context>
     <name>SSHUnx</name>
     <message>
-        <location filename="SSHUnx.cpp" line="101"/>
+        <location filename="SSHUnx.cpp" line="104"/>
         <source>
 *** Fatal error :</source>
         <translation>
 *** 致命的なエラー :</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="166"/>
+        <location filename="SSHUnx.cpp" line="172"/>
         <source>Logged in</source>
         <translation>ログイン</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="190"/>
+        <location filename="SSHUnx.cpp" line="196"/>
         <source>New RSA key</source>
         <translation>新規 RSA 鍵</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="191"/>
+        <location filename="SSHUnx.cpp" line="197"/>
         <source>Yes</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="191"/>
+        <location filename="SSHUnx.cpp" line="197"/>
         <source>No</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="251"/>
+        <location filename="SSHUnx.cpp" line="260"/>
         <source>Done</source>
         <translation>終了しました</translation>
     </message>
     <message>
-        <location filename="SSHUnx.cpp" line="263"/>
+        <location filename="SSHUnx.cpp" line="272"/>
         <source>Error in SSH</source>
         <translation>SSH のエラー</translation>
     </message>
@@ -5939,19 +6525,29 @@ access access lists generated for it.</source>
 <context>
     <name>StartTipDialog_q</name>
     <message>
-        <location filename="starttipdialog_q.ui" line="13"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="starttipdialog_q.ui" line="60"/>
+        <location filename="starttipdialog_q.ui" line="63"/>
         <source>Do not show this again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="starttipdialog_q.ui" line="80"/>
+        <location filename="starttipdialog_q.ui" line="106"/>
         <source>Close</source>
         <translation type="unfinished">閉じる</translation>
+    </message>
+    <message>
+        <location filename="starttipdialog_q.ui" line="13"/>
+        <source>Welcome to Firewall Builder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="starttipdialog_q.ui" line="83"/>
+        <source>Previous Tip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="starttipdialog_q.ui" line="93"/>
+        <source>Next Tip</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5964,135 +6560,103 @@ access access lists generated for it.</source>
     <message>
         <location filename="tcpservicedialog_q.ui" line="96"/>
         <source>TCP Service</source>
-        <translation>TCP サービス</translation>
+        <translation type="obsolete">TCP サービス</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="173"/>
+        <location filename="tcpservicedialog_q.ui" line="76"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="259"/>
+        <location filename="tcpservicedialog_q.ui" line="165"/>
         <source>U</source>
         <translation>U</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="269"/>
+        <location filename="tcpservicedialog_q.ui" line="175"/>
         <source>TCP flags that must be set (see man iptables, option --tcp-flags)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="272"/>
+        <location filename="tcpservicedialog_q.ui" line="178"/>
         <source>Settings:</source>
         <translation>設定:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="340"/>
+        <location filename="tcpservicedialog_q.ui" line="246"/>
         <source>R</source>
         <translation>R</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="356"/>
+        <location filename="tcpservicedialog_q.ui" line="262"/>
         <source>P</source>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="392"/>
+        <location filename="tcpservicedialog_q.ui" line="298"/>
         <source>TCP flags that should be examined (see man iptables, option --tcp-flags)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="395"/>
+        <location filename="tcpservicedialog_q.ui" line="301"/>
         <source>Mask:</source>
         <translation>マスク:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="437"/>
+        <location filename="tcpservicedialog_q.ui" line="343"/>
         <source>Flags:</source>
         <translation>フラグ:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="466"/>
+        <location filename="tcpservicedialog_q.ui" line="372"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="482"/>
+        <location filename="tcpservicedialog_q.ui" line="388"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="511"/>
+        <location filename="tcpservicedialog_q.ui" line="417"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="529"/>
+        <location filename="tcpservicedialog_q.ui" line="435"/>
         <source>Option &quot;established&quot; can be used if supported
 by the target firewall platform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="533"/>
+        <location filename="tcpservicedialog_q.ui" line="439"/>
         <source>Established</source>
         <translation>確立済み</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="615"/>
+        <location filename="tcpservicedialog_q.ui" line="521"/>
         <source>Source Port Range</source>
         <translation>送信元ポート範囲</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="752"/>
+        <location filename="tcpservicedialog_q.ui" line="634"/>
         <source>Start:</source>
         <translation>開始:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="765"/>
+        <location filename="tcpservicedialog_q.ui" line="647"/>
         <source>End:</source>
         <translation>終了:</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="708"/>
+        <location filename="tcpservicedialog_q.ui" line="602"/>
         <source>Destination Port Range</source>
         <translation>送信先ポート範囲</translation>
     </message>
     <message>
-        <location filename="tcpservicedialog_q.ui" line="790"/>
+        <location filename="tcpservicedialog_q.ui" line="672"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
-    </message>
-    <message>
-        <location filename="tcpservicedialog_q.ui" line="205"/>
-        <source>QGroupBox {
-    margin-top: 0px;
-<byte value="x9"/>padding-top: 1ex;
-    padding-bottom: 0px;
-}
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="tcpservicedialog_q.ui" line="688"/>
-        <source>QGroupBox {
-<byte value="x9"/>margin-top: 1ex;
-<byte value="x9"/>padding-top: 1ex;
-<byte value="x9"/>padding-bottom: 0px;
-<byte value="x9"/>padding-left: 2px;
-}
-
-QGroupBox::title {  
-<byte value="x9"/>subcontrol-origin: margin;
-<byte value="x9"/>subcontrol-position: top left;
-<byte value="x9"/>padding: 0 3px;
-}
-
-QSpinBox {
-<byte value="x9"/>margin: 0px;
-<byte value="x9"/>padding: 0px;
-}
-</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6105,20 +6669,20 @@ QSpinBox {
     <message>
         <location filename="tagservicedialog_q.ui" line="69"/>
         <source>Tag Service</source>
-        <translation>タグサービス</translation>
+        <translation type="obsolete">タグサービス</translation>
     </message>
     <message>
-        <location filename="tagservicedialog_q.ui" line="116"/>
+        <location filename="tagservicedialog_q.ui" line="58"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="tagservicedialog_q.ui" line="142"/>
+        <location filename="tagservicedialog_q.ui" line="84"/>
         <source>Code:</source>
         <translation>コード:</translation>
     </message>
     <message>
-        <location filename="tagservicedialog_q.ui" line="187"/>
+        <location filename="tagservicedialog_q.ui" line="129"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -6133,75 +6697,75 @@ QSpinBox {
     <message>
         <location filename="timedialog_q.ui" line="85"/>
         <source>Time Interval</source>
-        <translation>時間間隔</translation>
+        <translation type="obsolete">時間間隔</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="116"/>
+        <location filename="timedialog_q.ui" line="58"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="189"/>
+        <location filename="timedialog_q.ui" line="140"/>
         <source>Start date:</source>
         <translation>開始日:</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="282"/>
+        <location filename="timedialog_q.ui" line="251"/>
         <source>M/d/yyyy</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="226"/>
+        <location filename="timedialog_q.ui" line="183"/>
         <source>Start time:</source>
         <translation>開始時間:</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="275"/>
+        <location filename="timedialog_q.ui" line="238"/>
         <source>End date:  </source>
         <translation>終了日:</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="312"/>
+        <location filename="timedialog_q.ui" line="281"/>
         <source>End time:</source>
         <translation>終了時間:</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="374"/>
+        <location filename="timedialog_q.ui" line="350"/>
         <source>Mon</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="381"/>
+        <location filename="timedialog_q.ui" line="357"/>
         <source>Tue</source>
         <translation>火</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="388"/>
+        <location filename="timedialog_q.ui" line="364"/>
         <source>Wed</source>
         <translation>水</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="395"/>
+        <location filename="timedialog_q.ui" line="371"/>
         <source>Thu</source>
         <translation>木</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="402"/>
+        <location filename="timedialog_q.ui" line="378"/>
         <source>Fri</source>
         <translation>金</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="409"/>
+        <location filename="timedialog_q.ui" line="385"/>
         <source>Sat</source>
         <translation>土</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="416"/>
+        <location filename="timedialog_q.ui" line="392"/>
         <source>Sun</source>
         <translation>日</translation>
     </message>
     <message>
-        <location filename="timedialog_q.ui" line="438"/>
+        <location filename="timedialog_q.ui" line="414"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -6216,80 +6780,58 @@ QSpinBox {
     <message>
         <location filename="udpservicedialog_q.ui" line="99"/>
         <source>UDP Service</source>
-        <translation>UDP サービス</translation>
+        <translation type="obsolete">UDP サービス</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="186"/>
+        <location filename="udpservicedialog_q.ui" line="86"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="268"/>
+        <location filename="udpservicedialog_q.ui" line="159"/>
         <source>Source Port Range</source>
         <translation>送信元ポート幅</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="385"/>
+        <location filename="udpservicedialog_q.ui" line="252"/>
         <source>Start:</source>
         <translation>開始:</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="408"/>
+        <location filename="udpservicedialog_q.ui" line="275"/>
         <source>End:</source>
         <translation>終了:</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="361"/>
+        <location filename="udpservicedialog_q.ui" line="240"/>
         <source>Destination Port Range</source>
         <translation>送信先ポート幅</translation>
     </message>
     <message>
-        <location filename="udpservicedialog_q.ui" line="443"/>
+        <location filename="udpservicedialog_q.ui" line="310"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
-    </message>
-    <message>
-        <location filename="udpservicedialog_q.ui" line="341"/>
-        <source>QGroupBox {
-<byte value="x9"/>margin-top: 1ex;
-<byte value="x9"/>padding-top: 1ex;
-<byte value="x9"/>padding-bottom: 0px;
-<byte value="x9"/>padding-left: 2px;
-}
-
-QGroupBox::title {  
-<byte value="x9"/>subcontrol-origin: margin;
-<byte value="x9"/>subcontrol-position: top left;
-<byte value="x9"/>padding: 0 3px;
-}
-
-QSpinBox {
-<byte value="x9"/>margin: 0px;
-<byte value="x9"/>padding: 0px;
-}
-</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UserDialog_q</name>
     <message>
-        <location filename="userdialog_q.ui" line="90"/>
+        <location filename="userdialog_q.ui" line="22"/>
         <source>User</source>
         <translation>ユーザー</translation>
     </message>
     <message>
-        <location filename="userdialog_q.ui" line="143"/>
+        <location filename="userdialog_q.ui" line="73"/>
         <source>Name:</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="userdialog_q.ui" line="169"/>
+        <location filename="userdialog_q.ui" line="99"/>
         <source>User id:</source>
         <translation>ユーザー ID:</translation>
     </message>
     <message>
-        <location filename="userdialog_q.ui" line="214"/>
+        <location filename="userdialog_q.ui" line="144"/>
         <source>Comment:</source>
         <translation>コメント:</translation>
     </message>
@@ -6341,6 +6883,150 @@ QSpinBox {
     </message>
 </context>
 <context>
+    <name>carpOptionsDialog</name>
+    <message>
+        <location filename="carpOptionsDialog.cpp" line="116"/>
+        <source>Input not valid: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>carpOptionsDialog_q</name>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="13"/>
+        <source>CARP protocol settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="37"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="53"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="75"/>
+        <source>CARP Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="110"/>
+        <source>CARP password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="127"/>
+        <source>Virtual Host ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="133"/>
+        <source>VHID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="166"/>
+        <source>Advertisement interval (sec)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="202"/>
+        <source>Master advskew</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="carpoptionsdialog_q.ui" line="235"/>
+        <source>Default advskew</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>clusterMembersDialog_q</name>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="13"/>
+        <source>cluster member configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="21"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="44"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="60"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="82"/>
+        <source>Cluster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="108"/>
+        <source>Manage member firewalls for this Cluster. Firewalls are considered valid members if they have the same host OS and platform as the Cluster object. They also need to have at minimum one physical interface attached.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="139"/>
+        <source>Available Firewalls:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="146"/>
+        <source>Tree of potential cluster members. Select an interface to assign to the cluster.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="165"/>
+        <source>Firewall</source>
+        <translation type="unfinished">ファイアウォール</translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="286"/>
+        <source>Interface</source>
+        <translation type="unfinished">インターフェース</translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="175"/>
+        <source>Label</source>
+        <translation type="unfinished">ラベル</translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="211"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="240"/>
+        <source>Selected as Cluster-Members:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="250"/>
+        <source>Table of already selected member firewalls with their assigned cluster interfaces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="281"/>
+        <source>Name</source>
+        <translation type="unfinished">名前</translation>
+    </message>
+    <message>
+        <location filename="clustermembersdialog_q.ui" line="291"/>
+        <source>Master</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>colorLabelMenuItem_q</name>
     <message>
         <location filename="colorlabelmenuitem_q.ui" line="40"/>
@@ -6384,6 +7070,52 @@ QSpinBox {
     </message>
 </context>
 <context>
+    <name>conntrackOptionsDialog</name>
+    <message>
+        <location filename="conntrackOptionsDialog.cpp" line="110"/>
+        <source>Invalid IP address &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="conntrackOptionsDialog.cpp" line="111"/>
+        <source>&amp;Continue</source>
+        <translation type="unfinished">続ける(&amp;C)</translation>
+    </message>
+</context>
+<context>
+    <name>conntrackOptionsDialog_q</name>
+    <message>
+        <location filename="conntrackoptionsdialog_q.ui" line="13"/>
+        <source>conntrack protocol settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="conntrackoptionsdialog_q.ui" line="37"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="conntrackoptionsdialog_q.ui" line="53"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="conntrackoptionsdialog_q.ui" line="75"/>
+        <source>conntrack Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="conntrackoptionsdialog_q.ui" line="85"/>
+        <source>Address:</source>
+        <translation type="unfinished">アドレス:</translation>
+    </message>
+    <message>
+        <location filename="conntrackoptionsdialog_q.ui" line="95"/>
+        <source>Port number (udp):</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>debugDialog_q</name>
     <message>
         <location filename="debugdialog_q.ui" line="16"/>
@@ -6404,12 +7136,12 @@ QSpinBox {
 <context>
     <name>filePropDialog</name>
     <message>
-        <location filename="filePropDialog.cpp" line="70"/>
+        <location filename="filePropDialog.cpp" line="71"/>
         <source>Opened read-only</source>
         <translation>読み込み専用で開いています</translation>
     </message>
     <message>
-        <location filename="filePropDialog.cpp" line="88"/>
+        <location filename="filePropDialog.cpp" line="89"/>
         <source>Revision %1</source>
         <translation>リビジョン %1</translation>
     </message>
@@ -6566,97 +7298,97 @@ QSpinBox {
 <context>
     <name>findObjectWidget_q</name>
     <message>
-        <location filename="findobjectwidget_q.ui" line="16"/>
+        <location filename="findobjectwidget_q.ui" line="17"/>
         <source>Form1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="44"/>
+        <location filename="findobjectwidget_q.ui" line="39"/>
         <source>Replace &amp;&amp; Find</source>
         <translation>置換と検索</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="67"/>
+        <location filename="findobjectwidget_q.ui" line="60"/>
         <source> Replace object </source>
         <translation>オブジェクトの置換</translation>
     </message>
     <message>
         <location filename="findobjectwidget_q.ui" line="113"/>
         <source>Close</source>
-        <translation>閉じる</translation>
+        <translation type="obsolete">閉じる</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="165"/>
+        <location filename="findobjectwidget_q.ui" line="136"/>
         <source>Scope for search and replace :</source>
         <translation>検索と置換のスコープ :</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="178"/>
+        <location filename="findobjectwidget_q.ui" line="146"/>
         <source>Tree only</source>
         <translation>ツリーのみ</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="183"/>
+        <location filename="findobjectwidget_q.ui" line="151"/>
         <source>Tree and policy of all firewalls</source>
         <translation>すべてのファイアウォールのポリシーとツリー</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="188"/>
+        <location filename="findobjectwidget_q.ui" line="156"/>
         <source>Policy of all firewalls</source>
         <translation>すべてのファイアウォールのポリシー</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="193"/>
+        <location filename="findobjectwidget_q.ui" line="161"/>
         <source>policy of the opened firewall</source>
         <translation>開いているファイアウォールのポリシー</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="220"/>
+        <location filename="findobjectwidget_q.ui" line="172"/>
         <source>Replace</source>
         <translation>置換する</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="227"/>
+        <location filename="findobjectwidget_q.ui" line="179"/>
         <source>Replace all</source>
         <translation>すべて置換する</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="234"/>
+        <location filename="findobjectwidget_q.ui" line="186"/>
         <source>Next</source>
         <translation>次へ</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="257"/>
+        <location filename="findobjectwidget_q.ui" line="207"/>
         <source> Find object</source>
         <translation>オブジェクト検索</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="298"/>
+        <location filename="findobjectwidget_q.ui" line="240"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="303"/>
+        <location filename="findobjectwidget_q.ui" line="245"/>
         <source>Address</source>
         <translation>アドレス</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="308"/>
+        <location filename="findobjectwidget_q.ui" line="250"/>
         <source>TCP/UDP port</source>
         <translation>TCP/UDP ポート</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="313"/>
+        <location filename="findobjectwidget_q.ui" line="255"/>
         <source>Protocol number</source>
         <translation>プロトコル番号</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="318"/>
+        <location filename="findobjectwidget_q.ui" line="260"/>
         <source>ICMP type</source>
         <translation>ICMP の種類</translation>
     </message>
     <message>
-        <location filename="findobjectwidget_q.ui" line="338"/>
+        <location filename="findobjectwidget_q.ui" line="280"/>
         <source>Use regular expressions</source>
         <translation>正規表現を使う</translation>
     </message>
@@ -6689,14 +7421,14 @@ QSpinBox {
         <translation>詳細</translation>
     </message>
     <message>
-        <location filename="findwhereusedwidget_q.ui" line="144"/>
+        <location filename="findwhereusedwidget_q.ui" line="143"/>
         <source>Find</source>
         <translation>検索</translation>
     </message>
     <message>
         <location filename="findwhereusedwidget_q.ui" line="151"/>
         <source>Close</source>
-        <translation>閉じる</translation>
+        <translation type="obsolete">閉じる</translation>
     </message>
     <message>
         <location filename="findwhereusedwidget_q.ui" line="94"/>
@@ -6717,79 +7449,147 @@ QSpinBox {
         <translation>FreeBSD: 高度な設定</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="70"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="434"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="86"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="450"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="108"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="26"/>
         <source>Options</source>
         <translation>オプション</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="178"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="96"/>
         <source>Packet forwarding</source>
         <translation>パケット転送</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="256"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="174"/>
         <source>No change</source>
         <translation>変更なし</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="261"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="179"/>
         <source>On</source>
         <translation>オン</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="266"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="184"/>
         <source>Off</source>
         <translation>オフ</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="210"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="128"/>
         <source>Forward source routed packets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="242"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="160"/>
         <source>Generate ICMP redirects</source>
         <translation>ICMP リダイレクト生成</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="307"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="206"/>
         <source>Path</source>
         <translation>パス</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="337"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="218"/>
         <source>Specify directory path and a file name for the following utilities on the OS your firewall machine is running. Leave these empty if you want to use default values.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="382"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="344"/>
         <source>ipnat:</source>
         <translation>ipnat:</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="395"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="367"/>
         <source>sysctl:</source>
         <translation>sysctl:</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="418"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="315"/>
         <source>ipf:</source>
         <translation>ipf:</translation>
     </message>
     <message>
-        <location filename="freebsdadvanceddialog_q.ui" line="441"/>
+        <location filename="freebsdadvanceddialog_q.ui" line="247"/>
         <source>ipfw:</source>
         <translation>ipfw:</translation>
+    </message>
+    <message>
+        <location filename="freebsdadvanceddialog_q.ui" line="292"/>
+        <source>pfctl:</source>
+        <translation type="unfinished">pfctl:</translation>
+    </message>
+</context>
+<context>
+    <name>heartbeatOptionsDialog</name>
+    <message>
+        <location filename="heartbeatOptionsDialog.cpp" line="116"/>
+        <source>Invalid IP address &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="heartbeatOptionsDialog.cpp" line="117"/>
+        <source>&amp;Continue</source>
+        <translation type="unfinished">続ける(&amp;C)</translation>
+    </message>
+</context>
+<context>
+    <name>heartbeatOptionsDialog_q</name>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="13"/>
+        <source>heartbeat protocol settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="37"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="53"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="75"/>
+        <source>heartbeat Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="85"/>
+        <source>Heartbeat should be configured to use unicast address
+of each firewall member for health checks. Firewall Builder
+will add policy rules to permit these automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="90"/>
+        <source>Use unicast address for heartbeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="97"/>
+        <source>Address:</source>
+        <translation type="unfinished">アドレス:</translation>
+    </message>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="104"/>
+        <source>Enter multicat address used for heartbeat health checks here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="heartbeatoptionsdialog_q.ui" line="124"/>
+        <source>Port number (udp):</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6803,101 +7603,101 @@ QSpinBox {
 <context>
     <name>instDialog</name>
     <message>
-        <location filename="instDialog.cpp" line="135"/>
+        <location filename="instDialog.cpp" line="172"/>
         <source>There are no firewalls to process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog.cpp" line="156"/>
+        <location filename="instDialog.cpp" line="195"/>
         <source>&lt;p align=&quot;center&quot;&gt;&lt;b&gt;&lt;font size=&quot;+2&quot;&gt;Select firewalls for compilation.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog.cpp" line="170"/>
+        <location filename="instDialog.cpp" line="209"/>
         <source>Unknown operation.</source>
         <translation>不明な操作です。</translation>
     </message>
     <message>
-        <location filename="instDialog.cpp" line="414"/>
+        <location filename="instDialog.cpp" line="470"/>
         <source>Policy installer uses Secure Shell to communicate with the firewall.
 Please configure directory path to the secure shell utility 
 installed on your machine using Preferences dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="180"/>
+        <location filename="instDialog_ui_ops.cpp" line="1092"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="72"/>
+        <location filename="instDialog_compile.cpp" line="69"/>
         <source>Compiling rule sets for firewall: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="85"/>
+        <location filename="instDialog_compile.cpp" line="82"/>
         <source>Compiling ...</source>
         <translation>コンパイル中...</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="81"/>
+        <location filename="instDialog_ui_ops.cpp" line="91"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="124"/>
+        <location filename="instDialog.cpp" line="555"/>
         <source>Error: Failed to start program</source>
         <translation>エラー: プログラムの開始に失敗しました</translation>
     </message>
     <message>
-        <location filename="instDialog_compile.cpp" line="179"/>
+        <location filename="instDialog_compile.cpp" line="164"/>
         <source>Firewall platform is not specified in this object.
 Can&apos;t compile firewall policy.</source>
         <translation>ファイアウォールプラットフォームがこのオブジェクトで指定されていません。
 ファイアウォールポリシーをコンパイルできません。</translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="92"/>
+        <location filename="instDialog_installer.cpp" line="87"/>
         <source>Install firewall: </source>
         <translation>ファイアウォールインストール:</translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="105"/>
+        <location filename="instDialog_installer.cpp" line="100"/>
         <source>Installing ...</source>
         <translation>インストールしています...</translation>
     </message>
     <message>
-        <location filename="instDialog_installer.cpp" line="192"/>
+        <location filename="instDialog_installer.cpp" line="197"/>
         <source>Failure</source>
         <translation>失敗</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="151"/>
+        <location filename="instDialog_ui_ops.cpp" line="275"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="158"/>
+        <location filename="instDialog_ui_ops.cpp" line="282"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="165"/>
+        <location filename="instDialog_ui_ops.cpp" line="289"/>
         <source>Cancelled</source>
         <translation>取り消しました</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="186"/>
+        <location filename="instDialog_ui_ops.cpp" line="310"/>
         <source>Show details</source>
         <translation>詳細を表示する</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="192"/>
+        <location filename="instDialog_ui_ops.cpp" line="316"/>
         <source>Hide details</source>
         <translation>詳細を隠す</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="373"/>
+        <location filename="instDialog_ui_ops.cpp" line="446"/>
         <source>Running command &apos;%1&apos;
 </source>
         <translation>コマンド &apos;%1&apos; を実行しています
@@ -6906,143 +7706,143 @@ Can&apos;t compile firewall policy.</source>
     <message>
         <location filename="instDialog_ui_ops.cpp" line="774"/>
         <source>Show selected</source>
-        <translation>選択の表示</translation>
+        <translation type="obsolete">選択の表示</translation>
     </message>
     <message>
         <location filename="instDialog_ui_ops.cpp" line="780"/>
         <source>Show all</source>
-        <translation>すべて表示する</translation>
+        <translation type="obsolete">すべて表示する</translation>
     </message>
 </context>
 <context>
     <name>instDialog_q</name>
     <message>
-        <location filename="instdialog_q.ui" line="46"/>
+        <location filename="instdialog_q.ui" line="47"/>
         <source>TextLabel</source>
         <translation>テキストラベル</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="104"/>
+        <location filename="instdialog_q.ui" line="105"/>
         <source>&lt;p align=&quot;center&quot;&gt;&lt;b&gt;&lt;font size=&quot;+2&quot;&gt;Select firewalls to compile and install.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="141"/>
+        <location filename="instdialog_q.ui" line="142"/>
         <source>Perform batch install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="148"/>
+        <location filename="instdialog_q.ui" line="149"/>
         <source>Check this option if you want to install all selected firewalls automatically. This only works if you use the same user name and password to authenticate to all these firewalls. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="573"/>
+        <location filename="instdialog_q.ui" line="553"/>
         <source>Compile</source>
         <translation>コンパイル</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="578"/>
+        <location filename="instdialog_q.ui" line="558"/>
         <source>Install</source>
         <translation>インストール</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="568"/>
+        <location filename="instdialog_q.ui" line="548"/>
         <source>Firewall</source>
         <translation>ファイアウォール</translation>
     </message>
     <message>
         <location filename="instdialog_q.ui" line="210"/>
         <source>Library</source>
-        <translation>ライブラリー</translation>
+        <translation type="obsolete">ライブラリー</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="215"/>
+        <location filename="instdialog_q.ui" line="247"/>
         <source>Last Modified</source>
         <translation>最終更新日時</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="220"/>
+        <location filename="instdialog_q.ui" line="252"/>
         <source>Last Compiled</source>
         <translation>最終コンパイル日時</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="225"/>
+        <location filename="instdialog_q.ui" line="257"/>
         <source>Last Installed</source>
         <translation>最終インストール日時</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="245"/>
+        <location filename="instdialog_q.ui" line="208"/>
         <source>All</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="252"/>
+        <location filename="instdialog_q.ui" line="215"/>
         <source>None</source>
         <translation>なし</translation>
     </message>
     <message>
         <location filename="instdialog_q.ui" line="275"/>
         <source>Show selected</source>
-        <translation>選択の表示</translation>
+        <translation type="obsolete">選択の表示</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="306"/>
+        <location filename="instdialog_q.ui" line="286"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="338"/>
+        <location filename="instdialog_q.ui" line="318"/>
         <source>Progress</source>
         <translation>処理中</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="369"/>
+        <location filename="instdialog_q.ui" line="349"/>
         <source>Firewalls:</source>
         <translation>ファイアウォール:</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="391"/>
+        <location filename="instdialog_q.ui" line="371"/>
         <source>firewall</source>
         <translation>ファイアウォール</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="424"/>
+        <location filename="instdialog_q.ui" line="404"/>
         <source>current operation here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="461"/>
+        <location filename="instdialog_q.ui" line="441"/>
         <source>Show Details</source>
         <translation>詳細を表示する</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="491"/>
+        <location filename="instdialog_q.ui" line="471"/>
         <source>Process log</source>
         <translation>処理ログ</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="516"/>
+        <location filename="instdialog_q.ui" line="496"/>
         <source>Save log to file</source>
         <translation>ファイルにログを保存する</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="624"/>
+        <location filename="instdialog_q.ui" line="604"/>
         <source>&lt; &amp;Back</source>
         <translation>&lt; 戻る(&amp;B)</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="631"/>
+        <location filename="instdialog_q.ui" line="611"/>
         <source>&amp;Next &gt;</source>
         <translation>次へ(&amp;N) &gt;</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="641"/>
+        <location filename="instdialog_q.ui" line="621"/>
         <source>&amp;Finish</source>
         <translation>終了(&amp;F)</translation>
     </message>
     <message>
-        <location filename="instdialog_q.ui" line="651"/>
+        <location filename="instdialog_q.ui" line="631"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
@@ -7191,27 +7991,27 @@ Can&apos;t compile firewall policy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosadvanceddialog_q.ui" line="23"/>
+        <location filename="iosadvanceddialog_q.ui" line="54"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="iosadvanceddialog_q.ui" line="41"/>
+        <location filename="iosadvanceddialog_q.ui" line="63"/>
         <source>Set router name using object&apos;s name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosadvanceddialog_q.ui" line="48"/>
+        <location filename="iosadvanceddialog_q.ui" line="70"/>
         <source>Generate commands to configure addresses for interfaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosadvanceddialog_q.ui" line="90"/>
+        <location filename="iosadvanceddialog_q.ui" line="37"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="iosadvanceddialog_q.ui" line="97"/>
+        <location filename="iosadvanceddialog_q.ui" line="44"/>
         <source>Cancel</source>
         <translation>取り消し</translation>
     </message>
@@ -7219,7 +8019,7 @@ Can&apos;t compile firewall policy.</source>
 <context>
     <name>iosaclAdvancedDialog</name>
     <message>
-        <location filename="iosaclAdvancedDialog.cpp" line="381"/>
+        <location filename="iosaclAdvancedDialog.cpp" line="386"/>
         <source>Script Editor</source>
         <translation>スクリプトエディター</translation>
     </message>
@@ -7232,12 +8032,12 @@ Can&apos;t compile firewall policy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="1067"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1074"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="1084"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1091"/>
         <source>Cancel</source>
         <translation>取り消し</translation>
     </message>
@@ -7288,184 +8088,179 @@ workstation with this address:</source>
         <translation>スクリプトオプション</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="238"/>
+        <location filename="iosacladvanceddialog_q.ui" line="245"/>
         <source>Insert comments into generated IOSACL configuration file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="241"/>
+        <location filename="iosacladvanceddialog_q.ui" line="238"/>
         <source>Comment the code</source>
         <translation>コメントコード</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="248"/>
+        <location filename="iosacladvanceddialog_q.ui" line="255"/>
         <source>Group IOSACL commands in the script so that similar commands appear next to each other, just like IOSACL does it when you use &apos;show config&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="251"/>
+        <location filename="iosacladvanceddialog_q.ui" line="258"/>
         <source>Group similar commands together</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="279"/>
+        <location filename="iosacladvanceddialog_q.ui" line="286"/>
         <source>Clear all access lists then install new ones. This method may interrupt access to the firewall if you manage it remotely via IPSEC tunnel. This is the way access lists were generated in older versions of Firewall Builder for IOSACL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="298"/>
-        <source>Do not clear access lists and object group, just generate IOSACL commands for the new ones. Use this optin if you have your own policy installation scripts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="iosacladvanceddialog_q.ui" line="330"/>
+        <location filename="iosacladvanceddialog_q.ui" line="337"/>
         <source>&quot;Safety net&quot; method:
 
 First, create temporary access list to permit connections from the management subnet specified below to the firewall and assign it to outside interface. This temporary ACL helps maintain session between management station and the firewall while access lists are reloaded in case connection comes over IPSEC tunnel. Then clear permanent lists, recreate them and assign to interfaces. This method ensures that remote access to the firewall is maintained without interruption  at a cost of slightly larger configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="360"/>
+        <location filename="iosacladvanceddialog_q.ui" line="367"/>
         <source>Temporary access list should permit access from this address or subnet (use prefix notation to specify subnet, e.g. 192.0.2.0/24):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="473"/>
+        <location filename="iosacladvanceddialog_q.ui" line="480"/>
         <source>Installer</source>
         <translation>インストーラー</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="479"/>
+        <location filename="iosacladvanceddialog_q.ui" line="486"/>
         <source>Built-in installer</source>
         <translation>組み込みインストーラー</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="488"/>
+        <location filename="iosacladvanceddialog_q.ui" line="495"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="511"/>
+        <location filename="iosacladvanceddialog_q.ui" line="518"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="536"/>
+        <location filename="iosacladvanceddialog_q.ui" line="543"/>
         <source>Additional command line parameters for ssh</source>
         <translation type="unfinished">ssh の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="566"/>
+        <location filename="iosacladvanceddialog_q.ui" line="573"/>
         <source>Additional command line parameters for scp</source>
         <translation type="unfinished">scp の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="597"/>
+        <location filename="iosacladvanceddialog_q.ui" line="604"/>
         <source>External install script</source>
         <translation type="unfinished">外部インストールスクリプト</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="614"/>
+        <location filename="iosacladvanceddialog_q.ui" line="621"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation>インストールスクリプトのポリシー (この項目が空の場合に使用する組み込みインストーラー):</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="653"/>
+        <location filename="iosacladvanceddialog_q.ui" line="660"/>
         <source>Command line options for the script:</source>
         <translation>スクリプトのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="704"/>
+        <location filename="iosacladvanceddialog_q.ui" line="711"/>
         <source>Prolog/Epilog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="773"/>
+        <location filename="iosacladvanceddialog_q.ui" line="780"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="745"/>
+        <location filename="iosacladvanceddialog_q.ui" line="752"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="799"/>
+        <location filename="iosacladvanceddialog_q.ui" line="806"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="822"/>
+        <location filename="iosacladvanceddialog_q.ui" line="829"/>
         <source>Logging</source>
         <translation>ログ記録</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="828"/>
+        <location filename="iosacladvanceddialog_q.ui" line="835"/>
         <source>Generate logging commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="835"/>
+        <location filename="iosacladvanceddialog_q.ui" line="842"/>
         <source>Syslog</source>
         <translation>Syslog</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="847"/>
+        <location filename="iosacladvanceddialog_q.ui" line="854"/>
         <source>Syslog host (name or IP address):</source>
         <translation>Syslog ホスト (名前か IP アドレス):</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="860"/>
+        <location filename="iosacladvanceddialog_q.ui" line="867"/>
         <source>syslog facility:</source>
         <translation>syslog ファシリティ:</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="873"/>
+        <location filename="iosacladvanceddialog_q.ui" line="880"/>
         <source>syslog level (&apos;logging trap&apos;):</source>
         <translation>syslog レベル (&apos;logging trap&apos;):</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="918"/>
+        <location filename="iosacladvanceddialog_q.ui" line="925"/>
         <source>The logging timestamp command requires that the clock command be set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="931"/>
+        <location filename="iosacladvanceddialog_q.ui" line="938"/>
         <source>Enable logging timestamps on syslog file</source>
         <translation type="unfinished">syslog ファイルで日付の記録を有効にする</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="941"/>
+        <location filename="iosacladvanceddialog_q.ui" line="948"/>
         <source>Other logging destinations and levels:</source>
         <translation type="unfinished">その他のログ記録先とレベル:</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="950"/>
+        <location filename="iosacladvanceddialog_q.ui" line="957"/>
         <source>Internal buffer</source>
         <translation>内部バッファ</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="957"/>
+        <location filename="iosacladvanceddialog_q.ui" line="964"/>
         <source>Console</source>
         <translation>コンソール</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="990"/>
+        <location filename="iosacladvanceddialog_q.ui" line="997"/>
         <source>IPv6</source>
         <translation>IPv6</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="996"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1003"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="1017"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1024"/>
         <source>IPv4 before IPv6</source>
         <translation>IPv4 の前に IPv6</translation>
     </message>
     <message>
-        <location filename="iosacladvanceddialog_q.ui" line="1022"/>
+        <location filename="iosacladvanceddialog_q.ui" line="1029"/>
         <source>IPv6 before IPv4</source>
         <translation>IPv6 の前に IPv4</translation>
     </message>
@@ -7498,11 +8293,540 @@ interfaces.
         <source>Create one access list and attach it to all interfaces</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="iosacladvanceddialog_q.ui" line="248"/>
+        <source>Use ACL remarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iosacladvanceddialog_q.ui" line="305"/>
+        <source>Do not clear access lists and object group, just generate IOSACL commands for the new ones. Use this option if you have your own policy installation scripts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ipcopAdvancedDialog</name>
+    <message>
+        <location filename="ipcopAdvancedDialog.cpp" line="219"/>
+        <source>Script Editor</source>
+        <translation type="unfinished">スクリプトエディター</translation>
+    </message>
+</context>
+<context>
+    <name>ipcopAdvancedDialog_q</name>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="22"/>
+        <source>ipcop advanced settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="41"/>
+        <source>Compiler</source>
+        <translation type="unfinished">コンパイラー</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="56"/>
+        <source>Compiler:</source>
+        <translation type="unfinished">コンパイラー:</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="85"/>
+        <source>Command line options for the compiler:</source>
+        <translation type="unfinished">コンパイラーのコマンドラインオプション:</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="114"/>
+        <source>Output file name (if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="133"/>
+        <source>rc.firewall.local</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="180"/>
+        <source>Assume firewall is part of &apos;any&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="193"/>
+        <source>Accept TCP sessions opened prior to firewall restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="206"/>
+        <source>Bridging firewall</source>
+        <translation type="unfinished">ブリッジ中のファイアウォール</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="219"/>
+        <source>Detect shadowing in policy rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="232"/>
+        <source>Ignore empty groups in rules</source>
+        <translation type="unfinished">ルールのからグループを無視する</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="245"/>
+        <source>Enable support for NAT of locally originated connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="252"/>
+        <source>Make Tag and Classify actions terminating</source>
+        <translation type="unfinished">タグと分類の設定操作を中断しました</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="261"/>
+        <source>Default action on &apos;Reject&apos;:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="323"/>
+        <source>Always permit ssh access from
+the management workstation
+with this address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="365"/>
+        <source>Installer</source>
+        <translation type="unfinished">インストーラー</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="371"/>
+        <source>Built-in installer</source>
+        <translation type="unfinished">組み込みインストーラー</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="377"/>
+        <source>Directory on the firewall where script should be installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="402"/>
+        <source>/etc/rc.d/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="415"/>
+        <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="440"/>
+        <source>admin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="453"/>
+        <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="482"/>
+        <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="507"/>
+        <source>/etc/rc.d/rc.firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="522"/>
+        <source>Additional command line parameters for ssh</source>
+        <translation type="unfinished">ssh の追加コマンドラインパラメーター</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="552"/>
+        <source>Additional command line parameters for scp</source>
+        <translation type="unfinished">scp の追加コマンドラインパラメーター</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="583"/>
+        <source>External install script</source>
+        <translation type="unfinished">外部インストールスクリプト</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="597"/>
+        <source>Policy install script (using built-in installer if this field is blank):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="636"/>
+        <source>Command line options for the script:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="687"/>
+        <source>Prolog/Epilog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="772"/>
+        <source>Edit</source>
+        <translation type="unfinished">編集</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="731"/>
+        <source>The following commands will be added verbatim after generated configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="756"/>
+        <source>The following commands will be added verbatim on top of generated configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="796"/>
+        <source>Logging</source>
+        <translation type="unfinished">ログ記録</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="814"/>
+        <source>use ULOG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="821"/>
+        <source>use LOG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="841"/>
+        <source>log TCP seq. numbers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="848"/>
+        <source>log IP options</source>
+        <translation type="unfinished">IP オプションをログ記録する</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="855"/>
+        <source>use numeric syslog levels</source>
+        <translation type="unfinished">使用する syslog レベルの数値</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="862"/>
+        <source>Log level:</source>
+        <translation type="unfinished">ログレベル:</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="875"/>
+        <source>log TCP options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="899"/>
+        <source>cprange</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="916"/>
+        <source>queue threshold:</source>
+        <translation type="unfinished">キュー閾値:</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="926"/>
+        <source>netlink group:</source>
+        <translation type="unfinished">ネットリンクグループ:</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="994"/>
+        <source>Log prefix:</source>
+        <translation type="unfinished">ログ接頭語:</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1011"/>
+        <source>Logging limit:</source>
+        <translation type="unfinished">ログ記録制限:</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1038"/>
+        <source>Activate logging in all rules
+(overrides rule options, use for debugging)</source>
+        <translation type="unfinished">すべてのルールのログを記録する
+(ルールオプションを上書きします。デバッグで使います)</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1079"/>
+        <source>Script</source>
+        <translation type="unfinished">スクリプト</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1088"/>
+        <source>These options enable auxiliary sections in the generated shell script.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1133"/>
+        <source>Turn debugging on in generated script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1156"/>
+        <source>Verify interfaces before loading firewall policy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1164"/>
+        <source>IPv6</source>
+        <translation type="unfinished">IPv6</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1170"/>
+        <source>The order in which ipv4 and ipv6 rules should be generated:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1178"/>
+        <source>IPv4 before IPv6</source>
+        <translation type="unfinished">IPv4 の前に IPv6</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1183"/>
+        <source>IPv6 before IPv4</source>
+        <translation type="unfinished">IPv6 の前に IPv4</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1223"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1246"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="ipcopadvanceddialog_q.ui" line="1262"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+</context>
+<context>
+    <name>ipcoposAdvancedDialog_q</name>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="13"/>
+        <source>IPCOP: advanced settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="26"/>
+        <source>Options</source>
+        <translation type="unfinished">オプション</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="48"/>
+        <source>IPv4 Packet forwarding</source>
+        <translation type="unfinished">IPv4 パケット転送</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="628"/>
+        <source>No change</source>
+        <translation type="unfinished">変更なし</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="633"/>
+        <source>On</source>
+        <translation type="unfinished">オン</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="638"/>
+        <source>Off</source>
+        <translation type="unfinished">オフ</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="96"/>
+        <source>IPv6 Packet forwarding</source>
+        <translation type="unfinished">IPv6 パケット転送</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="128"/>
+        <source>Kernel anti-spoofing protection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="160"/>
+        <source>Ignore broadcast pings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="192"/>
+        <source>Ignore all pings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="224"/>
+        <source>Accept source route</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="256"/>
+        <source>Accept ICMP redirects</source>
+        <translation type="unfinished">ICMP リダイレクトの受理</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="288"/>
+        <source>Ignore bogus ICMP errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="320"/>
+        <source>Allow dynamic addresses</source>
+        <translation type="unfinished">ダイナミックアドレス群の許可</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="368"/>
+        <source>Log martians</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="381"/>
+        <source>whats this text</source>
+        <comment>whats this comment</comment>
+        <translation type="unfinished">このテキストは何</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="420"/>
+        <source>TCP</source>
+        <translation type="unfinished">TCP</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="429"/>
+        <source>These parameters make sense for connections to or from the firewall host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="646"/>
+        <source>TCP sack</source>
+        <translation type="unfinished">TCP sack</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="659"/>
+        <source>TCP window scaling</source>
+        <translation type="unfinished">TCP ウィンドウスケーリング</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="672"/>
+        <source>TCP ECN</source>
+        <translation type="unfinished">TCP ECN</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="685"/>
+        <source>TCP SYN cookies</source>
+        <translation type="unfinished">TCP SYN クッキー</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="698"/>
+        <source>TCP keepalive time (sec)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="711"/>
+        <source>TCP fack</source>
+        <translation type="unfinished">TCP fack</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="724"/>
+        <source>TCP timestamps</source>
+        <translation type="unfinished">TCP タイムスタンプ</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="737"/>
+        <source>TCP FIN timeout (sec)</source>
+        <translation type="unfinished">TCP FIN タイムアウト(秒)</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="751"/>
+        <source>Path</source>
+        <translation type="unfinished">パス</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="773"/>
+        <source>Specify directory path and a file name for each utility on your firewall machine. Leave these empty if you want to use default values.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="786"/>
+        <source>iptables:</source>
+        <translation type="unfinished">iptables:</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="805"/>
+        <source>:ip6tables</source>
+        <translation type="unfinished">:ip6tables</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="815"/>
+        <source>ip:</source>
+        <translation type="unfinished">ip:</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="831"/>
+        <source>vconfig</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="847"/>
+        <source>brctl</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="863"/>
+        <source>ifenslave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="879"/>
+        <source>logger:</source>
+        <translation type="unfinished">logger:</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="895"/>
+        <source>modprobe:</source>
+        <translation type="unfinished">modprobe:</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="911"/>
+        <source>lsmod</source>
+        <translation type="unfinished">lsmod</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="927"/>
+        <source>iptables-restore:</source>
+        <translation type="unfinished">iptables-restore:</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="946"/>
+        <source>:ip6tables-restore</source>
+        <translation type="unfinished">:ip6tables-restore</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="978"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="1001"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="ipcoposadvanceddialog_q.ui" line="1017"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
 </context>
 <context>
     <name>ipfAdvancedDialog</name>
     <message>
-        <location filename="ipfAdvancedDialog.cpp" line="189"/>
+        <location filename="ipfAdvancedDialog.cpp" line="191"/>
         <source>Script Editor</source>
         <translation>スクリプトエディター</translation>
     </message>
@@ -7525,313 +8849,318 @@ interfaces.
         <translation>取り消し(&amp;C)</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="78"/>
+        <location filename="ipfadvanceddialog_q.ui" line="403"/>
         <source>Protocol Helpers</source>
         <translation>プロトコルヘッダー</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="103"/>
+        <location filename="ipfadvanceddialog_q.ui" line="428"/>
         <source>Use raudio proxy in NAT rules</source>
         <translation>NAT ルールで raudio を使用する</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="110"/>
+        <location filename="ipfadvanceddialog_q.ui" line="435"/>
         <source>Use h323 proxy in NAT rules</source>
         <translation>NAT ルールで h323 プロキシーを使う</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="117"/>
+        <location filename="ipfadvanceddialog_q.ui" line="442"/>
         <source>Use ipsec proxy in NAT rules</source>
         <translation>NAT ルールで ipsec プロキシーを使う</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="140"/>
+        <location filename="ipfadvanceddialog_q.ui" line="465"/>
         <source>Use ftp proxy in NAT rules</source>
         <translation>NAT ルール中で ftp プロキシーを使用する</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="147"/>
+        <location filename="ipfadvanceddialog_q.ui" line="472"/>
         <source>Use rcmd proxy in NAT rules</source>
         <translation>NAT ルールで rcmd プロキシーを使う</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="184"/>
+        <location filename="ipfadvanceddialog_q.ui" line="509"/>
         <source>Use PPTP proxy in NAT rules</source>
         <translation>NAT ルールで PPTP プロキシーを使う</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="191"/>
+        <location filename="ipfadvanceddialog_q.ui" line="516"/>
         <source>Use IRC proxy in NAT rules for DCC</source>
         <translation>DCC 用の NAT ルールで IRC プロキシーを使う</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="204"/>
+        <location filename="ipfadvanceddialog_q.ui" line="529"/>
         <source>Some protocols involve multiple associated network connections. Firewall can keep track of such connections automatically if you activate one or all of the following options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="218"/>
+        <location filename="ipfadvanceddialog_q.ui" line="78"/>
         <source>Compiler</source>
         <translation>コンパイラー</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="227"/>
+        <location filename="ipfadvanceddialog_q.ui" line="84"/>
         <source>Compiler:</source>
         <translation>コンパイラー:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="240"/>
-        <source>There are two ways compiler can generate code for rules in the Global Policy: it can either create two ipf rules to control both incoming and outgoing packets for each rule, or it can create only one ipf rule for incoming packets and permit all outgoing ones.You get more control over the packets crossing the firewall in the first mode, but generated script is going to be smaller if you choose the second.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ipfadvanceddialog_q.ui" line="253"/>
+        <location filename="ipfadvanceddialog_q.ui" line="324"/>
         <source>Masquerade returned icmp as being from original
 packet&apos;s destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="270"/>
-        <source>Generate both &apos;in&apos; and &apos;out&apos; rules</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ipfadvanceddialog_q.ui" line="277"/>
-        <source>Pass all outgoing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ipfadvanceddialog_q.ui" line="287"/>
+        <location filename="ipfadvanceddialog_q.ui" line="255"/>
         <source>Accept TCP sessions opened prior to firewall restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="294"/>
+        <location filename="ipfadvanceddialog_q.ui" line="262"/>
         <source>Find and eliminate duplicate rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="301"/>
+        <location filename="ipfadvanceddialog_q.ui" line="269"/>
         <source>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="304"/>
+        <location filename="ipfadvanceddialog_q.ui" line="272"/>
         <source>Detect rule shadowing in policy</source>
         <translation>ポリシー中の隠れたルールを検出する</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="311"/>
+        <location filename="ipfadvanceddialog_q.ui" line="279"/>
         <source>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes &apos;any&apos; after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="314"/>
+        <location filename="ipfadvanceddialog_q.ui" line="282"/>
         <source>Ignore empty groups in rules</source>
         <translation type="unfinished">ルールのからグループを無視する</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="369"/>
+        <location filename="ipfadvanceddialog_q.ui" line="361"/>
         <source>Always permit ssh access from
 the management workstation
 with this address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="384"/>
+        <location filename="ipfadvanceddialog_q.ui" line="295"/>
         <source>Default action on &apos;Reject&apos;:</source>
         <translation>「Reject(拒否)」標準動作:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="490"/>
+        <location filename="ipfadvanceddialog_q.ui" line="113"/>
         <source>Command line options for the compiler:</source>
         <translation>コンパイラーのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="509"/>
-        <source>Output file name (if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ipfadvanceddialog_q.ui" line="553"/>
+        <location filename="ipfadvanceddialog_q.ui" line="543"/>
         <source>Installer</source>
         <translation>インストーラー</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="559"/>
+        <location filename="ipfadvanceddialog_q.ui" line="549"/>
         <source>Built-in installer</source>
         <translation>組み込みインストーラー</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="565"/>
+        <location filename="ipfadvanceddialog_q.ui" line="555"/>
         <source>Directory on the firewall where configuration files should be installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="588"/>
+        <location filename="ipfadvanceddialog_q.ui" line="578"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="611"/>
+        <location filename="ipfadvanceddialog_q.ui" line="601"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="634"/>
+        <location filename="ipfadvanceddialog_q.ui" line="624"/>
         <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="659"/>
+        <location filename="ipfadvanceddialog_q.ui" line="649"/>
         <source>Additional command line parameters for ssh</source>
         <translation type="unfinished">ssh の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="689"/>
+        <location filename="ipfadvanceddialog_q.ui" line="679"/>
         <source>Additional command line parameters for scp</source>
         <translation type="unfinished">scp の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="736"/>
+        <location filename="ipfadvanceddialog_q.ui" line="726"/>
         <source>External install script</source>
         <translation type="unfinished">外部インストールスクリプト</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="750"/>
+        <location filename="ipfadvanceddialog_q.ui" line="740"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation type="unfinished">ポリシーインストールスクリプト (もしこのフィールドがブランクの時に使用する組み込みインストーラー)</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="789"/>
+        <location filename="ipfadvanceddialog_q.ui" line="779"/>
         <source>Command line options for the script:</source>
         <translation>スクリプトのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="840"/>
+        <location filename="ipfadvanceddialog_q.ui" line="830"/>
         <source>Prolog/Epilog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="916"/>
+        <location filename="ipfadvanceddialog_q.ui" line="906"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="881"/>
+        <location filename="ipfadvanceddialog_q.ui" line="871"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="949"/>
+        <location filename="ipfadvanceddialog_q.ui" line="939"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="966"/>
+        <location filename="ipfadvanceddialog_q.ui" line="956"/>
         <source>Logging</source>
         <translation>ログ記録</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1039"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1029"/>
         <source>Log facility:</source>
         <translation>ログファシリティ:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1052"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1042"/>
         <source>Log level:</source>
         <translation>ログレベル:</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1065"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1055"/>
         <source>Log packet body</source>
         <translation>ログパケット本体</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1072"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1062"/>
         <source>Block if can not log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1096"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1086"/>
         <source>Script Options</source>
         <translation>スクリプトオプション</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1121"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1111"/>
         <source>Add virtual addresses for NAT</source>
         <translation>NAT 用バーチャルアドレスの追加</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1128"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1118"/>
         <source>Configure Interfaces of the firewall machine</source>
         <translation>ファイアウォールマシンのインターフェース構成</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1135"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1125"/>
         <source>Turn debugging on in generated script</source>
         <translation>生成スクリプトでデバッグに切り替え</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1142"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1132"/>
         <source>If this option is on, policy compiler adds virtual addresses to the interfaces to make the firewall answer to ARP queries for addresses used in NAT rules.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1145"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1135"/>
         <source>Optimization</source>
         <translation>最適化</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1152"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1142"/>
         <source>These options enable auxiliary sections in the generated shell script.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1197"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1187"/>
         <source>Determine addresses of dynamic interfaces at run time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1205"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1195"/>
         <source>IPv6</source>
         <translation>IPv6</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1211"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1201"/>
         <source>Enable IPv6 support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1218"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1208"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1239"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1229"/>
         <source>IPv4 before IPv6</source>
         <translation type="unfinished">IPv4 の前に IPv6</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="1244"/>
+        <location filename="ipfadvanceddialog_q.ui" line="1234"/>
         <source>IPv6 before IPv4</source>
         <translation type="unfinished">IPv6 の前に IPv4</translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="154"/>
+        <location filename="ipfadvanceddialog_q.ui" line="479"/>
         <source>Use Kerberos rcmd proxy in NAT rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfadvanceddialog_q.ui" line="161"/>
+        <location filename="ipfadvanceddialog_q.ui" line="486"/>
         <source>Use Kerberos ekshell proxy in NAT rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipfadvanceddialog_q.ui" line="142"/>
+        <source>Output file name. If left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipfadvanceddialog_q.ui" line="165"/>
+        <source>Generated script (.fw file) and configuration (.conf) files can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipfadvanceddialog_q.ui" line="175"/>
+        <source>Script (.fw) file name on the firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipfadvanceddialog_q.ui" line="192"/>
+        <source>ipf.conf file name on the firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipfadvanceddialog_q.ui" line="209"/>
+        <source>nat.conf file name on the firewall</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ipfwAdvancedDialog</name>
     <message>
-        <location filename="ipfwAdvancedDialog.cpp" line="174"/>
+        <location filename="ipfwAdvancedDialog.cpp" line="171"/>
         <source>Script Editor</source>
         <translation>スクリプトエディター</translation>
     </message>
@@ -7844,145 +9173,145 @@ with this address:</source>
         <translation>ipfw: 高度な設定</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="52"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="43"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="68"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="59"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="87"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="78"/>
         <source>Compiler</source>
         <translation>コンパイラー</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="93"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="84"/>
         <source>Compiler:</source>
         <translation>コンパイラー:</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="122"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="113"/>
         <source>Command line options for the compiler:</source>
         <translation>コンパイラーのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="151"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="142"/>
         <source>Output file name (if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="212"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="230"/>
         <source>Add rule to accept packets matching dynamic rules created for
 known sessions on top of the policy (action &apos;check-state&apos;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="226"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="244"/>
         <source>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="229"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="247"/>
         <source>Detect rule shadowing in policy</source>
         <translation type="unfinished">ポリシー中の隠れたルールを検出する</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="242"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="260"/>
         <source>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes &apos;any&apos; after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="245"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="263"/>
         <source>Ignore empty groups in rules</source>
         <translation type="unfinished">ルールのからグループを無視する</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="252"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="270"/>
         <source>Always permit ssh access from
 the management workstation
 with this address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="294"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="312"/>
         <source>Installer</source>
         <translation>インストーラー</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="300"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="318"/>
         <source>Built-in installer</source>
         <translation>組み込みインストーラー</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="306"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="324"/>
         <source>Directory on the firewall where script should be installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="329"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="347"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="352"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="370"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="375"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="393"/>
         <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="406"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="418"/>
         <source>Additional command line parameters for ssh</source>
         <translation type="unfinished">ssh の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="436"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="448"/>
         <source>Additional command line parameters for scp</source>
         <translation type="unfinished">scp の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="467"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="479"/>
         <source>External install script</source>
         <translation>外部インストールスクリプト</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="481"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="493"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation>インストールスクリプトのポリシー (この項目が空の場合に使用する組み込みインストーラー):</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="520"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="532"/>
         <source>Command line options for the script:</source>
         <translation>スクリプトのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="571"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="583"/>
         <source>Prolog/Epilog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="665"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="668"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="621"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="627"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="672"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="675"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ipfwadvanceddialog_q.ui" line="692"/>
+        <location filename="ipfwadvanceddialog_q.ui" line="695"/>
         <source>Script Options</source>
         <translation>スクリプトオプション</translation>
     </message>
@@ -8026,11 +9355,21 @@ with this address:</source>
         <source>IPv6 before IPv4</source>
         <translation type="unfinished">IPv6 の前に IPv4</translation>
     </message>
+    <message>
+        <location filename="ipfwadvanceddialog_q.ui" line="165"/>
+        <source>Generated script can be copied to the firewall machine under different name. If this field is left blank, the file name does not change.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ipfwadvanceddialog_q.ui" line="175"/>
+        <source>Script name on the firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>iptAdvancedDialog</name>
     <message>
-        <location filename="iptAdvancedDialog.cpp" line="231"/>
+        <location filename="iptAdvancedDialog.cpp" line="258"/>
         <source>Script Editor</source>
         <translation>スクリプトエディター</translation>
     </message>
@@ -8043,347 +9382,372 @@ with this address:</source>
         <translation>iptables: 高度な設定</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="41"/>
+        <location filename="iptadvanceddialog_q.ui" line="97"/>
         <source>Compiler</source>
         <translation>コンパイラー</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="56"/>
+        <location filename="iptadvanceddialog_q.ui" line="132"/>
         <source>Command line options for the compiler:</source>
         <translation>コンパイラーのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="75"/>
+        <location filename="iptadvanceddialog_q.ui" line="275"/>
         <source>Accept ESTABLISHED and RELATED packets before the first rule</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="88"/>
+        <location filename="iptadvanceddialog_q.ui" line="319"/>
         <source>Bridging firewall</source>
         <translation>ブリッジ中のファイアウォール</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="117"/>
+        <location filename="iptadvanceddialog_q.ui" line="332"/>
         <source>Detect shadowing in policy rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="130"/>
+        <location filename="iptadvanceddialog_q.ui" line="233"/>
         <source>Assume firewall is part of &apos;any&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="143"/>
+        <location filename="iptadvanceddialog_q.ui" line="262"/>
         <source>Accept TCP sessions opened prior to firewall restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="156"/>
+        <location filename="iptadvanceddialog_q.ui" line="358"/>
         <source>Enable support for NAT of locally originated connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="163"/>
+        <location filename="iptadvanceddialog_q.ui" line="103"/>
         <source>Compiler:</source>
         <translation>コンパイラー:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="182"/>
-        <source>Output file name (if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="iptadvanceddialog_q.ui" line="208"/>
+        <location filename="iptadvanceddialog_q.ui" line="282"/>
         <source>Drop packets that are associated with
 no known connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="216"/>
+        <location filename="iptadvanceddialog_q.ui" line="290"/>
         <source>and log them</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="282"/>
+        <location filename="iptadvanceddialog_q.ui" line="378"/>
         <source>Clamp MSS to MTU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="295"/>
+        <location filename="iptadvanceddialog_q.ui" line="345"/>
         <source>Ignore empty groups in rules</source>
         <translation>ルールのからグループを無視する</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="350"/>
+        <location filename="iptadvanceddialog_q.ui" line="450"/>
         <source>Always permit ssh access from
 the management workstation
 with this address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="375"/>
+        <location filename="iptadvanceddialog_q.ui" line="392"/>
         <source>Default action on &apos;Reject&apos;:</source>
         <translation>「Reject(拒否)」の標準動作:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="401"/>
+        <location filename="iptadvanceddialog_q.ui" line="385"/>
         <source>Make Tag and Classify actions terminating</source>
         <translation>タグと分類の設定操作を中断しました</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="409"/>
+        <location filename="iptadvanceddialog_q.ui" line="492"/>
         <source>Installer</source>
         <translation>インストーラー</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="415"/>
+        <location filename="iptadvanceddialog_q.ui" line="498"/>
         <source>Built-in installer</source>
         <translation>組み込みインストーラー</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="421"/>
+        <location filename="iptadvanceddialog_q.ui" line="504"/>
         <source>Directory on the firewall where script should be installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="444"/>
+        <location filename="iptadvanceddialog_q.ui" line="533"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="467"/>
+        <location filename="iptadvanceddialog_q.ui" line="562"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="490"/>
+        <location filename="iptadvanceddialog_q.ui" line="591"/>
         <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="515"/>
+        <location filename="iptadvanceddialog_q.ui" line="622"/>
         <source>Additional command line parameters for ssh</source>
         <translation>ssh の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="545"/>
+        <location filename="iptadvanceddialog_q.ui" line="652"/>
         <source>Additional command line parameters for scp</source>
         <translation>scp の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="576"/>
+        <location filename="iptadvanceddialog_q.ui" line="683"/>
         <source>External install script</source>
         <translation>外部インストールスクリプト</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="590"/>
+        <location filename="iptadvanceddialog_q.ui" line="697"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation type="unfinished">ポリシーインストールスクリプト (もしこのフィールドがブランクの時に使用する組み込みインストーラー)</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="629"/>
+        <location filename="iptadvanceddialog_q.ui" line="736"/>
         <source>Command line options for the script:</source>
         <translation>スクリプトのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="680"/>
+        <location filename="iptadvanceddialog_q.ui" line="787"/>
         <source>Prolog/Epilog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="765"/>
+        <location filename="iptadvanceddialog_q.ui" line="872"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="724"/>
+        <location filename="iptadvanceddialog_q.ui" line="831"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="752"/>
+        <location filename="iptadvanceddialog_q.ui" line="859"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="772"/>
+        <location filename="iptadvanceddialog_q.ui" line="879"/>
         <source>Insert prolog script </source>
         <translation>prolog スクリプトの挿入</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="789"/>
+        <location filename="iptadvanceddialog_q.ui" line="896"/>
         <source>on top of the script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="794"/>
+        <location filename="iptadvanceddialog_q.ui" line="901"/>
         <source>after interface configuration</source>
         <translation>インターフェース設定の後</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="799"/>
+        <location filename="iptadvanceddialog_q.ui" line="906"/>
         <source>after policy reset</source>
         <translation>ポリシーリセットの後</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="811"/>
+        <location filename="iptadvanceddialog_q.ui" line="918"/>
         <source>Logging</source>
         <translation type="unfinished">ログ記録</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="829"/>
+        <location filename="iptadvanceddialog_q.ui" line="936"/>
         <source>use ULOG</source>
         <translation>ULOG を使う</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="836"/>
+        <location filename="iptadvanceddialog_q.ui" line="943"/>
         <source>use LOG</source>
         <translation>LOG を使う</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="856"/>
+        <location filename="iptadvanceddialog_q.ui" line="963"/>
         <source>log TCP seq. numbers</source>
         <translation>TCP シーケンス番号を記録する</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="863"/>
+        <location filename="iptadvanceddialog_q.ui" line="970"/>
         <source>log IP options</source>
         <translation>IP オプションをログ記録する</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="870"/>
+        <location filename="iptadvanceddialog_q.ui" line="977"/>
         <source>use numeric syslog levels</source>
         <translation>使用する syslog レベルの数値</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="877"/>
+        <location filename="iptadvanceddialog_q.ui" line="984"/>
         <source>Log level:</source>
         <translation>ログレベル:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="890"/>
+        <location filename="iptadvanceddialog_q.ui" line="997"/>
         <source>log TCP options</source>
         <translation>TCP オプションを記録する</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="914"/>
+        <location filename="iptadvanceddialog_q.ui" line="1021"/>
         <source>cprange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="931"/>
+        <location filename="iptadvanceddialog_q.ui" line="1038"/>
         <source>queue threshold:</source>
         <translation>キュー閾値:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="941"/>
+        <location filename="iptadvanceddialog_q.ui" line="1048"/>
         <source>netlink group:</source>
         <translation>ネットリンクグループ:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1009"/>
+        <location filename="iptadvanceddialog_q.ui" line="1116"/>
         <source>Log prefix:</source>
         <translation>ログ接頭語:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1026"/>
+        <location filename="iptadvanceddialog_q.ui" line="1133"/>
         <source>Logging limit:</source>
         <translation>ログ記録制限:</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1053"/>
+        <location filename="iptadvanceddialog_q.ui" line="1160"/>
         <source>Activate logging in all rules
 (overrides rule options, use for debugging)</source>
         <translation>すべてのルールのログを記録する
 (ルールオプションを上書きします。デバッグで使います)</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1094"/>
+        <location filename="iptadvanceddialog_q.ui" line="1201"/>
         <source>Script</source>
         <translation>スクリプト</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1103"/>
+        <location filename="iptadvanceddialog_q.ui" line="1210"/>
         <source>These options enable auxiliary sections in the generated shell script.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1132"/>
+        <location filename="iptadvanceddialog_q.ui" line="1349"/>
         <source>iptables-restore replaces firewall policy in one atomic transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1135"/>
+        <location filename="iptadvanceddialog_q.ui" line="1352"/>
         <source>Use iptables-restore to activate policy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1142"/>
+        <location filename="iptadvanceddialog_q.ui" line="1336"/>
         <source>Add virtual addresses for NAT</source>
         <translation>NAT 用バーチャルアドレス群の追加</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1165"/>
+        <location filename="iptadvanceddialog_q.ui" line="1245"/>
         <source>Load modules</source>
         <translation>モジュール読み込み</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1172"/>
+        <location filename="iptadvanceddialog_q.ui" line="1258"/>
         <source>Verify interfaces before loading firewall policy</source>
         <translation>ファイアウォールポリシーを読み込む前にインターフェースの確認</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1179"/>
+        <location filename="iptadvanceddialog_q.ui" line="1271"/>
         <source>Turn debugging on in generated script</source>
         <translation>生成スクリプトでデバッグに切り替え</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1186"/>
+        <location filename="iptadvanceddialog_q.ui" line="1284"/>
         <source>Configure Interfaces of the firewall machine</source>
         <translation>ファイアウォールマシンのインターフェース構成</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1210"/>
+        <location filename="iptadvanceddialog_q.ui" line="1376"/>
         <source>IPv6</source>
         <translation>IPv6</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1216"/>
+        <location filename="iptadvanceddialog_q.ui" line="1382"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1224"/>
+        <location filename="iptadvanceddialog_q.ui" line="1390"/>
         <source>IPv4 before IPv6</source>
         <translation>IPv4 の前に IPv6</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1229"/>
+        <location filename="iptadvanceddialog_q.ui" line="1395"/>
         <source>IPv6 before IPv4</source>
         <translation>IPv6 の前に IPv4</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1269"/>
+        <location filename="iptadvanceddialog_q.ui" line="33"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1292"/>
+        <location filename="iptadvanceddialog_q.ui" line="56"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="1308"/>
+        <location filename="iptadvanceddialog_q.ui" line="72"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
     <message>
-        <location filename="iptadvanceddialog_q.ui" line="275"/>
+        <location filename="iptadvanceddialog_q.ui" line="371"/>
         <source>This adds a rule on top of the policy with iptables target TCPMSS
 and option --clamp-mss-to-pmtu. Generation of this command is
 version-dependent and also depends on the setting of ip or ipv6 forwarding
 in host settings dialog.
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iptadvanceddialog_q.ui" line="161"/>
+        <source>Output file name. If left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iptadvanceddialog_q.ui" line="184"/>
+        <source>Generated script can be copied to the firewall machine under different name. If this field is left blank, the file name does not change.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iptadvanceddialog_q.ui" line="194"/>
+        <source>Script name on the firewall:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iptadvanceddialog_q.ui" line="1297"/>
+        <source>Configure VLAN Interfaces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iptadvanceddialog_q.ui" line="1310"/>
+        <source>Configure bridge Interfaces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="iptadvanceddialog_q.ui" line="1323"/>
+        <source>Configure bonding Interfaces</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8395,22 +9759,22 @@ in host settings dialog.
         <translation>Linksys/Sveasoft: 高度な設定</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="70"/>
+        <location filename="linksysadvanceddialog_q.ui" line="40"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="86"/>
+        <location filename="linksysadvanceddialog_q.ui" line="56"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="108"/>
+        <location filename="linksysadvanceddialog_q.ui" line="78"/>
         <source>Path</source>
         <translation>パス</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="132"/>
+        <location filename="linksysadvanceddialog_q.ui" line="161"/>
         <source>modprobe:</source>
         <translation>modprobe:</translation>
     </message>
@@ -8420,32 +9784,32 @@ in host settings dialog.
         <translation>logger:</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="158"/>
+        <location filename="linksysadvanceddialog_q.ui" line="129"/>
         <source>ip:</source>
         <translation>ip:</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="171"/>
+        <location filename="linksysadvanceddialog_q.ui" line="177"/>
         <source>lsmod</source>
         <translation>lsmod</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="184"/>
+        <location filename="linksysadvanceddialog_q.ui" line="113"/>
         <source>iptables:</source>
         <translation>iptables:</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="244"/>
+        <location filename="linksysadvanceddialog_q.ui" line="100"/>
         <source>Specify directory path and a file name for each utility on your firewall machine. Leave these empty if you want to use default values.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="290"/>
+        <location filename="linksysadvanceddialog_q.ui" line="258"/>
         <source>Prompts</source>
         <translation>プロンプト</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="320"/>
+        <location filename="linksysadvanceddialog_q.ui" line="273"/>
         <source>Policy installer relies on the shell prompt on the firewall to execute commands. Installer tries both prompt string patterns configured here; it assumes that the firewall is ready to accept a command if either prompt matches. You should only need to change these string patterns if Sveasoft changes the shell prompt in the future releases of the software.
 &lt;br&gt;
 &lt;br&gt;
@@ -8453,19 +9817,34 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="358"/>
+        <location filename="linksysadvanceddialog_q.ui" line="311"/>
         <source>Use default prompts</source>
         <translation>標準プロンプトを使う</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="368"/>
+        <location filename="linksysadvanceddialog_q.ui" line="321"/>
         <source>prompt 2</source>
         <translation>プロンプト2</translation>
     </message>
     <message>
-        <location filename="linksysadvanceddialog_q.ui" line="400"/>
+        <location filename="linksysadvanceddialog_q.ui" line="353"/>
         <source>prompt 1</source>
         <translation>プロンプト1</translation>
+    </message>
+    <message>
+        <location filename="linksysadvanceddialog_q.ui" line="193"/>
+        <source>vconfig</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linksysadvanceddialog_q.ui" line="209"/>
+        <source>brctl</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linksysadvanceddialog_q.ui" line="225"/>
+        <source>ifenslave</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8481,190 +9860,376 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation>オプション</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="48"/>
+        <location filename="linux24advanceddialog_q.ui" line="51"/>
         <source>IPv4 Packet forwarding</source>
         <translation>IPv4 パケット転送</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="643"/>
+        <location filename="linux24advanceddialog_q.ui" line="1162"/>
         <source>No change</source>
         <translation>変更なし</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="648"/>
+        <location filename="linux24advanceddialog_q.ui" line="1167"/>
         <source>On</source>
         <translation>オン</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="653"/>
+        <location filename="linux24advanceddialog_q.ui" line="1172"/>
         <source>Off</source>
         <translation>オフ</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="96"/>
+        <location filename="linux24advanceddialog_q.ui" line="99"/>
         <source>IPv6 Packet forwarding</source>
         <translation>IPv6 パケット転送</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="128"/>
+        <location filename="linux24advanceddialog_q.ui" line="131"/>
         <source>Kernel anti-spoofing protection</source>
         <translation>カーネルの spoofing 対策防御</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="160"/>
+        <location filename="linux24advanceddialog_q.ui" line="163"/>
         <source>Ignore broadcast pings</source>
         <translation>ブロードキャスト ping の無視</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="192"/>
+        <location filename="linux24advanceddialog_q.ui" line="195"/>
         <source>Ignore all pings</source>
         <translation>すべての ping の無視</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="224"/>
+        <location filename="linux24advanceddialog_q.ui" line="227"/>
         <source>Accept source route</source>
         <translation>ソースルートの受理</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="256"/>
+        <location filename="linux24advanceddialog_q.ui" line="259"/>
         <source>Accept ICMP redirects</source>
         <translation>ICMP リダイレクトの受理</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="288"/>
+        <location filename="linux24advanceddialog_q.ui" line="291"/>
         <source>Ignore bogus ICMP errors</source>
         <translation>bogus ICMP エラーの無視</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="320"/>
+        <location filename="linux24advanceddialog_q.ui" line="323"/>
         <source>Allow dynamic addresses</source>
         <translation>ダイナミックアドレス群の許可</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="368"/>
+        <location filename="linux24advanceddialog_q.ui" line="371"/>
         <source>Log martians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="381"/>
+        <location filename="linux24advanceddialog_q.ui" line="384"/>
         <source>whats this text</source>
         <comment>whats this comment</comment>
         <translation>このテキストは何</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="420"/>
+        <location filename="linux24advanceddialog_q.ui" line="423"/>
         <source>TCP</source>
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="444"/>
+        <location filename="linux24advanceddialog_q.ui" line="432"/>
         <source>These parameters make sense for connections to or from the firewall host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="661"/>
+        <location filename="linux24advanceddialog_q.ui" line="649"/>
         <source>TCP sack</source>
         <translation>TCP sack</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="674"/>
+        <location filename="linux24advanceddialog_q.ui" line="662"/>
         <source>TCP window scaling</source>
         <translation>TCP ウィンドウスケーリング</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="687"/>
+        <location filename="linux24advanceddialog_q.ui" line="675"/>
         <source>TCP ECN</source>
         <translation>TCP ECN</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="700"/>
+        <location filename="linux24advanceddialog_q.ui" line="688"/>
         <source>TCP SYN cookies</source>
         <translation>TCP SYN クッキー</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="713"/>
+        <location filename="linux24advanceddialog_q.ui" line="701"/>
         <source>TCP keepalive time (sec)</source>
         <translation>TCP キープアライブ (秒)</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="726"/>
+        <location filename="linux24advanceddialog_q.ui" line="714"/>
         <source>TCP fack</source>
         <translation>TCP fack</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="739"/>
+        <location filename="linux24advanceddialog_q.ui" line="727"/>
         <source>TCP timestamps</source>
         <translation>TCP タイムスタンプ</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="752"/>
+        <location filename="linux24advanceddialog_q.ui" line="740"/>
         <source>TCP FIN timeout (sec)</source>
         <translation>TCP FIN タイムアウト(秒)</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="766"/>
+        <location filename="linux24advanceddialog_q.ui" line="754"/>
         <source>Path</source>
         <translation>パス</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="788"/>
+        <location filename="linux24advanceddialog_q.ui" line="785"/>
         <source>Specify directory path and a file name for each utility on your firewall machine. Leave these empty if you want to use default values.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="801"/>
+        <location filename="linux24advanceddialog_q.ui" line="798"/>
         <source>iptables:</source>
         <translation>iptables:</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="820"/>
+        <location filename="linux24advanceddialog_q.ui" line="817"/>
         <source>:ip6tables</source>
         <translation>:ip6tables</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="830"/>
+        <location filename="linux24advanceddialog_q.ui" line="827"/>
         <source>ip:</source>
         <translation>ip:</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="846"/>
+        <location filename="linux24advanceddialog_q.ui" line="843"/>
         <source>logger:</source>
         <translation>logger:</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="862"/>
+        <location filename="linux24advanceddialog_q.ui" line="907"/>
         <source>modprobe:</source>
         <translation>modprobe:</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="878"/>
+        <location filename="linux24advanceddialog_q.ui" line="923"/>
         <source>lsmod</source>
         <translation>lsmod</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="894"/>
+        <location filename="linux24advanceddialog_q.ui" line="939"/>
         <source>iptables-restore:</source>
         <translation>iptables-restore:</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="913"/>
+        <location filename="linux24advanceddialog_q.ui" line="958"/>
         <source>:ip6tables-restore</source>
         <translation>:ip6tables-restore</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="961"/>
+        <location filename="linux24advanceddialog_q.ui" line="1228"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="984"/>
+        <location filename="linux24advanceddialog_q.ui" line="1251"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="linux24advanceddialog_q.ui" line="1000"/>
+        <location filename="linux24advanceddialog_q.ui" line="1267"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="859"/>
+        <source>vconfig</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="875"/>
+        <source>brctl</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="891"/>
+        <source>ifenslave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="1001"/>
+        <source>conntrack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="1025"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;These parameters allow you to tune performance of&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;conntrack module (netfilter state tracking). This&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;should only be necessary for large firewalls with a lot&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;of traffic and many stateful rules.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Explanation of these parameters can be found at &lt;a href=&quot;http://www.wallfire.org/misc/netfilter_conntrack_perf.txt&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.wallfire.org/misc/netfilter_conntrack_perf.txt&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Set both to zero to use default values&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="1045"/>
+        <source>CONNTRACK_MAX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="1058"/>
+        <source>CONNTRACK_MAX is the maximum number of &quot;sessions&quot; (connection tracking entries)
+that can be handled simultaneously by netfilter in kernel memory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="1082"/>
+        <source>HASHSIZE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="1101"/>
+        <source>the size of the hash table storing the lists of conntrack entries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="1132"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This parameter is used if you run conntrackd in state &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;synchronization mode for a firewall cluster and have&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;kernel &amp;lt;2.6.22&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Explanation of this parameter can be found at&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://conntrack-tools.netfilter.org/manual.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://conntrack-tools.netfilter.org/manual.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24advanceddialog_q.ui" line="1151"/>
+        <source>Disable TCP window tracking  (&quot;ip_conntrack_tcp_be_liberal&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>linux24IfaceOptsDialog</name>
+    <message>
+        <location filename="linux24IfaceOptsDialog.cpp" line="188"/>
+        <source>Input not valid: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>linux24IfaceOptsDialog_q</name>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="13"/>
+        <source>Linux: interface settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="21"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="44"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="60"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="82"/>
+        <source>Options</source>
+        <translation type="unfinished">オプション</translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="111"/>
+        <source>Device Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="154"/>
+        <source>VLAN ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="198"/>
+        <source>Enable STP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="222"/>
+        <source>Bonding policy:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="235"/>
+        <source>balance-rr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="240"/>
+        <source>active-backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="245"/>
+        <source>balance-xor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="250"/>
+        <source>broadcast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="255"/>
+        <source>802.3ad</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="260"/>
+        <source>balance-tlb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="265"/>
+        <source>balance-alb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="273"/>
+        <source>Xmit hash policy:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="286"/>
+        <source>layer2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="291"/>
+        <source>layer3+4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="linux24ifaceoptsdialog_q.ui" line="299"/>
+        <source>Other parameters:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8759,59 +10324,255 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
     </message>
 </context>
 <context>
+    <name>newClusterDialog</name>
+    <message>
+        <location filename="newClusterDialog.cpp" line="95"/>
+        <source>FWBuilder template files</source>
+        <translation type="unfinished">ファイアウォールビルダー用テンプレートファイル</translation>
+    </message>
+    <message>
+        <location filename="newClusterDialog.cpp" line="96"/>
+        <source>FWBuilder template files (*.xml *.fwb)</source>
+        <translation type="unfinished">ファイアウォールビルダー用テンプレートファイル (*.xml *.fwb)</translation>
+    </message>
+    <message>
+        <location filename="newClusterDialog.cpp" line="404"/>
+        <source>Interface: %1 (%2)</source>
+        <translation type="unfinished">インターフェース: %1 (%2)</translation>
+    </message>
+    <message>
+        <location filename="newClusterDialog.cpp" line="462"/>
+        <source>Illegal address &apos;%1/%2&apos;</source>
+        <translation type="unfinished">不当なアドレス 「%1/%2」</translation>
+    </message>
+</context>
+<context>
+    <name>newClusterDialog_q</name>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="37"/>
+        <source>TextLabel</source>
+        <translation type="unfinished">テキストラベル</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="60"/>
+        <source>Enter the name of the new object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="104"/>
+        <source>Use preconfigured template cluster objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="120"/>
+        <source>Template file:</source>
+        <translation type="unfinished">テンプレートファイル:</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="137"/>
+        <source>Browse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="144"/>
+        <source>Use standard template library</source>
+        <translation type="unfinished">標準テンプレートライブラリーを使う</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="186"/>
+        <source>Choose firewall software of this cluster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="196"/>
+        <source>Choose OS of this cluster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="219"/>
+        <source>Here you can add or edit cluster interfaces manually. &apos;Name&apos; corresponds to the name of the cluster interface, such as &apos;vrrp0&apos;, &apos;carp0&apos; etc. &apos;Label&apos; is used to mark interface to reflect network topology, e.g. &apos;outside&apos; or &apos;inside&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="232"/>
+        <source>Click &apos;Finish&apos; when done.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="264"/>
+        <source>Name</source>
+        <translation type="unfinished">名前</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="269"/>
+        <source>Label</source>
+        <translation type="unfinished">ラベル</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="274"/>
+        <source>Address</source>
+        <translation type="unfinished">アドレス</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="279"/>
+        <source>Netmask</source>
+        <translation type="unfinished">ネットマスク</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="284"/>
+        <source>protocol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="289"/>
+        <source>Secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="294"/>
+        <source>VID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="304"/>
+        <source>Name:</source>
+        <translation type="unfinished">名前:</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="339"/>
+        <source>Address:</source>
+        <translation type="unfinished">アドレス:</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="374"/>
+        <source>Netmask:</source>
+        <translation type="unfinished">ネットマスク:</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="409"/>
+        <source>Label:</source>
+        <translation type="unfinished">ラベル:</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="446"/>
+        <source>Failover protocol:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="464"/>
+        <source>Delete</source>
+        <translation type="unfinished">削除</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="477"/>
+        <source>Update</source>
+        <translation type="unfinished">更新</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="490"/>
+        <source>Add</source>
+        <translation type="unfinished">追加</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="510"/>
+        <source>Secret:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="520"/>
+        <source>VRID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="536"/>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="546"/>
+        <source>VHID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="806"/>
+        <source>Choose template object in the list and click &apos;Finish&apos; when ready. Template objects use generic interface names that will be iherited by the cluster object you create. You may need to rename them later to reflect real names of interfaces on your cluster machine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="870"/>
+        <source>&lt; &amp;Back</source>
+        <translation type="unfinished">&lt; 戻る(&amp;B)</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="877"/>
+        <source>&amp;Next &gt;</source>
+        <translation type="unfinished">次へ(&amp;N) &gt;</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="887"/>
+        <source>&amp;Finish</source>
+        <translation type="unfinished">終了(&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="newclusterdialog_q.ui" line="897"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+</context>
+<context>
     <name>newFirewallDialog</name>
     <message>
-        <location filename="newFirewallDialog.cpp" line="122"/>
+        <location filename="newFirewallDialog.cpp" line="143"/>
         <source>Check option &apos;dynamic address&apos; for the interface that gets its IP address dynamically via DHCP or PPP protocol.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="123"/>
+        <location filename="newFirewallDialog.cpp" line="144"/>
         <source>Check option &apos;Unnumbered interface&apos; for the interface that does not have an IP address. Examples of interfaces of this kind are those used to terminate PPPoE or VPN tunnels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="131"/>
+        <location filename="newFirewallDialog.cpp" line="152"/>
         <source>FWBuilder template files</source>
         <translation>ファイアウォールビルダー用テンプレートファイル</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="131"/>
+        <location filename="newFirewallDialog.cpp" line="152"/>
         <source>FWBuilder template files (*.xml *.fwb)</source>
         <translation>ファイアウォールビルダー用テンプレートファイル (*.xml *.fwb)</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="290"/>
+        <location filename="newFirewallDialog.cpp" line="308"/>
         <source>Missing SNMP community string.</source>
         <translation>SNMP コミュニティ文字列が足りません。</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="310"/>
+        <location filename="newFirewallDialog.cpp" line="328"/>
         <source>Address of %1 could not be obtained via DNS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="584"/>
+        <location filename="newFirewallDialog.cpp" line="623"/>
         <source>Interface: %1 (%2)</source>
         <translation>インターフェース: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="591"/>
+        <location filename="newFirewallDialog.cpp" line="630"/>
         <source>Dynamic address</source>
         <translation>ダイナミックアドレス</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="593"/>
+        <location filename="newFirewallDialog.cpp" line="632"/>
         <source>Unnumbered interface</source>
         <translation>アンナンバードインターフェース</translation>
     </message>
     <message>
         <location filename="newFirewallDialog.cpp" line="595"/>
         <source>Bridge port</source>
-        <translation>ブリッジポート</translation>
+        <translation type="obsolete">ブリッジポート</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="650"/>
+        <location filename="newFirewallDialog.cpp" line="687"/>
         <source>Illegal address &apos;%1/%2&apos;</source>
         <translation>不当なアドレス 「%1/%2」</translation>
     </message>
@@ -8894,17 +10655,17 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation>「次へ」をクリックすると処理します。</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="779"/>
+        <location filename="newfirewalldialog_q.ui" line="772"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="784"/>
+        <location filename="newfirewalldialog_q.ui" line="777"/>
         <source>Label</source>
         <translation>ラベル</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="789"/>
+        <location filename="newfirewalldialog_q.ui" line="782"/>
         <source>Address</source>
         <translation>アドレス</translation>
     </message>
@@ -8929,107 +10690,107 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation>名前:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="568"/>
+        <location filename="newfirewalldialog_q.ui" line="561"/>
         <source>Address:</source>
         <translation>アドレス:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="603"/>
+        <location filename="newfirewalldialog_q.ui" line="596"/>
         <source>Netmask:</source>
         <translation>ネットマスク:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="638"/>
+        <location filename="newfirewalldialog_q.ui" line="631"/>
         <source>MAC:</source>
         <translation>MAC:</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="533"/>
+        <location filename="newfirewalldialog_q.ui" line="526"/>
         <source>Label:</source>
         <translation>ラベル:</translation>
     </message>
     <message>
         <location filename="newfirewalldialog_q.ui" line="499"/>
         <source>Bridge port</source>
-        <translation>ブリッジポート</translation>
+        <translation type="obsolete">ブリッジポート</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="506"/>
+        <location filename="newfirewalldialog_q.ui" line="499"/>
         <source>Unnumbered interface</source>
         <translation>アンナンバードインターフェース</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="513"/>
+        <location filename="newfirewalldialog_q.ui" line="506"/>
         <source>Dynamic address</source>
         <translation>ダイナミックアドレス</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="520"/>
+        <location filename="newfirewalldialog_q.ui" line="513"/>
         <source>Regular interface</source>
         <translation>レギュラーインターフェース</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="707"/>
+        <location filename="newfirewalldialog_q.ui" line="700"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="694"/>
+        <location filename="newfirewalldialog_q.ui" line="687"/>
         <source>Update</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="681"/>
+        <location filename="newfirewalldialog_q.ui" line="674"/>
         <source>Add</source>
         <translation>追加</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="764"/>
+        <location filename="newfirewalldialog_q.ui" line="757"/>
         <source>up</source>
         <translation>上</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="771"/>
+        <location filename="newfirewalldialog_q.ui" line="764"/>
         <source>down</source>
         <translation>下</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="794"/>
+        <location filename="newfirewalldialog_q.ui" line="787"/>
         <source>Security Level</source>
         <translation>セキュリティレベル</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="805"/>
+        <location filename="newfirewalldialog_q.ui" line="798"/>
         <source>Click &apos;Finish&apos; when done.</source>
         <translation>「終了を」をクリックすると処理します。</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="818"/>
+        <location filename="newfirewalldialog_q.ui" line="811"/>
         <source>In order to be able to build firewall policy properly, Firewall Builder needs information about &apos;security level&apos; of the firewall&apos;s interfaces. Interface that connects it to the Internet is considered &apos;insecure&apos; and has security level &apos;0&apos;, while interface connected to the internal network is supposed to be &apos;secure&apos; (security level &apos;100&apos;). You can arrange interfaces in the order of their security level below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1084"/>
+        <location filename="newfirewalldialog_q.ui" line="1077"/>
         <source>Choose template object in the list and click &apos;Finish&apos; when ready. Template objects use generic interface names that will be iherited by the firewall object you create. You may need to rename them later to reflect real names of interfaces on your firewall machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1148"/>
+        <location filename="newfirewalldialog_q.ui" line="1141"/>
         <source>&lt; &amp;Back</source>
         <translation>&lt; 戻る(&amp;B)</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1155"/>
+        <location filename="newfirewalldialog_q.ui" line="1148"/>
         <source>&amp;Next &gt;</source>
         <translation>次へ(&amp;N) &gt;</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1165"/>
+        <location filename="newfirewalldialog_q.ui" line="1158"/>
         <source>&amp;Finish</source>
         <translation>終了(&amp;F)</translation>
     </message>
     <message>
-        <location filename="newfirewalldialog_q.ui" line="1175"/>
+        <location filename="newfirewalldialog_q.ui" line="1168"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
@@ -9070,42 +10831,42 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
 <context>
     <name>newHostDialog</name>
     <message>
-        <location filename="newHostDialog.cpp" line="114"/>
+        <location filename="newHostDialog.cpp" line="115"/>
         <source>FWBuilder template files</source>
         <translation>ファイアウォールビルダー用テンプレートファイル</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="114"/>
+        <location filename="newHostDialog.cpp" line="115"/>
         <source>FWBuilder template files (*.xml *.fwb)</source>
         <translation>ファイアウォールビルダー用テンプレートファイル (*.xml *.fwb)</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="281"/>
+        <location filename="newHostDialog.cpp" line="282"/>
         <source>Missing SNMP community string.</source>
         <translation>SNMP コミュニティ文字列が足りません。</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="301"/>
+        <location filename="newHostDialog.cpp" line="302"/>
         <source>Address of %1 could not be obtained via DNS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="489"/>
+        <location filename="newHostDialog.cpp" line="490"/>
         <source>Interface: %1 (%2)</source>
         <translation>インターフェース: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="496"/>
+        <location filename="newHostDialog.cpp" line="497"/>
         <source>Dynamic address</source>
         <translation>ダイナミックアドレス</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="498"/>
+        <location filename="newHostDialog.cpp" line="499"/>
         <source>Unnumbered interface</source>
         <translation>アンナンバードインターフェース</translation>
     </message>
     <message>
-        <location filename="newHostDialog.cpp" line="553"/>
+        <location filename="newHostDialog.cpp" line="554"/>
         <source>Illegal address &apos;%1/%2&apos;</source>
         <translation>不当なアドレス 「%1/%2」</translation>
     </message>
@@ -9304,6 +11065,52 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
     </message>
 </context>
 <context>
+    <name>openaisOptionsDialog</name>
+    <message>
+        <location filename="openaisOptionsDialog.cpp" line="111"/>
+        <source>Invalid IP address &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="openaisOptionsDialog.cpp" line="112"/>
+        <source>&amp;Continue</source>
+        <translation type="unfinished">続ける(&amp;C)</translation>
+    </message>
+</context>
+<context>
+    <name>openaisOptionsDialog_q</name>
+    <message>
+        <location filename="openaisoptionsdialog_q.ui" line="13"/>
+        <source>openais protocol settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="openaisoptionsdialog_q.ui" line="37"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="openaisoptionsdialog_q.ui" line="53"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="openaisoptionsdialog_q.ui" line="75"/>
+        <source>openais Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="openaisoptionsdialog_q.ui" line="85"/>
+        <source>Address:</source>
+        <translation type="unfinished">アドレス:</translation>
+    </message>
+    <message>
+        <location filename="openaisoptionsdialog_q.ui" line="108"/>
+        <source>Port number (udp):</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>openbsdAdvancedDialog_q</name>
     <message>
         <location filename="openbsdadvanceddialog_q.ui" line="13"/>
@@ -9387,87 +11194,135 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
     </message>
 </context>
 <context>
+    <name>openbsdIfaceOptsDialog_q</name>
+    <message>
+        <location filename="openbsdifaceoptsdialog_q.ui" line="13"/>
+        <source>OpenBSD: interface settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="openbsdifaceoptsdialog_q.ui" line="21"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="openbsdifaceoptsdialog_q.ui" line="44"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="openbsdifaceoptsdialog_q.ui" line="60"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="openbsdifaceoptsdialog_q.ui" line="82"/>
+        <source>Options</source>
+        <translation type="unfinished">オプション</translation>
+    </message>
+    <message>
+        <location filename="openbsdifaceoptsdialog_q.ui" line="111"/>
+        <source>Device Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="openbsdifaceoptsdialog_q.ui" line="154"/>
+        <source>VLAN ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="openbsdifaceoptsdialog_q.ui" line="198"/>
+        <source>Enable STP</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>pageSetupDialog_q</name>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="16"/>
+        <location filename="pagesetupdialog_q.ui" line="13"/>
         <source>Page Setup</source>
         <translation>ページ設定</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="22"/>
+        <location filename="pagesetupdialog_q.ui" line="19"/>
         <source>start each section on a new page</source>
         <translation>新規ページで各セクションを開始する</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="29"/>
+        <location filename="pagesetupdialog_q.ui" line="26"/>
         <source>print header on every page</source>
         <translation>各ページにヘッダーを印刷する</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="36"/>
+        <location filename="pagesetupdialog_q.ui" line="33"/>
         <source>print legend</source>
         <translation>凡例を印刷する</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="43"/>
+        <location filename="pagesetupdialog_q.ui" line="40"/>
         <source>print objects used in rules</source>
         <translation>ルールで使用したオブジェクトを印刷する</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="71"/>
+        <location filename="pagesetupdialog_q.ui" line="108"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="74"/>
+        <location filename="pagesetupdialog_q.ui" line="111"/>
         <source>Alt+O</source>
         <translation>Alt+O</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="87"/>
+        <location filename="pagesetupdialog_q.ui" line="124"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="90"/>
+        <location filename="pagesetupdialog_q.ui" line="127"/>
         <source>Alt+C</source>
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location filename="pagesetupdialog_q.ui" line="110"/>
+        <location filename="pagesetupdialog_q.ui" line="47"/>
         <source>Scale tables: </source>
         <translation>テーブルスケール: </translation>
     </message>
     <message>
         <location filename="pagesetupdialog_q.ui" line="121"/>
         <source>50%</source>
-        <translation>50%</translation>
+        <translation type="obsolete">50%</translation>
     </message>
     <message>
         <location filename="pagesetupdialog_q.ui" line="126"/>
         <source>75%</source>
-        <translation>75%</translation>
+        <translation type="obsolete">75%</translation>
     </message>
     <message>
         <location filename="pagesetupdialog_q.ui" line="131"/>
         <source>100%</source>
-        <translation>100%</translation>
+        <translation type="obsolete">100%</translation>
     </message>
     <message>
         <location filename="pagesetupdialog_q.ui" line="136"/>
         <source>150%</source>
-        <translation>150%</translation>
+        <translation type="obsolete">150%</translation>
     </message>
     <message>
         <location filename="pagesetupdialog_q.ui" line="141"/>
         <source>200%</source>
-        <translation>200%</translation>
+        <translation type="obsolete">200%</translation>
+    </message>
+    <message>
+        <location filename="pagesetupdialog_q.ui" line="70"/>
+        <source>TextLabel</source>
+        <translation type="unfinished">テキストラベル</translation>
     </message>
 </context>
 <context>
     <name>pfAdvancedDialog</name>
     <message>
-        <location filename="pfAdvancedDialog.cpp" line="296"/>
+        <location filename="pfAdvancedDialog.cpp" line="328"/>
         <source>Script Editor</source>
         <translation>スクリプトエディター</translation>
     </message>
@@ -9485,562 +11340,620 @@ The default strings work for Sveasoft Alchemy pre-5.1 and pre-5.2</source>
         <translation>コンパイラー</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="50"/>
+        <location filename="pfadvanceddialog_q.ui" line="47"/>
         <source>Compiler:</source>
         <translation>コンパイラー:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="79"/>
+        <location filename="pfadvanceddialog_q.ui" line="76"/>
         <source>Command line options for the compiler:</source>
         <translation>コンパイラーのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="108"/>
+        <location filename="pfadvanceddialog_q.ui" line="105"/>
         <source>Output file name (if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="220"/>
+        <location filename="pfadvanceddialog_q.ui" line="261"/>
         <source>Accept TCP sessions opened prior to firewall restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="168"/>
+        <location filename="pfadvanceddialog_q.ui" line="209"/>
         <source>Modulate state for all stateful rules (applies only to TCP services)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="197"/>
+        <location filename="pfadvanceddialog_q.ui" line="238"/>
         <source>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="200"/>
+        <location filename="pfadvanceddialog_q.ui" line="241"/>
         <source>Detect rule shadowing in policy</source>
         <translation type="unfinished">ポリシー中の隠れたルールを検出する</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="181"/>
+        <location filename="pfadvanceddialog_q.ui" line="222"/>
         <source>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes &apos;any&apos; after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="184"/>
+        <location filename="pfadvanceddialog_q.ui" line="225"/>
         <source>Ignore empty groups in rules</source>
         <translation>ルールのからグループを無視する</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="207"/>
+        <location filename="pfadvanceddialog_q.ui" line="248"/>
         <source>Optimization:</source>
         <translation>最適化:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="252"/>
+        <location filename="pfadvanceddialog_q.ui" line="293"/>
         <source>Always permit ssh access from
 the management workstation
 with this address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="294"/>
+        <location filename="pfadvanceddialog_q.ui" line="335"/>
         <source>Scrub</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="319"/>
+        <location filename="pfadvanceddialog_q.ui" line="360"/>
         <source>Clears the don&apos;t fragment bit from the IP packet header.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="322"/>
+        <location filename="pfadvanceddialog_q.ui" line="363"/>
         <source>Clear DF bit</source>
         <translation>DF ビット解除</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="329"/>
+        <location filename="pfadvanceddialog_q.ui" line="370"/>
         <source>Replaces the IP identification field of outgoing packets with random values to compensate for operating systems that use predictable values.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="332"/>
+        <location filename="pfadvanceddialog_q.ui" line="373"/>
         <source>Use random ID</source>
         <translation>ランダム ID を使う</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="357"/>
+        <location filename="pfadvanceddialog_q.ui" line="398"/>
         <source>Enforce Minimum TTL:</source>
         <translation>TTL 最小値の強化:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="364"/>
+        <location filename="pfadvanceddialog_q.ui" line="405"/>
         <source>Enforces a minimum Time To Live (TTL) in IP packet headers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="397"/>
+        <location filename="pfadvanceddialog_q.ui" line="438"/>
         <source>Enforce Maximum MSS:</source>
         <translation>MSS 最大値の強化:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="404"/>
+        <location filename="pfadvanceddialog_q.ui" line="445"/>
         <source>Enforces a maximum Maximum Segment Size (MSS) in TCP packet headers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="451"/>
+        <location filename="pfadvanceddialog_q.ui" line="492"/>
         <source>Reassemble fragments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="479"/>
+        <location filename="pfadvanceddialog_q.ui" line="520"/>
         <source>Buffers incoming packet fragments and reassembles them into a complete packet before passing them to the filter engine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="482"/>
+        <location filename="pfadvanceddialog_q.ui" line="523"/>
         <source>Buffer and reassemble fragments (default)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="495"/>
+        <location filename="pfadvanceddialog_q.ui" line="536"/>
         <source>Causes duplicate fragments to be dropped and any overlaps to be cropped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="498"/>
+        <location filename="pfadvanceddialog_q.ui" line="539"/>
         <source>Drop duplicate fragments, do not buffer and reassemble</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="511"/>
+        <location filename="pfadvanceddialog_q.ui" line="552"/>
         <source>Similar to &apos;Drop duplicate fragments&apos; except that all duplicate or overlapping fragments will be dropped as well as any further corresponding fragments.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="514"/>
+        <location filename="pfadvanceddialog_q.ui" line="555"/>
         <source>Drop duplicate and subsequent fragments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="541"/>
+        <location filename="pfadvanceddialog_q.ui" line="582"/>
         <source>Limits</source>
         <translation>制限</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="559"/>
+        <location filename="pfadvanceddialog_q.ui" line="600"/>
         <source>maximum number of entries in the memory pool used for packet reassembly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="578"/>
+        <location filename="pfadvanceddialog_q.ui" line="619"/>
         <source>table-entries</source>
         <translation>テーブルエントリー</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="591"/>
+        <location filename="pfadvanceddialog_q.ui" line="632"/>
         <source>maximum number of addresses that canbe stored in tables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="616"/>
+        <location filename="pfadvanceddialog_q.ui" line="657"/>
         <source>maximum number of entries in the memory pool used for state table entries</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="635"/>
+        <location filename="pfadvanceddialog_q.ui" line="676"/>
         <source>state table size: </source>
         <translation>ステートテーブルの大きさ: </translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="642"/>
+        <location filename="pfadvanceddialog_q.ui" line="683"/>
         <source>reassembly pool: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="671"/>
+        <location filename="pfadvanceddialog_q.ui" line="712"/>
         <source>maximum number of entries in the memory pool used for tracking source IP addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="696"/>
+        <location filename="pfadvanceddialog_q.ui" line="737"/>
         <source>maximum number of tables that can exist in the memory simultaneously</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="715"/>
+        <location filename="pfadvanceddialog_q.ui" line="756"/>
         <source>tables</source>
         <translation>テーブル</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="722"/>
+        <location filename="pfadvanceddialog_q.ui" line="763"/>
         <source>src-nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="778"/>
+        <location filename="pfadvanceddialog_q.ui" line="819"/>
         <source>Timeouts</source>
         <translation>タイムアウト</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="790"/>
+        <location filename="pfadvanceddialog_q.ui" line="831"/>
         <source>When a packet matches a stateful connection, the seconds to live for the connection will be updated to the value which corresponds to the connection state.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="803"/>
+        <location filename="pfadvanceddialog_q.ui" line="844"/>
         <source>TCP</source>
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1182"/>
+        <location filename="pfadvanceddialog_q.ui" line="1223"/>
         <source>first</source>
         <translation>first</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1253"/>
+        <location filename="pfadvanceddialog_q.ui" line="1294"/>
         <source>The state after the first packet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="847"/>
+        <location filename="pfadvanceddialog_q.ui" line="888"/>
         <source>opening</source>
         <translation>opening</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="860"/>
+        <location filename="pfadvanceddialog_q.ui" line="901"/>
         <source> The state before the destination host ever sends a packet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="876"/>
+        <location filename="pfadvanceddialog_q.ui" line="917"/>
         <source>established</source>
         <translation>確立済み</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="889"/>
+        <location filename="pfadvanceddialog_q.ui" line="930"/>
         <source>The fully established state.</source>
         <translation>完全な確立状態です。</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="914"/>
+        <location filename="pfadvanceddialog_q.ui" line="955"/>
         <source>The state after the first FIN has been sent.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="930"/>
+        <location filename="pfadvanceddialog_q.ui" line="971"/>
         <source>closing</source>
         <translation>closing</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="943"/>
+        <location filename="pfadvanceddialog_q.ui" line="984"/>
         <source>The state after both FINs have been exchanged and the connection is closed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="959"/>
+        <location filename="pfadvanceddialog_q.ui" line="1000"/>
         <source>finwait</source>
         <translation>finwait</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="972"/>
+        <location filename="pfadvanceddialog_q.ui" line="1013"/>
         <source>The state after one endpoint sends an RST.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="988"/>
+        <location filename="pfadvanceddialog_q.ui" line="1029"/>
         <source>closed</source>
         <translation>closed</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="998"/>
+        <location filename="pfadvanceddialog_q.ui" line="1039"/>
         <source>UDP</source>
         <translation>UDP</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1211"/>
+        <location filename="pfadvanceddialog_q.ui" line="1252"/>
         <source>single</source>
         <translation>single</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1049"/>
+        <location filename="pfadvanceddialog_q.ui" line="1090"/>
         <source>The state if the source host sends more than one packet but the destination host has never sent one back.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1218"/>
+        <location filename="pfadvanceddialog_q.ui" line="1259"/>
         <source>multiple</source>
         <translation>multiple</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1078"/>
+        <location filename="pfadvanceddialog_q.ui" line="1119"/>
         <source> The state if both hosts have sent packets.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1097"/>
+        <location filename="pfadvanceddialog_q.ui" line="1138"/>
         <source>ICMP</source>
         <translation>ICMP</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1134"/>
+        <location filename="pfadvanceddialog_q.ui" line="1175"/>
         <source>The state after an ICMP error came back in response to an ICMP packet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1157"/>
+        <location filename="pfadvanceddialog_q.ui" line="1198"/>
         <source>error</source>
         <translation>error</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1167"/>
+        <location filename="pfadvanceddialog_q.ui" line="1208"/>
         <source>Other Protocols</source>
         <translation>その他のプロトコル</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1272"/>
+        <location filename="pfadvanceddialog_q.ui" line="1313"/>
         <source>Fragments</source>
         <translation>フラグメント</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1281"/>
+        <location filename="pfadvanceddialog_q.ui" line="1322"/>
         <source>reassembly timeout</source>
         <translation>組み換えのタイムアウト</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1288"/>
+        <location filename="pfadvanceddialog_q.ui" line="1329"/>
         <source>state expiration timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1301"/>
+        <location filename="pfadvanceddialog_q.ui" line="1342"/>
         <source>seconds between purges of expired states and packet fragments.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1323"/>
+        <location filename="pfadvanceddialog_q.ui" line="1364"/>
         <source>seconds before an unassembled fragment is expired.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1358"/>
+        <location filename="pfadvanceddialog_q.ui" line="1399"/>
         <source>Adaptive scaling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1367"/>
+        <location filename="pfadvanceddialog_q.ui" line="1408"/>
         <source>Timeout values can be reduced adaptively as the number of state table entries grows (see man page pf.conf(5) for details)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1386"/>
+        <location filename="pfadvanceddialog_q.ui" line="1427"/>
         <source>adaptive start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1402"/>
+        <location filename="pfadvanceddialog_q.ui" line="1443"/>
         <source>When the number of state entries exceeds this value, adaptive scaling begins.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1424"/>
+        <location filename="pfadvanceddialog_q.ui" line="1465"/>
         <source>adaptive end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1440"/>
+        <location filename="pfadvanceddialog_q.ui" line="1481"/>
         <source>When reaching this number of state entries, all timeout val- ues become zero, effectively purging all state entries imme- diately.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1456"/>
+        <location filename="pfadvanceddialog_q.ui" line="1497"/>
         <source>Activate adaptive timeout scaling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1483"/>
+        <location filename="pfadvanceddialog_q.ui" line="1524"/>
         <source>Installer</source>
         <translation>インストーラー</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1492"/>
+        <location filename="pfadvanceddialog_q.ui" line="1533"/>
         <source>Built-in installer</source>
         <translation>組み込みインストーラー</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1498"/>
+        <location filename="pfadvanceddialog_q.ui" line="1539"/>
         <source>Directory on the firewall where script should be installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1521"/>
+        <location filename="pfadvanceddialog_q.ui" line="1562"/>
         <source>User name used to authenticate to the firewall (leave this empty if you use putty session):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1544"/>
+        <location filename="pfadvanceddialog_q.ui" line="1585"/>
         <source>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1567"/>
+        <location filename="pfadvanceddialog_q.ui" line="1608"/>
         <source>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not &apos;root&apos;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1592"/>
+        <location filename="pfadvanceddialog_q.ui" line="1633"/>
         <source>Additional command line parameters for ssh</source>
         <translation>ssh の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1622"/>
+        <location filename="pfadvanceddialog_q.ui" line="1663"/>
         <source>Additional command line parameters for scp</source>
         <translation>scp の追加コマンドラインパラメーター</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1653"/>
+        <location filename="pfadvanceddialog_q.ui" line="1694"/>
         <source>External install script</source>
         <translation>外部インストールスクリプト</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1667"/>
+        <location filename="pfadvanceddialog_q.ui" line="1708"/>
         <source>Policy install script (using built-in installer if this field is blank):</source>
         <translation>インストールスクリプトのポリシー (この項目が空の場合に使用する組み込みインストーラー):</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1706"/>
+        <location filename="pfadvanceddialog_q.ui" line="1747"/>
         <source>Command line options for the script:</source>
         <translation>スクリプトのコマンドラインオプション:</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1757"/>
+        <location filename="pfadvanceddialog_q.ui" line="1798"/>
         <source>Prolog/Epilog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1836"/>
+        <location filename="pfadvanceddialog_q.ui" line="1877"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1811"/>
+        <location filename="pfadvanceddialog_q.ui" line="1852"/>
         <source>The following commands will be added verbatim after generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1853"/>
+        <location filename="pfadvanceddialog_q.ui" line="1894"/>
         <source>The following commands will be added verbatim on top of generated configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1866"/>
+        <location filename="pfadvanceddialog_q.ui" line="1907"/>
         <source>Insert prolog and epilog scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1883"/>
+        <location filename="pfadvanceddialog_q.ui" line="1924"/>
         <source>in the activation shell script (.fw file)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1888"/>
+        <location filename="pfadvanceddialog_q.ui" line="1929"/>
         <source>in the pf rule file (.conf file)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1932"/>
+        <location filename="pfadvanceddialog_q.ui" line="1973"/>
         <source>Logging</source>
         <translation>ログ記録</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="1960"/>
+        <location filename="pfadvanceddialog_q.ui" line="2001"/>
         <source>Log Prefix</source>
         <translation>ログ接頭語</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2024"/>
+        <location filename="pfadvanceddialog_q.ui" line="2065"/>
         <source>Fallback &quot;deny all&quot; rule should log blocked packets</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2032"/>
+        <location filename="pfadvanceddialog_q.ui" line="2073"/>
         <source>Script</source>
         <translation>スクリプト</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2100"/>
+        <location filename="pfadvanceddialog_q.ui" line="2162"/>
         <source>Add virtual addresses for NAT</source>
         <translation>NAT 用バーチャルアドレス群の追加</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2093"/>
+        <location filename="pfadvanceddialog_q.ui" line="2134"/>
         <source>Configure Interfaces of the firewall machine</source>
         <translation>ファイアウォールマシンのインターフェース構成</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2086"/>
+        <location filename="pfadvanceddialog_q.ui" line="2127"/>
         <source>Turn debugging on in generated script</source>
         <translation>生成スクリプトでデバッグに切り替え</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2057"/>
+        <location filename="pfadvanceddialog_q.ui" line="2098"/>
         <source>These options enable auxiliary sections in the generated shell script.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2131"/>
+        <location filename="pfadvanceddialog_q.ui" line="2193"/>
         <source>IPv6</source>
         <translation>IPv6</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2140"/>
+        <location filename="pfadvanceddialog_q.ui" line="2202"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2161"/>
+        <location filename="pfadvanceddialog_q.ui" line="2223"/>
         <source>IPv4 before IPv6</source>
         <translation type="unfinished">IPv4 の前に IPv6</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2166"/>
+        <location filename="pfadvanceddialog_q.ui" line="2228"/>
         <source>IPv6 before IPv4</source>
         <translation type="unfinished">IPv6 の前に IPv4</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2193"/>
+        <location filename="pfadvanceddialog_q.ui" line="2255"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2216"/>
+        <location filename="pfadvanceddialog_q.ui" line="2278"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2232"/>
+        <location filename="pfadvanceddialog_q.ui" line="2294"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
     <message>
-        <location filename="pfadvanceddialog_q.ui" line="2107"/>
+        <location filename="pfadvanceddialog_q.ui" line="2169"/>
         <source>Flush pf states after reloading rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfadvanceddialog_q.ui" line="128"/>
+        <source>Generated script (.fw file) and configuration (.conf) file can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfadvanceddialog_q.ui" line="138"/>
+        <source>Script (.fw) file name on the firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfadvanceddialog_q.ui" line="155"/>
+        <source>.conf file name on the firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfadvanceddialog_q.ui" line="2141"/>
+        <source>Configure CARP Interfaces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfadvanceddialog_q.ui" line="2148"/>
+        <source>Configure pfsync Interfaces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfadvanceddialog_q.ui" line="2155"/>
+        <source>Configure VLAN Interfaces</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>pfsyncOptionsDialog_q</name>
+    <message>
+        <location filename="pfsyncoptionsdialog_q.ui" line="13"/>
+        <source>pfsync protocol settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfsyncoptionsdialog_q.ui" line="37"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="pfsyncoptionsdialog_q.ui" line="53"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="pfsyncoptionsdialog_q.ui" line="75"/>
+        <source>pfsync Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfsyncoptionsdialog_q.ui" line="91"/>
+        <source>By default pfsync updates are multicast on the local network. This option overrides that behavior and instead unicasts the update to the specified peer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="pfsyncoptionsdialog_q.ui" line="101"/>
+        <source>Use unicast address to communicate with the peer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>pixAdvancedDialog</name>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="839"/>
-        <source>Error: Policy compiler for PIX is not installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="pixAdvancedDialog.cpp" line="824"/>
         <source>Compiler error</source>
-        <translation>コンパイラーエラー</translation>
+        <translation type="obsolete">コンパイラーエラー</translation>
     </message>
     <message>
-        <location filename="pixAdvancedDialog.cpp" line="919"/>
+        <location filename="pixAdvancedDialog.cpp" line="836"/>
         <source>Script Editor</source>
         <translation>スクリプトエディター</translation>
     </message>
@@ -10276,7 +12189,7 @@ workstation with this address:</source>
         <translation>h323</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2775"/>
+        <location filename="pixadvanceddialog_q.ui" line="2738"/>
         <source>sip</source>
         <translation>sip</translation>
     </message>
@@ -10358,418 +12271,413 @@ workstation with this address:</source>
     <message>
         <location filename="pixadvanceddialog_q.ui" line="1492"/>
         <source>Display generated commands</source>
-        <translation>生成されたコマンドを表示する</translation>
+        <translation type="obsolete">生成されたコマンドを表示する</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1539"/>
+        <location filename="pixadvanceddialog_q.ui" line="1502"/>
         <source>ctiqbe</source>
         <translation>ctiqbe</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3379"/>
+        <location filename="pixadvanceddialog_q.ui" line="3342"/>
         <source>skip</source>
         <translation>飛ばす</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3384"/>
+        <location filename="pixadvanceddialog_q.ui" line="3347"/>
         <source>enable</source>
         <translation>有効</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3389"/>
+        <location filename="pixadvanceddialog_q.ui" line="3352"/>
         <source>disable</source>
         <translation>無効</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1567"/>
+        <location filename="pixadvanceddialog_q.ui" line="1530"/>
         <source>Computer Telephony Interface Quick Buffer Encoding (CTIQBE) protocol inspection module that supports NAT, PAT, and bi-directional NAT.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3346"/>
+        <location filename="pixadvanceddialog_q.ui" line="3309"/>
         <source>port:</source>
         <translation>ポート:</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1626"/>
+        <location filename="pixadvanceddialog_q.ui" line="1589"/>
         <source>dns</source>
         <translation>dns</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1635"/>
+        <location filename="pixadvanceddialog_q.ui" line="1598"/>
         <source>Based on this maximum-length configured by the user, the DNS fixup checks to see if the DNS packet length is within this limit. Every UDP DNS packet (request/response) undergoes the above check.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1648"/>
+        <location filename="pixadvanceddialog_q.ui" line="1611"/>
         <source>max length:</source>
         <translation>最大長:</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1713"/>
+        <location filename="pixadvanceddialog_q.ui" line="1676"/>
         <source>esp ike</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1722"/>
+        <location filename="pixadvanceddialog_q.ui" line="1685"/>
         <source>Enables PAT for Encapsulating Security Payload (ESP), single tunnel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1771"/>
+        <location filename="pixadvanceddialog_q.ui" line="1734"/>
         <source>ftp</source>
         <translation>ftp</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1816"/>
+        <location filename="pixadvanceddialog_q.ui" line="1779"/>
         <source>strict:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1864"/>
+        <location filename="pixadvanceddialog_q.ui" line="1827"/>
         <source>Activated support for FTP protocol and allows to change the ftp control connection port number.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1878"/>
+        <location filename="pixadvanceddialog_q.ui" line="1841"/>
         <source>h323 h225</source>
         <translation>h323 h225</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1887"/>
+        <location filename="pixadvanceddialog_q.ui" line="1850"/>
         <source>Specifies to use H.225, the ITU standard that governs H.225.0 session establishment and packetization, with H.323</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3249"/>
+        <location filename="pixadvanceddialog_q.ui" line="3212"/>
         <source>--</source>
         <translation>--</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="1991"/>
+        <location filename="pixadvanceddialog_q.ui" line="1954"/>
         <source>h323 ras</source>
         <translation>h323 ras</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2000"/>
+        <location filename="pixadvanceddialog_q.ui" line="1963"/>
         <source>Specifies to use RAS with H.323 to enable dissimilar communication devices to communicate with each other.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2104"/>
+        <location filename="pixadvanceddialog_q.ui" line="2067"/>
         <source>http</source>
         <translation>http</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2113"/>
+        <location filename="pixadvanceddialog_q.ui" line="2076"/>
         <source>The default port for HTTP is 80.  Use the port option to change the HTTP port, or specify a range of HTTP ports.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2217"/>
+        <location filename="pixadvanceddialog_q.ui" line="2180"/>
         <source>icmp error</source>
         <translation>ICMP エラー</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2226"/>
+        <location filename="pixadvanceddialog_q.ui" line="2189"/>
         <source>Enables NAT of ICMP error messages. This creates translations for intermediate hops based on the static or network address translation configuration on the firewall.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2275"/>
+        <location filename="pixadvanceddialog_q.ui" line="2238"/>
         <source>ils</source>
         <translation type="unfinished">ils</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2284"/>
+        <location filename="pixadvanceddialog_q.ui" line="2247"/>
         <source>Provides NAT support for Microsoft NetMeeting, SiteServer, and Active Directory products that use LightWeight Directory Access Protocol (LDAP) to exchange directory information with an for Internet Locator Service (ILS) server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2388"/>
+        <location filename="pixadvanceddialog_q.ui" line="2351"/>
         <source>mgcp</source>
         <translation>mgcp</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2397"/>
+        <location filename="pixadvanceddialog_q.ui" line="2360"/>
         <source>Enables the Media Gateway Control Protocol (MGCP) fixup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2410"/>
+        <location filename="pixadvanceddialog_q.ui" line="2373"/>
         <source>Gateway Port:</source>
         <translation>ゲートウェイポート:</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2426"/>
+        <location filename="pixadvanceddialog_q.ui" line="2389"/>
         <source>Call Agent port:</source>
         <translation>エージェントポートを呼ぶ:</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2517"/>
+        <location filename="pixadvanceddialog_q.ui" line="2480"/>
         <source>pptp</source>
         <translation>pptp</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2526"/>
+        <location filename="pixadvanceddialog_q.ui" line="2489"/>
         <source>Enables Point-to-Point Tunneling Protocol (PPTP) application inspection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2604"/>
+        <location filename="pixadvanceddialog_q.ui" line="2567"/>
         <source>rsh</source>
         <translation>rsh</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2613"/>
+        <location filename="pixadvanceddialog_q.ui" line="2576"/>
         <source>Enables inspection of RSH protocol.</source>
         <translation>RSH プロトコルの監査を可能にします。</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2688"/>
+        <location filename="pixadvanceddialog_q.ui" line="2651"/>
         <source>rtsp</source>
         <translation>rtsp</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2697"/>
+        <location filename="pixadvanceddialog_q.ui" line="2660"/>
         <source>Lets PIX Firewall pass Real Time Streaming Protocol (RTSP) packets. RTSP is used by RealAudio, RealNetworks, Apple QuickTime 4, RealPlayer, and Cisco IP/TV connections.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2784"/>
+        <location filename="pixadvanceddialog_q.ui" line="2747"/>
         <source>Enable or change the port assignment for the Session Initiation Protocol (SIP) for Voice over IP TCP connections.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2888"/>
+        <location filename="pixadvanceddialog_q.ui" line="2851"/>
         <source>sip udp</source>
         <translation>sip udp</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2897"/>
+        <location filename="pixadvanceddialog_q.ui" line="2860"/>
         <source>Enable SIP-over-UDP application inspection.</source>
         <translation>SIP オーバー UDP アプリケーションの監査を有効にします。</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2972"/>
+        <location filename="pixadvanceddialog_q.ui" line="2935"/>
         <source>skinny</source>
         <translation>skinny</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="2981"/>
+        <location filename="pixadvanceddialog_q.ui" line="2944"/>
         <source>Enable SCCP application inspection.  SCCP protocol supports IP telephony and can coexist in an H.323 environment. An application layer ensures that all SCCP signaling and media packets can traverse the PIX Firewall and interoperate with H.323 terminals.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3085"/>
+        <location filename="pixadvanceddialog_q.ui" line="3048"/>
         <source>smtp</source>
         <translation>smtp</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3094"/>
+        <location filename="pixadvanceddialog_q.ui" line="3057"/>
         <source>Enables the Mail Guard feature, which only lets mail servers receive the RFC 821, section 4.5.1, commands of HELO, MAIL, RCPT, DATA, RSET, NOOP, and QUIT. All other commands are translated into X&apos;s which are rejected by the internal server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3198"/>
+        <location filename="pixadvanceddialog_q.ui" line="3161"/>
         <source>sqlnet</source>
         <translation>sqlnet</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3207"/>
+        <location filename="pixadvanceddialog_q.ui" line="3170"/>
         <source>Enables support for SQL*Net protocol.</source>
         <translation>SQL*Net プロトコルのサポートを有効にします。</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3311"/>
+        <location filename="pixadvanceddialog_q.ui" line="3274"/>
         <source>tftp</source>
         <translation>tftp</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3320"/>
+        <location filename="pixadvanceddialog_q.ui" line="3283"/>
         <source>Enable TFTP application inspection.</source>
         <translation>TFTP アプリケーションの監査を有効にします。</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3418"/>
+        <location filename="pixadvanceddialog_q.ui" line="3381"/>
         <source>Logging</source>
         <translation>ログ記録</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3468"/>
+        <location filename="pixadvanceddialog_q.ui" line="3431"/>
         <source>Syslog host (name or IP address):</source>
         <translation>Syslog ホスト (名前か IP アドレス):</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3481"/>
+        <location filename="pixadvanceddialog_q.ui" line="3444"/>
         <source>syslog facility:</source>
         <translation>syslog ファシリティ:</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3494"/>
+        <location filename="pixadvanceddialog_q.ui" line="3457"/>
         <source>syslog level (&apos;logging trap&apos;):</source>
         <translation>syslog レベル (&apos;logging trap&apos;):</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3513"/>
+        <location filename="pixadvanceddialog_q.ui" line="3476"/>
         <source>Syslog message queue size (messages):</source>
         <translation>Syslog メッセージキューの大きさ(メッセージ):</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3526"/>
+        <location filename="pixadvanceddialog_q.ui" line="3489"/>
         <source>PIX Firewall Version 6.3 introduces support for EMBLEM format, which is required when using the CiscoWorks Resource Manager Essentials (RME) syslog analyzer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3529"/>
+        <location filename="pixadvanceddialog_q.ui" line="3492"/>
         <source>Use &apos;EMBLEM&apos; format for syslog messages</source>
         <translation>syslog で「EMBLEM「」形式
 を使用する</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3549"/>
+        <location filename="pixadvanceddialog_q.ui" line="3512"/>
         <source>Set device id for syslog messages (v6.3 and later):</source>
         <translation>syslog メッセージのデバイス ID 設定 (v6.3 以上):</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3564"/>
+        <location filename="pixadvanceddialog_q.ui" line="3527"/>
         <source>use address of interface</source>
         <translation>インターフェースのアドレスを使用する</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3571"/>
+        <location filename="pixadvanceddialog_q.ui" line="3534"/>
         <source>use text string</source>
         <translation>テキスト文字列を使用する</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3578"/>
+        <location filename="pixadvanceddialog_q.ui" line="3541"/>
         <source>use hostname</source>
         <translation>ホスト名を使用する</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3617"/>
+        <location filename="pixadvanceddialog_q.ui" line="3580"/>
         <source>The logging timestamp command requires that the clock command be set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3630"/>
+        <location filename="pixadvanceddialog_q.ui" line="3593"/>
         <source>Enable logging timestamps on syslog file</source>
         <translation>syslog ファイルで日付の記録を有効にする</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3640"/>
+        <location filename="pixadvanceddialog_q.ui" line="3603"/>
         <source>Other logging destinations and levels:</source>
         <translation>その他のログ記録先とレベル:</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3649"/>
+        <location filename="pixadvanceddialog_q.ui" line="3612"/>
         <source>Internal buffer</source>
         <translation>内部バッファ</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3656"/>
+        <location filename="pixadvanceddialog_q.ui" line="3619"/>
         <source>Console</source>
         <translation>コンソール</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3689"/>
+        <location filename="pixadvanceddialog_q.ui" line="3652"/>
         <source>Script</source>
         <translation>スクリプト</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3716"/>
+        <location filename="pixadvanceddialog_q.ui" line="3679"/>
         <source>Insert comments into generated PIX configuration file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3719"/>
+        <location filename="pixadvanceddialog_q.ui" line="3682"/>
         <source>Comment the code</source>
         <translation>コメントコード</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3726"/>
+        <location filename="pixadvanceddialog_q.ui" line="3689"/>
         <source>Use ACL remarks to relate ACL commands and policy rules in the GUI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3729"/>
+        <location filename="pixadvanceddialog_q.ui" line="3692"/>
         <source>Use ACL remarks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3736"/>
+        <location filename="pixadvanceddialog_q.ui" line="3699"/>
         <source>Group PIX commands in the script so that similar commands appear next to each other, just like PIX does it when you use &apos;show config&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3739"/>
+        <location filename="pixadvanceddialog_q.ui" line="3702"/>
         <source>Group similar commands together</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3746"/>
+        <location filename="pixadvanceddialog_q.ui" line="3709"/>
         <source>Use manual ACL commit on FWSM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3774"/>
+        <location filename="pixadvanceddialog_q.ui" line="3737"/>
         <source>Clear all access lists then install new ones. This method may interrupt access to the firewall if you manage it remotely via IPSEC tunnel. This is the way access lists were generated in older versions of Firewall Builder for PIX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3793"/>
-        <source>Do not clear access lists and object group, just generate PIX commands for the new ones. Use this optin if you have your own policy installation scripts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="pixadvanceddialog_q.ui" line="3825"/>
+        <location filename="pixadvanceddialog_q.ui" line="3788"/>
         <source>&quot;Safety net&quot; method:
 
 First, create temporary access list to permit connections from the management subnet specified below to the firewall and assign it to outside interface. This temporary ACL helps maintain session between management station and the firewall while access lists are reloaded in case connection comes over IPSEC tunnel. Then clear permanent lists, recreate them and assign to interfaces. This method ensures that remote access to the firewall is maintained without interruption  at a cost of slightly larger configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3855"/>
+        <location filename="pixadvanceddialog_q.ui" line="3818"/>
         <source>Temporary access list should permit access from this address or subnet (use prefix notation to specify subnet, e.g. 192.0.2.0/24):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3968"/>
+        <location filename="pixadvanceddialog_q.ui" line="3931"/>
         <source>PIX Options</source>
         <translation>PIX オプション</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="3995"/>
+        <location filename="pixadvanceddialog_q.ui" line="3958"/>
         <source>Actively reset inbound TCP connections with RST</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4005"/>
+        <location filename="pixadvanceddialog_q.ui" line="3968"/>
         <source>Actively reset inbound TCP connections with RST on outside interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4015"/>
+        <location filename="pixadvanceddialog_q.ui" line="3978"/>
         <source>Force each TCP connection to linger in a shortened TIME&amp;WAIT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4018"/>
+        <location filename="pixadvanceddialog_q.ui" line="3981"/>
         <source>Alt+W</source>
         <translation>Alt+W</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4025"/>
+        <location filename="pixadvanceddialog_q.ui" line="3988"/>
         <source>Enable the IP Frag Guard feature (deprecated in v6.3 and later).</source>
         <translation>IP フラグガード機能を有効にします(バージョン 6.3 以上では非推奨です)。</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4032"/>
+        <location filename="pixadvanceddialog_q.ui" line="3995"/>
         <source>Enable TCP resource control for AAA Authentication Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4039"/>
+        <location filename="pixadvanceddialog_q.ui" line="4002"/>
         <source>Specify that when an incoming packet does a route lookup,
 the incoming interface is used to determine which interface
 the packet should go to, and which is the next hop
@@ -10777,64 +12685,69 @@ the packet should go to, and which is the next hop
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4062"/>
+        <location filename="pixadvanceddialog_q.ui" line="4025"/>
         <source>Disable inbound embedded DNS A record fixups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4069"/>
+        <location filename="pixadvanceddialog_q.ui" line="4032"/>
         <source>Disable outbound DNS A record replies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4089"/>
+        <location filename="pixadvanceddialog_q.ui" line="4052"/>
         <source>maximum number of simultaneous TCP and UDP connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4105"/>
+        <location filename="pixadvanceddialog_q.ui" line="4068"/>
         <source>maximum number of embryonic connections per host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4121"/>
+        <location filename="pixadvanceddialog_q.ui" line="4084"/>
         <source>Specifies the maximum number of simultaneous TCP and UDP connections for the entire subnet. The default is 0, which means unlimited connections. (Idle connections are closed after the idle timeout specified by the timeout conn command.)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4137"/>
+        <location filename="pixadvanceddialog_q.ui" line="4100"/>
         <source>Specifies the maximum number of embryonic connections per host. An embryonic connection is a connection request that has not finished the necessary handshake between source and destination. Set a small value for slower systems, and a higher value for faster systems. The default is 0, which means unlimited embryonic connections.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4153"/>
+        <location filename="pixadvanceddialog_q.ui" line="4116"/>
         <source>The following parameters are used for all NAT rules:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4166"/>
+        <location filename="pixadvanceddialog_q.ui" line="4129"/>
         <source>(The default for both parameters is 0, which means unlimited number of connections.)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4199"/>
+        <location filename="pixadvanceddialog_q.ui" line="4162"/>
         <source>IPv6</source>
         <translation>IPv6</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4208"/>
+        <location filename="pixadvanceddialog_q.ui" line="4171"/>
         <source>The order in which ipv4 and ipv6 rules should be generated:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4229"/>
+        <location filename="pixadvanceddialog_q.ui" line="4192"/>
         <source>IPv4 before IPv6</source>
         <translation type="unfinished">IPv4 の前に IPv6</translation>
     </message>
     <message>
-        <location filename="pixadvanceddialog_q.ui" line="4234"/>
+        <location filename="pixadvanceddialog_q.ui" line="4197"/>
         <source>IPv6 before IPv4</source>
         <translation type="unfinished">IPv6 の前に IPv4</translation>
+    </message>
+    <message>
+        <location filename="pixadvanceddialog_q.ui" line="3756"/>
+        <source>Do not clear access lists and object group, just generate PIX commands for the new ones. Use this option if you have your own policy installation scripts.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -10978,249 +12891,314 @@ the packet should go to, and which is the next hop
 <context>
     <name>prefsDialog_q</name>
     <message>
-        <location filename="prefsdialog_q.ui" line="16"/>
+        <location filename="prefsdialog_q.ui" line="17"/>
         <source>Preferences</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="29"/>
+        <location filename="prefsdialog_q.ui" line="30"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="62"/>
+        <location filename="prefsdialog_q.ui" line="44"/>
         <source>Working directory:</source>
         <translation>作業ディレクトリ－:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="483"/>
+        <location filename="prefsdialog_q.ui" line="451"/>
         <source>Browse...</source>
         <translation>参照...</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="115"/>
+        <location filename="prefsdialog_q.ui" line="97"/>
         <source>Software Updates:</source>
         <translation>ソフトウェアの更新:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="122"/>
+        <location filename="prefsdialog_q.ui" line="111"/>
         <source>Check for updates automatically</source>
         <translation>自動的に更新を確認する</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="142"/>
+        <location filename="prefsdialog_q.ui" line="104"/>
         <source>Check Now</source>
         <translation>今すぐ確認する</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="162"/>
+        <location filename="prefsdialog_q.ui" line="144"/>
         <source>Use http proxy while checking for updates  (host:port)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="192"/>
+        <location filename="prefsdialog_q.ui" line="185"/>
         <source>Objects</source>
         <translation>オブジェクト</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="217"/>
+        <location filename="prefsdialog_q.ui" line="194"/>
         <source>Automatically save data in dialogs when switching between objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="240"/>
+        <location filename="prefsdialog_q.ui" line="217"/>
         <source>Enable object tooltips</source>
         <translation>オブジェクトツールチップスを有効にする</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="260"/>
+        <location filename="prefsdialog_q.ui" line="237"/>
         <source>Tooltip delay:</source>
         <translation>ツールチップ遅延:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="293"/>
+        <location filename="prefsdialog_q.ui" line="270"/>
         <source>Show deleted objects</source>
         <translation>削除されたオブジェクトを表示する</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="300"/>
+        <location filename="prefsdialog_q.ui" line="284"/>
         <source>Clip comments in rules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="321"/>
+        <location filename="prefsdialog_q.ui" line="305"/>
         <source>Data File</source>
         <translation>データファイル</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="346"/>
+        <location filename="prefsdialog_q.ui" line="314"/>
         <source>Periodically save data to file every </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="375"/>
+        <location filename="prefsdialog_q.ui" line="343"/>
         <source>minutes</source>
         <translation>分</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="398"/>
+        <location filename="prefsdialog_q.ui" line="366"/>
         <source>Do not ask for the log record when checking in new file revision.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="405"/>
+        <location filename="prefsdialog_q.ui" line="373"/>
         <source>Enable compression of the data file</source>
         <translation>データファイルの圧縮を有効にする</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="426"/>
+        <location filename="prefsdialog_q.ui" line="394"/>
         <source>SSH</source>
         <translation>SSH</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="435"/>
+        <location filename="prefsdialog_q.ui" line="403"/>
         <source>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe  on Windows):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="464"/>
+        <location filename="prefsdialog_q.ui" line="432"/>
         <source>A full path to the SCP utility (file copy over ssh; for example scp on Unix or pscp.exe on Windows):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="515"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Download plink.exe from the web site at  &lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="prefsdialog_q.ui" line="547"/>
         <source>Labels</source>
         <translation>ラベル</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="556"/>
+        <location filename="prefsdialog_q.ui" line="524"/>
         <source>Use these labels to mark rules in the firewall policy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="594"/>
+        <location filename="prefsdialog_q.ui" line="565"/>
         <source>Red</source>
         <translation>赤色</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="601"/>
+        <location filename="prefsdialog_q.ui" line="572"/>
         <source>Blue</source>
         <translation>青色</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="608"/>
+        <location filename="prefsdialog_q.ui" line="579"/>
         <source>Yellow</source>
         <translation>黄色</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="622"/>
+        <location filename="prefsdialog_q.ui" line="593"/>
         <source>Orange</source>
         <translation>オレンジ色</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="657"/>
+        <location filename="prefsdialog_q.ui" line="628"/>
         <source>Purple</source>
         <translation>紫色</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="671"/>
+        <location filename="prefsdialog_q.ui" line="642"/>
         <source>Green</source>
         <translation>緑色</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="678"/>
+        <location filename="prefsdialog_q.ui" line="649"/>
         <source>Gray</source>
         <translation>灰色</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="717"/>
         <source>Icons</source>
-        <translation>アイコン</translation>
+        <translation type="obsolete">アイコン</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="720"/>
+        <location filename="prefsdialog_q.ui" line="691"/>
         <source>Icons settings</source>
         <translation>アイコンの設定</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="745"/>
+        <location filename="prefsdialog_q.ui" line="817"/>
         <source>Show icons in rules</source>
         <translation>ルールのアイコンを表示する</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="755"/>
+        <location filename="prefsdialog_q.ui" line="827"/>
         <source>Show text descriptions in columns &quot;Direction&quot;, &quot;Action&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="762"/>
         <source>Icon size:</source>
-        <translation>アイコンの大きさ:</translation>
+        <translation type="obsolete">アイコンの大きさ:</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="774"/>
+        <location filename="prefsdialog_q.ui" line="856"/>
         <source>16x16</source>
         <translation>16×16</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="781"/>
+        <location filename="prefsdialog_q.ui" line="863"/>
         <source>25x25</source>
         <translation>25×25</translation>
     </message>
     <message>
         <location filename="prefsdialog_q.ui" line="808"/>
         <source>Fonts</source>
-        <translation>フォント</translation>
+        <translation type="obsolete">フォント</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="845"/>
+        <location filename="prefsdialog_q.ui" line="714"/>
         <source>Choose font for rules sets</source>
         <translation>ルールセットのフォントを選んでください</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="848"/>
+        <location filename="prefsdialog_q.ui" line="717"/>
         <source>Rules font </source>
         <translation>ルールのフォント</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="861"/>
+        <location filename="prefsdialog_q.ui" line="730"/>
         <source>rules font description</source>
         <translation>ルールフォントの説明</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="880"/>
+        <location filename="prefsdialog_q.ui" line="792"/>
         <source>Choose font for tree</source>
         <translation>ツリーのフォントを選んでください</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="883"/>
+        <location filename="prefsdialog_q.ui" line="756"/>
         <source>Tree font</source>
         <translation>ツリーのフォント</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="896"/>
+        <location filename="prefsdialog_q.ui" line="769"/>
         <source>tree font description</source>
         <translation>ツリーフォントの説明</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="938"/>
+        <location filename="prefsdialog_q.ui" line="1013"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="prefsdialog_q.ui" line="954"/>
+        <location filename="prefsdialog_q.ui" line="1029"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="154"/>
+        <source>No identifiable information will be sent to the server during update check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="174"/>
+        <source>Do not show tips on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="277"/>
+        <source>Show object attributes in the tree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="483"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Download plink.exe and pscp.exe  from the web site at  &lt;/span&gt;&lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="688"/>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="795"/>
+        <source>Compiler Output Panel font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="808"/>
+        <source>compiler output font description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="849"/>
+        <source>Icons size in rules:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="903"/>
+        <source>Platforms and OS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="909"/>
+        <source>If you disable firewall platform or host OS here, it will not appear in the drop-down lists of platforms and host OS anywhere in the program. This helps avoid clutter in lists of platforms and OS if you only work with one or two of them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="919"/>
+        <source>Supported firewall platforms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="926"/>
+        <source>Supported host OS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="946"/>
+        <source>Platform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="prefsdialog_q.ui" line="970"/>
+        <source>Host OS</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11239,6 +13217,467 @@ p, li { white-space: pre-wrap; }
         <location filename="printingprogressdialog_q.ui" line="61"/>
         <source>textLabel1</source>
         <translation>テキストラベル 1</translation>
+    </message>
+</context>
+<context>
+    <name>secuwallAdvancedDialog</name>
+    <message>
+        <location filename="secuwallAdvancedDialog.cpp" line="275"/>
+        <source>Select templates directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallAdvancedDialog.cpp" line="295"/>
+        <source>URL is not valid: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallAdvancedDialog.cpp" line="303"/>
+        <source>Could not open URL: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallAdvancedDialog.cpp" line="359"/>
+        <source>Illegal address &apos;%1&apos;</source>
+        <translation type="unfinished">不当なアドレス 「%1/%2」 {1&apos;?}</translation>
+    </message>
+    <message>
+        <location filename="secuwallAdvancedDialog.cpp" line="373"/>
+        <source>Empty address found (position %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallAdvancedDialog.cpp" line="381"/>
+        <source>Illegal address &apos;%1&apos; (position %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallAdvancedDialog.cpp" line="399"/>
+        <source>Input not valid: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>secuwallAdvancedDialog_q</name>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="13"/>
+        <source>secunet wall: advanced settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="21"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="44"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="60"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="82"/>
+        <source>Management</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="89"/>
+        <source>secunet wall Management settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="111"/>
+        <source>Specify secunet wall Management settings below. 
+Please use commas to separate a list of IP addresses.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="144"/>
+        <source>Management address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="157"/>
+        <source>Enter the IP address of the secunet wall Management station</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="167"/>
+        <source>Syslog server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="177"/>
+        <source>Enter IP address of the logging server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="184"/>
+        <source>SNMP querier address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="197"/>
+        <source>Enter IP address where SNMP requests to this firewall come from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="204"/>
+        <source>RO-SNMP string</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="217"/>
+        <source>Enter community string for read only SNMP access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="224"/>
+        <source>NTP server IP address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="237"/>
+        <source>Enter IP address of a NTP server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="263"/>
+        <source>Nagios service IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="270"/>
+        <source>Enter IP address of the Nagios station here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="277"/>
+        <source>Local /var partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="290"/>
+        <source>Enter name for partition that will be mounted to /var</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="297"/>
+        <source>Local config partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="310"/>
+        <source>Enter name for local config partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="347"/>
+        <source>DNS Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="354"/>
+        <source>secunet wall DNS settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="376"/>
+        <source>Specify secunet wall DNS client related settings below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="408"/>
+        <source>DNS servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="443"/>
+        <source>Search domains</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="462"/>
+        <source>Enter DNS search domains here. One search domain per line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="488"/>
+        <source>Hosts file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="495"/>
+        <source>Enter Hosts entries here. One IP-Address/Name pair per line. These entries will be written to /etc/hosts file on the firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="518"/>
+        <source>The resolution order defines how hostnames will be resolved on the firewall (nsswitch.conf). Default is &quot;Hosts file first&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="524"/>
+        <source>Resolution order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="720"/>
+        <source>Hosts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="725"/>
+        <source>DNS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="730"/>
+        <source>NIS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="735"/>
+        <source>NIS+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="740"/>
+        <source>DB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="764"/>
+        <source>Options</source>
+        <translation type="unfinished">オプション</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="774"/>
+        <source>Specify secunet wall advanced iptables/routing options below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="787"/>
+        <source>IPv4 Packet forwarding</source>
+        <translation type="unfinished">IPv4 パケット転送</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1469"/>
+        <source>No change</source>
+        <translation type="unfinished">変更なし</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1474"/>
+        <source>On</source>
+        <translation type="unfinished">オン</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1479"/>
+        <source>Off</source>
+        <translation type="unfinished">オフ</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="819"/>
+        <source>IPv6 Packet forwarding</source>
+        <translation type="unfinished">IPv6 パケット転送</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="851"/>
+        <source>Kernel anti-spoofing protection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="883"/>
+        <source>Ignore broadcast pings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="915"/>
+        <source>Ignore all pings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="963"/>
+        <source>Accept source route</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="995"/>
+        <source>Accept ICMP redirects</source>
+        <translation type="unfinished">ICMP リダイレクトの受理</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1027"/>
+        <source>Ignore bogus ICMP errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1059"/>
+        <source>Allow dynamic addresses</source>
+        <translation type="unfinished">ダイナミックアドレス群の許可</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1091"/>
+        <source>Log martians</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1104"/>
+        <source>whats this text</source>
+        <comment>whats this comment</comment>
+        <translation type="unfinished">このテキストは何</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1188"/>
+        <source>TCP</source>
+        <translation type="unfinished">TCP</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1214"/>
+        <source>These parameters make sense for connections to or from the firewall host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1227"/>
+        <source>TCP FIN timeout (sec)</source>
+        <translation type="unfinished">TCP FIN タイムアウト(秒)</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1253"/>
+        <source>TCP keepalive time (sec)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1279"/>
+        <source>TCP window scaling</source>
+        <translation type="unfinished">TCP ウィンドウスケーリング</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1311"/>
+        <source>TCP sack</source>
+        <translation type="unfinished">TCP sack</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1343"/>
+        <source>TCP fack</source>
+        <translation type="unfinished">TCP fack</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1391"/>
+        <source>TCP ECN</source>
+        <translation type="unfinished">TCP ECN</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1423"/>
+        <source>TCP SYN cookies</source>
+        <translation type="unfinished">TCP SYN クッキー</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1455"/>
+        <source>TCP timestamps</source>
+        <translation type="unfinished">TCP タイムスタンプ</translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1533"/>
+        <source>Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1559"/>
+        <source>Enable support for additional files here. Files in the selected templates directory will be added to the configuration of this Firewall.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1597"/>
+        <source>Add additional files to firewall configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1607"/>
+        <source>Template directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1640"/>
+        <source>Select templates directory for this Firewall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1643"/>
+        <source>Browse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1653"/>
+        <source>Open current path in file browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwalladvanceddialog_q.ui" line="1656"/>
+        <source>Open</source>
+        <translation type="unfinished">開く</translation>
+    </message>
+</context>
+<context>
+    <name>secuwallIfaceOptsDialog_q</name>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="13"/>
+        <source>secunet wall: interface settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="21"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="44"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="60"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="163"/>
+        <source>Options</source>
+        <translation type="unfinished">オプション</translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="108"/>
+        <source>Specify secunet wall advanced interface options below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="140"/>
+        <source>MTU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="176"/>
+        <source>Device Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="248"/>
+        <source>VLAN ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="318"/>
+        <source>Disable at boot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="secuwallifaceoptsdialog_q.ui" line="325"/>
+        <source>Disable ARP on this interface</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11333,9 +13772,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/FWBMainWindow_q.cpp:432</name>
-</context>
-<context>
     <name>src/gui/.ui/FWBMainWindow_q.cpp:433</name>
     <message>
         <location filename="" line="0"/>
@@ -11358,9 +13794,6 @@ p, li { white-space: pre-wrap; }
         <source>Tab 1</source>
         <translation type="obsolete">タブ 1</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/FWBMainWindow_q.cpp:436</name>
 </context>
 <context>
     <name>src/gui/.ui/FWBMainWindow_q.cpp:437</name>
@@ -12195,9 +14628,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/FWBMainWindow_q.cpp:548</name>
-</context>
-<context>
     <name>src/gui/.ui/FWBMainWindow_q.cpp:549</name>
     <message>
         <location filename="" line="0"/>
@@ -12252,12 +14682,6 @@ p, li { white-space: pre-wrap; }
         <source>Unlock</source>
         <translation type="obsolete">ロック解除する</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/FWBMainWindow_q.cpp:556</name>
-</context>
-<context>
-    <name>src/gui/.ui/FWBMainWindow_q.cpp:557</name>
 </context>
 <context>
     <name>src/gui/.ui/FWBMainWindow_q.cpp:558</name>
@@ -12396,9 +14820,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:438</name>
-</context>
-<context>
     <name>src/gui/.ui/actionsdialog_q.cpp:439</name>
     <message>
         <location filename="" line="0"/>
@@ -12407,48 +14828,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:440</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:441</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:442</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:443</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:444</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:445</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:446</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:447</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:449</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:450</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:451</name>
-</context>
-<context>
     <name>src/gui/.ui/actionsdialog_q.cpp:452</name>
     <message>
         <location filename="" line="0"/>
         <source>Custom string:</source>
         <translation type="obsolete">テキスト文字列を使用する</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:453</name>
 </context>
 <context>
     <name>src/gui/.ui/actionsdialog_q.cpp:454</name>
@@ -12467,24 +14852,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:456</name>
-</context>
-<context>
     <name>src/gui/.ui/actionsdialog_q.cpp:457</name>
     <message>
         <location filename="" line="0"/>
         <source>Anchor name:</source>
         <translation type="obsolete">著者名</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:459</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:460</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:461</name>
 </context>
 <context>
     <name>src/gui/.ui/actionsdialog_q.cpp:462</name>
@@ -12495,21 +14868,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:463</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:464</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:466</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:467</name>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:468</name>
-</context>
-<context>
     <name>src/gui/.ui/actionsdialog_q.cpp:469</name>
     <message>
         <location filename="" line="0"/>
@@ -12518,18 +14876,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:470</name>
-</context>
-<context>
     <name>src/gui/.ui/actionsdialog_q.cpp:471</name>
     <message>
         <location filename="" line="0"/>
         <source>Change inbound interface to</source>
         <translation type="obsolete">インターフェンス管理</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:472</name>
 </context>
 <context>
     <name>src/gui/.ui/actionsdialog_q.cpp:473</name>
@@ -12546,9 +14898,6 @@ p, li { white-space: pre-wrap; }
         <source>Continue packet inspection</source>
         <translation type="obsolete">続ける(&amp;C)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/actionsdialog_q.cpp:475</name>
 </context>
 <context>
     <name>src/gui/.ui/addressrangedialog_q.cpp:162</name>
@@ -12815,9 +15164,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/commenteditorpanel_q.cpp:96</name>
-</context>
-<context>
     <name>src/gui/.ui/commenteditorpanel_q.cpp:98</name>
     <message>
         <location filename="" line="0"/>
@@ -12850,9 +15196,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/confirmdeleteobjectdialog_q.cpp:107</name>
-</context>
-<context>
     <name>src/gui/.ui/confirmdeleteobjectdialog_q.cpp:108</name>
     <message>
         <location filename="" line="0"/>
@@ -12875,9 +15218,6 @@ p, li { white-space: pre-wrap; }
         <source>Details</source>
         <translation type="obsolete">詳細</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/confirmdeleteobjectdialog_q.cpp:111</name>
 </context>
 <context>
     <name>src/gui/.ui/confirmdeleteobjectdialog_q.cpp:64</name>
@@ -12944,9 +15284,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/customservicedialog_q.cpp:182</name>
-</context>
-<context>
     <name>src/gui/.ui/customservicedialog_q.cpp:183</name>
     <message>
         <location filename="" line="0"/>
@@ -13011,12 +15348,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:800</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:801</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:802</name>
     <message>
         <location filename="" line="0"/>
@@ -13057,9 +15388,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:807</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:808</name>
     <message>
         <location filename="" line="0"/>
@@ -13076,21 +15404,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:810</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:811</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:813</name>
     <message>
         <location filename="" line="0"/>
         <source>Domain name</source>
         <translation type="obsolete">ドメイン名</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:814</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:815</name>
@@ -13109,9 +15428,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:817</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:818</name>
     <message>
         <location filename="" line="0"/>
@@ -13126,9 +15442,6 @@ p, li { white-space: pre-wrap; }
         <source>choose name server from the list below</source>
         <translation type="obsolete">下の一覧からネームサーバーを選択する</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:820</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:822</name>
@@ -13163,24 +15476,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:826</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:827</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:829</name>
     <message>
         <location filename="" line="0"/>
         <source>Enter a valid host name or address.</source>
         <translation type="obsolete">正しいホスト銘菓アドレスを入力してください。</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:830</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:831</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:832</name>
@@ -13207,24 +15508,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:836</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:837</name>
     <message>
         <location filename="" line="0"/>
         <source>Run network scan recursively</source>
         <translation type="obsolete">ネットワークの再起スキャンを実行する</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:838</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:839</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:840</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:841</name>
@@ -13235,21 +15524,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:842</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:843</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:844</name>
     <message>
         <location filename="" line="0"/>
         <source>Network scan options</source>
         <translation type="obsolete">ネットワークゾーン:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:845</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:846</name>
@@ -13268,18 +15548,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:848</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:849</name>
     <message>
         <location filename="" line="0"/>
         <source>timeout (sec):</source>
         <translation type="obsolete">タイムアウト(秒):</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:850</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:851</name>
@@ -13290,21 +15564,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:852</name>
-</context>
-<context>
     <name>src/gui/.ui/discoverydruid_q.cpp:853</name>
     <message>
         <location filename="" line="0"/>
         <source>timeout (sec) :</source>
         <translation type="obsolete">タイムアウト(秒) :</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:854</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:856</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:858</name>
@@ -13337,12 +15602,6 @@ p, li { white-space: pre-wrap; }
         <source>Process log:</source>
         <translation type="obsolete">処理ログ:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:863</name>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:864</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:865</name>
@@ -13415,9 +15674,6 @@ p, li { white-space: pre-wrap; }
         <source>Networks</source>
         <translation type="obsolete">ネットワーク</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:874</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:875</name>
@@ -13578,9 +15834,6 @@ p, li { white-space: pre-wrap; }
         <source>Type</source>
         <translation type="obsolete">種類</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/discoverydruid_q.cpp:895</name>
 </context>
 <context>
     <name>src/gui/.ui/discoverydruid_q.cpp:896</name>
@@ -13807,9 +16060,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/filepropdialog_q.cpp:119</name>
-</context>
-<context>
     <name>src/gui/.ui/filepropdialog_q.cpp:120</name>
     <message>
         <location filename="" line="0"/>
@@ -13896,9 +16146,6 @@ p, li { white-space: pre-wrap; }
         <source>any</source>
         <translation type="obsolete">どれか</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/filterdialog_q.cpp:148</name>
 </context>
 <context>
     <name>src/gui/.ui/filterdialog_q.cpp:150</name>
@@ -13997,9 +16244,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/finddialog_q.cpp:127</name>
-</context>
-<context>
     <name>src/gui/.ui/finddialog_q.cpp:128</name>
     <message>
         <location filename="" line="0"/>
@@ -14022,9 +16266,6 @@ p, li { white-space: pre-wrap; }
         <source>Find</source>
         <translation type="obsolete">検索</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/finddialog_q.cpp:131</name>
 </context>
 <context>
     <name>src/gui/.ui/finddialog_q.cpp:133</name>
@@ -14057,12 +16298,6 @@ p, li { white-space: pre-wrap; }
         <source>ICMP type</source>
         <translation type="obsolete">ICMP の種類</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/finddialog_q.cpp:137</name>
-</context>
-<context>
-    <name>src/gui/.ui/findobjectwidget_q.cpp:171</name>
 </context>
 <context>
     <name>src/gui/.ui/findobjectwidget_q.cpp:172</name>
@@ -14153,9 +16388,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/findobjectwidget_q.cpp:185</name>
-</context>
-<context>
     <name>src/gui/.ui/findobjectwidget_q.cpp:187</name>
     <message>
         <location filename="" line="0"/>
@@ -14196,18 +16428,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/findwhereusedwidget_q.cpp:112</name>
-</context>
-<context>
     <name>src/gui/.ui/findwhereusedwidget_q.cpp:113</name>
     <message>
         <location filename="" line="0"/>
         <source>Object:</source>
         <translation type="obsolete">オブジェクト:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/findwhereusedwidget_q.cpp:114</name>
 </context>
 <context>
     <name>src/gui/.ui/findwhereusedwidget_q.cpp:115</name>
@@ -14290,9 +16516,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/firewalldialog_q.cpp:203</name>
-</context>
-<context>
     <name>src/gui/.ui/firewalldialog_q.cpp:204</name>
     <message>
         <location filename="" line="0"/>
@@ -14371,9 +16594,6 @@ p, li { white-space: pre-wrap; }
         <source>&amp;Cancel</source>
         <translation type="obsolete">取り消し(&amp;C)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/freebsdadvanceddialog_q.cpp:190</name>
 </context>
 <context>
     <name>src/gui/.ui/freebsdadvanceddialog_q.cpp:191</name>
@@ -14472,9 +16692,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/freebsdadvanceddialog_q.cpp:206</name>
-</context>
-<context>
     <name>src/gui/.ui/freebsdadvanceddialog_q.cpp:207</name>
     <message>
         <location filename="" line="0"/>
@@ -14513,9 +16730,6 @@ p, li { white-space: pre-wrap; }
         <source>Path</source>
         <translation type="obsolete">パス</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/fwobjectdroparea_q.cpp:49</name>
 </context>
 <context>
     <name>src/gui/.ui/groupobjectdialog_q.cpp:186</name>
@@ -14742,15 +16956,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/instdialog_q.cpp:260</name>
-</context>
-<context>
-    <name>src/gui/.ui/instdialog_q.cpp:261</name>
-</context>
-<context>
-    <name>src/gui/.ui/instdialog_q.cpp:262</name>
-</context>
-<context>
     <name>src/gui/.ui/instdialog_q.cpp:263</name>
     <message>
         <location filename="" line="0"/>
@@ -14805,9 +17010,6 @@ p, li { white-space: pre-wrap; }
         <source>Last Installed</source>
         <translation type="obsolete">最終インストール日時</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/instdialog_q.cpp:270</name>
 </context>
 <context>
     <name>src/gui/.ui/instdialog_q.cpp:271</name>
@@ -14986,9 +17188,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:271</name>
-</context>
-<context>
     <name>src/gui/.ui/instoptionsdialog_q.cpp:272</name>
     <message>
         <location filename="" line="0"/>
@@ -15013,24 +17212,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:275</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:276</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:277</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:278</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:279</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:280</name>
-</context>
-<context>
     <name>src/gui/.ui/instoptionsdialog_q.cpp:281</name>
     <message>
         <location filename="" line="0"/>
@@ -15039,36 +17220,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:282</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:283</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:284</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:285</name>
-</context>
-<context>
     <name>src/gui/.ui/instoptionsdialog_q.cpp:286</name>
     <message>
         <location filename="" line="0"/>
         <source>min</source>
         <translation type="obsolete">最小</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:287</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:288</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:289</name>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:290</name>
 </context>
 <context>
     <name>src/gui/.ui/instoptionsdialog_q.cpp:291</name>
@@ -15085,9 +17242,6 @@ p, li { white-space: pre-wrap; }
         <source>Compress script</source>
         <translation type="obsolete">スクリプト圧縮</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/instoptionsdialog_q.cpp:293</name>
 </context>
 <context>
     <name>src/gui/.ui/instoptionsdialog_q.cpp:294</name>
@@ -15162,24 +17316,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/interfacedialog_q.cpp:217</name>
-</context>
-<context>
-    <name>src/gui/.ui/interfacedialog_q.cpp:220</name>
-</context>
-<context>
     <name>src/gui/.ui/interfacedialog_q.cpp:223</name>
     <message>
         <location filename="" line="0"/>
         <source>Network zone:</source>
         <translation type="obsolete">ネットワークゾーン:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/interfacedialog_q.cpp:224</name>
-</context>
-<context>
-    <name>src/gui/.ui/interfacedialog_q.cpp:225</name>
 </context>
 <context>
     <name>src/gui/.ui/interfacedialog_q.cpp:228</name>
@@ -15190,9 +17332,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/interfacedialog_q.cpp:229</name>
-</context>
-<context>
     <name>src/gui/.ui/interfacedialog_q.cpp:230</name>
     <message>
         <location filename="" line="0"/>
@@ -15201,21 +17340,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/interfacedialog_q.cpp:231</name>
-</context>
-<context>
-    <name>src/gui/.ui/interfacedialog_q.cpp:232</name>
-</context>
-<context>
     <name>src/gui/.ui/interfacedialog_q.cpp:233</name>
     <message>
         <location filename="" line="0"/>
         <source>Regular interface</source>
         <translation type="obsolete">レギュラーインターフェース</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/interfacedialog_q.cpp:234</name>
 </context>
 <context>
     <name>src/gui/.ui/interfacedialog_q.cpp:235</name>
@@ -15290,9 +17420,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:530</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:531</name>
     <message>
         <location filename="" line="0"/>
@@ -15307,9 +17434,6 @@ p, li { white-space: pre-wrap; }
         <source>Use IRC proxy in NAT rules for DCC</source>
         <translation type="obsolete">NAT ルール中で ftp プロキシを使用する</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:533</name>
 </context>
 <context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:534</name>
@@ -15328,39 +17452,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:536</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:537</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:540</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:541</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:542</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:543</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:544</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:545</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:546</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:547</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:548</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:551</name>
     <message>
         <location filename="" line="0"/>
@@ -15377,18 +17468,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:553</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:554</name>
     <message>
         <location filename="" line="0"/>
         <source>Compiler</source>
         <translation type="obsolete">コンパイラー</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:555</name>
 </context>
 <context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:556</name>
@@ -15415,21 +17500,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:559</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:560</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:561</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:562</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:563</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:564</name>
     <message>
         <location filename="" line="0"/>
@@ -15446,21 +17516,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:567</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:570</name>
     <message>
         <location filename="" line="0"/>
         <source>Edit</source>
         <translation type="obsolete">編集</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:572</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:573</name>
 </context>
 <context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:574</name>
@@ -15485,9 +17546,6 @@ p, li { white-space: pre-wrap; }
         <source>Log packet body</source>
         <translation type="obsolete">ログパケット本体</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:577</name>
 </context>
 <context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:578</name>
@@ -15530,15 +17588,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:583</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:584</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfadvanceddialog_q.cpp:585</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfadvanceddialog_q.cpp:586</name>
     <message>
         <location filename="" line="0"/>
@@ -15571,18 +17620,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:349</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:350</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:351</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:352</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:353</name>
     <message>
         <location filename="" line="0"/>
@@ -15599,21 +17636,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:355</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:356</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:359</name>
     <message>
         <location filename="" line="0"/>
         <source>Compiler</source>
         <translation type="obsolete">コンパイラー</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:360</name>
 </context>
 <context>
     <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:361</name>
@@ -15640,21 +17668,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:364</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:365</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:366</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:367</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:368</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:369</name>
     <message>
         <location filename="" line="0"/>
@@ -15671,21 +17684,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:373</name>
-</context>
-<context>
     <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:375</name>
     <message>
         <location filename="" line="0"/>
         <source>Edit</source>
         <translation type="obsolete">編集</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:376</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:378</name>
 </context>
 <context>
     <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:379</name>
@@ -15710,9 +17714,6 @@ p, li { white-space: pre-wrap; }
         <source>Turn debugging on in generated script</source>
         <translation type="obsolete">生成スクリプトでデバグを切り替え</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:382</name>
 </context>
 <context>
     <name>src/gui/.ui/ipfwadvanceddialog_q.cpp:383</name>
@@ -15755,24 +17756,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ipservicedialog_q.cpp:213</name>
-</context>
-<context>
     <name>src/gui/.ui/ipservicedialog_q.cpp:214</name>
     <message>
         <location filename="" line="0"/>
         <source>timestamp</source>
         <translation type="obsolete">タイムスタンプ</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ipservicedialog_q.cpp:215</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipservicedialog_q.cpp:216</name>
-</context>
-<context>
-    <name>src/gui/.ui/ipservicedialog_q.cpp:217</name>
 </context>
 <context>
     <name>src/gui/.ui/ipservicedialog_q.cpp:218</name>
@@ -15839,36 +17828,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:595</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:598</name>
-</context>
-<context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:599</name>
     <message>
         <location filename="" line="0"/>
         <source>Bridging firewall</source>
         <translation type="obsolete">ブリッジ中のファイアウォール</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:600</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:601</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:602</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:603</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:604</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:605</name>
 </context>
 <context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:606</name>
@@ -15879,9 +17844,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:607</name>
-</context>
-<context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:608</name>
     <message>
         <location filename="" line="0"/>
@@ -15890,21 +17852,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:609</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:611</name>
-</context>
-<context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:612</name>
     <message>
         <location filename="" line="0"/>
         <source>Compiler</source>
         <translation type="obsolete">コンパイラー</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:613</name>
 </context>
 <context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:614</name>
@@ -15931,21 +17884,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:617</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:618</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:619</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:620</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:621</name>
-</context>
-<context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:622</name>
     <message>
         <location filename="" line="0"/>
@@ -15962,24 +17900,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:626</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:629</name>
-</context>
-<context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:630</name>
     <message>
         <location filename="" line="0"/>
         <source>Edit</source>
         <translation type="obsolete">編集</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:631</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:633</name>
 </context>
 <context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:634</name>
@@ -15996,9 +17922,6 @@ p, li { white-space: pre-wrap; }
         <source>after policy reset</source>
         <translation type="obsolete">ポリシーリセットの後</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:636</name>
 </context>
 <context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:638</name>
@@ -16057,9 +17980,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:645</name>
-</context>
-<context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:646</name>
     <message>
         <location filename="" line="0"/>
@@ -16092,18 +18012,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:650</name>
-</context>
-<context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:652</name>
     <message>
         <location filename="" line="0"/>
         <source>Logging</source>
         <translation type="obsolete">ログ記録</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:653</name>
 </context>
 <context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:654</name>
@@ -16144,12 +18058,6 @@ p, li { white-space: pre-wrap; }
         <source>Add virtual addresses for NAT</source>
         <translation type="obsolete">NAT 用バーチャルアドレス群の追加</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:659</name>
-</context>
-<context>
-    <name>src/gui/.ui/iptadvanceddialog_q.cpp:660</name>
 </context>
 <context>
     <name>src/gui/.ui/iptadvanceddialog_q.cpp:661</name>
@@ -16232,18 +18140,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/libexport_q.cpp:106</name>
-</context>
-<context>
     <name>src/gui/.ui/libexport_q.cpp:108</name>
     <message>
         <location filename="" line="0"/>
         <source>New Item</source>
         <translation type="obsolete">新規項目</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/libexport_q.cpp:109</name>
 </context>
 <context>
     <name>src/gui/.ui/libexport_q.cpp:110</name>
@@ -16374,18 +18276,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/linksysadvanceddialog_q.cpp:197</name>
-</context>
-<context>
     <name>src/gui/.ui/linksysadvanceddialog_q.cpp:198</name>
     <message>
         <location filename="" line="0"/>
         <source>Path</source>
         <translation type="obsolete">パス</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/linksysadvanceddialog_q.cpp:199</name>
 </context>
 <context>
     <name>src/gui/.ui/linksysadvanceddialog_q.cpp:203</name>
@@ -16724,18 +18620,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/linux24advanceddialog_q.cpp:413</name>
-</context>
-<context>
     <name>src/gui/.ui/linux24advanceddialog_q.cpp:414</name>
     <message>
         <location filename="" line="0"/>
         <source>Options</source>
         <translation type="obsolete">オプション</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/linux24advanceddialog_q.cpp:415</name>
 </context>
 <context>
     <name>src/gui/.ui/linux24advanceddialog_q.cpp:417</name>
@@ -16882,9 +18772,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/linux24advanceddialog_q.cpp:440</name>
-</context>
-<context>
     <name>src/gui/.ui/linux24advanceddialog_q.cpp:441</name>
     <message>
         <location filename="" line="0"/>
@@ -16915,9 +18802,6 @@ p, li { white-space: pre-wrap; }
         <source>TCP keepalive time (sec)</source>
         <translation type="obsolete">TCP 生存時間 (秒)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/linux24advanceddialog_q.cpp:445</name>
 </context>
 <context>
     <name>src/gui/.ui/linux24advanceddialog_q.cpp:446</name>
@@ -16976,9 +18860,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/linux24advanceddialog_q.cpp:453</name>
-</context>
-<context>
     <name>src/gui/.ui/linux24advanceddialog_q.cpp:454</name>
     <message>
         <location filename="" line="0"/>
@@ -17001,9 +18882,6 @@ p, li { white-space: pre-wrap; }
         <source>Path</source>
         <translation type="obsolete">パス</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/longtextdialog_q.cpp:94</name>
 </context>
 <context>
     <name>src/gui/.ui/longtextdialog_q.cpp:95</name>
@@ -17134,9 +19012,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/macosxadvanceddialog_q.cpp:182</name>
-</context>
-<context>
     <name>src/gui/.ui/macosxadvanceddialog_q.cpp:183</name>
     <message>
         <location filename="" line="0"/>
@@ -17159,9 +19034,6 @@ p, li { white-space: pre-wrap; }
         <source>sysctl:</source>
         <translation type="obsolete">sysctl:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/macosxadvanceddialog_q.cpp:186</name>
 </context>
 <context>
     <name>src/gui/.ui/macosxadvanceddialog_q.cpp:187</name>
@@ -17196,12 +19068,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/natruleoptionsdialog_q.cpp:155</name>
-</context>
-<context>
-    <name>src/gui/.ui/natruleoptionsdialog_q.cpp:156</name>
-</context>
-<context>
     <name>src/gui/.ui/natruleoptionsdialog_q.cpp:157</name>
     <message>
         <location filename="" line="0"/>
@@ -17232,15 +19098,6 @@ p, li { white-space: pre-wrap; }
         <source>random</source>
         <translation type="obsolete">ランダム</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/natruleoptionsdialog_q.cpp:161</name>
-</context>
-<context>
-    <name>src/gui/.ui/natruleoptionsdialog_q.cpp:162</name>
-</context>
-<context>
-    <name>src/gui/.ui/natruleoptionsdialog_q.cpp:163</name>
 </context>
 <context>
     <name>src/gui/.ui/networkdialog_q.cpp:163</name>
@@ -17419,9 +19276,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/newfirewalldialog_q.cpp:491</name>
-</context>
-<context>
     <name>src/gui/.ui/newfirewalldialog_q.cpp:493</name>
     <message>
         <location filename="" line="0"/>
@@ -17452,9 +19306,6 @@ p, li { white-space: pre-wrap; }
         <source>SNMP &apos;read&apos; community string:</source>
         <translation type="obsolete">SNMP &apos;read&apos; コミュニティ文字列</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/newfirewalldialog_q.cpp:498</name>
 </context>
 <context>
     <name>src/gui/.ui/newfirewalldialog_q.cpp:499</name>
@@ -17665,12 +19516,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/newfirewalldialog_q.cpp:527</name>
-</context>
-<context>
-    <name>src/gui/.ui/newfirewalldialog_q.cpp:529</name>
-</context>
-<context>
     <name>src/gui/.ui/newgroupdialog_q.cpp:100</name>
     <message>
         <location filename="" line="0"/>
@@ -17709,9 +19554,6 @@ p, li { white-space: pre-wrap; }
         <source>Group Name:</source>
         <translation type="obsolete">グループ名:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/newgroupdialog_q.cpp:99</name>
 </context>
 <context>
     <name>src/gui/.ui/newhostdialog_q.cpp:185</name>
@@ -17786,9 +19628,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/newhostdialog_q.cpp:380</name>
-</context>
-<context>
     <name>src/gui/.ui/newhostdialog_q.cpp:382</name>
     <message>
         <location filename="" line="0"/>
@@ -17819,15 +19658,6 @@ p, li { white-space: pre-wrap; }
         <source>SNMP &apos;read&apos; community string:</source>
         <translation type="obsolete">SNMP &apos;read&apos; コミュニティ文字列</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/newhostdialog_q.cpp:387</name>
-</context>
-<context>
-    <name>src/gui/.ui/newhostdialog_q.cpp:388</name>
-</context>
-<context>
-    <name>src/gui/.ui/newhostdialog_q.cpp:389</name>
 </context>
 <context>
     <name>src/gui/.ui/newhostdialog_q.cpp:390</name>
@@ -17868,9 +19698,6 @@ p, li { white-space: pre-wrap; }
         <source>Unnumbered interface</source>
         <translation type="obsolete">アンナンバードインターフェース</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/newhostdialog_q.cpp:395</name>
 </context>
 <context>
     <name>src/gui/.ui/newhostdialog_q.cpp:396</name>
@@ -17937,9 +19764,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/newhostdialog_q.cpp:404</name>
-</context>
-<context>
     <name>src/gui/.ui/newhostdialog_q.cpp:405</name>
     <message>
         <location filename="" line="0"/>
@@ -17972,15 +19796,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/newhostdialog_q.cpp:410</name>
-</context>
-<context>
-    <name>src/gui/.ui/objconflictresolutiondialog_q.cpp:145</name>
-</context>
-<context>
-    <name>src/gui/.ui/objconflictresolutiondialog_q.cpp:146</name>
-</context>
-<context>
     <name>src/gui/.ui/objconflictresolutiondialog_q.cpp:147</name>
     <message>
         <location filename="" line="0"/>
@@ -17997,9 +19812,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/objconflictresolutiondialog_q.cpp:150</name>
-</context>
-<context>
     <name>src/gui/.ui/objconflictresolutiondialog_q.cpp:152</name>
     <message>
         <location filename="" line="0"/>
@@ -18014,9 +19826,6 @@ p, li { white-space: pre-wrap; }
         <source>Replace with this object</source>
         <translation type="obsolete">このオブジェクトと置換</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/objconflictresolutiondialog_q.cpp:155</name>
 </context>
 <context>
     <name>src/gui/.ui/objectmanipulator_q.cpp:107</name>
@@ -18081,9 +19890,6 @@ p, li { white-space: pre-wrap; }
         <source>&amp;Cancel</source>
         <translation type="obsolete">取り消し(&amp;C)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/openbsdadvanceddialog_q.cpp:176</name>
 </context>
 <context>
     <name>src/gui/.ui/openbsdadvanceddialog_q.cpp:177</name>
@@ -18230,9 +20036,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/openbsdadvanceddialog_q.cpp:200</name>
-</context>
-<context>
     <name>src/gui/.ui/openbsdadvanceddialog_q.cpp:201</name>
     <message>
         <location filename="" line="0"/>
@@ -18361,33 +20164,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1000</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1001</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1002</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1003</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1004</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1005</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:1006</name>
     <message>
         <location filename="" line="0"/>
         <source>Timeouts</source>
         <translation type="obsolete">タイムアウト</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1007</name>
 </context>
 <context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:1008</name>
@@ -18414,21 +20196,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1011</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1012</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1013</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1014</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1015</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:1016</name>
     <message>
         <location filename="" line="0"/>
@@ -18445,9 +20212,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1020</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:1022</name>
     <message>
         <location filename="" line="0"/>
@@ -18456,21 +20220,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1023</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1025</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:1026</name>
     <message>
         <location filename="" line="0"/>
         <source>Log Prefix</source>
         <translation type="obsolete">ログ接頭語</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1027</name>
 </context>
 <context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:1028</name>
@@ -18503,9 +20258,6 @@ p, li { white-space: pre-wrap; }
         <source>Turn debugging on in generated script</source>
         <translation type="obsolete">生成スクリプトでデバグを切り替え</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:1032</name>
 </context>
 <context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:1033</name>
@@ -18556,54 +20308,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:924</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:927</name>
     <message>
         <location filename="" line="0"/>
         <source>state table size: </source>
         <translation type="obsolete">ステートテーブルの大きさ: </translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:928</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:929</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:930</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:931</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:932</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:933</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:934</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:935</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:937</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:938</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:939</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:940</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:941</name>
 </context>
 <context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:942</name>
@@ -18638,24 +20348,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:946</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:947</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:948</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:949</name>
     <message>
         <location filename="" line="0"/>
         <source>Clear DF bit</source>
         <translation type="obsolete">DF ビット解除</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:950</name>
 </context>
 <context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:951</name>
@@ -18666,75 +20364,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:952</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:954</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:955</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:956</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:957</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:958</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:959</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:960</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:961</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:962</name>
     <message>
         <location filename="" line="0"/>
         <source>TCP</source>
         <translation type="obsolete">TCP</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:963</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:964</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:965</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:966</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:967</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:968</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:969</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:970</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:971</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:972</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:973</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:974</name>
 </context>
 <context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:975</name>
@@ -18745,39 +20380,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:976</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:977</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:978</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:979</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:980</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:981</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:982</name>
     <message>
         <location filename="" line="0"/>
         <source>ICMP</source>
         <translation type="obsolete">ICMP</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:983</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:984</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:985</name>
 </context>
 <context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:986</name>
@@ -18796,45 +20404,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:988</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:989</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:990</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:991</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:992</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:993</name>
-</context>
-<context>
     <name>src/gui/.ui/pfadvanceddialog_q.cpp:994</name>
     <message>
         <location filename="" line="0"/>
         <source>Fragments</source>
         <translation type="obsolete">フラグメント</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:995</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:996</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:997</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:998</name>
-</context>
-<context>
-    <name>src/gui/.ui/pfadvanceddialog_q.cpp:999</name>
 </context>
 <context>
     <name>src/gui/.ui/physaddressdialog_q.cpp:149</name>
@@ -18917,48 +20492,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1804</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1805</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1806</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1807</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1808</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1810</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1811</name>
     <message>
         <location filename="" line="0"/>
         <source>Optimize &apos;default nat&apos; rules</source>
         <translation type="obsolete">&apos;default nat&apos; ルールを最適化</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1812</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1813</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1814</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1815</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1816</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1817</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1818</name>
@@ -18977,18 +20516,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1820</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1821</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1822</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1824</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1827</name>
     <message>
         <location filename="" line="0"/>
@@ -19005,51 +20532,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1829</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1830</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1831</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1832</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1833</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1834</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1835</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1836</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1837</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1838</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1839</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1842</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1846</name>
     <message>
         <location filename="" line="0"/>
         <source>Script Options</source>
         <translation type="obsolete">スクリプトオプション</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1847</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1848</name>
@@ -19076,15 +20564,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1851</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1852</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1853</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1854</name>
     <message>
         <location filename="" line="0"/>
@@ -19101,27 +20580,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1857</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1860</name>
     <message>
         <location filename="" line="0"/>
         <source>Edit</source>
         <translation type="obsolete">編集</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1862</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1863</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1864</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1865</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1866</name>
@@ -19220,24 +20684,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1878</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1880</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1881</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1884</name>
     <message>
         <location filename="" line="0"/>
         <source>Timeouts</source>
         <translation type="obsolete">タイムアウト</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1885</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1887</name>
@@ -19296,21 +20748,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1895</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1896</name>
     <message>
         <location filename="" line="0"/>
         <source>port:</source>
         <translation type="obsolete">ポート:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1897</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1898</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1899</name>
@@ -19353,9 +20796,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1905</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1907</name>
     <message>
         <location filename="" line="0"/>
@@ -19380,18 +20820,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1910</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1912</name>
     <message>
         <location filename="" line="0"/>
         <source>port:</source>
         <translation type="obsolete">ポート:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1913</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1915</name>
@@ -19418,18 +20852,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1918</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1919</name>
     <message>
         <location filename="" line="0"/>
         <source>ftp</source>
         <translation type="obsolete">ftp</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1920</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1921</name>
@@ -19480,9 +20908,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1928</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1929</name>
     <message>
         <location filename="" line="0"/>
@@ -19529,9 +20954,6 @@ p, li { white-space: pre-wrap; }
         <source>h323 ras</source>
         <translation type="obsolete">h323 ras</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1936</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1937</name>
@@ -19582,9 +21004,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1944</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1946</name>
     <message>
         <location filename="" line="0"/>
@@ -19615,9 +21034,6 @@ p, li { white-space: pre-wrap; }
         <source>icmp error</source>
         <translation type="obsolete">ICMP エラー</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1950</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1951</name>
@@ -19668,18 +21084,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1958</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1959</name>
     <message>
         <location filename="" line="0"/>
         <source>Gateway Port:</source>
         <translation type="obsolete">ゲートウェイポート</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1960</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1962</name>
@@ -19712,9 +21122,6 @@ p, li { white-space: pre-wrap; }
         <source>mgcp</source>
         <translation type="obsolete">mgcp</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1966</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1967</name>
@@ -19805,9 +21212,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1980</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1981</name>
     <message>
         <location filename="" line="0"/>
@@ -19846,9 +21250,6 @@ p, li { white-space: pre-wrap; }
         <source>rtsp</source>
         <translation type="obsolete">rtsp</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1987</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1988</name>
@@ -19899,9 +21300,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:1995</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:1996</name>
     <message>
         <location filename="" line="0"/>
@@ -19940,9 +21338,6 @@ p, li { white-space: pre-wrap; }
         <source>sip udp</source>
         <translation type="obsolete">sip udp</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2002</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:2003</name>
@@ -19991,9 +21386,6 @@ p, li { white-space: pre-wrap; }
         <source>skinny</source>
         <translation type="obsolete">skinny</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2010</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:2011</name>
@@ -20148,9 +21540,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2033</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:2034</name>
     <message>
         <location filename="" line="0"/>
@@ -20199,9 +21588,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2040</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:2041</name>
     <message>
         <location filename="" line="0"/>
@@ -20234,15 +21620,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2045</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2046</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2047</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:2048</name>
     <message>
         <location filename="" line="0"/>
@@ -20267,15 +21644,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2051</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2053</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2055</name>
-</context>
-<context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:2056</name>
     <message>
         <location filename="" line="0"/>
@@ -20290,36 +21658,6 @@ p, li { white-space: pre-wrap; }
         <source>Enable the IP Frag Guard feature (deprecated in v6.3 and later).</source>
         <translation type="obsolete">IP フラグガード機能有効 (deprecated in v6.3 and later)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2058</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2059</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2063</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2064</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2065</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2066</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2067</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2068</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2069</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixadvanceddialog_q.cpp:2070</name>
 </context>
 <context>
     <name>src/gui/.ui/pixadvanceddialog_q.cpp:2071</name>
@@ -20344,9 +21682,6 @@ p, li { white-space: pre-wrap; }
         <source>Set PIX host name using object&apos;s name</source>
         <translation type="obsolete">オブジェクト名を使用して PIX ホスト名を設定</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixosadvanceddialog_q.cpp:276</name>
 </context>
 <context>
     <name>src/gui/.ui/pixosadvanceddialog_q.cpp:277</name>
@@ -20389,9 +21724,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixosadvanceddialog_q.cpp:285</name>
-</context>
-<context>
     <name>src/gui/.ui/pixosadvanceddialog_q.cpp:286</name>
     <message>
         <location filename="" line="0"/>
@@ -20416,9 +21748,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixosadvanceddialog_q.cpp:289</name>
-</context>
-<context>
     <name>src/gui/.ui/pixosadvanceddialog_q.cpp:290</name>
     <message>
         <location filename="" line="0"/>
@@ -20427,24 +21756,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/pixosadvanceddialog_q.cpp:292</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixosadvanceddialog_q.cpp:293</name>
-</context>
-<context>
     <name>src/gui/.ui/pixosadvanceddialog_q.cpp:294</name>
     <message>
         <location filename="" line="0"/>
         <source>Traps</source>
         <translation type="obsolete">トラップ</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixosadvanceddialog_q.cpp:296</name>
-</context>
-<context>
-    <name>src/gui/.ui/pixosadvanceddialog_q.cpp:297</name>
 </context>
 <context>
     <name>src/gui/.ui/pixosadvanceddialog_q.cpp:298</name>
@@ -20501,9 +21818,6 @@ p, li { white-space: pre-wrap; }
         <source>SNMP</source>
         <translation type="obsolete">SNMP</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/pixosadvanceddialog_q.cpp:305</name>
 </context>
 <context>
     <name>src/gui/.ui/pixosadvanceddialog_q.cpp:306</name>
@@ -20594,9 +21908,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/prefsdialog_q.cpp:368</name>
-</context>
-<context>
     <name>src/gui/.ui/prefsdialog_q.cpp:369</name>
     <message>
         <location filename="" line="0"/>
@@ -20619,9 +21930,6 @@ p, li { white-space: pre-wrap; }
         <source>Show deleted objects</source>
         <translation type="obsolete">削除されたオブジェクトを表示</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/prefsdialog_q.cpp:372</name>
 </context>
 <context>
     <name>src/gui/.ui/prefsdialog_q.cpp:373</name>
@@ -20680,18 +21988,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/prefsdialog_q.cpp:381</name>
-</context>
-<context>
     <name>src/gui/.ui/prefsdialog_q.cpp:382</name>
     <message>
         <location filename="" line="0"/>
         <source>Revision Control</source>
         <translation type="obsolete">リビジョン制御</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/prefsdialog_q.cpp:383</name>
 </context>
 <context>
     <name>src/gui/.ui/prefsdialog_q.cpp:384</name>
@@ -20724,9 +22026,6 @@ p, li { white-space: pre-wrap; }
         <source>Remove</source>
         <translation type="obsolete">削除</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/prefsdialog_q.cpp:388</name>
 </context>
 <context>
     <name>src/gui/.ui/prefsdialog_q.cpp:389</name>
@@ -20767,9 +22066,6 @@ p, li { white-space: pre-wrap; }
         <source>Libraries</source>
         <translation type="obsolete">ライブラリー</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/prefsdialog_q.cpp:394</name>
 </context>
 <context>
     <name>src/gui/.ui/prefsdialog_q.cpp:396</name>
@@ -20948,9 +22244,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/rcsfilesavedialog_q.cpp:100</name>
-</context>
-<context>
     <name>src/gui/.ui/rcsfilesavedialog_q.cpp:101</name>
     <message>
         <location filename="" line="0"/>
@@ -21007,15 +22300,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/routingruleoptionsdialog_q.cpp:119</name>
-</context>
-<context>
-    <name>src/gui/.ui/routingruleoptionsdialog_q.cpp:120</name>
-</context>
-<context>
-    <name>src/gui/.ui/routingruleoptionsdialog_q.cpp:121</name>
-</context>
-<context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:663</name>
     <message>
         <location filename="" line="0"/>
@@ -21024,21 +22308,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:664</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:665</name>
-</context>
-<context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:666</name>
     <message>
         <location filename="" line="0"/>
         <source>Stateless rule</source>
         <translation type="obsolete">ステートレスルール</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:667</name>
 </context>
 <context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:668</name>
@@ -21121,21 +22396,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:680</name>
-</context>
-<context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:681</name>
     <message>
         <location filename="" line="0"/>
         <source>Logging</source>
         <translation type="obsolete">ログ記録</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:682</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:683</name>
 </context>
 <context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:684</name>
@@ -21178,30 +22444,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:691</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:692</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:693</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:694</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:695</name>
-</context>
-<context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:696</name>
     <message>
         <location filename="" line="0"/>
         <source>connlimit</source>
         <translation type="obsolete">ログ記録制限:</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:697</name>
 </context>
 <context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:700</name>
@@ -21268,12 +22516,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:709</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:710</name>
-</context>
-<context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:711</name>
     <message>
         <location filename="" line="0"/>
@@ -21282,27 +22524,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:712</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:713</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:714</name>
-</context>
-<context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:715</name>
     <message>
         <location filename="" line="0"/>
         <source>Stateless rule</source>
         <translation type="obsolete">ステートレスルール</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:716</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:717</name>
 </context>
 <context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:718</name>
@@ -21335,9 +22562,6 @@ p, li { white-space: pre-wrap; }
         <source>Logging</source>
         <translation type="obsolete">ログ記録</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:722</name>
 </context>
 <context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:723</name>
@@ -21380,33 +22604,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:728</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:729</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:730</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:731</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:732</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:733</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:734</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:735</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:736</name>
-</context>
-<context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:737</name>
     <message>
         <location filename="" line="0"/>
@@ -21415,27 +22612,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:738</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:739</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:740</name>
-</context>
-<context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:741</name>
     <message>
         <location filename="" line="0"/>
         <source>sec</source>
         <translation type="obsolete">秒</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:742</name>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:743</name>
 </context>
 <context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:744</name>
@@ -21452,9 +22634,6 @@ p, li { white-space: pre-wrap; }
         <source>Stateless rule</source>
         <translation type="obsolete">ステートレスルール</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/ruleoptionsdialog_q.cpp:746</name>
 </context>
 <context>
     <name>src/gui/.ui/ruleoptionsdialog_q.cpp:747</name>
@@ -21746,9 +22925,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/solarisadvanceddialog_q.cpp:210</name>
-</context>
-<context>
     <name>src/gui/.ui/solarisadvanceddialog_q.cpp:211</name>
     <message>
         <location filename="" line="0"/>
@@ -21773,18 +22949,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/.ui/solarisadvanceddialog_q.cpp:214</name>
-</context>
-<context>
     <name>src/gui/.ui/solarisadvanceddialog_q.cpp:215</name>
     <message>
         <location filename="" line="0"/>
         <source>Path</source>
         <translation type="obsolete">パス</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/.ui/tagservicedialog_q.cpp:142</name>
 </context>
 <context>
     <name>src/gui/.ui/tagservicedialog_q.cpp:143</name>
@@ -22179,30 +23349,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/ActionsDialog.cpp:122</name>
-</context>
-<context>
     <name>src/gui/ActionsDialog.cpp:123</name>
     <message>
         <location filename="" line="0"/>
         <source>&amp;Continue</source>
         <translation type="obsolete">続ける(&amp;C)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/ActionsDialog.cpp:222</name>
-</context>
-<context>
-    <name>src/gui/ActionsDialog.cpp:223</name>
-</context>
-<context>
-    <name>src/gui/ActionsDialog.cpp:226</name>
-</context>
-<context>
-    <name>src/gui/ActionsDialog.cpp:227</name>
-</context>
-<context>
-    <name>src/gui/ActionsDialog.cpp:97</name>
 </context>
 <context>
     <name>src/gui/ActionsDialog.cpp:98</name>
@@ -22251,9 +23403,6 @@ p, li { white-space: pre-wrap; }
         <source>no color</source>
         <translation type="obsolete">色なし</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/CommentEditorPanel.cpp:75</name>
 </context>
 <context>
     <name>src/gui/CommentEditorPanel.cpp:80</name>
@@ -22318,15 +23467,6 @@ p, li { white-space: pre-wrap; }
         <source>Type: </source>
         <translation type="obsolete">種類: </translation>
     </message>
-</context>
-<context>
-    <name>src/gui/ConfirmDeleteObjectDialog.cpp:203</name>
-</context>
-<context>
-    <name>src/gui/DialogFactory.cpp:158</name>
-</context>
-<context>
-    <name>src/gui/DialogFactory.cpp:181</name>
 </context>
 <context>
     <name>src/gui/DiscoveryDruid.cpp:1086</name>
@@ -22416,21 +23556,12 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>src/gui/DiscoveryDruid.cpp:1838</name>
-</context>
-<context>
     <name>src/gui/DiscoveryDruid.cpp:1917</name>
     <message>
         <location filename="" line="0"/>
         <source>Empty community string</source>
         <translation type="obsolete">コミュニティ文字列が空です</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/DiscoveryDruid.cpp:2132</name>
-</context>
-<context>
-    <name>src/gui/DiscoveryDruid.cpp:2143</name>
 </context>
 <context>
     <name>src/gui/DiscoveryDruid.cpp:616</name>
@@ -22743,18 +23874,12 @@ Ignoring this setting.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:656</name>
-</context>
-<context>
     <name>src/gui/FWObjectPropertiesFactory.cpp:663</name>
     <message>
         <location filename="" line="0"/>
         <source>&lt;b&gt;Limit burst   :&lt;/b&gt; </source>
         <translation type="obsolete">&lt;b&gt;ライブラリー:&lt;/b&gt;</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:670</name>
 </context>
 <context>
     <name>src/gui/FWObjectPropertiesFactory.cpp:676</name>
@@ -22781,18 +23906,12 @@ Ignoring this setting.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:700</name>
-</context>
-<context>
     <name>src/gui/FWObjectPropertiesFactory.cpp:706</name>
     <message>
         <location filename="" line="0"/>
         <source>&lt;li&gt;&lt;b&gt;Stateless&lt;/b&gt;&lt;/li&gt; </source>
         <translation type="obsolete">&lt;li&gt;&lt;b&gt;ステートレス&lt;/b&gt;&lt;/li&gt; </translation>
     </message>
-</context>
-<context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:712</name>
 </context>
 <context>
     <name>src/gui/FWObjectPropertiesFactory.cpp:722</name>
@@ -22819,12 +23938,6 @@ Ignoring this setting.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:741</name>
-</context>
-<context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:744</name>
-</context>
-<context>
     <name>src/gui/FWObjectPropertiesFactory.cpp:747</name>
     <message>
         <location filename="" line="0"/>
@@ -22839,9 +23952,6 @@ Ignoring this setting.</source>
         <source>&lt;li&gt;&lt;b&gt;Stateless&lt;/b&gt;&lt;/li&gt; </source>
         <translation type="obsolete">&lt;li&gt;&lt;b&gt;ステートレス&lt;/b&gt;&lt;/li&gt; </translation>
     </message>
-</context>
-<context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:767</name>
 </context>
 <context>
     <name>src/gui/FWObjectPropertiesFactory.cpp:775</name>
@@ -22885,15 +23995,6 @@ Ignoring this setting.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:822</name>
-</context>
-<context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:823</name>
-</context>
-<context>
-    <name>src/gui/FWObjectPropertiesFactory.cpp:825</name>
-</context>
-<context>
     <name>src/gui/FWWindow.cpp:1080</name>
     <message>
         <location filename="" line="0"/>
@@ -22922,9 +24023,6 @@ Choose a different name for the new file.</source>
         <source>Choose name and location for the new file</source>
         <translation type="obsolete">新規ファイルの名前とフォルダーを選択</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/FWWindow.cpp:1094</name>
 </context>
 <context>
     <name>src/gui/FWWindow.cpp:1095</name>
@@ -23127,9 +24225,6 @@ has been renamed &apos;%2&apos;</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWWindow.cpp:1414</name>
-</context>
-<context>
     <name>src/gui/FWWindow.cpp:1427</name>
     <message>
         <location filename="" line="0"/>
@@ -23182,9 +24277,6 @@ has been renamed &apos;%2&apos;</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWWindow.cpp:1497</name>
-</context>
-<context>
     <name>src/gui/FWWindow.cpp:1510</name>
     <message>
         <location filename="" line="0"/>
@@ -23201,9 +24293,6 @@ has been renamed &apos;%2&apos;</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWWindow.cpp:1537</name>
-</context>
-<context>
     <name>src/gui/FWWindow.cpp:1538</name>
     <message>
         <location filename="" line="0"/>
@@ -23212,30 +24301,12 @@ has been renamed &apos;%2&apos;</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWWindow.cpp:1548</name>
-</context>
-<context>
     <name>src/gui/FWWindow.cpp:1550</name>
     <message>
         <location filename="" line="0"/>
         <source>&amp;Continue</source>
         <translation type="obsolete">続ける(&amp;C)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/FWWindow.cpp:1665</name>
-</context>
-<context>
-    <name>src/gui/FWWindow.cpp:1674</name>
-</context>
-<context>
-    <name>src/gui/FWWindow.cpp:1685</name>
-</context>
-<context>
-    <name>src/gui/FWWindow.cpp:1695</name>
-</context>
-<context>
-    <name>src/gui/FWWindow.cpp:1710</name>
 </context>
 <context>
     <name>src/gui/FWWindow.cpp:175</name>
@@ -23438,9 +24509,6 @@ Do you want to overwrite it ?</source>
         <source>Choose name and location for the file</source>
         <translation type="obsolete">ファイルの名前とフォルダーを選択する</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/FWWindow.cpp:674</name>
 </context>
 <context>
     <name>src/gui/FWWindow.cpp:679</name>
@@ -23687,9 +24755,6 @@ Do you want to overwrite it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FWWindowPrint.cpp:894</name>
-</context>
-<context>
     <name>src/gui/FWWindowPrint.cpp:916</name>
     <message>
         <location filename="" line="0"/>
@@ -23831,24 +24896,12 @@ Do you want to overwrite it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FilterDialog.cpp:409</name>
-</context>
-<context>
-    <name>src/gui/FilterDialog.cpp:410</name>
-</context>
-<context>
     <name>src/gui/FilterDialog.cpp:411</name>
     <message>
         <location filename="" line="0"/>
         <source>Ends with</source>
         <translation type="obsolete">編集</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/FilterDialog.cpp:412</name>
-</context>
-<context>
-    <name>src/gui/FilterDialog.cpp:413</name>
 </context>
 <context>
     <name>src/gui/FindObjectWidget.cpp:316</name>
@@ -23893,24 +24946,12 @@ Do you want to overwrite it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/FindObjectWidget.cpp:354</name>
-</context>
-<context>
-    <name>src/gui/FindObjectWidget.cpp:364</name>
-</context>
-<context>
-    <name>src/gui/FindObjectWidget.cpp:372</name>
-</context>
-<context>
     <name>src/gui/FindObjectWidget.cpp:466</name>
     <message>
         <location filename="" line="0"/>
         <source>Replaced %1 objects.</source>
         <translation type="obsolete">このオブジェクトと置換</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/FindObjectWidget.cpp:585</name>
 </context>
 <context>
     <name>src/gui/FindWhereUsedWidget.cpp:171</name>
@@ -24089,9 +25130,6 @@ Do you want to overwrite it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/IPv4Dialog.cpp:263</name>
-</context>
-<context>
     <name>src/gui/IPv4Dialog.cpp:270</name>
     <message>
         <location filename="" line="0"/>
@@ -24236,12 +25274,6 @@ Do you want to overwrite it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/ObjConflictResolutionDialog.cpp:299</name>
-</context>
-<context>
-    <name>src/gui/ObjConflictResolutionDialog.cpp:300</name>
-</context>
-<context>
     <name>src/gui/ObjConflictResolutionDialog.cpp:63</name>
     <message>
         <location filename="" line="0"/>
@@ -24256,9 +25288,6 @@ Do you want to overwrite it ?</source>
         <source>Replace with this object</source>
         <translation type="obsolete">このオブジェクトと置換</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/ObjectEditor.cpp:437</name>
 </context>
 <context>
     <name>src/gui/ObjectEditor.cpp:438</name>
@@ -24337,9 +25366,6 @@ Do you want to save it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/ObjectManipulator.cpp:1015</name>
-</context>
-<context>
     <name>src/gui/ObjectManipulator.cpp:1027</name>
     <message>
         <location filename="" line="0"/>
@@ -24402,9 +25428,6 @@ Do you want to save it ?</source>
         <source>Object Manipulator</source>
         <translation type="obsolete">オブジェクトマニピュレータ</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/ObjectManipulator.cpp:1576</name>
 </context>
 <context>
     <name>src/gui/ObjectManipulator.cpp:161</name>
@@ -24487,9 +25510,6 @@ Do you want to save it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/ObjectManipulator.cpp:1743</name>
-</context>
-<context>
     <name>src/gui/ObjectManipulator.cpp:175</name>
     <message>
         <location filename="" line="0"/>
@@ -24559,9 +25579,6 @@ Do you want to save it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/ObjectManipulator.cpp:1823</name>
-</context>
-<context>
     <name>src/gui/ObjectManipulator.cpp:1828</name>
     <message>
         <location filename="" line="0"/>
@@ -24589,9 +25606,6 @@ Do you want to save it ?</source>
         <source> ( read only )</source>
         <translation type="obsolete">( 読み込み専用 )</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/ObjectManipulator.cpp:2343</name>
 </context>
 <context>
     <name>src/gui/ObjectManipulator.cpp:2470</name>
@@ -24730,12 +25744,6 @@ Do you want to save it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/ObjectManipulator.cpp:2821</name>
-</context>
-<context>
-    <name>src/gui/ObjectManipulator.cpp:498</name>
-</context>
-<context>
     <name>src/gui/ObjectManipulator.cpp:510</name>
     <message>
         <location filename="" line="0"/>
@@ -24747,9 +25755,6 @@ Do you want to save it ?</source>
         <source>&amp;No</source>
         <translation type="obsolete">いいえ(&amp;N)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/ObjectManipulator.cpp:527</name>
 </context>
 <context>
     <name>src/gui/ObjectManipulator.cpp:539</name>
@@ -25069,9 +26074,6 @@ Do you want to save it ?</source>
     </message>
 </context>
 <context>
-    <name>src/gui/RCS.cpp:565</name>
-</context>
-<context>
     <name>src/gui/RCS.cpp:694</name>
     <message>
         <location filename="" line="0"/>
@@ -25127,9 +26129,6 @@ Do you want to save it ?</source>
 You can only open it read-only.</source>
         <translation type="obsolete">ファイルはオープン済みで %1 にロックされています。それは読み込み専用でのみ開くことが出来ます。</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/RCS.cpp:752</name>
 </context>
 <context>
     <name>src/gui/RCS.cpp:755</name>
@@ -25300,9 +26299,6 @@ You can only open it read-only.</source>
         <source>Delete</source>
         <translation type="obsolete">削除</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/RuleSetView.cpp:1672</name>
 </context>
 <context>
     <name>src/gui/RuleSetView.cpp:1674</name>
@@ -25769,9 +26765,6 @@ You can only open it read-only.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/RuleSetView.cpp:711</name>
-</context>
-<context>
     <name>src/gui/RuleSetView.cpp:712</name>
     <message>
         <location filename="" line="0"/>
@@ -25850,9 +26843,6 @@ You can only open it read-only.</source>
         <source>Can not open file %1</source>
         <translation type="obsolete">ファイル %1 を開くことが出来ません。</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/SSHPIX.cpp:387</name>
 </context>
 <context>
     <name>src/gui/SSHPIX.cpp:424</name>
@@ -25951,9 +26941,6 @@ You can only open it read-only.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/SSHPIX.cpp:783</name>
-</context>
-<context>
     <name>src/gui/SSHSession.cpp:180</name>
     <message>
         <location filename="" line="0"/>
@@ -25981,9 +26968,6 @@ You can only open it read-only.</source>
         <source>SSH session terminated, exit status: %1</source>
         <translation type="obsolete">SSH 接続が切断しました。終了ステータス: %1</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/SSHSession.cpp:90</name>
 </context>
 <context>
     <name>src/gui/SSHUnx.cpp:152</name>
@@ -26041,9 +27025,6 @@ You can only open it read-only.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/SimpleTextEditor.cpp:66</name>
-</context>
-<context>
     <name>src/gui/SimpleTextEditor.cpp:71</name>
     <message>
         <location filename="" line="0"/>
@@ -26096,18 +27077,12 @@ You can only open it read-only.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/TCPServiceDialog.cpp:176</name>
-</context>
-<context>
     <name>src/gui/TCPServiceDialog.cpp:177</name>
     <message>
         <location filename="" line="0"/>
         <source>&amp;Continue editing</source>
         <translation type="obsolete">編集を続ける(&amp;C)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/TCPServiceDialog.cpp:184</name>
 </context>
 <context>
     <name>src/gui/TCPServiceDialog.cpp:185</name>
@@ -26182,18 +27157,12 @@ You can only open it read-only.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/UDPServiceDialog.cpp:118</name>
-</context>
-<context>
     <name>src/gui/UDPServiceDialog.cpp:119</name>
     <message>
         <location filename="" line="0"/>
         <source>&amp;Continue editing</source>
         <translation type="obsolete">編集を続ける(&amp;C)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/UDPServiceDialog.cpp:126</name>
 </context>
 <context>
     <name>src/gui/UDPServiceDialog.cpp:127</name>
@@ -26218,12 +27187,6 @@ You can only open it read-only.</source>
         <source>Using Firewall Builder API %1</source>
         <translation type="obsolete">試用中の libfwbuilder API バージョン</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/aboutdialog_q.ui.h:19</name>
-</context>
-<context>
-    <name>src/gui/aboutdialog_q.ui.h:20</name>
 </context>
 <context>
     <name>src/gui/execDialog.cpp:101</name>
@@ -26293,9 +27256,6 @@ You can only open it read-only.</source>
         <source>Off</source>
         <translation type="obsolete">オフ</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/instBatchOptionsDialog.cpp:47</name>
 </context>
 <context>
     <name>src/gui/instDialog.cpp:1043</name>
@@ -26380,24 +27340,12 @@ Copying %1 -&gt; %2:%3
     </message>
 </context>
 <context>
-    <name>src/gui/instDialog.cpp:130</name>
-</context>
-<context>
-    <name>src/gui/instDialog.cpp:1435</name>
-</context>
-<context>
-    <name>src/gui/instDialog.cpp:145</name>
-</context>
-<context>
     <name>src/gui/instDialog.cpp:1450</name>
     <message>
         <location filename="" line="0"/>
         <source>Error: Failed to start program</source>
         <translation type="obsolete">エラー: プログラムの開始に失敗しました。</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/instDialog.cpp:1473</name>
 </context>
 <context>
     <name>src/gui/instDialog.cpp:1476</name>
@@ -26482,12 +27430,6 @@ Can&apos;t compile firewall policy.</source>
         <source>Success</source>
         <translation type="obsolete">成功</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/instDialog.cpp:1863</name>
-</context>
-<context>
-    <name>src/gui/instDialog.cpp:1869</name>
 </context>
 <context>
     <name>src/gui/instDialog.cpp:1870</name>
@@ -26626,9 +27568,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/instDialog.cpp:2277</name>
-</context>
-<context>
     <name>src/gui/instDialog.cpp:2284</name>
     <message>
         <location filename="" line="0"/>
@@ -26765,15 +27704,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/instDialog.cpp:670</name>
-</context>
-<context>
-    <name>src/gui/instDialog.cpp:677</name>
-</context>
-<context>
-    <name>src/gui/instDialog.cpp:684</name>
-</context>
-<context>
     <name>src/gui/instDialog.cpp:732</name>
     <message>
         <location filename="" line="0"/>
@@ -26894,9 +27824,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/listOfLibraries.cpp:142</name>
-</context>
-<context>
     <name>src/gui/listOfLibraries.cpp:148</name>
     <message>
         <location filename="" line="0"/>
@@ -26963,18 +27890,12 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/newFirewallDialog.cpp:100</name>
-</context>
-<context>
     <name>src/gui/newFirewallDialog.cpp:229</name>
     <message>
         <location filename="" line="0"/>
         <source>Missing SNMP community string.</source>
         <translation type="obsolete">SNMP コミュニティ文字列が足りません。</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/newFirewallDialog.cpp:248</name>
 </context>
 <context>
     <name>src/gui/newFirewallDialog.cpp:422</name>
@@ -27025,18 +27946,12 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/newFirewallDialog.cpp:99</name>
-</context>
-<context>
     <name>src/gui/newHostDialog.cpp:222</name>
     <message>
         <location filename="" line="0"/>
         <source>Missing SNMP community string.</source>
         <translation type="obsolete">SNMP コミュニティ文字列が足りません。</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/newHostDialog.cpp:241</name>
 </context>
 <context>
     <name>src/gui/newHostDialog.cpp:433</name>
@@ -27101,9 +28016,6 @@ Can&apos;t compile firewall policy.</source>
         <source>Conservative</source>
         <translation type="obsolete">コンサバティブ</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/pfAdvancedDialog.cpp:102</name>
 </context>
 <context>
     <name>src/gui/pfAdvancedDialog.cpp:104</name>
@@ -27178,9 +28090,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/pixAdvancedDialog.cpp:155</name>
-</context>
-<context>
     <name>src/gui/pixAdvancedDialog.cpp:160</name>
     <message>
         <location filename="" line="0"/>
@@ -27197,18 +28106,12 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/pixAdvancedDialog.cpp:679</name>
-</context>
-<context>
     <name>src/gui/pixAdvancedDialog.cpp:703</name>
     <message>
         <location filename="" line="0"/>
         <source>Compiler error</source>
         <translation type="obsolete">コンパイラーエラー</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/pixAdvancedDialog.cpp:717</name>
 </context>
 <context>
     <name>src/gui/pixAdvancedDialog.cpp:786</name>
@@ -27371,15 +28274,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/platforms.cpp:141</name>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:143</name>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:145</name>
-</context>
-<context>
     <name>src/gui/platforms.cpp:148</name>
     <message>
         <location filename="" line="0"/>
@@ -27412,9 +28306,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/platforms.cpp:157</name>
-</context>
-<context>
     <name>src/gui/platforms.cpp:159</name>
     <message>
         <location filename="" line="0"/>
@@ -27429,21 +28320,6 @@ Can&apos;t compile firewall policy.</source>
         <source>after policy reset</source>
         <translation type="obsolete">ポリシーリセットの後</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:164</name>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:167</name>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:170</name>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:173</name>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:176</name>
 </context>
 <context>
     <name>src/gui/platforms.cpp:181</name>
@@ -27566,12 +28442,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/platforms.cpp:542</name>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:544</name>
-</context>
-<context>
     <name>src/gui/platforms.cpp:546</name>
     <message>
         <location filename="" line="0"/>
@@ -27596,9 +28466,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/platforms.cpp:552</name>
-</context>
-<context>
     <name>src/gui/platforms.cpp:554</name>
     <message>
         <location filename="" line="0"/>
@@ -27621,9 +28488,6 @@ Can&apos;t compile firewall policy.</source>
         <source>Chain</source>
         <translation type="obsolete">連結</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/platforms.cpp:559</name>
 </context>
 <context>
     <name>src/gui/platforms.cpp:563</name>
@@ -27858,9 +28722,6 @@ Can&apos;t compile firewall policy.</source>
     </message>
 </context>
 <context>
-    <name>src/gui/upgradePredicate.h:45</name>
-</context>
-<context>
     <name>src/gui/upgradePredicate.h:53</name>
     <message>
         <location filename="" line="0"/>
@@ -27875,9 +28736,6 @@ Can&apos;t compile firewall policy.</source>
         <source>&amp;Do not load the file</source>
         <translation type="obsolete">ファイル %1 を読み込まない(&amp;D)</translation>
     </message>
-</context>
-<context>
-    <name>src/gui/utils.cpp:197</name>
 </context>
 <context>
     <name>src/gui/utils.cpp:198</name>
@@ -27901,6 +28759,223 @@ Can&apos;t compile firewall policy.</source>
         <location filename="" line="0"/>
         <source>&amp;Continue editing</source>
         <translation type="obsolete">編集を続ける(&amp;C)</translation>
+    </message>
+</context>
+<context>
+    <name>transferDialog</name>
+    <message>
+        <location filename="transferDialog.cpp" line="69"/>
+        <source>Transfer error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="70"/>
+        <source>&amp;Continue</source>
+        <translation type="unfinished">続ける(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="107"/>
+        <source>Waiting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="199"/>
+        <source>Error: Failed to start program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="207"/>
+        <source>Error: Waiting for program termination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferDialog.cpp" line="214"/>
+        <source>Error: Program returned failure status</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>transferDialog_q</name>
+    <message>
+        <location filename="transferdialog_q.ui" line="29"/>
+        <source>Config transfer options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="65"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;Export firewall configs to transfer device&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="97"/>
+        <source>Select usbstick volume to start firewall config transfer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="107"/>
+        <source>Select a portable disk volume to transfer firewall configs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="138"/>
+        <source>Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="143"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="148"/>
+        <source>Mounted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="153"/>
+        <source>Mountpoint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="158"/>
+        <source>Filesystem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="166"/>
+        <source>Double click on a firewall in this tree to jump to the corresponding process log entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="173"/>
+        <source>Firewall</source>
+        <translation type="unfinished">ファイアウォール</translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="178"/>
+        <source>Progress</source>
+        <translation type="unfinished">処理中</translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="194"/>
+        <source>Process log</source>
+        <translation type="unfinished">処理ログ</translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="225"/>
+        <source>Save log to file</source>
+        <translation type="unfinished">ファイルにログを保存する</translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="282"/>
+        <source>Start the export!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="285"/>
+        <source>Transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="transferdialog_q.ui" line="292"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取り消し</translation>
+    </message>
+</context>
+<context>
+    <name>vlanOnlyIfaceOptsDialog</name>
+    <message>
+        <location filename="vlanOnlyIfaceOptsDialog.cpp" line="158"/>
+        <source>Input not valid: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>vlanOnlyIfaceOptsDialog_q</name>
+    <message>
+        <location filename="vlanonlyifaceoptsdialog_q.ui" line="13"/>
+        <source>Vlan interface settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vlanonlyifaceoptsdialog_q.ui" line="21"/>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <location filename="vlanonlyifaceoptsdialog_q.ui" line="44"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="vlanonlyifaceoptsdialog_q.ui" line="60"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="vlanonlyifaceoptsdialog_q.ui" line="82"/>
+        <source>Options</source>
+        <translation type="unfinished">オプション</translation>
+    </message>
+    <message>
+        <location filename="vlanonlyifaceoptsdialog_q.ui" line="111"/>
+        <source>Device Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vlanonlyifaceoptsdialog_q.ui" line="127"/>
+        <source>VLAN ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>vrrpOptionsDialog</name>
+    <message>
+        <location filename="vrrpOptionsDialog.cpp" line="100"/>
+        <source>Input not valid: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>vrrpOptionsDialog_q</name>
+    <message>
+        <location filename="vrrpoptionsdialog_q.ui" line="13"/>
+        <source>secunet wall: interface settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vrrpoptionsdialog_q.ui" line="37"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="vrrpoptionsdialog_q.ui" line="53"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取り消し(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="vrrpoptionsdialog_q.ui" line="75"/>
+        <source>VRRP Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vrrpoptionsdialog_q.ui" line="107"/>
+        <source>VRRP Secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vrrpoptionsdialog_q.ui" line="124"/>
+        <source>Virtual Router ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="vrrpoptionsdialog_q.ui" line="130"/>
+        <source>VRID</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
