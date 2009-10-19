@@ -2,9 +2,9 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2006 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
-  Author:  Illiya Yalovoy <yalovoy@gmail.com>
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
   $Id$
 
