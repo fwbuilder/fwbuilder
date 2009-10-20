@@ -492,7 +492,8 @@ const char *NATRule::TYPENAME={"NATRule"};
 
 NATRule::NATRule() : Rule()
 {
-    rule_type=Unknown;
+    rule_type = Unknown;
+    setAction(NATRule::Translate);
 
     osrc_re = NULL;
     odst_re = NULL;
@@ -505,7 +506,8 @@ NATRule::NATRule() : Rule()
 
 NATRule::NATRule(const FWObjectDatabase *root,bool prepopulate) : Rule(root,prepopulate)
 {
-    rule_type=Unknown;
+    rule_type = Unknown;
+    setAction(NATRule::Translate);
 
     osrc_re = NULL;
     odst_re = NULL;
@@ -582,6 +584,19 @@ RuleElementInterval* NATRule::getWhen()
     return when_re;
 }
 
+string NATRule::getActionAsString() const
+{
+    if (action == Branch) return "Branch";
+    return "Translate";
+}
+
+void NATRule::setAction(const string& act)
+{
+    if (act=="Translate")  { setAction(Translate); return; }
+    if (act=="Branch")     { setAction(Branch); return; }
+    setAction(Translate);
+}
+
 bool NATRule::isEmpty()
 {
     RuleElement *osrc=getOSrc();
@@ -600,6 +615,13 @@ void NATRule::fromXML(xmlNodePtr root) throw(FWException)
     const char* n;
 
     FWObject::fromXML(root);
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("action")));
+    if(n)
+    {
+        setAction(string(n));
+        FREEXMLBUFF(n);
+    }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
     if(n)
@@ -628,6 +650,7 @@ xmlNodePtr NATRule::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 //    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("action"), STRTOXMLCAST(getActionAsString()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
 
     FWObject *o;
@@ -726,8 +749,9 @@ void         NATRule::setRuleType(NATRuleTypes rt)
 FWObject& NATRule::shallowDuplicate(const FWObject *x,
                                     bool preserve_id) throw(FWException)
 {
-    const NATRule *rx=NATRule::constcast(x);
-    if (rx!=NULL) rule_type=rx->rule_type;
+    const NATRule *rx = NATRule::constcast(x);
+    if (rx!=NULL) rule_type = rx->rule_type;
+    setAction(rx->getAction());
 
     osrc_re = NULL;
     odst_re = NULL;
