@@ -32,6 +32,7 @@
 #include "ActionsDialog.h"
 #include "FWWindow.h"
 #include "FWObjectDropArea.h"
+#include "DialogFactory.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interface.h"
@@ -174,7 +175,6 @@ void ActionsDialog::applyChanges()
     data.saveAll();
 
     PolicyRule *policy_rule = PolicyRule::cast(rule);
-    NATRule *nat_rule = NATRule::cast(rule);
 
     FWOptions *ropt = rule->getOptionsObject();
 
@@ -248,7 +248,6 @@ void ActionsDialog::setRule(Rule *r)
     rule = r;
 
     PolicyRule *policy_rule = PolicyRule::cast(r);
-    NATRule *nat_rule = NATRule::cast(r);
 
     FWObject *o = r;
     while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
@@ -261,13 +260,7 @@ void ActionsDialog::setRule(Rule *r)
 
     platform=f->getStr("platform");
 
-    string act;
-    if (policy_rule) act = policy_rule->getActionAsString();
-    if (nat_rule)
-    {
-        act = nat_rule->getActionAsString();
-        if (act == "Branch") act = "NATBranch";
-    }
+    string act = getRuleAction(r).toStdString();
 
     help_name = string(platform + "_" + act).c_str();
 
@@ -280,7 +273,7 @@ void ActionsDialog::setRule(Rule *r)
     fillInterfaces(m_dialog->ipf_route_opt_if);
     fillInterfaces(m_dialog->pf_route_opt_if);
 
-    editor = Resources::getActionEditor(platform, act);
+    editor = DialogFactory::getActionDialogPageName(f, r);
 
     branchNameInput = NULL;
 

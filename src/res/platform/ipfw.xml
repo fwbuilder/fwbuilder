@@ -39,51 +39,63 @@
         <actions>
             <Accept>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Accept</description>
+                <dialog_page>None</dialog_page>
             </Accept>
             <Deny>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Deny</description>
+                <dialog_page>None</dialog_page>
             </Deny>
             <Reject>
                 <supported>True</supported>
-                <parameter>Reject</parameter>
+                <description>Reject</description>
+                <dialog_page>Reject</dialog_page>
             </Reject>
             <Accounting>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Count</description>
+                <dialog_page>None</dialog_page>
             </Accounting>
             <Tag>
                 <supported>False</supported>
-                <parameter>None</parameter>
+                <description>Tag</description>
+                <dialog_page>None</dialog_page>
             </Tag>
             <Pipe>
                 <supported>True</supported>
-                <parameter>PipeArgsIPFW</parameter>
+                <description>Pipe</description>
+                <dialog_page>PipeArgsIPFW</dialog_page>
             </Pipe>
             <Classify>
                 <supported>True</supported>
-                <parameter>ClassifyArgsIPFW</parameter>
+                <description>Classify</description>
+                <dialog_page>ClassifyArgsIPFW</dialog_page>
             </Classify>
             <Custom>
                 <supported>True</supported>
-                <parameter>CustomStr</parameter>
+                <description>Custom</description>
+                <dialog_page>CustomStr</dialog_page>
             </Custom>
             <Branch>
                 <supported>False</supported>
-                <parameter>None</parameter>
+                <description>Branch</description>
+                <dialog_page>None</dialog_page>
             </Branch>
             <Route>
                 <supported>False</supported>
-                <parameter>None</parameter>
+                <description>Route</description>
+                <dialog_page>None</dialog_page>
             </Route>
             <Translate>
                 <supported>False</supported>
-                <parameter>None</parameter>
+                <description>Translate</description>
+                <dialog_page>None</dialog_page>
             </Translate>
             <NATBranch>
                 <supported>False</supported>
-                <parameter>None</parameter>
+                <description>Branch</description>
+                <dialog_page>None</dialog_page>
             </NATBranch>
         </actions>
       </capabilities>

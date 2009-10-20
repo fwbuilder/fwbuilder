@@ -44,51 +44,63 @@
         <actions>
             <Accept>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Accept</description>
+                <dialog_page>None</dialog_page>
             </Accept>
             <Deny>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Deny</description>
+                <dialog_page>None</dialog_page>
             </Deny>
             <Reject>
                 <supported>True</supported>
-                <parameter>Reject</parameter>
+                <description>Reject</description>
+                <dialog_page>Reject</dialog_page>
             </Reject>
             <Accounting>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Accounting</description>
+                <dialog_page>None</dialog_page>
             </Accounting>
             <Tag>
                 <supported>True</supported>
-                <parameter>TagStr</parameter>
+                <description>Tag</description>
+                <dialog_page>TagStr</dialog_page>
             </Tag>
             <Pipe>
                 <supported>False</supported>
-                <parameter>None</parameter>
+                <description>Pipe</description>
+                <dialog_page>None</dialog_page>
             </Pipe>
             <Classify>
                 <supported>True</supported>
-                <parameter>ClassifyStr</parameter>
+                <description>Classify</description>
+                <dialog_page>ClassifyStr</dialog_page>
             </Classify>
             <Custom>
                 <supported>False</supported>
-                <parameter>None</parameter>
+                <description>Custom</description>
+                <dialog_page>None</dialog_page>
             </Custom>
             <Branch>
                 <supported>True</supported>
-                <parameter>BranchAnchor</parameter>
+                <description>Anchor</description>
+                <dialog_page>BranchAnchor</dialog_page>
             </Branch>
             <Route>
                 <supported>True</supported>
-                <parameter>RoutePF</parameter>
+                <description>Route</description>
+                <dialog_page>RoutePF</dialog_page>
             </Route>
             <Translate>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Translate</description>
+                <dialog_page>None</dialog_page>
             </Translate>
             <NATBranch>
                 <supported>True</supported>
-                <parameter>NATBranch</parameter>
+                <description>Branch</description>
+                <dialog_page>NATBranch</dialog_page>
             </NATBranch>
         </actions>
       </capabilities>

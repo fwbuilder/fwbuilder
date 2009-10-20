@@ -51,8 +51,8 @@ class FWObjectPropertiesFactory {
                                                bool tooltip=false,
                                                bool accentName=true,
                                                bool richText=true);
-    static QString getRuleActionProperties(libfwbuilder::PolicyRule *rule); 
-    static QString getRuleActionPropertiesRich(libfwbuilder::PolicyRule *rule); 
+    static QString getRuleActionProperties(libfwbuilder::Rule *rule); 
+    static QString getRuleActionPropertiesRich(libfwbuilder::Rule *rule); 
     static QString getPolicyRuleOptions(libfwbuilder::Rule *rule);
     static QString getNATRuleOptions(libfwbuilder::Rule *rule);
 

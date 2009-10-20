@@ -33,6 +33,7 @@
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
 #include "FWBTree.h"
+#include "platforms.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
@@ -185,10 +186,9 @@ void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
     {
         FWObject *obj_for_icon = obj;
         if (ruleset) obj_for_icon = ruleset;
-        if (rule && PolicyRule::isA(rule) && t == ObjectEditor::optAction)
+        if (rule && t == ObjectEditor::optAction)
         {
-            QString icn = ":/Icons/" ;
-            icn += PolicyRule::cast(rule)->getActionAsString().c_str();
+            QString icn = ":/Icons/" + getRuleAction(rule);
             LoadPixmap(icn, *pm);  // in utils.cpp
         } else
             FWBTree().setObjectIcon(obj_for_icon, pm, false);

@@ -49,6 +49,8 @@
     <file alias="Icons/Both-tree" >Icons/both_16.png</file>
     <file alias="Icons/Branch-tree" >Icons/branch_16.png</file>
     <file alias="Icons/Branch" >Icons/branch_25.png</file>
+    <file alias="Icons/NATBranch-tree" >Icons/branch_16.png</file>
+    <file alias="Icons/NATBranch" >Icons/branch_25.png</file>
     <file>Icons/cancel.png</file>
     <file alias="Icons/Classify-tree" >Icons/classify_16.png</file>
     <file alias="Icons/Classify" >Icons/classify_25.png</file>

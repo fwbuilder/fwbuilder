@@ -364,16 +364,16 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 {
                     if (Resources::isTargetActionSupported(platform,"Translate"))
                     {
-                        action_name = getNatActionNameForPlatform(NATRule::Translate,
-                                                                  platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, NATRule::getActionAsString(NATRule::Translate));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Continue")),
                                          action_name,
                                          this, SLOT( changeActionToTranslate() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Branch"))
                     {
-                        action_name = getNatActionNameForPlatform(NATRule::Branch,
-                                                                  platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, NATRule::getActionAsString(NATRule::Branch));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Branch")),
                                          action_name,
                                          this, SLOT( changeActionToNATBranch() ));
@@ -383,88 +383,88 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 {
                     if (Resources::isTargetActionSupported(platform,"Accept"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Accept,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Accept));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Accept")),
                                          action_name,
                                          this, SLOT( changeActionToAccept() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Deny"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Deny,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Deny));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Deny")),
                                          action_name,
                                          this, SLOT( changeActionToDeny() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Reject"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Reject,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Reject));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Reject")),
                                          action_name,
                                          this, SLOT( changeActionToReject() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Accounting"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Accounting,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Accounting));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Accounting")),
                                          action_name,
                                          this, SLOT( changeActionToAccounting() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Pipe"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Pipe,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Pipe));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Pipe")),
                                          action_name,
                                          this, SLOT( changeActionToPipe() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Tag"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Tag,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Tag));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Tag")),
                                          action_name,
                                          this, SLOT( changeActionToTag() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Classify"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Classify,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Classify));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Classify")),
                                          action_name,
                                          this, SLOT( changeActionToClassify() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Custom"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Custom,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Custom));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Custom")),
                                          action_name,
                                          this, SLOT( changeActionToCustom() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Branch"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Branch,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Branch));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Branch")),
                                          action_name,
                                          this, SLOT( changeActionToBranch() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Route"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Route,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Route));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Route")),
                                          action_name,
                                          this, SLOT( changeActionToRoute() ));
                     }
                     if (Resources::isTargetActionSupported(platform,"Continue"))
                     {
-                        action_name = getActionNameForPlatform(PolicyRule::Continue,
-                                                               platform.c_str());
+                        action_name = getActionNameForPlatform(
+                            f, PolicyRule::getActionAsString(PolicyRule::Continue));
                         menu->addAction( QIcon(LoadPixmap(":/Icons/Continue")),
                                          action_name,
                                          this, SLOT( changeActionToContinue() ));

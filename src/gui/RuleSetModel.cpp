@@ -1190,16 +1190,6 @@ QStringList PolicyModel::getRuleOptions(Rule* r) const
     return res;
 }
 
-QString PolicyModel::getRuleAction(Rule* r) const
-{
-    PolicyRule *policy_rule  = PolicyRule::cast( r );
-    NATRule *nat_rule  = NATRule::cast( r );
-    QString res;
-    if (policy_rule) res = policy_rule->getActionAsString().c_str();
-    if (nat_rule) res = nat_rule->getActionAsString().c_str();
-    return res;
-}
-
 void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
 {
     //if (fwbdebug) qDebug() << "PolicyModel::initRule";
@@ -1293,13 +1283,6 @@ QStringList NatModel::getRuleOptions(Rule* r) const
 
     if (!isDefaultNATRuleOptions(r->getOptionsObject())) res << "Options";
 
-    return res;
-}
-
-QString NatModel::getRuleAction(Rule* r) const
-{
-    NATRule  *natRule = NATRule::cast( r );
-    QString res = natRule->getActionAsString().c_str();
     return res;
 }
 

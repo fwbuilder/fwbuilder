@@ -33,6 +33,8 @@
 namespace libfwbuilder {
     class FWObject;
     class FWException;
+    class Firewall;
+    class Rule;
 };
 
 
@@ -51,6 +53,12 @@ class DialogFactory {
         throw(libfwbuilder::FWException);
     static QWidget *createClusterGroupOptionsDialog(QWidget *parent, libfwbuilder::FWObject *o)
         throw(libfwbuilder::FWException);
+
+    static std::string getActionDialogPageName(libfwbuilder::Firewall *fw,
+                                               libfwbuilder::Rule *rule);
+
 };
+
+
 
 #endif
