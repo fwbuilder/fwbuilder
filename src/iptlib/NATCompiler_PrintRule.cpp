@@ -213,7 +213,8 @@ string NATCompiler_ipt::PrintRule::_printChainDirectionAndInterface(NATRule *rul
 
     ostr << rule->getStr("ipt_chain") << " ";
 
-    switch (rule->getRuleType()) {
+    switch (rule->getRuleType())
+    {
     case NATRule::SNAT:  
 	if (!iface_name.empty()) ostr << "-o " << iface_name;
 	break;
@@ -598,7 +599,9 @@ bool NATCompiler_ipt::PrintRule::processNext()
 
     string chain = rule->getStr("ipt_chain");
     if (ipt_comp->chain_usage_counter[chain] == 0)
+    {
         return true;
+    }
 
     tmp_queue.push_back(rule);
 
@@ -679,7 +682,8 @@ bool NATCompiler_ipt::PrintRule::processNext()
 
     cmdout << "-j " << rule->getStr("ipt_target") << " ";
 
-    switch (rule->getRuleType()) {
+    switch (rule->getRuleType())
+    {
     case NATRule::SNAT:  
 	if (rule->getStr("ipt_target")=="SNAT")
         {
@@ -732,6 +736,10 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	    if (!ports.empty()) cmdout << "--to-ports " << ports;
 	}
 	break;
+
+    case NATRule::NATBranch: 
+	break;
+
     default:	break;
     }
     cmdout << " ";

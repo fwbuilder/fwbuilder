@@ -32,6 +32,8 @@
 
 #include <string>
 #include <sstream>
+#include <map>
+#include <list>
 
 #include <QString>
 #include <QMap>
@@ -50,6 +52,19 @@ namespace fwcompiler {
 
     class CompilerDriver_ipt : public CompilerDriver {
 
+        // commands that pass control to branch chains should go into
+        // POSTROUTING or PREROUTING chains depending on the targets used
+        // inside the branch. Branches that use mixed rules (both SNAT
+        // and DNAT) will be split so that two separate chains are created, one
+        // for all SNAT rules and another for all DNAT rules. Rules in
+        // the top NAT ruleset that pass control to them will be placed into
+        // PREROUTING or POSTROUTING chain depending on the target in the branch.
+        // The following maps targets used in the branch to the ruleset name.
+        // By convention, the chain created for the branch rules will be named
+        // using combination of the ruleset name and word "PREROUTING"
+        // or "POSTROUTING"
+        std::map<std::string, std::list<std::string> > branch_ruleset_to_chain_mapping;
+       
 public:
 
         CompilerDriver_ipt(libfwbuilder::FWObjectDatabase *db);
@@ -84,6 +99,16 @@ public:
             std::map<const std::string, bool> &minus_n_commands_filter,
             std::map<const std::string, bool> &minus_n_commands_mangle);
 
+        bool processNatRuleSet(
+            libfwbuilder::Firewall *fw,
+            libfwbuilder::FWObject *ruleset,
+            const std::string &single_rule_id,
+            std::ostringstream &nat_stream,
+            fwcompiler::OSConfigurator_linux24 *oscnf,
+            int policy_af,
+            std::map<const std::string, bool> &minus_n_commands_nat);
+
+        
         virtual void processStateSyncGroups(libfwbuilder::Cluster *cluster,
                                             libfwbuilder::Firewall *member_fw);
 

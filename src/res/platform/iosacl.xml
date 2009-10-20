@@ -102,6 +102,10 @@ interface %in
                 <supported>False</supported>
                 <parameter>None</parameter>
             </Translate>
+            <NATBranch>
+                <supported>False</supported>
+                <parameter>None</parameter>
+            </NATBranch>
         </actions>
       </capabilities>
 

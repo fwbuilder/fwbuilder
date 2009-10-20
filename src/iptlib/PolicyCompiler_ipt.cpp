@@ -4908,4 +4908,13 @@ PolicyRule* PolicyCompiler_ipt::addMgmtRule(Address* src,
     return rule;
 }
 
+list<string> PolicyCompiler_ipt::getUsedChains()
+{
+    list<string> res;
+    for (map<string, int>::iterator it=chain_usage_counter.begin();
+         it!=chain_usage_counter.end(); ++it)
+        res.push_back(it->first);
+    return res;
+}
+
 

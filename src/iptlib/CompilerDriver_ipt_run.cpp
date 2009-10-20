@@ -163,9 +163,6 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
 
     string os_variant = DISTRO;
 
-    bool flush_and_set_default_policy = Resources::getTargetOptionBool(
-        platform, "default/flush_and_set_default_policy");
-
 /* minimal sanity checking */
     if (os_family == "ipcop")
     {
@@ -203,7 +200,6 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
     list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
     list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
-    int nat_rules_count     = 0;
     int routing_rules_count = 0;
     bool have_nat = false;
     bool have_ipv6 = false;
@@ -223,6 +219,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
 
     findImportedRuleSets(fw, all_policies);
     findBranchesInMangleTable(fw, all_policies);
+    findImportedRuleSets(fw, all_nat);
 
     // command line options -4 and -6 control address family for which
     // script will be generated. If "-4" is used, only ipv4 part will 
@@ -297,78 +294,52 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
         ostringstream nat_rules_stream;
 
         bool empty_output = true;
-        //MangleTableCompiler_ipt *top_level_mangle_compiler = NULL;
 
+        // First, process branch NAT rulesets, then top NAT ruleset
+
+        NAT *top_nat = NULL;
         for (list<FWObject*>::iterator p=all_nat.begin();
-             p!=all_nat.end(); ++p )
+             p!=all_nat.end(); ++p)
         {
             NAT *nat = NAT::cast(*p);
-            assignRuleSetChain(nat);
-            string branch_name = nat->getName();
-                
             if (!nat->matchingAddressFamily(policy_af)) continue;
-
-            // compile NAT rules before policy rules because policy
-            // compiler needs to know the number of virtual addresses
-            // being created for NAT
-            std::auto_ptr<NATCompiler_ipt> nat_compiler(
-                new NATCompiler_ipt(objdb, fw, ipv6_policy,
-                                    oscnf.get(), &minus_n_commands_nat));
-
-            nat_compiler->setSourceRuleSet( nat );
-            nat_compiler->setRuleSetName(branch_name);
-
-            nat_compiler->setSingleRuleCompileMode(single_rule_id);
-            nat_compiler->setDebugLevel( dl );
-            if (rule_debug_on) nat_compiler->setDebugRule(  drn );
-            nat_compiler->setVerbose( (bool)(verbose) );
-            nat_compiler->setHaveDynamicInterfaces(have_dynamic_interfaces);
-            if (inTestMode()) nat_compiler->setTestMode();
-            if (inEmbeddedMode()) nat_compiler->setEmbeddedMode();
-
-            if ( (nat_rules_count=nat_compiler->prolog()) > 0 )
+            if (nat->isTop())
             {
-                nat_compiler->compile();
-                nat_compiler->epilog();
+                top_nat = nat;
+                continue;
             }
-
-            have_nat = (have_nat || (nat_rules_count > 0));
-
-            if (nat_compiler->getCompiledScriptLength() > 0)
-            {
-                if (!single_rule_compile_on)
-                    nat_rules_stream << "# ================ Table 'nat', "
-                                     << " rule set "
-                                     << branch_name << "\n";
-
-                if (nat_compiler->haveErrorsAndWarnings())
-                {
-                    all_errors.push_back(nat_compiler->getErrors("").c_str());
-
-//                    nat_rules_stream << "# NAT compiler errors and "
-//                                     << "warnings:\n";
-//                    nat_rules_stream << nat_compiler->getErrors("# ");
-                }
-
-                if (nat->isTop())
-                {
-                    if (flush_and_set_default_policy)
-                        nat_rules_stream << nat_compiler->flushAndSetDefaultPolicy();
-
-                    nat_rules_stream << nat_compiler->printAutomaticRules();
-                }
-
-                nat_rules_stream << nat_compiler->getCompiledScript();
-                nat_rules_stream << "\n";
-                empty_output = false;
-            }
+            if (! processNatRuleSet(
+                    fw,
+                    nat,
+                    single_rule_id,
+                    nat_rules_stream,
+                    oscnf.get(),
+                    policy_af,
+                    minus_n_commands_nat)) empty_output = false;
         }
+
+        if (top_nat &&
+            ! processNatRuleSet(
+                fw,
+                top_nat,
+                single_rule_id,
+                nat_rules_stream,
+                oscnf.get(),
+                policy_af,
+                minus_n_commands_nat)) empty_output = false;
+
+        Policy *top_policy = NULL;
 
         for (list<FWObject*>::iterator p=all_policies.begin();
              p!=all_policies.end(); ++p )
         {
             Policy *policy = Policy::cast(*p);
             if (!policy->matchingAddressFamily(policy_af)) continue;
+            if (policy->isTop())
+            {
+                top_policy = policy;
+                continue;
+            }
 
             if (! processPolicyRuleSet(
                     fw,
@@ -382,6 +353,21 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
                     minus_n_commands_filter,
                     minus_n_commands_mangle)) empty_output = false;
         }
+
+        if (top_policy &&
+            ! processPolicyRuleSet(
+                fw,
+                top_policy,
+                single_rule_id,
+                filter_rules_stream,
+                mangle_rules_stream,
+                automaitc_rules_stream,
+                oscnf.get(),
+                policy_af,
+                minus_n_commands_filter,
+                minus_n_commands_mangle)) empty_output = false;
+
+
 
         if (!empty_output && !single_rule_compile_on)
         {

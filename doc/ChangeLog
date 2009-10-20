@@ -1,3 +1,27 @@
+2009-10-20  vadim  <vadim@vk.crocodile.org>
+
+	* Support for branch rules in NAT rule sets. Currently only
+	supported on iptables and PF. NAT rules get column "Action" for
+	these platforms, with possible acctions "Translate" and "Branch".
+	Action parameters dialog for the Branch action provides drop well
+	where another NAT ruleset object can be dropped (just like with
+	Branch action in the Policy rules). Action "Translate" performs
+	translation as defined in the rule. Objects in the "Translated
+	source/destination/service" are ignored in NAT rules with action
+	"Branch" and a warning is issued at compile time.
+
+	* NATCompiler_ipt.cpp (splitNATBranchRule::processNext): Support
+	for branching NAT rules for iptables. Rules in the branch rule set
+	are processed first and their targets and corresponding chains are
+	recorded. These rules are placed in the user-defined chains with
+	the name composed of the rule set name and the
+	chain ("POSTROUTING" or "PREROUTING") that corresponds to the
+	chosen target. Then top NAT rule set is processed. Branching rules
+	found in it pass control to the chains used for the rules from the
+	branching rule set. IF branching rule set uses a mix of SNAT and
+	DNAT rules, the branching rule in the top rule set is split and
+	placed in both PREROUTING and POSTROUTING chains as appropriate.
+
 2009-10-14  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/configlets/linux24/conntrack: Implemented support for

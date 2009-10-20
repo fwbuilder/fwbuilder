@@ -67,8 +67,8 @@ ActionsDialog::ActionsDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog->setupUi(this);
 
     m_dialog->iptBranchDropArea->addAcceptedTypes("Policy");
-    m_dialog->iptBranchDropArea->addAcceptedTypes("NAT");
-    m_dialog->iptBranchDropArea->addAcceptedTypes("Routing");
+    //m_dialog->iptBranchDropArea->addAcceptedTypes("NAT");
+    //m_dialog->iptBranchDropArea->addAcceptedTypes("Routing");
     m_dialog->iptBranchDropArea->setHelperText("Drop rule set object here");
     connect (m_dialog->iptBranchDropArea,
              SIGNAL(objectDeleted()),this,SLOT(changed()));
@@ -76,12 +76,19 @@ ActionsDialog::ActionsDialog(QWidget *parent) : BaseObjectDialog(parent)
              SIGNAL(objectInserted()),this,SLOT(changed()));
 
     m_dialog->pfBranchDropArea->addAcceptedTypes("Policy");
-    m_dialog->pfBranchDropArea->addAcceptedTypes("NAT");
-    m_dialog->pfBranchDropArea->addAcceptedTypes("Routing");
+    //m_dialog->pfBranchDropArea->addAcceptedTypes("NAT");
+    //m_dialog->pfBranchDropArea->addAcceptedTypes("Routing");
     m_dialog->pfBranchDropArea->setHelperText("Drop rule set object here");
     connect (m_dialog->pfBranchDropArea,
              SIGNAL(objectDeleted()),this,SLOT(changed()));
     connect (m_dialog->pfBranchDropArea,
+             SIGNAL(objectInserted()),this,SLOT(changed()));
+
+    m_dialog->natBranchDropArea->addAcceptedTypes("NAT");
+    m_dialog->natBranchDropArea->setHelperText("Drop NAT rule set object here");
+    connect (m_dialog->natBranchDropArea,
+             SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (m_dialog->natBranchDropArea,
              SIGNAL(objectInserted()),this,SLOT(changed()));
 
     m_dialog->pfTagDropArea->addAcceptedTypes("TagService");
@@ -199,6 +206,13 @@ void ActionsDialog::applyChanges()
         rule->setBranch(ruleset);
     }
 
+    if (editor=="NATBranch")
+    {
+        RuleSet *ruleset = RuleSet::cast(m_dialog->natBranchDropArea->getObject());
+        // if ruleset==NULL, setBranch clears setting in the rule
+        rule->setBranch(ruleset);
+    }
+
     if (m_dialog->useDummyNetPipe->isChecked())
         ropt->setInt("ipfw_classify_method",DUMMYNETPIPE);
     else
@@ -249,7 +263,11 @@ void ActionsDialog::setRule(Rule *r)
 
     string act;
     if (policy_rule) act = policy_rule->getActionAsString();
-    if (nat_rule) act = nat_rule->getActionAsString();
+    if (nat_rule)
+    {
+        act = nat_rule->getActionAsString();
+        if (act == "Branch") act = "NATBranch";
+    }
 
     help_name = string(platform + "_" + act).c_str();
 
@@ -397,6 +415,12 @@ void ActionsDialog::setRule(Rule *r)
         w=m_dialog->BranchAnchorPage;
         RuleSet *ruleset = r->getBranch();
         m_dialog->iptBranchDropArea->setObject(ruleset);
+    }
+    else if (editor=="NATBranch")
+    {
+        w = m_dialog->NATBranchPage;
+        RuleSet *ruleset = r->getBranch();
+        m_dialog->natBranchDropArea->setObject(ruleset);
     }
     else if (editor=="RouteIPT")
     {

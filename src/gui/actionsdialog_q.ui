@@ -37,7 +37,7 @@
          <enum>QFrame::Plain</enum>
         </property>
         <property name="currentIndex" >
-         <number>12</number>
+         <number>14</number>
         </property>
         <widget class="QWidget" name="TagStrPage" >
          <layout class="QGridLayout" >
@@ -1042,6 +1042,65 @@ object properties dialog.</string>
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="NATBranchPage" >
+         <layout class="QGridLayout" name="gridLayout_2" >
+          <item row="0" column="0" colspan="2" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>NAT Rule set object:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="FWObjectDropArea" native="1" name="natBranchDropArea" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>100</width>
+              <height>80</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>100</width>
+              <height>80</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <spacer name="horizontalSpacer" >
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>663</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1" >
+           <spacer name="verticalSpacer" >
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>20</width>
+              <height>33</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -1057,7 +1116,6 @@ object properties dialog.</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <includes/>
  <resources>
   <include location="MainRes.qrc" />
  </resources>

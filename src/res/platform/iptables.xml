@@ -96,6 +96,10 @@
                 <supported>True</supported>
                 <parameter>None</parameter>
             </Translate>
+            <NATBranch>
+                <supported>True</supported>
+                <parameter>NATBranch</parameter>
+            </NATBranch>
         </actions>
       </capabilities>
     </Target>
