@@ -212,8 +212,11 @@ public:
     bool checkRuleType(libfwbuilder::Rule *rule);
 
 private:
+    bool supports_actions;
+
     QVariant getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const;
     QStringList getRuleOptions(libfwbuilder::Rule* r) const;
+    QString getRuleAction(libfwbuilder::Rule* r) const;
     void configure();
 };
 

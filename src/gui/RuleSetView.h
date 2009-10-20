@@ -165,6 +165,8 @@ public slots:
     void changeActionToBranch();
     void changeActionToRoute();
     void changeActionToContinue();
+    void changeActionToTranslate();
+    void changeActionToNATBranch();
 
     void changeLogToOn();
     void changeLogToOff();
@@ -235,7 +237,7 @@ private:
     void addColumnRelatedMenu(QMenu *menu,const QModelIndex &index, RuleNode *node, const QPoint& pos);
 
     void changeDitection(libfwbuilder::PolicyRule::Direction dir);
-    void changeAction(libfwbuilder::PolicyRule::Action act);
+    void changeAction(int act);
     void changeLogging(bool flag);
     void configureGroups();
     bool showToolTip(QEvent *event);

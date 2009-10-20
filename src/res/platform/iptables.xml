@@ -38,6 +38,7 @@
         <logging_in_policy>True</logging_in_policy>
         <options_in_policy>True</options_in_policy>
         <supports_nat>True</supports_nat>
+        <actions_in_nat>True</actions_in_nat>
         <supports_time>True</supports_time>
         <supports_accounting>True</supports_accounting>
         <supports_routing_itf>True</supports_routing_itf>
@@ -91,6 +92,10 @@
                 <supported>True</supported>
                 <parameter>None</parameter>
             </Continue>
+            <Translate>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Translate>
         </actions>
       </capabilities>
     </Target>

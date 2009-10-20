@@ -135,6 +135,8 @@ QString getScreenName(QString s,const QStringList &sl);
 
 QString getActionNameForPlatform(libfwbuilder::PolicyRule::Action action,
                                  const QString &platform);
+QString getNatActionNameForPlatform(libfwbuilder::NATRule::NATAction action,
+                                    const QString &platform);
 
 bool getStatelessFlagForAction(libfwbuilder::PolicyRule *rule);
 

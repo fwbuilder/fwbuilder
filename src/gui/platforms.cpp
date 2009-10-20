@@ -718,6 +718,24 @@ QString getActionNameForPlatform(PolicyRule::Action action,
     return action_name;
 }
 
+QString getNatActionNameForPlatform(NATRule::NATAction action,
+                                    const QString &platform)
+{
+    Q_UNUSED(platform);
+    QString action_name = "";
+    switch (action)
+    {
+    case NATRule::Translate:
+        action_name = QObject::tr("Translate");
+        break;
+
+    case NATRule::Branch:
+        action_name = QObject::tr("Branch");
+        break;
+    }
+    return action_name;
+}
+
 /*
  * this function provides logic for the decision whether the rule
  * should be stateless by default. Currently it only depends on the

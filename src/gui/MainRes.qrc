@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/" >
+    <file alias="Icons/Translate-tree" >Icons/translate_16.png</file>
+    <file alias="Icons/Translate" >Icons/translate_25.png</file>
     <file alias="Icons/Routing/icon" >Icons/routing_25.png</file>
     <file alias="Icons/Routing/icon-tree" >Icons/routing_16.png</file>
     <file alias="Icons/FailoverClusterGroup/icon-neg-tree" >Icons/failover-cluster-group-neg_16.png</file>

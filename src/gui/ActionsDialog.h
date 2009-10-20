@@ -39,7 +39,7 @@
 
 namespace libfwbuilder
 {
-    class PolicyRule;
+    class Rule;
     class Firewall;
 }
 
@@ -50,15 +50,16 @@ class FWObjectDropArea;
 
 class ActionsDialog : public BaseObjectDialog
 {
-    Q_OBJECT
- private:
+    Q_OBJECT;
+
+private:
     libfwbuilder::Firewall *firewall; 
-    libfwbuilder::PolicyRule *rule; 
-    std::string               editor;
-    std::string               platform;
-    QLineEdit                *branchNameInput;
+    libfwbuilder::Rule *rule; 
+    std::string editor;
+    std::string platform;
+    QLineEdit *branchNameInput;
     
-    DialogData                data;
+    DialogData data;
     FWObjectDropArea * BranchChainArea ;
     FWObjectDropArea * BranchAnchorArea;
     FWObjectDropArea * TagIntArea ;
@@ -83,7 +84,7 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void getHelpName(QString*);
-    void setRule(libfwbuilder::PolicyRule*);
+    void setRule(libfwbuilder::Rule*);
     
 
 };

@@ -19,6 +19,7 @@
         <logging_in_policy>False</logging_in_policy>
         <options_in_policy>False</options_in_policy>
         <supports_nat>False</supports_nat>
+        <actions_in_nat>False</actions_in_nat>
         <supports_time>False</supports_time>
         <supports_accounting>False</supports_accounting>
         <supports_routing_itf>False</supports_routing_itf>
@@ -68,6 +69,10 @@
                 <supported>False</supported>
                 <parameter>None</parameter>
             </Route>
+            <Translate>
+                <supported>False</supported>
+                <parameter>None</parameter>
+            </Translate>
         </actions>
       </capabilities>
 

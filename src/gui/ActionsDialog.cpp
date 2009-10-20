@@ -53,6 +53,7 @@
 #include <QStackedWidget>
 #include <qcursor.h>
 #include <qregexp.h>
+#include <QtDebug>
 
 #include <iostream>
 #include <stdlib.h>
@@ -103,7 +104,7 @@ ActionsDialog::~ActionsDialog()
 
 void ActionsDialog::loadFWObject(FWObject *o)
 {
-    setRule(PolicyRule::cast(o));
+    setRule(Rule::cast(o));
 }
 
 void ActionsDialog::getHelpName(QString *str)
@@ -163,8 +164,10 @@ void ActionsDialog::applyChanges()
         }
     }
 
-
     data.saveAll();
+
+    PolicyRule *policy_rule = PolicyRule::cast(rule);
+    NATRule *nat_rule = NATRule::cast(rule);
 
     FWOptions *ropt = rule->getOptionsObject();
 
@@ -172,14 +175,14 @@ void ActionsDialog::applyChanges()
     {
         FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
         // if tag_object==NULL, setTagObject clears setting in the rule
-        rule->setTagObject(tag_object);
+        policy_rule->setTagObject(tag_object);
     }
 
     if (editor=="TagStr")
     {
         FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
         // if tag_object==NULL, setTagObject clears setting in the rule
-        rule->setTagObject(tag_object);
+        policy_rule->setTagObject(tag_object);
     }
 
     if (editor=="BranchChain")
@@ -226,34 +229,31 @@ void ActionsDialog::iptRouteContinueToggled()
     m_dialog->ipt_tee->setEnabled( ! m_dialog->ipt_continue->isChecked() );
 }
 
-void ActionsDialog::setRule(PolicyRule *r )
+void ActionsDialog::setRule(Rule *r)
 {
-    rule=r;
-    FWObject *o = rule;
-    while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
+    rule = r;
+
+    PolicyRule *policy_rule = PolicyRule::cast(r);
+    NATRule *nat_rule = NATRule::cast(r);
+
+    FWObject *o = r;
+    while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
     assert(o!=NULL);
 
     FWOptions *ropt = rule->getOptionsObject();
 
-    Firewall *f=Firewall::cast(o);
-    firewall=f;
+    Firewall *f = Firewall::cast(o);
+    firewall = f;
 
     platform=f->getStr("platform");
 
-    // QString icn = ":/Icons/" ;
-    // icn += r->getActionAsString().c_str();
-    // m_dialog->icon->setPixmap(QIcon(icn).pixmap(25,25));
+    string act;
+    if (policy_rule) act = policy_rule->getActionAsString();
+    if (nat_rule) act = nat_rule->getActionAsString();
 
-    // QString title=QString("%3 %1 / %2")
-    //     .arg(QString::fromUtf8(f->getName().c_str()))
-    //     .arg(rule->getPosition())
-    //     .arg(rule->getActionAsString().c_str());
-    // m_dialog->action->setText(title);
-
-    string act = rule->getActionAsString();
     help_name = string(platform + "_" + act).c_str();
 
-    QStringList actionsOnReject=getActionsOnReject( platform.c_str() );
+    QStringList actionsOnReject = getActionsOnReject( platform.c_str() );
     m_dialog->rejectvalue->clear();
     m_dialog->rejectvalue->addItems( getScreenNames( actionsOnReject ) );
 
@@ -352,14 +352,14 @@ void ActionsDialog::setRule(PolicyRule *r )
     else if (editor=="TagInt")
     {
         w=m_dialog->TagIntPage;
-        FWObject *o = rule->getTagObject();
+        FWObject *o = policy_rule->getTagObject();
         m_dialog->iptTagDropArea->setObject(o);
         m_dialog->iptTagDropArea->update();
     }
     else if (editor=="TagStr")
     {
         w=m_dialog->TagStrPage;
-        FWObject *o = rule->getTagObject();
+        FWObject *o = policy_rule->getTagObject();
         m_dialog->pfTagDropArea->setObject(o);
         m_dialog->pfTagDropArea->update();
     }
@@ -385,7 +385,7 @@ void ActionsDialog::setRule(PolicyRule *r )
     }
     else if (editor=="BranchChain")
     {
-        w=m_dialog->BranchChainPage;
+        w = m_dialog->BranchChainPage;
         RuleSet *ruleset = r->getBranch();
         m_dialog->iptBranchDropArea->setObject(ruleset);
 

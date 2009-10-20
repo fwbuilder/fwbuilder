@@ -125,6 +125,7 @@ nameif %in %il security%sl
         <logging_in_policy>True</logging_in_policy>
         <options_in_policy>True</options_in_policy>
         <supports_nat>True</supports_nat>
+        <actions_in_nat>False</actions_in_nat>
         <supports_time>False</supports_time>
         <supports_accounting>False</supports_accounting>
         <supports_routing_itf>True</supports_routing_itf>
@@ -174,6 +175,10 @@ nameif %in %il security%sl
                 <supported>False</supported>
                 <parameter>None</parameter>
             </Route>
+            <Translate>
+                <supported>True</supported>
+                <parameter>None</parameter>
+            </Translate>
         </actions>
       </capabilities>
 
