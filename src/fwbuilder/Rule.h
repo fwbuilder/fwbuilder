@@ -279,7 +279,8 @@ public:
  *
  */
     typedef enum { Unknown, 
-                   NONAT, 
+                   NONAT,
+                   NATBranch,
                    SNAT, 
                    Masq, 
                    DNAT, 

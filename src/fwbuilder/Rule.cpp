@@ -396,8 +396,9 @@ FWOptions* PolicyRule::getOptionsObject()
     return FWOptions::cast( getFirstByType(PolicyRuleOptions::TYPENAME) );
 }
 
-RuleSet*   PolicyRule::getBranch()
+RuleSet* PolicyRule::getBranch()
 {
+    if (getAction() != PolicyRule::Branch) return NULL;
     FWObject *fw = this;
     while (fw && Firewall::cast(fw) == NULL) fw = fw->getParent();
     assert(fw!=NULL);
@@ -690,8 +691,9 @@ FWOptions* NATRule::getOptionsObject()
     return FWOptions::cast( getFirstByType(NATRuleOptions::TYPENAME) );
 }
 
-RuleSet*   NATRule::getBranch()
+RuleSet* NATRule::getBranch()
 {
+    if (getAction() != NATRule::Branch) return NULL;
     FWObject *fw = getParent()->getParent();
     assert(fw!=NULL);
     string branch_id = getOptionsObject()->getStr("branch_id");
@@ -722,7 +724,7 @@ NATRule::NATRuleTypes NATRule::getRuleType() const
     return rule_type;
 }
 
-string  NATRule::getRuleTypeAsString() const 
+string NATRule::getRuleTypeAsString() const 
 {
     switch (rule_type) {
     case SNAT:     return("SNAT");     
@@ -737,11 +739,12 @@ string  NATRule::getRuleTypeAsString() const
     case Continue: return("Continue"); 
     case LB:       return("LB");       
     case NONAT:    return("NONAT");    
+    case NATBranch: return("NATBranch");    
     default:       return("Unknown");  
     }
 }
 
-void         NATRule::setRuleType(NATRuleTypes rt) 
+void NATRule::setRuleType(NATRuleTypes rt) 
 { 
     rule_type=rt;
 }
