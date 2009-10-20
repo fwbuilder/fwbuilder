@@ -229,7 +229,13 @@ bool PolicyRule::isEmpty()
 
 string PolicyRule::getActionAsString() const
 {
-    switch (action) {
+    return getActionAsString(action);
+}
+
+// static method
+string PolicyRule::getActionAsString(int act)
+{
+    switch (act) {
     case Accept:     return "Accept";
     case Deny:       return "Deny";
     case Reject:     return "Reject";
@@ -587,7 +593,13 @@ RuleElementInterval* NATRule::getWhen()
 
 string NATRule::getActionAsString() const
 {
-    if (action == Branch) return "Branch";
+    return getActionAsString(action);
+}
+
+// static method
+string NATRule::getActionAsString(int act)
+{
+    if (act == Branch) return "NATBranch";
     return "Translate";
 }
 
@@ -595,6 +607,7 @@ void NATRule::setAction(const string& act)
 {
     if (act=="Translate")  { setAction(Translate); return; }
     if (act=="Branch")     { setAction(Branch); return; }
+    if (act=="NATBranch")  { setAction(Branch); return; }
     setAction(Translate);
 }
 

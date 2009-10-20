@@ -218,6 +218,8 @@ public:
 
     Action getAction() const { return action; }
     void   setAction(Action act) { action = act; }
+
+    static std::string getActionAsString(int act);
     std::string getActionAsString() const;
     void   setAction(const std::string& act);
 
@@ -330,6 +332,8 @@ public:
 
     NATAction getAction() const { return action; }
     void setAction(NATAction act) { action = act; }
+
+    static std::string getActionAsString(int act);
     std::string getActionAsString() const;
     void setAction(const std::string& act);
     
