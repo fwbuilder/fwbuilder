@@ -133,8 +133,13 @@ QStringList getScreenNames(const QStringList &sl);
  */
 QString getScreenName(QString s,const QStringList &sl);
 
-QString getActionNameForPlatform(libfwbuilder::PolicyRule::Action action,
-                                 const QString &platform);
+QString getRuleAction(libfwbuilder::Rule *rule);
+
+QString getActionNameForPlatform(libfwbuilder::Firewall *fw,
+                                 libfwbuilder::Rule *rule);
+
+QString getActionNameForPlatform(libfwbuilder::Firewall *fw,
+                                 const std::string &action);
 
 bool getStatelessFlagForAction(libfwbuilder::PolicyRule *rule);
 

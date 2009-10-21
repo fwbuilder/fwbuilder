@@ -36,6 +36,7 @@
 
 #include "FWObjectPropertiesFactory.h"
 #include "platforms.h"
+#include "DialogFactory.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
@@ -735,13 +736,13 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
  * Do not translate literals 'pipe', 'queue', 'divert' below, these refer
  * to actual ipfw parameters and should not be localized.
  */
-QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
+QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
 {
     QString par = "";
 
     if (rule!=NULL)
     {
-        string act = rule->getActionAsString();
+        QString act = getRuleAction(rule);
         
         FWObject *o = rule;
         while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
@@ -751,22 +752,24 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
         string platform=f->getStr("platform");
         
         FWOptions *ropt = rule->getOptionsObject();
-        string editor=Resources::getActionEditor(platform,act);
+        string editor = DialogFactory::getActionDialogPageName(f, rule);
 
-        if (editor!="None")
+        if (editor == "None") return "";
+
+        if (PolicyRule::isA(rule))
         {
-            switch (rule->getAction())
+            switch (PolicyRule::cast(rule)->getAction())
             {
             case PolicyRule::Reject:
                 par = ropt->getStr("action_on_reject").c_str();
                 break;
             case PolicyRule::Tag:
             {
-                FWObject *tag_object = rule->getTagObject();
+                FWObject *tag_object = PolicyRule::cast(rule)->getTagObject();
                 if (tag_object)
                     par = tag_object->getName().c_str();
                 else
-                    par = rule->getTagValue().c_str();
+                    par = PolicyRule::cast(rule)->getTagValue().c_str();
                 break;
             }
             case PolicyRule::Accounting :
@@ -847,25 +850,38 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(PolicyRule *rule)
             default : {}
             }
         }
-        
+
+        if (NATRule::isA(rule))
+        {
+            switch (NATRule::cast(rule)->getAction())
+            {
+            case NATRule::Translate:
+                break;
+
+            case NATRule::Branch:
+                FWObject *branch_ruleset = rule->getBranch();
+                if (branch_ruleset)
+                    par = branch_ruleset->getName().c_str();
+                break;
+            }
+        }        
     }
     
     return par;
 }
 
-QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(PolicyRule *rule)
+QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(Rule *rule)
 {
     FWObject *p=rule;
     while (p!=NULL && !Firewall::cast(p)) p=p->getParent();
     assert(p!=NULL);
     string platform=p->getStr("platform"); 
-    QString act = getActionNameForPlatform(rule->getAction(),platform.c_str());
-
+    QString act = getActionNameForPlatform(Firewall::cast(p), rule);
     QString par = getRuleActionProperties(rule);
-    QString res = QObject::tr("<b>Action   :</b> ")+act+"<br>\n";
+    QString res = QObject::tr("<b>Action   :</b> %1<br>").arg(act);
     if (!par.isEmpty())
     {
-        res+=QObject::tr("<b>Parameter:</b> ")+par;
+        res += QObject::tr("<b>Parameter:</b> ")+par;
     }
     return res;
 }

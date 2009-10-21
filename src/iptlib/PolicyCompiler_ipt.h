@@ -1073,6 +1073,9 @@ namespace fwcompiler
         bool haveConnMarkRulesInOutput() { return have_connmark_in_output; }
 
         bool isMangleOnlyRuleSet(const std::string &rule_set_name);
+
+        std::list<std::string> getUsedChains();
+        
     };
 
 

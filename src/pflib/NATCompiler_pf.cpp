@@ -145,13 +145,39 @@ bool NATCompiler_pf::NATRuleType::processNext()
 
     if (rule->getRuleType()!=NATRule::Unknown) return true;
 
+    RuleElementTSrc *tsrcre = rule->getTSrc();
     RuleElementTDst *tdstre = rule->getTDst();
+    RuleElementTSrv *tsrvre = rule->getTSrv();
 
     Service  *osrv=compiler->getFirstOSrv(rule);
                                              
     Address *tsrc = compiler->getFirstTSrc(rule);
     Address *tdst = compiler->getFirstTDst(rule);
-    Service  *tsrv=compiler->getFirstTSrv(rule);
+    Service *tsrv=compiler->getFirstTSrv(rule);
+
+    if (rule->getAction() == NATRule::Branch)
+    {
+	rule->setRuleType(NATRule::NATBranch);
+        if (!tsrcre->isAny() || !tdstre->isAny() || !tsrvre->isAny())
+        {
+            tsrcre->clearChildren();
+            tsrcre->setAnyElement();
+
+            tdstre->clearChildren();
+            tdstre->setAnyElement();
+
+            tsrvre->clearChildren();
+            tsrvre->setAnyElement();
+
+            compiler->warning(
+                    rule,
+                    "Translated Src, Dst and Srv are ignored in the NAT "
+                    "rule with action 'Branch'");
+        }
+        return true;
+    }
+
+
 
     if (tsrc->isAny() && tdst->isAny() && tsrv->isAny())
     {
@@ -476,6 +502,20 @@ bool NATCompiler_pf::VerifyRules::processNext()
                     "Original and translated destination should both be networks of the same size.");
     }
 
+    if (rule->getRuleType()==NATRule::NATBranch ) 
+    {
+        RuleSet *branch = rule->getBranch();
+        if (branch == NULL)
+            compiler->abort(
+                rule, 
+                "Action 'Branch' needs NAT rule set to point to");
+        if (!NAT::isA(branch))
+            compiler->abort(
+                rule, 
+                "Action 'Branch' must point to a NAT rule set "
+                "(points to " + branch->getTypeName() + ")");
+    }
+
     return true;
 }
 
@@ -484,9 +524,10 @@ bool NATCompiler_pf::splitOnOSrv::processNext()
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
     RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
-    if (osrv->size()!=1) {
-
-	for(list<FWObject*>::iterator i=osrv->begin(); i!=osrv->end(); ++i) {
+    if (osrv->size()!=1)
+    {
+	for(list<FWObject*>::iterator i=osrv->begin(); i!=osrv->end(); ++i)
+        {
 	    FWObject *o= *i;
 //	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();

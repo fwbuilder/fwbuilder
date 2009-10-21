@@ -246,7 +246,8 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
     // and generate 'set skip on <ifspec>' commands
 
     if (fw->getStr("version")=="ge_3.7" ||
-        fw->getStr("version")=="4.x") 
+//        fw->getStr("version")=="4.x") 
+        XMLTools::version_compare(fw->getStr("version"), "4.0")>=0)
     {
         for (list<FWObject*>::iterator i=all_interfaces.begin();
              i!=all_interfaces.end(); ++i) 

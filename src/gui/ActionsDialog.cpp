@@ -32,6 +32,7 @@
 #include "ActionsDialog.h"
 #include "FWWindow.h"
 #include "FWObjectDropArea.h"
+#include "DialogFactory.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interface.h"
@@ -53,6 +54,7 @@
 #include <QStackedWidget>
 #include <qcursor.h>
 #include <qregexp.h>
+#include <QtDebug>
 
 #include <iostream>
 #include <stdlib.h>
@@ -66,8 +68,8 @@ ActionsDialog::ActionsDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog->setupUi(this);
 
     m_dialog->iptBranchDropArea->addAcceptedTypes("Policy");
-    m_dialog->iptBranchDropArea->addAcceptedTypes("NAT");
-    m_dialog->iptBranchDropArea->addAcceptedTypes("Routing");
+    //m_dialog->iptBranchDropArea->addAcceptedTypes("NAT");
+    //m_dialog->iptBranchDropArea->addAcceptedTypes("Routing");
     m_dialog->iptBranchDropArea->setHelperText("Drop rule set object here");
     connect (m_dialog->iptBranchDropArea,
              SIGNAL(objectDeleted()),this,SLOT(changed()));
@@ -75,12 +77,19 @@ ActionsDialog::ActionsDialog(QWidget *parent) : BaseObjectDialog(parent)
              SIGNAL(objectInserted()),this,SLOT(changed()));
 
     m_dialog->pfBranchDropArea->addAcceptedTypes("Policy");
-    m_dialog->pfBranchDropArea->addAcceptedTypes("NAT");
-    m_dialog->pfBranchDropArea->addAcceptedTypes("Routing");
+    //m_dialog->pfBranchDropArea->addAcceptedTypes("NAT");
+    //m_dialog->pfBranchDropArea->addAcceptedTypes("Routing");
     m_dialog->pfBranchDropArea->setHelperText("Drop rule set object here");
     connect (m_dialog->pfBranchDropArea,
              SIGNAL(objectDeleted()),this,SLOT(changed()));
     connect (m_dialog->pfBranchDropArea,
+             SIGNAL(objectInserted()),this,SLOT(changed()));
+
+    m_dialog->natBranchDropArea->addAcceptedTypes("NAT");
+    m_dialog->natBranchDropArea->setHelperText("Drop NAT rule set object here");
+    connect (m_dialog->natBranchDropArea,
+             SIGNAL(objectDeleted()),this,SLOT(changed()));
+    connect (m_dialog->natBranchDropArea,
              SIGNAL(objectInserted()),this,SLOT(changed()));
 
     m_dialog->pfTagDropArea->addAcceptedTypes("TagService");
@@ -103,7 +112,7 @@ ActionsDialog::~ActionsDialog()
 
 void ActionsDialog::loadFWObject(FWObject *o)
 {
-    setRule(PolicyRule::cast(o));
+    setRule(Rule::cast(o));
 }
 
 void ActionsDialog::getHelpName(QString *str)
@@ -163,8 +172,9 @@ void ActionsDialog::applyChanges()
         }
     }
 
-
     data.saveAll();
+
+    PolicyRule *policy_rule = PolicyRule::cast(rule);
 
     FWOptions *ropt = rule->getOptionsObject();
 
@@ -172,14 +182,14 @@ void ActionsDialog::applyChanges()
     {
         FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
         // if tag_object==NULL, setTagObject clears setting in the rule
-        rule->setTagObject(tag_object);
+        policy_rule->setTagObject(tag_object);
     }
 
     if (editor=="TagStr")
     {
         FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
         // if tag_object==NULL, setTagObject clears setting in the rule
-        rule->setTagObject(tag_object);
+        policy_rule->setTagObject(tag_object);
     }
 
     if (editor=="BranchChain")
@@ -192,6 +202,13 @@ void ActionsDialog::applyChanges()
     if (editor=="BranchAnchor")
     {
         RuleSet *ruleset = RuleSet::cast(m_dialog->pfBranchDropArea->getObject());
+        // if ruleset==NULL, setBranch clears setting in the rule
+        rule->setBranch(ruleset);
+    }
+
+    if (editor=="NATBranch")
+    {
+        RuleSet *ruleset = RuleSet::cast(m_dialog->natBranchDropArea->getObject());
         // if ruleset==NULL, setBranch clears setting in the rule
         rule->setBranch(ruleset);
     }
@@ -226,34 +243,28 @@ void ActionsDialog::iptRouteContinueToggled()
     m_dialog->ipt_tee->setEnabled( ! m_dialog->ipt_continue->isChecked() );
 }
 
-void ActionsDialog::setRule(PolicyRule *r )
+void ActionsDialog::setRule(Rule *r)
 {
-    rule=r;
-    FWObject *o = rule;
-    while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
+    rule = r;
+
+    PolicyRule *policy_rule = PolicyRule::cast(r);
+
+    FWObject *o = r;
+    while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
     assert(o!=NULL);
 
     FWOptions *ropt = rule->getOptionsObject();
 
-    Firewall *f=Firewall::cast(o);
-    firewall=f;
+    Firewall *f = Firewall::cast(o);
+    firewall = f;
 
     platform=f->getStr("platform");
 
-    // QString icn = ":/Icons/" ;
-    // icn += r->getActionAsString().c_str();
-    // m_dialog->icon->setPixmap(QIcon(icn).pixmap(25,25));
+    string act = getRuleAction(r).toStdString();
 
-    // QString title=QString("%3 %1 / %2")
-    //     .arg(QString::fromUtf8(f->getName().c_str()))
-    //     .arg(rule->getPosition())
-    //     .arg(rule->getActionAsString().c_str());
-    // m_dialog->action->setText(title);
-
-    string act = rule->getActionAsString();
     help_name = string(platform + "_" + act).c_str();
 
-    QStringList actionsOnReject=getActionsOnReject( platform.c_str() );
+    QStringList actionsOnReject = getActionsOnReject( platform.c_str() );
     m_dialog->rejectvalue->clear();
     m_dialog->rejectvalue->addItems( getScreenNames( actionsOnReject ) );
 
@@ -262,7 +273,12 @@ void ActionsDialog::setRule(PolicyRule *r )
     fillInterfaces(m_dialog->ipf_route_opt_if);
     fillInterfaces(m_dialog->pf_route_opt_if);
 
-    editor = Resources::getActionEditor(platform, act);
+    editor = DialogFactory::getActionDialogPageName(f, r);
+
+    if (fwbdebug)
+        qDebug() << "ActionsDialog::setRule"
+                 << "Action: " << getRuleAction(rule)
+                 << "editor: " << editor.c_str();
 
     branchNameInput = NULL;
 
@@ -352,14 +368,14 @@ void ActionsDialog::setRule(PolicyRule *r )
     else if (editor=="TagInt")
     {
         w=m_dialog->TagIntPage;
-        FWObject *o = rule->getTagObject();
+        FWObject *o = policy_rule->getTagObject();
         m_dialog->iptTagDropArea->setObject(o);
         m_dialog->iptTagDropArea->update();
     }
     else if (editor=="TagStr")
     {
         w=m_dialog->TagStrPage;
-        FWObject *o = rule->getTagObject();
+        FWObject *o = policy_rule->getTagObject();
         m_dialog->pfTagDropArea->setObject(o);
         m_dialog->pfTagDropArea->update();
     }
@@ -385,7 +401,7 @@ void ActionsDialog::setRule(PolicyRule *r )
     }
     else if (editor=="BranchChain")
     {
-        w=m_dialog->BranchChainPage;
+        w = m_dialog->BranchChainPage;
         RuleSet *ruleset = r->getBranch();
         m_dialog->iptBranchDropArea->setObject(ruleset);
 
@@ -397,6 +413,12 @@ void ActionsDialog::setRule(PolicyRule *r )
         w=m_dialog->BranchAnchorPage;
         RuleSet *ruleset = r->getBranch();
         m_dialog->iptBranchDropArea->setObject(ruleset);
+    }
+    else if (editor=="NATBranch")
+    {
+        w = m_dialog->NATBranchPage;
+        RuleSet *ruleset = r->getBranch();
+        m_dialog->natBranchDropArea->setObject(ruleset);
     }
     else if (editor=="RouteIPT")
     {

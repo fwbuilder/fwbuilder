@@ -548,11 +548,10 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
     {
         for (list<FWObject*>::iterator r=(*i)->begin(); r!=(*i)->end(); ++r)
         {
-            PolicyRule *rule = PolicyRule::cast(*r);
-            RuleSet *ruleset = NULL;
-            if (rule->getAction() == PolicyRule::Branch &&
-                (ruleset = rule->getBranch())!=NULL &&
-                !ruleset->isChildOf(fw))
+            Rule *rule = Rule::cast(*r);
+            RuleSet *ruleset = rule->getBranch();
+
+            if (ruleset!=NULL && !ruleset->isChildOf(fw))
             {
                 ruleset->setTop(false);
                 imported_policies.push_back(ruleset);

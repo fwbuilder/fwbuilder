@@ -65,7 +65,10 @@ namespace fwcompiler {
         // new chains across different compiler runs (used to process
         // rules in different policy or nat objects)
         std::map<const std::string, bool> *minus_n_commands;
-        
+
+        // This map is located in CompilerDriver_ipt
+        const std::map<std::string, std::list<std::string> > *branch_ruleset_to_chain_mapping;
+
         static const std::list<std::string>& getStandardChains();
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
                                         bool v6=false);
@@ -97,6 +100,12 @@ namespace fwcompiler {
          * SDNAT rule translates both source and destination.
 	 */
         DECLARE_NAT_RULE_PROCESSOR(splitSDNATRule);
+
+	/**
+	 * this processor spits NAT rule with action Branch to
+         * generate iptables commands in all chains that it needs
+	 */
+        DECLARE_NAT_RULE_PROCESSOR(splitNATBranchRule);
 
 	/**
 	 *  verifies correctness of the NAT rules
@@ -583,8 +592,17 @@ namespace fwcompiler {
             have_dynamic_interfaces=false;
             printRule=NULL;
             minus_n_commands = m_n_commands_map;
+            branch_ruleset_to_chain_mapping = NULL;
         }
 
+        /**
+         * this method registers chain used for the ruleset (most
+         * often branch rule set). Since rules in the same ruleset do
+         * not use this chain as target, rule processor
+         * countChainUsage considers it unused.  Registering it makes
+         * sure its usage counter is > 0.
+         */
+        void registerRuleSetChain(const std::string &chain_name);
 
         virtual void verifyPlatform();
 	virtual int  prolog();
@@ -597,8 +615,13 @@ namespace fwcompiler {
         virtual std::string printAutomaticRules();
         std::string commit();
 
+        std::list<std::string> getUsedChains();
+        
 	static std::string getNewTmpChainName(libfwbuilder::NATRule *rule);
 
+        void setRulesetToChainMapping(const std::map<std::string, std::list<std::string> > *m)
+        { branch_ruleset_to_chain_mapping = m; }
+       
     };
 
 

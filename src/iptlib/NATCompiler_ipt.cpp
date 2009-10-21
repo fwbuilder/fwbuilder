@@ -157,11 +157,10 @@ string NATCompiler_ipt::debugPrintRule(Rule *r)
 
     return NATCompiler::debugPrintRule(rule)+
         " " + FWObjectDatabase::getStringId(rule->getInterfaceId()) +
-        " " + rule->getStr("ipt_chain") +
-        " " + rule->getStr("ipt_target") +
+        " c=" + rule->getStr("ipt_chain") +
+        " t=" + rule->getStr("ipt_target") +
         " (type="+rule->getRuleTypeAsString()+")";
 }
-
 
 void NATCompiler_ipt::verifyPlatform()
 {
@@ -480,7 +479,6 @@ bool NATCompiler_ipt::splitSDNATRule::processNext()
     return true;
 }
 
-
 bool NATCompiler_ipt::VerifyRules::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -526,6 +524,19 @@ bool NATCompiler_ipt::VerifyRules::processNext()
             rule, 
             "Load balancing rules are not supported.");
 
+    if (rule->getRuleType()==NATRule::NATBranch ) 
+    {
+        RuleSet *branch = rule->getBranch();
+        if (branch == NULL)
+            compiler->abort(
+                rule, 
+                "Action 'Branch' needs NAT rule set to point to");
+        if (!NAT::isA(branch))
+            compiler->abort(
+                rule, 
+                "Action 'Branch' must point to a NAT rule set "
+                "(points to " + branch->getTypeName() + ")");
+    }
 
     if (rule->getRuleType()==NATRule::SNAT ) 
     {
@@ -535,7 +546,6 @@ bool NATCompiler_ipt::VerifyRules::processNext()
                 rule, 
                 "Can not use network object in translated source.");
     }
-
 
     if (rule->getRuleType()==NATRule::SNetnat && !tsrc->isAny() ) 
     {
@@ -558,9 +568,6 @@ bool NATCompiler_ipt::VerifyRules::processNext()
                 rule, 
                 "Original and translated destination should both be networks of the same size .");
     }
-
-//    Service  *osrv_obj = compiler->getFirstOSrv(rule);
-//    Service  *tsrv_obj = compiler->getFirstTSrv(rule);
 
     return true;
 }
@@ -1788,6 +1795,96 @@ bool NATCompiler_ipt::splitNONATRule::processNext()
     return true;
 }
 
+/**
+ * Branch rule in NAT rule sets should go into PREROUTING or
+ * POSTROUTING chain depending on the target of the rules in the
+ * branch. Iptables verifies this when a command that passes control
+ * (the one with "-j <branch_ruleset_name>") is entered. If branch
+ * ruleset has -j SNAT, the command that sends control to the branch
+ * should be in POSTROUTING. Attempt to place it in PREROUTING ends
+ * with an error "iptables: Invalid argument".
+ *
+ * Note that if branch rule set contains a mix of rules that use both
+ * SNAT and DNAT targets, the branching rule (that should pass control
+ * to the branch) can not be added to PREROUTING and POSTROUTING
+ * chains, it just gives an error "iptables: Invalid argument" for both.
+ * Tested with iptables 1.4.1.1 10/20/2009
+ */
+bool NATCompiler_ipt::splitNATBranchRule::processNext()
+{
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+
+    if ( rule->getRuleType()==NATRule::NATBranch)
+    {
+        RuleSet *branch = rule->getBranch();
+        if (branch) 
+        {
+            string branch_name = branch->getName();
+            if (ipt_comp->branch_ruleset_to_chain_mapping)
+            {
+                map<string, list<string> >::const_iterator lit = 
+                    ipt_comp->branch_ruleset_to_chain_mapping->find(branch_name);
+                if (lit!=ipt_comp->branch_ruleset_to_chain_mapping->end())
+                {
+                    list<string> chains = lit->second;
+                    list<string>::iterator it;
+                    for (it=chains.begin(); it!=chains.end(); ++it)
+                    {
+                        string branch_chain = *it;
+                        // If chain in the branch rule set does not
+                        // start with its own name plus "_", skip it
+                        // because it is one of the standard chains
+                        if (branch_chain.find(branch_name + "_") == 0)
+                        {
+                            // branch chain is <branch_ruleset_name> + "_" + <chain>
+                            string my_chain = branch_chain.substr(branch_name.length()+1);
+                            NATRule *r = compiler->dbcopy->createNATRule();
+                            compiler->temp_ruleset->add(r);
+                            r->duplicate(rule);
+                            r->setStr("ipt_chain", my_chain);
+                            r->setStr("ipt_target", *it);
+                            tmp_queue.push_back(r);
+                        }
+
+                    }
+                }
+            } else
+            {
+                compiler->warning(rule,
+                                  "NAT branching rule does not have information"
+                                  " about targets used in the branch ruleset"
+                                  " to choose proper chain in the nat table."
+                                  " Will split the rule and place it in both"
+                                  " PREROUTNING and POSTROUTING");
+                NATRule *r = compiler->dbcopy->createNATRule();
+                compiler->temp_ruleset->add(r);
+                r->duplicate(rule);
+                r->setStr("ipt_chain", "POSTROUTING");
+                r->setStr("ipt_target", branch_name);
+                tmp_queue.push_back(r);
+
+                r = compiler->dbcopy->createNATRule();
+                compiler->temp_ruleset->add(r);
+                r->duplicate(rule);
+                r->setStr("ipt_chain", "PREROUTING");
+                r->setStr("ipt_target", branch_name);
+                tmp_queue.push_back(r);
+            }
+        }
+        else 
+        {
+            compiler->abort(rule,
+                            "NAT branching rule misses branch rule set.");
+            // in case we are in the test mode and abort() does not really abort
+            rule->setStr("ipt_target", "UNDEFINED");
+        }
+    } else
+        tmp_queue.push_back(rule);
+
+    return true;
+}
+
 bool NATCompiler_ipt::localNATRule::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -1894,24 +1991,45 @@ bool NATCompiler_ipt::DNATforFW::processNext()
 
 bool NATCompiler_ipt::decideOnChain::processNext()
 {
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
     tmp_queue.push_back(rule);
 
-    if ( ! rule->getStr("ipt_chain").empty() ) return true; // already defined
-
-    switch (rule->getRuleType()) {
-    case NATRule::SNAT:     rule->setStr("ipt_chain","POSTROUTING"); break;
-    case NATRule::SNetnat:  rule->setStr("ipt_chain","POSTROUTING"); break;
-    case NATRule::Masq:     rule->setStr("ipt_chain","POSTROUTING"); break;
-    case NATRule::DNAT:     rule->setStr("ipt_chain","PREROUTING");  break;
-    case NATRule::DNetnat:  rule->setStr("ipt_chain","PREROUTING");  break;
-    case NATRule::Redirect: rule->setStr("ipt_chain","PREROUTING");  break;
+    string chain;
+    switch (rule->getRuleType())
+    {
+    case NATRule::SNAT:     chain = "POSTROUTING"; break;
+    case NATRule::SNetnat:  chain = "POSTROUTING"; break;
+    case NATRule::Masq:     chain = "POSTROUTING"; break;
+    case NATRule::DNAT:     chain = "PREROUTING";  break;
+    case NATRule::DNetnat:  chain = "PREROUTING";  break;
+    case NATRule::Redirect: chain = "PREROUTING";  break;
     case NATRule::NONAT:    
 // processor splitNONATRule took care of NONAT rule
         break;
+    case NATRule::NATBranch:
+// processor splitNATBranchRule took care of NATBranch rule
+        break;
     default: ;
     }
+
+    if (!rule->getStr("ipt_chain").empty())
+    {
+        if (!compiler->getSourceRuleSet()->isTop() &&
+            ipt_comp->getRuleSetName() == rule->getStr("ipt_chain"))
+        {
+            // this is a NAT branch. Need to rename the chain to add
+            // information about the chain that would have been used
+            // if this was top ruleset
+            string new_chain = compiler->getRuleSetName() + "_" + chain;
+            ipt_comp->registerRuleSetChain(new_chain);
+            rule->setStr("ipt_chain", new_chain);
+        }
+        return true; // already defined
+    }
+
+    if (!chain.empty()) rule->setStr("ipt_chain", chain);
     return true;
 }
 
@@ -1924,7 +2042,8 @@ bool NATCompiler_ipt::decideOnTarget::processNext()
 
     if ( ! rule->getStr("ipt_target").empty() ) return true; // already defined
 
-    switch (rule->getRuleType()) {
+    switch (rule->getRuleType())
+    {
     case NATRule::NONAT:    rule->setStr("ipt_target","ACCEPT");   break;
     case NATRule::SNAT:     rule->setStr("ipt_target","SNAT");     break;
     case NATRule::SNetnat:  rule->setStr("ipt_target","NETMAP");   break;
@@ -1933,6 +2052,9 @@ bool NATCompiler_ipt::decideOnTarget::processNext()
     case NATRule::Masq:     rule->setStr("ipt_target","MASQUERADE"); break;
     case NATRule::Redirect: rule->setStr("ipt_target","REDIRECT"); break;
     case NATRule::Return:   rule->setStr("ipt_target","RETURN");   break;
+    case NATRule::NATBranch:
+        // this case has been taken care for in splitNATBranchRule()
+        break;
     default: ;
     }
     return true;
@@ -2210,18 +2332,20 @@ bool NATCompiler_ipt::countChainUsage::processNext()
     return true;
 }
 
-
+void NATCompiler_ipt::registerRuleSetChain(const std::string &chain_name)
+{
+    chain_usage_counter[chain_name] = 1;
+}
 
 void NATCompiler_ipt::compile()
 {
-//    FWOptions* options=fw->getOptionsObject();
-
-    string banner = " Compiling rules for 'nat' table";
+    string banner = " Compiling ruleset " + getRuleSetName() +
+        " for 'nat' table";
     if (ipv6) banner += ", IPv6";
     info(banner);
 
-    try {
-
+    try
+    {
 	Compiler::compile();
 
         add( new NATCompiler::Begin());
@@ -2322,6 +2446,7 @@ void NATCompiler_ipt::compile()
         }
 
         add( new splitNONATRule("NAT rules that request no translation"));
+        add( new splitNATBranchRule("Split Branch rules to use all chains"));
         add( new localNATRule("process local NAT rules"));
 // add( new DNATforFW("process DNAT rules for packets originated on the firewall"));
         add( new decideOnChain( "decide on chain" ) );
@@ -2448,4 +2573,12 @@ string NATCompiler_ipt::commit()
     return res;
 }
 
+list<string> NATCompiler_ipt::getUsedChains()
+{
+    list<string> res;
+    for (map<string, int>::iterator it=chain_usage_counter.begin();
+         it!=chain_usage_counter.end(); ++it)
+        res.push_back(it->first);
+    return res;
+}
 

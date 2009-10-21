@@ -44,6 +44,7 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <iostream>
 #if __GNUC__ > 3 || \
@@ -123,22 +124,16 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
         RuleSet *ruleset = rule->getBranch();
         if (ruleset==NULL)
             compiler->abort(
-                
                     rule, 
                     "Branching rule refers ruleset that does not exist");
         string ruleset_name = ruleset->getName();
-        if (ruleset_name.find("/*")!=string::npos)
-            compiler->output << "anchor \"" << ruleset_name << "\" ";
-        else
-            compiler->output << "anchor " << ruleset_name << " ";
+        compiler->output << "anchor \"" << ruleset_name << "\" ";
         break;
     }
     default:
         compiler->abort(
-            
                 rule, 
                 string("Unknown action ") + rule->getActionAsString());
-//        compiler->output << rule->getActionAsString() << " ";
     }
 }
 
@@ -951,7 +946,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
         {
             // tcp service, no special flag match
 
-            if ( version == "4.x")
+//            if ( version == "4.x")
+            if (XMLTools::version_compare(version, "4.0")>=0)
             {
                 if (compiler->getCachedFwOpt()->getBool(
                         "accept_new_tcp_with_no_syn") )
@@ -1011,7 +1007,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
                  * interface. Adding rule option "Set 'keep state'
                  * explicitly" to cope with this.
                  */
-                if ( version != "4.x" ||
+                if (XMLTools::version_compare(version, "4.0") < 0 ||
+              //if ( version != "4.x" ||
                      compiler->getCachedFwOpt()->getBool("pf_keep_state"))
                     compiler->output << "keep state ";
             }
@@ -1099,7 +1096,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
     } else
     {
         // stateless rule
-        if ( version == "4.x")
+        if (XMLTools::version_compare(version, "4.0")>=0)
+      //if ( version == "4.x")
             // v4.x, stateless rule
             compiler->output << "no state ";
     }

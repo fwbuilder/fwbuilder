@@ -403,7 +403,8 @@ void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &res
                 res.push_back(QStringPair("","- any -"));
                 res.push_back(QStringPair("3.x", QObject::tr("3.x")));
 		res.push_back(QStringPair("ge_3.7", QObject::tr("3.7 to 3.9")));
-                res.push_back(QStringPair("4.x", QObject::tr("4.x")));
+                res.push_back(QStringPair("4.0", QObject::tr("4.0 to 4.2")));
+                res.push_back(QStringPair("4.3", QObject::tr("4.3 and later")));
 /* add pf versions here */
             } else
             {
@@ -653,6 +654,16 @@ QString getScreenName(QString s, const QStringList &sl)
     return res;
 }
 
+QString getRuleAction(Rule *rule)
+{
+    PolicyRule *policy_rule = PolicyRule::cast(rule);
+    NATRule *nat_rule = NATRule::cast(rule);
+    string act;
+    if (policy_rule) act = policy_rule->getActionAsString();
+    if (nat_rule) act = nat_rule->getActionAsString();
+    return act.c_str();
+}
+
 /*
  * will remap names of some actions to make it clear what commands or
  * configuration language keywords they will be translated to for the
@@ -663,59 +674,26 @@ QString getScreenName(QString s, const QStringList &sl)
  * files and are not pulled using Rule::getActionAsString.
  */
 
-QString getActionNameForPlatform(PolicyRule::Action action,
-                                 const QString &platform)
+QString getActionNameForPlatform(Firewall *fw, Rule *rule)
 {
-    QString action_name = "";
-    switch (action)
+    PolicyRule *policy_rule = PolicyRule::cast(rule);
+    NATRule *nat_rule = NATRule::cast(rule);
+    string act;
+    if (policy_rule) act = policy_rule->getActionAsString();
+    if (nat_rule) act = nat_rule->getActionAsString();
+    return getActionNameForPlatform(fw, act);
+}
+
+QString getActionNameForPlatform(Firewall *fw, const std::string &action)
+{
+    string platform = fw->getStr("platform");
+    string name;
+    try  
     {
-    case PolicyRule::Accept:     action_name = QObject::tr("Accept");   break;
-
-    case PolicyRule::Deny:       action_name = QObject::tr("Deny");     break;
-
-    case PolicyRule::Reject:     action_name = QObject::tr("Reject");   break;
-
-    case PolicyRule::Scrub:      action_name = QObject::tr("Scrub");    break;
-
-    case PolicyRule::Return:     action_name = QObject::tr("Return");   break;
-
-    case PolicyRule::Skip:       action_name = QObject::tr("Skip");     break;
-
-    case PolicyRule::Continue:   action_name = QObject::tr("Continue"); break;
-
-    case PolicyRule::Modify:     action_name = QObject::tr("Modify");   break;
-
-    case PolicyRule::Classify:   action_name = QObject::tr("Classify"); break;
-
-    case PolicyRule::Custom:     action_name = QObject::tr("Custom");   break;
-
-    case PolicyRule::Branch:
-        action_name = QObject::tr("Branch");
-        if (platform=="iptables") action_name = QObject::tr("Chain");
-        if (platform=="pf")       action_name = QObject::tr("Anchor");
-        break;
-
-    case PolicyRule::Accounting:
-        action_name = QObject::tr("Accounting");
-        if (platform=="ipf" || platform=="ipfw") action_name = QObject::tr("Count");
-        break;
-
-    case PolicyRule::Tag:
-        action_name = QObject::tr("Tag");
-        if (platform=="iptables") action_name = QObject::tr("Mark");
-        break;
-
-    case PolicyRule::Pipe:
-        action_name = QObject::tr("Pipe");
-        if (platform=="iptables") action_name = QObject::tr("Queue");
-        break;
-    case PolicyRule::Route:
-        action_name = QObject::tr("Routing");
-        break;
-    default:
-        ;
-    }
-    return action_name;
+        name = Resources::getTargetCapabilityStr(
+            platform, "actions/" + action + "/description");
+    } catch (FWException &ex) { }
+    return name.c_str();
 }
 
 /*

@@ -38,6 +38,7 @@
         <logging_in_policy>True</logging_in_policy>
         <options_in_policy>True</options_in_policy>
         <supports_nat>True</supports_nat>
+        <actions_in_nat>True</actions_in_nat>
         <supports_time>True</supports_time>
         <supports_accounting>True</supports_accounting>
         <supports_routing_itf>True</supports_routing_itf>
@@ -49,48 +50,69 @@
         <actions>
             <Accept>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Accept</description>
+                <dialog_page>None</dialog_page>
             </Accept>
             <Deny>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Deny</description>
+                <dialog_page>None</dialog_page>
             </Deny>
             <Reject>
                 <supported>True</supported>
-                <parameter>Reject</parameter>
+                <description>Reject</description>
+                <dialog_page>Reject</dialog_page>
             </Reject>
             <Accounting>
                 <supported>True</supported>
-                <parameter>AccountingStr</parameter>
+                <description>Accounting</description>
+                <dialog_page>AccountingStr</dialog_page>
             </Accounting>
             <Tag>
                 <supported>True</supported>
-                <parameter>TagInt</parameter>
+                <description>Mark</description>
+                <dialog_page>TagInt</dialog_page>
             </Tag>
             <Pipe>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Queue</description>
+                <dialog_page>None</dialog_page>
             </Pipe>
             <Classify>
                 <supported>True</supported>
-                <parameter>ClassifyStr</parameter>
+                <description>Classify</description>
+                <dialog_page>ClassifyStr</dialog_page>
             </Classify>
             <Custom>
                 <supported>True</supported>
-                <parameter>CustomStr</parameter>
+                <description>Custom</description>
+                <dialog_page>CustomStr</dialog_page>
             </Custom>
             <Branch>
                 <supported>True</supported>
-                <parameter>BranchChain</parameter>
+                <description>Chain</description>
+                <dialog_page>BranchChain</dialog_page>
             </Branch>
             <Route>
                 <supported>True</supported>
-                <parameter>RouteIPT</parameter>
+                <description>Routing</description>
+                <dialog_page>RouteIPT</dialog_page>
             </Route>
             <Continue>
                 <supported>True</supported>
-                <parameter>None</parameter>
+                <description>Continue</description>
+                <dialog_page>None</dialog_page>
             </Continue>
+            <Translate>
+                <supported>True</supported>
+                <description>Translate</description>
+                <dialog_page>None</dialog_page>
+            </Translate>
+            <NATBranch>
+                <supported>True</supported>
+                <description>Branch</description>
+                <dialog_page>NATBranch</dialog_page>
+            </NATBranch>
         </actions>
       </capabilities>
     </Target>

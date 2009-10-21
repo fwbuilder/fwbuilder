@@ -81,6 +81,8 @@ bool NATCompiler_pf::PrintRule::processNext()
 
     tmp_queue.push_back(rule);
 
+    string version = compiler->fw->getStr("version");
+
     if (!compiler->inSingleRuleCompileMode())
     {
         string rl=rule->getLabel();
@@ -230,10 +232,63 @@ bool NATCompiler_pf::PrintRule::processNext()
         _printNATRuleOptions(rule);
 	compiler->output  << endl;
         break;
+
+    case NATRule::NATBranch:
+    {
+        RuleSet *ruleset = rule->getBranch();
+        string ruleset_name;
+        if (ruleset!=NULL)
+        {
+             ruleset_name = ruleset->getName();
+        } else
+        {
+            compiler->abort(
+                rule, 
+                "Branching rule refers ruleset that does not exist");
+            // in test mode compiler->abort() does not really abort the program
+            ruleset_name = "UNKNOWN";
+        }
+
+        if (XMLTools::version_compare(version, "4.2")>=0)
+        {
+            _printAnchorRule("anchor", ruleset_name, iface_name, rule);
+        } else
+        {
+            _printAnchorRule("nat-anchor", ruleset_name, iface_name, rule);
+            _printAnchorRule("rdr-anchor", ruleset_name, iface_name, rule);
+        }
+
+    }
+    break;
+
     default: break;
     }
 
     return true;
+}
+
+void NATCompiler_pf::PrintRule::_printAnchorRule(const string &anchor_command,
+                                                 const std::string &ruleset_name,
+                                                 const std::string &interface_name,
+                                                 NATRule *rule)
+{
+    RuleElementOSrc *osrcrel = rule->getOSrc();
+    RuleElementODst *odstrel = rule->getODst();
+    RuleElementOSrv *osrvrel = rule->getOSrv();
+    Service *osrv = compiler->getFirstOSrv(rule);
+
+    compiler->output << anchor_command << " \"" << ruleset_name << "\" ";
+    if (interface_name!="") compiler->output << "on " << interface_name << " ";
+    if (!osrvrel->isAny() || !osrcrel->isAny() || !odstrel->isAny())
+    {
+        _printProtocol(osrv);
+        compiler->output  << "from ";
+        _printREAddr( osrcrel );
+        compiler->output  << "to ";
+        _printREAddr( odstrel );
+        _printPort(osrv, true);
+    }
+    compiler->output  << endl;
 }
 
 void NATCompiler_pf::PrintRule::_printProtocol(Service *srv)

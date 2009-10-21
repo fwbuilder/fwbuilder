@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/" >
+    <file alias="Icons/Translate-tree" >Icons/translate_16.png</file>
+    <file alias="Icons/Translate" >Icons/translate_25.png</file>
     <file alias="Icons/Routing/icon" >Icons/routing_25.png</file>
     <file alias="Icons/Routing/icon-tree" >Icons/routing_16.png</file>
     <file alias="Icons/FailoverClusterGroup/icon-neg-tree" >Icons/failover-cluster-group-neg_16.png</file>
@@ -47,6 +49,8 @@
     <file alias="Icons/Both-tree" >Icons/both_16.png</file>
     <file alias="Icons/Branch-tree" >Icons/branch_16.png</file>
     <file alias="Icons/Branch" >Icons/branch_25.png</file>
+    <file alias="Icons/NATBranch-tree" >Icons/branch_16.png</file>
+    <file alias="Icons/NATBranch" >Icons/branch_25.png</file>
     <file>Icons/cancel.png</file>
     <file alias="Icons/Classify-tree" >Icons/classify_16.png</file>
     <file alias="Icons/Classify" >Icons/classify_25.png</file>

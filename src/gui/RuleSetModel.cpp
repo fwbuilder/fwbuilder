@@ -934,6 +934,9 @@ void RuleSetModel::setEnabled(const QModelIndex &index, bool flag)
     rowChanged(index);
 }
 
+/*
+ * TODO: should just use FWObject::duplucate() since it does all of this
+ */
 void RuleSetModel::copyRuleContent(Rule *dst, Rule *src)
 {
     int id = dst->getId();
@@ -1101,8 +1104,6 @@ void RuleSetModel::resetAllSizes()
 
 void PolicyModel::configure()
 {
-    //if (fwbdebug) qDebug() << "PolicyModel::initModel";
-
     supports_logging      = false;
     supports_rule_options = false;
     supports_time         = false;
@@ -1182,7 +1183,6 @@ QString PolicyModel::getRuleDirection(Rule* r) const
 QStringList PolicyModel::getRuleOptions(Rule* r) const
 {
     QStringList res;
-
     PolicyRule  *policyRule  = PolicyRule::cast( r );
     if (policyRule->getLogging()) res << "Log";
     if (!isDefaultPolicyRuleOptions(r->getOptionsObject())) res << "Options";
@@ -1190,17 +1190,10 @@ QStringList PolicyModel::getRuleOptions(Rule* r) const
     return res;
 }
 
-QString PolicyModel::getRuleAction(Rule* r) const
-{
-    PolicyRule  *policyRule  = PolicyRule::cast( r );
-    QString res = policyRule->getActionAsString().c_str();
-    return res;
-}
 void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
 {
     //if (fwbdebug) qDebug() << "PolicyModel::initRule";
     PolicyRule *newrule_as_policy_rule = PolicyRule::cast(new_rule);
-
     if (newrule_as_policy_rule)
     {
         newrule_as_policy_rule->setLogging(supports_logging);
@@ -1209,9 +1202,7 @@ void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
         FWOptions *ruleopt = newrule_as_policy_rule->getOptionsObject();
         ruleopt->setBool("stateless",
                          getStatelessFlagForAction(newrule_as_policy_rule));
-
     }
-
     if (old_rule!=NULL)  copyRuleContent(new_rule, old_rule);
 }
 
@@ -1228,16 +1219,28 @@ bool PolicyModel::checkRuleType(libfwbuilder::Rule *rule)
 
 void NatModel::configure()
 {
-    //if (fwbdebug) qDebug() << "NatModel::configure";
+    supports_actions = false;
+
+    if (getFirewall())
+    {
+        try {
+            supports_actions = Resources::getTargetCapabilityBool(
+                getFirewall()->getStr("platform"), "actions_in_nat");
+        } catch(FWException &ex)    {    }
+    }
 
     header  << ColDesc(RuleElementOSrc::TYPENAME, ColDesc::Object)   // 1
             << ColDesc(RuleElementODst::TYPENAME, ColDesc::Object)   // 2
             << ColDesc(RuleElementOSrv::TYPENAME, ColDesc::Object)   // 3
             << ColDesc(RuleElementTSrc::TYPENAME, ColDesc::Object)   // 4
             << ColDesc(RuleElementTDst::TYPENAME, ColDesc::Object)   // 5
-            << ColDesc(RuleElementTSrv::TYPENAME, ColDesc::Object)   // 6
-            << ColDesc("Options", ColDesc::Options)                  // 7
-            << ColDesc("Comment", ColDesc::Comment);                 // 8
+            << ColDesc(RuleElementTSrv::TYPENAME, ColDesc::Object);   // 6
+
+    if (supports_actions)
+        header << ColDesc("Action", ColDesc::Action);
+
+    header << ColDesc("Options", ColDesc::Options)                  // 7
+           << ColDesc("Comment", ColDesc::Comment);                 // 8
 }
 
 QVariant NatModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const
@@ -1254,6 +1257,9 @@ QVariant NatModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode*
         int idx = index.column()-1;
         switch (header[idx].type)
         {
+            case ColDesc::Action :
+                res.setValue<QString>(getRuleAction(node->rule));
+                break;
 
             case ColDesc::Options :
                 res.setValue<QStringList>(getRuleOptions(node->rule));
@@ -1283,6 +1289,10 @@ QStringList NatModel::getRuleOptions(Rule* r) const
 void NatModel::initRule(Rule *new_rule, Rule *old_rule)
 {
     //if (fwbdebug) qDebug() << "NatModel::initRule";
+    NATRule  *natRule = NATRule::cast(new_rule);
+    if (natRule)
+        natRule->setAction(NATRule::Translate);
+
     if (old_rule!=NULL)  copyRuleContent(new_rule, old_rule);
 }
 

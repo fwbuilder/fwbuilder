@@ -28,6 +28,7 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
+#include "platforms.h"
 
 #include "DialogFactory.h"
 
@@ -348,6 +349,19 @@ QWidget *DialogFactory::createClusterGroupOptionsDialog(QWidget *parent,
     // Add more cluster group options dialog here
 
     return NULL;
+}
+
+string DialogFactory::getActionDialogPageName(Firewall *fw, Rule *rule)
+{
+    string platform = fw->getStr("platform");
+    string act = getRuleAction(rule).toStdString();
+    string editor_page;
+    try  
+    {
+        editor_page = Resources::getTargetCapabilityStr(
+            platform, "actions/" + act + "/dialog_page");
+    } catch (FWException &ex) { }
+    return editor_page;
 }
 
 
