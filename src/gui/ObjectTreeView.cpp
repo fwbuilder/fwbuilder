@@ -864,3 +864,42 @@ void ObjectTreeView::showOrHideAttributesColumn()
         setColumnCount(1);
 }
 
+QSet<QTreeWidgetItem*> ObjectTreeView::resolveChildren(QTreeWidgetItem *parent)
+{
+    QSet<QTreeWidgetItem*> children;
+    children.insert(parent);
+    if (parent->childCount() == 0) return children;
+    for (int i=0; i<parent->childCount(); i++)
+        children.unite(resolveChildren(parent->child(i)));
+    return children;
+}
+
+QSet<QTreeWidgetItem*> ObjectTreeView::resolveParents(QTreeWidgetItem *child)
+{
+    QSet<QTreeWidgetItem*> parents;
+    parents.insert(child);
+    parents.unite(resolveParents(child->parent()));
+    return parents;
+}
+
+void ObjectTreeView::setFilter(QString text)
+{
+    QSet<QTreeWidgetItem *> items = this->findItems(text, Qt::MatchContains, 0).toSet();
+    QSet<QTreeWidgetItem *> children, parents;
+    QSet<QTreeWidgetItem *>::iterator iter;
+    for(iter=items.begin(); iter!=items.end(); iter++)
+    {
+        children.unite(resolveChildren((*iter)));
+        parents.unite(resolveParents((*iter)));
+    }
+    items.unite(children);
+    items.unite(parents);
+    QTreeWidgetItemIterator witer(this);
+    while (*witer)
+    {
+        if (items.contains((*witer))) (*witer)->setHidden(false);
+        else (*witer)->setHidden(true);
+    }
+    this->expandAll();
+}
+

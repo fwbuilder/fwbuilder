@@ -72,6 +72,10 @@ class ObjectTreeView : public QTreeWidget {
     libfwbuilder::FWObject *getDropTarget(
         QDropEvent *ev, libfwbuilder::FWObject* dragobj);
 
+    QSet<QTreeWidgetItem*> resolveChildren(QTreeWidgetItem*);
+
+    QSet<QTreeWidgetItem*> resolveParents(QTreeWidgetItem*);
+
 protected:
 
     bool event( QEvent *event );
@@ -141,6 +145,8 @@ protected:
     const std::set<int>& getListOfExpandedObjectIds() { return expanded_objects; }
 
     void showOrHideAttributesColumn();
+
+    void setFilter(QString);
  
  public slots:
 
