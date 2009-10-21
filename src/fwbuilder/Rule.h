@@ -218,6 +218,8 @@ public:
 
     Action getAction() const { return action; }
     void   setAction(Action act) { action = act; }
+
+    static std::string getActionAsString(int act);
     std::string getActionAsString() const;
     void   setAction(const std::string& act);
 
@@ -237,18 +239,13 @@ public:
 
 class NATRule : public Rule 
 {
-    libfwbuilder::RuleElementOSrc*      osrc_re;
-    libfwbuilder::RuleElementODst*      odst_re;
-    libfwbuilder::RuleElementOSrv*      osrv_re;
-    libfwbuilder::RuleElementTSrc*      tsrc_re;
-    libfwbuilder::RuleElementTDst*      tdst_re;
-    libfwbuilder::RuleElementTSrv*      tsrv_re;
-    libfwbuilder::RuleElementInterval* when_re;
-    
-    public:
+public:
+
+    typedef enum { Translate,
+                   Branch } NATAction;
 
 /*
- *  Supported NAT rule actions:
+ *  Supported NAT rule types:
  *      
  *      Unknown - Uknown action
  *         
@@ -284,7 +281,8 @@ class NATRule : public Rule
  *
  */
     typedef enum { Unknown, 
-                   NONAT, 
+                   NONAT,
+                   NATBranch,
                    SNAT, 
                    Masq, 
                    DNAT, 
@@ -296,12 +294,20 @@ class NATRule : public Rule
                    Skip , 
                    Continue , 
                    LB }  NATRuleTypes;
+    
+private:
 
-    private:
-
+    libfwbuilder::RuleElementOSrc*      osrc_re;
+    libfwbuilder::RuleElementODst*      odst_re;
+    libfwbuilder::RuleElementOSrv*      osrv_re;
+    libfwbuilder::RuleElementTSrc*      tsrc_re;
+    libfwbuilder::RuleElementTDst*      tdst_re;
+    libfwbuilder::RuleElementTSrv*      tsrv_re;
+    libfwbuilder::RuleElementInterval* when_re;
+    NATAction action;
     NATRuleTypes  rule_type;
 
-    public:
+public:
 
     NATRule();
     NATRule(const FWObjectDatabase *root,bool prepopulate);
@@ -324,6 +330,13 @@ class NATRule : public Rule
     libfwbuilder::RuleElementTSrv* getTSrv();
     libfwbuilder::RuleElementInterval* getWhen();
 
+    NATAction getAction() const { return action; }
+    void setAction(NATAction act) { action = act; }
+
+    static std::string getActionAsString(int act);
+    std::string getActionAsString() const;
+    void setAction(const std::string& act);
+    
     NATRuleTypes getRuleType() const;
     std::string  getRuleTypeAsString() const;
     void         setRuleType(NATRuleTypes rt);

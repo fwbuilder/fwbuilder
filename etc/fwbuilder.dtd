@@ -57,10 +57,11 @@ TODO:
  *
 -->
 
-<!ENTITY % ACTION    "(Accept|Reject|Deny|Scrub|Return|Skip|Continue|Accounting|Modify|Tag|Pipe|Classify|Custom|Branch|Route)">
+<!ENTITY % ACTION "(Accept|Reject|Deny|Scrub|Return|Skip|Continue|Accounting|Modify|Tag|Pipe|Classify|Custom|Branch|Route)">
+<!ENTITY % NAT_ACTION "(Translate|NATBranch)">
 <!ENTITY % DIRECTION "(Inbound|Outbound|Both)">
 <!ENTITY % IPADDRESS "CDATA">
-<!ENTITY % NETMASK   "CDATA">
+<!ENTITY % NETMASK "CDATA">
 <!ENTITY % IP6ADDRESS "CDATA">
 <!ENTITY % IP6NETMASK "CDATA">
 
@@ -83,7 +84,7 @@ TODO:
 <!ELEMENT FWObjectDatabase (Library*)>
 <!ATTLIST FWObjectDatabase
  xmlns        CDATA     #FIXED "http://www.fwbuilder.org/1.0/"
- version      %STRING;  #FIXED "12"
+ version      %STRING;  #FIXED "13"
  lastModified %NUMBER;  #IMPLIED
  id           ID        #REQUIRED
 >
@@ -189,6 +190,7 @@ own compiler) we do not define content model for this element.
 <!ELEMENT NATRule (OSrc,ODst,OSrv,TSrc,TDst,TSrv,When?, NATRuleOptions?)>
 <!ATTLIST NATRule
  id      ID       #REQUIRED
+ action    %NAT_ACTION; #REQUIRED
  disabled  %BOOLEAN;   "False"
  position  %NUMBER;    #REQUIRED
  comment   %STRING;    #IMPLIED

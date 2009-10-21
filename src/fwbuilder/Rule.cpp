@@ -229,7 +229,13 @@ bool PolicyRule::isEmpty()
 
 string PolicyRule::getActionAsString() const
 {
-    switch (action) {
+    return getActionAsString(action);
+}
+
+// static method
+string PolicyRule::getActionAsString(int act)
+{
+    switch (act) {
     case Accept:     return "Accept";
     case Deny:       return "Deny";
     case Reject:     return "Reject";
@@ -396,8 +402,9 @@ FWOptions* PolicyRule::getOptionsObject()
     return FWOptions::cast( getFirstByType(PolicyRuleOptions::TYPENAME) );
 }
 
-RuleSet*   PolicyRule::getBranch()
+RuleSet* PolicyRule::getBranch()
 {
+    if (getAction() != PolicyRule::Branch) return NULL;
     FWObject *fw = this;
     while (fw && Firewall::cast(fw) == NULL) fw = fw->getParent();
     assert(fw!=NULL);
@@ -492,7 +499,8 @@ const char *NATRule::TYPENAME={"NATRule"};
 
 NATRule::NATRule() : Rule()
 {
-    rule_type=Unknown;
+    rule_type = Unknown;
+    setAction(NATRule::Translate);
 
     osrc_re = NULL;
     odst_re = NULL;
@@ -505,7 +513,8 @@ NATRule::NATRule() : Rule()
 
 NATRule::NATRule(const FWObjectDatabase *root,bool prepopulate) : Rule(root,prepopulate)
 {
-    rule_type=Unknown;
+    rule_type = Unknown;
+    setAction(NATRule::Translate);
 
     osrc_re = NULL;
     odst_re = NULL;
@@ -582,6 +591,26 @@ RuleElementInterval* NATRule::getWhen()
     return when_re;
 }
 
+string NATRule::getActionAsString() const
+{
+    return getActionAsString(action);
+}
+
+// static method
+string NATRule::getActionAsString(int act)
+{
+    if (act == Branch) return "NATBranch";
+    return "Translate";
+}
+
+void NATRule::setAction(const string& act)
+{
+    if (act=="Translate")  { setAction(Translate); return; }
+    if (act=="Branch")     { setAction(Branch); return; }
+    if (act=="NATBranch")  { setAction(Branch); return; }
+    setAction(Translate);
+}
+
 bool NATRule::isEmpty()
 {
     RuleElement *osrc=getOSrc();
@@ -600,6 +629,13 @@ void NATRule::fromXML(xmlNodePtr root) throw(FWException)
     const char* n;
 
     FWObject::fromXML(root);
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("action")));
+    if(n)
+    {
+        setAction(string(n));
+        FREEXMLBUFF(n);
+    }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
     if(n)
@@ -628,6 +664,7 @@ xmlNodePtr NATRule::toXML(xmlNodePtr parent) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 //    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
+    xmlNewProp(me, TOXMLCAST("action"), STRTOXMLCAST(getActionAsString()));
     xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
 
     FWObject *o;
@@ -667,8 +704,9 @@ FWOptions* NATRule::getOptionsObject()
     return FWOptions::cast( getFirstByType(NATRuleOptions::TYPENAME) );
 }
 
-RuleSet*   NATRule::getBranch()
+RuleSet* NATRule::getBranch()
 {
+    if (getAction() != NATRule::Branch) return NULL;
     FWObject *fw = getParent()->getParent();
     assert(fw!=NULL);
     string branch_id = getOptionsObject()->getStr("branch_id");
@@ -699,7 +737,7 @@ NATRule::NATRuleTypes NATRule::getRuleType() const
     return rule_type;
 }
 
-string  NATRule::getRuleTypeAsString() const 
+string NATRule::getRuleTypeAsString() const 
 {
     switch (rule_type) {
     case SNAT:     return("SNAT");     
@@ -714,11 +752,12 @@ string  NATRule::getRuleTypeAsString() const
     case Continue: return("Continue"); 
     case LB:       return("LB");       
     case NONAT:    return("NONAT");    
+    case NATBranch: return("NATBranch");    
     default:       return("Unknown");  
     }
 }
 
-void         NATRule::setRuleType(NATRuleTypes rt) 
+void NATRule::setRuleType(NATRuleTypes rt) 
 { 
     rule_type=rt;
 }
@@ -726,8 +765,9 @@ void         NATRule::setRuleType(NATRuleTypes rt)
 FWObject& NATRule::shallowDuplicate(const FWObject *x,
                                     bool preserve_id) throw(FWException)
 {
-    const NATRule *rx=NATRule::constcast(x);
-    if (rx!=NULL) rule_type=rx->rule_type;
+    const NATRule *rx = NATRule::constcast(x);
+    if (rx!=NULL) rule_type = rx->rule_type;
+    setAction(rx->getAction());
 
     osrc_re = NULL;
     odst_re = NULL;

@@ -530,33 +530,23 @@ bool Resources::getTargetCapabilityBool(const string &target,
     return (s=="true" || s=="True");
 }
 
-bool Resources::isTargetActionSupported(const string &target,
-                                        const string &action)
+bool Resources::isTargetActionSupported(const string &target, const string &action)
 {
     bool res=false;
     try  
     {
-         res=getTargetCapabilityBool(target,
-                 "actions/"+action+"/supported");
-
-    } catch (FWException &ex)
-    {
-    }
+         res = getTargetCapabilityBool(target, "actions/" + action + "/supported");
+    } catch (FWException &ex) { }
     return res;
 }
 
-string Resources::getActionEditor(const string &target,
-                                        const string &action)
+string Resources::getActionEditor(const string &target, const string &action)
 {
     string res="None";
     try  
     {
-         res=getTargetCapabilityStr(
-                 target,"actions/"+action+"/parameter");
-
-    } catch (FWException &ex)
-    {
-    }
+         res = getTargetCapabilityStr(target, "actions/" + action + "/parameter");
+    } catch (FWException &ex) { }
     return res;
 }
 

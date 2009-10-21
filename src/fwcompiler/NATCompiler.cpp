@@ -165,15 +165,37 @@ bool NATCompiler::classifyNATRule::processNext()
 
     if (rule->getRuleType()!=NATRule::Unknown) return true;
 
-    RuleElementTDst *tdstre=rule->getTDst();
+    RuleElementTSrc *tsrcre = rule->getTSrc();
+    RuleElementTDst *tdstre = rule->getTDst();
+    RuleElementTSrv *tsrvre = rule->getTSrv();
 
-//    Address  *osrc=compiler->getFirstOSrc(rule);
-//    Address  *odst=compiler->getFirstODst(rule);
-    Service  *osrv=compiler->getFirstOSrv(rule);
+    Service  *osrv = compiler->getFirstOSrv(rule);
 
-    Address  *tsrc=compiler->getFirstTSrc(rule);
-    Address  *tdst=compiler->getFirstTDst(rule);
-    Service  *tsrv=compiler->getFirstTSrv(rule);
+    Address  *tsrc = compiler->getFirstTSrc(rule);
+    Address  *tdst = compiler->getFirstTDst(rule);
+    Service  *tsrv = compiler->getFirstTSrv(rule);
+
+    if (rule->getAction() == NATRule::Branch)
+    {
+	rule->setRuleType(NATRule::NATBranch);
+        if (!tsrcre->isAny() || !tdstre->isAny() || !tsrvre->isAny())
+        {
+            tsrcre->clearChildren();
+            tsrcre->setAnyElement();
+
+            tdstre->clearChildren();
+            tdstre->setAnyElement();
+
+            tsrvre->clearChildren();
+            tsrvre->setAnyElement();
+
+            compiler->warning(
+                    rule,
+                    "Translated Src, Dst and Srv are ignored in the NAT "
+                    "rule with action 'Branch'");
+        }
+        return true;
+    }
 
     if (tsrc->isAny() && tdst->isAny() && tsrv->isAny())
     {
