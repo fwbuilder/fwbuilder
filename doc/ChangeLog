@@ -7,10 +7,11 @@
 
 	* platforms.cpp (getActionNameForPlatform): Human-readable names
 	for Policy and NAT rule actions come from the platform .xml
-	resource file (attribute "description").
+	resource file (attribute "description"). This implements Feature
+	Requests #1948874 and #1796803
 
 	* Support for branch rules in NAT rule sets. Currently only
-	supported on iptables and PF. NAT rules get column "Action" for
+	supported for iptables and PF. NAT rules get column "Action" for
 	these platforms, with possible acctions "Translate" and "Branch".
 	Action parameters dialog for the Branch action provides drop well
 	where another NAT ruleset object can be dropped (just like with
