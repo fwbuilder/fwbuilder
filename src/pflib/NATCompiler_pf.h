@@ -348,7 +348,12 @@ namespace fwcompiler {
 	 */
         class PrintRule : public NATRuleProcessor
         {
-            protected:
+            void _printAnchorRule(const std::string &anchor_command,
+                                  const std::string &ruleset_name,
+                                  const std::string &interface_name,
+                                  libfwbuilder::NATRule *rule);
+                
+    protected:
             bool                             init;
             std::string                      current_rule_label;
 

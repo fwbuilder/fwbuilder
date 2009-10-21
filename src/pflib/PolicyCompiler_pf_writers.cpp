@@ -44,6 +44,7 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <iostream>
 #if __GNUC__ > 3 || \
@@ -945,7 +946,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
         {
             // tcp service, no special flag match
 
-            if ( version == "4.x")
+//            if ( version == "4.x")
+            if (XMLTools::version_compare(version, "4.0")>=0)
             {
                 if (compiler->getCachedFwOpt()->getBool(
                         "accept_new_tcp_with_no_syn") )
@@ -1005,7 +1007,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
                  * interface. Adding rule option "Set 'keep state'
                  * explicitly" to cope with this.
                  */
-                if ( version != "4.x" ||
+                if (XMLTools::version_compare(version, "4.0") < 0 ||
+              //if ( version != "4.x" ||
                      compiler->getCachedFwOpt()->getBool("pf_keep_state"))
                     compiler->output << "keep state ";
             }
@@ -1093,7 +1096,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
     } else
     {
         // stateless rule
-        if ( version == "4.x")
+        if (XMLTools::version_compare(version, "4.0")>=0)
+      //if ( version == "4.x")
             // v4.x, stateless rule
             compiler->output << "no state ";
     }

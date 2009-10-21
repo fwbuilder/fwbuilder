@@ -181,7 +181,9 @@ QString CompilerDriver_pf::assembleFwScript(Firewall* fw, bool cluster_member, O
     if (fw->getStr("platform") == "pf")
     {
         script_skeleton.setVariable("pf_flush_states", options->getBool("pf_flush_states"));
-        script_skeleton.setVariable("pf_version_ge_4_x", fw->getStr("version")=="4.x");
+        script_skeleton.setVariable("pf_version_ge_4_x", // fw->getStr("version")=="4.x");
+                                    XMLTools::version_compare(fw->getStr("version"), "4.0")>=0);
+
     } else
     {
         script_skeleton.setVariable("pf_flush_states", 0);
@@ -331,6 +333,17 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
             if (!nat->matchingAddressFamily(policy_af)) continue;
 
             string ruleset_name = nat->getName();
+
+            if (ruleset_name.find("/*")!=string::npos)
+            {
+                QString err("The name of the policy ruleset %1"
+                            " ends with '/*', assuming it is externally"
+                            " controlled and skipping it.");
+                warning(fw, nat, NULL,
+                        err.arg(ruleset_name.c_str()).toStdString());
+                continue;
+            }
+
             if (nat->isTop())
                 ruleset_name = "__main__";
 
