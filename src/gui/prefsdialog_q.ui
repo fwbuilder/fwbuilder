@@ -79,7 +79,7 @@
          </item>
         </layout>
        </item>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string/>
@@ -168,14 +168,14 @@
             </property>
            </spacer>
           </item>
-          <item row="7" column="0">
-           <widget class="QCheckBox" name="showTips">
-            <property name="text">
-             <string>Do not show tips on startup</string>
-            </property>
-           </widget>
-          </item>
          </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="showTips">
+         <property name="text">
+          <string>Do not show tips on startup</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -1040,7 +1040,6 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>wDir</tabstop>
@@ -1074,8 +1073,8 @@ p, li { white-space: pre-wrap; }
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>558</x>
+     <y>457</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1090,8 +1089,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>610</x>
+     <y>457</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1106,8 +1105,8 @@ p, li { white-space: pre-wrap; }
    <slot>findWDir()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>583</x>
+     <y>52</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1122,8 +1121,8 @@ p, li { white-space: pre-wrap; }
    <slot>findSSH()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>568</x>
+     <y>51</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1138,8 +1137,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeRedColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>229</x>
+     <y>72</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1154,8 +1153,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeOrangeColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>229</x>
+     <y>118</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1170,8 +1169,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeYellowColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>229</x>
+     <y>164</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1186,8 +1185,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeGreenColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>229</x>
+     <y>210</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1202,8 +1201,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeBlueColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>229</x>
+     <y>256</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1218,8 +1217,8 @@ p, li { white-space: pre-wrap; }
    <slot>changePurpleColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>229</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1234,8 +1233,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeGrayColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>229</x>
+     <y>348</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1250,8 +1249,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeShowIcons()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>28</x>
+     <y>152</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1266,8 +1265,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeIconSize16()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>155</x>
+     <y>243</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1282,8 +1281,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeIconSize25()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>155</x>
+     <y>280</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1314,8 +1313,8 @@ p, li { white-space: pre-wrap; }
    <slot>checkSwUpdates()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>330</x>
-     <y>203</y>
+     <x>420</x>
+     <y>120</y>
     </hint>
     <hint type="destinationlabel">
      <x>334</x>
@@ -1330,8 +1329,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeRulesFont()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>106</y>
+     <x>137</x>
+     <y>60</y>
     </hint>
     <hint type="destinationlabel">
      <x>334</x>
@@ -1346,8 +1345,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeTreeFont()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>136</y>
+     <x>137</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>334</x>
@@ -1362,8 +1361,8 @@ p, li { white-space: pre-wrap; }
    <slot>changeCompilerOutputFont()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>163</y>
+     <x>137</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>334</x>
