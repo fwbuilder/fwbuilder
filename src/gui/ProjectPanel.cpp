@@ -1103,9 +1103,6 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
     if (fwbdebug)
         qDebug() << "ProjectPanel::topLevelChangedForTreePanel  f=" << f;
 
-    QList<int> sizes = m_panel->topSplitter->sizes();
-
-#if defined(Q_WS_X11) 
     /*
      * QDockWidget object uses native decorators on Windows and Mac
      * and therefore gets window title bar there. On X11 QT emulates
@@ -1137,19 +1134,16 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
             this, SLOT(topLevelChangedForTreePanel(bool)));
     connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
             this, SLOT(visibilityChangedForTreePanel(bool)));
-#endif
 
     if (!m_panel->treeDockWidget->isWindow())
     {
         loadMainSplitter();
     } else
     {
-        if (m_panel->treeDockWidget->isWindow())
-        {
-            // expand rules 
-            collapseTree();
-            m_panel->treeDockWidget->widget()->update();
-        }
+        saveMainSplitter();
+        // expand rules 
+        collapseTree();
+        m_panel->treeDockWidget->widget()->update();
     }
 }
 
@@ -1161,13 +1155,12 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
                  << " m_panel->treeDockWidget->isWindow()="
                  << m_panel->treeDockWidget->isWindow();
 
-    QList<int> sizes = m_panel->topSplitter->sizes();
-
     if (f && !m_panel->treeDockWidget->isWindow())  // visible and not floating
     {
         loadMainSplitter();
     } else
     {
+        saveMainSplitter();
         // expand rules 
         collapseTree();
         m_panel->treeDockWidget->widget()->update();

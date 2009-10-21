@@ -165,13 +165,17 @@ void ProjectPanel::loadMainSplitter()
     
     int w1 = 0;
     int w2 = 0;
-    QString w1s, w2s;
-    w1s = val.split(',')[0];
+    QStringList ws = val.split(',');
     bool ok = false;
-    w1 = w1s.toInt(&ok, 10);
+    w1 = ws[0].toInt(&ok, 10);
     if (!ok || w1 == 0) w1 = DEFAULT_H_SPLITTER_POSITION;
 
-    w2 = mdiWindow->width() - w1;
+    if (ws.size() > 1)
+    {
+        w2 = ws[1].toInt(&ok, 10);
+        if (!ok || w2 == 0) w2 = mdiWindow->width() - w1;
+    } else
+        w2 = mdiWindow->width() - w1;
 
     if (fwbdebug)
         qDebug(QString("%1: %2x%3").arg(h_splitter_setting).
