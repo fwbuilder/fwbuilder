@@ -58,7 +58,7 @@ TODO:
 -->
 
 <!ENTITY % ACTION "(Accept|Reject|Deny|Scrub|Return|Skip|Continue|Accounting|Modify|Tag|Pipe|Classify|Custom|Branch|Route)">
-<!ENTITY % NAT_ACTION "(Translate|Branch)">
+<!ENTITY % NAT_ACTION "(Translate|NATBranch)">
 <!ENTITY % DIRECTION "(Inbound|Outbound|Both)">
 <!ENTITY % IPADDRESS "CDATA">
 <!ENTITY % NETMASK "CDATA">
