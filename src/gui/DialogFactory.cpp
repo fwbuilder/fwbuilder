@@ -359,7 +359,7 @@ string DialogFactory::getActionDialogPageName(Firewall *fw, Rule *rule)
     try  
     {
         editor_page = Resources::getTargetCapabilityStr(
-            platform, "actions/" + act + "/editor_page");
+            platform, "actions/" + act + "/dialog_page");
     } catch (FWException &ex) { }
     return editor_page;
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="12" lastModified="1255054018" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1256083160" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <Library id="id40E233F3" color="#FFFFFF" name="West Coast" comment="" ro="False">
@@ -417,7 +417,7 @@
     <ObjectRef ref="id79413X23273"/>
     <Firewall id="id79413X23273" host_OS="linux24" lastCompiled="1244482781" lastInstalled="0" lastModified="1244584259" platform="iptables" version="" name="fw1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
       <NAT id="id80067X23273" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <NATRule id="id80068X23273" disabled="False" position="0" comment="">
+        <NATRule id="id80068X23273" disabled="False" position="0" action="Translate" comment="">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -438,7 +438,7 @@
           </TSrv>
           <NATRuleOptions/>
         </NATRule>
-        <NATRule id="id80100X23273" disabled="False" group="" position="1" comment="source port only">
+        <NATRule id="id80100X23273" disabled="False" group="" position="1" action="Translate" comment="source port only">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -459,7 +459,7 @@
           </TSrv>
           <NATRuleOptions/>
         </NATRule>
-        <NATRule id="id80135X23273" disabled="False" group="" position="2" comment="dest port only">
+        <NATRule id="id80135X23273" disabled="False" group="" position="2" action="Translate" comment="dest port only">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -480,7 +480,7 @@
           </TSrv>
           <NATRuleOptions/>
         </NATRule>
-        <NATRule id="id80170X23273" disabled="False" group="" position="3" comment="SDNAT ">
+        <NATRule id="id80170X23273" disabled="False" group="" position="3" action="Translate" comment="SDNAT ">
           <OSrc neg="False">
             <ObjectRef ref="sysid0"/>
           </OSrc>
@@ -501,7 +501,7 @@
           </TSrv>
           <NATRuleOptions/>
         </NATRule>
-        <NATRule id="id80204X23273" disabled="False" group="" position="4" comment="SDNAT with source port">
+        <NATRule id="id80204X23273" disabled="False" group="" position="4" action="Translate" comment="SDNAT with source port">
           <OSrc neg="False">
             <ObjectRef ref="sysid0"/>
           </OSrc>
@@ -522,7 +522,7 @@
           </TSrv>
           <NATRuleOptions/>
         </NATRule>
-        <NATRule id="id80237X23273" disabled="False" group="" position="5" comment="SDNAT with dest port">
+        <NATRule id="id80237X23273" disabled="False" group="" position="5" action="Translate" comment="SDNAT with dest port">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -543,7 +543,7 @@
           </TSrv>
           <NATRuleOptions/>
         </NATRule>
-        <NATRule id="id80270X23273" disabled="False" group="" position="6" comment="SDNAT&#10;translate src and dst addresses&#10;and src and dst ports">
+        <NATRule id="id80270X23273" disabled="False" group="" position="6" action="Translate" comment="SDNAT&#10;translate src and dst addresses&#10;and src and dst ports">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -564,7 +564,7 @@
           </TSrv>
           <NATRuleOptions/>
         </NATRule>
-        <NATRule id="id80305X23273" disabled="False" group="" position="7" comment="invalid rule">
+        <NATRule id="id80305X23273" disabled="False" group="" position="7" action="Translate" comment="invalid rule">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -585,7 +585,7 @@
           </TSrv>
           <NATRuleOptions/>
         </NATRule>
-        <NATRule id="id80338X23273" disabled="False" group="" position="8" comment="invalid rule">
+        <NATRule id="id80338X23273" disabled="False" group="" position="8" action="Translate" comment="invalid rule">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -818,7 +818,7 @@
     <ObjectRef ref="id18510X75509"/>
     <Firewall id="id18510X75509" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1253295292" platform="pf" version="" name="firewall63" comment="testing tos matching" ro="False">
       <NAT id="id18578X75509" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <NATRule id="id18579X75509" disabled="True" position="0" comment="">
+        <NATRule id="id18579X75509" disabled="True" position="0" action="Translate" comment="">
           <OSrc neg="False">
             <ObjectRef ref="net-Internal_net"/>
           </OSrc>
@@ -1096,6 +1096,11 @@
       </FirewallOptions>
     </Firewall>
     <ObjectRef ref="id34697X75509"/>
+    <ObjectRef ref="net-Internal_net"/>
+    <ObjectRef ref="id19505X46601"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -1704,7 +1709,7 @@
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
       <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1249943117" lastInstalled="0" lastModified="1249943111" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="nat-firewall2-0" disabled="False" position="0" comment="">
+          <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1725,7 +1730,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3EE25AA2" disabled="True" position="1" comment="illegal rule - host 'dyn host' has dynamic address">
+          <NATRule id="id3EE25AA2" disabled="True" position="1" action="Translate" comment="illegal rule - host 'dyn host' has dynamic address">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -1746,7 +1751,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="nat-firewall2-1" disabled="False" position="2" comment="">
+          <NATRule id="nat-firewall2-1" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -1767,7 +1772,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3CDB43B8" disabled="False" position="3" comment="">
+          <NATRule id="id3CDB43B8" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2490,7 +2495,7 @@
       </Firewall>
       <Firewall id="id3AF5AA0A" host_OS="openbsd" inactive="False" lastCompiled="1157930802" lastInstalled="0" lastModified="1224520201" platform="pf" version="" name="firewall1" comment="this object is used to test all kinds of negation in policy rules&#10;Also using interface policy on eth1 to test specific case with negation and&#10;rule shading depection&#10;" ro="False">
         <NAT id="id3AF5AA0D" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3C98491C" disabled="False" position="0" comment="">
+          <NATRule id="id3C98491C" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2511,7 +2516,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFADC09" disabled="False" position="1" comment="">
+          <NATRule id="id3AFADC09" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -2532,7 +2537,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3CD23959" disabled="False" position="2" comment="">
+          <NATRule id="id3CD23959" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2553,7 +2558,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B1328FB" disabled="False" position="3" comment="">
+          <NATRule id="id3B1328FB" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2574,7 +2579,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E7ABBCD" disabled="False" position="4" comment="">
+          <NATRule id="id3E7ABBCD" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2596,7 +2601,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E7ABFA4" disabled="False" position="5" comment="more examples&#10;of NAT rules with&#10;multiple objects in TSrc&#10;in firewall3">
+          <NATRule id="id3E7ABFA4" disabled="False" position="5" action="Translate" comment="more examples&#10;of NAT rules with&#10;multiple objects in TSrc&#10;in firewall3">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2618,7 +2623,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AF5AAD3" disabled="False" position="6" comment="">
+          <NATRule id="id3AF5AAD3" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2639,7 +2644,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3CCA1B57" disabled="False" position="7" comment="">
+          <NATRule id="id3CCA1B57" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2660,7 +2665,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B50F7CB" disabled="False" position="8" comment="">
+          <NATRule id="id3B50F7CB" disabled="False" position="8" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id3B022266"/>
             </OSrc>
@@ -2681,7 +2686,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BD8D94B" disabled="False" position="9" comment="">
+          <NATRule id="id3BD8D94B" disabled="False" position="9" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2702,7 +2707,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BD8D9DD" disabled="False" position="10" comment="">
+          <NATRule id="id3BD8D9DD" disabled="False" position="10" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2723,7 +2728,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BBC0EA4" disabled="False" position="11" comment="">
+          <NATRule id="id3BBC0EA4" disabled="False" position="11" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -2744,7 +2749,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BBC0F93" disabled="False" position="12" comment="">
+          <NATRule id="id3BBC0F93" disabled="False" position="12" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -2765,7 +2770,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BC6BCE5" disabled="False" position="13" comment="">
+          <NATRule id="id3BC6BCE5" disabled="False" position="13" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -2786,7 +2791,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3FDCD893" disabled="False" position="14" comment="">
+          <NATRule id="id3FDCD893" disabled="False" position="14" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3B665643"/>
               <ObjectRef ref="id3FDCD983"/>
@@ -3382,7 +3387,7 @@
       </Firewall>
       <Firewall id="id3DE69291" host_OS="openbsd" inactive="False" lastCompiled="1157930804" lastInstalled="0" lastModified="1193632387" platform="pf" version="" name="firewall13" comment="testing detection of empty groups" ro="False">
         <NAT id="id3DE69292" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3DE69752" disabled="False" position="0" comment="">
+          <NATRule id="id3DE69752" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DE69469"/>
             </OSrc>
@@ -3403,7 +3408,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DE697CD" disabled="False" position="1" comment="">
+          <NATRule id="id3DE697CD" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DE69469"/>
               <ObjectRef ref="id3B19C5EB"/>
@@ -3425,7 +3430,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DE69866" disabled="False" position="2" comment="">
+          <NATRule id="id3DE69866" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3589,7 +3594,7 @@
       </Firewall>
       <Firewall id="id3AFB66C6" host_OS="openbsd" inactive="False" lastCompiled="1244583253" lastInstalled="0" lastModified="1244584206" platform="pf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3AFB66C8" disabled="False" position="0" comment="">
+          <NATRule id="id3AFB66C8" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3613,7 +3618,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3AFB66D6" disabled="False" position="1" comment="">
+          <NATRule id="id3AFB66D6" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="id3B4572AF"/>
@@ -3638,7 +3643,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3CABE6DF" disabled="False" position="2" comment="">
+          <NATRule id="id3CABE6DF" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3662,7 +3667,7 @@
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id40E9A827" disabled="False" position="3" comment="">
+          <NATRule id="id40E9A827" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3686,7 +3691,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id40E9A83B" disabled="False" position="4" comment="">
+          <NATRule id="id40E9A83B" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="id3B4572AF"/>
@@ -3711,7 +3716,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id40E9A850" disabled="False" position="5" comment="">
+          <NATRule id="id40E9A850" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3735,7 +3740,7 @@
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id40E9A8DE" disabled="False" position="6" comment="">
+          <NATRule id="id40E9A8DE" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3759,7 +3764,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id40E9A8F2" disabled="False" position="7" comment="">
+          <NATRule id="id40E9A8F2" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="id3B4572AF"/>
@@ -3784,7 +3789,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id40E9A907" disabled="False" position="8" comment="">
+          <NATRule id="id40E9A907" disabled="False" position="8" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3808,7 +3813,7 @@
               <Option name="color">#C0BA44</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id431BEFED" disabled="False" position="9" comment="">
+          <NATRule id="id431BEFED" disabled="False" position="9" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3829,7 +3834,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFB69BD" disabled="False" position="10" comment="">
+          <NATRule id="id3AFB69BD" disabled="False" position="10" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3851,7 +3856,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BEEF6D2" disabled="False" position="11" comment="">
+          <NATRule id="id3BEEF6D2" disabled="False" position="11" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3872,7 +3877,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BD67563" disabled="False" position="12" comment="">
+          <NATRule id="id3BD67563" disabled="False" position="12" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostB"/>
             </OSrc>
@@ -3895,7 +3900,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3BD6757E" disabled="True" position="13" comment="">
+          <NATRule id="id3BD6757E" disabled="True" position="13" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3916,7 +3921,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B66568B" disabled="True" position="14" comment="NETMAP ">
+          <NATRule id="id3B66568B" disabled="True" position="14" action="Translate" comment="NETMAP ">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3937,7 +3942,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B6656EF" disabled="True" position="15" comment="NETMAP">
+          <NATRule id="id3B6656EF" disabled="True" position="15" action="Translate" comment="NETMAP">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3958,7 +3963,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id431C0728" disabled="False" position="16" comment="">
+          <NATRule id="id431C0728" disabled="False" position="16" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3979,7 +3984,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id431C0714" disabled="False" position="17" comment="">
+          <NATRule id="id431C0714" disabled="False" position="17" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4000,7 +4005,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id431C0700" disabled="False" position="18" comment="">
+          <NATRule id="id431C0700" disabled="False" position="18" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4021,7 +4026,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id431C355F" disabled="False" position="19" comment="">
+          <NATRule id="id431C355F" disabled="False" position="19" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4042,7 +4047,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFB69F7" disabled="False" position="20" comment="">
+          <NATRule id="id3AFB69F7" disabled="False" position="20" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4063,7 +4068,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id414BEA12" disabled="False" position="21" comment="">
+          <NATRule id="id414BEA12" disabled="False" position="21" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4084,7 +4089,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id414BEC22" disabled="False" position="22" comment="">
+          <NATRule id="id414BEC22" disabled="False" position="22" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4105,7 +4110,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id546F21844" disabled="False" group="" position="23" comment="">
+          <NATRule id="id546F21844" disabled="False" group="" position="23" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4126,7 +4131,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B7313C4" disabled="False" position="24" comment="">
+          <NATRule id="id3B7313C4" disabled="False" position="24" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4147,7 +4152,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E59ADF3" disabled="False" position="25" comment="">
+          <NATRule id="id3E59ADF3" disabled="False" position="25" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4168,7 +4173,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id40ECF000" disabled="False" position="26" comment="">
+          <NATRule id="id40ECF000" disabled="False" position="26" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4189,7 +4194,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E59AC6D" disabled="False" position="27" comment="">
+          <NATRule id="id3E59AC6D" disabled="False" position="27" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4210,7 +4215,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id41F9FFBB" disabled="False" position="28" comment="for bug 1111267: this custom service object has&#10;&quot;proto ...&quot; in the protocol string, compiler can put&#10;it in generated nat command in the right place.">
+          <NATRule id="id41F9FFBB" disabled="False" position="28" action="Translate" comment="for bug 1111267: this custom service object has&#10;&quot;proto ...&quot; in the protocol string, compiler can put&#10;it in generated nat command in the right place.">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4231,7 +4236,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id15833X50242" disabled="False" group="" position="29" comment="for bug 1111267: this custom service object&#10;has &quot;proto ..&quot; in the code string but we can't insert&#10;it in the generated nat command b/c it would appear &#10;in the wrong place, after &quot;from&quot;.&#10;">
+          <NATRule id="id15833X50242" disabled="False" group="" position="29" action="Translate" comment="for bug 1111267: this custom service object&#10;has &quot;proto ..&quot; in the code string but we can't insert&#10;it in the generated nat command b/c it would appear &#10;in the wrong place, after &quot;from&quot;.&#10;">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4252,7 +4257,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id41FA0A82" disabled="False" position="30" comment="">
+          <NATRule id="id41FA0A82" disabled="False" position="30" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4738,7 +4743,7 @@
       </Firewall>
       <Firewall id="id3B0C6380" host_OS="openbsd" inactive="False" lastCompiled="1249840602" lastInstalled="0" lastModified="1249840422" platform="pf" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
         <NAT id="id3B0C6381" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3B0C6382" disabled="False" position="0" comment="">
+          <NATRule id="id3B0C6382" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -4761,7 +4766,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3B0C6390" disabled="False" position="1" comment="">
+          <NATRule id="id3B0C6390" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4784,7 +4789,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3B202AFF" disabled="False" position="2" comment="">
+          <NATRule id="id3B202AFF" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4805,7 +4810,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E797EFF" disabled="False" position="3" comment="SDNAT rule&#10;">
+          <NATRule id="id3E797EFF" disabled="False" position="3" action="Translate" comment="SDNAT rule&#10;">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4826,7 +4831,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id14151X17863" disabled="False" position="4" comment="">
+          <NATRule id="id14151X17863" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4847,7 +4852,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id30999X2816" disabled="False" group="" position="5" comment="eth1 is dynamic">
+          <NATRule id="id30999X2816" disabled="False" group="" position="5" action="Translate" comment="eth1 is dynamic">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5271,7 +5276,7 @@
       </Firewall>
       <Firewall id="id3E1FC43C" host_OS="openbsd" inactive="False" lastCompiled="1157930819" lastInstalled="0" lastModified="1200415199" platform="pf" version="" name="firewall5" comment="testing IP fragments and scrub" ro="False">
         <NAT id="id3E1FC43D" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3E1FC8FC" disabled="True" position="0" comment="">
+          <NATRule id="id3E1FC8FC" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5720,7 +5725,7 @@
       </Firewall>
       <Firewall id="id3D581152" host_OS="openbsd" inactive="False" lastCompiled="1157930823" lastInstalled="0" lastModified="1200415211" platform="pf" version="" name="firewall8" comment="" ro="False">
         <NAT id="id3D581156" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3D58164E" disabled="False" position="0" comment="">
+          <NATRule id="id3D58164E" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5741,7 +5746,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D58163D" disabled="False" position="1" comment="">
+          <NATRule id="id3D58163D" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5762,7 +5767,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D5812BC" disabled="False" position="2" comment="">
+          <NATRule id="id3D5812BC" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5783,7 +5788,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D581322" disabled="False" position="3" comment="">
+          <NATRule id="id3D581322" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5804,7 +5809,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D5812AE" disabled="False" position="4" comment="">
+          <NATRule id="id3D5812AE" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5825,7 +5830,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D5812CC" disabled="False" position="5" comment="">
+          <NATRule id="id3D5812CC" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5846,7 +5851,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D5812FA" disabled="False" position="6" comment="">
+          <NATRule id="id3D5812FA" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5867,7 +5872,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D58130E" disabled="False" position="7" comment="">
+          <NATRule id="id3D58130E" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5888,7 +5893,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id40ECF00B" disabled="False" position="8" comment="">
+          <NATRule id="id40ECF00B" disabled="False" position="8" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6087,7 +6092,7 @@
       </Firewall>
       <Firewall id="id3E853CBE" host_OS="freebsd" inactive="False" lastCompiled="1255644798" lastInstalled="0" lastModified="1255644788" platform="pf" version="" name="firewall9" comment="testing rules with broadcasts" ro="False">
         <NAT id="id3E853CBF" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3E853EF8" disabled="True" position="0" comment="">
+          <NATRule id="id3E853EF8" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6108,7 +6113,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E853F16" disabled="False" position="1" comment="">
+          <NATRule id="id3E853F16" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6318,7 +6323,7 @@
       </Firewall>
       <Firewall id="id43867C1018346" host_OS="freebsd" inactive="False" lastCompiled="1157930808" lastInstalled="0" lastModified="1193632397" platform="pf" version="" name="firewall33" comment="testing DNSName object" ro="False">
         <NAT id="id43867C4818346" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id43876E2618346" disabled="False" position="0" comment="">
+          <NATRule id="id43876E2618346" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6339,7 +6344,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43876E5218346" disabled="False" position="1" comment="">
+          <NATRule id="id43876E5218346" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6360,7 +6365,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43876E6918346" disabled="False" position="2" comment="">
+          <NATRule id="id43876E6918346" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6382,7 +6387,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43876E7B18346" disabled="False" position="3" comment="">
+          <NATRule id="id43876E7B18346" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6736,7 +6741,7 @@
       </Firewall>
       <Firewall id="id4389EDAE18346" host_OS="openbsd" inactive="False" lastCompiled="1210047001" lastInstalled="0" lastModified="1210046836" platform="pf" version="" name="firewall34" comment="testing AddressTable object" ro="False">
         <NAT id="id4389EE4818346" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id4389EEB018346" disabled="False" position="0" comment="">
+          <NATRule id="id4389EEB018346" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id4389EE9118346"/>
             </OSrc>
@@ -6757,7 +6762,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id446FDDE610619" disabled="False" position="1" comment="">
+          <NATRule id="id446FDDE610619" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id4390C25525682"/>
             </OSrc>
@@ -6778,7 +6783,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43891B6E674" disabled="False" position="2" comment="">
+          <NATRule id="id43891B6E674" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6799,7 +6804,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id467A0FE823947" disabled="False" position="3" comment="">
+          <NATRule id="id467A0FE823947" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6820,7 +6825,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id467A0FF823947" disabled="False" position="4" comment="">
+          <NATRule id="id467A0FF823947" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6841,7 +6846,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id467A209B23947" disabled="False" position="5" comment="">
+          <NATRule id="id467A209B23947" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6862,7 +6867,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id467A20AD23947" disabled="False" position="6" comment="">
+          <NATRule id="id467A20AD23947" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -7242,7 +7247,7 @@
       </Firewall>
       <Firewall id="id43EC5DDC2355" host_OS="freebsd" inactive="False" lastCompiled="1215308407" lastInstalled="0" lastModified="1215308308" platform="pf" version="" name="firewall38" comment="testing rules with tag service" ro="False">
         <NAT id="id43EC5E1F2355" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id43EC5E2E2355" disabled="False" position="0" comment="">
+          <NATRule id="id43EC5E2E2355" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -7263,7 +7268,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43EC5E6E2355" disabled="False" position="1" comment="">
+          <NATRule id="id43EC5E6E2355" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -7662,7 +7667,7 @@
       </Firewall>
       <Firewall id="id43F7DBEE31316" host_OS="openbsd" inactive="False" lastCompiled="1157930807" lastInstalled="0" lastModified="1200415192" platform="pf" version="" name="firewall3" comment="testing NAT rules with multiple objects in TSrc and TDst and NAT rule options" ro="False">
         <NAT id="id43F7DC6531316" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id43F7DC6631316" disabled="False" position="0" comment="">
+          <NATRule id="id43F7DC6631316" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -7690,7 +7695,7 @@
               <Option name="pf_static_port">False</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id43F7DCC331316" disabled="False" position="1" comment="">
+          <NATRule id="id43F7DCC331316" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -7723,7 +7728,7 @@
               <Option name="pf_static_port">False</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id43F7DCD731316" disabled="False" position="2" comment="">
+          <NATRule id="id43F7DCD731316" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -7751,7 +7756,7 @@
               <Option name="pf_static_port">False</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id43F7DD1431316" disabled="False" position="3" comment="">
+          <NATRule id="id43F7DD1431316" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -7779,7 +7784,7 @@
               <Option name="pf_static_port">True</Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id43F7E942514" disabled="False" position="4" comment="">
+          <NATRule id="id43F7E942514" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -7985,7 +7990,7 @@
       </Firewall>
       <Firewall id="id445DB34232739" host_OS="freebsd" inactive="False" lastCompiled="1249840380" lastInstalled="0" lastModified="1249840375" platform="pf" version="" name="firewall39" comment="testing branching rules" ro="False">
         <NAT id="id445DB3CF32739" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id445DB3D032739" disabled="False" position="0" comment="">
+          <NATRule id="id445DB3D032739" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -8006,7 +8011,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id445DB3DE32739" disabled="False" position="1" comment="">
+          <NATRule id="id445DB3DE32739" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -8510,7 +8515,7 @@
       </Firewall>
       <Firewall id="id44948F9F2976" host_OS="openbsd" inactive="False" lastCompiled="1157930816" lastInstalled="0" lastModified="1193632410" platform="pf" version="" name="firewall40" comment="testing Route action&#10;" ro="False">
         <NAT id="id449490392976" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id449490482976" disabled="False" position="0" comment="Translate source address&#10;for outgoing connections">
+          <NATRule id="id449490482976" disabled="False" position="0" action="Translate" comment="Translate source address&#10;for outgoing connections">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -8531,7 +8536,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id4494A6FF3539" disabled="False" position="1" comment="Translate source address&#10;for outgoing connections">
+          <NATRule id="id4494A6FF3539" disabled="False" position="1" action="Translate" comment="Translate source address&#10;for outgoing connections">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -8974,7 +8979,7 @@
       </Firewall>
       <Firewall id="id4699449021967" host_OS="openbsd" inactive="False" lastCompiled="1202682006" lastInstalled="0" lastModified="1202681966" platform="pf" version="3.x" name="firewall10-1" comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;" ro="False">
         <NAT id="id469944D321967" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id469944D421967" disabled="True" position="0" comment="">
+          <NATRule id="id469944D421967" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -8995,7 +9000,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id469944E221967" disabled="False" position="1" comment="">
+          <NATRule id="id469944E221967" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -9270,7 +9275,7 @@
       </Firewall>
       <Firewall id="id4699570022254" host_OS="openbsd" inactive="False" lastCompiled="1249943166" lastInstalled="0" lastModified="1249943161" platform="pf" version="4.x" name="firewall10-2" comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;" ro="False">
         <NAT id="id4699573822254" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id4699573922254" disabled="True" position="0" comment="">
+          <NATRule id="id4699573922254" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -9291,7 +9296,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id4699574722254" disabled="False" position="1" comment="">
+          <NATRule id="id4699574722254" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -9570,7 +9575,7 @@
       </Firewall>
       <Firewall id="id469948EA22616" host_OS="openbsd" inactive="False" lastCompiled="1202682008" lastInstalled="0" lastModified="1202681977" platform="pf" version="3.x" name="firewall10-3" comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; ON&#10;" ro="False">
         <NAT id="id4699492222616" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id4699492322616" disabled="True" position="0" comment="">
+          <NATRule id="id4699492322616" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -9591,7 +9596,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id4699493122616" disabled="False" position="1" comment="">
+          <NATRule id="id4699493122616" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -9866,7 +9871,7 @@
       </Firewall>
       <Firewall id="id4699494C22616" host_OS="openbsd" inactive="False" lastCompiled="1202682010" lastInstalled="0" lastModified="1202681983" platform="pf" version="4.x" name="firewall10-4" comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; is ON&#10;" ro="False">
         <NAT id="id4699498422616" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id4699498522616" disabled="True" position="0" comment="">
+          <NATRule id="id4699498522616" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -9887,7 +9892,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id4699499322616" disabled="False" position="1" comment="">
+          <NATRule id="id4699499322616" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -10162,7 +10167,7 @@
       </Firewall>
       <Firewall id="id46F605DE10002" host_OS="openbsd" inactive="False" lastCompiled="1202682011" lastInstalled="0" lastModified="1202681989" platform="pf" version="3.x" name="firewall10-5" comment="PF 3.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; ON&#10;Using &quot;pass all outgoing&quot;&#10;" ro="False">
         <NAT id="id46F6061610002" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id46F6061710002" disabled="True" position="0" comment="">
+          <NATRule id="id46F6061710002" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -10183,7 +10188,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id46F6062510002" disabled="False" position="1" comment="">
+          <NATRule id="id46F6062510002" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -10493,7 +10498,7 @@
       </Firewall>
       <Firewall id="id46F6064010002" host_OS="openbsd" inactive="False" lastCompiled="1202682012" lastInstalled="0" lastModified="1202681995" platform="pf" version="4.x" name="firewall10-6" comment="PF 4.x, testing &#10;&quot;flags S/SA keep state&quot;&#10;&quot;Accept tcp sessions opened&#10;prior to restart&quot; is ON&#10;Using &quot;pass all outgoing&quot;&#10;" ro="False">
         <NAT id="id46F6067810002" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id46F6067910002" disabled="True" position="0" comment="">
+          <NATRule id="id46F6067910002" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -10514,7 +10519,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id46F6068710002" disabled="False" position="1" comment="">
+          <NATRule id="id46F6068710002" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -10789,7 +10794,7 @@
       </Firewall>
       <Firewall id="id476458AA9697" host_OS="openbsd" inactive="False" lastCompiled="1157930816" lastInstalled="0" lastModified="1237954922" platform="pf" version="" name="firewall40-1" comment="testing Route action&#10;with load balancing&#10;" ro="False">
         <NAT id="id476458FA9697" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id476458FB9697" disabled="False" position="0" comment="Translate source address&#10;for outgoing connections">
+          <NATRule id="id476458FB9697" disabled="False" position="0" action="Translate" comment="Translate source address&#10;for outgoing connections">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -10810,7 +10815,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id476459099697" disabled="False" position="1" comment="Translate source address&#10;for outgoing connections">
+          <NATRule id="id476459099697" disabled="False" position="1" action="Translate" comment="Translate source address&#10;for outgoing connections">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -13835,7 +13840,7 @@
       </Firewall>
       <Firewall id="id530B20443" host_OS="openbsd" inactive="False" lastCompiled="1215308098" lastInstalled="0" lastModified="1215308090" platform="pf" version="" name="firewall63" comment="testing tos matching" ro="False">
         <NAT id="id533820443" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id533920443" disabled="True" position="0" comment="">
+          <NATRule id="id533920443" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -14114,7 +14119,7 @@
       </Firewall>
       <Firewall id="id14540X3490" host_OS="openbsd" inactive="False" lastCompiled="1226899264" lastInstalled="0" lastModified="1226899257" platform="pf" version="" name="firewall20" comment="firewall using proxy arp" ro="False">
         <NAT id="id14569X3490" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id32714X3490" disabled="False" group="" position="0" comment="">
+          <NATRule id="id32714X3490" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -14135,7 +14140,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id26641X3490" disabled="False" position="1" comment="">
+          <NATRule id="id26641X3490" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -14156,7 +14161,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id32698X3490" disabled="False" group="" position="2" comment="">
+          <NATRule id="id32698X3490" disabled="False" group="" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -14177,7 +14182,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id63096X3490" disabled="False" group="" position="3" comment="">
+          <NATRule id="id63096X3490" disabled="False" group="" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -14930,7 +14935,7 @@
       </Firewall>
       <Firewall id="id78969X23273" host_OS="openbsd" inactive="False" lastCompiled="1244584306" lastInstalled="1142003872" lastModified="1244586784" platform="pf" version="4.x" name="firewall12" comment="This firewall does not do NAT for addresses, but translates port for a server&#10;" ro="False">
         <NAT id="id79033X23273" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id79034X23273" disabled="True" position="0" comment="">
+          <NATRule id="id79034X23273" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -14951,7 +14956,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id79067X23273" disabled="True" position="1" comment="">
+          <NATRule id="id79067X23273" disabled="True" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -14972,7 +14977,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id79099X23273" disabled="True" position="2" comment="">
+          <NATRule id="id79099X23273" disabled="True" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -14993,49 +14998,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id79131X23273" disabled="True" position="3" comment="">
-            <OSrc neg="False">
-              <ObjectRef ref="sysid0"/>
-            </OSrc>
-            <ODst neg="False">
-              <ObjectRef ref="id78969X23273"/>
-            </ODst>
-            <OSrv neg="False">
-              <ServiceRef ref="tcp-HTTP"/>
-            </OSrv>
-            <TSrc neg="False">
-              <ObjectRef ref="sysid0"/>
-            </TSrc>
-            <TDst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </TDst>
-            <TSrv neg="False">
-              <ServiceRef ref="id78996X23273"/>
-            </TSrv>
-            <NATRuleOptions/>
-          </NATRule>
-          <NATRule id="id79164X23273" disabled="False" position="4" comment="">
-            <OSrc neg="False">
-              <ObjectRef ref="sysid0"/>
-            </OSrc>
-            <ODst neg="False">
-              <ObjectRef ref="id78969X23273"/>
-            </ODst>
-            <OSrv neg="False">
-              <ServiceRef ref="tcp-HTTP"/>
-            </OSrv>
-            <TSrc neg="False">
-              <ObjectRef ref="sysid0"/>
-            </TSrc>
-            <TDst neg="False">
-              <ObjectRef ref="id78969X23273"/>
-            </TDst>
-            <TSrv neg="False">
-              <ServiceRef ref="id78996X23273"/>
-            </TSrv>
-            <NATRuleOptions/>
-          </NATRule>
-          <NATRule id="id79197X23273" disabled="True" position="5" comment="">
+          <NATRule id="id79131X23273" disabled="True" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -15056,7 +15019,49 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id79229X23273" disabled="True" position="6" comment="">
+          <NATRule id="id79164X23273" disabled="False" position="4" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id78969X23273"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id78969X23273"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id78996X23273"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id79197X23273" disabled="True" position="5" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id78969X23273"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="id78996X23273"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id79229X23273" disabled="True" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -15077,7 +15082,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id79295X23273" disabled="False" position="7" comment="">
+          <NATRule id="id79295X23273" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -15098,7 +15103,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id79328X23273" disabled="True" group="" position="8" comment="port-only translation">
+          <NATRule id="id79328X23273" disabled="True" group="" position="8" action="Translate" comment="port-only translation">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -15119,7 +15124,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id79361X23273" disabled="False" position="9" comment="">
+          <NATRule id="id79361X23273" disabled="False" position="9" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -15140,7 +15145,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id79394X23273" disabled="False" group="" position="10" comment="SDNAT ">
+          <NATRule id="id79394X23273" disabled="False" group="" position="10" action="Translate" comment="SDNAT ">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -15161,7 +15166,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id80398X23273" disabled="False" group="" position="11" comment="SDNAT with source port">
+          <NATRule id="id80398X23273" disabled="False" group="" position="11" action="Translate" comment="SDNAT with source port">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -15182,7 +15187,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id80431X23273" disabled="False" group="" position="12" comment="SDNAT with dest port">
+          <NATRule id="id80431X23273" disabled="False" group="" position="12" action="Translate" comment="SDNAT with dest port">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -15203,7 +15208,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id80464X23273" disabled="False" group="" position="13" comment="SDNAT&#10;translate src and dst addresses&#10;and src and dst ports">
+          <NATRule id="id80464X23273" disabled="False" group="" position="13" action="Translate" comment="SDNAT&#10;translate src and dst addresses&#10;and src and dst ports">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -15224,7 +15229,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id80497X23273" disabled="False" group="" position="14" comment="Matches destination port, translates source port">
+          <NATRule id="id80497X23273" disabled="False" group="" position="14" action="Translate" comment="Matches destination port, translates source port">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -15245,7 +15250,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id80530X23273" disabled="True" group="" position="15" comment="invalid rule">
+          <NATRule id="id80530X23273" disabled="True" group="" position="15" action="Translate" comment="invalid rule">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -15803,7 +15808,7 @@
       </Firewall>
       <Firewall id="id18609X75509" host_OS="openbsd" inactive="False" lastCompiled="1253295658" lastInstalled="0" lastModified="1253295652" platform="pf" version="" name="firewall70" comment="testing for unpotected interfaces" ro="False">
         <NAT id="id18677X75509" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id18678X75509" disabled="True" position="0" comment="">
+          <NATRule id="id18678X75509" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -16123,6 +16128,277 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
+      <Firewall id="id19494X46601" host_OS="freebsd" inactive="False" lastCompiled="1256083190" lastInstalled="0" lastModified="1256083185" platform="pf" version="4.x" name="firewall21" comment="branching in NAT rules" ro="False">
+        <NAT id="id19574X46601" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id19575X46601" disabled="False" position="0" action="NATBranch" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id28067X46601</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">none</Option>
+              <Option name="rule_name_accounting"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id36650X50270" disabled="False" group="" position="1" action="NATBranch" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id28067X46601</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">none</Option>
+              <Option name="rule_name_accounting"></Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id45141X50270" disabled="False" group="" position="2" action="NATBranch" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id19505X46601"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id28067X46601</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">none</Option>
+              <Option name="rule_name_accounting"></Option>
+            </NATRuleOptions>
+          </NATRule>
+        </NAT>
+        <NAT id="id28067X46601" name="NAT_1" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+          <NATRule id="id28068X46601" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id19494X46601"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+        </NAT>
+        <Policy id="id19513X46601" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id19562X46601" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+        </Policy>
+        <Routing id="id19603X46601" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <Interface id="id19500X46601" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+          <IPv4 id="id19503X46601" name="firewall21:en1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id19505X46601" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+          <IPv4 id="id45156X50270" name="firewall21:en0:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id19508X46601" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id19511X46601" name="firewall21:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="127.0.0.1">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject">ICMP net unreachable</Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="dyn_addr">False</Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="freebsd_ip_forward"></Option>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
+          <Option name="freebsd_ipv6_forward"></Option>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_pfctl">/usr/local/bin/pfctl</Option>
+          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">True</Option>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
+          <Option name="limit_suffix">/day</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">0</Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="load_modules">False</Option>
+          <Option name="log_all_dropped">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">debug</Option>
+          <Option name="log_limit_suffix">/second</Option>
+          <Option name="log_limit_value">0</Option>
+          <Option name="log_prefix"></Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="pass_all_out">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="platform">iptables</Option>
+          <Option name="proxy_arp">False</Option>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="use_ip_tool">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
     </ObjectGroup>
     <IntervalGroup id="stdid11_1" name="Time" comment="" ro="False"/>
     <ObjectRef ref="id483F5B7623190"/>
@@ -16179,7 +16455,7 @@
     <ObjectGroup id="id415276D6" name="Firewalls" comment="" ro="False">
       <Firewall id="id3AF5A2BA" host_OS="openbsd" inactive="False" lastCompiled="1172032243" lastInstalled="1172032344" lastModified="1212609898" platform="pf" version="" name="labfw-openbsd" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" ro="False">
         <NAT id="id3AF5A2BD" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id414E693E" disabled="False" position="0" comment="">
+          <NATRule id="id414E693E" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id414C70BE"/>
             </OSrc>
@@ -16200,7 +16476,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id414E7DF6" disabled="False" position="1" comment="">
+          <NATRule id="id414E7DF6" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id414C70BE"/>
               <ObjectRef ref="id414C5C51"/>
@@ -16591,7 +16867,7 @@
       </Firewall>
       <Firewall id="id42B5D8FC" host_OS="freebsd" inactive="True" lastCompiled="1157930826" lastInstalled="0" lastModified="1147032998" platform="pf" version="" name="labfw-fbsd" comment="" ro="False">
         <NAT id="id42B5D93E" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id42B5D93F" disabled="False" position="0" comment="">
+          <NATRule id="id42B5D93F" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id414C70BE"/>
             </OSrc>
@@ -17756,7 +18032,7 @@
     <ObjectGroup id="id4387B44718346" name="Firewalls" comment="" ro="False">
       <Firewall id="id81411X3490" host_OS="openbsd" inactive="False" lastCompiled="1226899264" lastInstalled="0" lastModified="1226899486" platform="pf" version="" name="firewall20" comment="firewall using proxy arp" ro="False">
         <NAT id="id81452X3490" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id81453X3490" disabled="False" group="" position="0" comment="">
+          <NATRule id="id81453X3490" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id87753X3490"/>
             </OSrc>
@@ -17777,7 +18053,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id81467X3490" disabled="False" position="1" comment="">
+          <NATRule id="id81467X3490" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id87753X3490"/>
             </OSrc>
@@ -17798,7 +18074,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id81481X3490" disabled="False" group="" position="2" comment="">
+          <NATRule id="id81481X3490" disabled="False" group="" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id87753X3490"/>
             </OSrc>
@@ -17819,7 +18095,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id81495X3490" disabled="False" group="" position="3" comment="">
+          <NATRule id="id81495X3490" disabled="False" group="" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id87753X3490"/>
             </OSrc>

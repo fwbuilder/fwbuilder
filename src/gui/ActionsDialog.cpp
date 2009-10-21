@@ -275,6 +275,11 @@ void ActionsDialog::setRule(Rule *r)
 
     editor = DialogFactory::getActionDialogPageName(f, r);
 
+    if (fwbdebug)
+        qDebug() << "ActionsDialog::setRule"
+                 << "Action: " << getRuleAction(rule)
+                 << "editor: " << editor.c_str();
+
     branchNameInput = NULL;
 
     if (ropt->getInt("ipfw_classify_method") == DUMMYNETPIPE)

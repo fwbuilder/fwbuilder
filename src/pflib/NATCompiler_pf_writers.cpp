@@ -230,6 +230,38 @@ bool NATCompiler_pf::PrintRule::processNext()
         _printNATRuleOptions(rule);
 	compiler->output  << endl;
         break;
+
+    case NATRule::NATBranch:
+    {
+        RuleSet *ruleset = rule->getBranch();
+        string ruleset_name;
+        if (ruleset!=NULL)
+        {
+             ruleset_name = ruleset->getName();
+        } else
+        {
+            compiler->abort(
+                rule, 
+                "Branching rule refers ruleset that does not exist");
+            // in test mode compiler->abort() does not really abort the program
+            ruleset_name = "UNKNOWN";
+        }
+        compiler->output << "anchor \"" << ruleset_name << "\" ";
+
+        if (iface_name!="") compiler->output << "on " << iface_name << " ";
+        if (!osrv->isAny() || !osrcrel->isAny() || !odstrel->isAny())
+        {
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr( osrcrel );
+            compiler->output  << "to ";
+            _printREAddr( odstrel );
+            _printPort(osrv, true);
+        }
+	compiler->output  << endl;
+    }
+    break;
+
     default: break;
     }
 
