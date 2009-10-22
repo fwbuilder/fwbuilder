@@ -327,46 +327,30 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
                 policy_af,
                 minus_n_commands_nat)) empty_output = false;
 
-        Policy *top_policy = NULL;
-
-        for (list<FWObject*>::iterator p=all_policies.begin();
-             p!=all_policies.end(); ++p )
+        for (int all_top = 0; all_top < 2; ++all_top)
         {
-            Policy *policy = Policy::cast(*p);
-            if (!policy->matchingAddressFamily(policy_af)) continue;
-            if (policy->isTop())
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p )
             {
-                top_policy = policy;
-                continue;
+                Policy *policy = Policy::cast(*p);
+                if (!policy->matchingAddressFamily(policy_af)) continue;
+
+                if (policy->isTop() && all_top == 0) continue;
+                if (!policy->isTop() && all_top == 1) continue;
+
+                if (! processPolicyRuleSet(
+                        fw,
+                        policy,
+                        single_rule_id,
+                        filter_rules_stream,
+                        mangle_rules_stream,
+                        automaitc_rules_stream,
+                        oscnf.get(),
+                        policy_af,
+                        minus_n_commands_filter,
+                        minus_n_commands_mangle)) empty_output = false;
             }
-
-            if (! processPolicyRuleSet(
-                    fw,
-                    policy,
-                    single_rule_id,
-                    filter_rules_stream,
-                    mangle_rules_stream,
-                    automaitc_rules_stream,
-                    oscnf.get(),
-                    policy_af,
-                    minus_n_commands_filter,
-                    minus_n_commands_mangle)) empty_output = false;
         }
-
-        if (top_policy &&
-            ! processPolicyRuleSet(
-                fw,
-                top_policy,
-                single_rule_id,
-                filter_rules_stream,
-                mangle_rules_stream,
-                automaitc_rules_stream,
-                oscnf.get(),
-                policy_af,
-                minus_n_commands_filter,
-                minus_n_commands_mangle)) empty_output = false;
-
-
 
         if (!empty_output && !single_rule_compile_on)
         {
