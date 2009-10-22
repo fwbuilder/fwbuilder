@@ -201,7 +201,6 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
     list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
     int routing_rules_count = 0;
-    bool have_nat = false;
     bool have_ipv6 = false;
 
     // track chains in each table separately. Can we have the same

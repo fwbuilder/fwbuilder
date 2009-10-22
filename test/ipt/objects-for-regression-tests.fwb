@@ -1783,18 +1783,11 @@
     <ObjectRef ref="if-FW-firewall2-eth1"/>
     <ObjectRef ref="if-FW-firewall2-eth1-ipv4"/>
     <IPv4 id="id48995X39861" name="Address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id48792X29790"/>
-    <ObjectRef ref="host-hostA"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id48789X29790"/>
     <ObjectRef ref="id48789X29790"/>
     <Interface id="id48789X29790" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.200" comment="VLAN interface" ro="False">
       <InterfaceOptions/>
     </Interface>
-    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -2981,7 +2974,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1251648535" lastInstalled="1142003872" lastModified="1247979693" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1251648535" lastInstalled="1142003872" lastModified="1256238759" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -44563,7 +44556,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
       </Firewall>
       <Firewall id="id48783X29790" host_OS="linux24" inactive="False" lastCompiled="1256067005" lastInstalled="0" lastModified="1256066997" platform="iptables" version="" name="firewall80" comment="Branch rules in NAT" ro="False">
         <NAT id="id48857X29790" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id138652X29790" disabled="False" group="" position="0" action="Branch" comment="Branch rule with actual translation. Translation is ignored and warning should be issued">
+          <NATRule id="id138652X29790" disabled="False" group="" position="0" action="NATBranch" comment="Branch rule with actual translation. Translation is ignored and warning should be issued">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -44607,7 +44600,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="rule_name_accounting"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id116180X29790" disabled="False" position="1" action="Branch" comment="DNAT Rule">
+          <NATRule id="id116180X29790" disabled="False" position="1" action="NATBranch" comment="DNAT Rule">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>

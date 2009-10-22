@@ -40,10 +40,13 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/TagService.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Host.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/DNSName.h"
@@ -2131,19 +2134,53 @@ bool NATCompiler_ipt::AssignInterface::processNext()
         }
     }
 
-    switch (rule->getRuleType()) {
+    switch (rule->getRuleType())
+    {
     case NATRule::SNAT:
     case NATRule::Masq:
     {
-        Address* a=compiler->getFirstTSrc(rule);
+        Address* a = compiler->getFirstTSrc(rule);
+        Interface *iface = Interface::cast(a);
 
-        if ( (Interface::isA(a) || IPv4::isA(a)) && a->isChildOf(compiler->fw))
+        if (IPv4::isA(a) || IPv6::isA(a))
         {
-            FWObject *p=a;
-            while ( ! Interface::isA(p) ) p=p->getParent();
-            rule->setInterfaceId( p->getId() );
-            tmp_queue.push_back(rule);
-            return true;
+            iface = Interface::cast(a->getParent());
+        }
+
+        if (iface)
+        {
+            if (Cluster::isA(iface->getParentHost()) &&
+                iface->isFailoverInterface())
+            {
+                FWObject *failover_group =
+                    iface->getFirstByType(FailoverClusterGroup::TYPENAME);
+
+                if (failover_group)
+                {
+                    for (FWObjectTypedChildIterator it =
+                             failover_group->findByType(FWObjectReference::TYPENAME);
+                         it != it.end(); ++it)
+                    {
+                        Interface *fw_iface = Interface::cast(FWObjectReference::getObject(*it));
+                        assert(fw_iface);
+                        if (fw_iface->isChildOf(compiler->fw))
+                        {
+                            iface = fw_iface;
+                            rule->setInterfaceId(iface->getId());
+                            tmp_queue.push_back(rule);
+                            return true;
+                        }
+                    }
+                }
+            } else
+            {
+                if (iface->isChildOf(compiler->fw))
+                {
+                    rule->setInterfaceId(iface->getId());
+                    tmp_queue.push_back(rule);
+                    return true;
+                }
+            }
         }
 
 /* if we appear here, then TSrc is not an interface or address of an
