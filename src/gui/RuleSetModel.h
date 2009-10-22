@@ -77,6 +77,20 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ActionDesc
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class ActionDesc
+{
+    public:
+    QString actionName;
+    QString actionNameForPlatform;
+    QString parameters;
+};
+
+Q_DECLARE_METATYPE(ActionDesc)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RuleSetModel
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +115,7 @@ public:
     bool isGroup(const QModelIndex &index) const;
 
     libfwbuilder::RuleSet* getRuleSet() {return ruleset;}
-    libfwbuilder::Firewall* getFirewall();
+    libfwbuilder::Firewall* getFirewall() const;
 
     void insertNewRule();
 
@@ -153,6 +167,7 @@ protected:
     int columnForRuleElementType(QString);
 
     QString getPositionAsString(RuleNode *node) const;
+    ActionDesc getRuleActionDesc(libfwbuilder::Rule* r) const;
 
 private:
     libfwbuilder::RuleSet *ruleset;

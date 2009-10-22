@@ -458,7 +458,7 @@ bool RuleSetModel::isEmpty()
     return root->children.size() == 0;
 }
 
-Firewall* RuleSetModel::getFirewall()
+Firewall* RuleSetModel::getFirewall() const
 {
     FWObject *f=ruleset;
     while (f!=NULL && (!Firewall::isA(f) && !Cluster::isA(f))) f=f->getParent();
@@ -1103,6 +1103,16 @@ QString RuleSetModel::getPositionAsString(RuleNode *node) const
 {
     return QString::number(node->rule->getPosition());
 }
+
+ActionDesc RuleSetModel::getRuleActionDesc(Rule* r) const
+{
+    ActionDesc res;
+    res.actionName = getRuleAction(r);
+    res.actionNameForPlatform = getActionNameForPlatform(getFirewall(), r);
+    res.parameters = "";
+    return res;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PolicyModel
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1155,7 +1165,7 @@ QVariant PolicyModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNo
         switch (header[idx].type)
         {
             case ColDesc::Action :
-                res.setValue<QString>(getRuleAction(node->rule));
+                res.setValue<ActionDesc>(getRuleActionDesc(node->rule));
                 break;
 
             case ColDesc::Direction :
@@ -1263,7 +1273,7 @@ QVariant NatModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode*
         switch (header[idx].type)
         {
             case ColDesc::Action :
-                res.setValue<QString>(getRuleAction(node->rule));
+                res.setValue<ActionDesc>(getRuleActionDesc(node->rule));
                 break;
 
             case ColDesc::Options :
@@ -1281,6 +1291,8 @@ QVariant NatModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode*
     }
     return res;
 }
+
+
 
 QStringList NatModel::getRuleOptions(Rule* r) const
 {
