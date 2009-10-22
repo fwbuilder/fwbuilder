@@ -425,6 +425,11 @@ bool Compiler::checkForShadowing(const Service &o1, const Service &o2)
 	    int drs2=static_cast<const TCPUDPService*>(&o2)->getDstRangeStart();
 	    int dre2=static_cast<const TCPUDPService*>(&o2)->getDstRangeEnd();
 
+            if (srs1==0 && sre1==0) sre1 = 65536; 
+            if (drs1==0 && dre1==0) dre1 = 65536;
+            if (srs2==0 && sre2==0) sre2 = 65536;
+            if (drs2==0 && dre2==0) dre2 = 65536;
+
 	    bool res = (srs1>=srs2 && sre1<=sre2 && drs1>=drs2 && dre1<=dre2);
             RETURN(res);
 	}
