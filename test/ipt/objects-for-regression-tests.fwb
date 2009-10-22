@@ -1788,6 +1788,18 @@
     <Interface id="id48789X29790" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.200" comment="VLAN interface" ro="False">
       <InterfaceOptions/>
     </Interface>
+    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="sysid1"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id451488C42143"/>
+    <ServiceRef ref="tcp-HTTP"/>
+    <ServiceRef ref="tcp-IRC"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -26569,7 +26581,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4513DEA62143" host_OS="linux24" inactive="False" lastCompiled="1247364284" lastInstalled="0" lastModified="1158818614" platform="iptables" version="" name="test-shadowing-1" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is assumed to be part of any" ro="False">
+      <Firewall id="id4513DEA62143" host_OS="linux24" inactive="False" lastCompiled="1247364284" lastInstalled="0" lastModified="1256245133" platform="iptables" version="" name="test-shadowing-1" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is assumed to be part of any" ro="False">
         <NAT id="id4513DEAA2143" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id4513DEA92143" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id4513DECC2143" disabled="False" log="False" position="0" action="Accept" direction="Outbound" comment="shades rule below">
@@ -26646,7 +26658,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           </PolicyRule>
           <PolicyRule id="id4514B3E62143" disabled="False" log="False" position="3" action="Deny" direction="Both" comment="">
             <Src neg="False">
-              <ObjectRef ref="id451488C42143"/>
+              <ObjectRef ref="id4513DEA62143"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="sysid0"/>
@@ -26664,9 +26676,89 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id451509E52143" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="this rule should shadow rule below it because&#10;it uses IPService object with protocol 0">
+          <PolicyRule id="id451488B82143" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
               <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-All_TCP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id4513DEB42143" disabled="False" log="False" position="5" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id4513DEDA2143" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-All_UDP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id48966X73664" disabled="False" group="" log="False" position="7" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-ntp"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id451509E52143" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="this rule should shadow rule below it because&#10;it uses IPService object with protocol 0">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="sysid0"/>
@@ -26682,7 +26774,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id451509D42143" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id451509D42143" disabled="False" log="False" position="9" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -26690,67 +26782,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <ObjectRef ref="sysid0"/>
             </Dst>
             <Srv neg="False">
-              <ServiceRef ref="tcp-IRC"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id451488B82143" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4513DEB42143" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4513DEDA2143" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
+              <ServiceRef ref="icmp-ping_reply"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="sysid0"/>
@@ -44866,10 +44898,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <ICMPService id="icmp-Host_unreach" code="1" type="3" name="host_unreach" comment="" ro="False"/>
         <ICMPService id="icmp-Unreachables" code="-1" type="3" name="all ICMP unreachables" comment="" ro="False"/>
         <ICMPService id="id3C20EEB5" code="-1" type="-1" name="any ICMP" comment="" ro="False"/>
+        <ICMPService id="icmp-ping_reply" code="0" type="0" name="ping reply" comment="" ro="False"/>
         <ICMP6Service id="ipv6-icmp-ping_request" code="0" type="128" name="ipv6 ping request" comment="IPv6 ping request" ro="False"/>
         <ICMPService id="icmp-Time_exceeded" code="0" type="11" name="time exceeded" comment="ICMP messages of this type are needed for traceroute" ro="False"/>
         <ICMPService id="icmp-Time_exceeded_in_transit" code="1" type="11" name="time exceeded in transit" comment="" ro="False"/>
-        <ICMPService id="icmp-ping_reply" code="0" type="0" name="ping reply" comment="" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="stdid06" name="IP" comment="" ro="False">
         <IPService id="id3D703C8F" fragm="False" lsrr="False" protocol_num="47" rr="False" short_fragm="False" ssrr="False" ts="False" name="GRE" comment="Generic Routing Encapsulation&#10;" ro="False"/>
@@ -44885,6 +44917,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <UDPService id="udp-All_UDP" name="All UDP" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
         <UDPService id="udp-bootps" name="bootps" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="67" dst_range_end="67"/>
         <UDPService id="udp-bootpc" name="bootpc" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="68" dst_range_end="68"/>
+        <UDPService id="udp-ntp" name="ntp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="123" dst_range_end="123"/>
       </ServiceGroup>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
         <ServiceGroup id="sg-DHCP" name="DHCP" comment="" ro="False">
