@@ -1098,6 +1098,11 @@ void RuleSetModel::resetAllSizes()
 {
     root->resetAllSizes();
 }
+
+QString RuleSetModel::getPositionAsString(RuleNode *node) const
+{
+    return QString::number(node->rule->getPosition());
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PolicyModel
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1143,7 +1148,7 @@ QVariant PolicyModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNo
 
     if (index.column() == 0)
     {
-        res.setValue(QString::number(node->rule->getPosition()));
+        res.setValue(getPositionAsString(node));
     } else if (index.column() <= header.size())
     {
         int idx = index.column()-1;
@@ -1251,7 +1256,7 @@ QVariant NatModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleNode*
 
     if (index.column() == 0)
     {
-        res.setValue(QString::number(node->rule->getPosition()+1));
+        res.setValue(getPositionAsString(node));
     } else if (index.column() <= header.size())
     {
         int idx = index.column()-1;
@@ -1338,7 +1343,7 @@ QVariant RoutingModel::getRuleDataForDisplayRole(const QModelIndex &index, RuleN
 
     if (index.column() == 0)
     {
-        res.setValue(QString::number(node->rule->getPosition()+1));
+        res.setValue(getPositionAsString(node));
     } else if (index.column() <= header.size())
     {
         int idx = index.column()-1;

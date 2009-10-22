@@ -152,6 +152,8 @@ protected:
     void copyRuleContent(libfwbuilder::Rule *dst, libfwbuilder::Rule *src);
     int columnForRuleElementType(QString);
 
+    QString getPositionAsString(RuleNode *node) const;
+
 private:
     libfwbuilder::RuleSet *ruleset;
     RuleNode *root;
