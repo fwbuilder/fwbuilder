@@ -89,11 +89,9 @@ bool ProjectPanel::event(QEvent *event)
                     QCoreApplication::postEvent(
                         this, new updateObjectInTreeEvent(data_file,
                                                           f->getId()));
-                } else
-                {
-                    QCoreApplication::postEvent(
-                        this, new updateObjectInTreeEvent(data_file, obj->getId()));
                 }
+                QCoreApplication::postEvent(
+                    this, new updateObjectInTreeEvent(data_file, obj->getId()));
                 registerModifiedObject(obj);
                 ev->accept();
                 return true;
