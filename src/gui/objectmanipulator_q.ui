@@ -1,10 +1,11 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ObjectManipulator_q</class>
- <widget class="QWidget" name="ObjectManipulator_q" >
-  <property name="enabled" >
+ <widget class="QWidget" name="ObjectManipulator_q">
+  <property name="enabled">
    <bool>true</bool>
   </property>
-  <property name="geometry" >
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -12,31 +13,31 @@
     <height>289</height>
    </rect>
   </property>
-  <property name="sizePolicy" >
-   <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Tree of Objects</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout">
+   <property name="margin">
     <number>0</number>
    </property>
-   <property name="spacing" >
+   <property name="spacing">
     <number>2</number>
    </property>
-   <item row="1" column="0" >
-    <widget class="QStackedWidget" name="widgetStack" >
-     <widget class="QWidget" name="page" >
-      <property name="palette" >
+   <item row="2" column="0">
+    <widget class="QStackedWidget" name="widgetStack">
+     <widget class="QWidget" name="page">
+      <property name="palette">
        <palette>
         <active>
-         <colorrole role="Text" >
-          <brush brushstyle="SolidPattern" >
-           <color alpha="255" >
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
             <red>0</red>
             <green>0</green>
             <blue>0</blue>
@@ -45,9 +46,9 @@
          </colorrole>
         </active>
         <inactive>
-         <colorrole role="Text" >
-          <brush brushstyle="SolidPattern" >
-           <color alpha="255" >
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
             <red>0</red>
             <green>0</green>
             <blue>0</blue>
@@ -56,9 +57,9 @@
          </colorrole>
         </inactive>
         <disabled>
-         <colorrole role="Text" >
-          <brush brushstyle="SolidPattern" >
-           <color alpha="255" >
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
             <red>69</red>
             <green>69</green>
             <blue>69</blue>
@@ -71,16 +72,16 @@
      </widget>
     </widget>
    </item>
-   <item row="0" column="0" >
-    <widget class="QGroupBox" name="buttonGroup1" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="buttonGroup1">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="styleSheet" >
-      <string notr="true" >
+     <property name="styleSheet">
+      <string notr="true">
 QGroupBox {
 	margin-top: 1ex;
     padding: 0px;
@@ -92,88 +93,115 @@ QComboBox {
 }
 </string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
+     <layout class="QGridLayout">
+      <property name="margin">
        <number>2</number>
       </property>
-      <property name="spacing" >
+      <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="0" >
-       <widget class="QToolButton" name="backButton" >
-        <property name="toolTip" >
+      <item row="0" column="0">
+       <widget class="QToolButton" name="backButton">
+        <property name="toolTip">
          <string>Back</string>
         </property>
-        <property name="whatsThis" >
+        <property name="whatsThis">
          <string>Go back to the previous object</string>
         </property>
-        <property name="text" >
+        <property name="text">
          <string/>
         </property>
-        <property name="icon" >
-         <iconset resource="MainRes.qrc" >
+        <property name="icon">
+         <iconset resource="MainRes.qrc">
           <normaloff>:/Icons/Return</normaloff>:/Icons/Return</iconset>
         </property>
-        <property name="autoRaise" >
+        <property name="autoRaise">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" >
-       <widget class="Line" name="line1" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
+      <item row="0" column="1">
+       <widget class="Line" name="line1">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="maximumSize" >
+        <property name="maximumSize">
          <size>
           <width>32767</width>
           <height>16</height>
          </size>
         </property>
-        <property name="frameShape" >
+        <property name="frameShape">
          <enum>QFrame::VLine</enum>
         </property>
-        <property name="frameShadow" >
+        <property name="frameShadow">
          <enum>QFrame::Plain</enum>
         </property>
-        <property name="lineWidth" >
+        <property name="lineWidth">
          <number>1</number>
         </property>
-        <property name="orientation" >
+        <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
        </widget>
       </item>
-      <item row="0" column="3" >
-       <widget class="QComboBox" name="libs" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+      <item row="0" column="3">
+       <widget class="QComboBox" name="libs">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="styleSheet" >
-         <string notr="true" >QComboBox { padding: 2px;}
+        <property name="styleSheet">
+         <string notr="true">QComboBox { padding: 2px;}
 </string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2" >
-       <widget class="QToolButton" name="newButton" >
-        <property name="toolTip" >
+      <item row="0" column="2">
+       <widget class="QToolButton" name="newButton">
+        <property name="toolTip">
          <string>New Object</string>
         </property>
-        <property name="whatsThis" >
+        <property name="whatsThis">
          <string>Create New Object</string>
         </property>
-        <property name="icon" >
-         <iconset resource="MainRes.qrc" >
+        <property name="icon">
+         <iconset resource="MainRes.qrc">
           <normaloff>:/Icons/newobject_25.png</normaloff>:/Icons/newobject_25.png</iconset>
         </property>
-        <property name="autoRaise" >
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QToolButton" name="clearFilter">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="MainRes.qrc">
+          <normaloff>:/Icons/close.png</normaloff>:/Icons/close.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="filter">
+        <property name="editable">
          <bool>true</bool>
         </property>
        </widget>
@@ -183,9 +211,9 @@ QComboBox {
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="MainRes.qrc" />
+  <include location="MainRes.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -194,11 +222,11 @@ QComboBox {
    <receiver>ObjectManipulator_q</receiver>
    <slot>libChanged(int)</slot>
    <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+    <hint type="sourcelabel">
+     <x>74</x>
+     <y>31</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -210,11 +238,11 @@ QComboBox {
    <receiver>ObjectManipulator_q</receiver>
    <slot>back()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -226,11 +254,11 @@ QComboBox {
    <receiver>ObjectManipulator_q</receiver>
    <slot>newObject()</slot>
    <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>30</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -242,13 +270,29 @@ QComboBox {
    <receiver>ObjectManipulator_q</receiver>
    <slot>currentTreePageChanged(int)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clearFilter</sender>
+   <signal>clicked()</signal>
+   <receiver>filter</receiver>
+   <slot>clearEditText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>69</x>
+     <y>59</y>
     </hint>
    </hints>
   </connection>

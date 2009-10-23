@@ -146,8 +146,6 @@ protected:
 
     void showOrHideAttributesColumn();
 
-    void setFilter(QString);
- 
  public slots:
 
     void itemSelectionChanged();
@@ -157,6 +155,7 @@ protected:
     void itemExpanded(QTreeWidgetItem *itm);
     void itemOpened ();
     virtual void updateTreeIcons();
+    void setFilter(QString);
 
  signals:
 

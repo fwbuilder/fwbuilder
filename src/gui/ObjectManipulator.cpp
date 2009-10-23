@@ -964,6 +964,10 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     // apparently sortByColumn does not work in QT 4.5, use sortItems
     objTreeView->sortItems(0, Qt::AscendingOrder);
     objTreeView->header()->resizeSections(QHeaderView::ResizeToContents);
+
+    m_objectManipulator->filter->connect(m_objectManipulator->filter,
+                                         SIGNAL(editTextChanged(QString)),
+                                         objTreeView, SLOT(setFilter(QString)));
 }
 
 void ObjectManipulator::removeLib(FWObject* lib)

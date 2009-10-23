@@ -878,13 +878,14 @@ QSet<QTreeWidgetItem*> ObjectTreeView::resolveParents(QTreeWidgetItem *child)
 {
     QSet<QTreeWidgetItem*> parents;
     parents.insert(child);
+    if (child->parent() == NULL) return parents;
     parents.unite(resolveParents(child->parent()));
     return parents;
 }
 
 void ObjectTreeView::setFilter(QString text)
 {
-    QSet<QTreeWidgetItem *> items = this->findItems(text, Qt::MatchContains, 0).toSet();
+    QSet<QTreeWidgetItem *> items = this->findItems(text, Qt::MatchContains|Qt::MatchRecursive, 0).toSet();
     QSet<QTreeWidgetItem *> children, parents;
     QSet<QTreeWidgetItem *>::iterator iter;
     for(iter=items.begin(); iter!=items.end(); iter++)
@@ -899,7 +900,8 @@ void ObjectTreeView::setFilter(QString text)
     {
         if (items.contains((*witer))) (*witer)->setHidden(false);
         else (*witer)->setHidden(true);
+        witer++;
     }
-    this->expandAll();
+    if (!text.isEmpty()) this->expandAll();
 }
 
