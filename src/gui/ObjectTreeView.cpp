@@ -146,6 +146,9 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
     setDragDropMode( QAbstractItemView::DragDrop );
     setRootIsDecorated( TRUE );
 
+    connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this,
+            SLOT(updateFilter()));
+
 // disable sorting, otherwise gui crashes when built with
 // QT 4.3.4 (discovered on Ubuntu Hardy). Crash happened when
 // second object was added to any branch of the tree.
@@ -883,8 +886,14 @@ QSet<QTreeWidgetItem*> ObjectTreeView::resolveParents(QTreeWidgetItem *child)
     return parents;
 }
 
+void ObjectTreeView::updateFilter()
+{
+    setFilter(filter);
+}
+
 void ObjectTreeView::setFilter(QString text)
 {
+    filter = text;
     QSet<QTreeWidgetItem *> items = this->findItems(text, Qt::MatchContains|Qt::MatchRecursive, 0).toSet();
     QSet<QTreeWidgetItem *> children, parents;
     QSet<QTreeWidgetItem *>::iterator iter;

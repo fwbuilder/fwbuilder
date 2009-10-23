@@ -183,31 +183,26 @@ QComboBox {
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string/>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QToolButton" name="clearFilter">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="MainRes.qrc">
-          <normaloff>:/Icons/close.png</normaloff>:/Icons/close.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="filter">
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QToolButton" name="clearFilter">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="MainRes.qrc">
+         <normaloff>:/Icons/close.png</normaloff>:/Icons/close.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="filter">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

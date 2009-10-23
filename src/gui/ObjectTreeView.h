@@ -76,6 +76,8 @@ class ObjectTreeView : public QTreeWidget {
 
     QSet<QTreeWidgetItem*> resolveParents(QTreeWidgetItem*);
 
+    QString filter;
+
 protected:
 
     bool event( QEvent *event );
@@ -156,6 +158,7 @@ protected:
     void itemOpened ();
     virtual void updateTreeIcons();
     void setFilter(QString);
+    void updateFilter();
 
  signals:
 
