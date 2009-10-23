@@ -1,3 +1,22 @@
+2009-10-22  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetView.cpp (RuleSetView::itemDoubleClicked): Fixes #545.
+	Change in the GUI behavior: both left and right mouse click on an
+	object in rules should not select it in the tree. If user wants to
+	open it in the tree, they can use context menu item "Reveal in the
+	tree" or double click the object. This solves the following
+	inconvenient behavior (quoting from email):
+
+	1) anytime I copy something and then right click to paste into a
+	policy or nat it immediately changes the tree to the location of
+	the object under the cursor which is usually to the standard
+	library on any and then i have change it back to the user
+	library.
+
+	2) if I want to compile a rule, unless I am careful and right
+	click on the rule number instead of any field in the rule to
+	select compile it move the tree to whatever is under the cursor.
+
 2009-10-20  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler_pf_writers.cpp (PrintRule::processNext): Added

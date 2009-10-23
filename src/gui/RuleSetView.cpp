@@ -256,11 +256,16 @@ void RuleSetView::mouseReleaseEvent( QMouseEvent* ev )
 
     RuleSetModel* md = ((RuleSetModel*)model());
 
-    if (md->getRuleSet()->size()!=0 &&
-        mw->isEditorVisible() && !switchObjectInEditor( currentIndex()) )
+    if (md->getRuleSet()->size()!=0)
     {
         ev->accept();
     };
+
+    // if (md->getRuleSet()->size()!=0 &&
+    //     mw->isEditorVisible() && !switchObjectInEditor( currentIndex()) )
+    // {
+    //     ev->accept();
+    // };
 
 }
 
@@ -720,6 +725,8 @@ void RuleSetView::itemDoubleClicked(const QModelIndex& index)
 {
     if (!index.isValid()) return;
     if (index.row()<0) return;
+    if ( fwosm->selectedObject!=NULL)
+        openObjectInTree(fwosm->selectedObject);
     editSelected(index);
 }
 
@@ -1518,7 +1525,7 @@ void RuleSetView::selectObject(FWObject *object, const QModelIndex &index)
     setCurrentIndex(index);
     viewport()->update((viewport()->rect()));
 
-    openObjectInTree(object);
+    //openObjectInTree(object);
 }
 
 void RuleSetView::restoreSelection(bool sameWidget)
