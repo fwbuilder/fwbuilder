@@ -47,6 +47,8 @@
 #include <map>
 #include <list>
 
+#include "fwbuilder/FWObjectDatabase.h"
+
 class FirewallInstaller;
 
 class QEventLoop;

@@ -729,6 +729,8 @@ void FWWindow::compile()
     std::set<Firewall*> emp;
 
     instd = new instDialog(NULL, BATCH_COMPILE, emp);
+    connect(instd, SIGNAL(activateRule(QString, QString, int)),
+            this, SLOT(activateRule(QString, QString, int)));
     instd->show();
 
 //    id->exec();
@@ -742,8 +744,9 @@ void FWWindow::compile(set<Firewall*> vf)
 
 
     instDialog *id = new instDialog(NULL, BATCH_COMPILE, vf);
-
     instd = id;
+    connect(instd, SIGNAL(activateRule(QString, QString, int)),
+            this, SLOT(activateRule(QString, QString, int)));
     instd->show();
 
 //    id->exec();
@@ -755,6 +758,8 @@ void FWWindow::install(set<Firewall*> vf)
     instDialog *id = new instDialog(NULL, BATCH_INSTALL, vf);
 
     instd = id;
+    connect(instd, SIGNAL(activateRule(QString, QString, int)),
+            this, SLOT(activateRule(QString, QString, int)));
     instd->show();
 
 //    id->exec();
@@ -765,7 +770,8 @@ void FWWindow::install()
 {
     std::set<Firewall*> emp;
     instd = new instDialog(NULL, BATCH_INSTALL, emp);
-
+    connect(instd, SIGNAL(activateRule(QString, QString, int)),
+            this, SLOT(activateRule(QString, QString, int)));
     instd->show();
 
 //    id->exec();
@@ -1254,4 +1260,9 @@ void FWWindow::showReleaseNotes()
 void FWWindow::enableBackAction()
 {
     m_mainWindow->backAction->setEnabled(true);
+}
+
+void FWWindow::activateRule(QString, QString, int rule)
+{
+    this->activeProject()->getCurrentRuleSetView()->selectRE(this->activeProject()->getCurrentRuleSet()->getRuleByNum(rule), 1);
 }
