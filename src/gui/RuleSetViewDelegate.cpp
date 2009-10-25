@@ -227,8 +227,8 @@ void RuleSetViewDelegate::paintAction(QPainter *painter, const QStyleOptionViewI
     DrawingContext ctx = initContext(option.rect);
     ActionDesc actionDesc = v.value<ActionDesc>();
     drawSelectedFocus(painter, option, ctx.objectRect);
-    QString text = (st->getShowDirectionText())?actionDesc.actionNameForPlatform:"";
-    drawIconAndText(painter, ctx.drawRect,actionDesc.actionName,text);
+    QString text = (st->getShowDirectionText())?actionDesc.displayName:"";
+    drawIconAndText(painter, ctx.drawRect,actionDesc.name,text);
 }
 
 void RuleSetViewDelegate::paintOptions(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
@@ -499,7 +499,7 @@ QSize RuleSetViewDelegate::calculateCellSizeForIconAndText(const QModelIndex & i
 {
     QVariant v = index.data(Qt::DisplayRole);
     ActionDesc actionDesc = v.value<ActionDesc>();
-    QString text = (st->getShowDirectionText())?actionDesc.actionNameForPlatform:"";
+    QString text = (st->getShowDirectionText())?actionDesc.displayName:"";
 
     if (text == "Undefined") text = "Both";
 

@@ -767,9 +767,9 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
             {
                 FWObject *tag_object = PolicyRule::cast(rule)->getTagObject();
                 if (tag_object)
-                    par = tag_object->getName().c_str();
+                    par = QString::fromUtf8(tag_object->getName().c_str());
                 else
-                    par = PolicyRule::cast(rule)->getTagValue().c_str();
+                    par = QString::fromUtf8(PolicyRule::cast(rule)->getTagValue().c_str());
                 break;
             }
             case PolicyRule::Accounting :

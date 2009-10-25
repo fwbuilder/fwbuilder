@@ -1108,9 +1108,17 @@ QString RuleSetModel::getPositionAsString(RuleNode *node) const
 ActionDesc RuleSetModel::getRuleActionDesc(Rule* r) const
 {
     ActionDesc res;
-    res.actionName = getRuleAction(r);
-    res.actionNameForPlatform = getActionNameForPlatform(getFirewall(), r);
-    res.parameters = FWObjectPropertiesFactory::getRuleActionPropertiesRich(r);
+    res.name = getRuleAction(r);
+    res.displayName = getActionNameForPlatform(getFirewall(), r);
+    res.tooltip = FWObjectPropertiesFactory::getRuleActionPropertiesRich(r);
+
+    QString par = FWObjectPropertiesFactory::getRuleActionProperties(r);
+    if (!par.isEmpty()) {
+        if (par.length() > 20)
+            par = par.left(17) + "...";
+        res.displayName += ":"+par;
+    }
+
     return res;
 }
 

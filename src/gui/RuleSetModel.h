@@ -83,9 +83,9 @@ private:
 class ActionDesc
 {
     public:
-    QString actionName;
-    QString actionNameForPlatform;
-    QString parameters;
+    QString name;
+    QString displayName;
+    QString tooltip;
 };
 
 Q_DECLARE_METATYPE(ActionDesc)
