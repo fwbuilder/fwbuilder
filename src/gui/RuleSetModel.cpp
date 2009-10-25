@@ -35,9 +35,9 @@
 #include <QHash>
 #include <QRegExp>
 #include <QMessageBox>
+#include <QTime>
 
 #include "fwbuilder/FWObjectDatabase.h"
-
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/Resources.h"
@@ -46,8 +46,9 @@
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Interface.h"
+
 #include "RuleSetModel.h"
-#include <QTime>
+#include "FWObjectPropertiesFactory.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -1109,7 +1110,7 @@ ActionDesc RuleSetModel::getRuleActionDesc(Rule* r) const
     ActionDesc res;
     res.actionName = getRuleAction(r);
     res.actionNameForPlatform = getActionNameForPlatform(getFirewall(), r);
-    res.parameters = "";
+    res.parameters = FWObjectPropertiesFactory::getRuleActionPropertiesRich(r);
     return res;
 }
 
