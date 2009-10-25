@@ -2147,7 +2147,7 @@ bool RuleSetView::showToolTip(QEvent *event)
                 break;
 
             case ColDesc::Action:
-                toolTip = v.value<QString>();
+                toolTip = v.value<ActionDesc>().actionNameForPlatform;
                 break;
 
             default:
