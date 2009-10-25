@@ -1264,5 +1264,6 @@ void FWWindow::enableBackAction()
 
 void FWWindow::activateRule(QString, QString, int rule)
 {
-    this->activeProject()->getCurrentRuleSetView()->selectRE(this->activeProject()->getCurrentRuleSet()->getRuleByNum(rule), 1);
+    this->activeProject()->getCurrentRuleSetView()->selectionModel()->select(this->activeProject()->getCurrentRuleSetView()->model()->index(rule, 0, QModelIndex()), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+    //this->activeProject()->getCurrentRuleSetView()->selectRE(this->activeProject()->getCurrentRuleSet()->getRuleByNum(rule), 1);
 }
