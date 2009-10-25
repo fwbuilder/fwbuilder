@@ -6,23 +6,14 @@ QT += network
 
 # this should work, but it does not with 4.3.5, workaround below
 # QT += network dbus
-
 TARGET = fwbuilder
-
 include(../../qmake.inc)
-
 exists(qmake.inc):include( qmake.inc)
-
-contains( HAVE_QTDBUS, 1 ) { 
-  unix {
-    macx {
-        LIBS += -framework QtDBus
-    }
-    !macx {
-        # workaround for QT += dbus not working atm
-        LIBS += -lQtDBus
-    }
-  }
+contains( HAVE_QTDBUS, 1 ):unix { 
+    macx:LIBS += -framework \
+        QtDBus
+    !macx:# workaround for QT += dbus not working atm
+    LIBS += -lQtDBus
 }
 
 # This makes gcc compile this header file and store result in
@@ -34,11 +25,11 @@ contains( HAVE_QTDBUS, 1 ) {
 # control whether we build debug or release in ../../qmake.inc
 # CONFIG += precompile_header
 HEADERS += ../../config.h \
-	../../build_num \
+    ../../build_num \
     events.h \
     FWWindow.h \
     ProjectPanel.h \
-	BaseObjectDialog.h \
+    BaseObjectDialog.h \
     utils.h \
     utils_no_qt.h \
     Importer.h \
@@ -149,7 +140,7 @@ HEADERS += ../../config.h \
     ActionsDialog.h \
     SimpleTextView.h \
     DiscoveryDruid.h \
-	BlankDialog.h \
+    BlankDialog.h \
     DNSNameDialog.h \
     instOptionsDialog.h \
     instBatchOptionsDialog.h \
@@ -173,7 +164,8 @@ HEADERS += ../../config.h \
     openaisOptionsDialog.h \
     pfsyncOptionsDialog.h \
     check_update_url.h \
-    startup_tip_url.h
+    startup_tip_url.h \
+    AutocompletedComboBox.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -295,7 +287,7 @@ SOURCES += ProjectPanel.cpp \
     ActionsDialog.cpp \
     SimpleTextView.cpp \
     DiscoveryDruid.cpp \
-	BlankDialog.cpp \
+    BlankDialog.cpp \
     DNSNameDialog.cpp \
     ObjectTreeViewItem.cpp \
     InstallFirewallViewItem.cpp \
@@ -320,7 +312,8 @@ SOURCES += ProjectPanel.cpp \
     conntrackOptionsDialog.cpp \
     pfsyncOptionsDialog.cpp \
     heartbeatOptionsDialog.cpp \
-    openaisOptionsDialog.cpp
+    openaisOptionsDialog.cpp \
+    AutocompletedComboBox.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
@@ -389,7 +382,7 @@ FORMS = FWBMainWindow_q.ui \
     linksysadvanceddialog_q.ui \
     printingprogressdialog_q.ui \
     pagesetupdialog_q.ui \
-	blankdialog_q.ui \
+    blankdialog_q.ui \
     dnsnamedialog_q.ui \
     tagservicedialog_q.ui \
     actionsdialog_q.ui \

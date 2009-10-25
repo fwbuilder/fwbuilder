@@ -196,7 +196,7 @@ QComboBox {
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="filter">
+      <widget class="AutocompletedComboBox" name="filter">
        <property name="editable">
         <bool>true</bool>
        </property>
@@ -207,6 +207,13 @@ QComboBox {
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>AutocompletedComboBox</class>
+   <extends>QComboBox</extends>
+   <header>AutocompletedComboBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="MainRes.qrc"/>
  </resources>
@@ -282,8 +289,8 @@ QComboBox {
    <slot>clearEditText()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33</x>
-     <y>59</y>
+     <x>25</x>
+     <y>51</y>
     </hint>
     <hint type="destinationlabel">
      <x>69</x>
