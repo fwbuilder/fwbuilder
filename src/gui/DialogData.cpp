@@ -39,6 +39,7 @@
 #include <qcheckbox.h>
 #include <qradiobutton.h>
 #include <qtextedit.h>
+#include <QtDebug>
 
 #include <iostream>
 
@@ -217,17 +218,21 @@ void DialogData::saveAll()
  *  strings define what is stored in the object (counting strings in
  *  the array from 1).
  */
+                qDebug() << "i:" << i->attr;
+                qDebug() << "mapping" << i->mapping;
                 QStringList::iterator i1 = i->mapping.begin();
                 QStringList::iterator i2 = i->mapping.begin();
                 ++i2;
-                while (i2!=i->mapping.end())
+                while (i1!=i->mapping.end())
                 {
-                    if (fwbdebug) qDebug(QString("   (*i1)=%1").arg(*i1).toAscii().constData());
+//                    if (fwbdebug)
+                        qDebug(QString("   (*i1)=%1").arg(*i1).toAscii().constData());
 
                     if (s== (*i1)) { s= *i2; break; }
                     i1++; i1++;
                     i2++; i2++;
                 }
+                qDebug() << "done";
             }
             if (s.isEmpty()) s="";
             i->obj->setStr(i->attr.toLatin1().constData(), s.toLatin1().constData());
