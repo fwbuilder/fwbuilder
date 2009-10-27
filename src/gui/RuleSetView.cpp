@@ -147,8 +147,8 @@ void RuleSetView::configureGroups()
 }
 
 RuleSetView* RuleSetView::getRuleSetViewByType(ProjectPanel *project,
-                                                      RuleSet *ruleset,
-                                                      QWidget *parent)
+                                               RuleSet *ruleset,
+                                               QWidget *parent)
 {
     if (fwbdebug) qDebug("RuleSetView::getRuleSetViewByType");
     if (Policy::isA(ruleset))

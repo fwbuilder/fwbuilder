@@ -254,8 +254,7 @@ void ProjectPanel::reopenFirewall()
 
     SelectionMemento memento;
 
-    RuleSetView* rv = dynamic_cast<RuleSetView*>(
-        m_panel->ruleSets->currentWidget());
+    RuleSetView* rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
     if (rv) rv->saveCurrentRowColumn(memento);
 
     last_modified = db()->getTimeLastModified();
@@ -293,24 +292,29 @@ void ProjectPanel::reopenFirewall()
         qDebug("ProjectPanel::reopenFirewall(): checkpoint 4: "
                "dirty=%d last_modified=%s",
                db()->isDirty(), ctime(&last_modified));
-    
-    m_panel->ruleSets->addWidget(RuleSetView::getRuleSetViewByType(this, visibleRuleSet,NULL));
 
-    last_modified = db()->getTimeLastModified();
-    if (fwbdebug)
-        qDebug("ProjectPanel::reopenFirewall(): checkpoint 5: "
-               "dirty=%d last_modified=%s",
-               db()->isDirty(), ctime(&last_modified));
-    
-    m_panel->ruleSets->setCurrentIndex( currentPage );
-    rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
-    rv->restoreCurrentRowColumn(memento);
-    
-    changingTabs = false;
-    mainW->setEnabledAfterRF();
+    RuleSetView* rulesetview = 
+        RuleSetView::getRuleSetViewByType(this, visibleRuleSet, NULL);
+    if (rulesetview)
+    {
+        m_panel->ruleSets->addWidget(rulesetview);
 
-    m_panel->ruleSets->setUpdatesEnabled(true);
-    m_panel->ruleSets->show();
+        last_modified = db()->getTimeLastModified();
+        if (fwbdebug)
+            qDebug("ProjectPanel::reopenFirewall(): checkpoint 5: "
+                   "dirty=%d last_modified=%s",
+                   db()->isDirty(), ctime(&last_modified));
+    
+        m_panel->ruleSets->setCurrentIndex(currentPage);
+        rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+        rv->restoreCurrentRowColumn(memento);
+    
+        changingTabs = false;
+        mainW->setEnabledAfterRF();
+
+        m_panel->ruleSets->setUpdatesEnabled(true);
+        m_panel->ruleSets->show();
+    }
 }
 
 int  ProjectPanel::findFirewallInList(FWObject *f)
@@ -858,16 +862,16 @@ bool ProjectPanel::getDeleteMenuState(FWObject *obj)
     // also can't delete "top" policy ruleset
     if (del_menu_item_state && RuleSet::cast(obj))
     {
-        if (dynamic_cast<RuleSet*>(obj)->isTop()) del_menu_item_state = false;
-        else
-        {
+        //if (dynamic_cast<RuleSet*>(obj)->isTop()) del_menu_item_state = false;
+        //else
+        //{
             FWObject *fw = obj->getParent();
             // fw can be NULL if this ruleset is in the Deleted objects
             // library
             if (fw==NULL) return del_menu_item_state;
             list<FWObject*> child_objects = fw->getByType(obj->getTypeName());
             if (child_objects.size()==1) del_menu_item_state = false;
-        }
+        //}
     }
     return del_menu_item_state;
 }
