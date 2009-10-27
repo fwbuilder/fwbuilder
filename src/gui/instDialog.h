@@ -36,6 +36,7 @@
 
 #include "instOptionsDialog.h"
 #include "FirewallInstaller.h"
+#include "ProjectPanel.h"
 
 #include <qstring.h>
 #include <qstringlist.h>
@@ -90,6 +91,7 @@ class instDialog : public QDialog, public FakeWizard
     instConf cnf;
     Page1Operation page_1_op;
     FirewallInstaller *installer;
+    ProjectPanel *project;
         
     // proc is used to launch external oprocess, such as compiler or
     // user-defined installer script
@@ -261,7 +263,7 @@ public slots:
     void logItemClicked(QUrl);
 
 signals:
-    void activateRule(QString, QString, int);
+    void activateRule(ProjectPanel*, QString, QString, int);
 };
 
 

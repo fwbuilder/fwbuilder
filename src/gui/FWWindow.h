@@ -227,7 +227,7 @@ public slots:
 
     virtual void rollBackSelectionSameWidget();
     virtual void rollBackSelectionDifferentWidget();
-    void activateRule(QString, QString, int);
+    void activateRule(ProjectPanel*, QString, QString, int);
     
  public:
     Ui::FWBMainWindow_q *m_mainWindow;

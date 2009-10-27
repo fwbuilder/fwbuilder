@@ -44,6 +44,7 @@
 #include "FWObjectPropertiesFactory.h"
 #include "upgradePredicate.h"
 #include "ObjConflictResolutionDialog.h"
+#include "ObjectTreeViewItem.h"
 #include "RuleSetView.h"
 #include "ObjectEditor.h"
 #include "PrefsDialog.h"
@@ -728,9 +729,7 @@ void FWWindow::compile()
 {
     std::set<Firewall*> emp;
 
-    instd = new instDialog(NULL, BATCH_COMPILE, emp);
-    connect(instd, SIGNAL(activateRule(QString, QString, int)),
-            this, SLOT(activateRule(QString, QString, int)));
+    instd = new instDialog(this, BATCH_COMPILE, emp);
     instd->show();
 
 //    id->exec();
@@ -743,10 +742,8 @@ void FWWindow::compile(set<Firewall*> vf)
         qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
 
 
-    instDialog *id = new instDialog(NULL, BATCH_COMPILE, vf);
+    instDialog *id = new instDialog(this, BATCH_COMPILE, vf);
     instd = id;
-    connect(instd, SIGNAL(activateRule(QString, QString, int)),
-            this, SLOT(activateRule(QString, QString, int)));
     instd->show();
 
 //    id->exec();
@@ -755,11 +752,9 @@ void FWWindow::compile(set<Firewall*> vf)
 
 void FWWindow::install(set<Firewall*> vf)
 {
-    instDialog *id = new instDialog(NULL, BATCH_INSTALL, vf);
+    instDialog *id = new instDialog(this, BATCH_INSTALL, vf);
 
     instd = id;
-    connect(instd, SIGNAL(activateRule(QString, QString, int)),
-            this, SLOT(activateRule(QString, QString, int)));
     instd->show();
 
 //    id->exec();
@@ -769,9 +764,7 @@ void FWWindow::install(set<Firewall*> vf)
 void FWWindow::install()
 {
     std::set<Firewall*> emp;
-    instd = new instDialog(NULL, BATCH_INSTALL, emp);
-    connect(instd, SIGNAL(activateRule(QString, QString, int)),
-            this, SLOT(activateRule(QString, QString, int)));
+    instd = new instDialog(this, BATCH_INSTALL, emp);
     instd->show();
 
 //    id->exec();
@@ -1262,8 +1255,37 @@ void FWWindow::enableBackAction()
     m_mainWindow->backAction->setEnabled(true);
 }
 
-void FWWindow::activateRule(QString, QString, int rule)
+
+void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setname, int rule)
 {
-    this->activeProject()->getCurrentRuleSetView()->selectionModel()->select(this->activeProject()->getCurrentRuleSetView()->model()->index(rule, 0, QModelIndex()), QItemSelectionModel::Select | QItemSelectionModel::Rows);
-    //this->activeProject()->getCurrentRuleSetView()->selectRE(this->activeProject()->getCurrentRuleSet()->getRuleByNum(rule), 1);
+    project->activateWindow();
+    ObjectTreeViewItem* firewall = NULL;
+    foreach(QTreeWidgetItem* item,
+            project->getCurrentObjectTree()->findItems(fwname,
+                                     Qt::MatchExactly | Qt::MatchRecursive, 0))
+    {
+        if(((ObjectTreeViewItem*)item)->getFWObject()->getTypeName() == "Firewall")
+        {
+            firewall = (ObjectTreeViewItem*) item;
+            break;
+        }
+    }
+    if (firewall == NULL) return;
+
+    foreach(QTreeWidgetItem* item,
+            project->getCurrentObjectTree()->findItems(setname,
+                                     Qt::MatchExactly | Qt::MatchRecursive, 0))
+    {
+        if (item->parent() == firewall)
+        {
+            project->getCurrentObjectTree()->clearSelection();
+            item->setSelected(true);
+            this->openEditor(((ObjectTreeViewItem*)item)->getFWObject());
+            project->openRuleSet(((ObjectTreeViewItem*)item)->getFWObject());
+        }
+    }
+    this->activeProject()->getCurrentRuleSetView()->selectionModel()->select(
+            this->activeProject()->getCurrentRuleSetView()->model()->
+                index(rule, 0, QModelIndex()),
+                      QItemSelectionModel::Select | QItemSelectionModel::Rows);
 }

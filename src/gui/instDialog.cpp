@@ -87,6 +87,10 @@ instDialog::instDialog(QWidget* p,
                        BatchOperation op,
                        set<Firewall*> reqFirewalls_) : QDialog(p)
 {
+
+    connect(this, SIGNAL(activateRule(ProjectPanel*, QString, QString, int)),
+            p, SLOT(activateRule(ProjectPanel*, QString, QString, int)));
+
     m_dialog = new Ui::instDialog_q;
     m_dialog->setupUi(this);
 
@@ -437,6 +441,7 @@ void instDialog::findFirewalls()
     clusters.clear();
     
     ProjectPanel *active_project = mw->activeProject();
+    project = mw->activeProject();
 
     if (active_project)
     {
