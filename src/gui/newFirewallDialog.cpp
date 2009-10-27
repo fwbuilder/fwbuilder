@@ -454,11 +454,21 @@ void newFirewallDialog::showPage(const int page)
         {
 
             MessageBoxUpgradePredicate upgrade_predicate(this);
-
             tmpldb = new FWObjectDatabase();
             tmpldb->setReadOnly( false );
-            tmpldb->load( m_dialog->templaterFilePath->text().toAscii().data(),
-                          &upgrade_predicate, librespath);
+            try
+            {
+                tmpldb->load( m_dialog->templaterFilePath->text().toAscii().data(),
+                              &upgrade_predicate, librespath);
+            } 
+            catch (FWException &ex)
+            {
+                QMessageBox::critical(
+                    this,"Firewall Builder",
+                    tr("Error loading template library:\n%1").arg(ex.toString().c_str()),
+                    tr("&Continue"), QString::null,QString::null,
+                    0, 1 );
+            }
         }
 
         list<FWObject*> fl;
@@ -466,7 +476,6 @@ void newFirewallDialog::showPage(const int page)
         FWObjectTypedChildIterator libiter = tmpldb->findByType(Library::TYPENAME);
         for ( ; libiter!=libiter.end(); ++libiter)
             findFirewalls(*libiter, fl, false);
-
 
         QString icn = ":/Icons/Firewall/icon-tree";
 
