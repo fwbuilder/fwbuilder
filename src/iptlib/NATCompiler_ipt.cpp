@@ -527,18 +527,23 @@ bool NATCompiler_ipt::VerifyRules::processNext()
             rule, 
             "Load balancing rules are not supported.");
 
-    if (rule->getRuleType()==NATRule::NATBranch ) 
+    // Note that in -xt mode and in single rule compile compiler->abort
+    // does not really abort processing
+    if (rule->getRuleType()==NATRule::NATBranch)
     {
         RuleSet *branch = rule->getBranch();
         if (branch == NULL)
             compiler->abort(
                 rule, 
                 "Action 'Branch' needs NAT rule set to point to");
-        if (!NAT::isA(branch))
-            compiler->abort(
-                rule, 
-                "Action 'Branch' must point to a NAT rule set "
-                "(points to " + branch->getTypeName() + ")");
+        else
+        {
+            if (!NAT::isA(branch))
+                compiler->abort(
+                    rule, 
+                    "Action 'Branch' must point to a NAT rule set "
+                    "(points to " + branch->getTypeName() + ")");
+        }
     }
 
     if (rule->getRuleType()==NATRule::SNAT ) 
@@ -1879,8 +1884,14 @@ bool NATCompiler_ipt::splitNATBranchRule::processNext()
         {
             compiler->abort(rule,
                             "NAT branching rule misses branch rule set.");
-            // in case we are in the test mode and abort() does not really abort
+            // in case we are in the test mode and abort() does not
+            // really abort. Both the chain and the target are bogus
+            // and are needed only to make the compiler continue and
+            // produce some output, which will be shown to the user
+            // together with the error in single-rule compile mode
+            rule->setStr("ipt_chain", "PREROUTING");
             rule->setStr("ipt_target", "UNDEFINED");
+            tmp_queue.push_back(rule);
         }
     } else
         tmp_queue.push_back(rule);

@@ -509,11 +509,14 @@ bool NATCompiler_pf::VerifyRules::processNext()
             compiler->abort(
                 rule, 
                 "Action 'Branch' needs NAT rule set to point to");
-        if (!NAT::isA(branch))
-            compiler->abort(
-                rule, 
-                "Action 'Branch' must point to a NAT rule set "
-                "(points to " + branch->getTypeName() + ")");
+        else
+        {
+            if (!NAT::isA(branch))
+                compiler->abort(
+                    rule, 
+                    "Action 'Branch' must point to a NAT rule set "
+                    "(points to " + branch->getTypeName() + ")");
+        }
     }
 
     return true;

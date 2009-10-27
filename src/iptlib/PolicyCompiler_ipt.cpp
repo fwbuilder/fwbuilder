@@ -3200,7 +3200,8 @@ bool PolicyCompiler_ipt::decideOnTarget::processNext()
                 rule, 
                 string("Branching rule ") + rule->getLabel() +
                 " refers ruleset that does not exist");
-        rule->setStr("ipt_target", ruleset->getName());
+        else
+            rule->setStr("ipt_target", ruleset->getName());
         break;
     }
     default: ;

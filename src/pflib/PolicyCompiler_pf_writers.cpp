@@ -123,11 +123,17 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
     {
         RuleSet *ruleset = rule->getBranch();
         if (ruleset==NULL)
+        {
             compiler->abort(
                     rule, 
                     "Branching rule refers ruleset that does not exist");
-        string ruleset_name = ruleset->getName();
-        compiler->output << "anchor \"" << ruleset_name << "\" ";
+            // if we are in test mode or single-rule compile mode
+            compiler->output << "anchor \"UNDEFINED\" ";
+        }else
+        {
+            string ruleset_name = ruleset->getName();
+            compiler->output << "anchor \"" << ruleset_name << "\" ";
+        }
         break;
     }
     default:
