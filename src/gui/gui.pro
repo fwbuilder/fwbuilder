@@ -9,11 +9,15 @@ QT += network
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)
-contains( HAVE_QTDBUS, 1 ):unix { 
-    macx:LIBS += -framework \
-        QtDBus
-    !macx:# workaround for QT += dbus not working atm
-    LIBS += -lQtDBus
+contains( HAVE_QTDBUS, 1 ) {
+    unix {
+        macx {
+            LIBS += -framework QtDBus
+        }
+        !macx {
+            LIBS += -lQtDBus # workaround for QT += dbus not working atm
+        }
+    }
 }
 
 # This makes gcc compile this header file and store result in
