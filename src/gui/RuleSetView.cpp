@@ -1385,17 +1385,6 @@ void RuleSetView::addRuleAfterCurrent()
         mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
-
-//void RuleSetView::insertNewRuleOnTop()
-//{
-//    RuleSetModel* md = ((RuleSetModel*)model());
-//    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-//    if (md->getFirewall()==NULL) return;
-//
-//    QModelIndex index = md->begin().index();
-//
-//}
-
 void RuleSetView::insertNewRuleAtBottom()
 {
     RuleSetModel* md = ((RuleSetModel*)model());

@@ -117,7 +117,6 @@ public slots:
     void showContextMenu(const QPoint&);
 
     void insertRule();
-//    void insertNewRuleOnTop();
     void insertNewRuleAtBottom();
     void addRuleAfterCurrent();
     void moveRuleUp();
