@@ -34,10 +34,21 @@ FWObjectSelectionModel::FWObjectSelectionModel()
 
 void FWObjectSelectionModel::setSelected(FWObject * so, const QModelIndex &index)
 {
-    this->selectedObjectOld = this->selectedObject;
+    save();
     this->selectedObject = so;
-
     this->index = index;
+}
+
+void FWObjectSelectionModel::save()
+{
+    indexOld = index;
+    selectedObjectOld = selectedObject;
+}
+
+void FWObjectSelectionModel::restore()
+{
+    index = indexOld;
+    selectedObject = selectedObjectOld;
 }
 
 void FWObjectSelectionModel::reset()

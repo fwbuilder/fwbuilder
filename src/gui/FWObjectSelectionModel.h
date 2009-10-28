@@ -39,9 +39,12 @@ public:
     libfwbuilder::FWObject *selectedObject;
     libfwbuilder::FWObject *selectedObjectOld;
     QModelIndex index;
+    QModelIndex indexOld;
     FWObjectSelectionModel();
     void setSelected(libfwbuilder::FWObject *, const QModelIndex &index);
     void reset();
+    void save();
+    void restore();
 };
 
 

@@ -458,7 +458,7 @@ bool ObjectEditor::validateAndSave()
                 dialogs[current_dialog_idx],
                 "Firewall Builder",
                 tr("Object %1 has been modified but not saved.\n"
-                   "Do you want to save it ?").arg(opened->getName().c_str()),
+                   "Do you want to save it ?").arg(QString::fromUtf8(opened->getName().c_str())),
                 tr("&Save"), tr("&Discard"), tr("&Continue editing"),
                 0, 2 ) )
         {
