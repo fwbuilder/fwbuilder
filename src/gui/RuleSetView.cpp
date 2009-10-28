@@ -592,7 +592,12 @@ void RuleSetView::addGenericMenuItemsToContextMenu(QMenu *menu) const
 {
     if (((RuleSetModel*)model())->isEmpty())
         menu->addAction(tr("Insert Rule"), this, SLOT( insertRule() ));
-
+    else
+    {
+        menu->addAction(tr("Add new rule on top"), this, SLOT( insertRule()));
+        menu->addAction(tr("Add new rule at the bottom"), this, SLOT( insertNewRuleAtBottom()));
+    }
+    menu->addSeparator();
     menu->addAction(tr("Paste Rule"), this, SLOT( pasteRuleBelow()));
 }
 
@@ -1376,6 +1381,33 @@ void RuleSetView::addRuleAfterCurrent()
         QModelIndex lastSelectedIndex = selection.last();
         md->insertNewRule(lastSelectedIndex, true);
     }
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+}
+
+
+//void RuleSetView::insertNewRuleOnTop()
+//{
+//    RuleSetModel* md = ((RuleSetModel*)model());
+//    if(!isTreeReadWrite(this,md->getRuleSet())) return;
+//    if (md->getFirewall()==NULL) return;
+//
+//    QModelIndex index = md->begin().index();
+//
+//}
+
+void RuleSetView::insertNewRuleAtBottom()
+{
+    RuleSetModel* md = ((RuleSetModel*)model());
+    if(!isTreeReadWrite(this,md->getRuleSet())) return;
+    if (md->getFirewall()==NULL) return;
+
+    RuleSetModelIterator it = md->end();
+    --it;
+    QModelIndex index = it.index();
+
+    md->insertNewRule(index, true);
+
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
