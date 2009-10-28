@@ -1255,10 +1255,19 @@ void FWWindow::enableBackAction()
     m_mainWindow->backAction->setEnabled(true);
 }
 
-
 void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setname, int rule)
 {
-    project->activateWindow();
+    QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
+        QMdiArea::StackingOrder);
+    foreach(QMdiSubWindow* win, subwindows)
+    {
+        ProjectPanel *current = dynamic_cast<ProjectPanel*>(win->widget());
+        if (current->getFileName() == project->getFileName())
+        {
+            if (m_mainWindow->m_space->activeSubWindow() != win)
+                m_mainWindow->m_space->setActiveSubWindow(win);
+        }
+    }
     ObjectTreeViewItem* firewall = NULL;
     foreach(QTreeWidgetItem* item,
             project->getCurrentObjectTree()->findItems(fwname,
@@ -1284,8 +1293,9 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
             project->openRuleSet(((ObjectTreeViewItem*)item)->getFWObject());
         }
     }
-    this->activeProject()->getCurrentRuleSetView()->selectionModel()->select(
-            this->activeProject()->getCurrentRuleSetView()->model()->
-                index(rule, 0, QModelIndex()),
-                      QItemSelectionModel::Select | QItemSelectionModel::Rows);
+    QModelIndex idx = project->getCurrentRuleSetView()->model()->
+                                                 index(rule, 0, QModelIndex());
+    if (idx.isValid())
+        project->getCurrentRuleSetView()->selectionModel()->select(
+                idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 }

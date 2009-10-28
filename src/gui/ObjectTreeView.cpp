@@ -888,6 +888,7 @@ QSet<QTreeWidgetItem*> ObjectTreeView::resolveParents(QTreeWidgetItem *child)
 
 void ObjectTreeView::updateFilter()
 {
+    if (filter.isEmpty()) return;
     setFilter(filter);
 }
 
