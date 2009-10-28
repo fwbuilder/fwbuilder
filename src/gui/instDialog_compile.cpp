@@ -196,7 +196,7 @@ Can't compile firewall policy."),
     }
 #endif
 
-    QString wdir = getFileDir(mw->getRCS()->getFileName() );
+    QString wdir = getFileDir(project->getRCS()->getFileName() );
 
     args.clear();
 
@@ -207,7 +207,7 @@ Can't compile firewall policy."),
 
     args.push_back("-v");
     args.push_back("-f");
-    args.push_back(mw->getRCS()->getFileName());
+    args.push_back(project->getRCS()->getFileName());
 
     if (wdir!="")
     {
@@ -240,7 +240,7 @@ Can't compile firewall policy."),
         Cluster::cast(fw)->getMembersList(members);
         for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
         {
-            QString fw_id = mw->db()->getStringId((*it)->getId()).c_str();
+            QString fw_id = project->db()->getStringId((*it)->getId()).c_str();
             name_pairs.push_back(
                 fw_id + "," + FirewallInstaller::getGeneratedFileFullPath(*it)
             );
@@ -255,7 +255,7 @@ Can't compile firewall policy."),
 
     args.push_back("-i");
 
-    args.push_back( mw->db()->getStringId(fw->getId()).c_str() );
+    args.push_back( project->db()->getStringId(fw->getId()).c_str() );
     return args;
 }
 
@@ -281,7 +281,7 @@ void instDialog::compilerFinished(int ret_code, QProcess::ExitStatus status)
 
         QCoreApplication::postEvent(
             mw, new updateLastCompiledTimestampEvent(
-                mw->db()->getFileName().c_str(), cnf.fwobj->getId()));
+                project->db()->getFileName().c_str(), cnf.fwobj->getId()));
 
         if (Cluster::isA(cnf.fwobj))
         {
@@ -290,10 +290,10 @@ void instDialog::compilerFinished(int ret_code, QProcess::ExitStatus status)
             Cluster::cast(cnf.fwobj)->getMembersList(members);
             for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
             {
-//                mw->updateLastCompiledTimestamp(*it);
+//                project->updateLastCompiledTimestamp(*it);
                 QCoreApplication::postEvent(
                     mw, new updateLastCompiledTimestampEvent(
-                        mw->db()->getFileName().c_str(), (*it)->getId()));
+                        project->db()->getFileName().c_str(), (*it)->getId()));
             }
         }
     }

@@ -180,9 +180,9 @@ void instDialog::installerFinished(int ret_code, QProcess::ExitStatus status)
 void instDialog::installerSuccess()
 {
     opSuccess(cnf.fwobj);
-//    mw->updateLastInstalledTimestamp(cnf.fwobj);
+//    project->updateLastInstalledTimestamp(cnf.fwobj);
     QCoreApplication::postEvent(
-        mw, new updateLastInstalledTimestampEvent(mw->db()->getFileName().c_str(),
+        mw, new updateLastInstalledTimestampEvent(project->db()->getFileName().c_str(),
                                                   cnf.fwobj->getId()));
 
     currentProgressBar->setValue(currentProgressBar->maximum());

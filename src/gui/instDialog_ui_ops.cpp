@@ -148,7 +148,7 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
                 // override if checkIfNeedToCompile() is true for the
                 // parent cluster
                 int obj_id = parent->data(0, Qt::UserRole).toInt();
-                Cluster *cluster = Cluster::cast(mw->db()->findInIndex(obj_id));
+                Cluster *cluster = Cluster::cast(project->db()->findInIndex(obj_id));
                 if (cluster && checkIfNeedToCompile(cluster))
                     checked = true;
             }
@@ -697,7 +697,7 @@ void instDialog::setSelectStateAll(int column, Qt::CheckState select)
     while (*it)
     {
         int obj_id = (*it)->data(0, Qt::UserRole).toInt();
-        FWObject *o = mw->db()->findInIndex(obj_id);
+        FWObject *o = project->db()->findInIndex(obj_id);
         bool cluster_member = (*it)->data(1, Qt::UserRole).toBool();
         int num_members = (*it)->data(2, Qt::UserRole).toInt();
 
@@ -724,7 +724,7 @@ void instDialog::fillCompileOpList()
         if ((*it)->checkState(COMPILE_CHECKBOX_COLUMN))
         {
             int obj_id = (*it)->data(0, Qt::UserRole).toInt();
-            FWObject *o = mw->db()->findInIndex(obj_id);
+            FWObject *o = project->db()->findInIndex(obj_id);
             compile_fw_list.push_back(Firewall::cast(o));
         }
         ++it;
@@ -768,7 +768,7 @@ void instDialog::fillInstallOpList()
         if ((*it)->checkState(INSTALL_CHECKBOX_COLUMN))
         {
             int obj_id = (*it)->data(0, Qt::UserRole).toInt();
-            FWObject *o = mw->db()->findInIndex(obj_id);
+            FWObject *o = project->db()->findInIndex(obj_id);
             install_fw_list.push_back(Firewall::cast(o));
             if (fwbdebug)
                 qDebug("fillInstallOpList: Install requested for %s", o->getName().c_str());
@@ -962,8 +962,8 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
 
         cnf.script = FirewallInstaller::getGeneratedFileFullPath(fw);
         cnf.remote_script = ""; // filled in FirewallInstaller::readManifest()
-        cnf.fwbfile = mw->db()->getFileName().c_str();
-        cnf.wdir = getFileDir( mw->getRCS()->getFileName() );
+        cnf.fwbfile = project->db()->getFileName().c_str();
+        cnf.wdir = getFileDir( project->getRCS()->getFileName() );
         cnf.diff_file = QString(cnf.fwobj->getName().c_str())+".diff";
         cnf.diff_pgm = Resources::platform_res[platform]->
             getResourceStr("/FWBuilderResources/Target/diff").c_str();

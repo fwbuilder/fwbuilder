@@ -94,6 +94,8 @@ instDialog::instDialog(QWidget* p,
     m_dialog = new Ui::instDialog_q;
     m_dialog->setupUi(this);
 
+    project = mw->activeProject();
+
     setControlWidgets(this,
                       m_dialog->stackedWidget,
                       m_dialog->nextButton,
@@ -440,13 +442,10 @@ void instDialog::findFirewalls()
     firewalls.clear();
     clusters.clear();
     
-    ProjectPanel *active_project = mw->activeProject();
-    project = mw->activeProject();
-
-    if (active_project)
+    if (project)
     {
-        active_project->m_panel->om->findAllFirewalls(firewalls);
-        active_project->m_panel->om->findAllClusters(clusters);
+        project->m_panel->om->findAllFirewalls(firewalls);
+        project->m_panel->om->findAllClusters(clusters);
     }
 
     firewalls.sort(FWObjectNameCmpPredicate());
