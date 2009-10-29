@@ -1551,13 +1551,7 @@ void RuleSetView::selectObject(FWObject *object, const QModelIndex &index)
 
 void RuleSetView::restoreSelection(bool sameWidget)
 {
-    if (sameWidget)
-    {
-        fwosm->restore();
-        setCurrentIndex(fwosm->index);
-    }
 
-//    openObjectInTree(fwosm->selectedObject);
 }
 
 void RuleSetView::openObjectInTree(FWObject *obj)

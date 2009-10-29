@@ -327,10 +327,10 @@ bool FWWindow::requestEditorOwnership(QWidget *w,
          * owns the editor. Signal restoreSelection_sign
          * is still connected to the previous owner
          */
-        if (w == editorOwner )
-            QTimer::singleShot(0, this, SLOT(rollBackSelectionSameWidget()));
-        else
-            QTimer::singleShot(0,this,SLOT(rollBackSelectionDifferentWidget()));
+//        if (w == editorOwner )
+//            QTimer::singleShot(0, this, SLOT(rollBackSelectionSameWidget()));
+//        else
+//            QTimer::singleShot(0,this,SLOT(rollBackSelectionDifferentWidget()));
         return false;
     }
 
