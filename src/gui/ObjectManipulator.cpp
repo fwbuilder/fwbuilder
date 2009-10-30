@@ -369,6 +369,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
  */
 void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 {
+    this->m_objectManipulator->filter->clearEditText();
     ObjectTreeViewItem *nitm = insertObject(itm, obj);
     if (nitm==NULL) return;
 

@@ -894,6 +894,7 @@ void ObjectTreeView::updateFilter()
 
 void ObjectTreeView::setFilter(QString text)
 {
+    if (filter.isEmpty() && text.isEmpty()) return;
     filter = text;
     QSet<QTreeWidgetItem *> items = this->findItems(text, Qt::MatchContains|Qt::MatchRecursive, 0).toSet();
     QSet<QTreeWidgetItem *> children, parents;
