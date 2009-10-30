@@ -43,6 +43,8 @@ class instOptionsDialog : public QDialog
     instOptionsDialog(QWidget *parent, instConf *_cnf);
     ~instOptionsDialog();
 
+    void savePassword();
+
     QString getUName();
     QString getPWD();
     QString getEPWD();

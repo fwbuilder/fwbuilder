@@ -57,16 +57,16 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     m_dialog = new Ui::instOptionsDialog_q;
     m_dialog->setupUi(this);
     cnf = _cnf;
-    FWBSettings sets;
 
-    bool savePassEnabled = sets.getBool("Environment/RememberSshPassEnabled");
+    Firewall *fw = Firewall::cast(cnf->fwobj);
+    QString usrname = fw->getOptionsObject()->getStr("admUser").c_str();
+    bool savePassEnabled = st->getBool("Environment/RememberSshPassEnabled");
     m_dialog->rememberPass->setEnabled( savePassEnabled );
     if (savePassEnabled)
     {
-        m_dialog->rememberPass->setChecked( sets.getBool("Environment/RememberSshPass") );
-        FWWindow *fwwin = dynamic_cast<FWWindow*>(this->parent()->parent());
-        QPair<QString, QString> passwds = fwwin->passwords[qMakePair(cnf->fwobj->getId(),
-                                                                     cnf->user)];
+        m_dialog->rememberPass->setChecked( st->getBool("Environment/RememberSshPass") );
+        QPair<QString, QString> passwds = mw->passwords[qMakePair(cnf->fwobj->getId(),
+                                                                  usrname)];
         m_dialog->pwd->setText(passwds.first);
         m_dialog->epwd->setText(passwds.second);
     }
@@ -187,16 +187,20 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     //dlg->setFixedHeight( dlg->minimumSizeHint().height() );
 }
 
+void instOptionsDialog::savePassword()
+{
+    Firewall *fw = Firewall::cast(cnf->fwobj);
+    fw->getOptionsObject()->setStr("admUser", m_dialog->uname->text().toStdString());
+    if ( m_dialog->rememberPass->isChecked() )
+        mw->passwords[qMakePair(cnf->fwobj->getId(), m_dialog->uname->text())] =
+                 qMakePair(m_dialog->pwd->text(), m_dialog->epwd->text());
+    else
+        mw->passwords.remove(qMakePair(cnf->fwobj->getId(), m_dialog->uname->text()));
+    st->setBool("Environment/RememberSshPass", m_dialog->rememberPass->isChecked());
+}
+
 instOptionsDialog::~instOptionsDialog()
 {
-    FWWindow *fwwin = dynamic_cast<FWWindow*>(this->parent()->parent());
-    if ( m_dialog->rememberPass->isChecked() )
-        fwwin->passwords[qMakePair(cnf->fwobj->getId(), m_dialog->uname->text())] =
-                      qMakePair(m_dialog->pwd->text(), m_dialog->epwd->text());
-    else
-        fwwin->passwords.remove(qMakePair(cnf->fwobj->getId(), m_dialog->uname->text()));
-    FWBSettings sets;
-    sets.setBool("Environment/RememberSshPass", m_dialog->rememberPass->isChecked());
     delete m_dialog;
 }
 

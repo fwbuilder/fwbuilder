@@ -1043,6 +1043,7 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
     cnf.cancelRollbackIfSuccess =
         dlg->m_dialog->cancelRollbackIfSuccess->isChecked();
 
+    dlg->savePassword();
     storeInstallerOptions();
 }
 

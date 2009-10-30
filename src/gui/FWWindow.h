@@ -117,6 +117,9 @@ public:
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
 
+    // Passwords are cached to this map if user enables remember password.
+    // Key is QPair<FWObject::getId(), User Name>
+    // and value is QPair<Password, Enable Password>
     QMap<QPair<int, QString>, QPair<QString, QString> > passwords;
 
     ObjectEditor *oe;
