@@ -112,10 +112,12 @@ class FWWindow : public QMainWindow {
     ProjectPanel *newProjectPanel();
     void showSub(ProjectPanel *projectW);
     void attachEditorToProjectPanel(ProjectPanel *pp);
-    
+
 public:
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
+
+    QMap<QPair<int, QString>, QPair<QString, QString> > passwords;
 
     ObjectEditor *oe;
     FindObjectWidget *findObjectWidget;

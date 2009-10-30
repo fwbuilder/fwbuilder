@@ -131,8 +131,9 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 
     m_dialog->sshPath->setText( st->getSSHPath() );
     m_dialog->scpPath->setText( st->getSCPPath() );
+    m_dialog->rememberSshPass->setChecked( st->getBool("Environment/RememberSshPassEnabled") );
 
-    m_dialog->showTips->setChecked(st->getBool("UI/NoStartTip"));
+    m_dialog->showTips->setChecked( st->getBool("UI/NoStartTip") );
 
 // set label icons colors and text strings using user's settings
 
@@ -449,6 +450,7 @@ void PrefsDialog::accept()
 
     st->setSSHPath( m_dialog->sshPath->text() );
     st->setSCPPath( m_dialog->scpPath->text() );
+    st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
     
     for (int row=0; row < m_dialog->enabled_platforms->rowCount(); ++row)
     {

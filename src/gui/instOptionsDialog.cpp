@@ -45,6 +45,9 @@
 
 #include <stdlib.h>
 
+#include "FWBSettings.h"
+#include "FWWindow.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -54,6 +57,21 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     m_dialog = new Ui::instOptionsDialog_q;
     m_dialog->setupUi(this);
     cnf = _cnf;
+    FWBSettings sets;
+
+    bool savePassEnabled = sets.getBool("Environment/RememberSshPassEnabled");
+    m_dialog->rememberPass->setEnabled( savePassEnabled );
+    if (savePassEnabled)
+    {
+        m_dialog->rememberPass->setChecked( sets.getBool("Environment/RememberSshPass") );
+        FWWindow *fwwin = dynamic_cast<FWWindow*>(this->parent()->parent());
+        QPair<QString, QString> passwds = fwwin->passwords[qMakePair(cnf->fwobj->getId(),
+                                                                     cnf->user)];
+        m_dialog->pwd->setText(passwds.first);
+        m_dialog->epwd->setText(passwds.second);
+    }
+    else
+        m_dialog->rememberPass->setChecked( false );
 
     m_dialog->pwd->setEchoMode( QLineEdit::Password );
     m_dialog->epwd->setEchoMode( QLineEdit::Password );
@@ -171,6 +189,14 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
 
 instOptionsDialog::~instOptionsDialog()
 {
+    FWWindow *fwwin = dynamic_cast<FWWindow*>(this->parent()->parent());
+    if ( m_dialog->rememberPass->isChecked() )
+        fwwin->passwords[qMakePair(cnf->fwobj->getId(), m_dialog->uname->text())] =
+                      qMakePair(m_dialog->pwd->text(), m_dialog->epwd->text());
+    else
+        fwwin->passwords.remove(qMakePair(cnf->fwobj->getId(), m_dialog->uname->text()));
+    FWBSettings sets;
+    sets.setBool("Environment/RememberSshPass", m_dialog->rememberPass->isChecked());
     delete m_dialog;
 }
 

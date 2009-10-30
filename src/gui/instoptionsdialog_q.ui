@@ -500,7 +500,7 @@
          <item row="3" column="1">
           <widget class="QCheckBox" name="rememberPass">
            <property name="text">
-            <string>Rememeber passwords</string>
+            <string>Remember passwords</string>
            </property>
           </widget>
          </item>
