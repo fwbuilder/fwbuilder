@@ -1275,7 +1275,7 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
     {
         if(Firewall::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())!=NULL)
         {
-            firewall = (ObjectTreeViewItem*) item;
+            firewall = dynamic_cast<ObjectTreeViewItem*>(item);
             break;
         }
     }
@@ -1292,6 +1292,7 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
             project->openRuleSet(((ObjectTreeViewItem*)item)->getFWObject());
         }
     }
+    project->getCurrentRuleSetView()->clearSelection();
     QModelIndex idx = project->getCurrentRuleSetView()->model()->
                                                  index(rule, 0, QModelIndex());
     if (idx.isValid())
