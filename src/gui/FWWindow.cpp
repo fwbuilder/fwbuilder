@@ -1273,7 +1273,7 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
             project->getCurrentObjectTree()->findItems(fwname,
                                      Qt::MatchExactly | Qt::MatchRecursive, 0))
     {
-        if(((ObjectTreeViewItem*)item)->getFWObject()->getTypeName() == "Firewall")
+        if(Firewall::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())!=NULL)
         {
             firewall = (ObjectTreeViewItem*) item;
             break;
@@ -1289,7 +1289,6 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
         {
             project->getCurrentObjectTree()->clearSelection();
             item->setSelected(true);
-            this->openEditor(((ObjectTreeViewItem*)item)->getFWObject());
             project->openRuleSet(((ObjectTreeViewItem*)item)->getFWObject());
         }
     }
