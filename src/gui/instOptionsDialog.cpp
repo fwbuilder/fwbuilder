@@ -141,6 +141,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
         } else
         {
             m_dialog->epwd->hide();
+            m_dialog->epwdLbl->hide();
             m_dialog->PIXgroupBox->hide();
             // cancelling rollback at the end of activation is currently
             // only supported on pix,fwsm and ios

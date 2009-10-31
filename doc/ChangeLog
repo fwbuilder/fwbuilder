@@ -1,3 +1,17 @@
+2009-10-31  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* instOptionsDialog.cpp (instOptionsDialog::instOptionsDialog):
+	New feature: password caching. Built-in installer can remember
+	firewall password (and enable password for Ciscos) for the
+	duration of the session. Passwords are never stored permanenetly
+	in any form, encrypted or plain text. The user needs to enter
+	password once when they activate generated policy. If they keep
+	the program open and need to modify and activate policy again, the
+	password fields in the installer dialog can be filled
+	automatically. The feature is optional and is off by default.
+	Cached passwords are associated with the firewall object and
+	account name used to activate policy. Implemented by a2k@codeminders.com
+
 2009-10-22  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::itemDoubleClicked): Fixes #545.
