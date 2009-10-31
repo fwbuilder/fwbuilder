@@ -187,7 +187,6 @@ bool ProjectPanel::event(QEvent *event)
                     qDebug("ProjectPanel %p: showObjectInTreeEvent received for file %s",
                            this, data_file.toLatin1().constData());
                 m_panel->om->openObject(obj);
-                if (mw->isEditorVisible()) editObject(obj);
 
                 ev->accept();
                 return true;

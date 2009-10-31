@@ -223,6 +223,7 @@ void FWWindow::actionChangedEditor(FWObject *o)
 
 bool FWWindow::validateAndSaveEditor()
 {
+//    qDebug("FWWindow::validateAndSaveEditor()");
     return oe->validateAndSave();
 }
 

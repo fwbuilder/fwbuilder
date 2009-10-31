@@ -2720,7 +2720,8 @@ bool ObjectManipulator::editObject(FWObject *obj)
 
 bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 {
-    if (fwbdebug) qDebug("ObjectManipulator::switchObjectInEditor");
+    if (fwbdebug)
+        qDebug("ObjectManipulator::switchObjectInEditor");
 
     if (obj && fwbdebug)
     {
