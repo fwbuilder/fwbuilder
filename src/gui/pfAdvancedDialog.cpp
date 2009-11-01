@@ -35,6 +35,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <qcheckbox.h>
 #include <qspinbox.h>
@@ -56,6 +57,8 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog->setupUi(this);
     obj=o;
     QStringList slm;
+
+    string version = obj->getStr("version");
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=NULL);
@@ -109,6 +112,19 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog->pf_optimization->clear();
     m_dialog->pf_optimization->addItems(getScreenNames(slm));
     data.registerOption( m_dialog->pf_optimization, fwopt, "pf_optimization", slm);
+
+// Prepare state_policy combo box
+    slm.clear();
+    slm.push_back("");
+    slm.push_back("");
+    slm.push_back(QObject::tr("Bound to interfaces"));
+    slm.push_back("if-bound");
+    slm.push_back(QObject::tr("Floating"));
+    slm.push_back("floating");
+    m_dialog->pf_state_policy->clear();
+    m_dialog->pf_state_policy->addItems(getScreenNames(slm));
+    data.registerOption( m_dialog->pf_state_policy, fwopt, "pf_state_policy", slm);
+    m_dialog->pf_state_policy->setEnabled(XMLTools::version_compare(version, "4.3") >= 0);
 
     data.registerOption( m_dialog->pf_check_shadowing,fwopt, "check_shading");
     data.registerOption( m_dialog->pf_ignore_empty_groups,fwopt,

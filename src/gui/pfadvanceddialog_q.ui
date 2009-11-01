@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>pfAdvancedDialog_q</class>
- <widget class="QDialog" name="pfAdvancedDialog_q" >
-  <property name="geometry" >
+ <widget class="QDialog" name="pfAdvancedDialog_q">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,54 +10,54 @@
     <height>685</height>
    </rect>
   </property>
-  <property name="maximumSize" >
+  <property name="maximumSize">
    <size>
     <width>700</width>
     <height>16777215</height>
    </size>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>pf: advanced settings</string>
   </property>
-  <property name="sizeGripEnabled" >
+  <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-  <layout class="QGridLayout" >
-   <property name="spacing" >
+  <layout class="QGridLayout">
+   <property name="spacing">
     <number>20</number>
    </property>
-   <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget" >
-     <property name="minimumSize" >
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="minimumSize">
       <size>
        <width>663</width>
        <height>0</height>
       </size>
      </property>
-     <property name="currentIndex" >
+     <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab1" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab1">
+      <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_8" >
-       <item row="0" column="0" >
-        <widget class="QLabel" name="compilerLabel" >
-         <property name="text" >
+      <layout class="QGridLayout" name="gridLayout_8">
+       <item row="0" column="0">
+        <widget class="QLabel" name="compilerLabel">
+         <property name="text">
           <string>Compiler:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="1" >
-        <widget class="QLineEdit" name="compiler" >
-         <property name="maximumSize" >
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="compiler">
+         <property name="maximumSize">
           <size>
            <width>32767</width>
            <height>22</height>
@@ -64,28 +65,28 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="compilerArgsLabel" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+       <item row="1" column="0">
+        <widget class="QLabel" name="compilerArgsLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>Command line options for the compiler:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="1" >
-        <widget class="QLineEdit" name="compilerArgs" >
-         <property name="maximumSize" >
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="compilerArgs">
+         <property name="maximumSize">
           <size>
            <width>32767</width>
            <height>22</height>
@@ -93,28 +94,28 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2" >
-        <widget class="QLabel" name="textLabel1_5" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="textLabel1_5">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="text" >
-          <string>Output file name (if left blank, the file name is constructed of the firewall object name and extension ".fw")</string>
+         <property name="text">
+          <string>Output file name (if left blank, the file name is constructed of the firewall object name and extension &quot;.fw&quot;)</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="3" column="1" >
-        <widget class="QLineEdit" name="outputFileName" >
-         <property name="maximumSize" >
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="outputFileName">
+         <property name="maximumSize">
           <size>
            <width>32767</width>
            <height>22</height>
@@ -122,26 +123,26 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2" >
-        <widget class="QLabel" name="label_4" >
-         <property name="text" >
+       <item row="4" column="0" colspan="2">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
           <string>Generated script (.fw file) and configuration (.conf) file can be copied to the firewall machine under different names. If these fields are left blank, the file name does not change.</string>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="5" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
           <string>Script (.fw) file name on the firewall</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" >
-        <widget class="QLineEdit" name="fileNameOnFw" >
-         <property name="maximumSize" >
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="fileNameOnFw">
+         <property name="maximumSize">
           <size>
            <width>32767</width>
            <height>22</height>
@@ -149,16 +150,16 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0" >
-        <widget class="QLabel" name="label_3" >
-         <property name="text" >
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
           <string>.conf file name on the firewall</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" >
-        <widget class="QLineEdit" name="confFileNameOnFw" >
-         <property name="maximumSize" >
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="confFileNameOnFw">
+         <property name="maximumSize">
           <size>
            <width>32767</width>
            <height>22</height>
@@ -166,27 +167,92 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="0" colspan="2" >
-        <widget class="QGroupBox" name="groupBox" >
-         <property name="title" >
+       <item row="7" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
           <string/>
          </property>
-         <property name="flat" >
+         <property name="flat">
           <bool>true</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout_6" >
-          <property name="spacing" >
-           <number>20</number>
-          </property>
-          <item row="4" column="2" >
-           <spacer name="spacer" >
-            <property name="orientation" >
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0" colspan="3">
+           <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn">
+            <property name="text">
+             <string>Accept TCP sessions opened prior to firewall restart</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3">
+           <widget class="QCheckBox" name="pf_modulate_state">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Modulate state for all stateful rules (applies only to TCP services)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="3">
+           <widget class="QCheckBox" name="pf_check_shadowing">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
+            </property>
+            <property name="text">
+             <string>Detect rule shadowing in policy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="3">
+           <widget class="QCheckBox" name="pf_ignore_empty_groups">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
+            </property>
+            <property name="text">
+             <string>Ignore empty groups in rules</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="textLabel3">
+            <property name="text">
+             <string>Optimization:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="pf_optimization"/>
+          </item>
+          <item row="4" column="2">
+           <spacer name="spacer">
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeType" >
+            <property name="sizeType">
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" stdset="0" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>354</width>
               <height>20</height>
@@ -194,117 +260,56 @@
             </property>
            </spacer>
           </item>
-          <item row="4" column="1" >
-           <widget class="QComboBox" name="pf_optimization" />
-          </item>
-          <item row="1" column="0" colspan="3" >
-           <widget class="QCheckBox" name="pf_modulate_state" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string>Modulate state for all stateful rules (applies only to TCP services)</string>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>State policy:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="0" colspan="3" >
-           <widget class="QCheckBox" name="pf_ignore_empty_groups" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip" >
-             <string>If the option is deactivated, compiler treats empty groups as an error and aborts processing the policy. If this option is activated, compiler removes all empty groups from all rule elements. If rule element becomes 'any' after the last empty group has been removed, the whole rule will be ignored. Use this option only if you fully understand how it works!</string>
-            </property>
-            <property name="text" >
-             <string>Ignore empty groups in rules</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="3" >
-           <widget class="QCheckBox" name="pf_check_shadowing" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip" >
-             <string>Shadowing happens because a rule is a superset of a subsequent rule and any packets potentially matched by the subsequent rule have already been matched by the prior rule.</string>
-            </property>
-            <property name="text" >
-             <string>Detect rule shadowing in policy</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" >
-           <widget class="QLabel" name="textLabel3" >
-            <property name="text" >
-             <string>Optimization:</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap" >
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="3" >
-           <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn" >
-            <property name="text" >
-             <string>Accept TCP sessions opened prior to firewall restart</string>
+          <item row="5" column="1">
+           <widget class="QComboBox" name="pf_state_policy">
+            <property name="toolTip">
+             <string>States can be bound to interfaces or match packets on any interface. The latter can be useful in case of an assymmetric routing.</string>
             </property>
            </widget>
           </item>
          </layout>
-         <zorder>spacer</zorder>
-         <zorder>pf_optimization</zorder>
-         <zorder>pf_modulate_state</zorder>
-         <zorder>pf_ignore_empty_groups</zorder>
-         <zorder>pf_check_shadowing</zorder>
-         <zorder>textLabel3</zorder>
-         <zorder>pf_accept_new_tcp_with_no_syn</zorder>
         </widget>
        </item>
-       <item row="8" column="0" colspan="2" >
-        <widget class="QGroupBox" name="groupBox_2" >
-         <property name="title" >
+       <item row="8" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
           <string/>
          </property>
-         <property name="flat" >
+         <property name="flat">
           <bool>true</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout_7" >
-          <item row="0" column="0" >
-           <widget class="QCheckBox" name="mgmt_ssh" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="mgmt_ssh">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>Always permit ssh access from
 the management workstation
 with this address:</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" >
-           <widget class="QLineEdit" name="mgmt_addr" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="mgmt_addr">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="maximumSize" >
+            <property name="maximumSize">
              <size>
               <width>32767</width>
               <height>22</height>
@@ -315,12 +320,12 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="9" column="1" >
-        <spacer name="verticalSpacer" >
-         <property name="orientation" >
+       <item row="9" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>11</height>
@@ -330,23 +335,23 @@ with this address:</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab2" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab2">
+      <attribute name="title">
        <string>Scrub</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_5" >
-       <property name="spacing" >
+      <layout class="QGridLayout" name="gridLayout_5">
+       <property name="spacing">
         <number>20</number>
        </property>
-       <item row="0" column="1" >
+       <item row="0" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -354,35 +359,35 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="1" column="1" >
-        <widget class="QCheckBox" name="pf_scrub_no_df" >
-         <property name="toolTip" >
+       <item row="1" column="1">
+        <widget class="QCheckBox" name="pf_scrub_no_df">
+         <property name="toolTip">
           <string>Clears the don't fragment bit from the IP packet header.</string>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>Clear DF bit</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
-        <widget class="QCheckBox" name="pf_scrub_random_id" >
-         <property name="toolTip" >
+       <item row="2" column="1">
+        <widget class="QCheckBox" name="pf_scrub_random_id">
+         <property name="toolTip">
           <string>Replaces the IP identification field of outgoing packets with random values to compensate for operating systems that use predictable values.</string>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>Use random ID</string>
          </property>
         </widget>
        </item>
-       <item rowspan="4" row="3" column="0" >
+       <item row="3" column="0" rowspan="4">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>100</height>
@@ -390,37 +395,37 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="3" column="1" >
-        <layout class="QHBoxLayout" name="horizontalLayout_3" >
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QCheckBox" name="pf_scrub_use_minttl" >
-           <property name="text" >
+          <widget class="QCheckBox" name="pf_scrub_use_minttl">
+           <property name="text">
             <string>Enforce Minimum TTL:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="pf_scrub_minttl" >
-           <property name="toolTip" >
+          <widget class="QSpinBox" name="pf_scrub_minttl">
+           <property name="toolTip">
             <string>Enforces a minimum Time To Live (TTL) in IP packet headers.</string>
            </property>
-           <property name="minimum" >
+           <property name="minimum">
             <number>0</number>
            </property>
-           <property name="maximum" >
+           <property name="maximum">
             <number>100</number>
            </property>
-           <property name="value" >
+           <property name="value">
             <number>1</number>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>328</width>
              <height>20</height>
@@ -430,40 +435,40 @@ with this address:</string>
          </item>
         </layout>
        </item>
-       <item row="4" column="1" >
-        <layout class="QHBoxLayout" name="horizontalLayout_4" >
+       <item row="4" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QCheckBox" name="pf_scrub_use_maxmss" >
-           <property name="text" >
+          <widget class="QCheckBox" name="pf_scrub_use_maxmss">
+           <property name="text">
             <string>Enforce Maximum MSS:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="pf_scrub_maxmss" >
-           <property name="toolTip" >
+          <widget class="QSpinBox" name="pf_scrub_maxmss">
+           <property name="toolTip">
             <string>Enforces a maximum Maximum Segment Size (MSS) in TCP packet headers.</string>
            </property>
-           <property name="minimum" >
+           <property name="minimum">
             <number>536</number>
            </property>
-           <property name="maximum" >
+           <property name="maximum">
             <number>10000</number>
            </property>
-           <property name="value" >
+           <property name="value">
             <number>1460</number>
            </property>
           </widget>
          </item>
          <item>
           <spacer>
-           <property name="orientation" >
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeType" >
+           <property name="sizeType">
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>140</width>
              <height>20</height>
@@ -473,85 +478,85 @@ with this address:</string>
          </item>
         </layout>
        </item>
-       <item row="5" column="1" >
-        <widget class="Line" name="hseparator39" >
-         <property name="frameShape" >
+       <item row="5" column="1">
+        <widget class="Line" name="hseparator39">
+         <property name="frameShape">
           <enum>QFrame::HLine</enum>
          </property>
-         <property name="frameShadow" >
+         <property name="frameShadow">
           <enum>QFrame::Sunken</enum>
          </property>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" >
-        <widget class="QCheckBox" name="pf_do_scrub" >
-         <property name="text" >
+       <item row="6" column="1">
+        <widget class="QCheckBox" name="pf_do_scrub">
+         <property name="text">
           <string>Reassemble fragments</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1" >
-        <widget class="QGroupBox" name="buttonGroup20" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+       <item row="7" column="1">
+        <widget class="QGroupBox" name="buttonGroup20">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="title" >
+         <property name="title">
           <string/>
          </property>
-         <layout class="QVBoxLayout" >
-          <property name="margin" >
+         <layout class="QVBoxLayout">
+          <property name="margin">
            <number>6</number>
           </property>
           <item>
-           <widget class="QRadioButton" name="pf_scrub_reassemble" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <widget class="QRadioButton" name="pf_scrub_reassemble">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>Buffers incoming packet fragments and reassembles them into a complete packet before passing them to the filter engine.</string>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>Buffer and reassemble fragments (default)</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="pf_scrub_fragm_crop" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <widget class="QRadioButton" name="pf_scrub_fragm_crop">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>Causes duplicate fragments to be dropped and any overlaps to be cropped.</string>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>Drop duplicate fragments, do not buffer and reassemble</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="pf_scrub_fragm_drop_ovl" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <widget class="QRadioButton" name="pf_scrub_fragm_drop_ovl">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>Similar to 'Drop duplicate fragments' except that all duplicate or overlapping fragments will be dropped as well as any further corresponding fragments.</string>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>Drop duplicate and subsequent fragments</string>
             </property>
            </widget>
@@ -559,15 +564,15 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="8" column="1" >
+       <item row="8" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>110</height>
@@ -577,122 +582,122 @@ with this address:</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab3" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab3">
+      <attribute name="title">
        <string>Limits</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout">
+       <property name="margin">
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="spacing">
         <number>20</number>
        </property>
-       <item row="1" column="2" >
-        <widget class="QSpinBox" name="pf_limit_frags" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="pf_limit_frags">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="toolTip" >
+         <property name="toolTip">
           <string>maximum number of entries in the memory pool used for packet reassembly</string>
          </property>
-         <property name="minimum" >
+         <property name="minimum">
           <number>0</number>
          </property>
-         <property name="maximum" >
+         <property name="maximum">
           <number>100000</number>
          </property>
-         <property name="singleStep" >
+         <property name="singleStep">
           <number>10</number>
          </property>
-         <property name="value" >
+         <property name="value">
           <number>5000</number>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" >
-        <widget class="QCheckBox" name="pf_do_limit_table_entries" >
-         <property name="text" >
+       <item row="5" column="1">
+        <widget class="QCheckBox" name="pf_do_limit_table_entries">
+         <property name="text">
           <string>table-entries</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="2" >
-        <widget class="QSpinBox" name="pf_limit_table_entries" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <item row="5" column="2">
+        <widget class="QSpinBox" name="pf_limit_table_entries">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="toolTip" >
+         <property name="toolTip">
           <string>maximum number of addresses that canbe stored in tables</string>
          </property>
-         <property name="minimum" >
+         <property name="minimum">
           <number>0</number>
          </property>
-         <property name="maximum" >
+         <property name="maximum">
           <number>100000000</number>
          </property>
-         <property name="singleStep" >
+         <property name="singleStep">
           <number>10</number>
          </property>
-         <property name="value" >
+         <property name="value">
           <number>100000</number>
          </property>
         </widget>
        </item>
-       <item row="2" column="2" >
-        <widget class="QSpinBox" name="pf_limit_states" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="pf_limit_states">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="toolTip" >
+         <property name="toolTip">
           <string>maximum number of entries in the memory pool used for state table entries</string>
          </property>
-         <property name="minimum" >
+         <property name="minimum">
           <number>0</number>
          </property>
-         <property name="maximum" >
+         <property name="maximum">
           <number>100000</number>
          </property>
-         <property name="singleStep" >
+         <property name="singleStep">
           <number>10</number>
          </property>
-         <property name="value" >
+         <property name="value">
           <number>20000</number>
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
-        <widget class="QCheckBox" name="pf_do_limit_states" >
-         <property name="text" >
+       <item row="2" column="1">
+        <widget class="QCheckBox" name="pf_do_limit_states">
+         <property name="text">
           <string>state table size: </string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1" >
-        <widget class="QCheckBox" name="pf_do_limit_frags" >
-         <property name="text" >
+       <item row="1" column="1">
+        <widget class="QCheckBox" name="pf_do_limit_frags">
+         <property name="text">
           <string>reassembly pool: </string>
          </property>
         </widget>
        </item>
-       <item row="1" column="3" >
+       <item row="1" column="3">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>310</width>
            <height>20</height>
@@ -700,79 +705,79 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="3" column="2" >
-        <widget class="QSpinBox" name="pf_limit_src_nodes" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <item row="3" column="2">
+        <widget class="QSpinBox" name="pf_limit_src_nodes">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="toolTip" >
+         <property name="toolTip">
           <string>maximum number of entries in the memory pool used for tracking source IP addresses</string>
          </property>
-         <property name="minimum" >
+         <property name="minimum">
           <number>0</number>
          </property>
-         <property name="maximum" >
+         <property name="maximum">
           <number>100000</number>
          </property>
-         <property name="singleStep" >
+         <property name="singleStep">
           <number>10</number>
          </property>
-         <property name="value" >
+         <property name="value">
           <number>2000</number>
          </property>
         </widget>
        </item>
-       <item row="4" column="2" >
-        <widget class="QSpinBox" name="pf_limit_tables" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <item row="4" column="2">
+        <widget class="QSpinBox" name="pf_limit_tables">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="toolTip" >
+         <property name="toolTip">
           <string>maximum number of tables that can exist in the memory simultaneously</string>
          </property>
-         <property name="minimum" >
+         <property name="minimum">
           <number>0</number>
          </property>
-         <property name="maximum" >
+         <property name="maximum">
           <number>100000</number>
          </property>
-         <property name="singleStep" >
+         <property name="singleStep">
           <number>10</number>
          </property>
-         <property name="value" >
+         <property name="value">
           <number>1000</number>
          </property>
         </widget>
        </item>
-       <item row="4" column="1" >
-        <widget class="QCheckBox" name="pf_do_limit_tables" >
-         <property name="text" >
+       <item row="4" column="1">
+        <widget class="QCheckBox" name="pf_do_limit_tables">
+         <property name="text">
           <string>tables</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1" >
-        <widget class="QCheckBox" name="pf_do_limit_src_nodes" >
-         <property name="text" >
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="pf_do_limit_src_nodes">
+         <property name="text">
           <string>src-nodes</string>
          </property>
         </widget>
        </item>
-       <item rowspan="3" row="1" column="0" >
+       <item row="1" column="0" rowspan="3">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>99</height>
@@ -780,15 +785,15 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="0" column="2" >
+       <item row="0" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -796,15 +801,15 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="6" column="2" >
+       <item row="6" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -814,218 +819,218 @@ with this address:</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab4" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab4">
+      <attribute name="title">
        <string>Timeouts</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout">
+       <property name="margin">
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="spacing">
         <number>20</number>
        </property>
-       <item row="0" column="0" colspan="2" >
-        <widget class="QLabel" name="textLabel2" >
-         <property name="text" >
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="textLabel2">
+         <property name="text">
           <string>When a packet matches a stateful connection, the seconds to live for the connection will be updated to the value which corresponds to the connection state.</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item rowspan="2" row="1" column="0" >
-        <widget class="QGroupBox" name="groupBox1" >
-         <property name="title" >
+       <item row="1" column="0" rowspan="2">
+        <widget class="QGroupBox" name="groupBox1">
+         <property name="title">
           <string>TCP</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>6</number>
           </property>
-          <item row="0" column="0" >
-           <widget class="QCheckBox" name="pf_set_tcp_first" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pf_set_tcp_first">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>first</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="2" >
-           <widget class="QSpinBox" name="pf_tcp_first" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="pf_tcp_first">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after the first packet.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QCheckBox" name="pf_set_tcp_opening" >
-            <property name="text" >
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pf_set_tcp_opening">
+            <property name="text">
              <string>opening</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="2" >
-           <widget class="QSpinBox" name="pf_tcp_opening" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="pf_tcp_opening">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string> The state before the destination host ever sends a packet.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" >
-           <widget class="QCheckBox" name="pf_set_tcp_established" >
-            <property name="text" >
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="pf_set_tcp_established">
+            <property name="text">
              <string>established</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2" >
-           <widget class="QSpinBox" name="pf_tcp_established" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="2" column="2">
+           <widget class="QSpinBox" name="pf_tcp_established">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The fully established state.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="singleStep" >
+            <property name="singleStep">
              <number>1</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="3" column="2" >
-           <widget class="QSpinBox" name="pf_tcp_closing" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="3" column="2">
+           <widget class="QSpinBox" name="pf_tcp_closing">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after the first FIN has been sent.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="3" column="0" >
-           <widget class="QCheckBox" name="pf_set_tcp_closing" >
-            <property name="text" >
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="pf_set_tcp_closing">
+            <property name="text">
              <string>closing</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="2" >
-           <widget class="QSpinBox" name="pf_tcp_finwait" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="4" column="2">
+           <widget class="QSpinBox" name="pf_tcp_finwait">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after both FINs have been exchanged and the connection is closed.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="4" column="0" >
-           <widget class="QCheckBox" name="pf_set_tcp_finwait" >
-            <property name="text" >
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="pf_set_tcp_finwait">
+            <property name="text">
              <string>finwait</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="2" >
-           <widget class="QSpinBox" name="pf_tcp_closed" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="5" column="2">
+           <widget class="QSpinBox" name="pf_tcp_closed">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after one endpoint sends an RST.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="5" column="0" >
-           <widget class="QCheckBox" name="pf_set_tcp_closed" >
-            <property name="text" >
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="pf_set_tcp_closed">
+            <property name="text">
              <string>closed</string>
             </property>
            </widget>
@@ -1033,98 +1038,98 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="3" column="0" >
-        <widget class="QGroupBox" name="groupBox2" >
-         <property name="title" >
+       <item row="3" column="0">
+        <widget class="QGroupBox" name="groupBox2">
+         <property name="title">
           <string>UDP</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>6</number>
           </property>
-          <item row="0" column="0" >
-           <widget class="QCheckBox" name="pf_set_udp_first" >
-            <property name="text" >
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pf_set_udp_first">
+            <property name="text">
              <string>first</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="2" >
-           <widget class="QSpinBox" name="pf_udp_first" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="pf_udp_first">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after the first packet.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QCheckBox" name="pf_set_udp_single" >
-            <property name="text" >
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pf_set_udp_single">
+            <property name="text">
              <string>single</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="2" >
-           <widget class="QSpinBox" name="pf_udp_single" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="pf_udp_single">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state if the source host sends more than one packet but the destination host has never sent one back.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" >
-           <widget class="QCheckBox" name="pf_set_udp_multiple" >
-            <property name="text" >
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="pf_set_udp_multiple">
+            <property name="text">
              <string>multiple</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2" >
-           <widget class="QSpinBox" name="pf_udp_multiple" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="2" column="2">
+           <widget class="QSpinBox" name="pf_udp_multiple">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string> The state if both hosts have sent packets.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
@@ -1132,69 +1137,69 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="1" column="1" >
-        <widget class="QGroupBox" name="groupBox3" >
-         <property name="title" >
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox3">
+         <property name="title">
           <string>ICMP</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>6</number>
           </property>
-          <item row="0" column="1" >
-           <widget class="QSpinBox" name="pf_icmp_first" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="pf_icmp_first">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after the first packet.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" >
-           <widget class="QSpinBox" name="pf_icmp_error" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="pf_icmp_error">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after an ICMP error came back in response to an ICMP packet.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" >
-           <widget class="QCheckBox" name="pf_set_icmp_first" >
-            <property name="text" >
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pf_set_icmp_first">
+            <property name="text">
              <string>first</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QCheckBox" name="pf_set_icmp_error" >
-            <property name="text" >
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pf_set_icmp_error">
+            <property name="text">
              <string>error</string>
             </property>
            </widget>
@@ -1202,104 +1207,104 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="2" column="1" >
-        <widget class="QGroupBox" name="groupBox4" >
-         <property name="title" >
+       <item row="2" column="1">
+        <widget class="QGroupBox" name="groupBox4">
+         <property name="title">
           <string>Other Protocols</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>6</number>
           </property>
-          <item row="0" column="0" >
-           <widget class="QCheckBox" name="pf_set_other_first" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pf_set_other_first">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>first</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="2" >
-           <widget class="QSpinBox" name="pf_other_first" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="pf_other_first">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after the first packet.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QCheckBox" name="pf_set_other_single" >
-            <property name="text" >
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pf_set_other_single">
+            <property name="text">
              <string>single</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" >
-           <widget class="QCheckBox" name="pf_set_other_multiple" >
-            <property name="text" >
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="pf_set_other_multiple">
+            <property name="text">
              <string>multiple</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="2" >
-           <widget class="QSpinBox" name="pf_other_single" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="pf_other_single">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after the first packet.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="2" column="2" >
-           <widget class="QSpinBox" name="pf_other_multiple" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="2" column="2">
+           <widget class="QSpinBox" name="pf_other_multiple">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>The state after the first packet.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
@@ -1307,69 +1312,69 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="3" column="1" >
-        <widget class="QGroupBox" name="groupBox5" >
-         <property name="title" >
+       <item row="3" column="1">
+        <widget class="QGroupBox" name="groupBox5">
+         <property name="title">
           <string>Fragments</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>6</number>
           </property>
-          <item row="0" column="0" >
-           <widget class="QCheckBox" name="pf_do_timeout_interval" >
-            <property name="text" >
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pf_do_timeout_interval">
+            <property name="text">
              <string>reassembly timeout</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QCheckBox" name="pf_do_timeout_frag" >
-            <property name="text" >
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pf_do_timeout_frag">
+            <property name="text">
              <string>state expiration timeout</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="2" >
-           <widget class="QSpinBox" name="pf_timeout_interval" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="pf_timeout_interval">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>seconds between purges of expired states and packet fragments.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>1</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>1000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>10</number>
             </property>
            </widget>
           </item>
-          <item row="1" column="2" >
-           <widget class="QSpinBox" name="pf_timeout_frag" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="pf_timeout_frag">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>seconds before an unassembled fragment is expired.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>1</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>1000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>30</number>
             </property>
            </widget>
@@ -1377,15 +1382,15 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="5" column="1" >
+       <item row="5" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -1393,120 +1398,120 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="4" column="0" colspan="2" >
-        <widget class="QGroupBox" name="groupBox6" >
-         <property name="title" >
+       <item row="4" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox6">
+         <property name="title">
           <string>Adaptive scaling</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>6</number>
           </property>
-          <item row="0" column="0" colspan="5" >
-           <widget class="QLabel" name="textLabel1_11" >
-            <property name="text" >
+          <item row="0" column="0" colspan="5">
+           <widget class="QLabel" name="textLabel1_11">
+            <property name="text">
              <string>Timeout values can be reduced adaptively as the number of state table entries grows (see man page pf.conf(5) for details)</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignVCenter</set>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="textLabel1_10_7" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+          <item row="2" column="0">
+           <widget class="QLabel" name="textLabel1_10_7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>adaptive start</string>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
-           <widget class="QSpinBox" name="pf_adaptive_start" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="pf_adaptive_start">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>When the number of state entries exceeds this value, adaptive scaling begins.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="2" column="2" >
-           <widget class="QLabel" name="textLabel1_10_7_2" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+          <item row="2" column="2">
+           <widget class="QLabel" name="textLabel1_10_7_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>adaptive end</string>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="2" column="3" >
-           <widget class="QSpinBox" name="pf_adaptive_end" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="2" column="3">
+           <widget class="QSpinBox" name="pf_adaptive_end">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip" >
+            <property name="toolTip">
              <string>When reaching this number of state entries, all timeout val- ues become zero, effectively purging all state entries imme- diately.</string>
             </property>
-            <property name="minimum" >
+            <property name="minimum">
              <number>0</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>100000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>0</number>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="5" >
-           <widget class="QCheckBox" name="pf_set_adaptive" >
-            <property name="text" >
+          <item row="1" column="0" colspan="5">
+           <widget class="QCheckBox" name="pf_set_adaptive">
+            <property name="text">
              <string>Activate adaptive timeout scaling</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="4" >
+          <item row="2" column="4">
            <spacer>
-            <property name="orientation" >
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeType" >
+            <property name="sizeType">
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" stdset="0" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>40</width>
               <height>20</height>
@@ -1519,133 +1524,133 @@ with this address:</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab5" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab5">
+      <attribute name="title">
        <string>Installer</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_3" >
-       <property name="spacing" >
+      <layout class="QGridLayout" name="gridLayout_3">
+       <property name="spacing">
         <number>20</number>
        </property>
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="groupBox2_2" >
-         <property name="title" >
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox2_2">
+         <property name="title">
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout" >
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label556" >
-            <property name="text" >
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label556">
+            <property name="text">
              <string>Directory on the firewall where script should be installed</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" >
-           <widget class="QLineEdit" name="pf_fw_dir" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="pf_fw_dir">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="textLabel1_2" >
-            <property name="text" >
+          <item row="1" column="0">
+           <widget class="QLabel" name="textLabel1_2">
+            <property name="text">
              <string>User name used to authenticate to the firewall (leave this empty if you use putty session):</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="pf_user" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="pf_user">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="textLabel1_3" >
-            <property name="text" >
+          <item row="2" column="0">
+           <widget class="QLabel" name="textLabel1_3">
+            <property name="text">
              <string>Alternative name or address used to communicate with the firewall (also putty session name on Windows)</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
-           <widget class="QLineEdit" name="altAddress" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="altAddress">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
            </widget>
           </item>
-          <item row="3" column="0" >
-           <widget class="QLabel" name="textLabel1_4" >
-            <property name="text" >
+          <item row="3" column="0">
+           <widget class="QLabel" name="textLabel1_4">
+            <property name="text">
              <string>A command that installer should execute on the firewall in order to activate the policy (if this field is blank, installer runs firewall script in the directory specified above; it uses sudo if user name is not 'root')</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignVCenter</set>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="3" column="1" >
-           <widget class="QLineEdit" name="activationCmd" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="activationCmd">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
            </widget>
           </item>
-          <item row="4" column="0" colspan="2" >
-           <layout class="QHBoxLayout" >
+          <item row="4" column="0" colspan="2">
+           <layout class="QHBoxLayout">
             <item>
-             <widget class="QLabel" name="textLabel1_7" >
-              <property name="text" >
+             <widget class="QLabel" name="textLabel1_7">
+              <property name="text">
                <string>Additional command line parameters for ssh</string>
               </property>
-              <property name="wordWrap" >
+              <property name="wordWrap">
                <bool>false</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="sshArgs" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+             <widget class="QLineEdit" name="sshArgs">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="minimumSize" >
+              <property name="minimumSize">
                <size>
                 <width>300</width>
                 <height>0</height>
@@ -1655,27 +1660,27 @@ with this address:</string>
             </item>
            </layout>
           </item>
-          <item row="5" column="0" colspan="2" >
-           <layout class="QHBoxLayout" name="_2" >
+          <item row="5" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="_2">
             <item>
-             <widget class="QLabel" name="textLabel1_8" >
-              <property name="text" >
+             <widget class="QLabel" name="textLabel1_8">
+              <property name="text">
                <string>Additional command line parameters for scp</string>
               </property>
-              <property name="wordWrap" >
+              <property name="wordWrap">
                <bool>false</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="scpArgs" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+             <widget class="QLineEdit" name="scpArgs">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="minimumSize" >
+              <property name="minimumSize">
                <size>
                 <width>300</width>
                 <height>0</height>
@@ -1688,42 +1693,42 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="1" column="0" >
-        <widget class="QGroupBox" name="groupBox1_2" >
-         <property name="title" >
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox1_2">
+         <property name="title">
           <string>External install script</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2" >
-          <item row="0" column="0" >
-           <layout class="QHBoxLayout" name="horizontalLayout" >
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <widget class="QLabel" name="textLabel5_2" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+             <widget class="QLabel" name="textLabel5_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="text" >
+              <property name="text">
                <string>Policy install script (using built-in installer if this field is blank):</string>
               </property>
-              <property name="alignment" >
+              <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
               </property>
-              <property name="wordWrap" >
+              <property name="wordWrap">
                <bool>true</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="installScript" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <widget class="QLineEdit" name="installScript">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="minimumSize" >
+              <property name="minimumSize">
                <size>
                 <width>300</width>
                 <height>0</height>
@@ -1733,36 +1738,36 @@ with this address:</string>
             </item>
            </layout>
           </item>
-          <item row="1" column="0" >
-           <layout class="QHBoxLayout" name="horizontalLayout_2" >
+          <item row="1" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QLabel" name="textLabel6_2" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+             <widget class="QLabel" name="textLabel6_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="text" >
+              <property name="text">
                <string>Command line options for the script:</string>
               </property>
-              <property name="alignment" >
+              <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
               </property>
-              <property name="wordWrap" >
+              <property name="wordWrap">
                <bool>false</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="installScriptArgs" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <widget class="QLineEdit" name="installScriptArgs">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="minimumSize" >
+              <property name="minimumSize">
                <size>
                 <width>300</width>
                 <height>0</height>
@@ -1775,15 +1780,15 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="2" column="0" >
+       <item row="2" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>80</height>
@@ -1793,42 +1798,42 @@ with this address:</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab6" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab6">
+      <attribute name="title">
        <string>Prolog/Epilog</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout">
+       <property name="margin">
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="spacing">
         <number>20</number>
        </property>
-       <item row="1" column="0" >
-        <widget class="QGroupBox" name="frame147" >
-         <property name="title" >
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="frame147">
+         <property name="title">
           <string/>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>6</number>
           </property>
-          <item row="2" column="1" >
-           <widget class="QPushButton" name="edit_epilog_button" >
-            <property name="text" >
+          <item row="2" column="1">
+           <widget class="QPushButton" name="edit_epilog_button">
+            <property name="text">
              <string>Edit</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" >
+          <item row="2" column="0">
            <spacer>
-            <property name="orientation" >
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeType" >
+            <property name="sizeType">
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" stdset="0" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>40</width>
               <height>20</height>
@@ -1836,25 +1841,25 @@ with this address:</string>
             </property>
            </spacer>
           </item>
-          <item row="1" column="0" colspan="2" >
-           <widget class="QTextEdit" name="epilog_script" >
-            <property name="verticalScrollBarPolicy" >
+          <item row="1" column="0" colspan="2">
+           <widget class="QTextEdit" name="epilog_script">
+            <property name="verticalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOn</enum>
             </property>
-            <property name="horizontalScrollBarPolicy" >
+            <property name="horizontalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="2" >
-           <widget class="QLabel" name="textLabel2_2_2" >
-            <property name="text" >
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="textLabel2_2_2">
+            <property name="text">
              <string>The following commands will be added verbatim after generated configuration</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignVCenter</set>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
@@ -1862,84 +1867,84 @@ with this address:</string>
          </layout>
         </widget>
        </item>
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="frame146" >
-         <property name="title" >
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="frame146">
+         <property name="title">
           <string/>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>6</number>
           </property>
-          <item row="3" column="3" >
-           <widget class="QPushButton" name="edit_prolog_button" >
-            <property name="text" >
+          <item row="3" column="3">
+           <widget class="QPushButton" name="edit_prolog_button">
+            <property name="text">
              <string>Edit</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="4" >
-           <widget class="QTextEdit" name="prolog_script" >
-            <property name="verticalScrollBarPolicy" >
+          <item row="2" column="0" colspan="4">
+           <widget class="QTextEdit" name="prolog_script">
+            <property name="verticalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOn</enum>
             </property>
-            <property name="horizontalScrollBarPolicy" >
+            <property name="horizontalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="4" >
-           <widget class="QLabel" name="textLabel2_2" >
-            <property name="text" >
+          <item row="1" column="0" colspan="4">
+           <widget class="QLabel" name="textLabel2_2">
+            <property name="text">
              <string>The following commands will be added verbatim on top of generated configuration</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignVCenter</set>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="textLabel1_6" >
-            <property name="text" >
+          <item row="0" column="0">
+           <widget class="QLabel" name="textLabel1_6">
+            <property name="text">
              <string>Insert prolog and epilog scripts</string>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" >
-           <widget class="QComboBox" name="prologPlace" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+          <item row="0" column="1">
+           <widget class="QComboBox" name="prologPlace">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>in the activation shell script (.fw file)</string>
              </property>
             </item>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>in the pf rule file (.conf file)</string>
              </property>
             </item>
            </widget>
           </item>
-          <item row="0" column="2" colspan="2" >
+          <item row="0" column="2" colspan="2">
            <spacer>
-            <property name="orientation" >
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeType" >
+            <property name="sizeType">
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" stdset="0" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>40</width>
               <height>20</height>
@@ -1947,15 +1952,15 @@ with this address:</string>
             </property>
            </spacer>
           </item>
-          <item row="3" column="0" colspan="3" >
+          <item row="3" column="0" colspan="3">
            <spacer>
-            <property name="orientation" >
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeType" >
+            <property name="sizeType">
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" stdset="0" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>410</width>
               <height>20</height>
@@ -1968,26 +1973,26 @@ with this address:</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab7" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab7">
+      <attribute name="title">
        <string>Logging</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout">
+       <property name="margin">
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="spacing">
         <number>20</number>
        </property>
-       <item row="0" column="2" >
+       <item row="0" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -1995,28 +2000,28 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="1" column="1" >
-        <widget class="QLabel" name="label584" >
-         <property name="text" >
+       <item row="1" column="1">
+        <widget class="QLabel" name="label584">
+         <property name="text">
           <string>Log Prefix</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" >
+       <item row="1" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>70</width>
            <height>20</height>
@@ -2024,15 +2029,15 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="1" column="3" >
+       <item row="1" column="3">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>130</width>
            <height>20</height>
@@ -2040,18 +2045,18 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="1" column="2" >
-        <widget class="QLineEdit" name="pf_log_prefix" />
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="pf_log_prefix"/>
        </item>
-       <item row="3" column="2" >
+       <item row="3" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>320</height>
@@ -2059,32 +2064,32 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="2" column="1" colspan="3" >
-        <widget class="QCheckBox" name="pf_fallback_log" >
-         <property name="text" >
-          <string>Fallback "deny all" rule should log blocked packets</string>
+       <item row="2" column="1" colspan="3">
+        <widget class="QCheckBox" name="pf_fallback_log">
+         <property name="text">
+          <string>Fallback &quot;deny all&quot; rule should log blocked packets</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab8" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab8">
+      <attribute name="title">
        <string>Script</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4" >
-       <property name="verticalSpacing" >
+      <layout class="QGridLayout" name="gridLayout_4">
+       <property name="verticalSpacing">
         <number>20</number>
        </property>
-       <item row="0" column="2" >
+       <item row="0" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -2092,28 +2097,28 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" colspan="3" >
-        <widget class="QLabel" name="textLabel8" >
-         <property name="text" >
+       <item row="1" column="0" colspan="3">
+        <widget class="QLabel" name="textLabel8">
+         <property name="text">
           <string>These options enable auxiliary sections in the generated shell script.</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item rowspan="3" row="2" column="0" >
+       <item row="2" column="0" rowspan="3">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>70</height>
@@ -2121,64 +2126,64 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="2" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_debug" >
-         <property name="text" >
+       <item row="2" column="1" colspan="2">
+        <widget class="QCheckBox" name="pf_debug">
+         <property name="text">
           <string>Turn debugging on in generated script</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_configure_interfaces" >
-         <property name="text" >
+       <item row="3" column="1" colspan="2">
+        <widget class="QCheckBox" name="pf_configure_interfaces">
+         <property name="text">
           <string>Configure Interfaces of the firewall machine</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_configure_carp_interfaces" >
-         <property name="text" >
+       <item row="4" column="1" colspan="2">
+        <widget class="QCheckBox" name="pf_configure_carp_interfaces">
+         <property name="text">
           <string>Configure CARP Interfaces</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_configure_pfsync_interfaces" >
-         <property name="text" >
+       <item row="5" column="1" colspan="2">
+        <widget class="QCheckBox" name="pf_configure_pfsync_interfaces">
+         <property name="text">
           <string>Configure pfsync Interfaces</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_configure_vlan_interfaces" >
-         <property name="text" >
+       <item row="6" column="1" colspan="2">
+        <widget class="QCheckBox" name="pf_configure_vlan_interfaces">
+         <property name="text">
           <string>Configure VLAN Interfaces</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_manage_virtual_addr" >
-         <property name="text" >
+       <item row="7" column="1" colspan="2">
+        <widget class="QCheckBox" name="pf_manage_virtual_addr">
+         <property name="text">
           <string>Add virtual addresses for NAT</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="1" colspan="2" >
-        <widget class="QCheckBox" name="pf_flush_states" >
-         <property name="text" >
+       <item row="8" column="1" colspan="2">
+        <widget class="QCheckBox" name="pf_flush_states">
+         <property name="text">
           <string>Flush pf states after reloading rules</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1" >
+       <item row="9" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>230</height>
@@ -2188,27 +2193,27 @@ with this address:</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab9" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab9">
+      <attribute name="title">
        <string>IPv6</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="spacing" >
+      <layout class="QGridLayout">
+       <property name="spacing">
         <number>20</number>
        </property>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="label" >
-         <property name="text" >
+       <item row="1" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
           <string>The order in which ipv4 and ipv6 rules should be generated:</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1" >
+       <item row="1" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>20</height>
@@ -2216,26 +2221,26 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="2" column="0" >
-        <widget class="QComboBox" name="ipv4before" >
+       <item row="2" column="0">
+        <widget class="QComboBox" name="ipv4before">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>IPv4 before IPv6</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>IPv6 before IPv4</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="3" column="0" >
+       <item row="3" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -2247,24 +2252,24 @@ with this address:</string>
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
+   <item row="1" column="0">
+    <layout class="QHBoxLayout">
      <item>
-      <widget class="QPushButton" name="buttonHelp" >
-       <property name="text" >
+      <widget class="QPushButton" name="buttonHelp">
+       <property name="text">
         <string>Help</string>
        </property>
       </widget>
      </item>
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeType" >
+       <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>331</width>
          <height>27</height>
@@ -2273,30 +2278,30 @@ with this address:</string>
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonOk" >
-       <property name="text" >
+      <widget class="QPushButton" name="buttonOk">
+       <property name="text">
         <string>&amp;OK</string>
        </property>
-       <property name="shortcut" >
+       <property name="shortcut">
         <string/>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>true</bool>
        </property>
-       <property name="default" >
+       <property name="default">
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonCancel" >
-       <property name="text" >
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
         <string>&amp;Cancel</string>
        </property>
-       <property name="shortcut" >
+       <property name="shortcut">
         <string/>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>true</bool>
        </property>
       </widget>
@@ -2305,7 +2310,7 @@ with this address:</string>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>compiler</tabstop>
@@ -2395,11 +2400,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2411,11 +2416,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2427,11 +2432,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>doScrubToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2443,11 +2448,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2459,11 +2464,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2475,11 +2480,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2491,11 +2496,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2507,11 +2512,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2523,11 +2528,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2539,11 +2544,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2555,11 +2560,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2571,11 +2576,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2587,11 +2592,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2603,11 +2608,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2619,11 +2624,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2635,11 +2640,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2651,11 +2656,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2667,11 +2672,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2683,11 +2688,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>editEpilog()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2699,11 +2704,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>editProlog()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2715,11 +2720,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2731,11 +2736,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2747,11 +2752,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2763,11 +2768,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2779,11 +2784,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>ltToggled()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -2795,11 +2800,11 @@ with this address:</string>
    <receiver>pfAdvancedDialog_q</receiver>
    <slot>help()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>47</x>
      <y>638</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>345</x>
      <y>330</y>
     </hint>

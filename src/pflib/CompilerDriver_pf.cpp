@@ -146,6 +146,12 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
 
     file << endl;
 
+    string state_policy = options->getStr("pf_state_policy");
+    if (!state_policy.empty())
+    {
+        file << "set state-policy " << state_policy << endl;
+    }
+
     QStringList limits;
     if (options->getBool("pf_do_limit_frags") &&
         options->getInt("pf_limit_frags")>0 )

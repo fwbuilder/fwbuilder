@@ -1,3 +1,12 @@
+2009-11-01  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_pf.cpp (CompilerDriver_pf::printStaticOptions):
+	Added support for PF configuration parameter "set state-policy"
+	which can have values "if-bound" or "floating". The GUI input
+	element provides these options in addition to the default empty
+	option. If empty list item is selected, command "set state-policy"
+	is not added to the generated .conf file at all. Fixes #423
+
 2009-10-31  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instOptionsDialog.cpp (instOptionsDialog::instOptionsDialog):
