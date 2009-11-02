@@ -424,13 +424,30 @@ string PolicyCompiler_pf::PrintRule::_printLogPrefix(PolicyRule *rule,
     if (rule && (n=s.find("%I"))!=string::npos )
     {
         std::ostringstream s1;
-        string rule_iface =  rule->getInterfaceStr();
-        if (rule_iface!="") 
+
+        RuleElementItf *intf_re = rule->getItf();
+        string rule_interfaces;
+        if (!intf_re->isAny())
         {
-            s1 << rule_iface;
-            s.replace(n,2,s1.str());
-        } else
-            s.replace(n,2,"global");
+            for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
+            {
+                FWObject *o   = *it;
+                if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+                rule_interfaces += " " + o->getName();
+            }
+        }
+        if (!rule_interfaces.empty()) 
+            s.replace(n, 2, rule_interfaces);
+        else
+            s.replace(n, 2, "global");
+
+        // string rule_iface =  rule->getInterfaceStr();
+        // if (rule_iface!="") 
+        // {
+        //     s1 << rule_iface;
+        //     s.replace(n,2,s1.str());
+        // } else
+        //     s.replace(n,2,"global");
     }
     if (rule && (n=s.find("%C"))!=string::npos )
     {
@@ -442,9 +459,29 @@ string PolicyCompiler_pf::PrintRule::_printLogPrefix(PolicyRule *rule,
 
 void PolicyCompiler_pf::PrintRule::_printInterface(PolicyRule *rule)
 {
-    string iface_name = rule->getInterfaceStr();
-    if (iface_name!="") 
-	compiler->output << "on " << iface_name << " ";
+    RuleElementItf *intf_re = rule->getItf();
+    string rule_interfaces;
+    int intf_count = 0;
+
+    if (!intf_re->isAny())
+    {
+        for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
+        {
+            FWObject *o   = *it;
+            if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+            rule_interfaces += " " + o->getName();
+            intf_count++;
+        }
+        compiler->output << "on";
+        if (intf_count > 1) compiler->output << " {";
+        compiler->output << rule_interfaces;
+        if (intf_count > 1) compiler->output << " }";
+        compiler->output << " ";
+    }
+
+    // string iface_name = rule->getInterfaceStr();
+    // if (iface_name!="") 
+    //     compiler->output << "on " << iface_name << " ";
 }
 
 // print address family

@@ -193,11 +193,10 @@ bool PolicyCompiler_pf::processMultiAddressObjectsInRE::processNext()
             {
                 if (re->size()>1 && neg)
                 {
-                    compiler->abort(
-                                        rule,
-                                        "AddressTable object can not be used "
-                                        "with negation in combination with "
-                                        "other objects in the same rule element.");
+                    compiler->abort(rule,
+                                    "AddressTable object can not be used "
+                                    "with negation in combination with "
+                                    "other objects in the same rule element.");
                 }
                 string tblname = o->getName();
                 string tblID = tblname + "_addressTableObject";
@@ -209,9 +208,8 @@ bool PolicyCompiler_pf::processMultiAddressObjectsInRE::processNext()
     } catch(FWException &ex)  // TableFactory::registerTable throws exception
     {
         string err;
-        err = "Can not process MultiAddress object in rule " +
-            rule->getLabel() + " : " + ex.toString();
-        compiler->abort(rule,  err );
+        err = "Can not process MultiAddress object: " + ex.toString();
+        compiler->abort(rule, err);
     }
 
     if (!maddr_runtime.empty())
@@ -263,7 +261,8 @@ bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 	FWObject *obj = NULL;
 //	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
 	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-	if (obj==NULL)  throw FWException("Broken Src object in rule: "+rule->getLabel());
+	if (obj==NULL)
+            compiler->abort(rule, "Broken Src object");
 
 	if (obj->getId()==compiler->getFwId()) {
 	    fw_in_src=o;   // can not remove right now because remove invalidates iterator
@@ -308,7 +307,8 @@ bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 	FWObject *obj = NULL;
 //	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
 	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-	if (obj==NULL) throw FWException("Broken Dst in rule: "+rule->getLabel());
+	if (obj==NULL)
+            compiler->abort(rule, "Broken Dst");
 
 	if (obj->getId()==compiler->getFwId()) {
 	    fw_in_dst=o;   // can not remove right now because remove invalidates iterator
@@ -561,7 +561,9 @@ bool PolicyCompiler_pf::ProcessScrubOption::processNext()
 	    ruleopt->setBool("scrub",false);
 	    tmp_queue.push_back(rule);
 
-	    throw FWException("Rule option 'scrub' is supported only for rules with action 'Accept'. Rule: "+rule->getLabel());
+	    compiler->abort(rule,
+                            "Rule option 'scrub' is supported only for rules "
+                            "with action 'Accept'");
 
 	    return true;
 	}
@@ -699,8 +701,10 @@ bool PolicyCompiler_pf::doSrvNegation::processNext()
 
     RuleElementSrv *srv=rule->getSrv();
 
-    if (srv->getNeg()) {
-	throw FWException("Negation in Srv is not implemented. Rule: "+rule->getLabel());
+    if (srv->getNeg())
+    {
+	compiler->abort(rule,
+                        "Negation in Srv is not implemented");
 	return true;
     }
     tmp_queue.push_back(rule);
@@ -719,10 +723,9 @@ bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
 
     if (pf_comp->redirect_rules_info==NULL)
         compiler->abort(
-            
-                rule, 
-                "addLoopbackForRedirect needs a valid pointer to "
-                "the list<NATCompiler_pf::redirectRuleInfo> object");
+            rule, 
+            "addLoopbackForRedirect needs a valid pointer to "
+            "the list<NATCompiler_pf::redirectRuleInfo> object");
 
     tmp_queue.push_back(rule);
 
@@ -794,7 +797,7 @@ void PolicyCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInte
                     ifs->getParent()->getName().c_str(),
                     rule->getLabel().c_str() );
 
-            throw FWException(errstr);
+            compiler->abort(rule, errstr);
         }
     }
 }
@@ -1085,7 +1088,8 @@ void PolicyCompiler_pf::compile()
 
         add(new ItfNegation("process negation in Itf"));
 
-        add(new InterfacePolicyRules("process interface policy rules and store interface ids"));
+        //add(new InterfacePolicyRules(
+        //    "process interface policy rules and store interface ids"));
 
 	add(new splitIfFirewallInSrc("split rule if firewall is in Src"));
 	add(new splitIfFirewallInDst("split rule if firewall is in Dst"));

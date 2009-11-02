@@ -330,8 +330,8 @@ void PolicyCompiler_ipfw::PrintRule::_printDirection(libfwbuilder::PolicyRule *r
 
 void PolicyCompiler_ipfw::PrintRule::_printInterface(PolicyRule *r)
 {
-    int iface_id = r->getInterfaceId();
-    if (iface_id > -1) 
+    Interface *intf = compiler->getFirstItf(r);
+    if (intf)
     {
         switch (r->getDirection())
         {
@@ -340,10 +340,23 @@ void PolicyCompiler_ipfw::PrintRule::_printInterface(PolicyRule *r)
         case PolicyRule::Both:     compiler->output << "via  "; break;
         default: break;
         }
-
-	FWObject *rule_iface = compiler->dbcopy->findInIndex( iface_id );
-	compiler->output << rule_iface->getName() << " ";
+	compiler->output << intf->getName() << " ";
     }
+
+    // int iface_id = r->getInterfaceId();
+    // if (iface_id > -1) 
+    // {
+    //     switch (r->getDirection())
+    //     {
+    //     case PolicyRule::Outbound: compiler->output << "xmit "; break;
+    //     case PolicyRule::Inbound:  compiler->output << "recv "; break;
+    //     case PolicyRule::Both:     compiler->output << "via  "; break;
+    //     default: break;
+    //     }
+
+    //     FWObject *rule_iface = compiler->dbcopy->findInIndex( iface_id );
+    //     compiler->output << rule_iface->getName() << " ";
+    // }
 }
 
 void PolicyCompiler_ipfw::PrintRule::_printSrcService(RuleElementSrv  *rel)

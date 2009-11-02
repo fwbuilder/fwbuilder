@@ -202,8 +202,9 @@ bool PolicyCompiler_ipf::doSrvNegation::processNext()
 
     RuleElementSrv *srv=rule->getSrv();
 
-    if (srv->getNeg()) {
-	throw FWException("Negation in Srv is not implemented. Rule: "+rule->getLabel());
+    if (srv->getNeg())
+    {
+	compiler->abort(rule, "Negation in Srv is not implemented");
 	return false;
     }
     tmp_queue.push_back(rule);
@@ -329,19 +330,29 @@ bool PolicyCompiler_ipf::checkForKeepState::processNext()
 
 bool PolicyCompiler_ipf::eliminateDuplicateRules::processNext()
 {
-    PolicyCompiler *pcomp=dynamic_cast<PolicyCompiler*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyCompiler *pcomp = dynamic_cast<PolicyCompiler*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+
+    // Note that if rule has "any" in Interface column, it is
+    // implemented as reference to the AnyNetwork object. In this case
+    // Compiler::getFirstItf() returns NULL.
+    Interface *intf_rule = compiler->getFirstItf(rule);
+    int intf_id_rule = (intf_rule) ? intf_rule->getId() : -1;
 
     if ( ! rule->getBool("skip_check_for_duplicates"))
     {
         for (deque<PolicyRule*>::iterator i=rules_seen_so_far.begin(); i!=rules_seen_so_far.end(); ++i)
         {
             PolicyRule *r=(*i);
-            if ( r->getBool("skip_check_for_duplicates") ) continue;
-            if (r->getInterfaceId()==rule->getInterfaceId() &&
+            if (r->getBool("skip_check_for_duplicates") ) continue;
+            if (r->getAction()==PolicyRule::Continue ||
+                r->getAction()==PolicyRule::Skip) continue;
+
+            Interface *intf_r = compiler->getFirstItf(r);
+            int intf_id_r = (intf_r) ? intf_r->getId() : -1;
+
+            if (intf_id_r==intf_id_rule &&
                 r->getAction()==rule->getAction()           &&
-                r->getAction()!=PolicyRule::Continue        &&
-                r->getAction()!=PolicyRule::Skip            &&
                 r->getLogging()==rule->getLogging()         &&
                 pcomp->cmpRules(*r,*rule) ) 
             {
@@ -561,13 +572,33 @@ string PolicyCompiler_ipf::debugPrintRule(Rule *r)
     ostringstream s;
     s << PolicyCompiler::debugPrintRule(rule) << " ";
 
-    int iface_id = rule->getInterfaceId();
-    if (iface_id > -1)
+    RuleElementItf *intf_re = rule->getItf();
+    string rule_interfaces;
+    int intf_count = 0;
+    for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
     {
-	FWObject *rule_iface = dbcopy->findInIndex( iface_id );
-        s << " intf: "+rule_iface->getName();
-    } else
-        s << iface_id;
+        FWObject *o   = *it;
+        if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+        rule_interfaces += " " + o->getName();
+        intf_count++;
+    }
+    if (intf_count > 0)
+    {
+        s << " intf: ";
+        if (intf_count > 1) s << "{ ";
+        s << rule_interfaces;
+        if (intf_count > 1) s << " }";
+    }
+    else
+        s << " intf: ?";
+
+    // int iface_id = rule->getInterfaceId();
+    // if (iface_id > -1)
+    // {
+    //     FWObject *rule_iface = dbcopy->findInIndex( iface_id );
+    //     s << " intf: "+rule_iface->getName();
+    // } else
+    //     s << iface_id;
 
     s << " ";
 

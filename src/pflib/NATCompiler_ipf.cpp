@@ -74,59 +74,53 @@ bool NATCompiler_ipf::VerifyRules::processNext()
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
-	throw FWException("There should be no more than one object in original destination in the rule "+rule->getLabel());
+	compiler->abort(rule,
+                        "There should be no more than one object in "
+                        "original destination");
 
 //    if (rule->getRuleType()==NATRule::SNAT && tsrc->size()!=1)
-//	throw FWException("There should be no more than one object in translated source in the rule "+rule->getLabel());
+//	compiler->abort(rule, "There should be no more than one object in translated source in the rule "+rule->getLabel());
 
     if (rule->getRuleType()==NATRule::DNAT && osrv->isAny()) 
-	throw FWException("Service must be specified for destination translation rule. Rule "+rule->getLabel());
+	compiler->abort(rule,
+                        "Service must be specified for destination translation rule");
 
     if (tsrv->size()!=1) 
-	throw FWException("Translated service should be 'Original' or should contain single object. Rule: "+rule->getLabel());
+	compiler->abort(rule,
+                        "Translated service should be 'Original' or should "
+                        "contain single object");
 
     FWObject *o=tsrv->front();
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     if ( Group::cast(o)!=NULL)
-	throw FWException("Can not use group in translated service. Rule "+rule->getLabel());
+	compiler->abort(rule,
+                        "Can not use group in translated service");
 
-#if 0
-    if (rule->getRuleType()==NATRule::SNAT ) 
+    if (rule->getRuleType()==NATRule::SNetnat && !tsrc->isAny() )
     {
-        if ( tsrc->size()!=1)
-            throw FWException("There should be no more than one object in translated source in the rule "+rule->getLabel());
-
-//        Address* o1=tsrc->getFirst(true);
-//        if ( ! tsrc->isAny() && Network::cast(o1)!=NULL)
-//            throw FWException("Can not use network object in translated source. Rule "+rule->getLabel());
-    }
-#endif
-
-    if (rule->getRuleType()==NATRule::SNetnat && !tsrc->isAny() ) {
         Network *a1=Network::cast(compiler->getFirstOSrc(rule));
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
-            throw FWException("Original and translated source should both be networks of the same size . Rule "+rule->getLabel());
+            compiler->abort(rule,
+                            "Original and translated source should both "
+                            "be networks of the same size");
     }
 
-    if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) {
+    if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() )
+    {
         Network *a1=Network::cast(compiler->getFirstODst(rule));
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
-            throw FWException("Original and translated destination should both be networks of the same size . Rule "+rule->getLabel());
+            compiler->abort(rule,
+                            "Original and translated destination should "
+                            "both be networks of the same size");
     }
 
-
-
-
     if (osrc->getNeg() || odst->getNeg() || osrv->getNeg())
-        throw FWException("Negation in NAT rules is not supported. Rule "+rule->getLabel());
-
-//    if (rule->getRuleType()==NATRule::NONAT)
-//        throw FWException("Unsupported translation. Rule "+rule->getLabel());
+        compiler->abort(rule, "Negation in NAT rules is not supported");
 
     return true;
 }
@@ -302,9 +296,10 @@ bool NATCompiler_ipf::AssignInterface::processNext()
     default: ;
     }
 
-    throw FWException("Could not assign NAT rule to the interface. Perhaps one of the \n\
- objects has address which does not belong to any subnet the firewall has interface on. \n\
- Rule: "+rule->getLabel());
+    compiler->abort(rule,
+                    "Could not assign NAT rule to the interface. "
+                    "Perhaps one of the objects has address which does not "
+                    "belong to any subnet the firewall has interface on");
     
     return true;
 }
@@ -507,7 +502,6 @@ bool NATCompiler_ipf::processMultiAddressObjectsInRE::processNext()
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
         if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
             compiler->abort(
-                
                     rule, 
                     "Run-time AddressTable objects are not supported.");
     }

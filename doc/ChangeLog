@@ -1,5 +1,11 @@
 2009-11-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf_writers.cpp (PrintRule::_printInterface): New
+	feature: optimization in compiler for PF. Rules that have several
+	interface objects (or a group) in the "Interface" column are
+	compiled using "{ }" grouping to produce only one configuration
+	line instead of several for such rule. Fixes #76
+
 	* PolicyCompiler_pf.cpp (SpecialServices::processNext): Compiler
 	for PF generates "allow-opts" keyword when IPService object used
 	in the rule has IP options. This includes new option "router-alert".
