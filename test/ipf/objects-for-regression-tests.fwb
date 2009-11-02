@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="12" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
   </Library>
@@ -116,6 +116,7 @@
         <Host id="id3B64FFAC" name="broadcast" comment="broadcast on internal subnet" ro="False">
           <Interface id="id3B64FFAC-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B64FFAC-i-ipv4" name="address" comment="" ro="False" address="192.168.1.255" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
@@ -124,6 +125,7 @@
         <Host id="id3D265845" name="fw2-dmz-iface" comment="" ro="False">
           <Interface id="id3D265845-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D265845-i-1-addr" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.2.1">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -141,6 +143,7 @@
         <Host id="id3AFC191C" name="fw2-int-iface" comment="the same address as internal iface of firewall1" ro="False">
           <Interface id="id3AFC191C-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFC191C-i-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.1">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -157,6 +160,7 @@
         <Host id="id3D265477" name="host-dmz1" comment="host on the DMZ net" ro="False">
           <Interface id="id3D265477-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D265477-i-1-addr" name="address" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.2.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -174,6 +178,7 @@
         <Host id="id3D26547B" name="host-dmz1-NAT" comment="" ro="False">
           <Interface id="id3D26547B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D26547B-i-1-addr" name="address" comment="" ro="False" address="22.22.22.24" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="22.22.22.24">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -191,6 +196,7 @@
         <Host id="id3DEA665F" name="host-ext1" comment="" ro="False">
           <Interface id="id3DEA6663" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3DEA6664" name="host-ext1" comment="" ro="False" address="22.22.22.24" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -204,6 +210,7 @@
         <Host id="id3AFC0F70" name="host-fw2" comment="this host has the same IP address as firewall1 and firewall2" ro="False">
           <Interface id="id3AFC0F70-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFC0F70-i-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
@@ -213,6 +220,7 @@
           <Interface id="id3BF1B3E2" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF1B3E2-ipv4" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.0"/>
             <physAddress id="id3BF1B3E2-pa" address="00:10:4b:de:e9:6f" name="unknown-pa" comment="" ro="False"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -227,6 +235,7 @@
           <Interface id="id3BF1B3E8" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF1B3E8-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress id="id3BF1B3E8-pa" address="00:10:4b:de:e9:6f" name="unknown-pa" comment="" ro="False"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -243,6 +252,7 @@
         <Host id="host-hostA" name="hostA" comment="" ro="False">
           <Interface id="host-hostA-i" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="host-hostA-i-ipv4" name="hostA(ip)" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -256,6 +266,7 @@
         <Host id="id3B3D5A3B" name="hostA" comment="" ro="False">
           <Interface id="id3B3D5A3B-i" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="id3B3D5A3B-i-ipv4" name="hostA(ip)" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -269,6 +280,7 @@
         <Host id="id3AFADBF9" name="hostA-NAT" comment="translated address for hostA" ro="False">
           <Interface id="id3AFADBF9-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFADBF9-i-ipv4" name="address" comment="" ro="False" address="22.22.22.23" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
@@ -277,6 +289,7 @@
         <Host id="host-hostB" name="hostB" comment="" ro="False">
           <Interface id="host-hostB-i" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="host-hostB-i-ipv4" name="hostB(ip)" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.20">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -290,6 +303,7 @@
         <Host id="id3BD6736B" name="hostB-NAT" comment="" ro="False">
           <Interface id="id3BD6736B-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BD6736B-i-ipv4" name="address" comment="" ro="False" address="22.22.23.24" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
@@ -298,6 +312,7 @@
         <Host id="id3D58227A" name="hostC" comment="" ro="False">
           <Interface id="id3D58227A-i" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="id3D58227A-i-1-addr" name="hostC(ip)" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.100">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -315,6 +330,7 @@
         <Host id="id3D58227E" name="hostC-1" comment="" ro="False">
           <Interface id="id3D582282" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id3D582283" name="hostC-1:eth0" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.100">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -332,6 +348,7 @@
         <Host id="id3CD87A53" name="n192.168.1.11" comment="" ro="False">
           <Interface id="id3CD87A53-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A53-i-1-addr" name="address" comment="" ro="False" address="192.168.1.11" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.11">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -349,6 +366,7 @@
         <Host id="id3CD87A5E" name="n192.168.1.12" comment="" ro="False">
           <Interface id="id3CD87A5E-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A5E-i-1-addr" name="address" comment="" ro="False" address="192.168.1.12" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.12">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -366,6 +384,7 @@
         <Host id="id3CD87A6D" name="n192.168.1.13" comment="" ro="False">
           <Interface id="id3CD87A6D-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A6D-i-1-addr" name="address" comment="" ro="False" address="192.168.1.13" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.13">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -383,6 +402,7 @@
         <Host id="id3CD87A7C" name="n192.168.1.14" comment="" ro="False">
           <Interface id="id3CD87A7C-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A7C-i-1-addr" name="address" comment="" ro="False" address="192.168.1.14" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.14">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -400,6 +420,7 @@
         <Host id="id3CD87A8B" name="n192.168.1.15" comment="" ro="False">
           <Interface id="id3CD87A8B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A8B-i-1-addr" name="address" comment="" ro="False" address="192.168.1.15" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.15">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -417,6 +438,7 @@
         <Host id="id3B19C5EB" name="outside-host" comment="some host outside our network" ro="False">
           <Interface id="id3B19C5EB-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B19C5EB-i-ipv4" name="address" comment="" ro="False" address="200.200.200.200" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <HostOptions>
             <Option name="use_mac_addr_filter">false</Option>
@@ -425,6 +447,7 @@
         <Host id="host-secondary1-com" name="secondary1.com" comment="" ro="False">
           <Interface id="host-secondary1-com-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-secondary1-com-i-ipv4" name="address" comment="" ro="False" address="211.11.11.11" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="211.11.11.11">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -438,6 +461,7 @@
         <Host id="host-secondary2-com" name="secondary2.com" comment="" ro="False">
           <Interface id="host-secondary2-com-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-secondary2-com-i-ipv4" name="address" comment="" ro="False" address="211.22.22.22" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="211.22.22.22">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -452,6 +476,7 @@
           <Interface id="id3BF23931" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF23931-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress id="id3BF23931-pa" address="00:a0:24:53:06:8c" name="unknown-pa" comment="" ro="False"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -468,6 +493,7 @@
         <Host id="id3D850651" name="zero address" comment="" ro="False">
           <Interface id="id3D850655" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3D850656" name="zero address" comment="" ro="False" address="0.0.0.0" netmask="255.0.0.0"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -481,6 +507,7 @@
         <Host id="id3FCA558D" name="dmz host 1" comment="" ro="False">
           <Interface id="id3FCA558F" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="id3FCA5590" name="dmz host 1:(ip)" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -494,6 +521,7 @@
         <Host id="id3FCA5593" name="dmz host 2" comment="" ro="False">
           <Interface id="id3FCA5595" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="id3FCA5596" name="dmz host 2:(ip)" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -507,6 +535,7 @@
         <Host id="id3FCA52D5" name="hostD" comment="" ro="False">
           <Interface id="id3FCA52D7" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="id3FCA52D8" name="hostD(ip)" comment="" ro="False" address="192.168.1.110" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -520,6 +549,7 @@
         <Host id="id3FCA52DB" name="hostE" comment="" ro="False">
           <Interface id="id3FCA52DD" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="id3FCA52DE" name="hostE(ip)" comment="" ro="False" address="192.168.1.120" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -533,6 +563,7 @@
         <Host id="id3FCA534B" name="dmz host 3" comment="" ro="False">
           <Interface id="id3FCA534D" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="id3FCA534E" name="dmz host 3(ip)" comment="" ro="False" address="192.168.2.30" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -546,6 +577,7 @@
         <Host id="id3FCA5351" name="dmz host 4" comment="" ro="False">
           <Interface id="id3FCA5353" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="id3FCA5354" name="dmz host 4(ip)" comment="" ro="False" address="192.168.2.40" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -559,6 +591,7 @@
         <Host id="id43913DCB25682" name="hostAt" comment="" ro="False">
           <Interface id="id43913DCD25682" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="hostA_eth0" comment="" ro="False">
             <IPv4 id="id43913DCE25682" name="hostAt:hostA_eth0:ip" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
+            <InterfaceOptions/>
           </Interface>
           <Management address="192.168.1.10">
             <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -679,7 +712,7 @@
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
       <Firewall id="fw-firewall2" host_OS="freebsd" inactive="False" lastCompiled="1249841462" lastInstalled="0" lastModified="1249841456" platform="ipf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="nat-firewall2-0" disabled="False" position="0" comment="">
+          <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -700,7 +733,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="nat-firewall2-1" disabled="False" position="1" comment="">
+          <NATRule id="nat-firewall2-1" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -721,7 +754,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3CDB43B8" disabled="False" position="2" comment="">
+          <NATRule id="id3CDB43B8" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -742,7 +775,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D7581A7" disabled="False" position="3" comment="">
+          <NATRule id="id3D7581A7" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -764,7 +797,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D75843D" disabled="False" position="4" comment="">
+          <NATRule id="id3D75843D" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1275,12 +1308,15 @@
         <Routing id="fw-firewall2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="if-FW-firewall2-eth1" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth1-ipv4" name="address" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="if-FW-firewall2-eth0" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth0-ipv4" name="firewall" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3E5F1D8E" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3E5F1DDA" name="firewall:lo(ip)" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -1373,7 +1409,7 @@
       </Firewall>
       <Firewall id="id3AF5AA0A" host_OS="freebsd" inactive="False" lastCompiled="1249841494" lastInstalled="0" lastModified="1249841490" platform="ipf" version="" name="firewall1" comment="this object is used to test all kinds of negation in policy rules&#10;&#10;Currently negation in NAT is not supported for ipf, therefore all rules in NAT with&#10;negation are disabled&#10;" ro="False">
         <NAT id="id3AF5AA0D" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3C98491C" disabled="True" position="0" comment="">
+          <NATRule id="id3C98491C" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1394,7 +1430,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFADC09" disabled="False" position="1" comment="">
+          <NATRule id="id3AFADC09" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -1415,7 +1451,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3CD23959" disabled="True" position="2" comment="">
+          <NATRule id="id3CD23959" disabled="True" position="2" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1436,7 +1472,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B1328FB" disabled="False" position="3" comment="">
+          <NATRule id="id3B1328FB" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1457,7 +1493,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E7ABF0A" disabled="False" position="4" comment="">
+          <NATRule id="id3E7ABF0A" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1479,7 +1515,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AF5AAD3" disabled="True" position="5" comment="">
+          <NATRule id="id3AF5AAD3" disabled="True" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1500,7 +1536,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3CCA1B57" disabled="True" position="6" comment="">
+          <NATRule id="id3CCA1B57" disabled="True" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1521,7 +1557,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B50F7CB" disabled="True" position="7" comment="">
+          <NATRule id="id3B50F7CB" disabled="True" position="7" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id3B022266"/>
             </OSrc>
@@ -1542,7 +1578,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BD8D94B" disabled="True" position="8" comment="">
+          <NATRule id="id3BD8D94B" disabled="True" position="8" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1563,7 +1599,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BD8D9DD" disabled="True" position="9" comment="">
+          <NATRule id="id3BD8D9DD" disabled="True" position="9" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -1584,7 +1620,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BBC0EA4" disabled="True" position="10" comment="">
+          <NATRule id="id3BBC0EA4" disabled="True" position="10" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -1605,7 +1641,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BBC0F93" disabled="True" position="11" comment="">
+          <NATRule id="id3BBC0F93" disabled="True" position="11" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id3B4572AF"/>
             </OSrc>
@@ -1626,7 +1662,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BC6BCE5" disabled="True" position="12" comment="">
+          <NATRule id="id3BC6BCE5" disabled="True" position="12" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -2010,18 +2046,23 @@
         <Routing id="id3AF5AA0A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3AF5AA96" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5AA96-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3AF5AA99" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3AF5AA99-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3B0B4BC8" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0B4BC8-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3B0B4D35" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3B0B4D35-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3B11F434" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3B11F434-ipv4" name="address" comment="" ro="False" address="22.22.23.23" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="22.22.23.23">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -2112,7 +2153,7 @@
       </Firewall>
       <Firewall id="id3AFB66C6" host_OS="freebsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1188008480" platform="ipf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3AFB66C8" disabled="False" position="0" comment="">
+          <NATRule id="id3AFB66C8" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2135,7 +2176,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3AFB66D6" disabled="False" position="1" comment="">
+          <NATRule id="id3AFB66D6" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="id3B4572AF"/>
@@ -2159,7 +2200,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3DE9CA86" disabled="False" position="2" comment="">
+          <NATRule id="id3DE9CA86" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2181,7 +2222,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DE9CD88" disabled="False" position="3" comment="">
+          <NATRule id="id3DE9CD88" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2202,7 +2243,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DEA6375" disabled="False" position="4" comment="">
+          <NATRule id="id3DEA6375" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2223,7 +2264,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3CABE6DF" disabled="False" position="5" comment="">
+          <NATRule id="id3CABE6DF" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2245,7 +2286,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E894DE7" disabled="True" position="6" comment="">
+          <NATRule id="id3E894DE7" disabled="True" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2266,7 +2307,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFB69BD" disabled="False" position="7" comment="">
+          <NATRule id="id3AFB69BD" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2288,7 +2329,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DEA6769" disabled="False" position="8" comment="load balancing rule">
+          <NATRule id="id3DEA6769" disabled="False" position="8" action="Translate" comment="load balancing rule">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2311,7 +2352,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DEA8105" disabled="False" position="9" comment="load balancing rule">
+          <NATRule id="id3DEA8105" disabled="False" position="9" action="Translate" comment="load balancing rule">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2332,7 +2373,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D265545" disabled="False" position="10" comment="">
+          <NATRule id="id3D265545" disabled="False" position="10" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2353,7 +2394,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D265556" disabled="False" position="11" comment="">
+          <NATRule id="id3D265556" disabled="False" position="11" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2374,7 +2415,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BEEF6D2" disabled="False" position="12" comment="">
+          <NATRule id="id3BEEF6D2" disabled="False" position="12" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2395,7 +2436,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BD67563" disabled="False" position="13" comment="">
+          <NATRule id="id3BD67563" disabled="False" position="13" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostB"/>
             </OSrc>
@@ -2418,7 +2459,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3BD6757E" disabled="True" position="14" comment="">
+          <NATRule id="id3BD6757E" disabled="True" position="14" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2439,7 +2480,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B66568B" disabled="False" position="15" comment="NETMAP ">
+          <NATRule id="id3B66568B" disabled="False" position="15" action="Translate" comment="NETMAP ">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2460,7 +2501,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B6656EF" disabled="True" position="16" comment="NETMAP">
+          <NATRule id="id3B6656EF" disabled="True" position="16" action="Translate" comment="NETMAP">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2481,7 +2522,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFB69F7" disabled="False" position="17" comment="">
+          <NATRule id="id3AFB69F7" disabled="False" position="17" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2502,7 +2543,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B7313C4" disabled="False" position="18" comment="">
+          <NATRule id="id3B7313C4" disabled="False" position="18" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -2523,7 +2564,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF6D103" disabled="False" position="19" comment="">
+          <NATRule id="id3DF6D103" disabled="False" position="19" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2544,7 +2585,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF6D242" disabled="False" position="20" comment="">
+          <NATRule id="id3DF6D242" disabled="False" position="20" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2566,7 +2607,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3F2E9A08" disabled="False" position="21" comment="">
+          <NATRule id="id3F2E9A08" disabled="False" position="21" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2587,7 +2628,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3F2E9B78" disabled="False" position="22" comment="">
+          <NATRule id="id3F2E9B78" disabled="False" position="22" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2608,7 +2649,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3F2E9CF2" disabled="False" position="23" comment="">
+          <NATRule id="id3F2E9CF2" disabled="False" position="23" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -2867,18 +2908,23 @@
         <Routing id="id3AFB66C6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3AFB6703" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AFB6703-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3AFB6706" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3AFB6706-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3AFB68D2" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3AFB68D2-ipv4" name="address" comment="" ro="False" address="22.22.23.23" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3B0221F1" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0221F1-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3CD2449F" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3CD2449F-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -2956,7 +3002,7 @@
       </Firewall>
       <Firewall id="id3B0C6380" host_OS="freebsd" inactive="False" lastCompiled="1157929207" lastInstalled="0" lastModified="1188008818" platform="ipf" version="" name="firewall4" comment="this object is used to test a configuration where firewall has dynamic address " ro="False">
         <NAT id="id3B0C6381" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3B0C6382" disabled="False" position="0" comment="">
+          <NATRule id="id3B0C6382" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -2979,7 +3025,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3D758531" disabled="False" position="1" comment="">
+          <NATRule id="id3D758531" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -3002,7 +3048,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3D75869D" disabled="False" position="2" comment="">
+          <NATRule id="id3D75869D" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -3025,7 +3071,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3D7586D1" disabled="False" position="3" comment="">
+          <NATRule id="id3D7586D1" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="host-hostA"/>
             </OSrc>
@@ -3048,7 +3094,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3B0C6390" disabled="True" position="4" comment="negation in NAT is not supported&#10;in ipf yet">
+          <NATRule id="id3B0C6390" disabled="True" position="4" action="Translate" comment="negation in NAT is not supported&#10;in ipf yet">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3071,7 +3117,7 @@
               <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
-          <NATRule id="id3B202AFF" disabled="False" position="5" comment="">
+          <NATRule id="id3B202AFF" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3092,7 +3138,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D757CC5" disabled="False" position="6" comment="">
+          <NATRule id="id3D757CC5" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3114,7 +3160,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D757E01" disabled="False" position="7" comment="">
+          <NATRule id="id3D757E01" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3136,7 +3182,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D757F29" disabled="False" position="8" comment="">
+          <NATRule id="id3D757F29" disabled="False" position="8" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3158,7 +3204,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E798041" disabled="True" position="9" comment="">
+          <NATRule id="id3E798041" disabled="True" position="9" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3179,7 +3225,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id46CFC34328618" disabled="False" position="10" comment="">
+          <NATRule id="id46CFC34328618" disabled="False" position="10" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3423,18 +3469,23 @@
         <Routing id="id3B0C6380-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3B0C63DF" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3B0C63DF-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3B0C63E1" dyn="True" label="" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3B0C63E1-ipv4" name="firewall4:eth1" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3B0C63F3" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0C63F3-ipv4" name="firewall4:eth2" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3B0C63F5" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3B0C63F5-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3CD88A77" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3CD88A77-ipv4" name="firewall4:eth3" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="222.222.222.222">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -3581,18 +3632,23 @@
         <Routing id="id3C69BD4F-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3C69BD5C" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3C69BD5C-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3C69BD5E" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3C69BD5E-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3C69BD68" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3C69BD68-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3C69BD6A" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3C69BD6A-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3C69BD6C" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3C69BD6C-ipv4" name="address" comment="" ro="False" address="22.22.23.23" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="22.22.23.23">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -3805,9 +3861,11 @@
         <Routing id="id3AF5A2BA-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3AF5A2CB" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5A2CB-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3AFB7090" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3AFB7090-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -3872,7 +3930,7 @@
       </Firewall>
       <Firewall id="id3D582236" host_OS="freebsd" lastCompiled="1157929212" lastInstalled="0" lastModified="0" platform="ipf" name="firewall8" comment="" ro="False">
         <NAT id="id3D58223A" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3D58237B" disabled="False" position="0" comment="">
+          <NATRule id="id3D58237B" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3893,7 +3951,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D5823A5" disabled="False" position="1" comment="">
+          <NATRule id="id3D5823A5" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3914,7 +3972,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D5823B9" disabled="False" position="2" comment="">
+          <NATRule id="id3D5823B9" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -3935,7 +3993,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D58245E" disabled="False" position="3" comment="">
+          <NATRule id="id3D58245E" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3956,7 +4014,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D58236D" disabled="False" position="4" comment="">
+          <NATRule id="id3D58236D" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3977,7 +4035,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D58235F" disabled="False" position="5" comment="">
+          <NATRule id="id3D58235F" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -3998,7 +4056,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D582472" disabled="False" position="6" comment="">
+          <NATRule id="id3D582472" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4019,7 +4077,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D58249D" disabled="False" position="7" comment="">
+          <NATRule id="id3D58249D" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4040,7 +4098,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D5825CC" disabled="False" position="8" comment="">
+          <NATRule id="id3D5825CC" disabled="False" position="8" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4159,15 +4217,20 @@
         <Routing id="id3D582236-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3D58223F" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3D582241" name="firewall8:eth0" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3D582242" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3D582244" name="firewall8:eth1:0" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
           <IPv4 id="id3D582245" name="firewall8:eth1:1" comment="" ro="False" address="33.33.33.34" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3E5F1E5D" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3E5F1E5F" name="firewall8:lo(ip)" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3EE260BD" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False"/>
+        <Interface id="id3EE260BD" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
         <Management address="33.33.33.33">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
@@ -4204,7 +4267,7 @@
       </Firewall>
       <Firewall id="id3DF3D0AD" host_OS="freebsd" lastCompiled="1157929213" lastInstalled="0" lastModified="0" platform="ipf" name="firewall9" comment="" ro="False">
         <NAT id="id3DF3D0AE" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3DF3D0AF" disabled="False" position="0" comment="">
+          <NATRule id="id3DF3D0AF" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4225,7 +4288,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF3D0BD" disabled="False" position="1" comment="">
+          <NATRule id="id3DF3D0BD" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4246,7 +4309,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF3D0CB" disabled="False" position="2" comment="">
+          <NATRule id="id3DF3D0CB" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -4267,7 +4330,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF3D0D9" disabled="False" position="3" comment="">
+          <NATRule id="id3DF3D0D9" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4288,7 +4351,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF3D0E7" disabled="False" position="4" comment="">
+          <NATRule id="id3DF3D0E7" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4309,7 +4372,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF3D0F5" disabled="False" position="5" comment="">
+          <NATRule id="id3DF3D0F5" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4330,7 +4393,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF3D103" disabled="False" position="6" comment="">
+          <NATRule id="id3DF3D103" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4351,7 +4414,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF3D111" disabled="False" position="7" comment="">
+          <NATRule id="id3DF3D111" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4372,7 +4435,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3E65B753" disabled="False" position="8" comment="">
+          <NATRule id="id3E65B753" disabled="False" position="8" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4393,7 +4456,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3DF3D11F" disabled="False" position="9" comment="">
+          <NATRule id="id3DF3D11F" disabled="False" position="9" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4574,12 +4637,15 @@
         <Routing id="id3DF3D0AD-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3DF3D160" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="le0" comment="" ro="False">
           <IPv4 id="id3DF3D161" name="firewall9:le0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3DF3D163" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="le1" comment="" ro="False">
           <IPv4 id="id3DF3D164" name="firewall9:le1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3E5F2278" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
           <IPv4 id="id3E5F227A" name="firewall9:lo(ip)" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -4821,15 +4887,19 @@
         <Routing id="id3FCA516A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id3FCA522B" dyn="False" label="fw10:fxp0" mgmt="False" security_level="100" unnum="False" unprotected="False" name="fxp0" comment="" ro="False">
           <IPv4 id="id3FCA522C" name="firewall9:eth0" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3FCA522E" dyn="False" label="fw10:fxp1" mgmt="False" security_level="0" unnum="False" unprotected="False" name="fxp1" comment="" ro="False">
           <IPv4 id="id3FCA522F" name="firewall9:eth1:0" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3FCA5251" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
           <IPv4 id="id3FCA5252" name="firewall9:lo(ip)" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3FCA5535" dyn="False" label="fw10:fxp2" mgmt="False" security_level="0" unnum="False" unprotected="False" name="fxp2" comment="" ro="False">
           <IPv4 id="id3FCA5537" name="firewall10:fw10:fxp2(ip)" comment="" ro="False" address="192.168.2.0" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.2.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -4872,7 +4942,7 @@
       </Firewall>
       <Firewall id="id3FF5DC0E" host_OS="freebsd" lastCompiled="1172425374" lastInstalled="0" lastModified="0" platform="ipf" name="firewall11" comment="" ro="False">
         <NAT id="id3FF5DC12" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3FF5DC26" disabled="False" position="0" comment="">
+          <NATRule id="id3FF5DC26" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -4951,14 +5021,22 @@
           </PolicyRule>
         </Policy>
         <Routing id="id3FF5DC0E-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3FF5DC15" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="100" unnum="True" unprotected="False" name="fxp1" comment="" ro="False"/>
-        <Interface id="id3FF5DC17" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="ng1" comment="" ro="False"/>
-        <Interface id="id3FF5DC19" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ng0" comment="" ro="False"/>
+        <Interface id="id3FF5DC15" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="100" unnum="True" unprotected="False" name="fxp1" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id3FF5DC17" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="ng1" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id3FF5DC19" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ng0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
         <Interface id="id3FF5DC1B" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="fxp0" comment="" ro="False">
           <IPv4 id="id3FF5DC1D" name="firewall11:fxp0(ip)" comment="" ro="False" address="10.0.0.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id3FF5DC1E" dyn="False" label="" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
           <IPv4 id="id3FF5DC20" name="firewall11:lo0(ip)" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="127.0.0.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -5003,7 +5081,7 @@
       </Firewall>
       <Firewall id="id424A636E" host_OS="freebsd" lastCompiled="1157929209" lastInstalled="0" lastModified="0" platform="ipf" version="" name="firewall5" comment="Dynamic interface ppp0" ro="False">
         <NAT id="id424A63A6" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id424A63A7" disabled="False" position="0" comment="">
+          <NATRule id="id424A63A7" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5024,7 +5102,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id424A63B5" disabled="False" position="1" comment="">
+          <NATRule id="id424A63B5" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5045,7 +5123,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id424A63C3" disabled="False" position="2" comment="">
+          <NATRule id="id424A63C3" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -5066,7 +5144,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id424A63D1" disabled="False" position="3" comment="">
+          <NATRule id="id424A63D1" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5087,7 +5165,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id424A63DF" disabled="False" position="4" comment="">
+          <NATRule id="id424A63DF" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5108,7 +5186,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id424A63ED" disabled="False" position="5" comment="">
+          <NATRule id="id424A63ED" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5129,7 +5207,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id424A63FB" disabled="False" position="6" comment="">
+          <NATRule id="id424A63FB" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5150,7 +5228,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id424A6409" disabled="False" position="7" comment="">
+          <NATRule id="id424A6409" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5171,7 +5249,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id424A6417" disabled="False" position="8" comment="">
+          <NATRule id="id424A6417" disabled="False" position="8" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5308,15 +5386,20 @@
         <Routing id="id424A636E-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id424A6425" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id424A6429" name="firewall5:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id424A642A" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id424A642F" name="firewall5:eth1:ip1" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
           <IPv4 id="id424A6430" name="firewall5:eth1:ip2" comment="" ro="False" address="33.33.33.34" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id424A6431" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id424A6435" name="firewall5:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id424A6436" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False"/>
+        <Interface id="id424A6436" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
         <Management address="33.33.33.33">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="True" identity="" port="9999"/>
@@ -5367,7 +5450,7 @@
       </Firewall>
       <Firewall id="id43867C1018346" host_OS="freebsd" lastCompiled="1157929202" lastInstalled="0" lastModified="0" platform="ipf" version="" name="firewall33" comment="testing DNSName object" ro="False">
         <NAT id="id43867C4818346" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id43876E2618346" disabled="False" position="0" comment="">
+          <NATRule id="id43876E2618346" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5388,7 +5471,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43876E5218346" disabled="False" position="1" comment="">
+          <NATRule id="id43876E5218346" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5409,7 +5492,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43876E6918346" disabled="False" position="2" comment="">
+          <NATRule id="id43876E6918346" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5431,7 +5514,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43876E7B18346" disabled="True" position="3" comment="">
+          <NATRule id="id43876E7B18346" disabled="True" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5682,12 +5765,16 @@
           </PolicyRule>
         </Policy>
         <Routing id="id43867C5718346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id43867C5818346" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False"/>
+        <Interface id="id43867C5818346" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
+          <InterfaceOptions/>
+        </Interface>
         <Interface id="id43867C5918346" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id43867C5B18346" name="firewall33:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id43867C5C18346" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id43867C5E18346" name="firewall33:eth1:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -5781,7 +5868,7 @@
       </Firewall>
       <Firewall id="id4389EDAE18346" host_OS="freebsd" lastCompiled="1157929203" lastInstalled="0" lastModified="0" platform="ipf" version="" name="firewall34" comment="testing AddressTable object" ro="False">
         <NAT id="id4389EE4818346" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id4389EEB018346" disabled="True" position="0" comment="">
+          <NATRule id="id4389EEB018346" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="True">
               <ObjectRef ref="id4389EE9118346"/>
             </OSrc>
@@ -5802,7 +5889,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43891B6E674" disabled="True" position="1" comment="">
+          <NATRule id="id43891B6E674" disabled="True" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id43913DEA25682"/>
             </OSrc>
@@ -6022,12 +6109,16 @@
           </PolicyRule>
         </Policy>
         <Routing id="id4389EE8318346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4389EE8418346" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False"/>
+        <Interface id="id4389EE8418346" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
+          <InterfaceOptions/>
+        </Interface>
         <Interface id="id4389EE8518346" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id4389EE8718346" name="firewall34:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id4389EE8818346" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4389EE8A18346" name="firewall34:eth1:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.100">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -6121,7 +6212,7 @@
       </Firewall>
       <Firewall id="id43F7C93131168" host_OS="freebsd" lastCompiled="1157929205" lastInstalled="0" lastModified="0" platform="ipf" version="" name="firewall35" comment="Testing action Custom" ro="False">
         <NAT id="id43F7C99A31168" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id43F7C99B31168" disabled="False" position="0" comment="">
+          <NATRule id="id43F7C99B31168" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6142,7 +6233,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7C9A931168" disabled="False" position="1" comment="">
+          <NATRule id="id43F7C9A931168" disabled="False" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6163,7 +6254,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7C9B731168" disabled="False" position="2" comment="">
+          <NATRule id="id43F7C9B731168" disabled="False" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -6184,7 +6275,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7C9C531168" disabled="False" position="3" comment="">
+          <NATRule id="id43F7C9C531168" disabled="False" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6205,7 +6296,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7C9D331168" disabled="False" position="4" comment="">
+          <NATRule id="id43F7C9D331168" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6226,7 +6317,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7C9E131168" disabled="False" position="5" comment="">
+          <NATRule id="id43F7C9E131168" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6247,7 +6338,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7C9EF31168" disabled="False" position="6" comment="">
+          <NATRule id="id43F7C9EF31168" disabled="False" position="6" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6268,7 +6359,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7C9FD31168" disabled="False" position="7" comment="">
+          <NATRule id="id43F7C9FD31168" disabled="False" position="7" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6289,7 +6380,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7CA0B31168" disabled="False" position="8" comment="">
+          <NATRule id="id43F7CA0B31168" disabled="False" position="8" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6310,7 +6401,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id43F7CA1931168" disabled="False" position="9" comment="">
+          <NATRule id="id43F7CA1931168" disabled="False" position="9" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -6431,12 +6522,15 @@
         <Routing id="id43F7CA2731168" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Interface id="id43F7CA2831168" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="le0" comment="" ro="False">
           <IPv4 id="id43F7CA2A31168" name="firewall35:le0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id43F7CA2B31168" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="le1" comment="" ro="False">
           <IPv4 id="id43F7CA2D31168" name="firewall35:le1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Interface id="id43F7CA2E31168" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
           <IPv4 id="id43F7CA3031168" name="firewall35:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="22.22.22.22">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>

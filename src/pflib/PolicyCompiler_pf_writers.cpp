@@ -77,7 +77,8 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
     FWOptions *ruleopt =rule->getOptionsObject();
     Service *srv=compiler->getFirstSrv(rule);    assert(srv);
 
-    switch (rule->getAction()) {
+    switch (rule->getAction())
+    {
     case PolicyRule::Accept:  
     case PolicyRule::Tag:
     case PolicyRule::Classify:
@@ -92,18 +93,22 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 
     case PolicyRule::Reject: 
 	if (TCPService::isA(srv)) compiler->output << "block return-rst ";
-	else {
+	else
+        {
 	    string aor=ruleopt->getStr("action_on_reject");
 	    string code;
-	    if ( aor.find("ICMP")!=string::npos ) {
+	    if ( aor.find("ICMP")!=string::npos )
+            {
 		code="return-icmp ";
-		if (aor.find("unreachable")!=string::npos ) {
+		if (aor.find("unreachable")!=string::npos )
+                {
  		    if (aor.find("net")!=string::npos)      code=code+"( 0 ) ";
 		    if (aor.find("host")!=string::npos)     code=code+"( 1 ) ";
 		    if (aor.find("protocol")!=string::npos) code=code+"( 2 ) ";
 		    if (aor.find("port")!=string::npos)     code=code+"( 3 ) ";
 		}
-		if (aor.find("prohibited")!=string::npos ) {
+		if (aor.find("prohibited")!=string::npos )
+                {
  		    if (aor.find("net")!=string::npos)      code=code+"( 9 ) ";
 		    if (aor.find("host")!=string::npos)     code=code+"( 10 ) ";
 		}
@@ -397,14 +402,17 @@ string PolicyCompiler_pf::PrintRule::_printLogPrefix(PolicyRule *rule,
  * %C - chain name
  */
     string::size_type n;
-    if (rule && (n=s.find("%N"))!=string::npos ) {
+    if (rule && (n=s.find("%N"))!=string::npos )
+    {
         std::ostringstream s1;
         s1 << rule->getPosition();
         s.replace(n,2,s1.str());
     }
-    if (rule && (n=s.find("%A"))!=string::npos ) {
+    if (rule && (n=s.find("%A"))!=string::npos )
+    {
         std::ostringstream s1;
-        switch (rule->getAction()) {
+        switch (rule->getAction())
+        {
         case PolicyRule::Accept:  s1 << "ACCEPT"; break;
         case PolicyRule::Deny:    s1 << "DROP";   break;
         case PolicyRule::Reject:  s1 << "REJECT"; break;
@@ -413,7 +421,8 @@ string PolicyCompiler_pf::PrintRule::_printLogPrefix(PolicyRule *rule,
         }
         s.replace(n,2,s1.str());
     }
-    if (rule && (n=s.find("%I"))!=string::npos ) {
+    if (rule && (n=s.find("%I"))!=string::npos )
+    {
         std::ostringstream s1;
         string rule_iface =  rule->getInterfaceStr();
         if (rule_iface!="") 
@@ -423,17 +432,17 @@ string PolicyCompiler_pf::PrintRule::_printLogPrefix(PolicyRule *rule,
         } else
             s.replace(n,2,"global");
     }
-    if (rule && (n=s.find("%C"))!=string::npos ) {
+    if (rule && (n=s.find("%C"))!=string::npos )
+    {
         s.replace(n,2,"");  // there is no chain in PF and friends
     }
 
     return "\"" + s + "\" ";
 }
 
-
 void PolicyCompiler_pf::PrintRule::_printInterface(PolicyRule *rule)
 {
-    string       iface_name = rule->getInterfaceStr();
+    string iface_name = rule->getInterfaceStr();
     if (iface_name!="") 
 	compiler->output << "on " << iface_name << " ";
 }
@@ -481,8 +490,8 @@ string PolicyCompiler_pf::PrintRule::_printPort(int rs,int re,bool neg)
     if (rs<0) rs=0;
     if (re<0) re=0;
 
-    if (!neg) {
-
+    if (!neg)
+    {
 	if (rs>0 || re>0)
         {
             if (rs>re && re==0) re=rs;
@@ -492,7 +501,8 @@ string PolicyCompiler_pf::PrintRule::_printPort(int rs,int re,bool neg)
 		if (rs==0 && re!=0)      str << "<= " << re;
 		else
 		    if (rs!=0 && re==65535)  str << ">= " << rs;
-		    else {
+		    else
+                    {
 /* 
  * port range. Operator '><' defines range in a such way that boundaries
  * are not included. Since we assume it is inclusive, let's move boundaries 
@@ -502,15 +512,17 @@ string PolicyCompiler_pf::PrintRule::_printPort(int rs,int re,bool neg)
 			str << rs << " >< " << re;
 		    }
 	}
-    } else {
-
-	if (rs>0 || re>0) {
+    } else
+    {
+	if (rs>0 || re>0)
+        {
 	    if (rs==re)  str << "!= " << rs;
 	    else
 		if (rs==0 && re!=0)      str << "> " << re;
 		else
 		    if (rs!=0 && re==65535)  str << "< " << rs;
-		    else {
+		    else
+                    {
 			str << rs << " <> " << re;
 		    }
 	}
@@ -887,7 +899,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
             string comm = rule->getComment();
             string::size_type c1,c2;
             c1=0;
-            while ( (c2=comm.find('\n',c1))!=string::npos ) {
+            while ( (c2=comm.find('\n',c1))!=string::npos )
+            {
                 compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
                 c1=c2+1;
             }
