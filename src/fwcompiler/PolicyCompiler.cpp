@@ -364,10 +364,10 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
         tmp_queue.push_back(rule);
         return true;
     }
+
     for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
     {
         FWObject *o = FWReference::getObject(*i);
-
         if (ObjectGroup::isA(o))
         {
             // a group in "interface" rule element. GUI checks that only
@@ -387,15 +387,29 @@ bool  PolicyCompiler::InterfacePolicyRules::processNext()
                 PolicyRule *r= compiler->dbcopy->createPolicyRule();
                 compiler->temp_ruleset->add(r);
                 r->duplicate(rule);
+                RuleElementItf *nitf = r->getItf();
+                nitf->clearChildren();
+                nitf->setAnyElement();
+                nitf->addRef(o1);
+                // Set interface ID using setInterfaceId() for
+                // backwards compatibility with older code. This
+                // should go away eventually since we have "Interface"
+                // rule element in policy rules. Rule element like
+                // this does not exist in the NAT rules, so there we
+                // need to keep using setInterfaceId()
                 r->setInterfaceId(o1->getId());
                 tmp_queue.push_back(r);
             }
         } else
         {
-
             PolicyRule *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
+            RuleElementItf *nitf = r->getItf();
+	    nitf->clearChildren();
+	    nitf->setAnyElement();
+            nitf->addRef(o);
+            // trying to get rid of Rule::getInterfaceId Rule::getInterfaceStr
             r->setInterfaceId(o->getId());
             tmp_queue.push_back(r);
         }
