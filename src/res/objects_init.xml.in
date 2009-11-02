@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1214961933" id="root">
-  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="False">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1257167351" id="root">
+  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
@@ -191,6 +191,8 @@
         <IPService id="id3D703C8E" fragm="False" lsrr="False" protocol_num="57" rr="False" short_fragm="False" ssrr="False" ts="False" name="SKIP" comment="IPSEC Simple Key Management for Internet Protocols" ro="False"/>
         <IPService id="id3D703C8F" fragm="False" lsrr="False" protocol_num="47" rr="False" short_fragm="False" ssrr="False" ts="False" name="GRE" comment="Generic Routing Encapsulation&#10;" ro="False"/>
         <IPService id="id3D703C95" fragm="False" lsrr="False" protocol_num="112" rr="False" short_fragm="False" ssrr="False" ts="False" name="vrrp" comment="Virtual Router Redundancy Protocol" ro="False"/>
+        <IPService id="ip-IGMP" fragm="False" lsrr="False" protocol_num="2" rr="False" short_fragm="False" ssrr="False" ts="False" name="IGMP" rtralt="True" rtralt_value="0" comment="Internet Group Management Protocol, Version 3, RFC 3376" ro="False"/>
+        <IPService id="ip-PIM" fragm="False" lsrr="False" protocol_num="103" rr="False" short_fragm="False" ssrr="False" ts="False" name="PIM" rtralt="False" rtralt_value="0" comment="Protocol Independent Multicast - Dense Mode (PIM-DM), RFC 3973, or Protocol Independent Multicast-Sparse Mode (PIM-SM) RFC 2362" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="stdid09" name="TCP" comment="" ro="False">
         <TCPService id="tcp-ALL_TCP_Masqueraded" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ALL TCP Masqueraded" comment="ipchains used to use this range of port numbers for masquerading. " ro="False" src_range_start="61000" src_range_end="65095" dst_range_start="0" dst_range_end="0"/>

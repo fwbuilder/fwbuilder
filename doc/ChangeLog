@@ -1,3 +1,14 @@
+2009-11-02  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_pf.cpp (SpecialServices::processNext): Compiler
+	for PF generates "allow-opts" keyword when IPService object used
+	in the rule has IP options. This includes new option "router-alert".
+	Fixes #503
+
+	* IPServiceDialog.cpp (IPServiceDialog::applyChanges): Added GUI
+	elements to support IP option "router-alert" which is now
+	available as an attribute of IPService object. Fixes #502
+
 2009-11-01  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* CompilerDriver_pf.cpp (CompilerDriver_pf::printStaticOptions):

@@ -97,6 +97,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
     m_dialog->timestamp->setChecked( s->getBool("ts") );
     m_dialog->all_fragments->setChecked( s->getBool("fragm") );
     m_dialog->short_fragments->setChecked( s->getBool("short_fragm") );
+    m_dialog->router_alert->setChecked( s->getBool("rtralt") );
 
     string tos = s->getTOSCode();
     string dscp = s->getDSCPCode();
@@ -134,6 +135,9 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
     m_dialog->timestamp->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->timestamp);
+
+    m_dialog->router_alert->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->router_alert);
 
     m_dialog->all_fragments->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->all_fragments);
@@ -176,7 +180,12 @@ void IPServiceDialog::applyChanges()
     obj->setBool("ts", m_dialog->timestamp->isChecked() );
     obj->setBool("fragm", m_dialog->all_fragments->isChecked() );
     obj->setBool("short_fragm", m_dialog->short_fragments->isChecked() );
-    
+
+    // router-alert IP option has only one defined value - "0". All other
+    // values are reserved atm. RFC 2113
+    obj->setBool("rtralt", m_dialog->router_alert->isChecked() );
+    if (m_dialog->router_alert->isChecked()) obj->setInt("rtralt_value", 0);
+
     IPService *ip = IPService::cast(obj);
     if (m_dialog->use_dscp->isChecked())
     {

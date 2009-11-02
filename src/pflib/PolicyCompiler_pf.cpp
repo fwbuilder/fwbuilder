@@ -508,17 +508,16 @@ bool PolicyCompiler_pf::SpecialServices::processNext()
 
     RuleElementSrv *srv=rule->getSrv();
 
-    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++) {
+    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
+    {
 	FWObject *o= *i;
 	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	Service *s=Service::cast( o );
 	assert(s);
 
-	if (IPService::cast(s)!=NULL  && rule->getAction()==PolicyRule::Accept) {
-	    if (s->getBool("rr")        ||
-		s->getBool("ssrr")      ||
-		s->getBool("ts") )
-		rule->setBool("allow_opts",true);
+	if (IPService::cast(s)!=NULL  && rule->getAction()==PolicyRule::Accept)
+        {
+            rule->setBool("allow_opts", IPService::cast(s)->hasIpOptions());
 	}
     }
     return true;
