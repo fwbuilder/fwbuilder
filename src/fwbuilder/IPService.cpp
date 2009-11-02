@@ -189,11 +189,11 @@ xmlNodePtr IPService::toXML(xmlNodePtr parent) throw(FWException)
 
 bool IPService::hasIpOptions()
 {
-    return (!getStr("lsrr").empty() ||
-            !getStr("rr").empty() ||
-            !getStr("ssrr").empty() ||
-            !getStr("ts").empty() ||
-            !getStr("rtralt").empty());
+    return (getBool("lsrr") ||
+            getBool("rr") ||
+            getBool("ssrr") ||
+            getBool("ts") ||
+            getBool("rtralt"));
 }
 
 string IPService::getTOSCode() const
