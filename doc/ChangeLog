@@ -1,3 +1,12 @@
+2009-11-02  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPService.cpp (IPService::hasIpOptions): Method hasIpOptions()
+	returns true if IPService object has one or more of the IP options:
+	lsrr, rr, ssrr, ts, rtr_alt
+
+	* fwbuilder.dtd.in: Added attributes rtralt and rtralt_value to
+	IPService
+
 2009-10-13  vadim  <vadim@vk.crocodile.org>
 
 	* VERSION (VERSION): started v3.0.8

@@ -159,6 +159,21 @@ void IPService::fromXML(xmlNodePtr root) throw(FWException)
         setStr("dscp", n);
         FREEXMLBUFF(n);
     }
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("rtralt")));
+    if(n!=NULL)
+    {
+        setStr("rtralt", n);
+        FREEXMLBUFF(n);
+    }
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("rtralt_value")));
+    if(n!=NULL)
+    {
+        setStr("rtralt_value", n);
+        FREEXMLBUFF(n);
+    }
+
 }
 
 xmlNodePtr IPService::toXML(xmlNodePtr parent) throw(FWException)
@@ -170,6 +185,15 @@ xmlNodePtr IPService::toXML(xmlNodePtr parent) throw(FWException)
     xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
 
     return me;
+}
+
+bool IPService::hasIpOptions()
+{
+    return (!getStr("lsrr").empty() ||
+            !getStr("rr").empty() ||
+            !getStr("ssrr").empty() ||
+            !getStr("ts").empty() ||
+            !getStr("rtralt").empty());
 }
 
 string IPService::getTOSCode() const
