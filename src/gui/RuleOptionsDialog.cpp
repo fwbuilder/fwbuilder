@@ -166,8 +166,26 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->ipt_hashlimit_gcinterval, ropt,
                             "hashlimit_gcinterval");
 
-        data.registerOption(m_dialog->ipt_assumeFwIsPartOfAny, ropt,
-                            "firewall_is_part_of_any_and_networks");
+        // in v3.0 attribute "assume fw is part of any" used to be a
+        // checkbox and therefore stored as boolean in the rule
+        // options. Old "on" maps to the new "on", which means old "True"
+        // maps to "1". Old "off" maps to "use global" though.
+        string old_val = ropt->getStr("firewall_is_part_of_any_and_networks");
+        if (old_val == "True") ropt->setStr("firewall_is_part_of_any_and_networks", "1");
+        if (old_val == "False") ropt->setStr("firewall_is_part_of_any_and_networks", "");
+
+        QStringList threeStateMapping;
+        threeStateMapping.push_back(QObject::tr("Follow global setting"));
+        threeStateMapping.push_back("");
+
+        threeStateMapping.push_back(QObject::tr("On"));
+        threeStateMapping.push_back("1");
+
+        threeStateMapping.push_back(QObject::tr("Off"));
+        threeStateMapping.push_back("0");
+
+        data.registerOption(m_dialog->ipt_assume_fw_is_part_of_any, ropt,
+                            "firewall_is_part_of_any_and_networks", threeStateMapping);
         data.registerOption(m_dialog->ipt_stateless, ropt,  "stateless");
     }
 

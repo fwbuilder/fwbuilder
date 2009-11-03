@@ -496,7 +496,7 @@ int PolicyCompiler_ipt::prolog()
     dbcopy->add(bcast255);
 
 
-    bool afpa = fwopt->getBool("firewall_is_part_of_any_and_networks");
+    bool global_afpa = fwopt->getBool("firewall_is_part_of_any_and_networks");
     int n = 0;
     for(FWObject::iterator i=combined_ruleset->begin();
         i!=combined_ruleset->end(); i++)
@@ -504,9 +504,24 @@ int PolicyCompiler_ipt::prolog()
 	Rule *r = Rule::cast( *i );
 	if (r->isDisabled()) continue;
 
-        FWOptions  *ruleopt = r->getOptionsObject();
-        ruleopt->setBool("firewall_is_part_of_any_and_networks",
-                         afpa | ruleopt->getBool("firewall_is_part_of_any_and_networks"));
+        FWOptions *ruleopt = r->getOptionsObject();
+        string rule_afpa = ruleopt->getStr("firewall_is_part_of_any_and_networks");
+
+        // in v3.0 rule options attribute "assume fw is part of any"
+        // used to be a checkbox and therefore stored as boolean in
+        // the rule options. Old "on" or "True" maps to "1", old "off"
+        // or "False" maps to "use global" (it was impossible to turn
+        // this option off for just one rule if it was on
+        // globally). If this attribute has value of an empty string,
+        // then we should use global setting from the firewall options
+        // object.
+        if (rule_afpa.empty())
+            ruleopt->setInt("firewall_is_part_of_any_and_networks", global_afpa);
+        if (rule_afpa == "True")
+            ruleopt->setInt("firewall_is_part_of_any_and_networks", 1);
+        if (rule_afpa == "False")
+            ruleopt->setInt("firewall_is_part_of_any_and_networks", global_afpa);
+
         n++;
     }
 
@@ -1056,7 +1071,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule         *rule=getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
-    bool afpa = ruleopt->getBool("firewall_is_part_of_any_and_networks");
+    string afpa = ruleopt->getStr("firewall_is_part_of_any_and_networks");
 
     RuleElementSrc *srcrel=rule->getSrc();
 
@@ -1092,7 +1107,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("connlimit_value",-1);
         ruleopt->setInt("hashlimit_value",-1);
-        ruleopt->setBool("firewall_is_part_of_any_and_networks",afpa);
+        ruleopt->setStr("firewall_is_part_of_any_and_networks", afpa);
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   A  any any any  RETURN  */
@@ -1179,7 +1194,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
-    bool afpa = ruleopt->getBool("firewall_is_part_of_any_and_networks");
+    string afpa = ruleopt->getStr("firewall_is_part_of_any_and_networks");
 
     RuleElementDst *dstrel=rule->getDst();
 
@@ -1215,7 +1230,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("connlimit_value",-1);
         ruleopt->setInt("hashlimit_value",-1);
-        ruleopt->setBool("firewall_is_part_of_any_and_networks",afpa);
+        ruleopt->setStr("firewall_is_part_of_any_and_networks", afpa);
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any B any any RETURN  */
@@ -1415,7 +1430,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
-    bool afpa = ruleopt->getBool("firewall_is_part_of_any_and_networks");
+    string afpa = ruleopt->getStr("firewall_is_part_of_any_and_networks");
 
     RuleElementInterval *intrel=rule->getWhen();
 
@@ -1451,7 +1466,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
         ruleopt->setInt("limit_value",-1);
         ruleopt->setInt("connlimit_value",-1);
         ruleopt->setInt("hashlimit_value",-1);
-        ruleopt->setBool("firewall_is_part_of_any_and_networks",afpa);
+        ruleopt->setStr("firewall_is_part_of_any_and_networks", afpa);
 	tmp_queue.push_back(r);
 
 /* TMP_CHAIN   any  any any  D  RETURN  */
@@ -2117,7 +2132,7 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
  * packets
  */
     if ( /* fwopt->getBool("bridging_fw") || */
-         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ||
+         ruleopt->getInt("firewall_is_part_of_any_and_networks")==0 ||
          ruleopt->getBool("no_output_chain")) 
     {
 	tmp_queue.push_back(rule);
@@ -2183,7 +2198,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
  * packets
  */
     if ( /* fwopt->getBool("bridging_fw") || */
-         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ||
+         ruleopt->getInt("firewall_is_part_of_any_and_networks")==0 ||
          ruleopt->getBool("no_input_chain")) 
     {
 	tmp_queue.push_back(rule);
@@ -2250,7 +2265,7 @@ bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
     RuleElementSrc *srcrel=rule->getSrc();
     FWOptions  *ruleopt = rule->getOptionsObject();
 
-    if ( ruleopt->getBool("firewall_is_part_of_any_and_networks") &&
+    if ( ruleopt->getInt("firewall_is_part_of_any_and_networks")==1 &&
          !ruleopt->getBool("no_output_chain") &&
          rule->getDirection()!=PolicyRule::Inbound && 
          srcrel->isAny() )
@@ -2283,7 +2298,7 @@ bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
     RuleElementDst *dstrel=rule->getDst();
     FWOptions  *ruleopt = rule->getOptionsObject();
 
-    if ( ruleopt->getBool("firewall_is_part_of_any_and_networks") &&
+    if ( ruleopt->getInt("firewall_is_part_of_any_and_networks")==1 &&
          !ruleopt->getBool("no_input_chain") &&
          rule->getDirection()!=PolicyRule::Outbound && 
          dstrel->isAny() )
@@ -2319,7 +2334,7 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
     FWOptions *fwopt = compiler->getCachedFwOpt();
     FWOptions  *ruleopt = rule->getOptionsObject();
     if ( fwopt->getBool("bridging_fw") ||
-         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ||
+         ruleopt->getInt("firewall_is_part_of_any_and_networks")==0 ||
          ruleopt->getBool("no_output_chain"))
     {
 	tmp_queue.push_back(rule);
@@ -2392,7 +2407,7 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
     FWOptions *fwopt = compiler->getCachedFwOpt();
     FWOptions  *ruleopt = rule->getOptionsObject();
     if ( fwopt->getBool("bridging_fw") ||
-         ! ruleopt->getBool("firewall_is_part_of_any_and_networks") ||
+         ruleopt->getInt("firewall_is_part_of_any_and_networks")==0 ||
          ruleopt->getBool("no_input_chain"))
     {
 	tmp_queue.push_back(rule);
@@ -3775,7 +3790,7 @@ bool PolicyCompiler_ipt::convertAnyToNotFWForShadowing::processNext()
     FWOptions  *ruleopt =rule->getOptionsObject();
     PolicyRule *r;
 
-    if ( ! ruleopt->getBool("firewall_is_part_of_any_and_networks") )
+    if ( ruleopt->getInt("firewall_is_part_of_any_and_networks")==0 )
     {
         RuleElementSrc *srcrel=rule->getSrc();
         RuleElementDst *dstrel=rule->getDst();
@@ -4671,7 +4686,7 @@ void PolicyCompiler_ipt::insertConntrackRule()
                                    PolicyRule::Accept, "CONNTRACK");
     FWOptions *ruleopt = rule->getOptionsObject();
     assert(ruleopt!=NULL);
-    ruleopt->setBool("firewall_is_part_of_any_and_networks", true);
+    ruleopt->setInt("firewall_is_part_of_any_and_networks", 1);
 
     rule = addMgmtRule(fw,
                        conntrack_dst,
@@ -4681,7 +4696,7 @@ void PolicyCompiler_ipt::insertConntrackRule()
                        PolicyRule::Accept, "CONNTRACK");
     ruleopt = rule->getOptionsObject();
     assert(ruleopt!=NULL);
-    ruleopt->setBool("firewall_is_part_of_any_and_networks", true);
+    ruleopt->setInt("firewall_is_part_of_any_and_networks", 1);
 
 
 
@@ -4874,7 +4889,7 @@ void PolicyCompiler_ipt::insertFailoverRule()
             {
                 FWOptions *ruleopt = rule->getOptionsObject();
                 assert(ruleopt!=NULL);
-                ruleopt->setBool("firewall_is_part_of_any_and_networks", true);
+                ruleopt->setInt("firewall_is_part_of_any_and_networks", 1);
             }
         }
     }
