@@ -105,8 +105,8 @@ QString CompilerDriver_ipfw::printActivationCommands(Firewall*)
 
 QString CompilerDriver_ipfw::assembleFwScript(Firewall* fw, bool cluster_member, OSConfigurator *oscnf)
 {
-    Configlet script_skeleton(fw, "bsd", "ipfw_script_skeleton");
-    Configlet top_comment(fw, "bsd", "top_comment");
+    Configlet script_skeleton(fw, "ipfw", "script_skeleton");
+    Configlet top_comment(fw, "ipfw", "top_comment");
 
     assembleFwScriptInternal(
         fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
@@ -160,7 +160,10 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
         oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
     if (oscnf.get()==NULL)
+    {
         abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
+        return "";
+    }
 
     oscnf->prolog();
 

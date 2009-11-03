@@ -165,20 +165,25 @@ int main(int argc, char **argv)
             usage(argv[0]);
             exit(1);
         }
+
         driver.compile();
         delete objdb;
         return 0;
         
-    } catch(libfwbuilder::FWException &ex)  {
+    } catch(libfwbuilder::FWException &ex)
+    {
         cerr << ex.toString() << endl;
         return 1;
-    } catch (std::string s) {
+    } catch (std::string s)
+    {
         cerr << s << endl;
         return 1;
-    } catch (std::exception ex) {
+    } catch (std::exception ex)
+    {
         cerr << "exception: " << ex.what() << endl;
         return 1;
-    } catch (...) {
+    } catch (...)
+    {
         cerr << "Unsupported exception";
         return 1;
     }

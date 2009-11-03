@@ -244,6 +244,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                       .arg(iface->getLabel().c_str())
                       .arg(iface2->getName().c_str())
                       .arg(iface2->getLabel().c_str()).toStdString());
+                return "";
             }
         }
 /*
@@ -256,6 +257,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
             abort(fw, NULL, NULL,
                   err.arg(iface->getName().c_str())
                   .arg(iface->getLabel().c_str()).toStdString());
+            return "";
         }
         FWObject *netzone=objdb->findInIndex(
             FWObjectDatabase::getIntId(netzone_id));
@@ -265,6 +267,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
             abort(fw, NULL, NULL,
                   err.arg(iface->getName().c_str())
                   .arg(iface->getLabel().c_str()).toStdString());
+            return "";
         }
 /*
  * netzone may be a group, in which case we need to expand it
@@ -328,6 +331,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                     abort(fw, NULL, NULL,
                           err.arg(l->second->getName().c_str())
                           .arg(k->first.c_str()).toStdString());
+                    return "";
                 } else
                 {
                     QString err("Object %1 is used in network zones of "
@@ -336,6 +340,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                           err.arg(l->second->getName().c_str())
                           .arg(k->first.c_str())
                           .arg(l->first.c_str()).toStdString());
+                    return "";
                 }
             }
         }
@@ -452,159 +457,13 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     if (r->haveErrorsAndWarnings())
         all_errors.push_back(r->getErrors("R ").c_str());
 
-
     if (single_rule_compile_on)
     {
         return all_errors.join("\n").toStdString() +
             policy_script + nat_script + routing_script;
     }
 
-
-
     QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
-
-#ifdef OLD_SCHOOL
-
-    char           timestr[256];
-    time_t         tm;
-
-    tm=time(NULL);
-    strcpy(timestr,ctime(&tm));
-    timestr[ strlen(timestr)-1 ]='\0';
-    
-#ifdef _WIN32
-    char* user_name=getenv("USERNAME");
-#else
-    char* user_name=getenv("USER");
-#endif
-    if (user_name==NULL) 
-        abort("Can't figure out your user name");
-
-    QString script_buffer;
-    QTextStream script(&script_buffer, QIODevice::WriteOnly);
-
-    script << "!\n\
-!  This is automatically generated file. DO NOT MODIFY !\n\
-!\n\
-!  Firewall Builder  fwb_pix v" << VERSION << "-" << BUILD_NUM << " \n\
-!\n\
-!  Generated " << timestr
-          << " "
-          << tzname[0]
-          << " by " 
-          << user_name;
-
-    script << endl;
-
-    string vers = fw->getStr("version");
-    string platform = fw->getStr("platform");
-
-    bool outbound_acl_supported = Resources::platform_res[platform]->getResourceBool(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+
-        "/pix_outbound_acl_supported");
-
-    bool afpa = options->getBool("pix_assume_fw_part_of_any");
-    bool emulate_outb_acls = options->getBool("pix_emulate_out_acl");
-    bool generate_outb_acls = options->getBool("pix_generate_out_acl");
-
-    script << "!" << endl;
-    script << "!" 
-          << " Compiled for "
-           << platform
-           << " " << vers << endl;
-
-    script << "!"
-          << " Outbound ACLs "
-           << string((outbound_acl_supported)?"supported":"not supported")
-          << endl;
-    if (!outbound_acl_supported)
-    {
-        script << "!"
-               << " Emulate outbound ACLs: "
-               << string((emulate_outb_acls)?"yes":"no")
-               << endl;
-    }
-    script << "!"
-           << " Generating outbound ACLs: "
-           << string((generate_outb_acls)?"yes":"no")
-           << endl;
-
-    script << "!"
-           << " Assume firewall is part of 'any': "
-           << string((afpa)?"yes":"no")
-           << endl;
-
-    script << "!" << endl;
-    script << "!" << MANIFEST_MARKER << "* " << ofname << endl;
-    script << "!" << endl;
-
-    if (c->haveErrorsAndWarnings())
-        all_errors.push_back(c->getErrors("C ").c_str());
-    if (n->haveErrorsAndWarnings())
-        all_errors.push_back(n->getErrors("N ").c_str());
-    if (r->haveErrorsAndWarnings())
-        all_errors.push_back(r->getErrors("R ").c_str());
-
-    script << prepend("! ", all_errors.join("\n")).toStdString() << endl;
-
-    script << endl;
-    script << "!" << endl;
-    script << "! Prolog script:" << endl;
-    script << "!" << endl;
-
-    string pre_hook= fw->getOptionsObject()->getStr("pix_prolog_script");
-    script << pre_hook << endl;
-
-    script << "!" << endl;
-    script << "! End of prolog script:" << endl;
-    script << "!" << endl;
-
-
-    script << oscnf->getCompiledScript();
-    script << endl;
-
-    // if (c->haveErrorsAndWarnings())
-    // {
-    //     script << "! Policy compiler errors and warnings:"
-    //           << endl;
-    //     script << c->getErrors("! ");
-    // }
-
-    script << c->getCompiledScript();
-    script << endl;
-
-    // if (n->haveErrorsAndWarnings())
-    // {
-    //     script << "! NAT compiler errors and warnings:"
-    //           << endl;
-    //     script << n->getErrors("! ");
-    // }
-
-    script << n->getCompiledScript();
-    script << endl;
-
-    // if (r->haveErrorsAndWarnings())
-    // {
-    //     script << "! Routing compiler errors and warnings:"
-    //           << endl;
-    //     script << r->getErrors("! ");
-    // }
-
-    script << r->getCompiledScript();
-
-    script << "!" << endl;
-    script << "! Epilog script:" << endl;
-    script << "!" << endl;
-
-    string post_hook = fw->getOptionsObject()->getStr("pix_epilog_script");
-    script << post_hook << endl;
-
-    script << endl;
-    script << "! End of epilog script:" << endl;
-    script << "!" << endl;
-
-#endif
 
     info("Output file name: " + ofname.toStdString());
 

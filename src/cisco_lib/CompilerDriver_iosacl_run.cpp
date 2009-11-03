@@ -174,26 +174,18 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
         else options->setBool("ios_acl_no_clear",true);
     }
 
-    Helper helper(NULL);
-
     std::auto_ptr<OSConfigurator_ios> oscnf(new OSConfigurator_ios(objdb, fw, false));
 
     oscnf->prolog();
     oscnf->processFirewallOptions();
 
-
-
-
-
     list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
-
     int policy_rules_count  = 0;
 
     vector<int> ipv4_6_runs;
 
     if (!single_rule_compile_on)
         system_configuration_script = safetyNetInstall(fw);
-
 
     // command line options -4 and -6 control address family for which
     // script will be generated. If "-4" is used, only ipv4 part will 

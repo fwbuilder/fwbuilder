@@ -96,7 +96,7 @@ QString CompilerDriver_pf::composeActivationCommand(Firewall *fw,
                                                     const string &pf_version,
                                                     const string &remote_file_name)
 {
-    Configlet act(fw, "bsd", "pf_activation");
+    Configlet act(fw, "pf", "activation");
     act.removeComments();
     act.setVariable("pfctl_debug", pfctl_debug.c_str());
     act.setVariable("anchor", !anchor_name.empty());
@@ -172,8 +172,8 @@ QString CompilerDriver_pf::assembleManifest(Firewall* fw, bool )
 QString CompilerDriver_pf::assembleFwScript(Firewall* fw, bool cluster_member, OSConfigurator *oscnf)
 {
     FWOptions* options = fw->getOptionsObject();
-    Configlet script_skeleton(fw, "bsd", "pf_script_skeleton");
-    Configlet top_comment(fw, "bsd", "top_comment");
+    Configlet script_skeleton(fw, "pf", "script_skeleton");
+    Configlet top_comment(fw, "pf", "top_comment");
 
     assembleFwScriptInternal(
         fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
@@ -254,7 +254,10 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                                                       objdb , fw, false));
 
     if (oscnf.get()==NULL)
+    {
         abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
+        return "";
+    }
 
     oscnf->prolog();
 

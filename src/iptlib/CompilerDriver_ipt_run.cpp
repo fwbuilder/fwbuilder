@@ -187,8 +187,11 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
             new OSConfigurator_secuwall(objdb , fw, false));
 
     if (oscnf.get()==NULL)
+    {
         abort("Unrecognized host OS " + fw->getStr("host_OS") +
               "  (family " + os_family+")");
+        return "";
+    }
 
     if (inTestMode()) oscnf->setTestMode();
     if (inEmbeddedMode()) oscnf->setEmbeddedMode();
