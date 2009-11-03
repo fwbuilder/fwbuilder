@@ -1,5 +1,16 @@
 2009-11-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* NATCompiler_ipt.cpp (dynamicInterfaceInTSrc::processNext):
+	Implemented feature request #2829661: "SNAT instead of MASQUERADE
+	on dynamic interfaces". NAT rule options dialog now has a checkbox
+	that makes compiler use SNAT target instead of MASQUERADING when
+	checked when TSrc has dynamic interface. Apparently MASQ target
+	has problems when iptables NAT is used in combination with policy
+	routing. Using SNAT with a variable that gets interface address
+	solves the problem. By default this option is off, that is
+	compiler uses MASQUERADE target when TSrc has dynamic interface.
+	Fixes #560
+
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::prolog): Fixed bug
 	#2792847 (SourceForge) "cant turn off "part of any" for a rule if
 	default is on". There was no way to turn option "Assume firewall

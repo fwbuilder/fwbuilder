@@ -1788,18 +1788,16 @@
     <Interface id="id48789X29790" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.200" comment="VLAN interface" ro="False">
       <InterfaceOptions/>
     </Interface>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id451488C42143"/>
-    <ServiceRef ref="tcp-HTTP"/>
     <ServiceRef ref="tcp-IRC"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="id3EFBC648"/>
+    <ObjectRef ref="sysid0"/>
+    <ServiceRef ref="tcp-SSH"/>
+    <ServiceRef ref="tcp-SSH"/>
+    <ObjectRef ref="host-hostA"/>
+    <ObjectRef ref="sysid0"/>
+    <ObjectRef ref="sysid0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -15193,7 +15191,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3EFBC648" host_OS="linux24" lastCompiled="1247363964" lastInstalled="1142003872" lastModified="1230444061" platform="iptables" version="" name="firewall20" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" ro="False">
+      <Firewall id="id3EFBC648" host_OS="linux24" lastCompiled="1247363964" lastInstalled="1142003872" lastModified="1257268597" platform="iptables" version="" name="firewall20" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" ro="False">
         <NAT id="id3EFBC649" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3EFBC64A" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -15237,7 +15235,51 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3EFBC666" disabled="False" position="2" action="Translate" comment="">
+          <NATRule id="id1009519X12234" disabled="False" group="" position="2" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3EFBC6F1"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id1169447X12234" disabled="False" group="" position="3" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3EFBC6F1"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="ipt_use_snat_instead_of_masq">True</Option>
+            </NATRuleOptions>
+          </NATRule>
+          <NATRule id="id3EFBC666" disabled="False" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -15258,7 +15300,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3FADADE5" disabled="False" position="3" action="Translate" comment="">
+          <NATRule id="id3FADADE5" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </OSrc>
@@ -15755,7 +15797,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3F29FAAD" host_OS="linux24" lastCompiled="1247363973" lastInstalled="1142003872" lastModified="0" platform="iptables" name="firewall21" comment="two dynamic interfaces in the same policy or NAT rule&#10;" ro="False">
+      <Firewall id="id3F29FAAD" host_OS="linux24" lastCompiled="1247363973" lastInstalled="1142003872" lastModified="1257268671" platform="iptables" name="firewall21" comment="two dynamic interfaces in the same policy or NAT rule&#10;" ro="False">
         <NAT id="id3F29FAAE" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3F2A008C" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -15778,6 +15820,50 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id1352003X12234" disabled="False" group="" position="1" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3F29FAF4"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id1352019X12234" disabled="False" group="" position="2" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3F29FAF4"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions>
+              <Option name="ipt_use_snat_instead_of_masq">True</Option>
+            </NATRuleOptions>
           </NATRule>
         </NAT>
         <Policy id="id3F29FACB" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">

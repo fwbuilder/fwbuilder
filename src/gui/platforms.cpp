@@ -325,6 +325,11 @@ bool isDefaultNATRuleOptions(FWOptions *opt)
 
     if (NATRuleOptions::isA(opt))
     {
+	if (platform=="iptables")
+        {
+            res = !opt->getBool("ipt_use_snat_instead_of_masq");
+        }
+
 	if (platform=="pf")
         {
             // if "pf_pool_type_none" is undefined, then all others

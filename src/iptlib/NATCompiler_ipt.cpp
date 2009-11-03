@@ -1117,19 +1117,26 @@ bool NATCompiler_ipt::splitMultiSrcAndDst::processNext()
 bool NATCompiler_ipt::dynamicInterfaceInTSrc::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
+    FWOptions  *ruleopt =rule->getOptionsObject();
+    bool use_snat = ruleopt->getBool("ipt_use_snat_instead_of_masq");
 
     tmp_queue.push_back(rule);
 
-    Address  *tsrc=compiler->getFirstTSrc(rule);
+    Address *tsrc = compiler->getFirstTSrc(rule);
 
-    if (rule->getRuleType()==NATRule::SNAT && 
+    if (rule->getRuleType()==NATRule::SNAT &&
         Interface::cast(tsrc)!=NULL && !Interface::cast(tsrc)->isRegular())
     {
-
+        if (use_snat)
+        {
+            // Emulate SNAT with dynamic interface
+            //tsrc->setBool("use_var_address", true);
+        } else
+        {
             rule->setRuleType(NATRule::Masq);
-
-            if ( rule->getStr("ipt_target")=="" || rule->getStr("ipt_target")=="SNAT" )
-                rule->setStr("ipt_target","MASQUERADE");
+            if (rule->getStr("ipt_target")=="" || rule->getStr("ipt_target")=="SNAT")
+                rule->setStr("ipt_target", "MASQUERADE");
+        }
     }
     return true;
 }

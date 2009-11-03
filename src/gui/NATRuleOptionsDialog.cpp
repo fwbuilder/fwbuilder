@@ -83,25 +83,31 @@ void NATRuleOptionsDialog::loadFWObject(FWObject *o)
     //         .arg(rule->getPosition()));
 
     int wid=0;
-    if (platform=="iptables") wid=0;
     if (platform=="ipf")      wid=0;
-    if (platform=="pf")       wid=1;
     if (platform=="ipfw")     wid=0;
-    if (platform=="pix" || platform=="fwsm")      wid=0;
+    if (platform=="pix" || platform=="fwsm") wid=0;
+    if (platform=="iptables") wid=1;
+    if (platform=="pf")       wid=2;
 
     m_dialog->widgetStack->setCurrentIndex(wid);
     m_dialog->widgetStack->widget(wid)->raise();
 
     data.clear();
 
+    if (platform=="iptables")
+    {
+        data.registerOption(m_dialog->ipt_use_snat_instead_of_masq, ropt,
+                            "ipt_use_snat_instead_of_masq");
+    }
+
     if (platform=="pf")
     {
-        data.registerOption( m_dialog->pf_pool_type_none  , ropt,  "pf_pool_type_none" );
-        data.registerOption( m_dialog->pf_bitmask         , ropt,  "pf_bitmask" );
-        data.registerOption( m_dialog->pf_random          , ropt,  "pf_random" );
-        data.registerOption( m_dialog->pf_source_hash     , ropt,  "pf_source_hash" );
-        data.registerOption( m_dialog->pf_round_robin     , ropt,  "pf_round_robin" );
-        data.registerOption( m_dialog->pf_static_port     , ropt,  "pf_static_port" );
+        data.registerOption(m_dialog->pf_pool_type_none, ropt,  "pf_pool_type_none" );
+        data.registerOption(m_dialog->pf_bitmask       , ropt,  "pf_bitmask" );
+        data.registerOption(m_dialog->pf_random        , ropt,  "pf_random" );
+        data.registerOption(m_dialog->pf_source_hash   , ropt,  "pf_source_hash" );
+        data.registerOption(m_dialog->pf_round_robin   , ropt,  "pf_round_robin" );
+        data.registerOption(m_dialog->pf_static_port   , ropt,  "pf_static_port" );
     }
 
     init=true;
