@@ -490,7 +490,6 @@ PolicyCompiler_ipfw::PrintRule::PrintRule(const std::string &name) :
 bool PolicyCompiler_ipfw::PrintRule::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    FWOptions*  options = compiler->fw->getOptionsObject();
     FWOptions  *ruleopt = rule->getOptionsObject();
 
     tmp_queue.push_back(rule);

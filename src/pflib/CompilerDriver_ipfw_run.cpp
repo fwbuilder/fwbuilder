@@ -160,7 +160,7 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
         oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
     if (oscnf.get()==NULL)
-        throw FWException("Unrecognized host OS " + host_os + "  (family " + family + ")");
+        abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
 
     oscnf->prolog();
 
@@ -326,9 +326,9 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
         info(" Compiled successfully");
     } else
     {
-        throw FWException(string(" Failed to open file ") +
-                          fw_file_name.toStdString() +
-                          " for writing");
+        abort(string(" Failed to open file ") +
+              fw_file_name.toStdString() +
+              " for writing");
     }
     return "";
 }

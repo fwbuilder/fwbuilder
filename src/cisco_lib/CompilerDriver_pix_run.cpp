@@ -623,9 +623,9 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
         info(" Compiled successfully");
     } else
     {
-        throw FWException(string(" Failed to open file ") +
-                          fw_file_name.toStdString() +
-                          " for writing");
+        abort(string(" Failed to open file ") +
+              fw_file_name.toStdString() +
+              " for writing");
     }
 
     return "";

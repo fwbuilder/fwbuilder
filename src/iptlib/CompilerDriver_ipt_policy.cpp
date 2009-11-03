@@ -190,9 +190,9 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
     }
 
     if (policy_compiler.get()==NULL)
-        throw FWException("Unrecognized firewall platform " +
-                          fw->getStr("platform") +
-                          "  (family " + platform_family+")");
+        abort("Unrecognized firewall platform " +
+              fw->getStr("platform") +
+              "  (family " + platform_family+")");
 
     if (!policy->isTop())
         policy_compiler->registerRuleSetChain(branch_name);

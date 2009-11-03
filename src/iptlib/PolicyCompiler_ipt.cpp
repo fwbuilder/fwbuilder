@@ -2500,11 +2500,11 @@ bool PolicyCompiler_ipt::specialCaseWithFW1::processNext()
     }
 
 //    RuleElementSrc *srcrel=rule->getSrc();
-    Address        *src   =compiler->getFirstSrc(rule);  
-    if(src==NULL) throw(string("Broken SRC in rule ") + rule->getLabel());
+    Address        *src = compiler->getFirstSrc(rule);  
+    if(src==NULL) compiler->abort(rule, "Broken SRC ");
 //    RuleElementDst *dstrel=rule->getDst();
-    Address        *dst   =compiler->getFirstDst(rule);
-    if(dst==NULL) throw(string("Broken DST in rule ") + rule->getLabel());
+    Address        *dst = compiler->getFirstDst(rule);
+    if(dst==NULL) compiler->abort(rule, "Broken DST");
 
     if (!src->isAny() && !dst->isAny() &&
         compiler->complexMatch(src,compiler->fw) &&

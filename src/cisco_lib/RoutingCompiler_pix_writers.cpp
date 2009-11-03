@@ -100,7 +100,7 @@ bool RoutingCompiler_pix::PrintRule::processNext()
     
     } else
     {
-        throw FWException("MultiPath routing not supported by platform");
+        compiler->abort(rule, "MultiPath routing not supported by platform");
     }
     return true;
 }
@@ -112,7 +112,7 @@ string RoutingCompiler_pix::PrintRule::RoutingRuleToString(RoutingRule *rule)
     RuleElementRDst *dstrel = rule->getRDst();
     ref = dstrel->front();
     Address *dst = Address::cast(FWReference::cast(ref)->getPointer());
-    if(dst == NULL) throw FWException("Broken DST in " + rule->getLabel());
+    if(dst == NULL) compiler->abort(rule, "Broken DST");
 
     std::ostringstream command_line;
 

@@ -135,8 +135,8 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
     if (fw->getOptionsObject()->getStr("prolog_place") == "after_flush" &&
         fw->getOptionsObject()->getBool("use_iptables_restore"))
     {
-        throw FWException("Prolog place \"after policy reset\" can not be used"
-                          " when policy is activated with iptables-restore");
+        abort("Prolog place \"after policy reset\" can not be used"
+              " when policy is activated with iptables-restore");
     }
 
     string firewall_dir = options->getStr("firewall_dir");
@@ -187,9 +187,8 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
             new OSConfigurator_secuwall(objdb , fw, false));
 
     if (oscnf.get()==NULL)
-        throw FWException("Unrecognized host OS " +
-                          fw->getStr("host_OS") +
-                          "  (family " + os_family+")");
+        abort("Unrecognized host OS " + fw->getStr("host_OS") +
+              "  (family " + os_family+")");
 
     if (inTestMode()) oscnf->setTestMode();
     if (inEmbeddedMode()) oscnf->setEmbeddedMode();
@@ -683,9 +682,8 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
 
     } else
     {
-        throw FWException(string(" Failed to open file ") +
-                          fw_file_name.toStdString() +
-                          " for writing");
+        abort(string(" Failed to open file ") + fw_file_name.toStdString() +
+              " for writing");
     }
     
     return "";

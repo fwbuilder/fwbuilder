@@ -197,8 +197,9 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
     if (res_id == -1) res_id = findInterfaceByAddress( addr );
 
     if (res_id == -1)
-        throw(string("Can not find interface with network zone that includes "
-                     "address ") + string((addr)?addr->toString():"NULL"));
+        compiler->abort(
+            string("Can not find interface with network zone that includes "
+                   "address ") + string((addr)?addr->toString():"NULL"));
     return res_id;
 }
 

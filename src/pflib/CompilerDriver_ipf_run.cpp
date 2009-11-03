@@ -235,15 +235,14 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
         oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
     if (oscnf.get()==NULL)
-        throw FWException("Unrecognized host OS " + 
-                          host_os + "  (family " + family + ")");
+        abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
 
     oscnf->prolog();
 
     list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
     list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
-    PolicyCompiler_ipf c( objdb , fw, false , oscnf.get() );
+    PolicyCompiler_ipf c(objdb , fw, false , oscnf.get() );
 
     FWObject *policy = all_policies.front();
 
@@ -347,9 +346,9 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
                                     QFile::ExeOther );
         } else
         {
-            throw FWException(string(" Failed to open file ") +
-                              ipf_file_name.toStdString() +
-                              " for writing");
+            abort(string(" Failed to open file ") +
+                  ipf_file_name.toStdString() +
+                  " for writing");
         }
 
         QString filePath;
@@ -383,9 +382,9 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
                                    QFile::ExeOther );
         } else
         {
-            throw FWException(string(" Failed to open file ") +
-                              nat_file_name.toStdString() +
-                              " for writing");
+            abort(string(" Failed to open file ") +
+                  nat_file_name.toStdString() +
+                  " for writing");
         }
 
         QString filePath;
@@ -418,9 +417,9 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
         info(" Compiled successfully");
     } else
     {
-        throw FWException(string(" Failed to open file ") +
-                          fw_file_name.toStdString() +
-                          " for writing");
+        abort(string(" Failed to open file ") +
+              fw_file_name.toStdString() +
+              " for writing");
     }
         
     return "";

@@ -254,8 +254,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                                                       objdb , fw, false));
 
     if (oscnf.get()==NULL)
-        throw FWException("Unrecognized host OS " + 
-                          host_os + "  (family " + family + ")");
+        abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
 
     oscnf->prolog();
 
@@ -349,7 +348,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
 
             if (table_factories.count(ruleset_name) == 0)
             {
-                table_factories[ruleset_name] = new fwcompiler::TableFactory();
+                table_factories[ruleset_name] = new fwcompiler::TableFactory(this);
             }
 
             NATCompiler_pf n( objdb, fw, ipv6_policy, oscnf.get(),
@@ -437,7 +436,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
 
             if (table_factories.count(ruleset_name) == 0)
             {
-                table_factories[ruleset_name] = new fwcompiler::TableFactory();
+                table_factories[ruleset_name] = new fwcompiler::TableFactory(this);
             }
 
             PolicyCompiler_pf c( objdb, fw, ipv6_policy, oscnf.get(),
@@ -563,8 +562,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
             table_factories.clear();
             generated_scripts.clear();
 
-            throw FWException(string(" Failed to open file ") +
-                              file_name + " for writing");
+            abort(string(" Failed to open file ") + file_name + " for writing");
         }
 
     }
@@ -594,9 +592,9 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
         info(" Compiled successfully");
     } else
     {
-        throw FWException(string(" Failed to open file ") +
-                          fw_file_name.toStdString() +
-                          " for writing");
+        abort(string(" Failed to open file ") +
+              fw_file_name.toStdString() +
+              " for writing");
     }
 
     return "";

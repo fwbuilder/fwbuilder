@@ -27,8 +27,10 @@
 #define __TABLEFACTORY_HH
 
 #include <fwbuilder/libfwbuilder-config.h>
-#include "fwcompiler/PolicyCompiler.h"
 #include <fwbuilder/FWException.h>
+#include <fwbuilder/RuleElement.h>
+
+#include <fwcompiler/BaseCompiler.h>
 
 #include <list>
 #include <map>
@@ -41,16 +43,17 @@ namespace libfwbuilder {
 namespace fwcompiler {
 
     class TableFactory {
+        BaseCompiler *compiler;
         libfwbuilder::FWObjectDatabase *dbroot;
-        libfwbuilder::FWObject         *persistent_tables;
+        libfwbuilder::FWObject *persistent_tables;
 
         std::map<std::string,libfwbuilder::FWObject*> tables;
-        std::map<std::string,std::string>             tblnames;
+        std::map<std::string,std::string> tblnames;
         std::string generateTblID(libfwbuilder::RuleElement *re);
         std::string ruleSetName;
 
 public:
-        TableFactory();
+        TableFactory(BaseCompiler *comp);
 
         void init(libfwbuilder::FWObjectDatabase *_dbroot);
 

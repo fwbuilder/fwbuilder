@@ -47,8 +47,9 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-TableFactory::TableFactory()
+TableFactory::TableFactory(BaseCompiler *comp)
 {
+    compiler = comp;
     ruleSetName = "";
     dbroot = NULL;
     persistent_tables = new ObjectGroup();
@@ -88,8 +89,7 @@ string TableFactory::generateTblID(RuleElement *re)
 }
 
 void TableFactory::registerTable(const string& tblname, const string& tblid,
-                                 FWObject* tbl)
- throw(FWException)
+                                 FWObject* tbl) throw(FWException)
 {
 // two different table objects should have different names
 // 
@@ -97,7 +97,7 @@ void TableFactory::registerTable(const string& tblname, const string& tblid,
         tblnames.count(tblname)!=0 &&
         tables[tblid]->getName()!=tbl->getName()
     )
-        throw(FWException("table object name must be unique: '"+tblname+"'"));
+        compiler->abort("table object name must be unique: '"+tblname+"'");
 
     tblnames[tblname] = tblid;
     tables[tblid] = tbl;
@@ -194,7 +194,7 @@ string TableFactory::PrintTables()
             FWObject *o= *i;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
             if (o==NULL)
-                throw(FWException("broken table object "));
+                compiler->abort("broken table object ");
 
 
             MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
@@ -213,8 +213,8 @@ string TableFactory::PrintTables()
                 {
                     Address *A=Address::cast( o );
                     if (A==NULL)
-                        throw(FWException("table object must be an address: '" +
-                                          o->getTypeName()+"'"));
+                        compiler->abort("table object must be an address: '" +
+                                          o->getTypeName()+"'");
 
                     const InetAddr *addr = A->getAddressPtr();
                     InetAddr mask = *(A->getNetmaskPtr());

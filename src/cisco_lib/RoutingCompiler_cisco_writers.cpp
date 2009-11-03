@@ -136,7 +136,7 @@ string RoutingCompiler_cisco::PrintRule::_printRGtw(RoutingRule *rule)
     RuleElementRGtw *gtwrel = rule->getRGtw();
     ref = gtwrel->front();
     Address *gtw = Address::cast(FWReference::cast(ref)->getPointer());
-    if (gtw == NULL) throw FWException("Broken GTW in " + rule->getLabel());
+    if (gtw == NULL) compiler->abort(rule, "Broken GTW");
 
     string gateway = _printAddr(gtw);
     if (gateway != "default ") return gateway;
@@ -162,7 +162,7 @@ string RoutingCompiler_cisco::PrintRule::_printRDst(RoutingRule *rule)
     RuleElementRDst *dstrel = rule->getRDst();
     ref = dstrel->front();
     Address *dst = Address::cast(FWReference::cast(ref)->getPointer());
-    if (dst==NULL) throw FWException("Broken DST in " + rule->getLabel());
+    if (dst==NULL) compiler->abort(rule, "Broken DST");
     
     string dest = _printAddr(dst);
 

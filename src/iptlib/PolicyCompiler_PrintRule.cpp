@@ -1397,19 +1397,19 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
     ref=srcrel->front();
     Address        *src=Address::cast(FWReference::cast(ref)->getPointer());
     if(src==NULL)
-        throw FWException(string("Broken SRC in ") + rule->getLabel());
+        compiler->abort(rule, string("Broken SRC in ") + rule->getLabel());
 
     RuleElementDst *dstrel=rule->getDst();
     ref=dstrel->front();
     Address        *dst=Address::cast(FWReference::cast(ref)->getPointer());
     if(dst==NULL)
-        throw FWException(string("Broken DST in ") + rule->getLabel());
+        compiler->abort(rule, string("Broken DST in ") + rule->getLabel());
 
     RuleElementSrv *srvrel=rule->getSrv();
     ref=srvrel->front();
     Service        *srv=Service::cast(FWReference::cast(ref)->getPointer());
     if(srv==NULL)
-        throw FWException(string("Broken SRV in ") + rule->getLabel());
+        compiler->abort(rule, string("Broken SRV in ") + rule->getLabel());
 
 
     std::ostringstream  command_line;

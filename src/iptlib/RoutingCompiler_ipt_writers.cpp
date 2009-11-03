@@ -263,7 +263,7 @@ string RoutingCompiler_ipt::PrintRule::RoutingRuleToString(RoutingRule *rule)
     ref=dstrel->front();
     Address *dst=Address::cast(FWReference::cast(ref)->getPointer());
     if(dst==NULL)
-        throw FWException(string("Broken DST in ")+rule->getLabel());
+        compiler->abort(rule, "Broken DST");
         
     ostringstream command_line;
 
@@ -307,7 +307,7 @@ string RoutingCompiler_ipt::PrintRule::_printRGtw(RoutingRule *rule)
     ref = gtwrel->front();
     Address *gtw = Address::cast(FWReference::cast(ref)->getPointer());
     if(gtw==NULL)
-        throw FWException(string("Broken GTW in ")+rule->getLabel());
+        compiler->abort(rule, "Broken GTW");
     
     string gateway = _printAddr(gtw);
     
@@ -335,7 +335,7 @@ string RoutingCompiler_ipt::PrintRule::_printRDst(RoutingRule *rule)
     ref=dstrel->front();
     Address *dst=Address::cast(FWReference::cast(ref)->getPointer());
     if(dst==NULL)
-        throw FWException(string("Broken DST in ")+rule->getLabel());
+        compiler->abort(rule, "Broken DST");
     
     return _printAddr(dst);
 }
