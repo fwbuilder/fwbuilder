@@ -57,7 +57,7 @@ public slots:
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void getHelpName(QString*);
-
+    virtual void anyOptionsStateChanged();
 };
 
 #endif // IPSERVICEDIALOG_H

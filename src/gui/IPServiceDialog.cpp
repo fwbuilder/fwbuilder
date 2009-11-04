@@ -91,6 +91,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->protocolNum->setValue( s->getProtocolNumber() );
+    m_dialog->any_opt->setChecked( s->getBool("any_opt") );
     m_dialog->lsrr->setChecked( s->getBool("lsrr") );
     m_dialog->ssrr->setChecked( s->getBool("ssrr") );
     m_dialog->rr->setChecked( s->getBool("rr") );
@@ -124,6 +125,9 @@ void IPServiceDialog::loadFWObject(FWObject *o)
     m_dialog->protocolNum->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->protocolNum);
 
+    m_dialog->any_opt->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->any_opt);
+
     m_dialog->lsrr->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->lsrr);
 
@@ -148,6 +152,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
     m_dialog->comment->setReadOnly(o->isReadOnly());
     setDisabledPalette(m_dialog->comment);
 
+    anyOptionsStateChanged();
 
     init=false;
 }
@@ -158,14 +163,34 @@ void IPServiceDialog::changed()
     BaseObjectDialog::changed();
 }
 
+void IPServiceDialog::anyOptionsStateChanged()
+{
+    bool any_opt_state = m_dialog->any_opt->isChecked();
+
+    if (any_opt_state)
+    {
+        m_dialog->lsrr->setChecked(false);
+        m_dialog->ssrr->setChecked(false);
+        m_dialog->rr->setChecked(false);
+        m_dialog->timestamp->setChecked(false);
+        m_dialog->router_alert->setChecked(false);
+    }
+
+    m_dialog->lsrr->setEnabled(!any_opt_state);
+    m_dialog->ssrr->setEnabled(!any_opt_state);
+    m_dialog->rr->setEnabled(!any_opt_state);
+    m_dialog->timestamp->setEnabled(!any_opt_state);
+    m_dialog->router_alert->setEnabled(!any_opt_state);
+
+    changed();
+}
+
 void IPServiceDialog::validate(bool *res)
 {
     *res=true;
     if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
-
-
 
 void IPServiceDialog::applyChanges()
 {
@@ -174,6 +199,7 @@ void IPServiceDialog::applyChanges()
     obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     obj->setInt("protocol_num", m_dialog->protocolNum->value() );
+    obj->setBool("any_opt", m_dialog->any_opt->isChecked() );
     obj->setBool("lsrr", m_dialog->lsrr->isChecked() );
     obj->setBool("ssrr", m_dialog->ssrr->isChecked() );
     obj->setBool("rr", m_dialog->rr->isChecked() );

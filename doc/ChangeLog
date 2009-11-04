@@ -1,3 +1,10 @@
+2009-11-04  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPServiceDialog.cpp (IPServiceDialog::loadFWObject): IPService
+	object now has attribute "any options". If this attribute is
+	turned on, compilers will generate configuration to match IP
+	packets with any options present. Fixes #561
+
 2009-11-03  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_ipt.cpp (dynamicInterfaceInTSrc::processNext):
