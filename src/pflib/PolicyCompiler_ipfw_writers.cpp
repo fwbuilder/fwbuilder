@@ -454,8 +454,25 @@ void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElementSrv  *rel)
         string str=_printTCPFlags(TCPService::cast(s1));
         if (!str.empty()) compiler->output << str << " ";
     }
-    if (IPService::isA(s1) && (s1->getBool("fragm") || s1->getBool("short_fragm")) )
-        compiler->output << " frag ";
+
+    IPService *ip_srv = IPService::cast(s1);
+    if (ip_srv)
+    {
+        if ((ip_srv->getBool("fragm") || ip_srv->getBool("short_fragm")) )
+            compiler->output << " frag ";
+        if (ip_srv->hasIpOptions())
+        {
+            if  (ip_srv->getBool("any_opt")) 
+                compiler->warning("ipfw can not match \"any IP option\" ");
+            else
+            {
+                if  (ip_srv->getBool("lsrr")) compiler->output << " ipoptions lsrr ";
+                if  (ip_srv->getBool("ssrr")) compiler->output << " ipoptions ssrr ";
+                if  (ip_srv->getBool("rr")) compiler->output << " ipoptions rr ";
+                if  (ip_srv->getBool("ts")) compiler->output << " ipoptions ts ";
+            }
+        }
+    }
 }
 
 string PolicyCompiler_ipfw::PrintRule::_printDstService(Service *srv,bool neg)

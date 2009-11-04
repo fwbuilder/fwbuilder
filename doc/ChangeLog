@@ -1,5 +1,10 @@
 2009-11-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipfw_writers.cpp (PrintRule::_printDstService):
+	Added support for IP options matching in ipfw using "ipoptions"
+	keyword. Matching IPService object with "any options" attribute
+	is not supported though.
+
 	* IPServiceDialog.cpp (IPServiceDialog::loadFWObject): IPService
 	object now has attribute "any options". If this attribute is
 	turned on, compilers will generate configuration to match IP
