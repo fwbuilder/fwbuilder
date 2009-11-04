@@ -457,12 +457,17 @@ See definition of IP options here: http://www.iana.org/assignments/ip-parameters
 router-alert option is defined in RFC2113. This option carries 16 bit value
 although only value "0" is defined at this time, all other values are
 reserved. Used in RSVP and IGMP2 protocols.
+
+attribute "any_opt" is used to create IPService object to match IP packets
+with any options present. Some firewall platforms can do this (pf, iptables),
+some can't (ipfilter, IOS, PIX)
 -->
 <!ELEMENT IPService EMPTY>
 <!ATTLIST IPService
  %STD_ATTRIBUTES;
  protocol_num %NUMBER;  #REQUIRED
  fragm        %BOOLEAN; #IMPLIED
+ any_opt      %BOOLEAN; #IMPLIED
  lsrr         %BOOLEAN; #IMPLIED
  rr           %BOOLEAN; #IMPLIED
  short_fragm  %BOOLEAN; #IMPLIED
@@ -471,7 +476,7 @@ reserved. Used in RSVP and IGMP2 protocols.
  tos          %STRING;  #IMPLIED
  dscp         %STRING;  #IMPLIED
  rtralt       %BOOLEAN; #IMPLIED
- rtralt_value %NUMBER; #IMPLIED
+ rtralt_value %NUMBER;  #IMPLIED
 >
 
 <!ELEMENT TCPService EMPTY>

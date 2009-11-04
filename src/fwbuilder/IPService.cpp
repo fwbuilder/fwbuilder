@@ -118,6 +118,13 @@ void IPService::fromXML(xmlNodePtr root) throw(FWException)
         FREEXMLBUFF(n);
     }
 
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("any_opt")));
+    if(n!=NULL)
+    {
+        setStr("any_opt", n);
+        FREEXMLBUFF(n);
+    }
+
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lsrr")));
     if(n!=NULL)
     {
@@ -189,7 +196,8 @@ xmlNodePtr IPService::toXML(xmlNodePtr parent) throw(FWException)
 
 bool IPService::hasIpOptions()
 {
-    return (getBool("lsrr") ||
+    return (getBool("any_opt") ||
+            getBool("lsrr") ||
             getBool("rr") ||
             getBool("ssrr") ||
             getBool("ts") ||
