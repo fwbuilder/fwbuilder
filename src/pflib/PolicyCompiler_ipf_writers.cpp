@@ -117,9 +117,12 @@ void PolicyCompiler_ipf::PrintRule::_printDstService(RuleElementSrv  *rel)
     if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     Service *srv= Service::cast(o);
+    IPService *ip_srv = IPService::cast(srv);
 
-    if (IPService::isA(srv))   return;
-    else
+    if (ip_srv)
+    {
+        return;
+    } else
         PolicyCompiler_pf::PrintRule::_printDstService(rel);
 }
 
@@ -205,7 +208,12 @@ void PolicyCompiler_ipf::PrintRule::_printAction(PolicyRule *rule)
 
 void PolicyCompiler_ipf::PrintRule::_printWith(libfwbuilder::Service *srv)
 {
-    if (IPService::cast(srv)!=NULL) {
+    IPService *ip_srv = IPService::cast(srv);
+    if (ip_srv)
+    {
+        if (ip_srv->getBool("any_opt"))
+            compiler->warning("ipfilter can not match \"any IP option\" ");
+
         bool with=true;
 	if ( srv->getBool("short_fragm") ) 
         {
