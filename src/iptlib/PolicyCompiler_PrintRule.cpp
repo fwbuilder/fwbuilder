@@ -857,18 +857,19 @@ string PolicyCompiler_ipt::PrintRule::_printIP(IPService *srv, PolicyRule *rule)
                 str << " -m dscp --dscp " << dscp;
         }
         
-    if  (srv->getBool("lsrr") ||
-         srv->getBool("ssrr") ||
-         srv->getBool("rr") ||
-         srv->getBool("ts") )
+    if  (srv->hasIpOptions())
     {
         if (!ipt_comp->ipv6)
         {
             str << " -m ipv4options ";
-            if  (srv->getBool("lsrr")) str << " --lsrr";
-            if  (srv->getBool("ssrr")) str << " --ssrr";
-            if  (srv->getBool("rr"))   str << " --rr";
-            if  (srv->getBool("ts"))   str << " --ts";
+            if  (srv->getBool("any_opt")) str << " --any-opt";
+            else
+            {
+                if  (srv->getBool("lsrr")) str << " --lsrr";
+                if  (srv->getBool("ssrr")) str << " --ssrr";
+                if  (srv->getBool("rr")) str << " --rr";
+                if  (srv->getBool("ts")) str << " --ts";
+            }
         } else
         {
             compiler->abort(
