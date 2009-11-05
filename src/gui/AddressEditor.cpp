@@ -1,7 +1,7 @@
 #include "AddressEditor.h"
 #include "ui_AddressEditor.h"
 
-AddressEditor::AddressEditor(QWidget *parent, Address *address) :
+AddressEditor::AddressEditor(QWidget *parent, libfwbuilder::Address *address) :
     QWidget(parent),
     m_ui(new Ui::AddressEditor)
 {

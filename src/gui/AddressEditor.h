@@ -6,19 +6,20 @@
 namespace Ui {
     class AddressEditor;
 }
+
 #include "fwbuilder/Address.h"
 
 class AddressEditor : public QWidget {
     Q_OBJECT
 public:
-    AddressEditor(QWidget *parent, Address *address);
+    AddressEditor(QWidget *parent, libfwbuilder::Address *address);
     ~AddressEditor();
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
-    Address* address;
+    libfwbuilder::Address* address;
     Ui::AddressEditor *m_ui;
 };
 

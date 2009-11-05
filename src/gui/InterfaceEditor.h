@@ -10,13 +10,6 @@
 #include <QtGui/QWidget>
 
 #include "fwbuilder/Interface.h"
-#include "fwbuilder/Library.h"
-#include "fwbuilder/Firewall.h"
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/Policy.h"
-#include "fwbuilder/BackgroundOp.h"
-#include "fwbuilder/IPv4.h"
-#include "fwbuilder/IPv6.h"
 
 namespace Ui {
     class InterfaceEditor;
