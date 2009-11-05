@@ -29,6 +29,7 @@
 #include "utils_no_qt.h"
 #include "platforms.h"
 
+#include "InterfaceEditor.h"
 #include "newFirewallDialog.h"
 #include "ObjConflictResolutionDialog.h"
 #include "upgradePredicate.h"
@@ -384,7 +385,7 @@ void newFirewallDialog::backClicked()
     if (previousRelevant( currentPage() ) > -1)
         showPage(previousRelevant( currentPage() ));
 }
-
+#include <QDebug>
 void newFirewallDialog::showPage(const int page)
 {
     FakeWizard::showPage(page);
@@ -449,6 +450,7 @@ void newFirewallDialog::showPage(const int page)
     case 4:
     {
         setFinishEnabled( 4, true );
+        setNextEnabled( 4, true );
 /* load templates if not loaded */
         if (tmpldb==NULL)
         {
@@ -503,6 +505,19 @@ void newFirewallDialog::showPage(const int page)
         m_dialog->templateList->setCurrentItem(0);
         m_dialog->templateList->setFocus();
         break;
+    }
+    case 5:
+    {
+        setFinishEnabled( 5, true );
+        while ( this->m_dialog->interfaces->count() )
+            this->m_dialog->interfaces->removeTab(0);
+        FWObjectTypedChildIterator intiter = tmpldb->findByType(Library::TYPENAME);
+        for ( ; intiter != intiter.end(); ++intiter)
+        {
+            Interface *intr = Interface::cast(*intiter);
+            if (intr != NULL)
+            this->m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, intr), intr->getName().c_str());
+        }
     }
     }
 }
@@ -843,7 +858,7 @@ void newFirewallDialog::finishClicked()
 
     if (p==2)  fillInterfaceSLList();
 
-    if (p==4)
+    if (p==4 || p==5)
     {
         // Creating from a template
         QListWidgetItem *itm = m_dialog->templateList->currentItem();
