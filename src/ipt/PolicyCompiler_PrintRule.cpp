@@ -1099,13 +1099,16 @@ string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel,
         AddressRange *ar = AddressRange::cast(o);
         const InetAddr &range_start = ar->getRangeStart();
         const InetAddr &range_end = ar->getRangeEnd();
+
         if (range_start != range_end)
         {
             if (!have_m_iprange) { res = "-m iprange "; have_m_iprange = true; }
             res += _printSingleObjectNegation(rel) + "--src-range ";
             res += range_start.toString() + "-" + range_end.toString() + " ";
-            return res;
-        }
+        } else
+            res += range_start.toString() + " ";
+
+        return res;
     }
     return _printSingleOptionWithNegation(" -s", rel, _printAddr(o));
 }
@@ -1124,8 +1127,10 @@ string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel,
             if (!have_m_iprange) { res = "-m iprange "; have_m_iprange = true; }
             res += _printSingleObjectNegation(rel) + "--dst-range ";
             res += range_start.toString() + "-" + range_end.toString() + " ";
-            return res;
-        }
+        } else
+            res += range_start.toString() + " ";
+
+        return res;
     }
     return _printSingleOptionWithNegation(" -d", rel, _printAddr(o));
 }
