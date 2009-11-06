@@ -563,9 +563,11 @@ bool NATCompiler_ipt::VerifyRules::processNext()
 //        if ( tsrc->size()!=1)
 //            throw FWException(_("There should be no more than one object in translated source in the rule ")+rule->getLabel());
 
-        Address* o1=compiler->getFirstTSrc(rule);
+        FWObject *o1 = FWReference::getObject(tsrc->front());
         if ( ! tsrc->isAny() && Network::cast(o1)!=NULL)
             compiler->abort(_("Can not use network object in translated source. Rule ")+rule->getLabel());
+        if (Interface::isA(o1) && Interface::cast(o1)->isUnnumbered())
+            compiler->abort("Can not use unnumbered interface in Translated Source of a Source translation rule. Rule " + rule->getLabel());
     }
 
 
