@@ -449,19 +449,22 @@ bool NATCompiler_pf::VerifyRules::processNext()
     if (rule->getRuleType()==NATRule::SNAT ) 
     {
         if (tsrc->isAny())
-            compiler->abort(
-                
-                    rule, 
-                    "Source translation rule needs an address in Translated Source.");
+            compiler->abort(rule, 
+                            "Source translation rule needs an address in "
+                            "Translated Source.");
+        FWObject *o = FWReference::getObject(tsrc->front());
+        if (Interface::isA(o) && Interface::cast(o)->isUnnumbered())
+            compiler->abort(rule,
+                            "Can not use unnumbered interface in "
+                            "Translated Source of a Source translation rule.");
     }
 
     if (rule->getRuleType()==NATRule::DNAT || rule->getRuleType()==NATRule::Redirect ) 
     {
         if (tdst->isAny())
-            compiler->abort(
-                
-                    rule, 
-                    "Destination translation rule needs an address in Translated Destination.");
+            compiler->abort(rule, 
+                            "Destination translation rule needs an address in "
+                            "Translated Destination.");
 
         if ( tdst->size()!=1)
             compiler->abort(
@@ -1161,6 +1164,13 @@ void NATCompiler_pf::compile()
         add( new ReplaceObjectsTDst( "replace objects in TDst" ) );
 
         add( new ExpandMultipleAddresses( "expand multiple addresses" ) );
+
+        // we might get empty RE after expanding multiple addresses,
+        // for example when unnumbered interface is used in TSRC. Note
+        // that VerifyRules should not allow this, but we may still
+        // get here in the test mode. Calling dropRuleWithEmptyRE works
+        // as a fail-safe and prevents crash.
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
 	if ( manage_virtual_addr )
             add( new addVirtualAddress("add virtual addresses for NAT rules"));

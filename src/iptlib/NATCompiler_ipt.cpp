@@ -548,11 +548,15 @@ bool NATCompiler_ipt::VerifyRules::processNext()
 
     if (rule->getRuleType()==NATRule::SNAT ) 
     {
-        Address* o1=compiler->getFirstTSrc(rule);
+        FWObject *o1 = FWReference::getObject(tsrc->front());
         if ( ! tsrc->isAny() && Network::cast(o1)!=NULL)
             compiler->abort(
                 rule, 
                 "Can not use network object in translated source.");
+        if (Interface::isA(o1) && Interface::cast(o1)->isUnnumbered())
+            compiler->abort(rule,
+                            "Can not use unnumbered interface in "
+                            "Translated Source of a Source translation rule.");
     }
 
     if (rule->getRuleType()==NATRule::SNetnat && !tsrc->isAny() ) 

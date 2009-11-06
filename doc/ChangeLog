@@ -9,6 +9,18 @@
 	commands are added, then the function body won't be empty and will
 	return success.
 
+	* NATCompiler_pf.cpp (NATCompiler_pf::compile): fixed bug
+	#2889579: "fwb_pf crash when unnumbered interface is used in nat
+	rule". Compiler for PF crashed when unnumbered interface was used
+	in TSrc element of a NAT rule.
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printSrcAddr): Fixed
+	bug #2892100: "'Old boradcast' object produces 0/0 in iptables
+	script". The bug triggered when iptables version was set to 1.3.x
+	or later. "Old broadcast" object is defined as AddressRange with
+	0.0.0.0 as a start and end addresses of the range. Generated
+	script should have "0.0.0.0" but the compiler uses "0/0" instead.
+
 2009-11-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipfw_writers.cpp (PrintRule::_printDstService):
