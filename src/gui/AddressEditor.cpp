@@ -7,6 +7,8 @@ AddressEditor::AddressEditor(QWidget *parent, libfwbuilder::Address *address) :
 {
     this->address = address;
     m_ui->setupUi(this);
+    this->m_ui->address->setText(address->getAddressPtr()->toString().c_str());
+    this->m_ui->netmask->setText(address->getNetmaskPtr()->toString().c_str());
 }
 
 AddressEditor::~AddressEditor()

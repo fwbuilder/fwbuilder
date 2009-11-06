@@ -63,5 +63,25 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>name</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>InterfaceEditor</receiver>
+   <slot>nameEdited(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>10</x>
+     <y>80</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>nameEdited(QString)</slot>
+ </slots>
 </ui>

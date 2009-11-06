@@ -54,6 +54,7 @@ class newFirewallDialog : public QDialog, public FakeWizard
     
     Ui::newFirewallDialog_q            *m_dialog;
 
+    libfwbuilder::FWObject             *currentTemplate;
     libfwbuilder::Firewall             *nfw;
     bool                                snmpPollCompleted;
     libfwbuilder::Logger               *logger;

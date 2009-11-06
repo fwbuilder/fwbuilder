@@ -7,6 +7,8 @@
 #include "utils_no_qt.h"
 #include "platforms.h"
 
+#include "AddressEditor.h"
+
 #include <QtGui/QWidget>
 
 #include "fwbuilder/Interface.h"
@@ -27,6 +29,9 @@ protected:
 private:
     libfwbuilder::Interface *interface;
     Ui::InterfaceEditor *m_ui;
+
+public slots:
+    void nameEdited(QString);
 };
 
 #endif // INTERFACEEDITOR_H

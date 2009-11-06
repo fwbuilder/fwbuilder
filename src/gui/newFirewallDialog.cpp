@@ -1,4 +1,4 @@
-/*
+   /*
 
                           Firewall Builder
 
@@ -385,7 +385,7 @@ void newFirewallDialog::backClicked()
     if (previousRelevant( currentPage() ) > -1)
         showPage(previousRelevant( currentPage() ));
 }
-#include <QDebug>
+
 void newFirewallDialog::showPage(const int page)
 {
     FakeWizard::showPage(page);
@@ -511,12 +511,12 @@ void newFirewallDialog::showPage(const int page)
         setFinishEnabled( 5, true );
         while ( this->m_dialog->interfaces->count() )
             this->m_dialog->interfaces->removeTab(0);
-        FWObjectTypedChildIterator intiter = tmpldb->findByType(Library::TYPENAME);
-        for ( ; intiter != intiter.end(); ++intiter)
+        FWObjectTypedChildIterator intiter = currentTemplate->findByType(Interface::TYPENAME);
+        for ( ; intiter != intiter.end(); ++intiter )
         {
             Interface *intr = Interface::cast(*intiter);
             if (intr != NULL)
-            this->m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, intr), intr->getName().c_str());
+                m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, intr), intr->getName().c_str());
         }
     }
     }
@@ -583,6 +583,7 @@ void newFirewallDialog::templateSelected(QListWidgetItem *itm)
     if (templates.size()==0) return;
     FWObject *o = templates[itm];
     if (o==NULL) return;
+    currentTemplate = o;
 
     Firewall *fw = Firewall::cast(o);
 
