@@ -1,3 +1,14 @@
+2009-11-06  vadim  <vadim@vk.crocodile.org>
+
+	* configlets/sveasoft/script_skeleton: Fixes #571 /bin/sh on
+	Sveasoft (busybox) does not like empty shell functions and fails
+	with an error "36: Syntax error: "}" unexpected". Will call
+	/bin/true as a placeholder so that if some other commands are
+	added to the function body during template expansion, they are
+	executed after /bin/true and their return code is preserved. If no
+	commands are added, then the function body won't be empty and will
+	return success.
+
 2009-11-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipfw_writers.cpp (PrintRule::_printDstService):

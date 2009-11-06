@@ -1,5 +1,12 @@
 ## -*- mode: shell-script; -*- 
 ##
+## Note that /bin/sh on Sveasoft (busybox) does not like empty shell
+## functions and fails with an error "36: Syntax error: "}" unexpected"
+## Will call /bin/true as a placeholder so that if some other
+## commands are added to the function body during template expansion,
+## they are executed after /bin/true and their return code is
+## preserved. If no commands are added, then the function body won't
+## be empty and will return success.
 {{$top_comment}}
 
 {{$shell_debug}}
@@ -14,19 +21,21 @@
 
 ## we do not load modules on Sveasoft
 load_modules() {
+    /bin/true
 }
 
 verify_interfaces() {
+    /bin/true
     {{$verify_interfaces}}
 }
 
 prolog_commands() {
-    echo "Running prolog script"
+    /bin/true
     {{$prolog_script}}
 }
 
 epilog_commands() {
-    echo "Running epilog script"
+    /bin/true
     {{$epilog_script}}
 }
 
@@ -36,6 +45,7 @@ run_epilog_and_exit() {
 }
 
 configure_interfaces() {
+    /bin/true
     {{$configure_interfaces}}
 }
 
@@ -44,10 +54,12 @@ script_body() {
 }
 
 ip_forward() {
+    /bin/true
     {{$ip_forward_commands}}
 }
 
 reset_all() {
+    /bin/true
     {{$reset_all}}
 }
 
