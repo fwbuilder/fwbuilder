@@ -1111,7 +1111,7 @@ string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel,
             res += _printSingleObjectNegation(rel) + "--src-range ";
             res += range_start.toString() + "-" + range_end.toString() + " ";
         } else
-            res += range_start.toString() + " ";
+            res += "-s " + range_start.toString() + " ";
 
         return res;
     }
@@ -1133,7 +1133,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel,
             res += _printSingleObjectNegation(rel) + "--dst-range ";
             res += range_start.toString() + "-" + range_end.toString() + " ";
         } else
-            res += range_start.toString() + " ";
+            res += "-s " + range_start.toString() + " ";
 
         return res;
     }
