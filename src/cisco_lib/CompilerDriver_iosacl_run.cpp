@@ -148,7 +148,8 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
     FWOptions* options = fw->getOptionsObject();
 
     string fwvers = fw->getStr("version");
-    if (fwvers == "") fw->setStr("version", "12.x");
+    if (fwvers == "") fw->setStr("version", "12.1");
+    if (fwvers == "12.x") fw->setStr("version", "12.1");
 
     string platform = fw->getStr("platform");
     string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
@@ -158,7 +159,7 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
     {
         // incorrect version. This could have happened if user converted
         // firewall platform. See bug #2662290
-        fw->setStr("version", "12.x");
+        fw->setStr("version", "12.1");
     }
 
     bool ios_acl_basic = options->getBool("ios_acl_basic");

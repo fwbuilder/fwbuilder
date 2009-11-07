@@ -304,7 +304,7 @@ string PolicyCompiler_pix::PrintRule::_printLog(PolicyRule *rule)
     return str.str();
 }
 
-string PolicyCompiler_pix::PrintRule::_printSrcService(libfwbuilder::Service *srv)
+string PolicyCompiler_pix::PrintRule::_printSrcService(Service *srv)
 {
     ostringstream  str;
 
@@ -316,7 +316,8 @@ string PolicyCompiler_pix::PrintRule::_printSrcService(libfwbuilder::Service *sr
         if (rs<0) rs=0;
         if (re<0) re=0;
 
-	if (rs>0 || re>0) {
+	if (rs>0 || re>0)
+        {
 	    if (rs==re)  str << "eq " << rs << " ";
 	    else
 		if (rs==0 && re!=0)      str << "lt " << re << " ";
@@ -329,18 +330,20 @@ string PolicyCompiler_pix::PrintRule::_printSrcService(libfwbuilder::Service *sr
     return str.str();
 }
 
-string PolicyCompiler_pix::PrintRule::_printDstService(libfwbuilder::Service *srv)
+string PolicyCompiler_pix::PrintRule::_printDstService(Service *srv)
 {
     ostringstream  str;
 
-    if (TCPService::isA(srv) || UDPService::isA(srv)) {
+    if (TCPService::isA(srv) || UDPService::isA(srv))
+    {
 	int rs=TCPUDPService::cast(srv)->getDstRangeStart();
 	int re=TCPUDPService::cast(srv)->getDstRangeEnd();
 
         if (rs<0) rs=0;
         if (re<0) re=0;
 
-	if (rs>0 || re>0) {
+	if (rs>0 || re>0)
+        {
 	    if (rs==re)  str << "eq " << rs << " ";
 	    else
 		if (rs==0 && re!=0)      str << "lt " << re << " ";
@@ -352,6 +355,11 @@ string PolicyCompiler_pix::PrintRule::_printDstService(libfwbuilder::Service *sr
     }
     if (ICMPService::isA(srv) && srv->getInt("type")!=-1)
 	    str << srv->getStr("type") << " ";
+
+    const IPService *ip_srv = IPService::constcast(srv);
+    if (ip_srv && ip_srv->hasIpOptions())
+        compiler->warning("PIX can not match IP options");
+
     return str.str();
 }
 

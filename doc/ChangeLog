@@ -1,5 +1,16 @@
 2009-11-06  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pix_writers.cpp (PrintRule::_printDstService): PIX
+	does not support IP options matching, compiler issues warning.
+	Fixes #567
+
+	* res/platform/iosacl.xml: Recognized IOS versions: 12.1, 12.2,
+	12.3
+
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printIPServiceOptions):
+	Added support for IP options matching, requires IOS v12.3 or
+	later. Fixes #566, #568
+
 	* configlets/sveasoft/script_skeleton: Fixes #571 /bin/sh on
 	Sveasoft (busybox) does not like empty shell functions and fails
 	with an error "36: Syntax error: "}" unexpected". Will call

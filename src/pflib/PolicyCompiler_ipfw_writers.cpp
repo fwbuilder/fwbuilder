@@ -455,15 +455,17 @@ void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElementSrv  *rel)
         if (!str.empty()) compiler->output << str << " ";
     }
 
-    IPService *ip_srv = IPService::cast(s1);
+    const IPService *ip_srv = IPService::constcast(s1);
     if (ip_srv)
     {
+        Rule *rule = Rule::cast(rel->getParent());
+
         if ((ip_srv->getBool("fragm") || ip_srv->getBool("short_fragm")) )
             compiler->output << " frag ";
         if (ip_srv->hasIpOptions())
         {
             if  (ip_srv->getBool("any_opt")) 
-                compiler->warning("ipfw can not match \"any IP option\" ");
+                compiler->warning(rule, "ipfw can not match \"any IP option\" ");
             else
             {
                 if  (ip_srv->getBool("lsrr")) compiler->output << " ipoptions lsrr ";

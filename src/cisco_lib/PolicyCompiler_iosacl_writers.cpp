@@ -43,6 +43,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <iostream>
 #if __GNUC__ > 3 || \
@@ -359,13 +360,19 @@ string PolicyCompiler_iosacl::PrintRule::_printIPServiceOptions(PolicyRule *r)
     const IPService *ip;
     if ((ip=IPService::constcast(srv))!=NULL)
     {
-        if (ip->getBool("lsrr") || ip->getBool("ssrr") || ip->getBool("rr"))
-            compiler->abort(
-                r, 
-                "Source routing options match is not supported.");
+        string version = compiler->fw->getStr("version");
 
         if (srv->getBool("fragm") || srv->getBool("short_fragm"))
             return "fragments ";
+
+        if (ip->hasIpOptions() && XMLTools::version_compare(version, "12.3")<0)
+            compiler->abort(r, "IP options match requires IOS v12.3 or later.");
+
+        if (ip->getBool("lsrr")) return "option lsr";
+        if (ip->getBool("ssrr")) return "option ssr";
+        if (ip->getBool("rr")) return "option record-route";
+        if (ip->getBool("rtralt")) return "option router-alert";
+        if (ip->getBool("any_opt")) return "option any-options ";
 
         string tos = ip->getTOSCode();
         string dscp = ip->getDSCPCode();

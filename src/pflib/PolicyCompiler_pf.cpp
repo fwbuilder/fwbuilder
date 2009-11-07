@@ -517,7 +517,7 @@ bool PolicyCompiler_pf::SpecialServices::processNext()
 
 	if (IPService::cast(s)!=NULL  && rule->getAction()==PolicyRule::Accept)
         {
-            rule->setBool("allow_opts", IPService::cast(s)->hasIpOptions());
+            rule->setBool("allow_opts", IPService::constcast(s)->hasIpOptions());
 	}
     }
     return true;
