@@ -63,7 +63,7 @@ class IPService : public Service
     std::string getDSCPCode() const;
     void setDSCPCode(const std::string &c);
 
-    bool hasIpOptions();
+    bool hasIpOptions() const;
     
     static void addNamedProtocol(int proto_num, const std::string &proto_name);
 };

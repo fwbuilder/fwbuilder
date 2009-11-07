@@ -194,7 +194,7 @@ xmlNodePtr IPService::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool IPService::hasIpOptions()
+bool IPService::hasIpOptions() const
 {
     return (getBool("any_opt") ||
             getBool("lsrr") ||
