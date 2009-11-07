@@ -1090,8 +1090,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstService(RuleElementSrv  *rel)
     return ostr.str();
 }
 
-string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel,
-                                                    Address  *o)
+string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel, Address  *o)
 {
     string res;
     if (AddressRange::cast(o)!=NULL)
@@ -1113,8 +1112,7 @@ string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel,
     return _printSingleOptionWithNegation(" -s", rel, _printAddr(o));
 }
 
-string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel,
-                                                    Address  *o)
+string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel, Address  *o)
 {
     string res;
     if (AddressRange::cast(o)!=NULL)
@@ -1128,7 +1126,7 @@ string PolicyCompiler_ipt::PrintRule::_printDstAddr(RuleElement *rel,
             res += _printSingleObjectNegation(rel) + "--dst-range ";
             res += range_start.toString() + "-" + range_end.toString() + " ";
         } else
-            res += "-s " + range_start.toString() + " ";
+            res += "-d " + range_start.toString() + " ";
 
         return res;
     }
