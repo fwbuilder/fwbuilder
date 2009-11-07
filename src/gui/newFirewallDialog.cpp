@@ -356,6 +356,11 @@ void newFirewallDialog::getInterfacesViaSNMP()
 #endif
 }
 
+bool interfaceCompare(libfwbuilder::Interface *first, libfwbuilder::Interface *second)
+{
+    return first->getName() < second->getName();
+}
+
 bool newFirewallDialog::appropriate(const int page) const
 {
     int p  = page;
@@ -511,15 +516,26 @@ void newFirewallDialog::showPage(const int page)
         setFinishEnabled( 5, true );
         while ( this->m_dialog->interfaces->count() )
             this->m_dialog->interfaces->removeTab(0);
+        QList<Interface*> interfaces;
         FWObjectTypedChildIterator intiter = currentTemplate->findByType(Interface::TYPENAME);
         for ( ; intiter != intiter.end(); ++intiter )
-        {
-            Interface *intr = Interface::cast(*intiter);
-            if (intr != NULL)
-                m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, intr), intr->getName().c_str());
-        }
+            interfaces.append(Interface::cast(*intiter));
+        sort(interfaces.begin(), interfaces.end(), interfaceCompare);
+        foreach(Interface* intr, interfaces)
+            m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, intr), intr->getName().c_str());
     }
     }
+}
+
+QMap<Interface*, EditedInterfaceData> newFirewallDialog::getEditedTemplateInterfaces()
+{
+    QMap<Interface*, EditedInterfaceData> res;
+    for ( int i = 0; i < m_dialog->interfaces->count(); i++ )
+    {
+        InterfaceEditor *intEditor = dynamic_cast<InterfaceEditor*>(m_dialog->interfaces->widget(i));
+        res[intEditor->getInterface()] = intEditor->getInterfaceData();
+    }
+    return res;
 }
 
 void newFirewallDialog::fillInterfaceSLList()

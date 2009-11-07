@@ -14,6 +14,8 @@ class AddressEditor : public QWidget {
 public:
     AddressEditor(QWidget *parent, libfwbuilder::Address *address);
     ~AddressEditor();
+    QPair<QString, QString> getEditedData();
+    libfwbuilder::Address* getAddress();
 
 protected:
     void changeEvent(QEvent *e);

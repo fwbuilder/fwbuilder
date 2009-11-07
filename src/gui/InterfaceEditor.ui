@@ -44,7 +44,20 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="comment"/>
+      <widget class="QPlainTextEdit" name="comment">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="tabChangesFocus">
+        <bool>true</bool>
+       </property>
+       <property name="plainText">
+        <string notr="true"/>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -66,17 +79,17 @@
  <connections>
   <connection>
    <sender>name</sender>
-   <signal>textChanged(QString)</signal>
+   <signal>textEdited(QString)</signal>
    <receiver>InterfaceEditor</receiver>
    <slot>nameEdited(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>187</x>
-     <y>27</y>
+     <x>140</x>
+     <y>31</y>
     </hint>
     <hint type="destinationlabel">
-     <x>10</x>
-     <y>80</y>
+     <x>6</x>
+     <y>69</y>
     </hint>
    </hints>
   </connection>

@@ -27,3 +27,13 @@ void AddressEditor::changeEvent(QEvent *e)
         break;
     }
 }
+
+QPair<QString, QString> AddressEditor::getEditedData()
+{
+    return qMakePair(this->m_ui->address->text(), this->m_ui->netmask->text());
+}
+
+libfwbuilder::Address* AddressEditor::getAddress()
+{
+    return this->address;
+}

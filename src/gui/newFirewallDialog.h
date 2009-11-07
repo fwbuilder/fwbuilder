@@ -48,6 +48,14 @@ class QTreeWidgetItem;
 class QTimer;
 class QTextEdit;
 
+struct EditedInterfaceData
+{
+    QString name;
+    QString label;
+    QString comment;
+    QMap<libfwbuilder::Address*, QPair<QString, QString> > addresses;
+};
+
 class newFirewallDialog : public QDialog, public FakeWizard
 {
     Q_OBJECT;
@@ -85,6 +93,7 @@ class newFirewallDialog : public QDialog, public FakeWizard
     
     void showPage(const int page); //it was "selected(QString)"
     bool validateAddressAndMask(const QString &addr,const QString &netm);
+    QMap<libfwbuilder::Interface*, EditedInterfaceData> getEditedTemplateInterfaces();
     
 public slots:
     virtual void addInterface();

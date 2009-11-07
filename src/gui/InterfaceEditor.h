@@ -8,6 +8,7 @@
 #include "platforms.h"
 
 #include "AddressEditor.h"
+#include "newFirewallDialog.h"
 
 #include <QtGui/QWidget>
 
@@ -22,6 +23,8 @@ class InterfaceEditor : public QWidget {
 public:
     InterfaceEditor(QWidget *parent, libfwbuilder::Interface *interface);
     ~InterfaceEditor();
+    libfwbuilder::Interface* getInterface();
+    EditedInterfaceData getInterfaceData();
 
 protected:
     void changeEvent(QEvent *e);
