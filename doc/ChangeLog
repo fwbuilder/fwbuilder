@@ -1,3 +1,12 @@
+2009-11-07  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printTCPFlags):
+	Implemented TCP flag matching per #2865044: "Add TCP options
+	support for IOS ACL". Uses extended ACL option "match-all" that
+	supports list of TCP flags that should be set and cleared. This
+	requires IOS v12.4 or later even though Cisco documentation seems
+	to indicate this option was introduced in 12.3(4)T. Fixes #455
+
 2009-11-06  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_pix_writers.cpp (PrintRule::_printDstService): PIX
@@ -5,10 +14,10 @@
 	Fixes #567
 
 	* res/platform/iosacl.xml: Recognized IOS versions: 12.1, 12.2,
-	12.3
+	12.3, 12.4
 
 	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printIPServiceOptions):
-	Added support for IP options matching, requires IOS v12.3 or
+	Added support for IP options matching, requires IOS v12.4 or
 	later. Fixes #566, #568
 
 	* configlets/sveasoft/script_skeleton: Fixes #571 /bin/sh on

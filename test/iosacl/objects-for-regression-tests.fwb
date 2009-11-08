@@ -21,12 +21,11 @@
     <ServiceRef ref="id5470X38343"/>
     <ObjectRef ref="id19068X65694"/>
     <ObjectRef ref="id19240X65694"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
     <ObjectRef ref="id4641321126611"/>
+    <ServiceRef ref="id5611X44763"/>
+    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="id4511636323682" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id4511636423682_clusters" name="Clusters" comment="" ro="False"/>
@@ -149,6 +148,9 @@
       <ServiceGroup id="id4511637023682" name="TCP" comment="" ro="False">
         <TCPService id="id4641521729061" ack_flag="False" ack_flag_mask="False" established="True" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="http established" comment="" ro="False" src_range_start="80" src_range_end="80" dst_range_start="0" dst_range_end="0"/>
         <TCPService id="id5470X38343" ack_flag="False" ack_flag_mask="False" established="True" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="establ" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id83887X7744" ack_flag="True" ack_flag_mask="True" established="False" fin_flag="False" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="False" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="ack" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id83888X7744" ack_flag="False" ack_flag_mask="True" established="False" fin_flag="False" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="syn" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id83889X7744" ack_flag="True" ack_flag_mask="True" established="False" fin_flag="False" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="False" rst_flag_mask="True" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="syn ack" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
       </ServiceGroup>
       <ServiceGroup id="id4511637123682" name="UDP" comment="" ro="False"/>
       <ServiceGroup id="id4511637223682" name="Custom" comment="" ro="False">
@@ -747,7 +749,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id464131E426611" host_OS="ios" inactive="False" lastCompiled="1251228630" lastInstalled="0" lastModified="1257560694" platform="iosacl" version="12.x" name="testios20" comment="" ro="False">
+      <Firewall id="id464131E426611" host_OS="ios" inactive="False" lastCompiled="1251228630" lastInstalled="0" lastModified="1257660998" platform="iosacl" version="12.4" name="testios20" comment="" ro="False">
         <NAT id="id4641320F26611" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id464131EA26611" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id464131EB26611" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -1000,7 +1002,71 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id7439X44763" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id85935X7744" disabled="False" group="" log="False" position="12" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id83887X7744"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4641321126611"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id85953X7744" disabled="False" group="" log="False" position="13" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id83887X7744"/>
+              <ServiceRef ref="id83888X7744"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4641321126611"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id85970X7744" disabled="False" group="" log="False" position="14" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id83889X7744"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id4641321126611"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id7439X44763" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1020,7 +1086,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4641320326611" disabled="False" log="True" position="13" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4641320326611" disabled="False" log="True" position="16" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

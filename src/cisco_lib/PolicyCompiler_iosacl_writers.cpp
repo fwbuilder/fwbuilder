@@ -61,6 +61,8 @@
 
 #include <assert.h>
 
+#include <QStringList>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -365,8 +367,8 @@ string PolicyCompiler_iosacl::PrintRule::_printIPServiceOptions(PolicyRule *r)
         if (srv->getBool("fragm") || srv->getBool("short_fragm"))
             return "fragments ";
 
-        if (ip->hasIpOptions() && XMLTools::version_compare(version, "12.3")<0)
-            compiler->abort(r, "IP options match requires IOS v12.3 or later.");
+        if (ip->hasIpOptions() && XMLTools::version_compare(version, "12.4")<0)
+            compiler->abort(r, "IP options match requires IOS v12.4 or later.");
 
         if (ip->getBool("lsrr")) return "option lsr";
         if (ip->getBool("ssrr")) return "option ssr";
@@ -405,8 +407,12 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
 			str << "range " << rs << " " << re << " ";
 	}
     }
-    if (TCPService::isA(srv) && srv->getBool("established"))
-        str << "established ";
+
+    if (TCPService::isA(srv))
+    {
+        if (srv->getBool("established")) str << "established ";
+        else str << _printTCPFlags(TCPService::cast(srv));
+    }
 
     if ((ICMPService::isA(srv) || ICMP6Service::isA(srv)) && srv->getInt("type")!=-1)
 	    str << srv->getStr("type") << " ";
@@ -416,6 +422,50 @@ string PolicyCompiler_iosacl::PrintRule::_printDstService(Service *srv)
             compiler->myPlatformName() ) << " ";
 
     return str.str();
+}
+
+string PolicyCompiler_iosacl::PrintRule::getTcpFlagName(const TCPService::TCPFlag f)
+{
+    switch (f)
+    {
+    case TCPService::URG: return "urg";
+    case TCPService::ACK: return "ack";
+    case TCPService::PSH: return "psh";
+    case TCPService::RST: return "rst";
+    case TCPService::SYN: return "syn";
+    case TCPService::FIN: return "fin";
+    default: return "";
+    }
+    return "";
+}
+
+string PolicyCompiler_iosacl::PrintRule::_printTCPFlags(TCPService *srv)
+{
+    if (srv->inspectFlags())
+    {
+        // We check the version and call compiler->abort() if its
+        // wrong in SpecialServices rule processor. Here we should just execute.
+        string version = compiler->fw->getStr("version");
+        if (XMLTools::version_compare(version, "12.4")>=0)
+        {
+            std::set<TCPService::TCPFlag> flags = srv->getAllTCPFlags();
+            std::set<TCPService::TCPFlag> masks = srv->getAllTCPFlagMasks();
+            std::set<TCPService::TCPFlag>::iterator mit = masks.begin();
+
+            QStringList match_specs;
+            for (; mit!=masks.end(); mit++)
+            {
+                if (flags.count(*mit) > 0)
+                    match_specs.push_back(QString("+%1").arg(getTcpFlagName(*mit).c_str()));
+                else
+                    match_specs.push_back(QString("-%1").arg(getTcpFlagName(*mit).c_str()));
+            }
+            if (!match_specs.empty())
+                match_specs.push_front("match-all");
+            return match_specs.join(" ").toStdString() + " ";
+        }
+    }
+    return "";
 }
 
 string PolicyCompiler_iosacl::PrintRule::_printProtocol(Service *srv)

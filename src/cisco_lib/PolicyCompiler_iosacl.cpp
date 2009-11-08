@@ -129,19 +129,14 @@ bool PolicyCompiler_iosacl::SpecialServices::processNext()
 	    s->getBool("ssrr")      ||
 	    s->getBool("ts") )
 	    compiler->abort(
-                
                     rule, 
                     "IOS ACL does not support checking for IP options in ACLs.");
     }
-    if (TCPService::cast(s)!=NULL) {
-	if (s->getBool("ack_flag")  ||
-	    s->getBool("fin_flag")  ||
-	    s->getBool("rst_flag")  ||
-	    s->getBool("syn_flag") )
-	    compiler->abort(
-                
-                    rule, 
-                    "IOS ACL does not support checking for TCP options in ACLs.");
+    if (TCPService::cast(s)!=NULL && TCPService::cast(s)->inspectFlags())
+    {
+        string version = compiler->fw->getStr("version");
+        if (XMLTools::version_compare(version, "12.4")<0)
+            compiler->abort(rule, "TCP flags match requires IOS v12.4 or later.");
     }
 
     tmp_queue.push_back(rule);

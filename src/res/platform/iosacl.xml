@@ -10,7 +10,7 @@
       <diff>fwb_iosacl_diff</diff>
       <supported_os>ios</supported_os>
 
-      <versions>12.1,12.2,12.3</versions>
+      <versions>12.1,12.2,12.3,12.4</versions>
 
       <options>
         <default>
@@ -75,6 +75,25 @@ interface %in
             </ip_addr_dyn>
           </iosacl_commands>
         </version_12.3>
+
+        <version_12.4>
+          <iosacl_include_comments>true</iosacl_include_comments>
+          <iosacl_add_clear_statements>true</iosacl_add_clear_statements>
+          <iosacl_assume_fw_part_of_any>true</iosacl_assume_fw_part_of_any>
+          <iosacl_commands>
+            <clear_acl>no access-list</clear_acl>
+            <clear_ip_acl>no ip access-list extended</clear_ip_acl>
+            <clear_ipv6_acl>no ipv6 access-list</clear_ipv6_acl>
+            <ip_addr_static>
+interface %in
+  ip address %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+interface %in
+  ip address dhcp 
+            </ip_addr_dyn>
+          </iosacl_commands>
+        </version_12.4>
 
       </options>
 
