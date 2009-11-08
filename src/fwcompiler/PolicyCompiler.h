@@ -193,6 +193,12 @@ namespace fwcompiler {
         DECLARE_POLICY_RULE_PROCESSOR(splitServices);
 
 	/**
+	 * split rules with more than one IPService object with
+	 * options, so that each rule has only one such service
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(splitIpOptions);
+
+	/**
 	 * separate TCP services with flags (can't use those in combination
 	 * with others in groups of services)
 	 */

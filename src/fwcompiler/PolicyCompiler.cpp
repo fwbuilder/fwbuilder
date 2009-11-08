@@ -613,6 +613,49 @@ bool PolicyCompiler::splitServices::processNext()
     return true;
 }
 
+bool PolicyCompiler::splitIpOptions::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+
+    RuleElementSrv *srv = rule->getSrv();
+
+    if (srv->size()==1)
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
+    list<Service*> ip_services_with_options;
+
+    for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
+    {
+        FWObject *o = FWReference::getObject(*i);
+
+        IPService *s = IPService::cast( o );
+        if (s==NULL) continue;
+
+        if (s->hasIpOptions()) ip_services_with_options.push_back(s);
+    }
+
+    for (list<Service*>::iterator i1=ip_services_with_options.begin();
+         i1!=ip_services_with_options.end(); i1++)
+    {
+        PolicyRule *r = compiler->dbcopy->createPolicyRule();
+        compiler->temp_ruleset->add(r);
+        r->duplicate(rule);
+        RuleElementSrv *nsrv = r->getSrv();
+        nsrv->clearChildren();
+        nsrv->addRef(*i1);
+        srv->removeRef(*i1);
+        tmp_queue.push_back(r);
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
+
 /*
  * processor splitServices should have been called eariler, so now all
  * services in Srv are of the same type
