@@ -493,6 +493,25 @@ void PolicyRule::removeRef(FWObject *obj)
     FWObject::removeRef(obj);
 }
 
+void PolicyRule::replaceReferenceInternal(int old_id, int new_id, int &counter)
+{
+    if (old_id == new_id) return;
+
+    FWObject::replaceReferenceInternal(old_id, new_id, counter);
+
+    string branch_id = getOptionsObject()->getStr("branch_id");
+    if (!branch_id.empty())
+    {
+        int branch_id_int = FWObjectDatabase::getIntId(branch_id);
+        if (branch_id_int == old_id)
+        {
+            getOptionsObject()->setStr("branch_id",
+                                       FWObjectDatabase::getStringId(new_id));
+            counter++;
+        }
+    }
+}
+
 /***************************************************************************/
 
 const char *NATRule::TYPENAME={"NATRule"};

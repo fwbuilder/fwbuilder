@@ -210,6 +210,13 @@ public:
      */
     virtual void removeRef(FWObject *obj);
     
+    /**
+     * if this object has any references as its children, replace IDs
+     * these references point to. This overloaded method also replaces
+     * references to branch rulesets.
+     */
+    virtual void replaceReferenceInternal(int old_id, int new_id, int &counter);
+
     libfwbuilder::RuleElementSrc*  getSrc() ;
     libfwbuilder::RuleElementDst*  getDst() ;
     libfwbuilder::RuleElementSrv*  getSrv() ;

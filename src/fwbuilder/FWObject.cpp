@@ -1278,18 +1278,19 @@ FWObject::tree_iterator FWObject::tree_end()
 int FWObject::replaceRef(int old_id, int new_id)
 {
     int ref_replacement_counter = 0;
-    _replaceRef(this, old_id, new_id, ref_replacement_counter);
+    replaceReferenceInternal(old_id, new_id, ref_replacement_counter);
     return ref_replacement_counter;
 }
 
-void FWObject::_replaceRef(FWObject *rs, int old_id, int new_id,
-                           int &counter)
+void FWObject::replaceReferenceInternal(int old_id, int new_id, int &counter)
 {
-    FWReference *ref = FWReference::cast(rs);
+    if (old_id == new_id) return;
+
+    FWReference *ref = FWReference::cast(this);
     if (ref==NULL)
     {
-        for (FWObject::iterator j1=rs->begin(); j1!=rs->end(); ++j1)
-            _replaceRef( *j1, old_id, new_id, counter);
+        for (FWObject::iterator j1=begin(); j1!=end(); ++j1)
+            (*j1)->replaceReferenceInternal(old_id, new_id, counter);
     } else
     { 
         if (ref->getPointerId()==old_id)

@@ -117,11 +117,12 @@ protected:
     void _removeAllRef(FWObject *rm);
     void _adopt(FWObject *obj);   // increments reference
     void _moveToDeletedObjects(FWObject *obj);
-    void _replaceRef(FWObject *rs, int oldfw_id, int newfw_id, int &counter);
     void _findDependencies_internal(FWObject *obj,
                                     std::list<FWObject*> &deps,
                                     int anti_loop_id);
     
+    virtual void replaceReferenceInternal(int oldfw_id, int newfw_id, int &counter);
+
     /**
      * Finds direct child of this object with given name.
      */
@@ -427,10 +428,10 @@ public:
                                     const std::string &val) throw(FWException);
 
     /**
-     * if this object has any references as its children, replace IDs these
-     * references point to.
+     * if this object has any references as its children, replace IDs
+     * these references point to.
      */
-    int replaceRef(int oldfw_id, int newfw_id);
+    virtual int replaceRef(int oldfw_id, int newfw_id);
 
     /**
      * recursively find all FWReference objects that are children of

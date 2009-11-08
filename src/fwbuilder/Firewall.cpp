@@ -333,17 +333,20 @@ FWObject& Firewall::duplicate(const FWObject *obj,
     for (FWObjectTypedChildIterator it = obj->findByType(Policy::TYPENAME);
          it != it.end(); ++it)
     {
-        addCopyOf(*it, preserve_id);
+        FWObject *new_ruleset = addCopyOf(*it, preserve_id);
+        id_mapping[(*it)->getId()] = new_ruleset->getId();
     }
     for (FWObjectTypedChildIterator it = obj->findByType(NAT::TYPENAME);
          it != it.end(); ++it)
     {
-        addCopyOf(*it, preserve_id);
+        FWObject *new_ruleset = addCopyOf(*it, preserve_id);
+        id_mapping[(*it)->getId()] = new_ruleset->getId();
     }
     for (FWObjectTypedChildIterator it = obj->findByType(Routing::TYPENAME);
          it != it.end(); ++it)
     {
-        addCopyOf(*it, preserve_id);
+        FWObject *new_ruleset = addCopyOf(*it, preserve_id);
+        id_mapping[(*it)->getId()] = new_ruleset->getId();
     }
 
     // replace references to old fw (obj) with references to this fw
