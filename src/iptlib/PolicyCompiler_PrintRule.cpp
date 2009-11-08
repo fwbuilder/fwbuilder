@@ -869,6 +869,7 @@ string PolicyCompiler_ipt::PrintRule::_printIP(IPService *srv, PolicyRule *rule)
                 if  (srv->getBool("ssrr")) str << " --ssrr";
                 if  (srv->getBool("rr")) str << " --rr";
                 if  (srv->getBool("ts")) str << " --ts";
+                if  (srv->getBool("rtralt")) str << " --ra";
             }
         } else
         {
@@ -966,14 +967,15 @@ string PolicyCompiler_ipt::PrintRule::_printSrcService(RuleElementSrv  *rel)
 
 	string str;
 	bool  first=true;
-	for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) {
+	for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++)
+        {
 	    FWObject *o= *i;
-//	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
 	    Service *s=Service::cast( o );
 	    assert(s);
-	    if (UDPService::isA(srv) || TCPService::isA(srv)) {
+	    if (UDPService::isA(srv) || TCPService::isA(srv))
+            {
 		if (!first) str+=",";
 		str+= _printSrcPorts( s );
 		if (!str.empty()) first=false;

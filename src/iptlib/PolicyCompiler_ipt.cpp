@@ -3633,11 +3633,10 @@ bool PolicyCompiler_ipt::splitServicesIfRejectWithTCPReset::processNext()
         tmp_queue.push_back(r);
         return true;
     }
-    tmp_queue.push_back(rule);
 
+    tmp_queue.push_back(rule);
     return true;
 }
-
 
 /*
  * processor splitServices should have been called eariler, so now all
@@ -3650,16 +3649,14 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
     RuleElementSrv *rel= rule->getSrv();
     Service        *srv= compiler->getFirstSrv(rule);
 
-    if (rel->size()==1) {
+    if (rel->size()==1)
+    {
 	tmp_queue.push_back(rule);
 	return true;
     }
 
-    if (IPService::isA(srv) ||
-        ICMPService::isA(srv) ||
-        ICMP6Service::isA(srv) ||
-        CustomService::isA(srv) ||
-        TagService::isA(srv))
+    if (IPService::isA(srv) || ICMPService::isA(srv) || ICMP6Service::isA(srv) ||
+        CustomService::isA(srv) || TagService::isA(srv))
     {
 /* multiport does  not support ip and icmp services, split the rule */
 	for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
@@ -3684,41 +3681,38 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
 
     if (TCPService::isA(srv) || UDPService::isA(srv)) 
     {
-	rule->setBool("ipt_multiport",true);
-
+        rule->setBool("ipt_multiport",true);
 /* make sure we have no more than 15 ports */
-	if (rel->size()>15) 
+        if (rel->size()>15) 
         {
-	    int n=0;
-	    PolicyRule *r;
-	    RuleElementSrv *nsrv = NULL;
-	    for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
+            int n=0;
+            PolicyRule *r;
+            RuleElementSrv *nsrv = NULL;
+            for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
             {
-		FWObject *o= *i;
-		if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-	    
-		Service *s=Service::cast( o );
-		assert(s);
-
-		if (n==0)
+                FWObject *o= *i;
+                if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+                Service *s=Service::cast( o );
+                assert(s);
+                if (n==0)
                 {
-		    r= compiler->dbcopy->createPolicyRule();
-		    compiler->temp_ruleset->add(r);
-		    r->duplicate(rule);
-		    nsrv=r->getSrv();
-		    nsrv->clearChildren();
-		    tmp_queue.push_back(r);
-		}
+                    r= compiler->dbcopy->createPolicyRule();
+                    compiler->temp_ruleset->add(r);
+                    r->duplicate(rule);
+                    nsrv=r->getSrv();
+                    nsrv->clearChildren();
+                    tmp_queue.push_back(r);
+                }
                 assert(nsrv!=NULL);
-		nsrv->addRef( s );
-		if (++n>=15) n=0;
-	    }
-
-	} else {
-	    tmp_queue.push_back(rule);
-	}
+                nsrv->addRef( s );
+                if (++n>=15) n=0;
+            }
+        } else
+            tmp_queue.push_back(rule);
+        return true;
     }
 
+    tmp_queue.push_back(rule);
     return true;
 }
 

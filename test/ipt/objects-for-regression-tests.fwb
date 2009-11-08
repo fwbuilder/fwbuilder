@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1257362010" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1257712010" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -1791,7 +1791,8 @@
     <ObjectRef ref="id451488C42143"/>
     <ServiceRef ref="tcp-IRC"/>
     <ObjectRef ref="id3EFBC648"/>
-    <ServiceRef ref="sysid1"/>
+    <ServiceRef ref="id49136X22476"/>
+    <ServiceRef ref="id3B6659A5"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -2871,6 +2872,7 @@
         <IPService id="idAF4F18769" dscp="BE" fragm="False" lsrr="False" protocol_num="0" rr="False" short_fragm="False" ssrr="False" tos="" ts="False" name="dscp BE" comment="" ro="False"/>
         <IPService id="id45790X95438" fragm="True" protocol_num="0" name="ip-0 fragm" comment="Imported from &quot;c3620&quot;&#10;protocol 0" ro="False"/>
         <IPService id="id49136X22476" any_opt="True" dscp="" fragm="False" lsrr="False" protocol_num="0" rr="False" rtralt="False" short_fragm="False" ssrr="False" tos="" ts="False" name="any ip opt" comment="" ro="False"/>
+        <IPService id="id49146X15005" any_opt="False" dscp="AF4" fragm="False" lsrr="True" protocol_num="0" rr="False" rtralt="True" rtralt_value="0" short_fragm="False" ssrr="False" tos="" ts="False" name="ip options plus DSCP" comment="" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="stdid09_1" name="TCP" comment="" ro="False">
         <TCPService id="id3C1A66EF" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="gopher" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="70" dst_range_end="70"/>
@@ -2979,7 +2981,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1251648535" lastInstalled="1142003872" lastModified="1257362054" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1251648535" lastInstalled="1142003872" lastModified="1257712157" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -4144,7 +4146,27 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3D34B4D8" disabled="False" log="True" position="25" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id49147X15005" disabled="False" group="" log="False" position="25" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id49146X15005"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3D34B4D8" disabled="False" log="True" position="26" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4164,7 +4186,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3D0C176B" disabled="True" log="False" position="26" action="Accept" direction="Both" comment="both src and dst have multiple interfaces.&#10;this rule is illegal because firewall8&#10;has dynamic interface">
+          <PolicyRule id="id3D0C176B" disabled="True" log="False" position="27" action="Accept" direction="Both" comment="both src and dst have multiple interfaces.&#10;this rule is illegal because firewall8&#10;has dynamic interface">
             <Src neg="False">
               <ObjectRef ref="fw-firewall2"/>
               <ObjectRef ref="id3D0C1E6E"/>
@@ -4184,7 +4206,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3EE24E9C" disabled="False" log="False" position="27" action="Accept" direction="Both" comment="both src and dst have multiple interfaces">
+          <PolicyRule id="id3EE24E9C" disabled="False" log="False" position="28" action="Accept" direction="Both" comment="both src and dst have multiple interfaces">
             <Src neg="False">
               <ObjectRef ref="fw-firewall2"/>
               <ObjectRef ref="id3D0C1E77"/>
@@ -4208,7 +4230,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3BF1B45E" disabled="False" log="False" position="28" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3BF1B45E" disabled="False" log="False" position="29" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E1"/>
             </Src>
@@ -4231,7 +4253,7 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3E0AA611" disabled="False" log="False" position="29" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3E0AA611" disabled="False" log="False" position="30" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E2"/>
             </Src>
@@ -4249,7 +4271,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3BF1B44E" disabled="False" log="False" position="30" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3BF1B44E" disabled="False" log="False" position="31" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E7"/>
             </Src>
@@ -4272,7 +4294,7 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3E0AA504" disabled="False" log="False" position="31" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3E0AA504" disabled="False" log="False" position="32" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E8-pa"/>
             </Src>
@@ -4290,7 +4312,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3E0AA635" disabled="False" log="False" position="32" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3E0AA635" disabled="False" log="False" position="33" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E8-pa"/>
             </Src>
@@ -4308,7 +4330,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3E0F40D5" disabled="False" log="False" position="33" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3E0F40D5" disabled="False" log="False" position="34" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3E0F3FC8"/>
             </Src>
@@ -4326,7 +4348,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3E0F452C" disabled="False" log="False" position="34" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3E0F452C" disabled="False" log="False" position="35" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3E0F3FCB"/>
             </Src>
@@ -4344,7 +4366,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3DB0B422" disabled="False" log="False" position="35" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3DB0B422" disabled="False" log="False" position="36" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DB0B356"/>
             </Src>
@@ -4362,7 +4384,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3DB0B628" disabled="False" log="False" position="36" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3DB0B628" disabled="False" log="False" position="37" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DB0B356"/>
               <ObjectRef ref="host-hostB"/>
@@ -4381,7 +4403,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3DE474B7" disabled="False" log="False" position="37" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3DE474B7" disabled="False" log="False" position="38" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DB0B356"/>
             </Src>
@@ -4399,7 +4421,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="pol-firewall2-2" disabled="False" log="False" position="38" action="Accept" direction="Both" comment="">
+          <PolicyRule id="pol-firewall2-2" disabled="False" log="False" position="39" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DB0B356"/>
             </Src>
@@ -4422,7 +4444,7 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id445FAA6D31658" disabled="False" log="False" position="39" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id445FAA6D31658" disabled="False" log="False" position="40" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3DB0B356"/>
             </Src>
@@ -4440,7 +4462,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3F14E0F4" disabled="False" log="False" position="40" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3F14E0F4" disabled="False" log="False" position="41" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3F14DFB8"/>
             </Src>
@@ -4458,7 +4480,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="pol-firewall2-3" disabled="False" log="True" position="41" action="Accept" direction="Both" comment="">
+          <PolicyRule id="pol-firewall2-3" disabled="False" log="True" position="42" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="host-secondary1-com"/>
               <ObjectRef ref="host-secondary2-com"/>
@@ -4485,7 +4507,7 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3FB8455E" disabled="False" log="False" position="42" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3FB8455E" disabled="False" log="False" position="43" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="host-secondary1-com"/>
               <ObjectRef ref="host-secondary2-com"/>
@@ -4505,7 +4527,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3CE71635" disabled="False" log="False" position="43" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3CE71635" disabled="False" log="False" position="44" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4523,7 +4545,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3CE716F8" disabled="False" log="False" position="44" action="Accept" direction="Both" comment="Rule #20 test: from Rock&#10;">
+          <PolicyRule id="id3CE716F8" disabled="False" log="False" position="45" action="Accept" direction="Both" comment="Rule #20 test: from Rock&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4544,7 +4566,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="pol-firewall2-4" disabled="False" log="False" position="45" action="Accept" direction="Both" comment="">
+          <PolicyRule id="pol-firewall2-4" disabled="False" log="False" position="46" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4568,7 +4590,7 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3CD8770E" disabled="False" log="False" position="46" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3CD8770E" disabled="False" log="False" position="47" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4592,7 +4614,7 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3CD87B1E" disabled="False" log="False" position="47" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3CD87B1E" disabled="False" log="False" position="48" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4616,7 +4638,7 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3E1FD93A" disabled="False" log="False" position="48" action="Accept" direction="Both" comment="group &quot;special combined srv&quot;&#10;has couple of UDP services,&#10;plus &quot;ALL UDP&quot; service, which has&#10;empty ports specs. This is special&#10;case for multiport.">
+          <PolicyRule id="id3E1FD93A" disabled="False" log="False" position="49" action="Accept" direction="Both" comment="group &quot;special combined srv&quot;&#10;has couple of UDP services,&#10;plus &quot;ALL UDP&quot; service, which has&#10;empty ports specs. This is special&#10;case for multiport.">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -4634,7 +4656,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id41D0F052" disabled="False" log="True" position="49" action="Accept" direction="Both" comment="another test case for multiport: this rule&#10;has 16 TCP services and should be split onto&#10;two rules. If both rules use &quot;-m multiport&quot;, then &#10;rule with a single service should use &quot;--dports&quot;.&#10;It may be acceptable to not use multiport&#10;in the rule with a single service at all.">
+          <PolicyRule id="id41D0F052" disabled="False" log="True" position="50" action="Accept" direction="Both" comment="another test case for multiport: this rule&#10;has 16 TCP services and should be split onto&#10;two rules. If both rules use &quot;-m multiport&quot;, then &#10;rule with a single service should use &quot;--dports&quot;.&#10;It may be acceptable to not use multiport&#10;in the rule with a single service at all.">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -4652,7 +4674,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3B58E180" disabled="False" log="True" position="50" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3B58E180" disabled="False" log="True" position="51" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="fw-firewall2"/>
             </Src>
@@ -4670,7 +4692,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3D41A4F4" disabled="False" log="False" position="51" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3D41A4F4" disabled="False" log="False" position="52" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="fw-firewall2"/>
             </Src>
@@ -4688,7 +4710,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="pol-firewall2-5" disabled="False" log="False" position="52" action="Accept" direction="Both" comment="Automatically generated 'masquerading' rule">
+          <PolicyRule id="pol-firewall2-5" disabled="False" log="False" position="53" action="Accept" direction="Both" comment="Automatically generated 'masquerading' rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="fw-firewall2"/>
@@ -4712,7 +4734,7 @@
               <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3CE894DA" disabled="False" log="False" position="53" action="Accept" direction="Both" comment="similar to a standard 'masquerading'&#10;rule, but not so permissive as it does &#10;not allow access to the firewall">
+          <PolicyRule id="id3CE894DA" disabled="False" log="False" position="54" action="Accept" direction="Both" comment="similar to a standard 'masquerading'&#10;rule, but not so permissive as it does &#10;not allow access to the firewall">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -4730,7 +4752,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40F1CFA3" disabled="False" log="False" position="54" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id40F1CFA3" disabled="False" log="False" position="55" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -4749,7 +4771,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id413D6500" disabled="False" log="False" position="55" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id413D6500" disabled="False" log="False" position="56" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3BBC0EFC"/>
             </Src>
@@ -4767,7 +4789,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="56" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
+          <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="57" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
