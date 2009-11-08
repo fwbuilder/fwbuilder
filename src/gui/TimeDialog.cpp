@@ -33,6 +33,8 @@
 #include "ProjectPanel.h"
 
 #include "FWWindow.h"
+#include "FWCmdChange.h"
+#include "FWObjectState.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interval.h"
@@ -45,6 +47,7 @@
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
+#include <QUndoStack>
 
 #include <iostream>
 #include "FWBSettings.h"
@@ -214,6 +217,12 @@ void TimeDialog::applyChanges()
     if (!isTreeReadWrite(this,obj)) return;
     Interval *s = dynamic_cast<Interval*>(obj);
     assert(s!=NULL);
+
+    FWObjectStateTime *ns = new FWObjectStateTime();
+    ns->name = m_dialog->obj_name->text();
+    ns->comment = m_dialog->comment->toPlainText();
+
+    m_project->undoStack->push(new FWCmdChangeTime(m_project, obj, ns));
 
     string oldname=obj->getName();
     obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

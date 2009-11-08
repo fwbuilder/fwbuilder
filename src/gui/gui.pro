@@ -171,7 +171,10 @@ HEADERS += ../../config.h \
     startup_tip_url.h \
     AutocompletedComboBox.h \
     InterfaceEditor.h \
-    AddressEditor.h
+    AddressEditor.h \
+    FWCmdBasic.h \
+    FWCmdChange.h \
+    FWObjectState.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -321,7 +324,10 @@ SOURCES += ProjectPanel.cpp \
     openaisOptionsDialog.cpp \
     AutocompletedComboBox.cpp \
     InterfaceEditor.cpp \
-    AddressEditor.cpp
+    AddressEditor.cpp \
+    FWCmdBasic.cpp \
+    FWCmdChange.cpp \
+    FWObjectState.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \

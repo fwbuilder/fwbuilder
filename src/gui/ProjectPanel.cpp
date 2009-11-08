@@ -57,6 +57,8 @@
 #include <QStatusBar>
 #include <QFileInfo>
 #include <QApplication>
+#include <QUndoStack>
+#include <QUndoGroup>
 
 #include <iostream>
 
@@ -95,6 +97,7 @@ void ProjectPanel::initMain(FWWindow *main)
     enableAvtoSaveState=true ;
     oldState=-1;
 
+    main->undoGroup->addStack(undoStack);
 
     connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
             this, SLOT(topLevelChangedForTreePanel(bool)));
@@ -126,12 +129,15 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     lastFirewallIdx(-2),
     changingTabs(false),
     noFirewalls(tr("No firewalls defined")),
-    m_panel(0)
+    m_panel(0),
+    undoStack(0)
 {
     if (fwbdebug) qDebug("ProjectPanel constructor");
     m_panel = new Ui::ProjectPanel_q();
     m_panel->setupUi(this);
     m_panel->om->setupProject(this);
+
+    undoStack = new QUndoStack(this);
 
     setWindowTitle(getPageTitle());
 

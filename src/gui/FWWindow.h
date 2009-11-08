@@ -56,6 +56,7 @@ class QTextEdit;
 class QTimer;
 class QTreeWidgetItem;
 class QDockWidget;
+class QUndoGroup;
 
 class RuleSetView;
 class findDialog;
@@ -125,6 +126,8 @@ public:
     ObjectEditor *oe;
     FindObjectWidget *findObjectWidget;
     FindWhereUsedWidget *findWhereUsedWidget;
+
+    QUndoGroup *undoGroup;
 
     ProjectPanel* activeProject();
     void updateWindowTitle();

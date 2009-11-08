@@ -153,6 +153,7 @@
 #include <QSignalMapper>
 #include <QUrl>
 #include <QDockWidget>
+#include <QUndoGroup>
 
 
 using namespace libfwbuilder;
@@ -168,7 +169,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
                        editorOwner(0),
                        printer(0), searchObject(0), replaceObject(0),
                        auto_load_from_rcs_head_revision(0),
-                       oe(0), findObjectWidget(0), findWhereUsedWidget(0)
+                       oe(0), findObjectWidget(0), findWhereUsedWidget(0),
+                       undoGroup(0)
 {
     setUnifiedTitleAndToolBarOnMac(true);
 
@@ -214,6 +216,11 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     m_mainWindow->editorDockWidget->setupEditor(oe);
     m_mainWindow->editorDockWidget->hide();
+
+    undoGroup = new QUndoGroup(this);
+    QAction *undoAction = undoGroup->createUndoAction(this);
+
+    m_mainWindow->editMenu->addAction(undoAction);
 
     printer = new QPrinter(QPrinter::HighResolution);
 

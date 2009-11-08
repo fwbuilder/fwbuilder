@@ -31,6 +31,8 @@
 #include <set>
 #include <map>
 
+
+
 namespace libfwbuilder {
     class FWObjectDatabase;
     class Firewall;
@@ -45,6 +47,8 @@ namespace libfwbuilder {
 class QWidget;
 class QMdiSubWindow;
 class QTextEdit;
+class QUndoStack;
+
 class ObjectTreeView;
 class ObjectManipulator;
 class findDialog;
@@ -106,6 +110,7 @@ public:
     Ui::ProjectPanel_q *m_panel;
     QSet<QString> copySet;
 
+    QUndoStack *undoStack;
     
     void readyStatus(bool f) { ready=f; }
 
