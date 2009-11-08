@@ -824,6 +824,17 @@ void ObjectManipulator::clearObjects()
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects done");
 }
 
+void ObjectManipulator::reload()
+{
+    FWObject *current_lib = getCurrentLib();
+    saveExpandedTreeItems();
+    saveSectionSizes();
+    loadObjects();
+    openLib(current_lib);
+    loadExpandedTreeItems();
+    loadSectionSizes();
+}
+
 void ObjectManipulator::loadObjects()
 {
     if (fwbdebug) qDebug("ObjectManipulator::loadObjects %p start", this);

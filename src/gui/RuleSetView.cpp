@@ -1291,6 +1291,8 @@ void RuleSetView::pasteRuleAbove()
             // proper location.
             co->ref();
             md->getRuleSet()->remove(co);
+
+            project->m_panel->om->reload();
         }
 
         md->insertRule(Rule::cast(co), index);
@@ -1334,6 +1336,8 @@ void RuleSetView::pasteRuleBelow()
             // proper location.
             co->ref();
             md->getRuleSet()->remove(co);
+
+            project->m_panel->om->reload();
         }
 
         md->insertRule(Rule::cast(co), index, true);
@@ -1950,7 +1954,7 @@ void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
 
     if (need_to_reload_tree)
     {
-        project->m_panel->om->loadObjects();
+        project->m_panel->om->reload();
         project->m_panel->om->openObject(object);
         // but still need to reopen this ruleset
         project->m_panel->om->openObject(md->getRuleSet());
