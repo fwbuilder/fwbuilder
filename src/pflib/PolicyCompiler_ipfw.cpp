@@ -632,6 +632,7 @@ void PolicyCompiler_ipfw::compile()
                  "check for a special cases with dynamic interface"));
         add( new addressRanges("expand address range objects"));
         add( new splitServices("split rules with different protocols"));
+        add( new splitIpOptions("split rules with multiple IPService objects with options"));
         add( new separateTCPWithFlags("separate TCP services with flags"));
         add( new separateSrcPort("split on TCP and UDP with source ports"));
         add( new separatePortRanges("split services with port ranges"));

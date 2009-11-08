@@ -59,6 +59,9 @@
 
 #include <assert.h>
 
+#include <QStringList>
+
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
@@ -462,17 +465,24 @@ void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElementSrv  *rel)
 
         if ((ip_srv->getBool("fragm") || ip_srv->getBool("short_fragm")) )
             compiler->output << " frag ";
+
         if (ip_srv->hasIpOptions())
         {
-            if  (ip_srv->getBool("any_opt")) 
+            QStringList options;
+
+            if (ip_srv->getBool("any_opt"))
                 compiler->warning(rule, "ipfw can not match \"any IP option\" ");
             else
             {
-                if  (ip_srv->getBool("lsrr")) compiler->output << " ipoptions lsrr ";
-                if  (ip_srv->getBool("ssrr")) compiler->output << " ipoptions ssrr ";
-                if  (ip_srv->getBool("rr")) compiler->output << " ipoptions rr ";
-                if  (ip_srv->getBool("ts")) compiler->output << " ipoptions ts ";
+                char *option_names[] = {"lsrr", "ssrr", "rr", "ts", NULL};
+                for (char **cptr=option_names; *cptr; cptr++)
+                    if  (ip_srv->getBool(*cptr)) options.push_back(*cptr);
             }
+
+            if (!options.empty())
+                compiler->output << " ipoptions "
+                                 << options.join(",").toStdString()
+                                 << " ";
         }
     }
 }
@@ -622,7 +632,7 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
     }
 
     compiler->output << " || exit 1" << endl;
-    compiler->output << endl;
+    //compiler->output << endl;
 
     return true;
 }

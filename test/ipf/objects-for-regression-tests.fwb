@@ -695,7 +695,7 @@
         <TCPService id="id3C1A66EF" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="gopher" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="70" dst_range_end="70"/>
         <TCPService id="tcp-IRC" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="irc" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="6667" dst_range_end="6667"/>
         <TCPService id="id3B5009F7" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="squid" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="3128" dst_range_end="3128"/>
-        <TCPService id="id3B20468D" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="test-TCP" comment="port range" ro="False" src_range_start="0" src_range_end="0" dst_range_start="10000" dst_range_end="11000"/>
+        <TCPService id="id3B20468D" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="test-TCP" comment="port range" ro="False" src_range_start="0" src_range_end="0" dst_range_start="10000" dst_range_end="10040"/>
         <TCPService id="id3B58E3F1" ack_flag="True" ack_flag_mask="True" fin_flag="True" fin_flag_mask="True" psh_flag="False" psh_flag_mask="True" rst_flag="True" rst_flag_mask="True" syn_flag="True" syn_flag_mask="True" urg_flag="False" urg_flag_mask="True" name="xmas-tree" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
       </ServiceGroup>
       <ServiceGroup id="stdid08_1" name="UDP" comment="" ro="False">
@@ -711,7 +711,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="freebsd" inactive="False" lastCompiled="1249841462" lastInstalled="0" lastModified="1257363335" platform="ipf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="freebsd" inactive="False" lastCompiled="1249841462" lastInstalled="0" lastModified="1257708838" platform="ipf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2153,7 +2153,7 @@
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="freebsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1188008480" platform="ipf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="freebsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1257708838" platform="ipf" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
