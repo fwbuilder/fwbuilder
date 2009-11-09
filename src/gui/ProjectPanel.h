@@ -142,7 +142,6 @@ public:
     libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col );
 
     //wrapers for some ObjectManipulator functions
-    libfwbuilder::FWObject* getOpened();
     
     libfwbuilder::FWObject*  getCurrentLib();
 

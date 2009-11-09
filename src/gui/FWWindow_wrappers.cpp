@@ -279,7 +279,7 @@ void FWWindow::toggleViewEditor()
     if (m_mainWindow->actionEditor_panel->isChecked())
     {
         if (activeProject())
-            openEditor(activeProject()->m_panel->om->getOpened());
+            openEditor(activeProject()->m_panel->om->getSelectedObject());
         else
             m_mainWindow->editorDockWidget->show();
     } else

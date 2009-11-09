@@ -83,7 +83,7 @@ class ObjectManipulator : public QWidget
     std::stack<HistoryItem> history;
     int cacheHits;
 
-    libfwbuilder::FWObject *currentObj;
+    //libfwbuilder::FWObject *currentObj;
     ObjectTreeView *current_tree_view;
     
     int treeWidth;
@@ -318,8 +318,6 @@ public:
                                      libfwbuilder::FWObject *obj);
      void relocateTo(libfwbuilder::FWObject *target, libfwbuilder::FWObject *obj);
      
-     libfwbuilder::FWObject* getOpened() { return currentObj; }
-
      void updateLibColor(libfwbuilder::FWObject *lib);
      void updateLibName(libfwbuilder::FWObject *lib);
 

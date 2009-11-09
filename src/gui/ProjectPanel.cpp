@@ -458,10 +458,6 @@ void ProjectPanel::setFileName(const QString &fname)
 }
 
 //wrapers for some ObjectManipulator functions
-FWObject* ProjectPanel::getOpened()
-{
-    return m_panel->om->getOpened();
-}
 
 FWObject* ProjectPanel::getCurrentLib()
 {

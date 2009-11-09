@@ -145,7 +145,7 @@ ObjectManipulator::~ObjectManipulator()
 }
 
 ObjectManipulator::ObjectManipulator(QWidget *parent):
-    QWidget(parent), currentObj(0), current_tree_view(0)
+    QWidget(parent), current_tree_view(0)
 {
     m_objectManipulator = new Ui::ObjectManipulator_q;
     m_objectManipulator->setupUi(this);
@@ -155,7 +155,6 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
 
     treeWidth    = -1;
     treeHeight   = -1;
-    currentObj   = NULL;
     active       = false;
     current_tree_view=NULL;
     previous_lib_index = -1;
@@ -580,7 +579,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     
     if (oldName == QString::fromUtf8(obj->getName().c_str())) return;
     
-    if (obj!=currentObj) openObject(obj);
+    if (obj!=getSelectedObject()) openObject(obj);
     
     QTreeWidgetItem *itm = allItems[obj];
     assert(itm!=NULL);
@@ -605,7 +604,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
                                       const QString &oldLabel,
                                       bool  askForAutorename)
 {
-    if (obj!=currentObj) openObject(obj);
+    if (obj!=getSelectedObject()) openObject(obj);
 
     QTreeWidgetItem *itm = allItems[obj];
     assert(itm!=NULL);
@@ -1149,7 +1148,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (!getCurrentObjectTree()->isSelected(otvi->getFWObject()))
         openObject( otvi, true );
 
-    if (currentObj==NULL)  currentObj=otvi->getFWObject();
+    //if (currentObj==NULL)  currentObj=otvi->getFWObject();
+    FWObject *currentObj = getSelectedObject();
 
     popup_menu->clear();
 
@@ -1601,11 +1601,6 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 // but we dont care about number of libraries if this will become
 // 'undelete' operation
         if (!haveMoveTargets && ! inDeletedObjects) moveMenuItem = false;
-
-//        copyMenuItem= (copyMenuItem &&
-//                       ! FWBTree().isSystem(currentObj) &&
-//                       ! Library::isA(currentObj));
-//        delMenuItem= (delMenuItem && ! FWBTree().isSystem(currentObj));
 
         newMenuItem= (newMenuItem && ! obj->isReadOnly() );
         Interface *intf = Interface::cast(obj);
@@ -2760,7 +2755,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 
     if (fwbdebug) qDebug("Open object in editor");
     mw->openEditor(obj); // opens object in the editor
-    currentObj = obj;
+    //currentObj = obj;
     active = true;
     openObject(obj);  // position the tree so that obj is visible
 
@@ -2771,7 +2766,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 
 void ObjectManipulator::closeObject()
 {
-    currentObj = NULL;
+    //currentObj = NULL;
     if (mw->isEditorVisible()) mw->hideEditor();
 }
 
@@ -2799,8 +2794,8 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     if (fwbdebug) qDebug("ObjectManipulator::selectionChanged obj=%s",
                          obj->getName().c_str());
 
-    FWObject *o=obj;
-//    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    FWObject *o = obj;
+    //if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     if (history.empty() || otvi!=history.top().item() )
     {
@@ -2808,9 +2803,9 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
         history.push( HistoryItem(otvi, o->getId()) );
     }
 
-    currentObj = obj;
+    //currentObj = obj;
 
-    active=true;
+    active = true;
 
     update();
 
@@ -2819,7 +2814,7 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     // highlighted with a thin red border in the rules.
     QCoreApplication::postEvent(
         m_project, new updateObjectInRulesetEvent(m_project->getFileName(),
-                                                  currentObj->getId()));
+                                                  getSelectedObject()->getId()));
 
     if (fwbdebug) qDebug("ObjectManipulator::selectionChanged done");
 }
@@ -2894,7 +2889,7 @@ void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
 
 void ObjectManipulator::invalidateDialog()
 {
-    currentObj=NULL;
+    //currentObj = NULL;
 }
 
 void ObjectManipulator::libChangedById(int id)
@@ -2953,9 +2948,9 @@ void ObjectManipulator::libChanged(int ln)
         else
             assert(FALSE);
     }
-    currentObj = otvi->getFWObject();
+    //currentObj = otvi->getFWObject();
     showObjectInTree( otvi );
-    if (mw->isEditorVisible()) mw->openEditor(currentObj);
+    if (mw->isEditorVisible()) mw->openEditor(getSelectedObject());
     updateCreateObjectMenu( idxToLibs[ln] );
     return;
 }
@@ -3180,6 +3175,7 @@ void ObjectManipulator::newLibrary()
 
 void ObjectManipulator::newPolicyRuleSet ()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
     QString name = "Policy";
     Firewall * fw = Firewall::cast(currentObj);
@@ -3206,6 +3202,7 @@ void ObjectManipulator::newPolicyRuleSet ()
 
 void ObjectManipulator::newNATRuleSet ()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
     QString name = "NAT";
     Firewall * fw = Firewall::cast(currentObj);
@@ -3283,6 +3280,7 @@ void ObjectManipulator::newCluster()
 
 void ObjectManipulator::newClusterIface()
 {
+    FWObject *currentObj = getSelectedObject();
     if (currentObj->isReadOnly()) return;
 
     QString new_name = makeNameUnique(currentObj,
@@ -3304,6 +3302,7 @@ void ObjectManipulator::newClusterIface()
  */
 void ObjectManipulator::newStateSyncClusterGroup()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
 
     FWObject *o = NULL;
@@ -3342,6 +3341,7 @@ void ObjectManipulator::newStateSyncClusterGroup()
  */
 void ObjectManipulator::newFailoverClusterGroup()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
 
     FWObject *o = NULL;
@@ -3404,6 +3404,7 @@ QString ObjectManipulator::findNewestInterfaceName(FWObject *parent)
 
 void ObjectManipulator::newInterface()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
 
     Interface *new_interface = NULL;
@@ -3472,6 +3473,7 @@ void ObjectManipulator::newNetworkIPv6()
 
 void ObjectManipulator::newAddress()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
 
     FWObject *o = createObject(IPv4::TYPENAME, tr("Address"));
@@ -3504,6 +3506,7 @@ void ObjectManipulator::newAddress()
 
 void ObjectManipulator::newAddressIPv6()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
 
     FWObject *o;
@@ -3541,6 +3544,7 @@ void ObjectManipulator::newAddressTable()
 
 void ObjectManipulator::newInterfaceAddress()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
 
     if (Interface::isA(currentObj))
@@ -3562,6 +3566,7 @@ void ObjectManipulator::newInterfaceAddress()
 
 void ObjectManipulator::newInterfaceAddressIPv6()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
 
     if (Interface::isA(currentObj))
@@ -3604,6 +3609,7 @@ void ObjectManipulator::newUserService()
 
 void ObjectManipulator::newPhysicalAddress()
 {
+    FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return;
 
     if (Interface::isA(currentObj))
@@ -3739,6 +3745,7 @@ void ObjectManipulator::newInterval()
 
 bool ObjectManipulator::validateDialog()
 {
+    FWObject *currentObj = getSelectedObject();
     if (currentObj==NULL) return true;
     if (!mw->isEditorVisible()) return true;
     return mw->validateAndSaveEditor();
@@ -3749,6 +3756,7 @@ void ObjectManipulator::select()
 //    if (fwbdebug)
         qDebug("ObjectManipulator::select()");
 
+    FWObject *currentObj = getSelectedObject();
     if (currentObj==NULL) return;
 
     if (fwbdebug) qDebug("currentObj=%s", currentObj->getName().c_str());
@@ -3772,6 +3780,7 @@ void ObjectManipulator::select()
 
 void ObjectManipulator::unselect()
 {
+    FWObject *currentObj = getSelectedObject();
     if (currentObj==NULL) return;
 
     for (int i=0; i<m_objectManipulator->libs->count(); i++)
@@ -3929,14 +3938,18 @@ void ObjectManipulator::simulateInstall()
 
 FWObject* ObjectManipulator::getSelectedObject()
 {
-    return currentObj;
+    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+    if (so.size() > 0) return so.front();
+    return NULL;
+
+//    return currentObj;
 }
 
 void ObjectManipulator::findWhereUsedSlot()
 {
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
-    FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
+    FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
     mw->findWhereUsed(obj, m_project);
 

@@ -178,9 +178,12 @@ void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
         o = o->getParent();
     }
 
-    if (include_file_name) editor_title.push_front(top_pp->getFileName());
+    if (include_file_name) editor_title.push_front(
+        QString("[%1]").arg(top_pp->getFileName()));
+    else
+        editor_title.push_front(" "); // to force '/' in front of object path
 
-    *title_txt = QString("/ ") + editor_title.join(" / ");
+    *title_txt = editor_title.join(" / ");
 
     if (pm)
     {

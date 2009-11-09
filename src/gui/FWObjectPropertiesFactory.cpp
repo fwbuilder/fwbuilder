@@ -174,17 +174,36 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
             str << intf->getLabel().c_str();
 
             FWObject *parent = intf->getParentHost();
-            bool supports_security_levels =
-                (!parent->getStr("platform").empty() &&
-                 Resources::getTargetCapabilityBool(
-                     parent->getStr("platform"), "security_levels"));
+
+            bool supports_security_levels = false;
+            bool supports_network_zones   = false;
+            try
+            {
+                supports_security_levels =
+                    (!parent->getStr("platform").empty() &&
+                     Resources::getTargetCapabilityBool(
+                         parent->getStr("platform"), "security_levels"));
+                supports_network_zones =
+                    (!parent->getStr("platform").empty() &&
+                     Resources::getTargetCapabilityBool(
+                         parent->getStr("platform"), "network_zones"));
+            } catch (FWException &ex)  { }
 
             QStringList q;
             if (supports_security_levels)
             {
                 QString str;
                 str.setNum(intf->getSecurityLevel());
-                q.push_back("sec level " + str);
+                q.push_back(QString("sec level: %1").arg(str));
+            }
+            if (supports_network_zones)
+            {
+                int id = FWObjectDatabase::getIntId(intf->getStr("network_zone"));
+                if (id > 0)
+                {
+                    FWObject *nz_obj = obj->getRoot()->findInIndex(id);
+                    q.push_back(QString("network zone: %1").arg(nz_obj->getName().c_str()));
+                }
             }
             if (intf->isDyn())         q.push_back("dyn");
             if (intf->isUnnumbered())  q.push_back("unnum");
