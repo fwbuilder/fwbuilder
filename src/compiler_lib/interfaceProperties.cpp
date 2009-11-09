@@ -46,6 +46,86 @@
 using namespace std;
 using namespace libfwbuilder;
 
+
+void interfaceProperties::parseVlan(InterfaceData *intf)
+{
+    intf->interface_type = "8021q";
+    QString base_name;
+    parseVlan(intf->name.c_str(), &base_name, &(intf->vlan_id));
+}
+
+void interfaceProperties::parseVlan(const QString &name,
+                                    QString *base_name,
+                                    int *vlan_id)
+{
+    for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
+    {
+        if (vlan_name_patterns[idx].indexIn(name) != -1)
+        {
+            *base_name = vlan_name_patterns[idx].cap(1);
+            *vlan_id = vlan_name_patterns[idx].cap(2).toInt();
+        }
+    }
+}
+
+bool interfaceProperties::looksLikeVlanInterface(InterfaceData *intf)
+{
+    return looksLikeVlanInterface(intf->name.c_str());
+}
+
+bool interfaceProperties::looksLikeVlanInterface(const QString &int_name)
+{
+    for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
+    {
+        if (vlan_name_patterns[idx].indexIn(int_name) != -1) return true;
+    }
+    return false;
+}
+
+/*
+ * While looksLikeVlanInterface only checks interface name format,
+ * this method does more detailed check to determine if the interface
+ * is valid vlan. In particular, it checks that given interface is
+ * indeed a subinterface (parent is also interface) and its base name
+ * matches the name of the parent
+ */
+bool interfaceProperties::isValidVlanInterfaceName(const QString &subint_name,
+                                                   const QString &parent_name,
+                                                   QString &err)
+{
+    if (!looksLikeVlanInterface(subint_name))
+    {
+        err = QObject::tr("'%1' is not a valid vlan interface name").arg(subint_name);
+        return false;
+    }
+
+    for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
+    {
+        if (vlan_name_patterns[idx].indexIn(subint_name) != -1)
+        {
+            QString parent_name_from_regex = vlan_name_patterns[idx].cap(1);
+            if (!parent_name.isEmpty() &&
+                parent_name_from_regex != "vlan" &&
+                parent_name != parent_name_from_regex)
+            {
+                err = QObject::tr("'%1' looks like a name of a vlan interface "
+                                  "but it does not match the name of the parent "
+                                  "interface '%2'").arg(subint_name).arg(parent_name);
+                return false;
+            }
+            int vlan_id = vlan_name_patterns[idx].cap(2).toInt();
+            if (vlan_id > 4095)
+            {
+                err = QObject::tr("'%1' looks like a name of a vlan interface "
+                                  "but vlan ID it defines is outside of the valid range."
+                                  "").arg(subint_name);
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void interfaceProperties::getListOfAddresses(Interface *intf, QStringList &addr_list)
 {
     list<FWObject*> addresses = intf->getByType(IPv4::TYPENAME);

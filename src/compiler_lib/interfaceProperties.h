@@ -69,13 +69,13 @@ public:
         }
     }
 
-    virtual void parseVlan(libfwbuilder::InterfaceData*) {};
-    virtual void parseVlan(const QString&, QString*, int*) {};
+    virtual void parseVlan(libfwbuilder::InterfaceData*);
+    virtual void parseVlan(const QString&, QString*, int*);
     virtual bool isValidVlanInterfaceName(const QString &,
                                           const QString &,
-                                          QString&) { return false; }
-    virtual bool looksLikeVlanInterface(libfwbuilder::InterfaceData*) { return false; }
-    virtual bool looksLikeVlanInterface(const QString&) { return false; }
+                                          QString&);
+    virtual bool looksLikeVlanInterface(libfwbuilder::InterfaceData*);
+    virtual bool looksLikeVlanInterface(const QString&);
 
     virtual bool validateInterface(libfwbuilder::FWObject *parent,
                                    const QString &inetrface_name,

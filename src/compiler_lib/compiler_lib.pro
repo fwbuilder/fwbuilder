@@ -13,6 +13,8 @@ SOURCES	 =  CompilerDriver.cpp \
 			Configlet.cpp \
 			interfaceProperties.cpp \
 			linux24Interfaces.cpp \
+			iosInterfaces.cpp \
+			pixInterfaces.cpp \
 			interfacePropertiesObjectFactory.cpp
 
 HEADERS	 = ../../config.h \
@@ -20,6 +22,8 @@ HEADERS	 = ../../config.h \
 			Configlet.h \
 			interfaceProperties.h \
 			linux24Interfaces.h \
+			iosInterfaces.h \
+			pixInterfaces.h \
 			interfacePropertiesObjectFactory.h
 
 !macx:LIBS  += $$LIBS_FWCOMPILER

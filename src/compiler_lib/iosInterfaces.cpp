@@ -23,26 +23,10 @@
 
 */
 
-#ifndef LINUX24_INTERFACE_PROPERTIES_HH
-#define LINUX24_INTERFACE_PROPERTIES_HH
+#include "iosInterfaces.h"
 
-#include <map>
-#include <list>
+iosInterfaces::iosInterfaces()
+{
+    vlan_name_patterns.append(QRegExp("([a-zA-Z-]+\\d{1,}/\\d{1,})\\.(\\d{1,})"));
+}
 
-#include <QString>
-
-#include "interfaceProperties.h"
-#include "fwbuilder/InterfaceData.h"
-
-
-class linux24Interfaces : public interfaceProperties {
-
-public:
-    linux24Interfaces();
-
-    virtual void rearrangeInterfaces(
-        std::map<int,libfwbuilder::InterfaceData> &interfaces,
-        std::list<libfwbuilder::InterfaceData*> &interface_tree);
-};
-
-#endif

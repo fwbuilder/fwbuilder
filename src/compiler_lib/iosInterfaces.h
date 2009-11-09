@@ -23,8 +23,8 @@
 
 */
 
-#ifndef LINUX24_INTERFACE_PROPERTIES_HH
-#define LINUX24_INTERFACE_PROPERTIES_HH
+#ifndef IOS_INTERFACE_PROPERTIES_HH
+#define IOS_INTERFACE_PROPERTIES_HH
 
 #include <map>
 #include <list>
@@ -35,14 +35,10 @@
 #include "fwbuilder/InterfaceData.h"
 
 
-class linux24Interfaces : public interfaceProperties {
+class iosInterfaces : public interfaceProperties {
 
 public:
-    linux24Interfaces();
-
-    virtual void rearrangeInterfaces(
-        std::map<int,libfwbuilder::InterfaceData> &interfaces,
-        std::list<libfwbuilder::InterfaceData*> &interface_tree);
+    iosInterfaces();
 };
 
 #endif

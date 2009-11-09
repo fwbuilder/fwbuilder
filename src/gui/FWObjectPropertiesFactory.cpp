@@ -173,13 +173,25 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
             if (!obj->isReadOnly()) intf->getOptionsObject();
             str << intf->getLabel().c_str();
 
-            QString q;
-            if (intf->isDyn())         q =" dyn";
-            if (intf->isUnnumbered())  q =" unnum";
-            if (intf->isBridgePort())  q =" bridge port";
-            if (intf->isSlave())       q =" slave";
-            if (intf->isUnprotected()) q = q + " unp";
-            if (q!="") str << " (" + q + ")";
+            FWObject *parent = intf->getParentHost();
+            bool supports_security_levels =
+                (!parent->getStr("platform").empty() &&
+                 Resources::getTargetCapabilityBool(
+                     parent->getStr("platform"), "security_levels"));
+
+            QStringList q;
+            if (supports_security_levels)
+            {
+                QString str;
+                str.setNum(intf->getSecurityLevel());
+                q.push_back("sec level " + str);
+            }
+            if (intf->isDyn())         q.push_back("dyn");
+            if (intf->isUnnumbered())  q.push_back("unnum");
+            if (intf->isBridgePort())  q.push_back("bridge port");
+            if (intf->isSlave())       q.push_back("slave");
+            if (intf->isUnprotected()) q.push_back("unp");
+            if (!q.empty()) str << q.join(",");
 
         } else if (IPService::isA(obj))
         {

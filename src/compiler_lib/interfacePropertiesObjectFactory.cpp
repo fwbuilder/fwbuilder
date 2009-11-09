@@ -26,6 +26,8 @@
 #include "interfacePropertiesObjectFactory.h"
 #include "interfaceProperties.h"
 #include "linux24Interfaces.h"
+#include "iosInterfaces.h"
+#include "pixInterfaces.h"
 
 #include <iostream>
 
@@ -36,6 +38,8 @@ interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObj
     const std::string &os_family)
 {
     if (os_family == "linux24") return new linux24Interfaces();
+    if (os_family == "ios") return new iosInterfaces();
+    if (os_family == "pix_os" || os_family == "ios") return new pixInterfaces();
     // by default return object of the base class. It performs some
     // reasonable default actions.
     return new interfaceProperties();

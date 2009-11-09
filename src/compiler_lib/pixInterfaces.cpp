@@ -23,26 +23,21 @@
 
 */
 
-#ifndef LINUX24_INTERFACE_PROPERTIES_HH
-#define LINUX24_INTERFACE_PROPERTIES_HH
+#include "pixInterfaces.h"
 
-#include <map>
-#include <list>
+/*
+ * http://www.cisco.com/en/US/docs/security/asa/asa70/command/reference/gl.html#wp1644971
+ *
+ * hostname(config)# interface gigabitethernet0/1.1
+ * hostname(config-subif)# vlan 101
+ * hostname(config-subif)# nameif dmz1
+ * hostname(config-subif)# security-level 50
+ * hostname(config-subif)# ip address 10.1.2.1 255.255.255.0
+ * hostname(config-subif)# no shutdown
+ * 
+ */
+pixInterfaces::pixInterfaces()
+{
+    vlan_name_patterns.append(QRegExp("([a-zA-Z-]+\\d{1,}/\\d{1,})\\.(\\d{1,})"));
+}
 
-#include <QString>
-
-#include "interfaceProperties.h"
-#include "fwbuilder/InterfaceData.h"
-
-
-class linux24Interfaces : public interfaceProperties {
-
-public:
-    linux24Interfaces();
-
-    virtual void rearrangeInterfaces(
-        std::map<int,libfwbuilder::InterfaceData> &interfaces,
-        std::list<libfwbuilder::InterfaceData*> &interface_tree);
-};
-
-#endif
