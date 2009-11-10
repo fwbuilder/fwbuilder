@@ -3938,6 +3938,14 @@ void ObjectManipulator::simulateInstall()
 
 FWObject* ObjectManipulator::getSelectedObject()
 {
+    QTreeWidgetItem *cur = getCurrentObjectTree()->currentItem();
+    if (cur)
+    {
+        ObjectTreeViewItem* otvi = dynamic_cast<ObjectTreeViewItem*>(cur);
+        return otvi->getFWObject();
+    }
+    return NULL;
+
     vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
     if (so.size() > 0) return so.front();
     return NULL;

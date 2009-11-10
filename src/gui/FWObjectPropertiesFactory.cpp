@@ -171,7 +171,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
             // trigger late initialization of options object
             // if its read-only or part of the read-only tree, I can't help it.
             if (!obj->isReadOnly()) intf->getOptionsObject();
-            str << intf->getLabel().c_str();
+            str << intf->getLabel().c_str() << " ";
 
             FWObject *parent = intf->getParentHost();
 

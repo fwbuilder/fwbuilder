@@ -6,6 +6,8 @@
       <compiler>fwb_pix</compiler>
       <family>pix_os</family>
       <dialog>pix_os</dialog>
+      <interface_dialog>linux24</interface_dialog>
+      <cluster_dialog>basic</cluster_dialog>
 
       <options>
         <user_can_change_install_dir>false</user_can_change_install_dir>
@@ -70,7 +72,24 @@
 
       <capabilities>
         <supports_routing>False</supports_routing>
+        <supports_subinterfaces>True</supports_subinterfaces>
+        <supports_cluster>True</supports_cluster>
       </capabilities>
+
+      <protocols>
+        <failover>
+          <string>vrrp,VRRP</string>
+        </failover>
+        <state_sync>
+          <string>pix,pix</string>
+        </state_sync>
+
+        <vrrp>
+          <needs_master>True</needs_master>
+          <no_ip_ok>False</no_ip_ok>
+          <manage_addresses>True</manage_addresses>
+        </vrrp>
+      </protocols>
 
       <interfaces>
         <cluster>
