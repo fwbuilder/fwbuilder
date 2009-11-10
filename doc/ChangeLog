@@ -1,3 +1,8 @@
+2009-11-09  vadim  <vadim@vk.crocodile.org>
+
+	* fwbuilder.dtd.in (TODO): Added attribute "dedicated_failover"
+	to the element Interface and corresponding class.
+
 2009-11-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* fwbuilder.dtd.in: Added attribute any_opt to IPService

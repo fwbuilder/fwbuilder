@@ -148,6 +148,9 @@ public:
         void setUnprotected(bool value);
         bool isUnprotected() const ;
 
+        void setDedicatedFailover(bool value);
+        bool isDedicatedFailover() const;
+        
         void setManagement(bool value);
         bool isManagement() const;
 

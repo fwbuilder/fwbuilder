@@ -345,6 +345,7 @@ Interface can have the following attributes:
    - security_level
    - network_zone   ID of the object representing network zone
    - unprotected    Skip this interface while assigning access lists or policy rules
+   - dedicated_failover Specialized version of "unprotected"
    - label          human-readable label of this interface
 
 -->
@@ -358,6 +359,7 @@ Interface can have the following attributes:
  security_level %NUMBER;    #REQUIRED
  network_zone   IDREF       #IMPLIED
  unprotected    %BOOLEAN;   #IMPLIED
+ dedicated_failover %BOOLEAN; #IMPLIED
  label          %STRING;    #IMPLIED
 >
 

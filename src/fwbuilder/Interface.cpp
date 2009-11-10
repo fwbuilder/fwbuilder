@@ -54,9 +54,10 @@ Interface::Interface(const Interface &i):Address()
 Interface::Interface():Address()
 {
     setName("unknown");
-    setBool("dyn",false);
-    setBool("unnum",false);
-    setBool("unprotected",false);
+    setBool("dyn", false);
+    setBool("unnum", false);
+    setBool("unprotected", false);
+    setBool("dedicated_failover", false);
     setInt("security_level",0);
 
     bcast_bits       = 1    ;
@@ -68,9 +69,10 @@ Interface::Interface(const FWObjectDatabase *root,bool prepopulate) :
     Address(root,prepopulate)
 {
     setName("unknown");
-    setBool("dyn",false);
-    setBool("unnum",false);
-    setBool("unprotected",false);
+    setBool("dyn", false);
+    setBool("unnum", false);
+    setBool("unprotected", false);
+    setBool("dedicated_failover", false);
     setInt("security_level",0);
 
     bcast_bits       = 1    ;
@@ -142,6 +144,13 @@ void Interface::fromXML(xmlNodePtr root) throw(FWException)
     if (n!=NULL)
     {
         setStr("unprotected",n);
+        FREEXMLBUFF(n);
+    }
+
+    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dedicated_failover")));
+    if (n!=NULL)
+    {
+        setStr("dedicated_failover",n);
         FREEXMLBUFF(n);
     }
 
@@ -280,6 +289,9 @@ bool Interface::isUnnumbered() const { return getBool("unnum"); }
 
 void Interface::setUnprotected(bool value) { setBool("unprotected",value); }
 bool Interface::isUnprotected() const { return getBool("unprotected"); }
+
+void Interface::setDedicatedFailover(bool value) { setBool("dedicated_failover",value); }
+bool Interface::isDedicatedFailover() const { return getBool("dedicated_failover"); }
 
 void Interface::setManagement(bool value) { setBool("mgmt",value); }
 bool Interface::isManagement() const { return (getBool("mgmt")); }
