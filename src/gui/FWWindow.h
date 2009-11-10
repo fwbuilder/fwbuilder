@@ -233,8 +233,6 @@ public slots:
 
     void tableResolutionSettingChanged(int );
 
-    virtual void rollBackSelectionSameWidget();
-    virtual void rollBackSelectionDifferentWidget();
     void activateRule(ProjectPanel*, QString, QString, int);
     
  public:
@@ -369,9 +367,6 @@ public slots:
                                 libfwbuilder::FWObject *o,
                                 ObjectEditor::OptType   otype,
                                 bool validate = true);
-    void releaseEditor();
-    void connectEditor(QWidget *w);
-
     void singleRuleCompile(libfwbuilder::Rule *rule);
 
     void buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
@@ -390,10 +385,6 @@ public slots:
  protected slots:
     void activatePreviousSubWindow();
  
- signals:
-    void restoreSelection_sign(bool same_widget);
-
-
 };
 
 #endif

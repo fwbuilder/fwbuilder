@@ -451,20 +451,6 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
         resetSelection();
     }
 
-#if 0
-    /*
-     * need to reset selection if:
-     *
-     * object editor is opened, and
-     * we are dragging one object, and
-     * object opened in editor is not the same as the one we are dragging
-     */
-    if (mw->isEditorVisible() && dragobj.size()==1 && mw->getOpenedEditor()!=obj)
-    {
-        setSelected(otvi,false);
-        resetSelection();
-    }
-#endif
     if (fwbdebug) qDebug("ObjectTreeView::dragObject()  returns !NULL");
 
     drag->start(supportedActions);
@@ -638,6 +624,9 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
     if (expandOrCollapse) return;  // user expanded or collapsed subtree,
                                    // no need to change object in the editor
 
+// Experiment: single click on the object in the tree should not open
+// it in the editor
+#if 0
     if (selectedObjects.size()==1)
         emit switchObjectInEditor_sign( getCurrentObject() );
     else
@@ -650,6 +639,7 @@ void ObjectTreeView::mouseReleaseEvent( QMouseEvent *e )
         else
             mw->blankEditor();
     }
+#endif
 }
 
 /*

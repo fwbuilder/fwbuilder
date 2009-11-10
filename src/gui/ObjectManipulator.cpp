@@ -2696,23 +2696,13 @@ void ObjectManipulator::groupObjects()
     }
 }
 
-void ObjectManipulator::restoreSelection(bool same_widget)
-{
-    if (fwbdebug)
-        qDebug("ObjectManipulator::restoreSelection  same_widget=%d",
-               same_widget);
-
-//    select();
-    openObject( mw->getOpenedEditor(), false);
-}
-
 void ObjectManipulator::editSelectedObject()
 {
     if (fwbdebug) qDebug("ObjectManipulator::editSelectedObject");
 
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
-    FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
+    FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
 //    obj->dump(false,false);
     if (RuleSet::cast(obj)!=NULL)
@@ -2735,8 +2725,7 @@ bool ObjectManipulator::editObject(FWObject *obj)
 
 bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 {
-    if (fwbdebug)
-        qDebug("ObjectManipulator::switchObjectInEditor");
+    if (fwbdebug) qDebug("ObjectManipulator::switchObjectInEditor");
 
     if (obj && fwbdebug)
     {
@@ -2935,6 +2924,8 @@ void ObjectManipulator::changeFirstNotSystemLib()
 
 void ObjectManipulator::libChanged(int ln)
 {
+// Experiment: switching libraries is now allowed while editor has unsaved changes
+#if 0
     if (previous_lib_index != -1 &&
         mw->isEditorVisible() && !mw->validateAndSaveEditor())
     {
@@ -2942,6 +2933,7 @@ void ObjectManipulator::libChanged(int ln)
         m_objectManipulator->libs->setCurrentIndex(previous_lib_index);
         return;
     }
+#endif
 
     previous_lib_index = ln;
 
@@ -2959,7 +2951,10 @@ void ObjectManipulator::libChanged(int ln)
     }
     //currentObj = otvi->getFWObject();
     showObjectInTree( otvi );
-    if (mw->isEditorVisible()) mw->openEditor(getSelectedObject());
+
+// Experiment: switching libraries does not open new lib in the editor
+//    if (mw->isEditorVisible()) mw->openEditor(getSelectedObject());
+
     updateCreateObjectMenu( idxToLibs[ln] );
     return;
 }

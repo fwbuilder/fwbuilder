@@ -148,7 +148,6 @@ public slots:
     void setRuleColor(const QString &c);
 
     void itemDoubleClicked(const QModelIndex& index);
-    void restoreSelection(bool sameWidget);
     void editSelected();
 
     void changeDirectionToIn();

@@ -284,29 +284,6 @@ void FWWindow::findWhereUsed(FWObject * obj, ProjectPanel *pp)
     m_mainWindow->editorDockWidget->show();
 }
 
-void FWWindow::rollBackSelectionSameWidget()
-{
-    editorOwner->setFocus();
-    emit restoreSelection_sign(true);
-}
-
-void FWWindow::rollBackSelectionDifferentWidget()
-{
-    editorOwner->setFocus();
-    emit restoreSelection_sign(false);
-}
-
-void FWWindow::releaseEditor()
-{
-    disconnect( SIGNAL(restoreSelection_sign(bool)) );
-}
-
-void FWWindow::connectEditor(QWidget *w)
-{
-    connect(this, SIGNAL(restoreSelection_sign(bool)),
-            w, SLOT(restoreSelection(bool)));
-}
-
 bool FWWindow::requestEditorOwnership(QWidget *w,
                                       FWObject *obj,
                                       ObjectEditor::OptType otype,
@@ -314,36 +291,13 @@ bool FWWindow::requestEditorOwnership(QWidget *w,
 {
     if (!isEditorVisible()) return false;
 
-    if(obj == getOpenedEditor() &&
-       otype == getOpenedOptEditor() &&
-       w == editorOwner )
-    {
-        releaseEditor();
-        editorOwner = w;
-        connectEditor(editorOwner);
-        return true;
-    }
+// Experiment: single click in the tree does not switch object in the
+// editor This means we never need to roll back selection in the tree
+// or rule set if editor has unsaved changes and user clicks another
+// object (this was the case before). The purpose of this method now
+// is just to call validateAndSaveEditor()
 
-    if (validate && !validateAndSaveEditor())
-    {
-        /*
-         * roll back selection in the widget that currently
-         * owns the editor. Signal restoreSelection_sign
-         * is still connected to the previous owner
-         */
-//        if (w == editorOwner )
-//            QTimer::singleShot(0, this, SLOT(rollBackSelectionSameWidget()));
-//        else
-//            QTimer::singleShot(0,this,SLOT(rollBackSelectionDifferentWidget()));
-        return false;
-    }
-
-    if (w)
-    {
-        releaseEditor();
-        editorOwner = w;
-        connectEditor(editorOwner);
-    }
+    if (validate && !validateAndSaveEditor()) return false;
     return true;
 }
 

@@ -247,7 +247,6 @@ public slots:
      
      void openObject(QTreeWidgetItem *otvi);
      void openObject(libfwbuilder::FWObject *obj);
-     void restoreSelection(bool same_widget);
 
      void find();
      void findObject();

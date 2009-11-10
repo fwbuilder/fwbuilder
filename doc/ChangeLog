@@ -1,3 +1,17 @@
+2009-11-10  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::libChanged):
+	Experimental change in the GUI, new feature: Now the program does
+	not switch object in the editor on a single click in the tree.
+	User should double click object in the tree or use context menu
+	item "Edit" to open object in the editor. User can select
+	different object in the tree or switch to another library while
+	editor has unsaved changes. This helps, for example, when they
+	need to populate large object group and need to switch between
+	libraries to find objects. Switching to another library or
+	accidentally clicking on a wrong object in the tree does not cause
+	editor to switch.
+
 2009-11-09  vadim  <vadim@vk.crocodile.org>
 
 	* CompilerDriver_pix_run.cpp (CompilerDriver_pix::run): Added
