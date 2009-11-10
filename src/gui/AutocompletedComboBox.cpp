@@ -46,7 +46,7 @@ void AutocompletedComboBox::filterUpdate(QString text)
 
 void AutocompletedComboBox::addWord()
 {
-    if (this->currentText().length() < 4) return;
+    if (this->currentText().length() < 2) return;
     if (words.contains(this->currentText())) return;
     QString text = this->currentText();
     words << text;
