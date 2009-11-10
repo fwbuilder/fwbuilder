@@ -2,6 +2,7 @@
 #define ADDRESSEDITOR_H
 
 #include <QtGui/QWidget>
+#include <QButtonGroup>
 
 namespace Ui {
     class AddressEditor;
@@ -9,12 +10,20 @@ namespace Ui {
 
 #include "fwbuilder/Address.h"
 
+struct AddressInfo
+{
+    bool ipv4;
+    QString address;
+    QString netmask;
+};
+
 class AddressEditor : public QWidget {
     Q_OBJECT
 public:
-    AddressEditor(QWidget *parent, libfwbuilder::Address *address);
+    AddressEditor(libfwbuilder::Address *address, QWidget *parent);
+    AddressEditor(QWidget *parent);
     ~AddressEditor();
-    QPair<QString, QString> getEditedData();
+    AddressInfo getEditedData();
     libfwbuilder::Address* getAddress();
 
 protected:

@@ -33,6 +33,8 @@
 #include "fwbuilder/InterfaceData.h"
 #include "fakeWizard.h"
 
+#include "AddressEditor.h"
+
 #include <map>
 
 namespace libfwbuilder {
@@ -53,7 +55,7 @@ struct EditedInterfaceData
     QString name;
     QString label;
     QString comment;
-    QMap<libfwbuilder::Address*, QPair<QString, QString> > addresses;
+    QMap<libfwbuilder::Address*, AddressInfo > addresses;
 };
 
 class newFirewallDialog : public QDialog, public FakeWizard
@@ -109,6 +111,8 @@ public slots:
     void browseTemplate();
     void useStandartTemplate();
     void showHideTemplatePanel();
+    void addNewInterface();
+
  protected slots:
     
     void finishClicked();

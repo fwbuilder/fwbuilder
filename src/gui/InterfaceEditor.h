@@ -22,6 +22,7 @@ class InterfaceEditor : public QWidget {
     Q_OBJECT
 public:
     InterfaceEditor(QWidget *parent, libfwbuilder::Interface *interface);
+    InterfaceEditor(QWidget *parent, libfwbuilder::FWObjectDatabase* db);
     ~InterfaceEditor();
     libfwbuilder::Interface* getInterface();
     EditedInterfaceData getInterfaceData();
@@ -30,11 +31,14 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
+    QTabWidget *tabw;
+    void setupUI();
     libfwbuilder::Interface *interface;
     Ui::InterfaceEditor *m_ui;
 
 public slots:
     void nameEdited(QString);
+    void addNewAddress();
 };
 
 #endif // INTERFACEEDITOR_H

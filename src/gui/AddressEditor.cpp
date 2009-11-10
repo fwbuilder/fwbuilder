@@ -1,14 +1,27 @@
 #include "AddressEditor.h"
 #include "ui_AddressEditor.h"
+#include "fwbuilder/IPv4.h"
 
-AddressEditor::AddressEditor(QWidget *parent, libfwbuilder::Address *address) :
+#include <QDebug>
+
+AddressEditor::AddressEditor(libfwbuilder::Address *address, QWidget *parent) :
     QWidget(parent),
     m_ui(new Ui::AddressEditor)
 {
     this->address = address;
+//    this->m_ui->ipv4->setChecked(libfwbuilder::IPv4::isA(address));
     m_ui->setupUi(this);
     this->m_ui->address->setText(address->getAddressPtr()->toString().c_str());
     this->m_ui->netmask->setText(address->getNetmaskPtr()->toString().c_str());
+}
+
+AddressEditor::AddressEditor(QWidget *parent) :
+    QWidget(parent),
+    m_ui(new Ui::AddressEditor)
+{
+    qDebug() << "123";
+    this->address = NULL;
+    m_ui->setupUi(this);
 }
 
 AddressEditor::~AddressEditor()
@@ -28,9 +41,13 @@ void AddressEditor::changeEvent(QEvent *e)
     }
 }
 
-QPair<QString, QString> AddressEditor::getEditedData()
+AddressInfo AddressEditor::getEditedData()
 {
-    return qMakePair(this->m_ui->address->text(), this->m_ui->netmask->text());
+    AddressInfo info;
+    info.address = this->m_ui->address->text();
+    info.netmask = this->m_ui->netmask->text();
+    info.ipv4 = this->m_ui->ipv4->isChecked();
+    return info;
 }
 
 libfwbuilder::Address* AddressEditor::getAddress()

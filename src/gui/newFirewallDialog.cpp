@@ -49,6 +49,7 @@
 #include <qtextedit.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
+#include <qtoolbutton.h>
 #include <qradiobutton.h>
 #include <qcheckbox.h>
 #include <qtreewidget.h>
@@ -146,6 +147,13 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
     m_dialog->obj_name->setFocus();
 
     showPage(0);
+
+    QToolButton *b = new QToolButton();
+    connect(b, SIGNAL(clicked()), this, SLOT(addNewInterface()));
+    b->setIcon(QIcon(":/Icons/Interface/icon"));
+    b->setToolTip(tr("Add new interface"));
+    m_dialog->interfaces->setCornerWidget(b, Qt::TopRightCorner);
+    m_dialog->interfaces->cornerWidget(Qt::TopRightCorner)->show();
 }
 
 void newFirewallDialog::browseTemplate()
@@ -525,6 +533,12 @@ void newFirewallDialog::showPage(const int page)
             m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, intr), intr->getName().c_str());
     }
     }
+}
+
+void newFirewallDialog::addNewInterface()
+{
+    FWObjectDatabase *root = Interface::cast(*(currentTemplate->findByType(Interface::TYPENAME)))->getRoot();
+    m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, root), tr("New interface"));
 }
 
 QMap<Interface*, EditedInterfaceData> newFirewallDialog::getEditedTemplateInterfaces()
