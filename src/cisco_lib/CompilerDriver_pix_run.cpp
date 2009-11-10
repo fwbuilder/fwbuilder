@@ -162,57 +162,58 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
 {
     Cluster *cluster = NULL;
     if (!cluster_id.empty())
-        cluster = Cluster::cast(
-            objdb->findInIndex(objdb->getIntId(cluster_id)));
+        cluster = Cluster::cast(objdb->findInIndex(objdb->getIntId(cluster_id)));
 
-    Firewall *fw = Firewall::cast(
-        objdb->findInIndex(objdb->getIntId(firewall_id)));
+    Firewall *fw = Firewall::cast(objdb->findInIndex(objdb->getIntId(firewall_id)));
     assert(fw);
 
     // Copy rules from the cluster object
     populateClusterElements(cluster, fw);
 
-    // PIX failover is dfferent from VRRP and other failover protocols
-    // in that it does not create new virtual address. Instead, each
-    // unit is configured with two ip addresses, one for the active
-    // unit and another for standby one. When active unit fails, the
-    // other one assumes its address.
-    //
-    // This matters because when we use cluster object or one of its
-    // interfaces in rules, compiler should expand it to the set of
-    // addresses that includes addresses of the corresponding
-    // interface of both member firewalls. Method
-    // CompilerDriver::copyFailoverInterface adds a copy of firewall
-    // interface to the cluster object. This works for all firewalls,
-    // but for PIX we need to add copies of interfaces from both
-    // members.
-    // 
-    FWObjectTypedChildIterator cl_iface = cluster->findByType(Interface::TYPENAME);
-    for (; cl_iface != cl_iface.end(); ++cl_iface)
+    if (cluster)
     {
-        FailoverClusterGroup *failover_group =
-            FailoverClusterGroup::cast(
-                (*cl_iface)->getFirstByType(FailoverClusterGroup::TYPENAME));
-        if (failover_group)
+        // PIX failover is dfferent from VRRP and other failover protocols
+        // in that it does not create new virtual address. Instead, each
+        // unit is configured with two ip addresses, one for the active
+        // unit and another for standby one. When active unit fails, the
+        // other one assumes its address.
+        //
+        // This matters because when we use cluster object or one of its
+        // interfaces in rules, compiler should expand it to the set of
+        // addresses that includes addresses of the corresponding
+        // interface of both member firewalls. Method
+        // CompilerDriver::copyFailoverInterface adds a copy of firewall
+        // interface to the cluster object. This works for all firewalls,
+        // but for PIX we need to add copies of interfaces from both
+        // members.
+        // 
+        FWObjectTypedChildIterator cl_iface = cluster->findByType(Interface::TYPENAME);
+        for (; cl_iface != cl_iface.end(); ++cl_iface)
         {
-            FWObject *this_member_interface = NULL;
-            list<FWObject*> other_member_interfaces;
-            for (FWObjectTypedChildIterator it =
-                     failover_group->findByType(FWObjectReference::TYPENAME);
-                 it != it.end(); ++it)
+            FailoverClusterGroup *failover_group =
+                FailoverClusterGroup::cast(
+                    (*cl_iface)->getFirstByType(FailoverClusterGroup::TYPENAME));
+            if (failover_group)
             {
-                FWObject *intf = FWObjectReference::getObject(*it);
-                assert(intf);
-                if (intf->isChildOf(fw)) this_member_interface = intf;
-                else other_member_interfaces.push_back(intf);
-            }
-
-            if (!other_member_interfaces.empty())
-            {
-                for (list<FWObject*>::iterator it=other_member_interfaces.begin();
-                     it!=other_member_interfaces.end(); ++it)
+                FWObject *this_member_interface = NULL;
+                list<FWObject*> other_member_interfaces;
+                for (FWObjectTypedChildIterator it =
+                         failover_group->findByType(FWObjectReference::TYPENAME);
+                     it != it.end(); ++it)
                 {
-                    cluster->addCopyOf(*it, true);
+                    FWObject *intf = FWObjectReference::getObject(*it);
+                    assert(intf);
+                    if (intf->isChildOf(fw)) this_member_interface = intf;
+                    else other_member_interfaces.push_back(intf);
+                }
+
+                if (!other_member_interfaces.empty())
+                {
+                    for (list<FWObject*>::iterator it=other_member_interfaces.begin();
+                         it!=other_member_interfaces.end(); ++it)
+                    {
+                        cluster->addCopyOf(*it, true);
+                    }
                 }
             }
         }

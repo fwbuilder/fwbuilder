@@ -44,6 +44,7 @@
           <pix_route_dnat_supported>true</pix_route_dnat_supported>
           <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
+
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
             <clear_og>clear object-group</clear_og>
@@ -56,15 +57,6 @@
             <clear_static>clear static</clear_static>
             <clear_global>clear global</clear_global>
             <clear_nat>clear nat</clear_nat>
-            <ip_addr_static>
-ip address %il %a %n
-            </ip_addr_static>
-            <ip_addr_dyn>
-ip address %il dhcp setroute retry 10
-            </ip_addr_dyn>
-            <nameif>
-nameif %in %il security%sl
-            </nameif>
           </pix_commands>
 
           <timeouts>
@@ -132,6 +124,7 @@ nameif %in %il security%sl
           <pix_route_dnat_supported>true</pix_route_dnat_supported>
           <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
+
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
             <clear_og>clear object-group</clear_og>
@@ -144,15 +137,6 @@ nameif %in %il security%sl
             <clear_static>clear static</clear_static>
             <clear_global>clear global</clear_global>
             <clear_nat>clear nat</clear_nat>
-            <ip_addr_static>
-ip address %il %a %n
-            </ip_addr_static>
-            <ip_addr_dyn>
-ip address %il dhcp setroute retry 10
-            </ip_addr_dyn>
-            <nameif>
-nameif %in %il security%sl
-            </nameif>
           </pix_commands>
     
           <timeouts>
@@ -220,6 +204,7 @@ nameif %in %il security%sl
           <pix_route_dnat_supported>false</pix_route_dnat_supported>
           <pix_outbound_acl_supported>false</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>false</pix_timeout_rpc_is_sunrpc>
+
           <pix_commands>
             <clear_acl>clear access-list</clear_acl>
             <clear_og>clear object-group</clear_og>
@@ -232,15 +217,6 @@ nameif %in %il security%sl
             <clear_static>clear static</clear_static>
             <clear_global>clear global</clear_global>
             <clear_nat>clear nat</clear_nat>
-            <ip_addr_static>
-ip address %il %a %n
-            </ip_addr_static>
-            <ip_addr_dyn>
-ip address %il dhcp setroute retry 10
-            </ip_addr_dyn>
-            <nameif>
-nameif %in %il security%sl
-            </nameif>
           </pix_commands>
     
           <timeouts>
@@ -308,6 +284,7 @@ nameif %in %il security%sl
           <pix_route_dnat_supported>false</pix_route_dnat_supported>
           <pix_outbound_acl_supported>true</pix_outbound_acl_supported>
           <pix_timeout_rpc_is_sunrpc>true</pix_timeout_rpc_is_sunrpc>
+
           <pix_commands>
             <clear_acl>clear config access-list</clear_acl>
             <clear_og>clear config object-group</clear_og>
@@ -320,22 +297,6 @@ nameif %in %il security%sl
             <clear_static>clear config static</clear_static>
             <clear_global>clear config global</clear_global>
             <clear_nat>clear config nat</clear_nat>
-            <ip_addr_static>
-interface %in
-  ip address %a %n
-exit
-            </ip_addr_static>
-            <ip_addr_dyn>
-interface %in
-  ip address dhcp setroute
-exit
-            </ip_addr_dyn>
-            <nameif>
-interface %in
-  nameif %il
-  security-level %sl
-exit
-            </nameif>
           </pix_commands>
     
           <timeouts>

@@ -9,7 +9,7 @@ while (<>) {
     $str=~ /<Firewall [^>]+name="([^"]*).*$"/;
     $fw=$1;
     printf "echo ====================== $fw =========================================\n";
-    printf "fwb_pix -v  -f $XMLFILE $fw \n";
+    printf "fwb_pix -v -xt  -f $XMLFILE $fw \n";
     $str=~ s/^.*<Firewall [^>]+name="$fw"[^>]+>//;
   }
 }

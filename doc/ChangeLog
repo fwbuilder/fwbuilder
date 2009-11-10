@@ -1,5 +1,10 @@
 2009-11-10  vadim  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_pix_os.cpp (OSConfigurator_pix_os::_printInterfaceConfiguration):
+	Using configlet to generate interface configuration commands for
+	PIX. Now user can change generated script if necessary without
+	making changes in the fwbuilder code.
+
 	* ObjectManipulator.cpp (ObjectManipulator::libChanged):
 	Experimental change in the GUI, new feature: Now the program does
 	not switch object in the editor on a single click in the tree.

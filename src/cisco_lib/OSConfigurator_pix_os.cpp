@@ -34,6 +34,9 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
 
+#include "Configlet.h"
+
+
 #include <list>
 #include <algorithm>
 #include <functional>
@@ -72,10 +75,14 @@ void OSConfigurator_pix_os::processFirewallOptions()
         output << endl;
     }
 
-    output << _printNameif();
+    //output << _printNameif();
+    //output << endl;
+    //output << _printIPAddress();
+    //output << endl;
+
+    output << _printInterfaceConfiguration();
     output << endl;
-    output << _printIPAddress();
-    output << endl;
+
     output << _printLogging();
     output << endl;
     output << _printTimeouts();
@@ -90,12 +97,15 @@ void OSConfigurator_pix_os::processFirewallOptions()
     output << endl;
 }
 
-string OSConfigurator_pix_os::_printNameif()
+string OSConfigurator_pix_os::_printInterfaceConfiguration()
 {
     ostringstream res;
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
     string::size_type n;
+
+    bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
+    bool configure_addresses = fw->getOptionsObject()->getBool("pix_ip_address");
 
     list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
@@ -103,73 +113,35 @@ string OSConfigurator_pix_os::_printNameif()
 	Interface *iface=dynamic_cast<Interface*>(*i);
 	assert(iface);
 
-        string nameifCmd = Resources::platform_res[platform]->getResourceStr(
-            string("/FWBuilderResources/Target/options/version_")+
-            version+"/pix_commands/nameif");
-        
-        if ((n = nameifCmd.find("%il"))!=string::npos)
-            nameifCmd.replace(n,3,iface->getLabel());
-        if ((n = nameifCmd.find("%in"))!=string::npos)
-            nameifCmd.replace(n,3,iface->getName());
-        if ((n = nameifCmd.find("%sl"))!=string::npos)
+        Configlet interface_config(fw, "pix_os", "configure_interfaces");
+        interface_config.removeComments();
+        interface_config.collapseEmptyStrings(true);
+
+        interface_config.setVariable("pix_version_lt_70", ! version_ge_70);
+        interface_config.setVariable("pix_version_ge_70",   version_ge_70);
+        interface_config.setVariable("configure_interface_address",
+                                     configure_addresses);
+
+        interface_config.setVariable("interface_name",  iface->getName().c_str());
+        interface_config.setVariable("interface_label", iface->getLabel().c_str());
+        interface_config.setVariable("security_level",  iface->getSecurityLevel());
+
+        interface_config.setVariable("static_address", ! iface->isDyn());
+        interface_config.setVariable("dhcp_address",     iface->isDyn());
+        if (!iface->isDyn())
         {
-            ostringstream sls;
-            sls << iface->getSecurityLevel();
-            nameifCmd.replace(n,3,sls.str());
+            QString addr = iface->getAddressPtr()->toString().c_str();
+            QString netm = iface->getNetmaskPtr()->toString().c_str();
+            interface_config.setVariable("address", addr);
+            interface_config.setVariable("netmask", netm);
         }
-        res << nameifCmd;
+
+        res << interface_config.expand().toStdString();
+        res << endl;
+        res << endl;
     }
-
-    res << endl;
-
     return res.str();
 }
-
-string OSConfigurator_pix_os::_printIPAddress()
-{
-    ostringstream res;
-    string version = fw->getStr("version");
-    string platform = fw->getStr("platform");
-    string setAddrCmd;
-    string::size_type n;
-
-    if ( fw->getOptionsObject()->getBool("pix_ip_address") )
-    {
-        list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
-        for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
-        {
-            Interface *iface=dynamic_cast<Interface*>(*i);
-            assert(iface);
-            if (iface->isDyn())
-            {
-                setAddrCmd = Resources::platform_res[platform]->getResourceStr(
-                    string("/FWBuilderResources/Target/options/version_")+
-                    version+"/pix_commands/ip_addr_dyn");
-            } else
-            {
-                setAddrCmd = Resources::platform_res[platform]->getResourceStr(
-                    string("/FWBuilderResources/Target/options/version_")+
-                    version+"/pix_commands/ip_addr_static");
-            }
-
-            if ((n = setAddrCmd.find("%il"))!=string::npos)
-                setAddrCmd.replace(n,3,iface->getLabel());
-            if ((n = setAddrCmd.find("%in"))!=string::npos)
-                setAddrCmd.replace(n,3,iface->getName());
-            if ((n = setAddrCmd.find("%a"))!=string::npos)
-                setAddrCmd.replace(n,2,iface->getAddressPtr()->toString());
-            if ((n = setAddrCmd.find("%n"))!=string::npos)
-                setAddrCmd.replace(n,2,iface->getNetmaskPtr()->toString());
-
-            res << setAddrCmd;
-        }        
-    }
-
-    res << endl;
-
-    return res.str();
-}
-
 
 string OSConfigurator_pix_os::_printLogging()
 {
@@ -278,7 +250,7 @@ string  OSConfigurator_pix_os::_printSNMPServer(const std::string &srv,
     return str.str();
 }
 
-string    OSConfigurator_pix_os::_printSNMP()
+string OSConfigurator_pix_os::_printSNMP()
 {
     ostringstream  str;
     string version = fw->getStr("version");
@@ -304,14 +276,16 @@ string    OSConfigurator_pix_os::_printSNMP()
     } else
     {
 
-        if (set_communities) {
+        if (set_communities)
+        {
             string read_c = fw->getManagementObject()->
                 getSNMPManagement()->getReadCommunity();
             str << endl;
             str << "snmp-server community " << read_c << endl;
         }
 
-        if (set_sysinfo) {
+        if (set_sysinfo)
+        {
             string location=fw->getOptionsObject()->getStr("snmp_location");
             string contact =fw->getOptionsObject()->getStr("snmp_contact");
             str << endl;
@@ -321,7 +295,8 @@ string    OSConfigurator_pix_os::_printSNMP()
                 str << "snmp-server contact  " << contact  << endl;
         }
 
-        if (enable_traps) {
+        if (enable_traps)
+        {
             str << endl;
             str << "snmp-server enable traps" << endl;
         } else {
@@ -364,7 +339,7 @@ string  OSConfigurator_pix_os::_printNTPServer(const std::string &srv,bool pref)
     return str.str();
 }
 
-string    OSConfigurator_pix_os::_printNTP()
+string OSConfigurator_pix_os::_printNTP()
 {
     ostringstream  res;
     string version = fw->getStr("version");
@@ -396,7 +371,7 @@ string    OSConfigurator_pix_os::_printNTP()
     return res.str();
 }
 
-string    OSConfigurator_pix_os::_printSysopt()
+string OSConfigurator_pix_os::_printSysopt()
 {
     ostringstream  res;
     string platform = fw->getStr("platform");

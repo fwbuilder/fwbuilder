@@ -715,15 +715,14 @@ void NATCompiler_pix::UseFirewallInterfaces::scanInterfaces(RuleElement *rel)
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
     Address *obj=Address::cast(o);
     if(obj==NULL)
-        compiler->abort(
-            rel->getParent(), 
-                                      "Broken rule element "+
-                                      rel->getTypeName()+
-                                      " in rule "+
-                                      NATRule::cast(rel->getParent())->getLabel()+
-                                      " ( found object with type "+
-                                      string((o!=NULL)?o->getTypeName():"<NULL>") +
-                                      ")");
+        compiler->abort(rel->getParent(), 
+                        "Broken rule element "+
+                        rel->getTypeName()+
+                        " in rule "+
+                        NATRule::cast(rel->getParent())->getLabel()+
+                        " ( found object with type "+
+                        string((o!=NULL)?o->getTypeName():"<NULL>") +
+                        ")");
     const InetAddr *obj_addr = obj->getAddressPtr();
     if (obj_addr==NULL) return;
 
@@ -1566,6 +1565,9 @@ void NATCompiler_pix::compile()
         add( new emptyGroupsInTSrv("check for empty groups in TSRV"));
 
         add( new ExpandGroups("expand groups"));
+
+        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
+
         add( new eliminateDuplicatesInOSRC("eliminate duplicates in OSRC"));
         add( new eliminateDuplicatesInODST("eliminate duplicates in ODST"));
         add( new eliminateDuplicatesInOSRV("eliminate duplicates in OSRV"));

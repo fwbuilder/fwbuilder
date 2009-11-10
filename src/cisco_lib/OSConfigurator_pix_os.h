@@ -37,8 +37,10 @@ namespace fwcompiler {
 
     class OSConfigurator_pix_os : public OSConfigurator {
 
-        std::string _printNameif();
-        std::string _printIPAddress();
+        //std::string _printNameif();
+        //std::string _printIPAddress();
+
+        std::string _printInterfaceConfiguration();
 
         std::string _printLogging();
         std::string _printSNMPServer(const std::string &srv,int poll_trap);
