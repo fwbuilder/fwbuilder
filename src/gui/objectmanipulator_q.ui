@@ -1,43 +1,197 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" >
  <class>ObjectManipulator_q</class>
- <widget class="QWidget" name="ObjectManipulator_q">
-  <property name="enabled">
+ <widget class="QWidget" name="ObjectManipulator_q" >
+  <property name="enabled" >
    <bool>true</bool>
   </property>
-  <property name="geometry">
+  <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>248</width>
-    <height>289</height>
+    <width>240</width>
+    <height>441</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
+  <property name="windowTitle" >
    <string>Tree of Objects</string>
   </property>
-  <layout class="QGridLayout">
-   <property name="margin">
-    <number>0</number>
-   </property>
-   <property name="spacing">
+  <layout class="QGridLayout" name="gridLayout" >
+   <property name="verticalSpacing" >
     <number>2</number>
    </property>
-   <item row="2" column="0">
-    <widget class="QStackedWidget" name="widgetStack">
-     <widget class="QWidget" name="page">
-      <property name="palette">
+   <property name="margin" >
+    <number>0</number>
+   </property>
+   <item row="0" column="0" >
+    <widget class="QGroupBox" name="buttonGroup1" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet" >
+      <string notr="true" >
+QGroupBox {
+	margin-top: 1ex;
+    padding: 0px;
+}
+
+QComboBox {
+	margin-top: 0px;
+    padding: 0px;
+}
+</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>2</number>
+      </property>
+      <property name="spacing" >
+       <number>0</number>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QToolButton" name="backButton" >
+        <property name="toolTip" >
+         <string>Back</string>
+        </property>
+        <property name="whatsThis" >
+         <string>Go back to the previous object</string>
+        </property>
+        <property name="text" >
+         <string/>
+        </property>
+        <property name="icon" >
+         <iconset resource="MainRes.qrc" >
+          <normaloff>:/Icons/Return</normaloff>:/Icons/Return</iconset>
+        </property>
+        <property name="autoRaise" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="Line" name="line1" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>32767</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="frameShape" >
+         <enum>QFrame::VLine</enum>
+        </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth" >
+         <number>1</number>
+        </property>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" >
+       <widget class="QComboBox" name="libs" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet" >
+         <string notr="true" >QComboBox { padding: 2px;}
+</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QToolButton" name="newButton" >
+        <property name="toolTip" >
+         <string>New Object</string>
+        </property>
+        <property name="whatsThis" >
+         <string>Create New Object</string>
+        </property>
+        <property name="icon" >
+         <iconset resource="MainRes.qrc" >
+          <normaloff>:/Icons/newobject_25.png</normaloff>:/Icons/newobject_25.png</iconset>
+        </property>
+        <property name="autoRaise" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" name="horizontalLayout" >
+     <item>
+      <widget class="QLabel" name="label" >
+       <property name="text" >
+        <string>Filter:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="AutocompletedComboBox" name="filter" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip" >
+        <string>Object name pattern</string>
+       </property>
+       <property name="editable" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="clearFilter" >
+       <property name="toolTip" >
+        <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Lucida Grande'; font-size:11pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Clear filter&lt;/p>&lt;/body>&lt;/html></string>
+       </property>
+       <property name="text" >
+        <string/>
+       </property>
+       <property name="icon" >
+        <iconset resource="MainRes.qrc" >
+         <normaloff>:/Icons/close.png</normaloff>:/Icons/close.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QStackedWidget" name="widgetStack" >
+     <widget class="QWidget" name="page" >
+      <property name="palette" >
        <palette>
         <active>
-         <colorrole role="Text">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
+         <colorrole role="Text" >
+          <brush brushstyle="SolidPattern" >
+           <color alpha="255" >
             <red>0</red>
             <green>0</green>
             <blue>0</blue>
@@ -46,9 +200,9 @@
          </colorrole>
         </active>
         <inactive>
-         <colorrole role="Text">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
+         <colorrole role="Text" >
+          <brush brushstyle="SolidPattern" >
+           <color alpha="255" >
             <red>0</red>
             <green>0</green>
             <blue>0</blue>
@@ -57,9 +211,9 @@
          </colorrole>
         </inactive>
         <disabled>
-         <colorrole role="Text">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
+         <colorrole role="Text" >
+          <brush brushstyle="SolidPattern" >
+           <color alpha="255" >
             <red>69</red>
             <green>69</green>
             <blue>69</blue>
@@ -72,141 +226,9 @@
      </widget>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="buttonGroup1">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">
-QGroupBox {
-	margin-top: 1ex;
-    padding: 0px;
-}
-
-QComboBox {
-	margin-top: 0px;
-    padding: 0px;
-}
-</string>
-     </property>
-     <layout class="QGridLayout">
-      <property name="margin">
-       <number>2</number>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QToolButton" name="backButton">
-        <property name="toolTip">
-         <string>Back</string>
-        </property>
-        <property name="whatsThis">
-         <string>Go back to the previous object</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="MainRes.qrc">
-          <normaloff>:/Icons/Return</normaloff>:/Icons/Return</iconset>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Line" name="line1">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>32767</width>
-          <height>16</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::VLine</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QComboBox" name="libs">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QComboBox { padding: 2px;}
-</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QToolButton" name="newButton">
-        <property name="toolTip">
-         <string>New Object</string>
-        </property>
-        <property name="whatsThis">
-         <string>Create New Object</string>
-        </property>
-        <property name="icon">
-         <iconset resource="MainRes.qrc">
-          <normaloff>:/Icons/newobject_25.png</normaloff>:/Icons/newobject_25.png</iconset>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QToolButton" name="clearFilter">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="MainRes.qrc">
-         <normaloff>:/Icons/close.png</normaloff>:/Icons/close.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="AutocompletedComboBox" name="filter">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
+ <layoutdefault spacing="6" margin="11" />
  <customwidgets>
   <customwidget>
    <class>AutocompletedComboBox</class>
@@ -215,7 +237,7 @@ QComboBox {
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="MainRes.qrc"/>
+  <include location="MainRes.qrc" />
  </resources>
  <connections>
   <connection>
@@ -224,11 +246,11 @@ QComboBox {
    <receiver>ObjectManipulator_q</receiver>
    <slot>libChanged(int)</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>74</x>
      <y>31</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -240,11 +262,11 @@ QComboBox {
    <receiver>ObjectManipulator_q</receiver>
    <slot>back()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -256,11 +278,11 @@ QComboBox {
    <receiver>ObjectManipulator_q</receiver>
    <slot>newObject()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>50</x>
      <y>30</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -272,11 +294,11 @@ QComboBox {
    <receiver>ObjectManipulator_q</receiver>
    <slot>currentTreePageChanged(int)</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>20</x>
      <y>104</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -288,11 +310,11 @@ QComboBox {
    <receiver>filter</receiver>
    <slot>clearEditText()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>25</x>
      <y>51</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>69</x>
      <y>59</y>
     </hint>
