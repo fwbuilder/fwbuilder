@@ -288,7 +288,10 @@ void Interface::setUnnumbered(bool value) { setBool("unnum",value); }
 bool Interface::isUnnumbered() const { return getBool("unnum"); }
 
 void Interface::setUnprotected(bool value) { setBool("unprotected",value); }
-bool Interface::isUnprotected() const { return getBool("unprotected"); }
+bool Interface::isUnprotected() const
+{
+    return getBool("unprotected") || getBool("dedicated_failover");
+}
 
 void Interface::setDedicatedFailover(bool value) { setBool("dedicated_failover",value); }
 bool Interface::isDedicatedFailover() const { return getBool("dedicated_failover"); }
