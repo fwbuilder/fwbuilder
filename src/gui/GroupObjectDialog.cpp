@@ -400,7 +400,7 @@ void GroupObjectDialog::applyChanges()
     obj->setComment(
         string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
-    init=true;
+    //init=true;
 
     set<int> oldobj;
     set<int> newobj;
