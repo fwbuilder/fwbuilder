@@ -45,7 +45,8 @@ using namespace std;
 
 static unsigned long calculateDimension(FWObject* obj)
 {
-    if (Group::cast(obj)!=NULL) {
+    if (Group::cast(obj)!=NULL)
+    {
         unsigned long res=0;
 	for (FWObject::iterator i1=obj->begin(); i1!=obj->end(); ++i1) 
         {
@@ -67,26 +68,10 @@ static unsigned long calculateDimension(FWObject* obj)
     return 0;
 }
 
-void Helper::expand_group_recursive_no_cache(FWObject *o,list<FWObject*> &ol)
-{
-    if (Group::cast( o )!=NULL) {
-        for (FWObject::iterator i2=o->begin(); i2!=o->end(); ++i2) 
-        {
-            FWObject *o1= *i2;
-            if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
-            assert(o1);
-
-            expand_group_recursive_no_cache(o1,ol);
-        }
-    } else {
-        ol.push_back( o );
-    }
-}
-
-
 void Helper::expand_group_recursive(FWObject *o,list<FWObject*> &ol)
 {
-    if (Group::cast( o )!=NULL) {
+    if (Group::cast( o )!=NULL)
+    {
         for (FWObject::iterator i2=o->begin(); i2!=o->end(); ++i2) 
         {
             FWObject *o1= *i2;
@@ -141,8 +126,8 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
         int netzone_id =
             FWObjectDatabase::getIntId((*i)->getStr("network_zone"));
 
-        FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
 #if 0
+        FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
         cerr << "netzone_id=" << netzone_id
              << "  " << (*i)->getStr("network_zone")
              << "  " << netzone->getName()
@@ -151,8 +136,10 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
         if (netzone_id != -1)
         {
             FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
-            for (list<FWObject*>::iterator j=netzone->begin();
-                 j!=netzone->end(); ++j)
+            list<FWObject*> nz;
+            expand_group_recursive(netzone, nz);
+
+            for (list<FWObject*>::iterator j=nz.begin(); j!=nz.end(); ++j)
             {
                 assert(Address::cast(*j)!=NULL);
 

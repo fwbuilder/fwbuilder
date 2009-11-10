@@ -899,6 +899,15 @@ void CompilerDriver::copyFailoverInterface(Cluster *cluster,
 
     new_cl_if->getOptionsObject()->setBool("failover_master",
                                            master_id == iface_str_id);
+
+
+    // cluster interface should "inherit" some of the
+    // attributes of the member interfaces it
+    // represents. For example, if member interfaces are
+    // marked "unprotected" or "dedicated failover", so
+    // should be the cluster interface.  What else?
+    new_cl_if->setDedicatedFailover(iface->isDedicatedFailover());
+    new_cl_if->setUnprotected(iface->isUnprotected());
     
     fw->getOptionsObject()->setBool("cluster_member", true);
 

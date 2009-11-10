@@ -78,17 +78,25 @@
 
       <protocols>
         <failover>
-          <string>vrrp,VRRP</string>
+          <string>pix_failover,PIX failover protocol</string>
+          <string>none,</string>
         </failover>
         <state_sync>
-          <string>pix,pix</string>
+          <string>pix_state_sync,PIX state synchronization</string>
+          <string>none,</string>
         </state_sync>
 
-        <vrrp>
+        <pix_failover>
           <needs_master>True</needs_master>
-          <no_ip_ok>False</no_ip_ok>
+          <no_ip_ok>True</no_ip_ok>
           <manage_addresses>True</manage_addresses>
-        </vrrp>
+        </pix_failover>
+
+        <none>
+          <needs_master>True</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <manage_addresses>True</manage_addresses>
+        </none>
       </protocols>
 
       <interfaces>

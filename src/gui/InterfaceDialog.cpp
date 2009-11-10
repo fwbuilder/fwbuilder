@@ -103,6 +103,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     m_dialog->dynamic->setChecked( s->isDyn() );
     m_dialog->unnumbered->setChecked( s->isUnnumbered() );
+    m_dialog->dedicated_failover->setChecked( s->isDedicatedFailover() );
 
     m_dialog->management->setChecked( s->isManagement() );
 
@@ -132,6 +133,9 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     m_dialog->unprotected->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->unprotected);
 
+    m_dialog->dedicated_failover->setEnabled(!o->isReadOnly());
+    setDisabledPalette(m_dialog->dedicated_failover);
+
     m_dialog->seclevel->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->seclevel);
 
@@ -145,6 +149,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         m_dialog->unnumbered->hide();
         m_dialog->management->hide();
         m_dialog->unprotected->hide();
+        m_dialog->dedicated_failover->hide();
         m_dialog->bridge_port_label->show();
     } else
     {
@@ -153,6 +158,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         m_dialog->unnumbered->show();
         m_dialog->management->show();
         m_dialog->unprotected->show();
+        m_dialog->dedicated_failover->show();
         m_dialog->bridge_port_label->hide();
     }
 
@@ -163,6 +169,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     {
         m_dialog->management->setEnabled(false);
         m_dialog->unprotected->setEnabled(false);
+        m_dialog->dedicated_failover->setEnabled(false);
         m_dialog->seclevel->setEnabled(false);
         m_dialog->seclevelLabel->setEnabled(false);
         m_dialog->netzone->setEnabled(false);
@@ -196,10 +203,16 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         if (Cluster::isA(s->getParent()))
             supports_advanced_ifaces = false;
 
+        if (s->isDedicatedFailover())
+        {
+            supports_security_levels = false;
+            supports_network_zones = false;
+        }
+
     } catch (FWException &ex)  { }
 
 /* if parent is a firewall or a fw cluster, it is more complex ... */
-    if (Firewall::isA( f ) || Cluster::isA( f ))
+    if (Firewall::isA(f) || Cluster::isA(f))
     {
         if (supports_security_levels)
         {
@@ -385,6 +398,7 @@ void InterfaceDialog::applyChanges()
     s->setLabel( string(m_dialog->label->text().toUtf8().constData()) );
     s->setDyn( m_dialog->dynamic->isChecked() );
     s->setUnnumbered( m_dialog->unnumbered->isChecked() );
+    s->setDedicatedFailover( m_dialog->dedicated_failover->isChecked() );
 
     FWObject *f = s->getParentHost();
     bool supports_security_levels = false;

@@ -63,6 +63,8 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Routing.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 #include "fwcompiler/Preprocessor.h"
 
@@ -170,6 +172,60 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     // Copy rules from the cluster object
     populateClusterElements(cluster, fw);
 
+    // PIX failover is dfferent from VRRP and other failover protocols
+    // in that it does not create new virtual address. Instead, each
+    // unit is configured with two ip addresses, one for the active
+    // unit and another for standby one. When active unit fails, the
+    // other one assumes its address.
+    //
+    // This matters because when we use cluster object or one of its
+    // interfaces in rules, compiler should expand it to the set of
+    // addresses that includes addresses of the corresponding
+    // interface of both member firewalls. Method
+    // CompilerDriver::copyFailoverInterface adds a copy of firewall
+    // interface to the cluster object. This works for all firewalls,
+    // but for PIX we need to add copies of interfaces from both
+    // members.
+    // 
+    FWObjectTypedChildIterator cl_iface = cluster->findByType(Interface::TYPENAME);
+    for (; cl_iface != cl_iface.end(); ++cl_iface)
+    {
+        FailoverClusterGroup *failover_group =
+            FailoverClusterGroup::cast(
+                (*cl_iface)->getFirstByType(FailoverClusterGroup::TYPENAME));
+        if (failover_group)
+        {
+            FWObject *this_member_interface = NULL;
+            list<FWObject*> other_member_interfaces;
+            for (FWObjectTypedChildIterator it =
+                     failover_group->findByType(FWObjectReference::TYPENAME);
+                 it != it.end(); ++it)
+            {
+                FWObject *intf = FWObjectReference::getObject(*it);
+                assert(intf);
+                if (intf->isChildOf(fw)) this_member_interface = intf;
+                else other_member_interfaces.push_back(intf);
+            }
+
+            if (!other_member_interfaces.empty())
+            {
+                for (list<FWObject*>::iterator it=other_member_interfaces.begin();
+                     it!=other_member_interfaces.end(); ++it)
+                {
+                    cluster->addCopyOf(*it, true);
+                }
+            }
+        }
+    }
+
+#if 0
+    FWObjectTypedChildIterator iface = fw->findByType(Interface::TYPENAME);
+    for (; iface != iface.end(); ++iface)
+    {
+        (*iface)->dump(true, true);
+    }
+#endif
+
     commonChecks2(cluster, fw);
 
     // Note that fwobjectname may be different from the name of the
@@ -177,15 +233,13 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     current_firewall_name = fw->getName().c_str();
 
     QString ofname = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
-
     FWOptions* options = fw->getOptionsObject();
 
+    bool pix_acl_basic = options->getBool("pix_acl_basic");
+    bool pix_acl_no_clear = options->getBool("pix_acl_no_clear");
+    bool pix_acl_substitution = options->getBool("pix_acl_substitution");
+    bool pix_add_clear_statements = options->getBool("pix_add_clear_statements");
 
-    bool pix_acl_basic=options->getBool("pix_acl_basic");
-    bool pix_acl_no_clear=options->getBool("pix_acl_no_clear");
-    bool pix_acl_substitution=options->getBool("pix_acl_substitution");
-    bool pix_add_clear_statements=options->getBool("pix_add_clear_statements");
-        
     if ( !pix_acl_basic &&
          !pix_acl_no_clear &&
          !pix_acl_substitution )
@@ -201,8 +255,22 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     std::list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
     for (std::list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
-        Interface *iface=dynamic_cast<Interface*>(*i);
+        Interface *iface = dynamic_cast<Interface*>(*i);
         assert(iface);
+
+        // dedicated failover interfaces are not used in ACLs or anywhere
+        // else in configuration, except in "failover" commands.
+        if (iface->isDedicatedFailover()) continue;
+
+        // Tests for label, security level and network zone make sense
+        // only for interfaces that can be used in ACLs or to bind
+        // ACLs to.  Unnumbered interfaces can't, so we do not need to
+        // run these checks.  One example of unnumbered interface is
+        // parent interface for vlan subinterfaces.
+        if (iface->isUnnumbered()) continue;
+
+        if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
+
 /*
  * missing labels on interfaces
  */
@@ -228,10 +296,14 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
  */
         for (std::list<FWObject*>::iterator j=l2.begin(); j!=l2.end(); ++j)
         {
-            Interface *iface2=dynamic_cast<Interface*>(*j);
+            Interface *iface2 = dynamic_cast<Interface*>(*j);
             assert(iface2);
+            if (iface2->isDedicatedFailover()) continue;
+            if (iface2->isUnnumbered()) continue;
             if (iface->getId()==iface2->getId()) continue;
-                
+            if (iface->getOptionsObject()->getBool("cluster_interface") ||
+                iface2->getOptionsObject()->getBool("cluster_interface")) continue;
+
             if (iface->getSecurityLevel()==iface2->getSecurityLevel())
             {
                 QString err(
@@ -292,7 +364,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
  * too.
  */
         list<FWObject*> ol;
-        helper.expand_group_recursive_no_cache(netzone,ol);
+        helper.expand_group_recursive(netzone,ol);
 
         FWObject *nz = objdb->createObjectGroup();
         assert(nz!=NULL);
@@ -344,7 +416,6 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                 }
             }
         }
-            
     }
 
 /*

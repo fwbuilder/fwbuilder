@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1257810272" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1257815261" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
-    <Interface id="id3213X42281" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp2" comment="" ro="False">
+    <Interface id="id3213X42281" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp2" comment="" ro="False">
       <InterfaceOptions>
         <Option name="iface_mtu">1500</Option>
         <Option name="type">vrrp</Option>
@@ -100,10 +100,17 @@
     </Policy>
     <ObjectRef ref="id3DC75CE7-1"/>
     <ObjectRef ref="id2374X75741"/>
+    <Interface id="id2875X71781" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="Interface" comment="" ro="False">
+      <InterfaceOptions/>
+    </Interface>
+    <ObjectRef ref="id3188X29979"/>
+    <ObjectRef ref="id2263X68642"/>
+    <IPv4 id="id2375X75741" name="cluster1:FastEthernet0/0.101:ip" comment="" ro="False" address="192.168.100.1" netmask="255.255.255.0"/>
+    <IPv4 id="id2380X75741" name="cluster1:FastEthernet0/1:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id2366X75741" host_OS="pix_os" inactive="False" lastCompiled="1248670597" lastInstalled="0" lastModified="1257811144" platform="pix" name="cluster1" comment="" ro="False">
+      <Cluster id="id2366X75741" host_OS="pix_os" inactive="False" lastCompiled="1248670597" lastInstalled="0" lastModified="1257829296" platform="pix" name="cluster1" comment="" ro="False">
         <NAT id="id2370X75741" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4606X78273" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -239,13 +246,12 @@
           </PolicyRule>
         </Policy>
         <Routing id="id2371X75741" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id2374X75741" dyn="False" label="inside" mgmt="False" network_zone="id3042X68642" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0.101" comment="" ro="False">
-          <IPv4 id="id2375X75741" name="cluster1:FastEthernet0/0.101:ip" comment="" ro="False" address="192.168.100.1" netmask="255.255.255.0"/>
+        <Interface id="id2374X75741" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id3042X68642" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0.101" comment="" ro="False">
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2377X75741" master_iface="id3188X29979" type="vrrp" name="cluster1:vrrp0:members" comment="">
+          <FailoverClusterGroup id="id2377X75741" master_iface="id3188X29979" type="none" name="cluster1:vrrp0:members" comment="">
             <ObjectRef ref="id3188X29979"/>
             <ObjectRef ref="id2263X68642"/>
             <ClusterGroupOptions>
@@ -254,21 +260,28 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id2379X75741" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
-          <IPv4 id="id2380X75741" name="cluster1:FastEthernet0/1:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+        <Interface id="id2379X75741" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2382X75741" master_iface="id2844X69605" type="vrrp" name="cluster1:vrrp1:members" comment="">
+          <FailoverClusterGroup id="id2382X75741" master_iface="id2844X69605" type="none" name="cluster1:vrrp1:members" comment="">
             <ObjectRef ref="id2844X69605"/>
             <ObjectRef ref="id2268X68642"/>
           </FailoverClusterGroup>
         </Interface>
+        <Interface id="id2335X71781" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
+          <InterfaceOptions/>
+          <FailoverClusterGroup id="id2337X71781" type="pix_failover" name="Failover group" comment="">
+            <ObjectRef ref="id2331X71781"/>
+            <ObjectRef ref="id2333X71781"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
         <FirewallOptions/>
-        <StateSyncClusterGroup id="id2372X75741" type="pix" name="State Sync Group" comment="">
-          <ObjectRef ref="id3188X29979"/>
-          <ObjectRef ref="id2263X68642"/>
+        <StateSyncClusterGroup id="id2372X75741" type="pix_state_sync" name="State Sync Group" comment="">
+          <ObjectRef ref="id2331X71781"/>
+          <ObjectRef ref="id2333X71781"/>
           <ClusterGroupOptions/>
         </StateSyncClusterGroup>
       </Cluster>
@@ -308,16 +321,16 @@
       <ServiceGroup id="id1513X69605" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id1514X69605" name="Firewalls" comment="" ro="False">
-      <Firewall id="id2735X69605" host_OS="pix_os" inactive="False" lastCompiled="1251482764" lastInstalled="0" lastModified="1257811140" platform="pix" version="7.0" name="pix-1" comment="  " ro="False">
+      <Firewall id="id2735X69605" host_OS="pix_os" inactive="False" lastCompiled="1251482764" lastInstalled="0" lastModified="1257822623" platform="pix" version="7.0" name="pix-1" comment="  " ro="False">
         <NAT id="id2827X69605" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id2741X69605" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id2842X69605" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id2843X69605" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="True" unprotected="False" name="FastEthernet0/0" comment="   " ro="False">
+        <Interface id="id2843X69605" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="True" unprotected="False" name="FastEthernet0/0" comment="   " ro="False">
           <InterfaceOptions>
             <Option name="type">ethernet</Option>
             <Option name="vlan_id">0</Option>
           </InterfaceOptions>
-          <Interface id="id3188X29979" dyn="False" label="inside" mgmt="False" network_zone="id3042X68642" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0.101" comment="vlan interface  " ro="False">
+          <Interface id="id3188X29979" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id3042X68642" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0.101" comment="vlan interface  " ro="False">
             <IPv4 id="id10439X39874" name="pix-1:FastEthernet0/0:FastEthernet0/0.101:ip" comment="" ro="False" address="192.168.100.253" netmask="255.255.255.0"/>
             <InterfaceOptions>
               <Option name="dev_plus_vid">False</Option>
@@ -329,10 +342,16 @@
             </InterfaceOptions>
           </Interface>
         </Interface>
-        <Interface id="id2844X69605" dyn="False" label="outside" mgmt="True" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
+        <Interface id="id2844X69605" dedicated_failover="False" dyn="False" label="outside" mgmt="True" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
           <IPv4 id="id2846X69605" name="pix-1:FastEthernet0/1:ip" comment="" ro="False" address="192.0.2.253" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id2331X71781" dedicated_failover="True" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
+          <IPv4 id="id2877X71781" name="pix-1:Ethernet0/0:ip" comment="" ro="False" address="172.17.1.253" netmask="255.255.255.252"/>
+          <InterfaceOptions>
             <Option name="type">ethernet</Option>
           </InterfaceOptions>
         </Interface>
@@ -440,16 +459,16 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id2251X68642" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1257811144" platform="pix" version="7.0" name="pix-2" comment="  " ro="False">
+      <Firewall id="id2251X68642" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1257822627" platform="pix" version="7.0" name="pix-2" comment="  " ro="False">
         <NAT id="id2287X68642" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id2273X68642" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id2288X68642" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id2257X68642" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="True" unprotected="False" name="FastEthernet0/0" comment="   " ro="False">
+        <Interface id="id2257X68642" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="True" unprotected="False" name="FastEthernet0/0" comment="   " ro="False">
           <InterfaceOptions>
             <Option name="type">ethernet</Option>
             <Option name="vlan_id">0</Option>
           </InterfaceOptions>
-          <Interface id="id2263X68642" dyn="False" label="inside" mgmt="False" network_zone="id3042X68642" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0.101" comment="vlan interface  " ro="False">
+          <Interface id="id2263X68642" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id3042X68642" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0.101" comment="vlan interface  " ro="False">
             <IPv4 id="id2266X68642" name="pix-2:FastEthernet0/0:FastEthernet0/0.101:ip" comment="" ro="False" address="192.168.100.254" netmask="255.255.255.0"/>
             <InterfaceOptions>
               <Option name="dev_plus_vid">False</Option>
@@ -461,10 +480,16 @@
             </InterfaceOptions>
           </Interface>
         </Interface>
-        <Interface id="id2268X68642" dyn="False" label="outside" mgmt="True" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
+        <Interface id="id2268X68642" dedicated_failover="False" dyn="False" label="outside" mgmt="True" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="FastEthernet0/1" comment="" ro="False">
           <IPv4 id="id2271X68642" name="pix-2:FastEthernet0/1:ip" comment="" ro="False" address="192.0.2.254" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id2333X71781" dedicated_failover="True" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
+          <IPv4 id="id2878X71781" name="pix-2:Ethernet0/0:ip" comment="" ro="False" address="172.17.1.254" netmask="255.255.255.252"/>
+          <InterfaceOptions>
             <Option name="type">ethernet</Option>
           </InterfaceOptions>
         </Interface>

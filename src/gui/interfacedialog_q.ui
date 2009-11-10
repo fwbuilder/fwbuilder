@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>922</width>
-    <height>262</height>
+    <width>1017</width>
+    <height>308</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -272,15 +272,6 @@ If network zone for this interface consists of only one subnet, you can simply c
          <bool>false</bool>
         </property>
         <layout class="QGridLayout" name="gridLayout" >
-         <property name="topMargin" >
-          <number>6</number>
-         </property>
-         <property name="bottomMargin" >
-          <number>6</number>
-         </property>
-         <property name="verticalSpacing" >
-          <number>6</number>
-         </property>
          <item row="0" column="0" >
           <widget class="QCheckBox" name="management" >
            <property name="toolTip" >
@@ -302,27 +293,34 @@ If network zone for this interface consists of only one subnet, you can simply c
           </widget>
          </item>
          <item row="2" column="0" >
+          <widget class="QCheckBox" name="dedicated_failover" >
+           <property name="text" >
+            <string>Dedicated failover interface</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" >
           <widget class="QRadioButton" name="regular" >
            <property name="text" >
             <string>Regular interface</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" >
+         <item row="4" column="0" >
           <widget class="QRadioButton" name="dynamic" >
            <property name="text" >
             <string>Address is assigned dynamically</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" >
+         <item row="5" column="0" >
           <widget class="QRadioButton" name="unnumbered" >
            <property name="text" >
             <string>Unnumbered interface</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="0" >
+         <item row="6" column="0" >
           <widget class="QLabel" name="bridge_port_label" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -338,7 +336,7 @@ If network zone for this interface consists of only one subnet, you can simply c
            </property>
           </widget>
          </item>
-         <item row="6" column="0" >
+         <item row="7" column="0" >
           <widget class="QPushButton" name="advancedconfig" >
            <property name="text" >
             <string>Advanced Interface Settings ...</string>
@@ -581,6 +579,22 @@ If network zone for this interface consists of only one subnet, you can simply c
     <hint type="destinationlabel" >
      <x>441</x>
      <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dedicated_failover</sender>
+   <signal>clicked()</signal>
+   <receiver>InterfaceDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>520</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>508</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>

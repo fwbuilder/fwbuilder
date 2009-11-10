@@ -1,3 +1,34 @@
+2009-11-09  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_pix_run.cpp (CompilerDriver_pix::run): Added
+	support for failover configurations for PIX.
+
+	- Interfaces of member firewalls used for failover configuration
+	should be marked as "Dedicated failover" interfaces. They should
+	have normal IP addresses. These interfaces will be used to
+	generate "failover" commands in the PIX configuration.
+
+	- Cluster should have interface with the same name as failover
+	interfaces of the members, with protocol set to "PIX failover" and
+	members configured as usual. This interface has no ip address.
+
+	- Other interfaces of the cluster have the same name as
+	corresponding interfaces of the member firewalls, protocol "None"
+	and failover groups that define members as usual. These cluster
+	interfaces also have no ip address.
+
+	- Cluster state synchronization group uses protocol "PIX state
+	synchrnization" and its members should be configured as usual.
+	Use failover interfaces of the members as members of the state
+	sync group.
+
+	* Interface.cpp: Added attribute "dedicated_failover" to the
+	Interface object. Interfaces with this attribute are treated like
+	other "unprotected" interfaces, that is they are not used to
+	attach ACLs to and not used in rules. Dedicated failover
+	interfaces have special meaning in PIX configurations and are used
+	to describe interfaces used for LAN failover.
+
 2009-11-07  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printTCPFlags):

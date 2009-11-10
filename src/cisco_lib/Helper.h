@@ -65,19 +65,11 @@ namespace fwcompiler {
 
         /**
          * recursively expands object 'o' and places all its children
-         * objects in the list 'ol'. Uses cache in compiler.
+         * objects in the list 'ol'.
          */
         void expand_group_recursive(libfwbuilder::FWObject *o,
                                     std::list<libfwbuilder::FWObject*> &ol);
 
-        /**
-         * recursively expands object 'o' and places all its children
-         * objects in the list 'ol'. Does not use cache in compiler,
-         * therefore can be called even if compiler object has not
-         * been created yet.
-         */
-        void expand_group_recursive_no_cache(libfwbuilder::FWObject *o,
-                                             std::list<libfwbuilder::FWObject*> &ol);
 
     };
 

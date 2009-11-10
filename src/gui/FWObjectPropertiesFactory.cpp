@@ -207,6 +207,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
             }
             if (intf->isDyn())         q.push_back("dyn");
             if (intf->isUnnumbered())  q.push_back("unnum");
+            if (intf->isDedicatedFailover())  q.push_back("failover");
             if (intf->isBridgePort())  q.push_back("bridge port");
             if (intf->isSlave())       q.push_back("slave");
             if (intf->isUnprotected()) q.push_back("unp");
