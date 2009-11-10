@@ -992,6 +992,11 @@ ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
 
 void ProjectPanel::registerObjectToUpdateInTree(FWObject *o, bool update_subtree)
 {
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::registerObjectToUpdateInTree()"
+                 << "o=" << o->getName().c_str()
+                 << "update_subtree=" << update_subtree
+                 << "updateObjectsInTreePool.size()=" << updateObjectsInTreePool.size();
     updateObjectsInTreePool[o->getId()] = update_subtree;
     QTimer::singleShot(0, this, SLOT(updateObjectInTree()));
 }

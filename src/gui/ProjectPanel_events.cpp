@@ -104,7 +104,7 @@ bool ProjectPanel::event(QEvent *event)
                 // when object name changes we need to update the tree
                 // and ruleset
                 QCoreApplication::postEvent(
-                    this, new updateObjectAndSubtreeInTreeEvent(data_file, obj_id));
+                    this, new updateObjectInTreeEvent(data_file, obj_id));
                 QCoreApplication::postEvent(
                     this, new updateObjectInRulesetEvent(data_file, obj_id));
                 if (Library::cast(obj))

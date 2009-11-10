@@ -615,8 +615,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
                oldName.toLatin1().constData(), QString::fromUtf8(obj->getName().c_str()).toLatin1().constData());
     }
 
-    if ((QString::fromUtf8(obj->getName().c_str()) != oldName) &&
-        Interface::isA(obj))
+    if ((QString::fromUtf8(obj->getName().c_str()) != oldName) && Interface::isA(obj))
         autorename(obj, askForAutorename);
 
     // Do not call updateObjectInTree because it will be called
@@ -724,10 +723,16 @@ void ObjectManipulator::autorename(list<FWObject*> &obj_list,
     for (list<FWObject*>::iterator j=obj_list.begin(); j!=obj_list.end(); ++j)
     {
         FWObject *obj = *j;
+        QString old_name = obj->getName().c_str();
         FWObject *parent = obj->getParent();
         QString name = getStandardName(parent, objtype, namesuffix);
         name = makeNameUnique(parent, name, objtype.c_str());
         obj->setName(string(name.toUtf8()));
+
+        if (old_name!=name)
+            QCoreApplication::postEvent(
+                mw, new objectNameChangedEvent(m_project->getFileName(), obj->getId()));
+
         //QTreeWidgetItem *itm1 = allItems[obj];
         //if (itm1!=NULL) updateObjectInTree(obj);
     }
@@ -766,6 +771,10 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
             {
                 QString new_name("%1.%2");
                 obj->setName(new_name.arg(QString::fromUtf8(parent->getName().c_str())).arg(vlan_id).toStdString());
+
+                QCoreApplication::postEvent(
+                    mw, new objectNameChangedEvent(m_project->getFileName(), obj->getId()));
+
                 //QTreeWidgetItem *itm1 = allItems[obj];
                 //if (itm1!=NULL) updateObjectInTree(obj);
             }
