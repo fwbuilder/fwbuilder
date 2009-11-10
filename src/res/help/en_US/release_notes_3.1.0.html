@@ -26,10 +26,121 @@
 
 <p>
   <ul>
+    <li><a href="#gui">Changes in the GUI</a></li>
     <li><a href="#cluster">Support for High Availability configurations</a></li>
     <li><a href="#bridge">Changes in the support for bridging firewalls</a></li>
   </ul>
 </p>
+
+
+<a name="gui"></a>
+<h2>Changes in the GUI</h2>
+
+<p>
+  The editor panel and object tree are now detachable. You can "float"
+  these windows and rearrange them on the screen any way you
+  want. There is only one editor panel even when you open several data
+  files at the dame time. Each data file is opened in its own project
+  window with object tree and rules.
+</p>
+
+<p>
+  Selection of the object in the tree or rules does not automatically
+  open it in the editor anymore. Use double click or context menu item
+  "Edit" to open object in the editor. This helps, for example, when
+  you need to populate large object group and need to switch between
+  libraries to find objects. Switching to another library or
+  accidentally clicking on a wrong object in the tree does not cause
+  editor to switch.
+</p>
+
+<p>
+  <b>"Single rule compile"</b>: Select a rule in the policy or NAT
+  rule set of a cluster or a firewall and hit "X" on the keyboard to
+  compile it. The result is shown in the editor panel immediately. To
+  select a rule click anywhere in it (any rule element, not just rule
+  number).
+</p>
+
+<p>
+  Right above the panel showing rules there are now two new buttons. These
+  allow you to compile and install policy for the firewall object shown 
+  in the rules panel at the moment. The same functions are available via context
+  menu associated with the firewall or cluster object in the object
+  tree, but these buttons are easier to use.
+</p>
+
+<p>
+  The GUI can show brief summary of object attributes
+  in the second column in the object tree. This is controlled by a
+  checkbox in the global preferences dialog, tab "Objects". This is
+  off by default. The first column always shows object icon and its
+  name, the second (optional) column shows its attributes. Interface
+  label is shown in the second column. The width of both columns in
+  the tree is set automatically to accommodate all the text, then
+  can be adjusted by the user using mouse. Column width is saved in
+  settings and will be restored upon program restart. Column width
+  is saved per-file, per-library.
+</p>
+
+<p>
+  <b>Password caching</b>: Built-in installer can remember
+  firewall password (and enable password for Ciscos) for the
+  duration of the session. Passwords are never stored permanenetly
+  in any form, encrypted or plain text. You need to enter
+  password once when you activate generated policy. If you keep
+  the program open and need to modify and activate policy again, the
+  password fields in the installer dialog can be filled
+  automatically. The feature is optional and is off by default.
+  Cached passwords are associated with the firewall object and
+  account name used to activate policy.
+</p>
+
+<p>
+  The program supports new types of interfaces: VLAN, bridge,
+  bonding. This is fully implemented for Linux and partially for other platforms.
+  VLANs are added as child objects of an interface, like so:
+</p>
+
+<img src="vlan_interfaces.png" style="float: left; margin: 10px;">
+
+<p>
+  The GUI checks the name of the vlan subinterface against  naming convention
+  for vlan interfaces on the chosen OS. For example, both "eth0.100" and "vlan100"
+  are supported on Linux, while on Cisco IOS or PIX it should be 
+  "FastEthernet0/1.101"
+</p>
+
+<p>
+  See <a href="#bridge">below</a> for more details on the bridge interfaces implementation.
+</p>
+
+<p>
+  The program can generate commands to confgiure vlans, bridges and bonding 
+  interfaces on Linux. This is off by default and controlled by checkboxes in the
+  "script" tab of the firewall object dialog. Generated script adds and removes
+  vlans, bridges, bridge ports, bond and bond slaves incrementally. That is, the script
+  analyses existing vlan interfaces and compares them with vlan interfaces defined
+  in the Firewall Builder GUI and then adds new ones and removes those that do not
+  exist in fwbuilder. The same algorithm is used to create bridges, add or remove
+  bridge ports and create bonds and then add or remove slave interfaces.
+</p>
+
+<p>
+  <b>Configlets</b>: generated firewall script (for all platforms) is assembled
+  from small fragments we call "configlets". These fragmens are located in the
+  /usr/share/fwbuilder/configlets (on Linux). Each configlet is a template
+  that uses specially defined macros which the program replaces with actual
+  strings and values when it generates firewall configuration. There are separate
+  templates for different firewall platforms and for different parts of the 
+  configuration file to be created. Supported macros  include simple variable
+  expansion and conditional "If - then" construct. You can override configlets
+  we provide with your own if you create directory "fwbuilder/configlets" in your
+  home directory and place files with the same name there. This way, you can change
+  vritually all aspecs of generated confgiuration file.
+</p>
+
+
 
 <a name="cluster"></a>
 <h2>Support for High Availability configurations</h2>
@@ -40,7 +151,7 @@
 </p>
 
 <p>
-New object type "Cluster" (currently it is under Objects in the tree)
+New object type "Cluster" (located under Clusters in the tree)
 represents the HA pair.  You configure policy and NAT rules in the
 rule sets of this object rather than in the actual firewalls.
 </p>
@@ -62,48 +173,61 @@ rule sets of this object rather than in the actual firewalls.
       and host OS. Use the usual "New Object" menu or toolbar button
       to create this object. Note that in order for the firewall
       object to become a member of a cluster, their platform and host
-      os settings must match.
+      OS settings must match.
     </li>
 
     <li>
       The Cluster object gets carp or vrrp interfaces. Name them
       "carp0", "carp1", "vrrp0", "vrrp1" or whatever indexes they have
       on your machines. You can add these when you create new cluster
-      object if choose manual method in the new cluster wizard. You
-      can add CARP/VRRP password and VRID at the same time, but if you
-      don't, you can add them later.
+      object if you choose manual method in the new cluster
+      wizard. You can add CARP/VRRP password and VRID at the same
+      time, but if you don't, you can add them later.
     </li>
 
     <li>
-      Besides interfaces, the Cluster object has a new child object
-      "State Sync Group". this group represents state synchronization
-      protocol. Currently pfsync is supported for OpenBSD and
-      conntrackd for Linux. To configure, double click it in the tree
-      to open it in the dialog and click "Manage Members". Select
-      interfaces of the member firewalls in the panel on the left hand
-      side and click arrow button to add them to the list on the
-      right. Use checkbox to select master. Click OK when done. They
-      should appear in the "members" table in the State Sync Group
-      dialog. Note that platform and host OS of the cluster object and
+      If you use heatbrat or OpenAIS (on Linux) for failover, cluster
+      interfaces should have the same names as corresponding member
+      firewall interfaces. In this case, cluster interfaces are
+      virtual entities that represent interfaces of the corresponding
+      member firewalls. The program will make substitution when it
+      compiles rules. This is also how it works for PIX failover
+      configuration.
+    </li>
+
+    <li>
+      Each cluster interface has child "Failover group" object with
+      the name "firewall:carp0:members" or similar.  This is where you
+      configure associated member firewall interfaces.  Double click
+      this object in the tree and then click "Manage Members" button
+      in the dialog. Select interfaces of the member firewalls in the
+      panel on the left hand side and click arrow button to add them
+      to the list on the right. Use checkbox to select master. Click
+      OK when done. The platform and host OS of the cluster object and
       members must match, otherwise firewall objects do not appear in
       the "members" dialog panel.
     </li>
 
     <li>
-      Each interface of the Cluster also has new child object besides
-      IP address, called "firewall:carp0:members" or similar to
-      this. These objects represent failover groups. Double click on
-      them to open in the dialog. Just like with State Sync Group,
-      there is a table for members and a button "Manage
-      Members". Click this button to add interfaces of the member
-      firewalls to the failover group of each cluster interface. Do
-      not forget to select the master.
+      Besides interfaces, the Cluster object has a new child object
+      "State Sync Group". This group represents state synchronization
+      protocol. Currently <b>pfsync</b> is supported for OpenBSD and
+      <b>conntrackd</b> for Linux. To configure, double click it in
+      the tree to open it in the dialog and click "Manage
+      Members". Select interfaces of the member firewalls in the panel
+      on the left hand side and click arrow button to add them to the
+      list on the right. Use checkbox to select master. Click OK when
+      done. They should appear in the "members" table in the State
+      Sync Group dialog. The platform and host OS of the cluster
+      object and members must match, otherwise firewall objects do not
+      appear in the "members" dialog panel.
     </li>
 
     <li>
       Button "Edit protocol parameters" allows you to edit CARP or
       VRRP password, VHID and other parameters for the failover
-      protocol.
+      protocol. This is where you can configure na ddress and port for
+      heartbeat and OpenAIS and other protocol-specific parameters.
     </li>
 
     <li>
