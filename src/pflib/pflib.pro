@@ -27,7 +27,6 @@ SOURCES	 =  TableFactory.cpp \
 			PolicyCompiler_pf.cpp \
 			PolicyCompiler_pf_writers.cpp \
 			CompilerDriver_pf.cpp \
-			CompilerDriver_pf_cluster.cpp \
 			CompilerDriver_pf_run.cpp \
 			CompilerDriver_ipf.cpp \
 			CompilerDriver_ipf_run.cpp \

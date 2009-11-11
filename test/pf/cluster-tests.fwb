@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="12" lastModified="1247165520" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1247165520" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ObjectRef ref="sysid0"/>
     <StateSyncClusterGroup id="id3505X94039" type="conntrack" name="State Sync Group-1" comment="">
@@ -24,7 +24,7 @@
     </StateSyncClusterGroup>
     <ObjectRef ref="id10491X48869"/>
     <ObjectRef ref="id10489X48869"/>
-    <Interface id="id10489X48869" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="br0" comment="" ro="False">
+    <Interface id="id10489X48869" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="br0" comment="" ro="False">
       <IPv4 id="id11790X48869" name="secuwall-1:br0:ip" comment="" ro="False" address="2.2.2.2" netmask="255.255.255.0"/>
       <InterfaceOptions>
         <Option name="iface_disablearp">False</Option>
@@ -34,7 +34,7 @@
         <Option name="type">bridge</Option>
         <Option name="vlan_id"></Option>
       </InterfaceOptions>
-      <Interface id="id10491X48869" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+      <Interface id="id10491X48869" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
         <InterfaceOptions>
           <Option name="iface_disablearp">False</Option>
           <Option name="iface_disableboot">False</Option>
@@ -44,22 +44,26 @@
           <Option name="vlan_id"></Option>
         </InterfaceOptions>
       </Interface>
-      <Interface id="id10493X48869" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False"/>
+      <Interface id="id10493X48869" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+        <InterfaceOptions/>
+      </Interface>
     </Interface>
-    <Interface id="id5112X49120" dyn="False" security_level="0" unnum="False" unprotected="False" name="New Interface" comment="" ro="False"/>
-    <Interface id="id3209X42281" dyn="False" security_level="0" unnum="False" unprotected="False" name="carp2" comment="" ro="False">
+    <Interface id="id5112X49120" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="New Interface" comment="" ro="False">
+      <InterfaceOptions/>
+    </Interface>
+    <Interface id="id3209X42281" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="carp2" comment="" ro="False">
       <InterfaceOptions>
         <Option name="carp_password">my_secret</Option>
         <Option name="type">carp</Option>
       </InterfaceOptions>
     </Interface>
-    <Interface id="id3211X42281" dyn="False" security_level="0" unnum="False" unprotected="False" name="carp3" comment="" ro="False">
+    <Interface id="id3211X42281" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="carp3" comment="" ro="False">
       <InterfaceOptions>
         <Option name="carp_password">my_secret</Option>
         <Option name="type">carp</Option>
       </InterfaceOptions>
     </Interface>
-    <Interface id="id3203X35714" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
+    <Interface id="id3203X35714" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
       <InterfaceOptions>
         <Option name="type">vrrp</Option>
         <Option name="vrrp_secret">my_secret</Option>
@@ -68,7 +72,7 @@
     <StateSyncClusterGroup id="id7981X81475" type="pfsync" name="pfsync group 2" comment="">
       <ClusterGroupOptions/>
     </StateSyncClusterGroup>
-    <Interface id="id2960X48869" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan100" comment="" ro="False">
+    <Interface id="id2960X48869" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan100" comment="" ro="False">
       <IPv4 id="id3508X48869" name="eth1:vlan100:ip" comment="" ro="False" address="10.10.100.1" netmask="255.255.255.0"/>
       <InterfaceOptions>
         <Option name="iface_disablearp">False</Option>
@@ -79,7 +83,7 @@
         <Option name="vlan_id">100</Option>
       </InterfaceOptions>
     </Interface>
-    <Interface id="id9262X48869" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan101" comment="" ro="False">
+    <Interface id="id9262X48869" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan101" comment="" ro="False">
       <IPv4 id="id9264X48869" name="eth1:vlan101:ip" comment="" ro="False" address="10.10.101.1" netmask="255.255.255.0"/>
       <InterfaceOptions>
         <Option name="iface_disablearp">False</Option>
@@ -102,7 +106,7 @@
     <ObjectRef ref="id2366X75741"/>
     <Cluster id="id2366X75741" host_OS="secuwall" lastCompiled="1247150655" lastInstalled="0" lastModified="1242671896" platform="iptables" name="cluster1" comment="" ro="False">
       <NAT id="id2370X75741" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <NATRule id="id4606X78273" disabled="False" position="0" comment="">
+        <NATRule id="id4606X78273" disabled="False" position="0" action="Translate" comment="">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -253,7 +257,7 @@
         </PolicyRule>
       </Policy>
       <Routing id="id2371X75741" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-      <Interface id="id2374X75741" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
+      <Interface id="id2374X75741" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
         <IPv4 id="id2375X75741" name="cluster1:vrrp0:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.0.0"/>
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
@@ -266,7 +270,7 @@
           </ClusterGroupOptions>
         </FailoverClusterGroup>
       </Interface>
-      <Interface id="id2379X75741" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp1" comment="" ro="False">
+      <Interface id="id2379X75741" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp1" comment="" ro="False">
         <IPv4 id="id2380X75741" name="cluster1:vrrp1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
@@ -274,7 +278,7 @@
         </InterfaceOptions>
         <FailoverClusterGroup id="id2382X75741" master_iface="id2844X69605" type="vrrp" name="cluster1:vrrp1:members" comment=""/>
       </Interface>
-      <Interface id="id3213X42281" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp2" comment="" ro="False">
+      <Interface id="id3213X42281" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp2" comment="" ro="False">
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
           <Option name="type">vrrp</Option>
@@ -291,7 +295,7 @@
     <ObjectRef ref="id2772X94039"/>
     <Cluster id="id2772X94039" host_OS="linux24" inactive="False" lastCompiled="1247150656" lastInstalled="0" lastModified="1243709194" platform="iptables" name="linux_cluster_1" comment="" ro="False">
       <NAT id="id2866X94039" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <NATRule id="id2867X94039" disabled="False" position="0" comment="">
+        <NATRule id="id2867X94039" disabled="False" position="0" action="Translate" comment="">
           <OSrc neg="False">
             <ObjectRef ref="id3DC75CE7-1"/>
           </OSrc>
@@ -524,7 +528,7 @@
         </PolicyRule>
       </Policy>
       <Routing id="id2881X94039" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-      <Interface id="id2882X94039" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
+      <Interface id="id2882X94039" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
         <IPv4 id="id2889X94039" name="cluster1-1:vrrp0:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.0.0"/>
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
@@ -537,7 +541,7 @@
           </ClusterGroupOptions>
         </FailoverClusterGroup>
       </Interface>
-      <Interface id="id2895X94039" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp1" comment="" ro="False">
+      <Interface id="id2895X94039" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp1" comment="" ro="False">
         <IPv4 id="id2901X94039" name="cluster1-1:vrrp1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
@@ -554,7 +558,7 @@
       <NAT id="id2712X89830" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Policy id="id2711X89830" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Routing id="id2713X89830" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-      <Interface id="id2716X89830" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
+      <Interface id="id2716X89830" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
         <IPv4 id="id2717X89830" name="cluster3:vrrp0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
@@ -562,7 +566,7 @@
         </InterfaceOptions>
         <FailoverClusterGroup id="id3048X95200" master_iface="id4030X2906" type="vrrp" name="Failover group" comment=""/>
       </Interface>
-      <Interface id="id2721X89830" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp1" comment="" ro="False">
+      <Interface id="id2721X89830" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vrrp1" comment="" ro="False">
         <IPv4 id="id2722X89830" name="cluster3:vrrp1:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
@@ -577,13 +581,13 @@
       <NAT id="id3102X82837" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Policy id="id3101X82837" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Routing id="id3103X82837" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-      <Interface id="id3104X82837" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+      <Interface id="id3104X82837" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
         <IPv4 id="id3109X82837" name="gw1-bridge:eth0:ip" comment="" ro="False" address="172.24.0.2" netmask="255.255.0.0"/>
         <InterfaceOptions>
           <Option name="type">ethernet</Option>
           <Option name="vlan_id">0</Option>
         </InterfaceOptions>
-        <Interface id="id3111X82837" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="" ro="False">
+        <Interface id="id3111X82837" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="" ro="False">
           <InterfaceOptions>
             <Option name="dev_plus_vid">False</Option>
             <Option name="dev_plus_vid_no_pad">True</Option>
@@ -594,7 +598,7 @@
           </InterfaceOptions>
         </Interface>
       </Interface>
-      <Interface id="id3114X82837" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="br1" comment="" ro="False">
+      <Interface id="id3114X82837" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="br1" comment="" ro="False">
         <IPv4 id="id3117X82837" name="gw1-bridge:br1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
         <InterfaceOptions>
           <Option name="dev_plus_vid">False</Option>
@@ -606,7 +610,7 @@
           <Option name="vlan_plus_vid">False</Option>
           <Option name="vlan_plus_vid_no_pad">True</Option>
         </InterfaceOptions>
-        <Interface id="id3127X82837" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3127X82837" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <InterfaceOptions>
             <Option name="dev_plus_vid">False</Option>
             <Option name="dev_plus_vid_no_pad">False</Option>
@@ -616,9 +620,11 @@
             <Option name="vlan_plus_vid_no_pad">True</Option>
           </InterfaceOptions>
         </Interface>
-        <Interface id="id3129X82837" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False"/>
+        <Interface id="id3129X82837" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
       </Interface>
-      <Interface id="id3119X82837" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+      <Interface id="id3119X82837" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
         <IPv4 id="id3121X82837" name="gw1-bridge:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         <InterfaceOptions/>
       </Interface>
@@ -714,13 +720,13 @@
       <NAT id="id2827X69605" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Policy id="id2741X69605" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Routing id="id2842X69605" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-      <Interface id="id2843X69605" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+      <Interface id="id2843X69605" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
         <IPv4 id="id3764X78273" name="linux-1:eth0:ip" comment="" ro="False" address="172.24.0.2" netmask="255.255.0.0"/>
         <InterfaceOptions>
           <Option name="type">ethernet</Option>
           <Option name="vlan_id">0</Option>
         </InterfaceOptions>
-        <Interface id="id3188X29979" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="" ro="False">
+        <Interface id="id3188X29979" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="" ro="False">
           <InterfaceOptions>
             <Option name="dev_plus_vid">False</Option>
             <Option name="dev_plus_vid_no_pad">True</Option>
@@ -731,15 +737,16 @@
           </InterfaceOptions>
         </Interface>
       </Interface>
-      <Interface id="id2844X69605" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+      <Interface id="id2844X69605" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
         <IPv4 id="id2846X69605" name="linux-1:eth1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
           <Option name="type">ethernet</Option>
         </InterfaceOptions>
       </Interface>
-      <Interface id="id2847X69605" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+      <Interface id="id2847X69605" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
         <IPv4 id="id2849X69605" name="linux-1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        <InterfaceOptions/>
       </Interface>
       <Management address="192.168.1.2">
         <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -830,14 +837,17 @@
       <NAT id="id3101X69605" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Policy id="id3015X69605" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Routing id="id3116X69605" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-      <Interface id="id3117X69605" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+      <Interface id="id3117X69605" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
         <IPv4 id="id3765X78273" name="linux-2:eth0:ip" comment="" ro="False" address="172.24.0.3" netmask="255.255.0.0"/>
+        <InterfaceOptions/>
       </Interface>
-      <Interface id="id3118X69605" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+      <Interface id="id3118X69605" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
         <IPv4 id="id3120X69605" name="linux-2:eth1:ip" comment="" ro="False" address="192.168.1.3" netmask="255.255.255.0"/>
+        <InterfaceOptions/>
       </Interface>
-      <Interface id="id3121X69605" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+      <Interface id="id3121X69605" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
         <IPv4 id="id3123X69605" name="linux-2:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        <InterfaceOptions/>
       </Interface>
       <Management address="192.168.1.3">
         <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -926,14 +936,14 @@
       <NAT id="id4028X2906" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Policy id="id4027X2906" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Routing id="id4029X2906" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-      <Interface id="id4030X2906" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+      <Interface id="id4030X2906" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
         <IPv4 id="id4032X2906" name="secuwall-1:eth0:ip" comment="" ro="False" address="172.24.0.2" netmask="255.255.0.0"/>
         <InterfaceOptions>
           <Option name="iface_mtu">1500</Option>
           <Option name="type">ethernet</Option>
         </InterfaceOptions>
       </Interface>
-      <Interface id="id4033X2906" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+      <Interface id="id4033X2906" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
         <IPv4 id="id4036X2906" name="secuwall-1:eth1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
         <InterfaceOptions>
           <Option name="iface_disablearp">False</Option>
@@ -944,8 +954,12 @@
           <Option name="vlan_id"></Option>
         </InterfaceOptions>
       </Interface>
-      <Interface id="id4038X2906" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+      <Interface id="id4038X2906" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
         <IPv4 id="id4040X2906" name="secuwall-1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        <InterfaceOptions>
+          <Option name="iface_mtu">1500</Option>
+          <Option name="iface_type">ethernet</Option>
+        </InterfaceOptions>
       </Interface>
       <Management address="192.168.1.2">
         <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1034,16 +1048,28 @@
       <NAT id="id4053X2906" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Policy id="id4052X2906" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
       <Routing id="id4054X2906" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-      <Interface id="id4055X2906" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+      <Interface id="id4055X2906" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
         <IPv4 id="id4057X2906" name="secuwall-2:eth0:ip" comment="" ro="False" address="172.24.0.3" netmask="255.255.0.0"/>
+        <InterfaceOptions>
+          <Option name="iface_mtu">1500</Option>
+          <Option name="iface_type">ethernet</Option>
+        </InterfaceOptions>
       </Interface>
-      <Interface id="id4058X2906" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+      <Interface id="id4058X2906" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
         <IPv4 id="id4060X2906" name="secuwall-2:eth1:ip" comment="" ro="False" address="192.168.1.3" netmask="255.255.255.0"/>
+        <InterfaceOptions>
+          <Option name="iface_mtu">1500</Option>
+          <Option name="iface_type">ethernet</Option>
+        </InterfaceOptions>
       </Interface>
-      <Interface id="id4061X2906" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+      <Interface id="id4061X2906" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
         <IPv4 id="id4063X2906" name="secuwall-2:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        <InterfaceOptions>
+          <Option name="iface_mtu">1500</Option>
+          <Option name="iface_type">ethernet</Option>
+        </InterfaceOptions>
       </Interface>
-      <Interface id="id3805X49120" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="br0" comment="" ro="False">
+      <Interface id="id3805X49120" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="br0" comment="" ro="False">
         <IPv4 id="id3809X49120" name="secuwall-2:br0:ip" comment="" ro="False" address="2.2.2.2" netmask="255.255.255.0"/>
         <InterfaceOptions>
           <Option name="iface_disablearp">False</Option>
@@ -1053,13 +1079,18 @@
           <Option name="type">bonding</Option>
           <Option name="vlan_id"></Option>
         </InterfaceOptions>
-        <Interface id="id3807X49120" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3807X49120" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">ethernet</Option>
           </InterfaceOptions>
         </Interface>
-        <Interface id="id3808X49120" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False"/>
+        <Interface id="id3808X49120" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="iface_mtu">1500</Option>
+            <Option name="iface_type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
       </Interface>
       <Management address="192.168.1.3">
         <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1148,7 +1179,7 @@
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
       <Cluster id="id3631X95766" host_OS="openbsd" inactive="False" lastCompiled="1248551815" lastInstalled="0" lastModified="1247165543" platform="pf" name="pf_cluster_1" comment=" " ro="False">
         <NAT id="id3640X95766" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <NATRule id="id3162X39764" disabled="False" position="0" comment="">
+          <NATRule id="id3162X39764" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -1169,7 +1200,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id11381X39764" disabled="False" group="" position="1" comment="">
+          <NATRule id="id11381X39764" disabled="False" group="" position="1" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -1190,7 +1221,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id11397X39764" disabled="False" group="" position="2" comment="">
+          <NATRule id="id11397X39764" disabled="False" group="" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3DC75CE7-1"/>
             </OSrc>
@@ -1211,7 +1242,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id15078X39764" disabled="False" group="" position="3" comment="">
+          <NATRule id="id15078X39764" disabled="False" group="" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -1232,7 +1263,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id16591X39764" disabled="False" group="" position="4" comment="">
+          <NATRule id="id16591X39764" disabled="False" group="" position="4" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -1253,7 +1284,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id16611X39764" disabled="False" group="" position="5" comment="">
+          <NATRule id="id16611X39764" disabled="False" group="" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -1398,7 +1429,7 @@
           </PolicyRule>
         </Policy>
         <Routing id="id3641X95766" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3642X95766" dyn="False" label="pf_clsuter_1 carp0" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp0" comment="" ro="False">
+        <Interface id="id3642X95766" dedicated_failover="False" dyn="False" label="pf_clsuter_1 carp0" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp0" comment="" ro="False">
           <IPv4 id="id3647X95766" name="pf_cluster_1:carp0:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
           <IPv4 id="id16633X39764" name="pf_cluster_1:carp0:ip-1" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
@@ -1417,7 +1448,7 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id3651X95766" dyn="False" label="pf_cluster_1 carp1" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp1" comment="" ro="False">
+        <Interface id="id3651X95766" dedicated_failover="False" dyn="False" label="pf_cluster_1 carp1" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp1" comment="" ro="False">
           <IPv4 id="id3656X95766" name="pf_cluster_1:carp1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
@@ -1432,7 +1463,7 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id3695X33400" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id3695X33400" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3697X33400" name="pf_cluster_1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions>
             <Option name="carp_password">my_secret</Option>
@@ -1473,7 +1504,7 @@
           </PolicyRule>
         </Policy>
         <Routing id="id5644X42213" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id5470X42213" dyn="False" label="pf_clsuter_1 carp0" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp0" comment="" ro="False">
+        <Interface id="id5470X42213" dedicated_failover="False" dyn="False" label="pf_clsuter_1 carp0" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp0" comment="" ro="False">
           <IPv4 id="id5478X42213" name="pf_cluster_1-1:carp0:ip1" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
           <IPv4 id="id5479X42213" name="pf_cluster_1-1:carp0:ip2" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
@@ -1492,7 +1523,7 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id5485X42213" dyn="False" label="pf_cluster_1 carp1" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp1" comment="" ro="False">
+        <Interface id="id5485X42213" dedicated_failover="False" dyn="False" label="pf_cluster_1 carp1" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp1" comment="" ro="False">
           <IPv4 id="id5492X42213" name="pf_cluster_1-1:carp1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
@@ -1523,7 +1554,7 @@
         <NAT id="id3646X20162" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id3645X20162" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id3647X20162" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3650X20162" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="carp0" comment="" ro="False">
+        <Interface id="id3650X20162" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="carp0" comment="" ro="False">
           <IPv4 id="id3651X20162" name="pf_cluster_3:carp0:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="type">cluster_interface</Option>
@@ -1535,7 +1566,7 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id3655X20162" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="carp1" comment="" ro="False">
+        <Interface id="id3655X20162" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="carp1" comment="" ro="False">
           <IPv4 id="id3656X20162" name="pf_cluster_3:carp1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="type">cluster_interface</Option>
@@ -1547,7 +1578,7 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id3660X20162" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+        <Interface id="id3660X20162" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
           <IPv4 id="id3661X20162" name="pf_cluster_3:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions>
             <Option name="type">cluster_interface</Option>
@@ -1595,18 +1626,19 @@
         <NAT id="id2831X26920" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id2830X26920" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id2832X26920" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id2833X26920" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+        <Interface id="id2833X26920" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
           <IPv4 id="id2834X26920" name="openbsd-1:en0:ip" comment="" ro="False" address="172.24.0.2" netmask="255.255.255.0"/>
           <InterfaceOptions/>
-          <Interface id="id3234X10904" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan0" comment="" ro="False">
+          <Interface id="id3234X10904" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan0" comment="" ro="False">
             <InterfaceOptions>
               <Option name="type">8021q</Option>
               <Option name="vlan_id">100</Option>
             </InterfaceOptions>
           </Interface>
         </Interface>
-        <Interface id="id2835X26920" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+        <Interface id="id2835X26920" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
           <IPv4 id="id2836X26920" name="openbsd-1:en1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1708,11 +1740,13 @@
         <NAT id="id3344X26920" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id3343X26920" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id3345X26920" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3346X26920" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+        <Interface id="id3346X26920" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
           <IPv4 id="id3348X26920" name="openbsd-2:en0:ip" comment="" ro="False" address="172.24.0.3" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id3349X26920" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+        <Interface id="id3349X26920" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
           <IPv4 id="id3351X26920" name="openbsd-2:en1:ip" comment="" ro="False" address="192.168.1.3" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1814,18 +1848,19 @@
         <NAT id="id7310X42213" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id7309X42213" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id7311X42213" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id7296X42213" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+        <Interface id="id7296X42213" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
           <IPv4 id="id7301X42213" name="freebsd-1:en0:ip" comment="" ro="False" address="172.24.0.2" netmask="255.255.255.0"/>
           <InterfaceOptions/>
-          <Interface id="id7303X42213" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan0" comment="" ro="False">
+          <Interface id="id7303X42213" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="vlan0" comment="" ro="False">
             <InterfaceOptions>
               <Option name="type">8021q</Option>
               <Option name="vlan_id">100</Option>
             </InterfaceOptions>
           </Interface>
         </Interface>
-        <Interface id="id7306X42213" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+        <Interface id="id7306X42213" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
           <IPv4 id="id7308X42213" name="freebsd-1:en1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -1928,11 +1963,13 @@
         <NAT id="id7330X42213" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id7329X42213" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id7331X42213" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id7323X42213" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+        <Interface id="id7323X42213" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
           <IPv4 id="id7325X42213" name="freebsd-2:en0:ip" comment="" ro="False" address="172.24.0.3" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
-        <Interface id="id7326X42213" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+        <Interface id="id7326X42213" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
           <IPv4 id="id7328X42213" name="freebsd-2:en1:ip" comment="" ro="False" address="192.168.1.3" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
         </Interface>
         <Management address="0.0.0.0">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>

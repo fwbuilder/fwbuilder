@@ -174,7 +174,7 @@ public:
                                              libfwbuilder::Firewall *fw);
 
         virtual void processStateSyncGroups(libfwbuilder::Cluster*,
-                                            libfwbuilder::Firewall*) {};
+                                            libfwbuilder::Firewall*);
 
         std::string indent(int n_spaces, const std::string &txt);
         QString indent(int n_spaces, const QString &txt);

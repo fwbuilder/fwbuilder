@@ -4605,14 +4605,14 @@ bool PolicyCompiler_ipt::isMangleOnlyRuleSet(const string &ruleset_name)
 void PolicyCompiler_ipt::insertConntrackRule()
 {
     FWOptions* options = fw->getOptionsObject();
-    string conntrack_iface_name = options->getStr("conntrack_interface");
+    string conntrack_iface_name = options->getStr("state_sync_interface");
     if (conntrack_iface_name.empty())
     {
         /* CONNTRACK not active, nothing left to do */
         return;
     }
 
-    string conntrack_group_id = options->getStr("conntrack_group_id");
+    string conntrack_group_id = options->getStr("state_sync_group_id");
     StateSyncClusterGroup *state_sync_group = 
         StateSyncClusterGroup::cast(
             dbcopy->findInIndex(

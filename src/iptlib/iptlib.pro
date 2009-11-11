@@ -6,7 +6,6 @@ include(../../qmake.inc)
 TEMPLATE = lib
 
 SOURCES	 =  CompilerDriver_ipt.cpp \
-			CompilerDriver_ipt_cluster.cpp \
 			CompilerDriver_ipt_run.cpp \
 			CompilerDriver_ipt_policy.cpp \
 			CompilerDriver_ipt_nat.cpp \

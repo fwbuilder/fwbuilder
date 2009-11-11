@@ -136,9 +136,6 @@ public:
                                 const std::string &firewall_id,
                                 const std::string &single_rule_id);
 
-        void processStateSyncGroups(libfwbuilder::Cluster *cluster,
-                                    libfwbuilder::Firewall *member_fw);
-
     };
 };
 

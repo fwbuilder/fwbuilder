@@ -109,9 +109,6 @@ public:
             std::map<const std::string, bool> &minus_n_commands_nat);
 
         
-        virtual void processStateSyncGroups(libfwbuilder::Cluster *cluster,
-                                            libfwbuilder::Firewall *member_fw);
-
     };
 };
 

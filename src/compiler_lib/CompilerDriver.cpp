@@ -918,6 +918,40 @@ void CompilerDriver::copyFailoverInterface(Cluster *cluster,
     cluster->addCopyOf(iface, true);
 }
 
+/**
+ * Do something with state sync cluster groups. Find interfaces that
+ * were placed in the group and store the name in the variable
+ * "state_sync_interface" which is used later to associate policy rule
+ * that should be added to permit state sync protocol with right
+ * interface. For iptables we add rule to permit conntrackd, for PIX
+ * we generate "failover" commands, etc.
+ */
+void CompilerDriver::processStateSyncGroups(Cluster *cluster, Firewall *member_fw)
+{
+    for (FWObjectTypedChildIterator it = cluster->findByType(StateSyncClusterGroup::TYPENAME);
+         it != it.end(); ++it)
+    {
+        FWObject *state_sync_group = *it;
+        for (FWObjectTypedChildIterator grp_it =
+                 state_sync_group->findByType(FWObjectReference::TYPENAME);
+             grp_it != grp_it.end(); ++grp_it)
+        {
+            FWObject *iface = FWObjectReference::getObject(*grp_it);
+            if (iface->isChildOf(member_fw))
+            {
+                member_fw->getOptionsObject()->setStr(
+                    "state_sync_group_id",
+                    FWObjectDatabase::getStringId(state_sync_group->getId()));
+
+                member_fw->getOptionsObject()->setStr(
+                    "state_sync_interface",
+                    iface->getName());
+                break;
+            }
+        }
+    }
+}
+
 /*
  * Verify that there is at least one Cluster interface and that all
  * have unique names and IP addresses.

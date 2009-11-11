@@ -291,7 +291,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 
     /* conntrackd */
     s.clear();
-    s = options->getStr("conntrack_interface").c_str();
+    s = options->getStr("state_sync_interface").c_str();
     stream << "CONNTRACKD=";
     if (s.isEmpty())
     {

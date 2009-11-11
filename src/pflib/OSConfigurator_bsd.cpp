@@ -276,10 +276,10 @@ string OSConfigurator_bsd::configureInterfaces()
          *  http://www.openbsd.org/faq/pf/carp.html
          * pfsync configuration:
          *
-         * ifconfig pfsyncN syncdev syncdev [syncpeer syncpeer] 
+         * ifconfig pfsyncN syncdev syncdev [syncpeer syncpeer]
          */
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
-        for ( ; i!=i.end(); ++i ) 
+        for ( ; i!=i.end(); ++i)
         {
             Interface *iface = Interface::cast(*i);
             assert(iface);
