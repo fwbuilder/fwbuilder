@@ -34,6 +34,8 @@
 #include <map>
 #include <QString>
 
+class Configlet;
+
 namespace fwcompiler {
 
     class OSConfigurator_pix_os : public OSConfigurator {
@@ -50,7 +52,9 @@ namespace fwcompiler {
         std::string _printFailoverConfiguration();
 
         std::string _printLogging();
-        std::string _printSNMPServer(const std::string &srv,int poll_trap);
+
+        void _configureSNMPServer(Configlet *cnf, int server_num,
+                                  const std::string &srv, int poll_trap);
         std::string _printSNMP();
         std::string _printSysopt();
         std::string _printNTPServer(const std::string &srv,bool pref);

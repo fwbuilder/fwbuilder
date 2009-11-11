@@ -75,28 +75,32 @@ void OSConfigurator_pix_os::processFirewallOptions()
         output << endl;
     }
 
-    //output << _printNameif();
-    //output << endl;
-    //output << _printIPAddress();
-    //output << endl;
-
     output << _printInterfaceConfiguration();
     output << endl;
-    output << _printFailoverConfiguration();
-    output << endl;
-    output << endl;
-    output << endl;
+
+    if (fw->getOptionsObject()->getBool("cluster_member"))
+    {
+        output << _printFailoverConfiguration();
+        output << endl;
+        output << endl;
+        output << endl;
+    }
 
     output << _printLogging();
     output << endl;
+
     output << _printTimeouts();
     output << endl;
+
     output << _printSNMP();
     output << endl;
+
     output << _printNTP();
     output << endl;
+
     output << _printSysopt();
     output << endl;
+
     output << getProtocolInspectionCommands();
     output << endl;
 }
@@ -374,33 +378,50 @@ string OSConfigurator_pix_os::_printLogging()
     return str.str();
 }
 
-string  OSConfigurator_pix_os::_printSNMPServer(const std::string &srv,
-                                                int poll_trap)
+void OSConfigurator_pix_os::_configureSNMPServer(Configlet *cnf,
+                                                 int server_num,
+                                                 const string &srv,
+                                                 int poll_trap)
 {
-    Helper helper(this);
+    QString interface_var = QString("interface_%1_label").arg(server_num);
+    QString address_var = QString("address_%1").arg(server_num);
+    QString poll_or_trap_var = QString("poll_or_trap_%1").arg(server_num);
 
-    ostringstream  str;
+    Helper helper(this);
     InetAddr srv_addr(srv);
-    int iface_id=helper.findInterfaceByNetzone(&srv_addr);
+    int iface_id = helper.findInterfaceByNetzone(&srv_addr);
     if (iface_id == -1)
         abort(string("SNMP server ") + srv + 
               " does not belong to any known network zone");
     Interface *snmp_iface = Interface::cast(dbcopy->findInIndex(iface_id));
-    str << "snmp-server host " << snmp_iface->getLabel() << " " << srv;
+    cnf->setVariable(interface_var, snmp_iface->getLabel().c_str());
+    cnf->setVariable(address_var, srv.c_str());
+
     switch (poll_trap)
     {
-    case 1:  str << " poll" << endl; break;
-    case 2:  str << " trap" << endl; break;
-    default: str << endl; break;
+    case 1:
+        cnf->setVariable(poll_or_trap_var, "poll");
+        break;
+    case 2:
+        cnf->setVariable(poll_or_trap_var, "trap");
+        break;
+    default:
+        cnf->setVariable(poll_or_trap_var, "");
+        break;
     }
-    return str.str();
 }
 
 string OSConfigurator_pix_os::_printSNMP()
 {
-    ostringstream  str;
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
+    bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
+
+    Configlet cnf(fw, "pix_os", "snmp");
+    cnf.removeComments();
+    cnf.collapseEmptyStrings(true);
+    cnf.setVariable("pix_version_lt_70", ! version_ge_70);
+    cnf.setVariable("pix_version_ge_70",   version_ge_70);
 
     bool set_communities = fw->getOptionsObject()->getBool(
         "pix_set_communities_from_object_data");
@@ -409,63 +430,34 @@ string OSConfigurator_pix_os::_printSNMP()
     bool enable_traps = fw->getOptionsObject()->getBool(
         "pix_enable_snmp_traps");
 
-    string clearSNMPcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/version_")+
-        version+"/pix_commands/clear_snmp");
+    cnf.setVariable("clear",
+                    !fw->getOptionsObject()->getBool("pix_acl_no_clear"));
+    cnf.setVariable("disable",
+                    fw->getOptionsObject()->getBool("pix_disable_snmp_agent"));
+    cnf.setVariable("not_disable",
+                    ! fw->getOptionsObject()->getBool("pix_disable_snmp_agent"));
+    cnf.setVariable("set_community", set_communities);
+    cnf.setVariable(
+        "read_community",
+        fw->getManagementObject()->getSNMPManagement()->getReadCommunity().c_str());
 
-    if ( !fw->getOptionsObject()->getBool("pix_acl_no_clear") ) 
-        str << clearSNMPcmd << endl;
+    cnf.setVariable("set_sysinfo", set_sysinfo);
+    QString location = fw->getOptionsObject()->getStr("snmp_location").c_str();
+    QString contact = fw->getOptionsObject()->getStr("snmp_contact").c_str();
 
-    if ( fw->getOptionsObject()->getBool("pix_disable_snmp_agent") ) 
-    {
-        str << "no snmp-server " << endl;
-    } else
-    {
+    cnf.setVariable("not_enable_traps", ! enable_traps);
 
-        if (set_communities)
-        {
-            string read_c = fw->getManagementObject()->
-                getSNMPManagement()->getReadCommunity();
-            str << endl;
-            str << "snmp-server community " << read_c << endl;
-        }
+    string snmp_server_1 = fw->getOptionsObject()->getStr("pix_snmp_server1");
+    string snmp_server_2 = fw->getOptionsObject()->getStr("pix_snmp_server2");
+    int snmp_poll_traps_1 = fw->getOptionsObject()->getInt("pix_snmp_poll_traps_1");
+    int snmp_poll_traps_2 = fw->getOptionsObject()->getInt("pix_snmp_poll_traps_2");
 
-        if (set_sysinfo)
-        {
-            string location=fw->getOptionsObject()->getStr("snmp_location");
-            string contact =fw->getOptionsObject()->getStr("snmp_contact");
-            str << endl;
-            if (!location.empty())
-                str << "snmp-server location " << location << endl;
-            if (!contact.empty())
-                str << "snmp-server contact  " << contact  << endl;
-        }
+    cnf.setVariable("not_server_1_empty", ! snmp_server_1.empty());
+    cnf.setVariable("not_server_2_empty", ! snmp_server_2.empty());
+    _configureSNMPServer(&cnf, 1, snmp_server_1, snmp_poll_traps_1);
+    _configureSNMPServer(&cnf, 2, snmp_server_2, snmp_poll_traps_2);
 
-        if (enable_traps)
-        {
-            str << endl;
-            str << "snmp-server enable traps" << endl;
-        } else {
-            str << endl;
-            str << "no snmp-server enable traps" << endl;
-        }
-
-        string snmp_server_1 = fw->getOptionsObject()->getStr(
-            "pix_snmp_server1");
-        string snmp_server_2 = fw->getOptionsObject()->getStr(
-            "pix_snmp_server2");
-        int  snmp_poll_traps_1 = fw->getOptionsObject()->getInt(
-            "pix_snmp_poll_traps_1");
-        int  snmp_poll_traps_2 = fw->getOptionsObject()->getInt(
-            "pix_snmp_poll_traps_2");
-
-        if (!snmp_server_1.empty()) 
-            str << _printSNMPServer(snmp_server_1,snmp_poll_traps_1);
-
-        if (!snmp_server_2.empty()) 
-            str << _printSNMPServer(snmp_server_2,snmp_poll_traps_2);
-    }
-    return str.str();
+    return cnf.expand().toStdString() + "\n";
 }
 
 string  OSConfigurator_pix_os::_printNTPServer(const std::string &srv,bool pref)

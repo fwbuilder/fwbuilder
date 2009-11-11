@@ -1,0 +1,33 @@
+## -*- mode: shell-script; -*- 
+##
+
+{{if clear}}
+{{if pix_version_lt_70}}
+clear snmp-server
+{{endif}}
+{{if pix_version_ge_70}}
+clear config snmp-server
+{{endif}}
+{{endif}}
+
+
+{{if disable}}
+no snmp-server
+{{endif}}
+
+{{if not_disable}}
+{{if set_community}}
+snmp-server community {{$read_community}}
+{{endif}}
+
+{{if set_sysinfo}}
+{{if not_location_empty}}snmp-server location {{$location}}{{endif}}
+{{if not_contact_empty}}snmp-server contact {{$contact}}{{endif}}
+{{endif}}
+
+{{if not_enable_traps}}no {{endif}}snmp-server enable traps
+
+{{if not_server_1_empty}}snmp-server host {{$interface_1_label}} {{$address_1}} {{$poll_or_trap_1}}  {{endif}}
+{{if not_server_2_empty}}snmp-server host {{$interface_2_label}} {{$address_2}} {{$poll_or_trap_2}}  {{endif}}
+
+{{endif}}
