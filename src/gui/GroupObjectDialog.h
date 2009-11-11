@@ -79,8 +79,6 @@ class GroupObjectDialog : public BaseObjectDialog
     virtual void switchToIconView();
     virtual void switchToListView();
     virtual void openObject();
-    virtual void openObject(QListWidgetItem *itm);
-    virtual void openObject(QTreeWidgetItem *itm);
     virtual void dropped(QDropEvent *ev);
     virtual void iconContextMenu(const QPoint & pos);
     virtual void listContextMenu(const QPoint & pos);

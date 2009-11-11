@@ -115,11 +115,6 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     m_dialog->iconViewBtn->setAutoRaise(false);
     m_dialog->listViewBtn->setAutoRaise(false);
 
-    //apply->setEnabled( false );
-
-    connect( iconView, SIGNAL( itemActivated(QListWidgetItem*) ),
-             this,     SLOT( openObject(QListWidgetItem*) ) );
-
     connect( iconView, SIGNAL( currentItemChanged(QListWidgetItem*,QListWidgetItem*) ),
              this,     SLOT( iconViewCurrentChanged(QListWidgetItem*) ) );
 
@@ -136,8 +131,6 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
              this,     SLOT( deleteObj() ) );
 
 
-    connect( listView, SIGNAL( itemActivated(QTreeWidgetItem*,int) ),
-             this,     SLOT( openObject(QTreeWidgetItem*) ) );
     connect( listView, SIGNAL( currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*) ),
              this,     SLOT( listViewCurrentChanged(QTreeWidgetItem*) ) );
     connect( listView, SIGNAL (itemSelectionChanged()),
@@ -489,6 +482,7 @@ void GroupObjectDialog::switchToListView()
     st->setGroupViewMode(LIST_VIEW_MODE);
 }
 
+// This method is attached to the context menu item "Edit"
 void GroupObjectDialog::openObject()
 {
     if (selectedObject!=NULL)
@@ -496,30 +490,9 @@ void GroupObjectDialog::openObject()
         QCoreApplication::postEvent(
             m_project, new showObjectInTreeEvent(selectedObject->getRoot()->getFileName().c_str(),
                                                  selectedObject->getId()));
-    }
-}
-
-void GroupObjectDialog::openObject(QTreeWidgetItem *itm)
-{
-    int obj_id = itm->data(0, Qt::UserRole).toInt();
-    FWObject *o = m_project->db()->findInIndex(obj_id);
-    if (o!=NULL)
-    {
         QCoreApplication::postEvent(
-            m_project, new showObjectInTreeEvent(o->getRoot()->getFileName().c_str(),
-                                                 o->getId()));
-    }
-}
-
-void GroupObjectDialog::openObject(QListWidgetItem *itm)
-{
-    int obj_id = itm->data(Qt::UserRole).toInt();
-    FWObject *o = m_project->db()->findInIndex(obj_id);
-    if (o!=NULL)
-    {
-        QCoreApplication::postEvent(
-            m_project, new showObjectInTreeEvent(o->getRoot()->getFileName().c_str(),
-                                                 o->getId()));
+            m_project, new openObjectInEditorEvent(selectedObject->getRoot()->getFileName().c_str(),
+                                                   selectedObject->getId()));
     }
 }
 
