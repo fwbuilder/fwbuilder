@@ -15,9 +15,15 @@
 
 {{if pix_version_ge_70}}
 failover lan unit {{$primary_or_secondary}}
-failover lan interface {{$interface_label}} {{$interface_name}} 
+failover lan interface {{$failover_interface_label}} {{$failover_interface_name}} 
 failover lan enable
 failover key {{$failover_key}}
-failover interface ip {{$interface_label}} {{$address}} {{$netmask}} standby {{$standby_address}}
+
+failover interface ip {{$failover_interface_label}} {{$failover_interface_address}} {{$failover_interface_netmask}} standby {{$failover_interface_standby_address}}
+
+failover link {{$state_sync_interface_label}} {{$state_sync_interface}}
+failover interface ip {{$state_sync_interface_label}} {{$state_sync_interface_address}} {{$state_sync_interface_netmask}} standby {{$state_sync_interface_standby_address}}
+
 failover
+
 {{endif}}

@@ -263,8 +263,8 @@ string OSConfigurator_pix_os::_printFailoverConfiguration()
 
         if (iface->isDedicatedFailover()) 
         {
-            cnf.setVariable("interface_name",  iface->getName().c_str());
-            cnf.setVariable("interface_label", iface->getLabel().c_str());
+            cnf.setVariable("failover_interface_name",  iface->getName().c_str());
+            cnf.setVariable("failover_interface_label", iface->getLabel().c_str());
 
             QString primary_or_secondary = "secondary";
             int failover_group_id = FWObjectDatabase::getIntId(
@@ -285,11 +285,15 @@ string OSConfigurator_pix_os::_printFailoverConfiguration()
 
             _getAddressConfigurationForInterface(iface, &addr, &netm, &standby_addr);
 
-            cnf.setVariable("address", addr);
-            cnf.setVariable("netmask", netm);
-            cnf.setVariable("standby_address", standby_addr);
+            cnf.setVariable("failover_interface_address", addr);
+            cnf.setVariable("failover_interface_netmask", netm);
+            cnf.setVariable("failover_interface_standby_address", standby_addr);
         }
     }
+
+    // configure state sync
+    // StateSyncClusterGroup object belongs to the cluster
+
     return cnf.expand().toStdString();
 }
 
