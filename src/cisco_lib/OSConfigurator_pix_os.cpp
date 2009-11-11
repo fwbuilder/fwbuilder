@@ -82,6 +82,10 @@ void OSConfigurator_pix_os::processFirewallOptions()
 
     output << _printInterfaceConfiguration();
     output << endl;
+    output << _printFailoverConfiguration();
+    output << endl;
+    output << endl;
+    output << endl;
 
     output << _printLogging();
     output << endl;
@@ -97,6 +101,44 @@ void OSConfigurator_pix_os::processFirewallOptions()
     output << endl;
 }
 
+void OSConfigurator_pix_os::_getAddressConfigurationForInterface(Interface *iface,
+                                                                 QString *addr,
+                                                                 QString *netm,
+                                                                 QString *standby_addr)
+{
+    const InetAddr *a = iface->getAddressPtr();
+    const InetAddr *n = iface->getNetmaskPtr();
+    if (a && n)
+    {
+        *addr = a->toString().c_str();
+        *netm = n->toString().c_str();
+    }
+
+    if (standby_addr)
+    {
+        // find standby address (address of the other unit in failover group)
+        int failover_group_id = FWObjectDatabase::getIntId(
+            iface->getOptionsObject()->getStr("failover_group_id"));
+        FWObject *failover_group = fw->getRoot()->findInIndex(failover_group_id);
+        if (failover_group)
+        {
+            for (FWObjectTypedChildIterator it =
+                     failover_group->findByType(FWObjectReference::TYPENAME);
+                 it != it.end(); ++it)
+            {
+                Interface *failover_intf = Interface::cast(FWObjectReference::getObject(*it));
+                assert(failover_intf);
+                if (failover_intf->getId() != iface->getId())
+                {
+                    const InetAddr *a = failover_intf->getAddressPtr();
+                    if (a) *standby_addr = a->toString().c_str();
+                    break;
+                }
+            }
+        }
+    }
+}
+
 string OSConfigurator_pix_os::_printInterfaceConfiguration()
 {
     ostringstream res;
@@ -105,42 +147,146 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
     string::size_type n;
 
     bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
-    bool configure_addresses = fw->getOptionsObject()->getBool("pix_ip_address");
+    bool configure_address = fw->getOptionsObject()->getBool("pix_ip_address");
+    bool configure_standby_address =
+        configure_address && fw->getOptionsObject()->getBool("cluster_member");
 
-    list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
+    list<FWObject*> l2=fw->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
 	Interface *iface=dynamic_cast<Interface*>(*i);
 	assert(iface);
 
-        Configlet interface_config(fw, "pix_os", "configure_interfaces");
-        interface_config.removeComments();
-        interface_config.collapseEmptyStrings(true);
+        if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
 
-        interface_config.setVariable("pix_version_lt_70", ! version_ge_70);
-        interface_config.setVariable("pix_version_ge_70",   version_ge_70);
-        interface_config.setVariable("configure_interface_address",
-                                     configure_addresses);
-
-        interface_config.setVariable("interface_name",  iface->getName().c_str());
-        interface_config.setVariable("interface_label", iface->getLabel().c_str());
-        interface_config.setVariable("security_level",  iface->getSecurityLevel());
-
-        interface_config.setVariable("static_address", ! iface->isDyn());
-        interface_config.setVariable("dhcp_address",     iface->isDyn());
-        if (!iface->isDyn())
+        Configlet *cnf = NULL;
+        if (iface->isDedicatedFailover()) 
         {
-            QString addr = iface->getAddressPtr()->toString().c_str();
-            QString netm = iface->getNetmaskPtr()->toString().c_str();
-            interface_config.setVariable("address", addr);
-            interface_config.setVariable("netmask", netm);
+            cnf = new Configlet(fw, "pix_os", "failover_interface");
+            if (iface->getLabel().empty()) iface->setLabel("failover");
         }
 
-        res << interface_config.expand().toStdString();
+        if (iface->getOptionsObject()->getStr("type") == "8021q")
+        {
+            cnf = new Configlet(fw, "pix_os", "vlan_subinterface");
+        }
+
+        if ((iface->getOptionsObject()->getStr("type") == "" ||
+             iface->getOptionsObject()->getStr("type") == "ethernet") &&
+            iface->getByType(Interface::TYPENAME).size() > 0)
+        {
+            // vlan parent
+            cnf = new Configlet(fw, "pix_os", "vlan_parent_interface");
+        }
+
+        if (cnf==NULL) cnf = new Configlet(fw, "pix_os", "regular_interface");
+
+        cnf->removeComments();
+        cnf->collapseEmptyStrings(true);
+
+        cnf->setVariable("pix_version_lt_70", ! version_ge_70);
+        cnf->setVariable("pix_version_ge_70",   version_ge_70);
+        cnf->setVariable("configure_interface_address", configure_address);
+        cnf->setVariable("configure_standby_address", configure_standby_address);
+
+        cnf->setVariable("interface_name",  iface->getName().c_str());
+        cnf->setVariable("interface_label", iface->getLabel().c_str());
+        cnf->setVariable("security_level",  iface->getSecurityLevel());
+
+        if (iface->getOptionsObject()->getStr("type") == "8021q")
+            cnf->setVariable("vlan_id",
+                             iface->getOptionsObject()->getInt("vlan_id"));
+
+        cnf->setVariable("static_address", ! iface->isDyn());
+        cnf->setVariable("dhcp_address",     iface->isDyn());
+
+        if (!iface->isDyn())
+        {
+            QString addr;
+            QString netm;
+            QString standby_addr;
+
+            _getAddressConfigurationForInterface(
+                iface, &addr, &netm,
+                (configure_standby_address) ? &standby_addr : NULL);
+
+            if (!addr.isEmpty() && !netm.isEmpty())
+            {
+                cnf->setVariable("address", addr);
+                cnf->setVariable("netmask", netm);
+            } else
+            {
+                cnf->setVariable("configure_interface_address", false);
+                cnf->setVariable("configure_standby_address", false);
+            }
+
+            if (configure_standby_address && !standby_addr.isEmpty())
+                cnf->setVariable("standby_address", standby_addr);
+
+        }
+
+        res << cnf->expand().toStdString();
         res << endl;
         res << endl;
+        
+        delete cnf;
     }
     return res.str();
+}
+
+string OSConfigurator_pix_os::_printFailoverConfiguration()
+{
+    ostringstream res;
+    string version = fw->getStr("version");
+    string platform = fw->getStr("platform");
+    string::size_type n;
+
+    bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
+
+    Configlet cnf(fw, "pix_os", "failover_commands");
+    cnf.removeComments();
+    cnf.collapseEmptyStrings(true);
+    cnf.setVariable("pix_version_lt_70", ! version_ge_70);
+    cnf.setVariable("pix_version_ge_70",   version_ge_70);
+
+    list<FWObject*> l2=fw->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+    {
+	Interface *iface=dynamic_cast<Interface*>(*i);
+	assert(iface);
+
+        if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
+
+        if (iface->isDedicatedFailover()) 
+        {
+            cnf.setVariable("interface_name",  iface->getName().c_str());
+            cnf.setVariable("interface_label", iface->getLabel().c_str());
+
+            QString primary_or_secondary = "secondary";
+            int failover_group_id = FWObjectDatabase::getIntId(
+                iface->getOptionsObject()->getStr("failover_group_id"));
+            FWObject *failover_group = fw->getRoot()->findInIndex(failover_group_id);
+            if (failover_group)
+            {
+                int master_id = FWObjectDatabase::getIntId(
+                    failover_group->getStr("master_iface"));
+                if (iface->getId() == master_id)
+                    primary_or_secondary = "primary";
+            }
+            cnf.setVariable("primary_or_secondary", primary_or_secondary);
+
+            QString addr;
+            QString netm;
+            QString standby_addr;
+
+            _getAddressConfigurationForInterface(iface, &addr, &netm, &standby_addr);
+
+            cnf.setVariable("address", addr);
+            cnf.setVariable("netmask", netm);
+            cnf.setVariable("standby_address", standby_addr);
+        }
+    }
+    return cnf.expand().toStdString();
 }
 
 string OSConfigurator_pix_os::_printLogging()

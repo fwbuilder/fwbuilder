@@ -32,6 +32,7 @@
 #include "fwcompiler/OSConfigurator.h"
 
 #include <map>
+#include <QString>
 
 namespace fwcompiler {
 
@@ -40,7 +41,13 @@ namespace fwcompiler {
         //std::string _printNameif();
         //std::string _printIPAddress();
 
+        void _getAddressConfigurationForInterface(libfwbuilder::Interface *iface,
+                                                  QString *addr,
+                                                  QString *netm,
+                                                  QString *standby_addr);
+        
         std::string _printInterfaceConfiguration();
+        std::string _printFailoverConfiguration();
 
         std::string _printLogging();
         std::string _printSNMPServer(const std::string &srv,int poll_trap);

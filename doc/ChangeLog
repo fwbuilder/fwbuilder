@@ -1,5 +1,8 @@
 2009-11-10  vadim  <vadim@vk.crocodile.org>
 
+	* configlets/pix_os/failover_commands: New feature: Added ability
+	to generate failover commands for PIX.
+
 	* OSConfigurator_pix_os.cpp (OSConfigurator_pix_os::_printInterfaceConfiguration):
 	Using configlet to generate interface configuration commands for
 	PIX. Now user can change generated script if necessary without
