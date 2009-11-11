@@ -9,7 +9,6 @@ AddressEditor::AddressEditor(libfwbuilder::Address *address, QWidget *parent) :
     m_ui(new Ui::AddressEditor)
 {
     this->address = address;
-//    this->m_ui->ipv4->setChecked(libfwbuilder::IPv4::isA(address));
     m_ui->setupUi(this);
     this->m_ui->address->setText(address->getAddressPtr()->toString().c_str());
     this->m_ui->netmask->setText(address->getNetmaskPtr()->toString().c_str());
@@ -19,7 +18,6 @@ AddressEditor::AddressEditor(QWidget *parent) :
     QWidget(parent),
     m_ui(new Ui::AddressEditor)
 {
-    qDebug() << "123";
     this->address = NULL;
     m_ui->setupUi(this);
 }

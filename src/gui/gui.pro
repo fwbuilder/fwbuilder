@@ -9,15 +9,10 @@ QT += network
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)
-contains( HAVE_QTDBUS, 1 ) {
-    unix {
-        macx {
-            LIBS += -framework QtDBus
-        }
-        !macx {
-            LIBS += -lQtDBus # workaround for QT += dbus not working atm
-        }
-    }
+contains( HAVE_QTDBUS, 1 ):unix { 
+    macx:LIBS += -framework \
+        QtDBus
+    !macx:LIBS += -lQtDBus # workaround for QT += dbus not working atm
 }
 
 # This makes gcc compile this header file and store result in
@@ -174,7 +169,8 @@ HEADERS += ../../config.h \
     AddressEditor.h \
     FWCmdBasic.h \
     FWCmdChange.h \
-    FWObjectState.h
+    FWObjectState.h \
+    InterfacesEditor.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -327,7 +323,8 @@ SOURCES += ProjectPanel.cpp \
     AddressEditor.cpp \
     FWCmdBasic.cpp \
     FWCmdChange.cpp \
-    FWObjectState.cpp
+    FWObjectState.cpp \
+    InterfacesEditor.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
@@ -423,7 +420,8 @@ FORMS = FWBMainWindow_q.ui \
     vlanonlyifaceoptsdialog_q.ui \
     linux24ifaceoptsdialog_q.ui \
     InterfaceEditor.ui \
-    AddressEditor.ui
+    AddressEditor.ui \
+    InterfacesEditor.ui
 
 # fwtransfer stuff
 HEADERS += transferDialog.h

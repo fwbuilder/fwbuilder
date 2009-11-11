@@ -1,5 +1,3 @@
-#include <QToolButton>
-
 #include "InterfaceEditor.h"
 #include "ui_InterfaceEditor.h"
 #include "fwbuilder/IPv4.h"
@@ -10,23 +8,8 @@ InterfaceEditor::InterfaceEditor(QWidget *parent, libfwbuilder::Interface *inter
 {
     tabw = dynamic_cast<QTabWidget*>(parent);
     this->interface = interface;
-    setupUI();
-}
-
-InterfaceEditor::InterfaceEditor(QWidget *parent, libfwbuilder::FWObjectDatabase* db) :
-    QWidget(parent),
-    m_ui(new Ui::InterfaceEditor)
-{
-    tabw = dynamic_cast<QTabWidget*>(parent);
-    this->interface =  new libfwbuilder::Interface(db, false);
-    this->interface->setName("New interface");
-    setupUI();
-    addNewAddress();
-}
-
-void InterfaceEditor::setupUI()
-{
     m_ui->setupUi(this);
+    setupUI();
     this->m_ui->name->setText(interface->getName().c_str());
     this->m_ui->label->setText(interface->getLabel().c_str());
     this->m_ui->comment->setPlainText(interface->getComment().c_str());
@@ -35,16 +18,36 @@ void InterfaceEditor::setupUI()
     for ( ; adriter != adriter.end(); ++adriter )
         this->m_ui->tabWidget->addTab(new AddressEditor(libfwbuilder::Address::cast(*adriter), this),
                                       libfwbuilder::Address::cast(*adriter)->getName().c_str());
-    QToolButton *b = new QToolButton(this);
-    b->setIcon(QIcon(":/Icons/AddressTable/icon"));
-    b->setToolTip(tr("Add new address"));
-    connect(b, SIGNAL(clicked()), this, SLOT(addNewAddress()));
-    this->m_ui->tabWidget->setCornerWidget(b, Qt::TopRightCorner);
+}
+
+InterfaceEditor::InterfaceEditor(QWidget *parent, libfwbuilder::FWObjectDatabase* db) :
+    QWidget(parent),
+    m_ui(new Ui::InterfaceEditor)
+{
+    tabw = dynamic_cast<QTabWidget*>(parent);
+    this->interface = NULL;
+    m_ui->setupUi(this);
+    setupUI();
+    this->m_ui->name->setText(tr("New interface"));
+    this->m_ui->label->clear();
+    this->m_ui->comment->clear();
+    while ( this->m_ui->tabWidget->count() ) this->m_ui->tabWidget->removeTab(0);
+    addNewAddress();
+}
+
+void InterfaceEditor::setupUI()
+{
+    addAddr = new QToolButton(this);
+    addAddr->setIcon(QIcon(":/Icons/AddressTable/icon"));
+    addAddr->setToolTip(tr("Add new address"));
+    connect(addAddr, SIGNAL(clicked()), this, SLOT(addNewAddress()));
+    this->m_ui->tabWidget->setCornerWidget(addAddr, Qt::TopRightCorner);
 }
 
 InterfaceEditor::~InterfaceEditor()
 {
     delete m_ui;
+    delete addAddr;
 }
 
 void InterfaceEditor::addNewAddress()

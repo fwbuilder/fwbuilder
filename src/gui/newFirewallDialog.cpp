@@ -148,12 +148,6 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
 
     showPage(0);
 
-    QToolButton *b = new QToolButton();
-    connect(b, SIGNAL(clicked()), this, SLOT(addNewInterface()));
-    b->setIcon(QIcon(":/Icons/Interface/icon"));
-    b->setToolTip(tr("Add new interface"));
-    m_dialog->interfaces->setCornerWidget(b, Qt::TopRightCorner);
-    m_dialog->interfaces->cornerWidget(Qt::TopRightCorner)->show();
 }
 
 void newFirewallDialog::browseTemplate()
@@ -530,26 +524,9 @@ void newFirewallDialog::showPage(const int page)
             interfaces.append(Interface::cast(*intiter));
         sort(interfaces.begin(), interfaces.end(), interfaceCompare);
         foreach(Interface* intr, interfaces)
-            m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, intr), intr->getName().c_str());
+            m_dialog->interfaces->addInterface(intr);
     }
     }
-}
-
-void newFirewallDialog::addNewInterface()
-{
-    FWObjectDatabase *root = Interface::cast(*(currentTemplate->findByType(Interface::TYPENAME)))->getRoot();
-    m_dialog->interfaces->addTab(new InterfaceEditor(this->m_dialog->interfaces, root), tr("New interface"));
-}
-
-QMap<Interface*, EditedInterfaceData> newFirewallDialog::getEditedTemplateInterfaces()
-{
-    QMap<Interface*, EditedInterfaceData> res;
-    for ( int i = 0; i < m_dialog->interfaces->count(); i++ )
-    {
-        InterfaceEditor *intEditor = dynamic_cast<InterfaceEditor*>(m_dialog->interfaces->widget(i));
-        res[intEditor->getInterface()] = intEditor->getInterfaceData();
-    }
-    return res;
 }
 
 void newFirewallDialog::fillInterfaceSLList()
@@ -613,6 +590,7 @@ void newFirewallDialog::templateSelected(QListWidgetItem *itm)
     if (templates.size()==0) return;
     FWObject *o = templates[itm];
     if (o==NULL) return;
+    this->m_dialog->interfaces->setTemplate(o);
     currentTemplate = o;
 
     Firewall *fw = Firewall::cast(o);

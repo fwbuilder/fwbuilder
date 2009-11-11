@@ -8,15 +8,19 @@
 #include "platforms.h"
 
 #include "AddressEditor.h"
-#include "newFirewallDialog.h"
+#include "InterfacesEditor.h"
 
 #include <QtGui/QWidget>
+#include <QtGui/QTabWidget>
+#include <QtGui/QToolButton>
 
 #include "fwbuilder/Interface.h"
 
 namespace Ui {
     class InterfaceEditor;
 }
+
+struct EditedInterfaceData;
 
 class InterfaceEditor : public QWidget {
     Q_OBJECT
@@ -32,6 +36,7 @@ protected:
 
 private:
     QTabWidget *tabw;
+    QToolButton *addAddr;
     void setupUI();
     libfwbuilder::Interface *interface;
     Ui::InterfaceEditor *m_ui;

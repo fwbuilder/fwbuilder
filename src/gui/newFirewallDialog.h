@@ -33,8 +33,6 @@
 #include "fwbuilder/InterfaceData.h"
 #include "fakeWizard.h"
 
-#include "AddressEditor.h"
-
 #include <map>
 
 namespace libfwbuilder {
@@ -49,14 +47,6 @@ namespace libfwbuilder {
 class QTreeWidgetItem;
 class QTimer;
 class QTextEdit;
-
-struct EditedInterfaceData
-{
-    QString name;
-    QString label;
-    QString comment;
-    QMap<libfwbuilder::Address*, AddressInfo > addresses;
-};
 
 class newFirewallDialog : public QDialog, public FakeWizard
 {
@@ -95,7 +85,6 @@ class newFirewallDialog : public QDialog, public FakeWizard
     
     void showPage(const int page); //it was "selected(QString)"
     bool validateAddressAndMask(const QString &addr,const QString &netm);
-    QMap<libfwbuilder::Interface*, EditedInterfaceData> getEditedTemplateInterfaces();
     
 public slots:
     virtual void addInterface();
@@ -111,7 +100,6 @@ public slots:
     void browseTemplate();
     void useStandartTemplate();
     void showHideTemplatePanel();
-    void addNewInterface();
 
  protected slots:
     
