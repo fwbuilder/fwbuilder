@@ -1110,7 +1110,7 @@
         </widget>
        </item>
        <item>
-        <widget class="InterfacesEditor" name="interfaces">
+        <widget class="InterfacesTabWidget" name="interfaces">
          <property name="currentIndex">
           <number>0</number>
          </property>
@@ -1201,9 +1201,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>InterfacesEditor</class>
+   <class>InterfacesTabWidget</class>
    <extends>QTabWidget</extends>
-   <header>interfaceseditor.h</header>
+   <header>interfacestabwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

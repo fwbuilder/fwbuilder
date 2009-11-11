@@ -165,12 +165,12 @@ HEADERS += ../../config.h \
     check_update_url.h \
     startup_tip_url.h \
     AutocompletedComboBox.h \
-    InterfaceEditor.h \
+    InterfaceEditorWidget.h \
     AddressEditor.h \
     FWCmdBasic.h \
     FWCmdChange.h \
     FWObjectState.h \
-    InterfacesEditor.h
+    InterfacesTabWidget.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -319,12 +319,12 @@ SOURCES += ProjectPanel.cpp \
     heartbeatOptionsDialog.cpp \
     openaisOptionsDialog.cpp \
     AutocompletedComboBox.cpp \
-    InterfaceEditor.cpp \
+    InterfaceEditorWidget.cpp \
     AddressEditor.cpp \
     FWCmdBasic.cpp \
     FWCmdChange.cpp \
     FWObjectState.cpp \
-    InterfacesEditor.cpp
+    InterfacesTabWidget.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
@@ -419,9 +419,9 @@ FORMS = FWBMainWindow_q.ui \
     pfsyncoptionsdialog_q.ui \
     vlanonlyifaceoptsdialog_q.ui \
     linux24ifaceoptsdialog_q.ui \
-    InterfaceEditor.ui \
+    InterfaceEditorWidget.ui \
     AddressEditor.ui \
-    InterfacesEditor.ui
+    InterfacesTabWidget.ui
 
 # fwtransfer stuff
 HEADERS += transferDialog.h

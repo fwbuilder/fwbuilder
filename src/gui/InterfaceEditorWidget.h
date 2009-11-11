@@ -1,5 +1,5 @@
-#ifndef INTERFACEEDITOR_H
-#define INTERFACEEDITOR_H
+#ifndef INTERFACEEDITORWIDGET_H
+#define INTERFACEEDITORWIDGET_H
 
 #include "../../config.h"
 #include "global.h"
@@ -8,7 +8,7 @@
 #include "platforms.h"
 
 #include "AddressEditor.h"
-#include "InterfacesEditor.h"
+#include "InterfacesTabWidget.h"
 
 #include <QtGui/QWidget>
 #include <QtGui/QTabWidget>
@@ -17,17 +17,17 @@
 #include "fwbuilder/Interface.h"
 
 namespace Ui {
-    class InterfaceEditor;
+    class InterfaceEditorWidget;
 }
 
 struct EditedInterfaceData;
 
-class InterfaceEditor : public QWidget {
+class InterfaceEditorWidget : public QWidget {
     Q_OBJECT
 public:
-    InterfaceEditor(QWidget *parent, libfwbuilder::Interface *interface);
-    InterfaceEditor(QWidget *parent, libfwbuilder::FWObjectDatabase* db);
-    ~InterfaceEditor();
+    InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface);
+    InterfaceEditorWidget(QWidget *parent, libfwbuilder::FWObjectDatabase* db);
+    ~InterfaceEditorWidget();
     libfwbuilder::Interface* getInterface();
     EditedInterfaceData getInterfaceData();
 
@@ -39,11 +39,12 @@ private:
     QToolButton *addAddr;
     void setupUI();
     libfwbuilder::Interface *interface;
-    Ui::InterfaceEditor *m_ui;
+    Ui::InterfaceEditorWidget *m_ui;
 
 public slots:
     void nameEdited(QString);
     void addNewAddress();
+    void closeTab(int);
 };
 
-#endif // INTERFACEEDITOR_H
+#endif // INTERFACEEDITORWIDGET_H

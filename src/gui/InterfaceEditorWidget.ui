@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>InterfaceEditor</class>
- <widget class="QWidget" name="InterfaceEditor">
+ <class>InterfaceEditorWidget</class>
+ <widget class="QWidget" name="InterfaceEditorWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -72,6 +72,9 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <property name="tabsClosable">
+      <bool>true</bool>
+     </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>Tab 1</string>
@@ -86,7 +89,7 @@
   <connection>
    <sender>name</sender>
    <signal>textEdited(QString)</signal>
-   <receiver>InterfaceEditor</receiver>
+   <receiver>InterfaceEditorWidget</receiver>
    <slot>nameEdited(QString)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -99,8 +102,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tabWidget</sender>
+   <signal>tabCloseRequested(int)</signal>
+   <receiver>InterfaceEditorWidget</receiver>
+   <slot>closeTab(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>290</x>
+     <y>344</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>290</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>nameEdited(QString)</slot>
+  <slot>closeTab(int)</slot>
  </slots>
 </ui>

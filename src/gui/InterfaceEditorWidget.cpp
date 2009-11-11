@@ -1,10 +1,10 @@
-#include "InterfaceEditor.h"
-#include "ui_InterfaceEditor.h"
+#include "InterfaceEditorWidget.h"
+#include "ui_InterfaceEditorWidget.h"
 #include "fwbuilder/IPv4.h"
 
-InterfaceEditor::InterfaceEditor(QWidget *parent, libfwbuilder::Interface *interface) :
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface) :
     QWidget(parent),
-    m_ui(new Ui::InterfaceEditor)
+    m_ui(new Ui::InterfaceEditorWidget)
 {
     tabw = dynamic_cast<QTabWidget*>(parent);
     this->interface = interface;
@@ -20,9 +20,9 @@ InterfaceEditor::InterfaceEditor(QWidget *parent, libfwbuilder::Interface *inter
                                       libfwbuilder::Address::cast(*adriter)->getName().c_str());
 }
 
-InterfaceEditor::InterfaceEditor(QWidget *parent, libfwbuilder::FWObjectDatabase* db) :
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::FWObjectDatabase* db) :
     QWidget(parent),
-    m_ui(new Ui::InterfaceEditor)
+    m_ui(new Ui::InterfaceEditorWidget)
 {
     tabw = dynamic_cast<QTabWidget*>(parent);
     this->interface = NULL;
@@ -35,7 +35,7 @@ InterfaceEditor::InterfaceEditor(QWidget *parent, libfwbuilder::FWObjectDatabase
     addNewAddress();
 }
 
-void InterfaceEditor::setupUI()
+void InterfaceEditorWidget::setupUI()
 {
     addAddr = new QToolButton(this);
     addAddr->setIcon(QIcon(":/Icons/AddressTable/icon"));
@@ -44,18 +44,18 @@ void InterfaceEditor::setupUI()
     this->m_ui->tabWidget->setCornerWidget(addAddr, Qt::TopRightCorner);
 }
 
-InterfaceEditor::~InterfaceEditor()
+InterfaceEditorWidget::~InterfaceEditorWidget()
 {
     delete m_ui;
     delete addAddr;
 }
 
-void InterfaceEditor::addNewAddress()
+void InterfaceEditorWidget::addNewAddress()
 {
     this->m_ui->tabWidget->addTab(new AddressEditor(this), "ip");
 }
 
-void InterfaceEditor::changeEvent(QEvent *e)
+void InterfaceEditorWidget::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
     switch (e->type()) {
@@ -67,17 +67,17 @@ void InterfaceEditor::changeEvent(QEvent *e)
     }
 }
 
-void InterfaceEditor::nameEdited(QString newname)
+void InterfaceEditorWidget::nameEdited(QString newname)
 {
     tabw->setTabText(tabw->indexOf(this), newname);
 }
 
-libfwbuilder::Interface* InterfaceEditor::getInterface()
+libfwbuilder::Interface* InterfaceEditorWidget::getInterface()
 {
     return this->interface;
 }
 
-EditedInterfaceData InterfaceEditor::getInterfaceData()
+EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
 {
     EditedInterfaceData res;
     res.name = this->m_ui->name->text();
@@ -89,4 +89,11 @@ EditedInterfaceData InterfaceEditor::getInterfaceData()
         res.addresses[addr->getAddress()] = addr->getEditedData();
     }
     return res;
+}
+
+void InterfaceEditorWidget::closeTab(int idx)
+{
+    QWidget *w = this->m_ui->tabWidget->widget(idx);
+    this->m_ui->tabWidget->removeTab(idx);
+    delete w;
 }

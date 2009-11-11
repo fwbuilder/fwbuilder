@@ -29,7 +29,6 @@
 #include "utils_no_qt.h"
 #include "platforms.h"
 
-#include "InterfaceEditor.h"
 #include "newFirewallDialog.h"
 #include "ObjConflictResolutionDialog.h"
 #include "upgradePredicate.h"
