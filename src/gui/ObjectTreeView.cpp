@@ -695,37 +695,8 @@ void ObjectTreeView::keyPressEvent( QKeyEvent* ev )
 
 void ObjectTreeView::keyReleaseEvent( QKeyEvent* ev )
 {
-    if (fwbdebug)
-        qDebug("ObjectTreeView::keyReleaseEvent");
-
     QTreeWidget::keyReleaseEvent(ev);
-
-    if (selectedObjects.size()==1)
-        emit switchObjectInEditor_sign( getCurrentObject() );
-    else
-    {
-        // user selected multiple objects
-        // do not let them if editor has unsaved changes
-        //
-        if (mw->isEditorVisible() && mw->isEditorModified())
-            emit switchObjectInEditor_sign( getCurrentObject() );
-        else
-            mw->blankEditor();
-    }
 }
-
-/*void ObjectTreeView::keyPressEvent(QKeyEvent *ke)
-{
-    if (ke->key() == Qt::Key_Enter)
-    {
-        if (fwbdebug)
-            qDebug("ObjectTreeView::keyPressed");
-
-        editCurrentObject();
-    }
-
-    QTreeWidget::returnPressed(ke);
-}*/
 
 void ObjectTreeView::itemOpened ()
 {
