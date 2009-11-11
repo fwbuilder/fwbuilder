@@ -1,0 +1,15 @@
+## -*- mode: shell-script; -*- 
+##
+
+{{if pix_version_lt_70}}
+no nameif {{$interface_name}} {{$interface_label}} security{{$security_level}}
+{{endif}}
+
+{{if pix_version_ge_70}}
+interface {{$interface_name}}
+  no nameif
+  no ip address
+  no security-level
+exit
+{{endif}}
+

@@ -1,0 +1,23 @@
+## -*- mode: shell-script; -*- 
+##
+## 
+## failover
+## failover lan unit primary
+## failover lan interface failover Ethernet3
+## failover lan enable
+## failover key ******
+## failover link state Ethernet2
+## failover interface ip failover 10.1.0.1 255.255.255.0 standby 10.1.0.2
+## failover interface ip state 10.0.0.1 255.0.0.0 standby 10.0.0.2
+
+{{if pix_version_lt_70}}
+{{endif}}
+
+{{if pix_version_ge_70}}
+failover lan unit {{$primary_or_secondary}}
+failover lan interface {{$interface_label}} {{$interface_name}} 
+failover lan enable
+failover key {{$failover_key}}
+failover interface ip {{$interface_label}} {{$address}} {{$netmask}} standby {{$standby_address}}
+failover
+{{endif}}

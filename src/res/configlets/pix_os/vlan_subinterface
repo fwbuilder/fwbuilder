@@ -12,9 +12,10 @@ ip address {{$interface_label}} {{$address}} {{$netmask}}
 
 {{if pix_version_ge_70}}
 interface {{$interface_name}}
+  vlan {{$vlan_id}}
   nameif {{$interface_label}}
 {{if configure_interface_address}}
-  ip address {{$address}} {{$netmask}}
+  ip address {{$address}} {{$netmask}} {{if configure_standby_address}} standby {{$standby_address}} {{endif}}
 {{endif}}
   security-level {{$security_level}}
 exit
@@ -35,6 +36,7 @@ ip address {{$interface_label}} dhcp setroute retry 10
 
 {{if pix_version_ge_70}}
 interface {{$interface_name}}
+  vlan {{$vlan_id}}
   nameif {{$interface_label}}
 {{if configure_interface_address}}
   ip address dhcp setroute
