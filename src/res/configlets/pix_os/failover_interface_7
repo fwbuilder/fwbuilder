@@ -1,13 +1,7 @@
 ## -*- mode: shell-script; -*- 
 ##
 
-{{if pix_version_lt_70}}
-nameif {{$interface_name}} {{$interface_label}}
-{{endif}}
-
-{{if pix_version_ge_70}}
 interface {{$interface_name}}
   description LAN/STATE Failover Interface
   no nameif
 exit
-{{endif}}

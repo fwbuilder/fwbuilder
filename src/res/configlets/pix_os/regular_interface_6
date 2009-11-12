@@ -4,6 +4,7 @@
 {{if static_address}}
 nameif {{$interface_name}} {{$interface_label}} security{{$security_level}}
 {{if configure_interface_address}}ip address {{$interface_label}} {{$address}} {{$netmask}} {{endif}}
+{{if configure_standby_address}}failover ip address {{$interface_label}} {{$standby_address}} {{endif}}
 {{endif}}
 
 {{if dhcp_address}}

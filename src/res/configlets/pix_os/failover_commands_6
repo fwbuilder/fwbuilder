@@ -13,20 +13,14 @@
 ## failover lan key 12345678
 ## failover lan enable
 ## failover
+##
+##
+##  "failover ip address" commands are added bu the failover_interface_6 configlet
 
-failover ip address {{$failover_interface_label}} {{$failover_interface_primary_address}}
-failover ip address {{$state_sync_interface_label}} {{$state_sync_interface_primary_address}}
-
-
-failover lan unit {{$primary_or_secondary}}
-failover lan interface {{$failover_interface_label}} {{$failover_interface_name}} 
-failover lan enable
+failover link {{$state_sync_interface_label}}
+failober lan unit {{$primary_or_secondary}}
+failover lan interface {{$failover_interface_label}}
 failover key {{$failover_key}}
-
-failover interface ip {{$failover_interface_label}} {{$failover_interface_primary_address}} {{$failover_interface_primary_netmask}} standby {{$failover_interface_standby_address}}
-
-failover link {{$state_sync_interface_label}} {{$state_sync_interface_name}}
-failover interface ip {{$state_sync_interface_label}} {{$state_sync_interface_primary_address}} {{$state_sync_interface_primary_netmask}} standby {{$state_sync_interface_standby_address}}
-
+failover lan enable
 failover
 

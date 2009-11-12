@@ -141,7 +141,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
 
             for (list<FWObject*>::iterator j=nz.begin(); j!=nz.end(); ++j)
             {
-                assert(Address::cast(*j)!=NULL);
+                if (Address::cast(*j) == NULL) continue;
 
                 // if addr==NULL, return id of the interfacce that has
                 // net_zone=="any"

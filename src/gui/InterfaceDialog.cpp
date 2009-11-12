@@ -205,7 +205,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
         if (s->isDedicatedFailover())
         {
-            supports_security_levels = false;
             supports_network_zones = false;
         }
 

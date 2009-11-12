@@ -226,7 +226,7 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
             configlet_name = "vlan_parent_interface_";
         }
 
-        if (cnf==NULL)  configlet_name = "regular_interface_";
+        if (configlet_name.isEmpty())  configlet_name = "regular_interface_";
 
         if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
         if (XMLTools::version_compare(version, "7.0") >= 0) configlet_name += "7";
