@@ -45,7 +45,7 @@ namespace libfwbuilder {
 
 
 namespace fwcompiler {
-
+    
     class CompilerDriver_pix : public CompilerDriver {
    
 protected:
@@ -54,6 +54,10 @@ protected:
         std::string policy_script;
         std::string routing_script;
 
+        void pixClusterGroupChecks(libfwbuilder::ClusterGroup *clgrp);
+        void pixClusterConfigurationChecks(libfwbuilder::Cluster *cluster,
+                                           libfwbuilder::Firewall *fw);
+        
         std::string safetyNetInstall(libfwbuilder::Firewall *fw);
         void printProlog(QTextStream &file, const std::string &prolog_code);
     

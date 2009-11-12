@@ -1250,6 +1250,7 @@ void FWWindow::showReleaseNotes()
         // But "file:file_name" works.
         h->setSource(QUrl("file:" + file_name));
         h->setModal(false);
+        h->resize(600, 700);
         h->show();
         h->exec();
         // Class Help uses attribute Qt::WA_DeleteOnClose which

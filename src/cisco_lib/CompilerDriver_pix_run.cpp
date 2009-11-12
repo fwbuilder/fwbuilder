@@ -227,121 +227,130 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     }
 #endif
 
-    commonChecks2(cluster, fw);
-
-    // Note that fwobjectname may be different from the name of the
-    // firewall fw This happens when we compile a member of a cluster
-    current_firewall_name = fw->getName().c_str();
+    std::auto_ptr<OSConfigurator> oscnf(new OSConfigurator_pix_os(objdb , fw, false));
+    if (inTestMode()) oscnf->setTestMode();
+    if (inEmbeddedMode()) oscnf->setEmbeddedMode();
 
     QString ofname = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
     FWOptions* options = fw->getOptionsObject();
 
-    bool pix_acl_basic = options->getBool("pix_acl_basic");
-    bool pix_acl_no_clear = options->getBool("pix_acl_no_clear");
-    bool pix_acl_substitution = options->getBool("pix_acl_substitution");
-    bool pix_add_clear_statements = options->getBool("pix_add_clear_statements");
 
-    if ( !pix_acl_basic &&
-         !pix_acl_no_clear &&
-         !pix_acl_substitution )
+    try
     {
-        if ( pix_add_clear_statements ) options->setBool("pix_acl_basic",true);
-        else options->setBool("pix_acl_no_clear",true);
-    }
+        commonChecks2(cluster, fw);
 
-    Helper helper(NULL);
+        pixClusterConfigurationChecks(cluster, fw);
 
-    multimap<string, FWObject*> netzone_objects;
+        // Note that fwobjectname may be different from the name of the
+        // firewall fw This happens when we compile a member of a cluster
+        current_firewall_name = fw->getName().c_str();
 
-    std::list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
-    for (std::list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
-    {
-        Interface *iface = dynamic_cast<Interface*>(*i);
-        assert(iface);
+        bool pix_acl_basic = options->getBool("pix_acl_basic");
+        bool pix_acl_no_clear = options->getBool("pix_acl_no_clear");
+        bool pix_acl_substitution = options->getBool("pix_acl_substitution");
+        bool pix_add_clear_statements = options->getBool("pix_add_clear_statements");
 
-        // dedicated failover interfaces are not used in ACLs or anywhere
-        // else in configuration, except in "failover" commands.
-        if (iface->isDedicatedFailover()) continue;
+        if ( !pix_acl_basic &&
+             !pix_acl_no_clear &&
+             !pix_acl_substitution )
+        {
+            if ( pix_add_clear_statements ) options->setBool("pix_acl_basic",true);
+            else options->setBool("pix_acl_no_clear",true);
+        }
 
-        // Tests for label, security level and network zone make sense
-        // only for interfaces that can be used in ACLs or to bind
-        // ACLs to.  Unnumbered interfaces can't, so we do not need to
-        // run these checks.  One example of unnumbered interface is
-        // parent interface for vlan subinterfaces.
-        if (iface->isUnnumbered()) continue;
+        Helper helper(NULL);
 
-        if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
+        multimap<string, FWObject*> netzone_objects;
+
+        std::list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
+        for (std::list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+        {
+            Interface *iface = dynamic_cast<Interface*>(*i);
+            assert(iface);
+
+            // dedicated failover interfaces are not used in ACLs or anywhere
+            // else in configuration, except in "failover" commands.
+            if (iface->isDedicatedFailover()) continue;
+
+            // Tests for label, security level and network zone make sense
+            // only for interfaces that can be used in ACLs or to bind
+            // ACLs to.  Unnumbered interfaces can't, so we do not need to
+            // run these checks.  One example of unnumbered interface is
+            // parent interface for vlan subinterfaces.
+            if (iface->isUnnumbered()) continue;
+
+            if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
 
 /*
  * missing labels on interfaces
  */
-        if (iface->getLabel()=="")
-        {
-            string lbl;
-            if (iface->getSecurityLevel()==0)   lbl="outside";
-            else
+            if (iface->getLabel()=="")
             {
-                if (iface->getSecurityLevel()==100) lbl="inside";
+                string lbl;
+                if (iface->getSecurityLevel()==0)   lbl="outside";
                 else
                 {
-                    char s[64];
-                    sprintf(s,"dmz%d",iface->getSecurityLevel());
-                    lbl=s;
+                    if (iface->getSecurityLevel()==100) lbl="inside";
+                    else
+                    {
+                        char s[64];
+                        sprintf(s,"dmz%d",iface->getSecurityLevel());
+                        lbl=s;
+                    }
                 }
+                iface->setLabel(lbl);
             }
-            iface->setLabel(lbl);
-        }
 
 /*
  * there shouldn't be two interfaces with the same security level
  */
-        for (std::list<FWObject*>::iterator j=l2.begin(); j!=l2.end(); ++j)
-        {
-            Interface *iface2 = dynamic_cast<Interface*>(*j);
-            assert(iface2);
-            if (iface2->isDedicatedFailover()) continue;
-            if (iface2->isUnnumbered()) continue;
-            if (iface->getId()==iface2->getId()) continue;
-            if (iface->getOptionsObject()->getBool("cluster_interface") ||
-                iface2->getOptionsObject()->getBool("cluster_interface")) continue;
-
-            if (iface->getSecurityLevel()==iface2->getSecurityLevel())
+            for (std::list<FWObject*>::iterator j=l2.begin(); j!=l2.end(); ++j)
             {
-                QString err(
-                    "Security level of each interface should be unique, "
-                    "however interfaces %1 (%2) and %3 (%4)"
-                    " have the same security level."
-                );
-                abort(fw, NULL, NULL,
-                      err.arg(iface->getName().c_str())
-                      .arg(iface->getLabel().c_str())
-                      .arg(iface2->getName().c_str())
-                      .arg(iface2->getLabel().c_str()).toStdString());
-                return "";
+                Interface *iface2 = dynamic_cast<Interface*>(*j);
+                assert(iface2);
+                if (iface2->isDedicatedFailover()) continue;
+                if (iface2->isUnnumbered()) continue;
+                if (iface->getId()==iface2->getId()) continue;
+                if (iface->getOptionsObject()->getBool("cluster_interface") ||
+                    iface2->getOptionsObject()->getBool("cluster_interface")) continue;
+
+                if (iface->getSecurityLevel()==iface2->getSecurityLevel())
+                {
+                    QString err(
+                        "Security level of each interface should be unique, "
+                        "however interfaces %1 (%2) and %3 (%4)"
+                        " have the same security level."
+                    );
+                    abort(fw, NULL, NULL,
+                          err.arg(iface->getName().c_str())
+                          .arg(iface->getLabel().c_str())
+                          .arg(iface2->getName().c_str())
+                          .arg(iface2->getLabel().c_str()).toStdString());
+                    throw FatalErrorInSingleRuleCompleMode();
+                }
             }
-        }
 /*
  * in PIX, we need network zones to be defined for all interfaces
  */
-        string netzone_id=iface->getStr("network_zone");
-        if (netzone_id=="")
-        {
-            QString err("Network zone definition is missing for interface %1 (%2)");
-            abort(fw, NULL, NULL,
-                  err.arg(iface->getName().c_str())
-                  .arg(iface->getLabel().c_str()).toStdString());
-            return "";
-        }
-        FWObject *netzone=objdb->findInIndex(
-            FWObjectDatabase::getIntId(netzone_id));
-        if (netzone==NULL) 
-        {
-            QString err("Network zone points at nonexisting object for interface %1 (%2)");
-            abort(fw, NULL, NULL,
-                  err.arg(iface->getName().c_str())
-                  .arg(iface->getLabel().c_str()).toStdString());
-            return "";
-        }
+            string netzone_id=iface->getStr("network_zone");
+            if (netzone_id=="")
+            {
+                QString err("Network zone definition is missing for interface %1 (%2)");
+                abort(fw, NULL, NULL,
+                      err.arg(iface->getName().c_str())
+                      .arg(iface->getLabel().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompleMode();
+            }
+            FWObject *netzone=objdb->findInIndex(
+                FWObjectDatabase::getIntId(netzone_id));
+            if (netzone==NULL) 
+            {
+                QString err("Network zone points at nonexisting object for interface %1 (%2)");
+                abort(fw, NULL, NULL,
+                      err.arg(iface->getName().c_str())
+                      .arg(iface->getLabel().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompleMode();
+            }
 /*
  * netzone may be a group, in which case we need to expand it
  * (recursively). 
@@ -364,23 +373,23 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
  * to netzones directly, we do not need to bother with dereferencing,
  * too.
  */
-        list<FWObject*> ol;
-        helper.expand_group_recursive(netzone,ol);
+            list<FWObject*> ol;
+            helper.expand_group_recursive(netzone,ol);
 
-        FWObject *nz = objdb->createObjectGroup();
-        assert(nz!=NULL);
-        nz->setName("netzone_"+iface->getLabel());
-        objdb->add(nz);
+            FWObject *nz = objdb->createObjectGroup();
+            assert(nz!=NULL);
+            nz->setName("netzone_"+iface->getLabel());
+            objdb->add(nz);
 
-        for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j)
-        {
-            netzone_objects.insert( pair<string,FWObject*>(iface->getLabel(),*j));
-            nz->add(*j);
+            for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j)
+            {
+                netzone_objects.insert( pair<string,FWObject*>(iface->getLabel(),*j));
+                nz->add(*j);
+            }
+            iface->setStr("orig_netzone_id", netzone_id );
+            iface->setStr("network_zone",
+                          FWObjectDatabase::getStringId(nz->getId()) );
         }
-        iface->setStr("orig_netzone_id", netzone_id );
-        iface->setStr("network_zone",
-                      FWObjectDatabase::getStringId(nz->getId()) );
-    }
 
 /*
  * the same object (network or host) can not belong to network zones
@@ -388,36 +397,36 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
  * interface_id/object. We just make sure the same object does not
  * appear in two pairs with different interfaces.
  */
-    multimap<string,FWObject*>::iterator k;
-    for (k=netzone_objects.begin(); k!=netzone_objects.end(); ++k)
-    {
-        multimap<string,FWObject*>::iterator l;
-        l=k;
-        ++l;
-        for ( ; l!=netzone_objects.end(); ++l)
+        multimap<string,FWObject*>::iterator k;
+        for (k=netzone_objects.begin(); k!=netzone_objects.end(); ++k)
         {
-            if ( l->second->getId() == k->second->getId() )
+            multimap<string,FWObject*>::iterator l;
+            l=k;
+            ++l;
+            for ( ; l!=netzone_objects.end(); ++l)
             {
-                if (k->first==l->first)
+                if ( l->second->getId() == k->second->getId() )
                 {
-                    QString err("Object %1 is used more than once in network zone of interface %2");
-                    abort(fw, NULL, NULL,
-                          err.arg(l->second->getName().c_str())
-                          .arg(k->first.c_str()).toStdString());
-                    return "";
-                } else
-                {
-                    QString err("Object %1 is used in network zones of "
-                                "interfaces %2 and %3");
-                    abort(fw, NULL, NULL,
-                          err.arg(l->second->getName().c_str())
-                          .arg(k->first.c_str())
-                          .arg(l->first.c_str()).toStdString());
-                    return "";
+                    if (k->first==l->first)
+                    {
+                        QString err("Object %1 is used more than once in network zone of interface %2");
+                        abort(fw, NULL, NULL,
+                              err.arg(l->second->getName().c_str())
+                              .arg(k->first.c_str()).toStdString());
+                        throw FatalErrorInSingleRuleCompleMode();
+                    } else
+                    {
+                        QString err("Object %1 is used in network zones of "
+                                    "interfaces %2 and %3");
+                        abort(fw, NULL, NULL,
+                              err.arg(l->second->getName().c_str())
+                              .arg(k->first.c_str())
+                              .arg(l->first.c_str()).toStdString());
+                        throw FatalErrorInSingleRuleCompleMode();
+                    }
                 }
             }
         }
-    }
 
 /*
  *  now sort interfaces by their network zone "width" (that is, more narrow 
@@ -428,106 +437,111 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
 */
 
 
-    std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
-    prep->compile();
+        std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
+        prep->compile();
 
-/*
- * Process firewall options, build OS network configuration script
- */
-    std::auto_ptr<OSConfigurator> oscnf(new OSConfigurator_pix_os(objdb , fw, false));
-
-    oscnf->prolog();
-    oscnf->processFirewallOptions();
+        oscnf->prolog();
+        oscnf->processFirewallOptions();
 
 
 /* create compilers and run the whole thing */
 
-    std::auto_ptr<NATCompiler_pix> n(new NATCompiler_pix(objdb, fw, false, oscnf.get()));
+        std::auto_ptr<NATCompiler_pix> n(new NATCompiler_pix(objdb, fw, false, oscnf.get()));
 
-    RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
-    if (nat)
-    {
-        n->setSourceRuleSet(nat);
-        n->setRuleSetName(nat->getName());
-
-        if (inTestMode()) n->setTestMode();
-        if (inEmbeddedMode()) n->setEmbeddedMode();
-        n->setSingleRuleCompileMode(single_rule_id);
-        n->setDebugLevel( dl );
-        if (rule_debug_on) n->setDebugRule(  drn );
-        n->setVerbose( verbose );
-
-        if ( n->prolog() > 0 )
+        RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
+        if (nat)
         {
-            n->compile();
-            n->epilog();
-        } else
-            info(" Nothing to compile in NAT");
-    }
+            n->setSourceRuleSet(nat);
+            n->setRuleSetName(nat->getName());
 
-    std::auto_ptr<PolicyCompiler_pix> c(
-        new PolicyCompiler_pix(objdb, fw, false, oscnf.get() , n.get()));
+            if (inTestMode()) n->setTestMode();
+            if (inEmbeddedMode()) n->setEmbeddedMode();
+            n->setSingleRuleCompileMode(single_rule_id);
+            n->setDebugLevel( dl );
+            if (rule_debug_on) n->setDebugRule(  drn );
+            n->setVerbose( verbose );
 
-    RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
-    if (policy)
-    {
-        c->setSourceRuleSet(policy);
-        c->setRuleSetName(policy->getName());
+            if ( n->prolog() > 0 )
+            {
+                n->compile();
+                n->epilog();
+            } else
+                info(" Nothing to compile in NAT");
+        }
 
-        if (inTestMode()) c->setTestMode();
-        if (inEmbeddedMode()) c->setEmbeddedMode();
-        c->setSingleRuleCompileMode(single_rule_id);
-        c->setDebugLevel( dl );
-        if (rule_debug_on) c->setDebugRule(  drp );
-        c->setVerbose( verbose );
+        std::auto_ptr<PolicyCompiler_pix> c(
+            new PolicyCompiler_pix(objdb, fw, false, oscnf.get() , n.get()));
 
-        if ( c->prolog() > 0 )
+        RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
+        if (policy)
         {
-            c->compile();
-            c->epilog();
-        } else
-            info(" Nothing to compile in Policy");
-    }
+            c->setSourceRuleSet(policy);
+            c->setRuleSetName(policy->getName());
 
-    std::auto_ptr<RoutingCompiler_pix> r(new RoutingCompiler_pix(objdb, fw, false, oscnf.get()));
+            if (inTestMode()) c->setTestMode();
+            if (inEmbeddedMode()) c->setEmbeddedMode();
+            c->setSingleRuleCompileMode(single_rule_id);
+            c->setDebugLevel( dl );
+            if (rule_debug_on) c->setDebugRule(  drp );
+            c->setVerbose( verbose );
 
-    RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
-    if (routing)
-    {
-        r->setSourceRuleSet(routing);
-        r->setRuleSetName(routing->getName());
+            if ( c->prolog() > 0 )
+            {
+                c->compile();
+                c->epilog();
+            } else
+                info(" Nothing to compile in Policy");
+        }
 
-        if (inTestMode()) r->setTestMode();
-        if (inEmbeddedMode()) r->setEmbeddedMode();
-        r->setSingleRuleCompileMode(single_rule_id);
-        r->setDebugLevel( dl );
-        if (rule_debug_on) r->setDebugRule(  drp );
-        r->setVerbose( verbose );
+        std::auto_ptr<RoutingCompiler_pix> r(new RoutingCompiler_pix(objdb, fw, false, oscnf.get()));
 
-        if ( r->prolog() > 0 )
+        RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
+        if (routing)
         {
-            r->compile();
-            r->epilog();
-        } else
-            info(" Nothing to compile in Routing");
-    }
+            r->setSourceRuleSet(routing);
+            r->setRuleSetName(routing->getName());
 
-    if (haveErrorsAndWarnings())
+            if (inTestMode()) r->setTestMode();
+            if (inEmbeddedMode()) r->setEmbeddedMode();
+            r->setSingleRuleCompileMode(single_rule_id);
+            r->setDebugLevel( dl );
+            if (rule_debug_on) r->setDebugRule(  drp );
+            r->setVerbose( verbose );
+
+            if ( r->prolog() > 0 )
+            {
+                r->compile();
+                r->epilog();
+            } else
+                info(" Nothing to compile in Routing");
+        }
+
+        if (haveErrorsAndWarnings())
+        {
+            all_errors.push_front(getErrors("").c_str());
+        }
+
+        system_configuration_script = oscnf->getCompiledScript();
+        policy_script = c->getCompiledScript();
+        nat_script = n->getCompiledScript();
+        routing_script = r->getCompiledScript();
+
+        if (c->haveErrorsAndWarnings())
+            all_errors.push_back(c->getErrors("C ").c_str());
+        if (n->haveErrorsAndWarnings())
+            all_errors.push_back(n->getErrors("N ").c_str());
+        if (r->haveErrorsAndWarnings())
+            all_errors.push_back(r->getErrors("R ").c_str());
+
+
+    }
+    catch (FatalErrorInSingleRuleCompleMode &ex)
     {
-        all_errors.push_front(getErrors("").c_str());
+        if (haveErrorsAndWarnings())
+        {
+            all_errors.push_front(getErrors("").c_str());
+        }
     }
-
-    system_configuration_script = oscnf->getCompiledScript();
-    policy_script = c->getCompiledScript();
-    nat_script = n->getCompiledScript();
-    routing_script = r->getCompiledScript();
-
-    if (c->haveErrorsAndWarnings())
-        all_errors.push_back(c->getErrors("C ").c_str());
-    if (n->haveErrorsAndWarnings())
-        all_errors.push_back(n->getErrors("N ").c_str());
-    if (r->haveErrorsAndWarnings())
-        all_errors.push_back(r->getErrors("R ").c_str());
 
     if (single_rule_compile_on)
     {
@@ -560,6 +574,184 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     }
 
     return "";
+}
+
+/*
+ * Sanity checks for the cluster configuration. Per ticket #606:
+ *
+ * - state sync group must have master
+ *
+ * - one interface must be marked as "dedicated failover" for failover
+ *   group.
+ *
+ * - this interface must have failover group with members, one of
+ *   which must be master
+ *
+ * - failover interfaces in member firewalls must have ip addresses
+ *   which should be different but in the same subnet.
+ *
+ * - possibly another interface can be defined as "dedicated failover"
+ *   and used in state sync group.
+ *
+ * - if second interface is used for state sync, it must have ip
+ *   address in member firewalls (different)
+ *
+ * - addresses of the dedicated failover interfaces must belong to the
+ *   same subnet in each pair of failover inetrfaces (failover and state sync)
+ *
+ * - failover interfaces of both members used in the failover cluster
+ *   group of the cluster object must have the same name.
+ *
+ * - The same check should be performed in the state sync group. 
+ *
+ *
+ */
+void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
+                                                       Firewall*)
+{
+    FWObjectTypedChildIterator it = cluster->findByType(StateSyncClusterGroup::TYPENAME);
+    StateSyncClusterGroup *state_sync_group = StateSyncClusterGroup::cast(*it);
+
+    if (state_sync_group->getStr("master_iface").empty())
+    {
+        QString err("One of the interfaces in the state synchronization group "
+                    "must be marked as 'Master'");
+        abort(cluster, NULL, NULL, err.toStdString());
+        throw FatalErrorInSingleRuleCompleMode();
+    }
+
+    pixClusterGroupChecks(state_sync_group);
+
+    bool failover_group_inspected = false;
+    list<FWObject*> l2 = cluster->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+    {
+	Interface *iface = dynamic_cast<Interface*>(*i);
+	assert(iface);
+
+        FailoverClusterGroup *failover_group =
+            FailoverClusterGroup::cast(
+                iface->getFirstByType(FailoverClusterGroup::TYPENAME));
+        if (failover_group)
+        {
+            for (FWObjectTypedChildIterator it =
+                     failover_group->findByType(FWObjectReference::TYPENAME);
+                 it != it.end(); ++it)
+            {
+                Interface *member_iface = Interface::cast(FWObjectReference::getObject(*it));
+                assert(member_iface);
+
+                if (member_iface->isDedicatedFailover())
+                {
+                    pixClusterGroupChecks(failover_group);
+                    failover_group_inspected = true;
+                }
+            }
+        }
+    }
+}
+
+void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
+{
+    FWObject *cluster = cluster_group;
+    while (cluster && !Cluster::isA(cluster)) cluster = cluster->getParent();
+
+    FWObject *cluster_interface = NULL;
+    FWObject *p = cluster_group->getParent();
+    if (Interface::isA(p)) cluster_interface = p;
+
+    map<QString, const InetAddrMask*> addresses_and_masks;
+
+    for (FWObjectTypedChildIterator it = cluster_group->findByType(FWObjectReference::TYPENAME);
+         it != it.end(); ++it)
+    {
+        Interface *member_iface = Interface::cast(FWObjectReference::getObject(*it));
+        assert(member_iface);
+        FWObject *member = member_iface->getParentHost();
+
+        if (cluster_interface)
+        {
+            // check consistency of the names.
+            // In case of PIX the name of the cluster interface should match 
+            // names of member interfaces
+            if (cluster_interface->getName() != member_iface->getName())
+            {
+                QString err("Names of interfaces used in state synchronization "
+                            "or failover group must match the name of the "
+                            "cluster inetrface. Interface %1:%2 has the name "
+                            "that is different from the cluster interface name %3");
+
+                abort(cluster, NULL, NULL,
+                      err.arg(member->getName().c_str())
+                      .arg(member_iface->getName().c_str())
+                      .arg(cluster_interface->getName().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompleMode();
+            }
+        }
+
+        if (!member_iface->isDedicatedFailover())
+        {
+            QString err("Interface %1 is used in a state synchronization or "
+                        "failover group but is not marked as 'Dedicated Failover' "
+                        "interface. All interfaces used for the state "
+                        "synchronization or failover must be marked "
+                        "'Dedicated Failover'. ");
+
+            abort(member, NULL, NULL,
+                  err.arg(member_iface->getName().c_str()).toStdString());
+            throw FatalErrorInSingleRuleCompleMode();
+        }
+        if (!member_iface->isRegular() || member_iface->countInetAddresses(true)==0)
+        {
+            QString err("Interface %1 which is used in state synchronization "
+                        "or failover group does not have an IP address. "
+                        "All interfaces used for the state "
+                        "synchronization or failover must have ip addresses.");
+
+            abort(member, NULL, NULL,
+                  err.arg(member_iface->getName().c_str()).toStdString());
+            throw FatalErrorInSingleRuleCompleMode();
+        }
+        QString key("%1:%2");
+
+        FWObjectTypedChildIterator it_addr = member_iface->findByType(IPv4::TYPENAME);
+        IPv4* addr = IPv4::cast(*it_addr);
+        addresses_and_masks[key.arg(member->getName().c_str()).arg(member_iface->getName().c_str())] =
+            addr->getInetAddrMaskObjectPtr();
+    }
+    
+    if (addresses_and_masks.size() >= 2)
+    {
+        QString first_key;
+        const InetAddr *first_network_addr = NULL;
+        map<QString, const InetAddrMask*>::iterator it;
+        for (it=addresses_and_masks.begin(); it!=addresses_and_masks.end(); ++it)
+        {
+            QString key = it->first;
+            const InetAddrMask *am = it->second;
+            if (first_network_addr == NULL)
+            {
+                first_key = key;
+                first_network_addr = am->getNetworkAddressPtr();
+            } else
+            {
+                const InetAddr *network_addr = am->getNetworkAddressPtr();
+                if (*first_network_addr != *(network_addr))
+                {
+                    QString err("Interfaces used in state synchronization "
+                                "or failover group must have IP addresses on "
+                                "the same subnet. Interfaces %1 and %2 have "
+                                "addresses on different subnets: %3 , %4");
+
+                    abort(cluster, NULL, NULL,
+                          err.arg(first_key).arg(key)
+                          .arg(first_network_addr->toString().c_str())
+                          .arg(network_addr->toString().c_str()).toStdString());
+                    throw FatalErrorInSingleRuleCompleMode();
+                }
+            }
+        }
+    }
 }
 
 
