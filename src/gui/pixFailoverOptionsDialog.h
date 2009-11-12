@@ -23,10 +23,10 @@
 
 */
 
-#ifndef __OPENAISOPTIONSDIALOG_H_
-#define __OPENAISOPTIONSDIALOG_H_
+#ifndef __PIXFAILOVEROPTIONSDIALOG_H_
+#define __PIXFAILOVEROPTIONSDIALOG_H_
 
-#include <ui_openaisoptionsdialog_q.h>
+#include <ui_pixfailoveroptionsdialog_q.h>
 #include "DialogData.h"
 #include <QDialog>
 
@@ -35,18 +35,18 @@ namespace libfwbuilder
     class FWObject;
 };
 
-class openaisOptionsDialog : public QDialog
+class pixFailoverOptionsDialog : public QDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
 public:
-    openaisOptionsDialog(QWidget *parent, libfwbuilder::FWObject *o);
-    ~openaisOptionsDialog();
+    pixFailoverOptionsDialog(QWidget *parent, libfwbuilder::FWObject *o);
+    ~pixFailoverOptionsDialog();
 
 private:
     libfwbuilder::FWObject *obj;
     DialogData data;
-    Ui::openaisOptionsDialog_q *m_dialog;
+    Ui::pixFailoverOptionsDialog_q *m_dialog;
 
     bool validate();
 
@@ -55,5 +55,5 @@ protected slots:
     virtual void reject();
 };
 
-#endif // __OPENAISOPTIONSDIALOG_H_
+#endif // __PIXFAILOVEROPTIONSDIALOG_H_
 

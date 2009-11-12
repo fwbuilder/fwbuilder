@@ -89,6 +89,7 @@
 
 #include "vrrpOptionsDialog.h"
 #include "carpOptionsDialog.h"
+#include "pixFailoverOptionsDialog.h"
 #include "conntrackOptionsDialog.h"
 #include "heartbeatOptionsDialog.h"
 #include "openaisOptionsDialog.h"
@@ -341,6 +342,7 @@ QWidget *DialogFactory::createClusterGroupOptionsDialog(QWidget *parent,
 
     if (type == "conntrack")  return new conntrackOptionsDialog(parent, o);
     if (type == "pfsync")  return new pfsyncOptionsDialog(parent, o);
+    if (type == "pix_state_sync")  return new pixFailoverOptionsDialog(parent, o);
 
     if (type == "vrrp")  return new vrrpOptionsDialog(parent, o);
     if (type == "carp")  return new carpOptionsDialog(parent, o);

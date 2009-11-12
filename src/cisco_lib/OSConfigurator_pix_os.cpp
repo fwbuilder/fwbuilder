@@ -327,6 +327,9 @@ string OSConfigurator_pix_os::_printFailoverConfiguration()
                 cnf.setVariable("state_sync_interface_name",  iface->getName().c_str());
                 cnf.setVariable("state_sync_interface_label", iface->getLabel().c_str());
 
+                QString key = state_sync_group->getOptionsObject()->getStr("pix_failover_key").c_str();
+                cnf.setVariable("failover_key", key);
+
                 QString primary_addr;
                 QString primary_netm;
                 QString standby_addr;

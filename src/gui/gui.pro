@@ -158,6 +158,7 @@ HEADERS += ../../config.h \
     StartTipDialog.h \
     vrrpOptionsDialog.h \
     carpOptionsDialog.h \
+	pixFailoverOptionsDialog.h \
     conntrackOptionsDialog.h \
     heartbeatOptionsDialog.h \
     openaisOptionsDialog.h \
@@ -314,6 +315,7 @@ SOURCES += ProjectPanel.cpp \
     FWBAboutDialog.cpp \
     vrrpOptionsDialog.cpp \
     carpOptionsDialog.cpp \
+	pixFailoverOptionsDialog.cpp \
     conntrackOptionsDialog.cpp \
     pfsyncOptionsDialog.cpp \
     heartbeatOptionsDialog.cpp \
@@ -413,6 +415,7 @@ FORMS = FWBMainWindow_q.ui \
     starttipdialog_q.ui \
     vrrpoptionsdialog_q.ui \
     carpoptionsdialog_q.ui \
+	pixfailoveroptionsdialog_q.ui \
     conntrackoptionsdialog_q.ui \
     heartbeatoptionsdialog_q.ui \
     openaisoptionsdialog_q.ui \
