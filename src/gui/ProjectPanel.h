@@ -246,6 +246,8 @@ public:
                         libfwbuilder::FWObject *> &objByIds);
 
     QString getPageTitle();
+
+    void setActive();
     
  public slots:
     void newObject();

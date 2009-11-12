@@ -1026,6 +1026,7 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     if (pp)
     {
         prepareFileMenu();
+        pp->setActive();
         if (isEditorVisible()) openEditor(pp->getSelectedObject());
         //attachEditorToProjectPanel(pp);
         //if (isEditorVisible()) oe->open(pp->getSelectedObject());
