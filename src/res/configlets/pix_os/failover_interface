@@ -7,7 +7,7 @@ nameif {{$interface_name}} {{$interface_label}}
 
 {{if pix_version_ge_70}}
 interface {{$interface_name}}
-  nameif {{$interface_label}}
-  description dedicated failover interface
+  description LAN/STATE Failover Interface
+  no nameif
 exit
 {{endif}}

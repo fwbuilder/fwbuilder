@@ -19,10 +19,10 @@ failover lan interface {{$failover_interface_label}} {{$failover_interface_name}
 failover lan enable
 failover key {{$failover_key}}
 
-failover interface ip {{$failover_interface_label}} {{$failover_interface_address}} {{$failover_interface_netmask}} standby {{$failover_interface_standby_address}}
+failover interface ip {{$failover_interface_label}} {{$failover_interface_primary_address}} {{$failover_interface_primary_netmask}} standby {{$failover_interface_standby_address}}
 
-failover link {{$state_sync_interface_label}} {{$state_sync_interface}}
-failover interface ip {{$state_sync_interface_label}} {{$state_sync_interface_address}} {{$state_sync_interface_netmask}} standby {{$state_sync_interface_standby_address}}
+failover link {{$state_sync_interface_label}} {{$state_sync_interface_name}}
+failover interface ip {{$state_sync_interface_label}} {{$state_sync_interface_primary_address}} {{$state_sync_interface_primary_netmask}} standby {{$state_sync_interface_standby_address}}
 
 failover
 

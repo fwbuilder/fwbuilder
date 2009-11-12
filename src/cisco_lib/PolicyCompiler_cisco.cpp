@@ -754,9 +754,7 @@ bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
     std::list<FWObject*> cl;
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
-	FWObject *obj = *i1;
-	if (FWReference::cast(obj)!=NULL) obj=FWReference::cast(obj)->getPointer();
-        Address *a=Address::cast(obj);
+        Address *a = Address::cast(FWReference::getObject(*i1));
         assert(a!=NULL);   // assuming all objects are addresses.
         addrmap[a] = *i1;
     }
@@ -765,21 +763,22 @@ bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
          i1!=addrmap.end(); ++i1)
     {
         Address *a1 = i1->first;
-
+        const InetAddrMask* am1 = a1->getInetAddrMaskObjectPtr();
         for (std::map<Address*,FWObject*>::iterator i2=addrmap.begin();
              i2!=addrmap.end(); ++i2)
         {
             Address *a2 = i2->first;
-            if (a1==a2) continue;
+            const InetAddrMask* am2 = a2->getInetAddrMaskObjectPtr();
+            if (am1 && am2 && am1->toString() == am2->toString()) continue;
             if (compiler->checkForShadowing(*a1, *a2) ) cl.push_back(i1->second);
         }
     }
 
-    if (!cl.empty()) {
+    if (!cl.empty())
+    {
         for (list<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  
             re->remove( (*i1) );
     }
-
 
     tmp_queue.push_back(rule);
     return true;

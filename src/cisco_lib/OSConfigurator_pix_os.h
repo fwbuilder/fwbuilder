@@ -36,6 +36,10 @@
 
 class Configlet;
 
+namespace libfwbuilder {
+    class ClusterGroup;
+};
+
 namespace fwcompiler {
 
     class OSConfigurator_pix_os : public OSConfigurator {
@@ -43,11 +47,16 @@ namespace fwcompiler {
         //std::string _printNameif();
         //std::string _printIPAddress();
 
+        void _getFailoverAddresses(libfwbuilder::ClusterGroup *cluster_group,
+                                   QString *primary_addr,
+                                   QString *primary_netm,
+                                   QString *standby_addr);
+
         void _getAddressConfigurationForInterface(libfwbuilder::Interface *iface,
                                                   QString *addr,
                                                   QString *netm,
                                                   QString *standby_addr);
-        
+
         std::string _printInterfaceConfiguration();
         std::string _printFailoverConfiguration();
 

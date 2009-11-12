@@ -26,16 +26,18 @@
 
 #include "OSConfigurator_pix_os.h"
 #include "Helper.h"
-#include "fwbuilder/Resources.h"
+#include "Configlet.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 
-#include "Configlet.h"
 
+#include <qDebug>
 
 #include <list>
 #include <algorithm>
@@ -105,10 +107,53 @@ void OSConfigurator_pix_os::processFirewallOptions()
     output << endl;
 }
 
-void OSConfigurator_pix_os::_getAddressConfigurationForInterface(Interface *iface,
-                                                                 QString *addr,
-                                                                 QString *netm,
-                                                                 QString *standby_addr)
+void OSConfigurator_pix_os::_getFailoverAddresses(ClusterGroup *cluster_group,
+                                                  QString *primary_addr,
+                                                  QString *primary_netm,
+                                                  QString *standby_addr)
+{
+    int master_id = FWObjectDatabase::getIntId(cluster_group->getStr("master_iface"));
+    if (master_id <= 0)
+    {
+        QString err;
+        if (StateSyncClusterGroup::isA(cluster_group))
+            err = QObject::tr("One of the state synchronization group members "
+                              "must be marked as master. Can not configure "
+                              "PIX failover without master.");
+        else
+            err = QObject::tr("One of the failover group members must be marked "
+                              "as master. Can not configure PIX failover "
+                              "without master.");
+        abort(err.toStdString());
+    }
+
+    for (FWObjectTypedChildIterator it = cluster_group->findByType(FWObjectReference::TYPENAME);
+         it != it.end(); ++it)
+    {
+        Interface *gorup_intf = Interface::cast(FWObjectReference::getObject(*it));
+        assert(gorup_intf);
+        QString addr;
+        QString netm;
+        const InetAddr *a = gorup_intf->getAddressPtr();
+        const InetAddr *n = gorup_intf->getNetmaskPtr();
+        if (a && n)
+        {
+            addr = a->toString().c_str();
+            netm = n->toString().c_str();
+            if (gorup_intf->getId() == master_id)
+            {
+                *primary_addr = addr;
+                *primary_netm = netm;
+            } else
+            {
+                *standby_addr = addr;
+            }
+        }
+    }
+}
+
+void OSConfigurator_pix_os::_getAddressConfigurationForInterface(
+    Interface *iface, QString *addr, QString *netm, QString *standby_addr)
 {
     const InetAddr *a = iface->getAddressPtr();
     const InetAddr *n = iface->getNetmaskPtr();
@@ -253,7 +298,7 @@ string OSConfigurator_pix_os::_printFailoverConfiguration()
     cnf.setVariable("pix_version_lt_70", ! version_ge_70);
     cnf.setVariable("pix_version_ge_70",   version_ge_70);
 
-    list<FWObject*> l2=fw->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*> l2 = fw->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
 	Interface *iface=dynamic_cast<Interface*>(*i);
@@ -261,38 +306,81 @@ string OSConfigurator_pix_os::_printFailoverConfiguration()
 
         if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
 
+        // Intrfaces used for failover and state sync must be marked
+        // as "dedicated failover" in PIX firewall objects. This can
+        // be the same or two different interfaces.
         if (iface->isDedicatedFailover()) 
         {
-            cnf.setVariable("failover_interface_name",  iface->getName().c_str());
-            cnf.setVariable("failover_interface_label", iface->getLabel().c_str());
+            // configure state sync.  StateSyncClusterGroup object
+            // belongs to the cluster but method
+            // CompilerDriver::processStateSyncGroups sets variables
+            // "state_sync_group_id" and "state_sync_interface" in the
+            // member firewall object
 
-            QString primary_or_secondary = "secondary";
+            int state_sync_group_id = FWObjectDatabase::getIntId(
+                fw->getOptionsObject()->getStr("state_sync_group_id"));
+            StateSyncClusterGroup *state_sync_group = StateSyncClusterGroup::cast(
+                fw->getRoot()->findInIndex(state_sync_group_id));
+
+            if (state_sync_group && state_sync_group->hasMember(iface))
+            {
+                cnf.setVariable("state_sync_interface_name",  iface->getName().c_str());
+                cnf.setVariable("state_sync_interface_label", iface->getLabel().c_str());
+
+                QString primary_addr;
+                QString primary_netm;
+                QString standby_addr;
+
+                /*
+                 * Note that in the "failover interface ip" command
+                 * the first address is always that of the primary
+                 * unit and the second address is that of the
+                 * standby. They come in this order in the
+                 * configuration of BOTH units which is rather
+                 * counter-intuitive.
+                 */
+                _getFailoverAddresses(
+                    state_sync_group,
+                    &primary_addr, &primary_netm, &standby_addr);
+
+                cnf.setVariable("state_sync_interface_primary_address", primary_addr);
+                cnf.setVariable("state_sync_interface_primary_netmask", primary_netm);
+                cnf.setVariable("state_sync_interface_standby_address", standby_addr);
+            }
+
             int failover_group_id = FWObjectDatabase::getIntId(
                 iface->getOptionsObject()->getStr("failover_group_id"));
-            FWObject *failover_group = fw->getRoot()->findInIndex(failover_group_id);
+            FailoverClusterGroup *failover_group = FailoverClusterGroup::cast(
+                fw->getRoot()->findInIndex(failover_group_id));
             if (failover_group)
             {
+                cnf.setVariable("failover_interface_name",  iface->getName().c_str());
+                cnf.setVariable("failover_interface_label", iface->getLabel().c_str());
+
+                QString primary_or_secondary = "secondary";
                 int master_id = FWObjectDatabase::getIntId(
                     failover_group->getStr("master_iface"));
                 if (iface->getId() == master_id)
                     primary_or_secondary = "primary";
+
+                cnf.setVariable("primary_or_secondary", primary_or_secondary);
+
+                QString primary_addr;
+                QString primary_netm;
+                QString standby_addr;
+
+                _getFailoverAddresses(
+                    failover_group,
+                    &primary_addr, &primary_netm, &standby_addr);
+
+                cnf.setVariable("failover_interface_primary_address", primary_addr);
+                cnf.setVariable("failover_interface_primary_netmask", primary_netm);
+                cnf.setVariable("failover_interface_standby_address", standby_addr);
             }
-            cnf.setVariable("primary_or_secondary", primary_or_secondary);
-
-            QString addr;
-            QString netm;
-            QString standby_addr;
-
-            _getAddressConfigurationForInterface(iface, &addr, &netm, &standby_addr);
-
-            cnf.setVariable("failover_interface_address", addr);
-            cnf.setVariable("failover_interface_netmask", netm);
-            cnf.setVariable("failover_interface_standby_address", standby_addr);
         }
     }
 
-    // configure state sync
-    // StateSyncClusterGroup object belongs to the cluster
+
 
     return cnf.expand().toStdString();
 }

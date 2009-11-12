@@ -86,6 +86,12 @@
           <string>none,</string>
         </state_sync>
 
+        <pix_state_sync>
+          <needs_master>True</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <manage_addresses>True</manage_addresses>
+        </pix_state_sync>
+
         <pix_failover>
           <needs_master>True</needs_master>
           <no_ip_ok>True</no_ip_ok>

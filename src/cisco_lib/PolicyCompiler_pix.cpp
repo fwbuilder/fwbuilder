@@ -531,9 +531,7 @@ PIXGroup* PolicyCompiler_pix::CreateObjectGroups::findObjectGroup(RuleElement *r
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
         FWObject *o   = *i1;
-        FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-        
+        FWObject *obj = FWReference::getObject(o);
         relement.push_back(obj);
     }
 
@@ -566,26 +564,24 @@ PIXGroup* PolicyCompiler_pix::CreateObjectGroups::findObjectGroup(RuleElement *r
 
 bool PolicyCompiler_pix::CreateObjectGroups::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyCompiler_pix *pix_comp = dynamic_cast<PolicyCompiler_pix*>(compiler);
     Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
     assert(rule_iface);
 
-    RuleElement    *re=RuleElement::cast(rule->getFirstByType(re_type));
+    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
     if (re->size()==1)  // no need to create object-group since there is single object in the rule element
     {
         tmp_queue.push_back(rule);
         return true;
     }
 
-    PIXGroup *obj_group=findObjectGroup(re);
+    PIXGroup *obj_group = findObjectGroup(re);
     if (obj_group==NULL)
     {
         obj_group= new PIXGroup();
-
-        FWObject *o=re->front();
-        FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL)   obj=FWReference::cast(o)->getPointer();
+        FWObject *o = re->front();
+        FWObject *obj = FWReference::getObject(o);
 
         if (Address::cast(obj)!=NULL)     obj_group->setPIXGroupType(NETWORK);
         if (IPService::cast(obj)!=NULL)   obj_group->setPIXGroupType(PROTO);

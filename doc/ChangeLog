@@ -1,7 +1,40 @@
 2009-11-10  vadim  <vadim@vk.crocodile.org>
 
 	* configlets/pix_os/failover_commands: New feature: Added ability
-	to generate failover commands for PIX.
+	to generate failover commands for PIX. Summary:
+
+	- only "lan" type failover configuration is supported
+
+	 - one interface in each member firewall should be marked as
+	"dedicated failover" interface. These interfaces must have the
+	same name.
+
+	 - cluster should have interface with the same name as failover
+	interface of the member firewalls; this cluster interface should
+	have failover cluster group child object. The failover group is
+	configured with failover interfaces of both members. One interface
+	must be marked as "master". Compiler checks for this.
+
+	- Protocol in this failover group should be configured as "PIX
+	failover protocol"
+
+	 - cluster must have state synchronization cluster group object,
+	configured with interfaces of member firewalls. Use the same
+	interface as for the failover or another dedicated inetrface. In
+	the latter case interface objects of the member firewalls used for
+	state sync must be marked as "dedicated failover" as well.
+
+	 - Failover and state sync groups should have the same member
+	firewall configured as "master". Compiler checks for this.
+
+	 - Regular interfaces: cluster should have interface object with
+	the name matching corresponding interface of member
+	firewalls. Each of these cluster interfaces should have failover
+	cluster group child object configured with member firewall
+	interfaces. Protocol in this failover group can be set to
+	"None" (or blank). It is also not necessary to mark member
+	interface as master.
+
 
 	* OSConfigurator_pix_os.cpp (OSConfigurator_pix_os::_printInterfaceConfiguration):
 	Using configlet to generate interface configuration commands for
