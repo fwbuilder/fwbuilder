@@ -1203,7 +1203,7 @@
   <customwidget>
    <class>InterfacesTabWidget</class>
    <extends>QTabWidget</extends>
-   <header>interfacestabwidget.h</header>
+   <header>InterfacesTabWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
