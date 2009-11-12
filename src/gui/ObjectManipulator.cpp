@@ -2705,14 +2705,9 @@ void ObjectManipulator::editSelectedObject()
     FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
 //    obj->dump(false,false);
-    if (RuleSet::cast(obj)!=NULL)
-    {
-        if (m_project->getCurrentRuleSet()!=obj)
-        {
-            m_project->openRuleSet(obj);
-            return ;
-        }
-    }
+    if (RuleSet::cast(obj)!=NULL && m_project->getCurrentRuleSet()!=obj)
+        m_project->openRuleSet(obj);
+
     editObject(obj);
 }
 
