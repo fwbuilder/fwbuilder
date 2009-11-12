@@ -38,21 +38,30 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::FWOb
 void InterfaceEditorWidget::setupUI()
 {
     addAddr = new QToolButton(this);
-    addAddr->setIcon(QIcon(":/Icons/AddressTable/icon"));
+    delAddr = new QToolButton(this);
+    addAddr->setIcon(QIcon(":/Icons/add.png"));
+    delAddr->setIcon(QIcon(":/Icons/del.png"));
     addAddr->setToolTip(tr("Add new address"));
+    delAddr->setToolTip(tr("Delete current address"));
     connect(addAddr, SIGNAL(clicked()), this, SLOT(addNewAddress()));
-    this->m_ui->tabWidget->setCornerWidget(addAddr, Qt::TopRightCorner);
+    connect(delAddr, SIGNAL(clicked()), this, SLOT(closeTab()));
+    this->m_ui->tabWidget->setCornerWidget(addAddr, Qt::TopLeftCorner);
+    this->m_ui->tabWidget->setCornerWidget(delAddr, Qt::TopRightCorner);
+    this->m_ui->tabWidget->cornerWidget(Qt::TopRightCorner)->show();
+    this->m_ui->tabWidget->cornerWidget(Qt::TopLeftCorner)->show();
 }
 
 InterfaceEditorWidget::~InterfaceEditorWidget()
 {
     delete m_ui;
     delete addAddr;
+    delete delAddr;
 }
 
 void InterfaceEditorWidget::addNewAddress()
 {
     this->m_ui->tabWidget->addTab(new AddressEditor(this), "ip");
+    this->m_ui->tabWidget->setCurrentIndex(this->m_ui->tabWidget->count() - 1);
 }
 
 void InterfaceEditorWidget::changeEvent(QEvent *e)
@@ -91,8 +100,9 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
     return res;
 }
 
-void InterfaceEditorWidget::closeTab(int idx)
+void InterfaceEditorWidget::closeTab()
 {
+    int idx = this->m_ui->tabWidget->currentIndex();
     QWidget *w = this->m_ui->tabWidget->widget(idx);
     this->m_ui->tabWidget->removeTab(idx);
     delete w;

@@ -9,6 +9,7 @@
 
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolButton>
+#include <QtGui/QHBoxLayout>
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "AddressEditor.h"
@@ -39,6 +40,9 @@ protected:
 private:
     Ui::InterfacesTabWidget *m_ui;
     QToolButton *newInterface;
+    QToolButton *delInterface;
+    QWidget newInterfaceWidget;
+    QHBoxLayout newInterfaceLayout;
     libfwbuilder::FWObject *currentTemplate;
 
 public slots:
@@ -46,7 +50,7 @@ public slots:
     void clear();
     void addNewInterface();
     void setTemplate(libfwbuilder::FWObject*);
-    void closeTab(int);
+    void closeTab();
 
 };
 

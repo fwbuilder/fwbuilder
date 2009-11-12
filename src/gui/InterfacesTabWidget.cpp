@@ -8,17 +8,24 @@ InterfacesTabWidget::InterfacesTabWidget(QWidget *parent) :
     m_ui->setupUi(this);
     clear();
     newInterface = new QToolButton();
+    delInterface = new QToolButton();
     connect(newInterface, SIGNAL(clicked()), this, SLOT(addNewInterface()));
-    newInterface->setIcon(QIcon(":/Icons/Interface/icon"));
+    connect(delInterface, SIGNAL(clicked()), this, SLOT(closeTab()));
+    newInterface->setIcon(QIcon(":/Icons/add.png"));
+    delInterface->setIcon(QIcon(":/Icons/del.png"));
     newInterface->setToolTip(tr("Add new interface"));
-    this->setCornerWidget(newInterface, Qt::TopRightCorner);
+    delInterface->setToolTip(tr("Delete current interface"));
+    this->setCornerWidget(delInterface, Qt::TopRightCorner);
+    this->setCornerWidget(newInterface, Qt::TopLeftCorner);
     this->cornerWidget(Qt::TopRightCorner)->show();
+    this->cornerWidget(Qt::TopLeftCorner)->show();
 }
 
 InterfacesTabWidget::~InterfacesTabWidget()
 {
     delete m_ui;
     delete newInterface;
+    delete delInterface;
 }
 
 void InterfacesTabWidget::changeEvent(QEvent *e)
@@ -53,6 +60,7 @@ void InterfacesTabWidget::addNewInterface()
 {
     libfwbuilder::FWObjectDatabase *root = libfwbuilder::Interface::cast(*(currentTemplate->findByType(libfwbuilder::Interface::TYPENAME)))->getRoot();
     addTab(new InterfaceEditorWidget(this, root), tr("New interface"));
+    setCurrentIndex(count() - 1);
 }
 
 void InterfacesTabWidget::setTemplate(libfwbuilder::FWObject* obj)
@@ -65,8 +73,9 @@ void InterfacesTabWidget::clear()
     while ( this->count() ) this->removeTab(0);
 }
 
-void InterfacesTabWidget::closeTab(int idx)
+void InterfacesTabWidget::closeTab()
 {
+    int idx = this->currentIndex();
     QWidget *w = this->widget(idx);
     this->removeTab(idx);
     delete w;

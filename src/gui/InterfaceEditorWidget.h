@@ -36,7 +36,7 @@ protected:
 
 private:
     QTabWidget *tabw;
-    QToolButton *addAddr;
+    QToolButton *addAddr, *delAddr;
     void setupUI();
     libfwbuilder::Interface *interface;
     Ui::InterfaceEditorWidget *m_ui;
@@ -44,7 +44,7 @@ private:
 public slots:
     void nameEdited(QString);
     void addNewAddress();
-    void closeTab(int);
+    void closeTab();
 };
 
 #endif // INTERFACEEDITORWIDGET_H
