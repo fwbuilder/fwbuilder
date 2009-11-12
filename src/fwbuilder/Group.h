@@ -50,6 +50,7 @@ class Group : virtual public FWObject
 
     DECLARE_FWOBJECT_SUBTYPE(Group);
 
+    bool hasMember(FWObject *o);
 
     /*
      * verify whether given object type is approppriate as a child

@@ -61,6 +61,22 @@ int Group::getSize()
     return getChildrenCount();
 }
 
+bool Group::hasMember(FWObject *o)
+{
+    int o_id = o->getId();
+    for (list<FWObject*>::iterator it=begin(); it!=end(); ++it)
+    {
+        if (FWReference::cast(*it))
+        {
+            if (FWReference::cast(*it)->getPointerId() == o_id) return true;
+        } else
+        {
+            if ((*it)->getId() == o_id) return true;
+        }
+    }
+    return false;
+}
+
 
 
 

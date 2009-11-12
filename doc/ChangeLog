@@ -1,3 +1,8 @@
+2009-11-11  vadim  <vadim@vk.crocodile.org>
+
+	* Group.cpp (Group::isMember): Generic member that checks
+	if given object is a member of the group.
+
 2009-11-09  vadim  <vadim@vk.crocodile.org>
 
 	* fwbuilder.dtd.in (TODO): Added attribute "dedicated_failover"
