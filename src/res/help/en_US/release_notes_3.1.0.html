@@ -28,6 +28,7 @@
   <ul>
     <li><a href="#gui">Changes in the GUI</a></li>
     <li><a href="#cluster">Support for High Availability configurations</a></li>
+    <li><a href="#pix_cluster">Cluster configuration for PIX</a></li>
     <li><a href="#bridge">Changes in the support for bridging firewalls</a></li>
   </ul>
 </p>
@@ -255,6 +256,78 @@ rule sets of this object rather than in the actual firewalls.
   </ul>
 </p>
 
+<a name="pix_cluster"></a>
+<h2>Cluster configuration for PIX</h2>
+
+<p>
+  Firewall Builder supports PIX "lan based" failover configuration.
+  Unlike in Linux or BSD, where each interface of the firewall runs
+  its own instance of failover protocol, PIX runs one instance of
+  failover protocol over dedicated interface. PIX can also run state
+  synchronization protocol over the same or another dedicated
+  interface. These dedicated interfaces should be connected via
+  separate switch and do not see regular traffic. Here is how this is
+  implemented in Firewall Builder:
+</p>
+
+<p>
+  <ul>
+    <li>Like with all other supported firewall platforms, inetrface
+      objects that belong to a cluster object serve to establish
+      association between actual interfaces of the member
+      firewalls. Cluster interface object should have the same name as
+      corresponding member firewall interfaces. It should have
+      Failover Group child object which should be configured with
+      interfaces of the member firewalls. You can create Failover
+      Group object using context menu item "Add Failover Group", the
+      menu appears when you right mouse click on the cluster interface
+      object.
+    </li>
+
+    <li>Interface that is configured for the failover on the member
+      firewall should be marked as "Dedicated Failover". Use checkbox
+      with this name in the interface object dialog to do this.
+    </li>
+
+    <li>
+      Cluster interface that corresponds to the failover interface of
+      the members should be configured with protocol "PIX failover
+      protocol". Click on the "Edit protocol parameters" button to edit
+      timeout, polltime and the key.
+    </li>
+      
+    <li>Cluster interfaces that represent regular interfaces of the
+      members also must have failover group objects; that is where you
+      add interfaces of the member firewalls. There is no need to
+      configure protocol in these failover groups because PIX does not
+      run it over these interfaces. Regular interfaces should not be
+      marked as "Dedicated Failover".
+    </li>
+    
+    <li>Cluster object should have State Synchronization group child
+      object. Create it using conext menu "Add State Synchronization
+      Group" item if this object does not exist. In this object you
+      need to configure member interfaces that should be used for
+      state synchronization. You can use separate dedicated interfaces
+      or the same interfaces used for failover. If these are separate,
+      corresponding interface objects of the member firewalls must be
+      marked as "Dedicated Failover".
+    </li>
+
+    <li>One of the member firewall interfaces used in the State
+      Synchronization group must be marked as "master". This is where
+      you define which PIX unit is going to be the primary and which
+      is going to be the secondary in the HA pair.
+    </li>
+
+    <li>Dedicated failover interfaces of the member firewalls must
+      have IP addresses and these addresses must be different but
+      belong to the same subnet.
+    </li>
+
+
+  </ul>
+</p>
 
 <a name="bridge"></a>
 <h2>Changes in the support for bridging firewalls</h2>
