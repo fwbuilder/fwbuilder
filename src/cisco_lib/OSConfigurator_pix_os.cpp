@@ -751,13 +751,11 @@ string OSConfigurator_pix_os::_printTimeouts()
 }
 
 
-void OSConfigurator_pix_os::addVirtualAddressForNAT(const Address *addr)
+void OSConfigurator_pix_os::addVirtualAddressForNAT(const Address*)
 {
-    if (addr==NULL) ;
 }
 
-void OSConfigurator_pix_os::addVirtualAddressForNAT(const Network *nw)
+void OSConfigurator_pix_os::addVirtualAddressForNAT(const Network*)
 {
-    if (nw==NULL) ;
 }
 
