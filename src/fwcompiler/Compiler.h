@@ -118,8 +118,16 @@ namespace fwcompiler {
         libfwbuilder::Service *srv;
     };
 
-    class Compiler : public BaseCompiler {
-
+    class FatalErrorInSingleRuleCompileMode : public libfwbuilder::FWException
+    {
+public:
+        FatalErrorInSingleRuleCompileMode() : libfwbuilder::FWException("") {};
+        FatalErrorInSingleRuleCompileMode(const std::string &err) : libfwbuilder::FWException(err) {};
+    };
+    
+   
+    class Compiler : public BaseCompiler
+    {
         void _init(libfwbuilder::FWObjectDatabase *_db, libfwbuilder::Firewall *fw);
 
         virtual void _expand_group_recursive(libfwbuilder::FWObject *o,
