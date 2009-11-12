@@ -133,7 +133,7 @@ nameif %in %il security%sl
         <network_zones>True</network_zones>
         <unprotected_interfaces>False</unprotected_interfaces>
         <supports_prolog_epilog>True</supports_prolog_epilog>
-        <supports_cluster>False</supports_cluster>
+        <supports_cluster>True</supports_cluster>
         <actions>
             <Accept>
                 <supported>True</supported>
