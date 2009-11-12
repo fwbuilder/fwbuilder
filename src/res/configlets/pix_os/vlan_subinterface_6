@@ -1,7 +1,10 @@
 ## -*- mode: shell-script; -*- 
 ##
+## interface ethernet0 vlan3 logical
 
 {{if static_address}}
+
+interface {{$parent_interface}} {{$interface_name}} logical
 
 nameif {{$interface_name}} {{$interface_label}} security{{$security_level}}
 {{if configure_interface_address}}

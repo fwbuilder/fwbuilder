@@ -243,8 +243,12 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
         cnf->setVariable("security_level",  iface->getSecurityLevel());
 
         if (iface->getOptionsObject()->getStr("type") == "8021q")
+        {
             cnf->setVariable("vlan_id",
                              iface->getOptionsObject()->getInt("vlan_id"));
+            cnf->setVariable("parent_interface",
+                             iface->getParent()->getName().c_str());
+        }
 
         cnf->setVariable("static_address", ! iface->isDyn());
         cnf->setVariable("dhcp_address",     iface->isDyn());
