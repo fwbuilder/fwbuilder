@@ -103,7 +103,7 @@
   VLANs are added as child objects of an interface, like so:
 </p>
 
-<img src="vlan_interfaces.png" style="float: left; margin: 10px;">
+<img src="vlan_interfaces.png" style="float: left; padding: 10px;">
 
 <p>
   The GUI checks the name of the vlan subinterface against  naming convention
@@ -272,7 +272,7 @@ rule sets of this object rather than in the actual firewalls.
 
 <p>
   <ul>
-    <li>Like with all other supported firewall platforms, inetrface
+    <li>Like with all other supported firewall platforms, interface
       objects that belong to a cluster object serve to establish
       association between actual interfaces of the member
       firewalls. Cluster interface object should have the same name as
@@ -281,8 +281,12 @@ rule sets of this object rather than in the actual firewalls.
       interfaces of the member firewalls. You can create Failover
       Group object using context menu item "Add Failover Group", the
       menu appears when you right mouse click on the cluster interface
-      object.
+      object. Here is how it should look like:
     </li>
+
+    <p>
+      <img src="cluster_interfaces.png"/>
+    </p>
 
     <li>Interface that is configured for the failover on the member
       firewall should be marked as "Dedicated Failover". Use checkbox
@@ -318,6 +322,14 @@ rule sets of this object rather than in the actual firewalls.
       Synchronization group must be marked as "master". This is where
       you define which PIX unit is going to be the primary and which
       is going to be the secondary in the HA pair.
+    </li>
+
+    <li>
+      Here is an example of the state synchronization and failover using
+      the same interface Ethernet2:
+      <p>
+        <img src="state_sync_configuration.png"/>
+      </p>
     </li>
 
     <li>Dedicated failover interfaces of the member firewalls must
