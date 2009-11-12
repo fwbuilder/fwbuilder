@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>TabWidget</string>
   </property>
-  <property name="tabsClosable">
-   <bool>true</bool>
-  </property>
   <widget class="QWidget" name="tab">
    <attribute name="title">
     <string>Tab 1</string>
@@ -28,24 +25,7 @@
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>InterfacesTabWidget</sender>
-   <signal>tabCloseRequested(int)</signal>
-   <receiver>InterfacesTabWidget</receiver>
-   <slot>closeTab(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>closeTab(int)</slot>
  </slots>

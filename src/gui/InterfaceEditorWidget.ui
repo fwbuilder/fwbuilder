@@ -72,9 +72,6 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <property name="tabsClosable">
-      <bool>true</bool>
-     </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>Tab 1</string>
@@ -99,22 +96,6 @@
     <hint type="destinationlabel">
      <x>6</x>
      <y>69</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tabWidget</sender>
-   <signal>tabCloseRequested(int)</signal>
-   <receiver>InterfaceEditorWidget</receiver>
-   <slot>closeTab(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>290</x>
-     <y>344</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>290</x>
-     <y>210</y>
     </hint>
    </hints>
   </connection>
