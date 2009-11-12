@@ -326,7 +326,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                           .arg(iface->getLabel().c_str())
                           .arg(iface2->getName().c_str())
                           .arg(iface2->getLabel().c_str()).toStdString());
-                    throw FatalErrorInSingleRuleCompleMode();
+                    throw FatalErrorInSingleRuleCompileMode();
                 }
             }
 /*
@@ -339,7 +339,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                 abort(fw, NULL, NULL,
                       err.arg(iface->getName().c_str())
                       .arg(iface->getLabel().c_str()).toStdString());
-                throw FatalErrorInSingleRuleCompleMode();
+                throw FatalErrorInSingleRuleCompileMode();
             }
             FWObject *netzone=objdb->findInIndex(
                 FWObjectDatabase::getIntId(netzone_id));
@@ -349,7 +349,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                 abort(fw, NULL, NULL,
                       err.arg(iface->getName().c_str())
                       .arg(iface->getLabel().c_str()).toStdString());
-                throw FatalErrorInSingleRuleCompleMode();
+                throw FatalErrorInSingleRuleCompileMode();
             }
 /*
  * netzone may be a group, in which case we need to expand it
@@ -413,7 +413,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                         abort(fw, NULL, NULL,
                               err.arg(l->second->getName().c_str())
                               .arg(k->first.c_str()).toStdString());
-                        throw FatalErrorInSingleRuleCompleMode();
+                        throw FatalErrorInSingleRuleCompileMode();
                     } else
                     {
                         QString err("Object %1 is used in network zones of "
@@ -422,7 +422,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                               err.arg(l->second->getName().c_str())
                               .arg(k->first.c_str())
                               .arg(l->first.c_str()).toStdString());
-                        throw FatalErrorInSingleRuleCompleMode();
+                        throw FatalErrorInSingleRuleCompileMode();
                     }
                 }
             }
@@ -535,7 +535,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
 
 
     }
-    catch (FatalErrorInSingleRuleCompleMode &ex)
+    catch (FatalErrorInSingleRuleCompileMode &ex)
     {
         if (haveErrorsAndWarnings())
         {
@@ -617,7 +617,7 @@ void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
         QString err("One of the interfaces in the state synchronization group "
                     "must be marked as 'Master'");
         abort(cluster, NULL, NULL, err.toStdString());
-        throw FatalErrorInSingleRuleCompleMode();
+        throw FatalErrorInSingleRuleCompileMode();
     }
 
     pixClusterGroupChecks(state_sync_group);
@@ -685,7 +685,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
                       err.arg(member->getName().c_str())
                       .arg(member_iface->getName().c_str())
                       .arg(cluster_interface->getName().c_str()).toStdString());
-                throw FatalErrorInSingleRuleCompleMode();
+                throw FatalErrorInSingleRuleCompileMode();
             }
         }
 
@@ -699,7 +699,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
 
             abort(member, NULL, NULL,
                   err.arg(member_iface->getName().c_str()).toStdString());
-            throw FatalErrorInSingleRuleCompleMode();
+            throw FatalErrorInSingleRuleCompileMode();
         }
         if (!member_iface->isRegular() || member_iface->countInetAddresses(true)==0)
         {
@@ -710,7 +710,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
 
             abort(member, NULL, NULL,
                   err.arg(member_iface->getName().c_str()).toStdString());
-            throw FatalErrorInSingleRuleCompleMode();
+            throw FatalErrorInSingleRuleCompileMode();
         }
         QString key("%1:%2");
 
@@ -747,7 +747,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
                           err.arg(first_key).arg(key)
                           .arg(first_network_addr->toString().c_str())
                           .arg(network_addr->toString().c_str()).toStdString());
-                    throw FatalErrorInSingleRuleCompleMode();
+                    throw FatalErrorInSingleRuleCompileMode();
                 }
             }
         }
