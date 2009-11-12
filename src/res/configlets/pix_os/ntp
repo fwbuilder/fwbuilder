@@ -1,0 +1,16 @@
+## -*- mode: shell-script; -*- 
+##
+
+{{if clear}}
+{{if pix_version_lt_70}}
+clear ntp
+{{endif}}
+{{if pix_version_ge_70}}
+clear config ntp
+{{endif}}
+{{endif}}
+
+{{if not_server_1_empty}}ntp server {{$address_1}} source {{$interface_1_label}} {{if prefer_1}}prefer{{endif}} {{endif}}
+{{if not_server_2_empty}}ntp server {{$address_2}} source {{$interface_2_label}} {{if prefer_2}}prefer{{endif}} {{endif}}
+{{if not_server_3_empty}}ntp server {{$address_3}} source {{$interface_3_label}} {{if prefer_3}}prefer{{endif}} {{endif}}
+

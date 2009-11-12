@@ -51,8 +51,6 @@
             <clear_icmp>clear icmp</clear_icmp>
             <clear_telnet>clear telnet</clear_telnet>
             <clear_ssh>clear ssh</clear_ssh>
-            <clear_ntp>clear ntp</clear_ntp>
-            <clear_snmp>clear snmp-server</clear_snmp>
             <clear_xlate>clear xlate</clear_xlate>
             <clear_static>clear static</clear_static>
             <clear_global>clear global</clear_global>
@@ -131,8 +129,6 @@
             <clear_icmp>clear icmp</clear_icmp>
             <clear_telnet>clear telnet</clear_telnet>
             <clear_ssh>clear ssh</clear_ssh>
-            <clear_ntp>clear ntp</clear_ntp>
-            <clear_snmp>clear snmp-server</clear_snmp>
             <clear_xlate>clear xlate</clear_xlate>
             <clear_static>clear static</clear_static>
             <clear_global>clear global</clear_global>
@@ -211,8 +207,6 @@
             <clear_icmp>clear icmp</clear_icmp>
             <clear_telnet>clear telnet</clear_telnet>
             <clear_ssh>clear ssh</clear_ssh>
-            <clear_ntp>clear ntp</clear_ntp>
-            <clear_snmp>clear snmp-server</clear_snmp>
             <clear_xlate>clear xlate</clear_xlate>
             <clear_static>clear static</clear_static>
             <clear_global>clear global</clear_global>
@@ -291,8 +285,6 @@
             <clear_icmp>clear config icmp</clear_icmp>
             <clear_telnet>clear config telnet</clear_telnet>
             <clear_ssh>clear config ssh</clear_ssh>
-            <clear_ntp>clear config ntp</clear_ntp>
-            <clear_snmp>clear config snmp-server</clear_snmp>
             <clear_xlate>clear xlate</clear_xlate>
             <clear_static>clear config static</clear_static>
             <clear_global>clear config global</clear_global>

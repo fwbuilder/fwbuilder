@@ -559,35 +559,42 @@ string OSConfigurator_pix_os::_printSNMP()
     return cnf.expand().toStdString() + "\n";
 }
 
-string  OSConfigurator_pix_os::_printNTPServer(const std::string &srv,bool pref)
+void OSConfigurator_pix_os::_configureNTPServer(Configlet *cnf, int server_num,
+                                                const std::string &server, bool pref)
 {
     Helper helper(this);
-
-    ostringstream  str;
-    InetAddr srv_addr(srv);
-    int iface_id=helper.findInterfaceByNetzone(&srv_addr);
+    InetAddr srv_addr(server);
+    int iface_id = helper.findInterfaceByNetzone(&srv_addr);
     if (iface_id == -1)
-        abort("NTP server "+srv+" does not belong to any known network zone");
+    {
+        QString err("NTP server %1 does not belong to any known network zone");
+        abort(fw, err.arg(server.c_str()).toStdString());
+    }
     Interface *ntp_iface = Interface::cast(dbcopy->findInIndex(iface_id));
-    str << "ntp server " << srv << " source " << ntp_iface->getLabel();
-    if (pref) str << " prefer";
-    str << endl;
 
-    return str.str();
+    QString var_name("not_server_%1_empty");
+    cnf->setVariable(var_name.arg(server_num), ! server.empty());
+    var_name = QString("address_%1");
+    cnf->setVariable(var_name.arg(server_num), server.c_str());
+
+    var_name = QString("interface_%1_label");
+    cnf->setVariable(var_name.arg(server_num), ntp_iface->getLabel().c_str());
+
+    var_name = QString("prefer_%1");
+    cnf->setVariable(var_name.arg(server_num), pref);
 }
 
 string OSConfigurator_pix_os::_printNTP()
 {
-    ostringstream  res;
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
-    string clearNTPcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/version_")+
-        version+"/pix_commands/clear_ntp");
+    bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
 
-
-    if ( !fw->getOptionsObject()->getBool("pix_acl_no_clear") ) 
-        res << clearNTPcmd << endl;
+    Configlet cnf(fw, "pix_os", "ntp");
+    cnf.removeComments();
+    cnf.collapseEmptyStrings(true);
+    cnf.setVariable("pix_version_lt_70", ! version_ge_70);
+    cnf.setVariable("pix_version_ge_70",   version_ge_70);
 
     string ntp_server_1=fw->getOptionsObject()->getStr("pix_ntp1");
     bool   ntp1_pref=fw->getOptionsObject()->getBool("pix_ntp1_pref");
@@ -596,16 +603,14 @@ string OSConfigurator_pix_os::_printNTP()
     string ntp_server_3=fw->getOptionsObject()->getStr("pix_ntp3");
     bool   ntp3_pref=fw->getOptionsObject()->getBool("pix_ntp3_pref");
 
-    if (!ntp_server_1.empty()) 
-        res << _printNTPServer(ntp_server_1,ntp1_pref);
+    cnf.setVariable("clear",
+                    !fw->getOptionsObject()->getBool("pix_acl_no_clear"));
 
-    if (!ntp_server_2.empty()) 
-        res << _printNTPServer(ntp_server_2,ntp2_pref);
+    _configureNTPServer(&cnf, 1, ntp_server_1, ntp1_pref);
+    _configureNTPServer(&cnf, 2, ntp_server_2, ntp2_pref);
+    _configureNTPServer(&cnf, 3, ntp_server_3, ntp3_pref);
 
-    if (!ntp_server_3.empty()) 
-        res << _printNTPServer(ntp_server_3,ntp3_pref);
-
-    return res.str();
+    return cnf.expand().toStdString() + "\n";
 }
 
 string OSConfigurator_pix_os::_printSysopt()

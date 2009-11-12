@@ -64,9 +64,11 @@ namespace fwcompiler {
 
         void _configureSNMPServer(Configlet *cnf, int server_num,
                                   const std::string &srv, int poll_trap);
+        void _configureNTPServer(Configlet *cnf, int server_num,
+                                 const std::string &server, bool pref);
+
         std::string _printSNMP();
         std::string _printSysopt();
-        std::string _printNTPServer(const std::string &srv,bool pref);
         std::string _printNTP();
         std::string _printServiceTimeout(const std::string &pix_service);
         std::string _printTimeouts();
