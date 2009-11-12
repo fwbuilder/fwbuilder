@@ -37,7 +37,7 @@
 #include "fwbuilder/FailoverClusterGroup.h"
 
 
-#include <qDebug>
+#include <QtDebug>
 
 #include <list>
 #include <algorithm>
