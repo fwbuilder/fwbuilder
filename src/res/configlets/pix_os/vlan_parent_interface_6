@@ -1,0 +1,6 @@
+## -*- mode: shell-script; -*- 
+##
+
+no nameif {{$interface_name}} {{$interface_label}} security{{$security_level}}
+
+

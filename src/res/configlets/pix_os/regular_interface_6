@@ -1,0 +1,13 @@
+## -*- mode: shell-script; -*- 
+##
+
+{{if static_address}}
+nameif {{$interface_name}} {{$interface_label}} security{{$security_level}}
+{{if configure_interface_address}}ip address {{$interface_label}} {{$address}} {{$netmask}} {{endif}}
+{{endif}}
+
+{{if dhcp_address}}
+nameif {{$interface_name}} {{$interface_label}} security{{$security_level}}
+{{if configure_interface_address}}ip address {{$interface_label}} dhcp setroute retry 10 {{endif}}
+{{endif}}
+

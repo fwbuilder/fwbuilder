@@ -195,7 +195,6 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
     string platform = fw->getStr("platform");
     string::size_type n;
 
-    bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
     bool configure_address = fw->getOptionsObject()->getBool("pix_ip_address");
     bool configure_standby_address =
         configure_address && fw->getOptionsObject()->getBool("cluster_member");
@@ -209,32 +208,33 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
         if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
 
         Configlet *cnf = NULL;
+        QString configlet_name;
         if (iface->isDedicatedFailover()) 
         {
-            cnf = new Configlet(fw, "pix_os", "failover_interface");
+            configlet_name = "failover_interface_";
             if (iface->getLabel().empty()) iface->setLabel("failover");
         }
 
         if (iface->getOptionsObject()->getStr("type") == "8021q")
-        {
-            cnf = new Configlet(fw, "pix_os", "vlan_subinterface");
-        }
+            configlet_name = "vlan_subinterface_";
 
         if ((iface->getOptionsObject()->getStr("type") == "" ||
              iface->getOptionsObject()->getStr("type") == "ethernet") &&
             iface->getByType(Interface::TYPENAME).size() > 0)
         {
             // vlan parent
-            cnf = new Configlet(fw, "pix_os", "vlan_parent_interface");
+            configlet_name = "vlan_parent_interface_";
         }
 
-        if (cnf==NULL) cnf = new Configlet(fw, "pix_os", "regular_interface");
+        if (cnf==NULL)  configlet_name = "regular_interface_";
+
+        if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
+        if (XMLTools::version_compare(version, "7.0") >= 0) configlet_name += "7";
+        cnf = new Configlet(fw, "pix_os", configlet_name);
 
         cnf->removeComments();
         cnf->collapseEmptyStrings(true);
 
-        cnf->setVariable("pix_version_lt_70", ! version_ge_70);
-        cnf->setVariable("pix_version_ge_70",   version_ge_70);
         cnf->setVariable("configure_interface_address", configure_address);
         cnf->setVariable("configure_standby_address", configure_standby_address);
 
@@ -290,13 +290,13 @@ string OSConfigurator_pix_os::_printFailoverConfiguration()
     string platform = fw->getStr("platform");
     string::size_type n;
 
-    bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
+    QString configlet_name = "failover_commands_";
+    if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
+    if (XMLTools::version_compare(version, "7.0") >= 0) configlet_name += "7";
 
-    Configlet cnf(fw, "pix_os", "failover_commands");
+    Configlet cnf(fw, "pix_os", configlet_name);
     cnf.removeComments();
     cnf.collapseEmptyStrings(true);
-    cnf.setVariable("pix_version_lt_70", ! version_ge_70);
-    cnf.setVariable("pix_version_ge_70",   version_ge_70);
 
     list<FWObject*> l2 = fw->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)

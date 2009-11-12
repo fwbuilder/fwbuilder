@@ -1,0 +1,9 @@
+## -*- mode: shell-script; -*- 
+##
+
+interface {{$interface_name}}
+  no nameif
+  no ip address
+  no security-level
+exit
+

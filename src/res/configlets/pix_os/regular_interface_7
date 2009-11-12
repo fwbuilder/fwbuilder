@@ -1,0 +1,30 @@
+## -*- mode: shell-script; -*- 
+##
+
+
+{{if static_address}}
+
+interface {{$interface_name}}
+  nameif {{$interface_label}}
+{{if configure_interface_address}}
+  ip address {{$address}} {{$netmask}} {{if configure_standby_address}} standby {{$standby_address}} {{endif}}
+{{endif}}
+  security-level {{$security_level}}
+exit
+
+{{endif}}
+
+
+
+{{if dhcp_address}}
+
+interface {{$interface_name}}
+  nameif {{$interface_label}}
+{{if configure_interface_address}}
+  ip address dhcp setroute
+{{endif}}
+  security-level {{$security_level}}
+exit
+
+{{endif}}
+

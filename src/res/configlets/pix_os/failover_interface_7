@@ -2,14 +2,12 @@
 ##
 
 {{if pix_version_lt_70}}
-no nameif {{$interface_name}} {{$interface_label}} security{{$security_level}}
+nameif {{$interface_name}} {{$interface_label}}
 {{endif}}
 
 {{if pix_version_ge_70}}
 interface {{$interface_name}}
+  description LAN/STATE Failover Interface
   no nameif
-  no ip address
-  no security-level
 exit
 {{endif}}
-

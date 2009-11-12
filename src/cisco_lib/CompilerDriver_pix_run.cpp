@@ -227,13 +227,11 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     }
 #endif
 
-    std::auto_ptr<OSConfigurator> oscnf(new OSConfigurator_pix_os(objdb , fw, false));
-    if (inTestMode()) oscnf->setTestMode();
-    if (inEmbeddedMode()) oscnf->setEmbeddedMode();
 
     QString ofname = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
     FWOptions* options = fw->getOptionsObject();
 
+    QString script_buffer;
 
     try
     {
@@ -250,9 +248,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
         bool pix_acl_substitution = options->getBool("pix_acl_substitution");
         bool pix_add_clear_statements = options->getBool("pix_add_clear_statements");
 
-        if ( !pix_acl_basic &&
-             !pix_acl_no_clear &&
-             !pix_acl_substitution )
+        if (!pix_acl_basic && !pix_acl_no_clear && !pix_acl_substitution)
         {
             if ( pix_add_clear_statements ) options->setBool("pix_acl_basic",true);
             else options->setBool("pix_acl_no_clear",true);
@@ -436,9 +432,12 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
  std::sort(fw->begin(), fw->end(), sort_by_net_zone() );
 */
 
-
         std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
         prep->compile();
+
+        std::auto_ptr<OSConfigurator> oscnf(new OSConfigurator_pix_os(objdb , fw, false));
+        if (inTestMode()) oscnf->setTestMode();
+        if (inEmbeddedMode()) oscnf->setEmbeddedMode();
 
         oscnf->prolog();
         oscnf->processFirewallOptions();
@@ -533,7 +532,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
         if (r->haveErrorsAndWarnings())
             all_errors.push_back(r->getErrors("R ").c_str());
 
-
+        script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
     {
@@ -548,8 +547,6 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
         return all_errors.join("\n").toStdString() +
             policy_script + nat_script + routing_script;
     }
-
-    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
 
     info("Output file name: " + ofname.toStdString());
 
@@ -609,6 +606,8 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
 void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
                                                        Firewall*)
 {
+    if (cluster==NULL) return;
+
     FWObjectTypedChildIterator it = cluster->findByType(StateSyncClusterGroup::TYPENAME);
     StateSyncClusterGroup *state_sync_group = StateSyncClusterGroup::cast(*it);
 
