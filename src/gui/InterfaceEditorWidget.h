@@ -7,12 +7,15 @@
 #include "utils_no_qt.h"
 #include "platforms.h"
 
-#include "AddressEditor.h"
 #include "InterfacesTabWidget.h"
 
 #include <QtGui/QWidget>
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolButton>
+#include <QTableWidgetItem>
+#include <QMap>
+#include <QPushButton>
+#include <QComboBox>
 
 #include "fwbuilder/Interface.h"
 
@@ -21,6 +24,13 @@ namespace Ui {
 }
 
 struct EditedInterfaceData;
+
+struct AddressInfo
+{
+    bool ipv4;
+    QString address;
+    QString netmask;
+};
 
 class InterfaceEditorWidget : public QWidget {
     Q_OBJECT
@@ -37,14 +47,17 @@ protected:
 private:
     QTabWidget *tabw;
     QToolButton *addAddr, *delAddr;
-    void setupUI();
     libfwbuilder::Interface *interface;
     Ui::InterfaceEditorWidget *m_ui;
+    QMap<QPushButton*, QPair<QTableWidgetItem*, QTableWidgetItem*> > buttons;
+    QMap<int, QPair<QTableWidgetItem*, QTableWidgetItem*> > rows;
+    QMap<int, QComboBox*> types;
+    QMap<int, libfwbuilder::Address*> fwaddrs;
 
 public slots:
+    int addNewAddress();
+    void deleteAddress();
     void nameEdited(QString);
-    void addNewAddress();
-    void closeTab();
 };
 
 #endif // INTERFACEEDITORWIDGET_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>582</width>
-    <height>421</height>
+    <width>579</width>
+    <height>477</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QPlainTextEdit" name="comment">
+      <widget class="QTextEdit" name="comment">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
@@ -63,26 +63,39 @@
          <height>0</height>
         </size>
        </property>
-       <property name="tabChangesFocus">
-        <bool>true</bool>
-       </property>
-       <property name="plainText">
-        <string notr="true"/>
-       </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
-      <number>0</number>
+    <widget class="QTableWidget" name="addresses">
+     <column>
+      <property name="text">
+       <string>Address</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Netmask</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Type</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Remove</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="addAddress">
+     <property name="text">
+      <string>Add address</string>
      </property>
-     <widget class="QWidget" name="tab">
-      <attribute name="title">
-       <string>Tab 1</string>
-      </attribute>
-     </widget>
     </widget>
    </item>
   </layout>
@@ -105,9 +118,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>addAddress</sender>
+   <signal>clicked()</signal>
+   <receiver>InterfaceEditorWidget</receiver>
+   <slot>addNewAddress()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>289</x>
+     <y>456</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>nameEdited(QString)</slot>
   <slot>closeTab(int)</slot>
+  <slot>addNewAddress()</slot>
  </slots>
 </ui>

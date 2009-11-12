@@ -167,7 +167,6 @@ HEADERS += ../../config.h \
     startup_tip_url.h \
     AutocompletedComboBox.h \
     InterfaceEditorWidget.h \
-    AddressEditor.h \
     FWCmdBasic.h \
     FWCmdChange.h \
     FWObjectState.h \
@@ -322,7 +321,6 @@ SOURCES += ProjectPanel.cpp \
     openaisOptionsDialog.cpp \
     AutocompletedComboBox.cpp \
     InterfaceEditorWidget.cpp \
-    AddressEditor.cpp \
     FWCmdBasic.cpp \
     FWCmdChange.cpp \
     FWObjectState.cpp \
@@ -423,7 +421,6 @@ FORMS = FWBMainWindow_q.ui \
     vlanonlyifaceoptsdialog_q.ui \
     linux24ifaceoptsdialog_q.ui \
     InterfaceEditorWidget.ui \
-    AddressEditor.ui \
     InterfacesTabWidget.ui
 
 # fwtransfer stuff

@@ -12,12 +12,13 @@
 #include <QtGui/QHBoxLayout>
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWObjectDatabase.h"
-#include "AddressEditor.h"
 #include "InterfaceEditorWidget.h"
 
 namespace Ui {
     class InterfacesTabWidget;
 }
+
+struct AddressInfo;
 
 struct EditedInterfaceData
 {
