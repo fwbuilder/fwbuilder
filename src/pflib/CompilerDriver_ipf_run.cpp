@@ -109,7 +109,7 @@ QString CompilerDriver_ipf::composeActivationCommand(libfwbuilder::Firewall *fw,
     return act.expand();
 }
 
-QString CompilerDriver_ipf::assembleManifest(Firewall* fw, bool )
+QString CompilerDriver_ipf::assembleManifest(Cluster *cluster, Firewall* fw, bool )
 {
     FWOptions* options = fw->getOptionsObject();
     QFileInfo fw_file_info(fw_file_name);
@@ -151,13 +151,16 @@ QString CompilerDriver_ipf::assembleManifest(Firewall* fw, bool )
     return script_buffer;
 }
 
-QString CompilerDriver_ipf::assembleFwScript(Firewall* fw, bool cluster_member, OSConfigurator *oscnf)
+QString CompilerDriver_ipf::assembleFwScript(Cluster *cluster,
+                                             Firewall* fw,
+                                             bool cluster_member,
+                                             OSConfigurator *oscnf)
 {
     Configlet script_skeleton(fw, "ipf", "script_skeleton");
     Configlet top_comment(fw, "ipf", "top_comment");
 
     assembleFwScriptInternal(
-        fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
+        cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
     return script_skeleton.expand();
 }
 
@@ -191,7 +194,7 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
     // firewall fw This happens when we compile a member of a cluster
     current_firewall_name = fw->getName().c_str();
 
-    fw_file_name = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
+    fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
     QFileInfo finfo(fw_file_name);
     QString ipf_file_name = finfo.completeBaseName() + "-ipf.conf";
@@ -400,7 +403,8 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
 /*
  * assemble the script and then perhaps post-process it if needed
  */
-    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
+    QString script_buffer = assembleFwScript(
+        cluster, fw, !cluster_id.empty(), oscnf.get());
 
 
     info("Output file name: " + fw_file_name.toStdString());

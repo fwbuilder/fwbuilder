@@ -8,9 +8,13 @@ fwb_ipt \- Policy compiler for Cisco PIX
 .SH SYNOPSIS
 
 .B fwb_pix
-.B [-vVi]
-.B [-d wdir]
-.B -f data_file.xml
+.RB -f data_file.xml
+.RB [-V]
+.RB [-d wdir]
+.RB [-i]
+.RB [-v]
+.RB [-xc]
+.RB [-xt]
 object_name
 
 .SH "DESCRIPTION"
@@ -44,6 +48,19 @@ Print version number and quit.
 .IP "-i"
 When this option is present, the last argument on the command line is
 supposed to be firewall object ID rather than its name
+
+.IP "-xc"
+When output file name is determined automatically (i.e. flags -o or -O
+are not present), the file name is composed of the cluster name and
+member firewall name rather than just member firewall name. This is
+used mostly for testing when the same member firewall object can be a
+part of different clusters with different configurations.
+
+.IP "-xt"
+This flag makes compiler treat all fatal errors as warnings and
+continue processing rules. Generated configuration script most likely
+will be incorrect but will include error message as a comment; this
+flag is used for testing and debugging.
 
 .SH URL
 Firewall Builder home page is located at the following URL:

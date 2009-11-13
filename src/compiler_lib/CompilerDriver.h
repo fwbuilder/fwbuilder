@@ -81,6 +81,7 @@ protected:
         int drp;
         bool rule_debug_on;
         bool single_rule_compile_on;
+        bool prepend_cluster_name_to_output_file;
         std::string single_rule_id;
         int drn;
         int verbose;
@@ -97,7 +98,8 @@ protected:
 
         libfwbuilder::FWObjectDatabase *objdb;
 
-        QString determineOutputFileName(libfwbuilder::Firewall *current_fw,
+        QString determineOutputFileName(libfwbuilder::Cluster *cluster,
+                                        libfwbuilder::Firewall *current_fw,
                                         bool cluster_member,
                                         const QString &ext);
         bool isSupported(std::list<std::string> *protocols,
@@ -118,9 +120,12 @@ protected:
 
         virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
 
-        virtual QString assembleManifest(libfwbuilder::Firewall* fw, bool cluster_member);
+        virtual QString assembleManifest(libfwbuilder::Cluster *cluster,
+                                         libfwbuilder::Firewall* fw,
+                                         bool cluster_member);
 
-        virtual void assembleFwScriptInternal(libfwbuilder::Firewall* fw,
+        virtual void assembleFwScriptInternal(libfwbuilder::Cluster *cluster,
+                                              libfwbuilder::Firewall* fw,
                                               bool cluster_member,
                                               OSConfigurator *ocsnf,
                                               Configlet *script_skeleton,

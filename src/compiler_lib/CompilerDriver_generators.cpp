@@ -68,12 +68,13 @@ QString CompilerDriver::printActivationCommands(Firewall*)
     return "";
 }
 
-QString CompilerDriver::assembleManifest(Firewall*, bool)
+QString CompilerDriver::assembleManifest(Cluster*, Firewall*, bool)
 {
     return "";
 }
 
-void CompilerDriver::assembleFwScriptInternal(Firewall* fw,
+void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
+                                              Firewall* fw,
                                               bool cluster_member,
                                               OSConfigurator *oscnf,
                                               Configlet *script_skeleton,
@@ -136,7 +137,7 @@ void CompilerDriver::assembleFwScriptInternal(Firewall* fw,
 
     QFileInfo fw_file_info(fw_file_name);
 
-    top_comment->setVariable("manifest", assembleManifest(fw, cluster_member));
+    top_comment->setVariable("manifest", assembleManifest(cluster, fw, cluster_member));
     top_comment->setVariable("platform", platform.c_str());
     top_comment->setVariable("fw_version", fw_version.c_str());
     top_comment->setVariable("comment", prepend(comment_char + " ", fw->getComment().c_str()));

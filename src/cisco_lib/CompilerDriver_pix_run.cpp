@@ -107,11 +107,11 @@ class sort_by_net_zone {
     }
 };
 
-QString CompilerDriver_pix::assembleManifest(Firewall* fw, bool cluster_member)
+QString CompilerDriver_pix::assembleManifest(Cluster *cluster, Firewall* fw, bool cluster_member)
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
-    QString ofname = determineOutputFileName(fw, cluster_member, ".fw");
+    QString ofname = determineOutputFileName(cluster, fw, cluster_member, ".fw");
     script << "!" << MANIFEST_MARKER << "* " << ofname << endl;
     return script_buffer;
 }
@@ -121,7 +121,8 @@ QString CompilerDriver_pix::printActivationCommands(Firewall*)
     return "";
 }
 
-QString CompilerDriver_pix::assembleFwScript(Firewall* fw,
+QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
+                                             Firewall* fw,
                                              bool cluster_member,
                                              OSConfigurator *oscnf)
 {
@@ -152,7 +153,7 @@ QString CompilerDriver_pix::assembleFwScript(Firewall* fw,
     script_skeleton.setVariable("nat_script", nat_script.c_str());
     script_skeleton.setVariable("routing_script", routing_script.c_str());
 
-    assembleFwScriptInternal(fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
+    assembleFwScriptInternal(cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
     return script_skeleton.expand();
 }
 
@@ -228,7 +229,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
 #endif
 
 
-    QString ofname = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
+    QString ofname = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
     FWOptions* options = fw->getOptionsObject();
 
     QString script_buffer;
@@ -554,7 +555,8 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
         if (r->haveErrorsAndWarnings())
             all_errors.push_back(r->getErrors("R ").c_str());
 
-        script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
+        script_buffer = assembleFwScript(
+            cluster, fw, !cluster_id.empty(), oscnf.get());
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
     {

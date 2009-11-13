@@ -144,7 +144,7 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     return activation_commands.join("\n");
 }
 
-QString CompilerDriver_pf::assembleManifest(Firewall* fw, bool )
+QString CompilerDriver_pf::assembleManifest(Cluster *cluster, Firewall* fw, bool )
 {
     QFileInfo fw_file_info(fw_file_name);
     QString script_buffer;
@@ -169,14 +169,17 @@ QString CompilerDriver_pf::assembleManifest(Firewall* fw, bool )
     return script_buffer;
 }
 
-QString CompilerDriver_pf::assembleFwScript(Firewall* fw, bool cluster_member, OSConfigurator *oscnf)
+QString CompilerDriver_pf::assembleFwScript(Cluster *cluster,
+                                            Firewall* fw,
+                                            bool cluster_member,
+                                            OSConfigurator *oscnf)
 {
     FWOptions* options = fw->getOptionsObject();
     Configlet script_skeleton(fw, "pf", "script_skeleton");
     Configlet top_comment(fw, "pf", "top_comment");
 
     assembleFwScriptInternal(
-        fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
+        cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
 
     if (fw->getStr("platform") == "pf")
     {
@@ -217,7 +220,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
     // firewall fw This happens when we compile a member of a cluster
     current_firewall_name = fw->getName().c_str();
 
-    fw_file_name = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
+    fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
     string firewall_dir = options->getStr("firewall_dir");
     if (firewall_dir=="") firewall_dir="/etc/fw";
@@ -572,7 +575,8 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
 /*
  * assemble the script and then perhaps post-process it if needed
  */
-    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
+    QString script_buffer = assembleFwScript(
+        cluster, fw, !cluster_id.empty(), oscnf.get());
 
     // clear() calls destructors of all elements in the container
     table_factories.clear();

@@ -87,11 +87,11 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-QString CompilerDriver_iosacl::assembleManifest(Firewall* fw, bool cluster_member)
+QString CompilerDriver_iosacl::assembleManifest(Cluster *cluster, Firewall* fw, bool cluster_member)
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
-    QString ofname = determineOutputFileName(fw, cluster_member, ".fw");
+    QString ofname = determineOutputFileName(cluster, fw, cluster_member, ".fw");
     script << "!" << MANIFEST_MARKER << "* " << ofname << endl;
     return script_buffer;
 }
@@ -101,7 +101,8 @@ QString CompilerDriver_iosacl::printActivationCommands(Firewall*)
     return "";
 }
 
-QString CompilerDriver_iosacl::assembleFwScript(Firewall *fw,
+QString CompilerDriver_iosacl::assembleFwScript(Cluster *cluster,
+                                                Firewall *fw,
                                                 bool cluster_member,
                                                 OSConfigurator *oscnf)
 {
@@ -117,7 +118,7 @@ QString CompilerDriver_iosacl::assembleFwScript(Firewall *fw,
     options->setStr("prolog_script", options->getStr("iosacl_prolog_script"));
     options->setStr("epilog_script", options->getStr("iosacl_epilog_script"));
 
-    assembleFwScriptInternal(fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
+    assembleFwScriptInternal(cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
     return script_skeleton.expand();
 }
 
@@ -143,7 +144,7 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
     // firewall fw This happens when we compile a member of a cluster
     current_firewall_name = fw->getName().c_str();
 
-    QString ofname = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
+    QString ofname = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
     FWOptions* options = fw->getOptionsObject();
 
@@ -322,7 +323,8 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
             policy_script + routing_script;
     }
 
-    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
+    QString script_buffer = assembleFwScript(
+        cluster, fw, !cluster_id.empty(), oscnf.get());
 
     info("Output file name: " + ofname.toStdString());
 

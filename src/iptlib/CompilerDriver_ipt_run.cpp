@@ -130,7 +130,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
     // firewall fw This happens when we compile a member of a cluster
     current_firewall_name = fw->getName().c_str();
 
-    fw_file_name = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
+    fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
     if (fw->getOptionsObject()->getStr("prolog_place") == "after_flush" &&
         fw->getOptionsObject()->getBool("use_iptables_restore"))

@@ -85,7 +85,7 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-QString CompilerDriver_ipfw::assembleManifest(Firewall* fw, bool )
+QString CompilerDriver_ipfw::assembleManifest(Cluster *cluster, Firewall* fw, bool )
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
@@ -103,13 +103,16 @@ QString CompilerDriver_ipfw::printActivationCommands(Firewall*)
     return activation_commands.join("\n");
 }
 
-QString CompilerDriver_ipfw::assembleFwScript(Firewall* fw, bool cluster_member, OSConfigurator *oscnf)
+QString CompilerDriver_ipfw::assembleFwScript(Cluster *cluster,
+                                              Firewall* fw,
+                                              bool cluster_member,
+                                              OSConfigurator *oscnf)
 {
     Configlet script_skeleton(fw, "ipfw", "script_skeleton");
     Configlet top_comment(fw, "ipfw", "top_comment");
 
     assembleFwScriptInternal(
-        fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
+        cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "#");
     return script_skeleton.expand();
 }
 
@@ -137,7 +140,7 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
     // firewall fw This happens when we compile a member of a cluster
     current_firewall_name = fw->getName().c_str();
 
-    fw_file_name = determineOutputFileName(fw, !cluster_id.empty(), ".fw");
+    fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
     string s;
 
@@ -310,7 +313,8 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
 /*
  * assemble the script and then perhaps post-process it if needed
  */
-    QString script_buffer = assembleFwScript(fw, !cluster_id.empty(), oscnf.get());
+    QString script_buffer = assembleFwScript(
+        cluster, fw, !cluster_id.empty(), oscnf.get());
 
     info("Output file name: " + fw_file_name.toStdString());
 

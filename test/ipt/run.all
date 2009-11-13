@@ -1,25 +1,20 @@
 #!/bin/sh
 
-XMLFILE=$1
-
-fwbedit list -f $XMLFILE -o /User/Firewalls -c -F%name% | sort | while read fwobj; do
+XMLFILE="objects-for-regression-tests.fwb"
+fwbedit list -f $XMLFILE -o /User/Firewalls -c -F%name% | \
+    sort | while read fwobj
+do
   echo "echo"
   echo "echo \"============================ $fwobj\""
   echo "fwb_ipt -v -f $XMLFILE -xt $fwobj"
 done
 
-exit 0
-
-while (<>) {
-  $str=$_;
-  while ( $str=~ /<Firewall / ) {
-    $str=~ /<Firewall [^>]+name="([^"]*).*$"/;
-    $fw=$1;
-    printf "\n";
-    printf "echo '***** $fw'\n";
-    printf "fwb_ipt -v -f $XMLFILE -xt $fw\n";
-    $str=~ s/^.*<Firewall [^>]+name="$fw"[^>]+>//;
-  }
-}
-
+XMLFILE="cluster-tests.fwb"
+fwbedit list -f $XMLFILE -o /User/Clusters -c -F%name% | \
+    sort | while read fwobj
+do
+  echo "echo"
+  echo "echo \"============================ $fwobj\""
+  echo "fwb_ipt -v -f $XMLFILE -xt -xc $fwobj"
+done
 

@@ -1,17 +1,12 @@
-#!/usr/bin/perl
+#!/bin/sh
 
-$XMLFILE=@ARGV[0];
 
-$DIFFCMD="diff -C 1 -c -b -B -I \"!  Generated\" -I 'Activating ' -I '!  Firewall Builder  fwb_pix v' -I 'Can not find file'";
+DIFFCMD="diff -C 5 -c -b -B -w -I \"#  Generated\" -I 'Activating ' -I '#  Firewall Builder  fwb_pix v' -I 'Can not find file' -I '====' -I 'log '"
 
-#$DIFFCMD="diff -u -b -B -I \"!  Generated\" ";
-
-while (<>) {
-  $str=$_;
-  while ( $str=~ /<Firewall / ) {
-    $str=~ /<Firewall [^>]+name="([^"]*).*$"/;
-    $fw=$1;
-    printf "$DIFFCMD %s.fw.orig %s.fw\n",$fw,$fw;
-    $str=~ s/^.*<Firewall [^>]+name="$fw"[^>]+>//;
-  }
-}
+for f in $(ls *.fw.orig)
+do
+    V="$f   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    echo "echo \"$V\" | cut -c1-72"
+    new_f=$(echo $f | sed 's/.org//')
+    echo "$DIFFCMD $f $new_f"
+done

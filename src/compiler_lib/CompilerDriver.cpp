@@ -84,6 +84,7 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     drp = -1;
     rule_debug_on = false;
     single_rule_compile_on = false;
+    prepend_cluster_name_to_output_file = false;
     drn = -1;
     verbose = 0;
     have_dynamic_interfaces = false;
@@ -181,6 +182,12 @@ bool CompilerDriver::configure(const QStringList &args)
                     abort(err.arg(fw_id).toStdString());
                 }
             }
+            continue;
+        }
+
+        if (arg == "-xc")
+        {
+            prepend_cluster_name_to_output_file = true;
             continue;
         }
 
@@ -502,7 +509,8 @@ Firewall* CompilerDriver::locateObject()
  * 
  *  Returns determined output file name
  */
-QString CompilerDriver::determineOutputFileName(Firewall *current_fw,
+QString CompilerDriver::determineOutputFileName(Cluster *cluster,
+                                                Firewall *current_fw,
                                                 bool cluster_member,
                                                 const QString &ext)
 {
@@ -522,7 +530,13 @@ QString CompilerDriver::determineOutputFileName(Firewall *current_fw,
     if (member_file_names.contains(fw_id))
         return member_file_names[fw_id];
     else
-        return current_firewall_name + ext;
+    {
+        if (prepend_cluster_name_to_output_file && cluster!=NULL)
+            return QString("%1_%2%3").arg(cluster->getName().c_str())
+                .arg(current_firewall_name).arg(ext);
+        else
+            return current_firewall_name + ext;
+    }
 }
 
 /* Find rulesets that belong to other firewall objects but are

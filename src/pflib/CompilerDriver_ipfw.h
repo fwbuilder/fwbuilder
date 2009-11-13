@@ -53,9 +53,12 @@ namespace fwcompiler {
         QStringList activation_commands;
 
 protected:
-        virtual QString assembleManifest(libfwbuilder::Firewall* fw, bool cluster_member);
+        virtual QString assembleManifest(libfwbuilder::Cluster *cluster,
+                                         libfwbuilder::Firewall* fw,
+                                         bool cluster_member);
         virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
-        virtual QString assembleFwScript(libfwbuilder::Firewall* fw,
+        virtual QString assembleFwScript(libfwbuilder::Cluster *cluster,
+                                         libfwbuilder::Firewall* fw,
                                          bool cluster_member,
                                          OSConfigurator *ocsnf);
 
