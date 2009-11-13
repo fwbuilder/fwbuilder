@@ -292,8 +292,8 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
                 int iface1_id = helper.findInterfaceByNetzone(a);
                 rule->setInterfaceId(iface1_id);
                 tmp_queue.push_back(rule);
-            } else {
-
+            } else
+            {
                 Address *a=compiler->getFirstDst(rule);
                 if ( ! dst->isAny() && compiler->complexMatch(a,compiler->fw))
                 {
@@ -304,14 +304,17 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
                     return true;
                 }
 
-                list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
+                list<FWObject*> l2 = compiler->fw->getByTypeDeep(Interface::TYPENAME);
                 for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
                 {
-                    PolicyRule *r= compiler->dbcopy->createPolicyRule();
+                    Interface *intf = Interface::cast(*i);
+                    if (intf->isUnprotected()) continue;
+
+                    PolicyRule *r = compiler->dbcopy->createPolicyRule();
                     compiler->temp_ruleset->add(r);
 
                     r->duplicate(rule);
-                    r->setInterfaceId((*i)->getId());
+                    r->setInterfaceId(intf->getId());
                     r->setStr("direction","Inbound");
 
                     tmp_queue.push_back(r);
