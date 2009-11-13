@@ -20,11 +20,14 @@ namespace Ui {
 
 struct AddressInfo;
 
+
 struct EditedInterfaceData
 {
     QString name;
     QString label;
     QString comment;
+    QString mac;
+    int type; // 0 - regular, 1 - dynamic, 2 - unnumbered
     QMap<libfwbuilder::Address*, AddressInfo > addresses;
 };
 

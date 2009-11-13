@@ -110,6 +110,11 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
     res.name = this->m_ui->name->text();
     res.label = this->m_ui->label->text();
     res.comment = this->m_ui->comment->toPlainText();
+
+    if (this->m_ui->type->currentIndex() == 0) res.type = 0;
+    if (this->m_ui->type->currentIndex() == 0) res.type = 1;
+    if (this->m_ui->type->currentIndex() == 0) res.type = 2;
+    res.mac = this->m_ui->mac->text();
     for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
     {
         AddressInfo info;

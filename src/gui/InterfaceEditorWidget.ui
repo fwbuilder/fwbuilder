@@ -36,7 +36,7 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="label"/>
      </item>
-     <item row="2" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="label_5">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -49,7 +49,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="4" column="1">
       <widget class="QTextEdit" name="comment">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -63,12 +63,60 @@
          <height>0</height>
         </size>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>150</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>MAC:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="mac"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Type:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="type">
+       <item>
+        <property name="text">
+         <string>Regular interface</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dynamic address</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Unnumbered interface</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QTableWidget" name="addresses">
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>120</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>120</number>
+     </attribute>
      <column>
       <property name="text">
        <string>Address</string>
