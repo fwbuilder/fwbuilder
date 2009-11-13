@@ -264,10 +264,6 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
             Interface *iface = dynamic_cast<Interface*>(*i);
             assert(iface);
 
-            // dedicated failover interfaces are not used in ACLs or anywhere
-            // else in configuration, except in "failover" commands.
-            if (iface->isDedicatedFailover()) continue;
-
             // Tests for label, security level and network zone make sense
             // only for interfaces that can be used in ACLs or to bind
             // ACLs to.  Unnumbered interfaces can't, so we do not need to
@@ -283,15 +279,34 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
             if (iface->getLabel()=="")
             {
                 string lbl;
-                if (iface->getSecurityLevel()==0)   lbl="outside";
-                else
+                if (iface->isDedicatedFailover()) 
                 {
-                    if (iface->getSecurityLevel()==100) lbl="inside";
+                    // dedicated failover interface misses label. This
+                    // interface can be used in failover cluster group
+                    // or state sync group. Assign label depending on
+                    // the function.
+                    FWObjectTypedChildIterator it =
+                        cluster->findByType(StateSyncClusterGroup::TYPENAME);
+                    StateSyncClusterGroup *state_sync_group =
+                        StateSyncClusterGroup::cast(*it);
+                    if (state_sync_group && state_sync_group->hasMember(iface))
+                        lbl = "state";
+
+                    if (!iface->getOptionsObject()->getStr("failover_group_id").empty())
+                        lbl = "failover";
+                }
+
+                if (lbl.empty())
+                {
+                    if (iface->getSecurityLevel()==0)   lbl="outside";
                     else
                     {
-                        char s[64];
-                        sprintf(s,"dmz%d",iface->getSecurityLevel());
-                        lbl=s;
+                        if (iface->getSecurityLevel()==100) lbl="inside";
+                        else
+                        {
+                            QString l("dmz%1");
+                            lbl = l.arg(iface->getSecurityLevel()).toStdString();
+                        }
                     }
                 }
                 iface->setLabel(lbl);
@@ -304,7 +319,6 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
             {
                 Interface *iface2 = dynamic_cast<Interface*>(*j);
                 assert(iface2);
-                if (iface2->isDedicatedFailover()) continue;
                 if (iface2->isUnnumbered()) continue;
                 if (iface->getId()==iface2->getId()) continue;
                 if (iface->getOptionsObject()->getBool("cluster_interface") ||
@@ -325,6 +339,14 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                     throw FatalErrorInSingleRuleCompileMode();
                 }
             }
+
+            // We only do limited checks for dedicated failover
+            // interfaces because they are not used in ACLs or
+            // anywhere else in configuration, except in "failover"
+            // commands.
+            if (iface->isDedicatedFailover()) continue;
+
+
 /*
  * in PIX, we need network zones to be defined for all interfaces
  */
