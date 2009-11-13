@@ -47,7 +47,6 @@ void InterfaceEditorWidget::deleteAddress()
     types.remove(row);
     rows.remove(row);
     fwaddrs.remove(row);
-    delete button;
 }
 
 InterfaceEditorWidget::~InterfaceEditorWidget()
@@ -57,8 +56,6 @@ InterfaceEditorWidget::~InterfaceEditorWidget()
         delete btn;
     foreach(QComboBox* box, types.values())
         delete box;
-    /*delete addAddr;
-    delete delAddr;*/
 }
 
 int InterfaceEditorWidget::addNewAddress()
