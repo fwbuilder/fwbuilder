@@ -763,15 +763,16 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
         }
     }
 
-    /* For VRRP references the hierarchy is as follows:
-     * Cluster->Interface->FailoverClusterGroup->ObjectRef
-     */
+    // For VRRP references the hierarchy is as follows:
+    // Cluster->Interface->FailoverClusterGroup->ObjectRef
+    
     FWObjectTypedChildIterator cl_iface = cluster->findByType(Interface::TYPENAME);
     for (; cl_iface != cl_iface.end(); ++cl_iface)
     {
+        Interface *cluster_interface = Interface::cast(*cl_iface);
         FailoverClusterGroup *failover_group =
             FailoverClusterGroup::cast(
-                (*cl_iface)->getFirstByType(FailoverClusterGroup::TYPENAME));
+                cluster_interface->getFirstByType(FailoverClusterGroup::TYPENAME));
         if (failover_group)
         {
             for (FWObjectTypedChildIterator it =
@@ -780,22 +781,48 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
             {
                 Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
                 assert(iface);
-                // We need to do some sanity checks of cluster
-                // interfaces for VRRP and then add them to the
-                // firewall object.
-                // These actions are very generic and have nothing specific
-                // to VRRP. Unless new protocol is added that requires
-                // something radically different, will always call this method
-                // for failover groups.
-                //if (failover_group->getStr("type") == "vrrp")
+
                 if (iface->isChildOf(fw))
+                {
+                     // Check that VRRP interface and fw interface are
+                     // in same subnet.  Exception: if interface is
+                     // dynamic and does not have an ip address in
+                     // fwbuilder configuration, assume it is ok.
+                    
+                    if (iface->isRegular())
+                    {
+                        const Address *iface_addr = iface->getAddressObject();
+                        // even regular interface may have no address
+                        // if user forgot to add one, so check if
+                        // iface_addr == NULL Also check if cluster
+                        // interface has ip address, it does not
+                        // always need one.
+
+                        if (iface_addr && cluster_interface->getAddressObject() &&
+                            !isReachable(cluster_interface->getAddressObject(),
+                                         iface_addr->getAddressPtr())
+                        )
+                        {
+                            QString err("%1 and %2 are not on the same subnet");
+                            warning(fw, NULL, NULL,
+                                    err.arg(cluster_interface->getName().c_str())
+                                    .arg(iface->getName().c_str()).toStdString());
+                        }
+                    }
+
+                    assert(fw->getOptionsObject() != NULL);
+
+                    iface->getOptionsObject()->setStr(
+                        "failover_group_id",
+                        FWObjectDatabase::getStringId(failover_group->getId()));
+
                     copyFailoverInterface(cluster, fw, failover_group, iface);
+                }
             }
         } else
         {
             // cluster interface without failover group
             // is this a loopback interface ?
-            Interface *cluster_interface = Interface::cast(*cl_iface);
             if (cluster_interface->isLoopback())
             {
                 /* Add copy of the interface from the cluster to the
@@ -846,34 +873,6 @@ void CompilerDriver::copyFailoverInterface(Cluster *cluster,
 {
     Interface* cluster_if = Interface::cast(cluster_group->getParent());
     assert(cluster_if != NULL);
-    string cluster_if_name = cluster_if->getName();
-
-    /* Check that VRRP interface and fw interface are in same subnet.
-     * Exception: if interface is dynamic and does not have an ip address in
-     * fwbuilder configuration, assume it is ok.
-     */
-    if (iface->isRegular())
-    {
-        const Address *iface_addr = iface->getAddressObject();
-        // even regular interface may have no address if user forgot
-        // to add one, so check if iface_addr == NULL
-        // Also check if cluster interface has ip address, it does not
-        // always need one.
-
-        if (iface_addr && cluster_if->getAddressObject() &&
-            !isReachable(cluster_if->getAddressObject(), iface_addr->getAddressPtr())
-        )
-        {
-            QString err("%1 and %2 are not on the same subnet");
-            warning(fw, NULL, NULL,
-                    err.arg(cluster_if_name.c_str()).arg(iface->getName().c_str()).toStdString());
-        }
-    }
-
-    assert(fw->getOptionsObject() != NULL);
-
-    iface->getOptionsObject()->setStr(
-        "failover_group_id", FWObjectDatabase::getStringId(cluster_group->getId()));
 
     /* Add copy of the cluster interface to the firewall object
      *
