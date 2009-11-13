@@ -74,8 +74,9 @@ class newFirewallDialog : public QDialog, public FakeWizard
     void adjustSL(QTreeWidgetItem *itm1);
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
     void fillInterfaceSLList();
+    void createFirewallFromTemplate();
 
- public:
+public:
     newFirewallDialog(libfwbuilder::FWObject *parent);
     virtual ~newFirewallDialog();
 
@@ -101,7 +102,7 @@ public slots:
     void useStandartTemplate();
     void showHideTemplatePanel();
 
- protected slots:
+protected slots:
     
     void finishClicked();
     void cancelClicked();

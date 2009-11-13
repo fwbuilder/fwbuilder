@@ -1,4 +1,4 @@
-   /*
+/*
 
                           Firewall Builder
 
@@ -869,34 +869,7 @@ void newFirewallDialog::finishClicked()
     if (p==4 || p==5)
     {
         // Creating from a template
-        QListWidgetItem *itm = m_dialog->templateList->currentItem();
-        FWObject *template_fw=templates[itm];
-        assert (template_fw!=NULL);
-
-//        FWObject *no = mw->duplicateObject(mw->getCurrentLib(),
-//                                           template_fw,
-//                                           m_dialog->obj_name->text(),
-//                                           false );  // do not ask to autorename
-        FWObject *no;
-        no = db->create(Firewall::TYPENAME);
-
-        if (no==NULL)
-        {
-            QDialog::accept();
-            return;
-        }
-
-        parent->add(no);
-        no->duplicate(template_fw, true);
-        no->setName(m_dialog->obj_name->text().toStdString());
-
-        nfw = Firewall::cast(no);
-
-        no->setStr("platform", platform);
-        Resources::setDefaultTargetOptions(platform , nfw);
-        no->setStr("host_OS", host_os);
-        Resources::setDefaultTargetOptions(host_os , nfw);
-
+        createFirewallFromTemplate();
 
     } else
     {

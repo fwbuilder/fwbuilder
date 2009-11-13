@@ -284,6 +284,7 @@ SOURCES += ProjectPanel.cpp \
     FirewallInstallerCisco.cpp \
     FirewallInstallerUnx.cpp \
     newFirewallDialog.cpp \
+    newFirewallDialog_from_template.cpp \
     newClusterDialog.cpp \
     newHostDialog.cpp \
     ObjConflictResolutionDialog.cpp \
