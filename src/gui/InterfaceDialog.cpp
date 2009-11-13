@@ -222,6 +222,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         {
             m_dialog->seclevel->setEnabled(false);
             m_dialog->seclevelLabel->setEnabled(false);
+            m_dialog->seclevel->setValue(0);
         }
 
         if (supports_unprotected)
@@ -328,6 +329,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         {
             m_dialog->netzone->setEnabled(false);
             m_dialog->netzoneLabel->setEnabled(false);
+            m_dialog->netzone->clear();
         }
     }
 
