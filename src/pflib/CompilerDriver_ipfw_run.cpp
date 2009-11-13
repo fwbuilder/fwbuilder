@@ -129,214 +129,222 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
         objdb->findInIndex(objdb->getIntId(firewall_id)));
     assert(fw);
 
-    // Copy rules from the cluster object
-    populateClusterElements(cluster, fw);
+    try
+    {
+        // Copy rules from the cluster object
+        populateClusterElements(cluster, fw);
 
-    commonChecks2(cluster, fw);
+        commonChecks2(cluster, fw);
 
-    FWOptions* options = fw->getOptionsObject();
+        FWOptions* options = fw->getOptionsObject();
 
-    // Note that fwobjectname may be different from the name of the
-    // firewall fw This happens when we compile a member of a cluster
-    current_firewall_name = fw->getName().c_str();
+        // Note that fwobjectname may be different from the name of the
+        // firewall fw This happens when we compile a member of a cluster
+        current_firewall_name = fw->getName().c_str();
 
-    fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
+        fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
-    string s;
+        string s;
 
-    string firewall_dir=options->getStr("firewall_dir");
-    if (firewall_dir=="") firewall_dir="/etc/fw";
+        string firewall_dir=options->getStr("firewall_dir");
+        if (firewall_dir=="") firewall_dir="/etc/fw";
 
-    bool debug=options->getBool("debug");
-    string shell_dbg=(debug)?"-x":"" ;
+        bool debug=options->getBool("debug");
+        string shell_dbg=(debug)?"-x":"" ;
 
 /*
  * Process firewall options, build OS network configuration script
  */
-    std::auto_ptr<OSConfigurator_bsd> oscnf;
-    string host_os = fw->getStr("host_OS");
-    string family = Resources::os_res[host_os]->Resources::getResourceStr("/FWBuilderResources/Target/family");
-    if ( host_os == "macosx")
-        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_macosx(objdb , fw, false));
+        std::auto_ptr<OSConfigurator_bsd> oscnf;
+        string host_os = fw->getStr("host_OS");
+        string family = Resources::os_res[host_os]->Resources::getResourceStr("/FWBuilderResources/Target/family");
+        if ( host_os == "macosx")
+            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_macosx(objdb , fw, false));
 
-    if ( host_os == "freebsd")
-        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
+        if ( host_os == "freebsd")
+            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
-    if (oscnf.get()==NULL)
-    {
-        abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
-        return "";
-    }
-
-    oscnf->prolog();
-
-
-    list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
-    vector<int> ipv4_6_runs;
-    string generated_script;
-    int policy_rules_count  = 0;
-    int ipfw_rule_number = 0;
-
-    findImportedRuleSets(fw, all_policies);
-
-    // command line options -4 and -6 control address family for which
-    // script will be generated. If "-4" is used, only ipv4 part will 
-    // be generated. If "-6" is used, only ipv6 part will be generated.
-    // If neither is used, both parts will be done.
-
-    if (options->getStr("ipv4_6_order").empty() ||
-        options->getStr("ipv4_6_order") == "ipv4_first")
-    {
-        if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
-        if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
-    }
-
-    if (options->getStr("ipv4_6_order") == "ipv6_first")
-    {
-        if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
-        if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
-    }
-
-    for (vector<int>::iterator i=ipv4_6_runs.begin(); 
-         i!=ipv4_6_runs.end(); ++i)
-    {
-        int policy_af = *i;
-        bool ipv6_policy = (policy_af == AF_INET6);
-
-        /*
-          We need to create and run preprocessor for this address
-          family before nat and policy compilers, but if there are
-          no nat / policy rules for this address family, we do not
-          need preprocessor either.
-        */
-
-        // Count rules for each address family
-        int policy_count = 0;
-
-        for (list<FWObject*>::iterator p=all_policies.begin();
-             p!=all_policies.end(); ++p)
+        if (oscnf.get()==NULL)
         {
-            Policy *policy = Policy::cast(*p);
-            if (policy->matchingAddressFamily(policy_af)) policy_count++;
+            abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
+            return "";
         }
 
-        if (policy_count)
+        oscnf->prolog();
+
+
+        list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+        vector<int> ipv4_6_runs;
+        string generated_script;
+        int policy_rules_count  = 0;
+        int ipfw_rule_number = 0;
+
+        findImportedRuleSets(fw, all_policies);
+
+        // command line options -4 and -6 control address family for which
+        // script will be generated. If "-4" is used, only ipv4 part will 
+        // be generated. If "-6" is used, only ipv6 part will be generated.
+        // If neither is used, both parts will be done.
+
+        if (options->getStr("ipv4_6_order").empty() ||
+            options->getStr("ipv4_6_order") == "ipv4_first")
         {
-            std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, ipv6_policy));
-            if (inTestMode()) prep->setTestMode();
-            if (inEmbeddedMode()) prep->setEmbeddedMode();
-            prep->compile();
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
         }
 
-        ostringstream c_str;
-        bool empty_output = true;
- 
-        for (list<FWObject*>::iterator p=all_policies.begin();
-             p!=all_policies.end(); ++p )
+        if (options->getStr("ipv4_6_order") == "ipv6_first")
         {
-            Policy *policy = Policy::cast(*p);
-            string branch_name = policy->getName();
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
+        }
 
-            if (!policy->matchingAddressFamily(policy_af)) continue;
+        for (vector<int>::iterator i=ipv4_6_runs.begin(); 
+             i!=ipv4_6_runs.end(); ++i)
+        {
+            int policy_af = *i;
+            bool ipv6_policy = (policy_af == AF_INET6);
 
-            PolicyCompiler_ipfw c(objdb, fw, ipv6_policy, oscnf.get());
-            c.setIPFWNumber(ipfw_rule_number);
-            c.setSourceRuleSet( policy );
-            c.setRuleSetName(branch_name);
-            c.setSingleRuleCompileMode(single_rule_id);
-            c.setDebugLevel( dl );
-            if (rule_debug_on) c.setDebugRule(  drp );
-            c.setVerbose( (bool)(verbose) );
-            if (inTestMode()) c.setTestMode();
-            if (inEmbeddedMode()) c.setEmbeddedMode();
+            /*
+              We need to create and run preprocessor for this address
+              family before nat and policy compilers, but if there are
+              no nat / policy rules for this address family, we do not
+              need preprocessor either.
+            */
 
-            if ( (policy_rules_count=c.prolog()) > 0 )
+            // Count rules for each address family
+            int policy_count = 0;
+
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p)
             {
-                c.compile();
-                c.epilog();
+                Policy *policy = Policy::cast(*p);
+                if (policy->matchingAddressFamily(policy_af)) policy_count++;
+            }
 
-                ipfw_rule_number = c.getIPFWNumber();
+            if (policy_count)
+            {
+                std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, ipv6_policy));
+                if (inTestMode()) prep->setTestMode();
+                if (inEmbeddedMode()) prep->setEmbeddedMode();
+                prep->compile();
+            }
 
-                if (c.getCompiledScriptLength() > 0)
+            ostringstream c_str;
+            bool empty_output = true;
+ 
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p )
+            {
+                Policy *policy = Policy::cast(*p);
+                string branch_name = policy->getName();
+
+                if (!policy->matchingAddressFamily(policy_af)) continue;
+
+                PolicyCompiler_ipfw c(objdb, fw, ipv6_policy, oscnf.get());
+                c.setIPFWNumber(ipfw_rule_number);
+                c.setSourceRuleSet( policy );
+                c.setRuleSetName(branch_name);
+                c.setSingleRuleCompileMode(single_rule_id);
+                c.setDebugLevel( dl );
+                if (rule_debug_on) c.setDebugRule(  drp );
+                c.setVerbose( (bool)(verbose) );
+                if (inTestMode()) c.setTestMode();
+                if (inEmbeddedMode()) c.setEmbeddedMode();
+
+                if ( (policy_rules_count=c.prolog()) > 0 )
                 {
-                    if (!single_rule_compile_on)
-                        c_str << "# ================ Rule set "
-                              << branch_name << endl;
-                    if (c.haveErrorsAndWarnings())
+                    c.compile();
+                    c.epilog();
+
+                    ipfw_rule_number = c.getIPFWNumber();
+
+                    if (c.getCompiledScriptLength() > 0)
                     {
-                        all_errors.push_back(c.getErrors("").c_str());
-                        // c_str << "# Policy compiler errors and warnings:"
-                        //       << endl;
-                        // c_str << c.getErrors("# ");
+                        if (!single_rule_compile_on)
+                            c_str << "# ================ Rule set "
+                                  << branch_name << endl;
+                        if (c.haveErrorsAndWarnings())
+                        {
+                            all_errors.push_back(c.getErrors("").c_str());
+                            // c_str << "# Policy compiler errors and warnings:"
+                            //       << endl;
+                            // c_str << c.getErrors("# ");
+                        }
+                        c_str << c.getCompiledScript();
+                        c_str << endl;
+                        empty_output = false;
                     }
-                    c_str << c.getCompiledScript();
-                    c_str << endl;
-                    empty_output = false;
                 }
             }
-        }
 
-        if (!empty_output && !single_rule_compile_on)
-        {
-            if (ipv6_policy)
+            if (!empty_output && !single_rule_compile_on)
             {
-                generated_script += "\n\n";
-                generated_script += "# ================ IPv6\n";
-                generated_script += "\n\n";
-            } else
-            {
-                generated_script += "\n\n";
-                generated_script += "# ================ IPv4\n";
-                generated_script += "\n\n";
+                if (ipv6_policy)
+                {
+                    generated_script += "\n\n";
+                    generated_script += "# ================ IPv6\n";
+                    generated_script += "\n\n";
+                } else
+                {
+                    generated_script += "\n\n";
+                    generated_script += "# ================ IPv4\n";
+                    generated_script += "\n\n";
+                }
             }
+
+            generated_script += c_str.str();
         }
 
-        generated_script += c_str.str();
-    }
+        if (haveErrorsAndWarnings())
+        {
+            all_errors.push_front(getErrors("").c_str());
+        }
 
-    if (haveErrorsAndWarnings())
-    {
-        all_errors.push_front(getErrors("").c_str());
-    }
+        if (single_rule_compile_on)
+        {
+            return
+                all_errors.join("\n").toStdString() + 
+                generated_script;
+        }
 
-    if (single_rule_compile_on)
-    {
-        return
-            all_errors.join("\n").toStdString() + 
-            generated_script;
-    }
-
-    PolicyCompiler_ipfw c(objdb, fw, false, oscnf.get());
-    activation_commands.push_back(c.defaultRules().c_str());
-    activation_commands.push_back(generated_script.c_str());
+        PolicyCompiler_ipfw c(objdb, fw, false, oscnf.get());
+        activation_commands.push_back(c.defaultRules().c_str());
+        activation_commands.push_back(generated_script.c_str());
 
 /*
  * assemble the script and then perhaps post-process it if needed
  */
-    QString script_buffer = assembleFwScript(
-        cluster, fw, !cluster_id.empty(), oscnf.get());
+        QString script_buffer = assembleFwScript(
+            cluster, fw, !cluster_id.empty(), oscnf.get());
 
-    info("Output file name: " + fw_file_name.toStdString());
+        info("Output file name: " + fw_file_name.toStdString());
 
-    QFile fw_file(fw_file_name);
-    if (fw_file.open(QIODevice::WriteOnly))
-    {
-        QTextStream fw_str(&fw_file);
-        fw_str << script_buffer;
-        fw_file.close();
-        fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
-                               QFile::ReadGroup | QFile::ReadOther |
-                               QFile::ExeOwner | 
-                               QFile::ExeGroup |
-                               QFile::ExeOther );
+        QFile fw_file(fw_file_name);
+        if (fw_file.open(QIODevice::WriteOnly))
+        {
+            QTextStream fw_str(&fw_file);
+            fw_str << script_buffer;
+            fw_file.close();
+            fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
+                                   QFile::ReadGroup | QFile::ReadOther |
+                                   QFile::ExeOwner | 
+                                   QFile::ExeGroup |
+                                   QFile::ExeOther );
 
-        info(" Compiled successfully");
-    } else
-    {
-        abort(string(" Failed to open file ") +
-              fw_file_name.toStdString() +
-              " for writing");
+            info(" Compiled successfully");
+        } else
+        {
+            abort(string(" Failed to open file ") +
+                  fw_file_name.toStdString() +
+                  " for writing");
+        }
     }
+    catch (FatalErrorInSingleRuleCompileMode &ex)
+    {
+        return getErrors("");
+    }
+
     return "";
 }
 

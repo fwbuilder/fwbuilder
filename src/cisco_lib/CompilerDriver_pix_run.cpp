@@ -557,41 +557,38 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
 
         script_buffer = assembleFwScript(
             cluster, fw, !cluster_id.empty(), oscnf.get());
+
+        if (single_rule_compile_on)
+        {
+            return all_errors.join("\n").toStdString() +
+                policy_script + nat_script + routing_script;
+        }
+
+        info("Output file name: " + ofname.toStdString());
+
+        QFile fw_file(ofname);
+        if (fw_file.open(QIODevice::WriteOnly))
+        {
+            QTextStream fw_str(&fw_file);
+            fw_str << script_buffer;
+            fw_file.close();
+            fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
+                                   QFile::ReadGroup | QFile::ReadOther |
+                                   QFile::ExeOwner | 
+                                   QFile::ExeGroup |
+                                   QFile::ExeOther );
+
+            info(" Compiled successfully");
+        } else
+        {
+            abort(string(" Failed to open file ") +
+                  fw_file_name.toStdString() +
+                  " for writing");
+        }
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        if (haveErrorsAndWarnings())
-        {
-            all_errors.push_front(getErrors("").c_str());
-        }
-    }
-
-    if (single_rule_compile_on)
-    {
-        return all_errors.join("\n").toStdString() +
-            policy_script + nat_script + routing_script;
-    }
-
-    info("Output file name: " + ofname.toStdString());
-
-    QFile fw_file(ofname);
-    if (fw_file.open(QIODevice::WriteOnly))
-    {
-        QTextStream fw_str(&fw_file);
-        fw_str << script_buffer;
-        fw_file.close();
-        fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
-                               QFile::ReadGroup | QFile::ReadOther |
-                               QFile::ExeOwner | 
-                               QFile::ExeGroup |
-                               QFile::ExeOther );
-
-        info(" Compiled successfully");
-    } else
-    {
-        abort(string(" Failed to open file ") +
-              fw_file_name.toStdString() +
-              " for writing");
+        return getErrors("");
     }
 
     return "";

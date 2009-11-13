@@ -182,252 +182,254 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
         objdb->findInIndex(objdb->getIntId(firewall_id)));
     assert(fw);
 
-    // Copy rules from the cluster object
-    populateClusterElements(cluster, fw);
-
-    commonChecks2(cluster, fw);
-
-    FWOptions* options = fw->getOptionsObject();
-    string fw_version = fw->getStr("version");
-
-    // Note that fwobjectname may be different from the name of the
-    // firewall fw This happens when we compile a member of a cluster
-    current_firewall_name = fw->getName().c_str();
-
-    fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
-
-    QFileInfo finfo(fw_file_name);
-    QString ipf_file_name = finfo.completeBaseName() + "-ipf.conf";
-    QString nat_file_name = finfo.completeBaseName() + "-nat.conf";
-    if (finfo.path() != ".")
+    try
     {
-        ipf_file_name = finfo.path() + "/" + ipf_file_name;
-        nat_file_name = finfo.path() + "/" + nat_file_name;
-    }
+        // Copy rules from the cluster object
+        populateClusterElements(cluster, fw);
 
-    QString remote_ipf_name = options->getStr("ipf_conf_file_name_on_firewall").c_str();
-    if (remote_ipf_name.isEmpty()) remote_ipf_name = ipf_file_name;
+        commonChecks2(cluster, fw);
 
-    QString remote_nat_name = options->getStr("nat_conf_file_name_on_firewall").c_str();
-    if (remote_nat_name.isEmpty()) remote_nat_name = nat_file_name;
+        FWOptions* options = fw->getOptionsObject();
+        string fw_version = fw->getStr("version");
 
-    string s;
+        // Note that fwobjectname may be different from the name of the
+        // firewall fw This happens when we compile a member of a cluster
+        current_firewall_name = fw->getName().c_str();
 
-    string firewall_dir = options->getStr("firewall_dir");
-    if (firewall_dir=="") firewall_dir = "/etc/fw";
+        fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
-    bool debug = options->getBool("debug");
-    string ipf_dbg = (debug)?"-v":"";
+        QFileInfo finfo(fw_file_name);
+        QString ipf_file_name = finfo.completeBaseName() + "-ipf.conf";
+        QString nat_file_name = finfo.completeBaseName() + "-nat.conf";
+        if (finfo.path() != ".")
+        {
+            ipf_file_name = finfo.path() + "/" + ipf_file_name;
+            nat_file_name = finfo.path() + "/" + nat_file_name;
+        }
 
-    std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
-    prep->compile();
+        QString remote_ipf_name = options->getStr("ipf_conf_file_name_on_firewall").c_str();
+        if (remote_ipf_name.isEmpty()) remote_ipf_name = ipf_file_name;
+
+        QString remote_nat_name = options->getStr("nat_conf_file_name_on_firewall").c_str();
+        if (remote_nat_name.isEmpty()) remote_nat_name = nat_file_name;
+
+        string s;
+
+        string firewall_dir = options->getStr("firewall_dir");
+        if (firewall_dir=="") firewall_dir = "/etc/fw";
+
+        bool debug = options->getBool("debug");
+        string ipf_dbg = (debug)?"-v":"";
+
+        std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
+        prep->compile();
 
 /*
  * Process firewall options, build OS network configuration script
  */
-    std::auto_ptr<OSConfigurator_bsd> oscnf;
-    string host_os = fw->getStr("host_OS");
-    string family=Resources::os_res[host_os]->Resources::getResourceStr("/FWBuilderResources/Target/family");
-    if ( host_os == "solaris" )
-        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(objdb , fw, false));
+        std::auto_ptr<OSConfigurator_bsd> oscnf;
+        string host_os = fw->getStr("host_OS");
+        string family=Resources::os_res[host_os]->Resources::getResourceStr("/FWBuilderResources/Target/family");
+        if ( host_os == "solaris" )
+            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(objdb , fw, false));
 
-    if ( host_os == "openbsd")
-        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(objdb , fw, false));
+        if ( host_os == "openbsd")
+            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(objdb , fw, false));
 
-    if ( host_os == "freebsd")
-        oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
+        if ( host_os == "freebsd")
+            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
-    if (oscnf.get()==NULL)
-    {
-        abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
-        return "";
-    }
+        if (oscnf.get()==NULL)
+        {
+            abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
+            return "";
+        }
 
-    oscnf->prolog();
+        oscnf->prolog();
 
-    list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
-    list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
+        list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+        list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
-    PolicyCompiler_ipf c(objdb , fw, false , oscnf.get() );
+        PolicyCompiler_ipf c(objdb , fw, false , oscnf.get() );
 
-    FWObject *policy = all_policies.front();
+        FWObject *policy = all_policies.front();
 
-    c.setSourceRuleSet(Policy::cast(policy));
-    c.setRuleSetName(policy->getName());
+        c.setSourceRuleSet(Policy::cast(policy));
+        c.setRuleSetName(policy->getName());
 
-    c.setSingleRuleCompileMode(single_rule_id);
-    c.setDebugLevel( dl );
-    if (rule_debug_on) c.setDebugRule(  drp );
-    c.setVerbose( verbose );
-    if (inTestMode()) c.setTestMode();
-    if (inEmbeddedMode()) c.setEmbeddedMode();
+        c.setSingleRuleCompileMode(single_rule_id);
+        c.setDebugLevel( dl );
+        if (rule_debug_on) c.setDebugRule(  drp );
+        c.setVerbose( verbose );
+        if (inTestMode()) c.setTestMode();
+        if (inEmbeddedMode()) c.setEmbeddedMode();
 
-    if ( c.prolog() > 0 )
-    {
-        have_filter = true;
-        c.compile();
-        c.epilog();
-    }
+        if ( c.prolog() > 0 )
+        {
+            have_filter = true;
+            c.compile();
+            c.epilog();
+        }
 
-    NATCompiler_ipf n( objdb , fw, false , oscnf.get() );
+        NATCompiler_ipf n( objdb , fw, false , oscnf.get() );
 
-    FWObject *nat = all_nat.front();
+        FWObject *nat = all_nat.front();
 
-    n.setSourceRuleSet(NAT::cast(nat));
-    n.setRuleSetName(nat->getName());
+        n.setSourceRuleSet(NAT::cast(nat));
+        n.setRuleSetName(nat->getName());
 
-    n.setSingleRuleCompileMode(single_rule_id);
-    n.setDebugLevel( dl );
-    if (rule_debug_on) n.setDebugRule(  drn );
-    n.setVerbose( verbose );
-    if (inTestMode()) n.setTestMode();
-    if (inEmbeddedMode()) n.setEmbeddedMode();
+        n.setSingleRuleCompileMode(single_rule_id);
+        n.setDebugLevel( dl );
+        if (rule_debug_on) n.setDebugRule(  drn );
+        n.setVerbose( verbose );
+        if (inTestMode()) n.setTestMode();
+        if (inEmbeddedMode()) n.setEmbeddedMode();
 
-    if ( n.prolog() > 0 )
-    {
-        have_nat = true;
-        n.compile();
-        n.epilog();
-    }
+        if ( n.prolog() > 0 )
+        {
+            have_nat = true;
+            n.compile();
+            n.epilog();
+        }
 
-    if (haveErrorsAndWarnings())
-    {
-        all_errors.push_front(getErrors("").c_str());
-    }
+        if (haveErrorsAndWarnings())
+        {
+            all_errors.push_front(getErrors("").c_str());
+        }
 
-    if (single_rule_compile_on)
-    {
-        // in single rule compile mode just return the result
-        ostringstream ostr;
+        if (single_rule_compile_on)
+        {
+            // in single rule compile mode just return the result
+            ostringstream ostr;
+
+            if (have_filter) 
+            {
+                if (c.haveErrorsAndWarnings())
+                {
+                    all_errors.push_back(c.getErrors("").c_str());
+                }
+                ostr << c.getCompiledScript();
+            }
+
+            if (have_nat) 
+            {
+                if (n.haveErrorsAndWarnings())
+                {
+                    all_errors.push_back(n.getErrors("").c_str());
+                }
+                ostr << n.getCompiledScript();
+            }
+
+            return
+                all_errors.join("\n").toStdString() + 
+                ostr.str();
+        }
+
 
         if (have_filter) 
         {
-            if (c.haveErrorsAndWarnings())
+            QFile ipf_file(ipf_file_name);
+            if (ipf_file.open(QIODevice::WriteOnly))
             {
-                all_errors.push_back(c.getErrors("").c_str());
-                // ostr << "# Policy compiler errors and warnings:"
-                //      << endl;
-                // ostr << c.getErrors("# ");
+                QTextStream ipf_str(&ipf_file);
+                if (c.haveErrorsAndWarnings())
+                {
+                    all_errors.push_back(c.getErrors("").c_str());
+                    ipf_str << "# Policy compiler errors and warnings:"
+                            << endl;
+                    ipf_str << c.getErrors("# ");
+                }
+                ipf_str << c.getCompiledScript();
+                ipf_file.close();
+                ipf_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
+                                        QFile::ReadGroup | QFile::ReadOther |
+                                        QFile::ExeOwner | 
+                                        QFile::ExeGroup |
+                                        QFile::ExeOther );
+            } else
+            {
+                abort(string(" Failed to open file ") +
+                      ipf_file_name.toStdString() +
+                      " for writing");
             }
-            ostr << c.getCompiledScript();
+
+            QString filePath;
+            if (remote_ipf_name[0] == '/') filePath = remote_ipf_name;
+            else filePath = QString("${FWDIR}/") + remote_ipf_name;
+
+            activation_commands.push_back(
+                composeActivationCommand(
+                    fw, true, ipf_dbg, fw_version, filePath.toStdString()));
         }
 
         if (have_nat) 
         {
-            if (n.haveErrorsAndWarnings())
+            QFile nat_file(nat_file_name);
+            if (nat_file.open(QIODevice::WriteOnly))
             {
-                all_errors.push_back(n.getErrors("").c_str());
-                // ostr << "# NAT compiler errors and warnings:"
-                //      << endl;
-                // ostr << n.getErrors("# ");
+                QTextStream nat_str(&nat_file);
+                if (n.haveErrorsAndWarnings())
+                {
+                    all_errors.push_back(n.getErrors("").c_str());
+                    nat_str << "# NAT compiler errors and warnings:"
+                            << endl;
+                    nat_str << n.getErrors("# ");
+                }
+                nat_str << n.getCompiledScript();
+                nat_file.close();
+                nat_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
+                                        QFile::ReadGroup | QFile::ReadOther |
+                                        QFile::ExeOwner | 
+                                        QFile::ExeGroup |
+                                        QFile::ExeOther );
+            } else
+            {
+                abort(string(" Failed to open file ") +
+                      nat_file_name.toStdString() +
+                      " for writing");
             }
-            ostr << n.getCompiledScript();
+
+            QString filePath;
+            if (remote_nat_name[0] == '/') filePath = remote_nat_name;
+            else filePath = QString("${FWDIR}/") + remote_nat_name;
+            activation_commands.push_back(
+                composeActivationCommand(
+                    fw, false, ipf_dbg, fw_version, filePath.toStdString()));
         }
+/*
+ * assemble the script and then perhaps post-process it if needed
+ */
+        QString script_buffer = assembleFwScript(
+            cluster, fw, !cluster_id.empty(), oscnf.get());
 
-        return
-            all_errors.join("\n").toStdString() + 
-            ostr.str();
-    }
 
+        info("Output file name: " + fw_file_name.toStdString());
 
-    if (have_filter) 
-    {
-        QFile ipf_file(ipf_file_name);
-        if (ipf_file.open(QIODevice::WriteOnly))
+        QFile fw_file(fw_file_name);
+        if (fw_file.open(QIODevice::WriteOnly))
         {
-            QTextStream ipf_str(&ipf_file);
-            if (c.haveErrorsAndWarnings())
-            {
-                all_errors.push_back(c.getErrors("").c_str());
-                ipf_str << "# Policy compiler errors and warnings:"
-                        << endl;
-                ipf_str << c.getErrors("# ");
-            }
-            ipf_str << c.getCompiledScript();
-            ipf_file.close();
-            ipf_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
-                                    QFile::ReadGroup | QFile::ReadOther |
-                                    QFile::ExeOwner | 
-                                    QFile::ExeGroup |
-                                    QFile::ExeOther );
-        } else
-        {
-            abort(string(" Failed to open file ") +
-                  ipf_file_name.toStdString() +
-                  " for writing");
-        }
-
-        QString filePath;
-        if (remote_ipf_name[0] == '/') filePath = remote_ipf_name;
-        else filePath = QString("${FWDIR}/") + remote_ipf_name;
-
-        activation_commands.push_back(
-            composeActivationCommand(
-                fw, true, ipf_dbg, fw_version, filePath.toStdString()));
-    }
-
-    if (have_nat) 
-    {
-        QFile nat_file(nat_file_name);
-        if (nat_file.open(QIODevice::WriteOnly))
-        {
-            QTextStream nat_str(&nat_file);
-            if (n.haveErrorsAndWarnings())
-            {
-                all_errors.push_back(n.getErrors("").c_str());
-                nat_str << "# NAT compiler errors and warnings:"
-                        << endl;
-                nat_str << n.getErrors("# ");
-            }
-            nat_str << n.getCompiledScript();
-            nat_file.close();
-            nat_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
+            QTextStream fw_str(&fw_file);
+            fw_str << script_buffer;
+            fw_file.close();
+            fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
                                    QFile::ReadGroup | QFile::ReadOther |
                                    QFile::ExeOwner | 
                                    QFile::ExeGroup |
                                    QFile::ExeOther );
+
+            info(" Compiled successfully");
         } else
         {
             abort(string(" Failed to open file ") +
-                  nat_file_name.toStdString() +
+                  fw_file_name.toStdString() +
                   " for writing");
         }
-
-        QString filePath;
-        if (remote_nat_name[0] == '/') filePath = remote_nat_name;
-        else filePath = QString("${FWDIR}/") + remote_nat_name;
-        activation_commands.push_back(
-            composeActivationCommand(
-                fw, false, ipf_dbg, fw_version, filePath.toStdString()));
     }
-/*
- * assemble the script and then perhaps post-process it if needed
- */
-    QString script_buffer = assembleFwScript(
-        cluster, fw, !cluster_id.empty(), oscnf.get());
-
-
-    info("Output file name: " + fw_file_name.toStdString());
-
-    QFile fw_file(fw_file_name);
-    if (fw_file.open(QIODevice::WriteOnly))
+    catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        QTextStream fw_str(&fw_file);
-        fw_str << script_buffer;
-        fw_file.close();
-        fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
-                               QFile::ReadGroup | QFile::ReadOther |
-                               QFile::ExeOwner | 
-                               QFile::ExeGroup |
-                               QFile::ExeOther );
-
-        info(" Compiled successfully");
-    } else
-    {
-        abort(string(" Failed to open file ") +
-              fw_file_name.toStdString() +
-              " for writing");
+        return getErrors("");
     }
+    
         
     return "";
 }

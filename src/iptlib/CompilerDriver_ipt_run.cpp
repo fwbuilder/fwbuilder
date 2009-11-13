@@ -113,580 +113,589 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
         objdb->findInIndex(objdb->getIntId(firewall_id)));
     assert(fw);
 
-    // Copy rules from the cluster object
-    populateClusterElements(cluster, fw);
-
-    commonChecks2(cluster, fw);
-
-    string fw_version = fw->getStr("version");
-    if (fw_version.empty()) fw_version = "(any version)";
-    string platform = fw->getStr("platform");
-    string host_os = fw->getStr("host_OS");
-
-    FWOptions* options = fw->getOptionsObject();
-    string s;
-
-    // Note that fwobjectname may be different from the name of the
-    // firewall fw This happens when we compile a member of a cluster
-    current_firewall_name = fw->getName().c_str();
-
-    fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
-
-    if (fw->getOptionsObject()->getStr("prolog_place") == "after_flush" &&
-        fw->getOptionsObject()->getBool("use_iptables_restore"))
-    {
-        abort("Prolog place \"after policy reset\" can not be used"
-              " when policy is activated with iptables-restore");
-    }
-
-    string firewall_dir = options->getStr("firewall_dir");
-    if (firewall_dir=="") firewall_dir="/etc";
-
-    bool debug=options->getBool("debug");
-    QString shell_dbg = (debug)?"set -x":"" ;
-
-    std::auto_ptr<OSConfigurator_linux24> oscnf;
-
-    string platform_family = Resources::platform_res[platform]->
-        getResourceStr("/FWBuilderResources/Target/family");
-    string os_family = Resources::os_res[host_os]->
-        getResourceStr("/FWBuilderResources/Target/family");
-
-    bool supports_prolog_epilog = Resources::getTargetCapabilityBool(
-        platform, "supports_prolog_epilog");
-
-    if (!supports_prolog_epilog)
-    {
-        prolog_done = true;
-        epilog_done = true;
-    }
-
-    string os_variant = DISTRO;
-
-/* minimal sanity checking */
-    if (os_family == "ipcop")
-    {
-        os_variant = "ipcop";
-
-        // can't use iptables-restore with ipcop
-        fw->getOptionsObject()->setBool("use_iptables_restore", false);
-        // ipcop has its own iptables commands that accept packets
-        // in states ESTABLISHED,RELATED
-        fw->getOptionsObject()->setBool("accept_established", false);
-
-        oscnf = std::auto_ptr<OSConfigurator_linux24>(
-            new OSConfigurator_ipcop(objdb , fw, false));
-    }
-
-    if (os_family == "linux24")
-        oscnf = std::auto_ptr<OSConfigurator_linux24>(
-            new OSConfigurator_linux24(objdb , fw, false));
-
-    if (os_family == "secuwall")
-        oscnf = std::auto_ptr<OSConfigurator_linux24>(
-            new OSConfigurator_secuwall(objdb , fw, false));
-
-    if (oscnf.get()==NULL)
-    {
-        abort("Unrecognized host OS " + fw->getStr("host_OS") +
-              "  (family " + os_family+")");
-        return "";
-    }
-
-    if (inTestMode()) oscnf->setTestMode();
-    if (inEmbeddedMode()) oscnf->setEmbeddedMode();
-
-    oscnf->validateInterfaces();
-    oscnf->prolog();
-
-    list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
-    list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
-
-    int routing_rules_count = 0;
-    bool have_ipv6 = false;
-
-    // track chains in each table separately. Can we have the same
-    // chain in filter and mangle tables ? Would it be the same
-    // chain, i.e. do we need to create it only once or do we create
-    // it twice, in each table separately ? 
-    // Using separate trackers we track and create chain in each
-    // table separately.
-    std::map<const std::string, bool> minus_n_commands_filter;
-    std::map<const std::string, bool> minus_n_commands_mangle;
-    std::map<const std::string, bool> minus_n_commands_nat;
-
-    vector<int> ipv4_6_runs;
     string generated_script;
 
-    findImportedRuleSets(fw, all_policies);
-    findBranchesInMangleTable(fw, all_policies);
-    findImportedRuleSets(fw, all_nat);
-
-    // command line options -4 and -6 control address family for which
-    // script will be generated. If "-4" is used, only ipv4 part will 
-    // be generated. If "-6" is used, only ipv6 part will be generated.
-    // If neither is used, both parts will be done.
-
-    if (options->getStr("ipv4_6_order").empty() ||
-        options->getStr("ipv4_6_order") == "ipv4_first")
+    try
     {
-        if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
-        if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
-    }
+        // Copy rules from the cluster object
+        populateClusterElements(cluster, fw);
 
-    if (options->getStr("ipv4_6_order") == "ipv6_first")
-    {
-        if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
-        if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
-    }
+        commonChecks2(cluster, fw);
 
-    for (vector<int>::iterator i=ipv4_6_runs.begin(); i!=ipv4_6_runs.end(); ++i)
-    {
-        int policy_af = *i;
-        bool ipv6_policy = (policy_af == AF_INET6);
+        string fw_version = fw->getStr("version");
+        if (fw_version.empty()) fw_version = "(any version)";
+        string platform = fw->getStr("platform");
+        string host_os = fw->getStr("host_OS");
 
-        /*
-          clear chain tracker map only between ipv4/ipv6 runs
-          Don't clear it between compiler runs for different
-          policy or nat objects for the same address family.
-        */
-        minus_n_commands_filter.clear();
-        minus_n_commands_mangle.clear();
-        minus_n_commands_nat.clear();
+        FWOptions* options = fw->getOptionsObject();
+        string s;
 
-        /*
-          We need to create and run preprocessor for this address
-          family before nat and policy compilers, but if there are
-          no nat / policy rules for this address family, we do not
-          need preprocessor either.
-        */
+        // Note that fwobjectname may be different from the name of the
+        // firewall fw This happens when we compile a member of a cluster
+        current_firewall_name = fw->getName().c_str();
 
-        // Count rules for each address family
-        int nat_count = 0;
-        int policy_count = 0;
+        fw_file_name = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
-        for (list<FWObject*>::iterator p=all_nat.begin();
-             p!=all_nat.end(); ++p)
+        if (fw->getOptionsObject()->getStr("prolog_place") == "after_flush" &&
+            fw->getOptionsObject()->getBool("use_iptables_restore"))
         {
-            NAT *nat = NAT::cast(*p);
-            if (nat->matchingAddressFamily(policy_af)) nat_count++;
+            abort("Prolog place \"after policy reset\" can not be used"
+                  " when policy is activated with iptables-restore");
         }
 
-        for (list<FWObject*>::iterator p=all_policies.begin();
-             p!=all_policies.end(); ++p)
+        string firewall_dir = options->getStr("firewall_dir");
+        if (firewall_dir=="") firewall_dir="/etc";
+
+        bool debug=options->getBool("debug");
+        QString shell_dbg = (debug)?"set -x":"" ;
+
+        std::auto_ptr<OSConfigurator_linux24> oscnf;
+
+        string platform_family = Resources::platform_res[platform]->
+            getResourceStr("/FWBuilderResources/Target/family");
+        string os_family = Resources::os_res[host_os]->
+            getResourceStr("/FWBuilderResources/Target/family");
+
+        bool supports_prolog_epilog = Resources::getTargetCapabilityBool(
+            platform, "supports_prolog_epilog");
+
+        if (!supports_prolog_epilog)
         {
-            Policy *policy = Policy::cast(*p);
-            if (policy->matchingAddressFamily(policy_af)) policy_count++;
+            prolog_done = true;
+            epilog_done = true;
         }
 
-        if (nat_count || policy_count)
+        string os_variant = DISTRO;
+
+/* minimal sanity checking */
+        if (os_family == "ipcop")
         {
-            Preprocessor* prep = new Preprocessor(
-                objdb , fw, ipv6_policy);
-            if (inTestMode()) prep->setTestMode();
-            if (inEmbeddedMode()) prep->setEmbeddedMode();
-            prep->compile();
-            delete prep;
+            os_variant = "ipcop";
+
+            // can't use iptables-restore with ipcop
+            fw->getOptionsObject()->setBool("use_iptables_restore", false);
+            // ipcop has its own iptables commands that accept packets
+            // in states ESTABLISHED,RELATED
+            fw->getOptionsObject()->setBool("accept_established", false);
+
+            oscnf = std::auto_ptr<OSConfigurator_linux24>(
+                new OSConfigurator_ipcop(objdb , fw, false));
         }
 
-        ostringstream automaitc_rules_stream;
-        ostringstream filter_rules_stream;
-        ostringstream mangle_rules_stream;
-        ostringstream nat_rules_stream;
+        if (os_family == "linux24")
+            oscnf = std::auto_ptr<OSConfigurator_linux24>(
+                new OSConfigurator_linux24(objdb , fw, false));
 
-        bool empty_output = true;
+        if (os_family == "secuwall")
+            oscnf = std::auto_ptr<OSConfigurator_linux24>(
+                new OSConfigurator_secuwall(objdb , fw, false));
 
-        // First, process branch NAT rulesets, then top NAT ruleset
-
-        NAT *top_nat = NULL;
-        for (list<FWObject*>::iterator p=all_nat.begin();
-             p!=all_nat.end(); ++p)
+        if (oscnf.get()==NULL)
         {
-            NAT *nat = NAT::cast(*p);
-            if (!nat->matchingAddressFamily(policy_af)) continue;
-            if (nat->isTop())
+            abort("Unrecognized host OS " + fw->getStr("host_OS") +
+                  "  (family " + os_family+")");
+            return "";
+        }
+
+        if (inTestMode()) oscnf->setTestMode();
+        if (inEmbeddedMode()) oscnf->setEmbeddedMode();
+
+        oscnf->validateInterfaces();
+        oscnf->prolog();
+
+        list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+        list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
+
+        int routing_rules_count = 0;
+        bool have_ipv6 = false;
+
+        // track chains in each table separately. Can we have the same
+        // chain in filter and mangle tables ? Would it be the same
+        // chain, i.e. do we need to create it only once or do we create
+        // it twice, in each table separately ? 
+        // Using separate trackers we track and create chain in each
+        // table separately.
+        std::map<const std::string, bool> minus_n_commands_filter;
+        std::map<const std::string, bool> minus_n_commands_mangle;
+        std::map<const std::string, bool> minus_n_commands_nat;
+
+        vector<int> ipv4_6_runs;
+
+        findImportedRuleSets(fw, all_policies);
+        findBranchesInMangleTable(fw, all_policies);
+        findImportedRuleSets(fw, all_nat);
+
+        // command line options -4 and -6 control address family for which
+        // script will be generated. If "-4" is used, only ipv4 part will 
+        // be generated. If "-6" is used, only ipv6 part will be generated.
+        // If neither is used, both parts will be done.
+
+        if (options->getStr("ipv4_6_order").empty() ||
+            options->getStr("ipv4_6_order") == "ipv4_first")
+        {
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
+        }
+
+        if (options->getStr("ipv4_6_order") == "ipv6_first")
+        {
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
+        }
+
+        for (vector<int>::iterator i=ipv4_6_runs.begin(); i!=ipv4_6_runs.end(); ++i)
+        {
+            int policy_af = *i;
+            bool ipv6_policy = (policy_af == AF_INET6);
+
+            /*
+              clear chain tracker map only between ipv4/ipv6 runs
+              Don't clear it between compiler runs for different
+              policy or nat objects for the same address family.
+            */
+            minus_n_commands_filter.clear();
+            minus_n_commands_mangle.clear();
+            minus_n_commands_nat.clear();
+
+            /*
+              We need to create and run preprocessor for this address
+              family before nat and policy compilers, but if there are
+              no nat / policy rules for this address family, we do not
+              need preprocessor either.
+            */
+
+            // Count rules for each address family
+            int nat_count = 0;
+            int policy_count = 0;
+
+            for (list<FWObject*>::iterator p=all_nat.begin();
+                 p!=all_nat.end(); ++p)
             {
-                top_nat = nat;
-                continue;
+                NAT *nat = NAT::cast(*p);
+                if (nat->matchingAddressFamily(policy_af)) nat_count++;
             }
-            if (! processNatRuleSet(
+
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p)
+            {
+                Policy *policy = Policy::cast(*p);
+                if (policy->matchingAddressFamily(policy_af)) policy_count++;
+            }
+
+            if (nat_count || policy_count)
+            {
+                Preprocessor* prep = new Preprocessor(
+                    objdb , fw, ipv6_policy);
+                if (inTestMode()) prep->setTestMode();
+                if (inEmbeddedMode()) prep->setEmbeddedMode();
+                prep->compile();
+                delete prep;
+            }
+
+            ostringstream automaitc_rules_stream;
+            ostringstream filter_rules_stream;
+            ostringstream mangle_rules_stream;
+            ostringstream nat_rules_stream;
+
+            bool empty_output = true;
+
+            // First, process branch NAT rulesets, then top NAT ruleset
+
+            NAT *top_nat = NULL;
+            for (list<FWObject*>::iterator p=all_nat.begin();
+                 p!=all_nat.end(); ++p)
+            {
+                NAT *nat = NAT::cast(*p);
+                if (!nat->matchingAddressFamily(policy_af)) continue;
+                if (nat->isTop())
+                {
+                    top_nat = nat;
+                    continue;
+                }
+                if (! processNatRuleSet(
+                        fw,
+                        nat,
+                        single_rule_id,
+                        nat_rules_stream,
+                        oscnf.get(),
+                        policy_af,
+                        minus_n_commands_nat)) empty_output = false;
+            }
+
+            if (top_nat &&
+                ! processNatRuleSet(
                     fw,
-                    nat,
+                    top_nat,
                     single_rule_id,
                     nat_rules_stream,
                     oscnf.get(),
                     policy_af,
                     minus_n_commands_nat)) empty_output = false;
-        }
 
-        if (top_nat &&
-            ! processNatRuleSet(
-                fw,
-                top_nat,
-                single_rule_id,
-                nat_rules_stream,
-                oscnf.get(),
-                policy_af,
-                minus_n_commands_nat)) empty_output = false;
-
-        for (int all_top = 0; all_top < 2; ++all_top)
-        {
-            for (list<FWObject*>::iterator p=all_policies.begin();
-                 p!=all_policies.end(); ++p )
+            for (int all_top = 0; all_top < 2; ++all_top)
             {
-                Policy *policy = Policy::cast(*p);
-                if (!policy->matchingAddressFamily(policy_af)) continue;
+                for (list<FWObject*>::iterator p=all_policies.begin();
+                     p!=all_policies.end(); ++p )
+                {
+                    Policy *policy = Policy::cast(*p);
+                    if (!policy->matchingAddressFamily(policy_af)) continue;
 
-                if (policy->isTop() && all_top == 0) continue;
-                if (!policy->isTop() && all_top == 1) continue;
+                    if (policy->isTop() && all_top == 0) continue;
+                    if (!policy->isTop() && all_top == 1) continue;
 
-                if (! processPolicyRuleSet(
-                        fw,
-                        policy,
-                        single_rule_id,
-                        filter_rules_stream,
-                        mangle_rules_stream,
-                        automaitc_rules_stream,
-                        oscnf.get(),
-                        policy_af,
-                        minus_n_commands_filter,
-                        minus_n_commands_mangle)) empty_output = false;
+                    if (! processPolicyRuleSet(
+                            fw,
+                            policy,
+                            single_rule_id,
+                            filter_rules_stream,
+                            mangle_rules_stream,
+                            automaitc_rules_stream,
+                            oscnf.get(),
+                            policy_af,
+                            minus_n_commands_filter,
+                            minus_n_commands_mangle)) empty_output = false;
+                }
             }
-        }
 
-        if (!empty_output && !single_rule_compile_on)
-        {
-            if (ipv6_policy)
+            if (!empty_output && !single_rule_compile_on)
             {
-                have_ipv6 = true;
-                generated_script += "\n\n";
-                generated_script += "# ================ IPv6\n";
-                generated_script += "\n\n";
-            } else
-            {
-                generated_script += "\n\n";
-                generated_script += "# ================ IPv4\n";
-                generated_script += "\n\n";
+                if (ipv6_policy)
+                {
+                    have_ipv6 = true;
+                    generated_script += "\n\n";
+                    generated_script += "# ================ IPv6\n";
+                    generated_script += "\n\n";
+                } else
+                {
+                    generated_script += "\n\n";
+                    generated_script += "# ================ IPv4\n";
+                    generated_script += "\n\n";
+                }
             }
+
+            generated_script += dumpScript(fw,
+                                           automaitc_rules_stream.str(),
+                                           nat_rules_stream.str(),
+                                           mangle_rules_stream.str(),
+                                           filter_rules_stream.str(),
+                                           ipv6_policy);
         }
 
-        generated_script += dumpScript(fw,
-                                       automaitc_rules_stream.str(),
-                                       nat_rules_stream.str(),
-                                       mangle_rules_stream.str(),
-                                       filter_rules_stream.str(),
-                                       ipv6_policy);
-    }
+        std::auto_ptr<RoutingCompiler_ipt> routing_compiler(
+            new RoutingCompiler_ipt(objdb, fw, false, oscnf.get()));
 
-    std::auto_ptr<RoutingCompiler_ipt> routing_compiler(
-        new RoutingCompiler_ipt(objdb, fw, false, oscnf.get()));
-
-    RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
-    if (routing)
-    {
-        routing_compiler->setSourceRuleSet(routing);
-        routing_compiler->setRuleSetName(routing->getName());
-
-        routing_compiler->setSingleRuleCompileMode(single_rule_id);
-        routing_compiler->setDebugLevel( dl );
-        if (rule_debug_on) routing_compiler->setDebugRule(drp);
-        routing_compiler->setVerbose( verbose );
-        if (inTestMode()) routing_compiler->setTestMode();
-        if (inEmbeddedMode()) routing_compiler->setEmbeddedMode();
-
-        if ( (routing_rules_count=routing_compiler->prolog()) > 0 )
+        RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
+        if (routing)
         {
-            routing_compiler->compile();
-            routing_compiler->epilog();
+            routing_compiler->setSourceRuleSet(routing);
+            routing_compiler->setRuleSetName(routing->getName());
+
+            routing_compiler->setSingleRuleCompileMode(single_rule_id);
+            routing_compiler->setDebugLevel( dl );
+            if (rule_debug_on) routing_compiler->setDebugRule(drp);
+            routing_compiler->setVerbose( verbose );
+            if (inTestMode()) routing_compiler->setTestMode();
+            if (inEmbeddedMode()) routing_compiler->setEmbeddedMode();
+
+            if ( (routing_rules_count=routing_compiler->prolog()) > 0 )
+            {
+                routing_compiler->compile();
+                routing_compiler->epilog();
+            }
+
+            if (routing_compiler->haveErrorsAndWarnings())
+                all_errors.push_back(routing_compiler->getErrors("").c_str());
         }
 
-        if (routing_compiler->haveErrorsAndWarnings())
-            all_errors.push_back(routing_compiler->getErrors("").c_str());
-    }
-
-    if (single_rule_compile_on)
-    {
-        // in single rule compile mode just return the result Note
-        // that we do not return all_errors because all compilers
-        // include errors and warnings with generated code for each
-        // rule. CompilerDriver errors, however, need to be added on
-        // top.
-        return
-            getErrors("") + 
+        if (single_rule_compile_on)
+        {
+            // in single rule compile mode just return the result Note
+            // that we do not return all_errors because all compilers
+            // include errors and warnings with generated code for each
+            // rule. CompilerDriver errors, however, need to be added on
+            // top.
+            return
+                getErrors("") + 
 //            all_errors.join("\n").toStdString() + 
-            generated_script + routing_compiler->getCompiledScript();
-    }
+                generated_script + routing_compiler->getCompiledScript();
+        }
 
-    if (haveErrorsAndWarnings())
-    {
-        all_errors.push_front(getErrors("").c_str());
-    }
+        if (haveErrorsAndWarnings())
+        {
+            all_errors.push_front(getErrors("").c_str());
+        }
 
 
 /*
  * These store generated configuration internally, extract it later using
  * OSConfiguration::getGeneratedFiles();
  */
-    oscnf->printChecksForRunTimeMultiAddress();
-    oscnf->processFirewallOptions();
+        oscnf->printChecksForRunTimeMultiAddress();
+        oscnf->processFirewallOptions();
 
 /*
  * now write generated scripts to files
  */
 
-    char *timestr;
-    time_t tm;
-    struct tm *stm;
+        char *timestr;
+        time_t tm;
+        struct tm *stm;
 
-    tm = time(NULL);
-    stm = localtime(&tm);
-    timestr = strdup(ctime(&tm));
-    timestr[strlen(timestr)-1] = '\0';
+        tm = time(NULL);
+        stm = localtime(&tm);
+        timestr = strdup(ctime(&tm));
+        timestr[strlen(timestr)-1] = '\0';
 
 #ifdef _WIN32
-    char* user_name = getenv("USERNAME");
+        char* user_name = getenv("USERNAME");
 #else
-    struct passwd *pwd = getpwuid(getuid());
-    assert(pwd);
-    char *user_name = pwd->pw_name;
+        struct passwd *pwd = getpwuid(getuid());
+        assert(pwd);
+        char *user_name = pwd->pw_name;
 #endif
 
-    if (user_name == NULL)
-    {
-        user_name = getenv("LOGNAME");
         if (user_name == NULL)
-            abort("Can't figure out your user name");
+        {
+            user_name = getenv("LOGNAME");
+            if (user_name == NULL)
+                abort("Can't figure out your user name");
 
-    }
+        }
 
 /*
  * assemble the script and then perhaps post-process it if it should
  * run on Linksys device with sveasoft firmware
  */
-    Configlet script_skeleton(fw, "linux24", "script_skeleton");
-    script_skeleton.removeComments();
+        Configlet script_skeleton(fw, "linux24", "script_skeleton");
+        script_skeleton.removeComments();
 
-    QString script_buffer;
-    QTextStream script(&script_buffer, QIODevice::WriteOnly);
-    script_buffer = "";
+        QString script_buffer;
+        QTextStream script(&script_buffer, QIODevice::WriteOnly);
+        script_buffer = "";
 
-    script_skeleton.setVariable("shell_debug", shell_dbg);
+        script_skeleton.setVariable("shell_debug", shell_dbg);
 
-    script << "PATH=\"/sbin:/usr/sbin:/bin:/usr/bin:${PATH}\"" << "\n";
-    script << "export PATH" << "\n";
+        script << "PATH=\"/sbin:/usr/sbin:/bin:/usr/bin:${PATH}\"" << "\n";
+        script << "export PATH" << "\n";
 
-    script_skeleton.setVariable("path", script_buffer);
-    script_buffer = "";
+        script_skeleton.setVariable("path", script_buffer);
+        script_buffer = "";
 
-    Configlet script_constants(fw, "linux24", "constants");
-    script_skeleton.setVariable("constants", script_constants.expand());
+        Configlet script_constants(fw, "linux24", "constants");
+        script_skeleton.setVariable("constants", script_constants.expand());
 
-    /*
-     * print definitions for variables IPTABLES, IP, LOGGER. Some
-     * day we may add a choice of os_variant in the GUI. Right now
-     * paths are either default for a given os_variant, or custom
-     * strings entered by user in the GUI and stored in firewall
-     * options.
-     */
-    script_skeleton.setVariable("tools",
-                             oscnf->printPathForAllTools(os_variant).c_str());
-    script_skeleton.setVariable("shell_functions",
-                             oscnf->printShellFunctions().c_str());
-    if (supports_prolog_epilog)
-    {
-        //script_skeleton.setVariable("prolog_epilog",
-        //                         oscnf->printPrologEpilogFunctions().c_str());
+        /*
+         * print definitions for variables IPTABLES, IP, LOGGER. Some
+         * day we may add a choice of os_variant in the GUI. Right now
+         * paths are either default for a given os_variant, or custom
+         * strings entered by user in the GUI and stored in firewall
+         * options.
+         */
+        script_skeleton.setVariable("tools",
+                                    oscnf->printPathForAllTools(os_variant).c_str());
+        script_skeleton.setVariable("shell_functions",
+                                    oscnf->printShellFunctions().c_str());
+        if (supports_prolog_epilog)
+        {
+            //script_skeleton.setVariable("prolog_epilog",
+            //                         oscnf->printPrologEpilogFunctions().c_str());
+
+            script_skeleton.setVariable(
+                "prolog_script", 
+                fw->getOptionsObject()->getStr("prolog_script").c_str());
+            script_skeleton.setVariable(
+                "epilog_script", 
+                fw->getOptionsObject()->getStr("epilog_script").c_str());
+        }
+
+        ostringstream ostr;
+
+        ostr << "# Configure interfaces" << endl;
+
+        if ( options->getBool("configure_bonding_interfaces") ) 
+            ostr << oscnf->printBondingInterfaceConfigurationCommands();
+
+        if ( options->getBool("configure_vlan_interfaces")) 
+            ostr << oscnf->printVlanInterfaceConfigurationCommands();
+
+        if ( options->getBool("configure_bridge_interfaces") ) 
+            ostr << oscnf->printBridgeInterfaceConfigurationCommands();
+
+        if ( options->getBool("configure_interfaces") ) 
+            ostr << oscnf->printInterfaceConfigurationCommands();
+
+        ostr << oscnf->printDynamicAddressesConfigurationCommands();
 
         script_skeleton.setVariable(
-            "prolog_script", 
-            fw->getOptionsObject()->getStr("prolog_script").c_str());
-        script_skeleton.setVariable(
-            "epilog_script", 
-            fw->getOptionsObject()->getStr("epilog_script").c_str());
-    }
-
-    ostringstream ostr;
-
-    ostr << "# Configure interfaces" << endl;
-
-    if ( options->getBool("configure_bonding_interfaces") ) 
-        ostr << oscnf->printBondingInterfaceConfigurationCommands();
-
-    if ( options->getBool("configure_vlan_interfaces")) 
-        ostr << oscnf->printVlanInterfaceConfigurationCommands();
-
-    if ( options->getBool("configure_bridge_interfaces") ) 
-        ostr << oscnf->printBridgeInterfaceConfigurationCommands();
-
-    if ( options->getBool("configure_interfaces") ) 
-        ostr << oscnf->printInterfaceConfigurationCommands();
-
-    ostr << oscnf->printDynamicAddressesConfigurationCommands();
-
-    script_skeleton.setVariable(
-        "configure_interfaces", indent(4, QString(ostr.str().c_str())));
+            "configure_interfaces", indent(4, QString(ostr.str().c_str())));
 
 
 
-    // verify_interfaces checks bridge interfaces so run it
-    // after those have been created
-    if (options->getBool("verify_interfaces")) 
-    {
-        list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
-        if (l2.empty() )
+        // verify_interfaces checks bridge interfaces so run it
+        // after those have been created
+        if (options->getBool("verify_interfaces")) 
+        {
+            list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
+            if (l2.empty() )
+                script_skeleton.setVariable("verify_interfaces", QString());
+            else
+                script_skeleton.setVariable("verify_interfaces",
+                                            oscnf->printVerifyInterfacesCommands().c_str());
+        } else
             script_skeleton.setVariable("verify_interfaces", QString());
-        else
-            script_skeleton.setVariable("verify_interfaces",
-                                        oscnf->printVerifyInterfacesCommands().c_str());
-    } else
-        script_skeleton.setVariable("verify_interfaces", QString());
     
-    string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
-    if (prolog_place == "") prolog_place="top";
+        string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
+        if (prolog_place == "") prolog_place="top";
 
-    /* there is no way to stick prolog commands between iptables
-     * reset and iptables rules if we use iptables-restore to
-     * activate policy. Therefore, if prolog needs to be ran after
-     * iptables flush and we use iptables-restore, we run prolog
-     * on top of the script.
-     */
-    if (!prolog_done &&
-        (prolog_place == "top" ||
-         (prolog_place == "after_flush" && 
-          fw->getOptionsObject()->getBool("use_iptables_restore"))))
-    {
-        script_skeleton.setVariable("prolog_top", 1);
-        script_skeleton.setVariable("prolog_after_interfaces", 0);
-        script_skeleton.setVariable("prolog_after_flush", 0);
-        prolog_done = true;
-    }
+        /* there is no way to stick prolog commands between iptables
+         * reset and iptables rules if we use iptables-restore to
+         * activate policy. Therefore, if prolog needs to be ran after
+         * iptables flush and we use iptables-restore, we run prolog
+         * on top of the script.
+         */
+        if (!prolog_done &&
+            (prolog_place == "top" ||
+             (prolog_place == "after_flush" && 
+              fw->getOptionsObject()->getBool("use_iptables_restore"))))
+        {
+            script_skeleton.setVariable("prolog_top", 1);
+            script_skeleton.setVariable("prolog_after_interfaces", 0);
+            script_skeleton.setVariable("prolog_after_flush", 0);
+            prolog_done = true;
+        }
 
-    if (!prolog_done && prolog_place == "after_interfaces")
-    {
-        script_skeleton.setVariable("prolog_top", 0);
-        script_skeleton.setVariable("prolog_after_interfaces", 1);
-        script_skeleton.setVariable("prolog_after_flush", 0);
-        prolog_done = true;
-    }
+        if (!prolog_done && prolog_place == "after_interfaces")
+        {
+            script_skeleton.setVariable("prolog_top", 0);
+            script_skeleton.setVariable("prolog_after_interfaces", 1);
+            script_skeleton.setVariable("prolog_after_flush", 0);
+            prolog_done = true;
+        }
 
-    if (!prolog_done && prolog_place == "after_flush")
-    {
-        script_skeleton.setVariable("prolog_top", 0);
-        script_skeleton.setVariable("prolog_after_interfaces", 0);
-        script_skeleton.setVariable("prolog_after_flush", 1);
-        prolog_done = true;
-    }
+        if (!prolog_done && prolog_place == "after_flush")
+        {
+            script_skeleton.setVariable("prolog_top", 0);
+            script_skeleton.setVariable("prolog_after_interfaces", 0);
+            script_skeleton.setVariable("prolog_after_flush", 1);
+            prolog_done = true;
+        }
 
-    script_skeleton.setVariable("load_modules",
-                             oscnf->generateCodeForProtocolHandlers().c_str());
-    script_skeleton.setVariable("load_modules_with_nat", (have_nat)?"\"nat\"":"");
+        script_skeleton.setVariable("load_modules",
+                                    oscnf->generateCodeForProtocolHandlers().c_str());
+        script_skeleton.setVariable("load_modules_with_nat", (have_nat)?"\"nat\"":"");
 
-    script_skeleton.setVariable("ip_forward_commands",
-                                oscnf->printIPForwardingCommands().c_str());
+        script_skeleton.setVariable("ip_forward_commands",
+                                    oscnf->printIPForwardingCommands().c_str());
 
-    /*
-     * script body begins here
-     */
-    script_buffer = "";
+        /*
+         * script body begins here
+         */
+        script_buffer = "";
 
-    if (oscnf->haveErrorsAndWarnings())
-    {
-        all_errors.push_back(oscnf->getErrors("").c_str());
+        if (oscnf->haveErrorsAndWarnings())
+        {
+            all_errors.push_back(oscnf->getErrors("").c_str());
 //        script << "# OS configuration errors and warnings:" << "\n";
 //        script << oscnf->getErrors("# ");
-    }
-
-    script << oscnf->getCompiledScript();
-    script << generated_script;
-    script << routing_compiler->getCompiledScript();
-    script << endl;
-
-    script_skeleton.setVariable("script_body", indent(4, script_buffer));
-
-    script_skeleton.setVariable("timestamp", timestr);
-    script_skeleton.setVariable("tz", tzname[stm->tm_isdst]);
-    script_skeleton.setVariable("user", user_name);
-
-    /*
-     * Call reset_all function to flush and reset iptables, but only
-     * do this if we do not use iptables_restore. Reset is done as part
-     * of iptables-restore script in the latter case and commands are
-     * added in PolicyCompiler_ipt::flushAndSetDefaultPolicy()
-     */
-    script_skeleton.setVariable("not_using_iptables_restore",
-                                ! fw->getOptionsObject()->getBool("use_iptables_restore"));
-
-    script_buffer = "";
-    script << "  reset_iptables_v4" << endl;
-    if (have_ipv6) script << "  reset_iptables_v6" << endl;
-    script_skeleton.setVariable("reset_all", script_buffer);
-
-    script_buffer = "";
-
-    Configlet top_comment(fw, "linux24", "top_comment");
-
-    top_comment.setVariable("version", VERSION);
-    QString build_num;
-    build_num.setNum(BUILD_NUM);
-    top_comment.setVariable("build", build_num);
- 
-    top_comment.setVariable("timestamp", timestr);
-    top_comment.setVariable("tz", tzname[stm->tm_isdst]);
-    top_comment.setVariable("user", user_name);
-
-    QFileInfo fw_file_info(fw_file_name);
-    script_buffer = "";
-    script << MANIFEST_MARKER << "* " << fw_file_info.fileName();
-    string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
-    if (!remote_name.empty()) script << " " << remote_name;
-    script << "\n";
-
-    /* Add additional files to manifest if specified.  Currently there
-     * are no GUI controls to let user provide alternative names for
-     * these on the firewall. See description of manifest format in
-     * comments in src/gui/FirewallInstaller.cpp
-     */
-    list<string> file_list = oscnf->getGeneratedFiles();
-    if (!file_list.empty())
-    {
-        info(" Adding additional files to manifest");
-        list<string>::const_iterator c_iter = file_list.begin();
-        for (; c_iter != file_list.end(); ++c_iter)
-        {
-            string name = *c_iter;
-            script << MANIFEST_MARKER << name << "\n";
         }
+
+        script << oscnf->getCompiledScript();
+        script << generated_script;
+        script << routing_compiler->getCompiledScript();
+        script << endl;
+
+        script_skeleton.setVariable("script_body", indent(4, script_buffer));
+
+        script_skeleton.setVariable("timestamp", timestr);
+        script_skeleton.setVariable("tz", tzname[stm->tm_isdst]);
+        script_skeleton.setVariable("user", user_name);
+
+        /*
+         * Call reset_all function to flush and reset iptables, but only
+         * do this if we do not use iptables_restore. Reset is done as part
+         * of iptables-restore script in the latter case and commands are
+         * added in PolicyCompiler_ipt::flushAndSetDefaultPolicy()
+         */
+        script_skeleton.setVariable("not_using_iptables_restore",
+                                    ! fw->getOptionsObject()->getBool("use_iptables_restore"));
+
+        script_buffer = "";
+        script << "  reset_iptables_v4" << endl;
+        if (have_ipv6) script << "  reset_iptables_v6" << endl;
+        script_skeleton.setVariable("reset_all", script_buffer);
+
+        script_buffer = "";
+
+        Configlet top_comment(fw, "linux24", "top_comment");
+
+        top_comment.setVariable("version", VERSION);
+        QString build_num;
+        build_num.setNum(BUILD_NUM);
+        top_comment.setVariable("build", build_num);
+ 
+        top_comment.setVariable("timestamp", timestr);
+        top_comment.setVariable("tz", tzname[stm->tm_isdst]);
+        top_comment.setVariable("user", user_name);
+
+        QFileInfo fw_file_info(fw_file_name);
+        script_buffer = "";
+        script << MANIFEST_MARKER << "* " << fw_file_info.fileName();
+        string remote_name = fw->getOptionsObject()->getStr("script_name_on_firewall");
+        if (!remote_name.empty()) script << " " << remote_name;
+        script << "\n";
+
+        /* Add additional files to manifest if specified.  Currently there
+         * are no GUI controls to let user provide alternative names for
+         * these on the firewall. See description of manifest format in
+         * comments in src/gui/FirewallInstaller.cpp
+         */
+        list<string> file_list = oscnf->getGeneratedFiles();
+        if (!file_list.empty())
+        {
+            info(" Adding additional files to manifest");
+            list<string>::const_iterator c_iter = file_list.begin();
+            for (; c_iter != file_list.end(); ++c_iter)
+            {
+                string name = *c_iter;
+                script << MANIFEST_MARKER << name << "\n";
+            }
+        }
+
+        top_comment.setVariable("manifest", script_buffer);
+        top_comment.setVariable("platform", platform.c_str());
+        top_comment.setVariable("fw_version", fw_version.c_str());
+        top_comment.setVariable("comment", prepend("# ", fw->getComment().c_str()));
+
+        script_skeleton.setVariable("top_comment", top_comment.expand());
+        script_skeleton.setVariable("errors_and_warnings",
+                                    prepend("# ", all_errors.join("\n")));
+
+        info("Output file name: " + fw_file_name.toStdString());
+
+        QFile fw_file(fw_file_name);
+        if (fw_file.open(QIODevice::WriteOnly))
+        {
+            QTextStream fw_str(&fw_file);
+            fw_str << script_skeleton.expand();
+            fw_file.close();
+            fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
+                                   QFile::ReadGroup | QFile::ReadOther |
+                                   QFile::ExeOwner | 
+                                   QFile::ExeGroup |
+                                   QFile::ExeOther );
+
+            info(" Compiled successfully");
+
+        } else
+        {
+            abort(string(" Failed to open file ") + fw_file_name.toStdString() +
+                  " for writing");
+        }
+
     }
-
-    top_comment.setVariable("manifest", script_buffer);
-    top_comment.setVariable("platform", platform.c_str());
-    top_comment.setVariable("fw_version", fw_version.c_str());
-    top_comment.setVariable("comment", prepend("# ", fw->getComment().c_str()));
-
-    script_skeleton.setVariable("top_comment", top_comment.expand());
-    script_skeleton.setVariable("errors_and_warnings",
-                                prepend("# ", all_errors.join("\n")));
-
-    info("Output file name: " + fw_file_name.toStdString());
-
-    QFile fw_file(fw_file_name);
-    if (fw_file.open(QIODevice::WriteOnly))
+    catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        QTextStream fw_str(&fw_file);
-        fw_str << script_skeleton.expand();
-        fw_file.close();
-        fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
-                               QFile::ReadGroup | QFile::ReadOther |
-                               QFile::ExeOwner | 
-                               QFile::ExeGroup |
-                               QFile::ExeOther );
-
-        info(" Compiled successfully");
-
-    } else
-    {
-        abort(string(" Failed to open file ") + fw_file_name.toStdString() +
-              " for writing");
+        return getErrors("");
     }
     
     return "";

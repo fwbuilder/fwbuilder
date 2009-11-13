@@ -135,217 +135,224 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
         objdb->findInIndex(objdb->getIntId(firewall_id)));
     assert(fw);
 
-    // Copy rules from the cluster object
-    populateClusterElements(cluster, fw);
-
-    commonChecks2(cluster, fw);
-
-    // Note that fwobjectname may be different from the name of the
-    // firewall fw This happens when we compile a member of a cluster
-    current_firewall_name = fw->getName().c_str();
-
-    QString ofname = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
-
-    FWOptions* options = fw->getOptionsObject();
-
-    string fwvers = fw->getStr("version");
-    if (fwvers == "") fw->setStr("version", "12.1");
-    if (fwvers == "12.x") fw->setStr("version", "12.1");
-
-    string platform = fw->getStr("platform");
-    string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/") +
-        "version_" + fwvers + "/iosacl_commands/clear_ip_acl");
-    if (clearACLCmd.empty())
+    try
     {
-        // incorrect version. This could have happened if user converted
-        // firewall platform. See bug #2662290
-        fw->setStr("version", "12.1");
-    }
+        // Copy rules from the cluster object
+        populateClusterElements(cluster, fw);
 
-    bool ios_acl_basic = options->getBool("ios_acl_basic");
-    bool ios_acl_no_clear = options->getBool("ios_acl_no_clear");
-    bool ios_acl_substitution = options->getBool("ios_acl_substitution");
-    bool ios_add_clear_statements = options->getBool("ios_add_clear_statements");
+        commonChecks2(cluster, fw);
 
-    if ( !ios_acl_basic &&
-         !ios_acl_no_clear &&
-         !ios_acl_substitution )
-    {
-        if ( ios_add_clear_statements ) options->setBool("ios_acl_basic",true);
-        else options->setBool("ios_acl_no_clear",true);
-    }
+        // Note that fwobjectname may be different from the name of the
+        // firewall fw This happens when we compile a member of a cluster
+        current_firewall_name = fw->getName().c_str();
 
-    std::auto_ptr<OSConfigurator_ios> oscnf(new OSConfigurator_ios(objdb, fw, false));
+        QString ofname = determineOutputFileName(cluster, fw, !cluster_id.empty(), ".fw");
 
-    oscnf->prolog();
-    oscnf->processFirewallOptions();
+        FWOptions* options = fw->getOptionsObject();
 
-    list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
-    int policy_rules_count  = 0;
+        string fwvers = fw->getStr("version");
+        if (fwvers == "") fw->setStr("version", "12.1");
+        if (fwvers == "12.x") fw->setStr("version", "12.1");
 
-    vector<int> ipv4_6_runs;
-
-    if (!single_rule_compile_on)
-        system_configuration_script = safetyNetInstall(fw);
-
-    // command line options -4 and -6 control address family for which
-    // script will be generated. If "-4" is used, only ipv4 part will 
-    // be generated. If "-6" is used, only ipv6 part will be generated.
-    // If neither is used, both parts will be done.
-
-    if (options->getStr("ipv4_6_order").empty() ||
-        options->getStr("ipv4_6_order") == "ipv4_first")
-    {
-        if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
-        if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
-    }
-
-    if (options->getStr("ipv4_6_order") == "ipv6_first")
-    {
-        if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
-        if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
-    }
-
-    for (vector<int>::iterator i=ipv4_6_runs.begin(); 
-         i!=ipv4_6_runs.end(); ++i)
-    {
-        int policy_af = *i;
-        bool ipv6_policy = (policy_af == AF_INET6);
-
-        // Count rules for each address family
-        int policy_count = 0;
-
-        for (list<FWObject*>::iterator p=all_policies.begin();
-             p!=all_policies.end(); ++p)
+        string platform = fw->getStr("platform");
+        string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
+            string("/FWBuilderResources/Target/options/") +
+            "version_" + fwvers + "/iosacl_commands/clear_ip_acl");
+        if (clearACLCmd.empty())
         {
-            Policy *policy = Policy::cast(*p);
-            if (policy->matchingAddressFamily(policy_af)) policy_count++;
-        }
-        if (policy_count)
-        {
-            std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
-            prep->compile();
+            // incorrect version. This could have happened if user converted
+            // firewall platform. See bug #2662290
+            fw->setStr("version", "12.1");
         }
 
-        for (list<FWObject*>::iterator p=all_policies.begin();
-             p!=all_policies.end(); ++p )
+        bool ios_acl_basic = options->getBool("ios_acl_basic");
+        bool ios_acl_no_clear = options->getBool("ios_acl_no_clear");
+        bool ios_acl_substitution = options->getBool("ios_acl_substitution");
+        bool ios_add_clear_statements = options->getBool("ios_add_clear_statements");
+
+        if ( !ios_acl_basic &&
+             !ios_acl_no_clear &&
+             !ios_acl_substitution )
         {
-            Policy *policy = Policy::cast(*p);
+            if ( ios_add_clear_statements ) options->setBool("ios_acl_basic",true);
+            else options->setBool("ios_acl_no_clear",true);
+        }
 
-            if (!policy->matchingAddressFamily(policy_af)) continue;
+        std::auto_ptr<OSConfigurator_ios> oscnf(new OSConfigurator_ios(objdb, fw, false));
 
-            PolicyCompiler_iosacl c(objdb, fw, ipv6_policy, oscnf.get());
+        oscnf->prolog();
+        oscnf->processFirewallOptions();
 
-            c.setSourceRuleSet( policy );
-            c.setRuleSetName(policy->getName());
+        list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+        int policy_rules_count  = 0;
 
-            c.setSingleRuleCompileMode(single_rule_id);
-            if (inTestMode()) c.setTestMode();
-            if (inEmbeddedMode()) c.setEmbeddedMode();
-            c.setDebugLevel( dl );
-            if (rule_debug_on) c.setDebugRule(  drp );
-            c.setVerbose( verbose );
+        vector<int> ipv4_6_runs;
 
-            if ( c.prolog() > 0 )
+        if (!single_rule_compile_on)
+            system_configuration_script = safetyNetInstall(fw);
+
+        // command line options -4 and -6 control address family for which
+        // script will be generated. If "-4" is used, only ipv4 part will 
+        // be generated. If "-6" is used, only ipv6 part will be generated.
+        // If neither is used, both parts will be done.
+
+        if (options->getStr("ipv4_6_order").empty() ||
+            options->getStr("ipv4_6_order") == "ipv4_first")
+        {
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
+        }
+
+        if (options->getStr("ipv4_6_order") == "ipv6_first")
+        {
+            if (ipv6_run) ipv4_6_runs.push_back(AF_INET6);
+            if (ipv4_run) ipv4_6_runs.push_back(AF_INET);
+        }
+
+        for (vector<int>::iterator i=ipv4_6_runs.begin(); 
+             i!=ipv4_6_runs.end(); ++i)
+        {
+            int policy_af = *i;
+            bool ipv6_policy = (policy_af == AF_INET6);
+
+            // Count rules for each address family
+            int policy_count = 0;
+
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p)
             {
-                c.compile();
-                c.epilog();
+                Policy *policy = Policy::cast(*p);
+                if (policy->matchingAddressFamily(policy_af)) policy_count++;
+            }
+            if (policy_count)
+            {
+                std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
+                prep->compile();
+            }
 
-                if (!single_rule_compile_on)
+            for (list<FWObject*>::iterator p=all_policies.begin();
+                 p!=all_policies.end(); ++p )
+            {
+                Policy *policy = Policy::cast(*p);
+
+                if (!policy->matchingAddressFamily(policy_af)) continue;
+
+                PolicyCompiler_iosacl c(objdb, fw, ipv6_policy, oscnf.get());
+
+                c.setSourceRuleSet( policy );
+                c.setRuleSetName(policy->getName());
+
+                c.setSingleRuleCompileMode(single_rule_id);
+                if (inTestMode()) c.setTestMode();
+                if (inEmbeddedMode()) c.setEmbeddedMode();
+                c.setDebugLevel( dl );
+                if (rule_debug_on) c.setDebugRule(  drp );
+                c.setVerbose( verbose );
+
+                if ( c.prolog() > 0 )
                 {
-                    if (ipv6_policy)
+                    c.compile();
+                    c.epilog();
+
+                    if (!single_rule_compile_on)
                     {
-                        policy_script += "\n\n";
-                        policy_script += "! ================ IPv6\n";
-                        policy_script += "\n\n";
-                    } else
-                    {
-                        policy_script += "\n\n";
-                        policy_script += "! ================ IPv4\n";
-                        policy_script += "\n\n";
+                        if (ipv6_policy)
+                        {
+                            policy_script += "\n\n";
+                            policy_script += "! ================ IPv6\n";
+                            policy_script += "\n\n";
+                        } else
+                        {
+                            policy_script += "\n\n";
+                            policy_script += "! ================ IPv4\n";
+                            policy_script += "\n\n";
+                        }
                     }
-                }
 
-                if (c.haveErrorsAndWarnings())
-                {
-                    all_errors.push_back(c.getErrors("").c_str());
-                }
-                policy_script +=  c.getCompiledScript();
+                    if (c.haveErrorsAndWarnings())
+                    {
+                        all_errors.push_back(c.getErrors("").c_str());
+                    }
+                    policy_script +=  c.getCompiledScript();
 
-            } else
-                info(" Nothing to compile in Policy");
-        }
+                } else
+                    info(" Nothing to compile in Policy");
+            }
 
-        if (!ipv6_policy)
-        {
-            list<FWObject*> all_routing = fw->getByType(Routing::TYPENAME);
-            RuleSet *routing = RuleSet::cast(all_routing.front());
-
-            // currently routing is supported only for ipv4
-            RoutingCompiler_iosacl r(objdb, fw, false, oscnf.get());
-
-            r.setSourceRuleSet(routing);
-            r.setRuleSetName(routing->getName());
-
-            r.setSingleRuleCompileMode(single_rule_id);
-            if (inTestMode()) r.setTestMode();
-            if (inEmbeddedMode()) r.setEmbeddedMode();
-            r.setDebugLevel( dl );
-            if (rule_debug_on) r.setDebugRule(  drp );
-            r.setVerbose( verbose );
-                
-            if ( r.prolog() > 0 )
+            if (!ipv6_policy)
             {
-                r.compile();
-                r.epilog();
+                list<FWObject*> all_routing = fw->getByType(Routing::TYPENAME);
+                RuleSet *routing = RuleSet::cast(all_routing.front());
 
-                if (r.haveErrorsAndWarnings())
+                // currently routing is supported only for ipv4
+                RoutingCompiler_iosacl r(objdb, fw, false, oscnf.get());
+
+                r.setSourceRuleSet(routing);
+                r.setRuleSetName(routing->getName());
+
+                r.setSingleRuleCompileMode(single_rule_id);
+                if (inTestMode()) r.setTestMode();
+                if (inEmbeddedMode()) r.setEmbeddedMode();
+                r.setDebugLevel( dl );
+                if (rule_debug_on) r.setDebugRule(  drp );
+                r.setVerbose( verbose );
+                
+                if ( r.prolog() > 0 )
                 {
-                    all_errors.push_back(r.getErrors("").c_str());
-                }
+                    r.compile();
+                    r.epilog();
 
-                routing_script += r.getCompiledScript();
-            } else
-                info(" Nothing to compile in Routing");
+                    if (r.haveErrorsAndWarnings())
+                    {
+                        all_errors.push_back(r.getErrors("").c_str());
+                    }
+
+                    routing_script += r.getCompiledScript();
+                } else
+                    info(" Nothing to compile in Routing");
+            }
+        }
+
+        if (haveErrorsAndWarnings())
+        {
+            all_errors.push_front(getErrors("").c_str());
+        }
+
+
+        if (single_rule_compile_on)
+        {
+            return all_errors.join("\n").toStdString() +
+                policy_script + routing_script;
+        }
+
+        QString script_buffer = assembleFwScript(
+            cluster, fw, !cluster_id.empty(), oscnf.get());
+
+        info("Output file name: " + ofname.toStdString());
+
+        QFile fw_file(ofname);
+        if (fw_file.open(QIODevice::WriteOnly))
+        {
+            QTextStream fw_str(&fw_file);
+            fw_str << script_buffer;
+            fw_file.close();
+            fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
+                                   QFile::ReadGroup | QFile::ReadOther |
+                                   QFile::ExeOwner | 
+                                   QFile::ExeGroup |
+                                   QFile::ExeOther );
+
+            info(" Compiled successfully");
+        } else
+        {
+            abort(string(" Failed to open file ") +
+                  fw_file_name.toStdString() +
+                  " for writing");
         }
     }
-
-    if (haveErrorsAndWarnings())
+    catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        all_errors.push_front(getErrors("").c_str());
-    }
-
-
-    if (single_rule_compile_on)
-    {
-        return all_errors.join("\n").toStdString() +
-            policy_script + routing_script;
-    }
-
-    QString script_buffer = assembleFwScript(
-        cluster, fw, !cluster_id.empty(), oscnf.get());
-
-    info("Output file name: " + ofname.toStdString());
-
-    QFile fw_file(ofname);
-    if (fw_file.open(QIODevice::WriteOnly))
-    {
-        QTextStream fw_str(&fw_file);
-        fw_str << script_buffer;
-        fw_file.close();
-        fw_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
-                               QFile::ReadGroup | QFile::ReadOther |
-                               QFile::ExeOwner | 
-                               QFile::ExeGroup |
-                               QFile::ExeOther );
-
-        info(" Compiled successfully");
-    } else
-    {
-        abort(string(" Failed to open file ") +
-              fw_file_name.toStdString() +
-              " for writing");
+        return getErrors("");
     }
 
     return "";

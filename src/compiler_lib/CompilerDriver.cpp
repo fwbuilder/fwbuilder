@@ -266,16 +266,39 @@ void CompilerDriver::commonChecks(Firewall *fw)
             if (ofname.empty()) continue;
             if (output_file_names.count(ofname) > 0)
             {
-                string err =
-                    string("Member firewalls use the same output file name ") +
-                    ofname;
-                throw FWException(err);
+                QString err("Member firewalls use the same output file name %1");
+                error(cluster, NULL, NULL, err.arg(ofname.c_str()).toStdString());
             }
             output_file_names.insert(ofname);
         }
     }
 }
 
+/*
+ * This method performs series of checks for the configuration
+ * consitency of clusters and cluster members as well as common
+ * problems with interfaces, addresses and their combinations. There
+ * are several possible levels of errors:
+ *
+ *  - errors that can be worked around. Compiler makes minor changes
+ * to objects and continues. These are not warnings though, the user
+ * should fix these problems. Using Compiler::error() to report.
+ *
+ * - serious errors that should stop processing because generated file
+ * will be incorrect or inconsistent. However it is possible to
+ * continue in single rule compile mode because the error may not
+ * affect the rule being compiled. Using Compiler::abort() to
+ * report. Normally this method throws FWException() but in single
+ * rule compile mode or in testing mode it records the error and
+ * continues.
+ *
+ * - fatal errors that make it impossible to continue even in test or
+ * single rule compile modes. To report call Compiler::abort() and
+ * then throw FatalErrorInSingleRuleCompileMode exception. This
+ * exception should be caught in CompilerDriver::run() (virtual
+ * method) where recorded error can be shown to the user in the GUI.
+ *
+ */
 void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
 {
     QString current_firewall_name = fw->getName().c_str();
@@ -312,6 +335,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                             "the wildcard's interface name: '%1'.");
                 abort(fw, NULL, NULL,
                       err.arg(iface->getName().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
             }
 /*
   removed test to implement RFE #837238: "unnummbered wildcard interfaces"
@@ -354,6 +378,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                                     "that is used in the firewall policy rule.");
                         abort(fw, NULL, NULL,
                               err.arg(iface->getName().c_str()).toStdString());
+                        throw FatalErrorInSingleRuleCompileMode();
                     }
 
                 QString err("Dynamic interface %1 should not have an "
@@ -397,6 +422,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 QString err("Missing IP address for interface %1");
                 abort(fw, NULL, NULL,
                       err.arg(iface->getName().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
             }
 
             for (list<FWObject*>::iterator j = all_addr.begin();
@@ -411,6 +437,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                           .arg(FWObjectDatabase::getStringId(
                                    iface->getId()).c_str())
                           .arg(ip_addr->toString().c_str()).toStdString());
+                    throw FatalErrorInSingleRuleCompileMode();
                 }
             }
         }
@@ -430,7 +457,10 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
 
             QString err;
             if (!int_prop->validateInterface(parent, iface, true, err))
+            {
                 abort(fw, NULL, NULL, err.toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
+            }
 
             string interface_type = iface->getOptionsObject()->getStr("type");
             if (interface_type.empty()) interface_type = "ethernet";
@@ -467,6 +497,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                     );
                     abort(fw, NULL, NULL,
                           err.arg(iface->getName().c_str()).toStdString());
+                    throw FatalErrorInSingleRuleCompileMode();
                 }
             }
         }
@@ -977,6 +1008,7 @@ int CompilerDriver::checkCluster(Cluster* cluster)
     {
         /* No configured cluster interface found */
         abort(cluster, NULL, NULL, "The cluster has no interfaces.");
+        throw FatalErrorInSingleRuleCompileMode();
     }
 
     for (; cluster_ifaces != cluster_ifaces.end(); ++cluster_ifaces)
@@ -991,6 +1023,7 @@ int CompilerDriver::checkCluster(Cluster* cluster)
             {
                 QString err("Found duplicate cluster interface %1");
                 abort(cluster, NULL, NULL, err.arg(iface_name.c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
             }
             const InetAddr *other_iface_address = Interface::cast(*other_ifaces)->getAddressPtr();
             if (other_iface_address==NULL) continue; // cluster interface with no address
@@ -998,6 +1031,7 @@ int CompilerDriver::checkCluster(Cluster* cluster)
             {
                 QString err("Found duplicate cluster interface address %1");
                 abort(cluster, NULL, NULL, err.arg(iface_address->toString().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
             }
         }
     }
