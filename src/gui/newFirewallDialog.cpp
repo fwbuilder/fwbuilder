@@ -146,6 +146,10 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
     m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
     m_dialog->obj_name->setFocus();
 
+
+    this->m_dialog->interfaceEditor1->clear();
+    this->m_dialog->interfaceEditor2->clear();
+
     showPage(0);
 
 }
@@ -438,7 +442,6 @@ void newFirewallDialog::showPage(const int page)
             setNextEnabled( 2, false );
             setFinishEnabled( 2, true );
         }
-        this->m_dialog->interfaceEditor1->clear();
         break;
     }
 
@@ -519,8 +522,7 @@ void newFirewallDialog::showPage(const int page)
     case 5:
     {
         setFinishEnabled( 5, true );
-        while ( this->m_dialog->interfaceEditor2->count() )
-            this->m_dialog->interfaceEditor2->removeTab(0);
+        this->m_dialog->interfaceEditor2->setCornerWidgetsVisible(false);
         QList<Interface*> interfaces;
         FWObjectTypedChildIterator intiter = currentTemplate->findByType(Interface::TYPENAME);
         for ( ; intiter != intiter.end(); ++intiter )
@@ -537,40 +539,38 @@ void newFirewallDialog::fillInterfaceSLList()
     m_dialog->iface_sl_list->clear();
     foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getData().values())
     {
-        foreach(AddressInfo address, interface.addresses.values())
+        InterfaceData idata;
+
+        idata.name  = interface.name.toLatin1().constData();
+        idata.label = interface.label.toLatin1().constData();
+        AddressInfo address = interface.addresses.values().first();
+
+        InetAddrMask *iam = new InetAddrMask();
+        if (interface.type == 0)
         {
-            InterfaceData idata;
-
-            idata.name  = interface.name.toLatin1().constData();
-            idata.label = interface.label.toLatin1().constData();
-
-            InetAddrMask *iam = new InetAddrMask();
-            if (interface.type == 0)
-            {
-                iam->setAddress(libfwbuilder::InetAddr(address.address.toStdString().c_str()));
-            }
-            idata.addr_mask.push_back(iam);
-
-            try
-            {
-                idata.guessSecurityLevel( readPlatform(m_dialog->platform).toStdString() );
-            }
-            catch (FWException &ex)
-            {
-                QMessageBox::warning( this,"Firewall Builder", ex.toString().c_str(),
-                                      "&Continue", QString::null, QString::null, 0, 1 );
-                showPage( 2 );
-                return;
-            }
-
-            QStringList qsl;
-            qsl << idata.name.c_str()
-                << idata.label.c_str()
-                << idata.addr_mask.front()->getAddressPtr()->toString().c_str()
-                << QString::number(idata.securityLevel);
-
-            new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);
+            iam->setAddress(libfwbuilder::InetAddr(address.address.toStdString().c_str()));
         }
+        idata.addr_mask.push_back(iam);
+
+        try
+        {
+            idata.guessSecurityLevel( readPlatform(m_dialog->platform).toStdString() );
+        }
+        catch (FWException &ex)
+        {
+            QMessageBox::warning( this,"Firewall Builder", ex.toString().c_str(),
+                                  "&Continue", QString::null, QString::null, 0, 1 );
+            showPage( 2 );
+            return;
+        }
+
+        QStringList qsl;
+        qsl << idata.name.c_str()
+            << idata.label.c_str()
+            << idata.addr_mask.front()->getAddressPtr()->toString().c_str()
+            << QString::number(idata.securityLevel);
+
+        new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);
     }
 }
 

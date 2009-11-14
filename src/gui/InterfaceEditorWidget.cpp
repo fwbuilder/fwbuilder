@@ -142,6 +142,7 @@ void InterfaceEditorWidget::typeChanged(int type)
 
 bool InterfaceEditorWidget::isValid()
 {
+    if ( this->m_ui->addresses->rowCount() == 0 ) return false;
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
         if (types[i]->currentIndex() != 0) continue;
@@ -154,7 +155,13 @@ bool InterfaceEditorWidget::isValid()
 
 bool InterfaceEditorWidget::validateAddress(const QString &addr, const QString &netm)
 {
-
+    if ( addr.isEmpty() || netm.isEmpty() )
+    {
+        QMessageBox::warning( this, "Firewall Builder",
+                              tr("Empty addrres or netmask field"),
+                              "&Continue", QString::null, QString::null, 0, 1);
+        return false;
+    }
     try
     {
         libfwbuilder::InetAddr(addr.toLatin1().constData());

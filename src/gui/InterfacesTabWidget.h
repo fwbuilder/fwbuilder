@@ -38,6 +38,7 @@ public:
     ~InterfacesTabWidget();
     QMap<libfwbuilder::Interface*, EditedInterfaceData> getData();
     bool isValid();
+    void setCornerWidgetsVisible(bool);
 
 protected:
     void changeEvent(QEvent *e);

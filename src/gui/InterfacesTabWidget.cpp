@@ -92,3 +92,9 @@ bool InterfacesTabWidget::isValid()
     }
     return true;
 }
+
+void InterfacesTabWidget::setCornerWidgetsVisible(bool st)
+{
+    this->cornerWidget(Qt::TopRightCorner)->setVisible(st);
+    this->cornerWidget(Qt::TopLeftCorner)->setVisible(st);
+}
