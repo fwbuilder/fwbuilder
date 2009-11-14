@@ -551,7 +551,7 @@ void newFirewallDialog::fillInterfaceSLList()
         InetAddrMask *iam = new InetAddrMask();
         if (interface.type == 0)
         {
-            iam->setAddress(libfwbuilder::InetAddr(address.address.toStdString().c_str()));
+            iam->setAddress(libfwbuilder::InetAddr(address.address.toStdString()));
         }
         idata.addr_mask.push_back(iam);
 
@@ -570,7 +570,7 @@ void newFirewallDialog::fillInterfaceSLList()
         QStringList qsl;
         qsl << idata.name.c_str()
             << idata.label.c_str()
-            << idata.addr_mask.front()->getAddressPtr()->toString().c_str()
+            << address.address
             << QString::number(idata.securityLevel);
 
         new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);

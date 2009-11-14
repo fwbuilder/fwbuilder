@@ -153,7 +153,7 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
         info.address = rows[i].first->text();
         info.netmask = rows[i].second->text();
         info.ipv4 = types[i]->currentIndex() == 0;
-        res.addresses[fwaddrs[i]] = info;
+        res.addresses.insert(fwaddrs[i], info);
     }
     return res;
 }
