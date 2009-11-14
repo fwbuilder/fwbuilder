@@ -99,17 +99,20 @@ void newFirewallDialog::changedAddressesInNewFirewall()
         list<FWObject*> old_ipv6 = intf->getByType(IPv6::TYPENAME);
         old_addr.splice(old_addr.begin(), old_ipv6);
 
-        for (list<FWObject*>::iterator it=old_addr.begin();
-             it != old_addr.end(); ++it)
+        while (old_addr.size())
         {
-            Address *addr = Address::cast(*it);
-            const InetAddrMask *old_addr_mask = addr->getInetAddrMaskObjectPtr();
-            InetAddrMask old_net = InetAddrMask(
-                *(old_addr_mask->getAddressPtr()),
-                *(old_addr_mask->getNetmaskPtr()));
-            old_subnets.push_back(old_net);
-
-            intf->remove(addr, false);
+            Address *addr = Address::cast(old_addr.front());
+            old_addr.pop_front();
+            if (addr)
+            {
+                const InetAddrMask *old_addr_mask = addr->getInetAddrMaskObjectPtr();
+                InetAddrMask old_net = InetAddrMask(
+                    *(old_addr_mask->getAddressPtr()),
+                    *(old_addr_mask->getNetmaskPtr()));
+                old_subnets.push_back(old_net);
+                intf->remove(addr, false);
+                delete addr;
+            }
         }
 
         if (new_configuration.count(intf) == 0)
