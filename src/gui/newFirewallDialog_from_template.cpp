@@ -30,6 +30,8 @@
 #include "newFirewallDialog.h"
 #include "FWBSettings.h"
 #include "FWBTree.h"
+#include "InterfaceEditorWidget.h"
+#include "InterfacesTabWidget.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
@@ -38,6 +40,8 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 
+#include <QtDebug>
+#include <QMessageBox>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -72,5 +76,108 @@ void newFirewallDialog::createFirewallFromTemplate()
     Resources::setDefaultTargetOptions(platform , nfw);
     no->setStr("host_OS", host_os);
     Resources::setDefaultTargetOptions(host_os , nfw);
+}
+
+void newFirewallDialog::changedAddressesInNewFirewall()
+{
+    // the key in this map is the pointer to interface that used to be
+    // part of the template. We do not allow the user to create new or 
+    // delete existing interfaces when they edit template interfaces.
+
+    QMap<Interface*, EditedInterfaceData> new_configuration =
+        m_dialog->interfaceEditor2->getData();
+
+    list<FWObject*> all_intrfaces = nfw->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator intiter=all_intrfaces.begin();
+         intiter != all_intrfaces.end(); ++intiter )
+    {
+        Interface *intf = Interface::cast(*intiter);
+
+        list<InetAddrMask> old_subnets;
+
+        list<FWObject*> old_addr = intf->getByType(IPv4::TYPENAME);
+        list<FWObject*> old_ipv6 = intf->getByType(IPv6::TYPENAME);
+        old_addr.splice(old_addr.begin(), old_ipv6);
+
+        for (list<FWObject*>::iterator it=old_addr.begin();
+             it != old_addr.end(); ++it)
+        {
+            Address *addr = Address::cast(*it);
+            const InetAddrMask *old_addr_mask = addr->getInetAddrMaskObjectPtr();
+            InetAddrMask old_net = InetAddrMask(
+                *(old_addr_mask->getAddressPtr()),
+                *(old_addr_mask->getNetmaskPtr()));
+            old_subnets.push_back(old_net);
+
+            intf->remove(addr);
+        }
+
+        if (new_configuration.count(intf) == 0)
+        {
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Can not find interface %1 in the interface editor data")
+                .arg(intf->getName().c_str()),
+                "&Continue", QString::null, QString::null, 0, 1 );
+        } else
+        {
+            EditedInterfaceData new_data = new_configuration[intf];
+            intf->setName(new_data.name.toStdString());
+            intf->setLabel(new_data.label.toStdString());
+            intf->setComment(new_data.comment.toStdString());
+
+            if (fwbdebug)
+                qDebug() << "Interface" << intf->getName().c_str()
+                         << "type=" << new_data.type;
+
+
+            switch (new_data.type)
+            {
+            case 1:
+                intf->setDyn(true);
+                intf->setUnnumbered(false);
+                break;
+            case 2:
+                intf->setDyn(false);
+                intf->setUnnumbered(true);
+                break;
+            default:
+                intf->setDyn(false);
+                intf->setUnnumbered(false);
+                break;
+            }
+
+            QMap<libfwbuilder::Address*, AddressInfo >::iterator addrit;
+            for (addrit=new_data.addresses.begin(); addrit!=new_data.addresses.end(); ++addrit)
+            {
+                AddressInfo new_addr = addrit.value();
+                if (new_addr.ipv4)
+                {
+                    IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                    intf->add(oa);
+                    QString name = QString("%1:%2:ipv4")
+                        .arg(nfw->getName().c_str())
+                        .arg(intf->getName().c_str());
+                    oa->setName(name.toStdString());
+                    oa->setAddress( InetAddr(new_addr.address.toLatin1().constData()) );
+                    bool ok = false ;
+                    int inetmask = new_addr.netmask.toInt(&ok);
+                    if (ok)
+                    {
+                        oa->setNetmask( InetAddr(inetmask) );
+                    }
+                    else
+                    {
+                        oa->setNetmask(
+                            InetAddr(new_addr.netmask.toLatin1().constData()) );
+                    }
+
+                } else
+                {
+
+                }
+            }
+        }
+    }
 }
 

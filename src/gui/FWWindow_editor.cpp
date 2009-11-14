@@ -284,7 +284,7 @@ void FWWindow::findWhereUsed(FWObject * obj, ProjectPanel *pp)
     m_mainWindow->editorDockWidget->show();
 }
 
-bool FWWindow::requestEditorOwnership(QWidget *w,
+bool FWWindow::requestEditorOwnership(QWidget*,
                                       FWObject *obj,
                                       ObjectEditor::OptType otype,
                                       bool validate)

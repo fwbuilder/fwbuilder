@@ -61,6 +61,7 @@
 #include <qpixmapcache.h>
 #include <qfiledialog.h>
 #include <qdir.h>
+#include <QtDebug>
 
 #include <algorithm>
 #include <iostream>
@@ -522,12 +523,15 @@ void newFirewallDialog::showPage(const int page)
         m_dialog->templateList->setFocus();
         break;
     }
+
     case 5:
     {
+        createFirewallFromTemplate();
+
         setFinishEnabled( 5, true );
         this->m_dialog->interfaceEditor2->setCornerWidgetsVisible(false);
         QList<Interface*> interfaces;
-        FWObjectTypedChildIterator intiter = currentTemplate->findByType(Interface::TYPENAME);
+        FWObjectTypedChildIterator intiter = nfw->findByType(Interface::TYPENAME);
         for ( ; intiter != intiter.end(); ++intiter )
             interfaces.append(Interface::cast(*intiter));
         sort(interfaces.begin(), interfaces.end(), interfaceCompare);
@@ -857,6 +861,19 @@ void newFirewallDialog::downInterface()
 
 void newFirewallDialog::cancelClicked()
 {
+    if (nfw)
+    {
+        parent->remove(nfw, false);
+        delete nfw;
+        nfw = NULL;
+    }
+
+    if (tmpldb)
+    {
+        delete tmpldb;
+        tmpldb = NULL;
+    }
+
     reject();
 }
 
@@ -864,9 +881,14 @@ void newFirewallDialog::finishClicked()
 {
     int p = currentPage();
 
+    if (fwbdebug)
+        qDebug() << "newFirewallDialog::finishClicked()"
+                 << "p=" << p;
+
     if ( p == 2 )
         if ( !this->m_dialog->interfaceEditor1->isValid() )
             return;
+
     if ( p == 5 )
         if ( !this->m_dialog->interfaceEditor2->isValid() )
             return;
@@ -881,7 +903,9 @@ void newFirewallDialog::finishClicked()
     if (p==4 || p==5)
     {
         // Creating from a template
-        createFirewallFromTemplate();
+        if (nfw==NULL) createFirewallFromTemplate();
+        else
+            changedAddressesInNewFirewall();
 
     } else
     {

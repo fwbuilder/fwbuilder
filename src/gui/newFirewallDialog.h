@@ -75,7 +75,8 @@ class newFirewallDialog : public QDialog, public FakeWizard
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
     void fillInterfaceSLList();
     void createFirewallFromTemplate();
-
+    void changedAddressesInNewFirewall();
+    
 public:
     newFirewallDialog(libfwbuilder::FWObject *parent);
     virtual ~newFirewallDialog();
