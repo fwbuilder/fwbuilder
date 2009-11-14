@@ -95,25 +95,12 @@ void newFirewallDialog::changedAddressesInNewFirewall()
 
         list<InetAddrMask> old_subnets;
 
-        list<FWObject*> old_addr = intf->getByType(IPv4::TYPENAME);
-        list<FWObject*> old_ipv6 = intf->getByType(IPv6::TYPENAME);
-        old_addr.splice(old_addr.begin(), old_ipv6);
-
-        while (old_addr.size())
-        {
-            Address *addr = Address::cast(old_addr.front());
-            old_addr.pop_front();
-            if (addr)
-            {
-                const InetAddrMask *old_addr_mask = addr->getInetAddrMaskObjectPtr();
-                InetAddrMask old_net = InetAddrMask(
-                    *(old_addr_mask->getAddressPtr()),
-                    *(old_addr_mask->getNetmaskPtr()));
-                old_subnets.push_back(old_net);
-                intf->remove(addr, false);
-                delete addr;
-            }
-        }
+        // First, substitute interface addresses. Each old ipv4
+        // address will be replaced in rules with new ipv4 address
+        // defined in the interface editor page. First old ipv4
+        // address replaced with first new, and so on in order.  If
+        // user created more addresses than there used to be, extra
+        // addresses are not added to rules.
 
         if (new_configuration.count(intf) == 0)
         {
@@ -133,7 +120,6 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                 qDebug() << "Interface" << intf->getName().c_str()
                          << "type=" << new_data.type;
 
-
             switch (new_data.type)
             {
             case 1:
@@ -150,15 +136,26 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                 break;
             }
 
+            list<FWObject*> old_addr = intf->getByType(IPv4::TYPENAME);
+            list<FWObject*> old_ipv6 = intf->getByType(IPv6::TYPENAME);
+            old_addr.splice(old_addr.begin(), old_ipv6);
+
             QMap<libfwbuilder::Address*, AddressInfo >::iterator addrit;
             for (addrit=new_data.addresses.begin(); addrit!=new_data.addresses.end(); ++addrit)
             {
+                Address *old_addr_obj = addrit.key();
                 AddressInfo new_addr = addrit.value();
+
                 Address *oa;
                 QString name;
                 if (new_addr.ipv4)
                 {
-                    oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                    if (old_addr_obj) oa = old_addr_obj;
+                    else
+                    {
+                        oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                        intf->add(oa);
+                    }
                     name = QString("%1:%2:ipv4")
                         .arg(nfw->getName().c_str())
                         .arg(intf->getName().c_str());
@@ -170,7 +167,12 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                     else oa->setNetmask(InetAddr(new_addr.netmask.toStdString()));
                 } else
                 {
-                    oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                    if (old_addr_obj) oa = old_addr_obj;
+                    else
+                    {
+                        oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                        intf->add(oa);
+                    }
                     name = QString("%1:%2:ipv6")
                         .arg(nfw->getName().c_str())
                         .arg(intf->getName().c_str());
@@ -180,10 +182,40 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                     int inetmask = new_addr.netmask.toInt(&ok);
                     if (ok) oa->setNetmask(InetAddr(AF_INET6, inetmask));
                 }
-                intf->add(oa);
                 oa->setName(name.toStdString());
+
+                // If address object is present in the editor data, remove
+                // it form the old_addr list so we won't delete it later.
+                if (old_addr_obj) old_addr.remove(old_addr_obj);
             }
+
+            // Now delete old address objects that are still in the
+            // old_addr list. These are the object that were deleted
+            // in the editor. Do not forget to remove references to
+            // thse objects in rules and groups, if any.
+            while (old_addr.size())
+            {
+                Address *addr = Address::cast(old_addr.front());
+                old_addr.pop_front();
+                if (addr)
+                {
+                    const InetAddrMask *old_addr_mask = addr->getInetAddrMaskObjectPtr();
+                    InetAddrMask old_net = InetAddrMask(
+                        *(old_addr_mask->getAddressPtr()),
+                        *(old_addr_mask->getNetmaskPtr()));
+                    old_subnets.push_back(old_net);
+
+                    nfw->removeAllReferences(addr);
+
+                    intf->remove(addr, false);
+                    delete addr;
+                }
+            }
+
+
         }
+
+
     }
 }
 
