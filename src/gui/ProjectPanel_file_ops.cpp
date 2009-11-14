@@ -60,6 +60,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTimer>
+#include <QUndoStack>
 
 #include <list>
 #include <algorithm>
@@ -1320,6 +1321,8 @@ void ProjectPanel::save()
                rcs->isRO(),
                rcs->isTemp(),
                rcs->getFileName().toLocal8Bit().constData());
+
+    undoStack->clear();
 
     if (!rcs->isRO() && !rcs->isTemp())
     {
