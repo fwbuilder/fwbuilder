@@ -92,7 +92,10 @@ class newFirewallDialog : public QDialog, public FakeWizard
                                      libfwbuilder::Interface *intf,
                                      libfwbuilder::InetAddrMask old_net,
                                      libfwbuilder::InetAddrMask new_net);
-
+    void replaceReferencesToObject(libfwbuilder::Firewall *fw,
+                                   libfwbuilder::FWObject *old_obj,
+                                   libfwbuilder::FWObject *new_obj);
+                                   
 public:
     newFirewallDialog(libfwbuilder::FWObject *parent);
     virtual ~newFirewallDialog();

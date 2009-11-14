@@ -79,18 +79,9 @@ void newFirewallDialog::createFirewallFromTemplate()
     string platform = readPlatform(m_dialog->platform).toAscii().constData();
     string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
 
+    map<int, int> map_ids;
+    FWObject *no = db->recursivelyCopySubtree(parent, template_fw, map_ids);
 
-    FWObject *no;
-    no = db->create(Firewall::TYPENAME);
-
-    if (no==NULL)
-    {
-        QDialog::accept();
-        return;
-    }
-
-    parent->add(no);
-    no->duplicate(template_fw, true);
     no->setName(m_dialog->obj_name->text().toStdString());
 
     nfw = Firewall::cast(no);
@@ -327,9 +318,18 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
         for (list<FWObject*>::iterator it=res.begin();
              it!=res.end(); ++it)
         {
-            FWObjectReference *ref = FWObjectReference::cast(*it);
-            if (ref) ref->setPointer(new_net_obj);
+            FWObject *old_obj = FWObjectReference::getObject(*it);
+            replaceReferencesToObject(fw, old_obj, new_net_obj);
         }
     }
+}
+
+void newFirewallDialog::replaceReferencesToObject(Firewall *fw,
+                                                  FWObject *old_obj,
+                                                  FWObject *new_obj)
+{
+    map<int, int> map_ids;
+    map_ids[old_obj->getId()] = new_obj->getId();
+    db->fixReferences(db, map_ids);
 }
 

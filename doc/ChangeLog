@@ -1,3 +1,20 @@
+2009-11-14  vadim  <vadim@vk.crocodile.org>
+
+	* newFirewallDialog_from_template.cpp (newFirewallDialog::replaceReferencesToNetworks):
+	New feature: when user creates new firewall from a template, the
+	wizard dialog now offers a new page where they can change ip
+	addresses of the interfaces of the template. User can change name,
+	label, address, netmask, MAC address and type (regular/dynamic) of
+	the interface, as well as add and delete interfaces. The program
+	then creates interface objects with new parameters and updates
+	policy and NAT rules of the template. It creates new Network and
+	NetworkIPv6 objects using new addresses and replaces references to
+	network objects that match old addresses with references to these
+	new objects in rules and groups. This eliminates the need to do
+	manual search and replace to update firewall object created from a
+	template to make it match actual user network configuration.
+	Fixes #613
+
 2009-11-10  vadim  <vadim@vk.crocodile.org>
 
 	* configlets/pix_os/failover_commands: New feature: Added ability
