@@ -846,8 +846,9 @@ void FWObject::removeRef(FWObject *obj)
         {
             // do not delete object even if this reference was the last one (?)
             obj->unref();  
-            // remove will delete o because reference counter goes to zero
-            FWObject::remove(o); 
+
+            FWObject::remove(o, false);  // do not move to DeletedObjects
+            delete o;
             return;
         }
     }
