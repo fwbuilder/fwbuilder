@@ -12,6 +12,10 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Inte
     this->m_ui->name->setText(interface->getName().c_str());
     this->m_ui->label->setText(interface->getLabel().c_str());
     this->m_ui->comment->setPlainText(interface->getComment().c_str());
+    if ( this->interface->isDyn() )
+        this->m_ui->type->setCurrentIndex(1);
+    if ( this->interface->isUnnumbered() )
+        this->m_ui->type->setCurrentIndex(2);
     libfwbuilder::FWObjectTypedChildIterator adriter = interface->findByType(libfwbuilder::IPv4::TYPENAME);
     for ( ; adriter != adriter.end(); ++adriter )
     {

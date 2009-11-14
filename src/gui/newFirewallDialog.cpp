@@ -149,6 +149,7 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
 
     this->m_dialog->interfaceEditor1->clear();
     this->m_dialog->interfaceEditor2->clear();
+    this->m_dialog->interfaceEditor2->removeTab(0);
 
     showPage(0);
 
