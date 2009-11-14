@@ -182,10 +182,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>type</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>InterfaceEditorWidget</receiver>
+   <slot>typeChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>139</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>168</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>nameEdited(QString)</slot>
   <slot>closeTab(int)</slot>
   <slot>addNewAddress()</slot>
+  <slot>typeChanged(int)</slot>
  </slots>
 </ui>

@@ -390,321 +390,15 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frame149">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <widget class="InterfacesTabWidget" name="interfaceEditor1">
+         <property name="currentIndex">
+          <number>0</number>
          </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0" colspan="3">
-           <widget class="QTreeWidget" name="iface_list">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>82</height>
-             </size>
-            </property>
-            <column>
-             <property name="text">
-              <string>Name</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Label</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Address</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Netmask</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Dyn</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>MAC</string>
-             </property>
-            </column>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label633">
-            <property name="text">
-             <string>Name:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="iface_name">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>32767</width>
-              <height>32767</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2" rowspan="5">
-           <widget class="QGroupBox" name="buttonGroup4">
-            <property name="title">
-             <string/>
-            </property>
-            <layout class="QGridLayout">
-             <property name="horizontalSpacing">
-              <number>0</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>-1</number>
-             </property>
-             <property name="margin">
-              <number>12</number>
-             </property>
-             <item row="2" column="0">
-              <widget class="QRadioButton" name="iface_unnum">
-               <property name="text">
-                <string>Unnumbered interface</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QRadioButton" name="iface_dyn">
-               <property name="text">
-                <string>Dynamic address</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QRadioButton" name="iface_reg">
-               <property name="text">
-                <string>Regular interface</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label659">
-            <property name="text">
-             <string>Label:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="iface_label">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>32767</width>
-              <height>32767</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label634">
-            <property name="text">
-             <string>Address:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="iface_addr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>32767</width>
-              <height>32767</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label635">
-            <property name="text">
-             <string>Netmask:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="iface_netmask">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>32767</width>
-              <height>32767</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label636">
-            <property name="text">
-             <string>MAC:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QLineEdit" name="iface_physaddr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>32767</width>
-              <height>32767</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0" colspan="3">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QPushButton" name="addBtn">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Add</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="updBtn">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Update</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="delBtn">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Delete</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
+         <widget class="QWidget" name="tab_2">
+          <attribute name="title">
+           <string>Tab 1</string>
+          </attribute>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -1105,12 +799,15 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Here you can edit interface settings for template</string>
+          <string>Here you can add or edit interfaces manually. 'Name' corresponds to the name of the physical interface, such as 'eth0', 'fxp0', 'ethernet0' etc. 'Label' is used to mark interface to reflect network topology, e.g. 'outside' or 'inside'. Label is mandatory for PIX firewall.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="InterfacesTabWidget" name="interfaces">
+        <widget class="InterfacesTabWidget" name="interfaceEditor2">
          <property name="currentIndex">
           <number>0</number>
          </property>
@@ -1216,15 +913,6 @@
   <tabstop>snmp_community</tabstop>
   <tabstop>snmpQuery</tabstop>
   <tabstop>snmpProgress</tabstop>
-  <tabstop>iface_list</tabstop>
-  <tabstop>iface_name</tabstop>
-  <tabstop>iface_label</tabstop>
-  <tabstop>iface_addr</tabstop>
-  <tabstop>iface_netmask</tabstop>
-  <tabstop>iface_physaddr</tabstop>
-  <tabstop>addBtn</tabstop>
-  <tabstop>updBtn</tabstop>
-  <tabstop>delBtn</tabstop>
   <tabstop>iface_sl_list</tabstop>
   <tabstop>upBtn</tabstop>
   <tabstop>downBtn</tabstop>
@@ -1238,54 +926,6 @@
   <include location="MainRes.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>addBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>addInterface()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>57</x>
-     <y>579</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>updBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>updateInterface()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>237</x>
-     <y>579</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>delBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>deleteInterface()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>416</x>
-     <y>579</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>upBtn</sender>
    <signal>clicked()</signal>
@@ -1325,8 +965,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>286</x>
-     <y>67</y>
+     <x>99</x>
+     <y>58</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1341,24 +981,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>283</x>
-     <y>97</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>iface_list</sender>
-   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>selectedInterface(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>57</x>
-     <y>178</y>
+     <x>102</x>
+     <y>58</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1373,8 +997,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>45</x>
-     <y>175</y>
+     <x>70</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1389,8 +1013,8 @@
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>45</x>
-     <y>200</y>
+     <x>70</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1405,8 +1029,8 @@
    <slot>getInterfacesViaSNMP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>219</x>
-     <y>281</y>
+     <x>102</x>
+     <y>88</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1423,54 +1047,6 @@
     <hint type="sourcelabel">
      <x>32</x>
      <y>126</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>iface_reg</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>419</x>
-     <y>442</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>iface_dyn</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>419</x>
-     <y>478</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>iface_unnum</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>newFirewallDialog_q</receiver>
-   <slot>changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>419</x>
-     <y>514</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>

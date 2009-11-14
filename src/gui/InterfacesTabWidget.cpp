@@ -58,8 +58,7 @@ void InterfacesTabWidget::addInterface(libfwbuilder::Interface *interface)
 
 void InterfacesTabWidget::addNewInterface()
 {
-    libfwbuilder::FWObjectDatabase *root = libfwbuilder::Interface::cast(*(currentTemplate->findByType(libfwbuilder::Interface::TYPENAME)))->getRoot();
-    addTab(new InterfaceEditorWidget(this, root), tr("New interface"));
+    addTab(new InterfaceEditorWidget(this), tr("New interface"));
     setCurrentIndex(count() - 1);
 }
 
@@ -71,6 +70,7 @@ void InterfacesTabWidget::setTemplate(libfwbuilder::FWObject* obj)
 void InterfacesTabWidget::clear()
 {
     while ( this->count() ) this->removeTab(0);
+    this->addNewInterface();
 }
 
 void InterfacesTabWidget::closeTab()
@@ -79,4 +79,16 @@ void InterfacesTabWidget::closeTab()
     QWidget *w = this->widget(idx);
     this->removeTab(idx);
     delete w;
+    if (this->count() == 0) addNewInterface();
+}
+
+
+bool InterfacesTabWidget::isValid()
+{
+    for (int i = 0; i< this->count(); i++)
+    {
+        if (!dynamic_cast<InterfaceEditorWidget*>(this->widget(i))->isValid())
+            return false;
+    }
+    return true;
 }

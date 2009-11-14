@@ -23,7 +23,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Inte
     }
 }
 
-InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::FWObjectDatabase* db) :
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     QWidget(parent),
     m_ui(new Ui::InterfaceEditorWidget)
 {
@@ -124,4 +124,77 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
         res.addresses[fwaddrs[i]] = info;
     }
     return res;
+}
+
+void InterfaceEditorWidget::typeChanged(int type)
+{
+    if (type != 0)
+    {
+        this->m_ui->addresses->setColumnHidden(0, true);
+        this->m_ui->addresses->setColumnHidden(1, true);
+    }
+    else
+    {
+        this->m_ui->addresses->setColumnHidden(0, false);
+        this->m_ui->addresses->setColumnHidden(1, false);
+    }
+}
+
+bool InterfaceEditorWidget::isValid()
+{
+    for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
+    {
+        if (types[i]->currentIndex() != 0) continue;
+        QString address = this->m_ui->addresses->item(i, 0)->text();
+        QString netmask = this->m_ui->addresses->item(i, 1)->text();
+        if (!validateAddress(address, netmask)) return false;
+    }
+    return true;
+}
+
+bool InterfaceEditorWidget::validateAddress(const QString &addr, const QString &netm)
+{
+
+    try
+    {
+        libfwbuilder::InetAddr(addr.toLatin1().constData());
+    }
+    catch (libfwbuilder::FWException &ex)
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
+    try
+    {
+        bool ok = false ;
+        int ilen = netm.toInt (&ok);
+        if (ok)
+        {
+            if (ilen < 0 || ilen > 32)
+            {
+                QMessageBox::warning(
+                    this,"Firewall Builder",
+                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+                return false;
+            }
+        }
+        else
+        {
+            libfwbuilder::InetAddr(netm.toLatin1().constData());
+        }
+
+    }
+    catch (libfwbuilder::FWException &ex)
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
+    return true;
 }

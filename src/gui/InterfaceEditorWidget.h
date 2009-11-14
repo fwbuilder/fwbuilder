@@ -16,6 +16,7 @@
 #include <QMap>
 #include <QPushButton>
 #include <QComboBox>
+#include <QMessageBox>
 
 #include "fwbuilder/Interface.h"
 
@@ -36,10 +37,11 @@ class InterfaceEditorWidget : public QWidget {
     Q_OBJECT
 public:
     InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface);
-    InterfaceEditorWidget(QWidget *parent, libfwbuilder::FWObjectDatabase* db);
+    InterfaceEditorWidget(QWidget *parent);
     ~InterfaceEditorWidget();
     libfwbuilder::Interface* getInterface();
     EditedInterfaceData getInterfaceData();
+    bool isValid();
 
 protected:
     void changeEvent(QEvent *e);
@@ -53,11 +55,13 @@ private:
     QMap<int, QPair<QTableWidgetItem*, QTableWidgetItem*> > rows;
     QMap<int, QComboBox*> types;
     QMap<int, libfwbuilder::Address*> fwaddrs;
+    bool validateAddress(const QString &addr, const QString &netm);
 
 public slots:
     int addNewAddress();
     void deleteAddress();
     void nameEdited(QString);
+    void typeChanged(int);
 };
 
 #endif // INTERFACEEDITORWIDGET_H

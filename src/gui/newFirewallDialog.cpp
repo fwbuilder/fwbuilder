@@ -135,14 +135,15 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
 
     /*for (int i=0; i<pageCount(); ++i)
         setHelpEnabled( i, false );*/
-
+/*
     //m_dialog->iface_list->setItemMargin( 1 );
     m_dialog->iface_list->setAllColumnsShowFocus( true );
 
     //m_dialog->iface_sl_list->setItemMargin( 1 );
-    m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
     m_dialog->iface_dyn->setToolTip(wordWrap(tr("Check option 'dynamic address' for the interface that gets its IP address dynamically via DHCP or PPP protocol.") ,80 ));
     m_dialog->iface_unnum->setToolTip(wordWrap(tr("Check option 'Unnumbered interface' for the interface that does not have an IP address. Examples of interfaces of this kind are those used to terminate PPPoE or VPN tunnels.") ,80 ));
+*/
+    m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
     m_dialog->obj_name->setFocus();
 
     showPage(0);
@@ -218,7 +219,7 @@ void newFirewallDialog::changed()
     }
 
     if (p==2)
-    {
+    {/*
         if (m_dialog->iface_dyn->isChecked() ||
             m_dialog->iface_unnum->isChecked())
         {
@@ -231,6 +232,7 @@ void newFirewallDialog::changed()
             m_dialog->iface_addr->setEnabled(true);
             m_dialog->iface_netmask->setEnabled(true);
         }
+        */
     }
 }
 
@@ -382,6 +384,9 @@ bool newFirewallDialog::appropriate(const int page) const
 
 void newFirewallDialog::nextClicked()
 {
+    if ( currentPage() == 2 )
+        if ( !this->m_dialog->interfaceEditor1->isValid() )
+            return;
     if (nextRelevant( currentPage() ) > -1)
         showPage(nextRelevant( currentPage() ));
 }
@@ -423,8 +428,6 @@ void newFirewallDialog::showPage(const int page)
 
     case 2:
     {
-        m_dialog->iface_name->setFocus();
-
         if (!Resources::getTargetCapabilityBool(
                 readPlatform(m_dialog->platform).toLatin1().constData(),
                 "security_levels") )
@@ -435,6 +438,7 @@ void newFirewallDialog::showPage(const int page)
             setNextEnabled( 2, false );
             setFinishEnabled( 2, true );
         }
+        this->m_dialog->interfaceEditor1->clear();
         break;
     }
 
@@ -515,68 +519,58 @@ void newFirewallDialog::showPage(const int page)
     case 5:
     {
         setFinishEnabled( 5, true );
-        while ( this->m_dialog->interfaces->count() )
-            this->m_dialog->interfaces->removeTab(0);
+        while ( this->m_dialog->interfaceEditor2->count() )
+            this->m_dialog->interfaceEditor2->removeTab(0);
         QList<Interface*> interfaces;
         FWObjectTypedChildIterator intiter = currentTemplate->findByType(Interface::TYPENAME);
         for ( ; intiter != intiter.end(); ++intiter )
             interfaces.append(Interface::cast(*intiter));
         sort(interfaces.begin(), interfaces.end(), interfaceCompare);
         foreach(Interface* intr, interfaces)
-            m_dialog->interfaces->addInterface(intr);
+            m_dialog->interfaceEditor2->addInterface(intr);
     }
     }
 }
 
 void newFirewallDialog::fillInterfaceSLList()
 {
-
-    QTreeWidgetItem *itm = m_dialog->iface_list->topLevelItem(0);// firstChild();
-
-    int itm_index = 0;
-
     m_dialog->iface_sl_list->clear();
-
-    while (itm!=NULL)
+    foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getData().values())
     {
-        InterfaceData idata;
-
-        idata.name         =  itm->text(0).toLatin1().constData();
-        idata.label        =  itm->text(1).toLatin1().constData();
-        idata.isDyn        =  itm->text(4).indexOf("Dyn")!=-1;
-        idata.isUnnumbered =  itm->text(4).indexOf("Unn")!=-1;
-
-        InetAddrMask *iam = new InetAddrMask();
-        if (!idata.isDyn && !idata.isUnnumbered)
+        foreach(AddressInfo address, interface.addresses.values())
         {
-            iam->setAddress(itm->text(2).toLatin1().constData());
+            InterfaceData idata;
+
+            idata.name  = interface.name.toLatin1().constData();
+            idata.label = interface.label.toLatin1().constData();
+
+            InetAddrMask *iam = new InetAddrMask();
+            if (interface.type == 0)
+            {
+                iam->setAddress(libfwbuilder::InetAddr(address.address.toStdString().c_str()));
+            }
+            idata.addr_mask.push_back(iam);
+
+            try
+            {
+                idata.guessSecurityLevel( readPlatform(m_dialog->platform).toStdString() );
+            }
+            catch (FWException &ex)
+            {
+                QMessageBox::warning( this,"Firewall Builder", ex.toString().c_str(),
+                                      "&Continue", QString::null, QString::null, 0, 1 );
+                showPage( 2 );
+                return;
+            }
+
+            QStringList qsl;
+            qsl << idata.name.c_str()
+                << idata.label.c_str()
+                << idata.addr_mask.front()->getAddressPtr()->toString().c_str()
+                << QString::number(idata.securityLevel);
+
+            new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);
         }
-        idata.addr_mask.push_back(iam);
-
-        try
-        {
-            idata.guessSecurityLevel(
-                readPlatform(m_dialog->platform).toStdString() );
-        }
-        catch (FWException &ex)
-        {
-            QMessageBox::warning(
-                this,"Firewall Builder", ex.toString().c_str(),
-                "&Continue", QString::null, QString::null, 0, 1 );
-
-            showPage( 2 );
-            return;
-        }
-
-        QStringList qsl;
-        qsl << idata.name.c_str()
-            << idata.label.c_str()
-            << idata.addr_mask.front()->getAddressPtr()->toString().c_str()
-            << QString::number(idata.securityLevel);
-        new QTreeWidgetItem(m_dialog->iface_sl_list, qsl);
-
-        itm_index++;
-        itm=m_dialog->iface_list->topLevelItem(itm_index);
     }
 }
 
@@ -589,7 +583,7 @@ void newFirewallDialog::templateSelected(QListWidgetItem *itm)
     if (templates.size()==0) return;
     FWObject *o = templates[itm];
     if (o==NULL) return;
-    this->m_dialog->interfaces->setTemplate(o);
+    this->m_dialog->interfaceEditor2->setTemplate(o);
     currentTemplate = o;
 
     Firewall *fw = Firewall::cast(o);
@@ -726,6 +720,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
 
 void newFirewallDialog::addInterface()
 {
+    /*
     QString dn = "";
     if (m_dialog->iface_dyn->isChecked())        dn+="Dyn";
     if (m_dialog->iface_unnum->isChecked())      dn+="Unn";
@@ -753,10 +748,12 @@ void newFirewallDialog::addInterface()
         << m_dialog->iface_physaddr->text();
 
     new QTreeWidgetItem(m_dialog->iface_list, qsl);
+    */
 }
 
 void newFirewallDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
 {
+    /*
     QTreeWidgetItem *itm = cur; //current item
     if (itm)
     {
@@ -769,10 +766,12 @@ void newFirewallDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
         m_dialog->iface_unnum->setChecked( itm->text(4).indexOf("Unn")!=-1 );
         m_dialog->iface_physaddr->setText( itm->text(5) );
     }
+    */
 }
 
 void newFirewallDialog::updateInterface()
 {
+    /*
     QString dn = "";
     if (m_dialog->iface_dyn->isChecked())   dn+="Dyn";
     if (m_dialog->iface_unnum->isChecked()) dn+="Unn";
@@ -789,14 +788,17 @@ void newFirewallDialog::updateInterface()
     itm->setText( 3 , m_dialog->iface_netmask->text() );
     itm->setText( 4 , dn );
     itm->setText( 5 , m_dialog->iface_physaddr->text() );
+    */
 }
 
 void newFirewallDialog::deleteInterface()
 {
+    /*
     QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
     if (itm==NULL) return;
     m_dialog->iface_list->takeTopLevelItem(
             m_dialog->iface_list->indexOfTopLevelItem(itm) );
+    */
 }
 
 void newFirewallDialog::adjustSL(QTreeWidgetItem *itm1)
@@ -858,6 +860,13 @@ void newFirewallDialog::cancelClicked()
 void newFirewallDialog::finishClicked()
 {
     int p = currentPage();
+
+    if ( p == 2 )
+        if ( !this->m_dialog->interfaceEditor1->isValid() )
+            return;
+    if ( p == 5 )
+        if ( !this->m_dialog->interfaceEditor2->isValid() )
+            return;
  
     string platform = readPlatform(m_dialog->platform).toAscii().constData();
     string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
@@ -897,21 +906,17 @@ void newFirewallDialog::finishClicked()
 
 /* create interfaces */
 
-        int itm_index = 0;
-        QTreeWidgetItem *itm = m_dialog->iface_list->topLevelItem(itm_index);
-
-        while (itm!=NULL)
+        foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getData().values())
         {
-            QString name    =  itm->text(0);
-            QString label   =  itm->text(1);
-            QString addr    =  itm->text(2);
-            QString netmask =  itm->text(3);
-            bool    dyn     =  itm->text(4).indexOf("Dyn")!=-1;
-            bool    unnum   =  itm->text(4).indexOf("Unn")!=-1;
-            QString physaddr=  itm->text(5);
+            QString name     =  interface.name;
+            QString label    =  interface.label;
+//            QString addr     =  itm->text(2);
+ //           QString netmask  =  itm->text(3);
+            bool    dyn      =  interface.type == 1;
+            bool    unnum    =  interface.type == 2;
+            QString physaddr =  interface.mac;
 
-            QList<QTreeWidgetItem*> ltwi = m_dialog->iface_sl_list->findItems(
-                name , Qt::MatchExactly );
+            QList<QTreeWidgetItem*> ltwi = m_dialog->iface_sl_list->findItems( name , Qt::MatchExactly );
             assert(!ltwi.empty());
             QTreeWidgetItem *itm2 = ltwi[0];
             assert(itm2!=NULL);
@@ -936,58 +941,49 @@ void newFirewallDialog::finishClicked()
                 qDebug("Adding interface %s: security_level=%d",
                        oi->getName().c_str(), sl);
 
-            if (!dyn && !unnum && !addr.isEmpty() && addr!="0.0.0.0")
+            if (interface.type == 0)
             {
-                if (addr.indexOf(':')!=-1)
+                foreach(AddressInfo address, interface.addresses)
                 {
-                    // ipv6 address
-                    QString addrname = QString("%1:%2:ip6")
-                        .arg(m_dialog->obj_name->text()).arg(name);
-                    IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
-                    oi->add(oa);
-                    oa->setName(addrname.toStdString());
-                    oa->setAddress(
-                        InetAddr(AF_INET6, addr.toLatin1().constData()) );
-                    bool ok = false ;
-                    int inetmask = netmask.toInt(&ok);
-                    if (ok)
+                    if (address.address == "0.0.0.0") continue;
+                    if (address.ipv4)
                     {
-                        oa->setNetmask( InetAddr(AF_INET6, inetmask) );
+                        QString addrname = QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name);
+                        IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                        oi->add(oa);
+                        oa->setName(addrname.toStdString());
+                        oa->setAddress( InetAddr(address.address.toLatin1().constData()) );
+                        bool ok = false ;
+                        int inetmask = address.netmask.toInt(&ok);
+                        if (ok)
+                        {
+                            oa->setNetmask( InetAddr(inetmask) );
+                        }
+                        else
+                        {
+                            oa->setNetmask( InetAddr(address.netmask.toLatin1().constData()) );
+                        }
                     }
                     else
                     {
-                        oa->setNetmask(
-                            InetAddr(AF_INET6, netmask.toLatin1().constData()));
+                        QString addrname = QString("%1:%2:ip6").arg(m_dialog->obj_name->text()).arg(name);
+                        IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                        oi->add(oa);
+                        oa->setName(addrname.toStdString());
+                        oa->setAddress(InetAddr(AF_INET6, address.address.toLatin1().constData()) );
+                        bool ok = false ;
+                        int inetmask = address.netmask.toInt(&ok);
+                        if (ok)
+                        {
+                            oa->setNetmask( InetAddr(AF_INET6, inetmask) );
+                        }
+                        else
+                        {
+                            oa->setNetmask(InetAddr(AF_INET6, address.netmask.toLatin1().constData()));
+                        }
                     }
-
-                    //mw->insertObjectInTree(oi, oa);
-
-                } else
-                {
-                    QString addrname = QString("%1:%2:ip").arg(
-                        m_dialog->obj_name->text()).arg(name);
-                    IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
-                    oi->add(oa);
-                    oa->setName(addrname.toStdString());
-                    oa->setAddress( InetAddr(addr.toLatin1().constData()) );
-                    bool ok = false ;
-                    int inetmask = netmask.toInt(&ok);
-                    if (ok)
-                    {
-                        oa->setNetmask( InetAddr(inetmask) );
-                    }
-                    else
-                    {
-                        oa->setNetmask(
-                            InetAddr(netmask.toLatin1().constData()) );
-                    }
-
-                    //mw->insertObjectInTree(oi, oa);
                 }
             }
-
-            itm_index++;
-            itm = m_dialog->iface_list->topLevelItem(itm_index);
         }
 
     }

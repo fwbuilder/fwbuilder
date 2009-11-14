@@ -37,6 +37,7 @@ public:
     InterfacesTabWidget(QWidget *parent = 0);
     ~InterfacesTabWidget();
     QMap<libfwbuilder::Interface*, EditedInterfaceData> getData();
+    bool isValid();
 
 protected:
     void changeEvent(QEvent *e);
