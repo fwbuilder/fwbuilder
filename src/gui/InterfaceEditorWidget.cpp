@@ -174,7 +174,14 @@ void InterfaceEditorWidget::typeChanged(int type)
 
 bool InterfaceEditorWidget::isValid()
 {
-    if ( this->m_ui->addresses->rowCount() == 0 ) return false;
+    if ( this->m_ui->type->currentIndex() != 0 &&
+         this->m_ui->addresses->rowCount() == 0 )
+    {
+        QMessageBox::warning(this,"Firewall Builder",
+                 tr("You should enter at least one address for regular interface %1").arg(this->m_ui->name->text()),
+                "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
         if (types[i]->currentIndex() != 0) continue;
