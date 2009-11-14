@@ -36,6 +36,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
+#include <iostream>
 #include <fstream>
 #include <cstdlib>
 
@@ -50,6 +51,7 @@ class FWObject;
 class FWObjectDatabase;
 class FWReference;
 class FWObjectTypedChildIterator;
+class FWObjectFindPredicate;
 
 #define DECLARE_FWOBJECT_SUBTYPE(name) \
    static    const char *TYPENAME; \
@@ -428,6 +430,13 @@ public:
                                     const std::string &val) throw(FWException);
 
     /**
+     * Generic find function, finds all objects in the tree rooted at
+     * <this> that match given predicate. Fills @res_list with
+     * pointers to the objects it finds.
+     */
+    std::list<FWObject*> findIf(FWObjectFindPredicate *pred);
+
+    /**
      * if this object has any references as its children, replace IDs
      * these references point to.
      */
@@ -544,6 +553,18 @@ class FWObjectTypeNameEQPredicate: public std::unary_function<FWObject*, bool>
     {
         return o->getTypeName()==n;
     }
+};
+
+
+/**
+ * Generic predicate class testing any object parameters, used for findIf.
+ */
+class FWObjectFindPredicate
+{
+    public:
+    FWObjectFindPredicate() {}
+    virtual ~FWObjectFindPredicate() {}
+    virtual bool operator()(FWObject*) const { std::cerr << "#"; return false; }
 };
 
 }

@@ -1,3 +1,9 @@
+2009-11-14  vadim  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp: Added method FWObject::findIf - generic method
+	that searches for child objects that match criteria impemented
+	by a predicate object passed as an argument.
+
 2009-11-11  vadim  <vadim@vk.crocodile.org>
 
 	* Group.cpp (Group::isMember): Generic member that checks

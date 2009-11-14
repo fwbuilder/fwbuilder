@@ -250,8 +250,21 @@ void FWObject::setXMLName(const string &n)
 
 FWObject* FWObject::_find(const string& name) const
 {
-    const_iterator i=find_if(begin(),end(), FWObjectNameEQPredicate(name));
+    const_iterator i = std::find_if(begin(),end(), FWObjectNameEQPredicate(name));
     return i==end()?NULL:(*i);
+}
+
+list<FWObject*> FWObject::findIf(FWObjectFindPredicate *pred)
+{
+    list<FWObject*> res_list;
+    list<FWObject*>::iterator i1;
+    for(i1=begin(); i1!=end(); ++i1)
+    {
+        if ((*pred)(*i1)) res_list.push_back(*i1);
+        list<FWObject*> res1 = (*i1)->findIf(pred);
+        res_list.splice(res_list.begin(), res1);
+    }
+    return res_list;
 }
 
 FWObject* FWObject::findObjectByName(const string &type,
