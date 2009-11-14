@@ -154,31 +154,34 @@ void newFirewallDialog::changedAddressesInNewFirewall()
             for (addrit=new_data.addresses.begin(); addrit!=new_data.addresses.end(); ++addrit)
             {
                 AddressInfo new_addr = addrit.value();
+                Address *oa;
+                QString name;
                 if (new_addr.ipv4)
                 {
-                    IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
-                    intf->add(oa);
-                    QString name = QString("%1:%2:ipv4")
+                    oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                    name = QString("%1:%2:ipv4")
                         .arg(nfw->getName().c_str())
                         .arg(intf->getName().c_str());
-                    oa->setName(name.toStdString());
-                    oa->setAddress( InetAddr(new_addr.address.toLatin1().constData()) );
+                    oa->setAddress(
+                        InetAddr(new_addr.address.toStdString()));
                     bool ok = false ;
                     int inetmask = new_addr.netmask.toInt(&ok);
-                    if (ok)
-                    {
-                        oa->setNetmask( InetAddr(inetmask) );
-                    }
-                    else
-                    {
-                        oa->setNetmask(
-                            InetAddr(new_addr.netmask.toLatin1().constData()) );
-                    }
-
+                    if (ok) oa->setNetmask(InetAddr(inetmask));
+                    else oa->setNetmask(InetAddr(new_addr.netmask.toStdString()));
                 } else
                 {
-
+                    oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                    name = QString("%1:%2:ipv6")
+                        .arg(nfw->getName().c_str())
+                        .arg(intf->getName().c_str());
+                    oa->setAddress(
+                        InetAddr(AF_INET6, new_addr.address.toStdString()) );
+                    bool ok = false ;
+                    int inetmask = new_addr.netmask.toInt(&ok);
+                    if (ok) oa->setNetmask(InetAddr(AF_INET6, inetmask));
                 }
+                intf->add(oa);
+                oa->setName(name.toStdString());
             }
         }
     }

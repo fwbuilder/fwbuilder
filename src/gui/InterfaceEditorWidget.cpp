@@ -172,11 +172,13 @@ void InterfaceEditorWidget::typeChanged(int type)
 
 bool InterfaceEditorWidget::isValid()
 {
+    // type 0 == regular
     if ( (this->m_ui->type->currentIndex() == 0) &&
          (this->m_ui->addresses->rowCount() == 0) )
     {
         QMessageBox::warning(this,"Firewall Builder",
-                 tr("You should enter at least one address for regular interface %1").arg(this->m_ui->name->text()),
+                 tr("You should enter at least one address for "
+                    "regular interface %1").arg(this->m_ui->name->text()),
                 "&Continue", QString::null, QString::null, 0, 1 );
         return false;
     }
@@ -185,12 +187,15 @@ bool InterfaceEditorWidget::isValid()
         if (types[i]->currentIndex() != 0) continue;
         QString address = this->m_ui->addresses->item(i, 0)->text();
         QString netmask = this->m_ui->addresses->item(i, 1)->text();
-        if ( !validateAddress(address, netmask, types[i]->currentIndex() == 0) ) return false;
+        if ( !validateAddress(address, netmask, types[i]->currentIndex() == 0) )
+            return false;
     }
     return true;
 }
 
-bool InterfaceEditorWidget::validateAddress(const QString &addr, const QString &netm, bool regular)
+bool InterfaceEditorWidget::validateAddress(const QString &addr,
+                                            const QString &netm,
+                                            bool regular)
 {
     if ( regular && ( addr.isEmpty() || netm.isEmpty() ) )
     {
@@ -201,7 +206,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr, const QString &
     }
     try
     {
-        libfwbuilder::InetAddr(addr.toLatin1().constData());
+        libfwbuilder::InetAddr(addr.toStdString());
     }
     catch (libfwbuilder::FWException &ex)
     {
@@ -221,14 +226,14 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr, const QString &
             {
                 QMessageBox::warning(
                     this,"Firewall Builder",
-                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+                    tr("Illegal netmask '%1/%2'").arg(addr).arg(netm),
                     "&Continue", QString::null, QString::null, 0, 1 );
                 return false;
             }
         }
         else
         {
-            libfwbuilder::InetAddr(netm.toLatin1().constData());
+            libfwbuilder::InetAddr(netm.toStdString());
         }
 
     }
@@ -236,7 +241,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr, const QString &
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            tr("Illegal netmask '%1/%2'").arg(addr).arg(netm),
             "&Continue", QString::null, QString::null, 0, 1 );
         return false;
     }
