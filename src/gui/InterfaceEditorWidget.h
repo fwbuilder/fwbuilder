@@ -37,6 +37,7 @@ class InterfaceEditorWidget : public QWidget {
     Q_OBJECT
 public:
     InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface);
+    InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data);
     InterfaceEditorWidget(QWidget *parent);
     ~InterfaceEditorWidget();
     libfwbuilder::Interface* getInterface();

@@ -11,6 +11,7 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QHBoxLayout>
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/InterfaceData.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "InterfaceEditorWidget.h"
 
@@ -57,6 +58,7 @@ public slots:
     void addNewInterface();
     void setTemplate(libfwbuilder::FWObject*);
     void closeTab();
+    void addInterface(libfwbuilder::InterfaceData*);
 
 };
 

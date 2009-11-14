@@ -11,6 +11,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Inte
     m_ui->setupUi(this);
     this->m_ui->name->setText(interface->getName().c_str());
     this->m_ui->label->setText(interface->getLabel().c_str());
+    this->m_ui->mac->setText(interface->getPhysicalAddress()->getPhysAddress().c_str());
     this->m_ui->comment->setPlainText(interface->getComment().c_str());
     if ( this->interface->isDyn() )
         this->m_ui->type->setCurrentIndex(1);
@@ -24,6 +25,32 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Inte
         fwaddrs[row] = addr;
         rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
         rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
+    }
+}
+
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data)
+{
+    tabw = dynamic_cast<QTabWidget*>(parent);
+    this->interface = NULL;
+    m_ui->setupUi(this);
+    this->m_ui->name->setText(data->name.c_str());
+    this->m_ui->label->setText(data->label.c_str());
+    this->m_ui->mac->setText(data->mac_addr.c_str());
+    this->m_ui->comment->clear();
+    if ( data->isDyn )
+        this->m_ui->type->setCurrentIndex(1);
+    else if ( data->isUnnumbered )
+        this->m_ui->type->setCurrentIndex(2);
+    else
+        this->m_ui->type->setCurrentIndex(0);
+    if ( !data->isDyn && !data->isUnnumbered )
+    {
+        foreach( libfwbuilder::InetAddrMask* addr, data->addr_mask )
+        {
+            int row = addNewAddress();
+            rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
+            rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
+        }
     }
 }
 

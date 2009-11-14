@@ -264,7 +264,8 @@ void  newFirewallDialog::monitor()
     for (i=intf->begin(); i!=intf->end(); ++i)
     {
         InterfaceData* idata = &(i->second);
-
+        this->m_dialog->interfaceEditor1->addInterface(idata);
+        /*
         if ( idata->ostatus )
         {
             idata->guessLabel(readPlatform(m_dialog->platform).toStdString());
@@ -287,6 +288,7 @@ void  newFirewallDialog::monitor()
             qsl << dn << idata->mac_addr.c_str();
             new QTreeWidgetItem(m_dialog->iface_list, qsl);
         }
+        */
     }
 
     delete q;
