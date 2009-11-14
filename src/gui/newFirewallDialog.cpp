@@ -457,6 +457,7 @@ void newFirewallDialog::showPage(const int page)
             return;
         }
 
+        // Edit security levels
         fillInterfaceSLList();
 
         setNextEnabled( 3, false );
@@ -466,7 +467,8 @@ void newFirewallDialog::showPage(const int page)
 
     case 4:
     {
-        setFinishEnabled( 4, true );
+        // Show firewall templates
+        setFinishEnabled( 4, false );
         setNextEnabled( 4, true );
 /* load templates if not loaded */
         if (tmpldb==NULL)
@@ -526,6 +528,7 @@ void newFirewallDialog::showPage(const int page)
 
     case 5:
     {
+        // Edit interfaces of the template object
         createFirewallFromTemplate();
 
         setFinishEnabled( 5, true );
@@ -758,7 +761,7 @@ void newFirewallDialog::addInterface()
     */
 }
 
-void newFirewallDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
+void newFirewallDialog::selectedInterface(QTreeWidgetItem*cur, QTreeWidgetItem*)
 {
     /*
     QTreeWidgetItem *itm = cur; //current item

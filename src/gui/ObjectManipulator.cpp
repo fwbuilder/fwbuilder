@@ -4038,7 +4038,7 @@ void ObjectManipulator::saveExpandedTreeItems()
     }
 }
 
-void ObjectManipulator::setAttributesColumnEnabled(bool f)
+void ObjectManipulator::setAttributesColumnEnabled(bool)
 {
     for (int i=0; i<m_objectManipulator->libs->count(); i++)
     {

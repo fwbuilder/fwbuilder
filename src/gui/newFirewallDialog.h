@@ -31,6 +31,8 @@
 #include <ui_newfirewalldialog_q.h>
 
 #include "fwbuilder/InterfaceData.h"
+#include "fwbuilder/InetAddrMask.h"
+
 #include "fakeWizard.h"
 
 #include <map>
@@ -76,7 +78,21 @@ class newFirewallDialog : public QDialog, public FakeWizard
     void fillInterfaceSLList();
     void createFirewallFromTemplate();
     void changedAddressesInNewFirewall();
-    
+
+    void replaceInterfaceAttributes(libfwbuilder::Firewall *fw,
+                                    libfwbuilder::Interface *intf,
+                                    EditedInterfaceData *new_data);
+    libfwbuilder::Address* replaceInterfaceAddressData(libfwbuilder::Firewall *fw,
+                                                       libfwbuilder::Interface *intf,
+                                                       libfwbuilder::Address *addr_obj,
+                                                       const QString &address,
+                                                       const QString &netmask,
+                                                       bool ipv4);
+    void replaceReferencesToNetworks(libfwbuilder::Firewall *fw,
+                                     libfwbuilder::Interface *intf,
+                                     libfwbuilder::InetAddrMask old_net,
+                                     libfwbuilder::InetAddrMask new_net);
+
 public:
     newFirewallDialog(libfwbuilder::FWObject *parent);
     virtual ~newFirewallDialog();

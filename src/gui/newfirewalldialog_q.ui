@@ -1,31 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" >
  <class>newFirewallDialog_q</class>
- <widget class="QDialog" name="newFirewallDialog_q">
-  <property name="geometry">
+ <widget class="QDialog" name="newFirewallDialog_q" >
+  <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>615</width>
-    <height>703</height>
+    <width>551</width>
+    <height>773</height>
    </rect>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <widget class="QLabel" name="titleLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+  <layout class="QGridLayout" name="gridLayout_2" >
+   <item row="0" column="0" >
+    <widget class="QLabel" name="titleLabel" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
+     <property name="minimumSize" >
       <size>
        <width>0</width>
        <height>25</height>
       </size>
      </property>
-     <property name="font">
+     <property name="font" >
       <font>
        <family>Sans Serif</family>
        <pointsize>14</pointsize>
@@ -34,126 +33,126 @@
        <bold>true</bold>
       </font>
      </property>
-     <property name="text">
+     <property name="text" >
       <string>TextLabel</string>
      </property>
-     <property name="alignment">
+     <property name="alignment" >
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QStackedWidget" name="stackedWidget">
-     <property name="minimumSize">
+   <item row="1" column="0" >
+    <widget class="QStackedWidget" name="stackedWidget" >
+     <property name="minimumSize" >
       <size>
        <width>500</width>
        <height>450</height>
       </size>
      </property>
-     <property name="currentIndex">
-      <number>5</number>
+     <property name="currentIndex" >
+      <number>4</number>
      </property>
-     <widget class="QWidget" name="page1">
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label631">
-         <property name="text">
+     <widget class="QWidget" name="page1" >
+      <layout class="QGridLayout" name="gridLayout" >
+       <item row="0" column="0" >
+        <widget class="QLabel" name="label631" >
+         <property name="text" >
           <string>Enter the name of the new object below:</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="obj_name"/>
+       <item row="0" column="1" >
+        <widget class="QLineEdit" name="obj_name" />
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label657">
-         <property name="text">
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label657" >
+         <property name="text" >
           <string>Choose firewall software it is running:</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="platform"/>
+       <item row="1" column="1" >
+        <widget class="QComboBox" name="platform" />
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label656">
-         <property name="text">
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label656" >
+         <property name="text" >
           <string>Choose OS the new firewall runs on:</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="hostOS"/>
+       <item row="2" column="1" >
+        <widget class="QComboBox" name="hostOS" />
        </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="Line" name="line1">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <item row="3" column="0" colspan="2" >
+        <widget class="Line" name="line1" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize">
+         <property name="minimumSize" >
           <size>
            <width>0</width>
            <height>20</height>
           </size>
          </property>
-         <property name="frameShape">
+         <property name="frameShape" >
           <enum>QFrame::HLine</enum>
          </property>
-         <property name="frameShadow">
+         <property name="frameShadow" >
           <enum>QFrame::Sunken</enum>
          </property>
-         <property name="orientation">
+         <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
-        <widget class="QCheckBox" name="useTemplate">
-         <property name="text">
+       <item row="4" column="0" colspan="2" >
+        <widget class="QCheckBox" name="useTemplate" >
+         <property name="text" >
           <string>Use preconfigured template firewall objects</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
-        <widget class="QFrame" name="templaterFrame">
-         <property name="frameShape">
+       <item row="5" column="0" colspan="2" >
+        <widget class="QFrame" name="templaterFrame" >
+         <property name="frameShape" >
           <enum>QFrame::NoFrame</enum>
          </property>
-         <property name="frameShadow">
+         <property name="frameShadow" >
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QGridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
+         <layout class="QGridLayout" >
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
              <string>Template file:</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="templaterFilePath">
-            <property name="minimumSize">
+          <item row="0" column="1" >
+           <widget class="QLineEdit" name="templaterFilePath" >
+            <property name="minimumSize" >
              <size>
               <width>400</width>
               <height>0</height>
@@ -161,29 +160,29 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="templaterBrowseButton">
-            <property name="text">
+          <item row="1" column="0" >
+           <widget class="QPushButton" name="templaterBrowseButton" >
+            <property name="text" >
              <string>Browse</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="templateUseStandart">
-            <property name="text">
+          <item row="1" column="1" >
+           <widget class="QPushButton" name="templateUseStandart" >
+            <property name="text" >
              <string>Use standard template library</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
+          <item row="1" column="2" >
            <spacer>
-            <property name="orientation">
+            <property name="orientation" >
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeType">
+            <property name="sizeType" >
              <enum>QSizePolicy::Fixed</enum>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>100</width>
               <height>20</height>
@@ -194,12 +193,12 @@
          </layout>
         </widget>
        </item>
-       <item row="6" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
+       <item row="6" column="0" >
+        <spacer name="verticalSpacer" >
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>210</height>
@@ -209,33 +208,33 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page2">
-      <layout class="QGridLayout">
-       <property name="margin">
+     <widget class="QWidget" name="page2" >
+      <layout class="QGridLayout" >
+       <property name="margin" >
         <number>0</number>
        </property>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label662">
-         <property name="text">
+       <item row="0" column="0" >
+        <widget class="QLabel" name="label662" >
+         <property name="text" >
           <string>Next step is to add interfaces to the new firewall. There are two ways to do it: using SNMP query or manually. Adding them using SNMP query is fast and automatic, but is only possible if firewall runs SNMP agent and you know SNMP community string 'read'.</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="1" column="0" >
         <spacer>
-         <property name="orientation">
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType">
+         <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -243,31 +242,31 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0">
-        <widget class="QGroupBox" name="buttonGroup1">
-         <property name="title">
+       <item row="2" column="0" >
+        <widget class="QGroupBox" name="buttonGroup1" >
+         <property name="title" >
           <string/>
          </property>
-         <layout class="QGridLayout">
-          <property name="verticalSpacing">
+         <layout class="QGridLayout" >
+          <property name="verticalSpacing" >
            <number>10</number>
           </property>
-          <property name="margin">
+          <property name="margin" >
            <number>12</number>
           </property>
-          <item row="0" column="0">
-           <widget class="QRadioButton" name="use_manual">
-            <property name="text">
+          <item row="0" column="0" >
+           <widget class="QRadioButton" name="use_manual" >
+            <property name="text" >
              <string>Configure interfaces manually</string>
             </property>
-            <property name="checked">
+            <property name="checked" >
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QRadioButton" name="use_snmp">
-            <property name="text">
+          <item row="1" column="0" >
+           <widget class="QRadioButton" name="use_snmp" >
+            <property name="text" >
              <string>Use SNMP to discover interfaces of the firewall</string>
             </property>
            </widget>
@@ -275,17 +274,17 @@
          </layout>
         </widget>
        </item>
-       <item row="3" column="0">
-        <layout class="QGridLayout">
-         <item row="1" column="4">
+       <item row="3" column="0" >
+        <layout class="QGridLayout" >
+         <item row="1" column="4" >
           <spacer>
-           <property name="orientation">
+           <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeType">
+           <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -293,38 +292,38 @@
            </property>
           </spacer>
          </item>
-         <item row="2" column="0" colspan="5">
-          <widget class="QTextBrowser" name="snmpProgress"/>
+         <item row="2" column="0" colspan="5" >
+          <widget class="QTextBrowser" name="snmpProgress" />
          </item>
-         <item row="1" column="1" colspan="3">
-          <widget class="QPushButton" name="snmpQuery">
-           <property name="text">
+         <item row="1" column="1" colspan="3" >
+          <widget class="QPushButton" name="snmpQuery" >
+           <property name="text" >
             <string>Discover Interfaces using SNMP</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="label665">
-           <property name="text">
+         <item row="0" column="0" colspan="2" >
+          <widget class="QLabel" name="label665" >
+           <property name="text" >
             <string>SNMP 'read' community string:</string>
            </property>
-           <property name="alignment">
+           <property name="alignment" >
             <set>Qt::AlignCenter</set>
            </property>
-           <property name="wordWrap">
+           <property name="wordWrap" >
             <bool>false</bool>
            </property>
           </widget>
          </item>
-         <item row="0" column="3" colspan="2">
+         <item row="0" column="3" colspan="2" >
           <spacer>
-           <property name="orientation">
+           <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeType">
+           <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>140</width>
              <height>20</height>
@@ -332,15 +331,15 @@
            </property>
           </spacer>
          </item>
-         <item row="1" column="0">
+         <item row="1" column="0" >
           <spacer>
-           <property name="orientation">
+           <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeType">
+           <property name="sizeType" >
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -348,54 +347,54 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="snmp_community"/>
+         <item row="0" column="2" >
+          <widget class="QLineEdit" name="snmp_community" />
          </item>
         </layout>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page3">
-      <layout class="QVBoxLayout">
+     <widget class="QWidget" name="page3" >
+      <layout class="QVBoxLayout" >
        <item>
-        <widget class="QLabel" name="label632">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <widget class="QLabel" name="label632" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="text">
+         <property name="text" >
           <string>Here you can add or edit interfaces manually. 'Name' corresponds to the name of the physical interface, such as 'eth0', 'fxp0', 'ethernet0' etc. 'Label' is used to mark interface to reflect network topology, e.g. 'outside' or 'inside'. Label is mandatory for PIX firewall.</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label658">
-         <property name="text">
+        <widget class="QLabel" name="label658" >
+         <property name="text" >
           <string>Click 'Next' when done.</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>false</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="InterfacesTabWidget" name="interfaceEditor1">
-         <property name="currentIndex">
+        <widget class="InterfacesTabWidget" name="interfaceEditor1" >
+         <property name="currentIndex" >
           <number>0</number>
          </property>
-         <widget class="QWidget" name="tab_2">
-          <attribute name="title">
+         <widget class="QWidget" name="tab_2" >
+          <attribute name="title" >
            <string>Tab 1</string>
           </attribute>
          </widget>
@@ -403,42 +402,42 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page4">
-      <layout class="QGridLayout">
-       <property name="margin">
+     <widget class="QWidget" name="page4" >
+      <layout class="QGridLayout" >
+       <property name="margin" >
         <number>0</number>
        </property>
-       <item row="1" column="0">
-        <widget class="QLabel" name="sec_level_txt1">
-         <property name="alignment">
+       <item row="1" column="0" >
+        <widget class="QLabel" name="sec_level_txt1" >
+         <property name="alignment" >
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QFrame" name="frame160">
-         <property name="frameShape">
+       <item row="4" column="0" >
+        <widget class="QFrame" name="frame160" >
+         <property name="frameShape" >
           <enum>QFrame::Box</enum>
          </property>
-         <property name="frameShadow">
+         <property name="frameShadow" >
           <enum>QFrame::Sunken</enum>
          </property>
-         <layout class="QGridLayout">
-          <property name="margin">
+         <layout class="QGridLayout" >
+          <property name="margin" >
            <number>11</number>
           </property>
-          <item row="2" column="1">
+          <item row="2" column="1" >
            <spacer>
-            <property name="orientation">
+            <property name="orientation" >
              <enum>Qt::Vertical</enum>
             </property>
-            <property name="sizeType">
+            <property name="sizeType" >
              <enum>QSizePolicy::Expanding</enum>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>190</height>
@@ -446,39 +445,39 @@
             </property>
            </spacer>
           </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="upBtn">
-            <property name="text">
+          <item row="0" column="1" >
+           <widget class="QPushButton" name="upBtn" >
+            <property name="text" >
              <string>up</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="downBtn">
-            <property name="text">
+          <item row="1" column="1" >
+           <widget class="QPushButton" name="downBtn" >
+            <property name="text" >
              <string>down</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" rowspan="3">
-           <widget class="QTreeWidget" name="iface_sl_list">
+          <item rowspan="3" row="0" column="0" >
+           <widget class="QTreeWidget" name="iface_sl_list" >
             <column>
-             <property name="text">
+             <property name="text" >
               <string>Name</string>
              </property>
             </column>
             <column>
-             <property name="text">
+             <property name="text" >
               <string>Label</string>
              </property>
             </column>
             <column>
-             <property name="text">
+             <property name="text" >
               <string>Address</string>
              </property>
             </column>
             <column>
-             <property name="text">
+             <property name="text" >
               <string>Security Level</string>
              </property>
             </column>
@@ -487,71 +486,71 @@
          </layout>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label668">
-         <property name="text">
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label668" >
+         <property name="text" >
           <string>Click 'Finish' when done.</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label666">
-         <property name="text">
+       <item row="0" column="0" >
+        <widget class="QLabel" name="label666" >
+         <property name="text" >
           <string>In order to be able to build firewall policy properly, Firewall Builder needs information about 'security level' of the firewall's interfaces. Interface that connects it to the Internet is considered 'insecure' and has security level '0', while interface connected to the internal network is supposed to be 'secure' (security level '100'). You can arrange interfaces in the order of their security level below.</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="sec_level_txt2">
-         <property name="alignment">
+       <item row="2" column="0" >
+        <widget class="QLabel" name="sec_level_txt2" >
+         <property name="alignment" >
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page5">
-      <layout class="QGridLayout">
-       <property name="margin">
+     <widget class="QWidget" name="page5" >
+      <layout class="QGridLayout" >
+       <property name="margin" >
         <number>0</number>
        </property>
-       <item row="1" column="1">
-        <widget class="QFrame" name="frame5">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <item row="1" column="1" >
+        <widget class="QFrame" name="frame5" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize">
+         <property name="minimumSize" >
           <size>
            <width>310</width>
            <height>210</height>
           </size>
          </property>
-         <property name="frameShape">
+         <property name="frameShape" >
           <enum>QFrame::StyledPanel</enum>
          </property>
-         <property name="frameShadow">
+         <property name="frameShadow" >
           <enum>QFrame::Sunken</enum>
          </property>
-         <widget class="Line" name="intfOutsideLine">
-          <property name="geometry">
+         <widget class="Line" name="intfOutsideLine" >
+          <property name="geometry" >
            <rect>
             <x>30</x>
             <y>11</y>
@@ -559,30 +558,30 @@
             <height>55</height>
            </rect>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
+          <property name="minimumSize" >
            <size>
             <width>20</width>
             <height>20</height>
            </size>
           </property>
-          <property name="frameShape">
+          <property name="frameShape" >
            <enum>QFrame::VLine</enum>
           </property>
-          <property name="frameShadow">
+          <property name="frameShadow" >
            <enum>QFrame::Sunken</enum>
           </property>
-          <property name="orientation">
+          <property name="orientation" >
            <enum>Qt::Vertical</enum>
           </property>
          </widget>
-         <widget class="QTextBrowser" name="intfOutsideText">
-          <property name="geometry">
+         <widget class="QTextBrowser" name="intfOutsideText" >
+          <property name="geometry" >
            <rect>
             <x>81</x>
             <y>11</y>
@@ -590,33 +589,33 @@
             <height>55</height>
            </rect>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximumSize">
+          <property name="maximumSize" >
            <size>
             <width>16777215</width>
             <height>55</height>
            </size>
           </property>
-          <property name="frameShape">
+          <property name="frameShape" >
            <enum>QFrame::Panel</enum>
           </property>
-          <property name="frameShadow">
+          <property name="frameShadow" >
            <enum>QFrame::Raised</enum>
           </property>
-          <property name="verticalScrollBarPolicy">
+          <property name="verticalScrollBarPolicy" >
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
-          <property name="horizontalScrollBarPolicy">
+          <property name="horizontalScrollBarPolicy" >
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
-         <widget class="QLabel" name="pixmapLabel1">
-          <property name="geometry">
+         <widget class="QLabel" name="pixmapLabel1" >
+          <property name="geometry" >
            <rect>
             <x>11</x>
             <y>72</y>
@@ -624,18 +623,18 @@
             <height>64</height>
            </rect>
           </property>
-          <property name="pixmap">
-           <pixmap resource="MainRes.qrc">:/Icons/firewall_64.png</pixmap>
+          <property name="pixmap" >
+           <pixmap resource="MainRes.qrc" >:/Icons/firewall_64.png</pixmap>
           </property>
-          <property name="scaledContents">
+          <property name="scaledContents" >
            <bool>false</bool>
           </property>
-          <property name="wordWrap">
+          <property name="wordWrap" >
            <bool>false</bool>
           </property>
          </widget>
-         <widget class="Line" name="intfDMZLine">
-          <property name="geometry">
+         <widget class="Line" name="intfDMZLine" >
+          <property name="geometry" >
            <rect>
             <x>81</x>
             <y>94</y>
@@ -643,30 +642,30 @@
             <height>20</height>
            </rect>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
+          <property name="minimumSize" >
            <size>
             <width>20</width>
             <height>20</height>
            </size>
           </property>
-          <property name="frameShape">
+          <property name="frameShape" >
            <enum>QFrame::HLine</enum>
           </property>
-          <property name="frameShadow">
+          <property name="frameShadow" >
            <enum>QFrame::Sunken</enum>
           </property>
-          <property name="orientation">
+          <property name="orientation" >
            <enum>Qt::Horizontal</enum>
           </property>
          </widget>
-         <widget class="QTextBrowser" name="intfDMZText">
-          <property name="geometry">
+         <widget class="QTextBrowser" name="intfDMZText" >
+          <property name="geometry" >
            <rect>
             <x>107</x>
             <y>76</y>
@@ -674,33 +673,33 @@
             <height>55</height>
            </rect>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximumSize">
+          <property name="maximumSize" >
            <size>
             <width>16777215</width>
             <height>55</height>
            </size>
           </property>
-          <property name="frameShape">
+          <property name="frameShape" >
            <enum>QFrame::Panel</enum>
           </property>
-          <property name="frameShadow">
+          <property name="frameShadow" >
            <enum>QFrame::Raised</enum>
           </property>
-          <property name="verticalScrollBarPolicy">
+          <property name="verticalScrollBarPolicy" >
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
-          <property name="horizontalScrollBarPolicy">
+          <property name="horizontalScrollBarPolicy" >
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
-         <widget class="Line" name="intfInsideLine">
-          <property name="geometry">
+         <widget class="Line" name="intfInsideLine" >
+          <property name="geometry" >
            <rect>
             <x>30</x>
             <y>142</y>
@@ -708,30 +707,30 @@
             <height>55</height>
            </rect>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
+          <property name="minimumSize" >
            <size>
             <width>20</width>
             <height>20</height>
            </size>
           </property>
-          <property name="frameShape">
+          <property name="frameShape" >
            <enum>QFrame::VLine</enum>
           </property>
-          <property name="frameShadow">
+          <property name="frameShadow" >
            <enum>QFrame::Sunken</enum>
           </property>
-          <property name="orientation">
+          <property name="orientation" >
            <enum>Qt::Vertical</enum>
           </property>
          </widget>
-         <widget class="QTextBrowser" name="intfInsideText">
-          <property name="geometry">
+         <widget class="QTextBrowser" name="intfInsideText" >
+          <property name="geometry" >
            <rect>
             <x>81</x>
             <y>142</y>
@@ -739,52 +738,55 @@
             <height>55</height>
            </rect>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximumSize">
+          <property name="maximumSize" >
            <size>
             <width>16777215</width>
             <height>55</height>
            </size>
           </property>
-          <property name="frameShape">
+          <property name="frameShape" >
            <enum>QFrame::Panel</enum>
           </property>
-          <property name="frameShadow">
+          <property name="frameShadow" >
            <enum>QFrame::Raised</enum>
           </property>
-          <property name="verticalScrollBarPolicy">
+          <property name="verticalScrollBarPolicy" >
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
-          <property name="horizontalScrollBarPolicy">
+          <property name="horizontalScrollBarPolicy" >
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
         </widget>
        </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="textLabel1">
-         <property name="text">
-          <string>Choose template object in the list and click 'Finish' when ready. Template objects use generic interface names that will be iherited by the firewall object you create. You may need to rename them later to reflect real names of interfaces on your firewall machine.</string>
+       <item row="0" column="0" colspan="2" >
+        <widget class="QLabel" name="textLabel1" >
+         <property name="text" >
+          <string>Choose template object in the list and click 'Next' when ready.
+
+You can change  intrface names and their IP addresses on the next page. Template firewall object comes with a basic policy and NAT rules that implement policy described in its comment. If you change IP addresses of its interfaces, policy and NAT rules will be automatically corrected to reflect this change. However you should always inspect the rules and adjust them to suite your security policy. Template objects are designed to be a starting point, a way to jump-start your configuration and most likely require changes to be useful in your environment.
+</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QTextBrowser" name="templateComment"/>
+       <item row="2" column="0" colspan="2" >
+        <widget class="QTextBrowser" name="templateComment" />
        </item>
-       <item row="1" column="0">
-        <widget class="QListWidget" name="templateList">
-         <property name="maximumSize">
+       <item row="1" column="0" >
+        <widget class="QListWidget" name="templateList" >
+         <property name="maximumSize" >
           <size>
            <width>250</width>
            <height>16777215</height>
@@ -794,25 +796,25 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page6">
-      <layout class="QVBoxLayout" name="verticalLayout">
+     <widget class="QWidget" name="page6" >
+      <layout class="QVBoxLayout" name="verticalLayout" >
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
+        <widget class="QLabel" name="label" >
+         <property name="text" >
           <string>Here you can add or edit interfaces manually. 'Name' corresponds to the name of the physical interface, such as 'eth0', 'fxp0', 'ethernet0' etc. 'Label' is used to mark interface to reflect network topology, e.g. 'outside' or 'inside'. Label is mandatory for PIX firewall.</string>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="InterfacesTabWidget" name="interfaceEditor2">
-         <property name="currentIndex">
+        <widget class="InterfacesTabWidget" name="interfaceEditor2" >
+         <property name="currentIndex" >
           <number>0</number>
          </property>
-         <widget class="QWidget" name="tab">
-          <attribute name="title">
+         <widget class="QWidget" name="tab" >
+          <attribute name="title" >
            <string>Tab 1</string>
           </attribute>
          </widget>
@@ -822,33 +824,33 @@
      </widget>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QFrame" name="frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+   <item row="2" column="0" >
+    <widget class="QFrame" name="frame" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
        <horstretch>1</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
+     <property name="minimumSize" >
       <size>
        <width>400</width>
        <height>50</height>
       </size>
      </property>
-     <property name="frameShape">
+     <property name="frameShape" >
       <enum>QFrame::StyledPanel</enum>
      </property>
-     <property name="frameShadow">
+     <property name="frameShadow" >
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QHBoxLayout">
+     <layout class="QHBoxLayout" >
       <item>
        <spacer>
-        <property name="orientation">
+        <property name="orientation" >
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeHint" stdset="0">
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>161</width>
           <height>37</height>
@@ -857,35 +859,35 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="backButton">
-        <property name="text">
+       <widget class="QPushButton" name="backButton" >
+        <property name="text" >
          <string>&lt; &amp;Back</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="nextButton">
-        <property name="text">
-         <string>&amp;Next &gt;</string>
+       <widget class="QPushButton" name="nextButton" >
+        <property name="text" >
+         <string>&amp;Next ></string>
         </property>
-        <property name="flat">
+        <property name="flat" >
          <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="finishButton">
-        <property name="text">
+       <widget class="QPushButton" name="finishButton" >
+        <property name="text" >
          <string>&amp;Finish</string>
         </property>
-        <property name="flat">
+        <property name="flat" >
          <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="cancelButton">
-        <property name="text">
+       <widget class="QPushButton" name="cancelButton" >
+        <property name="text" >
          <string>&amp;Cancel</string>
         </property>
        </widget>
@@ -895,7 +897,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
+ <layoutdefault spacing="6" margin="11" />
  <customwidgets>
   <customwidget>
    <class>InterfacesTabWidget</class>
@@ -923,7 +925,7 @@
   <tabstop>templateComment</tabstop>
  </tabstops>
  <resources>
-  <include location="MainRes.qrc"/>
+  <include location="MainRes.qrc" />
  </resources>
  <connections>
   <connection>
@@ -932,11 +934,11 @@
    <receiver>newFirewallDialog_q</receiver>
    <slot>upInterface()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>541</x>
      <y>251</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -948,11 +950,11 @@
    <receiver>newFirewallDialog_q</receiver>
    <slot>downInterface()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>541</x>
      <y>285</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -964,11 +966,11 @@
    <receiver>newFirewallDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>99</x>
      <y>58</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -980,11 +982,11 @@
    <receiver>newFirewallDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>102</x>
      <y>58</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -996,11 +998,11 @@
    <receiver>newFirewallDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>70</x>
      <y>79</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1012,11 +1014,11 @@
    <receiver>newFirewallDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>70</x>
      <y>76</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1028,11 +1030,11 @@
    <receiver>newFirewallDialog_q</receiver>
    <slot>getInterfacesViaSNMP()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>102</x>
      <y>88</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1044,11 +1046,11 @@
    <receiver>newFirewallDialog_q</receiver>
    <slot>templateSelected(QListWidgetItem*)</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>32</x>
      <y>126</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
