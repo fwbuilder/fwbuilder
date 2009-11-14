@@ -174,8 +174,8 @@ void InterfaceEditorWidget::typeChanged(int type)
 
 bool InterfaceEditorWidget::isValid()
 {
-    if ( this->m_ui->type->currentIndex() == 0 &&
-         this->m_ui->addresses->rowCount() == 0 )
+    if ( (this->m_ui->type->currentIndex() == 0) &&
+         (this->m_ui->addresses->rowCount() == 0) )
     {
         QMessageBox::warning(this,"Firewall Builder",
                  tr("You should enter at least one address for regular interface %1").arg(this->m_ui->name->text()),
@@ -187,14 +187,14 @@ bool InterfaceEditorWidget::isValid()
         if (types[i]->currentIndex() != 0) continue;
         QString address = this->m_ui->addresses->item(i, 0)->text();
         QString netmask = this->m_ui->addresses->item(i, 1)->text();
-        if (!validateAddress(address, netmask)) return false;
+        if ( !validateAddress(address, netmask, types[i]->currentIndex() == 0) ) return false;
     }
     return true;
 }
 
-bool InterfaceEditorWidget::validateAddress(const QString &addr, const QString &netm)
+bool InterfaceEditorWidget::validateAddress(const QString &addr, const QString &netm, bool regular)
 {
-    if ( addr.isEmpty() || netm.isEmpty() )
+    if ( regular && ( addr.isEmpty() || netm.isEmpty() ) )
     {
         QMessageBox::warning( this, "Firewall Builder",
                               tr("Empty addrres or netmask field"),

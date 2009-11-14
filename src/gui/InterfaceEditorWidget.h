@@ -56,7 +56,7 @@ private:
     QMap<int, QPair<QTableWidgetItem*, QTableWidgetItem*> > rows;
     QMap<int, QComboBox*> types;
     QMap<int, libfwbuilder::Address*> fwaddrs;
-    bool validateAddress(const QString &addr, const QString &netm);
+    bool validateAddress(const QString &addr, const QString &netm, bool regular);
 
 public slots:
     int addNewAddress();
