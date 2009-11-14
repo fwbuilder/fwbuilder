@@ -174,7 +174,7 @@ void InterfaceEditorWidget::typeChanged(int type)
 
 bool InterfaceEditorWidget::isValid()
 {
-    if ( this->m_ui->type->currentIndex() != 0 &&
+    if ( this->m_ui->type->currentIndex() == 0 &&
          this->m_ui->addresses->rowCount() == 0 )
     {
         QMessageBox::warning(this,"Firewall Builder",
