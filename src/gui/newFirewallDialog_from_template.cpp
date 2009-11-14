@@ -109,7 +109,7 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                 *(old_addr_mask->getNetmaskPtr()));
             old_subnets.push_back(old_net);
 
-            intf->remove(addr);
+            intf->remove(addr, false);
         }
 
         if (new_configuration.count(intf) == 0)
