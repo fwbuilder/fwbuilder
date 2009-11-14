@@ -11,7 +11,8 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Inte
     m_ui->setupUi(this);
     this->m_ui->name->setText(interface->getName().c_str());
     this->m_ui->label->setText(interface->getLabel().c_str());
-    this->m_ui->mac->setText(interface->getPhysicalAddress()->getPhysAddress().c_str());
+    if (interface->getPhysicalAddress() != NULL)
+       m_ui->mac->setText(interface->getPhysicalAddress()->getPhysAddress().c_str());
     this->m_ui->comment->setPlainText(interface->getComment().c_str());
     if ( this->interface->isDyn() )
         this->m_ui->type->setCurrentIndex(1);
