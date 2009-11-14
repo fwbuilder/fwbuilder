@@ -39,9 +39,12 @@ protected:
     FWObjectState *oldState;
     FWObjectState *newState;
 
+    void notify();
+
 public:
-    FWCmdChange(ProjectPanel *project, FWObjectState *oldState, FWObjectState *newState);
+    FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *oldState, FWObjectState *newState);
     ~FWCmdChange();
+
 
 };
 
@@ -54,11 +57,10 @@ class FWCmdChangeTime : public FWCmdChange
 
     FWObjectState* createState(libfwbuilder::FWObject *object);
 public:
-    FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *object, FWObjectState *newState):
-            FWCmdChange(project, createState(object), newState) {setText("edit object");}
+    FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *newState);
 
     void redo() {}
-    void undo() {}
+    void undo();
 
 };
 

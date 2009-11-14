@@ -25,7 +25,14 @@
 
 #include "FWCmdBasic.h"
 
+using namespace libfwbuilder;
+
 FWCmdBasic::FWCmdBasic(ProjectPanel *project)
 {
     this->project = project;
+}
+
+FWObject* FWCmdBasic::object()
+{
+    return project->db()->findInIndex(id);
 }

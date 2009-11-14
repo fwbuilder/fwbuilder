@@ -23,11 +23,29 @@
 
 */
 
-#include "FWCmdChange.h"
+#include "global.h"
 
-FWCmdChange::FWCmdChange(ProjectPanel *project, FWObjectState *oldState, FWObjectState *newState):
+#include "FWCmdChange.h"
+#include "FWWindow.h"
+
+#include "events.h"
+
+
+using namespace libfwbuilder;
+using namespace std;
+
+void FWCmdChange::notify()
+{
+    FWObject* obj = object();
+    QCoreApplication::postEvent(
+    mw, new dataModifiedEvent(QString::fromUtf8(obj->getRoot()->getFileName().c_str()),
+                              obj->getId()));
+}
+
+FWCmdChange::FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *oldState, FWObjectState *newState):
             FWCmdBasic(project)
 {
+    setObject(obj);
     this->oldState = oldState;
     this->newState = newState;
 }
@@ -37,8 +55,22 @@ FWCmdChange::~FWCmdChange()
     delete (oldState);
     delete (newState);
 }
-
-FWObjectState* FWCmdChangeTime::createState(libfwbuilder::FWObject *object)
+FWCmdChangeTime::FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *newState):
+            FWCmdChange(project, obj, createState(obj), newState)
 {
-    return new FWObjectStateTime(object);
+    setText("edit object");
+}
+
+FWObjectState* FWCmdChangeTime::createState(libfwbuilder::FWObject *obj)
+{
+    return new FWObjectStateTime(obj);
+}
+
+void FWCmdChangeTime::undo()
+{
+    FWObject* obj = object();
+
+    oldState->restore(obj);
+    project->updateObjName(obj, newState->name);
+    notify();
 }
