@@ -219,8 +219,10 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     undoGroup = new QUndoGroup(this);
     QAction *undoAction = undoGroup->createUndoAction(this);
+    QAction *redoAction = undoGroup->createRedoAction(this);
 
-    m_mainWindow->editMenu->addAction(undoAction);
+    m_mainWindow->editMenu->insertAction(m_mainWindow->editMenu->actions().at(0), undoAction);
+    m_mainWindow->editMenu->insertAction(undoAction, redoAction);
 
     printer = new QPrinter(QPrinter::HighResolution);
 
@@ -1048,14 +1050,6 @@ void FWWindow::editPrefs()
 
 
 void FWWindow::editFind()
-{
-}
-
-void FWWindow::editRedo()
-{
-}
-
-void FWWindow::editUndo()
 {
 }
 

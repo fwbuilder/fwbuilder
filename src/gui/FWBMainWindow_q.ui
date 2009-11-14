@@ -724,8 +724,6 @@
     <property name="title" >
      <string>&amp;Edit</string>
     </property>
-    <addaction name="editUndoAction" />
-    <addaction name="editRedoAction" />
     <addaction name="separator" />
     <addaction name="editCutAction" />
     <addaction name="editCopyAction" />
@@ -909,34 +907,6 @@
    </property>
    <property name="shortcut" >
     <string/>
-   </property>
-  </action>
-  <action name="editUndoAction" >
-   <property name="enabled" >
-    <bool>false</bool>
-   </property>
-   <property name="text" >
-    <string>&amp;Undo</string>
-   </property>
-   <property name="iconText" >
-    <string>Undo</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+Z</string>
-   </property>
-  </action>
-  <action name="editRedoAction" >
-   <property name="enabled" >
-    <bool>false</bool>
-   </property>
-   <property name="text" >
-    <string>&amp;Redo</string>
-   </property>
-   <property name="iconText" >
-    <string>Redo</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+Y</string>
    </property>
   </action>
   <action name="editCutAction" >
@@ -1831,38 +1801,6 @@
    <signal>triggered()</signal>
    <receiver>FWBMainWindow_q</receiver>
    <slot>editPrefs()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>editRedoAction</sender>
-   <signal>triggered()</signal>
-   <receiver>FWBMainWindow_q</receiver>
-   <slot>editRedo()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>editUndoAction</sender>
-   <signal>triggered()</signal>
-   <receiver>FWBMainWindow_q</receiver>
-   <slot>editUndo()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>-1</x>

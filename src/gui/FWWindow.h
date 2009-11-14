@@ -151,8 +151,6 @@ public slots:
     virtual void restoreRuleSetTab();
 
     virtual void editFind();
-    virtual void editRedo();
-    virtual void editUndo();
 
     virtual void toggleViewObjectTree();
     virtual void toggleViewEditor();
