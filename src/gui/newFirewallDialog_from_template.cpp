@@ -140,53 +140,56 @@ void newFirewallDialog::changedAddressesInNewFirewall()
             list<FWObject*> old_ipv6 = intf->getByType(IPv6::TYPENAME);
             old_addr.splice(old_addr.begin(), old_ipv6);
 
-            QMap<libfwbuilder::Address*, AddressInfo >::iterator addrit;
-            for (addrit=new_data.addresses.begin(); addrit!=new_data.addresses.end(); ++addrit)
+            if (new_data.type == 0)  // regular interface
             {
-                Address *old_addr_obj = addrit.key();
-                AddressInfo new_addr = addrit.value();
+                QMap<libfwbuilder::Address*, AddressInfo >::iterator addrit;
+                for (addrit=new_data.addresses.begin(); addrit!=new_data.addresses.end(); ++addrit)
+                {
+                    Address *old_addr_obj = addrit.key();
+                    AddressInfo new_addr = addrit.value();
 
-                Address *oa;
-                QString name;
-                if (new_addr.ipv4)
-                {
-                    if (old_addr_obj) oa = old_addr_obj;
-                    else
+                    Address *oa;
+                    QString name;
+                    if (new_addr.ipv4)
                     {
-                        oa = IPv4::cast(db->create(IPv4::TYPENAME));
-                        intf->add(oa);
-                    }
-                    name = QString("%1:%2:ipv4")
-                        .arg(nfw->getName().c_str())
-                        .arg(intf->getName().c_str());
-                    oa->setAddress(
-                        InetAddr(new_addr.address.toStdString()));
-                    bool ok = false ;
-                    int inetmask = new_addr.netmask.toInt(&ok);
-                    if (ok) oa->setNetmask(InetAddr(inetmask));
-                    else oa->setNetmask(InetAddr(new_addr.netmask.toStdString()));
-                } else
-                {
-                    if (old_addr_obj) oa = old_addr_obj;
-                    else
+                        if (old_addr_obj) oa = old_addr_obj;
+                        else
+                        {
+                            oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                            intf->add(oa);
+                        }
+                        name = QString("%1:%2:ipv4")
+                            .arg(nfw->getName().c_str())
+                            .arg(intf->getName().c_str());
+                        oa->setAddress(
+                            InetAddr(new_addr.address.toStdString()));
+                        bool ok = false ;
+                        int inetmask = new_addr.netmask.toInt(&ok);
+                        if (ok) oa->setNetmask(InetAddr(inetmask));
+                        else oa->setNetmask(InetAddr(new_addr.netmask.toStdString()));
+                    } else
                     {
-                        oa = IPv6::cast(db->create(IPv6::TYPENAME));
-                        intf->add(oa);
+                        if (old_addr_obj) oa = old_addr_obj;
+                        else
+                        {
+                            oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                            intf->add(oa);
+                        }
+                        name = QString("%1:%2:ipv6")
+                            .arg(nfw->getName().c_str())
+                            .arg(intf->getName().c_str());
+                        oa->setAddress(
+                            InetAddr(AF_INET6, new_addr.address.toStdString()) );
+                        bool ok = false ;
+                        int inetmask = new_addr.netmask.toInt(&ok);
+                        if (ok) oa->setNetmask(InetAddr(AF_INET6, inetmask));
                     }
-                    name = QString("%1:%2:ipv6")
-                        .arg(nfw->getName().c_str())
-                        .arg(intf->getName().c_str());
-                    oa->setAddress(
-                        InetAddr(AF_INET6, new_addr.address.toStdString()) );
-                    bool ok = false ;
-                    int inetmask = new_addr.netmask.toInt(&ok);
-                    if (ok) oa->setNetmask(InetAddr(AF_INET6, inetmask));
+                    oa->setName(name.toStdString());
+
+                    // If address object is present in the editor data, remove
+                    // it form the old_addr list so we won't delete it later.
+                    if (old_addr_obj) old_addr.remove(old_addr_obj);
                 }
-                oa->setName(name.toStdString());
-
-                // If address object is present in the editor data, remove
-                // it form the old_addr list so we won't delete it later.
-                if (old_addr_obj) old_addr.remove(old_addr_obj);
             }
 
             // Now delete old address objects that are still in the
