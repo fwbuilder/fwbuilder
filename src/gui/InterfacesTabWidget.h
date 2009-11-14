@@ -29,7 +29,7 @@ struct EditedInterfaceData
     QString comment;
     QString mac;
     int type; // 0 - regular, 1 - dynamic, 2 - unnumbered
-    QMultiMap<libfwbuilder::Address*, AddressInfo > addresses;
+    QMap<libfwbuilder::Address*, AddressInfo > addresses;
 };
 
 class InterfacesTabWidget : public QTabWidget {
