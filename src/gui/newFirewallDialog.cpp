@@ -308,7 +308,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
     if (q!=NULL || getInterfacesBusy) return;
 
     snmpPollCompleted=false;
-    m_dialog->iface_list->clear();
+    m_dialog->interfaceEditor1->clear();
 
     string rcomm=m_dialog->snmp_community->text().toLatin1().constData();
 
