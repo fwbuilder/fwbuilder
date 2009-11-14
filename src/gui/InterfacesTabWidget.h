@@ -38,6 +38,8 @@ public:
     InterfacesTabWidget(QWidget *parent = 0);
     ~InterfacesTabWidget();
     QMap<libfwbuilder::Interface*, EditedInterfaceData> getData();
+    QList<EditedInterfaceData> getNewData();
+    QList<libfwbuilder::Interface*> getDeletedInterfaces();
     bool isValid();
     void setCornerWidgetsVisible(bool);
 
@@ -51,6 +53,7 @@ private:
     QWidget newInterfaceWidget;
     QHBoxLayout newInterfaceLayout;
     libfwbuilder::FWObject *currentTemplate;
+    QList<libfwbuilder::Interface*> deleted;
 
 public slots:
     void addInterface(libfwbuilder::Interface*);

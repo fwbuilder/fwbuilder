@@ -45,10 +45,29 @@ QMap<libfwbuilder::Interface*, EditedInterfaceData> InterfacesTabWidget::getData
     QMap<libfwbuilder::Interface*, EditedInterfaceData> res;
     for ( int i = 0; i < this->count(); i++ )
     {
+        if ( dynamic_cast<InterfaceEditorWidget*>(this->widget(i))->getInterface() == NULL)
+            continue;
         InterfaceEditorWidget *intEditor = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
         res[intEditor->getInterface()] = intEditor->getInterfaceData();
     }
     return res;
+}
+
+QList<EditedInterfaceData> InterfacesTabWidget::getNewData()
+{
+    QList<EditedInterfaceData> res;
+    for ( int i = 0; i < this->count(); i++ )
+    {
+        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        if ( w->getInterface() == NULL)
+            res.append(w->getInterfaceData());
+    }
+    return res;
+}
+
+QList<libfwbuilder::Interface*> InterfacesTabWidget::getDeletedInterfaces()
+{
+    return deleted;
 }
 
 void InterfacesTabWidget::addInterface(libfwbuilder::Interface *interface)
@@ -77,6 +96,8 @@ void InterfacesTabWidget::closeTab()
 {
     int idx = this->currentIndex();
     QWidget *w = this->widget(idx);
+    libfwbuilder::Interface *interface = dynamic_cast<InterfaceEditorWidget*>(w)->getInterface() ;
+    if ( interface != NULL ) deleted.append( interface );
     this->removeTab(idx);
     delete w;
     if (this->count() == 0) addNewInterface();
