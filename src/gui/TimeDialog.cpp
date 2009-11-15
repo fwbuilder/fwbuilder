@@ -48,6 +48,7 @@
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <QUndoStack>
+#include <QDebug>
 
 #include <iostream>
 #include "FWBSettings.h"
@@ -210,8 +211,6 @@ void TimeDialog::validate(bool *res)
     *res=true;
 }
 
-
-
 void TimeDialog::applyChanges()
 {
     if (!isTreeReadWrite(this,obj)) return;
@@ -222,39 +221,20 @@ void TimeDialog::applyChanges()
     ns->name = m_dialog->obj_name->text();
     ns->comment = m_dialog->comment->toPlainText();
 
-    m_project->undoStack->push(new FWCmdChangeTime(m_project, obj, ns));
-
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
-
+    
     if (m_dialog->useStartDate->isChecked())
     {
-        obj->setInt( "from_day"   ,      m_dialog->startDate->date().day()   );
-        obj->setInt( "from_month" ,      m_dialog->startDate->date().month() );
-        obj->setInt( "from_year"  ,      m_dialog->startDate->date().year()  );
-    } else
-    {
-        obj->setInt( "from_day"   ,      -1 );
-        obj->setInt( "from_month" ,      -1 );
-        obj->setInt( "from_year"  ,      -1 );
-    }
-    obj->setInt( "from_minute"   ,   m_dialog->startTime->time().minute());
-    obj->setInt( "from_hour"  ,      m_dialog->startTime->time().hour()  );
+        ns->startDate = m_dialog->startDate->date();
+    } 
+ 
+    ns->startTime = m_dialog->startTime->time();
 
     if (m_dialog->useEndDate->isChecked())
     {
-        obj->setInt( "to_day"   ,        m_dialog->endDate->date().day()     );
-        obj->setInt( "to_month" ,        m_dialog->endDate->date().month()   );
-        obj->setInt( "to_year"  ,        m_dialog->endDate->date().year()    );
-    } else
-    {
-        obj->setInt( "to_day"   ,      -1 );
-        obj->setInt( "to_month" ,      -1 );
-        obj->setInt( "to_year"  ,      -1 );
-    }
-    obj->setInt( "to_minute"   ,     m_dialog->endTime->time().minute()  );
-    obj->setInt( "to_hour"  ,        m_dialog->endTime->time().hour()    );
+        ns->endDate = m_dialog->endDate->date();
+    } 
+
+    ns->endTime = m_dialog->endTime->time();
 
     QStringList weekDays ;
     if (m_dialog->cbStart7_2->checkState ()==Qt::Checked)
@@ -272,10 +252,11 @@ void TimeDialog::applyChanges()
     if (m_dialog->cbStart6_2->checkState ()==Qt::Checked)
         weekDays.append("6");
 
-    s->setDaysOfWeek(weekDays.join(",").toAscii().data());
+    ns->days_of_week = weekDays.join(",");
 
-    m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
-
+    m_project->undoStack->push(new FWCmdChangeTime(m_project, obj, ns));
+    
+    //TODO: Need to refactor this method
     BaseObjectDialog::applyChanges();
 }
 

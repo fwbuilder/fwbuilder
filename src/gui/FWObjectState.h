@@ -28,6 +28,8 @@
 
 #include "fwbuilder/FWObject.h"
 #include <QString>
+#include <QDate>
+#include <QTime>
 
 /********************************************************
  * FWObjectState
@@ -40,8 +42,6 @@ public:
     QString comment;
 
     FWObjectState() {}
-
-    FWObjectState(libfwbuilder::FWObject* object) {save(object);}
 
     virtual void save(libfwbuilder::FWObject* object)
     {
@@ -59,9 +59,20 @@ public:
 class FWObjectStateTime : public FWObjectState
 {
 public:
+
+    QDate startDate;
+    QTime startTime;
+
+    QDate endDate;
+    QTime endTime;
+
+    QString days_of_week;
+
     FWObjectStateTime() {}
 
-    FWObjectStateTime(libfwbuilder::FWObject* object) : FWObjectState(object) {}
+    virtual void save(libfwbuilder::FWObject* object);
+    virtual void restore(libfwbuilder::FWObject* object);
+
 };
 
 #endif // FWOBJECTSTATE_H

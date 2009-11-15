@@ -63,7 +63,9 @@ FWCmdChangeTime::FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *
 
 FWObjectState* FWCmdChangeTime::createState(libfwbuilder::FWObject *obj)
 {
-    return new FWObjectStateTime(obj);
+    FWObjectStateTime* state = new FWObjectStateTime();
+    state->save(obj);
+    return state;
 }
 
 void FWCmdChangeTime::undo()
@@ -71,6 +73,14 @@ void FWCmdChangeTime::undo()
     FWObject* obj = object();
 
     oldState->restore(obj);
+    project->updateObjName(obj, newState->name);
+    notify();
+}
+
+void FWCmdChangeTime::redo()
+{
+    FWObject* obj = object();
+    newState->restore(obj);
     project->updateObjName(obj, newState->name);
     notify();
 }

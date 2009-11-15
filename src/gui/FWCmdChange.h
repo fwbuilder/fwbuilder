@@ -45,6 +45,7 @@ public:
     FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *oldState, FWObjectState *newState);
     ~FWCmdChange();
 
+    virtual FWObjectState* createState(libfwbuilder::FWObject *object)=0;
 
 };
 
@@ -59,7 +60,7 @@ class FWCmdChangeTime : public FWCmdChange
 public:
     FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *newState);
 
-    void redo() {}
+    void redo();
     void undo();
 
 };
