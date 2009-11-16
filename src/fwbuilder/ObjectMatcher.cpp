@@ -190,7 +190,7 @@ bool ObjectMatcher::checkComplexMatch(Host *obj1,
  *  match only if all interfaces of obj1 match obj2
  */
     bool res = true;
-    list<FWObject*> l = obj1->getByType(Interface::TYPENAME);
+    list<FWObject*> l = obj1->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator it = l.begin(); it!=l.end(); ++it)
         res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);
     return res;

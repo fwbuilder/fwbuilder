@@ -757,13 +757,15 @@ bool Compiler::splitIfRuleElementMatchesFW::processNext()
 
     list<FWObject*> cl;
 
-    for (list<FWObject*>::iterator i1=re->begin(); nre>1 && i1!=re->end(); ++i1) {
-
+    for (list<FWObject*>::iterator i1=re->begin(); nre>1 && i1!=re->end(); ++i1)
+    {
         FWObject *obj = FWReference::getObject(*i1);
         Address *a = Address::cast(obj);
         assert(a!=NULL);
 
-        if (compiler->complexMatch(a, compiler->fw))
+        if (a->getId() == compiler->fw->getId() ||
+            a->getInt("parent_cluster_id") == compiler->fw->getId() ||
+            compiler->complexMatch(a, compiler->fw))
         {
 	    cl.push_back(*i1);
             nre--;
