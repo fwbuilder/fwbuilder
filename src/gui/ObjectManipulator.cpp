@@ -4082,7 +4082,9 @@ void ObjectManipulator::guessSubInterfaceTypeAndAttributes(Interface *intf)
     )
     {
         InterfaceData *idata = new InterfaceData(*intf);
-        int_prop->parseVlan(idata);
+        //int_prop->parseVlan(idata);
+        idata->interface_type = "8021q";
+        int_prop->parseVlan(idata->name.c_str(), NULL, &(idata->vlan_id));
         if (!idata->interface_type.empty())
         {
             intf->getOptionsObject()->setStr("type", idata->interface_type);

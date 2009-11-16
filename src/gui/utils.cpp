@@ -228,10 +228,6 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
         // ruleset objects with name "ftp-proxy/*" for PF. Allow
         // objects of different type to have the same name.
 
-        qDebug() << "o1=" << o1 << "obj=" << obj
-                 << "o1->getTypeName()=" << o1->getTypeName().c_str()
-                 << "obj->getTypeName()=" << obj->getTypeName().c_str();
-
         if (o1 == obj || o1->getTypeName() != obj->getTypeName()) continue;
 
         if (QString(o1->getName().c_str()) == newname)

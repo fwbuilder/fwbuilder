@@ -202,12 +202,6 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         // disable advanced options dialog if this is main interface of a cluster
         if (Cluster::isA(s->getParent()))
             supports_advanced_ifaces = false;
-
-        if (s->isDedicatedFailover())
-        {
-            supports_network_zones = false;
-        }
-
     } catch (FWException &ex)  { }
 
 /* if parent is a firewall or a fw cluster, it is more complex ... */
