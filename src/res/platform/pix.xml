@@ -355,7 +355,7 @@
         <supports_routing_itf>True</supports_routing_itf>
         <security_levels>True</security_levels>
         <network_zones>True</network_zones>
-        <unprotected_interfaces>False</unprotected_interfaces>
+        <unprotected_interfaces>True</unprotected_interfaces>
         <supports_prolog_epilog>True</supports_prolog_epilog>
         <supports_cluster>True</supports_cluster>
         <actions>
