@@ -25,6 +25,8 @@
 
 #include "pixInterfaces.h"
 
+#include <QRegExp>
+
 /*
  * http://www.cisco.com/en/US/docs/security/asa/asa70/command/reference/gl.html#wp1644971
  *
@@ -36,8 +38,16 @@
  * hostname(config-subif)# no shutdown
  * 
  */
-pixInterfaces::pixInterfaces()
+
+bool pixInterfaces::parseVlan(const QString &name, QString *base_name, int *vlan_id)
 {
-    vlan_name_patterns.append(QRegExp("([a-zA-Z-]+\\d{1,}/\\d{1,})\\.(\\d{1,})"));
+    QRegExp vlan_name_pattern("([a-zA-Z-]+\\d{1,}(/\\d{1,})*)\\.(\\d{1,})");
+    if (vlan_name_pattern.indexIn(name) != -1)
+    {
+        if (base_name!=NULL) *base_name = vlan_name_pattern.cap(1);
+        if (vlan_id!=NULL) *vlan_id = vlan_name_pattern.cap(3).toInt();
+        return true;
+    }
+    return false;
 }
 

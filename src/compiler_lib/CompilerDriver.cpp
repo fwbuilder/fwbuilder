@@ -565,9 +565,8 @@ QString CompilerDriver::determineOutputFileName(Cluster *cluster,
         if (prepend_cluster_name_to_output_file && cluster!=NULL)
             return QString("%1_%2%3").arg(cluster->getName().c_str())
                 .arg(current_firewall_name).arg(ext);
-        else
-            return current_firewall_name + ext;
     }
+    return current_firewall_name + ext;
 }
 
 /* Find rulesets that belong to other firewall objects but are

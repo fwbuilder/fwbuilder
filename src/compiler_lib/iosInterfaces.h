@@ -26,19 +26,15 @@
 #ifndef IOS_INTERFACE_PROPERTIES_HH
 #define IOS_INTERFACE_PROPERTIES_HH
 
-#include <map>
-#include <list>
-
-#include <QString>
-
 #include "interfaceProperties.h"
-#include "fwbuilder/InterfaceData.h"
 
 
-class iosInterfaces : public interfaceProperties {
+class iosInterfaces : public interfaceProperties
+{
 
 public:
-    iosInterfaces();
+    iosInterfaces() : interfaceProperties() {}
+    virtual bool parseVlan(const QString&, QString*, int*);
 };
 
 #endif

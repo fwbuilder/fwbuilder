@@ -26,20 +26,15 @@
 #ifndef LINUX24_INTERFACE_PROPERTIES_HH
 #define LINUX24_INTERFACE_PROPERTIES_HH
 
-#include <map>
-#include <list>
-
-#include <QString>
-
 #include "interfaceProperties.h"
-#include "fwbuilder/InterfaceData.h"
 
 
-class linux24Interfaces : public interfaceProperties {
-
+class linux24Interfaces : public interfaceProperties
+{
 public:
-    linux24Interfaces();
-
+    linux24Interfaces() : interfaceProperties() {}
+    
+    virtual bool parseVlan(const QString&, QString*, int*);
     virtual void rearrangeInterfaces(
         std::map<int,libfwbuilder::InterfaceData> &interfaces,
         std::list<libfwbuilder::InterfaceData*> &interface_tree);

@@ -47,39 +47,19 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-void interfaceProperties::parseVlan(InterfaceData *intf)
+bool interfaceProperties::parseVlan(const QString&, QString*, int*)
 {
-    intf->interface_type = "8021q";
-    QString base_name;
-    parseVlan(intf->name.c_str(), &base_name, &(intf->vlan_id));
-}
-
-void interfaceProperties::parseVlan(const QString &name,
-                                    QString *base_name,
-                                    int *vlan_id)
-{
-    for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
-    {
-        if (vlan_name_patterns[idx].indexIn(name) != -1)
-        {
-            *base_name = vlan_name_patterns[idx].cap(1);
-            *vlan_id = vlan_name_patterns[idx].cap(2).toInt();
-        }
-    }
+    return false;
 }
 
 bool interfaceProperties::looksLikeVlanInterface(InterfaceData *intf)
 {
-    return looksLikeVlanInterface(intf->name.c_str());
+    return parseVlan(intf->name.c_str(), NULL, NULL);
 }
 
 bool interfaceProperties::looksLikeVlanInterface(const QString &int_name)
 {
-    for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
-    {
-        if (vlan_name_patterns[idx].indexIn(int_name) != -1) return true;
-    }
-    return false;
+    return parseVlan(int_name, NULL, NULL);
 }
 
 /*
@@ -98,31 +78,30 @@ bool interfaceProperties::isValidVlanInterfaceName(const QString &subint_name,
         err = QObject::tr("'%1' is not a valid vlan interface name").arg(subint_name);
         return false;
     }
-
-    for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
+ 
+    QString parent_name_from_regex;
+    int vlan_id;
+    if (parseVlan(subint_name, &parent_name_from_regex, &vlan_id))
     {
-        if (vlan_name_patterns[idx].indexIn(subint_name) != -1)
+        if (!parent_name.isEmpty() &&
+            parent_name_from_regex != "vlan" &&
+            parent_name != parent_name_from_regex)
         {
-            QString parent_name_from_regex = vlan_name_patterns[idx].cap(1);
-            if (!parent_name.isEmpty() &&
-                parent_name_from_regex != "vlan" &&
-                parent_name != parent_name_from_regex)
-            {
-                err = QObject::tr("'%1' looks like a name of a vlan interface "
-                                  "but it does not match the name of the parent "
-                                  "interface '%2'").arg(subint_name).arg(parent_name);
-                return false;
-            }
-            int vlan_id = vlan_name_patterns[idx].cap(2).toInt();
-            if (vlan_id > 4095)
-            {
-                err = QObject::tr("'%1' looks like a name of a vlan interface "
-                                  "but vlan ID it defines is outside of the valid range."
-                                  "").arg(subint_name);
-                return false;
-            }
+            err = QObject::tr("'%1' looks like a name of a vlan interface "
+                              "but it does not match the name of the parent "
+                              "interface '%2'").arg(subint_name).arg(parent_name);
+            return false;
+        }
+
+        if (vlan_id > 4095)
+        {
+            err = QObject::tr("'%1' looks like a name of a vlan interface "
+                              "but vlan ID it defines is outside of the valid range."
+                              "").arg(subint_name);
+            return false;
         }
     }
+
     return true;
 }
 

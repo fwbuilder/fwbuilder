@@ -26,19 +26,15 @@
 #ifndef PIX_INTERFACE_PROPERTIES_HH
 #define PIX_INTERFACE_PROPERTIES_HH
 
-#include <map>
-#include <list>
-
-#include <QString>
-
 #include "interfaceProperties.h"
-#include "fwbuilder/InterfaceData.h"
 
 
-class pixInterfaces : public interfaceProperties {
+class pixInterfaces : public interfaceProperties
+{
 
 public:
-    pixInterfaces();
+    pixInterfaces() : interfaceProperties() {}
+    virtual bool parseVlan(const QString&, QString*, int*);
 };
 
 #endif

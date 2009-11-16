@@ -27,7 +27,6 @@
 #define INTERFACE_PROPERTIES_HH
 
 #include <QString>
-#include <QRegExp>
 #include <QList>
 
 #include <map>
@@ -43,7 +42,6 @@ protected:
                   VLAN_INTERFACE,
                   BRIDGE_INTERFACE,
                   UNKNOWN} interface_type;
-    QList<QRegExp> vlan_name_patterns;
 
     /*
      * collects all ip addresses of the interface (only direct
@@ -69,8 +67,7 @@ public:
         }
     }
 
-    virtual void parseVlan(libfwbuilder::InterfaceData*);
-    virtual void parseVlan(const QString&, QString*, int*);
+    virtual bool parseVlan(const QString&, QString*, int*);
     virtual bool isValidVlanInterfaceName(const QString &,
                                           const QString &,
                                           QString&);
