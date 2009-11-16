@@ -160,13 +160,23 @@ void InterfaceEditorWidget::typeChanged(int type)
 {
     if (type != 0)
     {
-        this->m_ui->addresses->setColumnHidden(0, true);
-        this->m_ui->addresses->setColumnHidden(1, true);
+        while ( this->m_ui->addresses->rowCount() > 0 )
+            this->m_ui->addresses->removeRow(0);
+        foreach ( QPushButton* btn, buttons.keys() )
+            delete btn;
+        foreach ( QComboBox* box, types.values() )
+            delete box;
+        types.clear();
+        buttons.clear();
+        fwaddrs.clear();
+        rows.clear();
+        this->m_ui->addresses->setEnabled(false);
+        this->m_ui->addAddress->setEnabled(false);
     }
     else
     {
-        this->m_ui->addresses->setColumnHidden(0, false);
-        this->m_ui->addresses->setColumnHidden(1, false);
+        this->m_ui->addresses->setEnabled(true);
+        this->m_ui->addAddress->setEnabled(true);
     }
 }
 

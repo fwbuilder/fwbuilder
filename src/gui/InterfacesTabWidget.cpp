@@ -94,13 +94,13 @@ void InterfacesTabWidget::clear()
 
 void InterfacesTabWidget::closeTab()
 {
+    if ( this->count() == 1 ) return;
     int idx = this->currentIndex();
     QWidget *w = this->widget(idx);
     libfwbuilder::Interface *interface = dynamic_cast<InterfaceEditorWidget*>(w)->getInterface() ;
     if ( interface != NULL ) deleted.append( interface );
     this->removeTab(idx);
     delete w;
-    if (this->count() == 0) addNewInterface();
 }
 
 
