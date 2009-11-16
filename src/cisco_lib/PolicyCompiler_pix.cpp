@@ -696,7 +696,8 @@ void PolicyCompiler_pix::compile()
         add( new InterfacePolicyRules(
                  "process interface policy rules and store interface ids"));
 
-	if ( fwopt->getBool("pix_assume_fw_part_of_any")) {
+	if ( fwopt->getBool("pix_assume_fw_part_of_any"))
+        {
 // add( new splitIfSrcAny( "split rule if src is any" ));
             add( new splitIfDstAny( "split rule if dst is any" ));
         }

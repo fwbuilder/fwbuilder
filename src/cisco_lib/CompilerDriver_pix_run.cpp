@@ -80,6 +80,7 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
+#include <QtDebug>
 
 
 using namespace std;
@@ -259,11 +260,32 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
 
         multimap<string, FWObject*> netzone_objects;
 
-        std::list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
-        for (std::list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+        std::list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+        for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
         {
             Interface *iface = dynamic_cast<Interface*>(*i);
             assert(iface);
+
+            if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
+
+            if ((iface->getOptionsObject()->getStr("type") == "" ||
+                 iface->getOptionsObject()->getStr("type") == "ethernet") &&
+                iface->getByType(Interface::TYPENAME).size() > 0)
+            {
+                // Parent vlan interface (i.e. trunk)
+                if (!iface->isUnprotected())
+                {
+                    QString err(
+                        "Interface %1 has vlan subinterfaces, it can not "
+                        "be used for ACL. Marking this interface \"unprotected\" "
+                        "to exclude it."
+                    );
+                    warning(fw, NULL, NULL,
+                            err.arg(iface->getName().c_str())
+                            .toStdString());
+                    iface->setUnprotected(true);
+                }
+            }
 
             // Tests for label, security level and network zone make sense
             // only for interfaces that can be used in ACLs or to bind
@@ -271,59 +293,22 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
             // run these checks.  One example of unnumbered interface is
             // parent interface for vlan subinterfaces.
             if (iface->isUnnumbered()) continue;
-
-            if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
-
-/*
- * missing labels on interfaces
- */
-            if (iface->getLabel()=="")
-            {
-                string lbl;
-                if (iface->isDedicatedFailover()) 
-                {
-                    // dedicated failover interface misses label. This
-                    // interface can be used in failover cluster group
-                    // or state sync group. Assign label depending on
-                    // the function.
-                    FWObjectTypedChildIterator it =
-                        cluster->findByType(StateSyncClusterGroup::TYPENAME);
-                    StateSyncClusterGroup *state_sync_group =
-                        StateSyncClusterGroup::cast(*it);
-                    if (state_sync_group && state_sync_group->hasMember(iface))
-                        lbl = "state";
-
-                    if (!iface->getOptionsObject()->getStr("failover_group_id").empty())
-                        lbl = "failover";
-                }
-
-                if (lbl.empty())
-                {
-                    if (iface->getSecurityLevel()==0)   lbl="outside";
-                    else
-                    {
-                        if (iface->getSecurityLevel()==100) lbl="inside";
-                        else
-                        {
-                            QString l("dmz%1");
-                            lbl = l.arg(iface->getSecurityLevel()).toStdString();
-                        }
-                    }
-                }
-                iface->setLabel(lbl);
-            }
+            if (iface->isUnprotected()) continue;
 
 /*
- * there shouldn't be two interfaces with the same security level
+ * there shouldn't be two interfaces with the same security level and same label
+ * 
  */
-            for (std::list<FWObject*>::iterator j=l2.begin(); j!=l2.end(); ++j)
+            for (std::list<FWObject*>::iterator j=all_interfaces.begin(); j!=all_interfaces.end(); ++j)
             {
                 Interface *iface2 = dynamic_cast<Interface*>(*j);
                 assert(iface2);
                 if (iface2->isUnnumbered()) continue;
+                if (iface2->isUnprotected()) continue;
                 if (iface->getId()==iface2->getId()) continue;
                 if (iface->getOptionsObject()->getBool("cluster_interface") ||
-                    iface2->getOptionsObject()->getBool("cluster_interface")) continue;
+                    iface2->getOptionsObject()->getBool("cluster_interface"))
+                    continue;
 
                 if (iface->getSecurityLevel()==iface2->getSecurityLevel())
                 {
@@ -331,6 +316,21 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                         "Security level of each interface should be unique, "
                         "however interfaces %1 (%2) and %3 (%4)"
                         " have the same security level."
+                    );
+                    abort(fw, NULL, NULL,
+                          err.arg(iface->getName().c_str())
+                          .arg(iface->getLabel().c_str())
+                          .arg(iface2->getName().c_str())
+                          .arg(iface2->getLabel().c_str()).toStdString());
+                    throw FatalErrorInSingleRuleCompileMode();
+                }
+
+                if (iface->getLabel()==iface2->getLabel())
+                {
+                    QString err(
+                        "Label of each interface should be unique, "
+                        "however interfaces %1 (%2) and %3 (%4)"
+                        " have the same."
                     );
                     abort(fw, NULL, NULL,
                           err.arg(iface->getName().c_str())
@@ -347,11 +347,10 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
             // commands.
             if (iface->isDedicatedFailover()) continue;
 
-
 /*
  * in PIX, we need network zones to be defined for all interfaces
  */
-            string netzone_id=iface->getStr("network_zone");
+            string netzone_id = iface->getStr("network_zone");
             if (netzone_id=="")
             {
                 QString err("Network zone definition is missing for interface %1 (%2)");
@@ -360,7 +359,8 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
                       .arg(iface->getLabel().c_str()).toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
             }
-            FWObject *netzone=objdb->findInIndex(
+
+            FWObject *netzone = objdb->findInIndex(
                 FWObjectDatabase::getIntId(netzone_id));
             if (netzone==NULL) 
             {
@@ -447,13 +447,81 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
             }
         }
 
+        /* Now that all checks are done, we can drop copies of cluster
+         * interfaces that were added to the firewall by
+         * CompilerDriver::populateClusterElements()
+         */
+        list<FWObject*> copies_of_cluster_interfaces;
+        for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+
+            if (iface->getOptionsObject()->getBool("cluster_interface"))
+                copies_of_cluster_interfaces.push_back(iface);
+        }
+        while (copies_of_cluster_interfaces.size())
+        {
+            fw->remove(copies_of_cluster_interfaces.front());
+            copies_of_cluster_interfaces.pop_front();
+        }
+
+        all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+
+        for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+        {
+            Interface *iface = dynamic_cast<Interface*>(*i);
+            assert(iface);
 /*
- *  now sort interfaces by their network zone "width" (that is, more narrow 
- *  network zone should go first, interface with network zone "any" should be
- *  the last)
+ * missing labels on interfaces
  *
- std::sort(fw->begin(), fw->end(), sort_by_net_zone() );
-*/
+ */
+            if (iface->getLabel()=="")
+            {
+                string lbl;
+                if (iface->isDedicatedFailover()) 
+                {
+                    // dedicated failover interface misses label. This
+                    // interface can be used in failover cluster group
+                    // or state sync group. Assign label depending on
+                    // the function.
+                    FWObjectTypedChildIterator it =
+                        cluster->findByType(StateSyncClusterGroup::TYPENAME);
+                    StateSyncClusterGroup *state_sync_group =
+                        StateSyncClusterGroup::cast(*it);
+                    if (state_sync_group && state_sync_group->hasMember(iface))
+                        lbl = "state";
+
+                    if (!iface->getOptionsObject()->getStr("failover_group_id").empty())
+                        lbl = "failover";
+                }
+
+                if (lbl.empty())
+                {
+                    if (iface->getSecurityLevel()==0)   lbl="outside";
+                    else
+                    {
+                        if (iface->getSecurityLevel()==100) lbl="inside";
+                        else
+                        {
+                            QString l("dmz%1");
+                            lbl = l.arg(iface->getSecurityLevel()).toStdString();
+                        }
+                    }
+                }
+                iface->setLabel(lbl);
+            }
+
+
+
+        }
+        /*
+         *  now sort interfaces by their network zone "width" (that
+         *  is, more narrow network zone should go first, interface
+         *  with network zone "any" should be the last)
+         *
+         std::sort(fw->begin(), fw->end(), sort_by_net_zone() );
+        */
 
         std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
         prep->compile();
@@ -661,9 +729,10 @@ void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
                 Interface *member_iface = Interface::cast(FWObjectReference::getObject(*it));
                 assert(member_iface);
 
+                pixClusterGroupChecks(failover_group);
+
                 if (member_iface->isDedicatedFailover())
                 {
-                    pixClusterGroupChecks(failover_group);
                     failover_group_inspected = true;
                 }
             }
@@ -709,10 +778,11 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
             }
         }
 
-        if (!member_iface->isDedicatedFailover())
+        if (StateSyncClusterGroup::isA(cluster_group) &&
+            !member_iface->isDedicatedFailover())
         {
-            QString err("Interface %1 is used in a state synchronization or "
-                        "failover group but is not marked as 'Dedicated Failover' "
+            QString err("Interface %1 is used in a state synchronization "
+                        "but is not marked as 'Dedicated Failover' "
                         "interface. All interfaces used for the state "
                         "synchronization or failover must be marked "
                         "'Dedicated Failover'. ");
@@ -721,6 +791,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
                   err.arg(member_iface->getName().c_str()).toStdString());
             throw FatalErrorInSingleRuleCompileMode();
         }
+
         if (!member_iface->isRegular() || member_iface->countInetAddresses(true)==0)
         {
             QString err("Interface %1 which is used in state synchronization "

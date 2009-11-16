@@ -309,6 +309,7 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
                 {
                     Interface *intf = Interface::cast(*i);
                     if (intf->isUnprotected()) continue;
+                    if (intf->getOptionsObject()->getBool("cluster_interface")) continue;
 
                     PolicyRule *r = compiler->dbcopy->createPolicyRule();
                     compiler->temp_ruleset->add(r);
@@ -347,14 +348,10 @@ bool PolicyCompiler_pix::pickACL_v6::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
     if(rule_iface==NULL)
-    {
-        compiler->abort(
-            
-                rule, "Missing interface assignment");
-    }
+        compiler->abort(rule, "Missing interface assignment");
 
     string acl_name= rule_iface->getLabel() + "_acl_in";
-    rule->setStr("acl",acl_name);
+    rule->setStr("acl", acl_name);
 
     ciscoACL *acl = new ciscoACL(acl_name, rule_iface, "in");
     pix_comp->acls[acl_name] = acl;
