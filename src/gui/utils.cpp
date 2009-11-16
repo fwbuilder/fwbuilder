@@ -202,10 +202,13 @@ bool isTreeReadWrite(QWidget *parent, FWObject *obj)
 {
     if (obj->isReadOnly())
     {
-        QMessageBox::warning(parent, "Firewall Builder",
- QObject::tr("Impossible to apply changes because object is located in read-only\npart of the tee or data file was opened read-only"),
- QObject::tr("&Continue"), 0, 0,
- 0, 2 );
+        QMessageBox::warning(
+            parent, "Firewall Builder",
+            QObject::tr("Impossible to apply changes because object is "
+                        "located in read-only\npart of the tree or data "
+                        "file was opened read-only"),
+            QObject::tr("&Continue"), 0, 0,
+            0, 2 );
 
         return false;
     }
@@ -215,19 +218,30 @@ bool isTreeReadWrite(QWidget *parent, FWObject *obj)
 /*
  * compare names as QString objects to catch non-ascii names
  */
-bool validateName(QWidget *parent,
-                  libfwbuilder::FWObject *obj,const QString &newname)
+bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
 {
     FWObject *p = obj->getParent();
     for (FWObject::iterator i=p->begin(); i!=p->end(); ++i)
     {
         FWObject *o1= *i;
-        if (QString(o1->getName().c_str())==newname && o1!=obj)
+        // Another hack: we need to be able to create policy and nat
+        // ruleset objects with name "ftp-proxy/*" for PF. Allow
+        // objects of different type to have the same name.
+
+        qDebug() << "o1=" << o1 << "obj=" << obj
+                 << "o1->getTypeName()=" << o1->getTypeName().c_str()
+                 << "obj->getTypeName()=" << obj->getTypeName().c_str();
+
+        if (o1 == obj || o1->getTypeName() != obj->getTypeName()) continue;
+
+        if (QString(o1->getName().c_str()) == newname)
         {
-            QMessageBox::warning(parent, "Firewall Builder",
- QObject::tr("Object with name '%1' already exists, please choose different name.").
-                                 arg(o1->getName().c_str()),
-                                 QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
+            QMessageBox::warning(
+                parent, "Firewall Builder",
+                QObject::tr("Object with name '%1' already exists, "
+                            "please choose different name.").
+                arg(o1->getName().c_str()),
+                QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
             return false;
         }
     }
