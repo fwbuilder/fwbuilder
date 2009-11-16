@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1258062728" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1258406412" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <Interface id="id3213X42281" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp2" comment="" ro="False">
       <InterfaceOptions>
@@ -280,10 +280,15 @@
     <ObjectRef ref="id2936X39486"/>
     <ObjectRef ref="id2461X26048"/>
     <ObjectRef ref="id2490X26048"/>
+    <IPv4 id="id2944X39486" name="pix2:Ethernet0:ip" comment="" ro="False" address="192.0.2.254" netmask="255.255.255.0"/>
+    <IPv4 id="id2846X69605" name="pix1:Ethernet0:ip" comment="" ro="False" address="192.0.2.253" netmask="255.255.255.0"/>
+    <IPv4 id="id4842X97641" name="cluster1_v6:Ethernet0:ip" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
+    <ObjectRef ref="id3817X97641"/>
+    <ObjectRef ref="id3315X97641"/>
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id2366X75741" host_OS="pix_os" inactive="False" lastCompiled="1257993249" lastInstalled="0" lastModified="1258129476" platform="pix" name="cluster1" comment="" ro="False">
+      <Cluster id="id2366X75741" host_OS="pix_os" inactive="False" lastCompiled="1258409844" lastInstalled="0" lastModified="1258413993" platform="pix" name="cluster1" comment="" ro="False">
         <NAT id="id2370X75741" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4606X78273" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -345,15 +350,15 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2862X78273" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id55439X897" disabled="False" group="" log="True" position="2" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
-              <ObjectRef ref="id2366X75741"/>
+              <ObjectRef ref="id2735X69605"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="id2385X39486"/>
             </Dst>
             <Srv neg="False">
-              <ServiceRef ref="id3F530CC8"/>
+              <ServiceRef ref="udp-DNS"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="sysid0"/>
@@ -363,7 +368,25 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2845X78273" disabled="False" log="True" position="3" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id2862X78273" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+            <Src neg="False">
+              <ObjectRef ref="id2366X75741"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id2385X39486"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-DNS"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id2845X78273" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -381,7 +404,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2828X78273" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id2828X78273" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id2385X39486"/>
             </Src>
@@ -399,7 +422,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2811X78273" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2811X78273" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -424,7 +447,7 @@
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2377X75741" master_iface="id2843X69605" type="none" name="cluster1:vrrp0:members" comment="">
+          <FailoverClusterGroup id="id2377X75741" type="none" name="cluster1:e1:members" comment="">
             <ObjectRef ref="id2843X69605"/>
             <ObjectRef ref="id2936X39486"/>
             <ClusterGroupOptions>
@@ -433,14 +456,14 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id2379X75741" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0" comment="" ro="False">
+        <Interface id="id2379X75741" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0.101" comment="" ro="False">
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2382X75741" type="none" name="cluster1:vrrp1:members" comment="">
-            <ObjectRef ref="id2844X69605"/>
-            <ObjectRef ref="id2941X39486"/>
+          <FailoverClusterGroup id="id2382X75741" type="none" name="cluster1:e0.101:members" comment="">
+            <ObjectRef ref="id3814X97641"/>
+            <ObjectRef ref="id2818X95537"/>
             <ClusterGroupOptions/>
           </FailoverClusterGroup>
         </Interface>
@@ -449,6 +472,14 @@
           <FailoverClusterGroup id="id2337X71781" master_iface="id2331X71781" type="pix_failover" name="Failover group" comment="">
             <ObjectRef ref="id2331X71781"/>
             <ObjectRef ref="id2946X39486"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <Interface id="id5372X97641" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="20" unnum="False" unprotected="False" name="Ethernet0.102" comment="" ro="False">
+          <InterfaceOptions/>
+          <FailoverClusterGroup id="id5374X97641" master_iface="id3817X97641" type="none" name="cluster1:e0.102:members" comment="">
+            <ObjectRef ref="id3817X97641"/>
+            <ObjectRef ref="id3315X97641"/>
             <ClusterGroupOptions/>
           </FailoverClusterGroup>
         </Interface>
@@ -461,7 +492,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id2851X26048" host_OS="pix_os" inactive="False" lastCompiled="1258127973" lastInstalled="0" lastModified="1258127885" platform="pix" name="cluster1_v6" comment="" ro="False">
+      <Cluster id="id2851X26048" host_OS="pix_os" inactive="False" lastCompiled="1258127973" lastInstalled="0" lastModified="1258405852" platform="pix" name="cluster1_v6" comment="" ro="False">
         <NAT id="id2966X26048" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id2967X26048" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -611,12 +642,12 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id2870X26048" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0" comment="" ro="False">
+        <Interface id="id2870X26048" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0.101" comment="" ro="False">
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2877X26048" type="none" name="cluster1:vrrp1:members" comment="">
+          <FailoverClusterGroup id="id2877X26048" type="none" name="cluster1:eth0:members" comment="">
             <ObjectRef ref="id2456X26048"/>
             <ObjectRef ref="id2485X26048"/>
             <ClusterGroupOptions/>
@@ -627,6 +658,12 @@
           <FailoverClusterGroup id="id2888X26048" master_iface="id2461X26048" type="pix_failover" name="Failover group" comment="">
             <ObjectRef ref="id2461X26048"/>
             <ObjectRef ref="id2490X26048"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <Interface id="id4843X97641" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0.102" comment="" ro="False">
+          <InterfaceOptions/>
+          <FailoverClusterGroup id="id4845X97641" type="none" name="cluster1:eth0:members" comment="">
             <ClusterGroupOptions/>
           </FailoverClusterGroup>
         </Interface>
@@ -646,6 +683,7 @@
         <IPv4 id="id11417X39764" name="like pf_cluster_1:carp0:ip" comment="" ro="False" address="172.24.0.1" netmask="0.0.0.0"/>
         <IPv4 id="id15840X39764" name="int host" comment="" ro="False" address="172.24.0.100" netmask="0.0.0.0"/>
         <IPv4 id="id98741X57559" name="gw1" comment="" ro="False" address="172.24.0.100" netmask="0.0.0.0"/>
+        <IPv4 id="id11816X97641" name="Address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="id1498X69605" name="DNS Names" comment="" ro="False"/>
       <ObjectGroup id="id1499X69605" name="Address Tables" comment="" ro="False"/>
@@ -660,6 +698,7 @@
         <Network id="id95768X57559" name="net-172.24.2" comment="" ro="False" address="172.24.2.0" netmask="255.255.255.0"/>
         <Network id="id3041X68642" name="net-192.168.100" comment="" ro="False" address="192.168.100.0" netmask="255.255.255.0"/>
         <Network id="id2385X39486" name="net-10.3.14" comment="" ro="False" address="10.3.14.0" netmask="255.255.255.0"/>
+        <Network id="id11817X97641" name="net-10.0.0.0/24" comment="" ro="False" address="10.0.0.0" netmask="255.255.255.0"/>
       </ObjectGroup>
       <ObjectGroup id="id1504X69605" name="Address Ranges" comment="" ro="False"/>
     </ObjectGroup>
@@ -676,23 +715,40 @@
       <ServiceGroup id="id1513X69605" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id1514X69605" name="Firewalls" comment="" ro="False">
-      <Firewall id="id2735X69605" host_OS="pix_os" inactive="False" lastCompiled="1257993249" lastInstalled="0" lastModified="1258129450" platform="pix" version="7.0" name="pix1" comment="  " ro="False">
+      <Firewall id="id2735X69605" host_OS="pix_os" inactive="False" lastCompiled="1258409844" lastInstalled="0" lastModified="1258414389" platform="pix" version="7.0" name="pix1" comment="  " ro="False">
         <NAT id="id2827X69605" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id2741X69605" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id2842X69605" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id2843X69605" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id2385X39486" security_level="100" unnum="False" unprotected="False" name="Ethernet1" comment="   " ro="False">
+        <Interface id="id2843X69605" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id2385X39486" security_level="100" unnum="False" unprotected="False" name="Ethernet1" comment="   " ro="False">
           <IPv4 id="id2384X39486" name="pix1:Ethernet1:ip" comment="" ro="False" address="10.3.14.206" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="type">ethernet</Option>
             <Option name="vlan_id">0</Option>
           </InterfaceOptions>
         </Interface>
-        <Interface id="id2844X69605" dedicated_failover="False" dyn="False" label="outside" mgmt="True" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0" comment="" ro="False">
-          <IPv4 id="id2846X69605" name="pix1:Ethernet0:ip" comment="" ro="False" address="192.0.2.253" netmask="255.255.255.0"/>
+        <Interface id="id2844X69605" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="True" unprotected="False" name="Ethernet0" comment="" ro="False">
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">ethernet</Option>
           </InterfaceOptions>
+          <Interface id="id3814X97641" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0.101" comment="" ro="False">
+            <IPv4 id="id3816X97641" name="pix1:Ethernet0:Ethernet0.101:ip" comment="" ro="False" address="192.0.2.253" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="bonding_policy"></Option>
+              <Option name="bondng_driver_options"></Option>
+              <Option name="enable_stp">False</Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">101</Option>
+              <Option name="xmit_hash_policy"></Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id3817X97641" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="id11817X97641" security_level="20" unnum="False" unprotected="False" name="Ethernet0.102" comment="" ro="False">
+            <IPv4 id="id3819X97641" name="pix1:Ethernet0:Ethernet0.102:ip" comment="" ro="False" address="10.0.0.253" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">102</Option>
+            </InterfaceOptions>
+          </Interface>
         </Interface>
         <Interface id="id2331X71781" dedicated_failover="True" dyn="False" label="failover" mgmt="False" network_zone="root" security_level="10" unnum="False" unprotected="False" name="Ethernet2" comment="" ro="False">
           <IPv4 id="id2877X71781" name="pix1:Ethernet2:ip" comment="" ro="False" address="172.17.1.253" netmask="255.255.255.252"/>
@@ -700,7 +756,7 @@
             <Option name="type">ethernet</Option>
           </InterfaceOptions>
         </Interface>
-        <Management address="192.168.1.2">
+        <Management address="10.3.14.206">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="False" identity="" port="-1"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
@@ -720,6 +776,9 @@
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_vlan_interfaces">True</Option>
+          <Option name="conn_hh">0</Option>
+          <Option name="conn_mm">0</Option>
+          <Option name="conn_ss">0</Option>
           <Option name="ctiqbe_fixup">2 2748 0 nil 0</Option>
           <Option name="debug">False</Option>
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
@@ -733,7 +792,13 @@
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ftp_fixup">2 21 0 strict 0</Option>
           <Option name="h323_h225_fixup">2 1720 1720 nil 0</Option>
+          <Option name="h323_hh">0</Option>
+          <Option name="h323_mm">0</Option>
           <Option name="h323_ras_fixup">2 1718 1719 nil 0</Option>
+          <Option name="h323_ss">0</Option>
+          <Option name="half-closed_hh">0</Option>
+          <Option name="half-closed_mm">0</Option>
+          <Option name="half-closed_ss">0</Option>
           <Option name="http_fixup">2 80 80 nil 0</Option>
           <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
           <Option name="ignore_empty_groups">False</Option>
@@ -766,22 +831,50 @@
           <Option name="pf_timeout_frag">30</Option>
           <Option name="pf_timeout_interval">10</Option>
           <Option name="pix_acl_basic">True</Option>
+          <Option name="pix_acl_no_clear">False</Option>
+          <Option name="pix_acl_substitution">False</Option>
+          <Option name="pix_acl_temp_addr"></Option>
           <Option name="pix_add_clear_statements">true</Option>
-          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_assume_fw_part_of_any">True</Option>
+          <Option name="pix_check_duplicate_nat">False</Option>
+          <Option name="pix_check_overlapping_global_pools">False</Option>
+          <Option name="pix_check_overlapping_global_statics">False</Option>
+          <Option name="pix_check_overlapping_statics">False</Option>
+          <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_default_logint">300</Option>
           <Option name="pix_disable_snmp_agent">False</Option>
-          <Option name="pix_emblem_log_format">false</Option>
-          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_emb_limit">0</Option>
+          <Option name="pix_emblem_log_format">False</Option>
+          <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">False</Option>
-          <Option name="pix_floodguard">true</Option>
-          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_floodguard">True</Option>
+          <Option name="pix_fragguard">False</Option>
+          <Option name="pix_generate_out_acl">True</Option>
+          <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">True</Option>
+          <Option name="pix_logging_buffered">False</Option>
+          <Option name="pix_logging_buffered_level">2</Option>
+          <Option name="pix_logging_console">False</Option>
+          <Option name="pix_logging_console_level">2</Option>
+          <Option name="pix_logging_timestamp">False</Option>
+          <Option name="pix_logging_trap_level">2</Option>
+          <Option name="pix_max_conns">0</Option>
+          <Option name="pix_nodnsalias_inbound">False</Option>
+          <Option name="pix_nodnsalias_outbound">False</Option>
           <Option name="pix_ntp1"></Option>
           <Option name="pix_ntp1_pref">False</Option>
           <Option name="pix_ntp2"></Option>
           <Option name="pix_ntp2_pref">False</Option>
           <Option name="pix_ntp3"></Option>
           <Option name="pix_ntp3_pref">False</Option>
+          <Option name="pix_optimize_default_nat">False</Option>
+          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_regroup_commands">False</Option>
+          <Option name="pix_replace_natted_objects">False</Option>
+          <Option name="pix_resetinbound">False</Option>
+          <Option name="pix_resetoutside">False</Option>
+          <Option name="pix_route_dnat">False</Option>
           <Option name="pix_route_dnat_supported">true</Option>
           <Option name="pix_rule_syslog_settings">false</Option>
           <Option name="pix_security_fragguard_supported">true</Option>
@@ -791,13 +884,24 @@
           <Option name="pix_snmp_poll_traps_2"></Option>
           <Option name="pix_snmp_server1"></Option>
           <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_ssh_timeout">0</Option>
+          <Option name="pix_syslog_device_id_opt"></Option>
           <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_syslog_device_id_val"></Option>
+          <Option name="pix_syslog_facility"></Option>
+          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_tcpmss">False</Option>
           <Option name="pix_tcpmss_value">0</Option>
-          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="pix_telnet_timeout">0</Option>
+          <Option name="pix_use_acl_remarks">False</Option>
+          <Option name="pix_use_manual_commit">False</Option>
           <Option name="pptp_fixup">2 1723 0 nil 0</Option>
           <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
+          <Option name="rpc_hh">0</Option>
+          <Option name="rpc_mm">0</Option>
+          <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">2 514 0 nil 0</Option>
           <Option name="rtsp_fixup">2 554 0 nil 0</Option>
           <Option name="scpArgs"></Option>
@@ -805,6 +909,12 @@
           <Option name="secuwall_add_files_dir">/opt/secuwall/templates/default</Option>
           <Option name="secuwall_dns_reso1">files</Option>
           <Option name="sip_fixup">2 5060 5060 nil 0</Option>
+          <Option name="sip_hh">0</Option>
+          <Option name="sip_media_hh">0</Option>
+          <Option name="sip_media_mm">0</Option>
+          <Option name="sip_media_ss">0</Option>
+          <Option name="sip_mm">0</Option>
+          <Option name="sip_ss">0</Option>
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
@@ -812,6 +922,14 @@
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
           <Option name="sshArgs"></Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
+          <Option name="uauth_abs">False</Option>
+          <Option name="uauth_hh">0</Option>
+          <Option name="uauth_inact">False</Option>
+          <Option name="uauth_mm">0</Option>
+          <Option name="uauth_ss">0</Option>
+          <Option name="udp_hh">0</Option>
+          <Option name="udp_mm">0</Option>
+          <Option name="udp_ss">0</Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -819,33 +937,53 @@
           <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
+          <Option name="xlate_hh">0</Option>
+          <Option name="xlate_mm">0</Option>
+          <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id2930X39486" host_OS="pix_os" inactive="False" lastCompiled="1257993249" lastInstalled="0" lastModified="1258129476" platform="pix" version="7.0" name="pix2" comment="  " ro="False">
+      <Firewall id="id2930X39486" host_OS="pix_os" inactive="False" lastCompiled="1258409844" lastInstalled="0" lastModified="1258414396" platform="pix" version="7.0" name="pix2" comment="  " ro="False">
         <NAT id="id2952X39486" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Policy id="id2951X39486" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
         <Routing id="id2953X39486" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id2936X39486" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id2385X39486" security_level="100" unnum="False" unprotected="False" name="Ethernet1" comment="   " ro="False">
+        <Interface id="id2936X39486" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id2385X39486" security_level="100" unnum="False" unprotected="False" name="Ethernet1" comment="   " ro="False">
           <IPv4 id="id2939X39486" name="pix2:Ethernet1:ip" comment="" ro="False" address="10.3.14.207" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="type">ethernet</Option>
             <Option name="vlan_id">0</Option>
           </InterfaceOptions>
         </Interface>
-        <Interface id="id2941X39486" dedicated_failover="False" dyn="False" label="outside" mgmt="True" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0" comment="" ro="False">
-          <IPv4 id="id2944X39486" name="pix2:Ethernet0:ip" comment="" ro="False" address="192.0.2.254" netmask="255.255.255.0"/>
+        <Interface id="id2941X39486" dedicated_failover="False" dyn="False" label="eth0" mgmt="False" network_zone="sysid0" security_level="0" unnum="True" unprotected="False" name="Ethernet0" comment="" ro="False">
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">ethernet</Option>
           </InterfaceOptions>
+          <Interface id="id2818X95537" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0.101" comment="" ro="False">
+            <IPv4 id="id2826X97641" name="pix2:Ethernet0:ip" comment="" ro="False" address="192.0.2.254" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="bonding_policy"></Option>
+              <Option name="bondng_driver_options"></Option>
+              <Option name="enable_stp">False</Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">101</Option>
+              <Option name="xmit_hash_policy"></Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id3315X97641" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="id11817X97641" security_level="20" unnum="False" unprotected="False" name="Ethernet0.102" comment="" ro="False">
+            <IPv4 id="id3317X97641" name="pix2:Ethernet0:Ethernet0.102:ip" comment="" ro="False" address="10.0.0.254" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">102</Option>
+            </InterfaceOptions>
+          </Interface>
         </Interface>
-        <Interface id="id2946X39486" dedicated_failover="True" dyn="False" label="failover" mgmt="False" network_zone="id2385X39486" security_level="10" unnum="False" unprotected="False" name="Ethernet2" comment="" ro="False">
+        <Interface id="id2946X39486" dedicated_failover="True" dyn="False" label="failover" mgmt="False" network_zone="sysid0" security_level="10" unnum="False" unprotected="False" name="Ethernet2" comment="" ro="False">
           <IPv4 id="id2949X39486" name="pix2:Ethernet2:ip" comment="" ro="False" address="172.17.1.254" netmask="255.255.255.252"/>
           <InterfaceOptions>
             <Option name="type">ethernet</Option>
           </InterfaceOptions>
         </Interface>
-        <Management address="192.168.1.2">
+        <Management address="10.3.14.207">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
           <FWBDManagement enabled="False" identity="" port="-1"/>
           <PolicyInstallScript arguments="" command="" enabled="False"/>
@@ -865,6 +1003,9 @@
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="configure_vlan_interfaces">True</Option>
+          <Option name="conn_hh">0</Option>
+          <Option name="conn_mm">0</Option>
+          <Option name="conn_ss">0</Option>
           <Option name="ctiqbe_fixup">2 2748 0 nil 0</Option>
           <Option name="debug">False</Option>
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
@@ -878,7 +1019,13 @@
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ftp_fixup">2 21 0 strict 0</Option>
           <Option name="h323_h225_fixup">2 1720 1720 nil 0</Option>
+          <Option name="h323_hh">0</Option>
+          <Option name="h323_mm">0</Option>
           <Option name="h323_ras_fixup">2 1718 1719 nil 0</Option>
+          <Option name="h323_ss">0</Option>
+          <Option name="half-closed_hh">0</Option>
+          <Option name="half-closed_mm">0</Option>
+          <Option name="half-closed_ss">0</Option>
           <Option name="http_fixup">2 80 80 nil 0</Option>
           <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
           <Option name="ignore_empty_groups">False</Option>
@@ -911,22 +1058,50 @@
           <Option name="pf_timeout_frag">30</Option>
           <Option name="pf_timeout_interval">10</Option>
           <Option name="pix_acl_basic">True</Option>
+          <Option name="pix_acl_no_clear">False</Option>
+          <Option name="pix_acl_substitution">False</Option>
+          <Option name="pix_acl_temp_addr"></Option>
           <Option name="pix_add_clear_statements">true</Option>
-          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_assume_fw_part_of_any">True</Option>
+          <Option name="pix_check_duplicate_nat">False</Option>
+          <Option name="pix_check_overlapping_global_pools">False</Option>
+          <Option name="pix_check_overlapping_global_statics">False</Option>
+          <Option name="pix_check_overlapping_statics">False</Option>
+          <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_default_logint">300</Option>
           <Option name="pix_disable_snmp_agent">False</Option>
-          <Option name="pix_emblem_log_format">false</Option>
-          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_emb_limit">0</Option>
+          <Option name="pix_emblem_log_format">False</Option>
+          <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">False</Option>
-          <Option name="pix_floodguard">true</Option>
-          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_floodguard">True</Option>
+          <Option name="pix_fragguard">False</Option>
+          <Option name="pix_generate_out_acl">True</Option>
+          <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">True</Option>
+          <Option name="pix_logging_buffered">False</Option>
+          <Option name="pix_logging_buffered_level">3</Option>
+          <Option name="pix_logging_console">False</Option>
+          <Option name="pix_logging_console_level">3</Option>
+          <Option name="pix_logging_timestamp">False</Option>
+          <Option name="pix_logging_trap_level">3</Option>
+          <Option name="pix_max_conns">0</Option>
+          <Option name="pix_nodnsalias_inbound">False</Option>
+          <Option name="pix_nodnsalias_outbound">False</Option>
           <Option name="pix_ntp1"></Option>
           <Option name="pix_ntp1_pref">False</Option>
           <Option name="pix_ntp2"></Option>
           <Option name="pix_ntp2_pref">False</Option>
           <Option name="pix_ntp3"></Option>
           <Option name="pix_ntp3_pref">False</Option>
+          <Option name="pix_optimize_default_nat">False</Option>
+          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_regroup_commands">False</Option>
+          <Option name="pix_replace_natted_objects">False</Option>
+          <Option name="pix_resetinbound">False</Option>
+          <Option name="pix_resetoutside">False</Option>
+          <Option name="pix_route_dnat">False</Option>
           <Option name="pix_route_dnat_supported">true</Option>
           <Option name="pix_rule_syslog_settings">false</Option>
           <Option name="pix_security_fragguard_supported">true</Option>
@@ -936,13 +1111,24 @@
           <Option name="pix_snmp_poll_traps_2"></Option>
           <Option name="pix_snmp_server1"></Option>
           <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_ssh_timeout">0</Option>
+          <Option name="pix_syslog_device_id_opt"></Option>
           <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_syslog_device_id_val"></Option>
+          <Option name="pix_syslog_facility"></Option>
+          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_tcpmss">False</Option>
           <Option name="pix_tcpmss_value">0</Option>
-          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="pix_telnet_timeout">0</Option>
+          <Option name="pix_use_acl_remarks">False</Option>
+          <Option name="pix_use_manual_commit">False</Option>
           <Option name="pptp_fixup">2 1723 0 nil 0</Option>
           <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
+          <Option name="rpc_hh">0</Option>
+          <Option name="rpc_mm">0</Option>
+          <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">2 514 0 nil 0</Option>
           <Option name="rtsp_fixup">2 554 0 nil 0</Option>
           <Option name="scpArgs"></Option>
@@ -950,6 +1136,12 @@
           <Option name="secuwall_add_files_dir">/opt/secuwall/templates/default</Option>
           <Option name="secuwall_dns_reso1">files</Option>
           <Option name="sip_fixup">2 5060 5060 nil 0</Option>
+          <Option name="sip_hh">0</Option>
+          <Option name="sip_media_hh">0</Option>
+          <Option name="sip_media_mm">0</Option>
+          <Option name="sip_media_ss">0</Option>
+          <Option name="sip_mm">0</Option>
+          <Option name="sip_ss">0</Option>
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
@@ -957,6 +1149,14 @@
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
           <Option name="sshArgs"></Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
+          <Option name="uauth_abs">False</Option>
+          <Option name="uauth_hh">0</Option>
+          <Option name="uauth_inact">False</Option>
+          <Option name="uauth_mm">0</Option>
+          <Option name="uauth_ss">0</Option>
+          <Option name="udp_hh">0</Option>
+          <Option name="udp_mm">0</Option>
+          <Option name="udp_ss">0</Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -964,6 +1164,9 @@
           <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
+          <Option name="xlate_hh">0</Option>
+          <Option name="xlate_mm">0</Option>
+          <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id2445X26048" host_OS="pix_os" inactive="False" lastCompiled="1258127973" lastInstalled="0" lastModified="1258127858" platform="pix" version="6.3" name="pix1_v6" comment="  " ro="False">
@@ -1273,14 +1476,14 @@
         <TCPService id="tcp-SSH" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ssh" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
         <TCPService id="tcp-DNS" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
       </ServiceGroup>
+      <ServiceGroup id="stdid08" name="UDP" comment="" ro="False">
+        <UDPService id="udp-DNS" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
+      </ServiceGroup>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
         <ServiceGroup id="id3F530CC8" name="DNS" comment="" ro="False">
           <ServiceRef ref="udp-DNS"/>
           <ServiceRef ref="tcp-DNS"/>
         </ServiceGroup>
-      </ServiceGroup>
-      <ServiceGroup id="stdid08" name="UDP" comment="" ro="False">
-        <UDPService id="udp-DNS" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
       </ServiceGroup>
     </ServiceGroup>
   </Library>
