@@ -308,6 +308,7 @@ void InterfaceEditorWidget::addressChanged(int row, int col)
 {
     if ( row < 0 || col < 0 || rows.isEmpty() || row > m_ui->addresses->rowCount() || col > 1 ) return;
 
+    if (!rows.keys().contains(row)) return;
     QString address = this->rows[row].first->text();
     QString netmask = this->rows[row].second->text();
     if ( address.isEmpty() || netmask.isEmpty() ) return;
