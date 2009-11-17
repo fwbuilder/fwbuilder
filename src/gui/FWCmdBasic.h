@@ -42,7 +42,7 @@ public:
     FWCmdBasic(ProjectPanel *project);
     int objectId() {return id;}
     void setObject(libfwbuilder::FWObject *object) {id = object->getId();}
-    libfwbuilder::FWObject* object();
+    libfwbuilder::FWObject* getObject();
 
 };
 

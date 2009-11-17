@@ -27,7 +27,6 @@
 #define FWCMDCHANGE_H
 
 #include "FWCmdBasic.h"
-#include "FWObjectState.h"
 
 /********************************************************
  * FWCmdChange
@@ -35,35 +34,42 @@
 
 class FWCmdChange : public FWCmdBasic
 {
-protected:
-    FWObjectState *oldState;
-    FWObjectState *newState;
 
+    libfwbuilder::FWObject *oldState;
+    libfwbuilder::FWObject *newState;
+
+protected:
     void notify();
 
 public:
-    FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *oldState, FWObjectState *newState);
+    FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, QString text=QString());
     ~FWCmdChange();
 
-    virtual FWObjectState* createState(libfwbuilder::FWObject *object)=0;
+    libfwbuilder::FWObject* getOldState() {return oldState;}
+    libfwbuilder::FWObject* getNewState() {return newState;}
 
+    virtual void redo();
+    virtual void undo();
 };
 
 /********************************************************
  * FWCmdChangeTime
  ********************************************************/
 
-class FWCmdChangeTime : public FWCmdChange
-{
+//class FWCmdChangeTime : public FWCmdChange
+//{
+//public:
+//    FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj) : FWCmdChange(project, obj, tr("Edit time")) {}
+//};
 
-    FWObjectState* createState(libfwbuilder::FWObject *object);
-public:
-    FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *newState);
+/********************************************************
+ * FWCmdChangeIPv4
+ ********************************************************/
 
-    void redo();
-    void undo();
-
-};
-
+//class FWCmdChangeIPv4 : public FWCmdChange
+//{
+//public:
+//    FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj) : FWCmdChange(project, obj, tr("Edit IPv4")) {}
+//};
 
 #endif // FWCMDCHANGE_H

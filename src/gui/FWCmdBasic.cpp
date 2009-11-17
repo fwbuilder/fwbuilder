@@ -32,7 +32,7 @@ FWCmdBasic::FWCmdBasic(ProjectPanel *project)
     this->project = project;
 }
 
-FWObject* FWCmdBasic::object()
+FWObject* FWCmdBasic::getObject()
 {
     return project->db()->findInIndex(id);
 }

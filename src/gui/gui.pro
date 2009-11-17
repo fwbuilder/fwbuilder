@@ -116,7 +116,7 @@ HEADERS += ../../config.h \
     secuwallIfaceOptsDialog.h \
     vlanOnlyIfaceOptsDialog.h \
     linux24IfaceOptsDialog.h \
-	pixosIfaceOptsDialog.h \
+    pixosIfaceOptsDialog.h \
     openbsdIfaceOptsDialog.h \
     clusterMembersDialog.h \
     CompilerOutputPanel.h \
@@ -159,7 +159,7 @@ HEADERS += ../../config.h \
     StartTipDialog.h \
     vrrpOptionsDialog.h \
     carpOptionsDialog.h \
-	pixFailoverOptionsDialog.h \
+    pixFailoverOptionsDialog.h \
     conntrackOptionsDialog.h \
     heartbeatOptionsDialog.h \
     openaisOptionsDialog.h \
@@ -170,7 +170,6 @@ HEADERS += ../../config.h \
     InterfaceEditorWidget.h \
     FWCmdBasic.h \
     FWCmdChange.h \
-    FWObjectState.h \
     InterfacesTabWidget.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
@@ -317,7 +316,7 @@ SOURCES += ProjectPanel.cpp \
     FWBAboutDialog.cpp \
     vrrpOptionsDialog.cpp \
     carpOptionsDialog.cpp \
-	pixFailoverOptionsDialog.cpp \
+    pixFailoverOptionsDialog.cpp \
     conntrackOptionsDialog.cpp \
     pfsyncOptionsDialog.cpp \
     heartbeatOptionsDialog.cpp \
@@ -326,7 +325,6 @@ SOURCES += ProjectPanel.cpp \
     InterfaceEditorWidget.cpp \
     FWCmdBasic.cpp \
     FWCmdChange.cpp \
-    FWObjectState.cpp \
     InterfacesTabWidget.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
@@ -416,7 +414,7 @@ FORMS = FWBMainWindow_q.ui \
     starttipdialog_q.ui \
     vrrpoptionsdialog_q.ui \
     carpoptionsdialog_q.ui \
-	pixfailoveroptionsdialog_q.ui \
+    pixfailoveroptionsdialog_q.ui \
     conntrackoptionsdialog_q.ui \
     heartbeatoptionsdialog_q.ui \
     openaisoptionsdialog_q.ui \

@@ -34,7 +34,6 @@
 
 #include "FWWindow.h"
 #include "FWCmdChange.h"
-#include "FWObjectState.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interval.h"
@@ -214,27 +213,44 @@ void TimeDialog::validate(bool *res)
 void TimeDialog::applyChanges()
 {
     if (!isTreeReadWrite(this,obj)) return;
-    Interval *s = dynamic_cast<Interval*>(obj);
-    assert(s!=NULL);
 
-    FWObjectStateTime *ns = new FWObjectStateTime();
-    ns->name = m_dialog->obj_name->text();
-    ns->comment = m_dialog->comment->toPlainText();
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
 
-    
+    FWObject* newState = cmd->getNewState();
+
+    Interval *interval = dynamic_cast<Interval*>(newState);
+    assert(interval!=NULL);
+
+    newState->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    newState->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+
     if (m_dialog->useStartDate->isChecked())
     {
-        ns->startDate = m_dialog->startDate->date();
-    } 
- 
-    ns->startTime = m_dialog->startTime->time();
+        newState->setInt( "from_day"   ,      m_dialog->startDate->date().day()   );
+        newState->setInt( "from_month" ,      m_dialog->startDate->date().month() );
+        newState->setInt( "from_year"  ,      m_dialog->startDate->date().year()  );
+    } else
+    {
+        newState->setInt( "from_day"   ,      -1 );
+        newState->setInt( "from_month" ,      -1 );
+        newState->setInt( "from_year"  ,      -1 );
+    }
+    newState->setInt( "from_minute"   ,   m_dialog->startTime->time().minute());
+    newState->setInt( "from_hour"  ,      m_dialog->startTime->time().hour()  );
 
     if (m_dialog->useEndDate->isChecked())
     {
-        ns->endDate = m_dialog->endDate->date();
-    } 
-
-    ns->endTime = m_dialog->endTime->time();
+        newState->setInt( "to_day"   ,        m_dialog->endDate->date().day()     );
+        newState->setInt( "to_month" ,        m_dialog->endDate->date().month()   );
+        newState->setInt( "to_year"  ,        m_dialog->endDate->date().year()    );
+    } else
+    {
+        newState->setInt( "to_day"   ,      -1 );
+        newState->setInt( "to_month" ,      -1 );
+        newState->setInt( "to_year"  ,      -1 );
+    }
+    newState->setInt( "to_minute"   ,     m_dialog->endTime->time().minute()  );
+    newState->setInt( "to_hour"  ,        m_dialog->endTime->time().hour()    );
 
     QStringList weekDays ;
     if (m_dialog->cbStart7_2->checkState ()==Qt::Checked)
@@ -252,9 +268,9 @@ void TimeDialog::applyChanges()
     if (m_dialog->cbStart6_2->checkState ()==Qt::Checked)
         weekDays.append("6");
 
-    ns->days_of_week = weekDays.join(",");
+    interval->setDaysOfWeek(weekDays.join(",").toAscii().data());
 
-    m_project->undoStack->push(new FWCmdChangeTime(m_project, obj, ns));
+    m_project->undoStack->push(cmd);
     
     //TODO: Need to refactor this method
     BaseObjectDialog::applyChanges();

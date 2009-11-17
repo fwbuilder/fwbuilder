@@ -27,6 +27,7 @@
 
 #include "FWCmdChange.h"
 #include "FWWindow.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 #include "events.h"
 
@@ -34,20 +35,38 @@
 using namespace libfwbuilder;
 using namespace std;
 
+/********************************************************
+ * FWCmdChange
+ ********************************************************/
+
 void FWCmdChange::notify()
 {
-    FWObject* obj = object();
+    FWObject* obj = getObject();
     QCoreApplication::postEvent(
     mw, new dataModifiedEvent(QString::fromUtf8(obj->getRoot()->getFileName().c_str()),
                               obj->getId()));
 }
 
-FWCmdChange::FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *oldState, FWObjectState *newState):
+FWCmdChange::FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, QString text):
             FWCmdBasic(project)
 {
     setObject(obj);
-    this->oldState = oldState;
-    this->newState = newState;
+
+    FWObjectDatabase* db = obj->getRoot();
+
+    this->oldState = db->create(obj->getTypeName());
+    this->newState = db->create(obj->getTypeName());
+
+    this->oldState->shallowDuplicate(obj);
+    this->newState->shallowDuplicate(obj);
+
+    if (text.isEmpty())
+    {
+        setText(QObject::tr("Edit ")+QString::fromUtf8(obj->getName().c_str()));
+    } else
+    {
+        setText(text);
+    }
 }
 
 FWCmdChange::~FWCmdChange()
@@ -55,32 +74,24 @@ FWCmdChange::~FWCmdChange()
     delete (oldState);
     delete (newState);
 }
-FWCmdChangeTime::FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj, FWObjectState *newState):
-            FWCmdChange(project, obj, createState(obj), newState)
-{
-    setText("edit object");
-}
 
-FWObjectState* FWCmdChangeTime::createState(libfwbuilder::FWObject *obj)
+void FWCmdChange::undo()
 {
-    FWObjectStateTime* state = new FWObjectStateTime();
-    state->save(obj);
-    return state;
-}
+    FWObject* obj = getObject();
 
-void FWCmdChangeTime::undo()
-{
-    FWObject* obj = object();
+    obj->shallowDuplicate(oldState);
 
-    oldState->restore(obj);
-    project->updateObjName(obj, newState->name);
+    project->updateObjName(obj, QString::fromUtf8(newState->getName().c_str()));
     notify();
 }
 
-void FWCmdChangeTime::redo()
+void FWCmdChange::redo()
 {
-    FWObject* obj = object();
-    newState->restore(obj);
-    project->updateObjName(obj, newState->name);
+    FWObject* obj = getObject();
+
+    obj->shallowDuplicate(newState);
+
+    project->updateObjName(obj, QString::fromUtf8(oldState->getName().c_str()));
     notify();
 }
+
