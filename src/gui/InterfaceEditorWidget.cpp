@@ -216,7 +216,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
     }
     try
     {
-        libfwbuilder::InetAddr(addr.toStdString());
+        libfwbuilder::InetAddr(addr.toLatin1().constData());
     }
     catch (libfwbuilder::FWException &ex)
     {
@@ -243,7 +243,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
         }
         else
         {
-            libfwbuilder::InetAddr(netm.toStdString());
+            libfwbuilder::InetAddr(netm.toLatin1().constData());
         }
 
     }
@@ -256,4 +256,15 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
         return false;
     }
     return true;
+}
+
+void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
+{
+    int total = this->m_ui->addresses->viewport()->width();
+    int controls;
+    if ( total/4 > 130 ) controls = 130; else controls = total/4;
+    this->m_ui->addresses->setColumnWidth(0, (total - controls*2)/2);
+    this->m_ui->addresses->setColumnWidth(1, (total - controls*2)/2);
+    this->m_ui->addresses->setColumnWidth(2, controls);
+    this->m_ui->addresses->setColumnWidth(3, controls);
 }

@@ -63,6 +63,9 @@ public slots:
     void deleteAddress();
     void nameEdited(QString);
     void typeChanged(int);
+
+protected:
+    virtual void resizeEvent ( QResizeEvent * );
 };
 
 #endif // INTERFACEEDITORWIDGET_H
