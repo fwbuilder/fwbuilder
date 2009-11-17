@@ -75,6 +75,7 @@ public slots:
 
     virtual void applyChanges()
     {
+        //TODO: When operations are performed in UndoCommands, we need to remove sending of the signal from this method.
         data_changed = false;
         emit notify_changes_applied_sign();
     }

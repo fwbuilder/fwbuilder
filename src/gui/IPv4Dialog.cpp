@@ -47,6 +47,7 @@
 #include <qapplication.h>
 #include <qcursor.h>
 #include "FWBSettings.h"
+#include "FWCmdChange.h"
 
 #include <iostream>
 
@@ -181,13 +182,16 @@ void IPv4Dialog::validate(bool *result)
 
 void IPv4Dialog::applyChanges()
 {
-    IPv4 *s = dynamic_cast<IPv4*>(obj);
+
+
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* newState = cmd->getNewState();
+
+    IPv4 *s = dynamic_cast<IPv4*>(newState);
     assert(s!=NULL);
 
-    string oldname = obj->getName();
-    obj->setName(string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment(
-        string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    newState->setName(string(m_dialog->obj_name->text().toUtf8().constData()) );
+    newState->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     try
     {
@@ -205,7 +209,7 @@ void IPv4Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr());
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    m_project->undoStack->push(cmd);
 
     BaseObjectDialog::applyChanges();
 }
