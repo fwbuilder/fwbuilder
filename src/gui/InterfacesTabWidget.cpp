@@ -40,9 +40,9 @@ void InterfacesTabWidget::changeEvent(QEvent *e)
     }
 }
 
-QMap<libfwbuilder::Interface*, EditedInterfaceData> InterfacesTabWidget::getData()
+QMap<Interface*, EditedInterfaceData> InterfacesTabWidget::getData()
 {
-    QMap<libfwbuilder::Interface*, EditedInterfaceData> res;
+    QMap<Interface*, EditedInterfaceData> res;
     for ( int i = 0; i < this->count(); i++ )
     {
         if ( dynamic_cast<InterfaceEditorWidget*>(this->widget(i))->getInterface() == NULL)
@@ -65,12 +65,12 @@ QList<EditedInterfaceData> InterfacesTabWidget::getNewData()
     return res;
 }
 
-QList<libfwbuilder::Interface*> InterfacesTabWidget::getDeletedInterfaces()
+QList<Interface*> InterfacesTabWidget::getDeletedInterfaces()
 {
     return deleted;
 }
 
-void InterfacesTabWidget::addInterface(libfwbuilder::Interface *interface)
+void InterfacesTabWidget::addInterface(Interface *interface)
 {
     this->addTab(new InterfaceEditorWidget(this, interface), interface->getName().c_str());
 }
@@ -81,7 +81,7 @@ void InterfacesTabWidget::addNewInterface()
     setCurrentIndex(count() - 1);
 }
 
-void InterfacesTabWidget::setTemplate(libfwbuilder::FWObject* obj)
+void InterfacesTabWidget::setTemplate(FWObject* obj)
 {
     currentTemplate = obj;
 }
@@ -97,7 +97,7 @@ void InterfacesTabWidget::closeTab()
     if ( this->count() == 1 ) return;
     int idx = this->currentIndex();
     QWidget *w = this->widget(idx);
-    libfwbuilder::Interface *interface = dynamic_cast<InterfaceEditorWidget*>(w)->getInterface() ;
+    Interface *interface = dynamic_cast<InterfaceEditorWidget*>(w)->getInterface() ;
     if ( interface != NULL ) deleted.append( interface );
     this->removeTab(idx);
     delete w;
@@ -120,7 +120,7 @@ void InterfacesTabWidget::setCornerWidgetsVisible(bool st)
     this->cornerWidget(Qt::TopLeftCorner)->setVisible(st);
 }
 
-void InterfacesTabWidget::addInterface(libfwbuilder::InterfaceData* idata)
+void InterfacesTabWidget::addInterface(InterfaceData* idata)
 {
     addTab(new InterfaceEditorWidget(this, idata), idata->name.c_str());
 }

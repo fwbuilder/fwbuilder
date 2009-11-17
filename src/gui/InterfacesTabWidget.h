@@ -15,6 +15,8 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "InterfaceEditorWidget.h"
 
+using namespace libfwbuilder;
+
 namespace Ui {
     class InterfacesTabWidget;
 }
@@ -29,7 +31,7 @@ struct EditedInterfaceData
     QString comment;
     QString mac;
     int type; // 0 - regular, 1 - dynamic, 2 - unnumbered
-    QMultiMap<libfwbuilder::Address*, AddressInfo > addresses;
+    QMultiMap<Address*, AddressInfo > addresses;
 };
 
 class InterfacesTabWidget : public QTabWidget {
@@ -37,9 +39,9 @@ class InterfacesTabWidget : public QTabWidget {
 public:
     InterfacesTabWidget(QWidget *parent = 0);
     ~InterfacesTabWidget();
-    QMap<libfwbuilder::Interface*, EditedInterfaceData> getData();
+    QMap<Interface*, EditedInterfaceData> getData();
     QList<EditedInterfaceData> getNewData();
-    QList<libfwbuilder::Interface*> getDeletedInterfaces();
+    QList<Interface*> getDeletedInterfaces();
     bool isValid();
     void setCornerWidgetsVisible(bool);
 
@@ -52,16 +54,16 @@ private:
     QToolButton *delInterface;
     QWidget newInterfaceWidget;
     QHBoxLayout newInterfaceLayout;
-    libfwbuilder::FWObject *currentTemplate;
-    QList<libfwbuilder::Interface*> deleted;
+    FWObject *currentTemplate;
+    QList<Interface*> deleted;
 
 public slots:
-    void addInterface(libfwbuilder::Interface*);
+    void addInterface(Interface*);
     void clear();
     void addNewInterface();
-    void setTemplate(libfwbuilder::FWObject*);
+    void setTemplate(FWObject*);
     void closeTab();
-    void addInterface(libfwbuilder::InterfaceData*);
+    void addInterface(InterfaceData*);
 
 };
 

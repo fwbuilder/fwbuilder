@@ -20,6 +20,8 @@
 
 #include "fwbuilder/Interface.h"
 
+using namespace libfwbuilder;
+
 namespace Ui {
     class InterfaceEditorWidget;
 }
@@ -36,11 +38,11 @@ struct AddressInfo
 class InterfaceEditorWidget : public QWidget {
     Q_OBJECT
 public:
-    InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface);
-    InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data);
+    InterfaceEditorWidget(QWidget *parent, Interface *interface);
+    InterfaceEditorWidget(QWidget *parent, InterfaceData* data);
     InterfaceEditorWidget(QWidget *parent);
     ~InterfaceEditorWidget();
-    libfwbuilder::Interface* getInterface();
+    Interface* getInterface();
     EditedInterfaceData getInterfaceData();
     bool isValid();
 
@@ -50,12 +52,12 @@ protected:
 private:
     QTabWidget *tabw;
     QToolButton *addAddr, *delAddr;
-    libfwbuilder::Interface *interface;
+    Interface *interface;
     Ui::InterfaceEditorWidget *m_ui;
     QMap<QPushButton*, QPair<QTableWidgetItem*, QTableWidgetItem*> > buttons;
     QMap<int, QPair<QTableWidgetItem*, QTableWidgetItem*> > rows;
     QMap<int, QComboBox*> types;
-    QMap<int, libfwbuilder::Address*> fwaddrs;
+    QMap<int, Address*> fwaddrs;
     bool validateAddress(const QString &addr, const QString &netm, bool regular);
 
 public slots:
@@ -63,6 +65,7 @@ public slots:
     void deleteAddress();
     void nameEdited(QString);
     void typeChanged(int);
+    void addressChanged(int, int);
 
 protected:
     virtual void resizeEvent ( QResizeEvent * );

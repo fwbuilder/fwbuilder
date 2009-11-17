@@ -114,9 +114,6 @@
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>120</number>
      </attribute>
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>120</number>
-     </attribute>
      <column>
       <property name="text">
        <string>Address</string>
@@ -198,11 +195,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>addresses</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>InterfaceEditorWidget</receiver>
+   <slot>addressChanged(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>nameEdited(QString)</slot>
   <slot>closeTab(int)</slot>
   <slot>addNewAddress()</slot>
   <slot>typeChanged(int)</slot>
+  <slot>addressChanged(int,int)</slot>
  </slots>
 </ui>

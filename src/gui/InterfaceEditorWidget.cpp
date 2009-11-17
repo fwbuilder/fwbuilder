@@ -2,7 +2,7 @@
 #include "ui_InterfaceEditorWidget.h"
 #include "fwbuilder/IPv4.h"
 
-InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface) :
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interface) :
     QWidget(parent),
     m_ui(new Ui::InterfaceEditorWidget)
 {
@@ -18,10 +18,10 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Inte
         this->m_ui->type->setCurrentIndex(1);
     if ( this->interface->isUnnumbered() )
         this->m_ui->type->setCurrentIndex(2);
-    libfwbuilder::FWObjectTypedChildIterator adriter = interface->findByType(libfwbuilder::IPv4::TYPENAME);
+    FWObjectTypedChildIterator adriter = interface->findByType(IPv4::TYPENAME);
     for ( ; adriter != adriter.end(); ++adriter )
     {
-        libfwbuilder::Address *addr = libfwbuilder::Address::cast(*adriter);
+        Address *addr = Address::cast(*adriter);
         int row = addNewAddress();
         fwaddrs[row] = addr;
         rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
@@ -29,7 +29,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Inte
     }
 }
 
-InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data)
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, InterfaceData* data)
 {
     tabw = dynamic_cast<QTabWidget*>(parent);
     this->interface = NULL;
@@ -46,7 +46,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, libfwbuilder::Inte
         this->m_ui->type->setCurrentIndex(0);
     if ( !data->isDyn && !data->isUnnumbered )
     {
-        foreach( libfwbuilder::InetAddrMask* addr, data->addr_mask )
+        foreach( InetAddrMask* addr, data->addr_mask )
         {
             int row = addNewAddress();
             rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
@@ -131,7 +131,7 @@ void InterfaceEditorWidget::nameEdited(QString newname)
 }
 
 
-libfwbuilder::Interface* InterfaceEditorWidget::getInterface()
+Interface* InterfaceEditorWidget::getInterface()
 {
     return this->interface;
 }
@@ -216,9 +216,9 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
     }
     try
     {
-        libfwbuilder::InetAddr(addr.toLatin1().constData());
+        InetAddr(addr.toLatin1().constData());
     }
-    catch (libfwbuilder::FWException &ex)
+    catch (FWException &ex)
     {
         QMessageBox::warning(
             this,"Firewall Builder",
@@ -243,11 +243,11 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
         }
         else
         {
-            libfwbuilder::InetAddr(netm.toLatin1().constData());
+            InetAddr(netm.toLatin1().constData());
         }
 
     }
-    catch (libfwbuilder::FWException &ex)
+    catch (FWException &ex)
     {
         QMessageBox::warning(
             this,"Firewall Builder",
@@ -267,4 +267,15 @@ void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
     this->m_ui->addresses->setColumnWidth(1, (total - controls*2)/2);
     this->m_ui->addresses->setColumnWidth(2, controls);
     this->m_ui->addresses->setColumnWidth(3, controls);
+}
+
+void InterfaceEditorWidget::addressChanged(int row, int col)
+{
+    if ( rows.isEmpty() || row > this->m_ui->addresses->rowCount() || col > 1 ) return;
+
+    QString address = this->rows[row].first->text();
+    QString netmask = this->rows[row].second->text();
+    if ( address.isEmpty() || netmask.isEmpty() ) return;
+    bool regular = this->types[row]->currentIndex() == 0;
+    validateAddress(address, netmask, regular);
 }
