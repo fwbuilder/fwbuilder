@@ -199,7 +199,10 @@ void newFirewallDialog::changed()
     int p = currentPage();
     if (p==0)
     {
-        setNextEnabled( p, !m_dialog->obj_name->text().isEmpty() );
+        setNextEnabled(p,
+                       !m_dialog->obj_name->text().isEmpty() &&
+                       !readPlatform(m_dialog->platform).isEmpty()
+        );
         setHostOS(m_dialog->hostOS, readPlatform(m_dialog->platform), "");
     }
 
