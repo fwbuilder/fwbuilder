@@ -283,7 +283,8 @@ AC_MSG_CHECKING(QT DBus framework)
   test -n "$QMAKESPEC" && C="$C -spec $QMAKESPEC "
   $QMAKE $C qtdbus_test.pro || exit 1
   test -f Makefile || exit 1
-  make >config.log 2>&1
+  make clean >config.log 2>&1
+  make >>config.log 2>&1
 )
 if test $? -eq 0; then
   HAVE_QTDBUS="1"
