@@ -211,6 +211,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>addresses</sender>
+   <signal>currentCellChanged(int,int,int,int)</signal>
+   <receiver>InterfaceEditorWidget</receiver>
+   <slot>addressChanged(int,int,int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>32</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>362</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>nameEdited(QString)</slot>
@@ -218,5 +234,6 @@
   <slot>addNewAddress()</slot>
   <slot>typeChanged(int)</slot>
   <slot>addressChanged(int,int)</slot>
+  <slot>addressChanged(int,int,int,int)</slot>
  </slots>
 </ui>

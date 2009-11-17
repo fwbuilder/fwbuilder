@@ -81,7 +81,7 @@ private:
     QMap<int, QPair<QTableWidgetItem*, QTableWidgetItem*> > rows;
     QMap<int, QComboBox*> types;
     QMap<int, libfwbuilder::Address*> fwaddrs;
-    bool validateAddress(const QString &addr, const QString &netm, bool regular);
+    bool validateAddress(const QString &addr, const QString &netm, bool regular, bool ipv4);
 
 public slots:
     int addNewAddress();
@@ -89,6 +89,7 @@ public slots:
     void nameEdited(QString);
     void typeChanged(int);
     void addressChanged(int, int);
+    void addressChanged(int, int, int, int);
 
 protected:
     virtual void resizeEvent ( QResizeEvent * );

@@ -26,6 +26,7 @@
 #include "InterfaceEditorWidget.h"
 #include "ui_InterfaceEditorWidget.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 using namespace libfwbuilder;
 
@@ -224,7 +225,7 @@ bool InterfaceEditorWidget::isValid()
         if (types[i]->currentIndex() != 0) continue;
         QString address = this->m_ui->addresses->item(i, 0)->text();
         QString netmask = this->m_ui->addresses->item(i, 1)->text();
-        if ( !validateAddress(address, netmask, types[i]->currentIndex() == 0) )
+        if ( !validateAddress(address, netmask, this->m_ui->type->currentIndex() == 0, types[i]->currentIndex() == 1) )
             return false;
     }
     return true;
@@ -232,7 +233,8 @@ bool InterfaceEditorWidget::isValid()
 
 bool InterfaceEditorWidget::validateAddress(const QString &addr,
                                             const QString &netm,
-                                            bool regular)
+                                            bool regular,
+                                            bool ipv6)
 {
     if ( regular && ( addr.isEmpty() || netm.isEmpty() ) )
     {
@@ -241,9 +243,11 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
                               "&Continue", QString::null, QString::null, 0, 1);
         return false;
     }
+
     try
     {
-        InetAddr(addr.toLatin1().constData());
+        if (ipv6) InetAddr(AF_INET6, addr.toLatin1().constData());
+        else InetAddr(addr.toLatin1().constData());
     }
     catch (FWException &ex)
     {
@@ -259,7 +263,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
         int ilen = netm.toInt (&ok);
         if (ok)
         {
-            if (ilen < 0 || ilen > 32)
+            if (ilen < 0 || (!ipv6 && (ilen > 32)) || (ilen>64) )
             {
                 QMessageBox::warning(
                     this,"Firewall Builder",
@@ -270,7 +274,8 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
         }
         else
         {
-            InetAddr(netm.toLatin1().constData());
+            if (ipv6) InetAddr(AF_INET6, netm.toLatin1().constData());
+            else InetAddr(netm.toLatin1().constData());
         }
 
     }
@@ -298,11 +303,23 @@ void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
 
 void InterfaceEditorWidget::addressChanged(int row, int col)
 {
-    if ( rows.isEmpty() || row > this->m_ui->addresses->rowCount() || col > 1 ) return;
+    if ( row < 0 || col < 0 || rows.isEmpty() || row > this->m_ui->addresses->rowCount() || col > 1 ) return;
 
     QString address = this->rows[row].first->text();
     QString netmask = this->rows[row].second->text();
     if ( address.isEmpty() || netmask.isEmpty() ) return;
-    bool regular = this->types[row]->currentIndex() == 0;
-    validateAddress(address, netmask, regular);
+    bool regular = this->m_ui->type->currentIndex() == 0;
+    bool ipv6 = this->types[row]->currentIndex() == 1;
+    if (!validateAddress(address, netmask, regular, ipv6))
+    {
+        this->m_ui->addresses->setCurrentCell(row, col);
+        this->m_ui->addresses->openPersistentEditor(this->m_ui->addresses->item(row, col));
+//        this->m_ui->addresses->edit(this->m_ui->addresses->indexFromItem(this->m_ui->addresses->item(row, col)));
+    }
+    else this->m_ui->addresses->closePersistentEditor(this->m_ui->addresses->item(row, col));
+}
+
+void InterfaceEditorWidget::addressChanged(int, int, int row, int col)
+{
+    addressChanged(row, col);
 }

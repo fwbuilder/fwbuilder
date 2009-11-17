@@ -894,8 +894,11 @@ void newFirewallDialog::finishClicked()
                  << "p=" << p;
 
     if ( p == 2 )
+    {
+
         if ( !this->m_dialog->interfaceEditor1->isValid() )
             return;
+    }
 
     if ( p == 5 )
         if ( !this->m_dialog->interfaceEditor2->isValid() )
