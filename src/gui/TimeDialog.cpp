@@ -274,6 +274,7 @@ void TimeDialog::applyChanges()
     
     //TODO: Need to refactor this method
     BaseObjectDialog::applyChanges();
+
 }
 
 void TimeDialog::discardChanges()

@@ -108,7 +108,9 @@ class FWWindow : public QMainWindow {
     bool auto_load_from_rcs_head_revision;
     QAction *recentFileActs[MAXRECENTFILES];
     QAction *openRecentSeparatorAct;
-
+    QAction *undoAction;
+    QAction *redoAction;
+    
     void clearFirewallTabs();
     ProjectPanel *newProjectPanel();
     void showSub(ProjectPanel *projectW);
@@ -136,7 +138,7 @@ public:
     void updateOpenRecentMenu(const QString &fileName);
 
     void enableBackAction();
-
+    void attachUndoStack(ProjectPanel *pp);
     
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);

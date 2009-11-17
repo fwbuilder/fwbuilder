@@ -154,6 +154,7 @@
 #include <QUrl>
 #include <QDockWidget>
 #include <QUndoGroup>
+#include <QUndoStack>
 
 
 using namespace libfwbuilder;
@@ -218,8 +219,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     m_mainWindow->editorDockWidget->hide();
 
     undoGroup = new QUndoGroup(this);
-    QAction *undoAction = undoGroup->createUndoAction(this);
-    QAction *redoAction = undoGroup->createRedoAction(this);
+    undoAction = undoGroup->createUndoAction(this);
+    redoAction = undoGroup->createRedoAction(this);
 
     m_mainWindow->editMenu->insertAction(m_mainWindow->editMenu->actions().at(0), undoAction);
     m_mainWindow->editMenu->insertAction(undoAction, redoAction);
@@ -270,6 +271,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     ProjectPanel *proj = newProjectPanel();
     showSub(proj);
+    proj->setActive();
 
     setSafeMode(false);
 
@@ -1022,9 +1024,18 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
         prepareFileMenu();
         pp->setActive();
         if (isEditorVisible()) openEditor(pp->getSelectedObject());
-        //attachEditorToProjectPanel(pp);
-        //if (isEditorVisible()) oe->open(pp->getSelectedObject());
     }
+}
+
+void FWWindow::attachUndoStack(ProjectPanel *pp)
+{
+    disconnect(redoAction, SLOT(setEnabled(bool)));
+    disconnect(undoAction, SLOT(setEnabled(bool)));
+
+    connect(pp->undoStack, SIGNAL(canRedoChanged(bool)),
+            redoAction, SLOT(setEnabled(bool)));
+    connect(pp->undoStack, SIGNAL(canUndoChanged(bool)),
+            undoAction, SLOT(setEnabled(bool)));
 }
 
 void FWWindow::attachEditorToProjectPanel(ProjectPanel *pp)
