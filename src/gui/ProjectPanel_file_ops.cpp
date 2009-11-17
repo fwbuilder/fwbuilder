@@ -335,11 +335,11 @@ void ProjectPanel::fileCommit()
 void ProjectPanel::fileDiscard()
 {
     if (QMessageBox::warning(this, "Firewall Builder",
-      tr("This operation discards all changes that have been saved\n"
-         "into the file so far, closes it and replaces it with a clean\n"
-         "copy of its head revision from RCS.\n"
+      tr("This operation discards all changes that have been saved "
+         "into the file so far, closes it and replaces it with a clean "
+         "copy of its head revision from RCS."
          "\n"
-         "All changes will be lost if you do this.\n\n"),
+         "All changes will be lost if you do this.\n"),
       tr("&Discard changes"),
       tr("&Cancel"), QString::null,
       1 )==0 )

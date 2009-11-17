@@ -890,14 +890,6 @@ void FWWindow::prepareFileMenu()
     bool in_rcs = (activeProject()->getRCS() != NULL &&
                    activeProject()->getRCS()->isCheckedOut());
     bool needs_saving = (db() && db()->isDirty());
-
-    // if (fwbdebug)
-    //     qDebug("FWWindow::prepareFileMenu(): activeProject()=%p"
-    //            "  activeProject()->getFileName()='%s'"
-    //            "  real_file_opened=%d  needs_saving=%d",
-    //            activeProject(),
-    //            activeProject()->getFileName().toAscii().constData(),
-    //            real_file_opened, needs_saving);
     
     m_mainWindow->fileSaveAction->setEnabled(real_file_opened && needs_saving);
     m_mainWindow->fileCloseAction->setEnabled(real_file_opened);
@@ -906,8 +898,8 @@ void FWWindow::prepareFileMenu()
     m_mainWindow->libExportAction->setEnabled(real_file_opened);
 
     m_mainWindow->addToRCSAction->setEnabled(real_file_opened && !in_rcs);
-    m_mainWindow->fileCommitAction->setEnabled(real_file_opened && in_rcs);
-    m_mainWindow->fileDiscardAction->setEnabled(real_file_opened && in_rcs);
+    m_mainWindow->fileCommitAction->setEnabled(real_file_opened && in_rcs && needs_saving);
+    m_mainWindow->fileDiscardAction->setEnabled(real_file_opened && in_rcs && needs_saving);
 
     m_mainWindow->fileNewAction->setEnabled(true);
     m_mainWindow->fileOpenAction->setEnabled(true);
