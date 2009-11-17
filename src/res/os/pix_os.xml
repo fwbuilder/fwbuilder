@@ -6,7 +6,7 @@
       <compiler>fwb_pix</compiler>
       <family>pix_os</family>
       <dialog>pix_os</dialog>
-      <interface_dialog>linux24</interface_dialog>
+      <interface_dialog>pix_os</interface_dialog>
       <cluster_dialog>basic</cluster_dialog>
 
       <options>

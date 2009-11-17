@@ -70,6 +70,7 @@
 #include "secuwallIfaceOptsDialog.h"
 #include "vlanOnlyIfaceOptsDialog.h"
 #include "openbsdIfaceOptsDialog.h"
+#include "pixosIfaceOptsDialog.h"
 
 #include "clusterMembersDialog.h"
 
@@ -295,6 +296,7 @@ QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
     if (dlgname=="secuwall")  return new secuwallIfaceOptsDialog(parent, o);
     if (dlgname=="linux24")  return new linux24IfaceOptsDialog(parent, o);
     if (dlgname=="openbsd")  return new openbsdIfaceOptsDialog(parent, o);
+    if (dlgname=="pix_os")  return new pixosIfaceOptsDialog(parent, o);
     if (dlgname=="vlan_only")  return new vlanOnlyIfaceOptsDialog(parent, o);
 
     cerr << "Interface settings dialog for OS " << host_OS

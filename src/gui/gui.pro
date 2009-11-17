@@ -116,6 +116,7 @@ HEADERS += ../../config.h \
     secuwallIfaceOptsDialog.h \
     vlanOnlyIfaceOptsDialog.h \
     linux24IfaceOptsDialog.h \
+	pixosIfaceOptsDialog.h \
     openbsdIfaceOptsDialog.h \
     clusterMembersDialog.h \
     CompilerOutputPanel.h \
@@ -266,6 +267,7 @@ SOURCES += ProjectPanel.cpp \
     secuwallIfaceOptsDialog.cpp \
     vlanOnlyIfaceOptsDialog.cpp \
     linux24IfaceOptsDialog.cpp \
+    pixosIfaceOptsDialog.cpp \
     openbsdIfaceOptsDialog.cpp \
     clusterMembersDialog.cpp \
     CompilerOutputPanel.cpp \
@@ -421,6 +423,7 @@ FORMS = FWBMainWindow_q.ui \
     pfsyncoptionsdialog_q.ui \
     vlanonlyifaceoptsdialog_q.ui \
     linux24ifaceoptsdialog_q.ui \
+    pixosifaceoptsdialog_q.ui \
     InterfaceEditorWidget.ui \
     InterfacesTabWidget.ui
 
