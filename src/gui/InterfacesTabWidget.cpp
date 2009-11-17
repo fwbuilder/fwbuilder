@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
@@ -25,6 +25,8 @@
 
 #include "InterfacesTabWidget.h"
 #include "ui_InterfacesTabWidget.h"
+
+using namespace libfwbuilder;
 
 InterfacesTabWidget::InterfacesTabWidget(QWidget *parent) :
     QTabWidget(parent),

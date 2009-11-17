@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
@@ -45,8 +45,6 @@
 
 #include "fwbuilder/Interface.h"
 
-using namespace libfwbuilder;
-
 namespace Ui {
     class InterfaceEditorWidget;
 }
@@ -63,11 +61,11 @@ struct AddressInfo
 class InterfaceEditorWidget : public QWidget {
     Q_OBJECT
 public:
-    InterfaceEditorWidget(QWidget *parent, Interface *interface);
-    InterfaceEditorWidget(QWidget *parent, InterfaceData* data);
+    InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface);
+    InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data);
     InterfaceEditorWidget(QWidget *parent);
     ~InterfaceEditorWidget();
-    Interface* getInterface();
+    libfwbuilder::Interface* getInterface();
     EditedInterfaceData getInterfaceData();
     bool isValid();
 
@@ -77,12 +75,12 @@ protected:
 private:
     QTabWidget *tabw;
     QToolButton *addAddr, *delAddr;
-    Interface *interface;
+    libfwbuilder::Interface *interface;
     Ui::InterfaceEditorWidget *m_ui;
     QMap<QPushButton*, QPair<QTableWidgetItem*, QTableWidgetItem*> > buttons;
     QMap<int, QPair<QTableWidgetItem*, QTableWidgetItem*> > rows;
     QMap<int, QComboBox*> types;
-    QMap<int, Address*> fwaddrs;
+    QMap<int, libfwbuilder::Address*> fwaddrs;
     bool validateAddress(const QString &addr, const QString &netm, bool regular);
 
 public slots:

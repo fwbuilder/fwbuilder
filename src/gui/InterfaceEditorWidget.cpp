@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
@@ -26,6 +26,8 @@
 #include "InterfaceEditorWidget.h"
 #include "ui_InterfaceEditorWidget.h"
 #include "fwbuilder/IPv4.h"
+
+using namespace libfwbuilder;
 
 InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interface) :
     QWidget(parent),

@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
@@ -40,8 +40,6 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "InterfaceEditorWidget.h"
 
-using namespace libfwbuilder;
-
 namespace Ui {
     class InterfacesTabWidget;
 }
@@ -56,7 +54,7 @@ struct EditedInterfaceData
     QString comment;
     QString mac;
     int type; // 0 - regular, 1 - dynamic, 2 - unnumbered
-    QMultiMap<Address*, AddressInfo > addresses;
+    QMultiMap<libfwbuilder::Address*, AddressInfo > addresses;
 };
 
 class InterfacesTabWidget : public QTabWidget {
@@ -64,9 +62,9 @@ class InterfacesTabWidget : public QTabWidget {
 public:
     InterfacesTabWidget(QWidget *parent = 0);
     ~InterfacesTabWidget();
-    QMap<Interface*, EditedInterfaceData> getData();
+    QMap<libfwbuilder::Interface*, EditedInterfaceData> getData();
     QList<EditedInterfaceData> getNewData();
-    QList<Interface*> getDeletedInterfaces();
+    QList<libfwbuilder::Interface*> getDeletedInterfaces();
     bool isValid();
     void setCornerWidgetsVisible(bool);
 
@@ -79,16 +77,16 @@ private:
     QToolButton *delInterface;
     QWidget newInterfaceWidget;
     QHBoxLayout newInterfaceLayout;
-    FWObject *currentTemplate;
-    QList<Interface*> deleted;
+    libfwbuilder::FWObject *currentTemplate;
+    QList<libfwbuilder::Interface*> deleted;
 
 public slots:
-    void addInterface(Interface*);
+    void addInterface(libfwbuilder::Interface*);
     void clear();
     void addNewInterface();
-    void setTemplate(FWObject*);
+    void setTemplate(libfwbuilder::FWObject*);
     void closeTab();
-    void addInterface(InterfaceData*);
+    void addInterface(libfwbuilder::InterfaceData*);
 
 };
 
