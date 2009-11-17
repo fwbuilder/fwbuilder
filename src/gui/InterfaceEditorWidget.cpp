@@ -55,6 +55,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interfa
         rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
         rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
     }
+    doNotCheckNext = false;
 }
 
 InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, InterfaceData* data)
@@ -81,6 +82,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, InterfaceData* dat
             rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
         }
     }
+    doNotCheckNext = false;
 }
 
 InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
@@ -93,6 +95,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     this->m_ui->name->setText(tr("New interface"));
     this->m_ui->label->clear();
     this->m_ui->comment->clear();
+    doNotCheckNext = false;
     addNewAddress();
 }
 
@@ -303,7 +306,7 @@ void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
 
 void InterfaceEditorWidget::addressChanged(int row, int col)
 {
-    if ( row < 0 || col < 0 || rows.isEmpty() || row > this->m_ui->addresses->rowCount() || col > 1 ) return;
+    if ( row < 0 || col < 0 || rows.isEmpty() || row > m_ui->addresses->rowCount() || col > 1 ) return;
 
     QString address = this->rows[row].first->text();
     QString netmask = this->rows[row].second->text();
@@ -312,14 +315,13 @@ void InterfaceEditorWidget::addressChanged(int row, int col)
     bool ipv6 = this->types[row]->currentIndex() == 1;
     if (!validateAddress(address, netmask, regular, ipv6))
     {
-        this->m_ui->addresses->setCurrentCell(row, col);
-        this->m_ui->addresses->openPersistentEditor(this->m_ui->addresses->item(row, col));
-//        this->m_ui->addresses->edit(this->m_ui->addresses->indexFromItem(this->m_ui->addresses->item(row, col)));
+        doNotCheckNext = true;
+        this->m_ui->addresses->editItem(this->m_ui->addresses->item(row, col));
     }
-    else this->m_ui->addresses->closePersistentEditor(this->m_ui->addresses->item(row, col));
 }
 
-void InterfaceEditorWidget::addressChanged(int, int, int row, int col)
+void InterfaceEditorWidget::addressChanged(int newrow, int newcol, int row, int col)
 {
+    if (doNotCheckNext) { doNotCheckNext = false; return; }
     addressChanged(row, col);
 }

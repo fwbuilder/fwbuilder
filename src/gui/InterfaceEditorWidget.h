@@ -82,6 +82,7 @@ private:
     QMap<int, QComboBox*> types;
     QMap<int, libfwbuilder::Address*> fwaddrs;
     bool validateAddress(const QString &addr, const QString &netm, bool regular, bool ipv4);
+    bool doNotCheckNext;
 
 public slots:
     int addNewAddress();
