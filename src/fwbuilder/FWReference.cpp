@@ -149,13 +149,13 @@ int FWReference::getPointerId()
 }
 
 
-void FWReference::dump(std::ostream &f, bool recursive, bool brief, int offset)
+void FWReference::dump(std::ostream &f, bool recursive, bool brief, int offset) const
 {
     FWObject::dump(f, recursive, brief, offset);
 
-    FWObject* ptr=getPointer();
+    FWObject* ptr = getRoot()->findInIndex(int_ref);
 
-    f << string(offset,' ') << "PointerId: " << getPointerId() << endl;
+    f << string(offset,' ') << "PointerId: " << int_ref << endl;
     f << string(offset,' ') << "Pointer: " << ptr << endl;
     if (ptr)
     {

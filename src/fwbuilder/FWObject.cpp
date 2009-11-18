@@ -623,12 +623,12 @@ void FWObject::Hide()
 
 
 
-void FWObject::dump(bool recursive,bool brief,int offset) 
+void FWObject::dump(bool recursive,bool brief,int offset) const
 {
     dump(cerr,recursive,brief,offset);
 }
 
-void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) 
+void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
 {
     FWObject *o;
     string    n;
@@ -645,13 +645,10 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset)
             f << " Library=" << getLibrary();
 	f << " Root=" << getRoot();
         f << " ref_counter=" << ref_counter;
-
-	if (FWReference::constcast(this)!=0)
-	    f << " RefID=" << FWReference::cast(this)->getPointerId();
-
 	f << endl;
 
-	if (recursive) {
+	if (recursive)
+        {
 	    list<FWObject*>::const_iterator m;
 	    for (m=begin(); m!=end(); ++m) {
 		if (  (o=(*m))!=NULL)  o->dump(f,recursive,brief,offset+2);

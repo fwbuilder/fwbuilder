@@ -382,8 +382,8 @@ public:
 
     int getChildrenCount();
 
-    virtual void dump(bool recursive,bool brief,int offset=0);
-    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
+    virtual void dump(bool recursive,bool brief,int offset=0) const;
+    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0) const;
 
     /**
      * returns true if this is either direct child of obj, or a child
@@ -577,6 +577,8 @@ class FWObjectFindPredicate
     virtual ~FWObjectFindPredicate() {}
     virtual bool operator()(FWObject*) const { std::cerr << "#"; return false; }
 };
+
+
 
 }
 

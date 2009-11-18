@@ -66,7 +66,7 @@ public:
     virtual void setNetmask(const InetAddr &nm);
     virtual void setAddressNetmask(const std::string& s);
 
-    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
+    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0) const;
 
     virtual bool isPrimaryObject() const;
 

@@ -46,6 +46,14 @@ namespace libfwbuilder
         virtual bool validateChild(FWObject *o);
 
         virtual ClusterGroupOptions* getOptionsObject();
+
+        /**
+         * This method copies all attributes of obj plus all reference
+         * child objects and the options object to reproduce accurate
+         * state of this.
+         */
+        virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+
     };
 }
 

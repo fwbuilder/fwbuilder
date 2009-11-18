@@ -38,17 +38,17 @@ namespace libfwbuilder
  */
 class FWReference : public FWObject
 {
-    private:
+private:
 
     std::string str_ref;
     int int_ref;
 
-    protected:
+protected:
     
     FWReference();
     FWReference(const FWObjectDatabase *root, bool prepopulate);
 
-    public:
+public:
     
     DECLARE_FWOBJECT_SUBTYPE(FWReference);
     
@@ -59,7 +59,7 @@ class FWReference : public FWObject
 
     virtual FWObject& shallowDuplicate(
         const FWObject *obj, bool preserve_id = true) throw(FWException);
-    
+
     virtual void add(FWObject *obj);
 
     virtual FWObject *getPointer();
@@ -68,7 +68,7 @@ class FWReference : public FWObject
     void setPointer(FWObject *o);
     void setPointerId(int ref_id);
 
-    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0);
+    virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0) const;
 
     virtual bool isPrimaryObject() const { return false; }
 

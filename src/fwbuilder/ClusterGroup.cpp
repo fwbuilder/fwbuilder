@@ -107,5 +107,36 @@ ClusterGroupOptions* ClusterGroup::getOptionsObject()
     return gopt;
 }
 
+FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
+{
+    if (ClusterGroup::constcast(obj)==NULL) return *this;
+
+    shallowDuplicate(obj);
+
+    ClusterGroupOptions *their_opts = ClusterGroupOptions::cast(
+        obj->getFirstByType(ClusterGroupOptions::TYPENAME));
+    ClusterGroupOptions *mine_opts = ClusterGroupOptions::cast(
+        getFirstByType(ClusterGroupOptions::TYPENAME));
+
+    list<FWObject*> all_refs = getByType(FWObjectReference::TYPENAME);
+    while (all_refs.size())
+    {
+        remove(all_refs.front(), false);
+        all_refs.pop_front();
+    }
+
+    for(list<FWObject*>::const_iterator m=obj->begin(); m!=obj->end(); ++m) 
+    {
+        if (FWReference::cast(*m))
+        {
+            FWObject *object = FWReference::getObject(*m);
+            addRef(object);
+        }
+    }
+    if (their_opts && mine_opts) mine_opts->duplicate(their_opts);
+    if (their_opts && mine_opts==NULL) addCopyOf(their_opts);
+    return *this;
+}
+
 
 

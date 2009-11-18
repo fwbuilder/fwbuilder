@@ -61,6 +61,14 @@ class Group : virtual public FWObject
 
     int   getSize();
 
+    /**
+     * This method copies all attributes of obj plus all reference
+     * child objects to reproduce accurate state of this.  In fact, it
+     * simply calls duplicate() if this is user-defined group. For system
+     * grops that hold actual objects, it calls shallowDuplicate()
+     */
+    virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+
 };
 
 }

@@ -77,6 +77,35 @@ bool Group::hasMember(FWObject *o)
     return false;
 }
 
+/*
+ * if this is user-defined group, it holds references to objects and
+ * we need to copy it with all these child objects to accurately
+ * reproduce its state for undo. If this is system group, we only copy
+ * this object and its attributes. However we should never really need
+ * to execute undo/redo for system groups anyway.
+ *
+ * Important assumption: groups never have a mix of references and
+ * actual objects, it is either one or another. We can check the kind
+ * of the group by looking at the first child object.
+ */
+FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
+{
+    shallowDuplicate(obj);
+    if (obj->size() && FWReference::cast(obj->front())!=NULL)
+    {
+        destroyChildren();
+        for(list<FWObject*>::const_iterator m=obj->begin(); m!=obj->end(); ++m) 
+        {
+            if (FWReference::cast(*m))
+            {
+                FWObject *object = FWReference::getObject(*m);
+                addRef(object);
+            }
+        }
+    }
+    return *this;
+}
+
 
 
 
