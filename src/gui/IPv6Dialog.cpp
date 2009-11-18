@@ -29,6 +29,7 @@
 
 #include "IPv6Dialog.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/IPv6.h"
@@ -47,7 +48,7 @@
 #include <qhostinfo.h>
 #include <qapplication.h>
 #include <qcursor.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
 #include <iostream>
 
@@ -181,12 +182,15 @@ void IPv6Dialog::validate(bool *res)
 
 void IPv6Dialog::applyChanges()
 {
-    IPv6 *s = dynamic_cast<IPv6*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    IPv6 *s = dynamic_cast<IPv6*>(new_state);
     assert(s!=NULL);
 
     string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     try
     {
@@ -206,8 +210,10 @@ void IPv6Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr(AF_INET6, 0));
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

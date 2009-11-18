@@ -92,6 +92,7 @@ bool ProjectPanel::event(QEvent *event)
                 }
                 QCoreApplication::postEvent(
                     this, new updateObjectInTreeEvent(data_file, obj->getId()));
+
                 registerModifiedObject(obj);
                 ev->accept();
                 return true;
@@ -106,7 +107,10 @@ bool ProjectPanel::event(QEvent *event)
                 QCoreApplication::postEvent(
                     this, new updateObjectInRulesetEvent(data_file, obj_id));
                 if (Library::cast(obj))
+                {
                     m_panel->om->updateLibName(obj);
+                    m_panel->om->updateLibColor(obj);
+                }
                 ev->accept();
                 return true;
 

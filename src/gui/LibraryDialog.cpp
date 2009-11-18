@@ -33,6 +33,7 @@
 #include "LibraryDialog.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 
@@ -46,6 +47,7 @@
 
 #include <QPainter>
 #include <QtDebug>
+#include <QUndoStack>
 
 #include <iostream>
 
@@ -120,17 +122,22 @@ void LibraryDialog::changeIds(FWObject *root)
 
 void LibraryDialog::applyChanges()
 {
-    string oldname=obj->getName();
-    QString oldcolor=obj->getStr("color").c_str();
-
     if (FWBTree().isSystem(obj)) return;
 
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
-    obj->setStr("color", color.toLatin1().constData());
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
 
-    m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
-    if (color!=oldcolor) m_project->updateLibColor(obj);
+    QString oldcolor = new_state->getStr("color").c_str();
+
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    new_state->setStr("color", color.toLatin1().constData());
+
+    //m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
+
+    m_project->undoStack->push(cmd);
+    
+    //if (color!=oldcolor) m_project->updateLibColor(obj);
 
     BaseObjectDialog::applyChanges();
 }

@@ -166,9 +166,6 @@ public:
     void moveObject(const QString &targetLibName,
                     libfwbuilder::FWObject *obj);
 
-    void updateLibColor(libfwbuilder::FWObject *lib);
-    void updateLibName(libfwbuilder::FWObject *lib);
-
     void updateObjName(libfwbuilder::FWObject *obj,
                        const QString &oldName,
                        bool  askForAutorename=true);

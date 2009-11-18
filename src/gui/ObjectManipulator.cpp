@@ -490,8 +490,7 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
 
 void ObjectManipulator::updateLibColor(FWObject *lib)
 {
-    QString clr=lib->getStr("color").c_str();
-
+    QString clr = lib->getStr("color").c_str();
     int index = getIdxForLib(lib);
     if (index >= 0)
     {

@@ -512,16 +512,6 @@ void ProjectPanel::moveObject(const QString &targetLibName,
     m_panel->om->moveObject(targetLibName, obj);
 }
 
-void ProjectPanel::updateLibColor(FWObject *lib)
-{
-    m_panel->om->updateLibColor(lib);
-}
-
-void ProjectPanel::updateLibName(FWObject *lib)
-{
-    m_panel->om->updateLibName(lib);
-}
-
 void ProjectPanel::updateObjName(FWObject *obj,
                                  const QString &oldName,
                                  bool  askForAutorename)
