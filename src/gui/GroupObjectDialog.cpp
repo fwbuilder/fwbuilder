@@ -37,6 +37,7 @@
 #include "FWObjectDrag.h"
 #include "FWObjectClipboard.h"
 #include "ObjectTreeView.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Library.h"
@@ -59,6 +60,7 @@
 #include <qscrollarea.h>
 #include <qpixmapcache.h>
 #include <QCoreApplication>
+#include <QUndoStack>
 
 #include <iostream>
 #include <algorithm>
@@ -388,9 +390,12 @@ void GroupObjectDialog::applyChanges()
 {
     if (fwbdebug) qDebug("GroupObjectDialog::applyChanges");
 
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment(
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment(
         string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     //init=true;
@@ -405,7 +410,7 @@ void GroupObjectDialog::applyChanges()
         newobj.insert(obj_id);
     }
 
-    for (FWObject::iterator j=obj->begin(); j!=obj->end(); ++j)
+    for (FWObject::iterator j=new_state->begin(); j!=new_state->end(); ++j)
     {
         FWObject *o = *j;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
@@ -423,10 +428,10 @@ void GroupObjectDialog::applyChanges()
     for (set<int>::iterator k=diff.begin(); k!=diff.end(); ++k)
     {
         FWObject *o = m_project->db()->findInIndex(*k);
-        if (FWBTree().isSystem(obj))
+        if (FWBTree().isSystem(new_state))
             m_project->delObj(o, false);
         else
-            obj->removeRef(o);
+            new_state->removeRef(o);
     }
 
     diff.clear();
@@ -441,15 +446,17 @@ void GroupObjectDialog::applyChanges()
     {
         FWObject *o = m_project->db()->findInIndex(*k1);
         if (FWBTree().isSystem(o))
-            m_project->pasteTo(obj, o);
+            m_project->pasteTo(new_state, o);
         else
-            obj->addRef(o);
+            new_state->addRef(o);
     }
 
-    m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(new_state, QString::fromUtf8(oldname.c_str()));
 
     saveColumnWidths();
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

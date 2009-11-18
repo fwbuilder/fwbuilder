@@ -20,6 +20,7 @@
 
 #include "FWWindow.h"
 #include "Help.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Cluster.h"
@@ -33,6 +34,8 @@
 #include <qpixmapcache.h>
 
 #include <QHeaderView>
+#include <QUndoStack>
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -389,32 +392,39 @@ void clusterMembersDialog::invalidate()
 
 void clusterMembersDialog::accept()
 {
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
+    FWObject* new_state = cmd->getNewState();
+
     bool master_found = false;
     t_memberList::const_iterator it = selected.begin();
 
     // remoive all existing references and add new ones
-    list<FWObject*> all_refs = obj->getByType(FWObjectReference::TYPENAME);
+    list<FWObject*> all_refs = new_state->getByType(FWObjectReference::TYPENAME);
     for (list<FWObject*>::iterator it=all_refs.begin(); it!=all_refs.end(); ++it)
-        obj->remove(*it);
+        new_state->remove(*it);
 
     // add selected interfaces as objref to cluster member group
     for (it = selected.begin(); it != selected.end(); it++)
     {
-        obj->addRef((*it)->iface_cluster);
+        new_state->addRef((*it)->iface_cluster);
         // set master interface ref id
         if ((*it)->is_master)
         {
             master_found = true;
             std::string masteriface_id =
                 FWObjectDatabase::getStringId((*it)->iface_cluster->getId());
-            obj->setStr("master_iface", masteriface_id);
+            new_state->setStr("master_iface", masteriface_id);
         }
     }
     if (!master_found)
     {
-        obj->remStr("master_iface");
+        new_state->remStr("master_iface");
     }
     emit membersChanged();
+
+    project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 
