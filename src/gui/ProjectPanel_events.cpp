@@ -97,19 +97,24 @@ bool ProjectPanel::event(QEvent *event)
                 return true;
             }
 
-            case OBJECT_NAME_CHANGED_EVENT:
+            case UPDATE_OBJECT_EVERYWHERE_EVENT:
                 if (fwbdebug)
-                    qDebug("ProjectPanel::event  objectNameChanged  obj: %s",
+                    qDebug("ProjectPanel::event  updateObjectEverywhereEvent  obj: %s",
                            obj->getName().c_str());
-                // when object name changes we need to update the tree
-                // and ruleset
                 QCoreApplication::postEvent(
                     this, new updateObjectInTreeEvent(data_file, obj_id));
                 QCoreApplication::postEvent(
                     this, new updateObjectInRulesetEvent(data_file, obj_id));
                 if (Library::cast(obj))
                     m_panel->om->updateLibName(obj);
+                ev->accept();
+                return true;
 
+            case OBJECT_NAME_CHANGED_EVENT:
+                objectNameChangedEvent *name_change_event =
+                    dynamic_cast<objectNameChangedEvent*>(event);
+                // This performs automatic renaming of child objects if necessary
+                updateObjName(obj, name_change_event->old_name, name_change_event->new_name);
                 ev->accept();
                 return true;
 

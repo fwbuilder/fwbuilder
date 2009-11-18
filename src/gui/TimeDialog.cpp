@@ -215,7 +215,6 @@ void TimeDialog::applyChanges()
     if (!isTreeReadWrite(this,obj)) return;
 
     FWCmdChange* cmd = new FWCmdChange(m_project, obj);
-
     FWObject* newState = cmd->getNewState();
 
     Interval *interval = dynamic_cast<Interval*>(newState);

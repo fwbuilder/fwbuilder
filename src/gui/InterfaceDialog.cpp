@@ -32,6 +32,7 @@
 #include "ProjectPanel.h"
 #include "FWWindow.h"
 #include "FWBSettings.h"
+#include "FWCmdChange.h"
 
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
@@ -60,6 +61,7 @@
 #include <qlabel.h>
 #include <QtDebug>
 #include <QTime>
+#include <QUndoStack>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -382,25 +384,32 @@ void InterfaceDialog::validate(bool *res)
 
 void InterfaceDialog::applyChanges()
 {
-    Interface *s = Interface::cast(obj);
-    assert(s!=NULL);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
 
-    string oldname=obj->getName();
-    string oldlabel=s->getLabel();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    Interface *intf = Interface::cast(new_state);
+    assert(intf!=NULL);
 
-    s->setLabel( string(m_dialog->label->text().toUtf8().constData()) );
-    s->setDyn( m_dialog->dynamic->isChecked() );
-    s->setUnnumbered( m_dialog->unnumbered->isChecked() );
-    s->setDedicatedFailover( m_dialog->dedicated_failover->isChecked() );
+    string oldname = obj->getName();
+    string oldlabel = intf->getLabel();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
-    FWObject *f = s->getParentHost();
+    intf->setLabel( string(m_dialog->label->text().toUtf8().constData()) );
+    intf->setDyn( m_dialog->dynamic->isChecked() );
+    intf->setUnnumbered( m_dialog->unnumbered->isChecked() );
+    intf->setDedicatedFailover( m_dialog->dedicated_failover->isChecked() );
+
+    // NOTE: new_state is a copy of the interface but it is not attached to
+    // the tree and therefore has no parent. Need to use original object obj
+    // to get the pointer to the parent firewall.
+    FWObject *f = Interface::cast(obj)->getParentHost();
     bool supports_security_levels = false;
     bool supports_network_zones   = false;
     bool supports_unprotected     = false;
 
-    try  {
+    try 
+    {
         supports_security_levels=
             Resources::getTargetCapabilityBool(f->getStr("platform"), "security_levels");
         supports_network_zones=
@@ -413,28 +422,31 @@ void InterfaceDialog::applyChanges()
     if (Firewall::isA( f ) || Cluster::isA( f ))
     {
         if (supports_security_levels)
-            obj->setInt("security_level", m_dialog->seclevel->value() );
+            new_state->setInt("security_level", m_dialog->seclevel->value() );
 
         if (supports_unprotected)
-            obj->setBool("unprotected",  m_dialog->unprotected->isChecked() );
+            new_state->setBool("unprotected",  m_dialog->unprotected->isChecked() );
 
         if (supports_network_zones)
-            obj->setStr("network_zone",
+            new_state->setStr("network_zone",
                         FWObjectDatabase::getStringId(
                             netzoneObjectNos[
                                 m_dialog->netzone->currentIndex() ]));
 
-        s->setManagement( m_dialog->management->isChecked() );
+        intf->setManagement( m_dialog->management->isChecked() );
     }
 
-    m_project->updateObjName(obj,
-                      QString::fromUtf8(oldname.c_str()),
-                      QString::fromUtf8(oldlabel.c_str()));
+    // // Call this to automatically rename child address objects
+    // m_project->updateObjName(new_state,
+    //                          QString::fromUtf8(oldname.c_str()),
+    //                          QString::fromUtf8(oldlabel.c_str()));
 
     // ticket #328: automatically assign vlan id to interface based on
     // interface name
-    mw->activeProject()->m_panel->om->guessSubInterfaceTypeAndAttributes(s);
+    m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(intf);
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

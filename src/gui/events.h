@@ -39,12 +39,13 @@
 #define UPDATE_OBJECT_IN_TREE_EVENT  2
 #define UPDATE_OBJECT_AND_SUBTREE_IN_TREE_EVENT  3
 #define UPDATE_OBJECT_IN_RULESET_EVENT  4
-#define UPDATE_LAST_COMPILED_TIMESTAMP_EVENT 5
-#define UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT 6
-#define SHOW_OBJECT_IN_TREE_EVENT 7
-#define OPEN_OBJECT_IN_EDITOR_EVENT 8
-#define CLOSE_OBJECT_EVENT 9
-#define OBJECT_NAME_CHANGED_EVENT  10
+#define UPDATE_OBJECT_EVERYWHERE_EVENT  5
+#define UPDATE_LAST_COMPILED_TIMESTAMP_EVENT 6
+#define UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT 7
+#define SHOW_OBJECT_IN_TREE_EVENT 8
+#define OPEN_OBJECT_IN_EDITOR_EVENT 9
+#define CLOSE_OBJECT_EVENT 10
+#define OBJECT_NAME_CHANGED_EVENT  11
 
 
 class fwbUpdateEvent : public QEvent {
@@ -97,6 +98,15 @@ public:
 };
 
 
+class updateObjectEverywhereEvent : public fwbUpdateEvent {
+public:
+    updateObjectEverywhereEvent(const QString &file_name, int obj_id) :
+      fwbUpdateEvent(file_name, obj_id,
+                     QEvent::Type(QEvent::User + UPDATE_OBJECT_EVERYWHERE_EVENT))
+      {}
+};
+
+
 class updateLastCompiledTimestampEvent : public fwbUpdateEvent {
 public:
     updateLastCompiledTimestampEvent(const QString &file_name, int obj_id) :
@@ -118,36 +128,39 @@ public:
 class showObjectInTreeEvent : public fwbUpdateEvent {
 public:
     showObjectInTreeEvent(const QString &file_name, int obj_id) :
-      fwbUpdateEvent(file_name, obj_id,
-                     QEvent::Type(QEvent::User + SHOW_OBJECT_IN_TREE_EVENT))
-      {}
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + SHOW_OBJECT_IN_TREE_EVENT))
+    {}
 };
 
 
 class openObjectInEditorEvent : public fwbUpdateEvent {
 public:
     openObjectInEditorEvent(const QString &file_name, int obj_id) :
-      fwbUpdateEvent(file_name, obj_id,
-                     QEvent::Type(QEvent::User + OPEN_OBJECT_IN_EDITOR_EVENT))
-      {}
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + OPEN_OBJECT_IN_EDITOR_EVENT))
+    {}
 };
 
 
 class closeObjectEvent : public fwbUpdateEvent {
 public:
     closeObjectEvent(const QString &file_name, int obj_id) :
-      fwbUpdateEvent(file_name, obj_id,
-                     QEvent::Type(QEvent::User + CLOSE_OBJECT_EVENT))
-      {}
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + CLOSE_OBJECT_EVENT))
+    {}
 };
 
 
 class objectNameChangedEvent : public fwbUpdateEvent {
 public:
-    objectNameChangedEvent(const QString &file_name, int obj_id) :
-      fwbUpdateEvent(file_name, obj_id,
-                     QEvent::Type(QEvent::User + OBJECT_NAME_CHANGED_EVENT))
-      {}
+    QString old_name;
+    QString new_name;
+    objectNameChangedEvent(const QString &file_name, int obj_id,
+                           const QString &_old_name, const QString &_new_name) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + OBJECT_NAME_CHANGED_EVENT))
+    { old_name = _old_name; new_name = _new_name; }
 };
 
 

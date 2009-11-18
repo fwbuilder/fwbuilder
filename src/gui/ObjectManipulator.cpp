@@ -593,7 +593,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     }
 
     QCoreApplication::postEvent(
-        mw, new objectNameChangedEvent(m_project->getFileName(), obj->getId()));
+        mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
 }
 
 /*
@@ -627,7 +627,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
          (QString::fromUtf8(obj->getName().c_str()) != oldName))
     {
         QCoreApplication::postEvent(
-            mw, new objectNameChangedEvent(m_project->getFileName(), obj->getId()));
+            mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
 //        m_project->scheduleRuleSetRedraw();
     }
 }
@@ -731,7 +731,7 @@ void ObjectManipulator::autorename(list<FWObject*> &obj_list,
 
         if (old_name!=name)
             QCoreApplication::postEvent(
-                mw, new objectNameChangedEvent(m_project->getFileName(), obj->getId()));
+                mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
 
         //QTreeWidgetItem *itm1 = allItems[obj];
         //if (itm1!=NULL) updateObjectInTree(obj);
@@ -773,7 +773,7 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
                 obj->setName(new_name.arg(QString::fromUtf8(parent->getName().c_str())).arg(vlan_id).toStdString());
 
                 QCoreApplication::postEvent(
-                    mw, new objectNameChangedEvent(m_project->getFileName(), obj->getId()));
+                    mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
 
                 //QTreeWidgetItem *itm1 = allItems[obj];
                 //if (itm1!=NULL) updateObjectInTree(obj);

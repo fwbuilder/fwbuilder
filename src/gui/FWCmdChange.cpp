@@ -90,10 +90,15 @@ void FWCmdChange::notify()
     QCoreApplication::postEvent(
         mw, new showObjectInTreeEvent(filename, obj->getId()));
     QCoreApplication::postEvent(
-        mw, new updateObjectInTreeEvent(filename, obj->getId()));
-    QCoreApplication::postEvent(
-        mw, new updateObjectInRulesetEvent(filename, obj->getId()));
-
+        mw, new updateObjectEverywhereEvent(filename, obj->getId()));
+    if (oldState->getName() != newState->getName())
+    {
+        QCoreApplication::postEvent(
+            mw, new objectNameChangedEvent(
+                filename, obj->getId(),
+                QString::fromUtf8(oldState->getName().c_str()),
+                QString::fromUtf8(newState->getName().c_str())));
+    }
     mw->openEditor(obj);
 }
 
