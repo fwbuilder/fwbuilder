@@ -152,8 +152,6 @@ void ActionsDialog::validate(bool *res)
     }
 }
 
-
-
 void ActionsDialog::applyChanges()
 {
     FWCmdChange* cmd = new FWCmdChangeRuleAction(m_project, obj);
