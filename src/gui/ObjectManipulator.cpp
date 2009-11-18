@@ -596,42 +596,6 @@ void ObjectManipulator::updateObjName(FWObject *obj,
         mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
 }
 
-/*
- * variant specifically used for interfaces that have name and a label
- */
-void ObjectManipulator::updateObjName(FWObject *obj,
-                                      const QString &oldName,
-                                      const QString &oldLabel,
-                                      bool  askForAutorename)
-{
-    if (obj!=getSelectedObject()) openObject(obj);
-
-    QTreeWidgetItem *itm = allItems[obj];
-    assert(itm!=NULL);
-
-    if (fwbdebug)
-    {
-        qDebug("ObjectManipulator::updateObjName  changing name %s -> %s",
-               oldName.toLatin1().constData(), QString::fromUtf8(obj->getName().c_str()).toLatin1().constData());
-    }
-
-    if ((QString::fromUtf8(obj->getName().c_str()) != oldName) && Interface::isA(obj))
-        autorename(obj, askForAutorename);
-
-    // Do not call updateObjectInTree because it will be called
-    // from ProjectPanel::event when we process updateObjectInTree event
-    //updateObjectInTree(obj);
-
-    Interface *i = Interface::cast(obj);
-    if  ((i!=NULL && i->getLabel()!=oldLabel.toLatin1().constData()) ||
-         (QString::fromUtf8(obj->getName().c_str()) != oldName))
-    {
-        QCoreApplication::postEvent(
-            mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
-//        m_project->scheduleRuleSetRedraw();
-    }
-}
-
 void ObjectManipulator::autorename(FWObject *obj, bool ask)
 {
     if (Host::isA(obj) || Firewall::isA(obj) || Cluster::isA(obj))

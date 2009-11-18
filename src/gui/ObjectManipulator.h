@@ -323,10 +323,6 @@ public:
      void updateObjName(libfwbuilder::FWObject *obj,
                         const QString &oldName,
                         bool  askForAutorename=true);
-     void updateObjName(libfwbuilder::FWObject *obj,
-                        const QString &oldName,
-                        const QString &oldLabel,
-                        bool  askForAutorename=true);
     void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
     
      ObjectTreeView* getCurrentObjectTree();
