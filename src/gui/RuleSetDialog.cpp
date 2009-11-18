@@ -30,6 +30,7 @@
 #include "FWBTree.h"
 #include "RuleSetDialog.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Host.h"
@@ -48,9 +49,8 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
-#include "FWWindow.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -195,12 +195,15 @@ void RuleSetDialog::validate(bool *res)
 
 void RuleSetDialog::applyChanges()
 {
-    RuleSet *s = dynamic_cast<RuleSet*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    RuleSet *s = dynamic_cast<RuleSet*>(new_state);
     assert(s!=NULL);
 
     string oldname = obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment(
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment(
         string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     switch (m_dialog->ipv4_6_rule_set->currentIndex())
@@ -230,8 +233,10 @@ void RuleSetDialog::applyChanges()
     fwopt->setStr("ipt_mangle_only_rulesets",
                   mangle_rulesets.join(" ").toAscii().constData());
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 
