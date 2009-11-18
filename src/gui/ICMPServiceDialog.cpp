@@ -31,6 +31,7 @@
 #include "ProjectPanel.h"
 #include "FWBTree.h"
 #include "ICMPServiceDialog.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/ICMPService.h"
@@ -42,7 +43,7 @@
 #include <qtextedit.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
 #include <iostream>
 
@@ -121,15 +122,20 @@ void ICMPServiceDialog::validate(bool *res)
 
 void ICMPServiceDialog::applyChanges()
 {
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
 
-    obj->setInt("type", m_dialog->icmpType->value() );
-    obj->setInt("code", m_dialog->icmpCode->value() );
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    new_state->setInt("type", m_dialog->icmpType->value() );
+    new_state->setInt("code", m_dialog->icmpCode->value() );
 
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

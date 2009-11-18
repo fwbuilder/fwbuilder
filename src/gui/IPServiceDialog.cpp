@@ -31,6 +31,7 @@
 #include "FWBTree.h"
 #include "IPServiceDialog.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/IPService.h"
@@ -42,9 +43,9 @@
 #include <qtextedit.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
+#include <QUndoStack>
 
 #include <iostream>
-#include "FWBSettings.h"
 
 #include "FWWindow.h"
 using namespace libfwbuilder;
@@ -194,25 +195,28 @@ void IPServiceDialog::validate(bool *res)
 
 void IPServiceDialog::applyChanges()
 {
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
 
-    obj->setInt("protocol_num", m_dialog->protocolNum->value() );
-    obj->setBool("any_opt", m_dialog->any_opt->isChecked() );
-    obj->setBool("lsrr", m_dialog->lsrr->isChecked() );
-    obj->setBool("ssrr", m_dialog->ssrr->isChecked() );
-    obj->setBool("rr", m_dialog->rr->isChecked() );
-    obj->setBool("ts", m_dialog->timestamp->isChecked() );
-    obj->setBool("fragm", m_dialog->all_fragments->isChecked() );
-    obj->setBool("short_fragm", m_dialog->short_fragments->isChecked() );
+    string oldname=obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+
+    new_state->setInt("protocol_num", m_dialog->protocolNum->value() );
+    new_state->setBool("any_opt", m_dialog->any_opt->isChecked() );
+    new_state->setBool("lsrr", m_dialog->lsrr->isChecked() );
+    new_state->setBool("ssrr", m_dialog->ssrr->isChecked() );
+    new_state->setBool("rr", m_dialog->rr->isChecked() );
+    new_state->setBool("ts", m_dialog->timestamp->isChecked() );
+    new_state->setBool("fragm", m_dialog->all_fragments->isChecked() );
+    new_state->setBool("short_fragm", m_dialog->short_fragments->isChecked() );
 
     // router-alert IP option has only one defined value - "0". All other
     // values are reserved atm. RFC 2113
-    obj->setBool("rtralt", m_dialog->router_alert->isChecked() );
-    if (m_dialog->router_alert->isChecked()) obj->setInt("rtralt_value", 0);
+    new_state->setBool("rtralt", m_dialog->router_alert->isChecked() );
+    if (m_dialog->router_alert->isChecked()) new_state->setInt("rtralt_value", 0);
 
-    IPService *ip = IPService::cast(obj);
+    IPService *ip = IPService::cast(new_state);
     if (m_dialog->use_dscp->isChecked())
     {
         ip->setDSCPCode(m_dialog->code->text().toUtf8().constData());
@@ -223,8 +227,10 @@ void IPServiceDialog::applyChanges()
         ip->setDSCPCode("");
     }
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

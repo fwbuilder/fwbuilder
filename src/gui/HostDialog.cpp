@@ -30,6 +30,7 @@
 #include "FWBTree.h"
 #include "HostDialog.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Host.h"
@@ -44,7 +45,7 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
 #include "FWWindow.h"
 
@@ -125,22 +126,26 @@ void HostDialog::validate(bool *res)
 
 void HostDialog::applyChanges()
 {
-    Host *s = dynamic_cast<Host*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    Host *s = dynamic_cast<Host*>(new_state);
     assert(s!=NULL);
 
-    Management *mgmt=s->getManagementObject();
+    Management *mgmt = s->getManagementObject();
     assert(mgmt!=NULL);
 
     FWOptions  *opt =s->getOptionsObject();
 
     string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
-//    mgmt->getSNMPManagement()->setReadCommunity( snmpCommunity->text().latin1() );
-    opt->setBool("use_mac_addr_filter", m_dialog->MACmatching->isChecked() );
+    new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
+    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    opt->setBool("use_mac_addr_filter", m_dialog->MACmatching->isChecked());
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 
