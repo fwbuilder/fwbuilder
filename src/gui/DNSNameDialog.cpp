@@ -29,6 +29,7 @@
 
 #include "DNSNameDialog.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/DNSName.h"
@@ -46,7 +47,7 @@
 #include <qpushbutton.h>
 #include <qapplication.h>
 #include <qcursor.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
 #include <iostream>
 
@@ -117,20 +118,24 @@ void DNSNameDialog::validate(bool *res)
 
 void DNSNameDialog::applyChanges()
 {
-    DNSName *s = dynamic_cast<DNSName*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    DNSName *s = dynamic_cast<DNSName*>(new_state);
     assert(s!=NULL);
 
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     s->setSourceName( m_dialog->dnsrec->text().toLatin1().constData() );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
-
 }
 
 void DNSNameDialog::discardChanges()

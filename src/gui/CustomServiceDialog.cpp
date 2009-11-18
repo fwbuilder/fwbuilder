@@ -33,6 +33,7 @@
 #include "FWBTree.h"
 #include "CustomServiceDialog.h"
 #include "FWBSettings.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/CustomService.h"
@@ -42,9 +43,9 @@
 #include <qtextedit.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
+#include <QUndoStack>
 
 #include <iostream>
-#include "FWBSettings.h"
 
 #include "FWWindow.h"
 
@@ -193,14 +194,17 @@ void CustomServiceDialog::platformChanged()
 
 void CustomServiceDialog::applyChanges()
 {
-    CustomService *s = dynamic_cast<CustomService*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    CustomService *s = dynamic_cast<CustomService*>(new_state);
     assert(s!=NULL);
 
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     string commText = string(
         m_dialog->comment->toPlainText().toUtf8().constData());
-    obj->setComment( commText );
+    new_state->setComment( commText );
     QMap<QString,QString> platforms = getAllPlatforms();
     QMap<QString,QString>::iterator i;
     for (i=platforms.begin(); i!=platforms.end(); i++)
@@ -215,8 +219,10 @@ void CustomServiceDialog::applyChanges()
     int af = (m_dialog->ipv6->isChecked()) ? AF_INET6 : AF_INET;
     s->setAddressFamily(af);
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

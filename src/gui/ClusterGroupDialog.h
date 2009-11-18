@@ -37,7 +37,7 @@ class ClusterGroupDialog : public BaseObjectDialog
     Ui::ClusterGroupDialog_q *m_dialog;
     bool enable_master_column;
     
-    void saveGroupType();
+    void saveGroupType(libfwbuilder::FWObject *group);
 
 public:
     ClusterGroupDialog(QWidget *parent);

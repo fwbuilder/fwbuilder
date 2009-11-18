@@ -25,6 +25,7 @@
 #include "ProjectPanel.h"
 #include "DialogFactory.h"
 #include "vrrpOptionsDialog.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
@@ -37,6 +38,7 @@
 #include <qdialog.h>
 #include <QCoreApplication>
 #include <QtDebug>
+#include <QUndoStack>
 
 #include <algorithm>
 #include <iostream>
@@ -173,7 +175,7 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
     init = false;
 }
 
-void ClusterGroupDialog::saveGroupType()
+void ClusterGroupDialog::saveGroupType(FWObject *group)
 {
     QString host_os = cluster->getStr("host_OS").c_str();
     list<QStringPair> possible_cluster_group_types;
@@ -184,7 +186,7 @@ void ClusterGroupDialog::saveGroupType()
     list<QStringPair>::iterator li =
         std::find_if(possible_cluster_group_types.begin(), possible_cluster_group_types.end(), findSecondInQStringPair(grp_type));
     if (li != possible_cluster_group_types.end())
-        obj->setStr("type", li->first.toLatin1().constData() );
+        group->setStr("type", li->first.toLatin1().constData() );
 }
 
 void ClusterGroupDialog::addIcon(FWObject *o, bool master)
@@ -270,17 +272,22 @@ void ClusterGroupDialog::validate(bool *res)
 
 void ClusterGroupDialog::applyChanges()
 {
-    ClusterGroup *g = dynamic_cast<ClusterGroup*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    ClusterGroup *g = dynamic_cast<ClusterGroup*>(new_state);
     assert(g != NULL);
 
     QString oldname = obj->getName().c_str();
-    obj->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
-    obj->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
+    new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
+    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
 
-    saveGroupType();
+    saveGroupType(new_state);
 
-    m_project->updateObjName(obj, oldname);
+    //m_project->updateObjName(obj, oldname);
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 
