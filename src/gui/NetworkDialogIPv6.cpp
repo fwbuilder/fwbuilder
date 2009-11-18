@@ -31,6 +31,7 @@
 #include "NetworkDialogIPv6.h"
 #include "ProjectPanel.h"
 #include "FWBSettings.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Network.h"
@@ -46,8 +47,9 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
+#include <QUndoStack>
 
-#include "FWWindow.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -150,12 +152,15 @@ void NetworkDialogIPv6::validate(bool *res)
 
 void NetworkDialogIPv6::applyChanges()
 {
-    NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(new_state);
     assert(s!=NULL);
 
     string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment(
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment(
         string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     try
     {
@@ -173,8 +178,10 @@ void NetworkDialogIPv6::applyChanges()
  */
 
     }
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 
 }

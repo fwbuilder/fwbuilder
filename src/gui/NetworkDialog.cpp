@@ -31,6 +31,7 @@
 #include "NetworkDialog.h"
 #include "ProjectPanel.h"
 #include "FWBSettings.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Network.h"
@@ -45,8 +46,9 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
+#include <QUndoStack>
 
-#include "FWWindow.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -162,13 +164,16 @@ void NetworkDialog::validate(bool *result)
 
 void NetworkDialog::applyChanges()
 {
-    Network *s = dynamic_cast<Network*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    Network *s = dynamic_cast<Network*>(new_state);
     assert(s!=NULL);
 
     string oldname = obj->getName();
-    obj->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
-    obj->setComment(string(
-                        m_dialog->comment->toPlainText().toUtf8().constData()));
+    new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
+    new_state->setComment(string(
+                              m_dialog->comment->toPlainText().toUtf8().constData()));
     try
     {
         s->setAddress(InetAddr(m_dialog->address->text().toStdString()));
@@ -198,8 +203,10 @@ void NetworkDialog::applyChanges()
 //        bool ok = false ;
     }
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 
