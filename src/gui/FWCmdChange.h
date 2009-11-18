@@ -53,6 +53,19 @@ public:
 };
 
 /********************************************************
+ * FWCmdChangeOptionsObject
+ ********************************************************/
+
+class FWCmdChangeOptionsObject : public FWCmdChange
+{
+protected:
+    virtual void notify();
+
+public:
+    FWCmdChangeOptionsObject(ProjectPanel *project, libfwbuilder::FWObject *obj);
+};
+
+/********************************************************
  * FWCmdChangeRuleAction
  ********************************************************/
 
@@ -66,23 +79,17 @@ public:
 };
 
 /********************************************************
- * FWCmdChangeTime
+ * FWCmdChangeRuleOptions
  ********************************************************/
 
-//class FWCmdChangeTime : public FWCmdChange
-//{
-//public:
-//    FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj) : FWCmdChange(project, obj, tr("Edit time")) {}
-//};
+class FWCmdChangeRuleOptions : public FWCmdChange
+{
+protected:
+    virtual void notify();
 
-/********************************************************
- * FWCmdChangeIPv4
- ********************************************************/
+public:
+    FWCmdChangeRuleOptions(ProjectPanel *project, libfwbuilder::FWObject *obj);
+};
 
-//class FWCmdChangeIPv4 : public FWCmdChange
-//{
-//public:
-//    FWCmdChangeTime(ProjectPanel *project, libfwbuilder::FWObject *obj) : FWCmdChange(project, obj, tr("Edit IPv4")) {}
-//};
 
 #endif // FWCMDCHANGE_H

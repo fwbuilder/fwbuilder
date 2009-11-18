@@ -43,7 +43,7 @@ class FirewallDialog : public BaseObjectDialog
     Ui::FirewallDialog_q   *m_dialog;
     
     void fillVersion();
-    void saveVersion();
+    void saveVersion(libfwbuilder::FWObject *o);
     void updateTimeStamps();
     
  public:

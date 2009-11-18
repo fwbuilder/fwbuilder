@@ -31,6 +31,7 @@
 #include "RuleSetView.h"
 #include "FWWindow.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Rule.h"
@@ -127,11 +128,16 @@ void NATRuleOptionsDialog::applyChanges()
 {
     if (!isTreeReadWrite(this,obj)) return;
 
-    init=true;
-    data.saveAll();
-    init=false;
+    FWCmdChange* cmd = new FWCmdChangeRuleOptions(m_project, obj);
+    // new_state  is a copy of the rule object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();
 
-//    mw->updateRuleOptions();
+    init = true;
+    data.saveAll(new_rule_options);
+    init = false;
+
+    m_project->undoStack->push(cmd);
 
     BaseObjectDialog::applyChanges();
 }

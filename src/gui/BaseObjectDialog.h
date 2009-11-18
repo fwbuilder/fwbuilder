@@ -60,6 +60,7 @@ public:
     virtual ~BaseObjectDialog() {};
 
     void attachToProjectWindow(ProjectPanel *pp) { m_project = pp; }
+    ProjectPanel* getAssociatedProjectWindow() { return m_project; }
 
     bool isDataChanged() { return data_changed; }
 

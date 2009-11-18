@@ -34,6 +34,7 @@
 #include "DialogFactory.h"
 #include "FWWindow.h"
 #include "FWBSettings.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
@@ -58,6 +59,7 @@
 #include <qlabel.h>
 #include <qtimer.h>
 #include <QDateTime>
+#include <QUndoStack>
 
 #include <iostream>
 
@@ -182,7 +184,7 @@ void FirewallDialog::fillVersion()
     }
 }
 
-void FirewallDialog::saveVersion()
+void FirewallDialog::saveVersion(FWObject *o)
 {
     QString pl = readPlatform(m_dialog->platform);
 
@@ -192,7 +194,7 @@ void FirewallDialog::saveVersion()
     list<QStringPair>::iterator li =
         std::find_if(vl.begin(),vl.end(),findSecondInQStringPair(v));
     if (li!=vl.end())
-        obj->setStr("version", li->first.toLatin1().constData() );
+        o->setStr("version", li->first.toLatin1().constData() );
 }
 
 void FirewallDialog::platformChanged()
@@ -259,13 +261,14 @@ void FirewallDialog::validate(bool *res)
 
 void FirewallDialog::applyChanges()
 {
-    Firewall *s = dynamic_cast<Firewall*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+
+    Firewall *s = dynamic_cast<Firewall*>(new_state);
     Management *mgmt = s->getManagementObject();
     assert(mgmt!=NULL);
-
-//    FWOptions  *opt =s->getOptionsObject();
-
-    assert(s!=NULL);
 
     string old_name = obj->getName();
     string new_name = string(m_dialog->obj_name->text().toUtf8().constData());
@@ -273,39 +276,26 @@ void FirewallDialog::applyChanges()
     string old_host_os = obj->getStr("host_OS");
     string old_version = obj->getStr("version");
 
-    obj->setName(new_name);
-    obj->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
+    new_state->setName(new_name);
+    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
 
     string new_platform = readPlatform(m_dialog->platform).toLatin1().constData();
-    obj->setStr("platform", new_platform );
+    new_state->setStr("platform", new_platform );
 
     string new_host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();
-    obj->setStr("host_OS", new_host_os);
+    new_state->setStr("host_OS", new_host_os);
 
     s->setInactive(m_dialog->inactive->isChecked());
 
-    saveVersion();
+    saveVersion(new_state);
 
-    string new_version = obj->getStr("version");
-
-    m_project->updateObjName(obj, QString::fromUtf8(old_name.c_str()));
-
-    if (old_platform!=new_platform || old_host_os!=new_host_os ||
-        old_name!=new_name || old_version!=new_version)
-    {
-        if (fwbdebug)
-            qDebug("FirewallDialog::applyChanges() scheduling call "
-                   "to reopenFirewall()");
-        m_project->scheduleRuleSetRedraw();
-    }
+    string new_version = new_state->getStr("version");
 
     if (old_platform!=new_platform)
     {
         if (fwbdebug)
             qDebug("FirewallDialog::applyChanges() platform has changed to %s - "
                    "clear option 'compiler'", new_platform.c_str());
-        Firewall *s = Firewall::cast(obj);
-        assert(s!=NULL);
         FWOptions  *opt =s->getOptionsObject();
         opt->setStr("compiler", "");
 
@@ -318,11 +308,22 @@ void FirewallDialog::applyChanges()
         if (fwbdebug)
             qDebug("FirewallDialog::applyChanges() host_OS has changed to %s",
                    new_host_os.c_str());
-        Firewall *s = Firewall::cast(obj);
-        assert(s!=NULL);
         // Set default options for the new host os
         Resources::setDefaultTargetOptions(new_host_os, s);
     }
+
+    if (old_platform!=new_platform || old_host_os!=new_host_os ||
+        old_name!=new_name || old_version!=new_version)
+    {
+        if (fwbdebug)
+            qDebug("FirewallDialog::applyChanges() scheduling call "
+                   "to reopenFirewall()");
+        m_project->scheduleRuleSetRedraw();
+    }
+
+    m_project->undoStack->push(cmd);
+
+    m_project->updateObjName(obj, QString::fromUtf8(old_name.c_str()));
 
     BaseObjectDialog::applyChanges();
     updateTimeStamps();
