@@ -88,6 +88,8 @@ void FWCmdChange::notify()
     FWObject* obj = getObject();
     QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
     QCoreApplication::postEvent(
+        mw, new showObjectInTreeEvent(filename, obj->getId()));
+    QCoreApplication::postEvent(
         mw, new updateObjectInTreeEvent(filename, obj->getId()));
     QCoreApplication::postEvent(
         mw, new updateObjectInRulesetEvent(filename, obj->getId()));
