@@ -323,7 +323,7 @@ void FirewallDialog::applyChanges()
 
     m_project->undoStack->push(cmd);
 
-    m_project->updateObjName(obj, QString::fromUtf8(old_name.c_str()));
+    //m_project->updateObjName(obj, QString::fromUtf8(old_name.c_str()));
 
     BaseObjectDialog::applyChanges();
     updateTimeStamps();
