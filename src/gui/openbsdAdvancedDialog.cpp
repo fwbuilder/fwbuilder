@@ -29,6 +29,7 @@
 
 #include "openbsdAdvancedDialog.h"
 #include "FWWindow.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -40,6 +41,7 @@
 #include <qlineedit.h>
 #include <qstackedwidget.h>
 #include <qregexp.h>
+#include <QUndoStack>
 
 
 using namespace std;
@@ -105,14 +107,21 @@ openbsdAdvancedDialog::openbsdAdvancedDialog(QWidget *parent,FWObject *o)
  */
 void openbsdAdvancedDialog::accept()
 {
-    FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt!=NULL);
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
 
-    Management *mgmt=(Firewall::cast(obj))->getManagementObject();
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
+    assert(fwoptions!=NULL);
+
+    Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
     assert(mgmt!=NULL);
 
-    data.saveAll();
+    data.saveAll(fwoptions);
 
+    project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 
