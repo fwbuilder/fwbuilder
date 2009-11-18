@@ -227,6 +227,17 @@ public:
     virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
 
     /**
+     * This method copies all attributes of obj into this, plus
+     * FWOptions child object if it exists but no other
+     * children. Combination of attributes of the object plus its
+     * option child object describe all parameters of the object and
+     * should be sufficient to properly roll back or redo any changes.
+     * Changes done to its children should be undone or redone using
+     * corresponding objects.
+     */
+    virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+
+    /**
      * This method creates a copy of object 'x' and adds it to 'this'.
      * Depending on 'preserve_id' flag, Id are either copied or new
      * ones are issued.

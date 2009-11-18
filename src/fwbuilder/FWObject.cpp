@@ -444,6 +444,30 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
     return *this;
 }
 
+class InheritsFWOptions: public std::unary_function<FWObject*, bool>
+{
+    public:
+    InheritsFWOptions() {}
+    bool operator()(const FWObject *o) const 
+    {
+        return FWOptions::constcast(o)!=NULL;
+    }
+};
+
+FWObject& FWObject::duplicateForUndo(const FWObject *obj) throw(FWException)
+{
+    shallowDuplicate(obj);
+    InheritsFWOptions pred;
+    FWObject::const_iterator mine_opts_iter = std::find_if(begin(), end(), pred);
+    FWObject::const_iterator their_opts_iter = std::find_if(obj->begin(), obj->end(), pred);
+    if (their_opts_iter != obj->end())
+    {
+        if (mine_opts_iter != end()) (*mine_opts_iter)->duplicate(*their_opts_iter);
+        else addCopyOf(*their_opts_iter);
+    }
+    return *this;
+}
+
 const string &FWObject::getName() const 
 { 
     return name;
