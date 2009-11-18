@@ -188,17 +188,19 @@ void DialogData::loadAll()
         loadToWidget( *i );
 }
 
-void DialogData::saveAll()
+void DialogData::saveAll(FWObject *new_obj)
 {
     for (list<DialogOption>::iterator i=options.begin(); i!=options.end(); ++i)
     {
+        FWObject *use_obj = (new_obj!=NULL) ? new_obj : i->obj;
 
         if (dynamic_cast<QComboBox*>(i->w)!=NULL)
         {
             QComboBox *cbx = dynamic_cast<QComboBox*>(i->w);
-            QString      s = cbx->currentText();
+            QString s = cbx->currentText();
             if (fwbdebug)
-                qDebug(QString("DialogData::saveAll() QComboBox %1 (i->mapping.empty()=%2) s=%3").arg(i->w->objectName()).arg(i->mapping.empty()).arg(s).toAscii().constData());
+                qDebug(QString("DialogData::saveAll() QComboBox %1 (i->mapping.empty()=%2) s=%3")
+                       .arg(i->w->objectName()).arg(i->mapping.empty()).arg(s).toAscii().constData());
 
             if ( !i->mapping.empty() && !s.isNull() )
             {
@@ -233,32 +235,32 @@ void DialogData::saveAll()
 
             }
             if (s.isEmpty()) s="";
-            i->obj->setStr(i->attr.toLatin1().constData(), s.toLatin1().constData());
+            use_obj->setStr(i->attr.toLatin1().constData(), s.toLatin1().constData());
         }
         if (dynamic_cast<QCheckBox*>(i->w)!=NULL)
         {
             QCheckBox *cbx=dynamic_cast<QCheckBox*>(i->w);
-            i->obj->setBool(i->attr.toLatin1().constData(), cbx->isChecked() );
+            use_obj->setBool(i->attr.toLatin1().constData(), cbx->isChecked() );
         }
         if (dynamic_cast<QLineEdit*>(i->w)!=NULL)
         {
             QLineEdit *edit=dynamic_cast<QLineEdit*>(i->w);
-            i->obj->setStr(i->attr.toLatin1().constData(), edit->text().toLatin1().constData() );
+            use_obj->setStr(i->attr.toLatin1().constData(), edit->text().toLatin1().constData() );
         }
         if (dynamic_cast<QTextEdit*>(i->w)!=NULL)
         {
             QTextEdit *edit=dynamic_cast<QTextEdit*>(i->w);
-            i->obj->setStr(i->attr.toLatin1().constData(), edit->toPlainText().toLatin1().constData() );
+            use_obj->setStr(i->attr.toLatin1().constData(), edit->toPlainText().toLatin1().constData() );
         }
         if (dynamic_cast<QRadioButton*>(i->w)!=NULL)
         {
             QRadioButton *rbtn=dynamic_cast<QRadioButton*>(i->w);
-            i->obj->setBool(i->attr.toLatin1().constData(), rbtn->isChecked() );
+            use_obj->setBool(i->attr.toLatin1().constData(), rbtn->isChecked() );
         }
         if (dynamic_cast<QSpinBox*>(i->w)!=NULL)
         {
             QSpinBox *sbx = dynamic_cast<QSpinBox*>(i->w);
-            i->obj->setInt( i->attr.toLatin1().constData(), sbx->value() );
+            use_obj->setInt( i->attr.toLatin1().constData(), sbx->value() );
         }
 
     }

@@ -33,6 +33,7 @@
 #include "FWWindow.h"
 #include "FWObjectDropArea.h"
 #include "DialogFactory.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interface.h"
@@ -112,6 +113,7 @@ ActionsDialog::~ActionsDialog()
 
 void ActionsDialog::loadFWObject(FWObject *o)
 {
+    obj = o;
     setRule(Rule::cast(o));
 }
 
@@ -154,6 +156,12 @@ void ActionsDialog::validate(bool *res)
 
 void ActionsDialog::applyChanges()
 {
+    FWCmdChange* cmd = new FWCmdChangeRuleAction(m_project, obj);
+
+    // new_state  is a copy of the rule object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();
+
     if (platform=="iptables" && editor=="AccountingStr")
     {
         QString rn = m_dialog->accountingvalue_str->text();
@@ -172,11 +180,10 @@ void ActionsDialog::applyChanges()
         }
     }
 
-    data.saveAll();
+    data.saveAll(new_rule_options);
 
-    PolicyRule *policy_rule = PolicyRule::cast(rule);
-
-    FWOptions *ropt = rule->getOptionsObject();
+    Rule *rule = Rule::cast(new_state);
+    PolicyRule *policy_rule = PolicyRule::cast(new_state);
 
     if (editor=="TagInt")
     {
@@ -214,9 +221,11 @@ void ActionsDialog::applyChanges()
     }
 
     if (m_dialog->useDummyNetPipe->isChecked())
-        ropt->setInt("ipfw_classify_method",DUMMYNETPIPE);
+        new_rule_options->setInt("ipfw_classify_method", DUMMYNETPIPE);
     else
-        ropt->setInt("ipfw_classify_method",DUMMYNETQUEUE);
+        new_rule_options->setInt("ipfw_classify_method", DUMMYNETQUEUE);
+
+    m_project->undoStack->push(cmd);
 
     BaseObjectDialog::applyChanges();
 }

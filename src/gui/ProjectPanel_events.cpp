@@ -175,7 +175,8 @@ bool ProjectPanel::event(QEvent *event)
                 if (rv!=NULL && getSelectedObject() != rv->getSelectedObject())
                 {
                     rv->repaintSelection();
-                }
+                } else
+                    scheduleRuleSetRedraw();
                 // update rule set title as well
                 updateFirewallName();
                 ev->accept();
@@ -188,15 +189,6 @@ bool ProjectPanel::event(QEvent *event)
                            this, data_file.toLatin1().constData());
                 m_panel->om->openObject(obj);
 
-                ev->accept();
-                return true;
-
-            case OPEN_OBJECT_IN_EDITOR_EVENT:
-                if (fwbdebug)
-                    qDebug("ProjectPanel %p: openObjectInEditorEvent received for file %s",
-                           this, data_file.toLatin1().constData());
-                editObject(obj);
-                mdiWindow->update();
                 ev->accept();
                 return true;
 

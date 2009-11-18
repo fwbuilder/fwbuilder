@@ -1103,6 +1103,27 @@ bool FWWindow::event(QEvent *event)
 {
     if (event->type() >= QEvent::User)
     {
+        fwbUpdateEvent *ev = dynamic_cast<fwbUpdateEvent*>(event);
+        int obj_id = ev->getObjectId();
+        FWObject *obj = db()->findInIndex(obj_id);
+        if (obj == NULL) return false;
+        ProjectPanel *pp = activeProject();
+
+        switch (event->type() - QEvent::User)
+        {
+            case OPEN_OBJECT_IN_EDITOR_EVENT:
+            {
+                if (fwbdebug) qDebug("ProjectPanel: openObjectInEditorEvent received");
+                if (pp)
+                {
+                    pp->editObject(obj);
+                    pp->mdiWindow->update();
+                }
+                ev->accept();
+                return true;
+            }
+        }
+
         // dispatch event to all projectpanel windows
         QList<QMdiSubWindow*> subWindowList = m_mainWindow->m_space->subWindowList();
         for (int i = 0 ; i < subWindowList.size(); i++)

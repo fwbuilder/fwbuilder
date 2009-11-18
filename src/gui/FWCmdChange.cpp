@@ -31,6 +31,7 @@
 
 #include "events.h"
 
+#include <QObject>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -39,16 +40,8 @@ using namespace std;
  * FWCmdChange
  ********************************************************/
 
-void FWCmdChange::notify()
-{
-    FWObject* obj = getObject();
-    QCoreApplication::postEvent(
-    mw, new dataModifiedEvent(QString::fromUtf8(obj->getRoot()->getFileName().c_str()),
-                              obj->getId()));
-}
-
-FWCmdChange::FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, QString text):
-            FWCmdBasic(project)
+FWCmdChange::FWCmdChange(ProjectPanel *project, FWObject *obj, QString text):
+    FWCmdBasic(project)
 {
     setObject(obj);
 
@@ -57,12 +50,12 @@ FWCmdChange::FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, QSt
     this->oldState = db->create(obj->getTypeName());
     this->newState = db->create(obj->getTypeName());
 
-    this->oldState->shallowDuplicate(obj);
-    this->newState->shallowDuplicate(obj);
+    this->oldState->duplicateForUndo(obj);
+    this->newState->duplicateForUndo(obj);
 
     if (text.isEmpty())
     {
-        setText(QObject::tr("Edit ")+QString::fromUtf8(obj->getName().c_str()));
+        setText(QObject::tr("Edit ") + QString::fromUtf8(obj->getName().c_str()));
     } else
     {
         setText(text);
@@ -78,20 +71,40 @@ FWCmdChange::~FWCmdChange()
 void FWCmdChange::undo()
 {
     FWObject* obj = getObject();
-
-    obj->shallowDuplicate(oldState);
-
-    project->updateObjName(obj, QString::fromUtf8(newState->getName().c_str()));
+    obj->duplicateForUndo(oldState);
     notify();
 }
 
 void FWCmdChange::redo()
 {
     FWObject* obj = getObject();
-
-    obj->shallowDuplicate(newState);
-
-    project->updateObjName(obj, QString::fromUtf8(oldState->getName().c_str()));
+    obj->duplicateForUndo(newState);
     notify();
+}
+
+void FWCmdChange::notify()
+{
+    FWObject* obj = getObject();
+    QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+    QCoreApplication::postEvent(
+        mw, new updateObjectInTreeEvent(filename, obj->getId()));
+    QCoreApplication::postEvent(
+        mw, new updateObjectInRulesetEvent(filename, obj->getId()));
+
+    mw->openEditor(obj);
+}
+
+/********************************************************
+ * FWCmdChangeRuleAction
+ ********************************************************/
+
+FWCmdChangeRuleAction::FWCmdChangeRuleAction(ProjectPanel *project, FWObject *obj) :
+    FWCmdChange(project, obj, QObject::tr("Edit Rule Action"))
+{}
+
+void FWCmdChangeRuleAction::notify()
+{
+    FWObject* obj = getObject();
+    mw->openOptEditor(obj, ObjectEditor::optAction);
 }
 

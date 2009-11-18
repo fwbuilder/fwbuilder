@@ -27,6 +27,8 @@
 #include "global.h"
 #include "utils.h"
 
+#include "FWBSettings.h"
+#include "FWCmdChange.h"
 #include "IPv4Dialog.h"
 
 #include "ProjectPanel.h"
@@ -46,12 +48,9 @@
 #include <qhostinfo.h>
 #include <qapplication.h>
 #include <qcursor.h>
-#include "FWBSettings.h"
-#include "FWCmdChange.h"
 
 #include <iostream>
 
-#include "FWWindow.h"
 
 using namespace std;
 using namespace libfwbuilder;

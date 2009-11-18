@@ -41,37 +41,35 @@ namespace libfwbuilder {
 
 class DialogData;
 
-class DialogOption {
+class DialogOption
+{
     friend class DialogData;
 
  public:
     enum DataType { Unknown, String, Int, Bool };
 
  private:
-    QWidget                *w;
+    QWidget *w;
     libfwbuilder::FWObject *obj;
-    QString                 attr;
-    QStringList             mapping;
-    QString                 override_str_val;
-    int                     override_int_val;
-    DataType                dtype;
-    
- public:
+    QString attr;
+    QStringList mapping;
+    QString override_str_val;
+    int override_int_val;
+    DataType dtype;
+
     DialogOption(QWidget *widget, libfwbuilder::FWObject *obj, const char* attr);
     DialogOption(QWidget *widget, libfwbuilder::FWObject *obj, const char* attr, QStringList mapping);
 
     void overrideValue(const QString &val) { override_str_val=val; }
-    void overrideValue(int            val)  { override_int_val=val; }
+    void overrideValue(int val)  { override_int_val=val; }
 
     DataType type() { return dtype; }
-    
 };
 
 
-class DialogData {
-
+class DialogData
+{
     std::list<DialogOption>  options;
-
 
     void loadToWidget( DialogOption &dopt , bool override=false );
     
@@ -91,7 +89,6 @@ class DialogData {
     void registerOption(QWidget *widget,
                         libfwbuilder::FWObject *obj,
                         const char *attr);
-
 
 /**
  * like the method above, plus adds a maping between option value
@@ -127,8 +124,7 @@ class DialogData {
 /**
  * saves all options from their widgets to object attributes
  */
-    void saveAll();
-        
+    void saveAll(libfwbuilder::FWObject *new_obj=NULL);
 };
 
 #endif

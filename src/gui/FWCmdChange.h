@@ -39,7 +39,7 @@ class FWCmdChange : public FWCmdBasic
     libfwbuilder::FWObject *newState;
 
 protected:
-    void notify();
+    virtual void notify();
 
 public:
     FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, QString text=QString());
@@ -50,6 +50,19 @@ public:
 
     virtual void redo();
     virtual void undo();
+};
+
+/********************************************************
+ * FWCmdChangeRuleAction
+ ********************************************************/
+
+class FWCmdChangeRuleAction : public FWCmdChange
+{
+protected:
+    virtual void notify();
+
+public:
+    FWCmdChangeRuleAction(ProjectPanel *project, libfwbuilder::FWObject *obj);
 };
 
 /********************************************************
