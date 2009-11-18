@@ -29,6 +29,7 @@
 
 #include "FWBTree.h"
 #include "UserDialog.h"
+#include "FWCmdChange.h"
 
 #include "ProjectPanel.h"
 #include "fwbuilder/Library.h"
@@ -43,9 +44,8 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
-#include "FWWindow.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -107,16 +107,21 @@ void UserDialog::validate(bool *res)
 
 void UserDialog::applyChanges()
 {
-    UserService *s = dynamic_cast<UserService*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    UserService *s = dynamic_cast<UserService*>(new_state);
     assert(s!=NULL);
 
-    string oldname=obj->getName();
+    string oldname = obj->getName();
     s->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     s->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     s->setUserId( string(m_dialog->userid->text().toUtf8().constData()) );
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

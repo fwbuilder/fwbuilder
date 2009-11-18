@@ -31,6 +31,7 @@
 #include "FWBTree.h"
 #include "UDPServiceDialog.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/UDPService.h"
@@ -42,9 +43,9 @@
 #include <qcombobox.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
-#include "FWWindow.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -143,20 +144,25 @@ void UDPServiceDialog::validate(bool *res)
 
 void UDPServiceDialog::applyChanges()
 {
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     if (m_dialog->ss->value()!=0 && m_dialog->se->value()==0) m_dialog->se->setValue( m_dialog->ss->value() );
     if (m_dialog->ds->value()!=0 && m_dialog->de->value()==0) m_dialog->de->setValue( m_dialog->ds->value() );
 
-    TCPUDPService::cast(obj)->setSrcRangeStart(m_dialog->ss->value());
-    TCPUDPService::cast(obj)->setSrcRangeEnd(m_dialog->se->value());
-    TCPUDPService::cast(obj)->setDstRangeStart(m_dialog->ds->value());
-    TCPUDPService::cast(obj)->setDstRangeEnd(m_dialog->de->value());
+    TCPUDPService::cast(new_state)->setSrcRangeStart(m_dialog->ss->value());
+    TCPUDPService::cast(new_state)->setSrcRangeEnd(m_dialog->se->value());
+    TCPUDPService::cast(new_state)->setDstRangeStart(m_dialog->ds->value());
+    TCPUDPService::cast(new_state)->setDstRangeEnd(m_dialog->de->value());
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

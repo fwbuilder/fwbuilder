@@ -29,7 +29,7 @@
 
 #include "TagServiceDialog.h"
 #include "ProjectPanel.h"
-#include "FWWindow.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/TagService.h"
@@ -47,9 +47,9 @@
 #include <qpushbutton.h>
 #include <qapplication.h>
 #include <qcursor.h>
+#include <QUndoStack>
 
 #include <iostream>
-#include "FWBSettings.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -115,17 +115,22 @@ void TagServiceDialog::validate(bool *res)
 
 void TagServiceDialog::applyChanges()
 {
-    TagService *s = dynamic_cast<TagService*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    TagService *s = dynamic_cast<TagService*>(new_state);
     assert(s!=NULL);
 
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     s->setCode( m_dialog->tagcode->text().toLatin1().constData() );
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

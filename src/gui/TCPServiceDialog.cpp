@@ -30,6 +30,7 @@
 
 #include "FWBTree.h"
 #include "TCPServiceDialog.h"
+#include "FWCmdChange.h"
 
 #include "ProjectPanel.h"
 #include "fwbuilder/Library.h"
@@ -43,9 +44,9 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qlabel.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
-#include "FWWindow.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -201,37 +202,42 @@ void TCPServiceDialog::validate(bool *res)
 
 void TCPServiceDialog::applyChanges()
 {
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     if (m_dialog->ss->value()!=0 && m_dialog->se->value()==0) m_dialog->se->setValue( m_dialog->ss->value() );
     if (m_dialog->ds->value()!=0 && m_dialog->de->value()==0) m_dialog->de->setValue( m_dialog->ds->value() );
 
 
-    TCPUDPService::cast(obj)->setSrcRangeStart(m_dialog->ss->value());
-    TCPUDPService::cast(obj)->setSrcRangeEnd(m_dialog->se->value());
-    TCPUDPService::cast(obj)->setDstRangeStart(m_dialog->ds->value());
-    TCPUDPService::cast(obj)->setDstRangeEnd(m_dialog->de->value());
+    TCPUDPService::cast(new_state)->setSrcRangeStart(m_dialog->ss->value());
+    TCPUDPService::cast(new_state)->setSrcRangeEnd(m_dialog->se->value());
+    TCPUDPService::cast(new_state)->setDstRangeStart(m_dialog->ds->value());
+    TCPUDPService::cast(new_state)->setDstRangeEnd(m_dialog->de->value());
 
-    obj->setBool("urg_flag_mask", m_dialog->urg_m->isChecked() );
-    obj->setBool("ack_flag_mask", m_dialog->ack_m->isChecked() );
-    obj->setBool("psh_flag_mask", m_dialog->psh_m->isChecked() );
-    obj->setBool("rst_flag_mask", m_dialog->rst_m->isChecked() );
-    obj->setBool("syn_flag_mask", m_dialog->syn_m->isChecked() );
-    obj->setBool("fin_flag_mask", m_dialog->fin_m->isChecked() );
+    new_state->setBool("urg_flag_mask", m_dialog->urg_m->isChecked() );
+    new_state->setBool("ack_flag_mask", m_dialog->ack_m->isChecked() );
+    new_state->setBool("psh_flag_mask", m_dialog->psh_m->isChecked() );
+    new_state->setBool("rst_flag_mask", m_dialog->rst_m->isChecked() );
+    new_state->setBool("syn_flag_mask", m_dialog->syn_m->isChecked() );
+    new_state->setBool("fin_flag_mask", m_dialog->fin_m->isChecked() );
 
-    obj->setBool("urg_flag",      m_dialog->urg_s->isChecked() );
-    obj->setBool("ack_flag",      m_dialog->ack_s->isChecked() );
-    obj->setBool("psh_flag",      m_dialog->psh_s->isChecked() );
-    obj->setBool("rst_flag",      m_dialog->rst_s->isChecked() );
-    obj->setBool("syn_flag",      m_dialog->syn_s->isChecked() );
-    obj->setBool("fin_flag",      m_dialog->fin_s->isChecked() );
+    new_state->setBool("urg_flag",      m_dialog->urg_s->isChecked() );
+    new_state->setBool("ack_flag",      m_dialog->ack_s->isChecked() );
+    new_state->setBool("psh_flag",      m_dialog->psh_s->isChecked() );
+    new_state->setBool("rst_flag",      m_dialog->rst_s->isChecked() );
+    new_state->setBool("syn_flag",      m_dialog->syn_s->isChecked() );
+    new_state->setBool("fin_flag",      m_dialog->fin_s->isChecked() );
 
-    obj->setBool("established",  m_dialog->established->isChecked());
+    new_state->setBool("established",  m_dialog->established->isChecked());
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 
