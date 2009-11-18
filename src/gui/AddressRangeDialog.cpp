@@ -27,7 +27,8 @@
 #include "global.h"
 #include "utils.h"
 #include "ProjectPanel.h"
-
+#include "FWCmdChange.h"
+#include "FWBSettings.h"
 #include "FWBTree.h"
 #include "AddressRangeDialog.h"
 
@@ -42,9 +43,9 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include "FWBSettings.h"
 
-#include "FWWindow.h"
+#include <QUndoStack>
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -135,12 +136,15 @@ void AddressRangeDialog::validate(bool *res)
 
 void AddressRangeDialog::applyChanges()
 {
-    AddressRange *s = dynamic_cast<AddressRange*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    AddressRange *s = dynamic_cast<AddressRange*>(new_state);
     assert(s!=NULL);
 
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     try
     {
         s->setRangeStart( InetAddr(m_dialog->rangeStart->text().toLatin1().constData()) );
@@ -149,8 +153,11 @@ void AddressRangeDialog::applyChanges()
     {
 
     }
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

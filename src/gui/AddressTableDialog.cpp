@@ -27,11 +27,11 @@
 #include "global.h"
 #include "utils.h"
 #include "ProjectPanel.h"
-
 #include "AddressTableDialog.h"
 #include "SimpleTextView.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/AddressTable.h"
@@ -53,7 +53,7 @@
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qdir.h>
-#include "FWBSettings.h"
+#include <QUndoStack>
 
 
 #include <iostream>
@@ -124,18 +124,23 @@ void AddressTableDialog::validate(bool *res)
 
 void AddressTableDialog::applyChanges()
 {
-    AddressTable *s = dynamic_cast<AddressTable*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    AddressTable *s = dynamic_cast<AddressTable*>(new_state);
     assert(s!=NULL);
 
-    string oldname=obj->getName();
-    obj->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    obj->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
-    QByteArray cs=m_dialog->filename->text().toLocal8Bit();
+    string oldname = obj->getName();
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    QByteArray cs = m_dialog->filename->text().toLocal8Bit();
     s->setSourceName( (const char *)cs );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

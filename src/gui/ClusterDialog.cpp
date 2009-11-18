@@ -18,10 +18,10 @@
 
 #include "utils.h"
 #include "platforms.h"
-
 #include "DialogFactory.h"
 #include "FWWindow.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
@@ -31,6 +31,8 @@
 
 #include <qmessagebox.h>
 #include <QDateTime>
+#include <QUndoStack>
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -199,31 +201,36 @@ void ClusterDialog::validate(bool *res)
 
 void ClusterDialog::applyChanges()
 {
-    Cluster *s = dynamic_cast<Cluster*>(obj);
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    Cluster *s = dynamic_cast<Cluster*>(new_state);
     assert(s != NULL);
 
     string oldname = obj->getName();
     string newname = string(m_dialog->obj_name->text().toUtf8().constData());
     string oldplatform = obj->getStr("platform");
 
-    obj->setName(newname);
-    obj->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
+    new_state->setName(newname);
+    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
 
     string pl = readPlatform(m_dialog->platform).toLatin1().constData();
-    obj->setStr("platform", pl);
-
-    obj->setStr("host_OS", readHostOS(m_dialog->hostOS).toLatin1().constData());
+    new_state->setStr("platform", pl);
+    new_state->setStr("host_OS", readHostOS(m_dialog->hostOS).toLatin1().constData());
 
     s->setInactive(m_dialog->inactive->isChecked());
 
-    m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
+    //m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
 
-    if (oldplatform != pl || oldname != newname)
-    {
-        m_project->scheduleRuleSetRedraw();
-    }
+    // if (oldplatform != pl || oldname != newname)
+    // {
+    //     m_project->scheduleRuleSetRedraw();
+    // }
 
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
+
     updateTimeStamps();
 }
 
