@@ -517,10 +517,21 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
     return nlib;
 }
 
-void FWBTree::setObjectIcon(FWObject *obj, QPixmap *pm, bool small_icon)
+/*
+ * @icon_size:  0 - small (16x16) , 1 - medium (25x25), 2 - big (64x64)
+ */
+void FWBTree::setObjectIcon(FWObject *obj, QPixmap *pm, int icon_size)
 {
     QString icn_alias;
-    QString icn_sfx = (small_icon)?"icon-tree":"icon";
+    QString icn_sfx;
+
+    switch (icon_size)
+    {
+    case 0: icn_sfx = "icon-tree"; break;
+    case 2: icn_sfx = "icon-big"; break;
+    default: icn_sfx = "icon"; break;
+    }
+
     if (obj->getRO())
         icn_alias = ":/Icons/lock";
     else

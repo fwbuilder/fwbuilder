@@ -109,7 +109,8 @@ void RuleSetViewDelegate::paintGroup(QPainter *painter, const QStyleOptionViewIt
     QItemDelegate::paint(painter, option, index);
 }
 
-void RuleSetViewDelegate::drawIcons(QPainter *painter, QRect rect, const QStringList &icons) const
+void RuleSetViewDelegate::drawIcons(QPainter *painter, QRect rect,
+                                    const QStringList &icons) const
 {
     int x = rect.left();
     int y = rect.top();
@@ -132,17 +133,21 @@ void RuleSetViewDelegate::drawIcons(QPainter *painter, QRect rect, const QString
     }
 }
 
-void RuleSetViewDelegate::drawIconAndText(QPainter *painter, QRect rect, QString icon, QString text, bool negation) const
+void RuleSetViewDelegate::drawIconAndText(QPainter *painter,
+                                          QRect rect,
+                                          QString icon,
+                                          QString text,
+                                          bool negation) const
 {
     int x = rect.left();
     int y = rect.top();
 
     int iconWidth = 0;
 
-    if (!icon.isEmpty() && st->getShowIconsInRules()) {
+    if (!icon.isEmpty() && st->getShowIconsInRules())
+    {
         QPixmap pm;
-        if (!icon.isEmpty())
-            LoadPixmap(calculateIconName(icon, negation), pm);
+        if (!icon.isEmpty()) LoadPixmap(calculateIconName(icon, negation), pm);
         painter->drawPixmap(x,y,pm);
         iconWidth = pm.width();
         x += iconWidth + ICON_TEXT_GAP;
@@ -237,7 +242,7 @@ void RuleSetViewDelegate::paintOptions(QPainter *painter, const QStyleOptionView
     DrawingContext ctx = initContext(option.rect);
     QStringList options = v.value<QStringList>();
     drawSelectedFocus(painter, option, ctx.objectRect);
-    drawIcons(painter, ctx.drawRect,options);
+    drawIcons(painter, ctx.drawRect, options);
 }
 
 
@@ -290,7 +295,7 @@ void RuleSetViewDelegate::paintObject(QPainter *painter, const QStyleOptionViewI
         }
 
         QString icon;
-        if (!re->isAny()) icon = QString(o1->getTypeName().c_str()) + "/icon";
+        if (!re->isAny()) icon = QString(o1->getTypeName().c_str()); // + "/icon";
         QString text = objectText(re, o1);
 
         drawIconAndText(painter,
@@ -349,7 +354,7 @@ QPixmap RuleSetViewDelegate::getPixmap(QString name, PixmapAttr pmattr) const
     if (pmattr == Tree) icn="icon-tree";
     if (pmattr == NegTree) icn="icon-neg-tree";
 
-    QString icn_file = ":/Icons/"+name+"/"+icn.c_str();
+    QString icn_file = ":/Icons/" + name + "/" + icn.c_str();
     QPixmap pm;
     LoadPixmap(icn_file, pm);
 

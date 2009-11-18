@@ -346,7 +346,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     nitm->setText( 1, getTreeLabel(obj) );
 
     QPixmap pm;
-    FWBTree().setObjectIcon(obj, &pm);
+    FWBTree().setObjectIcon(obj, &pm, 0);
 
     nitm->setIcon( 0, QIcon(pm) );
 //    nitm->setIcon( 1, QIcon(pm) );
@@ -970,7 +970,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     itm1->setText( 1, getTreeLabel(lib) );
 
     QPixmap pm;
-    FWBTree().setObjectIcon(lib, &pm);
+    FWBTree().setObjectIcon(lib, &pm, 0);
     itm1->setIcon( 0, pm);
 
     itm1->setProperty("type", lib->getTypeName().c_str() );

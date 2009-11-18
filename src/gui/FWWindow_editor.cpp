@@ -191,10 +191,10 @@ void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
         if (ruleset) obj_for_icon = ruleset;
         if (rule && t == ObjectEditor::optAction)
         {
-            QString icn = ":/Icons/" + getRuleAction(rule);
+            QString icn = ":/Icons/" + getRuleAction(rule) + "/icon-big";
             LoadPixmap(icn, *pm);  // in utils.cpp
         } else
-            FWBTree().setObjectIcon(obj_for_icon, pm, false);
+            FWBTree().setObjectIcon(obj_for_icon, pm, 2); // big icon
     }
 }
 

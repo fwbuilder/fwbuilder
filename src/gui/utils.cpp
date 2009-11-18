@@ -480,7 +480,7 @@ QPixmap LoadPixmap(const QString path)
 
 QString calculateIconName(const QString &_icn, bool negation)
 {
-    QString icn = ":/Icons/"+_icn;
+    QString icn = ":/Icons/" + _icn + "/icon";
 
     if (negation)
     {

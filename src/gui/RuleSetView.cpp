@@ -343,7 +343,8 @@ QDrag* RuleSetView::dragObject()
 
     if (obj==NULL) return NULL;
 
-    QString icn = (":/Icons/"+obj->getTypeName()+"/icon").c_str();
+    // TODO: use FWBTree::setObjectIcon()
+    QString icn = (":/Icons/" + obj->getTypeName() + "/icon").c_str();
     list<FWObject*> dragobj;
     dragobj.push_back(obj);
     FWObjectDrag *drag = new FWObjectDrag(dragobj, this, NULL);
@@ -371,7 +372,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, NATRule::getActionAsString(NATRule::Translate));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Continue")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Continue/icon")),
                                          action_name,
                                          this, SLOT( changeActionToTranslate() ));
                     }
@@ -379,7 +380,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, NATRule::getActionAsString(NATRule::Branch));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Branch")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/NATBranch/icon")),
                                          action_name,
                                          this, SLOT( changeActionToNATBranch() ));
                     }
@@ -390,7 +391,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Accept));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Accept")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Accept/icon")),
                                          action_name,
                                          this, SLOT( changeActionToAccept() ));
                     }
@@ -398,7 +399,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Deny));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Deny")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Deny/icon")),
                                          action_name,
                                          this, SLOT( changeActionToDeny() ));
                     }
@@ -406,7 +407,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Reject));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Reject")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Reject/icon")),
                                          action_name,
                                          this, SLOT( changeActionToReject() ));
                     }
@@ -414,7 +415,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Accounting));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Accounting")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Accounting/icon")),
                                          action_name,
                                          this, SLOT( changeActionToAccounting() ));
                     }
@@ -422,7 +423,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Pipe));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Pipe")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Pipe/icon")),
                                          action_name,
                                          this, SLOT( changeActionToPipe() ));
                     }
@@ -430,7 +431,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Tag));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Tag")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Tag/icon")),
                                          action_name,
                                          this, SLOT( changeActionToTag() ));
                     }
@@ -438,7 +439,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Classify));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Classify")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Classify/icon")),
                                          action_name,
                                          this, SLOT( changeActionToClassify() ));
                     }
@@ -446,7 +447,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Custom));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Custom")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Custom/icon")),
                                          action_name,
                                          this, SLOT( changeActionToCustom() ));
                     }
@@ -454,7 +455,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Branch));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Branch")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Branch/icon")),
                                          action_name,
                                          this, SLOT( changeActionToBranch() ));
                     }
@@ -462,7 +463,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Route));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Route")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Route/icon")),
                                          action_name,
                                          this, SLOT( changeActionToRoute() ));
                     }
@@ -470,7 +471,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                     {
                         action_name = getActionNameForPlatform(
                             f, PolicyRule::getActionAsString(PolicyRule::Continue));
-                        menu->addAction( QIcon(LoadPixmap(":/Icons/Continue")),
+                        menu->addAction( QIcon(LoadPixmap(":/Icons/Continue/icon")),
                                          action_name,
                                          this, SLOT( changeActionToContinue() ));
                     }
@@ -493,13 +494,13 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
             }
 
         case ColDesc::Direction:
-            menu->addAction( QIcon(LoadPixmap(":/Icons/Inbound")),
+            menu->addAction( QIcon(LoadPixmap(":/Icons/Inbound/icon")),
                               tr("Inbound"),
                               this, SLOT( changeDirectionToIn() ));
-            menu->addAction( QIcon(LoadPixmap(":/Icons/Outbound")),
+            menu->addAction( QIcon(LoadPixmap(":/Icons/Outbound/icon")),
                               tr("Outbound"),
                               this, SLOT( changeDirectionToOut() ));
-            menu->addAction( QIcon(LoadPixmap(":/Icons/Both")),
+            menu->addAction( QIcon(LoadPixmap(":/Icons/Both/icon")),
                               tr("Both"),
                               this, SLOT( changeDirectionToBoth() ));
             break;
@@ -513,16 +514,16 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
             break;
 
         case ColDesc::Options:
-            menu->addAction( QIcon(LoadPixmap(":/Icons/Options")),
+            menu->addAction( QIcon(LoadPixmap(":/Icons/Options/icon")),
                               tr("Rule Options"),
                               this, SLOT( editSelected() ));
 
             if (md->getRuleSet()->getTypeName() == Policy::TYPENAME)
             {
-                menu->addAction( QIcon(LoadPixmap(":/Icons/Log")),
+                menu->addAction( QIcon(LoadPixmap(":/Icons/Log/icon")),
                                   tr("Logging On"),
                                   this, SLOT( changeLogToOn() ));
-                menu->addAction( QIcon(LoadPixmap(":/Icons/Blank")),
+                menu->addAction( QIcon(LoadPixmap(":/Icons/Blank/icon")),
                                   tr("Logging Off"),
                                   this, SLOT( changeLogToOff() ));
             }
