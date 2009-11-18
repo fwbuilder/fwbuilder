@@ -68,7 +68,9 @@ Firewall::Firewall()
    
 }
 
-Firewall::Firewall(const FWObjectDatabase *root,bool prepopulate) : Host(root,prepopulate)
+// Do not call parent class (Host) constructor with prepopulate=true because
+// it creates HostOptions child object we do not need here
+Firewall::Firewall(const FWObjectDatabase *root,bool prepopulate) : Host(root, false)
 {
     setStr("platform","unknown");
     setStr("host_OS" ,"unknown");
@@ -373,7 +375,19 @@ FWObject& Firewall::duplicate(const FWObject *obj,
     return *this;
 }
 
-void   Firewall::updateLastInstalledTimestamp()
+FWObject& Firewall::duplicateForUndo(const FWObject *obj) throw(FWException)
+{
+    FWObject::duplicateForUndo(obj);
+    FWObject *their_mgmt = obj->getFirstByType(Management::TYPENAME);
+    if (their_mgmt)
+    {
+        FWObject *my_mgmt = getManagementObject();
+        if (my_mgmt) my_mgmt->duplicate(their_mgmt);
+    }
+    return *this;
+}
+
+void  Firewall::updateLastInstalledTimestamp()
 {
     setInt("lastInstalled",time(NULL));
 }

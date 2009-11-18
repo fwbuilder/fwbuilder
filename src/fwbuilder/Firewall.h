@@ -77,6 +77,13 @@ public:
     virtual FWObject& duplicate(const FWObject *obj,
                                 bool preserve_id = true) throw(FWException);
 
+    /**
+     * This method copies all attributes of obj into this, plus
+     * FWOptions and Management child objects but no other
+     * children.
+     */
+    virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+
     Policy  *getPolicy();
     NAT     *getNAT();
     Routing *getRouting();
