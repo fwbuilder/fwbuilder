@@ -1181,5 +1181,4 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
 void ProjectPanel::setActive()
 {
     undoStack->setActive(true);
-    mainW->attachUndoStack(this);
 }

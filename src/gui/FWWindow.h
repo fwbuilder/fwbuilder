@@ -138,7 +138,6 @@ public:
     void updateOpenRecentMenu(const QString &fileName);
 
     void enableBackAction();
-    void attachUndoStack(ProjectPanel *pp);
     
 public slots:
     void selectActiveSubWindow (/*const QString & text*/);

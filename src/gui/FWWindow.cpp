@@ -1027,17 +1027,6 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     }
 }
 
-void FWWindow::attachUndoStack(ProjectPanel *pp)
-{
-    disconnect(redoAction, SLOT(setEnabled(bool)));
-    disconnect(undoAction, SLOT(setEnabled(bool)));
-
-    connect(pp->undoStack, SIGNAL(canRedoChanged(bool)),
-            redoAction, SLOT(setEnabled(bool)));
-    connect(pp->undoStack, SIGNAL(canUndoChanged(bool)),
-            undoAction, SLOT(setEnabled(bool)));
-}
-
 void FWWindow::attachEditorToProjectPanel(ProjectPanel *pp)
 {
     findObjectWidget->attachToProjectWindow(pp);
