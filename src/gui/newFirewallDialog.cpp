@@ -792,13 +792,6 @@ void newFirewallDialog::finishClicked()
         qDebug() << "newFirewallDialog::finishClicked()"
                  << "p=" << p;
 
-    if ( p == 2 )
-    {
-
-        if ( !this->m_dialog->interfaceEditor1->isValid() )
-            return;
-    }
-
     if ( p == 5 )
         if ( !this->m_dialog->interfaceEditor2->isValid() )
             return;
@@ -820,6 +813,8 @@ void newFirewallDialog::finishClicked()
     } else
     {
         // Create from interface list (obtained either manually or via snmp)
+        if ( !this->m_dialog->interfaceEditor1->isValid() )
+            return;
 
         FWObject *o;
         o = db->create(Firewall::TYPENAME);

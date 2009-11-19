@@ -225,7 +225,6 @@ bool InterfaceEditorWidget::isValid()
     }
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
-        if (types[i]->currentIndex() != 0) continue;
         QString address = this->m_ui->addresses->item(i, 0)->text();
         QString netmask = this->m_ui->addresses->item(i, 1)->text();
         if ( !validateAddress(address, netmask, this->m_ui->type->currentIndex() == 0, types[i]->currentIndex() == 1) )
