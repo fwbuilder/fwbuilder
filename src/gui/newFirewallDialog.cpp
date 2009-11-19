@@ -226,23 +226,6 @@ void newFirewallDialog::changed()
         f = m_dialog->use_manual->isChecked() || snmpPollCompleted;
         setNextEnabled( 1, f );
     }
-
-    if (p==2)
-    {/*
-        if (m_dialog->iface_dyn->isChecked() ||
-            m_dialog->iface_unnum->isChecked())
-        {
-            m_dialog->iface_addr->clear();
-            m_dialog->iface_addr->setEnabled(false);
-            m_dialog->iface_netmask->clear();
-            m_dialog->iface_netmask->setEnabled(false);
-        } else
-        {
-            m_dialog->iface_addr->setEnabled(true);
-            m_dialog->iface_netmask->setEnabled(true);
-        }
-        */
-    }
 }
 
 void  newFirewallDialog::monitor()
@@ -732,90 +715,6 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
     return true;
 }
 
-
-void newFirewallDialog::addInterface()
-{
-    /*
-    QString dn = "";
-    if (m_dialog->iface_dyn->isChecked())        dn+="Dyn";
-    if (m_dialog->iface_unnum->isChecked())      dn+="Unn";
-
-    QString addr;
-    QString netm;
-
-    if (!m_dialog->iface_dyn->isChecked() &&
-        !m_dialog->iface_unnum->isChecked())
-    {
-        addr = m_dialog->iface_addr->text();
-        netm = m_dialog->iface_netmask->text();
-
-        if (addr.isEmpty())
-            addr = QString(InetAddr::getAny().toString().c_str());
-        if (netm.isEmpty())
-            netm = QString(InetAddr::getAny().toString().c_str());
-        if (!validateAddressAndMask(addr, netm)) return;
-
-    }
-    QStringList qsl;
-    qsl << m_dialog->iface_name->text()
-        << m_dialog->iface_label->text()
-        << addr << netm << dn
-        << m_dialog->iface_physaddr->text();
-
-    new QTreeWidgetItem(m_dialog->iface_list, qsl);
-    */
-}
-
-void newFirewallDialog::selectedInterface(QTreeWidgetItem*cur, QTreeWidgetItem*)
-{
-    /*
-    QTreeWidgetItem *itm = cur; //current item
-    if (itm)
-    {
-        m_dialog->iface_name->setText( itm->text(0) );
-        m_dialog->iface_label->setText( itm->text(1) );
-        m_dialog->iface_addr->setText( itm->text(2) );
-        m_dialog->iface_netmask->setText( itm->text(3) );
-        m_dialog->iface_reg->setChecked( itm->text(4).isEmpty() );
-        m_dialog->iface_dyn->setChecked( itm->text(4).indexOf("Dyn")!=-1 );
-        m_dialog->iface_unnum->setChecked( itm->text(4).indexOf("Unn")!=-1 );
-        m_dialog->iface_physaddr->setText( itm->text(5) );
-    }
-    */
-}
-
-void newFirewallDialog::updateInterface()
-{
-    /*
-    QString dn = "";
-    if (m_dialog->iface_dyn->isChecked())   dn+="Dyn";
-    if (m_dialog->iface_unnum->isChecked()) dn+="Unn";
-
-    QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
-    if (itm==NULL) return;
-    QString addr = m_dialog->iface_addr->text();
-    QString netm = m_dialog->iface_netmask->text();
-    if (!validateAddressAndMask(addr, netm)) return;
-
-    itm->setText( 0 , m_dialog->iface_name->text() );
-    itm->setText( 1 , m_dialog->iface_label->text() );
-    itm->setText( 2 , m_dialog->iface_addr->text() );
-    itm->setText( 3 , m_dialog->iface_netmask->text() );
-    itm->setText( 4 , dn );
-    itm->setText( 5 , m_dialog->iface_physaddr->text() );
-    */
-}
-
-void newFirewallDialog::deleteInterface()
-{
-    /*
-    QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
-    if (itm==NULL) return;
-    m_dialog->iface_list->takeTopLevelItem(
-            m_dialog->iface_list->indexOfTopLevelItem(itm) );
-    */
-}
-
 void newFirewallDialog::adjustSL(QTreeWidgetItem *itm1)
 {
 // interface 1 is above 2. Adjust their security levels accordingly
@@ -944,7 +843,7 @@ void newFirewallDialog::finishClicked()
 
 /* create interfaces */
 
-        foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getData().values())
+        foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getNewData())
         {
             QString name     =  interface.name;
             QString label    =  interface.label;
@@ -974,10 +873,11 @@ void newFirewallDialog::finishClicked()
             oi->setSecurityLevel(sl);
 
             //mw->insertObjectInTree(nfw, oi);
-
+            fwbdebug = true;
             if (fwbdebug)
                 qDebug("Adding interface %s: security_level=%d",
                        oi->getName().c_str(), sl);
+            fwbdebug = false;
 
             if (interface.type == 0)
             {

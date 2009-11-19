@@ -90,7 +90,6 @@ public slots:
     void nameEdited(QString);
     void typeChanged(int);
     void addressChanged(int, int);
-    void addressChanged(int, int, int, int);
 
 protected:
     virtual void resizeEvent ( QResizeEvent * );

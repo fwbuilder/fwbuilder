@@ -315,14 +315,5 @@ void InterfaceEditorWidget::addressChanged(int row, int col)
     bool regular = this->m_ui->type->currentIndex() == 0;
     bool ipv6 = this->types[row]->currentIndex() == 1;
     if (!validateAddress(address, netmask, regular, ipv6))
-    {
-        doNotCheckNext = true;
         this->m_ui->addresses->editItem(this->m_ui->addresses->item(row, col));
-    }
-}
-
-void InterfaceEditorWidget::addressChanged(int newrow, int newcol, int row, int col)
-{
-    if (doNotCheckNext) { doNotCheckNext = false; return; }
-    addressChanged(row, col);
 }

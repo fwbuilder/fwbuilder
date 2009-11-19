@@ -108,13 +108,9 @@ public:
     bool validateAddressAndMask(const QString &addr,const QString &netm);
     
 public slots:
-    virtual void addInterface();
-    virtual void updateInterface();
-    virtual void deleteInterface();
     virtual void upInterface();
     virtual void downInterface();
     virtual void changed();
-    virtual void selectedInterface(QTreeWidgetItem*,QTreeWidgetItem*);
     virtual void getInterfacesViaSNMP();    
     virtual void monitor();
     virtual void templateSelected(QListWidgetItem *itm);
