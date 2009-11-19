@@ -4,16 +4,10 @@ TEMPLATE = app
 LANGUAGE = C++
 QT += network
 
-# this should work, but it does not with 4.3.5, workaround below
-# QT += network dbus
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)
-contains( HAVE_QTDBUS, 1 ):unix { 
-    macx:LIBS += -framework \
-        QtDBus
-    !macx:LIBS += -lQtDBus # workaround for QT += dbus not working atm
-}
+
 
 # This makes gcc compile this header file and store result in
 # .obj/fwbuilder.gch/c++. Generated Makefile will also add
@@ -425,18 +419,28 @@ FORMS = FWBMainWindow_q.ui \
     InterfaceEditorWidget.ui \
     InterfacesTabWidget.ui
 
-# fwtransfer stuff
+# fwtransfer stuff.
 HEADERS += transferDialog.h
 SOURCES += transferDialog.cpp
 FORMS += transferdialog_q.ui
+
 contains( HAVE_ANTLR_RUNTIME, 1 ) { 
     INCLUDEPATH += $$ANTLR_INCLUDEPATH
-    LIBS += $$FWBPARSER_LIB \
-        $$ANTLR_LIBS \
-        $$FWTRANSFER_LIB
+    LIBS += $$FWBPARSER_LIB $$ANTLR_LIBS
     DEFINES += $$ANTLR_DEFINES
 }
 LIBS += $$LIBS_FWCOMPILER
+
+# fwtransfer lib. Add this before adding -lQtDBus to LIBS below
+LIBS += $$FWTRANSFER_LIB
+
+contains( HAVE_QTDBUS, 1 ):unix {
+	!macx: QT += network dbus
+	macx:  LIBS += -framework QtDBus
+#!macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
+}
+
+
 INCLUDEPATH += ../iptlib \
     ../pflib \
     ../cisco_lib/ \

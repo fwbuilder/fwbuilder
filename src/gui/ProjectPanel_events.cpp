@@ -115,12 +115,14 @@ bool ProjectPanel::event(QEvent *event)
                 return true;
 
             case OBJECT_NAME_CHANGED_EVENT:
+            {
                 objectNameChangedEvent *name_change_event =
                     dynamic_cast<objectNameChangedEvent*>(event);
                 // This performs automatic renaming of child objects if necessary
                 m_panel->om->updateObjName(obj, name_change_event->old_name, true);
                 ev->accept();
                 return true;
+            }
 
             case UPDATE_LAST_COMPILED_TIMESTAMP_EVENT:
                 if (Firewall::cast(obj))
