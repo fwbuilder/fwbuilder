@@ -154,8 +154,6 @@ void AddressRangeDialog::applyChanges()
 
     }
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

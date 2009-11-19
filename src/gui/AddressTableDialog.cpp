@@ -137,8 +137,6 @@ void AddressTableDialog::applyChanges()
     s->setSourceName( (const char *)cs );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

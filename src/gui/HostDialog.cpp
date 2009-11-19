@@ -142,8 +142,6 @@ void HostDialog::applyChanges()
     new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     opt->setBool("use_mac_addr_filter", m_dialog->MACmatching->isChecked());
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

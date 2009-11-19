@@ -103,6 +103,16 @@ void FWCmdChange::notify()
 }
 
 /********************************************************
+ * FWCmdChangeName
+ ********************************************************/
+
+FWCmdChangeName::FWCmdChangeName(ProjectPanel *project, FWObject *obj) :
+    FWCmdChange(project, obj,
+                QObject::tr("Rename %1").arg(QString::fromUtf8(obj->getName().c_str())))
+{}
+
+
+/********************************************************
  * FWCmdChangeRuleAction
  ********************************************************/
 

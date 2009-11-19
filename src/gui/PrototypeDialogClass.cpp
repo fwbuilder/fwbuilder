@@ -30,6 +30,7 @@
 
 #include "PrototypeDialog.h"
 #include "ObjectManipulator.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Prototype.h"   //  should be an include file for the object type
@@ -38,6 +39,7 @@
 #include <qtextedit.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
+#include <QUndoStack>
 
 #include <iostream>
 
@@ -78,19 +80,18 @@ void PrototypeDialog::validate(bool *res)
     *res=true;
 }
 
-
-
 void PrototypeDialog::applyChanges()
 {
     if (!isTreeReadWrite(this,obj)) return;
 
-    string oldname=obj->getName();
-    obj->setName( string(obj_name->text().utf8()) );
-    obj->setComment( string(comment->text().utf8()) );
+    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    FWObject* new_state = cmd->getNewState();
 
+    new_state->setName( string(obj_name->text().utf8()) );
+    new_state->setComment( string(comment->text().utf8()) );
 
-    m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
+    m_project->undoStack->push(cmd);
+    
     BaseObjectDialog::applyChanges();
 }
 

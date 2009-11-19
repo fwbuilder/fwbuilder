@@ -132,8 +132,6 @@ void ICMPServiceDialog::applyChanges()
     new_state->setInt("type", m_dialog->icmpType->value() );
     new_state->setInt("code", m_dialog->icmpCode->value() );
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

@@ -118,7 +118,7 @@ bool ProjectPanel::event(QEvent *event)
                 objectNameChangedEvent *name_change_event =
                     dynamic_cast<objectNameChangedEvent*>(event);
                 // This performs automatic renaming of child objects if necessary
-                updateObjName(obj, name_change_event->old_name, true);
+                m_panel->om->updateObjName(obj, name_change_event->old_name, true);
                 ev->accept();
                 return true;
 

@@ -451,8 +451,6 @@ void GroupObjectDialog::applyChanges()
             new_state->addRef(o);
     }
 
-    //m_project->updateObjName(new_state, QString::fromUtf8(oldname.c_str()));
-
     saveColumnWidths();
 
     m_project->undoStack->push(cmd);

@@ -210,8 +210,6 @@ void IPv6Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr(AF_INET6, 0));
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

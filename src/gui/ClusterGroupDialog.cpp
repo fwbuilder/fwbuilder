@@ -284,8 +284,6 @@ void ClusterGroupDialog::applyChanges()
 
     saveGroupType(new_state);
 
-    //m_project->updateObjName(obj, oldname);
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

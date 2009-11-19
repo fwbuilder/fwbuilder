@@ -53,6 +53,16 @@ public:
 };
 
 /********************************************************
+ * FWCmdChangeName
+ ********************************************************/
+
+class FWCmdChangeName : public FWCmdChange
+{
+public:
+    FWCmdChangeName(ProjectPanel *project, libfwbuilder::FWObject *obj);
+};
+
+/********************************************************
  * FWCmdChangeOptionsObject
  ********************************************************/
 

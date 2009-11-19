@@ -178,7 +178,6 @@ void NetworkDialogIPv6::applyChanges()
  */
 
     }
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
 
     m_project->undoStack->push(cmd);
     

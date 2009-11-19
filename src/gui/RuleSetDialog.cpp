@@ -233,8 +233,6 @@ void RuleSetDialog::applyChanges()
     fwopt->setStr("ipt_mangle_only_rulesets",
                   mangle_rulesets.join(" ").toAscii().constData());
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

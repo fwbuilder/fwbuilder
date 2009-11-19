@@ -49,6 +49,7 @@
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
 #include "events.h"
+#include "FWCmdChange.h"
 
 #include <QMessageBox>
 #include <QTextEdit>
@@ -81,6 +82,7 @@
 #include <QMdiSubWindow>
 #include <QMdiArea>
 #include <QRegExp>
+#include <QUndoStack>
 
 #include "DialogFactory.h"
 #include "FWBTree.h"
@@ -578,7 +580,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     
     if (oldName == QString::fromUtf8(obj->getName().c_str())) return;
     
-    if (obj!=getSelectedObject()) openObject(obj);
+    //if (obj!=getSelectedObject()) openObject(obj);
     
     QTreeWidgetItem *itm = allItems[obj];
     assert(itm!=NULL);
@@ -586,9 +588,7 @@ void ObjectManipulator::updateObjName(FWObject *obj,
     if ((QString::fromUtf8(obj->getName().c_str())!=oldName) &&
         (Host::isA(obj) || Firewall::isA(obj) || Interface::isA(obj)))
     {
-        if (fwbdebug) qDebug("ObjectManipulator::updateObjName  autorename");
         autorename(obj, askForAutorename);
-        if (fwbdebug) qDebug("ObjectManipulator::updateObjName  autorename done");
     }
 
     QCoreApplication::postEvent(
@@ -690,14 +690,13 @@ void ObjectManipulator::autorename(list<FWObject*> &obj_list,
         FWObject *parent = obj->getParent();
         QString name = getStandardName(parent, objtype, namesuffix);
         name = makeNameUnique(parent, name, objtype.c_str());
-        obj->setName(string(name.toUtf8()));
-
-        if (old_name!=name)
-            QCoreApplication::postEvent(
-                mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
-
-        //QTreeWidgetItem *itm1 = allItems[obj];
-        //if (itm1!=NULL) updateObjectInTree(obj);
+        if (name != old_name)
+        {
+            FWCmdChange* cmd = new FWCmdChangeName(m_project, obj);
+            FWObject* new_state = cmd->getNewState();
+            new_state->setName(string(name.toUtf8()));
+            m_project->undoStack->push(cmd);
+        }
     }
 }
 
@@ -732,14 +731,17 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
             int_prop->parseVlan(obj_name, &base_name, &vlan_id);
             if (base_name != "vlan")
             {
-                QString new_name("%1.%2");
-                obj->setName(new_name.arg(QString::fromUtf8(parent->getName().c_str())).arg(vlan_id).toStdString());
-
-                QCoreApplication::postEvent(
-                    mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
-
-                //QTreeWidgetItem *itm1 = allItems[obj];
-                //if (itm1!=NULL) updateObjectInTree(obj);
+                QString new_name = QString("%1.%2")
+                    .arg(QString::fromUtf8(
+                             parent->getName().c_str()))
+                    .arg(vlan_id);
+                if (new_name != QString::fromUtf8(obj->getName().c_str()))
+                {
+                    FWCmdChange* cmd = new FWCmdChangeName(m_project, obj);
+                    FWObject* new_state = cmd->getNewState();
+                    new_state->setName(new_name.toStdString());
+                    m_project->undoStack->push(cmd);
+                }
             }
         }
     }

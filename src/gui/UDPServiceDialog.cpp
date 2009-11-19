@@ -159,8 +159,6 @@ void UDPServiceDialog::applyChanges()
     TCPUDPService::cast(new_state)->setDstRangeStart(m_dialog->ds->value());
     TCPUDPService::cast(new_state)->setDstRangeEnd(m_dialog->de->value());
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

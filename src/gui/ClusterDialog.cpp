@@ -220,13 +220,6 @@ void ClusterDialog::applyChanges()
 
     s->setInactive(m_dialog->inactive->isChecked());
 
-    //m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
-
-    // if (oldplatform != pl || oldname != newname)
-    // {
-    //     m_project->scheduleRuleSetRedraw();
-    // }
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

@@ -118,8 +118,6 @@ void UserDialog::applyChanges()
     s->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     s->setUserId( string(m_dialog->userid->text().toUtf8().constData()) );
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

@@ -234,8 +234,6 @@ void TCPServiceDialog::applyChanges()
 
     new_state->setBool("established",  m_dialog->established->isChecked());
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

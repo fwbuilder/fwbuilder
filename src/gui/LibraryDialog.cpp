@@ -133,8 +133,6 @@ void LibraryDialog::applyChanges()
     new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     new_state->setStr("color", color.toLatin1().constData());
 
-    //m_project->updateObjName(obj, QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     //if (color!=oldcolor) m_project->updateLibColor(obj);

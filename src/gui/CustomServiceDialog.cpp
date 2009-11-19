@@ -219,8 +219,6 @@ void CustomServiceDialog::applyChanges()
     int af = (m_dialog->ipv6->isChecked()) ? AF_INET6 : AF_INET;
     s->setAddressFamily(af);
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

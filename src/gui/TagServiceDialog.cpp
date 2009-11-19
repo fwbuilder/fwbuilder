@@ -127,8 +127,6 @@ void TagServiceDialog::applyChanges()
 
     s->setCode( m_dialog->tagcode->text().toLatin1().constData() );
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

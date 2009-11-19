@@ -166,10 +166,6 @@ public:
     void moveObject(const QString &targetLibName,
                     libfwbuilder::FWObject *obj);
 
-    void updateObjName(libfwbuilder::FWObject *obj,
-                       const QString &oldName,
-                       bool  askForAutorename=true);
-
     void registerModifiedObject(libfwbuilder::FWObject *o);
     void registerObjectToUpdateInTree(libfwbuilder::FWObject *o, bool update_subtree);
 

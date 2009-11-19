@@ -512,13 +512,6 @@ void ProjectPanel::moveObject(const QString &targetLibName,
     m_panel->om->moveObject(targetLibName, obj);
 }
 
-void ProjectPanel::updateObjName(FWObject *obj,
-                                 const QString &oldName,
-                                 bool  askForAutorename)
-{
-    m_panel->om->updateObjName(obj, oldName, askForAutorename);
-}
-
 FWObject* ProjectPanel::pasteTo(FWObject *target, FWObject *obj)
 {
     return m_panel->om->pasteTo(target, obj);

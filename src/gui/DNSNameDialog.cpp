@@ -131,8 +131,6 @@ void DNSNameDialog::applyChanges()
     s->setSourceName( m_dialog->dnsrec->text().toLatin1().constData() );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    //m_project->updateObjName(obj,QString::fromUtf8(oldname.c_str()));
-
     m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();

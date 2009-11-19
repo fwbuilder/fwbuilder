@@ -436,11 +436,6 @@ void InterfaceDialog::applyChanges()
         intf->setManagement( m_dialog->management->isChecked() );
     }
 
-    // // Call this to automatically rename child address objects
-    // m_project->updateObjName(new_state,
-    //                          QString::fromUtf8(oldname.c_str()),
-    //                          QString::fromUtf8(oldlabel.c_str()));
-
     // ticket #328: automatically assign vlan id to interface based on
     // interface name
     m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(intf);
