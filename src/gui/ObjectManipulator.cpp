@@ -739,7 +739,7 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
                 {
                     FWCmdChange* cmd = new FWCmdChangeName(m_project, obj);
                     FWObject* new_state = cmd->getNewState();
-                    new_state->setName(new_name.toStdString());
+                    new_state->setName(string(new_name.toUtf8()));
                     m_project->undoStack->push(cmd);
                 }
             }
