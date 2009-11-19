@@ -220,7 +220,12 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     undoGroup = new QUndoGroup(this);
     undoAction = undoGroup->createUndoAction(this);
+    undoAction->setShortcut(tr("Ctrl+Z"));
+
     redoAction = undoGroup->createRedoAction(this);
+    QList<QKeySequence> redoShortcuts;
+    redoShortcuts << tr("Ctrl+Y") << tr("Shift+Ctrl+Z");
+    redoAction->setShortcuts(redoShortcuts);
 
     m_mainWindow->editMenu->insertAction(m_mainWindow->editMenu->actions().at(0), undoAction);
     m_mainWindow->editMenu->insertAction(undoAction, redoAction);
