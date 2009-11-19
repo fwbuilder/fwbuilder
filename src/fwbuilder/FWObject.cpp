@@ -1036,6 +1036,16 @@ bool FWObject::isChildOf(FWObject *obj)
     return (p==obj);
 }
 
+bool FWObject::hasChild(FWObject *obj)
+{
+    int o_id = obj->getId();
+    for (list<FWObject*>::iterator it=begin(); it!=end(); ++it)
+    {
+        if ((*it)->getId() == o_id) return true;
+    }
+    return false;
+}
+
 FWObject* FWObject::getById  (int id, bool recursive)
 {
     if(id==getId())  return this;

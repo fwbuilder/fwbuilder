@@ -205,6 +205,7 @@ public:
 
     int ref()   { ++ref_counter; return(ref_counter); }
     int unref() { --ref_counter; return(ref_counter); }
+    int getRefCounter() { return(ref_counter); }
 
     /**
      * It is same as calling duplicate(x, FALSE);
@@ -391,6 +392,8 @@ public:
      */
     bool isChildOf(FWObject *obj);
 
+    bool hasChild(FWObject *obj);
+    
     /**
      * Returns object with given ID. If recursive is 'false'
      * search is restricted to direct children of given object

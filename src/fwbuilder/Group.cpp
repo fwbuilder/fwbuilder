@@ -63,6 +63,7 @@ int Group::getSize()
 
 bool Group::hasMember(FWObject *o)
 {
+    // unlike FWObject::hasChild(), Group::hasMember() also checks references
     int o_id = o->getId();
     for (list<FWObject*>::iterator it=begin(); it!=end(); ++it)
     {
