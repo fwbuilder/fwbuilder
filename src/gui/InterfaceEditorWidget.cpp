@@ -55,7 +55,6 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interfa
         rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
         rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
     }
-    updateColumnsSizes();
 }
 
 void InterfaceEditorWidget::setData(InterfaceData *data)
@@ -70,6 +69,8 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
         this->m_ui->type->setCurrentIndex(2);
     else
         this->m_ui->type->setCurrentIndex(0);
+    foreach(QPushButton *btn, this->buttons.keys())
+        btn->click();
     if ( !data->isDyn && !data->isUnnumbered )
     {
         foreach( InetAddrMask* addr, data->addr_mask )
@@ -93,7 +94,6 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     this->m_ui->label->clear();
     this->m_ui->comment->clear();
     addNewAddress();
-    updateColumnsSizes();
 }
 
 void InterfaceEditorWidget::deleteAddress()
@@ -291,12 +291,8 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
 
 void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
 {
-    updateColumnsSizes();
-}
-
-void InterfaceEditorWidget::updateColumnsSizes()
-{
     int total = this->m_ui->addresses->viewport()->width();
+    if (total < 100) total = this->m_ui->addresses->width() * 0.95;
     int controls;
     if ( total/4 > 130 ) controls = 130; else controls = total/4;
     this->m_ui->addresses->setColumnWidth(0, (total - controls*2)/2);

@@ -69,6 +69,7 @@ public:
     libfwbuilder::Interface* getInterface();
     EditedInterfaceData getInterfaceData();
     bool isValid();
+    void updateColumnsSizes();
 
 protected:
     void changeEvent(QEvent *e);
@@ -83,7 +84,7 @@ private:
     QMap<int, QComboBox*> types;
     QMap<int, libfwbuilder::Address*> fwaddrs;
     bool validateAddress(const QString &addr, const QString &netm, bool regular, bool ipv4);
-    void updateColumnsSizes();
+
 
 public slots:
     int addNewAddress();

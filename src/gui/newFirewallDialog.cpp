@@ -149,7 +149,6 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
 
 
     this->m_dialog->interfaceEditor1->clear();
-    this->connect(this, SIGNAL(addSNMPInterface(libfwbuilder::InterfaceData*)), this->m_dialog->interfaceEditor1, SLOT(addInterfaceFromData(libfwbuilder::InterfaceData*)));
     this->m_dialog->interfaceEditor2->clear();
     this->m_dialog->interfaceEditor2->removeTab(0);
 
@@ -249,6 +248,7 @@ void  newFirewallDialog::monitor()
 
     map<int, InterfaceData>* intf = q->getInterfaces();
     map<int, InterfaceData>::iterator i;
+    this->m_dialog->interfaceEditor1->clear();
     for (i=intf->begin(); i!=intf->end(); ++i)
     {
         InterfaceData* idata = &(i->second);
@@ -259,6 +259,8 @@ void  newFirewallDialog::monitor()
             this->m_dialog->interfaceEditor1->addInterfaceFromData(idata);
         }
     }
+    if ( this->m_dialog->interfaceEditor1->count() == 0 )
+        this->m_dialog->interfaceEditor1->addNewInterface();
 
     delete q;
     q=NULL;
