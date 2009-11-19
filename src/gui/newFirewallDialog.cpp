@@ -249,6 +249,7 @@ void  newFirewallDialog::monitor()
     map<int, InterfaceData>* intf = q->getInterfaces();
     map<int, InterfaceData>::iterator i;
     this->m_dialog->interfaceEditor1->clear();
+    this->m_dialog->interfaceEditor1->removeTab(0);
     for (i=intf->begin(); i!=intf->end(); ++i)
     {
         InterfaceData* idata = &(i->second);

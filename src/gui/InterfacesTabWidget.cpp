@@ -116,7 +116,7 @@ void InterfacesTabWidget::setTemplate(FWObject* obj)
 void InterfacesTabWidget::clear()
 {
     while ( this->count() ) this->removeTab(0);
-    //this->addNewInterface();
+    this->addNewInterface();
 }
 
 void InterfacesTabWidget::closeTab()
