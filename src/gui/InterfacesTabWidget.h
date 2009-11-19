@@ -86,7 +86,7 @@ public slots:
     void addNewInterface();
     void setTemplate(libfwbuilder::FWObject*);
     void closeTab();
-    void addInterface(libfwbuilder::InterfaceData*);
+    void addInterfaceFromData(libfwbuilder::InterfaceData*);
 
 };
 

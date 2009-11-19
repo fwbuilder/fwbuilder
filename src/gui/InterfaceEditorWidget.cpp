@@ -55,14 +55,11 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interfa
         rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
         rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
     }
-    doNotCheckNext = false;
+    updateColumnsSizes();
 }
 
-InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, InterfaceData* data)
+void InterfaceEditorWidget::setData(InterfaceData *data)
 {
-    tabw = dynamic_cast<QTabWidget*>(parent);
-    this->interface = NULL;
-    m_ui->setupUi(this);
     this->m_ui->name->setText(data->name.c_str());
     this->m_ui->label->setText(data->label.c_str());
     this->m_ui->mac->setText(data->mac_addr.c_str());
@@ -78,11 +75,11 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, InterfaceData* dat
         foreach( InetAddrMask* addr, data->addr_mask )
         {
             int row = addNewAddress();
+            types[row]->setCurrentIndex(addr->getAddressPtr()->isV6());
             rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
             rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
         }
     }
-    doNotCheckNext = false;
 }
 
 InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
@@ -95,8 +92,8 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     this->m_ui->name->setText(tr("New interface"));
     this->m_ui->label->clear();
     this->m_ui->comment->clear();
-    doNotCheckNext = false;
     addNewAddress();
+    updateColumnsSizes();
 }
 
 void InterfaceEditorWidget::deleteAddress()
@@ -293,6 +290,11 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
 }
 
 void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
+{
+    updateColumnsSizes();
+}
+
+void InterfaceEditorWidget::updateColumnsSizes()
 {
     int total = this->m_ui->addresses->viewport()->width();
     int controls;

@@ -149,6 +149,7 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
 
 
     this->m_dialog->interfaceEditor1->clear();
+    this->connect(this, SIGNAL(addSNMPInterface(libfwbuilder::InterfaceData*)), this->m_dialog->interfaceEditor1, SLOT(addInterfaceFromData(libfwbuilder::InterfaceData*)));
     this->m_dialog->interfaceEditor2->clear();
     this->m_dialog->interfaceEditor2->removeTab(0);
 
@@ -255,28 +256,7 @@ void  newFirewallDialog::monitor()
         if ( idata->ostatus )
         {
             idata->guessLabel(readPlatform(m_dialog->platform).toStdString());
-
-            this->m_dialog->interfaceEditor1->addInterface(idata);
-
-            /*
-            QString dn;
-            if (idata->isDyn)        dn+="dyn";
-            if (idata->isUnnumbered) dn+="unn";
-
-            QStringList qsl;
-            qsl << idata->name.c_str() << idata->label.c_str();
-            // TODO: redesign the way we pass information from the
-            // snmp crawler down the line so that multiple ip
-            // addresses per interface can be processed.
-            if (idata->addr_mask.size())
-                qsl << idata->addr_mask.front()->getAddressPtr()->toString().c_str()
-                    << idata->addr_mask.front()->getNetmaskPtr()->toString().c_str();
-            else
-                qsl << "" << "";
-
-            qsl << dn << idata->mac_addr.c_str();
-            new QTreeWidgetItem(m_dialog->iface_list, qsl);
-            */
+            this->m_dialog->interfaceEditor1->addInterfaceFromData(idata);
         }
     }
 

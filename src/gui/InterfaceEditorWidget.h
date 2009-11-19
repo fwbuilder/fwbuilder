@@ -61,10 +61,11 @@ struct AddressInfo
 class InterfaceEditorWidget : public QWidget {
     Q_OBJECT
 public:
+    InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data, int v);
     InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface);
-    InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data);
     InterfaceEditorWidget(QWidget *parent);
     ~InterfaceEditorWidget();
+    void setData(libfwbuilder::InterfaceData *data);
     libfwbuilder::Interface* getInterface();
     EditedInterfaceData getInterfaceData();
     bool isValid();
@@ -82,7 +83,7 @@ private:
     QMap<int, QComboBox*> types;
     QMap<int, libfwbuilder::Address*> fwaddrs;
     bool validateAddress(const QString &addr, const QString &netm, bool regular, bool ipv4);
-    bool doNotCheckNext;
+    void updateColumnsSizes();
 
 public slots:
     int addNewAddress();

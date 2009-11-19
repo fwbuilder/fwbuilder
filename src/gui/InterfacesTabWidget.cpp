@@ -147,7 +147,9 @@ void InterfacesTabWidget::setCornerWidgetsVisible(bool st)
     this->cornerWidget(Qt::TopLeftCorner)->setVisible(st);
 }
 
-void InterfacesTabWidget::addInterface(InterfaceData* idata)
+void InterfacesTabWidget::addInterfaceFromData(InterfaceData* idata)
 {
-    addTab(new InterfaceEditorWidget(this, idata), idata->name.c_str());
+    InterfaceEditorWidget *w = new InterfaceEditorWidget(this);
+    w->setData(idata);
+    addTab(w, idata->name.c_str());
 }

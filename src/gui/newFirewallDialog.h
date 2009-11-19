@@ -95,7 +95,7 @@ class newFirewallDialog : public QDialog, public FakeWizard
     void replaceReferencesToObject(libfwbuilder::Firewall *fw,
                                    libfwbuilder::FWObject *old_obj,
                                    libfwbuilder::FWObject *new_obj);
-                                   
+
 public:
     newFirewallDialog(libfwbuilder::FWObject *parent);
     virtual ~newFirewallDialog();
@@ -124,7 +124,7 @@ protected slots:
     void cancelClicked();
     void nextClicked();
     void backClicked();
- 
+
 };
 
 #endif // __NEWFIREWALLDIALOG_H
