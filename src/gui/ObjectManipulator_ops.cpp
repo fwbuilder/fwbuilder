@@ -58,6 +58,8 @@
 #include <QTime>
 #include <QtDebug>
 
+#include <memory>
+
 
 using namespace std;
 using namespace libfwbuilder;

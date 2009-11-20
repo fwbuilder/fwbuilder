@@ -65,6 +65,8 @@
 #include <QMenu>
 #include <QAction>
 
+#include <memory>
+
 
 using namespace std;
 using namespace libfwbuilder;
