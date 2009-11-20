@@ -830,7 +830,7 @@ void newFirewallDialog::finishClicked()
             return;
         }
 
-        o->setName(m_dialog->obj_name->text().toLocal8Bit().constData());//.toStdString());
+        o->setName( string( m_dialog->obj_name->text().toUtf8().constData() ) );//.toStdString());
         parent->add(o);
 
         nfw = Firewall::cast(o);
