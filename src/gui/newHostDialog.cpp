@@ -593,8 +593,8 @@ void newHostDialog::finishClicked()
             QString physaddr =  interface.mac;
 
             Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
-            oi->setName( name.toStdString() );
-            oi->setLabel( label.toLatin1().constData() );
+            oi->setName( name.toUtf8().constData() );
+            oi->setLabel( label.toUtf8().constData() );
             nhst->add(oi);
 
             if (dyn)   oi->setDyn(true);

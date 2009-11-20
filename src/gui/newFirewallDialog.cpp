@@ -524,26 +524,48 @@ void newFirewallDialog::fillInterfaceSLList()
 
         idata.name  = interface.name.toLatin1().constData();
         idata.label = interface.label.toLatin1().constData();
-        AddressInfo address = interface.addresses.values().first();
+        AddressInfo address;
+        bool gotIPv4 = false;
+        foreach(AddressInfo addr, interface.addresses.values())
+        {
+            if (addr.ipv4)
+            {
+                address = addr;
+                gotIPv4 = true;
+                break;
+            }
+        }
+        if (!gotIPv4) address = interface.addresses.values().first();
 
-        InetAddrMask *iam = new InetAddrMask();
+        InetAddrMask *iam;// = new InetAddrMask();
         if (interface.type == 0)
         {
-            iam->setAddress(libfwbuilder::InetAddr(address.address.toStdString()));
+            if ( address.ipv4 )
+                iam = new InetAddrMask(InetAddr(address.address.toStdString()), InetAddr(address.netmask.toStdString()));
+            else
+            {
+                iam = new InetAddrMask(InetAddr(AF_INET6, address.address.toStdString()), InetAddr(AF_INET6, address.netmask.toStdString()));
+            }
         }
+
         idata.addr_mask.push_back(iam);
 
-        try
+        if (gotIPv4)
         {
-            idata.guessSecurityLevel( readPlatform(m_dialog->platform).toStdString() );
+            try
+            {
+                idata.guessSecurityLevel( readPlatform(m_dialog->platform).toStdString() );
+            }
+            catch (FWException &ex)
+            {
+                QMessageBox::warning( this,"Firewall Builder", ex.toString().c_str(),
+                                      "&Continue", QString::null, QString::null, 0, 1 );
+                showPage( 2 );
+                return;
+            }
         }
-        catch (FWException &ex)
-        {
-            QMessageBox::warning( this,"Firewall Builder", ex.toString().c_str(),
-                                  "&Continue", QString::null, QString::null, 0, 1 );
-            showPage( 2 );
-            return;
-        }
+        else idata.securityLevel = 0;
+
 
         QStringList qsl;
         qsl << idata.name.c_str()
@@ -825,8 +847,6 @@ void newFirewallDialog::finishClicked()
         {
             QString name     =  interface.name;
             QString label    =  interface.label;
-//            QString addr     =  itm->text(2);
- //           QString netmask  =  itm->text(3);
             bool    dyn      =  interface.type == 1;
             bool    unnum    =  interface.type == 2;
             QString physaddr =  interface.mac;
@@ -843,8 +863,8 @@ void newFirewallDialog::finishClicked()
 
             nfw->add(oi);
 
-            oi->setName(name.toStdString());
-            oi->setLabel(label.toStdString());
+            oi->setName(name.toUtf8().constData());
+            oi->setLabel(label.toUtf8().constData());
 
             oi->setDyn(dyn);
             oi->setUnnumbered(unnum);
@@ -899,7 +919,6 @@ void newFirewallDialog::finishClicked()
                 }
             }
         }
-
     }
 
     if (tmpldb!=NULL)
