@@ -616,7 +616,7 @@ void newHostDialog::finishClicked()
                     if (address.address == "0.0.0.0") continue;
                     if (address.ipv4)
                     {
-                        QString addrname = QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name);
+                        QString addrname = QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name).toUtf8();
                         IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
                         oi->add(oa);
                         oa->setName(addrname.toStdString());
@@ -634,7 +634,7 @@ void newHostDialog::finishClicked()
                     }
                     else
                     {
-                        QString addrname = QString("%1:%2:ip6").arg(m_dialog->obj_name->text()).arg(name);
+                        QString addrname = QString("%1:%2:ip6").arg(m_dialog->obj_name->text()).arg(name).toUtf8();
                         IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
                         oi->add(oa);
                         oa->setName(addrname.toStdString());
