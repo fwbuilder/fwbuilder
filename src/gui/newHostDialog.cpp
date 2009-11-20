@@ -593,8 +593,8 @@ void newHostDialog::finishClicked()
             QString physaddr =  interface.mac;
 
             Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
-            oi->setName( name.toUtf8().constData() );
-            oi->setLabel( label.toUtf8().constData() );
+            oi->setName( string(name.toUtf8().constData()) );
+            oi->setLabel( string(label.toUtf8().constData()) );
             oi->setComment( string(interface.comment.toUtf8().constData()) );
             nhst->add(oi);
 
@@ -617,10 +617,10 @@ void newHostDialog::finishClicked()
                     if (address.address == "0.0.0.0") continue;
                     if (address.ipv4)
                     {
-                        QString addrname = QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name).toUtf8();
+                        string addrname = string( QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name).toUtf8() );
                         IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
                         oi->add(oa);
-                        oa->setName(addrname.toStdString());
+                        oa->setName(addrname);
                         oa->setAddress( InetAddr(address.address.toLatin1().constData()) );
                         bool ok = false ;
                         int inetmask = address.netmask.toInt(&ok);
@@ -635,10 +635,10 @@ void newHostDialog::finishClicked()
                     }
                     else
                     {
-                        QString addrname = QString("%1:%2:ip6").arg(m_dialog->obj_name->text()).arg(name).toUtf8();
+                        string addrname = string( QString("%1:%2:ip6").arg(m_dialog->obj_name->text()).arg(name).toUtf8() );
                         IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
                         oi->add(oa);
-                        oa->setName(addrname.toStdString());
+                        oa->setName(addrname);
                         oa->setAddress(InetAddr(AF_INET6, address.address.toLatin1().constData()) );
                         bool ok = false ;
                         int inetmask = address.netmask.toInt(&ok);

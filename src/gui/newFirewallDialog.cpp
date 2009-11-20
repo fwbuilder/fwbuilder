@@ -148,6 +148,7 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
     m_dialog->obj_name->setFocus();
 
 
+    currentTemplate = NULL;
     this->m_dialog->interfaceEditor1->clear();
     this->m_dialog->interfaceEditor2->clear();
     this->m_dialog->interfaceEditor2->removeTab(0);
@@ -363,6 +364,19 @@ bool newFirewallDialog::appropriate(const int page) const
 
 void newFirewallDialog::nextClicked()
 {
+    if ( currentPage() == 4 )
+    {
+        if (m_dialog->templateList->currentItem() == NULL)
+        {
+            QMessageBox::warning(
+                    this,"Firewall Builder",
+                    tr("Please select template"),
+                    tr("&Continue"), QString::null,QString::null,
+                    0, 1 );
+            showPage(4);
+            return;
+        }
+    }
     if ( currentPage() == 2 )
         if ( !this->m_dialog->interfaceEditor1->isValid() )
             return;
@@ -492,8 +506,8 @@ void newFirewallDialog::showPage(const int page)
             m_dialog->templateList->addItem( twi );
             templates[ m_dialog->templateList->item( m_dialog->templateList->count()-1 ) ]=o;
         }
-        m_dialog->templateList->setCurrentItem(0);
         m_dialog->templateList->setFocus();
+        m_dialog->templateList->setCurrentItem(0);
         break;
     }
 
@@ -503,6 +517,8 @@ void newFirewallDialog::showPage(const int page)
         createFirewallFromTemplate();
 
         setFinishEnabled( 5, true );
+        this->m_dialog->interfaceEditor2->clear();
+        this->m_dialog->interfaceEditor2->removeTab(0);
         this->m_dialog->interfaceEditor2->setCornerWidgetsVisible(false);
         QList<Interface*> interfaces;
         FWObjectTypedChildIterator intiter = nfw->findByType(Interface::TYPENAME);
