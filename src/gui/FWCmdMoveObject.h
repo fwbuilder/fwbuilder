@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: FWCmdChange.h 1799 2009-11-18 03:33:57Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -23,29 +23,34 @@
 
 */
 
-#ifndef FWCMDADDOBJECT_H
-#define FWCMDADDOBJECT_H
+#ifndef FWCMDMOVEOBJECT_H
+#define FWCMDMOVEOBJECT_H
 
-#include "FWCmdChange.h"
+#include "FWCmdBasic.h"
+#include <list>
 
 /********************************************************
- * FWCmdAddObject
+ * FWCmdMoveObject
  ********************************************************/
 
-class FWCmdAddObject : public FWCmdChange
+class FWCmdMoveObject : public FWCmdBasic
 {
-    libfwbuilder::FWObject *member;
-    bool require_complete_tree_reload;
+    libfwbuilder::FWObject *old_parent;
+    libfwbuilder::FWObject *new_parent;
+    libfwbuilder::FWObject *obj;
+    std::list<libfwbuilder::FWObject*> reference_holders;
+
 protected:
     virtual void notify();
 
 public:
-    FWCmdAddObject(ProjectPanel *project,
-                   libfwbuilder::FWObject *grp,
-                   libfwbuilder::FWObject *member,
-                   QString text=QString());
-    ~FWCmdAddObject();
-    void setNeedTreeReload(bool f) { require_complete_tree_reload = f; }
+    FWCmdMoveObject(ProjectPanel *project,
+                    libfwbuilder::FWObject *old_parent,
+                    libfwbuilder::FWObject *new_parent,
+                    libfwbuilder::FWObject *obj,
+                    std::list<libfwbuilder::FWObject*> &reference_holders,
+                    QString text=QString());
+    ~FWCmdMoveObject();
     virtual void redo();
     virtual void undo();
 };

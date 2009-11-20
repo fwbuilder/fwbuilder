@@ -216,6 +216,18 @@ bool ProjectPanel::event(QEvent *event)
                 return true;
             }
 
+            case SHOW_OBJECT_IN_RULESET_EVENT:
+            {
+                if (fwbdebug)
+                    qDebug("ProjectPanel %p: showObjectInRulesetEvent received for file %s",
+                           this, data_file.toLatin1().constData());
+                openRuleSet(obj);
+                // update rule set title as well
+                updateFirewallName();
+                ev->accept();
+                return true;
+            }
+
             case SHOW_OBJECT_IN_TREE_EVENT:
                 if (fwbdebug)
                     qDebug("ProjectPanel %p: showObjectInTreeEvent received for file %s",

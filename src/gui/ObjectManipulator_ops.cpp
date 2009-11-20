@@ -41,6 +41,7 @@
 #include "interfacePropertiesObjectFactory.h"
 #include "FWCmdChange.h"
 #include "FWCmdAddObject.h"
+#include "FWCmdMoveObject.h"
 #include "FWBTree.h"
 #include "FWWindow.h"
 #include "ProjectPanel.h"
@@ -252,11 +253,10 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
 FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib,
                                              FWObject *obj,
                                              const QString &name,
-                                             bool  askForAutorename)
+                                             bool)
 {
     if (!isTreeReadWrite(this, targetLib)) return NULL;
     openLib(targetLib);
-    FWObject *o=NULL;
     QString newName;
     if (!name.isEmpty()) newName = name;
     else                 newName = QString::fromUtf8(obj->getName().c_str());
@@ -288,48 +288,40 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
 
     if (!grp->isReadOnly())
     {
-        obj->ref();
-        obj->ref();
+        list<FWObject*> reference_holders;
+        FWCmdMoveObject *cmd = new FWCmdMoveObject(m_project,
+                                                   obj->getParent(),
+                                                   grp,
+                                                   obj, reference_holders,
+                                                   "Move object");
+        m_project->undoStack->push(cmd);
 
-        if (fwbdebug)
-            qDebug("ObjectManipulator::moveObject  remove from the widget");
+        // ObjectTreeViewItem *itm = allItems[obj];
+        // if (itm->parent()==NULL) return;
+        // itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
 
-        ObjectTreeViewItem *itm = allItems[obj];
-        if (itm->parent()==NULL) return;
+        // obj->getParent()->remove(obj);
+        // grp->add(obj);
+        // obj->unref();
 
-        itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
+        // if (allItems[grp]==NULL)
+        // {
+        //     /* adding to the root, there is not such tree item */
+        //     if (Library::isA(obj))
+        //     {
+        //         addTreePage(obj);
+        //         openLib(obj);
+        //     } else
+        //     {
+        //         /* it screwed up, just print debugging message */
+        //         if (fwbdebug)
+        //             qDebug("ObjectManipulator::moveObject  no place in "
+        //                    "the tree corresponding to the object %p %s",
+        //                    grp, grp->getName().c_str());
+        //     }
+        // } else
+        //     allItems[grp]->addChild(itm);
 
-        if (fwbdebug)
-            qDebug("ObjectManipulator::moveObject  removing from the tree");
-
-        obj->getParent()->remove(obj);
-
-        if (fwbdebug)
-            qDebug("ObjectManipulator::moveObject  adding to the tree");
-
-        grp->add(obj);
-        obj->unref();
-
-        if (fwbdebug)
-            qDebug("ObjectManipulator::moveObject  adding to the widget");
-
-        if (allItems[grp]==NULL)
-        {
-            /* adding to the root, there is not such tree item */
-            if (Library::isA(obj))
-            {
-                addTreePage(obj);
-                openLib(obj);
-            } else
-            {
-                /* it screwed up, just print debugging message */
-                if (fwbdebug)
-                    qDebug("ObjectManipulator::moveObject  no place in "
-                           "the tree corresponding to the object %p %s",
-                           grp, grp->getName().c_str());
-            }
-        } else
-            allItems[grp]->addChild(itm);
     }
     if (fwbdebug)
         qDebug("ObjectManipulator::moveObject  all done");
@@ -393,6 +385,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
                 .arg(QString::fromUtf8(obj->getName().c_str()))
                 .arg(QString::fromUtf8(ta->getName().c_str())));
             FWObject *new_state = cmd->getNewState();
+            cmd->setNeedTreeReload(true);
             // recursivelyCopySubtree() needs access to the target tree root
             // when it copies subtree, so have to copy into the actual target
             // tree.

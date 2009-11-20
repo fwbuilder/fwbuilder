@@ -46,6 +46,7 @@ enum EVENT_CODES {
     UPDATE_LAST_COMPILED_TIMESTAMP_EVENT ,
     UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT ,
     SHOW_OBJECT_IN_TREE_EVENT ,
+    SHOW_OBJECT_IN_RULESET_EVENT ,
     RELOAD_OBJECT_TREE_EVENT ,
     OPEN_OBJECT_IN_EDITOR_EVENT ,
     CLOSE_OBJECT_EVENT ,
@@ -144,6 +145,15 @@ public:
     fwbUpdateEvent(file_name, obj_id,
                    QEvent::Type(QEvent::User + SHOW_OBJECT_IN_TREE_EVENT))
     {}
+};
+
+
+class showObjectInRulesetEvent : public fwbUpdateEvent {
+public:
+    showObjectInRulesetEvent(const QString &file_name, int obj_id) :
+      fwbUpdateEvent(file_name, obj_id,
+                     QEvent::Type(QEvent::User + SHOW_OBJECT_IN_RULESET_EVENT))
+      {}
 };
 
 

@@ -57,7 +57,7 @@ FWCmdAddObject::FWCmdAddObject(ProjectPanel *project,
     FWCmdChange(project, grp, text)
 {
     member = mem;
-    require_complete_tree_reload = true;
+    require_complete_tree_reload = false;
 
     if (text.isEmpty())
     {
@@ -135,7 +135,17 @@ void FWCmdAddObject::redo()
                            << member->getRefCounter();
     QString filename = QString::fromUtf8(grp->getRoot()->getFileName().c_str());
 
-    QCoreApplication::postEvent(mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
+    // updateObjectAndSubtreeImmediatelyEvent updates the part of the
+    // tree where object we just added is attached. This rebuilds
+    // subtree. However, if the object was copied from another data
+    // file and dragged with it some other objects (as dependencies)
+    // in other parts of the tree, rebulding the subtree is
+    // insufficient, we need to reload the whole tree. The caller should have
+    // set flag require_complete_tree_reload to signal that.
+    if (require_complete_tree_reload)
+        QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+    else
+        QCoreApplication::postEvent(mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, grp->getId()));
     // post openObjectInEditorEvent first so that editor panel opens
     // this matters if the tree needs to scroll to show the object when
