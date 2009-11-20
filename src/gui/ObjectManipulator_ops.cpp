@@ -276,55 +276,19 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
         grp = m_project->getFWTree()->getStandardSlotForObject(
             targetLib, obj->getTypeName().c_str());
     }
-
-    if (fwbdebug)
-        qDebug("ObjectManipulator::moveObject  grp= %p", grp);
-
     if (grp==NULL) grp=targetLib;
-
-    if (fwbdebug)
-        qDebug("ObjectManipulator::moveObject  grp= %s",
-               grp->getName().c_str());
 
     if (!grp->isReadOnly())
     {
-        list<FWObject*> reference_holders;
+        set<FWObject*> reference_holders;
         FWCmdMoveObject *cmd = new FWCmdMoveObject(m_project,
                                                    obj->getParent(),
                                                    grp,
                                                    obj, reference_holders,
                                                    "Move object");
         m_project->undoStack->push(cmd);
-
-        // ObjectTreeViewItem *itm = allItems[obj];
-        // if (itm->parent()==NULL) return;
-        // itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
-
-        // obj->getParent()->remove(obj);
-        // grp->add(obj);
-        // obj->unref();
-
-        // if (allItems[grp]==NULL)
-        // {
-        //     /* adding to the root, there is not such tree item */
-        //     if (Library::isA(obj))
-        //     {
-        //         addTreePage(obj);
-        //         openLib(obj);
-        //     } else
-        //     {
-        //         /* it screwed up, just print debugging message */
-        //         if (fwbdebug)
-        //             qDebug("ObjectManipulator::moveObject  no place in "
-        //                    "the tree corresponding to the object %p %s",
-        //                    grp, grp->getName().c_str());
-        //     }
-        // } else
-        //     allItems[grp]->addChild(itm);
-
     }
-    if (fwbdebug)
-        qDebug("ObjectManipulator::moveObject  all done");
+    if (fwbdebug) qDebug("ObjectManipulator::moveObject  all done");
 }
 
 /*
@@ -587,6 +551,16 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
     FWObject *deleted_objects_lib = m_project->db()->findInIndex(
         FWObjectDatabase::DELETED_OBJECTS_ID );
 
+    if (deleted_objects_lib == NULL)
+    {
+        FWObject *dobj = m_project->db()->createLibrary();
+        dobj->setId(FWObjectDatabase::DELETED_OBJECTS_ID);
+        dobj->setName("Deleted Objects");
+        dobj->setReadOnly(false);
+        m_project->db()->add(dobj);
+        deleted_objects_lib = dobj;
+    }
+
     if (object_library->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
         object_library->getId() == FWObjectDatabase::TEMPLATE_LIB_ID)
         return;
@@ -617,64 +591,64 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
                      << "is_firewall= " << is_firewall
                      << "ruleset_visible=" << ruleset_visible
                      << "is_deleted_object="<< is_deleted_object;
-    
-        /*
-         * TODO: we have to remove not only the object, but also all
-         * its child objects from the database, as well as all
-         * references to them. This logic should really be in
-         * FWObject::removeAllInstances(FWObject*);
-         */
-    
-        /* remove from our internal tables before it is removed from the
-         * object tree so we could use obj->getId()
-         */
-        if (is_library && !is_deleted_object)
+        if (is_deleted_object)
         {
-            int idx = getIdxForLib(obj);
-            QTreeWidget *otv = idxToTrees[idx];
-            assert(otv!=NULL);
-            m_objectManipulator->widgetStack->removeWidget( otv );
-            removeLib(idx);
-        } else
-            removeObjectFromTreeView(obj);
+            if (QMessageBox::question(
+                    m_project, "Firewall Builder",
+                    QObject::tr("You are trying to delete objects in "
+                                "the Deleted Objects library. This can "
+                                "not be undone. Do you want to continue ?"),
+                    QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
+                return;
 
-        QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-    
+            obj->getParent()->remove(obj);
+            QString filename = m_project->getFileName();
+            QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+            return;
+        }
+
+        // /* remove from our internal tables before it is removed from the
+        //  * object tree so we could use obj->getId()
+        //  */
+        // if (is_library && !is_deleted_object)
+        // {
+        //     int idx = getIdxForLib(obj);
+        //     QTreeWidget *otv = idxToTrees[idx];
+        //     assert(otv!=NULL);
+        //     m_objectManipulator->widgetStack->removeWidget( otv );
+        //     removeLib(idx);
+        // } else
+        //     removeObjectFromTreeView(obj);
+
         if (is_library && obj->isReadOnly()) obj->setReadOnly(false);
-        if (obj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID) // special case
+
+        if (is_library) parent = m_project->db()->getFirstByType(Library::TYPENAME);
+
+        set<FWObject*> reference_holders;
+        set<FWObject*> res;
+        m_project->db()->findWhereObjectIsUsed(obj, m_project->db(), res);
+
+        foreach(FWObject* o, res)
         {
-            if (fwbdebug)
-                qDebug("ObjectManipulator::delObj:   "
-                       "special case: deleting template library");
-            m_project->db()->removeAllInstances(obj);
-        } else
-        {
-            if (fwbdebug)
-                qDebug("ObjectManipulator::delObj:   "
-                       "recursively deleting object from the tree");
-            m_project->db()->recursivelyRemoveObjFromTree(obj,
-                                                          false);
-            if (is_library)
-                parent = m_project->db()->getFirstByType(
-                    Library::TYPENAME);
+            if (FWReference::cast(o))
+            {
+                FWObject *holder = o->getParent();
+                qDebug() << holder->getName().c_str()
+                         << "(" << holder->getTypeName().c_str() << ")";
+                reference_holders.insert(holder);
+            }
         }
         
-        QApplication::restoreOverrideCursor();
+        FWCmdMoveObject *cmd = new FWCmdMoveObject(
+            m_project,
+            obj->getParent(),
+            deleted_objects_lib,
+            obj,
+            reference_holders,
+            QString("Delete object %1").arg(QString::fromUtf8(obj->getName().c_str())));
+        m_project->undoStack->push(cmd);
 
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(m_project->getFileName(), parent->getId()));
-
-        //m_project->scheduleRuleSetRedraw();
-    
-        if (!is_deleted_object)
-        {
-            if (allItems[deleted_objects_lib]!=NULL)
-                insertSubtree( allItems[deleted_objects_lib], obj );
-        } else
-            FWObjectClipboard::obj_clipboard->clear();
-    
         if (ruleset_visible) m_project->closeRuleSetPanel();
-        if (openobj) openObject(parent);
     }
     catch(FWException &ex)
     {

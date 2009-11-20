@@ -52,7 +52,6 @@
 #include "FWCmdChange.h"
 #include "FWCmdAddObject.h"
 
-#include <QMessageBox>
 #include <QTextEdit>
 #include <QTime>
 #include <QtDebug>
@@ -301,11 +300,28 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
     {
         QTreeWidgetItem *parent_itm = itm->parent();
         bool was_expanded = itm->isExpanded();
-        parent_itm->removeChild(itm);
-        insertSubtree(dynamic_cast<ObjectTreeViewItem*>(parent_itm), obj);
+
+        qDebug() << "Remove QTreeWidgetItem from the tree: "
+                 << "itm=" << itm
+                 << "parent_itm=" << parent_itm;
+        if (parent_itm)
+        {
+            parent_itm->removeChild(itm);
+            insertSubtree(dynamic_cast<ObjectTreeViewItem*>(parent_itm), obj);
+        } else
+        {
+            int idx = itm->treeWidget()->indexOfTopLevelItem(itm);
+
+            qDebug() << "itm index=" << idx;
+
+            itm->treeWidget()->takeTopLevelItem(idx);
+        }
         itm = allItems[obj];
-        itm->setExpanded(was_expanded);
-        refreshSubtree(itm);
+        if (itm)
+        {
+            itm->setExpanded(was_expanded);
+            refreshSubtree(itm);
+        }
     } else
     {
         QString old_itm_text = itm->text(0);
@@ -352,12 +368,16 @@ void ObjectManipulator::clearObjects()
 void ObjectManipulator::reload()
 {
     FWObject *current_lib = getCurrentLib();
+    FWObject *currentObj = getSelectedObject();
+
     saveExpandedTreeItems();
     saveSectionSizes();
     loadObjects();
     openLib(current_lib);
     loadExpandedTreeItems();
     loadSectionSizes();
+
+    if (currentObj) openObject(currentObj);
 }
 
 void ObjectManipulator::loadObjects()

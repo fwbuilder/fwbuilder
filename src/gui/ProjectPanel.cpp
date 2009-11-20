@@ -352,7 +352,7 @@ void ProjectPanel::openRuleSet(FWObject * obj)
     if (rs!= visibleRuleSet)
     {
         visibleRuleSet = rs;
-        scheduleRuleSetRedraw();
+        registerRuleSetRedrawRequest();
     }
 }
 
@@ -853,13 +853,13 @@ FWObject* ProjectPanel::createNewLibrary(FWObjectDatabase *db)
     return objectTreeFormat->createNewLibrary(db);
 }
 
-void ProjectPanel::scheduleRuleSetRedraw()
+void ProjectPanel::registerRuleSetRedrawRequest()
 {
     if (!ruleSetRedrawPending)
     {
         ruleSetRedrawPending = true;
-        redrawRuleSets();
-        //QTimer::singleShot( 0, this, SLOT(redrawRuleSets()) );
+        //redrawRuleSets();
+        QTimer::singleShot( 0, this, SLOT(redrawRuleSets()) );
     }
 }
 

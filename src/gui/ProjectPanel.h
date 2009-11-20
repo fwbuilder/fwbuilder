@@ -169,6 +169,7 @@ public:
     void registerModifiedObject(libfwbuilder::FWObject *o);
     void registerObjectToUpdateInTree(libfwbuilder::FWObject *o, bool update_subtree);
     void registerTreeReloadRequest();
+    void registerRuleSetRedrawRequest();
 
     void loadDataFromFw(libfwbuilder::Firewall *fw);
     
@@ -218,7 +219,6 @@ public:
 
     int  findFirewallInList(libfwbuilder::FWObject *f);
     void updateFirewallName();
-    void scheduleRuleSetRedraw();
     void selectRules();
     void unselectRules();
     void editCopy();

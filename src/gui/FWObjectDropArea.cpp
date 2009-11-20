@@ -241,8 +241,7 @@ void FWObjectDropArea::showInTreeObject()
     if (pp!=NULL)
     {
         QCoreApplication::postEvent(
-            pp, new showObjectInTreeEvent(object->getRoot()->getFileName().c_str(),
-                                          object->getId()));
+            pp, new showObjectInTreeEvent(pp->getFileName(), object->getId()));
     }
 }
 
@@ -252,19 +251,13 @@ void FWObjectDropArea::editObject()
     if (pp!=NULL)
     {
         QCoreApplication::postEvent(
-            pp, new showObjectInTreeEvent(object->getRoot()->getFileName().c_str(),
-                                          object->getId()));
+            pp, new openObjectInEditorEvent(pp->getFileName(), object->getId()));
         QCoreApplication::postEvent(
-            pp, new openObjectInEditorEvent(object->getRoot()->getFileName().c_str(),
-                                            object->getId()));
+            pp, new showObjectInTreeEvent(pp->getFileName(), object->getId()));
     }
-
 }
 
-void FWObjectDropArea::mouseDoubleClickEvent ( QMouseEvent * )
+void FWObjectDropArea::mouseDoubleClickEvent(QMouseEvent *)
 {
-    if (object!=NULL)
-    {
-        editObject();
-    }
+    if (object!=NULL) editObject();
 }

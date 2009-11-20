@@ -318,7 +318,7 @@ void FirewallDialog::applyChanges()
         if (fwbdebug)
             qDebug("FirewallDialog::applyChanges() scheduling call "
                    "to reopenFirewall()");
-        m_project->scheduleRuleSetRedraw();
+        m_project->registerRuleSetRedrawRequest();
     }
 
     m_project->undoStack->push(cmd);

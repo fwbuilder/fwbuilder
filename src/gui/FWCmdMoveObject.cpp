@@ -63,7 +63,7 @@ FWCmdMoveObject::FWCmdMoveObject(ProjectPanel *project,
                                  FWObject *old_p,
                                  FWObject *new_p,
                                  FWObject *o,
-                                 list<FWObject*> &reference_holder_objects,
+                                 set<FWObject*> &reference_holder_objects,
                                  QString text):
     FWCmdBasic(project),
     reference_holders(reference_holder_objects)
@@ -130,22 +130,31 @@ void FWCmdMoveObject::notify()
 {
     // This command should only operate on moving objects from one
     // place in the tree to another but within the same data file
-    QString filename = QString::fromUtf8(old_parent->getRoot()->getFileName().c_str());
-    QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+    QString filename = project->getFileName();
+    QCoreApplication::postEvent(mw, new reloadObjectTreeImmediatelyEvent(filename));
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, old_parent->getId()));
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, new_parent->getId()));
     // post openObjectInEditorEvent first so that editor panel opens.
     // This matters if the tree needs to scroll to show the object when
     // showObjectInTreeEvent is posted because vertical size of the tree
     // changes when editor opens
-    QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, obj->getId()));
-    QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, obj->getId()));
-
-    if (Firewall::isA(obj) && project->getCurrentRuleSet()->isChildOf(obj))
+    if (obj->getLibrary()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
     {
-        // need to repopen ruleset view
-        QCoreApplication::postEvent(mw, new updateObjectInRulesetEvent(filename, obj->getId()));
+        if (mw->isEditorVisible())
+            QCoreApplication::postEvent(mw, new openObjectInEditorEvent(
+                                            filename, old_parent->getId()));
+        QCoreApplication::postEvent(mw, new showObjectInTreeEvent(
+                                        filename, old_parent->getId()));
+    } else
+    {
+        if (mw->isEditorVisible())
+            QCoreApplication::postEvent(mw, new openObjectInEditorEvent(
+                                            filename, obj->getId()));
+        QCoreApplication::postEvent(mw, new showObjectInTreeEvent(
+                                        filename, obj->getId()));
     }
-
+    // always reload rule set because the object we just moved might
+    // be shown there. 
+    QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
 }
 

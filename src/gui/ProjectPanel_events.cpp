@@ -47,6 +47,7 @@
 
 #include <QMdiSubWindow>
 #include <QMdiArea>
+#include <QtDebug>
 
 
 using namespace Ui;
@@ -63,16 +64,41 @@ bool ProjectPanel::event(QEvent *event)
         int obj_id = ev->getObjectId();
         FWObject *obj = db()->findInIndex(obj_id);
 
+        if (fwbdebug)
+            qDebug() << this
+                     << "file:"
+                     << data_file
+                     << "event:"
+                     << ev->getEventName()
+                     << "object:"
+                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "");
+
         if ((rcs && rcs->getFileName() == data_file) ||
             (!rcs && data_file.isEmpty()))
         {
-            if (event_code == RELOAD_OBJECT_TREE_EVENT)
+            switch (event_code)
             {
-                if (fwbdebug)
-                    qDebug("ProjectPanel %p: reloadObjectTreeEvent received for file %s",
-                           this, data_file.toLatin1().constData());
+            case RELOAD_OBJECT_TREE_EVENT:
                 registerTreeReloadRequest();
-                //m_panel->om->loadObjects();
+                ev->accept();
+                return true;
+                
+            case RELOAD_OBJECT_TREE_IMMEDIATELY_EVENT:
+                m_panel->om->reload();
+                ev->accept();
+                return true;
+                
+            case RELOAD_RULESET_EVENT:
+                registerRuleSetRedrawRequest();
+                // update rule set title as well
+                updateFirewallName();
+                ev->accept();
+                return true;
+
+            case RELOAD_RULESET_IMMEDIATELY_EVENT:
+                reopenFirewall();
+                // update rule set title as well
+                updateFirewallName();
                 ev->accept();
                 return true;
             }
@@ -83,9 +109,6 @@ bool ProjectPanel::event(QEvent *event)
             {
             case DATA_MODIFIED_EVENT:
             {
-                if (fwbdebug)
-                    qDebug("ProjectPanel::event  dataModified  obj: %s",
-                           obj->getName().c_str());
                 // This event does not trigger any updates in the UI,
                 // this purely data structure update event. However,
                 // we post updateObjectInTreeEvent even here to
@@ -104,22 +127,14 @@ bool ProjectPanel::event(QEvent *event)
                         this, new updateObjectInTreeEvent(data_file,
                                                           f->getId()));
                 }
-                QCoreApplication::postEvent(
-                    this, new updateObjectInTreeEvent(data_file, obj->getId()));
-
                 registerModifiedObject(obj);
                 ev->accept();
                 return true;
             }
 
             case UPDATE_OBJECT_EVERYWHERE_EVENT:
-                if (fwbdebug)
-                    qDebug("ProjectPanel::event  updateObjectEverywhereEvent  obj: %s",
-                           obj->getName().c_str());
-                QCoreApplication::postEvent(
-                    this, new updateObjectInTreeEvent(data_file, obj_id));
-                QCoreApplication::postEvent(
-                    this, new updateObjectInRulesetEvent(data_file, obj_id));
+                QCoreApplication::postEvent(this, new updateObjectInTreeEvent(data_file, obj_id));
+                QCoreApplication::postEvent(this, new reloadRulesetEvent(data_file));
                 if (Library::cast(obj))
                 {
                     m_panel->om->updateLibName(obj);
@@ -175,52 +190,22 @@ bool ProjectPanel::event(QEvent *event)
             switch (event->type() - QEvent::User)
             {
             case UPDATE_OBJECT_IN_TREE_EVENT:
-                if (fwbdebug)
-                    qDebug("ProjectPanel::event  updateObjectInTreeEvent  obj: %s",
-                           obj->getName().c_str());
                 registerObjectToUpdateInTree(obj, false);
                 ev->accept();
                 return true;
 
             case UPDATE_OBJECT_AND_SUBTREE_IN_TREE_EVENT:
-                if (fwbdebug)
-                    qDebug("ProjectPanel::event  updateObjectAndSubtreeInTreeEvent  obj: %s",
-                           obj->getName().c_str());
                 registerObjectToUpdateInTree(obj, true);
                 ev->accept();
                 return true;
 
             case UPDATE_OBJECT_AND_SUBTREE_IMMEDIATELY_EVENT:
-                if (fwbdebug)
-                    qDebug("ProjectPanel::event  updateObjectAndSubtreeImmediatelyEvent  obj: %s",
-                           obj->getName().c_str());
                 m_panel->om->updateObjectInTree(obj, true);
                 ev->accept();
                 return true;
 
-            case UPDATE_OBJECT_IN_RULESET_EVENT:
-            {
-                if (fwbdebug)
-                    qDebug("ProjectPanel %p: updateObjectInRulesetEvent received for file %s",
-                           this, data_file.toLatin1().constData());
-                RuleSetView* rv=dynamic_cast<RuleSetView*>(
-                    m_panel->ruleSets->currentWidget());
-                if (rv!=NULL && getSelectedObject() != rv->getSelectedObject())
-                {
-                    rv->repaintSelection();
-                } else
-                    scheduleRuleSetRedraw();
-                // update rule set title as well
-                updateFirewallName();
-                ev->accept();
-                return true;
-            }
-
             case SHOW_OBJECT_IN_RULESET_EVENT:
             {
-                if (fwbdebug)
-                    qDebug("ProjectPanel %p: showObjectInRulesetEvent received for file %s",
-                           this, data_file.toLatin1().constData());
                 openRuleSet(obj);
                 // update rule set title as well
                 updateFirewallName();
@@ -229,9 +214,6 @@ bool ProjectPanel::event(QEvent *event)
             }
 
             case SHOW_OBJECT_IN_TREE_EVENT:
-                if (fwbdebug)
-                    qDebug("ProjectPanel %p: showObjectInTreeEvent received for file %s",
-                           this, data_file.toLatin1().constData());
                 m_panel->om->openObject(obj);
                 m_panel->om->select();
                 ev->accept();

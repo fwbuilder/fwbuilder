@@ -27,7 +27,7 @@
 #define FWCMDMOVEOBJECT_H
 
 #include "FWCmdBasic.h"
-#include <list>
+#include <set>
 
 /********************************************************
  * FWCmdMoveObject
@@ -38,7 +38,7 @@ class FWCmdMoveObject : public FWCmdBasic
     libfwbuilder::FWObject *old_parent;
     libfwbuilder::FWObject *new_parent;
     libfwbuilder::FWObject *obj;
-    std::list<libfwbuilder::FWObject*> reference_holders;
+    std::set<libfwbuilder::FWObject*> reference_holders;
 
 protected:
     virtual void notify();
@@ -48,7 +48,7 @@ public:
                     libfwbuilder::FWObject *old_parent,
                     libfwbuilder::FWObject *new_parent,
                     libfwbuilder::FWObject *obj,
-                    std::list<libfwbuilder::FWObject*> &reference_holders,
+                    std::set<libfwbuilder::FWObject*> &reference_holders,
                     QString text=QString());
     ~FWCmdMoveObject();
     virtual void redo();

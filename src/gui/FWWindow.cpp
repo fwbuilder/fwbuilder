@@ -1102,11 +1102,17 @@ bool FWWindow::event(QEvent *event)
         FWObject *obj = db()->findInIndex(obj_id);
         ProjectPanel *pp = activeProject();
 
+        if (fwbdebug)
+            qDebug() << this
+                     << "event:"
+                     << ev->getEventName()
+                     << "object:"
+                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "");
+
         switch (event->type() - QEvent::User)
         {
             case OPEN_OBJECT_IN_EDITOR_EVENT:
             {
-                if (fwbdebug) qDebug("FWWindow: openObjectInEditorEvent received");
                 if (pp && obj)
                 {
                     openEditor(obj);

@@ -94,7 +94,8 @@ void FWCmdAddObject::undo()
 
     QCoreApplication::postEvent(mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, grp->getId()));
-    QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, grp->getId()));
+    if (mw->isEditorVisible())
+        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, grp->getId()));
     QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, grp->getId()));
 }
 
@@ -151,7 +152,8 @@ void FWCmdAddObject::redo()
     // this matters if the tree needs to scroll to show the object when
     // showObjectInTreeEvent is posted because vertical size of the tree
     // changes when editor opens
-    QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, member->getId()));
+    if (mw->isEditorVisible())
+        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, member->getId()));
     QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, member->getId()));
 }
 

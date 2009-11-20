@@ -1099,13 +1099,6 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 
     update();
 
-    // Send event to project panel object to cause update of currentObj
-    // display in rules. If this object is selected in the tree, it gets
-    // highlighted with a thin red border in the rules.
-    QCoreApplication::postEvent(
-        m_project, new updateObjectInRulesetEvent(m_project->getFileName(),
-                                                  getSelectedObject()->getId()));
-
     if (fwbdebug) qDebug("ObjectManipulator::selectionChanged done");
 }
 
@@ -1307,10 +1300,6 @@ void ObjectManipulator::select()
     {
         active = true;
     }
-
-    //QCoreApplication::postEvent(
-    //    m_project, new updateObjectInRulesetEvent(m_project->getFileName(),
-    //                                              currentObj->getId()));
 
     if (fwbdebug) qDebug("ObjectManipulator::select() done");
 }

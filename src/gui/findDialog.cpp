@@ -299,9 +299,6 @@ loop:
         QCoreApplication::postEvent(
             mw, new openObjectInEditorEvent(m_project->getFileName(),
                                             o->getParent()->getId()));
-
-        //m_project->openObject( o->getParent() );
-        //m_project->editObject( o->getParent() );
         QTimer::singleShot(200, this, SLOT(makeActive()) );
         return;
     }
@@ -321,10 +318,6 @@ loop:
     QCoreApplication::postEvent(
         mw, new openObjectInEditorEvent(m_project->getFileName(),
                                         o->getId()));
-
-    // m_project->openObject( o );
-    // m_project->editObject( o );
-
     QTimer::singleShot(200, this, SLOT(makeActive()) );
 }
 

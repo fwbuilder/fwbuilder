@@ -246,7 +246,6 @@ void ObjectManipulator::duplicateObj(QAction *action)
  */
 void ObjectManipulator::delObj()
 {
-
     if (fwbdebug)
         qDebug("ObjectManipulator::delObj selected %d objects ",
                getCurrentObjectTree()->getNumSelected());
@@ -259,8 +258,6 @@ void ObjectManipulator::delObj()
         return;
 
     FWObject *obj;
-    bool emptyingTrash      = false;
-    bool emptyingTrashInLib = false;
     
     vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
     vector<FWObject*> so2;
@@ -276,85 +273,13 @@ void ObjectManipulator::delObj()
     
     if (so2.size()==0) return;
     
-    FWObject *delObjLib = m_project->db()->findInIndex(
-        FWObjectDatabase::DELETED_OBJECTS_ID);
-
-    if (fwbdebug)
-        qDebug("ObjectManipulator::delObj  delObjLib=%p", delObjLib);
-    
-    if (delObjLib!=NULL)
+    if (so2.size()>1 || !Library::isA(so2.front()))
     {
-        for (vector<FWObject*>::iterator i=so2.begin();  i!=so2.end(); ++i)
-        {
-            obj = *i;
-            emptyingTrash |= obj->isChildOf(delObjLib);
-        }
-    }
-    
-    emptyingTrashInLib = emptyingTrash && m_project->editingLibrary();
-    
-    /* Ask user iff:
-     *
-     * we are emptying trash while editing library file (.fwl)
-     *    else
-     *
-     * if we are not emptying Trash (i.e. not deleting "Deleted objects" library)
-     *    and
-     * (we delete more than one object
-     *    or
-     * we delete one object and it is not a library (because in this case
-     * we ask them later anyway))
-     */
-    
-    QString msg;
-    
-    if (emptyingTrashInLib)
-    {
-        msg = tr(
-            "Emptying the 'Deleted Objects' in a library file is not recommended.\n"
-            "When you remove deleted objects from a library file, Firewall Builder\n"
-            "loses ability to track them. If a group or a policy rule in some\n"
-            "data file still uses removed object from this library, you may encounter\n"
-            "unusual and unexpected behavior of the program.\n"
-            "Do you want to delete selected objects anyway ?"
-        );
-        if (QMessageBox::warning(
-                this,"Firewall Builder", msg,
-                tr("&Yes"), tr("&No"), QString::null,
-                0, 1 )!=0) return;
-    } else
-    {
-    
-        if (fwbdebug)
-            qDebug("ObjectManipulator::delObj emptyingTrash=%d "
-                   "so.size=%d  so.front()->type=%s",
-                   emptyingTrash,
-                   int(so.size()),
-                   so2.front()->getTypeName().c_str() );
-    
-    
-        if (!emptyingTrash && (so2.size()>1 || !Library::isA(so2.front())))
-        {
-            /*
-              msg = tr(
-              "When you delete an object, it is removed from the tree and\n"
-              "all groups and firewall policy rules that reference it.\n"
-              "Do you want to delete selected objects ?"
-              );
-              if (QMessageBox::warning(
-              this,"Firewall Builder", msg,
-              tr("&Yes"), tr("&No"), QString::null,
-              0, 1 )!=0) return;
-            */
-            QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-            ConfirmDeleteObjectDialog * dlg =
-                new ConfirmDeleteObjectDialog(this);
-    
-            dlg->load(so2);
-    
-            QApplication::restoreOverrideCursor();
-            if(dlg->exec()==QDialog::Rejected ) return;
-        }
+        QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
+        ConfirmDeleteObjectDialog * dlg = new ConfirmDeleteObjectDialog(this);
+        dlg->load(so2);
+        QApplication::restoreOverrideCursor();
+        if(dlg->exec()==QDialog::Rejected ) return;
     }
         
     /* need to work with a copy of the list of selected objects because
@@ -362,24 +287,12 @@ void ObjectManipulator::delObj()
      * getCurrentObjectTree()->getSelectedObjects()
      */
     
-    if (fwbdebug)
-    {
-        for (vector<FWObject*>::iterator i=so2.begin();  i!=so2.end(); ++i)
-        {
-            obj= *i;
-            qDebug("ObjectManipulator::delObj will delete obj=%p ( %s %s ) ",
-                   obj, obj->getTypeName().c_str(), obj->getName().c_str());
-        }
-    }
-    
     try
     {
         for (vector<FWObject*>::iterator i=so2.begin();  i!=so2.end(); ++i)
         {
             obj= *i;
-    
-            //        openObject(obj,false);
-    
+   
             if ( ! FWBTree().isSystem(obj) )
             {
                 if (Library::isA(obj))
@@ -399,25 +312,16 @@ void ObjectManipulator::delObj()
                             0, 1 )!=0 ) continue;
                 }
     
-                if (mw->isEditorVisible() &&
-                    mw->getOpenedEditor()==obj) mw->hideEditor();
-
-                int parent_id = obj->getParent()->getId();
+                if (mw->isEditorVisible() && mw->getOpenedEditor()==obj)
+                    mw->hideEditor();
 
                 deleteObject(obj, false);
-
-                QCoreApplication::postEvent(
-                    mw, new updateObjectAndSubtreeInTreeEvent(
-                        m_project->getFileName(), parent_id));
             }
         }
-
-        m_project->scheduleRuleSetRedraw();
     }
     catch(FWException &ex)
     {
     }
-
 }
 
 void ObjectManipulator::dumpObj()
