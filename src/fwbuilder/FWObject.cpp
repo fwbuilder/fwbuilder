@@ -800,39 +800,8 @@ void FWObject::swapObjects(FWObject *o1, FWObject *o2)
     setDirty(true);
 }
 
-/**
- * we move deleted objects to the special library with id
- * 'sysid99' rather than delete them completely. This serves two purposes:
- *
- * 1. can easily provide for undelete function which is very useful
- * 2. can catch a situation when an object has been deleted fromt he external
- *    library but is still used in the data file
- *
- */
-void FWObject::_moveToDeletedObjects(FWObject *obj)
-{
-    FWObjectDatabase *root = getRoot();
-    FWObject *dobj = root->findInIndex( FWObjectDatabase::DELETED_OBJECTS_ID );
-            
-    if (dobj==NULL)
-    {
-        dobj = root->createLibrary();
-        dobj->setId(FWObjectDatabase::DELETED_OBJECTS_ID);
-        dobj->setName("Deleted Objects");
-        dobj->setReadOnly(false);
-        root->add(dobj);
-    }
-
-/* just in case check if an object with the same id is already there */
-    if (dobj->getById( obj->getId(), false )==NULL &&
-        dobj->validateChild(obj) )   dobj->add(obj);
-}
-
 void FWObject::remove(FWObject *obj, bool delete_if_last)
 {
-//    if (getId()==FWObjectDatabase::cast(getRoot())->getDeletedObjectsId())
-//        return;
-
     FWObject::iterator fi=std::find(begin(), end(), obj);
     if(fi!=end())
     {
@@ -842,10 +811,11 @@ void FWObject::remove(FWObject *obj, bool delete_if_last)
         setDirty(true);
         obj->unref();
 
-        if (delete_if_last &&
-            obj->ref_counter==0 &&
-            getId()!=FWObjectDatabase::DELETED_OBJECTS_ID)
-            _moveToDeletedObjects(obj);
+        if (delete_if_last && obj->ref_counter==0)
+        {
+            getRoot()->removeFromIndex(obj->getId());
+            delete obj;
+        }
     }
 }
 
@@ -860,13 +830,8 @@ void FWObject::_removeAll(FWObject *rm)
 void FWObject::removeAllInstances(FWObject *rm)
 {
     checkReadOnly();
-
-    bool deletedObject =
-        (rm->getParent()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID);
     removeAllReferences(rm);
     _removeAll(rm);
-
-    if (!deletedObject) _moveToDeletedObjects(rm);
 }
 
 void FWObject::removeRef(FWObject *obj)
@@ -881,7 +846,7 @@ void FWObject::removeRef(FWObject *obj)
             // do not delete object even if this reference was the last one (?)
             obj->unref();  
 
-            FWObject::remove(o, false);  // do not move to DeletedObjects
+            FWObject::remove(o, false);  // do not remove
             delete o;
             return;
         }

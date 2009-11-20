@@ -118,7 +118,6 @@ protected:
     void _removeAll(FWObject *rm);
     void _removeAllRef(FWObject *rm);
     void _adopt(FWObject *obj);   // increments reference
-    void _moveToDeletedObjects(FWObject *obj);
     void _findDependencies_internal(FWObject *obj,
                                     std::list<FWObject*> &deps,
                                     int anti_loop_id);
