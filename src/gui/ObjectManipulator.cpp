@@ -66,6 +66,7 @@
 #include <QAction>
 
 #include <memory>
+#include <algorithm>
 
 
 using namespace std;

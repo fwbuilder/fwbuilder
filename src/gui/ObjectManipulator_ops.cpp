@@ -59,6 +59,7 @@
 #include <QtDebug>
 
 #include <memory>
+#include <algorithm>
 
 
 using namespace std;
