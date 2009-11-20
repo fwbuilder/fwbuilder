@@ -163,7 +163,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
 
     nitm->setLib("");
     nitm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
-    nitm->setText( 1, QString::fromUtf8(getTreeLabel(obj).toStdString().c_str()) );
+    nitm->setText( 1, getTreeLabel(obj) );
 
     QPixmap pm;
     FWBTree().setObjectIcon(obj, &pm, 0);

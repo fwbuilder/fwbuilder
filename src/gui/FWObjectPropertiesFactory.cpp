@@ -250,7 +250,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
         cerr << ex.toString() << endl;
     }
 
-    return res;
+    return QString::fromUtf8(res.toStdString().c_str());
 }
 
 
