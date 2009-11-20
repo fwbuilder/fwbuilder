@@ -32,6 +32,8 @@
 #include "ProjectPanel.h"
 #include "FWBTree.h"
 #include "FWBSettings.h"
+#include "FWWindow.h"
+#include "events.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWReference.h"
@@ -291,8 +293,15 @@ loop:
     if (Group::cast(o->getParent())!=NULL &&
         !FWBTree().isSystem(o->getParent()))
     {
-        m_project->openObject( o->getParent() );
-        m_project->editObject( o->getParent() );
+        QCoreApplication::postEvent(
+            mw, new showObjectInTreeEvent(m_project->getFileName(),
+                                          o->getParent()->getId()));
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(m_project->getFileName(),
+                                            o->getParent()->getId()));
+
+        //m_project->openObject( o->getParent() );
+        //m_project->editObject( o->getParent() );
         QTimer::singleShot(200, this, SLOT(makeActive()) );
         return;
     }
@@ -306,8 +315,15 @@ loop:
                o->getTypeName().c_str());
     }
 
-    m_project->openObject( o );
-    m_project->editObject( o );
+    QCoreApplication::postEvent(
+        mw, new showObjectInTreeEvent(m_project->getFileName(),
+                                      o->getId()));
+    QCoreApplication::postEvent(
+        mw, new openObjectInEditorEvent(m_project->getFileName(),
+                                        o->getId()));
+
+    // m_project->openObject( o );
+    // m_project->editObject( o );
 
     QTimer::singleShot(200, this, SLOT(makeActive()) );
 }

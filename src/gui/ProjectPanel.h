@@ -103,7 +103,9 @@ class ProjectPanel: public QWidget {
     // value is a boolean flag, true means need to update the object and 
     // subtree under it.
     std::map<int, bool> updateObjectsInTreePool;
-    
+
+    bool treeReloadPending;
+
 public:
 
     QMdiSubWindow *mdiWindow;
@@ -116,8 +118,6 @@ public:
 
     libfwbuilder::RuleSet* getCurrentRuleSet () {return visibleRuleSet;};
     RuleSetView* getCurrentRuleSetView() ;
-
-    ProjectPanel* clone(ProjectPanel * cln);
 
     void openRuleSet(libfwbuilder::FWObject *obj);
     void closeRuleSet(libfwbuilder::FWObject *obj)
@@ -168,6 +168,7 @@ public:
 
     void registerModifiedObject(libfwbuilder::FWObject *o);
     void registerObjectToUpdateInTree(libfwbuilder::FWObject *o, bool update_subtree);
+    void registerTreeReloadRequest();
 
     void loadDataFromFw(libfwbuilder::Firewall *fw);
     
@@ -177,9 +178,9 @@ public:
     void relocateTo(libfwbuilder::FWObject *target, libfwbuilder::FWObject *obj);
 
     ObjectTreeView* getCurrentObjectTree();
-    void openObject(QTreeWidgetItem *otvi);
-    void openObject(libfwbuilder::FWObject *obj);
-    bool editObject(libfwbuilder::FWObject *obj);
+    //void openObject(QTreeWidgetItem *otvi);
+    //void openObject(libfwbuilder::FWObject *obj);
+    //bool editObject(libfwbuilder::FWObject *obj);
     void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
 
     libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
@@ -294,6 +295,7 @@ public:
 
     void updateLastModifiedTimestampForAllFirewalls();
     void updateObjectInTree();
+    void reloadTree();
 
 public:
     QString getFileName();

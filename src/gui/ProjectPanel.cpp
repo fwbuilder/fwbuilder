@@ -74,6 +74,7 @@ void ProjectPanel::initMain(FWWindow *main)
     mainW = main;
     closing = false ;
     mdiWindow = NULL;
+    treeReloadPending = false;
 
     // mdiWindow changes state several times right after it is opened,
     // but we call saveState to store splitter position and its geometry
@@ -536,20 +537,15 @@ ObjectTreeView* ProjectPanel::getCurrentObjectTree()
     return m_panel->om->getCurrentObjectTree();
 }
 
-void ProjectPanel::openObject(QTreeWidgetItem *otvi)
-{
-    m_panel->om->openObject(otvi);
-}
+// void ProjectPanel::openObject(QTreeWidgetItem *otvi)
+// {
+//     m_panel->om->openObject(otvi);
+// }
 
-void ProjectPanel::openObject(FWObject *obj)
-{
-    m_panel->om->openObject(obj);
-}
-
-bool ProjectPanel::editObject(FWObject *obj)
-{
-    return m_panel->om->editObject(obj);
-}
+// void ProjectPanel::openObject(FWObject *obj)
+// {
+//     m_panel->om->openObject(obj);
+// }
 
 void ProjectPanel::findAllFirewalls (std::list<Firewall *> &fws)
 {
@@ -938,30 +934,19 @@ void ProjectPanel::resizeEvent(QResizeEvent*)
 {
 }
 
-ProjectPanel * ProjectPanel::clone(ProjectPanel * cln)
+void ProjectPanel::registerTreeReloadRequest()
 {
-    cln->mainW = mainW;
-    cln->rcs = rcs;
-    //cln->objectTreeFormat = objectTreeFormat;
-    cln->systemFile = systemFile;
-    cln->safeMode = safeMode;
-    cln->editingStandardLib = editingStandardLib;
-    cln->editingTemplateLib = editingTemplateLib;
-    cln->ruleSetRedrawPending = ruleSetRedrawPending;
-    //cln->objdb = objdb;
-    cln->fd = fd;
-    cln->autosaveTimer = autosaveTimer;
-    //cln->ruleSetViews = ruleSetViews;
-    cln->ruleSetTabIndex = ruleSetTabIndex;
-    cln->visibleFirewall = visibleFirewall;
-    cln->firewalls = firewalls;
-    cln->lastFirewallIdx = lastFirewallIdx;
-    cln->changingTabs = changingTabs;
-    cln->noFirewalls = noFirewalls;
-    cln->mdiWindow = mdiWindow ;
-    cln->m_panel = m_panel;
-    cln->copySet = copySet;
-    return cln;
+    treeReloadPending = true;
+    QTimer::singleShot(0, this, SLOT(reloadTree()));
+}
+
+void ProjectPanel::reloadTree()
+{
+    if (treeReloadPending)
+    {
+        m_panel->om->reload();
+        treeReloadPending = false;
+    }
 }
 
 void ProjectPanel::registerObjectToUpdateInTree(FWObject *o, bool update_subtree)

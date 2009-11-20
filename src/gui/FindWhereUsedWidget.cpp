@@ -29,6 +29,7 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 #include "platforms.h"
+#include "events.h"
 
 #include "FindWhereUsedWidget.h"
 #include "FWWindow.h"
@@ -223,8 +224,6 @@ void FindWhereUsedWidget::showObject(FWObject* o)
         RuleSetView *rsv = project_panel->getCurrentRuleSetView();
         rsv->selectRE(RuleElement::cast(o), object);
         rsv->setFocus(Qt::MouseFocusReason);
-
-        if (mw->isEditorVisible()) project_panel->editObject(object);
     } else
     {
         if (Rule::cast(o)!=NULL)
@@ -233,28 +232,24 @@ void FindWhereUsedWidget::showObject(FWObject* o)
             project_panel->clearManipulatorFocus();
             RuleSetView *rsv = project_panel->getCurrentRuleSetView();
             rsv->selectRE(Rule::cast(o),rsv->getColByType(ColDesc::Action));
-
-            if (mw->isEditorVisible()) project_panel->editObject(object);
         } else
         {
             project_panel->unselectRules();
 
             if (Group::cast(o)!=NULL)
             {
-                project_panel->openObject(o);
+                //project_panel->openObject(o);
+                QCoreApplication::postEvent(
+                    mw,
+                    new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
                 project_panel->unselectRules();
-
-                if (mw->isEditorVisible())
-                {
-                    project_panel->editObject(o);
-                    mw->selectObjectInEditor(object);
-                }
             } else
             {
-                project_panel->openObject( object );
+                //project_panel->openObject( object );
+                QCoreApplication::postEvent(
+                    mw,
+                    new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
                 project_panel->unselectRules();
-
-                if (mw->isEditorVisible()) project_panel->editObject( object );
             }
         }
     }

@@ -35,18 +35,21 @@
    increments above QEvent::User
 */
 
-#define DATA_MODIFIED_EVENT  1
-#define UPDATE_OBJECT_IN_TREE_EVENT  2
-#define UPDATE_OBJECT_AND_SUBTREE_IN_TREE_EVENT  3
-#define UPDATE_OBJECT_IN_RULESET_EVENT  4
-#define UPDATE_OBJECT_EVERYWHERE_EVENT  5
-#define UPDATE_LAST_COMPILED_TIMESTAMP_EVENT 6
-#define UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT 7
-#define SHOW_OBJECT_IN_TREE_EVENT 8
-#define OPEN_OBJECT_IN_EDITOR_EVENT 9
-#define CLOSE_OBJECT_EVENT 10
-#define OBJECT_NAME_CHANGED_EVENT  11
-
+enum EVENT_CODES {
+    DATA_MODIFIED_EVENT  ,
+    UPDATE_OBJECT_IN_TREE_EVENT  ,
+    UPDATE_OBJECT_AND_SUBTREE_IN_TREE_EVENT  ,
+    UPDATE_OBJECT_AND_SUBTREE_IMMEDIATELY_EVENT  ,
+    UPDATE_OBJECT_IN_RULESET_EVENT  ,
+    UPDATE_OBJECT_EVERYWHERE_EVENT  ,
+    UPDATE_LAST_COMPILED_TIMESTAMP_EVENT ,
+    UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT ,
+    SHOW_OBJECT_IN_TREE_EVENT ,
+    RELOAD_OBJECT_TREE_EVENT ,
+    OPEN_OBJECT_IN_EDITOR_EVENT ,
+    CLOSE_OBJECT_EVENT ,
+    OBJECT_NAME_CHANGED_EVENT
+};
 
 class fwbUpdateEvent : public QEvent {
     QString data_file_name;
@@ -85,6 +88,15 @@ public:
     updateObjectAndSubtreeInTreeEvent(const QString &file_name, int obj_id) :
       fwbUpdateEvent(file_name, obj_id,
                      QEvent::Type(QEvent::User + UPDATE_OBJECT_AND_SUBTREE_IN_TREE_EVENT))
+      {}
+};
+
+
+class updateObjectAndSubtreeImmediatelyEvent : public fwbUpdateEvent {
+public:
+    updateObjectAndSubtreeImmediatelyEvent(const QString &file_name, int obj_id) :
+      fwbUpdateEvent(file_name, obj_id,
+                     QEvent::Type(QEvent::User + UPDATE_OBJECT_AND_SUBTREE_IMMEDIATELY_EVENT))
       {}
 };
 
@@ -130,6 +142,15 @@ public:
     showObjectInTreeEvent(const QString &file_name, int obj_id) :
     fwbUpdateEvent(file_name, obj_id,
                    QEvent::Type(QEvent::User + SHOW_OBJECT_IN_TREE_EVENT))
+    {}
+};
+
+
+class reloadObjectTreeEvent : public fwbUpdateEvent {
+public:
+    reloadObjectTreeEvent(const QString &file_name) :
+    fwbUpdateEvent(file_name, -1,
+                   QEvent::Type(QEvent::User + RELOAD_OBJECT_TREE_EVENT))
     {}
 };
 

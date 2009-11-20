@@ -164,6 +164,7 @@ HEADERS += ../../config.h \
     InterfaceEditorWidget.h \
     FWCmdBasic.h \
     FWCmdChange.h \
+	FWCmdAddObject.h \
     InterfacesTabWidget.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
@@ -319,6 +320,7 @@ SOURCES += ProjectPanel.cpp \
     InterfaceEditorWidget.cpp \
     FWCmdBasic.cpp \
     FWCmdChange.cpp \
+	FWCmdAddObject.cpp \
     InterfacesTabWidget.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \

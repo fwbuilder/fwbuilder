@@ -285,8 +285,8 @@ void FWWindow::findWhereUsed(FWObject * obj, ProjectPanel *pp)
 }
 
 bool FWWindow::requestEditorOwnership(QWidget*,
-                                      FWObject *obj,
-                                      ObjectEditor::OptType otype,
+                                      FWObject*,
+                                      ObjectEditor::OptType,
                                       bool validate)
 {
     if (!isEditorVisible()) return false;

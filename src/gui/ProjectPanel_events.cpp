@@ -58,14 +58,28 @@ bool ProjectPanel::event(QEvent *event)
     if (event->type() >= QEvent::User)
     {
         fwbUpdateEvent *ev = dynamic_cast<fwbUpdateEvent*>(event);
+        int event_code = event->type() - QEvent::User;
         QString data_file = ev->getFileName();
         int obj_id = ev->getObjectId();
         FWObject *obj = db()->findInIndex(obj_id);
-        if (obj == NULL) return false;
+
         if ((rcs && rcs->getFileName() == data_file) ||
             (!rcs && data_file.isEmpty()))
         {
-            switch (event->type() - QEvent::User)
+            if (event_code == RELOAD_OBJECT_TREE_EVENT)
+            {
+                if (fwbdebug)
+                    qDebug("ProjectPanel %p: reloadObjectTreeEvent received for file %s",
+                           this, data_file.toLatin1().constData());
+                registerTreeReloadRequest();
+                //m_panel->om->loadObjects();
+                ev->accept();
+                return true;
+            }
+
+            if (obj == NULL) return false;
+
+            switch (event_code)
             {
             case DATA_MODIFIED_EVENT:
             {
@@ -176,6 +190,14 @@ bool ProjectPanel::event(QEvent *event)
                 ev->accept();
                 return true;
 
+            case UPDATE_OBJECT_AND_SUBTREE_IMMEDIATELY_EVENT:
+                if (fwbdebug)
+                    qDebug("ProjectPanel::event  updateObjectAndSubtreeImmediatelyEvent  obj: %s",
+                           obj->getName().c_str());
+                m_panel->om->updateObjectInTree(obj, true);
+                ev->accept();
+                return true;
+
             case UPDATE_OBJECT_IN_RULESET_EVENT:
             {
                 if (fwbdebug)
@@ -199,7 +221,7 @@ bool ProjectPanel::event(QEvent *event)
                     qDebug("ProjectPanel %p: showObjectInTreeEvent received for file %s",
                            this, data_file.toLatin1().constData());
                 m_panel->om->openObject(obj);
-
+                m_panel->om->select();
                 ev->accept();
                 return true;
 

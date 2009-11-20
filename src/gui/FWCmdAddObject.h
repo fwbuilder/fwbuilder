@@ -4,9 +4,9 @@
 
                  Copyright (C) 2009 NetCitadel, LLC
 
-  Author:  Illiya Yalovoy <yalovoy@gmail.com>
+  Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id$
+  $Id: FWCmdChange.h 1799 2009-11-18 03:33:57Z vadim $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -23,28 +23,31 @@
 
 */
 
-#ifndef FWCMDBASIC_H
-#define FWCMDBASIC_H
+#ifndef FWCMDADDTOGROUP_H
+#define FWCMDADDTOGROUP_H
 
-#include <QUndoCommand>
+#include "FWCmdChange.h"
 
-#include "ProjectPanel.h"
+/********************************************************
+ * FWCmdAddObject
+ ********************************************************/
 
-#include "fwbuilder/FWObject.h"
-
-class FWCmdBasic : public QUndoCommand
+class FWCmdAddObject : public FWCmdChange
 {
-    int id;
+    libfwbuilder::FWObject *member;
+    bool require_complete_tree_reload;
 protected:
-
-    ProjectPanel *project;
+    virtual void notify();
 
 public:
-    FWCmdBasic(ProjectPanel *project);
-    int objectId() {return id;}
-    void setObject(libfwbuilder::FWObject *object) {id = object->getId();}
-    libfwbuilder::FWObject* getObject();
-
+    FWCmdAddObject(ProjectPanel *project,
+                   libfwbuilder::FWObject *grp,
+                   libfwbuilder::FWObject *member,
+                   QString text=QString());
+    ~FWCmdAddObject();
+    void setNeedTreeReload(bool f) { require_complete_tree_reload = f; }
+    virtual void redo();
+    virtual void undo();
 };
 
-#endif // FWCMDBASIC_H
+#endif

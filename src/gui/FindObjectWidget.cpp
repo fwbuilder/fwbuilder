@@ -602,9 +602,14 @@ void FindObjectWidget::showObject(FWObject* o)
         Group::cast(o->getParent())!=NULL &&
         !FWBTree().isStandardFolder(o->getParent()))
     {
-        project_panel->openObject( o->getParent() );
-        project_panel->editObject( o->getParent() );
-        mw->selectObjectInEditor( (ref) ? ref->getPointer() : o );
+
+        QCoreApplication::postEvent(
+            mw, new showObjectInTreeEvent(project_panel->getFileName(),
+                                          o->getParent()->getId()));
+        // QCoreApplication::postEvent(
+        //     mw, new openObjectInEditorEvent(project_panel->getFileName(),
+        //                                     o->getParent()->getId()));
+        //mw->selectObjectInEditor( (ref) ? ref->getPointer() : o );
         return;
     }
 
@@ -612,7 +617,10 @@ void FindObjectWidget::showObject(FWObject* o)
         qDebug("FindObjectWidget::showObject  checkpoint #2");
 
     //mw->closeEditor();
-    project_panel->openObject( o );
+    //project_panel->openObject( o );
+    QCoreApplication::postEvent(
+        mw,
+        new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
     project_panel->select();  // selects an item in the tree and assigns kbd focus to it
 }
 
