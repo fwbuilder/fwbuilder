@@ -865,6 +865,7 @@ void newFirewallDialog::finishClicked()
 
             oi->setName( string(name.toUtf8().constData()) );
             oi->setLabel( string(label.toUtf8().constData()) );
+            oi->setComment( string(interface.comment.toUtf8().constData()) );
 
             oi->setDyn(dyn);
             oi->setUnnumbered(unnum);

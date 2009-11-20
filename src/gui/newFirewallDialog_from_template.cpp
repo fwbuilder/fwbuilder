@@ -210,9 +210,9 @@ void newFirewallDialog::replaceInterfaceAttributes(Firewall *fw,
                                                    Interface *intf,
                                                    EditedInterfaceData *new_data)
 {
-    intf->setName(new_data->name.toStdString());
-    intf->setLabel(new_data->label.toStdString());
-    intf->setComment(new_data->comment.toStdString());
+    intf->setName( string(new_data->name.toUtf8().constData()));
+    intf->setLabel( string(new_data->label.toUtf8().constData()));
+    intf->setComment( string(new_data->comment.toUtf8().constData()));
 
     if (fwbdebug)
         qDebug() << "Interface" << intf->getName().c_str()

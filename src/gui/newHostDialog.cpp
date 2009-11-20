@@ -595,6 +595,7 @@ void newHostDialog::finishClicked()
             Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
             oi->setName( name.toUtf8().constData() );
             oi->setLabel( label.toUtf8().constData() );
+            oi->setComment( string(interface.comment.toUtf8().constData()) );
             nhst->add(oi);
 
             if (dyn)   oi->setDyn(true);
