@@ -851,11 +851,9 @@ void newFirewallDialog::finishClicked()
             oi->setSecurityLevel(sl);
 
             //mw->insertObjectInTree(nfw, oi);
-            fwbdebug = true;
             if (fwbdebug)
                 qDebug("Adding interface %s: security_level=%d",
                        oi->getName().c_str(), sl);
-            fwbdebug = false;
 
             if (interface.type == 0)
             {

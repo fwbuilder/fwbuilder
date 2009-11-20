@@ -152,3 +152,9 @@ void InterfacesTabWidget::addInterfaceFromData(InterfaceData* idata)
     w->setData(idata);
     addTab(w, idata->name.c_str());
 }
+
+void InterfacesTabWidget::addTab(QWidget* widget, const QString& title)
+{
+    if ( dynamic_cast<InterfaceEditorWidget*>(widget) != NULL )
+        QTabWidget::addTab(widget, title);
+}

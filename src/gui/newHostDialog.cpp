@@ -106,9 +106,9 @@ newHostDialog::newHostDialog(FWObject *_p) : QDialog()
 
     setNextEnabled( OBJECT_NAME_PAGE, false );
 
-    m_dialog->iface_list->setAllColumnsShowFocus( true );
-
     m_dialog->obj_name->setFocus();
+
+    m_dialog->interfaceEditor->clear();
 
     showPage(0);
 }
@@ -196,6 +196,7 @@ void newHostDialog::changed()
 
     if (p==MANUAL_PAGE)
     {
+        /*
         if (m_dialog->iface_dyn->isChecked() || m_dialog->iface_unnum->isChecked())
         {
             m_dialog->iface_addr->clear();
@@ -206,7 +207,7 @@ void newHostDialog::changed()
         {
             m_dialog->iface_addr->setEnabled(true);
             m_dialog->iface_netmask->setEnabled(true);
-        }
+        }*/
     }
 }
 
@@ -236,24 +237,7 @@ void  newHostDialog::monitor()
         if ( idata->ostatus )
         {
             idata->guessLabel("");
-
-            QString dn;
-            if (idata->isDyn)        dn+="dyn";
-            if (idata->isUnnumbered) dn+="unn";
-
-            QStringList qsl;
-            qsl << idata->name.c_str() << idata->label.c_str();
-            // TODO: redesign the way we pass information from the
-            // snmp crawler down the line so that multiple ip
-            // addresses per interface can be processed.
-            if (idata->addr_mask.size())
-                qsl << idata->addr_mask.front()->getAddressPtr()->toString().c_str()
-                    << idata->addr_mask.front()->getNetmaskPtr()->toString().c_str();
-            else
-                qsl << "" << "";
-
-            qsl << dn << idata->mac_addr.c_str();
-            new QTreeWidgetItem(m_dialog->iface_list, qsl);
+            this->m_dialog->interfaceEditor->addInterfaceFromData(idata);
         }
     }
 
@@ -274,7 +258,6 @@ void newHostDialog::getInterfacesViaSNMP()
     if (q!=NULL || getInterfacesBusy) return;
 
     snmpPollCompleted=false;
-    m_dialog->iface_list->clear();
 
     string rcomm=m_dialog->snmp_community->text().toLatin1().constData();
 
@@ -287,6 +270,8 @@ void newHostDialog::getInterfacesViaSNMP()
         return ;
     }
 
+    m_dialog->interfaceEditor->clear();
+    m_dialog->interfaceEditor->removeTab(0);
     getInterfacesBusy = true;
 
     InetAddr addr;
@@ -373,8 +358,6 @@ void newHostDialog::showPage(const int page)
 
     case MANUAL_PAGE:
     {
-        m_dialog->iface_name->setFocus();
-
         setNextEnabled( MANUAL_PAGE, false );
         setFinishEnabled( MANUAL_PAGE, true );
         break;
@@ -561,85 +544,6 @@ bool newHostDialog::validateAddressAndMask(const QString &addr,
     return true;
 }
 
-
-void newHostDialog::addInterface()
-{
-    QString dn = "";
-    if (m_dialog->iface_dyn->isChecked())   dn += "Dyn";
-    if (m_dialog->iface_unnum->isChecked()) dn += "Unn";
-
-    QString addr;
-    QString netm;
-
-    if (!m_dialog->iface_dyn->isChecked() &&
-        !m_dialog->iface_unnum->isChecked())
-    {
-        addr = m_dialog->iface_addr->text();
-        netm = m_dialog->iface_netmask->text();
-
-        if (addr.isEmpty()) 
-            addr = QString(InetAddr::getAny().toString().c_str());
-        if (netm.isEmpty())
-            netm = QString(InetAddr::getAny().toString().c_str());
-
-        if (!validateAddressAndMask(addr, netm)) return;
-    }
-    QStringList sl;
-    sl << m_dialog->iface_name->text()
-       << m_dialog->iface_label->text()
-       << addr
-       << netm
-       << dn
-       << m_dialog->iface_physaddr->text();
-
-    new QTreeWidgetItem(m_dialog->iface_list, sl);
-}
-
-
-void newHostDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
-{
-    QTreeWidgetItem *itm = cur;
-    if (itm)
-    {
-        m_dialog->iface_name->setText( itm->text(0) );
-        m_dialog->iface_label->setText( itm->text(1) );
-        m_dialog->iface_addr->setText( itm->text(2) );
-        m_dialog->iface_netmask->setText( itm->text(3) );
-        m_dialog->iface_dyn->setChecked( itm->text(4).indexOf("Dyn")!=-1 );
-        m_dialog->iface_unnum->setChecked( itm->text(4).indexOf("Unn")!=-1 );
-        m_dialog->iface_physaddr->setText( itm->text(5) );
-    }
-}
-
-void newHostDialog::updateInterface()
-{
-    QString dn = "";
-    if (m_dialog->iface_dyn->isChecked())   dn+="Dyn";
-    if (m_dialog->iface_unnum->isChecked()) dn+="Unn";
-
-    QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
-    if (itm==NULL) return;
-
-    QString addr = m_dialog->iface_addr->text();
-    QString netm = m_dialog->iface_netmask->text();
-    if (!validateAddressAndMask(addr, netm)) return;
-
-    itm->setText( 0 , m_dialog->iface_name->text() );
-    itm->setText( 1 , m_dialog->iface_label->text() );
-    itm->setText( 2 , addr );
-    itm->setText( 3 , netm );
-    itm->setText( 4 , dn );
-    itm->setText( 5 , m_dialog->iface_physaddr->text() );
-}
-
-void newHostDialog::deleteInterface()
-{
-    QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
-    if (itm==NULL) return;
-    m_dialog->iface_list->takeTopLevelItem(
-            m_dialog->iface_list->indexOfTopLevelItem(itm) );
-}
-
 void newHostDialog::cancelClicked()
 {
     QDialog::reject();
@@ -680,18 +584,16 @@ void newHostDialog::finishClicked()
 
 /* create interfaces */
 
-        for (int i = 0; i < m_dialog->iface_list->topLevelItemCount(); i++)
+        foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor->getNewData())
         {
-            QTreeWidgetItem *itm = m_dialog->iface_list->topLevelItem(i);
-            QString name    =  itm->text(0);
-            QString label   =  itm->text(1);
-            QString addr    =  itm->text(2);
-            QString netmask =  itm->text(3);
-            bool    dyn     =  itm->text(4).indexOf("Dyn")!=-1;
-            bool    unnum   =  itm->text(4).indexOf("Unn")!=-1;
-            QString physaddr=  itm->text(5);
+            QString name     =  interface.name;
+            QString label    =  interface.label;
+            bool    dyn      =  interface.type == 1;
+            bool    unnum    =  interface.type == 2;
+            QString physaddr =  interface.mac;
 
             Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
+            oi->setName( name.toStdString() );
             oi->setLabel( label.toLatin1().constData() );
             nhst->add(oi);
 
@@ -707,50 +609,46 @@ void newHostDialog::finishClicked()
                 oi->add(pa);
                 pa->setPhysAddress(physaddr.toLatin1().constData());
             }
-            if (!dyn && !unnum && !addr.isEmpty() && addr!="0.0.0.0")
+            if (interface.type == 0)
             {
-                if (addr.indexOf(':')!=-1)
+                foreach(AddressInfo address, interface.addresses)
                 {
-                    // ipv6 address
-                    QString addrname = QString("%1:%2:ip6")
-                        .arg(m_dialog->obj_name->text()).arg(name);
-
-                    IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
-                    oa->setName(addrname.toUtf8().constData());
-                    oi->add(oa);
-                    oa->setAddress(
-                        InetAddr(AF_INET6, addr.toLatin1().constData()) );
-                    bool ok = false ;
-                    int inetmask = netmask.toInt(&ok);
-                    if (ok)
+                    if (address.address == "0.0.0.0") continue;
+                    if (address.ipv4)
                     {
-                        oa->setNetmask( InetAddr(AF_INET6, inetmask) );
+                        QString addrname = QString("%1:%2:ip").arg(m_dialog->obj_name->text()).arg(name);
+                        IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                        oi->add(oa);
+                        oa->setName(addrname.toStdString());
+                        oa->setAddress( InetAddr(address.address.toLatin1().constData()) );
+                        bool ok = false ;
+                        int inetmask = address.netmask.toInt(&ok);
+                        if (ok)
+                        {
+                            oa->setNetmask( InetAddr(inetmask) );
+                        }
+                        else
+                        {
+                            oa->setNetmask( InetAddr(address.netmask.toLatin1().constData()) );
+                        }
                     }
                     else
                     {
-                        oa->setNetmask(
-                            InetAddr(AF_INET6, netmask.toLatin1().constData()));
-                    }
-
-                } else
-                {
-                    // ipv4 address
-                    QString addrname = QString("%1:%2:ip")
-                        .arg(m_dialog->obj_name->text()).arg(name);
-                    IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
-                    oa->setName(addrname.toUtf8().constData());
-                    oi->add(oa);
-                    oa->setAddress( InetAddr(addr.toLatin1().constData()) );
-                    bool ok = false ;
-                    int inetmask = netmask.toInt(&ok);
-                    if (ok)
-                    {
-                        oa->setNetmask( InetAddr(inetmask) );
-                    }
-                    else
-                    {
-                        oa->setNetmask(
-                            InetAddr(netmask.toLatin1().constData()));
+                        QString addrname = QString("%1:%2:ip6").arg(m_dialog->obj_name->text()).arg(name);
+                        IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                        oi->add(oa);
+                        oa->setName(addrname.toStdString());
+                        oa->setAddress(InetAddr(AF_INET6, address.address.toLatin1().constData()) );
+                        bool ok = false ;
+                        int inetmask = address.netmask.toInt(&ok);
+                        if (ok)
+                        {
+                            oa->setNetmask( InetAddr(AF_INET6, inetmask) );
+                        }
+                        else
+                        {
+                            oa->setNetmask(InetAddr(AF_INET6, address.netmask.toLatin1().constData()));
+                        }
                     }
                 }
             }

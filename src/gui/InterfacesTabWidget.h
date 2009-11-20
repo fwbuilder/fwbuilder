@@ -87,6 +87,7 @@ public slots:
     void setTemplate(libfwbuilder::FWObject*);
     void closeTab();
     void addInterfaceFromData(libfwbuilder::InterfaceData*);
+    virtual void addTab(QWidget*, const QString&);
 
 };
 

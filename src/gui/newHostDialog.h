@@ -80,16 +80,12 @@ class newHostDialog : public QDialog, public FakeWizard
     void showPage(const int page);
 
 public slots:
-    virtual void addInterface();
-    virtual void updateInterface();
-    virtual void deleteInterface();
     virtual void changed();
 //    virtual void selectedInterface(QTreeWidgetItem *cur);
     virtual void getInterfacesViaSNMP();    
     virtual void monitor();
 //    virtual void templateSelected(QListWidgetItem *cur);
 
-    virtual void selectedInterface(QTreeWidgetItem*,QTreeWidgetItem*);
     virtual void templateSelected(QListWidgetItem *itm);
     void browseTemplate();
     void useStandartTemplate();
