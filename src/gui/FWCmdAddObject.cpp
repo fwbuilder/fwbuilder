@@ -30,6 +30,9 @@
 #include "FWWindow.h"
 #include "events.h"
 
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/RuleSet.h"
+
 #include <QObject>
 #include <QtDebug>
 
@@ -42,7 +45,7 @@ using namespace std;
  *
  * This command controls adding an object to another object. This can
  * be adding an object to a system group or adding interface to a host
- * or address to an interface and so on where object itself becomes a
+ * or address to an interface and so on, where object itself becomes a
  * child rather than reference to it gets created.
  *
  ********************************************************/
@@ -81,12 +84,13 @@ void FWCmdAddObject::undo()
     grp->remove(member, false);
     if (fwbdebug) qDebug() << "FWCmdAddObject::undo() member->ref_counter=" 
                            << member->getRefCounter();
+    if (Firewall::isA(member) && project->getCurrentRuleSet()->isChildOf(member))
+    {
+        // need to close ruleset view
+        project->closeRuleSetPanel();
+    }
+
     QString filename = QString::fromUtf8(grp->getRoot()->getFileName().c_str());
-    // if (require_complete_tree_reload)
-    //     QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
-    // else
-    //     QCoreApplication::postEvent(
-    //         mw, new updateObjectAndSubtreeInTreeEvent(filename, grp->getId()));
 
     QCoreApplication::postEvent(mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, grp->getId()));

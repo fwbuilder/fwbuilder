@@ -732,7 +732,13 @@ void RuleSetView::itemDoubleClicked(const QModelIndex& index)
     if (!index.isValid()) return;
     if (index.row()<0) return;
     if ( fwosm->selectedObject!=NULL)
-        openObjectInTree(fwosm->selectedObject);
+    {
+        QCoreApplication::postEvent(
+            mw,
+            new showObjectInTreeEvent(project->getFileName(), fwosm->selectedObject->getId()));
+
+        //openObjectInTree(fwosm->selectedObject);
+    }
     editSelected(index);
 }
 

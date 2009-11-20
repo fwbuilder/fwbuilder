@@ -255,37 +255,12 @@ FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib,
                                              bool  askForAutorename)
 {
     if (!isTreeReadWrite(this, targetLib)) return NULL;
-
     openLib(targetLib);
-
     FWObject *o=NULL;
-
     QString newName;
     if (!name.isEmpty()) newName = name;
     else                 newName = QString::fromUtf8(obj->getName().c_str());
-
-    o = createObject(obj->getTypeName().c_str(), newName, obj);
-    // if (o)
-    // {
-    //   openObject(o);
-    //   if (!o->isReadOnly() &&
-    //       (Host::isA(o) || Firewall::isA(o) || Cluster::isA(o) ||
-    //        Interface::isA(o)) )
-    //     autorename(o, askForAutorename);
-    //   if (Firewall::isA(o))
-    //   {
-    //       // reset lastModified, lastCompiled, lastInstalled
-    //       o->setInt("lastCompiled", 0);
-    //       o->setInt("lastModified", 0);
-    //       o->setInt("lastInstalled", 0);
-    //       // switch policy 
-    //       m_project->openRuleSet(o->getFirstByType(Policy::TYPENAME));
-    //   }
-    //   QCoreApplication::postEvent(
-    //       mw, new showObjectInTreeEvent(m_project->getFileName(),
-    //                                     obj->getId()));
-    // }
-    return o;
+    return createObject(obj->getTypeName().c_str(), newName, obj);
 }
 
 void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
