@@ -236,7 +236,7 @@ public slots:
      void copyObj();
      void cutObj();
      void pasteObj();
-     void deleteObj();
+     void delObj();
      void dumpObj();
      void compile();
      void install();
@@ -347,7 +347,7 @@ public:
       */
      void closeSystemLib();
 
-     void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
+     void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);
 
      /**
       * select whatever object is current in the tree (used to restore

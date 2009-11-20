@@ -318,7 +318,7 @@ public slots:
 
     void loadDataFromFw(libfwbuilder::Firewall *fw);
 
-    void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
+    void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);
     ObjectTreeView* getCurrentObjectTree();
 
     void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);

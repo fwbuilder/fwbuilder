@@ -505,28 +505,23 @@ void ObjectManipulator::newFailoverClusterGroup()
 
 void ObjectManipulator::newHost()
 {
-    newHostDialog *nhd = new newHostDialog();
+    FWObject *parent = 
+        FWBTree().getStandardSlotForObject(getCurrentLib(), Host::TYPENAME);
+    assert(parent);
+    newHostDialog *nhd = new newHostDialog(parent);
     if (mw->isEditorVisible()) mw->hideEditor();
     nhd->exec();
     FWObject *o = nhd->getNewHost();
     delete nhd;
 
-    //this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
-
     if (o!=NULL)
     {
-        FWObject *parent = o->getParent();
         FWCmdAddObject *cmd = new FWCmdAddObject(
             m_project, parent, NULL, QObject::tr("Create new Host"));
         FWObject *new_state = cmd->getNewState();
         parent->remove(o, false);
         new_state->add(o);
         m_project->undoStack->push(cmd);
-
-        // openObject(o);
-        // editObject(o);
-        // QCoreApplication::postEvent(
-        //     mw, new dataModifiedEvent(m_project->getFileName(), o->getId()));
     }
 }
 

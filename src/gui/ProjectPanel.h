@@ -174,7 +174,7 @@ public:
     
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                     libfwbuilder::FWObject *obj);
-    void delObj(libfwbuilder::FWObject *obj,bool openobj=true);
+    void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);
     void relocateTo(libfwbuilder::FWObject *target, libfwbuilder::FWObject *obj);
 
     ObjectTreeView* getCurrentObjectTree();

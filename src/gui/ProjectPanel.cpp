@@ -518,9 +518,9 @@ FWObject* ProjectPanel::pasteTo(FWObject *target, FWObject *obj)
     return m_panel->om->pasteTo(target, obj);
 }
 
-void ProjectPanel::delObj(FWObject *obj,bool openobj)
+void ProjectPanel::deleteObject(FWObject *obj,bool openobj)
 {
-    m_panel->om->delObj(obj, openobj);
+    m_panel->om->deleteObject(obj, openobj);
 }
 
 /*
@@ -608,7 +608,7 @@ void ProjectPanel::newObject()
 
 void ProjectPanel::deleteObj()
 {
-    m_panel->om->deleteObj();
+    m_panel->om->delObj();
 }
 
 FWObject* ProjectPanel::getSelectedObject()

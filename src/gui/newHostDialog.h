@@ -58,7 +58,9 @@ class newHostDialog : public QDialog, public FakeWizard
     libfwbuilder::Logger               *logger;
     libfwbuilder::SNMP_interface_query *q;
     QTimer                             *timer;
+    libfwbuilder::FWObjectDatabase     *db;
     libfwbuilder::FWObjectDatabase     *tmpldb;
+    libfwbuilder::FWObject             *parent;
     std::map<QListWidgetItem*, libfwbuilder::FWObject*> templates;
     bool                                unloadTemplatesLib;
     bool                                getInterfacesBusy;
@@ -69,7 +71,7 @@ class newHostDialog : public QDialog, public FakeWizard
     bool validateAddressAndMask(const QString &addr, const QString &netm);
 
  public:
-    newHostDialog();
+    newHostDialog(libfwbuilder::FWObject *parent);
     virtual ~newHostDialog();
 
     libfwbuilder::Host* getNewHost() { return nhst; };

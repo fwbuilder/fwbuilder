@@ -450,11 +450,11 @@ void FWWindow::moveObject(const QString &targetLibName, FWObject *obj)
     }
 }
 
-void FWWindow::delObj(FWObject *obj,bool openobj)
+void FWWindow::deleteObject(FWObject *obj,bool openobj)
 {
     if (activeProject())
     {
-        activeProject()->delObj(obj, openobj);
+        activeProject()->deleteObject(obj, openobj);
     }
 }
 

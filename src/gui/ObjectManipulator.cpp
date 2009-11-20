@@ -474,7 +474,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     popup_menu->addSeparator();
 
     QAction * delID = popup_menu->addAction( tr("Delete"), this,
-                                        SLOT( deleteObj() ) );
+                                        SLOT( delObj() ) );
 
     QList<QAction*> AddObjectActions;
 
@@ -865,48 +865,6 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
     if (fwbdebug) qDebug("ObjectManipulator::getMenuState done");
 }
 
-void ObjectManipulator::find()
-{
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
-
-    FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
-    m_project->setFDObject(obj);
-}
-void ObjectManipulator::findObject()
-{
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
-
-    FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
-    mw->findObject( obj );
-}
-
-void ObjectManipulator::dumpObj()
-{
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
-
-    FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
-    obj->dump(true,false);
-}
-
-void ObjectManipulator::compile()
-{
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
-
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-
-    set<Firewall*> fo;
-    filterFirewallsFromSelection(so, fo);
-
-    if (fwbdebug)
-        qDebug("ObjectManipulator::compile filtered %d firewalls",
-               int(fo.size()));
-
-    m_project->compile(fo);
-}
-
 void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,
                                                      set<Firewall*> &fo)
 {
@@ -955,28 +913,6 @@ void ObjectManipulator::extractFirewallsFromGroup(ObjectGroup *gr,
    set<FWObject*>::iterator i;
    for(i=oset.begin();i!=oset.end();++i)
        if (Firewall::cast(*i)) fo.insert(Firewall::cast(*i));
-}
-
-void ObjectManipulator::install()
-{
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
-
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-    set<Firewall*> fo;
-    filterFirewallsFromSelection(so,fo);
-
-    m_project->install(fo);
-}
-
-void ObjectManipulator::transferfw()
-{
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
-
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-    set<Firewall*> fo;
-    filterFirewallsFromSelection(so, fo);
-
-    m_project->transferfw(fo);
 }
 
 bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
@@ -1317,37 +1253,6 @@ void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
     noa->setEnabled( !f );
 }
 
-void ObjectManipulator::back()
-{
-//    if (!validateDialog()) return;
-
-    if (!history.empty())
-    {
-        history.pop();
-
-/* skip objects that have been deleted */
-        while ( ! history.empty())
-        {
-            if (m_project->db()->findInIndex( history.top().id() )!=NULL) break;
-            history.pop();
-        }
-
-        if (history.empty())
-        {
-            mw->enableBackAction();
-            return;
-        }
-
-        openObject( history.top().item(), false );
-
-        if (mw->isEditorVisible())
-        {
-            ObjectTreeViewItem *otvi=history.top().item();
-            switchObjectInEditor(otvi->getFWObject());
-        }
-    }
-}
-
 FWObject*  ObjectManipulator::getCurrentLib()
 {
     int idx = m_objectManipulator->libs->currentIndex();
@@ -1583,16 +1488,6 @@ FWObject* ObjectManipulator::getSelectedObject()
     return NULL;
 
 //    return currentObj;
-}
-
-void ObjectManipulator::findWhereUsedSlot()
-{
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
-
-    FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
-    mw->findWhereUsed(obj, m_project);
-
 }
 
 void ObjectManipulator::reopenCurrentItemParent()

@@ -429,7 +429,7 @@ void GroupObjectDialog::applyChanges()
     {
         FWObject *o = m_project->db()->findInIndex(*k);
         if (FWBTree().isSystem(new_state))
-            m_project->delObj(o, false);
+            m_project->deleteObject(o, false);
         else
             new_state->removeRef(o);
     }

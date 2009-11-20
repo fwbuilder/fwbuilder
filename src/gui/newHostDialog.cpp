@@ -74,8 +74,11 @@ using namespace std;
 #define MANUAL_PAGE      2
 #define TEMPLATES_PAGE   3
 
-newHostDialog::newHostDialog() : QDialog()
+newHostDialog::newHostDialog(FWObject *_p) : QDialog()
 {
+    parent = _p;
+    db = parent->getRoot();
+
     m_dialog = new Ui::newHostDialog_q;
     m_dialog->setupUi(this);
 
@@ -594,7 +597,6 @@ void newHostDialog::addInterface()
 
 
 void newHostDialog::selectedInterface(QTreeWidgetItem*cur,QTreeWidgetItem*)
-//void newHostDialog::selectedInterface(QTreeWidgetItem *cur)
 {
     QTreeWidgetItem *itm = cur;
     if (itm)
@@ -653,27 +655,28 @@ void newHostDialog::finishClicked()
         FWObject *o=templates[itm];
         assert (o!=NULL);
 
-        FWObject *no = mw->duplicateObject(mw->getCurrentLib(),
-                                           o,
-                                           m_dialog->obj_name->text(),
-                                           false );  // do not ask to autorename
+        FWObject *no = db->create(Host::TYPENAME);
+        no->duplicate(o, true);
+        no->setName(m_dialog->obj_name->text().toUtf8().constData());
+
         if (no==NULL)
         {
           QDialog::accept();
           return;
         }
-        nhst=Host::cast(no);
+        nhst = Host::cast(no);
     } else
     {
         FWObject *o;
-        o=mw->createObject(Host::TYPENAME, m_dialog->obj_name->text() );
+        o = db->create(Host::TYPENAME);
+        o->setName(m_dialog->obj_name->text().toUtf8().constData());
         if (o==NULL)
         {
           QDialog::accept();
           return;
         }
 
-        nhst=Host::cast(o);
+        nhst = Host::cast(o);
 
 /* create interfaces */
 
@@ -688,13 +691,9 @@ void newHostDialog::finishClicked()
             bool    unnum   =  itm->text(4).indexOf("Unn")!=-1;
             QString physaddr=  itm->text(5);
 
-            Interface *oi = Interface::cast(
-                mw->createObject(nhst,Interface::TYPENAME, name)
-            );
-#ifdef USE_INTERFACE_POLICY
-            oi->add(new InterfacePolicy());
-#endif
+            Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
             oi->setLabel( label.toLatin1().constData() );
+            nhst->add(oi);
 
             if (dyn)   oi->setDyn(true);
             if (unnum) oi->setUnnumbered(true);
@@ -703,10 +702,9 @@ void newHostDialog::finishClicked()
             {
                 QString addrname=QString("%1:%2:mac")
                     .arg(m_dialog->obj_name->text()).arg(name);
-                physAddress * pa =
-                    physAddress::cast(mw->createObject(oi,
-                                                       physAddress::TYPENAME,
-                                                       addrname));
+                physAddress* pa = physAddress::cast(db->create(physAddress::TYPENAME));
+                pa->setName(addrname.toUtf8().constData());
+                oi->add(pa);
                 pa->setPhysAddress(physaddr.toLatin1().constData());
             }
             if (!dyn && !unnum && !addr.isEmpty() && addr!="0.0.0.0")
@@ -716,9 +714,10 @@ void newHostDialog::finishClicked()
                     // ipv6 address
                     QString addrname = QString("%1:%2:ip6")
                         .arg(m_dialog->obj_name->text()).arg(name);
-                    IPv6 *oa = IPv6::cast(
-                        mw->createObject(oi, IPv6::TYPENAME, addrname)
-                    );
+
+                    IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                    oa->setName(addrname.toUtf8().constData());
+                    oi->add(oa);
                     oa->setAddress(
                         InetAddr(AF_INET6, addr.toLatin1().constData()) );
                     bool ok = false ;
@@ -738,9 +737,9 @@ void newHostDialog::finishClicked()
                     // ipv4 address
                     QString addrname = QString("%1:%2:ip")
                         .arg(m_dialog->obj_name->text()).arg(name);
-                    IPv4 *oa = IPv4::cast(
-                        mw->createObject(oi, IPv4::TYPENAME,addrname)
-                    );
+                    IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                    oa->setName(addrname.toUtf8().constData());
+                    oi->add(oa);
                     oa->setAddress( InetAddr(addr.toLatin1().constData()) );
                     bool ok = false ;
                     int inetmask = netmask.toInt(&ok);

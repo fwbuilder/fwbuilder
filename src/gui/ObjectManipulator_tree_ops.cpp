@@ -460,7 +460,7 @@ void ObjectManipulator::addTreePage( FWObject *lib)
             this, SLOT( switchObjectInEditor(libfwbuilder::FWObject*)) );
 
     connect(objTreeView, SIGNAL( deleteObject_sign(libfwbuilder::FWObject*) ),
-             this, SLOT( deleteObj() ) );
+             this, SLOT( delObj() ) );
 
     connect(objTreeView, SIGNAL( objectDropped_sign(libfwbuilder::FWObject*) ),
              this, SLOT( openObject(libfwbuilder::FWObject*) ) );

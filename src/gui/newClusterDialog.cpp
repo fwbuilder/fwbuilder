@@ -476,11 +476,6 @@ void newClusterDialog::finishClicked()
         FWObject *template_cl = templates[itm];
         assert(template_cl != NULL);
 
-//        FWObject *no = mw->duplicateObject(mw->getCurrentLib(),
-//                                           template_cl,
-//                                           m_dialog->obj_name->text(),
-//                                           false);  // do not ask to autorename
-
         FWObject *no = db->create(Cluster::TYPENAME);
 
         if (no == NULL)
