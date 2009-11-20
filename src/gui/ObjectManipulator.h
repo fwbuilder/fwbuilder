@@ -101,6 +101,8 @@ class ObjectManipulator : public QWidget
     ProjectPanel *m_project;
 
     int dedup_marker_global_counter;
+
+    void buildNewObjectMenu();
     
     ObjectTreeViewItem* insertObject(ObjectTreeViewItem *itm,
                                      libfwbuilder::FWObject *obj);

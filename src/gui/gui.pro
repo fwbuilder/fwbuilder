@@ -207,6 +207,9 @@ SOURCES += ProjectPanel.cpp \
     PrintingController.cpp \
     FWObjectPropertiesFactory.cpp \
     ObjectManipulator.cpp \
+    ObjectManipulator_ops.cpp \
+    ObjectManipulator_tree_ops.cpp \
+    ObjectManipulator_create_new.cpp \
     ObjectEditor.cpp \
     FWObjectDrag.cpp \
     ObjectTreeView.cpp \

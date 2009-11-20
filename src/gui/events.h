@@ -28,6 +28,7 @@
 
 #include "global.h"
 #include <QEvent>
+#include <QString>
 
 /* Custom event types.  QEvent::registerEventType is only available
    starting QT 4.4 but we have to support QT 4.3 for Ubuntu Hardy so
