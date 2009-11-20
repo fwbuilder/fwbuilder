@@ -522,8 +522,8 @@ void newFirewallDialog::fillInterfaceSLList()
     {
         InterfaceData idata;
 
-        idata.name  = interface.name.toUtf8().constData();
-        idata.label = interface.label.toUtf8().constData();
+        idata.name  = interface.name.toLocal8Bit().constData();
+        idata.label = interface.label.toLocal8Bit().constData();
         AddressInfo address;
         bool gotIPv4 = false;
         foreach(AddressInfo addr, interface.addresses.values())
@@ -830,7 +830,7 @@ void newFirewallDialog::finishClicked()
             return;
         }
 
-        o->setName(m_dialog->obj_name->text().toUtf8().constData());//.toStdString());
+        o->setName(m_dialog->obj_name->text().toLocal8Bit().constData());//.toStdString());
         parent->add(o);
 
         nfw = Firewall::cast(o);
@@ -845,8 +845,8 @@ void newFirewallDialog::finishClicked()
 
         foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getNewData())
         {
-            QString name     =  interface.name.toUtf8();
-            QString label    =  interface.label.toUtf8();
+            QString name     =  interface.name.toLocal8Bit();//.toUtf8();
+            QString label    =  interface.label.toLocal8Bit();//.toUtf8();
             bool    dyn      =  interface.type == 1;
             bool    unnum    =  interface.type == 2;
             QString physaddr =  interface.mac;
@@ -882,7 +882,7 @@ void newFirewallDialog::finishClicked()
                     if (address.address == "0.0.0.0") continue;
                     if (address.ipv4)
                     {
-                        QString addrname = QString("%1:%2:ip").arg(QString(m_dialog->obj_name->text().toUtf8())).arg(name);
+                        QString addrname = QString("%1:%2:ip").arg(QString(m_dialog->obj_name->text().toLocal8Bit())).arg(name);
                         IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
                         oi->add(oa);
                         oa->setName(addrname.toStdString());
