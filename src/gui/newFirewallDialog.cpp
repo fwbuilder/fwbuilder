@@ -522,8 +522,8 @@ void newFirewallDialog::fillInterfaceSLList()
     {
         InterfaceData idata;
 
-        idata.name  = interface.name.toLocal8Bit().constData();
-        idata.label = interface.label.toLocal8Bit().constData();
+        idata.name  = interface.name.toStdString();
+        idata.label = interface.label.toStdString();
         AddressInfo address;
         bool gotIPv4 = false;
         foreach(AddressInfo addr, interface.addresses.values())
@@ -568,8 +568,8 @@ void newFirewallDialog::fillInterfaceSLList()
 
 
         QStringList qsl;
-        qsl << idata.name.c_str()
-            << idata.label.c_str()
+        qsl << interface.name//idata.name.c_str()
+            << interface.label//idata.label.c_str()
             << address.address
             << QString::number(idata.securityLevel);
 
@@ -845,8 +845,8 @@ void newFirewallDialog::finishClicked()
 
         foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getNewData())
         {
-            QString name     =  interface.name.toLocal8Bit();//.toUtf8();
-            QString label    =  interface.label.toLocal8Bit();//.toUtf8();
+            QString name     =  interface.name;
+            QString label    =  interface.label;
             bool    dyn      =  interface.type == 1;
             bool    unnum    =  interface.type == 2;
             QString physaddr =  interface.mac;
@@ -863,8 +863,8 @@ void newFirewallDialog::finishClicked()
 
             nfw->add(oi);
 
-            oi->setName( name.toStdString().c_str() ) ;
-            oi->setLabel( label.toStdString().c_str() );
+            oi->setName( string(name.toUtf8().constData()) );
+            oi->setLabel( string(label.toUtf8().constData()) );
 
             oi->setDyn(dyn);
             oi->setUnnumbered(unnum);
@@ -882,10 +882,10 @@ void newFirewallDialog::finishClicked()
                     if (address.address == "0.0.0.0") continue;
                     if (address.ipv4)
                     {
-                        QString addrname = QString("%1:%2:ip").arg(QString(m_dialog->obj_name->text().toLocal8Bit())).arg(name);
+                        string addrname = string( QString("%1:%2:ip").arg(QString(m_dialog->obj_name->text())).arg(name).toUtf8().constData() );
                         IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
                         oi->add(oa);
-                        oa->setName(addrname.toStdString());
+                        oa->setName(addrname);
                         oa->setAddress( InetAddr(address.address.toLatin1().constData()) );
                         bool ok = false ;
                         int inetmask = address.netmask.toInt(&ok);
@@ -900,10 +900,10 @@ void newFirewallDialog::finishClicked()
                     }
                     else
                     {
-                        QString addrname = QString("%1:%2:ip6").arg(QString(m_dialog->obj_name->text().toUtf8())).arg(name);
+                        string addrname = string ( QString("%1:%2:ip6").arg(QString(m_dialog->obj_name->text())).arg(name).toUtf8().constData() );
                         IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
                         oi->add(oa);
-                        oa->setName(addrname.toStdString());
+                        oa->setName(addrname);
                         oa->setAddress(InetAddr(AF_INET6, address.address.toLatin1().constData()) );
                         bool ok = false ;
                         int inetmask = address.netmask.toInt(&ok);
