@@ -37,6 +37,7 @@
 #include "FWObjectDrag.h"
 #include "FWObjectClipboard.h"
 #include "ObjectTreeView.h"
+#include "FWWindow.h"
 #include "FWCmdChange.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -496,8 +497,8 @@ void GroupObjectDialog::openObject()
             m_project, new showObjectInTreeEvent(selectedObject->getRoot()->getFileName().c_str(),
                                                  selectedObject->getId()));
         QCoreApplication::postEvent(
-            m_project, new openObjectInEditorEvent(selectedObject->getRoot()->getFileName().c_str(),
-                                                   selectedObject->getId()));
+            mw, new openObjectInEditorEvent(selectedObject->getRoot()->getFileName().c_str(),
+                                            selectedObject->getId()));
     }
 }
 
