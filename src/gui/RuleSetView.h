@@ -29,6 +29,7 @@
 #include <QtGui/QTreeView>
 
 #include "fwbuilder/Rule.h"
+
 #include "ColDesc.h"
 
 using namespace std;
@@ -38,7 +39,6 @@ namespace libfwbuilder {
     class Firewall;
     class FWReference;
     class RuleElement;
-    class Rule;
     class RuleSet;
     class Policy;
     class NAT;
@@ -84,6 +84,7 @@ public:
      * makes specified column of a rule current.
      */
     void selectRE(libfwbuilder::Rule *rule, int col);
+    void selectRE(libfwbuilder::Rule *rule, ColDesc::ColumnType type);
 
     /**
      * makes specified rule element current and selects object <obj> in it.

@@ -168,9 +168,9 @@ void RuleSetView::selectRE(QModelIndex index)
     {
         fwosm->selectedObject = NULL;
         fwosm->index = index;
+        setCurrentIndex(index);
 
         scrollTo( index, QAbstractItemView::PositionAtCenter);
-        //QTimer::singleShot(0, this, SLOT(scrollToCurrent()));
     }
 }
 
@@ -189,6 +189,16 @@ void RuleSetView::selectRE(libfwbuilder::Rule *rule, int col)
     if (fwbdebug) qDebug() << "RuleSetView::selectRE(libfwbuilder::Rule *rule, int col)";
     RuleSetModel* md = ((RuleSetModel*)model());
     selectRE(md->index(rule, col));
+}
+
+void RuleSetView::selectRE(libfwbuilder::Rule *rule, ColDesc::ColumnType type)
+{
+    if (fwbdebug)
+        qDebug() << "RuleSetView::selectRE(libfwbuilder::Rule *rule, ColDesc::ColumnType type)";
+    RuleSetModel* md = ((RuleSetModel*)model());
+    int col = md->columnByType(type);
+
+    selectRE(rule, col);
 }
 
 void RuleSetView::selectRE(libfwbuilder::RuleElement *re, libfwbuilder::FWObject *obj)

@@ -412,7 +412,7 @@ int RuleSetModel::columnForRuleElementType(QString typeName)
 
 int RuleSetModel::columnByType(ColDesc::ColumnType type)
 {
-    //if (fwbdebug) qDebug() << "RuleSetModel::columnByType(ColDesc::ColumnType type)";
+    if (fwbdebug) qDebug() << "RuleSetModel::columnByType(ColDesc::ColumnType type)";
     int col = 1;
     foreach (ColDesc cd, header)
     {

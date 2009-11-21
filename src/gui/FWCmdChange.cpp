@@ -27,8 +27,12 @@
 
 #include "FWCmdChange.h"
 #include "FWWindow.h"
+#include "ColDesc.h"
+#include "RuleSetView.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Rule.h"
+
 
 #include "events.h"
 
@@ -154,10 +158,14 @@ void FWCmdChangeRuleOptions::notify()
     // showObjectInTreeEvent rather than
     // updateObjectInTreeEvent. Redraw whole rule set since there is
     // no way to redraw single rule at this time.
+
     QCoreApplication::postEvent(
         mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
     QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
     mw->openOptEditor(obj, ObjectEditor::optNone);
+
+    Rule *rule = Rule::cast(obj);
+    project->getCurrentRuleSetView()->selectRE(rule, ColDesc::Options);
 }
 
 /********************************************************
