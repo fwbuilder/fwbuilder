@@ -14,8 +14,10 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
+#include "FWWindow.h"
 #include "newClusterDialog.h"
 
+#include "global.h"
 #include "utils_no_qt.h"
 #include "utils.h"
 #include "platforms.h"
@@ -41,6 +43,10 @@
 #define OBJECT_NAME_PAGE 0
 #define MANUAL_PAGE      1
 #define TEMPLATES_PAGE   2
+
+#define FIREWALLS_PAGE 0
+#define INTERFACES_PAGE 1
+#define INTERFACEEDITOR_PAGE 2
 
 using namespace libfwbuilder;
 using namespace std;
@@ -169,6 +175,17 @@ void newClusterDialog::showPage(const int page)
 
     switch (p)
     {
+    case FIREWALLS_PAGE:
+
+        list<Firewall*> fwlist;
+        mw->findAllFirewalls(fwlist);
+        m_dialog->firewallSelector->setFirewallList(fwlist);
+
+        break;
+    }
+    /*
+    switch (p)
+    {
     case MANUAL_PAGE:
     {
         // This is the page where user configures interfaces manually
@@ -243,6 +260,7 @@ void newClusterDialog::showPage(const int page)
         m_dialog->templateList->setCurrentItem(0);
         m_dialog->templateList->setFocus();
     }
+    */
 }
 
 void newClusterDialog::addInterface()

@@ -3,11 +3,9 @@
 TEMPLATE = app
 LANGUAGE = C++
 QT += network
-
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)
-
 
 # This makes gcc compile this header file and store result in
 # .obj/fwbuilder.gch/c++. Generated Makefile will also add
@@ -164,9 +162,10 @@ HEADERS += ../../config.h \
     InterfaceEditorWidget.h \
     FWCmdBasic.h \
     FWCmdChange.h \
-	FWCmdAddObject.h \
-	FWCmdMoveObject.h \
-    InterfacesTabWidget.h
+    FWCmdAddObject.h \
+    FWCmdMoveObject.h \
+    InterfacesTabWidget.h \
+    FirewallSelectorWidget.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -325,9 +324,10 @@ SOURCES += ProjectPanel.cpp \
     InterfaceEditorWidget.cpp \
     FWCmdBasic.cpp \
     FWCmdChange.cpp \
-	FWCmdAddObject.cpp \
-	FWCmdMoveObject.cpp \
-    InterfacesTabWidget.cpp
+    FWCmdAddObject.cpp \
+    FWCmdMoveObject.cpp \
+    InterfacesTabWidget.cpp \
+    FirewallSelectorWidget.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
@@ -431,24 +431,24 @@ FORMS = FWBMainWindow_q.ui \
 HEADERS += transferDialog.h
 SOURCES += transferDialog.cpp
 FORMS += transferdialog_q.ui
-
 contains( HAVE_ANTLR_RUNTIME, 1 ) { 
     INCLUDEPATH += $$ANTLR_INCLUDEPATH
-    LIBS += $$FWBPARSER_LIB $$ANTLR_LIBS
+    LIBS += $$FWBPARSER_LIB \
+        $$ANTLR_LIBS
     DEFINES += $$ANTLR_DEFINES
 }
 LIBS += $$LIBS_FWCOMPILER
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
 LIBS += $$FWTRANSFER_LIB
-
-contains( HAVE_QTDBUS, 1 ):unix {
-	!macx: QT += network dbus
-	macx:  LIBS += -framework QtDBus
-#!macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
+contains( HAVE_QTDBUS, 1 ):unix { 
+    !macx:QT += network \
+        dbus
+    macx:LIBS += -framework \
+        QtDBus
 }
 
-
+# !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
 INCLUDEPATH += ../iptlib \
     ../pflib \
     ../cisco_lib/ \
