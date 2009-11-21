@@ -98,8 +98,11 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
 
     m_dialog->objectViewsStack->addWidget(iconView);
     m_dialog->objectViewsStack->addWidget(listView);
-    m_dialog->objectViewsStack->setCurrentWidget(iconView);
 
+    if (st->getGroupViewMode() == ICON_VIEW_MODE)
+        m_dialog->objectViewsStack->setCurrentWidget(iconView);
+    else
+        m_dialog->objectViewsStack->setCurrentWidget(listView);
 
     setTabOrder( m_dialog->obj_name, iconView );
     setTabOrder( iconView, listView );
