@@ -44,7 +44,7 @@
 #include <qlabel.h>
 
 #include <iostream>
-#include "FWBSettings.h"
+
 
 using namespace libfwbuilder;
 using namespace std;
@@ -121,8 +121,6 @@ void NATRuleOptionsDialog::validate(bool *res)
 {
     *res=true;
 }
-
-
 
 void NATRuleOptionsDialog::applyChanges()
 {

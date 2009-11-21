@@ -148,6 +148,8 @@ void FWWindow::openOptEditor(FWObject *obj, ObjectEditor::OptType t)
     m_mainWindow->editorDockWidget->show(); // editor
     oe->openOpt(obj, t);
     m_mainWindow->objectEditorStack->resize(old_size);
+    if (fwbdebug)
+        qDebug() << "FWWindow::openOptEditor done";
 }
 
 void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,

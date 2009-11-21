@@ -204,6 +204,13 @@ bool ProjectPanel::event(QEvent *event)
                 ev->accept();
                 return true;
 
+            case OPEN_RULESET_EVENT:
+                openRuleSet(obj);
+                // update rule set title as well
+                //updateFirewallName();
+                ev->accept();
+                return true;
+
             case SHOW_OBJECT_IN_RULESET_EVENT:
             {
                 openRuleSet(obj);

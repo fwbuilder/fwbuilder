@@ -347,13 +347,9 @@ void ProjectPanel::updateFirewallName()
 
 void ProjectPanel::openRuleSet(FWObject * obj)
 {
-    mw->blankEditor();
-    RuleSet * rs = RuleSet::cast(obj);
-    if (rs!= visibleRuleSet)
-    {
-        visibleRuleSet = rs;
-        registerRuleSetRedrawRequest();
-    }
+    //mw->blankEditor();
+    visibleRuleSet = RuleSet::cast(obj);
+    registerRuleSetRedrawRequest();
 }
 
 void ProjectPanel::selectRules()

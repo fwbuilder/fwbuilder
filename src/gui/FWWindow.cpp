@@ -1123,6 +1123,19 @@ bool FWWindow::event(QEvent *event)
                 ev->accept();
                 return true;
             }
+
+            case OPEN_OPT_OBJECT_IN_EDITOR_EVENT:
+            {
+                if (pp && obj)
+                {
+                    openOptEditor(obj,
+                                  dynamic_cast<openOptObjectInEditorEvent*>(event)->opt_code);
+                    // pp->editObject(obj);
+                    pp->mdiWindow->update();
+                }
+                ev->accept();
+                return true;
+            }
         }
 
         // dispatch event to all projectpanel windows

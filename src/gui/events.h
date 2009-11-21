@@ -27,6 +27,8 @@
 #define FWBUILDER_EVENTS_HH
 
 #include "global.h"
+#include "ObjectEditor.h"
+
 #include <QEvent>
 #include <QString>
 
@@ -48,9 +50,11 @@ enum EVENT_CODES {
     SHOW_OBJECT_IN_RULESET_EVENT ,
     RELOAD_OBJECT_TREE_EVENT ,
     RELOAD_OBJECT_TREE_IMMEDIATELY_EVENT ,
+    OPEN_RULESET_EVENT ,
     RELOAD_RULESET_EVENT ,
     RELOAD_RULESET_IMMEDIATELY_EVENT ,
     OPEN_OBJECT_IN_EDITOR_EVENT ,
+    OPEN_OPT_OBJECT_IN_EDITOR_EVENT ,
     CLOSE_OBJECT_EVENT ,
     OBJECT_NAME_CHANGED_EVENT
 };
@@ -202,6 +206,16 @@ public:
 };
 
 
+class openRulesetEvent : public fwbUpdateEvent {
+public:
+    openRulesetEvent(const QString &file_name, int obj_id) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + OPEN_RULESET_EVENT),
+                   "openRulesetEvent")
+    {}
+};
+
+
 class openObjectInEditorEvent : public fwbUpdateEvent {
 public:
     openObjectInEditorEvent(const QString &file_name, int obj_id) :
@@ -209,6 +223,17 @@ public:
                    QEvent::Type(QEvent::User + OPEN_OBJECT_IN_EDITOR_EVENT),
                    "openObjectInEditorEvent")
     {}
+};
+
+
+class openOptObjectInEditorEvent : public fwbUpdateEvent {
+public:
+    ObjectEditor::OptType opt_code;
+    openOptObjectInEditorEvent(const QString &file_name, int obj_id, ObjectEditor::OptType opt) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + OPEN_OPT_OBJECT_IN_EDITOR_EVENT),
+                   "openOptObjectInEditorEvent")
+    { opt_code = opt; }
 };
 
 

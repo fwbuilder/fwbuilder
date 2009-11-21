@@ -2501,7 +2501,7 @@
   </connection>
   <connection>
    <sender>ipt_hashlimit</sender>
-   <signal>valueChanged(int)</signal>
+   <signal>valueChanged(QString)</signal>
    <receiver>RuleOptionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -2709,7 +2709,7 @@
   </connection>
   <connection>
    <sender>ipt_hashlimit_name</sender>
-   <signal>textChanged(QString)</signal>
+   <signal>textEdited(QString)</signal>
    <receiver>RuleOptionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>

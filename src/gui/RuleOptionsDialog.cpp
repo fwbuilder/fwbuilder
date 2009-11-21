@@ -29,10 +29,10 @@
 #include "utils.h"
 #include "platforms.h"
 #include "ProjectPanel.h"
-
 #include "RuleOptionsDialog.h"
 #include "RuleSetView.h"
 #include "FWWindow.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Rule.h"
@@ -51,7 +51,7 @@
 #include <qlabel.h>
 
 #include <iostream>
-#include "FWBSettings.h"
+
 
 using namespace libfwbuilder;
 using namespace std;
@@ -313,9 +313,16 @@ void RuleOptionsDialog::applyChanges()
 {
     if (!isTreeReadWrite(this,obj)) return;
 
+    FWCmdChange* cmd = new FWCmdChangeRuleOptions(m_project, obj);
+    // new_state  is a copy of the rule object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();
+
     init=true;
-    data.saveAll();
+    data.saveAll(new_rule_options);
     init=false;
+
+    m_project->undoStack->push(cmd);
 
     BaseObjectDialog::applyChanges();
 }

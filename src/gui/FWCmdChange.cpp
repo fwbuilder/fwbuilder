@@ -136,8 +136,13 @@ void FWCmdChangeRuleAction::notify()
     // no way to redraw single rule at this time.
     QCoreApplication::postEvent(
         mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
-    QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
-    mw->openOptEditor(obj, ObjectEditor::optAction);
+    QCoreApplication::postEvent(
+        mw, new openRulesetEvent(filename, obj->getParent()->getId()));
+    QCoreApplication::postEvent(
+        mw, new openOptObjectInEditorEvent(
+            filename, obj->getId(), ObjectEditor::optAction));
+
+    //mw->openOptEditor(obj, ObjectEditor::optAction);
 }
 
 /********************************************************
@@ -161,8 +166,10 @@ void FWCmdChangeRuleOptions::notify()
 
     QCoreApplication::postEvent(
         mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
-    QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
-    mw->openOptEditor(obj, ObjectEditor::optNone);
+    QCoreApplication::postEvent(
+        mw, new openRulesetEvent(filename, obj->getParent()->getId()));
+    QCoreApplication::postEvent(
+        mw, new openObjectInEditorEvent(filename, obj->getId()));
 
     Rule *rule = Rule::cast(obj);
     project->getCurrentRuleSetView()->selectRE(rule, ColDesc::Options);

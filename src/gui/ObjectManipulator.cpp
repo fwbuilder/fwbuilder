@@ -1060,12 +1060,6 @@ void ObjectManipulator::closeObject()
     if (mw->isEditorVisible()) mw->hideEditor();
 }
 
-void ObjectManipulator::openObject(ObjectTreeViewItem *otvi,
-                                   bool register_in_history)
-{
-    openObject(otvi->getFWObject(),register_in_history);
-}
-
 void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
 {
     if (fwbdebug)
@@ -1100,6 +1094,12 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     update();
 
     if (fwbdebug) qDebug("ObjectManipulator::selectionChanged done");
+}
+
+void ObjectManipulator::openObject(ObjectTreeViewItem *otvi,
+                                   bool register_in_history)
+{
+    openObject(otvi->getFWObject(),register_in_history);
 }
 
 /*
