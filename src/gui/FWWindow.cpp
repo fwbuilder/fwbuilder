@@ -222,6 +222,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     undoAction = undoGroup->createUndoAction(this);
     undoAction->setShortcut(tr("Ctrl+Z"));
     m_mainWindow->undoView->setGroup(undoGroup);
+    m_mainWindow->undoDockWidget->hide();
 
     redoAction = undoGroup->createRedoAction(this);
     QList<QKeySequence> redoShortcuts;
@@ -860,6 +861,8 @@ void FWWindow::prepareViewMenu()
         activeProject()->m_panel->treeDockWidget->isVisible());
     m_mainWindow->actionEditor_panel->setChecked(
         m_mainWindow->editorDockWidget->isVisible());
+    m_mainWindow->actionUndo_view->setChecked(
+        m_mainWindow->undoDockWidget->isVisible());
 }
 
 void FWWindow::prepareObjectMenu()

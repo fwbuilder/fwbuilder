@@ -286,6 +286,14 @@ void FWWindow::toggleViewEditor()
         m_mainWindow->editorDockWidget->hide();
 }
 
+void FWWindow::toggleViewUndo()
+{
+    if (m_mainWindow->actionUndo_view->isChecked())
+        m_mainWindow->undoDockWidget->show();
+    else
+        m_mainWindow->undoDockWidget->hide();
+}
+
 void FWWindow::insertRule()
 {
     if (activeProject()) activeProject()->insertRule();

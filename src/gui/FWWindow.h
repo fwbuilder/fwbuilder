@@ -155,6 +155,7 @@ public slots:
 
     virtual void toggleViewObjectTree();
     virtual void toggleViewEditor();
+    virtual void toggleViewUndo();
 
     virtual void helpContents();
     virtual void helpContentsAction();

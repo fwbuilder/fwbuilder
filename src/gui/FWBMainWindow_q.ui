@@ -819,6 +819,7 @@
     </property>
     <addaction name="actionObject_Tree"/>
     <addaction name="actionEditor_panel"/>
+    <addaction name="actionUndo_view"/>
    </widget>
    <addaction name="fileMenu"/>
    <addaction name="editMenu"/>
@@ -1416,6 +1417,14 @@
    </property>
    <property name="text">
     <string>Editor panel</string>
+   </property>
+  </action>
+  <action name="actionUndo_view">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Undo view</string>
    </property>
   </action>
  </widget>
@@ -2413,6 +2422,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionUndo_view</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>toggleViewUndo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>554</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
@@ -2422,5 +2447,6 @@
   <slot>toggleViewEditor()</slot>
   <slot>toggleViewSearch()</slot>
   <slot>editorPanelTabChanged(int)</slot>
+  <slot>toggleViewUndo()</slot>
  </slots>
 </ui>
