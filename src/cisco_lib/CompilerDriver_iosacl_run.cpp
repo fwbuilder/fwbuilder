@@ -25,15 +25,6 @@
 
 #include "../../config.h"
 
-#ifndef _WIN32
-#  include <unistd.h>
-#  include <pwd.h>
-#else
-#  include <direct.h>
-#  include <stdlib.h>
-#  include <io.h>
-#endif
-
 #include <fstream>
 #include <iostream>
 #include <algorithm>
