@@ -139,6 +139,9 @@ void FWCmdChangeRuleAction::notify()
     QCoreApplication::postEvent(
         mw, new openRulesetEvent(filename, obj->getParent()->getId()));
     QCoreApplication::postEvent(
+        mw, new selectRuleElementEvent(
+            filename, obj->getId(), ColDesc::Action));
+    QCoreApplication::postEvent(
         mw, new openOptObjectInEditorEvent(
             filename, obj->getId(), ObjectEditor::optAction));
 
@@ -169,10 +172,10 @@ void FWCmdChangeRuleOptions::notify()
     QCoreApplication::postEvent(
         mw, new openRulesetEvent(filename, obj->getParent()->getId()));
     QCoreApplication::postEvent(
+        mw, new selectRuleElementEvent(
+            filename, obj->getId(), ColDesc::Options));
+    QCoreApplication::postEvent(
         mw, new openObjectInEditorEvent(filename, obj->getId()));
-
-    Rule *rule = Rule::cast(obj);
-    project->getCurrentRuleSetView()->selectRE(rule, ColDesc::Options);
 }
 
 /********************************************************

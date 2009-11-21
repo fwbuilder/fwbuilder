@@ -211,6 +211,15 @@ bool ProjectPanel::event(QEvent *event)
                 ev->accept();
                 return true;
 
+            case SELECT_RULE_ELEMENT_EVENT:
+            {
+                getCurrentRuleSetView()->selectRE(
+                    Rule::cast(obj),
+                    dynamic_cast<selectRuleElementEvent*>(event)->column_type);
+                ev->accept();
+                return true;
+            }
+
             case SHOW_OBJECT_IN_RULESET_EVENT:
             {
                 openRuleSet(obj);

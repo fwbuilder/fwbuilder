@@ -28,6 +28,7 @@
 
 #include "global.h"
 #include "ObjectEditor.h"
+#include "ColDesc.h"
 
 #include <QEvent>
 #include <QString>
@@ -48,6 +49,7 @@ enum EVENT_CODES {
     UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT ,
     SHOW_OBJECT_IN_TREE_EVENT ,
     SHOW_OBJECT_IN_RULESET_EVENT ,
+    SELECT_RULE_ELEMENT_EVENT,
     RELOAD_OBJECT_TREE_EVENT ,
     RELOAD_OBJECT_TREE_IMMEDIATELY_EVENT ,
     OPEN_RULESET_EVENT ,
@@ -163,6 +165,17 @@ public:
                      QEvent::Type(QEvent::User + SHOW_OBJECT_IN_RULESET_EVENT),
                      "showObjectInRulesetEvent")
       {}
+};
+
+
+class selectRuleElementEvent : public fwbUpdateEvent {
+public:
+    ColDesc::ColumnType column_type;
+    selectRuleElementEvent(const QString &file_name, int obj_id, ColDesc::ColumnType ct) :
+    fwbUpdateEvent(file_name, obj_id,
+                     QEvent::Type(QEvent::User + SELECT_RULE_ELEMENT_EVENT),
+                     "selectRuleElementEvent")
+    { column_type = ct; }
 };
 
 
