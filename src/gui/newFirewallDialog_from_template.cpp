@@ -82,7 +82,7 @@ void newFirewallDialog::createFirewallFromTemplate()
     map<int, int> map_ids;
     FWObject *no = db->recursivelyCopySubtree(parent, template_fw, map_ids);
 
-    no->setName(m_dialog->obj_name->text().toStdString());
+    no->setName( string( m_dialog->obj_name->text().toUtf8().constData() ) );
 
     nfw = Firewall::cast(no);
 
