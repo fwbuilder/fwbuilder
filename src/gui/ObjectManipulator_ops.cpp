@@ -440,100 +440,81 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
     return NULL;
 }
 
-void ObjectManipulator::relocateTo(FWObject *target, FWObject *obj)
-{
-    FWObject *ta = prepareForInsertion(target, obj);
-    if (ta == NULL) return;
-
-    if (obj->getRoot() != ta->getRoot())
-    {
-        if (fwbdebug)
-            qDebug("Attempt to relocate object %s (%d) to a different object tree",
-                   obj->getName().c_str(), obj->getId());
-        return;
-    }
-    if (obj == ta) return;  // can't insert into intself
-
-    removeObjectFromTreeView(obj);
-
-    obj->ref();
-    obj->getParent()->remove(obj);
-    ta->add(obj);
-
-    // If we paste interface, reset the type of the copy
-    // See #299
-    if (Interface::isA(obj) && Interface::isA(ta))
-        Interface::cast(obj)->getOptionsObject()->setStr("type", "ethernet");
-
-    insertSubtree(allItems[ta], obj);
-
-    refreshSubtree(allItems[obj]);
-
-    m_project->db()->setDirty(true);
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(m_project->getFileName(), ta->getId()));
-}
-
 void ObjectManipulator::lockObject()
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::lockObject selected %d objects ",
-               getCurrentObjectTree()->getNumSelected());
+        qDebug() << "ObjectManipulator::lockObject selected:"
+                 << getCurrentObjectTree()->getNumSelected();
 
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
-    FWObject *obj;
-
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-    for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
+    try
     {
-        obj= *i;
-        FWObject *lib = obj->getLibrary();
-        // these lbraries are locked anyway, do not let the user
-        // lock objects inside because they won't be able to unlock them.
-        if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
-            lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
-        {
-            obj->setReadOnly(true);
-            QCoreApplication::postEvent(
-                mw, new updateObjectInTreeEvent(m_project->getFileName(),
-                                                obj->getId()));
-        }
-    }
-    getCurrentObjectTree()->setLockFlags();
+        FWObject *obj;
 
-    // Arguably, locking an object should not change lastModified timestamp
-    // because none of the attributes that affect generated policy change.
-    //QCoreApplication::postEvent(
-    //    mw, new dataModifiedEvent(m_project->getFileName(), 0));
+        vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+        for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
+        {
+            obj= *i;
+            FWObject *lib = obj->getLibrary();
+            // these lbraries are locked anyway, do not let the user
+            // lock objects inside because they won't be able to unlock them.
+            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
+                lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
+            {
+                FWCmdChange* cmd = new FWCmdChange(
+                    m_project, obj,
+                    QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str())));
+                FWObject* new_state = cmd->getNewState();
+                new_state->setReadOnly(true);
+                m_project->undoStack->push(cmd);
+            }
+        }
+        // getCurrentObjectTree()->setLockFlags();
+
+        // Arguably, locking an object should not change lastModified timestamp
+        // because none of the attributes that affect generated policy change.
+        //QCoreApplication::postEvent(
+        //    mw, new dataModifiedEvent(m_project->getFileName(), 0));
+    } catch (FWException &ex)
+    {
+        qDebug() << ex.toString().c_str();
+    }
 }
 
 void ObjectManipulator::unlockObject()
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::unlockObject selected %d objects ",
-               getCurrentObjectTree()->getNumSelected());
+        qDebug() << "ObjectManipulator::unlockObject selected:"
+                 << getCurrentObjectTree()->getNumSelected();
 
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
-    FWObject *obj;
-
-    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-    for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
+    try
     {
-        obj= *i;
-        FWObject *lib = obj->getLibrary();
-        if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
-            lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
+        FWObject *obj;
+
+        vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+        for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
         {
-            obj->setReadOnly(false);
-            QCoreApplication::postEvent(
-                mw, new updateObjectInTreeEvent(m_project->getFileName(),
-                                                obj->getId()));
+            obj= *i;
+            FWObject *lib = obj->getLibrary();
+            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
+                lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
+            {
+                FWCmdChange* cmd = new FWCmdChange(
+                    m_project, obj,
+                    QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str())));
+                FWObject* new_state = cmd->getNewState();
+                new_state->setReadOnly(false);
+                m_project->undoStack->push(cmd);
+            }
         }
+        //getCurrentObjectTree()->setLockFlags();
+    } catch (FWException &ex)
+    {
+        qDebug() << ex.toString().c_str();
     }
-    getCurrentObjectTree()->setLockFlags();
 }
 
 void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
@@ -650,7 +631,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
 
         if (ruleset_visible) m_project->closeRuleSetPanel();
     }
-    catch(FWException &ex)
+    catch (FWException &ex)
     {
         if (fwbdebug)
             qDebug("ObjectManipulator::delObj: catch:  restoreOverrideCursor");

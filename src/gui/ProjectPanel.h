@@ -176,7 +176,6 @@ public:
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                     libfwbuilder::FWObject *obj);
     void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);
-    void relocateTo(libfwbuilder::FWObject *target, libfwbuilder::FWObject *obj);
 
     ObjectTreeView* getCurrentObjectTree();
     //void openObject(QTreeWidgetItem *otvi);

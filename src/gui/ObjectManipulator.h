@@ -181,11 +181,11 @@ public slots:
      void contextMenuRequested(const QPoint &pos);
 
      /*
-      * Internal: this method is used in relocateTo() and
-      * actuallyPasteTo(). This method checks if the target object is
-      * appropriate and replaces it with parent if needed. Also does
-      * validation and shows error dialogs if validation
-      * fails. Returns new parent or NULL if validation fails.
+      * Internal: this method is used in actuallyPasteTo(). This
+      * method checks if the target object is appropriate and replaces
+      * it with parent if needed. Also does validation and shows error
+      * dialogs if validation fails. Returns new parent or NULL if
+      * validation fails.
       */
      libfwbuilder::FWObject* prepareForInsertion(libfwbuilder::FWObject *target,
                                                  libfwbuilder::FWObject *obj);
@@ -317,7 +317,6 @@ public:
 
      libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                      libfwbuilder::FWObject *obj);
-     void relocateTo(libfwbuilder::FWObject *target, libfwbuilder::FWObject *obj);
      
      void updateLibColor(libfwbuilder::FWObject *lib);
      void updateLibName(libfwbuilder::FWObject *lib);

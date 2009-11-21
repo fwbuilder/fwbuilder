@@ -523,29 +523,10 @@ void ProjectPanel::deleteObject(FWObject *obj,bool openobj)
     m_panel->om->deleteObject(obj, openobj);
 }
 
-/*
- * Move object @obj from its current position in the tree to the @target
- * If successfull, returns pointer to @obj
- */
-void ProjectPanel::relocateTo(FWObject *target, FWObject *obj)
-{
-    m_panel->om->relocateTo(target, obj);
-}
-
 ObjectTreeView* ProjectPanel::getCurrentObjectTree()
 {
     return m_panel->om->getCurrentObjectTree();
 }
-
-// void ProjectPanel::openObject(QTreeWidgetItem *otvi)
-// {
-//     m_panel->om->openObject(otvi);
-// }
-
-// void ProjectPanel::openObject(FWObject *obj)
-// {
-//     m_panel->om->openObject(obj);
-// }
 
 void ProjectPanel::findAllFirewalls (std::list<Firewall *> &fws)
 {
