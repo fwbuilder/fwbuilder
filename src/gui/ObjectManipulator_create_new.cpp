@@ -292,17 +292,6 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     new_state->add(nobj);
     m_project->undoStack->push(cmd);
 
-    // ObjectTreeViewItem* parent_item = allItems[parent];
-    // if (fwbdebug)
-    //     qDebug("insertSubtree: parent=%s  allItems[parent]=%p",
-    //            parent->getName().c_str(), parent_item);
-
-    // insertSubtree(parent_item, nobj);
-    // refreshSubtree(allItems[nobj]);
-
-    // QCoreApplication::postEvent(
-    //     mw, new dataModifiedEvent(m_project->getFileName(), parent->getId()));
-
     m_project->db()->setDirty(true);
     return nobj;
 }

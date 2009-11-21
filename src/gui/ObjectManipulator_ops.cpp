@@ -666,7 +666,8 @@ void ObjectManipulator::groupObjects()
         if (Service::cast(co)!=NULL)  type=ServiceGroup::TYPENAME;
         if (Interval::cast(co)!=NULL) type=IntervalGroup::TYPENAME;
 
-        FWObject *newgrp=NULL;
+        FWObject *parent = NULL;
+        FWObject *newgrp = NULL;
 
         list<FWObject*> ll = m_project->db()->getByType( Library::TYPENAME );
         for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
@@ -679,7 +680,7 @@ void ObjectManipulator::groupObjects()
  * the pull-down only with names of read-write libraries
  */
                 if (lib->isReadOnly()) return;
-                FWObject *parent = m_project->getFWTree()->getStandardSlotForObject(lib,type);
+                parent = m_project->getFWTree()->getStandardSlotForObject(lib,type);
                 if (parent==NULL)
                 {
                     if (fwbdebug)
@@ -687,32 +688,24 @@ void ObjectManipulator::groupObjects()
                                type.toAscii().constData(),lib->getName().c_str());
                     return;
                 }
-                newgrp = createObject(parent,type,objName);
-
+                newgrp = m_project->db()->create(type.toStdString());
+                newgrp->setName(string(objName.toUtf8().constData()));
                 break;
             }
         }
         if (newgrp==NULL) return;
 
-        FWObject *obj;
-
-        ObjectTreeView* ot=getCurrentObjectTree();
-        ot->freezeSelection(true);
+        FWCmdAddObject *cmd = new FWCmdAddObject(
+            m_project, parent, newgrp,
+            QObject::tr("Create new group %1").arg(objName));
+        FWObject *new_state = cmd->getNewState();
+        new_state->add(newgrp);
 
         vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
-
         for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
-        {
-            obj= *i;
-            newgrp->addRef(obj);
-        }
-        ot->freezeSelection(false);
+            newgrp->addRef(*i);
 
-        openObject(newgrp);
-        editObject(newgrp);
-
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(m_project->getFileName(), newgrp->getId()));
+        m_project->undoStack->push(cmd);
     }
 }
 
