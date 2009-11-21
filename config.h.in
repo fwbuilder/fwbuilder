@@ -1,6 +1,5 @@
 
 #include "VERSION.h"
-#include "build_num"
 
 #undef PACKAGE_LOCALE_DIR
 #undef PACKAGE_DATA_DIR

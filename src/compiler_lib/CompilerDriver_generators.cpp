@@ -24,6 +24,7 @@
 */
 
 #include "../../config.h"
+#include "build_num"
 
 #include <fstream>
 #include <iostream>
