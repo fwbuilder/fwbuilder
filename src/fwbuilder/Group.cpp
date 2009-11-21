@@ -104,12 +104,6 @@ FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
             }
         }
     }
-    shallowDuplicate(obj);
+    FWObject::duplicateForUndo(obj);
     return *this;
 }
-
-
-
-
-
-
