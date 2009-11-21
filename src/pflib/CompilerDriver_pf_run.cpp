@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "../../build_num"
 
 #ifndef _WIN32
 #  include <unistd.h>

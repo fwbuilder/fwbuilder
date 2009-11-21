@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "../../build_num"
 
 #include "CompilerDriver_ipfw.h"
 
