@@ -121,7 +121,9 @@ protected:
     void _findDependencies_internal(FWObject *obj,
                                     std::list<FWObject*> &deps,
                                     int anti_loop_id);
-    
+
+    void setRO(bool f) { ro = f; }
+
     virtual void replaceReferenceInternal(int oldfw_id, int newfw_id, int &counter);
 
     /**

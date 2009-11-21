@@ -91,7 +91,7 @@ bool Group::hasMember(FWObject *o)
  */
 FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
 {
-    shallowDuplicate(obj);
+    setRO(false);
     if (obj->size() && FWReference::cast(obj->front())!=NULL)
     {
         destroyChildren();
@@ -104,6 +104,7 @@ FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
             }
         }
     }
+    shallowDuplicate(obj);
     return *this;
 }
 

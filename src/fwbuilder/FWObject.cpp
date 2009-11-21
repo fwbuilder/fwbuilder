@@ -456,7 +456,7 @@ class InheritsFWOptions: public std::unary_function<FWObject*, bool>
 
 FWObject& FWObject::duplicateForUndo(const FWObject *obj) throw(FWException)
 {
-    shallowDuplicate(obj);
+    setRO(false);
     InheritsFWOptions pred;
     FWObject::const_iterator mine_opts_iter = std::find_if(begin(), end(), pred);
     FWObject::const_iterator their_opts_iter = std::find_if(obj->begin(), obj->end(), pred);
@@ -465,6 +465,7 @@ FWObject& FWObject::duplicateForUndo(const FWObject *obj) throw(FWException)
         if (mine_opts_iter != end()) (*mine_opts_iter)->duplicate(*their_opts_iter);
         else addCopyOf(*their_opts_iter);
     }
+    shallowDuplicate(obj);
     return *this;
 }
 

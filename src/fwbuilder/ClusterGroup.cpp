@@ -111,7 +111,7 @@ FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
 {
     if (ClusterGroup::constcast(obj)==NULL) return *this;
 
-    shallowDuplicate(obj);
+    setRO(false);
 
     ClusterGroupOptions *their_opts = ClusterGroupOptions::cast(
         obj->getFirstByType(ClusterGroupOptions::TYPENAME));
@@ -135,6 +135,8 @@ FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
     }
     if (their_opts && mine_opts) mine_opts->duplicate(their_opts);
     if (their_opts && mine_opts==NULL) addCopyOf(their_opts);
+
+    shallowDuplicate(obj);
     return *this;
 }
 

@@ -377,13 +377,14 @@ FWObject& Firewall::duplicate(const FWObject *obj,
 
 FWObject& Firewall::duplicateForUndo(const FWObject *obj) throw(FWException)
 {
-    FWObject::duplicateForUndo(obj);
+    setRO(false);
     FWObject *their_mgmt = obj->getFirstByType(Management::TYPENAME);
     if (their_mgmt)
     {
         FWObject *my_mgmt = getManagementObject();
         if (my_mgmt) my_mgmt->duplicate(their_mgmt);
     }
+    FWObject::duplicateForUndo(obj);
     return *this;
 }
 
