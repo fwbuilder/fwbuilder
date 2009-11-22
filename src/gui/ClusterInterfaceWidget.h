@@ -35,6 +35,7 @@
 #include <fwbuilder/Interface.h>
 
 class ClusterInterfacesSelectorWidget;
+struct ClusterInterfaceData;
 
 #include "ClusterInterfacesSelectorWidget.h"
 
@@ -47,6 +48,7 @@ struct InterfacesList
     QVBoxLayout *layout;
     QListWidget *list;
     QLabel *label;
+    libfwbuilder::Firewall *firewall;
 };
 
 class ClusterInterfaceWidget : public QWidget {
@@ -56,6 +58,7 @@ public:
     ~ClusterInterfaceWidget();
     void setFirewallList(QList<libfwbuilder::Firewall*>);
     void setCurrentInterface(QString);
+    ClusterInterfaceData getInterfaceData();
 
 protected:
     void changeEvent(QEvent *e);

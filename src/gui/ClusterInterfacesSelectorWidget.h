@@ -27,6 +27,7 @@
 #define CLUSTERINTERFACESSELECTORWIDGET_H
 
 #include <QTabWidget>
+#include <QToolButton>
 #include <QSet>
 #include <fwbuilder/Firewall.h>
 #include <fwbuilder/Interface.h>
@@ -35,20 +36,32 @@ class ClusterInterfaceWidget;
 
 #include "ClusterInterfaceWidget.h"
 
+struct ClusterInterfaceData
+{
+    QString name;
+    QString label;
+    QString comment;
+    QList<QPair<libfwbuilder::Firewall*, libfwbuilder::Interface*> > interfaces;
+};
+
 class ClusterInterfacesSelectorWidget : public QTabWidget
 {
     Q_OBJECT
 public:
     ClusterInterfacesSelectorWidget(QWidget *parent = 0);
     void setFirewallList(QList<libfwbuilder::Firewall*>);
+    QList<ClusterInterfaceData> getInterfaces();
 
 private:
     QList<ClusterInterfaceWidget*> editors;
     QList<libfwbuilder::Firewall*> fwlist;
+    QToolButton newInterface;
+    QToolButton delInterface;
 
 public slots:
     ClusterInterfaceWidget* addNewInterface();
     void addInterface(QString name);
+    void closeTab();
 
 };
 

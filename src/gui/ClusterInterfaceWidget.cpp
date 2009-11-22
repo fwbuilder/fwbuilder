@@ -73,6 +73,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
         newlist.label = label;
         newlist.layout = layout;
         newlist.list = list;
+        newlist.firewall = fw;
         lists[fw] = newlist;
     }
 }
@@ -90,3 +91,27 @@ void ClusterInterfaceWidget::nameChanged(QString newname)
 {
     cisw->setTabText(cisw->indexOf(this), newname);
 }
+
+ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
+{
+    ClusterInterfaceData res;
+    res.name = this->m_ui->name->text();
+    res.label = this->m_ui->label->text();
+    res.comment = this->m_ui->comment->toPlainText();
+    foreach(InterfacesList ifacelist, this->lists.values())
+    {
+        QString selectedInterface = ifacelist.list->currentItem()->text();
+        FWObjectTypedChildIterator iter = ifacelist.firewall->findByType(Interface::TYPENAME);
+        for ( ; iter!=iter.end(); ++iter )
+        {
+            Interface* iface = Interface::cast(*iter);
+            if (QString::fromUtf8(iface->getName().c_str()) == selectedInterface)
+            {
+                res.interfaces.append(qMakePair(ifacelist.firewall, iface));
+                break;
+            }
+        }
+    }
+    return res;
+}
+
