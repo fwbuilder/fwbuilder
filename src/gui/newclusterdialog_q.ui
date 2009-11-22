@@ -42,6 +42,77 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout">
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>161</width>
+          <height>37</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="backButton">
+        <property name="text">
+         <string>&lt; &amp;Back</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="nextButton">
+        <property name="text">
+         <string>&amp;Next &gt;</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="finishButton">
+        <property name="text">
+         <string>&amp;Finish</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cancelButton">
+        <property name="text">
+         <string>&amp;Cancel</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="minimumSize">
@@ -71,7 +142,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="obj_name_2"/>
+          <widget class="QLineEdit" name="obj_name"/>
          </item>
         </layout>
        </item>
@@ -84,6 +155,24 @@
        </item>
        <item>
         <widget class="FirewallSelectorWidget" name="firewallSelector">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
          <column>
           <property name="text">
            <string>Firewall</string>
@@ -115,7 +204,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QTreeWidget" name="notUsedInterfaces">
+          <widget class="FirewallInterfacesList" name="notUsedInterfaces">
            <column>
             <property name="text">
              <string>Firewall</string>
@@ -173,7 +262,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QTreeWidget" name="usedInterfaces">
+          <widget class="FirewallInterfacesList" name="usedInterfaces">
            <column>
             <property name="text">
              <string>Firewall</string>
@@ -209,7 +298,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="obj_name"/>
+        <widget class="QLineEdit" name="obj_name_old"/>
        </item>
        <item row="3" column="0" colspan="2">
         <widget class="Line" name="line1">
@@ -971,77 +1060,6 @@
      </widget>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QFrame" name="frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>400</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout">
-      <item>
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>161</width>
-          <height>37</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="backButton">
-        <property name="text">
-         <string>&lt; &amp;Back</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="nextButton">
-        <property name="text">
-         <string>&amp;Next &gt;</string>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="finishButton">
-        <property name="text">
-         <string>&amp;Finish</string>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cancelButton">
-        <property name="text">
-         <string>&amp;Cancel</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -1051,9 +1069,14 @@
    <extends>QTableWidget</extends>
    <header>FirewallSelectorWidget.h</header>
   </customwidget>
+  <customwidget>
+   <class>FirewallInterfacesList</class>
+   <extends>QTreeWidget</extends>
+   <header>FirewallInterfacesList.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>obj_name</tabstop>
+  <tabstop>obj_name_old</tabstop>
   <tabstop>useTemplate</tabstop>
   <tabstop>templateList</tabstop>
   <tabstop>intfOutsideText</tabstop>
@@ -1083,14 +1106,14 @@
  </resources>
  <connections>
   <connection>
-   <sender>obj_name</sender>
+   <sender>obj_name_old</sender>
    <signal>textChanged(QString)</signal>
    <receiver>newClusterDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>280</x>
+     <y>67</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1105,8 +1128,8 @@
    <slot>templateSelected(QListWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>32</x>
+     <y>62</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -1121,8 +1144,8 @@
    <slot>addInterface()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>454</x>
-     <y>488</y>
+     <x>613</x>
+     <y>517</y>
     </hint>
     <hint type="destinationlabel">
      <x>293</x>
@@ -1137,8 +1160,8 @@
    <slot>updateInterface()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>454</x>
-     <y>458</y>
+     <x>613</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
      <x>293</x>
@@ -1153,8 +1176,8 @@
    <slot>deleteInterface()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>454</x>
-     <y>428</y>
+     <x>613</x>
+     <y>441</y>
     </hint>
     <hint type="destinationlabel">
      <x>293</x>
@@ -1210,11 +1233,61 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>obj_name</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>newClusterDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addInterface</sender>
+   <signal>clicked()</signal>
+   <receiver>newClusterDialog_q</receiver>
+   <slot>addInterface()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>322</x>
+     <y>302</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>10</x>
+     <y>334</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeInterface</sender>
+   <signal>clicked()</signal>
+   <receiver>newClusterDialog_q</receiver>
+   <slot>deleteInterface()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>332</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>changed()</slot>
   <slot>failoverProtocolChanged()</slot>
   <slot>selectedInterface(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
   <slot>platformChanged()</slot>
+  <slot>addInterface()</slot>
+  <slot>deleteInterface()</slot>
  </slots>
 </ui>

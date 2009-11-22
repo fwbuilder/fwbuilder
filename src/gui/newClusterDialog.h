@@ -73,6 +73,7 @@ public slots:
     void failoverProtocolChanged();
     void platformChanged();
     void changed();
+
     
 protected slots:
     virtual void finishClicked();

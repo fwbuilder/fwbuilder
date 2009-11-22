@@ -176,12 +176,35 @@ void newClusterDialog::showPage(const int page)
     switch (p)
     {
     case FIREWALLS_PAGE:
-
+    {
+        m_dialog->firewallSelector->clear();
         list<Firewall*> fwlist;
         mw->findAllFirewalls(fwlist);
         m_dialog->firewallSelector->setFirewallList(fwlist);
 
+        setNextEnabled(FIREWALLS_PAGE, false);
+        setFinishEnabled(FIREWALLS_PAGE, false);
+
         break;
+    }
+    case INTERFACES_PAGE:
+    {
+        QList<QPair<Firewall*, bool> > fws =  this->m_dialog->firewallSelector->getSelectedFirewalls();
+        QList<Interface*> interfaces;
+        for (int i = 0; i < fws.count(); i++)
+        {
+            FWObjectTypedChildIterator iter = fws.at(0).first->findByType(Interface::TYPENAME);
+            while (iter != iter.end())
+            {
+                this->m_dialog->notUsedInterfaces->addInterface(Interface::cast(*iter));
+                interfaces.append(Interface::cast(*iter));
+                ++iter;
+            }
+        }
+        setNextEnabled(INTERFACES_PAGE, true);
+        setFinishEnabled(INTERFACES_PAGE, false);
+        // add interfaces to widget here
+    }
     }
     /*
     switch (p)
@@ -265,6 +288,13 @@ void newClusterDialog::showPage(const int page)
 
 void newClusterDialog::addInterface()
 {
+    foreach( QTreeWidgetItem *item, this->m_dialog->notUsedInterfaces->selectedItems())
+    {
+        Interface *iface = this->m_dialog->notUsedInterfaces->getInterfaceForItem(item);
+        this->m_dialog->usedInterfaces->addInterface(iface);
+        this->m_dialog->notUsedInterfaces->removeInterface(iface);
+    }
+    /*
     QString addr, netm, protocol, secr, vrid;
     getInterfaceAttributes(&addr, &netm, &protocol, &secr, &vrid);
 
@@ -282,7 +312,7 @@ void newClusterDialog::addInterface()
         << secr
         << vrid;
 
-    new QTreeWidgetItem(m_dialog->iface_list, qsl);
+    new QTreeWidgetItem(m_dialog->iface_list, qsl);*/
 }
 
 void newClusterDialog::selectedInterface(QTreeWidgetItem*cur, QTreeWidgetItem*)
@@ -338,6 +368,13 @@ void newClusterDialog::updateInterface()
 
 void newClusterDialog::deleteInterface()
 {
+    foreach( QTreeWidgetItem *item, this->m_dialog->usedInterfaces->selectedItems() )
+    {
+        Interface *iface = this->m_dialog->usedInterfaces->getInterfaceForItem(item);
+        this->m_dialog->notUsedInterfaces->addInterface(iface);
+        this->m_dialog->usedInterfaces->removeInterface(iface);
+    }
+    /*
     QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
     if (itm == NULL)
     {
@@ -345,6 +382,7 @@ void newClusterDialog::deleteInterface()
     }
     m_dialog->iface_list->takeTopLevelItem(
         m_dialog->iface_list->indexOfTopLevelItem(itm));
+    */
 }
 
 void newClusterDialog::templateSelected(QListWidgetItem *itm)
@@ -640,6 +678,25 @@ void newClusterDialog::cancelClicked()
 
 void newClusterDialog::nextClicked()
 {
+    if (currentPage() == FIREWALLS_PAGE)
+    {
+        if ( !this->m_dialog->firewallSelector->isValid() )
+        {
+            QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("Platform, version and host_os settings of chosen firewalls are not the same"),
+            "&Continue", QString::null, QString::null, 0, 1);
+            return;
+        }
+        if ( this->m_dialog->firewallSelector->getSelectedFirewalls().count() == 0 )
+        {
+            QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("You should select at least one firewall to create a cluster"),
+            "&Continue", QString::null, QString::null, 0, 1);
+            return;
+        }
+    }
     if (nextRelevant(currentPage()) > -1)
     {
         showPage(nextRelevant(currentPage()));

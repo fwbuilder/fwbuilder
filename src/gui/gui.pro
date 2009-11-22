@@ -165,7 +165,8 @@ HEADERS += ../../config.h \
     FWCmdAddObject.h \
     FWCmdMoveObject.h \
     InterfacesTabWidget.h \
-    FirewallSelectorWidget.h
+    FirewallSelectorWidget.h \
+    FirewallInterfacesList.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -327,7 +328,8 @@ SOURCES += ProjectPanel.cpp \
     FWCmdAddObject.cpp \
     FWCmdMoveObject.cpp \
     InterfacesTabWidget.cpp \
-    FirewallSelectorWidget.cpp
+    FirewallSelectorWidget.cpp \
+    FirewallInterfacesList.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
