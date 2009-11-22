@@ -226,6 +226,9 @@ class FWBSettings : public QSettings {
     QString getNewFirewallPlatform();
     void setNewFirewallPlatform(const QString &platform);
 
+    bool getShowUndoPanel();
+    void setShowUndoPanel(bool);
+
     
 private:
     QFont getFontByType(const char*type);

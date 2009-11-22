@@ -221,7 +221,10 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     undoAction = undoGroup->createUndoAction(this);
     undoAction->setShortcut(tr("Ctrl+Z"));
     m_mainWindow->undoView->setGroup(undoGroup);
-    m_mainWindow->undoDockWidget->hide();
+    if (st->getShowUndoPanel())
+        m_mainWindow->undoDockWidget->show();
+    else
+        m_mainWindow->undoDockWidget->hide();
 
     redoAction = undoGroup->createRedoAction(this);
     QList<QKeySequence> redoShortcuts;

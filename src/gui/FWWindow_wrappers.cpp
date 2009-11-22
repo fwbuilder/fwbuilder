@@ -288,6 +288,7 @@ void FWWindow::toggleViewEditor()
 
 void FWWindow::toggleViewUndo()
 {
+    st->setShowUndoPanel(m_mainWindow->actionUndo_view->isChecked());
     if (m_mainWindow->actionUndo_view->isChecked())
         m_mainWindow->undoDockWidget->show();
     else

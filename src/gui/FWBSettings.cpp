@@ -79,6 +79,7 @@ const char* groupModeSetpath = SETTINGS_PATH_PREFIX "/UI/GroupViewMode";
 const char* groupColsSetpath = SETTINGS_PATH_PREFIX "/UI/GroupViewColumns";
 const char* objTooltips = SETTINGS_PATH_PREFIX "/UI/objTooltips";
 const char* tooltipDelay = SETTINGS_PATH_PREFIX "/UI/tooltipDelay";
+const char* showUndoPanel = SETTINGS_PATH_PREFIX "/UI/showUndoPanel";
 
 const char* emptyRCSLog = SETTINGS_PATH_PREFIX "/RCS/emptyLog";
 const char* rcsFilePreviewStyle = SETTINGS_PATH_PREFIX "/RCS/FilePreviewStyle";
@@ -370,6 +371,9 @@ void FWBSettings::setCompression(bool f) { setValue(compression, f); }
 
 bool FWBSettings::getDontSaveStdLib() {return value(dontSaveStdLib).toBool();}
 void FWBSettings::setDontSaveStdLib( bool f) { setValue(dontSaveStdLib,f);}
+
+bool FWBSettings::getShowUndoPanel() {return value(showUndoPanel).toBool();}
+void FWBSettings::setShowUndoPanel(bool f) {setValue(showUndoPanel, f);}
 
 bool FWBSettings::haveScreenPosition(const QString &wname)
 {
