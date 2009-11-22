@@ -133,7 +133,6 @@ void CommentEditorPanel::loadFWObject(FWObject *obj)
     FWObject *o = r;
     while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
     assert(o!=NULL);
-    Firewall *f=Firewall::cast(o);
 
     setText(QString::fromUtf8(r->getComment().c_str()));
 }

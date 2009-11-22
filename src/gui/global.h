@@ -31,6 +31,7 @@
 
 #include <QEvent>
 
+class  QString;
 class  QApplication;
 class  FWWindow;
 class  FWBSettings;
@@ -51,6 +52,7 @@ extern std::string     ee;
 extern int             fwbdebug;
 extern int             registered;
 extern bool            gui_experiment1;
+extern QString         build_num;
 
 #define SETTINGS_PATH_PREFIX  "/3.1"
 

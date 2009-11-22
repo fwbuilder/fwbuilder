@@ -72,7 +72,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
     obj=o;
 
     Firewall  *fw=Firewall::cast(obj);
-    FWOptions *fwopt=fw->getOptionsObject();
+    //FWOptions *fwopt=fw->getOptionsObject();
 
     string vers="version_"+obj->getStr("version");
     string platform = obj->getStr("platform");   // could be 'pix' or 'fwsm'

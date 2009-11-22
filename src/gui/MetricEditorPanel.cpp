@@ -97,12 +97,10 @@ void MetricEditorPanel::loadFWObject(libfwbuilder::FWObject *obj)
     FWObject *o = r;
     while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
     assert(o!=NULL);
-    Firewall *f=Firewall::cast(o);
 
     m_widget->spin_box->setMinimum( 0);
     m_widget->spin_box->setMaximum( 255);
     m_widget->spin_box->setValue( r->getMetric());
-
 }
 
 void MetricEditorPanel::validate(bool* b )

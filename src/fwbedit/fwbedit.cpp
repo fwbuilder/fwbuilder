@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "../../build_num"
 
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Constants.h"
@@ -109,10 +108,9 @@ command cmd = NONE;
 bool autoupgrade_flag = false;
 string filename = "";
 
-
 vector<string> platforms;
 
-FWObjectDatabase       *objdb = NULL;
+FWObjectDatabase *objdb = NULL;
 
 int fwbdebug = 0;
 
@@ -142,7 +140,7 @@ void usage()
 {
     cout << "Firewall Builder:  general purpose object tree editing tool"
          << endl;
-    cout << "Version " << VERSION << "-" << BUILD_NUM << endl;
+    cout << "Version " << VERSION << "-" << build_num.toStdString() << endl;
     cout << endl;
     cout << "Usage: fwbedit command [options]" << endl;
     cout << endl;

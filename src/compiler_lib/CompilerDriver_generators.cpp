@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "build_num"
 
 #include <fstream>
 #include <iostream>
@@ -57,6 +56,7 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
+extern QString build_num;
 
 
 QString CompilerDriver::printPathForAllTools(Firewall*, const std::string &)
@@ -128,8 +128,6 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
     script_skeleton->setVariable("firewall_dir", firewall_dir.c_str());
 
     top_comment->setVariable("version", VERSION);
-    QString build_num;
-    build_num.setNum(BUILD_NUM);
     top_comment->setVariable("build", build_num);
  
     top_comment->setVariable("timestamp", timestr);

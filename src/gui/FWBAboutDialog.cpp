@@ -30,7 +30,6 @@
 #include "fwbuilder/Constants.h"
 
 #include "../../VERSION.h"
-#include "../../build_num"
 
 FWBAboutDialog::FWBAboutDialog() 
 {
@@ -38,8 +37,7 @@ FWBAboutDialog::FWBAboutDialog()
     m_aboutDialog->setupUi(this);
     m_aboutDialog->titleLbl->setText(
         QString("Firewall Builder v%1").arg(VERSION) );
-    m_aboutDialog->revLbl->setText(
-        tr("Build: %1").arg(BUILD_NUM) );
+    m_aboutDialog->revLbl->setText(tr("Build: %1").arg(build_num));
     m_aboutDialog->apiLbl->setText(
         tr("Using Firewall Builder API %1").arg(
             libfwbuilder::Constants::getLibraryVersion().c_str() ) );

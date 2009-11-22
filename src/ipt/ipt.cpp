@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "../../build_num"
 
 #include <fstream>
 #include <iostream>
@@ -66,7 +65,7 @@ void usage(const char *name)
 {
     cout << "Firewall Builder:  policy compiler for "
             "Linux 2.4.x and 2.6.x iptables" << endl;
-    cout << "Version " << VERSION << "-" << BUILD_NUM << endl;
+    cout << "Version " << VERSION << "-" << build_num.toStdString() << endl;
     cout << "Usage: " << name
          << " [-x level] [-v] [-V] [-q] [-f filename.xml] [-d destdir] "
             "[-m] [-4|-6] firewall_object_name" << endl;

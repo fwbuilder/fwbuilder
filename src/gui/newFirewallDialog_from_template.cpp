@@ -206,7 +206,7 @@ void newFirewallDialog::changedAddressesInNewFirewall()
     }
 }
 
-void newFirewallDialog::replaceInterfaceAttributes(Firewall *fw,
+void newFirewallDialog::replaceInterfaceAttributes(Firewall*,
                                                    Interface *intf,
                                                    EditedInterfaceData *new_data)
 {
@@ -324,7 +324,7 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
     }
 }
 
-void newFirewallDialog::replaceReferencesToObject(Firewall *fw,
+void newFirewallDialog::replaceReferencesToObject(Firewall*,
                                                   FWObject *old_obj,
                                                   FWObject *new_obj)
 {

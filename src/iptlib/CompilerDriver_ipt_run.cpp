@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "../../build_num"
 
 #ifndef _WIN32
 #  include <unistd.h>
@@ -92,6 +91,7 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
+extern QString build_num;
 
 /*
  * Go through paces to compile firewall which may be a member of a
@@ -629,10 +629,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
         Configlet top_comment(fw, "linux24", "top_comment");
 
         top_comment.setVariable("version", VERSION);
-        QString build_num;
-        build_num.setNum(BUILD_NUM);
         top_comment.setVariable("build", build_num);
- 
         top_comment.setVariable("timestamp", timestr);
         top_comment.setVariable("tz", tzname[stm->tm_isdst]);
         top_comment.setVariable("user", user_name);

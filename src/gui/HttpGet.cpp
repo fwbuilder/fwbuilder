@@ -24,7 +24,6 @@
 */
 
 #include "../../config.h"
-#include "build_num"
 #include "global.h"
 
 #include <QtCore>
@@ -105,7 +104,7 @@ bool HttpGet::get(const QUrl &url)
   #endif
 #endif
     agent += locale;
-    agent += QString("; b:%1; ").arg(BUILD_NUM);
+    agent += QString("; b:%1; ").arg(build_num);
 #ifdef ELC
     if (registered==2) agent += "r";
     else               agent += "u";

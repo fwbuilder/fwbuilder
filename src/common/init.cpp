@@ -1,5 +1,6 @@
 
 #include "../../config.h"
+#include "../../build_num"
 
 #include <qglobal.h>
 
@@ -30,6 +31,7 @@ std::string sysfname;
 std::string tempfname;
 std::string argv0;
 std::string ee;
+QString build_num = QString("").setNum(BUILD_NUM);
 
 extern int fwbdebug;
 

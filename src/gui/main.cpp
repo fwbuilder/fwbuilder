@@ -40,6 +40,7 @@
 #  endif
 #endif
 
+#include <QString>
 #include <QApplication>
 #include <QTimer>
 #include <QPixmapCache>
