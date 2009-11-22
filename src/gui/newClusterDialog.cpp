@@ -189,6 +189,12 @@ void newClusterDialog::showPage(const int page)
     }
     case INTERFACES_PAGE:
     {
+        QList<Firewall*> firewalls;
+        typedef QPair<Firewall*, bool> fwpair;
+        foreach ( fwpair fw, m_dialog->firewallSelector->getSelectedFirewalls() )
+            firewalls.append(fw.first);
+        this->m_dialog->interfaceSelector->setFirewallList(firewalls);
+        /*
         QList<QPair<Firewall*, bool> > fws =  this->m_dialog->firewallSelector->getSelectedFirewalls();
         QList<Interface*> interfaces;
         for (int i = 0; i < fws.count(); i++)
@@ -204,6 +210,7 @@ void newClusterDialog::showPage(const int page)
         setNextEnabled(INTERFACES_PAGE, true);
         setFinishEnabled(INTERFACES_PAGE, false);
         // add interfaces to widget here
+        */
     }
     }
     /*
@@ -288,12 +295,6 @@ void newClusterDialog::showPage(const int page)
 
 void newClusterDialog::addInterface()
 {
-    foreach( QTreeWidgetItem *item, this->m_dialog->notUsedInterfaces->selectedItems())
-    {
-        Interface *iface = this->m_dialog->notUsedInterfaces->getInterfaceForItem(item);
-        this->m_dialog->usedInterfaces->addInterface(iface);
-        this->m_dialog->notUsedInterfaces->removeInterface(iface);
-    }
     /*
     QString addr, netm, protocol, secr, vrid;
     getInterfaceAttributes(&addr, &netm, &protocol, &secr, &vrid);
@@ -368,12 +369,6 @@ void newClusterDialog::updateInterface()
 
 void newClusterDialog::deleteInterface()
 {
-    foreach( QTreeWidgetItem *item, this->m_dialog->usedInterfaces->selectedItems() )
-    {
-        Interface *iface = this->m_dialog->usedInterfaces->getInterfaceForItem(item);
-        this->m_dialog->notUsedInterfaces->addInterface(iface);
-        this->m_dialog->usedInterfaces->removeInterface(iface);
-    }
     /*
     QTreeWidgetItem *itm = m_dialog->iface_list->currentItem();
     if (itm == NULL)

@@ -195,87 +195,16 @@
      <widget class="QWidget" name="page_2">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Select interfaces to use in this cluster:</string>
+        <widget class="ClusterInterfacesSelectorWidget" name="interfaceSelector">
+         <property name="currentIndex">
+          <number>0</number>
          </property>
+         <widget class="QWidget" name="tab">
+          <attribute name="title">
+           <string>Tab 1</string>
+          </attribute>
+         </widget>
         </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="FirewallInterfacesList" name="notUsedInterfaces">
-           <column>
-            <property name="text">
-             <string>Firewall</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Interface</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QToolButton" name="addInterface">
-             <property name="text">
-              <string>&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="removeInterface">
-             <property name="text">
-              <string>&lt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="FirewallInterfacesList" name="usedInterfaces">
-           <column>
-            <property name="text">
-             <string>Firewall</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Interface</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
@@ -1070,9 +999,10 @@
    <header>FirewallSelectorWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>FirewallInterfacesList</class>
-   <extends>QTreeWidget</extends>
-   <header>FirewallInterfacesList.h</header>
+   <class>ClusterInterfacesSelectorWidget</class>
+   <extends>QTabWidget</extends>
+   <header>ClusterInterfacesSelectorWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -1246,38 +1176,6 @@
     <hint type="destinationlabel">
      <x>7</x>
      <y>35</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>addInterface</sender>
-   <signal>clicked()</signal>
-   <receiver>newClusterDialog_q</receiver>
-   <slot>addInterface()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>322</x>
-     <y>302</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>10</x>
-     <y>334</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>removeInterface</sender>
-   <signal>clicked()</signal>
-   <receiver>newClusterDialog_q</receiver>
-   <slot>deleteInterface()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>326</x>
-     <y>332</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>5</x>
-     <y>288</y>
     </hint>
    </hints>
   </connection>

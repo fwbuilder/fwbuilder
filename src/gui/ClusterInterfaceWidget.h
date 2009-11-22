@@ -23,24 +23,50 @@
 
 */
 
-#ifndef FIREWALLINTERFACESLIST_H
-#define FIREWALLINTERFACESLIST_H
+#ifndef CLUSTERINTERFACEWIDGET_H
+#define CLUSTERINTERFACEWIDGET_H
 
-#include <QTreeWidget>
+#include <QtGui/QWidget>
+#include <QtGui/QLabel>
+#include <QtGui/QListWidget>
+#include <QVBoxLayout>
+
+#include <fwbuilder/Firewall.h>
 #include <fwbuilder/Interface.h>
 
-class FirewallInterfacesList : public QTreeWidget
+class ClusterInterfacesSelectorWidget;
+
+#include "ClusterInterfacesSelectorWidget.h"
+
+namespace Ui {
+    class ClusterInterfaceWidget;
+}
+
+struct InterfacesList
 {
-    Q_OBJECT
-public:
-    FirewallInterfacesList(QWidget *parent = NULL);
-    //TODO: destructor
-    void addInterface(libfwbuilder::Interface*);
-    void removeInterface(libfwbuilder::Interface*);
-    libfwbuilder::Interface* getInterfaceForItem(QTreeWidgetItem*);
-    QList<libfwbuilder::Interface> getInterfaces() {}
-private:
-    QMap<libfwbuilder::Interface*, QTreeWidgetItem*> interfaces;
+    QVBoxLayout *layout;
+    QListWidget *list;
+    QLabel *label;
 };
 
-#endif // FIREWALLINTERFACESLIST_H
+class ClusterInterfaceWidget : public QWidget {
+    Q_OBJECT
+public:
+    ClusterInterfaceWidget(QWidget *parent = 0);
+    ~ClusterInterfaceWidget();
+    void setFirewallList(QList<libfwbuilder::Firewall*>);
+    void setCurrentInterface(QString);
+
+protected:
+    void changeEvent(QEvent *e);
+
+private:
+    Ui::ClusterInterfaceWidget *m_ui;
+    QMap<libfwbuilder::Firewall*, InterfacesList> lists;
+    ClusterInterfacesSelectorWidget *cisw;
+
+public slots:
+    void nameChanged(QString);
+};
+
+#endif // CLUSTERINTERFACEWIDGET_H
