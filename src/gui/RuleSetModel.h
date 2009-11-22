@@ -117,10 +117,11 @@ public:
     libfwbuilder::RuleSet* getRuleSet() {return ruleset;}
     libfwbuilder::Firewall* getFirewall() const;
 
-    void insertNewRule();
+    libfwbuilder::Rule* insertNewRule();
+    libfwbuilder::Rule* insertNewRule(QModelIndex &index, bool isAfter = false);
 
     void insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter = false);
-    void insertNewRule(QModelIndex &index, bool isAfter = false);
+
     virtual void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = NULL) = 0;
 
     void removeRow(int row,const QModelIndex &parent);
@@ -146,7 +147,7 @@ public:
     virtual bool checkRuleType(libfwbuilder::Rule *rule) = 0;
     void deleteObject(QModelIndex &index, libfwbuilder::FWObject* obj);
     bool insertObject(QModelIndex &index, libfwbuilder::FWObject *obj);
-    QModelIndex index(libfwbuilder::Rule *rule, int col);
+    QModelIndex index(libfwbuilder::Rule *rule, int col=0);
     QModelIndex index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re);
     int columnByType(ColDesc::ColumnType type);
     void rowChanged(const QModelIndex &index);

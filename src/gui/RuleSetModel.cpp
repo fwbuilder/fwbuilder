@@ -494,17 +494,18 @@ void RuleSetModel::insertRuleToModel(Rule *rule, QModelIndex &index, bool isAfte
     }
 }
 
-void RuleSetModel::insertNewRule()
+Rule* RuleSetModel::insertNewRule()
 {
     Rule *newrule = getRuleSet()->insertRuleAtTop();
     initRule(newrule);
     QModelIndex index;
     insertRuleToModel(newrule, index);
+    return newrule;
 }
 
-void RuleSetModel::insertNewRule(QModelIndex &index, bool isAfter)
+Rule* RuleSetModel::insertNewRule(QModelIndex &index, bool isAfter)
 {
-    if (!index.isValid()) return;
+    if (!index.isValid()) return insertNewRule();
     RuleNode *node = nodeFromIndex(index);
     int pos = node->rule->getPosition();
     Rule *newrule = isAfter?ruleset->appendRuleAfter(pos):ruleset->insertRuleBefore(pos);
@@ -512,7 +513,7 @@ void RuleSetModel::insertNewRule(QModelIndex &index, bool isAfter)
     string groupName = node->rule->getRuleGroupName();
     newrule->setRuleGroupName(groupName);
     insertRuleToModel(newrule, index, isAfter);
-
+    return newrule;
 }
 
 void RuleSetModel::insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter)

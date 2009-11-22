@@ -51,6 +51,7 @@ namespace libfwbuilder {
 class ProjectPanel;
 class FWObjectSelectionModel;
 class RuleNode;
+class RuleSetModel;
 
 class SelectionMemento
 {
@@ -217,7 +218,7 @@ private:
     int getObjectNumber(libfwbuilder::FWObject *object, const QModelIndex &index);
 
     void selectObject(libfwbuilder::FWObject *object, const QModelIndex &index);
-    ProjectPanel *project;
+    ProjectPanel* project;
 
     void addGenericMenuItemsToContextMenu(QMenu *menu) const;
     void addGroupMenuItemsToContextMenu(QMenu *menu) const;
@@ -245,6 +246,8 @@ private:
     void resizeColumns();
     void copyAndInsertObject(QModelIndex &index, libfwbuilder::FWObject *object);
     libfwbuilder::RuleElement* getRE(QModelIndex index);
+
+    bool canChange(RuleSetModel* md);
 
 };
 

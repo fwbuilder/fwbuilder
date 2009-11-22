@@ -42,6 +42,7 @@
 #include "FWObjectDrag.h"
 #include "FWWindow.h"
 #include "FWBTree.h"
+#include "FWCmdRule.h"
 #include "ProjectPanel.h"
 #include "FindObjectWidget.h"
 #include "events.h"
@@ -1364,25 +1365,28 @@ void RuleSetView::pasteRuleBelow()
         mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
+bool RuleSetView::canChange(RuleSetModel* md)
+{
+    if(!isTreeReadWrite(this,md->getRuleSet())) return false;
+    if (md->getFirewall()==NULL) return false;
+    return true;
+}
+
 void RuleSetView::insertRule()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     QModelIndexList selection = getSelectedRows();
+    Rule* posRule = 0;
 
-    if (selection.isEmpty())
+    if (!selection.isEmpty())
     {
-        md->insertNewRule();
-    }
-    else
-    {        
         QModelIndex firstSelectedIndex = selection.first();
-        md->insertNewRule(firstSelectedIndex);
+        posRule = md->nodeFromIndex(firstSelectedIndex)->rule;
     }
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+
+    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), posRule));
 }
 
 void RuleSetView::addRuleAfterCurrent()
