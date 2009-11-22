@@ -60,7 +60,7 @@
           </widget>
          </item>
          <item row="0" column="1" >
-          <widget class="QLineEdit" name="obj_name" >
+          <widget class="LineEditWidget" name="obj_name" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>200</horstretch>
@@ -134,7 +134,7 @@
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QTextEdit" name="comment" >
+       <widget class="TextEditWidget" name="comment" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
           <horstretch>0</horstretch>
@@ -173,6 +173,18 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TextEditWidget</class>
+   <extends>QTextEdit</extends>
+   <header>TextEditWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEditWidget</class>
+   <extends>QLineEdit</extends>
+   <header>LineEditWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>colorButton</tabstop>
@@ -200,7 +212,7 @@
   </connection>
   <connection>
    <sender>obj_name</sender>
-   <signal>textChanged(QString)</signal>
+   <signal>newTextAvailable()</signal>
    <receiver>LibraryDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -216,7 +228,7 @@
   </connection>
   <connection>
    <sender>comment</sender>
-   <signal>textChanged()</signal>
+   <signal>newTextAvailable()</signal>
    <receiver>LibraryDialog_q</receiver>
    <slot>changed()</slot>
    <hints>

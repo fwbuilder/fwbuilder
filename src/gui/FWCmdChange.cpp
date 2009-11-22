@@ -103,7 +103,8 @@ void FWCmdChange::notify()
                 QString::fromUtf8(oldState->getName().c_str()),
                 QString::fromUtf8(newState->getName().c_str())));
     }
-    mw->openEditor(obj);
+    QCoreApplication::postEvent(
+        mw, new openObjectInEditorEvent(filename, obj->getId()));
 }
 
 /********************************************************
@@ -144,8 +145,6 @@ void FWCmdChangeRuleAction::notify()
     QCoreApplication::postEvent(
         mw, new openOptObjectInEditorEvent(
             filename, obj->getId(), ObjectEditor::optAction));
-
-    //mw->openOptEditor(obj, ObjectEditor::optAction);
 }
 
 /********************************************************
@@ -199,8 +198,6 @@ void FWCmdChangeOptionsObject::notify()
     QCoreApplication::postEvent(
         mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
     QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
-
-    mw->openEditor(obj->getParent());
 }
 
 

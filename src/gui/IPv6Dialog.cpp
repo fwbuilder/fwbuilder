@@ -245,6 +245,7 @@ void IPv6Dialog::DNSlookup()
         if (! addr.isEmpty())
         {
             m_dialog->address->setText( addr );
+            changed();
             return;
         }
 
@@ -267,6 +268,7 @@ void IPv6Dialog::DNSlookup()
             if ( ! addr.isEmpty())
             {
                 m_dialog->address->setText( addr );
+                changed();
                 return;
             }
             QMessageBox::warning(

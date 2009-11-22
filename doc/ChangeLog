@@ -1,3 +1,18 @@
+2009-11-21  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectEditor.cpp (ObjectEditor::apply): New feature: behavior of
+	all object dialogs has changed. According to the results of the
+	user community opinion poll and discussion, object dialogs are
+	losing button "Apply". All changes made in dialog entry fields are
+	saved into the object immediately. This does not change the data
+	in the .fwb file, only objects in memory. Combined with Undo, this
+	allows for faster object editing and roll back of changes.
+
+	* New feature: Undo/Redo facility. Undo supports changes to object
+	parameters in editors, creation of new objects, deletion of
+	objects, adding and removed objects to groups. Undo stack can be
+	displayed in a special docked window.
+
 2009-11-14  vadim  <vadim@vk.crocodile.org>
 
 	* newFirewallDialog_from_template.cpp (newFirewallDialog::replaceReferencesToNetworks):

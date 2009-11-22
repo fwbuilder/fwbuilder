@@ -463,12 +463,10 @@ void InterfaceDialog::openIfaceDialog()
 
         if (d->exec() == QDialog::Accepted)
         {
-            // modal dialog, dialog saves data into the object
-            
             // update object tree (if interface type has changed, the
             // object properties summary text may have to change too)
-            mw->activeProject()->updateObjectInTree(obj, true);
-            changed();
+            // mw->activeProject()->updateObjectInTree(obj, true);
+            // changed();
             BaseObjectDialog::applyChanges();
         }
         delete w;

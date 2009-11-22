@@ -66,7 +66,7 @@
           </widget>
          </item>
          <item row="0" column="1" >
-          <widget class="QLineEdit" name="obj_name" >
+          <widget class="LineEditWidget" name="obj_name" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>1</horstretch>
@@ -128,7 +128,7 @@ supported firewall platform.</string>
           </widget>
          </item>
          <item row="2" column="1" >
-          <widget class="QLineEdit" name="code" >
+          <widget class="LineEditWidget" name="code" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>0</horstretch>
@@ -260,7 +260,7 @@ will only be used in ipv6 policies.
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QTextEdit" name="comment" >
+       <widget class="TextEditWidget" name="comment" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
           <horstretch>0</horstretch>
@@ -283,6 +283,18 @@ will only be used in ipv6 policies.
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TextEditWidget</class>
+   <extends>QTextEdit</extends>
+   <header>TextEditWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEditWidget</class>
+   <extends>QLineEdit</extends>
+   <header>LineEditWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>platform</tabstop>
@@ -295,7 +307,7 @@ will only be used in ipv6 policies.
  <connections>
   <connection>
    <sender>obj_name</sender>
-   <signal>textChanged(QString)</signal>
+   <signal>newTextAvailable()</signal>
    <receiver>CustomServiceDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -327,7 +339,7 @@ will only be used in ipv6 policies.
   </connection>
   <connection>
    <sender>code</sender>
-   <signal>textChanged(QString)</signal>
+   <signal>newTextAvailable()</signal>
    <receiver>CustomServiceDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -343,7 +355,7 @@ will only be used in ipv6 policies.
   </connection>
   <connection>
    <sender>comment</sender>
-   <signal>textChanged()</signal>
+   <signal>newTextAvailable()</signal>
    <receiver>CustomServiceDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -359,7 +371,7 @@ will only be used in ipv6 policies.
   </connection>
   <connection>
    <sender>protocol</sender>
-   <signal>editTextChanged(QString)</signal>
+   <signal>currentIndexChanged(int)</signal>
    <receiver>CustomServiceDialog_q</receiver>
    <slot>changed()</slot>
    <hints>

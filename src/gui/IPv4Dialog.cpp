@@ -38,16 +38,9 @@
 #include "fwbuilder/FWException.h"
 
 #include <qlineedit.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
-#include <qtextedit.h>
-#include <qcombobox.h>
 #include <qmessagebox.h>
-#include <qlabel.h>
 #include <qpushbutton.h>
-#include <qhostinfo.h>
-#include <qapplication.h>
-#include <qcursor.h>
+#include <QtDebug>
 
 #include <iostream>
 
@@ -181,7 +174,7 @@ void IPv4Dialog::validate(bool *result)
 
 void IPv4Dialog::applyChanges()
 {
-
+    if (fwbdebug) qDebug() << "IPv4Dialog::applyChanges()";
 
     FWCmdChange* cmd = new FWCmdChange(m_project, obj);
     FWObject* newState = cmd->getNewState();
@@ -207,6 +200,8 @@ void IPv4Dialog::applyChanges()
         } catch (FWException &ex) { }
     } else
         s->setNetmask(InetAddr());
+
+    if (fwbdebug) qDebug() << "IPv4Dialog::applyChanges() pushing undo command to stack";
 
     m_project->undoStack->push(cmd);
 
@@ -237,6 +232,7 @@ void IPv4Dialog::DNSlookup()
         if (! addr.isEmpty())
         {
             m_dialog->address->setText( addr );
+            changed();
             return;
         }
 
@@ -257,6 +253,7 @@ void IPv4Dialog::DNSlookup()
             if ( ! addr.isEmpty())
             {
                 m_dialog->address->setText( addr );
+                changed();
                 return;
             }
             QMessageBox::warning(

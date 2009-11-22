@@ -21,6 +21,8 @@ HEADERS += ../../config.h \
     FWWindow.h \
     ProjectPanel.h \
     BaseObjectDialog.h \
+	LineEditWidget.h \
+	TextEditWidget.h \
     utils.h \
     utils_no_qt.h \
     Importer.h \
@@ -167,6 +169,7 @@ HEADERS += ../../config.h \
     InterfacesTabWidget.h \
     FirewallSelectorWidget.h \
     FirewallInterfacesList.h
+
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -176,6 +179,8 @@ SOURCES += ProjectPanel.cpp \
     FWWindow_single_rule_compile.cpp \
     FWWindow_wrappers.cpp \
     FWWindowPrint.cpp \
+	LineEditWidget.cpp \
+	TextEditWidget.cpp \
     ObjectEditorDockWidget.cpp \
     main.cpp \
     utils.cpp \

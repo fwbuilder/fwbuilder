@@ -212,7 +212,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     m_mainWindow->editorDockWidget->hide();
 
     oe  = new ObjectEditor((QWidget*)m_mainWindow->objectEditorStack);
-    oe->setApplyButton(m_mainWindow->applyObjectEditorButton);
     oe->setHelpButton(m_mainWindow->helpObjectEditorButton);
 
     m_mainWindow->editorDockWidget->setupEditor(oe);

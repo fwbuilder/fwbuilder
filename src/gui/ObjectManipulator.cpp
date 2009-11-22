@@ -1130,7 +1130,7 @@ void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
 
     if (obj==NULL) return;
 
-    raise();
+    //raise();
     FWObject *o=obj;
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 

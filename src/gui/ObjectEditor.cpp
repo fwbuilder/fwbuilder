@@ -107,7 +107,6 @@ using namespace libfwbuilder;
 ObjectEditor::ObjectEditor( QWidget *parent):
     QObject(parent), opened(0), current_dialog_idx(-1), current_dialog_name(""),
     editorStack(dynamic_cast<QStackedWidget*>(parent)),
-    applyButton(0),
     helpButton(0),
     m_project(0),
     openedOpt(optNone)
@@ -189,13 +188,6 @@ void ObjectEditor::registerObjectDialog(QStackedWidget *stack,
     }
     assert(w);
     int dlg_id = stack->indexOf(w->parentWidget());
-    if (fwbdebug)
-        qDebug() << "Register object dialog for type "
-                 << obj_type
-                 << ": "
-                 << " w=" << w
-                 << " id=" << dlg_id
-                 << " name=" << w->objectName();
     stackIds[obj_type]  = dlg_id;
     dialogs[dlg_id] = w;
 }
@@ -214,13 +206,6 @@ void ObjectEditor::registerOptDialog(QStackedWidget *stack,
     }
     assert(w);
     int dlg_id = stack->indexOf(w->parentWidget());
-    if (fwbdebug)
-        qDebug() << "Register object dialog for option "
-                 << opt_type
-                 << ": "
-                 << " w=" << w
-                 << " id=" << dlg_id
-                 << " name=" << w->objectName();
     stackIds[getOptDialogName(opt_type)]  = dlg_id;
     dialogs[dlg_id] = w;
 }
@@ -246,11 +231,16 @@ QWidget* ObjectEditor::getCurrentObjectDialog()
     else return NULL;
 }
 
+/*
+ * TODO: deprecate this
+ */
 void ObjectEditor::show()
 {
 }
 
 /*
+ * TODO: deprecate this
+ *
  * need to call ProjectPanel::closeEditorPanel from here because
  * we connect signal clicked() from the closeButton to the slot in
  * ObjectEditor rather than in ProjectPanel.
@@ -267,9 +257,12 @@ bool ObjectEditor::isVisible()
     return (editorStack->isVisible());
 }
 
+/*
+ * TODO: deprecate this
+ */
 bool ObjectEditor::isModified()
 {
-    return applyButton->isEnabled();
+    return false;
 }
 
 QString ObjectEditor::getOptDialogName(OptType t)
@@ -286,11 +279,14 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
     current_dialog_idx = stackIds[current_dialog_name];
     editorStack->setCurrentIndex(current_dialog_idx);
 
-    show();
-
     connect(this, SIGNAL(loadObject_sign(libfwbuilder::FWObject*)),
             dialogs[ current_dialog_idx ],
             SLOT(loadFWObject(libfwbuilder::FWObject*)));
+
+    emit loadObject_sign(obj);
+    findAndLoadHelp();
+
+    show();
 
     connect(this, SIGNAL(validate_sign(bool*)),
             dialogs[ current_dialog_idx ],
@@ -320,9 +316,9 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
             dialogs[ current_dialog_idx ],
             SLOT(getHelpName(QString*)));
 
-    emit loadObject_sign(obj);
-    findAndLoadHelp();
-    applyButton->setEnabled(false);
+    // emit loadObject_sign(obj);
+    // findAndLoadHelp();
+    //applyButton->setEnabled(false);
 
     opened = obj;
     openedOpt = opt;
@@ -441,7 +437,7 @@ bool ObjectEditor::validateAndSave()
             if (fwbdebug)
                 qDebug("ObjectEditor::validateAndSave  return true, "
                        "discard changes, can switch to another object");
-            discard();
+            //discard();
             return true;
         }
         return false;
@@ -467,7 +463,7 @@ bool ObjectEditor::validateAndSave()
             return true;
 
         case 1:
-            discard();
+            //discard();
             return true;
 
         case 2:
@@ -475,13 +471,6 @@ bool ObjectEditor::validateAndSave()
         }
     }
     return true;
-}
-
-void ObjectEditor::setApplyButton(QPushButton * b)
-{
-    applyButton=b;
-    applyButton->setEnabled(false);
-    connect((QWidget*)applyButton,SIGNAL(clicked()),this,SLOT(apply()));
 }
 
 void ObjectEditor::setHelpButton(QPushButton * b)
@@ -495,15 +484,15 @@ void ObjectEditor::setHelpButton(QPushButton * b)
 // applies changes to the object
 void ObjectEditor::notifyChangesApplied()
 {
-    applyButton->setEnabled(false);
+    //applyButton->setEnabled(false);
     // send event so other project panels can reload themselves
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(QString::fromUtf8(opened->getRoot()->getFileName().c_str()),
-                                  opened->getId()));
+    // QCoreApplication::postEvent(
+    //     mw, new dataModifiedEvent(QString::fromUtf8(opened->getRoot()->getFileName().c_str()),
+    //                               opened->getId()));
 }
 
 // this method is connected to the "Apply" button
+// TODO: deprecate this
 void ObjectEditor::apply()
 {
     if (fwbdebug) qDebug("ObjectEditor::apply");
@@ -537,15 +526,23 @@ void ObjectEditor::findAndLoadHelp()
     delete h;
 }
 
-void ObjectEditor::discard()
-{
-    emit discardChanges_sign();
-    applyButton->setEnabled(false);
-}
+/*
+ * TODO: deprecate this
+ */
+// void ObjectEditor::discard()
+// {
+//     emit discardChanges_sign();
+//     //applyButton->setEnabled(false);
+// }
 
 void ObjectEditor::changed()
 {
-    applyButton->setEnabled(true);
+    if (fwbdebug) qDebug() << "ObjectEditor::changed()";
+    bool isgood = true;
+    emit validate_sign( &isgood );
+    if (!isgood) return;
+
+    emit applyChanges_sign();
 }
 
 /*
