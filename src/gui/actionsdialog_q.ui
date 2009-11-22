@@ -1110,6 +1110,12 @@ object properties dialog.</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>FWObjectDropArea</class>
+   <extends>QWidget</extends>
+   <header>FWObjectDropArea.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>LineEditWidget</class>
    <extends>QLineEdit</extends>
    <header>LineEditWidget.h</header>
