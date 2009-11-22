@@ -55,6 +55,15 @@ protected:
 public:
     FWCmdRule(ProjectPanel *project, libfwbuilder::RuleSet* ruleset);
 
+    virtual void redo();
+    virtual void undo();
+
+    virtual void redoOnModel(RuleSetModel *md)=0;
+    virtual void redoOnBase()=0;
+
+    virtual void undoOnModel(RuleSetModel *md)=0;
+    virtual void undoOnBase()=0;
+
 };
 
 /********************************************************
@@ -73,8 +82,11 @@ protected:
 public:
     FWCmdRuleInsert(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,libfwbuilder::Rule* posRule=0, bool isAfter=false, libfwbuilder::Rule* newRule=0);
 
-    void redo();
-    void undo();
+    void redoOnModel(RuleSetModel *md);
+    void redoOnBase();
+
+    void undoOnModel(RuleSetModel *md);
+    void undoOnBase();
 };
 
 #endif // FWCMDRULE_H

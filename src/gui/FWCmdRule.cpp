@@ -50,22 +50,41 @@ FWCmdRule::FWCmdRule(ProjectPanel *project, libfwbuilder::RuleSet* ruleset) : FW
 RuleSetView* FWCmdRule::getRuleSetView()
 {
     RuleSet* crs = project->getCurrentRuleSet();
-    if (crs != ruleset)
-    {
-        project->openRuleSet(ruleset);
-    }
-    return project->getCurrentRuleSetView();
+    return (crs == ruleset)?project->getCurrentRuleSetView():NULL;
 }
 
 RuleSetModel* FWCmdRule::getRuleSetModel()
 {
-    return (RuleSetModel*)getRuleSetView()->model();
+    RuleSetView* rsv = getRuleSetView();
+    return (rsv != NULL)?(RuleSetModel*)getRuleSetView()->model():NULL;
 }
 
 void FWCmdRule::notify()
 {
+    QCoreApplication::postEvent(mw, new dataModifiedEvent(project->getFileName(), ruleset->getId()));
+
+}
+
+void FWCmdRule::redo()
+{
     RuleSetModel* md = getRuleSetModel();
-    QCoreApplication::postEvent(mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+    if (md != NULL)
+        redoOnModel(md);
+    else
+        redoOnBase();
+
+    notify();
+}
+
+void FWCmdRule::undo()
+{
+    RuleSetModel* md = getRuleSetModel();
+    if (md != NULL)
+        undoOnModel(md);
+    else
+        undoOnBase();
+
+    notify();
 }
 
 /********************************************************
@@ -82,9 +101,8 @@ FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset, Rule* 
     setText(QObject::tr("insert rule"));
 }
 
-void FWCmdRuleInsert::redo()
+void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
 {
-    RuleSetModel* md = getRuleSetModel();
     if (posRule == 0)
     {
         newRule = md->insertNewRule();
@@ -93,13 +111,21 @@ void FWCmdRuleInsert::redo()
         QModelIndex index = md->index(posRule);
         newRule = md->insertNewRule(index);
     }
-    notify();
 }
 
-void FWCmdRuleInsert::undo()
+void FWCmdRuleInsert::redoOnBase()
 {
-    RuleSetModel* md = getRuleSetModel();
+    //TODO: need to select affected rule
+    QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(), ruleset->getId()));
+}
+
+void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
+{
     QModelIndex index = md->index(newRule);
     md->removeRow(index.row(), index.parent());
-    notify();
+}
+
+void FWCmdRuleInsert::undoOnBase()
+{
+    QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(), ruleset->getId()));
 }
