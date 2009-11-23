@@ -123,10 +123,11 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     getFailoverTypesForOS(host_os, types2);
     QStringList typenames;
     foreach(QStringPair pair, types)
-        typenames << pair.second;
+        if (pair.first != "none")
+            typenames << pair.second;
     foreach(QStringPair pair, types2)
-        typenames << pair.second;
-    typenames.removeOne("None");
+        if (pair.first != "none")
+            typenames << pair.second;
     this->m_ui->protocol->clear();
     this->m_ui->protocol->insertItems(0, typenames);
 }
