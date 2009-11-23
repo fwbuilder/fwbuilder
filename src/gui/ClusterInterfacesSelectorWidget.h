@@ -38,6 +38,7 @@ class ClusterInterfaceWidget;
 
 struct ClusterInterfaceData
 {
+    QString os;
     QString name;
     QString label;
     QString comment;

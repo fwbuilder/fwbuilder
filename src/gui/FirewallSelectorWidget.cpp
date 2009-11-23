@@ -47,7 +47,9 @@ void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls)
     for (list<Firewall*>::iterator it = firewalls.begin(); it != firewalls.end(); it++)
     {
         fw = *it;
-        QTableWidgetItem *title = new QTableWidgetItem(QIcon(":/Icons/Firewall/icon"), QString::fromUtf8(fw->getName().c_str()));
+        QTableWidgetItem *title = new QTableWidgetItem(QIcon(":/Icons/Firewall/icon"),
+                                                       QString::fromUtf8(fw->getName().c_str()));
+        title->setFlags(Qt::ItemIsEnabled);
         QCheckBox *box = new QCheckBox(this);
         connect(box, SIGNAL(toggled(bool)), this, SLOT(usageChanged(bool)));
         QRadioButton *radio = new QRadioButton(this);
@@ -111,13 +113,88 @@ bool FirewallSelectorWidget::isValid()
     for ( int i = 0; i < fws.count(); i++)
     {
         if (host_os.isEmpty()) host_os = fws.at(i).first->getStr("host_OS").c_str();
-        else if (host_os != fws.at(i).first->getStr("host_OS").c_str()) return false;
+        else if (host_os != fws.at(i).first->getStr("host_OS").c_str())
+        {
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Host operation systems of chosen firewalls are not the same"),
+                "&Continue", QString::null, QString::null, 0, 1);
+            return false;
+        }
         if (platform.isEmpty()) platform = fws.at(i).first->getStr("platform").c_str();
-        else if (platform != fws.at(i).first->getStr("platform").c_str()) return false;
+        else if (platform != fws.at(i).first->getStr("platform").c_str())
+        {
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Platforms of chosen firewalls are not the same"),
+                "&Continue", QString::null, QString::null, 0, 1);
+            return false;
+        }
         if (version.isEmpty()) version = fws.at(i).first->getStr("version").c_str();
-        else if (version != fws.at(i).first->getStr("version").c_str()) return false;
+        else if (version != fws.at(i).first->getStr("version").c_str())
+        {
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Versions of chosen firewalls are not the same"),
+                "&Continue", QString::null, QString::null, 0, 1);
+            return false;
+        }
     }
-    return true;
+    int ok = false;
+    // check for at least one same interface in all firwalls
+    if ( fws.count() )
+    {
+        FWObjectTypedChildIterator intrs =  fws.first().first->findByType(Interface::TYPENAME);
+        for ( ; intrs!=intrs.end(); ++intrs )
+        {
+            string name = Interface::cast(*intrs)->getName();
+            int got = 0;
+            for ( int j = 0; j < fws.count(); j++)
+            {
+                FWObjectTypedChildIterator intrs2 =  fws.at(j).first->findByType(Interface::TYPENAME);
+                for ( ; intrs2!=intrs2.end(); ++intrs2 )
+                {
+                    if (Interface::cast(*intrs2)->getName() == name)
+                    {
+                        got ++;
+                        break;
+                    }
+                }
+            }
+            if (got == fws.count())
+            {
+                ok = true;
+                break;
+            }
+        }
+    }/*
+    foreach ( string name, interfaces )
+    {
+        int used = 0;
+        foreach ( Firewall* fw, firewalls )
+        {
+            FWObjectTypedChildIterator iter = fw->findByType(Interface::TYPENAME);
+            for ( ; iter != iter.end(); ++iter )
+            {
+                Interface *interface = Interface::cast(*iter);
+                if (interface->getName() == name )
+                {
+                    used++;
+                    break;
+                }
+            }
+        }
+        if ( used == firewalls.count() )
+            usedInterfaces.insert(name);
+    }*/
+    if (!ok)
+    {
+        QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Cluster firewalls should have at least one common inteface"),
+                "&Continue", QString::null, QString::null, 0, 1);
+    }
+    return ok;
 }
 
 void FirewallSelectorWidget::clear()

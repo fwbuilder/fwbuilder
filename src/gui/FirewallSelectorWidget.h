@@ -31,9 +31,11 @@
 #include <QTableWidget>
 #include <QCheckBox>
 #include <QRadioButton>
+#include <QMessageBox>
 #include <QMap>
 
 
+#include <fwbuilder/Interface.h>
 #include <fwbuilder/Firewall.h>
 
 struct TableRow

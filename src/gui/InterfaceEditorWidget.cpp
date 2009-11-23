@@ -28,7 +28,10 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 
+#include <QDebug>
+
 using namespace libfwbuilder;
+using namespace std;
 
 InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interface) :
     QWidget(parent),
@@ -37,6 +40,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interfa
     tabw = dynamic_cast<QTabWidget*>(parent);
     this->interface = interface;
     m_ui->setupUi(this);
+    setProtocolVisible(false);
     this->m_ui->name->setText(interface->getName().c_str());
     this->m_ui->label->setText(interface->getLabel().c_str());
     if (interface->getPhysicalAddress() != NULL)
@@ -55,6 +59,77 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interfa
         rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
         rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
     }
+    FWObjectTypedChildIterator adriter2 = interface->findByType(IPv6::TYPENAME);
+    for ( ; adriter2 != adriter2.end(); ++adriter2 )
+    {
+        Address *addr = Address::cast(*adriter2);
+        int row = addNewAddress();
+        fwaddrs[row] = addr;
+        rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
+        rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
+    }
+}
+
+
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceData data) :
+    QWidget(parent),
+    m_ui(new Ui::InterfaceEditorWidget)
+{
+    tabw = dynamic_cast<QTabWidget*>(parent);
+    m_ui->setupUi(this);
+    this->interface = NULL;
+    this->m_ui->name->setText(data.name);
+    this->m_ui->label->setText(data.label);
+    this->m_ui->comment->setText(data.comment);
+
+    set<AddressInfo> addrs;
+    for ( int i =0; i < data.interfaces.count(); i++ )
+    {
+        Interface *intr = data.interfaces.at(i).second;
+        FWObjectTypedChildIterator adriter = intr->findByType(IPv4::TYPENAME);
+        for ( ; adriter != adriter.end(); ++adriter )
+        {
+            Address *addr = Address::cast(*adriter);
+            AddressInfo newdata;
+            newdata.address = addr->getAddressPtr()->toString().c_str();
+            newdata.netmask = addr->getNetmaskPtr()->toString().c_str();
+            newdata.ipv4 = true;
+            addrs.insert(newdata);
+        }
+        FWObjectTypedChildIterator adriter2 = intr->findByType(IPv6::TYPENAME);
+        for ( ; adriter2 != adriter2.end(); ++adriter2 )
+        {
+            Address *addr = Address::cast(*adriter2);
+            AddressInfo newdata;
+            newdata.address = addr->getAddressPtr()->toString().c_str();
+            newdata.netmask = addr->getNetmaskPtr()->toString().c_str();
+            newdata.ipv4 = false;
+            addrs.insert(newdata);
+        }
+    }
+    foreach(AddressInfo addr, addrs)
+    {
+        int row = addNewAddress();
+        fwaddrs[row] = NULL;
+        rows[row].first->setText(addr.address);
+        rows[row].second->setText(addr.netmask);
+        types[row]->setCurrentIndex(addr.ipv4==true?0:1);
+    }
+
+    QString host_os = data.os;
+    list<QStringPair> types;
+    list<QStringPair> types2;
+    getStateSyncTypesForOS(host_os, types);
+    getFailoverTypesForOS(host_os, types2);
+    QStringList typenames;
+    foreach(QStringPair pair, types)
+        typenames << pair.second;
+    foreach(QStringPair pair, types2)
+        typenames << pair.second;
+    typenames.removeDuplicates();
+    typenames.removeOne("None");
+    this->m_ui->protocol->clear();
+    this->m_ui->protocol->insertItems(0, typenames);
 }
 
 void InterfaceEditorWidget::setData(InterfaceData *data)
@@ -90,6 +165,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     tabw = dynamic_cast<QTabWidget*>(parent);
     this->interface = NULL;
     m_ui->setupUi(this);
+    setProtocolVisible(false);
     this->m_ui->name->setText(tr("New interface"));
     this->m_ui->label->clear();
     this->m_ui->comment->clear();
@@ -171,6 +247,7 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
     res.label = this->m_ui->label->text();
     res.comment = this->m_ui->comment->toPlainText();
     res.type = this->m_ui->type->currentIndex();
+    res.protocol = this->m_ui->protocol->currentText();
 
     res.mac = this->m_ui->mac->text();
     for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
@@ -313,4 +390,10 @@ void InterfaceEditorWidget::addressChanged(int row, int col)
     bool ipv6 = this->types[row]->currentIndex() == 1;
     if (!validateAddress(address, netmask, regular, ipv6))
         this->m_ui->addresses->editItem(this->m_ui->addresses->item(row, col));
+}
+
+void InterfaceEditorWidget::setProtocolVisible(bool st)
+{
+    this->m_ui->protocol->setVisible(st);
+    this->m_ui->protocolLabel->setVisible(st);
 }

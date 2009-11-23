@@ -57,9 +57,10 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
 {
     foreach ( Firewall* fw, firewalls )
     {
-        QVBoxLayout *layout = new QVBoxLayout(this);
+        os = fw->getStr("host_OS").c_str();
+        QVBoxLayout *layout = new QVBoxLayout();//this->m_ui->interfaces);
         this->m_ui->interfaces->addLayout(layout);
-        QLabel *label = new QLabel(fw->getName().c_str(), this);
+        QLabel *label = new QLabel(QString::fromUtf8(fw->getName().c_str()), this);
         layout->addWidget(label);
         QListWidget *list = new QListWidget(this);
         layout->addWidget(list);
@@ -95,6 +96,7 @@ void ClusterInterfaceWidget::nameChanged(QString newname)
 ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
 {
     ClusterInterfaceData res;
+    res.os = os;
     res.name = this->m_ui->name->text();
     res.label = this->m_ui->label->text();
     res.comment = this->m_ui->comment->toPlainText();

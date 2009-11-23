@@ -39,12 +39,14 @@
 #include "fwbuilder/InterfaceData.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "InterfaceEditorWidget.h"
+#include "ClusterInterfaceWidget.h"
 
 namespace Ui {
     class InterfacesTabWidget;
 }
 
 struct AddressInfo;
+struct ClusterInterfaceData;
 
 
 struct EditedInterfaceData
@@ -54,6 +56,7 @@ struct EditedInterfaceData
     QString comment;
     QString mac;
     int type; // 0 - regular, 1 - dynamic, 2 - unnumbered
+    QString protocol;
     QMultiMap<libfwbuilder::Address*, AddressInfo > addresses;
 };
 
@@ -67,6 +70,7 @@ public:
     QList<libfwbuilder::Interface*> getDeletedInterfaces();
     bool isValid();
     void setCornerWidgetsVisible(bool);
+    void setProtocolsVisible(bool);
 
 protected:
     void changeEvent(QEvent *e);
@@ -79,6 +83,7 @@ private:
     QHBoxLayout newInterfaceLayout;
     libfwbuilder::FWObject *currentTemplate;
     QList<libfwbuilder::Interface*> deleted;
+    bool protocolVisible;
 
 public slots:
     void addInterface(libfwbuilder::Interface*);
@@ -87,6 +92,7 @@ public slots:
     void setTemplate(libfwbuilder::FWObject*);
     void closeTab();
     void addInterfaceFromData(libfwbuilder::InterfaceData*);
+    void addClusterInterface(ClusterInterfaceData);
     virtual void addTab(QWidget*, const QString&);
 
 };

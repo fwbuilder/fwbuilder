@@ -44,25 +44,35 @@
 #include <QMessageBox>
 
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
 
 namespace Ui {
     class InterfaceEditorWidget;
 }
 
 struct EditedInterfaceData;
+struct ClusterInterfaceData;
 
 struct AddressInfo
 {
     bool ipv4;
     QString address;
     QString netmask;
+    bool operator<( const AddressInfo &second ) const
+    {
+        if (address<second.address) return true;
+        if (netmask<second.netmask) return true;
+        if (!ipv4 && second.ipv4) return true;
+        return false;
+    }
 };
 
 class InterfaceEditorWidget : public QWidget {
     Q_OBJECT
 public:
-    InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data, int v);
+    InterfaceEditorWidget(QWidget *parent, libfwbuilder::InterfaceData* data);
     InterfaceEditorWidget(QWidget *parent, libfwbuilder::Interface *interface);
+    InterfaceEditorWidget(QWidget *parent, ClusterInterfaceData data);
     InterfaceEditorWidget(QWidget *parent);
     ~InterfaceEditorWidget();
     void setData(libfwbuilder::InterfaceData *data);
@@ -70,6 +80,7 @@ public:
     EditedInterfaceData getInterfaceData();
     bool isValid();
     void updateColumnsSizes();
+    void setProtocolVisible(bool);
 
 protected:
     void changeEvent(QEvent *e);

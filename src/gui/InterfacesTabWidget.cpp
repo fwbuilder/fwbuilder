@@ -33,6 +33,7 @@ InterfacesTabWidget::InterfacesTabWidget(QWidget *parent) :
     m_ui(new Ui::InterfacesTabWidget)
 {
     m_ui->setupUi(this);
+    protocolVisible = false;
     clear();
     newInterface = new QToolButton();
     delInterface = new QToolButton();
@@ -99,12 +100,16 @@ QList<Interface*> InterfacesTabWidget::getDeletedInterfaces()
 
 void InterfacesTabWidget::addInterface(Interface *interface)
 {
-    this->addTab(new InterfaceEditorWidget(this, interface), interface->getName().c_str());
+    InterfaceEditorWidget *w = new InterfaceEditorWidget(this, interface);
+    w->setProtocolVisible(protocolVisible);
+    this->addTab(w, interface->getName().c_str());
 }
 
 void InterfacesTabWidget::addNewInterface()
 {
-    addTab(new InterfaceEditorWidget(this), tr("New interface"));
+    InterfaceEditorWidget *w = new InterfaceEditorWidget(this);
+    w->setProtocolVisible(protocolVisible);
+    addTab(w, tr("New interface"));
     setCurrentIndex(count() - 1);
 }
 
@@ -157,4 +162,21 @@ void InterfacesTabWidget::addTab(QWidget* widget, const QString& title)
 {
     if ( dynamic_cast<InterfaceEditorWidget*>(widget) != NULL )
         QTabWidget::addTab(widget, title);
+}
+
+void InterfacesTabWidget::setProtocolsVisible(bool st)
+{
+    protocolVisible = st;
+    for ( int i = 0; i < this->count() ; i++ )
+    {
+        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        if (w!=NULL) w->setProtocolVisible(st);
+    }
+}
+
+void InterfacesTabWidget::addClusterInterface(ClusterInterfaceData data)
+{
+    InterfaceEditorWidget *w = new InterfaceEditorWidget(this, data);
+    w->setProtocolVisible(true);
+    this->addTab(w, data.name);
 }

@@ -47,6 +47,7 @@
 #define FIREWALLS_PAGE 0
 #define INTERFACES_PAGE 1
 #define INTERFACEEDITOR_PAGE 2
+#define POLICY_PAGE 3
 
 using namespace libfwbuilder;
 using namespace std;
@@ -194,6 +195,7 @@ void newClusterDialog::showPage(const int page)
         foreach ( fwpair fw, m_dialog->firewallSelector->getSelectedFirewalls() )
             firewalls.append(fw.first);
         this->m_dialog->interfaceSelector->setFirewallList(firewalls);
+        break;
         /*
         QList<QPair<Firewall*, bool> > fws =  this->m_dialog->firewallSelector->getSelectedFirewalls();
         QList<Interface*> interfaces;
@@ -211,6 +213,27 @@ void newClusterDialog::showPage(const int page)
         setFinishEnabled(INTERFACES_PAGE, false);
         // add interfaces to widget here
         */
+    }
+    case INTERFACEEDITOR_PAGE:
+    {
+        this->m_dialog->interfaceEditor->setProtocolsVisible(true);
+        while (this->m_dialog->interfaceEditor->count())
+            this->m_dialog->interfaceEditor->removeTab(0);
+        foreach (ClusterInterfaceData iface, this->m_dialog->interfaceSelector->getInterfaces())
+        {
+            this->m_dialog->interfaceEditor->addClusterInterface(iface);
+        }
+        break;
+    }
+    case POLICY_PAGE:
+    {
+        QList<QPair<Firewall*, bool> > fws = m_dialog->firewallSelector->getSelectedFirewalls();
+        for ( int i = 0; i < fws.count() ; i++ )
+        {
+            QRadioButton *newbox = new QRadioButton(QString::fromUtf8(fws.at(i).first->getName().c_str()), this);
+            this->m_dialog->policyLayout->addWidget(newbox);
+        }
+        break;
     }
     }
     /*
@@ -675,14 +698,7 @@ void newClusterDialog::nextClicked()
 {
     if (currentPage() == FIREWALLS_PAGE)
     {
-        if ( !this->m_dialog->firewallSelector->isValid() )
-        {
-            QMessageBox::critical(
-            this, "Firewall Builder",
-            tr("Platform, version and host_os settings of chosen firewalls are not the same"),
-            "&Continue", QString::null, QString::null, 0, 1);
-            return;
-        }
+        if (!this->m_dialog->firewallSelector->isValid()) return;
         if ( this->m_dialog->firewallSelector->getSelectedFirewalls().count() == 0 )
         {
             QMessageBox::critical(

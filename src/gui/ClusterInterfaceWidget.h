@@ -67,6 +67,7 @@ private:
     Ui::ClusterInterfaceWidget *m_ui;
     QMap<libfwbuilder::Firewall*, InterfacesList> lists;
     ClusterInterfacesSelectorWidget *cisw;
+    QString os;
 
 public slots:
     void nameChanged(QString);
