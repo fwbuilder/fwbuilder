@@ -708,6 +708,9 @@ void newClusterDialog::nextClicked()
             return;
         }
     }
+    if (currentPage() == INTERFACEEDITOR_PAGE)
+        if (!this->m_dialog->interfaceEditor->isValid())
+            return;
     if (nextRelevant(currentPage()) > -1)
     {
         showPage(nextRelevant(currentPage()));
