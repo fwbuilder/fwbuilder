@@ -76,9 +76,6 @@ class FWCmdRuleInsert : public FWCmdRule
     libfwbuilder::Rule * newRule;
     bool isAfter;
 
-protected:
-    libfwbuilder::RuleSet* ruleset;
-
 public:
     FWCmdRuleInsert(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,libfwbuilder::Rule* posRule=0, bool isAfter=false, libfwbuilder::Rule* newRule=0);
 

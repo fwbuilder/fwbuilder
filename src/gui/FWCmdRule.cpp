@@ -61,8 +61,8 @@ RuleSetModel* FWCmdRule::getRuleSetModel()
 
 void FWCmdRule::notify()
 {
-    QCoreApplication::postEvent(mw, new dataModifiedEvent(project->getFileName(), ruleset->getId()));
-
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(project->getFileName(), ruleset->getId()));
 }
 
 void FWCmdRule::redo()
@@ -113,10 +113,33 @@ void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
     }
 }
 
+/*
+ * TODO: there is a problem with creating rules by calling
+ * RuleSet::insertRuleAtTop because the new rule does not get initialized
+ * in the same way as is done by RuleSetModel::initRule(). So re-doing
+ * this operation while some other rule set is visible in the GUI creates
+ * a rule which is different from the rule created when this operation was
+ * executed for the first time.
+ */
 void FWCmdRuleInsert::redoOnBase()
 {
-    //TODO: need to select affected rule
-    QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(), ruleset->getId()));
+    if (posRule == 0)
+    {
+        ruleset->insertRuleAtTop();
+    } else
+    {
+        if (isAfter)
+            ruleset->appendRuleAfter(posRule->getPosition());
+        else
+            ruleset->insertRuleBefore(posRule->getPosition());
+    }
+
+    QCoreApplication::postEvent(
+        mw, new openRulesetEvent(project->getFileName(), ruleset->getId()));
+    QCoreApplication::postEvent(
+        mw, new selectRuleElementEvent(project->getFileName(),
+                                       newRule->getId(),
+                                       ColDesc::GroupHandle));
 }
 
 void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
@@ -127,5 +150,7 @@ void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
 
 void FWCmdRuleInsert::undoOnBase()
 {
-    QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(), ruleset->getId()));
+    ruleset->remove(newRule);
+    QCoreApplication::postEvent(
+        mw, new openRulesetEvent(project->getFileName(), ruleset->getId()));
 }
