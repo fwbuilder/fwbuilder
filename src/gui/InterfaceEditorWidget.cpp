@@ -126,7 +126,6 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
         typenames << pair.second;
     foreach(QStringPair pair, types2)
         typenames << pair.second;
-    typenames.removeDuplicates();
     typenames.removeOne("None");
     this->m_ui->protocol->clear();
     this->m_ui->protocol->insertItems(0, typenames);
