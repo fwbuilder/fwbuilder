@@ -43,6 +43,7 @@ FirewallSelectorWidget::~FirewallSelectorWidget()
 
 void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls)
 {
+    this->clear();
     Firewall *fw;
     for (list<Firewall*>::iterator it = firewalls.begin(); it != firewalls.end(); it++)
     {

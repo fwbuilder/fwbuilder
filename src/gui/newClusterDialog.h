@@ -51,6 +51,7 @@ class newClusterDialog : public QDialog, public FakeWizard
                                 QString *secret, QString *vrid);
     void shrinkListOfPlatforms();
     void shrinkListOfOS();
+    QMap<QRadioButton*, libfwbuilder::Firewall*> radios;
     
 public:
     newClusterDialog(libfwbuilder::FWObject *parent);

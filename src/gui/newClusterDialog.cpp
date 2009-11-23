@@ -48,6 +48,7 @@
 #define INTERFACES_PAGE 1
 #define INTERFACEEDITOR_PAGE 2
 #define POLICY_PAGE 3
+#define SUMMARY_PAGE 4
 
 using namespace libfwbuilder;
 using namespace std;
@@ -195,6 +196,9 @@ void newClusterDialog::showPage(const int page)
         foreach ( fwpair fw, m_dialog->firewallSelector->getSelectedFirewalls() )
             firewalls.append(fw.first);
         this->m_dialog->interfaceSelector->setFirewallList(firewalls);
+
+        setNextEnabled(FIREWALLS_PAGE, true);
+        setFinishEnabled(FIREWALLS_PAGE, false);
         break;
         /*
         QList<QPair<Firewall*, bool> > fws =  this->m_dialog->firewallSelector->getSelectedFirewalls();
@@ -223,16 +227,77 @@ void newClusterDialog::showPage(const int page)
         {
             this->m_dialog->interfaceEditor->addClusterInterface(iface);
         }
+        setNextEnabled(FIREWALLS_PAGE, true);
+        setFinishEnabled(FIREWALLS_PAGE, false);
         break;
     }
     case POLICY_PAGE:
     {
+        radios.clear();
         QList<QPair<Firewall*, bool> > fws = m_dialog->firewallSelector->getSelectedFirewalls();
         for ( int i = 0; i < fws.count() ; i++ )
         {
             QRadioButton *newbox = new QRadioButton(QString::fromUtf8(fws.at(i).first->getName().c_str()), this);
             this->m_dialog->policyLayout->addWidget(newbox);
+            radios[newbox] = fws.at(i).first;
         }
+        setNextEnabled(FIREWALLS_PAGE, true);
+        setFinishEnabled(FIREWALLS_PAGE, false);
+        break;
+    }
+    case SUMMARY_PAGE:
+    {
+        this->m_dialog->clusterName->setText(this->m_dialog->clusterName->text() + this->m_dialog->obj_name->text());
+        QStringList firewalls;
+        QList<QPair<Firewall*, bool> > fws = m_dialog->firewallSelector->getSelectedFirewalls();
+        QString master;
+        for ( int i = 0; i < fws.count() ; i++ )
+        {
+            if (fws.at(i).second) master = QString::fromUtf8(fws.at(i).first->getName().c_str());
+            firewalls.append(QString::fromUtf8(fws.at(i).first->getName().c_str()));
+        }
+        this->m_dialog->firewallsList->setText(firewalls.join("\n"));
+        this->m_dialog->masterLabel->setText(this->m_dialog->masterLabel->text() + master);
+        QStringList interfaces;
+        foreach (EditedInterfaceData iface, this->m_dialog->interfaceEditor->getNewData())
+        {
+            QString str;
+            if (iface.type == 0) str += tr("regular ");
+            if (iface.type == 1) str += tr("dynamic ");
+            if (iface.type == 1) str += tr("unnumbered ");
+            str += iface.name;
+            if (iface.type == 0)
+            {
+                str += " with address";
+                if (iface.addresses.count() > 1) str += "es:\n";
+                else str += ": ";
+                QStringList addresses;
+                foreach (AddressInfo addr, iface.addresses)
+                {
+                    if (iface.addresses.count() > 0)
+                        addresses.append("    " + addr.address + "/" + addr.netmask);
+                    else addresses.append(addr.address + "/" + addr.netmask);
+                }
+                str += addresses.join("\n");
+            }
+            interfaces.append(str);
+        }
+        this->m_dialog->interfacesList->setText(interfaces.join("\n"));
+        bool doCopy = false;
+        foreach (QRadioButton* btn, radios.keys())
+        {
+            if (btn->isChecked() && btn != this->m_dialog->noPolicy)
+            {
+                QString fwname = QString::fromUtf8(radios[btn]->getName().c_str());
+                this->m_dialog->policyLabel->setText(this->m_dialog->policyLabel->text() + fwname);
+                doCopy = true;
+                break;
+            }
+        }
+        if (!doCopy) this->m_dialog->policyLabel->setVisible(false);
+
+        setNextEnabled(FIREWALLS_PAGE, true);
+        setFinishEnabled(FIREWALLS_PAGE, true);
         break;
     }
     }
