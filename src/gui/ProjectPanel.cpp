@@ -344,11 +344,12 @@ void ProjectPanel::updateFirewallName()
     m_panel->rulesetname->setText(name );
 }
 
-void ProjectPanel::openRuleSet(FWObject * obj)
+void ProjectPanel::openRuleSet(FWObject * obj, bool immediately)
 {
     //mw->blankEditor();
     visibleRuleSet = RuleSet::cast(obj);
-    registerRuleSetRedrawRequest();
+    if (immediately) redrawRuleSets();
+    else registerRuleSetRedrawRequest();
 }
 
 void ProjectPanel::selectRules()

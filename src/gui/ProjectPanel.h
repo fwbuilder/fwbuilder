@@ -119,7 +119,7 @@ public:
     libfwbuilder::RuleSet* getCurrentRuleSet () {return visibleRuleSet;};
     RuleSetView* getCurrentRuleSetView() ;
 
-    void openRuleSet(libfwbuilder::FWObject *obj);
+    void openRuleSet(libfwbuilder::FWObject *obj, bool immediately=false);
     void closeRuleSet(libfwbuilder::FWObject *obj)
     { if ((libfwbuilder::FWObject*)(visibleRuleSet)==obj) visibleRuleSet=NULL;};
     

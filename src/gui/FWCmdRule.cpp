@@ -50,7 +50,8 @@ FWCmdRule::FWCmdRule(ProjectPanel *project, libfwbuilder::RuleSet* ruleset) : FW
 RuleSetView* FWCmdRule::getRuleSetView()
 {
     RuleSet* crs = project->getCurrentRuleSet();
-    return (crs == ruleset)?project->getCurrentRuleSetView():NULL;
+    if (crs != ruleset) project->openRuleSet(ruleset, true);
+    return project->getCurrentRuleSetView();
 }
 
 RuleSetModel* FWCmdRule::getRuleSetModel()
