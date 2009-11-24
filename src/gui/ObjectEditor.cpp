@@ -231,39 +231,26 @@ QWidget* ObjectEditor::getCurrentObjectDialog()
     else return NULL;
 }
 
-/*
- * TODO: deprecate this
- */
-void ObjectEditor::show()
-{
-}
+// /*
+//  * TODO: deprecate this
+//  */
+// void ObjectEditor::show()
+// {
+// }
 
-/*
- * TODO: deprecate this
- *
- * need to call ProjectPanel::closeEditorPanel from here because
- * we connect signal clicked() from the closeButton to the slot in
- * ObjectEditor rather than in ProjectPanel.
- */
-void ObjectEditor::hide()
-{
-    mw->closeEditorPanel();
-    current_dialog_idx = -1;
-    current_dialog_name = "";
-}
-
-bool ObjectEditor::isVisible()
-{
-    return (editorStack->isVisible());
-}
-
-/*
- * TODO: deprecate this
- */
-bool ObjectEditor::isModified()
-{
-    return false;
-}
+// /*
+//  * TODO: deprecate this
+//  *
+//  * need to call ProjectPanel::closeEditorPanel from here because
+//  * we connect signal clicked() from the closeButton to the slot in
+//  * ObjectEditor rather than in ProjectPanel.
+//  */
+// void ObjectEditor::hide()
+// {
+//     mw->closeEditorPanel();
+//     current_dialog_idx = -1;
+//     current_dialog_name = "";
+// }
 
 QString ObjectEditor::getOptDialogName(OptType t)
 {
@@ -289,7 +276,7 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
     load();
     findAndLoadHelp();
 
-    show();
+    //show();
 
     connect(this, SIGNAL(validate_sign(bool*)),
             dialogs[ current_dialog_idx ],
@@ -473,11 +460,11 @@ void ObjectEditor::actionChanged(FWObject *o)
     }
     //if (opened==o) return;
     openOpt(o, ObjectEditor::optAction);
-    show();
+    //show();
 }
 
 void ObjectEditor::blank()
 {
     if (fwbdebug) qDebug() << "ObjectEditor::blank()";
-    if (isVisible()) purge();
+    purge();
 }

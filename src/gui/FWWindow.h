@@ -343,7 +343,6 @@ public slots:
 
     //wrapers for some Object Editor functions
     bool isEditorVisible();
-    bool isEditorModified();
     
     void showEditor();
     void hideEditor();

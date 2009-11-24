@@ -88,10 +88,9 @@ public:
     QString getOptDialogName(OptType t);
     void open(libfwbuilder::FWObject *o);
     void openOpt(libfwbuilder::FWObject *, OptType t);
-    void show();
-    void hide();
-    bool isVisible();
-    bool isModified();
+
+    /* void show(); */
+    /* void hide(); */
 
     libfwbuilder::FWObject* getOpened() { return opened; };
     OptType getOpenedOpt() {return openedOpt;};

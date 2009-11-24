@@ -63,11 +63,6 @@ bool FWWindow::isEditorVisible()
         m_mainWindow->editorPanelTabWidget->currentIndex() == EDITOR_PANEL_EDITOR_TAB;
 }
 
-bool FWWindow::isEditorModified()
-{
-    return oe != NULL && oe->isModified();
-}
-
 void FWWindow::editorPanelTabChanged(int idx)
 {
     if (idx == EDITOR_PANEL_EDITOR_TAB)
