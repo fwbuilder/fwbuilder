@@ -534,15 +534,15 @@ void newFirewallDialog::showPage(const int page)
 void newFirewallDialog::fillInterfaceSLList()
 {
     m_dialog->iface_sl_list->clear();
-    foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getData().values() + this->m_dialog->interfaceEditor1->getNewData())
+    foreach(EditedInterfaceData iface, this->m_dialog->interfaceEditor1->getData().values() + this->m_dialog->interfaceEditor1->getNewData())
     {
         InterfaceData idata;
 
-        idata.name  = interface.name.toStdString();
-        idata.label = interface.label.toStdString();
+        idata.name  = iface.name.toStdString();
+        idata.label = iface.label.toStdString();
         AddressInfo address;
         bool gotIPv4 = false;
-        foreach(AddressInfo addr, interface.addresses.values())
+        foreach(AddressInfo addr, iface.addresses.values())
         {
             if (addr.ipv4)
             {
@@ -551,10 +551,10 @@ void newFirewallDialog::fillInterfaceSLList()
                 break;
             }
         }
-        if (!gotIPv4) address = interface.addresses.values().first();
+        if (!gotIPv4) address = iface.addresses.values().first();
 
         InetAddrMask *iam;// = new InetAddrMask();
-        if (interface.type == 0)
+        if (iface.type == 0)
         {
             if ( address.ipv4 )
                 iam = new InetAddrMask(InetAddr(address.address.toStdString()), InetAddr(address.netmask.toStdString()));
@@ -584,8 +584,8 @@ void newFirewallDialog::fillInterfaceSLList()
 
 
         QStringList qsl;
-        qsl << interface.name//idata.name.c_str()
-            << interface.label//idata.label.c_str()
+        qsl << iface.name//idata.name.c_str()
+            << iface.label//idata.label.c_str()
             << address.address
             << QString::number(idata.securityLevel);
 
