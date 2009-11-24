@@ -1686,7 +1686,10 @@ void RuleSetView::changeAction(int act)
     }
 
     updateColumnSizeForIndex(index);
-    mw->actionChangedEditor(node->rule);
+
+    QCoreApplication::postEvent(
+        mw, new openOptObjectInEditorEvent(
+            project->getFileName(), node->rule->getId(), ObjectEditor::optAction));
 }
 
 void RuleSetView::changeActionToAccept()

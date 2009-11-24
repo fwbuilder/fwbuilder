@@ -102,7 +102,6 @@ public:
     void setHelpButton(QPushButton * b);
     void selectObject(libfwbuilder::FWObject *o);
     void selectionChanged(libfwbuilder::FWObject *o);
-    void actionChanged(libfwbuilder::FWObject *o);
 
     int getCurrentDialogIndex() { return current_dialog_idx; };
     QWidget* getCurrentObjectDialog();

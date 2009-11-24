@@ -451,18 +451,6 @@ void ObjectEditor::selectionChanged(FWObject*)
 {
 }
 
-void ObjectEditor::actionChanged(FWObject *o)
-{
-    if (current_dialog_idx==-1)
-    {
-        purge();
-        return;
-    }
-    //if (opened==o) return;
-    openOpt(o, ObjectEditor::optAction);
-    //show();
-}
-
 void ObjectEditor::blank()
 {
     if (fwbdebug) qDebug() << "ObjectEditor::blank()";

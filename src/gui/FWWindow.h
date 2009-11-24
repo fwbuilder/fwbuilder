@@ -356,7 +356,6 @@ public slots:
     ObjectEditor::OptType getOpenedOptEditor();
     
     void selectObjectInEditor(libfwbuilder::FWObject *o);
-    void actionChangedEditor(libfwbuilder::FWObject *o);
 
     virtual void closeEditorPanel();
     virtual void openEditorPanel();

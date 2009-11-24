@@ -216,11 +216,6 @@ void FWWindow::selectObjectInEditor(FWObject *o)
     oe->selectObject(o);
 }
 
-void FWWindow::actionChangedEditor(FWObject *o)
-{
-    oe->actionChanged(o);
-}
-
 void FWWindow::closeEditorPanel()
 {
     //m_mainWindow->objectEditorFrame->hide();
