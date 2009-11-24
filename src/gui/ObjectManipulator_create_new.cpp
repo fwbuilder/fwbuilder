@@ -172,9 +172,6 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
                                           const QString &objName,
                                           FWObject *copyFrom)
 {
-
-    if (!validateDialog()) return NULL;
-
     if (fwbdebug) qDebug("ObjectManipulator::createObject   check 1");
 
     FWObject *lib  = getCurrentLib();
@@ -238,8 +235,6 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
                                           const QString &objName,
                                           FWObject *copyFrom)
 {
-    if (!validateDialog()) return NULL;
-
     FWObject *lib  = getCurrentLib();
     int       i = 0;
 
@@ -298,7 +293,6 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
 
 void ObjectManipulator::newLibrary()
 {
-    if (!validateDialog()) return;
     FWObject *nlib = m_project->createNewLibrary(m_project->db());
     addTreePage( nlib );
 }

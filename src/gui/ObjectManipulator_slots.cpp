@@ -391,8 +391,6 @@ void ObjectManipulator::findObject()
 
 void ObjectManipulator::back()
 {
-//    if (!validateDialog()) return;
-
     if (!history.empty())
     {
         history.pop();

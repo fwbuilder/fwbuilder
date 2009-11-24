@@ -336,7 +336,6 @@ void ObjectManipulator::clearObjects()
 {
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects %p start",this);
 
-    invalidateDialog();
     while (history.size()!=0) history.pop();
 
     int N = m_objectManipulator->libs->count();

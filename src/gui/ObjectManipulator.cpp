@@ -1170,11 +1170,6 @@ void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
     otvi->setSelected( true );
 }
 
-void ObjectManipulator::invalidateDialog()
-{
-    //currentObj = NULL;
-}
-
 void ObjectManipulator::libChangedById(int id)
 {
     for (vector<FWObject*>::size_type i = 0 ; i < idxToLibs.size(); i++)
@@ -1271,14 +1266,6 @@ void ObjectManipulator::openLib(FWObject *obj)
 void ObjectManipulator::newObject()
 {
     m_objectManipulator->newButton->showMenu();
-}
-
-/*
- * TODO: check if we need this and possibly deprecate
- */
-bool ObjectManipulator::validateDialog()
-{
-    return true;
 }
 
 void ObjectManipulator::select()

@@ -294,9 +294,6 @@ public:
      void loadObjects();
      void clearObjects();
     
-     bool validateDialog();
-     void invalidateDialog();
-
      void reopenCurrentItemParent();
 
      void insertObjectInTree(libfwbuilder::FWObject *parent,
