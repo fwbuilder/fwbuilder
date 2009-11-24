@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" >
  <class>prefsDialog_q</class>
- <widget class="QDialog" name="prefsDialog_q">
-  <property name="enabled">
+ <widget class="QDialog" name="prefsDialog_q" >
+  <property name="enabled" >
    <bool>true</bool>
   </property>
-  <property name="geometry">
+  <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
@@ -13,45 +12,48 @@
     <height>529</height>
    </rect>
   </property>
-  <property name="windowTitle">
+  <property name="windowTitle" >
    <string>Preferences</string>
   </property>
-  <property name="sizeGripEnabled">
+  <property name="sizeGripEnabled" >
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout">
-   <item row="0" column="0">
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
-      <number>3</number>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="tabGeneral">
-      <attribute name="title">
+     <widget class="QWidget" name="tabGeneral" >
+      <attribute name="title" >
        <string>General</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QGridLayout" name="gridLayout_4" >
+       <property name="topMargin" >
+        <number>20</number>
+       </property>
+       <item row="0" column="0" >
+        <layout class="QHBoxLayout" name="horizontalLayout" >
          <item>
-          <widget class="QLabel" name="textLabel1">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <widget class="QLabel" name="textLabel1" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="text">
+           <property name="text" >
             <string>Working directory:</string>
            </property>
-           <property name="wordWrap">
+           <property name="wordWrap" >
             <bool>false</bool>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="wDir">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <widget class="QLineEdit" name="wDir" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -59,65 +61,65 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="browseWDir">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <widget class="QPushButton" name="browseWDir" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="maximumSize">
+           <property name="maximumSize" >
             <size>
              <width>200</width>
              <height>16777215</height>
             </size>
            </property>
-           <property name="text">
+           <property name="text" >
             <string>Browse...</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item row="2" column="0">
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
+       <item row="2" column="0" >
+        <widget class="QGroupBox" name="groupBox_2" >
+         <property name="title" >
           <string/>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0" colspan="4">
-           <widget class="QLabel" name="label">
-            <property name="font">
+         <layout class="QGridLayout" name="gridLayout_3" >
+          <item row="0" column="0" colspan="4" >
+           <widget class="QLabel" name="label" >
+            <property name="font" >
              <font>
               <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
-            <property name="text">
+            <property name="text" >
              <string>Software Updates:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" colspan="2">
-           <widget class="QPushButton" name="checkUpdatesNow">
-            <property name="text">
+          <item row="1" column="1" colspan="2" >
+           <widget class="QPushButton" name="checkUpdatesNow" >
+            <property name="text" >
              <string>Check Now</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" rowspan="2">
-           <widget class="QCheckBox" name="checkUpdates">
-            <property name="text">
+          <item rowspan="2" row="2" column="0" >
+           <widget class="QCheckBox" name="checkUpdates" >
+            <property name="text" >
              <string>Check for updates automatically</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
+          <item row="2" column="1" >
+           <spacer name="horizontalSpacer_2" >
+            <property name="orientation" >
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>15</width>
               <height>20</height>
@@ -125,12 +127,12 @@
             </property>
            </spacer>
           </item>
-          <item row="2" column="3">
-           <spacer name="spacer_3">
-            <property name="orientation">
+          <item row="2" column="3" >
+           <spacer name="spacer_3" >
+            <property name="orientation" >
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>223</width>
               <height>20</height>
@@ -138,29 +140,29 @@
             </property>
            </spacer>
           </item>
-          <item row="4" column="0" colspan="4">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
+          <item row="4" column="0" colspan="4" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
              <string>Use http proxy while checking for updates  (host:port)</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="0" colspan="4">
-           <widget class="QLineEdit" name="checkUpdatesProxy"/>
+          <item row="5" column="0" colspan="4" >
+           <widget class="QLineEdit" name="checkUpdatesProxy" />
           </item>
-          <item row="6" column="0" colspan="4">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
+          <item row="6" column="0" colspan="4" >
+           <widget class="QLabel" name="label_3" >
+            <property name="text" >
              <string>No identifiable information will be sent to the server during update check</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="2">
-           <spacer name="verticalSpacer_9">
-            <property name="orientation">
+          <item row="8" column="2" >
+           <spacer name="verticalSpacer_9" >
+            <property name="orientation" >
              <enum>Qt::Vertical</enum>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>7</height>
@@ -171,59 +173,39 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="showTips">
-         <property name="text">
+       <item row="1" column="0" >
+        <widget class="QCheckBox" name="showTips" >
+         <property name="text" >
           <string>Do not show tips on startup</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabObjects">
-      <attribute name="title">
+     <widget class="QWidget" name="tabObjects" >
+      <attribute name="title" >
        <string>Objects</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <property name="verticalSpacing">
+      <layout class="QGridLayout" name="gridLayout_2" >
+       <property name="verticalSpacing" >
         <number>20</number>
        </property>
-       <item row="0" column="0" colspan="4">
-        <widget class="QCheckBox" name="autosave">
-         <property name="text">
-          <string>Automatically save data in dialogs when switching between objects</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <spacer name="spacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>148</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="objTooltips">
-         <property name="text">
+       <property name="topMargin" >
+        <number>20</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="objTooltips" >
+         <property name="text" >
           <string>Enable object tooltips</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
+       <item row="0" column="1" >
+        <spacer name="horizontalSpacer_3" >
+         <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>106</width>
            <height>20</height>
@@ -231,32 +213,32 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="2">
-        <widget class="QLabel" name="textLabel1_6">
-         <property name="text">
+       <item row="0" column="2" >
+        <widget class="QLabel" name="textLabel1_6" >
+         <property name="text" >
           <string>Tooltip delay:</string>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="3">
-        <widget class="QSpinBox" name="tooltipDelay">
-         <property name="minimum">
+       <item row="0" column="3" >
+        <widget class="QSpinBox" name="tooltipDelay" >
+         <property name="minimum" >
           <number>1</number>
          </property>
         </widget>
        </item>
-       <item row="1" column="4">
-        <spacer name="spacer_2">
-         <property name="orientation">
+       <item row="0" column="4" >
+        <spacer name="spacer_2" >
+         <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType">
+         <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>244</width>
            <height>20</height>
@@ -264,33 +246,33 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0" colspan="5">
-        <widget class="QCheckBox" name="deletedObj">
-         <property name="text">
+       <item row="1" column="0" colspan="5" >
+        <widget class="QCheckBox" name="deletedObj" >
+         <property name="text" >
           <string>Show deleted objects</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="5">
-        <widget class="QCheckBox" name="attributesInTree">
-         <property name="text">
+       <item row="2" column="0" colspan="5" >
+        <widget class="QCheckBox" name="attributesInTree" >
+         <property name="text" >
           <string>Show object attributes in the tree</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="5">
-        <widget class="QCheckBox" name="chClipComment">
-         <property name="text">
+       <item row="3" column="0" colspan="5" >
+        <widget class="QCheckBox" name="chClipComment" >
+         <property name="text" >
           <string>Clip comments in rules</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="2">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
+       <item row="4" column="2" >
+        <spacer name="verticalSpacer" >
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>183</height>
@@ -300,59 +282,62 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabData">
-      <attribute name="title">
+     <widget class="QWidget" name="tabData" >
+      <attribute name="title" >
        <string>Data File</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_5">
-       <property name="verticalSpacing">
+      <layout class="QGridLayout" name="gridLayout_5" >
+       <property name="verticalSpacing" >
         <number>20</number>
        </property>
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="autosaveFile">
-         <property name="text">
+       <property name="topMargin" >
+        <number>20</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="autosaveFile" >
+         <property name="text" >
           <string>Periodically save data to file every </string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QSpinBox" name="autosaveInterval">
-         <property name="minimumSize">
+       <item row="0" column="1" >
+        <widget class="QSpinBox" name="autosaveInterval" >
+         <property name="minimumSize" >
           <size>
            <width>50</width>
            <height>0</height>
           </size>
          </property>
-         <property name="maximumSize">
+         <property name="maximumSize" >
           <size>
            <width>100</width>
            <height>16777215</height>
           </size>
          </property>
-         <property name="minimum">
+         <property name="minimum" >
           <number>1</number>
          </property>
-         <property name="maximum">
+         <property name="maximum" >
           <number>120</number>
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="textLabel1_3">
-         <property name="text">
+       <item row="0" column="2" >
+        <widget class="QLabel" name="textLabel1_3" >
+         <property name="text" >
           <string>minutes</string>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
+       <item row="0" column="3" >
+        <spacer name="horizontalSpacer" >
+         <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>225</width>
            <height>20</height>
@@ -360,26 +345,26 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" colspan="4">
-        <widget class="QCheckBox" name="emptyRCSLog">
-         <property name="text">
+       <item row="1" column="0" colspan="4" >
+        <widget class="QCheckBox" name="emptyRCSLog" >
+         <property name="text" >
           <string>Do not ask for the log record when checking in new file revision.</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="4">
-        <widget class="QCheckBox" name="dataFileCompression">
-         <property name="text">
+       <item row="2" column="0" colspan="4" >
+        <widget class="QCheckBox" name="dataFileCompression" >
+         <property name="text" >
           <string>Enable compression of the data file</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="4">
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
+       <item row="3" column="0" colspan="4" >
+        <spacer name="verticalSpacer_3" >
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>97</height>
@@ -389,78 +374,81 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabSSH">
-      <attribute name="title">
+     <widget class="QWidget" name="tabSSH" >
+      <attribute name="title" >
        <string>SSH</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0" colspan="3">
-        <widget class="QLabel" name="textLabel1_5_2">
-         <property name="text">
+      <layout class="QGridLayout" name="gridLayout" >
+       <property name="topMargin" >
+        <number>20</number>
+       </property>
+       <item row="0" column="0" colspan="3" >
+        <widget class="QLabel" name="textLabel1_5_2" >
+         <property name="text" >
           <string>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe  on Windows):</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
-        <widget class="QPushButton" name="browseForSSH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <item row="0" column="3" >
+        <widget class="QPushButton" name="browseForSSH" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="text">
+         <property name="text" >
           <string>Browse...</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QLineEdit" name="sshPath"/>
+       <item row="1" column="0" colspan="2" >
+        <widget class="QLineEdit" name="sshPath" />
        </item>
-       <item row="2" column="0" colspan="3">
-        <widget class="QLabel" name="textLabel1_5_3">
-         <property name="text">
+       <item row="2" column="0" colspan="3" >
+        <widget class="QLabel" name="textLabel1_5_3" >
+         <property name="text" >
           <string>A full path to the SCP utility (file copy over ssh; for example scp on Unix or pscp.exe on Windows):</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignVCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="3">
-        <widget class="QPushButton" name="browseForSCP">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <item row="2" column="3" >
+        <widget class="QPushButton" name="browseForSCP" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="text">
+         <property name="text" >
           <string>Browse...</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QLineEdit" name="scpPath"/>
+       <item row="3" column="0" colspan="2" >
+        <widget class="QLineEdit" name="scpPath" />
        </item>
-       <item row="4" column="0">
+       <item row="4" column="0" >
         <spacer>
-         <property name="orientation">
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType">
+         <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -468,57 +456,57 @@
          </property>
         </spacer>
        </item>
-       <item row="5" column="0" colspan="4">
-        <widget class="QTextBrowser" name="plink_hint">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <item row="5" column="0" colspan="4" >
+        <widget class="QTextBrowser" name="plink_hint" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize">
+         <property name="minimumSize" >
           <size>
            <width>0</width>
            <height>100</height>
           </size>
          </property>
-         <property name="maximumSize">
+         <property name="maximumSize" >
           <size>
            <width>16777215</width>
            <height>100</height>
           </size>
          </property>
-         <property name="autoFillBackground">
+         <property name="autoFillBackground" >
           <bool>true</bool>
          </property>
-         <property name="frameShape">
+         <property name="frameShape" >
           <enum>QFrame::NoFrame</enum>
          </property>
-         <property name="frameShadow">
+         <property name="frameShadow" >
           <enum>QFrame::Plain</enum>
          </property>
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+         <property name="html" >
+          <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;Download plink.exe and pscp.exe  from the web site at  &lt;/span&gt;&lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;">Download plink.exe and pscp.exe  from the web site at  &lt;/span>&lt;a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; text-decoration: underline; color:#0000ff;">http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span>&lt;/a>&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;">&lt;/p>&lt;/body>&lt;/html></string>
          </property>
-         <property name="openExternalLinks">
+         <property name="openExternalLinks" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="6" column="2">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
+       <item row="6" column="2" >
+        <spacer name="verticalSpacer_2" >
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType">
+         <property name="sizeType" >
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>20</height>
@@ -526,36 +514,36 @@ p, li { white-space: pre-wrap; }
          </property>
         </spacer>
        </item>
-       <item row="7" column="0" colspan="4">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
+       <item row="7" column="0" colspan="4" >
+        <widget class="QLabel" name="label_8" >
+         <property name="text" >
           <string>Built-in policy installer can remember passwords for the duration of the session. Passwords are never stored permanently.</string>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="8" column="0" colspan="4">
-        <widget class="QCheckBox" name="rememberSshPass">
-         <property name="toolTip">
+       <item row="8" column="0" colspan="4" >
+        <widget class="QCheckBox" name="rememberSshPass" >
+         <property name="toolTip" >
           <string>Enable password caching for the duration of the session (passwords
 are never stored permanently)</string>
          </property>
-         <property name="text">
+         <property name="text" >
           <string>Enable password caching</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1" colspan="2">
+       <item row="9" column="1" colspan="2" >
         <spacer>
-         <property name="orientation">
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType">
+         <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>505</width>
            <height>61</height>
@@ -565,36 +553,39 @@ are never stored permanently)</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabLabels">
-      <attribute name="title">
+     <widget class="QWidget" name="tabLabels" >
+      <attribute name="title" >
        <string>Labels</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_6">
-       <property name="verticalSpacing">
+      <layout class="QGridLayout" name="gridLayout_6" >
+       <property name="verticalSpacing" >
         <number>20</number>
        </property>
-       <item row="0" column="0" colspan="3">
-        <widget class="QLabel" name="textLabel1_4">
-         <property name="text">
+       <property name="topMargin" >
+        <number>20</number>
+       </property>
+       <item row="0" column="0" colspan="3" >
+        <widget class="QLabel" name="textLabel1_4" >
+         <property name="text" >
           <string>Use these labels to mark rules in the firewall policy</string>
          </property>
-         <property name="alignment">
+         <property name="alignment" >
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" rowspan="2">
+       <item rowspan="2" row="1" column="0" >
         <spacer>
-         <property name="orientation">
+         <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType">
+         <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>20</height>
@@ -602,120 +593,120 @@ are never stored permanently)</string>
          </property>
         </spacer>
        </item>
-       <item row="1" column="1">
-        <layout class="QGridLayout">
-         <property name="verticalSpacing">
+       <item row="1" column="1" >
+        <layout class="QGridLayout" >
+         <property name="verticalSpacing" >
           <number>20</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="redBtn">
-           <property name="text">
+         <item row="0" column="0" >
+          <widget class="QPushButton" name="redBtn" >
+           <property name="text" >
             <string/>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="redText">
-           <property name="text">
+         <item row="0" column="1" >
+          <widget class="QLineEdit" name="redText" >
+           <property name="text" >
             <string>Red</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="blueText">
-           <property name="text">
+         <item row="4" column="1" >
+          <widget class="QLineEdit" name="blueText" >
+           <property name="text" >
             <string>Blue</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="yellowText">
-           <property name="text">
+         <item row="2" column="1" >
+          <widget class="QLineEdit" name="yellowText" >
+           <property name="text" >
             <string>Yellow</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QPushButton" name="greenBtn">
-           <property name="text">
+         <item row="3" column="0" >
+          <widget class="QPushButton" name="greenBtn" >
+           <property name="text" >
             <string/>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="orangeText">
-           <property name="text">
+         <item row="1" column="1" >
+          <widget class="QLineEdit" name="orangeText" >
+           <property name="text" >
             <string>Orange</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="orangeBtn">
-           <property name="text">
+         <item row="1" column="0" >
+          <widget class="QPushButton" name="orangeBtn" >
+           <property name="text" >
             <string/>
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
-          <widget class="QPushButton" name="purpleBtn">
-           <property name="text">
+         <item row="5" column="0" >
+          <widget class="QPushButton" name="purpleBtn" >
+           <property name="text" >
             <string/>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QPushButton" name="yellowBtn">
-           <property name="text">
+         <item row="2" column="0" >
+          <widget class="QPushButton" name="yellowBtn" >
+           <property name="text" >
             <string/>
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
-          <widget class="QPushButton" name="grayBtn">
-           <property name="text">
+         <item row="6" column="0" >
+          <widget class="QPushButton" name="grayBtn" >
+           <property name="text" >
             <string/>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
-          <widget class="QLineEdit" name="purpleText">
-           <property name="text">
+         <item row="5" column="1" >
+          <widget class="QLineEdit" name="purpleText" >
+           <property name="text" >
             <string>Purple</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
-          <widget class="QPushButton" name="blueBtn">
-           <property name="text">
+         <item row="4" column="0" >
+          <widget class="QPushButton" name="blueBtn" >
+           <property name="text" >
             <string/>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="greenText">
-           <property name="text">
+         <item row="3" column="1" >
+          <widget class="QLineEdit" name="greenText" >
+           <property name="text" >
             <string>Green</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
-          <widget class="QLineEdit" name="grayText">
-           <property name="text">
+         <item row="6" column="1" >
+          <widget class="QLineEdit" name="grayText" >
+           <property name="text" >
             <string>Gray</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item row="1" column="2" rowspan="2">
+       <item rowspan="2" row="1" column="2" >
         <spacer>
-         <property name="orientation">
+         <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType">
+         <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>70</width>
            <height>20</height>
@@ -723,12 +714,12 @@ are never stored permanently)</string>
          </property>
         </spacer>
        </item>
-       <item row="2" column="1">
-        <spacer name="verticalSpacer_6">
-         <property name="orientation">
+       <item row="2" column="1" >
+        <spacer name="verticalSpacer_6" >
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>38</height>
@@ -738,186 +729,189 @@ are never stored permanently)</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabAppearance">
-      <attribute name="title">
+     <widget class="QWidget" name="tabAppearance" >
+      <attribute name="title" >
        <string>Appearance</string>
       </attribute>
-      <attribute name="toolTip">
+      <attribute name="toolTip" >
        <string>Icons settings</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_9">
-       <property name="spacing">
+      <layout class="QGridLayout" name="gridLayout_9" >
+       <property name="topMargin" >
+        <number>20</number>
+       </property>
+       <property name="spacing" >
         <number>12</number>
        </property>
-       <item row="0" column="0" colspan="3">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item row="0" column="0" colspan="3" >
+        <layout class="QHBoxLayout" name="horizontalLayout_2" >
          <item>
-          <widget class="QPushButton" name="btRulesFont">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <widget class="QPushButton" name="btRulesFont" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="minimumSize">
+           <property name="minimumSize" >
             <size>
              <width>250</width>
              <height>0</height>
             </size>
            </property>
-           <property name="toolTip">
+           <property name="toolTip" >
             <string>Choose font for rules sets</string>
            </property>
-           <property name="text">
+           <property name="text" >
             <string>Rules font </string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="rulesFontDescr">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <widget class="QLabel" name="rulesFontDescr" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="text">
+           <property name="text" >
             <string>rules font description</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item row="1" column="0" colspan="3">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item row="1" column="0" colspan="3" >
+        <layout class="QHBoxLayout" name="horizontalLayout_3" >
          <item>
-          <widget class="QPushButton" name="btTreeFont">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <widget class="QPushButton" name="btTreeFont" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="minimumSize">
+           <property name="minimumSize" >
             <size>
              <width>250</width>
              <height>0</height>
             </size>
            </property>
-           <property name="toolTip">
+           <property name="toolTip" >
             <string>Choose font for tree</string>
            </property>
-           <property name="text">
+           <property name="text" >
             <string>Tree font</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="treeFontDescr">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <widget class="QLabel" name="treeFontDescr" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="text">
+           <property name="text" >
             <string>tree font description</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item row="2" column="0" colspan="3">
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item row="2" column="0" colspan="3" >
+        <layout class="QHBoxLayout" name="horizontalLayout_4" >
          <item>
-          <widget class="QPushButton" name="btCompilerOutputFont">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <widget class="QPushButton" name="btCompilerOutputFont" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="minimumSize">
+           <property name="minimumSize" >
             <size>
              <width>250</width>
              <height>0</height>
             </size>
            </property>
-           <property name="toolTip">
+           <property name="toolTip" >
             <string>Choose font for tree</string>
            </property>
-           <property name="text">
+           <property name="text" >
             <string>Compiler Output Panel font</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="compilerOutputFontDescr">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <widget class="QLabel" name="compilerOutputFontDescr" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="text">
+           <property name="text" >
             <string>compiler output font description</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item row="3" column="0" colspan="3">
-        <widget class="QCheckBox" name="chShowIcons">
-         <property name="text">
+       <item row="3" column="0" colspan="3" >
+        <widget class="QCheckBox" name="chShowIcons" >
+         <property name="text" >
           <string>Show icons in rules</string>
          </property>
-         <property name="checked">
+         <property name="checked" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="3">
-        <widget class="QCheckBox" name="showDirectionText">
-         <property name="text">
-          <string>Show text descriptions in columns &quot;Direction&quot;, &quot;Action&quot;</string>
+       <item row="4" column="0" colspan="3" >
+        <widget class="QCheckBox" name="showDirectionText" >
+         <property name="text" >
+          <string>Show text descriptions in columns "Direction", "Action"</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="minimumSize">
+       <item row="5" column="0" >
+        <widget class="QGroupBox" name="groupBox" >
+         <property name="minimumSize" >
           <size>
            <width>100</width>
            <height>100</height>
           </size>
          </property>
-         <property name="title">
+         <property name="title" >
           <string/>
          </property>
-         <property name="flat">
+         <property name="flat" >
           <bool>true</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout_7">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
+         <layout class="QGridLayout" name="gridLayout_7" >
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_7" >
+            <property name="text" >
              <string>Icons size in rules:</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QRadioButton" name="rb16">
-            <property name="text">
+          <item row="0" column="1" >
+           <widget class="QRadioButton" name="rb16" >
+            <property name="text" >
              <string>16x16</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QRadioButton" name="rb25">
-            <property name="text">
+          <item row="1" column="1" >
+           <widget class="QRadioButton" name="rb25" >
+            <property name="text" >
              <string>25x25</string>
             </property>
-            <property name="checked">
+            <property name="checked" >
              <bool>true</bool>
             </property>
            </widget>
@@ -925,12 +919,12 @@ are never stored permanently)</string>
          </layout>
         </widget>
        </item>
-       <item row="5" column="2">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
+       <item row="5" column="2" >
+        <spacer name="horizontalSpacer_4" >
+         <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>330</width>
            <height>96</height>
@@ -938,12 +932,12 @@ are never stored permanently)</string>
          </property>
         </spacer>
        </item>
-       <item row="6" column="1">
+       <item row="6" column="1" >
         <spacer>
-         <property name="orientation">
+         <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -953,108 +947,98 @@ are never stored permanently)</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabPlatforms">
-      <attribute name="title">
+     <widget class="QWidget" name="tabPlatforms" >
+      <attribute name="title" >
        <string>Platforms and OS</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_8">
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
+      <layout class="QGridLayout" name="gridLayout_8" >
+       <property name="topMargin" >
+        <number>20</number>
+       </property>
+       <item row="0" column="0" colspan="2" >
+        <widget class="QLabel" name="label_6" >
+         <property name="text" >
           <string>If you disable firewall platform or host OS here, it will not appear in the drop-down lists of platforms and host OS anywhere in the program. This helps avoid clutter in lists of platforms and OS if you only work with one or two of them.</string>
          </property>
-         <property name="wordWrap">
+         <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label_4" >
+         <property name="text" >
           <string>Supported firewall platforms</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
+       <item row="1" column="1" >
+        <widget class="QLabel" name="label_5" >
+         <property name="text" >
           <string>Supported host OS</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QTableWidget" name="enabled_platforms">
-         <property name="alternatingRowColors">
+       <item row="2" column="0" >
+        <widget class="QTableWidget" name="enabled_platforms" >
+         <property name="alternatingRowColors" >
           <bool>true</bool>
          </property>
-         <property name="selectionMode">
+         <property name="selectionMode" >
           <enum>QAbstractItemView::NoSelection</enum>
          </property>
-         <property name="showGrid">
+         <property name="showGrid" >
           <bool>false</bool>
          </property>
-         <property name="cornerButtonEnabled">
+         <property name="cornerButtonEnabled" >
           <bool>false</bool>
          </property>
          <column>
-          <property name="text">
+          <property name="text" >
            <string>Platform</string>
           </property>
          </column>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QTableWidget" name="enabled_os">
-         <property name="editTriggers">
+       <item row="2" column="1" >
+        <widget class="QTableWidget" name="enabled_os" >
+         <property name="editTriggers" >
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
-         <property name="alternatingRowColors">
+         <property name="alternatingRowColors" >
           <bool>true</bool>
          </property>
-         <property name="selectionMode">
+         <property name="selectionMode" >
           <enum>QAbstractItemView::NoSelection</enum>
          </property>
-         <property name="showGrid">
+         <property name="showGrid" >
           <bool>false</bool>
          </property>
-         <property name="cornerButtonEnabled">
+         <property name="cornerButtonEnabled" >
           <bool>false</bool>
          </property>
          <column>
-          <property name="text">
+          <property name="text" >
            <string>Host OS</string>
           </property>
          </column>
         </widget>
        </item>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
       </layout>
      </widget>
     </widget>
    </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout">
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
      <item>
       <spacer>
-       <property name="orientation">
+       <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeType">
+       <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" stdset="0">
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>20</width>
          <height>20</height>
@@ -1063,30 +1047,30 @@ are never stored permanently)</string>
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonOk">
-       <property name="text">
+      <widget class="QPushButton" name="buttonOk" >
+       <property name="text" >
         <string>&amp;OK</string>
        </property>
-       <property name="shortcut">
+       <property name="shortcut" >
         <string/>
        </property>
-       <property name="autoDefault">
+       <property name="autoDefault" >
         <bool>true</bool>
        </property>
-       <property name="default">
+       <property name="default" >
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonCancel">
-       <property name="text">
+      <widget class="QPushButton" name="buttonCancel" >
+       <property name="text" >
         <string>&amp;Cancel</string>
        </property>
-       <property name="shortcut">
+       <property name="shortcut" >
         <string/>
        </property>
-       <property name="autoDefault">
+       <property name="autoDefault" >
         <bool>true</bool>
        </property>
       </widget>
@@ -1127,11 +1111,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>558</x>
      <y>457</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1143,11 +1127,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>610</x>
      <y>457</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1159,11 +1143,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>findWDir()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>583</x>
      <y>52</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1175,11 +1159,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>findSSH()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>568</x>
      <y>51</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1191,11 +1175,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeRedColor()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>229</x>
      <y>72</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1207,11 +1191,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeOrangeColor()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>229</x>
      <y>118</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1223,11 +1207,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeYellowColor()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>229</x>
      <y>164</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1239,11 +1223,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeGreenColor()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>229</x>
      <y>210</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1255,11 +1239,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeBlueColor()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>229</x>
      <y>256</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1271,11 +1255,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changePurpleColor()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>229</x>
      <y>302</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1287,11 +1271,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeGrayColor()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>229</x>
      <y>348</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1303,11 +1287,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeShowIcons()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>28</x>
      <y>152</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1319,11 +1303,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeIconSize16()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>155</x>
      <y>243</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1335,11 +1319,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeIconSize25()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>155</x>
      <y>280</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
     </hint>
@@ -1351,11 +1335,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>findSCP()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>590</x>
      <y>138</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>334</x>
      <y>214</y>
     </hint>
@@ -1367,11 +1351,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>checkSwUpdates()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>420</x>
      <y>120</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>334</x>
      <y>214</y>
     </hint>
@@ -1383,11 +1367,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeRulesFont()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>137</x>
      <y>60</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>334</x>
      <y>210</y>
     </hint>
@@ -1399,11 +1383,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeTreeFont()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>137</x>
      <y>99</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>334</x>
      <y>210</y>
     </hint>
@@ -1415,11 +1399,11 @@ are never stored permanently)</string>
    <receiver>prefsDialog_q</receiver>
    <slot>changeCompilerOutputFont()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>137</x>
      <y>138</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>334</x>
      <y>233</y>
     </hint>

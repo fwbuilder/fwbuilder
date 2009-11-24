@@ -119,11 +119,9 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->attributesInTree->setChecked( st->getBool("UI/ShowObjectsAttributesInTree") );
 
     m_dialog->emptyRCSLog->setChecked( st->getRCSLogState() );
-    m_dialog->autosave->setChecked( st->getAutoSave() );
 
     m_dialog->autosaveFile->setChecked(st->getBool("Environment/autoSaveFile"));
-    m_dialog->autosaveInterval->setValue(
-        st->getInt("Environment/autoSaveFilePeriod"));
+    m_dialog->autosaveInterval->setValue(st->getInt("Environment/autoSaveFilePeriod"));
 
     m_dialog->dataFileCompression->setChecked( st->getCompression() );
 
@@ -408,7 +406,6 @@ void PrefsDialog::accept()
 //  QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 
     st->setRCSLogState( m_dialog->emptyRCSLog->isChecked() );
-    st->setAutoSave( m_dialog->autosave->isChecked() );
 
     st->setBool("Environment/autoSaveFile", m_dialog->autosaveFile->isChecked());
     st->setInt("Environment/autoSaveFilePeriod", m_dialog->autosaveInterval->value() );
