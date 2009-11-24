@@ -70,7 +70,7 @@ public:
     QList<libfwbuilder::Interface*> getDeletedInterfaces();
     bool isValid();
     void setCornerWidgetsVisible(bool);
-    void setProtocolsVisible(bool);
+    void setClusterMode(bool);
 
 protected:
     void changeEvent(QEvent *e);
@@ -83,7 +83,7 @@ private:
     QHBoxLayout newInterfaceLayout;
     libfwbuilder::FWObject *currentTemplate;
     QList<libfwbuilder::Interface*> deleted;
-    bool protocolVisible;
+    bool clusterMode;
 
 public slots:
     void addInterface(libfwbuilder::Interface*);

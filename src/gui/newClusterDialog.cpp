@@ -220,7 +220,7 @@ void newClusterDialog::showPage(const int page)
     }
     case INTERFACEEDITOR_PAGE:
     {
-        this->m_dialog->interfaceEditor->setProtocolsVisible(true);
+        this->m_dialog->interfaceEditor->setClusterMode(true);
         while (this->m_dialog->interfaceEditor->count())
             this->m_dialog->interfaceEditor->removeTab(0);
         foreach (ClusterInterfaceData iface, this->m_dialog->interfaceSelector->getInterfaces())

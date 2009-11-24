@@ -80,7 +80,7 @@ public:
     EditedInterfaceData getInterfaceData();
     bool isValid();
     void updateColumnsSizes();
-    void setProtocolVisible(bool);
+    void setClusterMode(bool);
 
 private:
     QTabWidget *tabw;
@@ -92,6 +92,7 @@ private:
     QMap<int, QComboBox*> types;
     QMap<int, libfwbuilder::Address*> fwaddrs;
     bool validateAddress(const QString &addr, const QString &netm, bool regular, bool ipv4);
+    bool clusterMode;
 
 
 public slots:

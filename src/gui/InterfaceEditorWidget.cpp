@@ -40,7 +40,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interfa
     tabw = dynamic_cast<QTabWidget*>(parent);
     this->interface = interface;
     m_ui->setupUi(this);
-    setProtocolVisible(false);
+    setClusterMode(false);
     this->m_ui->name->setText(interface->getName().c_str());
     this->m_ui->label->setText(interface->getLabel().c_str());
     if (interface->getPhysicalAddress() != NULL)
@@ -160,7 +160,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     tabw = dynamic_cast<QTabWidget*>(parent);
     this->interface = NULL;
     m_ui->setupUi(this);
-    setProtocolVisible(false);
+    setClusterMode(false);
     this->m_ui->name->setText(tr("New interface"));
     this->m_ui->label->clear();
     this->m_ui->comment->clear();
@@ -387,8 +387,11 @@ void InterfaceEditorWidget::addressChanged(int row, int col)
         this->m_ui->addresses->editItem(this->m_ui->addresses->item(row, col));
 }
 
-void InterfaceEditorWidget::setProtocolVisible(bool st)
+void InterfaceEditorWidget::setClusterMode(bool st)
 {
+    clusterMode = st;
     this->m_ui->protocol->setVisible(st);
     this->m_ui->protocolLabel->setVisible(st);
+    this->m_ui->mac->setVisible(st);
+    this->m_ui->type->setVisible(st);
 }
