@@ -48,15 +48,18 @@ ObjectEditorDockWidget::ObjectEditorDockWidget(QWidget *parent,
 }
 
 void ObjectEditorDockWidget::setupEditor(ObjectEditor *ed) { editor = ed; }
-    
+
+/*
+ * TODO: deprecate this (?)
+ */    
 void ObjectEditorDockWidget::closeEvent(QCloseEvent *event)
 {
-    if (editor && editor->validateAndSave())
-    {
+    // if (editor && editor->validateAndSave())
+    // {
         event->accept();
         return;
-    }
-    event->ignore();
+    // }
+    // event->ignore();
 }
 
 void ObjectEditorDockWidget::topLevelChanged(bool topLevel)

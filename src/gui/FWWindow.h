@@ -358,7 +358,6 @@ public slots:
     
     void selectObjectInEditor(libfwbuilder::FWObject *o);
     void actionChangedEditor(libfwbuilder::FWObject *o);
-    bool validateAndSaveEditor();
 
     virtual void closeEditorPanel();
     virtual void openEditorPanel();

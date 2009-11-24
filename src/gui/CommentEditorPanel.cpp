@@ -151,7 +151,3 @@ void CommentEditorPanel::isChanged(bool*)
 
 }
 
-void CommentEditorPanel::closeEvent(QCloseEvent *e)
-{
-    emit close_sign(e);
-}

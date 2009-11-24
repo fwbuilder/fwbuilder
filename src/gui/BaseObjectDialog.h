@@ -44,11 +44,6 @@ protected:
     bool data_changed;
     ProjectPanel *m_project;
 
-    virtual void closeEvent(QCloseEvent *e)
-    {
-        emit close_sign(e);
-    }
-    
 public:
     BaseObjectDialog(QWidget *parent) : QWidget(parent)
     {
@@ -84,12 +79,6 @@ public slots:
 signals:
     void changed_sign();
     void notify_changes_applied_sign();
-    /**
-     * This signal is emitted from closeEvent, ObjectEditor connects
-     * to this signal to make checks before the object editor can be
-     * closed and to store its position on the screen
-     */
-    void close_sign(QCloseEvent *e);
 
 };
 

@@ -1273,12 +1273,12 @@ void ObjectManipulator::newObject()
     m_objectManipulator->newButton->showMenu();
 }
 
+/*
+ * TODO: check if we need this and possibly deprecate
+ */
 bool ObjectManipulator::validateDialog()
 {
-    FWObject *currentObj = getSelectedObject();
-    if (currentObj==NULL) return true;
-    if (!mw->isEditorVisible()) return true;
-    return mw->validateAndSaveEditor();
+    return true;
 }
 
 void ObjectManipulator::select()

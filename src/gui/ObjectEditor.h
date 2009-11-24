@@ -98,7 +98,6 @@ public:
 
     void purge();
 
-    bool validateAndSave();
     void setHelpButton(QPushButton * b);
     void selectObject(libfwbuilder::FWObject *o);
     void selectionChanged(libfwbuilder::FWObject *o);
@@ -108,7 +107,6 @@ public:
     QWidget* getCurrentObjectDialog();
     
 public slots:
-    void validateAndClose(QCloseEvent *e);
     void apply();
     void help();
     //void discard();

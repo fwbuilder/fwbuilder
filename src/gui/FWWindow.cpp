@@ -1013,19 +1013,19 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
 
     if (previous_subwindow == subwindow) return;
 
-    if (isEditorVisible() && !oe->validateAndSave())
-    {
-        // editor has unsaved data and user clicked "Continue editing"
-        // Roll back switch of subwindows
+    // if (isEditorVisible() && !oe->validateAndSave())
+    // {
+    //     // editor has unsaved data and user clicked "Continue editing"
+    //     // Roll back switch of subwindows
 
-        if (fwbdebug)
-            qDebug() << "Activating previous subwindow " 
-                     << previous_subwindow
-                     << " "
-                     << previous_subwindow->windowTitle();
-        QTimer::singleShot(0, this, SLOT(activatePreviousSubWindow()));
-        return;
-    }
+    //     if (fwbdebug)
+    //         qDebug() << "Activating previous subwindow " 
+    //                  << previous_subwindow
+    //                  << " "
+    //                  << previous_subwindow->windowTitle();
+    //     QTimer::singleShot(0, this, SLOT(activatePreviousSubWindow()));
+    //     return;
+    // }
 
     previous_subwindow = subwindow;
 

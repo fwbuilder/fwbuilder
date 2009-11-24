@@ -865,19 +865,6 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
     if (fwbdebug)
         qDebug() << "ProjectPanel::closeEvent title=" << getPageTitle();
 
-    // Can't just call fileClose() because I need to ignore event in
-    // case user clicks Cancel in dialog if some data has not been
-    // saved.
-    if (mw->isEditorVisible())
-    {
-        if (!mw->oe->validateAndSave())
-        {
-            ev->ignore();
-            return;
-        }
-        mw->closeEditorPanel();
-    }
-
     if (!saveIfModified() || !checkin(true))
     {
         ev->ignore();

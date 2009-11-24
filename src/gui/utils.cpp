@@ -237,7 +237,7 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
                 QObject::tr("Object with name '%1' already exists, "
                             "please choose different name.").
                 arg(o1->getName().c_str()),
-                QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
+                QObject::tr("&Continue"), NULL, NULL, 0, 2 );
             return false;
         }
     }

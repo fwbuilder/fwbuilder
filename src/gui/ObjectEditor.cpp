@@ -300,9 +300,9 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
             dialogs[ current_dialog_idx ],
             SLOT(discardChanges()));
 
-    connect(dialogs[ current_dialog_idx ], SIGNAL(close_sign(QCloseEvent*)),
-            this,
-            SLOT(validateAndClose(QCloseEvent*)));
+    // connect(dialogs[ current_dialog_idx ], SIGNAL(close_sign(QCloseEvent*)),
+    //         this,
+    //         SLOT(validateAndClose(QCloseEvent*)));
 
     connect(dialogs[ current_dialog_idx ], SIGNAL(changed_sign()),
             this,
@@ -373,106 +373,6 @@ void ObjectEditor::purge()
     openedOpt = optNone;
 }
 
-/* editor window needs to close. Check if something changed in it and
- * accept or ignore closing event
- */
-void ObjectEditor::validateAndClose(QCloseEvent *e)
-{
-    if (fwbdebug) qDebug("ObjectEditor::validateAndClose");
-
-    if (validateAndSave())
-    {
-        if (e) e->accept();
-        //disconnectSignals();  // all signals will be disconnected
-                                // in next open(...)
-        hide();
-        return;
-    }
-    if (e) e->ignore();
-}
-
-bool ObjectEditor::validateAndSave()
-{
-    if (fwbdebug) qDebug("ObjectEditor::validateAndSave");
-    if (current_dialog_idx==stackIds["BLANK"]) return true;
-    bool ischanged=false;
-    ischanged = isModified();
-    //emit isChanged_sign(&ischanged);
-
-    if (fwbdebug)
-        qDebug("ObjectEditor::validateAndSave  "
-               "ischanged=%d db->isReadOnly()=%d",
-               ischanged, m_project->db()->isReadOnly());
-
-/* if nothing changed or tree is read-only, just close dialog */
-    if (!ischanged || !isTreeReadWrite(dialogs[current_dialog_idx], m_project->db()))
-    {
-        if (fwbdebug) qDebug("ObjectEditor::validateAndSave: no changes");
-        return true;
-    }
-
-/* there are changes and the tree is writable */
-    bool isgood=true;
-    emit validate_sign( &isgood );
-    if (!isgood)
-    {
-        switch (
-            QMessageBox::warning(
-                dialogs[current_dialog_idx],
-                "Firewall Builder",
-                tr("Modifications done to this object can not be saved.\n"
-                   "Do you want to continue editing it ?"),
-                tr("&Continue editing"),
-                tr("&Discard changes"),
-                QString::null,
-                0, 1 ) )
-        {
-        case 0:
-            if (fwbdebug)
-                qDebug("ObjectEditor::validateAndSave:  return false, "
-                       "can not switch to another object");
-            return false;
-
-        default:
-            if (fwbdebug)
-                qDebug("ObjectEditor::validateAndSave  return true, "
-                       "discard changes, can switch to another object");
-            //discard();
-            return true;
-        }
-        return false;
-    }
-
-/* changes have been validated, need to save now */
-    if (st->getAutoSave())
-    {
-        emit applyChanges_sign();
-    } else
-    {
-        switch (
-            QMessageBox::warning(
-                dialogs[current_dialog_idx],
-                "Firewall Builder",
-                tr("Object %1 has been modified but not saved.\n"
-                   "Do you want to save it ?").arg(QString::fromUtf8(opened->getName().c_str())),
-                tr("&Save"), tr("&Discard"), tr("&Continue editing"),
-                0, 2 ) )
-        {
-        case 0:
-            apply();
-            return true;
-
-        case 1:
-            //discard();
-            return true;
-
-        case 2:
-            return false;
-        }
-    }
-    return true;
-}
-
 void ObjectEditor::setHelpButton(QPushButton * b)
 {
     helpButton=b;
@@ -526,21 +426,17 @@ void ObjectEditor::findAndLoadHelp()
     delete h;
 }
 
-/*
- * TODO: deprecate this
- */
-// void ObjectEditor::discard()
-// {
-//     emit discardChanges_sign();
-//     //applyButton->setEnabled(false);
-// }
-
 void ObjectEditor::changed()
 {
     if (fwbdebug) qDebug() << "ObjectEditor::changed()";
     bool isgood = true;
     emit validate_sign( &isgood );
-    if (!isgood) return;
+    if (!isgood)
+    {
+        // change is not good, reload data into the editor to clear and reset it.
+        emit loadObject_sign(opened);
+        return;
+    }
 
     emit applyChanges_sign();
 }

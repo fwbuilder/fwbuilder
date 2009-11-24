@@ -331,12 +331,6 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
         qDebug() << "ObjectManipulator::actuallyPasteTo"
                  << "target=" << target->getPath().c_str()
                  << "ta=" << ta->getPath().c_str();
-
-    // What if the target is currently opened in the editor and has unsaved
-    // changes ? 
-    if (mw->isEditorVisible() && mw->getOpenedEditor()==ta && !mw->validateAndSaveEditor())
-        return NULL;
-
     try
     {
 /* clipboard holds a copy of the object */

@@ -226,12 +226,6 @@ void FWWindow::actionChangedEditor(FWObject *o)
     oe->actionChanged(o);
 }
 
-bool FWWindow::validateAndSaveEditor()
-{
-//    qDebug("FWWindow::validateAndSaveEditor()");
-    return oe->validateAndSave();
-}
-
 void FWWindow::closeEditorPanel()
 {
     //m_mainWindow->objectEditorFrame->hide();
@@ -286,6 +280,9 @@ void FWWindow::findWhereUsed(FWObject * obj, ProjectPanel *pp)
     m_mainWindow->editorDockWidget->show();
 }
 
+/*
+ * TODO: deprecate this
+ */
 bool FWWindow::requestEditorOwnership(QWidget*,
                                       FWObject*,
                                       ObjectEditor::OptType,
@@ -293,13 +290,6 @@ bool FWWindow::requestEditorOwnership(QWidget*,
 {
     if (!isEditorVisible()) return false;
 
-// Experiment: single click in the tree does not switch object in the
-// editor This means we never need to roll back selection in the tree
-// or rule set if editor has unsaved changes and user clicks another
-// object (this was the case before). The purpose of this method now
-// is just to call validateAndSaveEditor()
-
-    if (validate && !validateAndSaveEditor()) return false;
     return true;
 }
 
