@@ -185,8 +185,12 @@ bool PolicyRule::cmp(const FWObject *x, bool recursive) throw(FWException)
     if (getDirection() != rx->getDirection() ||
         getAction() != rx->getAction() ||
         getLogging() != rx->getLogging()) return false;
+
     FWOptions *opts = FWOptions::cast( getFirstByType(PolicyRuleOptions::TYPENAME) );
     const FWOptions *rx_opts = FWOptions::constcast( rx->getFirstByType(PolicyRuleOptions::TYPENAME) );
+
+    if (opts == NULL && rx_opts != NULL) return false;
+    if (opts != NULL && rx_opts == NULL) return false;
     if (opts && rx_opts && !opts->cmp(rx_opts)) return false;
     return  Rule::cmp(x, recursive);
 }

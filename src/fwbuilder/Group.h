@@ -69,6 +69,7 @@ class Group : virtual public FWObject
      */
     virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
 
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 };
 
 }

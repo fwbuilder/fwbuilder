@@ -308,6 +308,8 @@ bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
     if (name != obj->name || comment != obj->comment || ro != obj->ro)
         return false;
 
+    if (data.size() != obj->data.size()) return false;
+
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
     {
         const string &name  = (*i).first;

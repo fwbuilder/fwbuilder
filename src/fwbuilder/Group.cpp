@@ -33,6 +33,9 @@
 #include <fwbuilder/Group.h>
 #include <fwbuilder/XMLTools.h>
 
+#include <algorithm>
+
+
 using namespace libfwbuilder;
 using namespace std;
 
@@ -107,3 +110,30 @@ FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
     FWObject::duplicateForUndo(obj);
     return *this;
 }
+
+bool Group::cmp(const FWObject *obj, bool recursive) throw(FWException)
+{
+    if (!FWObject::cmp(obj, recursive)) return false;
+    set<int> all_refs_ids;
+    if (obj->size() != size()) return false;
+    if (obj->size() && FWReference::cast(obj->front())!=NULL)
+    {
+        // assuming the group can either have all normal objects as children
+        // or all references
+        for(list<FWObject*>::const_iterator m=begin(); m!=end(); ++m) 
+        {
+            if (FWReference::cast(*m))
+                all_refs_ids.insert(FWReference::cast(*m)->getPointerId());
+        }
+        for(list<FWObject*>::const_iterator m=obj->begin(); m!=obj->end(); ++m) 
+        {
+            if (FWReference::cast(*m))
+            {
+                int id = FWReference::cast(*m)->getPointerId();
+                if (all_refs_ids.find(id) == all_refs_ids.end()) return false;
+            }
+        }
+    }
+    return true;
+}
+
