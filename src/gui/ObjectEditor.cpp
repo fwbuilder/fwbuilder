@@ -338,7 +338,6 @@ void ObjectEditor::disconnectSignals()
 {
     disconnect( SIGNAL(loadObject_sign(libfwbuilder::FWObject*)) );
     disconnect( SIGNAL(validate_sign(bool*)) );
-    //disconnect( SIGNAL(isChanged_sign(bool*)) );
     disconnect( SIGNAL(applyChanges_sign()) );
     disconnect( SIGNAL(discardChanges_sign()) );
     disconnect( SIGNAL(getHelpName_sign(QString*)) );

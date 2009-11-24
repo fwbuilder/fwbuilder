@@ -139,12 +139,6 @@ signals:
     void validate_sign(bool *res);
 
     /**
-     * the dialog class should have a slot that can verify if the data in
-     * dialog has been edited.
-     */
-    void isChanged_sign(bool *res);
-
-    /**
      * the dialog class should have a slot that applies changes made by
      * the user and saves data in the object.
      */
