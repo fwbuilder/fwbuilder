@@ -159,10 +159,6 @@ void AddressRangeDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void AddressRangeDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
 
 
 

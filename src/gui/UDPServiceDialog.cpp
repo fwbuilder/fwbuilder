@@ -164,8 +164,3 @@ void UDPServiceDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void UDPServiceDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

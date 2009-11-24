@@ -289,11 +289,6 @@ void ClusterGroupDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void ClusterGroupDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 /*
  * This method is connected to the "Edit members" button and opens dialog
  * where user chooses cluster member firewalls and interfaces

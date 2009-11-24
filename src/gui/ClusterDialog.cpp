@@ -227,7 +227,3 @@ void ClusterDialog::applyChanges()
     updateTimeStamps();
 }
 
-void ClusterDialog::discardChanges()
-{
-    loadFWObject(obj);
-}

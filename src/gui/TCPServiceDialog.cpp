@@ -239,11 +239,6 @@ void TCPServiceDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void TCPServiceDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void TCPServiceDialog::toggleEstablished()
 {
     bool using_established = m_dialog->established->isChecked();

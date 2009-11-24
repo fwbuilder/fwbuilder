@@ -224,11 +224,6 @@ void CustomServiceDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void CustomServiceDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void CustomServiceDialog::fillDialogInputFields()
 {
     QString npl = platformReverseMap[m_dialog->platform->currentText()];

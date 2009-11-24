@@ -228,10 +228,6 @@ void ActionsDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void ActionsDialog::discardChanges()
-{
-}
-
 void ActionsDialog::tagvalueChanged(int)
 {
     QString buf;

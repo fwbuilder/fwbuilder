@@ -142,11 +142,6 @@ void AddressTableDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void AddressTableDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void AddressTableDialog::browse()
 {
 

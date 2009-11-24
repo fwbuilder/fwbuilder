@@ -276,7 +276,3 @@ void TimeDialog::applyChanges()
 
 }
 
-void TimeDialog::discardChanges()
-{
-    loadFWObject(obj);
-}

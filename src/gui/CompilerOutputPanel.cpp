@@ -71,10 +71,6 @@ void CompilerOutputPanel::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void CompilerOutputPanel::discardChanges()
-{
-}
-
 void CompilerOutputPanel::getHelpName(QString *str)
 {
     *str = "CompilerOutputPanel";

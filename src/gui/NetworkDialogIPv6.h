@@ -49,7 +49,6 @@ class NetworkDialogIPv6 : public BaseObjectDialog
 public slots:
     virtual void changed();
     virtual void applyChanges();
-    virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void addressEntered();

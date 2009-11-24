@@ -124,8 +124,3 @@ void PhysicalAddressDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void PhysicalAddressDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

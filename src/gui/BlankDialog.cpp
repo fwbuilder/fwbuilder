@@ -63,10 +63,6 @@ void BlankDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void BlankDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
 
 
 

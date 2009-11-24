@@ -48,7 +48,6 @@ class DNSNameDialog : public BaseObjectDialog
     
 public slots:
     virtual void applyChanges();
-    virtual void discardChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
     virtual void getHelpName(QString*);

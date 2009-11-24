@@ -208,11 +208,6 @@ void NetworkDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void NetworkDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void NetworkDialog::addressEntered()
 {
     try

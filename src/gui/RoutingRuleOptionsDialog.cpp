@@ -139,8 +139,3 @@ void RoutingRuleOptionsDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void RoutingRuleOptionsDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

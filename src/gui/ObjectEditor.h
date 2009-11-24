@@ -109,7 +109,6 @@ public:
 public slots:
     void apply();
     void help();
-    //void discard();
     void changed();
     void blank();
 
@@ -143,12 +142,6 @@ signals:
      * the user and saves data in the object.
      */
     void applyChanges_sign();
-
-    /**
-     * the dialog class should have a slot that discards changes made by
-     * the user 
-     */
-    void discardChanges_sign();
 
     /**
      * the dialog class returns corresponding help file name

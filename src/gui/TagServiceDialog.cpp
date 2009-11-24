@@ -132,8 +132,3 @@ void TagServiceDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void TagServiceDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

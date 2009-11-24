@@ -445,11 +445,6 @@ void InterfaceDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void InterfaceDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void InterfaceDialog::openIfaceDialog()
 {
     if (isDataChanged()) applyChanges();

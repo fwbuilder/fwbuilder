@@ -286,10 +286,6 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
             dialogs[ current_dialog_idx ],
             SLOT(applyChanges()));
 
-    connect(this, SIGNAL(discardChanges_sign()),
-            dialogs[ current_dialog_idx ],
-            SLOT(discardChanges()));
-
     connect(dialogs[ current_dialog_idx ], SIGNAL(changed_sign()),
             this,
             SLOT(changed()));
@@ -339,7 +335,6 @@ void ObjectEditor::disconnectSignals()
     disconnect( SIGNAL(loadObject_sign(libfwbuilder::FWObject*)) );
     disconnect( SIGNAL(validate_sign(bool*)) );
     disconnect( SIGNAL(applyChanges_sign()) );
-    disconnect( SIGNAL(discardChanges_sign()) );
     disconnect( SIGNAL(getHelpName_sign(QString*)) );
     if (current_dialog_idx>=0) dialogs[current_dialog_idx]->disconnect( this );
 }

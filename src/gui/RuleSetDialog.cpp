@@ -238,8 +238,3 @@ void RuleSetDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void RuleSetDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

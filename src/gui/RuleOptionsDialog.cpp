@@ -333,8 +333,3 @@ void RuleOptionsDialog::cancelChanges()
     close();
 }
 
-void RuleOptionsDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

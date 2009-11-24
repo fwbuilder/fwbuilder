@@ -78,7 +78,6 @@ private:
 
 public slots:
     virtual void applyChanges();
-    virtual void discardChanges();
     virtual void tagvalueChanged(int);
     virtual void iptRouteContinueToggled();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);

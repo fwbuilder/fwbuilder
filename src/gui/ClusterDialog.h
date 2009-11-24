@@ -50,7 +50,6 @@ private:
 
 public slots:
     virtual void applyChanges();
-    virtual void discardChanges();
     virtual void platformChanged();
     virtual void hostOSChanged();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);

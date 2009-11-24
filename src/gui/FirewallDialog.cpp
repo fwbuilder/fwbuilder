@@ -327,11 +327,6 @@ void FirewallDialog::applyChanges()
     updateTimeStamps();
 }
 
-void FirewallDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void FirewallDialog::openFWDialog()
 {
     if (fwbdebug)

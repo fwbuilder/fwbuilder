@@ -232,8 +232,3 @@ void IPServiceDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void IPServiceDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

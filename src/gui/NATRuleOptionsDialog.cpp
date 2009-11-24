@@ -140,8 +140,3 @@ void NATRuleOptionsDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void NATRuleOptionsDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

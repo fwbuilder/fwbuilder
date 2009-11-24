@@ -137,10 +137,6 @@ void CommentEditorPanel::loadFWObject(FWObject *obj)
     setText(QString::fromUtf8(r->getComment().c_str()));
 }
 
-void CommentEditorPanel::discardChanges()
-{
-}
-
 void CommentEditorPanel::validate(bool* b)
 {
     *b=true;

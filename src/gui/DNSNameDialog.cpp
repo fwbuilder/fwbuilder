@@ -136,10 +136,3 @@ void DNSNameDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void DNSNameDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
-
-

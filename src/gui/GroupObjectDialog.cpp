@@ -462,11 +462,6 @@ void GroupObjectDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void GroupObjectDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void GroupObjectDialog::switchToIconView()
 {
     if (vt == Icon) return;

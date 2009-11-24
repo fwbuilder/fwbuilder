@@ -123,8 +123,3 @@ void UserDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void UserDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

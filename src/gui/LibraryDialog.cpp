@@ -140,11 +140,6 @@ void LibraryDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void LibraryDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void LibraryDialog::validate(bool *res)
 {
     *res=true;

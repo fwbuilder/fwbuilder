@@ -215,11 +215,6 @@ void IPv6Dialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void IPv6Dialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void IPv6Dialog::DNSlookup()
 {
     if (fwbdebug)

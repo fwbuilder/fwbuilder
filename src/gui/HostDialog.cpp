@@ -147,8 +147,3 @@ void HostDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void HostDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

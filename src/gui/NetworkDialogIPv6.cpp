@@ -185,11 +185,6 @@ void NetworkDialogIPv6::applyChanges()
 
 }
 
-void NetworkDialogIPv6::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void NetworkDialogIPv6::addressEntered()
 {
     try

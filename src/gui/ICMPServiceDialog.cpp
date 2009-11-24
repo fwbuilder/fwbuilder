@@ -137,8 +137,3 @@ void ICMPServiceDialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void ICMPServiceDialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-

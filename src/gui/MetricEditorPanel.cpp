@@ -79,10 +79,6 @@ void MetricEditorPanel::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void MetricEditorPanel::discardChanges()
-{
-}
-
 void MetricEditorPanel::getHelpName(QString *str)
 {
     *str = "MetricEditorPanel";

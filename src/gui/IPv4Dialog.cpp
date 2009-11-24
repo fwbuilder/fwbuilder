@@ -208,11 +208,6 @@ void IPv4Dialog::applyChanges()
     BaseObjectDialog::applyChanges();
 }
 
-void IPv4Dialog::discardChanges()
-{
-    loadFWObject(obj);
-}
-
 void IPv4Dialog::DNSlookup()
 {
     if (fwbdebug)
