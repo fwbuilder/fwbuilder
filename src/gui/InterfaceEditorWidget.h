@@ -82,9 +82,6 @@ public:
     void updateColumnsSizes();
     void setProtocolVisible(bool);
 
-protected:
-    void changeEvent(QEvent *e);
-
 private:
     QTabWidget *tabw;
     QToolButton *addAddr, *delAddr;
@@ -105,7 +102,8 @@ public slots:
     void addressChanged(int, int);
 
 protected:
-    virtual void resizeEvent ( QResizeEvent * );
+    void changeEvent(QEvent *e);
+    void resizeEvent ( QResizeEvent * );
 };
 
 #endif // INTERFACEEDITORWIDGET_H
