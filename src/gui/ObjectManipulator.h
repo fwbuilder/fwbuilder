@@ -397,27 +397,6 @@ public:
      void saveSectionSizes();
 
      void setAttributesColumnEnabled(bool f);
-     
-signals:
-/**
- * the dialog class should have a slot that can load object's data
- * into dialog elements when ObjectManipulator emits this signal
- */
-     void loadObject_sign(libfwbuilder::FWObject *);
-
-/**
- * the dialog class should have a slot that can verify data entered by
- * user in the dialog elements when ObjectManipulator emits this
- * signal. The validation result is returned in variable "bool *res"
- */
-     void validate_sign(bool *res);
-
-/**
- * the dialog class should have a slot that applies changes made by
- * the user and saves data in the object.
- */
-     void applyChanges_sign();
-
 };
 
 #endif
