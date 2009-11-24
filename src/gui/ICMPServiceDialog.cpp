@@ -132,7 +132,7 @@ void ICMPServiceDialog::applyChanges()
     new_state->setInt("type", m_dialog->icmpType->value() );
     new_state->setInt("code", m_dialog->icmpCode->value() );
 
-    m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();
 }

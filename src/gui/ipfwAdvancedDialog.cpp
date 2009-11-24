@@ -154,7 +154,7 @@ void ipfwAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) project->undoStack->push(cmd);
     
     QDialog::accept();
 }

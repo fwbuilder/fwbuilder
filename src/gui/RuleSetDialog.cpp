@@ -233,7 +233,7 @@ void RuleSetDialog::applyChanges()
     fwopt->setStr("ipt_mangle_only_rulesets",
                   mangle_rulesets.join(" ").toAscii().constData());
 
-    m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();
 }

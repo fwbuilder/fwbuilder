@@ -27,10 +27,8 @@
 #ifndef  __BASEOBJECTDIALOG_H_
 #define  __BASEOBJECTDIALOG_H_
 
-#include <QWidget>
-#include <QCloseEvent>
-
 #include "fwbuilder/FWObject.h"
+#include <QWidget>
 
 class ProjectPanel;
 
@@ -44,22 +42,8 @@ protected:
     bool data_changed;
     ProjectPanel *m_project;
 
-public:
-    BaseObjectDialog(QWidget *parent) : QWidget(parent)
-    {
-        obj = 0;
-        init = false;
-        data_changed = false;
-        m_project = NULL;
-    }
-    virtual ~BaseObjectDialog() {};
-
-    void attachToProjectWindow(ProjectPanel *pp) { m_project = pp; }
-    ProjectPanel* getAssociatedProjectWindow() { return m_project; }
-
-    bool isDataChanged() { return data_changed; }
-
 public slots:
+
     virtual void changed()
     {
         if (!init)
@@ -76,6 +60,21 @@ public slots:
         emit notify_changes_applied_sign();
     }
     
+public:
+    BaseObjectDialog(QWidget *parent) : QWidget(parent)
+    {
+        obj = 0;
+        init = false;
+        data_changed = false;
+        m_project = NULL;
+    }
+    virtual ~BaseObjectDialog() {};
+
+    void attachToProjectWindow(ProjectPanel *pp) { m_project = pp; }
+    ProjectPanel* getAssociatedProjectWindow() { return m_project; }
+
+    bool isDataChanged() { return data_changed; }
+
 signals:
     void changed_sign();
     void notify_changes_applied_sign();

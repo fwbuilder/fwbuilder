@@ -92,7 +92,7 @@
           </widget>
          </item>
          <item row="0" column="1" >
-          <widget class="LineEditWidget" name="obj_name" >
+          <widget class="QLineEdit" name="obj_name" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>200</horstretch>
@@ -163,9 +163,9 @@
    <header>TextEditWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>LineEditWidget</class>
+   <class>QLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>LineEditWidget.h</header>
+   <header>QLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -179,7 +179,7 @@
  <connections>
   <connection>
    <sender>obj_name</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>HostDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -211,7 +211,7 @@
   </connection>
   <connection>
    <sender>comment</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>textChanged()</signal>
    <receiver>HostDialog_q</receiver>
    <slot>changed()</slot>
    <hints>

@@ -95,7 +95,7 @@ void carpOptionsDialog::accept()
 
     data.saveAll(new_state);
 
-    project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) project->undoStack->push(cmd);
     
     QDialog::accept();
 }

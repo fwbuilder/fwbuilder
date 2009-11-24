@@ -142,8 +142,8 @@ void HostDialog::applyChanges()
     new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     opt->setBool("use_mac_addr_filter", m_dialog->MACmatching->isChecked());
 
-    m_project->undoStack->push(cmd);
-    
+    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+
     BaseObjectDialog::applyChanges();
 }
 

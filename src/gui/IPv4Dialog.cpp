@@ -52,7 +52,6 @@ IPv4Dialog::IPv4Dialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPv4Dialog_q;
     m_dialog->setupUi(this);
-
     obj=NULL;
 }
 
@@ -122,8 +121,6 @@ void IPv4Dialog::loadFWObject(FWObject *o)
     m_dialog->comment->setReadOnly(o->isReadOnly());
     setDisabledPalette(m_dialog->comment);
 
-
-
     init=false;
 }
 
@@ -174,8 +171,6 @@ void IPv4Dialog::validate(bool *result)
 
 void IPv4Dialog::applyChanges()
 {
-    if (fwbdebug) qDebug() << "IPv4Dialog::applyChanges()";
-
     FWCmdChange* cmd = new FWCmdChange(m_project, obj);
     FWObject* newState = cmd->getNewState();
 
@@ -201,9 +196,7 @@ void IPv4Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr());
 
-    if (fwbdebug) qDebug() << "IPv4Dialog::applyChanges() pushing undo command to stack";
-
-    m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(newState)) m_project->undoStack->push(cmd);
 
     BaseObjectDialog::applyChanges();
 }

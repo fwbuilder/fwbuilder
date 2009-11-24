@@ -21,7 +21,6 @@ HEADERS += ../../config.h \
     FWWindow.h \
     ProjectPanel.h \
     BaseObjectDialog.h \
-    LineEditWidget.h \
     TextEditWidget.h \
     utils.h \
     utils_no_qt.h \
@@ -180,7 +179,6 @@ SOURCES += ProjectPanel.cpp \
     FWWindow_single_rule_compile.cpp \
     FWWindow_wrappers.cpp \
     FWWindowPrint.cpp \
-    LineEditWidget.cpp \
     TextEditWidget.cpp \
     ObjectEditorDockWidget.cpp \
     main.cpp \

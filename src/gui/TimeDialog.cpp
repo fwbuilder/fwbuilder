@@ -215,41 +215,41 @@ void TimeDialog::applyChanges()
     if (!isTreeReadWrite(this,obj)) return;
 
     FWCmdChange* cmd = new FWCmdChange(m_project, obj);
-    FWObject* newState = cmd->getNewState();
+    FWObject* new_state = cmd->getNewState();
 
-    Interval *interval = dynamic_cast<Interval*>(newState);
+    Interval *interval = dynamic_cast<Interval*>(new_state);
     assert(interval!=NULL);
 
-    newState->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
-    newState->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     if (m_dialog->useStartDate->isChecked())
     {
-        newState->setInt( "from_day"   ,      m_dialog->startDate->date().day()   );
-        newState->setInt( "from_month" ,      m_dialog->startDate->date().month() );
-        newState->setInt( "from_year"  ,      m_dialog->startDate->date().year()  );
+        new_state->setInt( "from_day"   ,      m_dialog->startDate->date().day()   );
+        new_state->setInt( "from_month" ,      m_dialog->startDate->date().month() );
+        new_state->setInt( "from_year"  ,      m_dialog->startDate->date().year()  );
     } else
     {
-        newState->setInt( "from_day"   ,      -1 );
-        newState->setInt( "from_month" ,      -1 );
-        newState->setInt( "from_year"  ,      -1 );
+        new_state->setInt( "from_day"   ,      -1 );
+        new_state->setInt( "from_month" ,      -1 );
+        new_state->setInt( "from_year"  ,      -1 );
     }
-    newState->setInt( "from_minute"   ,   m_dialog->startTime->time().minute());
-    newState->setInt( "from_hour"  ,      m_dialog->startTime->time().hour()  );
+    new_state->setInt( "from_minute"   ,   m_dialog->startTime->time().minute());
+    new_state->setInt( "from_hour"  ,      m_dialog->startTime->time().hour()  );
 
     if (m_dialog->useEndDate->isChecked())
     {
-        newState->setInt( "to_day"   ,        m_dialog->endDate->date().day()     );
-        newState->setInt( "to_month" ,        m_dialog->endDate->date().month()   );
-        newState->setInt( "to_year"  ,        m_dialog->endDate->date().year()    );
+        new_state->setInt( "to_day"   ,        m_dialog->endDate->date().day()     );
+        new_state->setInt( "to_month" ,        m_dialog->endDate->date().month()   );
+        new_state->setInt( "to_year"  ,        m_dialog->endDate->date().year()    );
     } else
     {
-        newState->setInt( "to_day"   ,      -1 );
-        newState->setInt( "to_month" ,      -1 );
-        newState->setInt( "to_year"  ,      -1 );
+        new_state->setInt( "to_day"   ,      -1 );
+        new_state->setInt( "to_month" ,      -1 );
+        new_state->setInt( "to_year"  ,      -1 );
     }
-    newState->setInt( "to_minute"   ,     m_dialog->endTime->time().minute()  );
-    newState->setInt( "to_hour"  ,        m_dialog->endTime->time().hour()    );
+    new_state->setInt( "to_minute"   ,     m_dialog->endTime->time().minute()  );
+    new_state->setInt( "to_hour"  ,        m_dialog->endTime->time().hour()    );
 
     QStringList weekDays ;
     if (m_dialog->cbStart7_2->checkState ()==Qt::Checked)
@@ -269,7 +269,7 @@ void TimeDialog::applyChanges()
 
     interval->setDaysOfWeek(weekDays.join(",").toAscii().data());
 
-    m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
     
     //TODO: Need to refactor this method
     BaseObjectDialog::applyChanges();

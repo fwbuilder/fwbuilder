@@ -39,6 +39,6 @@ void TextEditWidget::dirty(bool f)
 
 void TextEditWidget::focusOutEvent(QFocusEvent * event)
 {
-    if (modified) emit newTextAvailable();
+    if (modified) emit textChanged(); // newTextAvailable();
     QTextEdit::focusOutEvent(event);
 }

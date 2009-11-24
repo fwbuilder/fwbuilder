@@ -87,7 +87,7 @@
           </widget>
          </item>
          <item row="0" column="1" colspan="2" >
-          <widget class="LineEditWidget" name="obj_name" >
+          <widget class="QLineEdit" name="obj_name" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>200</horstretch>
@@ -113,7 +113,7 @@
           </widget>
          </item>
          <item row="1" column="1" colspan="2" >
-          <widget class="LineEditWidget" name="address" >
+          <widget class="QLineEdit" name="address" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>200</horstretch>
@@ -139,7 +139,7 @@
           </widget>
          </item>
          <item row="2" column="2" >
-          <widget class="LineEditWidget" name="netmask" >
+          <widget class="QLineEdit" name="netmask" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
              <horstretch>0</horstretch>
@@ -217,9 +217,9 @@
    <header>TextEditWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>LineEditWidget</class>
+   <class>QLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>LineEditWidget.h</header>
+   <header>QLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -233,7 +233,7 @@
  <connections>
   <connection>
    <sender>obj_name</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>NetworkDialogIPv6_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -249,7 +249,7 @@
   </connection>
   <connection>
    <sender>address</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>NetworkDialogIPv6_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -265,7 +265,7 @@
   </connection>
   <connection>
    <sender>comment</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>textChanged()</signal>
    <receiver>NetworkDialogIPv6_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -281,7 +281,7 @@
   </connection>
   <connection>
    <sender>address</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>NetworkDialogIPv6_q</receiver>
    <slot>addressEntered()</slot>
    <hints>
@@ -313,7 +313,7 @@
   </connection>
   <connection>
    <sender>netmask</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>NetworkDialogIPv6_q</receiver>
    <slot>changed()</slot>
    <hints>

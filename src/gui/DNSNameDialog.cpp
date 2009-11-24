@@ -131,7 +131,7 @@ void DNSNameDialog::applyChanges()
     s->setSourceName( m_dialog->dnsrec->text().toLatin1().constData() );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();
 }

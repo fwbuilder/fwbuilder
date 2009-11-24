@@ -440,7 +440,7 @@ void InterfaceDialog::applyChanges()
     // interface name
     m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(intf);
 
-    m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();
 }

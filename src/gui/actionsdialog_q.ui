@@ -37,7 +37,7 @@
          <enum>QFrame::Plain</enum>
         </property>
         <property name="currentIndex" >
-         <number>12</number>
+         <number>13</number>
         </property>
         <widget class="QWidget" name="TagStrPage" >
          <layout class="QGridLayout" >
@@ -321,7 +321,7 @@ tab of the firewall object properties dialog activates emulation.</string>
            </widget>
           </item>
           <item row="2" column="0" >
-           <widget class="LineEditWidget" native="1" name="accountingvalue_str" />
+           <widget class="QLineEdit" name="accountingvalue_str" />
           </item>
           <item row="3" column="0" >
            <spacer>
@@ -467,7 +467,7 @@ tab of the firewall object properties dialog activates emulation.</string>
            </widget>
           </item>
           <item>
-           <widget class="LineEditWidget" native="1" name="custom_str" />
+           <widget class="QLineEdit" name="custom_str" />
           </item>
           <item>
            <spacer>
@@ -503,7 +503,7 @@ tab of the firewall object properties dialog activates emulation.</string>
            </widget>
           </item>
           <item row="1" column="0" >
-           <widget class="LineEditWidget" native="1" name="classify_str" />
+           <widget class="QLineEdit" name="classify_str" />
           </item>
           <item row="4" column="0" >
            <spacer>
@@ -811,7 +811,7 @@ object properties dialog.</string>
              </widget>
             </item>
             <item>
-             <widget class="LineEditWidget" native="1" name="ipf_route_opt_addr" />
+             <widget class="QLineEdit" name="ipf_route_opt_addr" />
             </item>
            </layout>
           </item>
@@ -869,7 +869,7 @@ object properties dialog.</string>
              </widget>
             </item>
             <item>
-             <widget class="LineEditWidget" native="1" name="pf_route_opt_addr" />
+             <widget class="QLineEdit" name="pf_route_opt_addr" />
             </item>
            </layout>
           </item>
@@ -992,7 +992,7 @@ object properties dialog.</string>
            </widget>
           </item>
           <item row="2" column="1" colspan="3" >
-           <widget class="LineEditWidget" native="1" name="ipt_gw" />
+           <widget class="QLineEdit" name="ipt_gw" />
           </item>
           <item row="1" column="0" >
            <widget class="QLabel" name="textLabel5_2" >
@@ -1115,11 +1115,6 @@ object properties dialog.</string>
    <header>FWObjectDropArea.h</header>
    <container>1</container>
   </customwidget>
-  <customwidget>
-   <class>LineEditWidget</class>
-   <extends>QLineEdit</extends>
-   <header>LineEditWidget.h</header>
-  </customwidget>
  </customwidgets>
  <resources>
   <include location="MainRes.qrc" />
@@ -1223,7 +1218,7 @@ object properties dialog.</string>
   </connection>
   <connection>
    <sender>pf_route_opt_addr</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>ActionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -1319,7 +1314,7 @@ object properties dialog.</string>
   </connection>
   <connection>
    <sender>ipt_gw</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>ActionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -1415,7 +1410,7 @@ object properties dialog.</string>
   </connection>
   <connection>
    <sender>ipf_route_opt_addr</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>ActionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -1447,7 +1442,7 @@ object properties dialog.</string>
   </connection>
   <connection>
    <sender>custom_str</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>ActionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -1463,7 +1458,7 @@ object properties dialog.</string>
   </connection>
   <connection>
    <sender>classify_str</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>ActionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -1479,7 +1474,7 @@ object properties dialog.</string>
   </connection>
   <connection>
    <sender>accountingvalue_str</sender>
-   <signal>newTextAvailable()</signal>
+   <signal>editingFinished()</signal>
    <receiver>ActionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>

@@ -220,7 +220,7 @@ void ClusterDialog::applyChanges()
 
     s->setInactive(m_dialog->inactive->isChecked());
 
-    m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
     
     BaseObjectDialog::applyChanges();
 

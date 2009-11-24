@@ -112,7 +112,6 @@ void FWWindow::openEditor(FWObject *obj)
     QSize old_size = m_mainWindow->objectEditorStack->size();
     m_mainWindow->editorPanelTabWidget->setCurrentIndex(EDITOR_PANEL_EDITOR_TAB);
     m_mainWindow->editorDockWidget->setWindowTitle(title_txt);
-    //m_mainWindow->editorDockWidget->setWindowIcon(title_icon);
     m_mainWindow->objectTypeIcon->setPixmap(title_icon);
     m_mainWindow->editorDockWidget->show(); // editor
     oe->open(obj);

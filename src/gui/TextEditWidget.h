@@ -35,8 +35,9 @@ class TextEditWidget : public QTextEdit
     bool modified;
 
 signals:
-    void newTextAvailable();
-
+//    void newTextAvailable();
+    void textChanged();
+    
 public slots:
     void dirty(bool);
     

@@ -120,7 +120,7 @@ void openbsdAdvancedDialog::accept()
 
     data.saveAll(fwoptions);
 
-    project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state)) project->undoStack->push(cmd);
     
     QDialog::accept();
 }
