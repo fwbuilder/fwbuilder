@@ -1133,8 +1133,9 @@ bool FWWindow::event(QEvent *event)
             {
                 if (pp && obj)
                 {
-                    openOptEditor(obj,
-                                  dynamic_cast<openOptObjectInEditorEvent*>(event)->opt_code);
+                    openOptEditor(
+                        obj,
+                        dynamic_cast<openOptObjectInEditorEvent*>(event)->opt_code);
                     // pp->editObject(obj);
                     pp->mdiWindow->update();
                 }

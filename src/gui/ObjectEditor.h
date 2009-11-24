@@ -96,8 +96,10 @@ public:
     libfwbuilder::FWObject* getOpened() { return opened; };
     OptType getOpenedOpt() {return openedOpt;};
 
+    void load();
     void purge();
-
+    bool validate();
+    
     void setHelpButton(QPushButton * b);
     void selectObject(libfwbuilder::FWObject *o);
     void selectionChanged(libfwbuilder::FWObject *o);

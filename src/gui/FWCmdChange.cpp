@@ -103,8 +103,9 @@ void FWCmdChange::notify()
                 QString::fromUtf8(oldState->getName().c_str()),
                 QString::fromUtf8(newState->getName().c_str())));
     }
-    QCoreApplication::postEvent(
-        mw, new openObjectInEditorEvent(filename, obj->getId()));
+    if (mw->isEditorVisible())
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(filename, obj->getId()));
 }
 
 /********************************************************

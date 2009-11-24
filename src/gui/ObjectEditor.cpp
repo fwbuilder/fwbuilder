@@ -283,7 +283,10 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
             dialogs[ current_dialog_idx ],
             SLOT(loadFWObject(libfwbuilder::FWObject*)));
 
-    emit loadObject_sign(obj);
+    opened = obj;
+    openedOpt = opt;
+
+    load();
     findAndLoadHelp();
 
     show();
@@ -300,10 +303,6 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
             dialogs[ current_dialog_idx ],
             SLOT(discardChanges()));
 
-    // connect(dialogs[ current_dialog_idx ], SIGNAL(close_sign(QCloseEvent*)),
-    //         this,
-    //         SLOT(validateAndClose(QCloseEvent*)));
-
     connect(dialogs[ current_dialog_idx ], SIGNAL(changed_sign()),
             this,
             SLOT(changed()));
@@ -315,13 +314,6 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
     connect(this, SIGNAL(getHelpName_sign(QString*)),
             dialogs[ current_dialog_idx ],
             SLOT(getHelpName(QString*)));
-
-    // emit loadObject_sign(obj);
-    // findAndLoadHelp();
-    //applyButton->setEnabled(false);
-
-    opened = obj;
-    openedOpt = opt;
 }
 
 void ObjectEditor::open(FWObject *obj)
@@ -426,19 +418,30 @@ void ObjectEditor::findAndLoadHelp()
     delete h;
 }
 
+void ObjectEditor::load()
+{
+    emit loadObject_sign(opened);
+}
+
 void ObjectEditor::changed()
 {
     if (fwbdebug) qDebug() << "ObjectEditor::changed()";
-    bool isgood = true;
-    emit validate_sign( &isgood );
-    if (!isgood)
+    if (!validate())
     {
         // change is not good, reload data into the editor to clear and reset it.
-        emit loadObject_sign(opened);
+        load();
         return;
     }
 
     emit applyChanges_sign();
+}
+
+bool ObjectEditor::validate()
+{
+    if (fwbdebug) qDebug() << "ObjectEditor::validate()";
+    bool isgood = true;
+    emit validate_sign( &isgood );
+    return isgood;
 }
 
 /*

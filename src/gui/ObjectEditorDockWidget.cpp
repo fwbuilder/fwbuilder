@@ -28,6 +28,10 @@
 #include "ObjectEditorDockWidget.h"
 #include "ObjectEditor.h"
 
+#include <QCoreApplication>
+#include <QtDebug>
+
+
 ObjectEditorDockWidget::ObjectEditorDockWidget(const QString &title,
                                                QWidget *parent,
                                                Qt::WindowFlags flags) :
@@ -49,17 +53,18 @@ ObjectEditorDockWidget::ObjectEditorDockWidget(QWidget *parent,
 
 void ObjectEditorDockWidget::setupEditor(ObjectEditor *ed) { editor = ed; }
 
-/*
- * TODO: deprecate this (?)
- */    
 void ObjectEditorDockWidget::closeEvent(QCloseEvent *event)
 {
-    // if (editor && editor->validateAndSave())
-    // {
-        event->accept();
+    if (fwbdebug) qDebug() << "ObjectEditorDockWidget::closeEvent()";
+
+    if (!editor->validate())
+    {
+        editor->load();  // bad changes in the editor, reset
+        event->ignore();
         return;
-    // }
-    // event->ignore();
+    }
+
+    event->accept();
 }
 
 void ObjectEditorDockWidget::topLevelChanged(bool topLevel)
