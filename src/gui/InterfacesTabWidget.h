@@ -46,8 +46,6 @@ namespace Ui {
 }
 
 struct AddressInfo;
-struct ClusterInterfaceData;
-
 
 struct EditedInterfaceData
 {
