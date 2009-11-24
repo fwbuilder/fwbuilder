@@ -75,6 +75,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     QWidget(parent),
     m_ui(new Ui::InterfaceEditorWidget)
 {
+    os = data.os;
     tabw = dynamic_cast<QTabWidget*>(parent);
     m_ui->setupUi(this);
     this->interface = NULL;
@@ -82,6 +83,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     this->m_ui->label->setText(data.label);
     this->m_ui->comment->setText(data.comment);
 
+    /*
     set<AddressInfo> addrs;
     for ( int i =0; i < data.interfaces.count(); i++ )
     {
@@ -115,6 +117,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
         rows[row].second->setText(addr.netmask);
         types[row]->setCurrentIndex(addr.ipv4==true?0:1);
     }
+    */
 
     QString host_os = data.os;
     list<QStringPair> types;
@@ -282,16 +285,28 @@ void InterfaceEditorWidget::typeChanged(int type)
 
 bool InterfaceEditorWidget::isValid()
 {
-    // type 0 == regular
-    if ( (this->m_ui->type->currentIndex() == 0) &&
-         (this->m_ui->addresses->rowCount() == 0) )
+    bool no_addr_ok = true;
+    if (clusterMode)
     {
-        QMessageBox::warning(this,"Firewall Builder",
-                 tr("You should enter at least one address for "
-                    "regular interface %1").arg(this->m_ui->name->text()),
-                "&Continue", QString::null, QString::null, 0, 1 );
-        return false;
+        no_addr_ok = Resources::os_res[os.toStdString()]->getResourceBool(
+                        "/FWBuilderResources/Target/protocols/"
+                        + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok");
     }
+
+    if (!no_addr_ok && this->m_ui->addresses->rowCount() == 0)
+    {
+        if ( (this->m_ui->type->currentIndex() == 0) &&
+             (this->m_ui->addresses->rowCount() == 0) )
+        {
+            QMessageBox::warning(this,"Firewall Builder",
+                     tr("You should enter at least one address for "
+                        "regular interface %1").arg(this->m_ui->name->text()),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+            return false;
+        }
+    }
+
+
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
         QString address = this->m_ui->addresses->item(i, 0)->text();
@@ -392,6 +407,8 @@ void InterfaceEditorWidget::setClusterMode(bool st)
     clusterMode = st;
     this->m_ui->protocol->setVisible(st);
     this->m_ui->protocolLabel->setVisible(st);
-    this->m_ui->mac->setVisible(st);
-    this->m_ui->type->setVisible(st);
+    this->m_ui->mac->setVisible(!st);
+    this->m_ui->macLabel->setVisible(!st);
+    this->m_ui->type->setVisible(!st);
+    this->m_ui->typeLabel->setVisible(!st);
 }

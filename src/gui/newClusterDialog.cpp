@@ -191,48 +191,38 @@ void newClusterDialog::showPage(const int page)
     }
     case INTERFACES_PAGE:
     {
+        m_dialog->interfaceSelector->clear();
         QList<Firewall*> firewalls;
         typedef QPair<Firewall*, bool> fwpair;
         foreach ( fwpair fw, m_dialog->firewallSelector->getSelectedFirewalls() )
             firewalls.append(fw.first);
         this->m_dialog->interfaceSelector->setFirewallList(firewalls);
 
-        setNextEnabled(FIREWALLS_PAGE, true);
-        setFinishEnabled(FIREWALLS_PAGE, false);
-        break;
-        /*
-        QList<QPair<Firewall*, bool> > fws =  this->m_dialog->firewallSelector->getSelectedFirewalls();
-        QList<Interface*> interfaces;
-        for (int i = 0; i < fws.count(); i++)
-        {
-            FWObjectTypedChildIterator iter = fws.at(0).first->findByType(Interface::TYPENAME);
-            while (iter != iter.end())
-            {
-                this->m_dialog->notUsedInterfaces->addInterface(Interface::cast(*iter));
-                interfaces.append(Interface::cast(*iter));
-                ++iter;
-            }
-        }
         setNextEnabled(INTERFACES_PAGE, true);
         setFinishEnabled(INTERFACES_PAGE, false);
-        // add interfaces to widget here
-        */
+        break;
     }
     case INTERFACEEDITOR_PAGE:
     {
         this->m_dialog->interfaceEditor->setClusterMode(true);
+        this->m_dialog->interfaceEditor->clear();
         while (this->m_dialog->interfaceEditor->count())
             this->m_dialog->interfaceEditor->removeTab(0);
         foreach (ClusterInterfaceData iface, this->m_dialog->interfaceSelector->getInterfaces())
         {
             this->m_dialog->interfaceEditor->addClusterInterface(iface);
         }
-        setNextEnabled(FIREWALLS_PAGE, true);
-        setFinishEnabled(FIREWALLS_PAGE, false);
+        setNextEnabled(INTERFACEEDITOR_PAGE, true);
+        setFinishEnabled(INTERFACEEDITOR_PAGE, false);
         break;
     }
     case POLICY_PAGE:
     {
+        foreach (QRadioButton *btn, radios.keys())
+        {
+            this->m_dialog->policyLayout->removeWidget(btn);
+            delete btn;
+        }
         radios.clear();
         QList<QPair<Firewall*, bool> > fws = m_dialog->firewallSelector->getSelectedFirewalls();
         for ( int i = 0; i < fws.count() ; i++ )
@@ -241,8 +231,8 @@ void newClusterDialog::showPage(const int page)
             this->m_dialog->policyLayout->addWidget(newbox);
             radios[newbox] = fws.at(i).first;
         }
-        setNextEnabled(FIREWALLS_PAGE, true);
-        setFinishEnabled(FIREWALLS_PAGE, false);
+        setNextEnabled(POLICY_PAGE, true);
+        setFinishEnabled(POLICY_PAGE, false);
         break;
     }
     case SUMMARY_PAGE:
@@ -296,8 +286,8 @@ void newClusterDialog::showPage(const int page)
         }
         if (!doCopy) this->m_dialog->policyLabel->setVisible(false);
 
-        setNextEnabled(FIREWALLS_PAGE, true);
-        setFinishEnabled(FIREWALLS_PAGE, true);
+        setNextEnabled(SUMMARY_PAGE, false);
+        setFinishEnabled(SUMMARY_PAGE, true);
         break;
     }
     }

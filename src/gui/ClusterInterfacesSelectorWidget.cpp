@@ -109,3 +109,9 @@ QList<ClusterInterfaceData> ClusterInterfacesSelectorWidget::getInterfaces()
     return res;
 }
 
+void ClusterInterfacesSelectorWidget::clear()
+{
+    QTabWidget::clear();
+    editors.clear();
+    fwlist.clear();
+}

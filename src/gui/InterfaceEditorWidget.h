@@ -43,6 +43,7 @@
 #include <QComboBox>
 #include <QMessageBox>
 
+#include "fwbuilder/Resources.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
 
@@ -93,6 +94,7 @@ private:
     QMap<int, libfwbuilder::Address*> fwaddrs;
     bool validateAddress(const QString &addr, const QString &netm, bool regular, bool ipv4);
     bool clusterMode;
+    QString os;
 
 
 public slots:

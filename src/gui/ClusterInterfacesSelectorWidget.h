@@ -63,6 +63,7 @@ public slots:
     ClusterInterfaceWidget* addNewInterface();
     void addInterface(QString name);
     void closeTab();
+    void clear();
 
 };
 
