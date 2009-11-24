@@ -118,14 +118,9 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
 
     QString host_os = data.os;
     list<QStringPair> types;
-    list<QStringPair> types2;
-    getStateSyncTypesForOS(host_os, types);
-    getFailoverTypesForOS(host_os, types2);
+    getFailoverTypesForOS(host_os, types);
     QStringList typenames;
     foreach(QStringPair pair, types)
-        if (pair.first != "none")
-            typenames << pair.second;
-    foreach(QStringPair pair, types2)
         if (pair.first != "none")
             typenames << pair.second;
     this->m_ui->protocol->clear();
