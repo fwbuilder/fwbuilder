@@ -314,7 +314,7 @@ void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
  * objects with the same ID are equal. Here we specifically look for a
  * case when objects with the same ID have different attributes.
  */
-            if (dobj->cmp( *i )) continue;
+            if (dobj->cmp(*i, true)) continue; // compare recursively
 
 /* such object exists in destination tree but is different Since we
  * traverse the tree from the root towards leaves, it won't help much

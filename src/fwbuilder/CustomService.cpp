@@ -146,10 +146,10 @@ xmlNodePtr CustomService::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool CustomService::cmp(const FWObject *obj) throw(FWException)
+bool CustomService::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (CustomService::constcast(obj)==NULL) return false;
-    if (!FWObject::cmp(obj)) return false;
+    if (!FWObject::cmp(obj, recursive)) return false;
     
     const CustomService *o2 = CustomService::constcast(obj);
 

@@ -66,7 +66,7 @@ class AddressRange : public Address
     
     virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id)
         throw(FWException);
-    virtual bool cmp(const FWObject *obj) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
    
     virtual void       fromXML (xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node) throw(FWException);

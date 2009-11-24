@@ -97,6 +97,16 @@ FWObject& Rule::shallowDuplicate(const FWObject *x,
     return  FWObject::shallowDuplicate(x,preserve_id);
 }
 
+bool Rule::cmp(const FWObject *x, bool recursive) throw(FWException)
+{
+    const Rule *rx = Rule::constcast(x);
+    if (fallback != rx->fallback ||
+        hidden != rx->hidden ||
+        label != rx->label ||
+        unique_id != rx->unique_id) return false;
+
+    return  FWObject::cmp(x, recursive);
+}
 
 /***************************************************************************/
 
@@ -166,6 +176,19 @@ FWObject& PolicyRule::shallowDuplicate(const FWObject *x,
     when_re = NULL;
 
     return  Rule::shallowDuplicate(x, preserve_id);
+}
+
+bool PolicyRule::cmp(const FWObject *x, bool recursive) throw(FWException)
+{
+    const PolicyRule *rx = PolicyRule::constcast(x);
+    if (rx == NULL) return false;
+    if (getDirection() != rx->getDirection() ||
+        getAction() != rx->getAction() ||
+        getLogging() != rx->getLogging()) return false;
+    FWOptions *opts = FWOptions::cast( getFirstByType(PolicyRuleOptions::TYPENAME) );
+    const FWOptions *rx_opts = FWOptions::constcast( rx->getFirstByType(PolicyRuleOptions::TYPENAME) );
+    if (opts && rx_opts && !opts->cmp(rx_opts)) return false;
+    return  Rule::cmp(x, recursive);
 }
 
 // <!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
@@ -799,7 +822,16 @@ FWObject& NATRule::shallowDuplicate(const FWObject *x,
     return  Rule::shallowDuplicate(x, preserve_id);
 }
 
-
+bool NATRule::cmp(const FWObject *x, bool recursive) throw(FWException)
+{
+    const NATRule *rx = NATRule::constcast(x);
+    if (rx == NULL) return false;
+    if (getAction() != rx->getAction()) return false;
+    FWOptions *opts = FWOptions::cast( getFirstByType(NATRuleOptions::TYPENAME) );
+    const FWOptions *rx_opts = FWOptions::constcast( rx->getFirstByType(NATRuleOptions::TYPENAME) );
+    if (opts && rx_opts && !opts->cmp(rx_opts)) return false;
+    return  Rule::cmp(x, recursive);
+}
 
 /***************************************************************************/
 

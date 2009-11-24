@@ -60,6 +60,7 @@ class RuleSet : public FWObject
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
         throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
     // Both ipv4 and ipv6 variables can be set to true, which means
     // this is "dual" rule set. When both are false, this is ipv4-only

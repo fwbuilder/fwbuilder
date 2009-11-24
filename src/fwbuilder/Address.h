@@ -104,7 +104,7 @@ public:
     bool belongs(const InetAddr &) const;
     
     virtual FWReference* createRef();
-    virtual bool cmp(const FWObject *obj) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
     bool isAny() const;
 

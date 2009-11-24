@@ -76,10 +76,10 @@ xmlNodePtr UserService::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool UserService::cmp(const FWObject *obj) throw(FWException)
+bool UserService::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (UserService::constcast(obj)==NULL) return false;
-    if (!FWObject::cmp(obj)) return false;
+    if (!FWObject::cmp(obj, recursive)) return false;
     
     const UserService *user_serv = UserService::constcast(obj);
     return (userid == user_serv->userid);

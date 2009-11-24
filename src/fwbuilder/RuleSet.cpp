@@ -125,6 +125,15 @@ FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
     return *this;
 }
 
+bool RuleSet::cmp(const FWObject *obj, bool recursive) throw(FWException)
+{
+    const RuleSet *other = RuleSet::constcast(obj);
+    if (other == NULL) return false;
+    if (ipv4 != other->ipv4 || ipv6 != other->ipv6 || top != other->top)
+        return false;
+    return FWObject::cmp(obj, recursive);
+}
+
 /**
  * Add new rule on top of the rule set. If hidden_rule arg is true,
  * force new rule position number ot be negative. Make sure it grows
@@ -284,7 +293,6 @@ void RuleSet::renumberRules()
 {
     if (size() == 0) return;
 
-    FWObject *o;
     list<FWObject*>::iterator m, it;
     int rn;
 

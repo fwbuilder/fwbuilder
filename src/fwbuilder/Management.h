@@ -46,7 +46,7 @@ namespace libfwbuilder
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
         virtual FWObject& shallowDuplicate(
             const FWObject *obj, bool preserve_id = true) throw(FWException);
-        virtual bool cmp(const FWObject *obj) throw(FWException);
+        virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
         const std::string& getCommand () const;
         void          setCommand (const std::string& );
@@ -78,7 +78,7 @@ namespace libfwbuilder
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
         virtual FWObject& shallowDuplicate(
             const FWObject *obj, bool preserve_id = true) throw(FWException);
-        virtual bool cmp(const FWObject *obj) throw(FWException);
+        virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
         const std::string& getReadCommunity () const;
         void          setReadCommunity (const std::string& );
@@ -108,7 +108,7 @@ namespace libfwbuilder
         DECLARE_FWOBJECT_SUBTYPE(FWBDManagement);
         virtual FWObject& shallowDuplicate(
             const FWObject *obj, bool preserve_id = true) throw(FWException);
-        virtual bool cmp(const FWObject *obj) throw(FWException);
+        virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
@@ -143,7 +143,7 @@ namespace libfwbuilder
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
         virtual FWObject& shallowDuplicate(
             const FWObject *obj, bool preserve_id = true) throw(FWException);
-        virtual bool  cmp(const FWObject *obj) throw(FWException);
+        virtual bool  cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 	virtual bool  validateChild(FWObject *o);
 
         const InetAddr& getAddress() const { return addr; }

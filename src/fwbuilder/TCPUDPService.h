@@ -72,6 +72,7 @@ class TCPUDPService : public Service
     void setDstRangeStart(int p) { dst_range_start = p; }
     void setDstRangeEnd(int p) { dst_range_end = p; }
     
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 };
     
 }

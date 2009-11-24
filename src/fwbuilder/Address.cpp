@@ -165,10 +165,10 @@ bool Address::belongs(const InetAddr &other) const
     return false;
 }
 
-bool Address::cmp(const FWObject *obj) throw(FWException)
+bool Address::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (Address::constcast(obj)==NULL) return false;
-    if (!FWObject::cmp(obj)) return false;
+    if (!FWObject::cmp(obj, recursive)) return false;
     if (hasInetAddress()!=Address::constcast(obj)->hasInetAddress()) return false;
     if (!hasInetAddress()) return true;
     // both this and obj are objects that own ip addresses

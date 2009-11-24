@@ -303,50 +303,42 @@ FWObject* FWObject::findObjectByAttribute(const std::string &attr,
 }
 
 
-bool FWObject::cmp(const FWObject *obj) throw(FWException)
+bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
+    if (name != obj->name || comment != obj->comment || ro != obj->ro)
+        return false;
+
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
     {
         const string &name  = (*i).first;
         const string &value = (*i).second;
 // 10/21/2008 --vk
         map<string,string>::const_iterator j=obj->data.find(name);
-        if (j==obj->data.end()) continue;
+        if (j==obj->data.end()) return false;
         if (j->second!=value) return false;
     }
-    
-    if (size()!=obj->size())  return false;
+
+    if (recursive)
+    {
+        if (size()!=obj->size())  return false;
 
 /* chidren are not necessarily in the same order in two groups */
-    FWObject::const_iterator i1=begin();
-    for ( ; i1!=end(); ++i1)
-    {
-        bool found=false;
-//        FWObject *o2=NULL;
-        FWObject::const_iterator j1=obj->begin();
-        for ( ; j1!=obj->end(); ++j1)
+        FWObject::const_iterator i1=begin();
+        for ( ; i1!=end(); ++i1)
         {
-            if ((*i1)->cmp(*j1))
+            bool found=false;
+            FWObject::const_iterator j1=obj->begin();
+            for ( ; j1!=obj->end(); ++j1)
             {
-                found=true;
-                break;
+                if ((*i1)->cmp(*j1, recursive))
+                {
+                    found=true;
+                    break;
+                }
             }
+            if (!found) return false;
         }
-        if (!found) return false;
     }
-
-#if 0
-    list<FWObject*>::const_iterator i1=begin();
-    list<FWObject*>::const_iterator j1=obj->begin();
-    for( ; i1!=end() && j1!=obj->end(); ++i1,++j1)     
-    {
-        FWObject *o1=*i1;
-        FWObject *o2=*j1;
-        if ( ! o1->cmp(o2)) 
-            return false;
-    }
-    return ( i1==end() && j1==obj->end());
-#endif
     return true;
 }
 

@@ -96,10 +96,10 @@ FWObject& AddressRange::shallowDuplicate(const FWObject *o, bool preserve_id)
     return FWObject::shallowDuplicate(o, preserve_id);
 }
 
-bool AddressRange::cmp(const FWObject *obj) throw(FWException)
+bool AddressRange::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (AddressRange::constcast(obj)==NULL) return false;
-    if (!FWObject::cmp(obj)) return false;
+    if (!FWObject::cmp(obj, recursive)) return false;
 
     InetAddr o1b;
     InetAddr o1e;

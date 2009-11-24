@@ -105,6 +105,8 @@ class Rule : public Group
                                        bool preserve_id = true)
         throw(FWException);
 
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+    
     virtual FWOptions* getOptionsObject();
 
     // find branch ruleset for policy rules with action Branch
@@ -195,6 +197,7 @@ public:
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
         throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(PolicyRule);
     virtual FWOptions* getOptionsObject();
@@ -349,6 +352,7 @@ public:
     void         setRuleType(NATRuleTypes rt);
 
     virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 };
 
 class RoutingRule : public Rule 

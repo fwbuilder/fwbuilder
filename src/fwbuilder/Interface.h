@@ -183,6 +183,7 @@ public:
         virtual FWObject& duplicate(const FWObject *obj,
                                     bool preserve_id = true)
             throw(FWException);
+        virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
         const std::string &getLabel() const;
         void setLabel(const std::string& n);

@@ -250,7 +250,7 @@ public:
      * compares objects. Ignores ID and always looks at
      * attributes. Returns true if objects are equal.
      */
-    virtual bool cmp(const FWObject *obj) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
     
     void Show();
     void Hide();

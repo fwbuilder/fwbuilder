@@ -105,10 +105,10 @@ xmlNodePtr Management::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool Management::cmp(const FWObject *obj) throw(FWException)
+bool Management::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (Management::constcast(obj)==NULL) return false;
-    if (!FWObject::cmp(obj)) return false;
+    if (!FWObject::cmp(obj, recursive)) return false;
 
     const Management *o2=Management::constcast(obj);
 
@@ -239,10 +239,10 @@ xmlNodePtr PolicyInstallScript::toXML(xmlNodePtr parent) throw(FWException)
     return FWObject::toXML(parent);
 }
 
-bool PolicyInstallScript::cmp(const FWObject *obj) throw(FWException)
+bool PolicyInstallScript::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (PolicyInstallScript::constcast(obj)==NULL) return false;
-    if (!FWObject::cmp(obj)) return false;
+    if (!FWObject::cmp(obj, recursive)) return false;
 
     const PolicyInstallScript *o2=PolicyInstallScript::constcast(obj);
 
@@ -341,10 +341,10 @@ xmlNodePtr SNMPManagement::toXML(xmlNodePtr parent) throw(FWException)
     return FWObject::toXML(parent);
 }
 
-bool SNMPManagement::cmp(const FWObject *obj) throw(FWException)
+bool SNMPManagement::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (SNMPManagement::constcast(obj)==NULL) return false;
-    if (!FWObject::cmp(obj)) return false;
+    if (!FWObject::cmp(obj, recursive)) return false;
 
     const SNMPManagement *o2=SNMPManagement::constcast(obj);
 
@@ -459,10 +459,10 @@ xmlNodePtr FWBDManagement::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool FWBDManagement::cmp(const FWObject *obj) throw(FWException)
+bool FWBDManagement::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (FWBDManagement::constcast(obj)==NULL) return false;
-    if (!FWObject::cmp(obj)) return false;
+    if (!FWObject::cmp(obj, recursive)) return false;
 
     const FWBDManagement *o2=FWBDManagement::constcast(obj);
 

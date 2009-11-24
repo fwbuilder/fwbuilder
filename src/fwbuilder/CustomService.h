@@ -65,7 +65,7 @@ class CustomService : public Service
     
     virtual void       fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
-    virtual bool cmp(const FWObject *obj) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
     
     virtual FWObject& shallowDuplicate(
         const FWObject *obj, bool preserve_id = true) throw(FWException);

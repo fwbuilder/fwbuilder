@@ -112,6 +112,15 @@ FWObject& Interface::duplicate(const FWObject *x, bool preserve_id)
     return *this;
 }
 
+bool Interface::cmp(const FWObject *obj, bool recursive) throw(FWException)
+{
+    const Interface *rx = Interface::constcast(obj);
+    if (rx == NULL) return false;
+    if (bcast_bits != rx->bcast_bits ||
+        ostatus != rx->ostatus ||
+        snmp_type != rx->snmp_type) return false;
+    return FWObject::cmp(obj, recursive);
+}
 
 void Interface::fromXML(xmlNodePtr root) throw(FWException)
 {
