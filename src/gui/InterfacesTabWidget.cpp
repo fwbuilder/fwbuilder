@@ -129,8 +129,8 @@ void InterfacesTabWidget::closeTab()
     if ( this->count() == 1 ) return;
     int idx = this->currentIndex();
     QWidget *w = this->widget(idx);
-    Interface *interface = dynamic_cast<InterfaceEditorWidget*>(w)->getInterface() ;
-    if ( interface != NULL ) deleted.append( interface );
+    Interface *iface = dynamic_cast<InterfaceEditorWidget*>(w)->getInterface() ;
+    if ( iface != NULL ) deleted.append( iface );
     this->removeTab(idx);
     delete w;
 }
