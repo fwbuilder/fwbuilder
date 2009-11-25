@@ -209,6 +209,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TextEditWidget</class>
+   <extends>QTextEdit</extends>
+   <header>TextEditWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>obj_name</tabstop>
   <tabstop>address</tabstop>

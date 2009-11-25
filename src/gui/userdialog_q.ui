@@ -178,11 +178,6 @@
    <extends>QTextEdit</extends>
    <header>TextEditWidget.h</header>
   </customwidget>
-  <customwidget>
-   <class>QLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>QLineEdit.h</header>
-  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>obj_name</tabstop>
