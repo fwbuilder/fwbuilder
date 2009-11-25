@@ -16,6 +16,7 @@
 
 #include "secuwallIfaceOptsDialog.h"
 #include "platforms.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Cluster.h"
@@ -91,8 +92,13 @@ secuwallIfaceOptsDialog::~secuwallIfaceOptsDialog()
  */
 void secuwallIfaceOptsDialog::accept()
 {
-    FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();
-    assert(ifopt != NULL);
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
+
+    // new_state  is a copy of the interface object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* ifopt = Interface::cast(new_state)->getOptionsObject();
+    assert(ifopt!=NULL);
 
     if (cluster_interface)
     {
@@ -104,8 +110,10 @@ void secuwallIfaceOptsDialog::accept()
         ifopt->setStr("type", new_type.toStdString());
     }
 
-    data.saveAll();
+    data.saveAll(ifopt);
 
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 
