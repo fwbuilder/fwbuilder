@@ -34,6 +34,7 @@
 #include "SimpleTextEditor.h"
 #include "FWWindow.h"
 #include "FWBSettings.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -342,17 +343,18 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
  */
 void iosaclAdvancedDialog::accept()
 {
-    FWOptions *options=(Firewall::cast(obj))->getOptionsObject();
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
+
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* options = Firewall::cast(new_state)->getOptionsObject();
     assert(options!=NULL);
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=NULL);
 
-    data.saveAll();
-
-//    PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
-//    pis->setCommand( installScript->text() );
-//    pis->setArguments( installScriptArgs->text() );
+    data.saveAll(options);
 
     const InetAddr *mgmt_addr = Firewall::cast(obj)->getManagementAddress();
     if (mgmt_addr)
@@ -362,6 +364,8 @@ void iosaclAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 

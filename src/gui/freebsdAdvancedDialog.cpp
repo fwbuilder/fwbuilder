@@ -28,6 +28,7 @@
 #include "platforms.h"
 
 #include "freebsdAdvancedDialog.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -106,14 +107,18 @@ freebsdAdvancedDialog::freebsdAdvancedDialog(QWidget *parent,FWObject *o)
  */
 void freebsdAdvancedDialog::accept()
 {
-    FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
+
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions *fwopt=(Firewall::cast(new_state))->getOptionsObject();
     assert(fwopt!=NULL);
 
-    Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    data.saveAll(fwopt);
 
-    data.saveAll();
-
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 
