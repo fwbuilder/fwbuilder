@@ -28,6 +28,7 @@
 
 #include "vrrpOptionsDialog.h"
 #include "FWWindow.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Cluster.h"
@@ -71,7 +72,15 @@ vrrpOptionsDialog::~vrrpOptionsDialog()
 void vrrpOptionsDialog::accept()
 {
     if (!validate()) return;
-    data.saveAll();
+    // the parent of this dialog is InterfaceDialog, not ProjectPanel
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChangeOptionsObject(project, obj);
+    FWObject* new_state = cmd->getNewState();
+
+    data.saveAll(new_state);
+
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 
