@@ -100,6 +100,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     assert(fw!=NULL);
     platform = fw->getStr("platform");
     fwopt = Firewall::cast(fw)->getOptionsObject();
+    FWOptions *rulesetopt = s->getOptionsObject();
 
     if (platform == "iptables")
     {
@@ -119,10 +120,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
             // backwards compatibility the rule set is considered
             // filter+mangle rather than mangle only.
             m_dialog->iptables_only->show();
-            QStringList mangle_rulesets = 
-                QString(fwopt->getStr("ipt_mangle_only_rulesets").c_str()).
-                split(" ");
-            bool f = (mangle_rulesets.indexOf(s->getName().c_str()) >= 0);
+            bool f = rulesetopt->getBool("mangle_only_rule_set");
             m_dialog->ipt_filter_table->setChecked(!f);
             m_dialog->ipt_mangle_table->setChecked(f);
         } else
@@ -201,6 +199,8 @@ void RuleSetDialog::applyChanges()
     RuleSet *s = dynamic_cast<RuleSet*>(new_state);
     assert(s!=NULL);
 
+    FWOptions *rulesetopt = s->getOptionsObject();
+
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     new_state->setComment(
@@ -215,23 +215,11 @@ void RuleSetDialog::applyChanges()
 
     s->setTop(m_dialog->top_rule_set->isChecked());
 
-    QStringList mangle_rulesets = 
-        QString(fwopt->getStr("ipt_mangle_only_rulesets").c_str()).
-        split(" ");
-
-    if (platform == "iptables")
+    if (platform == "iptables" && Policy::isA(s))
     {
-        if (m_dialog->ipt_mangle_table->isChecked() &&
-            mangle_rulesets.indexOf(s->getName().c_str()) < 0)
-            mangle_rulesets.push_back(s->getName().c_str());
-
-        if (!m_dialog->ipt_mangle_table->isChecked() &&
-            mangle_rulesets.indexOf(s->getName().c_str()) >= 0)
-            mangle_rulesets.removeAll(s->getName().c_str());
+        rulesetopt->setBool("mangle_only_rule_set",
+                            m_dialog->ipt_mangle_table->isChecked());
     }
-
-    fwopt->setStr("ipt_mangle_only_rulesets",
-                  mangle_rulesets.join(" ").toAscii().constData());
 
     if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     

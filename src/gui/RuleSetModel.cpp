@@ -178,6 +178,7 @@ void RuleSetModel::initModel()
     {
 
         Rule *r = Rule::cast( *i );
+        if (r == NULL) continue;  // skip RuleSetOptions
 
 //        rulesByPosition[r->getPosition()] = r;
 

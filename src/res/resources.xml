@@ -198,6 +198,11 @@
       <hidden>true</hidden>
     </InterfaceOptions>
 
+    <RuleSetOptions>
+      <description>Rule Set Options</description>
+      <hidden>true</hidden>
+    </RuleSetOptions>
+
     <PolicyRuleOptions>
       <description>Policy Rule Options</description>
       <hidden>true</hidden>
