@@ -576,24 +576,13 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
                     QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
                 return;
 
+            unselect();
+            removeObjectFromTreeView(obj);
             obj->getParent()->remove(obj);
             QString filename = m_project->getFileName();
             QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
             return;
         }
-
-        // /* remove from our internal tables before it is removed from the
-        //  * object tree so we could use obj->getId()
-        //  */
-        // if (is_library && !is_deleted_object)
-        // {
-        //     int idx = getIdxForLib(obj);
-        //     QTreeWidget *otv = idxToTrees[idx];
-        //     assert(otv!=NULL);
-        //     m_objectManipulator->widgetStack->removeWidget( otv );
-        //     removeLib(idx);
-        // } else
-        //     removeObjectFromTreeView(obj);
 
         if (is_library && obj->isReadOnly()) obj->setReadOnly(false);
 
