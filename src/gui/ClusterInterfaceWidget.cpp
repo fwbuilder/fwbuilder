@@ -70,15 +70,15 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
         {
             Interface *iface = Interface::cast(*iter);
             QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(list, QStringList() << QString::fromUtf8(iface->getName().c_str()));
-            //if (!interfaceSelectable(iface))
-            //    ifaceitem->setFlags(Qt::ItemIsEnabled);
+            if (!interfaceSelectable(iface))
+                ifaceitem->setFlags(Qt::ItemIsEnabled);
             FWObjectTypedChildIterator iter2 = iface->findByType(Interface::TYPENAME);
             for ( ; iter2 != iter2.end() ; ++iter2 )
             {
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
-                //if (!interfaceSelectable(subiface))
-                //    subitem->setFlags(Qt::ItemIsEnabled);
+                if (!interfaceSelectable(subiface))
+                    subitem->setFlags(Qt::NoItemFlags);
             }
         }
         InterfacesList newlist;
@@ -131,7 +131,8 @@ ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
 bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
 {
     libfwbuilder::Cluster cluster;
-    cluster.add(iface, false);
+//    cluster.add(iface, false);
+    cluster.setStr("host_os", os.toStdString());
 
     Resources* os_res = Resources::os_res[os.toStdString()];
     string os_family = os.toStdString();
