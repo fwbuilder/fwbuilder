@@ -269,10 +269,6 @@ void TimeDialog::applyChanges()
 
     interval->setDaysOfWeek(weekDays.join(",").toAscii().data());
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
-    
-    //TODO: Need to refactor this method
-    BaseObjectDialog::applyChanges();
-
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
 }
 

@@ -154,9 +154,8 @@ void AddressRangeDialog::applyChanges()
 
     }
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     
-    BaseObjectDialog::applyChanges();
 }
 
 

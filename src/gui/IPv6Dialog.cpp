@@ -210,9 +210,7 @@ void IPv6Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr(AF_INET6, 0));
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
-    
-    BaseObjectDialog::applyChanges();
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
 }
 
 void IPv6Dialog::DNSlookup()

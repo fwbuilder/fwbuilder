@@ -284,9 +284,8 @@ void ClusterGroupDialog::applyChanges()
 
     saveGroupType(new_state);
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     
-    BaseObjectDialog::applyChanges();
 }
 
 /*
@@ -321,7 +320,6 @@ void ClusterGroupDialog::openClusterConfDialog()
 
             // mark as modified
             changed();
-            BaseObjectDialog::applyChanges();
         }
         delete d;
     }
@@ -378,7 +376,6 @@ void ClusterGroupDialog::openParametersEditor()
             // object properties summary text may have to change too)
             mw->activeProject()->updateObjectInTree(obj, true);
             changed();
-            BaseObjectDialog::applyChanges();
         }
         delete dlg;
     }

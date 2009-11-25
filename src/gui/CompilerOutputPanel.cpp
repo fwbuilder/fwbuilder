@@ -68,7 +68,6 @@ void CompilerOutputPanel::changed()
 
 void CompilerOutputPanel::applyChanges()
 {
-    BaseObjectDialog::applyChanges();
 }
 
 void CompilerOutputPanel::getHelpName(QString *str)

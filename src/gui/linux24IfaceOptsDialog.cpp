@@ -116,7 +116,7 @@ void linux24IfaceOptsDialog::accept()
 
     data.saveAll(ifopt);
 
-    if (!cmd->getOldState()->cmp(new_state)) project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
     
     QDialog::accept();
 }

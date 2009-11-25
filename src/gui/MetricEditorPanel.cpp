@@ -76,7 +76,6 @@ void MetricEditorPanel::changed()
 void MetricEditorPanel::applyChanges()
 {
     rule->setMetric( value() );
-    BaseObjectDialog::applyChanges();
 }
 
 void MetricEditorPanel::getHelpName(QString *str)

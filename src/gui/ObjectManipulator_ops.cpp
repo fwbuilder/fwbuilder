@@ -461,7 +461,7 @@ void ObjectManipulator::lockObject()
                     QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str())));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(true);
-                if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+                if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
             }
         }
         // getCurrentObjectTree()->setLockFlags();
@@ -501,7 +501,7 @@ void ObjectManipulator::unlockObject()
                     QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str())));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(false);
-                if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+                if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
             }
         }
         //getCurrentObjectTree()->setLockFlags();

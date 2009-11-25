@@ -60,7 +60,6 @@ void BlankDialog::validate(bool *res)
 
 void BlankDialog::applyChanges()
 {
-    BaseObjectDialog::applyChanges();
 }
 
 

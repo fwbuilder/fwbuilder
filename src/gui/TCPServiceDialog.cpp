@@ -234,9 +234,8 @@ void TCPServiceDialog::applyChanges()
 
     new_state->setBool("established",  m_dialog->established->isChecked());
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     
-    BaseObjectDialog::applyChanges();
 }
 
 void TCPServiceDialog::toggleEstablished()

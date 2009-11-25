@@ -159,8 +159,7 @@ void UDPServiceDialog::applyChanges()
     TCPUDPService::cast(new_state)->setDstRangeStart(m_dialog->ds->value());
     TCPUDPService::cast(new_state)->setDstRangeEnd(m_dialog->de->value());
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     
-    BaseObjectDialog::applyChanges();
 }
 

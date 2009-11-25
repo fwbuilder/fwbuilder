@@ -321,9 +321,8 @@ void FirewallDialog::applyChanges()
         m_project->registerRuleSetRedrawRequest();
     }
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
 
-    BaseObjectDialog::applyChanges();
     updateTimeStamps();
 }
 
@@ -335,10 +334,7 @@ void FirewallDialog::openFWDialog()
         if (w==NULL)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
         assert(d!=NULL);
-
-        if (d->exec() == QDialog::Accepted)
-            BaseObjectDialog::applyChanges();
-
+        d->exec();
         delete d;
     }
     catch (FWException &ex)
@@ -361,10 +357,7 @@ void FirewallDialog::openOSDialog()
         if (w==NULL)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
         assert(d!=NULL);
-
-        if (d->exec() == QDialog::Accepted)
-            BaseObjectDialog::applyChanges();
-
+        d->exec();
         delete d;
     }
     catch (FWException &ex)

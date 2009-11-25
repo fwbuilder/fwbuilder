@@ -290,10 +290,6 @@ void ObjectEditor::activateDialog(const QString &dialog_name,
             this,
             SLOT(changed()));
 
-    connect(dialogs[ current_dialog_idx ], SIGNAL(notify_changes_applied_sign()),
-            this,
-            SLOT(notifyChangesApplied()));
-
     connect(this, SIGNAL(getHelpName_sign(QString*)),
             dialogs[ current_dialog_idx ],
             SLOT(getHelpName(QString*)));
@@ -351,30 +347,6 @@ void ObjectEditor::setHelpButton(QPushButton * b)
     helpButton=b;
     helpButton->setEnabled(true);
     connect((QWidget*)helpButton,SIGNAL(clicked()),this,SLOT(help()));
-}
-
-// Object dialog emits signal notify_changes_applied_sign() when it
-// applies changes to the object
-void ObjectEditor::notifyChangesApplied()
-{
-    //applyButton->setEnabled(false);
-    // send event so other project panels can reload themselves
-    // QCoreApplication::postEvent(
-    //     mw, new dataModifiedEvent(QString::fromUtf8(opened->getRoot()->getFileName().c_str()),
-    //                               opened->getId()));
-}
-
-// this method is connected to the "Apply" button
-// TODO: deprecate this
-void ObjectEditor::apply()
-{
-    if (fwbdebug) qDebug("ObjectEditor::apply");
-
-    bool isgood = true;
-    emit validate_sign( &isgood );
-
-    if (isgood)
-        emit applyChanges_sign(); // eventually emits notify_changes_applied_sign()
 }
 
 void ObjectEditor::help()

@@ -107,20 +107,10 @@ public:
     QWidget* getCurrentObjectDialog();
     
 public slots:
-    void apply();
+
     void help();
     void changed();
     void blank();
-
-    /*
-     * this slot is used by the object dialog class to notify
-     * ObjectEditor that it applied changes to the object. This way,
-     * object dialog can call its applyChanges() method itself, not
-     * only when user clicks "Apply" button.  Slot
-     * notifyChangesApplied() attached to this signal can disable
-     * Apply button and do other things as appropriate.
-     */
-    void notifyChangesApplied();
 
 signals:
 

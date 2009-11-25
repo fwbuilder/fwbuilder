@@ -219,9 +219,8 @@ void CustomServiceDialog::applyChanges()
     int af = (m_dialog->ipv6->isChecked()) ? AF_INET6 : AF_INET;
     s->setAddressFamily(af);
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     
-    BaseObjectDialog::applyChanges();
 }
 
 void CustomServiceDialog::fillDialogInputFields()

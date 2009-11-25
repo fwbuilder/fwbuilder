@@ -223,9 +223,7 @@ void ActionsDialog::applyChanges()
     else
         new_rule_options->setInt("ipfw_classify_method", DUMMYNETQUEUE);
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
-
-    BaseObjectDialog::applyChanges();
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
 }
 
 void ActionsDialog::tagvalueChanged(int)

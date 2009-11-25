@@ -172,13 +172,13 @@ void IPv4Dialog::validate(bool *result)
 void IPv4Dialog::applyChanges()
 {
     FWCmdChange* cmd = new FWCmdChange(m_project, obj);
-    FWObject* newState = cmd->getNewState();
+    FWObject* new_state = cmd->getNewState();
 
-    IPv4 *s = dynamic_cast<IPv4*>(newState);
+    IPv4 *s = dynamic_cast<IPv4*>(new_state);
     assert(s!=NULL);
 
-    newState->setName(string(m_dialog->obj_name->text().toUtf8().constData()) );
-    newState->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()) );
+    new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()) );
+    new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
     try
     {
@@ -196,9 +196,8 @@ void IPv4Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr());
 
-    if (!cmd->getOldState()->cmp(newState)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
 
-    BaseObjectDialog::applyChanges();
 }
 
 void IPv4Dialog::DNSlookup()

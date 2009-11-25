@@ -51,12 +51,6 @@ public slots:
         }
     }
 
-    virtual void applyChanges()
-    {
-        //TODO: When operations are performed in UndoCommands, we need to remove sending of the signal from this method.
-        emit notify_changes_applied_sign();
-    }
-    
 public:
     BaseObjectDialog(QWidget *parent) : QWidget(parent)
     {
@@ -71,7 +65,6 @@ public:
 
 signals:
     void changed_sign();
-    void notify_changes_applied_sign();
 
 };
 

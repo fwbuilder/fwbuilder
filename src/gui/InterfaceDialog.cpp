@@ -440,9 +440,8 @@ void InterfaceDialog::applyChanges()
     // interface name
     m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(intf);
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     
-    BaseObjectDialog::applyChanges();
 }
 
 void InterfaceDialog::openIfaceDialog()
@@ -453,15 +452,7 @@ void InterfaceDialog::openIfaceDialog()
         if (w==NULL)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
         assert(d!=NULL);
-
-        if (d->exec() == QDialog::Accepted)
-        {
-            // update object tree (if interface type has changed, the
-            // object properties summary text may have to change too)
-            // mw->activeProject()->updateObjectInTree(obj, true);
-            // changed();
-            BaseObjectDialog::applyChanges();
-        }
+        d->exec();
         delete w;
     }
     catch (FWException &ex)

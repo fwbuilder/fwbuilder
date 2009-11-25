@@ -90,8 +90,7 @@ void PrototypeDialog::applyChanges()
     new_state->setName( string(obj_name->text().utf8()) );
     new_state->setComment( string(comment->text().utf8()) );
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     
-    BaseObjectDialog::applyChanges();
 }
 

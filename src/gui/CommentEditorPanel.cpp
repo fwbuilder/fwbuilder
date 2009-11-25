@@ -116,7 +116,6 @@ void CommentEditorPanel::applyChanges()
         string(m_widget->editor->toPlainText().toUtf8().constData())
     );
 
-    BaseObjectDialog::applyChanges();
 }
 
 void CommentEditorPanel::getHelpName(QString *str)

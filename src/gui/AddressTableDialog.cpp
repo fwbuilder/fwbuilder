@@ -137,9 +137,8 @@ void AddressTableDialog::applyChanges()
     s->setSourceName( (const char *)cs );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    if (!cmd->getOldState()->cmp(new_state)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
     
-    BaseObjectDialog::applyChanges();
 }
 
 void AddressTableDialog::browse()
