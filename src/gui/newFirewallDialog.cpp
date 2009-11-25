@@ -859,13 +859,13 @@ void newFirewallDialog::finishClicked()
 
 /* create interfaces */
 
-        foreach(EditedInterfaceData interface, this->m_dialog->interfaceEditor1->getNewData())
+        foreach(EditedInterfaceData iface, this->m_dialog->interfaceEditor1->getNewData())
         {
-            QString name     =  interface.name;
-            QString label    =  interface.label;
-            bool    dyn      =  interface.type == 1;
-            bool    unnum    =  interface.type == 2;
-            QString physaddr =  interface.mac;
+            QString name     =  iface.name;
+            QString label    =  iface.label;
+            bool    dyn      =  iface.type == 1;
+            bool    unnum    =  iface.type == 2;
+            QString physaddr =  iface.mac;
 
             QList<QTreeWidgetItem*> ltwi = m_dialog->iface_sl_list->findItems( name , Qt::MatchExactly );
             assert(!ltwi.empty());
@@ -881,7 +881,7 @@ void newFirewallDialog::finishClicked()
 
             oi->setName( string(name.toUtf8().constData()) );
             oi->setLabel( string(label.toUtf8().constData()) );
-            oi->setComment( string(interface.comment.toUtf8().constData()) );
+            oi->setComment( string(iface.comment.toUtf8().constData()) );
 
             oi->setDyn(dyn);
             oi->setUnnumbered(unnum);
@@ -892,9 +892,9 @@ void newFirewallDialog::finishClicked()
                 qDebug("Adding interface %s: security_level=%d",
                        oi->getName().c_str(), sl);
 
-            if (interface.type == 0)
+            if (iface.type == 0)
             {
-                foreach(AddressInfo address, interface.addresses)
+                foreach(AddressInfo address, iface.addresses)
                 {
                     if (address.address == "0.0.0.0") continue;
                     if (address.ipv4)
