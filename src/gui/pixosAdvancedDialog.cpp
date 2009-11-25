@@ -31,6 +31,7 @@
 
 #include "pixosAdvancedDialog.h"
 #include "FWWindow.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -107,7 +108,18 @@ pixosAdvancedDialog::pixosAdvancedDialog(QWidget *parent,FWObject *o)
  */
 void pixosAdvancedDialog::accept()
 {
-    data.saveAll();
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
+
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
+    assert(fwoptions!=NULL);
+
+    data.saveAll(fwoptions);
+
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 

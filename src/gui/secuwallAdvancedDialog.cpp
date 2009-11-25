@@ -21,6 +21,7 @@
 //#include <arpa/inet.h>
 
 #include "secuwallAdvancedDialog.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 
@@ -223,16 +224,20 @@ secuwallAdvancedDialog::secuwallAdvancedDialog(QWidget *parent, FWObject *o)
 void secuwallAdvancedDialog::accept()
 {
     // validate user input before saving
-    if (!validate())
-    {
-        return;
-    }
+    if (!validate()) return;
 
-    FWOptions *fwopt = (Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt != NULL);
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
 
-    data.saveAll();
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
+    assert(fwoptions!=NULL);
 
+    data.saveAll(fwoptions);
+
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 
