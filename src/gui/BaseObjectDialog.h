@@ -39,7 +39,6 @@ class BaseObjectDialog : public QWidget
 protected:
     libfwbuilder::FWObject *obj;
     bool init;
-    bool data_changed;
     ProjectPanel *m_project;
 
 public slots:
@@ -48,7 +47,6 @@ public slots:
     {
         if (!init)
         {
-            data_changed = true;
             emit changed_sign();
         }
     }
@@ -56,7 +54,6 @@ public slots:
     virtual void applyChanges()
     {
         //TODO: When operations are performed in UndoCommands, we need to remove sending of the signal from this method.
-        data_changed = false;
         emit notify_changes_applied_sign();
     }
     
@@ -65,15 +62,12 @@ public:
     {
         obj = 0;
         init = false;
-        data_changed = false;
         m_project = NULL;
     }
     virtual ~BaseObjectDialog() {};
 
     void attachToProjectWindow(ProjectPanel *pp) { m_project = pp; }
     ProjectPanel* getAssociatedProjectWindow() { return m_project; }
-
-    bool isDataChanged() { return data_changed; }
 
 signals:
     void changed_sign();

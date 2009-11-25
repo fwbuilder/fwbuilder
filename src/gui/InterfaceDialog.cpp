@@ -447,8 +447,6 @@ void InterfaceDialog::applyChanges()
 
 void InterfaceDialog::openIfaceDialog()
 {
-    if (isDataChanged()) applyChanges();
-
     try
     {
         QWidget *w = DialogFactory::createIfaceDialog(this, obj);

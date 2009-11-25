@@ -76,7 +76,6 @@ void HostDialog::loadFWObject(FWObject *o)
     assert(s!=NULL);
 
     init = true;
-    data_changed = false;
 
     Management *mgmt=s->getManagementObject();
     assert(mgmt!=NULL);

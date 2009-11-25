@@ -297,8 +297,6 @@ void ClusterGroupDialog::openClusterConfDialog()
 {
     try
     {
-        if (isDataChanged()) applyChanges();
-
         QWidget *w = DialogFactory::createClusterConfDialog(this, obj);
         if (w == NULL)
         {
@@ -365,8 +363,6 @@ void ClusterGroupDialog::objectChanged()
  */
 void ClusterGroupDialog::openParametersEditor()
 {
-    if (isDataChanged()) applyChanges();
-
     FWOptions *gr_opt = ClusterGroup::cast(obj)->getOptionsObject();
 
     QDialog *dlg = dynamic_cast<QDialog*>(

@@ -329,13 +329,6 @@ void FirewallDialog::applyChanges()
 
 void FirewallDialog::openFWDialog()
 {
-    if (fwbdebug)
-        qDebug("FirewallDialog::openFWDialog: modified=%d", isDataChanged());
-
-    if (isDataChanged()) applyChanges();
-
-//    if (obj->getStr("version").empty()) saveVersion();
-
     try
     {
         QWidget *w = DialogFactory::createFWDialog(this,obj);
@@ -362,8 +355,6 @@ void FirewallDialog::openFWDialog()
 
 void FirewallDialog::openOSDialog()
 {
-    if (isDataChanged()) applyChanges();
-
     try
     {
         QWidget *w = DialogFactory::createOSDialog(this,obj);
