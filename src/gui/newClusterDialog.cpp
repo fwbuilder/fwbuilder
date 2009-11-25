@@ -648,10 +648,22 @@ void newClusterDialog::finishClicked()
     o->setStr("platform", this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("platform"));
     o->setStr("host_OS", this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("host_OS"));
 
+    foreach(EditedInterfaceData data, this->m_dialog->interfaceEditor->getNewData())
+    {
+        Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
+        oi->setName(string(data.name.toUtf8().constData()));
+
+        ncl->add(oi);
+        oi->setLabel(string(data.label.toUtf8().constData()));
+
+
+
+    }
+
     // create cluster interfaces and cluster groups
     int itm_index = 0;
     QTreeWidgetItem *itm = m_dialog->iface_list->topLevelItem(itm_index);
-
+/*
     while (itm != NULL)
     {
         QString name    = itm->text(0);
@@ -730,6 +742,7 @@ void newClusterDialog::finishClicked()
         itm_index++;
         itm = m_dialog->iface_list->topLevelItem(itm_index);
     }
+    */
     //}
 
     if (unloadTemplatesLib)
