@@ -202,10 +202,6 @@ void CompilerOutputPanel::validate(bool* b )
     *b=true;
 }
 
-void CompilerOutputPanel::isChanged(bool *)
-{
-}
-
 void CompilerOutputPanel::closeEvent(QCloseEvent *)
 {
 }

@@ -103,10 +103,6 @@ void MetricEditorPanel::validate(bool* b )
     *b=true;
 }
 
-void MetricEditorPanel::isChanged(bool *)
-{
-}
-
 void MetricEditorPanel::closeEvent(QCloseEvent *)
 {
 }

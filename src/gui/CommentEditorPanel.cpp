@@ -139,8 +139,4 @@ void CommentEditorPanel::validate(bool* b)
     *b=true;
 }
 
-void CommentEditorPanel::isChanged(bool*)
-{
-
-}
 
