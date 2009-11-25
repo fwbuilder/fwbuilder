@@ -28,6 +28,9 @@
 
 #include <QTextEdit>
 
+class QFocusEvent;
+class QKeyEvent;
+
 class TextEditWidget : public QTextEdit
 {
     Q_OBJECT;
@@ -43,7 +46,9 @@ public slots:
     
 public:
     TextEditWidget(QWidget *parent);
-    virtual void focusOutEvent(QFocusEvent * event);
+    virtual void focusOutEvent(QFocusEvent* event);
+    virtual void keyPressEvent(QKeyEvent* event);
+
 };
 
 #endif

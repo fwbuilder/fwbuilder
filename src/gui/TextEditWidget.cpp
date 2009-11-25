@@ -26,6 +26,9 @@
 
 #include "TextEditWidget.h"
 
+#include <QFocusEvent>
+#include <QKeyEvent>
+
 TextEditWidget::TextEditWidget(QWidget *parent) : QTextEdit(parent)
 {
     modified = false;
@@ -39,6 +42,13 @@ void TextEditWidget::dirty(bool f)
 
 void TextEditWidget::focusOutEvent(QFocusEvent * event)
 {
-    if (modified) emit textChanged(); // newTextAvailable();
     QTextEdit::focusOutEvent(event);
+    if (modified) emit textChanged(); // newTextAvailable();
 }
+
+void TextEditWidget::keyPressEvent(QKeyEvent* ev)
+{
+    QTextEdit::keyPressEvent(ev);
+    if (ev->key()==Qt::Key_Enter && modified)  emit textChanged();
+}
+
