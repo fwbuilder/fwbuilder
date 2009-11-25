@@ -30,6 +30,7 @@
 #include "SimpleTextEditor.h"
 #include "FWWindow.h"
 #include "Help.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -176,13 +177,18 @@ void ipcopAdvancedDialog::switchLOG_ULOG()
  */
 void ipcopAdvancedDialog::accept()
 {
-    FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
+
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
     assert(fwoptions!=NULL);
 
-    Management *mgmt=(Firewall::cast(obj))->getManagementObject();
+    Management *mgmt=(Firewall::cast(new_state))->getManagementObject();
     assert(mgmt!=NULL);
 
-    data.saveAll();
+    data.saveAll(fwoptions);
 
 /*********************  data for fwbd and install script **************/
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
@@ -195,6 +201,8 @@ void ipcopAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData());
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData());
 
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 

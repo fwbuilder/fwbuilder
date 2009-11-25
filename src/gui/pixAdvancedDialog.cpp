@@ -34,6 +34,7 @@
 #include "SimpleTextEditor.h"
 #include "FWWindow.h"
 #include "FWBSettings.h"
+#include "FWCmdChange.h"
 
 #include "CompilerDriver_pix.h"
 
@@ -769,13 +770,19 @@ void pixAdvancedDialog::fixupCmdChanged()
  */
 void pixAdvancedDialog::accept()
 {
-    FWOptions *options=(Firewall::cast(obj))->getOptionsObject();
-    assert(options!=NULL);
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
 
-    Management *mgmt=(Firewall::cast(obj))->getManagementObject();
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
+    assert(fwoptions!=NULL);
+
+    Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
     assert(mgmt!=NULL);
 
-    data.saveAll();
+    data.saveAll(fwoptions);
+
     saveFixups();
 
 //    PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
@@ -783,7 +790,7 @@ void pixAdvancedDialog::accept()
 //    pis->setArguments( installScriptArgs->text() );
 
     // find first interface marked as "management"
-    const InetAddr *mgmt_addr = Firewall::cast(obj)->getManagementAddress();
+    const InetAddr *mgmt_addr = Firewall::cast(new_state)->getManagementAddress();
     if (mgmt_addr)
         mgmt->setAddress(*mgmt_addr);
 
@@ -804,14 +811,16 @@ void pixAdvancedDialog::accept()
             v=m_dialog->syslog_device_id_string_val->text();
         }
 
-        options->setStr("pix_syslog_device_id_opt",s.toLatin1().constData());
-        options->setStr("pix_syslog_device_id_val",v.toLatin1().constData());
+        fwoptions->setStr("pix_syslog_device_id_opt",s.toLatin1().constData());
+        fwoptions->setStr("pix_syslog_device_id_val",v.toLatin1().constData());
     }
 
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 

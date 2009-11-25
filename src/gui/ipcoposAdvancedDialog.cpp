@@ -28,6 +28,7 @@
 #include "platforms.h"
 
 #include "ipcoposAdvancedDialog.h"
+#include "FWCmdChange.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Management.h"
@@ -182,14 +183,18 @@ ipcoposAdvancedDialog::ipcoposAdvancedDialog(QWidget *parent,FWObject *o)
  */
 void ipcoposAdvancedDialog::accept()
 {
-    FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt!=NULL);
+    ProjectPanel *project = mw->activeProject();
+    FWCmdChange* cmd = new FWCmdChange(project, obj);
 
-    Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    // new_state  is a copy of the fw object
+    FWObject* new_state = cmd->getNewState();
+    FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
+    assert(fwoptions!=NULL);
 
-    data.saveAll();
+    data.saveAll(fwoptions);
 
+    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    
     QDialog::accept();
 }
 
