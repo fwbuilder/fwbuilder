@@ -27,6 +27,7 @@
 #include "ui_ClusterInterfaceWidget.h"
 
 using namespace libfwbuilder;
+using namespace std;
 
 ClusterInterfaceWidget::ClusterInterfaceWidget(QWidget *parent) :
     QWidget(parent),
@@ -62,13 +63,23 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
         this->m_ui->interfaces->addLayout(layout);
         QLabel *label = new QLabel(QString::fromUtf8(fw->getName().c_str()), this);
         layout->addWidget(label);
-        QListWidget *list = new QListWidget(this);
+        QTreeWidget *list = new QTreeWidget(this);
         layout->addWidget(list);
         FWObjectTypedChildIterator iter = fw->findByType(Interface::TYPENAME);
         for ( ; iter != iter.end() ; ++iter )
         {
-            Interface *interface = Interface::cast(*iter);
-            list->addItem(QString::fromUtf8(interface->getName().c_str()));
+            Interface *iface = Interface::cast(*iter);
+            QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(list, QStringList() << QString::fromUtf8(iface->getName().c_str()));
+            //if (!interfaceSelectable(iface))
+            //    ifaceitem->setFlags(Qt::ItemIsEnabled);
+            FWObjectTypedChildIterator iter2 = iface->findByType(Interface::TYPENAME);
+            for ( ; iter2 != iter2.end() ; ++iter2 )
+            {
+                Interface *subiface = Interface::cast(*iter2);
+                QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
+                //if (!interfaceSelectable(subiface))
+                //    subitem->setFlags(Qt::ItemIsEnabled);
+            }
         }
         InterfacesList newlist;
         newlist.label = label;
@@ -102,7 +113,7 @@ ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
     res.comment = this->m_ui->comment->toPlainText();
     foreach(InterfacesList ifacelist, this->lists.values())
     {
-        QString selectedInterface = ifacelist.list->currentItem()->text();
+        QString selectedInterface = ifacelist.list->currentItem()->text(0);
         FWObjectTypedChildIterator iter = ifacelist.firewall->findByType(Interface::TYPENAME);
         for ( ; iter!=iter.end(); ++iter )
         {
@@ -115,5 +126,22 @@ ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
         }
     }
     return res;
+}
+
+bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
+{
+    libfwbuilder::Cluster cluster;
+    cluster.add(iface, false);
+
+    Resources* os_res = Resources::os_res[os.toStdString()];
+    string os_family = os.toStdString();
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+    auto_ptr<interfaceProperties> int_prop(
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            os_family));
+    QString err;
+    return int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster), dynamic_cast<FWObject*>(iface), false, err);
 }
 

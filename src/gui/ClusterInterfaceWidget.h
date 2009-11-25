@@ -28,11 +28,18 @@
 
 #include <QtGui/QWidget>
 #include <QtGui/QLabel>
-#include <QtGui/QListWidget>
+#include <QtGui/QTreeWidget>
 #include <QVBoxLayout>
 
+#include <fwbuilder/Resources.h>
+#include <fwbuilder/Cluster.h>
 #include <fwbuilder/Firewall.h>
 #include <fwbuilder/Interface.h>
+#include <fwbuilder/InterfaceData.h>
+#include <interfaceProperties.h>
+#include <interfacePropertiesObjectFactory.h>
+
+#include <memory>
 
 class ClusterInterfacesSelectorWidget;
 struct ClusterInterfaceData;
@@ -46,7 +53,7 @@ namespace Ui {
 struct InterfacesList
 {
     QVBoxLayout *layout;
-    QListWidget *list;
+    QTreeWidget *list;
     QLabel *label;
     libfwbuilder::Firewall *firewall;
 };
@@ -59,6 +66,7 @@ public:
     void setFirewallList(QList<libfwbuilder::Firewall*>);
     void setCurrentInterface(QString);
     ClusterInterfaceData getInterfaceData();
+    bool interfaceSelectable(libfwbuilder::Interface*);
 
 protected:
     void changeEvent(QEvent *e);
