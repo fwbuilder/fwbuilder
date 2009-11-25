@@ -210,21 +210,13 @@ ObjectEditor::OptType FWWindow::getOpenedOptEditor()
     return oe->getOpenedOpt();
 }
 
-void FWWindow::selectObjectInEditor(FWObject *o)
-{
-    oe->selectObject(o);
-}
-
 void FWWindow::closeEditorPanel()
 {
-    //m_mainWindow->objectEditorFrame->hide();
     m_mainWindow->editorDockWidget->hide(); // editor
 }
 
 void FWWindow::openEditorPanel()
 {
-    //m_mainWindow->objectEditorFrame->show();
-
 }
 
 void FWWindow::findObject(FWObject *o)

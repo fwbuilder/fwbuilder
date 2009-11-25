@@ -231,27 +231,6 @@ QWidget* ObjectEditor::getCurrentObjectDialog()
     else return NULL;
 }
 
-// /*
-//  * TODO: deprecate this
-//  */
-// void ObjectEditor::show()
-// {
-// }
-
-// /*
-//  * TODO: deprecate this
-//  *
-//  * need to call ProjectPanel::closeEditorPanel from here because
-//  * we connect signal clicked() from the closeButton to the slot in
-//  * ObjectEditor rather than in ProjectPanel.
-//  */
-// void ObjectEditor::hide()
-// {
-//     mw->closeEditorPanel();
-//     current_dialog_idx = -1;
-//     current_dialog_name = "";
-// }
-
 QString ObjectEditor::getOptDialogName(OptType t)
 {
     return QString("OptionDialog_%1").arg(t);
@@ -395,26 +374,6 @@ bool ObjectEditor::validate()
     bool isgood = true;
     emit validate_sign( &isgood );
     return isgood;
-}
-
-/*
- * For groups, select object in the group dialog. Argument @o is the
- * child object that has to be selected in the dialog, <opened> is
- * currently opened object (which should be the parent of @o or hold
- * reference to @o)
- */
-void ObjectEditor::selectObject(FWObject *o)
-{
-    qDebug("ObjectEditor::selectObject");
-    // class Library inherits Group but has its own dialog where
-    // children objects are not shown.
-    if (Library::cast(opened)!=NULL || Group::cast(opened)==NULL || current_dialog_idx==-1)
-        return;
-    ((GroupObjectDialog *) dialogs[current_dialog_idx])->selectObject(o);
-}
-
-void ObjectEditor::selectionChanged(FWObject*)
-{
 }
 
 void ObjectEditor::blank()

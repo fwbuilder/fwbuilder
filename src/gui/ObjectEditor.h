@@ -89,9 +89,6 @@ public:
     void open(libfwbuilder::FWObject *o);
     void openOpt(libfwbuilder::FWObject *, OptType t);
 
-    /* void show(); */
-    /* void hide(); */
-
     libfwbuilder::FWObject* getOpened() { return opened; };
     OptType getOpenedOpt() {return openedOpt;};
 
@@ -100,8 +97,6 @@ public:
     bool validate();
     
     void setHelpButton(QPushButton * b);
-    void selectObject(libfwbuilder::FWObject *o);
-    void selectionChanged(libfwbuilder::FWObject *o);
 
     int getCurrentDialogIndex() { return current_dialog_idx; };
     QWidget* getCurrentObjectDialog();
