@@ -250,7 +250,7 @@ private:
     libfwbuilder::RuleElement* getRE(QModelIndex index);
 
     bool canChange(RuleSetModel* md);
-    void insertRule(QModelIndex index);
+    void insertRule(QModelIndex index, bool isAfter = false);
 
 };
 

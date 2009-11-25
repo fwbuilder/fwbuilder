@@ -1372,7 +1372,7 @@ bool RuleSetView::canChange(RuleSetModel* md)
     return true;
 }
 
-void RuleSetView::insertRule(QModelIndex index) {
+void RuleSetView::insertRule(QModelIndex index,bool isAfter) {
     RuleSetModel* md = ((RuleSetModel*)model());
     if (!canChange(md)) return;
 
@@ -1382,7 +1382,7 @@ void RuleSetView::insertRule(QModelIndex index) {
         posRule = md->nodeFromIndex(index)->rule;
     }
 
-    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), (posRule == 0)?0:posRule->getPosition()));
+    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), (posRule == 0)?0:posRule->getPosition(), isAfter));
 }
 
 void RuleSetView::insertRule()
@@ -1404,22 +1404,19 @@ void RuleSetView::insertRule()
 void RuleSetView::addRuleAfterCurrent()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     QModelIndexList selection = getSelectedRows();
 
     if (selection.isEmpty())
     {
-        md->insertNewRule();
+        insertRule(QModelIndex());
     }
     else
     {
         QModelIndex lastSelectedIndex = selection.last();
-        md->insertNewRule(lastSelectedIndex, true);
+        insertRule(lastSelectedIndex, true);
     }
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
 void RuleSetView::insertNewRuleOnTop()
