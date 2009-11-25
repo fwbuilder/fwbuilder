@@ -1386,7 +1386,7 @@ void RuleSetView::insertRule()
         posRule = md->nodeFromIndex(firstSelectedIndex)->rule;
     }
 
-    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), posRule));
+    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), (posRule == 0)?0:posRule->getPosition()));
 }
 
 void RuleSetView::addRuleAfterCurrent()
@@ -1413,17 +1413,13 @@ void RuleSetView::addRuleAfterCurrent()
 void RuleSetView::insertNewRuleAtBottom()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     RuleSetModelIterator it = md->end();
     --it;
-    QModelIndex index = it.index();
+    Rule* posRule = md->nodeFromIndex(it.index())->rule;
 
-    md->insertNewRule(index, true);
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), posRule->getPosition(), true));
 }
 
 void RuleSetView::removeFromGroup()

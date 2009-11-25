@@ -36,6 +36,8 @@
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/RuleElement.h"
 
+#include <QDebug>
+
 using namespace libfwbuilder;
 
 /********************************************************
@@ -84,10 +86,10 @@ void FWCmdRule::undo()
  * FWCmdRuleInsert
  ********************************************************/
 
-FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset, Rule* posRule, bool isAfter, Rule* ruleToInsert):
+FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset, int position, bool isAfter, Rule* ruleToInsert):
         FWCmdRule(project, ruleset)
 {
-    this->posRule = posRule;
+    this->position = position;
     this->isAfter = isAfter;
     this->ruleToInsert = ruleToInsert;
     this->insertedRule = 0;
@@ -99,13 +101,13 @@ void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
 {
     if (ruleToInsert == 0)
     {
-        if (posRule == 0)
+        if (position == 0)
         {
             insertedRule = md->insertNewRule();
         } else
         {
-            QModelIndex index = md->index(posRule);
-            insertedRule = md->insertNewRule(index);
+            QModelIndex index = md->indexForPosition(position);
+            insertedRule = md->insertNewRule(index, isAfter);
         }
     } else {
         //TODO: insert ruleToInsert into the ruleset.

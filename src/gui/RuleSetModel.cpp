@@ -179,7 +179,7 @@ void RuleSetModel::initModel()
 
         Rule *r = Rule::cast( *i );
 
-        rulesByPosition[r->getPosition()] = r;
+//        rulesByPosition[r->getPosition()] = r;
 
         node = new RuleNode(RuleNode::Rule, QString());
         node->rule = r;
@@ -311,6 +311,25 @@ QVariant RuleSetModel::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
+Rule * RuleSetModel::findRuleForPosition(int position) const
+{
+    for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
+    {
+        Rule *r = Rule::cast( *i );
+        if (r->getPosition() == position)
+        {
+            return r;
+        }
+    }
+    return 0;
+}
+
+QModelIndex RuleSetModel::indexForPosition(int position) const
+{
+    Rule * res = findRuleForPosition(position);
+    return (res == 0)?QModelIndex():index(res, 0);
+}
+
 QModelIndex RuleSetModel::index(int row, int column, const QModelIndex &parent) const
 {
     //if (fwbdebug) qDebug() << "RuleSetModel::index(int row, int column, const QModelIndex &parent)";
@@ -345,14 +364,14 @@ QModelIndex RuleSetModel::index(int row, int column, QString groupName) const
     return createIndex(row, column, parent);
 }
 
-QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re)
+QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re) const
 {
     //if (fwbdebug) qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col)";
     int col = columnForRuleElementType(re->getTypeName().c_str());
     return index(rule, col);
 }
 
-QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col)
+QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col) const
 {
     //if (fwbdebug) qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
 
@@ -396,7 +415,7 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col)
     return createIndex(row, col, child);
 }
 
-int RuleSetModel::columnForRuleElementType(QString typeName)
+int RuleSetModel::columnForRuleElementType(QString typeName) const
 {
     //if (fwbdebug) qDebug() << "RuleSetModel::columnForRuleElementType(QString typeName)";
     int col = 1;
@@ -969,7 +988,7 @@ void RuleSetModel::deleteObject(QModelIndex &index, FWObject* obj)
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
 
     if (re==NULL || re->isAny()) return;
-    int id = obj->getId();
+//    int id = obj->getId();
 
     // if (fwbdebug)
     // {

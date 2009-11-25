@@ -109,6 +109,9 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QModelIndex index(int row, int column, QString groupName) const;
+    QModelIndex index(libfwbuilder::Rule *rule, int col=0) const;
+    QModelIndex index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re) const;
+    QModelIndex indexForPosition(int position) const;
     QModelIndex parent(const QModelIndex &child) const;
 
     bool isEmpty();
@@ -147,8 +150,7 @@ public:
     virtual bool checkRuleType(libfwbuilder::Rule *rule) = 0;
     void deleteObject(QModelIndex &index, libfwbuilder::FWObject* obj);
     bool insertObject(QModelIndex &index, libfwbuilder::FWObject *obj);
-    QModelIndex index(libfwbuilder::Rule *rule, int col=0);
-    QModelIndex index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re);
+
     int columnByType(ColDesc::ColumnType type);
     void rowChanged(const QModelIndex &index);
     void groupChanged(const QModelIndex &index);
@@ -165,7 +167,7 @@ protected:
 
     void insertRuleToModel(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter = false);
     void copyRuleContent(libfwbuilder::Rule *dst, libfwbuilder::Rule *src);
-    int columnForRuleElementType(QString);
+    int columnForRuleElementType(QString) const;
 
     QString getPositionAsString(RuleNode *node) const;
     ActionDesc getRuleActionDesc(libfwbuilder::Rule* r) const;
@@ -173,7 +175,7 @@ protected:
 private:
     libfwbuilder::RuleSet *ruleset;
     RuleNode *root;
-    QHash<int,libfwbuilder::Rule*> rulesByPosition;
+//    QHash<int,libfwbuilder::Rule*> rulesByPosition;
 
     void initModel();
 
@@ -189,6 +191,8 @@ private:
 
     void removeToList(QList<RuleNode*> &list, const QModelIndex &group, int first, int last);
     void insertFromList(const QList<RuleNode*> &list, const QModelIndex &parent, int position);
+
+    libfwbuilder::Rule * findRuleForPosition(int position) const;
 
 };
 

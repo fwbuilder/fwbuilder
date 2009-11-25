@@ -69,13 +69,13 @@ public:
 
 class FWCmdRuleInsert : public FWCmdRule
 {
-    libfwbuilder::Rule * posRule;
+    int position;
     libfwbuilder::Rule * ruleToInsert;
     libfwbuilder::Rule * insertedRule;
     bool isAfter;
 
 public:
-    FWCmdRuleInsert(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,libfwbuilder::Rule* posRule=0, bool isAfter=false, libfwbuilder::Rule* ruleToInsert=0);
+    FWCmdRuleInsert(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, int position=0, bool isAfter=false, libfwbuilder::Rule* ruleToInsert=0);
 
     void redoOnModel(RuleSetModel *md);
     void undoOnModel(RuleSetModel *md);
