@@ -79,7 +79,7 @@ public:
 private:
     QTabWidget *tabw;
     QToolButton *addAddr, *delAddr;
-    libfwbuilder::Interface *interface;
+    libfwbuilder::Interface *interfacep;
     Ui::InterfaceEditorWidget *m_ui;
     QMap<QPushButton*, QPair<QTableWidgetItem*, QTableWidgetItem*> > buttons;
     QMap<int, QPair<QTableWidgetItem*, QTableWidgetItem*> > rows;

@@ -38,19 +38,19 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     m_ui(new Ui::InterfaceEditorWidget)
 {
     tabw = dynamic_cast<QTabWidget*>(parent);
-    this->interface = interface;
+    this->interfacep = iface;
     m_ui->setupUi(this);
     setClusterMode(false);
-    this->m_ui->name->setText(interface->getName().c_str());
-    this->m_ui->label->setText(interface->getLabel().c_str());
-    if (interface->getPhysicalAddress() != NULL)
-       m_ui->mac->setText(interface->getPhysicalAddress()->getPhysAddress().c_str());
-    this->m_ui->comment->setPlainText(interface->getComment().c_str());
-    if ( this->interface->isDyn() )
+    this->m_ui->name->setText(interfacep->getName().c_str());
+    this->m_ui->label->setText(interfacep->getLabel().c_str());
+    if (iface->getPhysicalAddress() != NULL)
+       m_ui->mac->setText(iface->getPhysicalAddress()->getPhysAddress().c_str());
+    this->m_ui->comment->setPlainText(iface->getComment().c_str());
+    if ( this->interfacep->isDyn() )
         this->m_ui->type->setCurrentIndex(1);
-    if ( this->interface->isUnnumbered() )
+    if ( this->interfacep->isUnnumbered() )
         this->m_ui->type->setCurrentIndex(2);
-    FWObjectTypedChildIterator adriter = interface->findByType(IPv4::TYPENAME);
+    FWObjectTypedChildIterator adriter = iface->findByType(IPv4::TYPENAME);
     for ( ; adriter != adriter.end(); ++adriter )
     {
         Address *addr = Address::cast(*adriter);
@@ -59,7 +59,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
         rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
         rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
     }
-    FWObjectTypedChildIterator adriter2 = interface->findByType(IPv6::TYPENAME);
+    FWObjectTypedChildIterator adriter2 = iface->findByType(IPv6::TYPENAME);
     for ( ; adriter2 != adriter2.end(); ++adriter2 )
     {
         Address *addr = Address::cast(*adriter2);
@@ -78,7 +78,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     os = data.os;
     tabw = dynamic_cast<QTabWidget*>(parent);
     m_ui->setupUi(this);
-    this->interface = NULL;
+    this->interfacep = NULL;
     this->m_ui->name->setText(data.name);
     this->m_ui->label->setText(data.label);
     this->m_ui->comment->setText(data.comment);
@@ -87,7 +87,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     set<AddressInfo> addrs;
     for ( int i =0; i < data.interfaces.count(); i++ )
     {
-        Interface *intr = data.interfaces.at(i).second;
+        interfacep *intr = data.interfaces.at(i).second;
         FWObjectTypedChildIterator adriter = intr->findByType(IPv4::TYPENAME);
         for ( ; adriter != adriter.end(); ++adriter )
         {
@@ -161,7 +161,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     m_ui(new Ui::InterfaceEditorWidget)
 {
     tabw = dynamic_cast<QTabWidget*>(parent);
-    this->interface = NULL;
+    this->interfacep = NULL;
     m_ui->setupUi(this);
     setClusterMode(false);
     this->m_ui->name->setText(tr("New interface"));
@@ -235,7 +235,7 @@ void InterfaceEditorWidget::nameEdited(QString newname)
 
 Interface* InterfaceEditorWidget::getInterface()
 {
-    return this->interface;
+    return this->interfacep;
 }
 
 EditedInterfaceData InterfaceEditorWidget::getInterfaceData()

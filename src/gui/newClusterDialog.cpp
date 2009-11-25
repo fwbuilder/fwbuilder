@@ -645,12 +645,8 @@ void newClusterDialog::finishClicked()
 
     ncl = Cluster::cast(o);
 
-    o->setStr("platform",
-              readPlatform(m_dialog->platform).toLatin1().constData());
-
-    string host_os =
-        readHostOS(m_dialog->hostOS).toLatin1().constData();
-    o->setStr("host_OS", host_os);
+    o->setStr("platform", this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("platform"));
+    o->setStr("host_OS", this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("host_OS"));
 
     // create cluster interfaces and cluster groups
     int itm_index = 0;
