@@ -120,6 +120,12 @@ InterfaceOptions::InterfaceOptions() : FWOptions() {}
 InterfaceOptions::InterfaceOptions(const FWObjectDatabase *root,bool prepopulate) :
     FWOptions(root, prepopulate) {}
 
+const char *RuleSetOptions::TYPENAME={"RuleSetOptions"};
+RuleSetOptions::RuleSetOptions() : FWOptions() {}
+RuleSetOptions::RuleSetOptions(const FWObjectDatabase *root,
+                               bool prepopulate) :
+    FWOptions(root,prepopulate) {}
+
 const char *PolicyRuleOptions::TYPENAME={"PolicyRuleOptions"};
 PolicyRuleOptions::PolicyRuleOptions() : FWOptions() {}
 PolicyRuleOptions::PolicyRuleOptions(const FWObjectDatabase *root,
@@ -127,7 +133,6 @@ PolicyRuleOptions::PolicyRuleOptions(const FWObjectDatabase *root,
     FWOptions(root,prepopulate) {}
 
 const char *NATRuleOptions::TYPENAME={"NATRuleOptions"};
-
 NATRuleOptions::NATRuleOptions() : FWOptions() {}
 NATRuleOptions::NATRuleOptions(const FWObjectDatabase *root, bool prepopulate) :
     FWOptions(root,prepopulate) {}

@@ -106,6 +106,7 @@ namespace libfwbuilder
     class RuleElementTDst;
     class RuleElementTSrc;
     class RuleElementTSrv;
+    class RuleSetOptions;
     class SNMPManagement;
     class ServiceGroup;
     class TCPService;
@@ -424,6 +425,7 @@ public:
         DECLARE_CREATE_OBJ_METHOD(RuleElementTDst);
         DECLARE_CREATE_OBJ_METHOD(RuleElementTSrc);
         DECLARE_CREATE_OBJ_METHOD(RuleElementTSrv);
+        DECLARE_CREATE_OBJ_METHOD(RuleSetOptions);
         DECLARE_CREATE_OBJ_METHOD(SNMPManagement);
         DECLARE_CREATE_OBJ_METHOD(ServiceGroup);
         DECLARE_CREATE_OBJ_METHOD(TCPService);

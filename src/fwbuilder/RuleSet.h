@@ -57,6 +57,8 @@ class RuleSet : public FWObject
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 
+    virtual FWOptions* getOptionsObject();
+
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
         throw(FWException);

@@ -192,6 +192,8 @@ void FWObjectDatabase::init_create_methods_table()
             &FWObjectDatabase::createFWObjectRoutingRule;
         create_methods["RoutingRuleOptions"] =
             &FWObjectDatabase::createFWObjectRoutingRuleOptions;
+        create_methods["RuleSetOptions"] =
+            &FWObjectDatabase::createFWObjectRuleSetOptions;
 
         create_methods["Dst"] =
             &FWObjectDatabase::createFWObjectRuleElementDst;
@@ -363,6 +365,7 @@ CREATE_OBJ_METHOD(RuleElementSrv);
 CREATE_OBJ_METHOD(RuleElementTDst);
 CREATE_OBJ_METHOD(RuleElementTSrc);
 CREATE_OBJ_METHOD(RuleElementTSrv);
+CREATE_OBJ_METHOD(RuleSetOptions);
 CREATE_OBJ_METHOD(SNMPManagement);
 CREATE_OBJ_METHOD(ServiceGroup);
 CREATE_OBJ_METHOD(TCPService);

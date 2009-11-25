@@ -68,6 +68,15 @@ class InterfaceOptions : public FWOptions
     DECLARE_FWOBJECT_SUBTYPE(InterfaceOptions);
 };
 
+class RuleSetOptions : public FWOptions 
+{
+    public:
+    
+    RuleSetOptions();
+    RuleSetOptions(const FWObjectDatabase *root,bool prepopulate);
+    DECLARE_FWOBJECT_SUBTYPE(RuleSetOptions);
+};
+
 class PolicyRuleOptions : public FWOptions 
 {
     public:

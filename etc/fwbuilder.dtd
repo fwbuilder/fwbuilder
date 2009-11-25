@@ -84,7 +84,7 @@ TODO:
 <!ELEMENT FWObjectDatabase (Library*)>
 <!ATTLIST FWObjectDatabase
  xmlns        CDATA     #FIXED "http://www.fwbuilder.org/1.0/"
- version      %STRING;  #FIXED "14"
+ version      %STRING;  #FIXED "15"
  lastModified %NUMBER;  #IMPLIED
  id           ID        #REQUIRED
 >
@@ -182,6 +182,7 @@ own compiler) we do not define content model for this element.
 <!ELEMENT HostOptions       (Option*)>
 <!ELEMENT GatewayOptions    (Option*)>
 <!ELEMENT ClusterGroupOptions (Option*)>
+<!ELEMENT RuleSetOptions    (Option*)>
 
 <!-- 
       **** Document structure, rest ****
@@ -560,7 +561,7 @@ some can't (ipfilter, IOS, PIX)
  inactive             %BOOLEAN;   #IMPLIED
 >
 
-<!ELEMENT NAT (NATRule*)>
+<!ELEMENT NAT (NATRule*, RuleSetOptions)>
 <!ATTLIST NAT
  %STD_ATTRIBUTES;
  ipv4_rule_set       %BOOLEAN; #IMPLIED
@@ -568,7 +569,7 @@ some can't (ipfilter, IOS, PIX)
  top_rule_set        %BOOLEAN; #IMPLIED
 >
 
-<!ELEMENT Policy (PolicyRule*)>
+<!ELEMENT Policy (PolicyRule*, RuleSetOptions)>
 <!ATTLIST Policy
  %STD_ATTRIBUTES;
  ipv4_rule_set       %BOOLEAN; #IMPLIED
@@ -576,7 +577,7 @@ some can't (ipfilter, IOS, PIX)
  top_rule_set        %BOOLEAN; #IMPLIED
 >
 
-<!ELEMENT Routing (RoutingRule*)>
+<!ELEMENT Routing (RoutingRule*, RuleSetOptions)>
 <!ATTLIST Routing
  %STD_ATTRIBUTES;
  ipv4_rule_set       %BOOLEAN; #IMPLIED

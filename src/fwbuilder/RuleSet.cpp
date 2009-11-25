@@ -47,12 +47,19 @@ RuleSet::RuleSet()
     top = false;
 }
 
-RuleSet::RuleSet(const FWObjectDatabase*, bool)
+RuleSet::RuleSet(const FWObjectDatabase *root, bool prepopulate) :
+    FWObject(root, prepopulate)
 {
     setName("RuleSet");
     ipv4 = false;
     ipv6 = false;
     top = false;
+    if (prepopulate)
+    {
+        FWObjectDatabase *db = (FWObjectDatabase*)root;
+        assert(db);
+        add(db->createRuleSetOptions());
+    }
 }
 
 RuleSet::~RuleSet() {}
@@ -105,10 +112,22 @@ xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
     xmlNewProp(me, TOXMLCAST("top_rule_set"), 
                TOXMLCAST(((top) ? "True" : "False")));
 
+    // First all rules, skip options
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)
-        (*j)->toXML(me);
+    {
+        if (FWOptions::cast(*j) == NULL) (*j)->toXML(me);
+    }
+
+    FWObject *o;
+    if ( (o=getFirstByType( RuleSetOptions::TYPENAME ))!=NULL )
+	o->toXML(me);
 
     return me;
+}
+
+FWOptions* RuleSet::getOptionsObject()
+{
+    return FWOptions::cast(getFirstByType(RuleSetOptions::TYPENAME));
 }
 
 FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
