@@ -2039,9 +2039,9 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 
 void RuleSetView::unselect()
 {
-//    clearSelection();
-//    setCurrentIndex(QModelIndex());
-//    selectionModel->setSelected(NULL, QModelIndex());
+    clearSelection();
+    setCurrentIndex(QModelIndex());
+    fwosm->setSelected(NULL, QModelIndex());
 }
 
 FWObject* RuleSetView::getSelectedObject()

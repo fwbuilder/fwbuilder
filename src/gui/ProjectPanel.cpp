@@ -375,7 +375,6 @@ void ProjectPanel::unselectRules()
 
         if (rv && rv->getSelectedObject()!=getSelectedObject())
         {
-            rv->unselect();
             rv->clearFocus();
         }
     }

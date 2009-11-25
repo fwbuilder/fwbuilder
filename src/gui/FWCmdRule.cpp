@@ -69,22 +69,14 @@ void FWCmdRule::notify()
 void FWCmdRule::redo()
 {
     RuleSetModel* md = getRuleSetModel();
-    if (md != NULL)
-        redoOnModel(md);
-    else
-        redoOnBase();
-
+    redoOnModel(md);
     notify();
 }
 
 void FWCmdRule::undo()
 {
     RuleSetModel* md = getRuleSetModel();
-    if (md != NULL)
-        undoOnModel(md);
-    else
-        undoOnBase();
-
+    undoOnModel(md);
     notify();
 }
 
@@ -92,66 +84,43 @@ void FWCmdRule::undo()
  * FWCmdRuleInsert
  ********************************************************/
 
-FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset, Rule* posRule, bool isAfter, Rule* newRule):
+FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset, Rule* posRule, bool isAfter, Rule* ruleToInsert):
         FWCmdRule(project, ruleset)
 {
     this->posRule = posRule;
     this->isAfter = isAfter;
-    this->newRule = newRule;
+    this->ruleToInsert = ruleToInsert;
+    this->insertedRule = 0;
 
     setText(QObject::tr("insert rule"));
 }
 
 void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
 {
-    if (posRule == 0)
+    if (ruleToInsert == 0)
     {
-        newRule = md->insertNewRule();
-    } else
-    {
-        QModelIndex index = md->index(posRule);
-        newRule = md->insertNewRule(index);
-    }
-}
-
-/*
- * TODO: there is a problem with creating rules by calling
- * RuleSet::insertRuleAtTop because the new rule does not get initialized
- * in the same way as is done by RuleSetModel::initRule(). So re-doing
- * this operation while some other rule set is visible in the GUI creates
- * a rule which is different from the rule created when this operation was
- * executed for the first time.
- */
-void FWCmdRuleInsert::redoOnBase()
-{
-    if (posRule == 0)
-    {
-        ruleset->insertRuleAtTop();
-    } else
-    {
-        if (isAfter)
-            ruleset->appendRuleAfter(posRule->getPosition());
-        else
-            ruleset->insertRuleBefore(posRule->getPosition());
+        if (posRule == 0)
+        {
+            insertedRule = md->insertNewRule();
+        } else
+        {
+            QModelIndex index = md->index(posRule);
+            insertedRule = md->insertNewRule(index);
+        }
+    } else {
+        //TODO: insert ruleToInsert into the ruleset.
     }
 
-    QCoreApplication::postEvent(
-        mw, new openRulesetEvent(project->getFileName(), ruleset->getId()));
-    QCoreApplication::postEvent(
-        mw, new selectRuleElementEvent(project->getFileName(),
-                                       newRule->getId(),
-                                       ColDesc::GroupHandle));
+    getRuleSetView()->selectRE(insertedRule,0);
+
 }
 
 void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
 {
-    QModelIndex index = md->index(newRule);
+    QModelIndex index = md->index(insertedRule);
+    getRuleSetView()->scrollTo(index,  QAbstractItemView::PositionAtCenter);
+    getRuleSetView()->unselect();
     md->removeRow(index.row(), index.parent());
-}
-
-void FWCmdRuleInsert::undoOnBase()
-{
-    ruleset->remove(newRule);
-    QCoreApplication::postEvent(
-        mw, new openRulesetEvent(project->getFileName(), ruleset->getId()));
+    // do we need delete insertedRule?
+    insertedRule = 0;
 }
