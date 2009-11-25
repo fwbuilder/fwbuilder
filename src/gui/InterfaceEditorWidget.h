@@ -59,13 +59,6 @@ struct AddressInfo
     bool ipv4;
     QString address;
     QString netmask;
-    bool operator<( const AddressInfo &second ) const
-    {
-        if (address<second.address) return true;
-        if (netmask<second.netmask) return true;
-        if (!ipv4 && second.ipv4) return true;
-        return false;
-    }
 };
 
 class InterfaceEditorWidget : public QWidget {
