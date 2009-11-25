@@ -31,7 +31,7 @@
       <number>2</number>
      </property>
      <item>
-      <widget class="QTextEdit" name="editor" >
+      <widget class="TextEditWidget" name="editor" >
        <property name="minimumSize" >
         <size>
          <width>500</width>
@@ -97,6 +97,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <customwidgets>
+  <customwidget>
+   <class>TextEditWidget</class>
+   <extends>QTextEdit</extends>
+   <header>TextEditWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

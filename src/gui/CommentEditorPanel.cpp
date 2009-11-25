@@ -32,6 +32,7 @@
 #include "FWBSettings.h"
 #include "ObjectManipulator.h"
 #include "FWWindow.h"
+#include "FWCmdChange.h"
 
 #include <qmessagebox.h>
 #include <qfiledialog.h>
@@ -110,12 +111,15 @@ void CommentEditorPanel::changed()
 
 void CommentEditorPanel::applyChanges()
 {
-    if (fwbdebug) qDebug("CommentEditorPanel::applyChanges()");
+    FWCmdChange* cmd = new FWCmdChangeRuleComment(m_project, rule);
+    // new_state  is a copy of the rule object
+    FWObject* new_state = cmd->getNewState();
 
-    rule->setComment(
+    new_state->setComment(
         string(m_widget->editor->toPlainText().toUtf8().constData())
     );
 
+    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
 }
 
 void CommentEditorPanel::getHelpName(QString *str)
@@ -125,14 +129,8 @@ void CommentEditorPanel::getHelpName(QString *str)
 
 void CommentEditorPanel::loadFWObject(FWObject *obj)
 {
-    Rule *r=Rule::cast(obj);
-
-    rule=r;
-
-    FWObject *o = r;
-    while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
-    assert(o!=NULL);
-
+    Rule *r = Rule::cast(obj);
+    rule = r;
     setText(QString::fromUtf8(r->getComment().c_str()));
 }
 

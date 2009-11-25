@@ -101,5 +101,18 @@ public:
     FWCmdChangeRuleOptions(ProjectPanel *project, libfwbuilder::FWObject *obj);
 };
 
+/********************************************************
+ * FWCmdChangeRuleComment
+ ********************************************************/
+
+class FWCmdChangeRuleComment : public FWCmdChange
+{
+protected:
+    virtual void notify();
+
+public:
+    FWCmdChangeRuleComment(ProjectPanel *project, libfwbuilder::FWObject *obj);
+};
+
 
 #endif // FWCMDCHANGE_H

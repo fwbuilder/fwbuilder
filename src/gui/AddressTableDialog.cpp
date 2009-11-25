@@ -138,7 +138,7 @@ void AddressTableDialog::applyChanges()
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
     if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
-    
+   
 }
 
 void AddressTableDialog::browse()

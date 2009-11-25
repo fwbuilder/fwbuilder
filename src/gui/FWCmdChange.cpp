@@ -179,6 +179,36 @@ void FWCmdChangeRuleOptions::notify()
 }
 
 /********************************************************
+ * FWCmdChangeRuleComment
+ ********************************************************/
+
+FWCmdChangeRuleComment::FWCmdChangeRuleComment(ProjectPanel *project, FWObject *obj) :
+    FWCmdChange(project, obj, QObject::tr("Edit Rule Comment"))
+{}
+
+void FWCmdChangeRuleComment::notify()
+{
+    FWObject* obj = getObject();
+    QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+    // obj here is a Rule. We need to select RuleSet in the tree and
+    // redraw it in the rule set panel. To do so, using
+    // obj->getParent(). Note that rule set hasn't changed, so we send
+    // showObjectInTreeEvent rather than
+    // updateObjectInTreeEvent. Redraw whole rule set since there is
+    // no way to redraw single rule at this time.
+
+    QCoreApplication::postEvent(
+        mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
+    QCoreApplication::postEvent(
+        mw, new openRulesetEvent(filename, obj->getParent()->getId()));
+    QCoreApplication::postEvent(
+        mw, new selectRuleElementEvent(
+            filename, obj->getId(), ColDesc::Comment));
+    QCoreApplication::postEvent(
+        mw, new openOptObjectInEditorEvent(filename, obj->getId(), ObjectEditor::optComment));
+}
+
+/********************************************************
  * FWCmdChangeOptionsObject
  ********************************************************/
 
