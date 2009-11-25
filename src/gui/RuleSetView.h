@@ -119,6 +119,8 @@ public slots:
     void showContextMenu(const QPoint&);
 
     void insertRule();
+
+    void insertNewRuleOnTop();
     void insertNewRuleAtBottom();
     void addRuleAfterCurrent();
     void moveRuleUp();
@@ -248,6 +250,7 @@ private:
     libfwbuilder::RuleElement* getRE(QModelIndex index);
 
     bool canChange(RuleSetModel* md);
+    void insertRule(QModelIndex index);
 
 };
 

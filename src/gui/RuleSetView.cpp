@@ -606,7 +606,7 @@ void RuleSetView::addGenericMenuItemsToContextMenu(QMenu *menu) const
         menu->addAction(tr("Insert Rule"), this, SLOT( insertRule() ));
     else
     {
-        menu->addAction(tr("Add new rule on top"), this, SLOT( insertRule()));
+        menu->addAction(tr("Add new rule on top"), this, SLOT( insertNewRuleOnTop()));
         menu->addAction(tr("Add new rule at the bottom"), this, SLOT( insertNewRuleAtBottom()));
     }
     menu->addSeparator();
@@ -1372,21 +1372,33 @@ bool RuleSetView::canChange(RuleSetModel* md)
     return true;
 }
 
+void RuleSetView::insertRule(QModelIndex index) {
+    RuleSetModel* md = ((RuleSetModel*)model());
+    if (!canChange(md)) return;
+
+    Rule* posRule = 0;
+    if (index.isValid())
+    {
+        posRule = md->nodeFromIndex(index)->rule;
+    }
+
+    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), (posRule == 0)?0:posRule->getPosition()));
+}
+
 void RuleSetView::insertRule()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
     if (!canChange(md)) return;
 
     QModelIndexList selection = getSelectedRows();
-    Rule* posRule = 0;
 
+    QModelIndex index;
     if (!selection.isEmpty())
     {
-        QModelIndex firstSelectedIndex = selection.first();
-        posRule = md->nodeFromIndex(firstSelectedIndex)->rule;
+        index = selection.first();
     }
 
-    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), (posRule == 0)?0:posRule->getPosition()));
+    insertRule(index);
 }
 
 void RuleSetView::addRuleAfterCurrent()
@@ -1408,6 +1420,11 @@ void RuleSetView::addRuleAfterCurrent()
     }
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+}
+
+void RuleSetView::insertNewRuleOnTop()
+{
+    insertRule(QModelIndex());
 }
 
 void RuleSetView::insertNewRuleAtBottom()
