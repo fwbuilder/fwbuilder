@@ -33,7 +33,7 @@
 using namespace libfwbuilder;
 using namespace std;
 
-InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *interface) :
+InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) :
     QWidget(parent),
     m_ui(new Ui::InterfaceEditorWidget)
 {

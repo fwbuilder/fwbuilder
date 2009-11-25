@@ -111,6 +111,14 @@ bool FirewallSelectorWidget::isValid()
 {
     QString host_os, platform, version;
     QList<QPair<Firewall*, bool> > fws = this->getSelectedFirewalls();
+    if (fws.count() == 0)
+    {
+        QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("You should select at least one firewall to use in this cluster"),
+                "&Continue", QString::null, QString::null, 0, 1);
+        return false;
+    }
     for ( int i = 0; i < fws.count(); i++)
     {
         if (host_os.isEmpty()) host_os = fws.at(i).first->getStr("host_OS").c_str();
@@ -200,6 +208,7 @@ bool FirewallSelectorWidget::isValid()
 
 void FirewallSelectorWidget::clear()
 {
+    //QTableWidget::clear();
     for (int i =0; i < this->rows.keys().count(); i++)
     {
         this->removeRow(i);
@@ -207,8 +216,12 @@ void FirewallSelectorWidget::clear()
         radiorow.remove(rows[i].master);
         delete this->rows[i].master;
         delete this->rows[i].use;
-        rows.remove(i);
     }
+    boxrow.clear();
+    radiorow.clear();
+    rows.clear();
+    this->setRowCount(0);
+//    QTableWidget::clear();
 }
 
 

@@ -184,7 +184,7 @@ void newClusterDialog::showPage(const int page)
         mw->findAllFirewalls(fwlist);
         m_dialog->firewallSelector->setFirewallList(fwlist);
 
-        setNextEnabled(FIREWALLS_PAGE, false);
+        setNextEnabled(FIREWALLS_PAGE, !this->m_dialog->obj_name->text().isEmpty());
         setFinishEnabled(FIREWALLS_PAGE, false);
 
         break;
@@ -598,6 +598,7 @@ bool newClusterDialog::validateAddressAndMask(const QString &addr,
 
 void newClusterDialog::finishClicked()
 {
+    /*
     int p = currentPage();
 
     if (p == TEMPLATES_PAGE)
@@ -627,113 +628,113 @@ void newClusterDialog::finishClicked()
 
     }
     else
+    {*/
+    // create cluster object
+
+    FWObject *o;
+    o = db->create(Cluster::TYPENAME);
+    o->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
+
+    if (o == NULL)
     {
-        // create cluster object
+        QDialog::accept();
+        return;
+    }
 
-        FWObject *o;
-        o = db->create(Cluster::TYPENAME);
-        o->setName(m_dialog->obj_name->text().toStdString());
+    parent->add(o);
 
-        if (o == NULL)
+    ncl = Cluster::cast(o);
+
+    o->setStr("platform",
+              readPlatform(m_dialog->platform).toLatin1().constData());
+
+    string host_os =
+        readHostOS(m_dialog->hostOS).toLatin1().constData();
+    o->setStr("host_OS", host_os);
+
+    // create cluster interfaces and cluster groups
+    int itm_index = 0;
+    QTreeWidgetItem *itm = m_dialog->iface_list->topLevelItem(itm_index);
+
+    while (itm != NULL)
+    {
+        QString name    = itm->text(0);
+        QString label   = itm->text(1);
+        QString addr    = itm->text(2);
+        QString netmask = itm->text(3);
+        QString protocol  = itm->text(4);
+        QString secret  = itm->text(5);
+        QString vrid    = itm->text(6);
+
+        Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
+        oi->setName(name.toStdString());
+
+        ncl->add(oi);
+        oi->setLabel(label.toLatin1().constData());
+
+        QString addrname = QString("%1:%2:ip")
+                           .arg(m_dialog->obj_name->text())
+                           .arg(name);
+        IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+        oa->setName(addrname.toStdString());
+        oi->add(oa);
+        oa->setAddress(InetAddr(addr.toLatin1().constData()));
+        bool ok = false ;
+        int inetmask = netmask.toInt(&ok);
+        if (ok)
         {
-            QDialog::accept();
-            return;
+            oa->setNetmask(InetAddr(inetmask));
+        }
+        else
+        {
+            oa->setNetmask(InetAddr(netmask.toLatin1().constData()));
         }
 
-        parent->add(o);
-
-        ncl = Cluster::cast(o);
-
-        o->setStr("platform",
-                  readPlatform(m_dialog->platform).toLatin1().constData());
-
-        string host_os = 
-            readHostOS(m_dialog->hostOS).toLatin1().constData();
-        o->setStr("host_OS", host_os);
-
-        // create cluster interfaces and cluster groups
-        int itm_index = 0;
-        QTreeWidgetItem *itm = m_dialog->iface_list->topLevelItem(itm_index);
-
-        while (itm != NULL)
-        {
-            QString name    = itm->text(0);
-            QString label   = itm->text(1);
-            QString addr    = itm->text(2);
-            QString netmask = itm->text(3);
-            QString protocol  = itm->text(4);
-            QString secret  = itm->text(5);
-            QString vrid    = itm->text(6);
-
-            Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
-            oi->setName(name.toStdString());
-
-            ncl->add(oi);
-            oi->setLabel(label.toLatin1().constData());
-
-            QString addrname = QString("%1:%2:ip")
-                               .arg(m_dialog->obj_name->text())
-                               .arg(name);
-            IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
-            oa->setName(addrname.toStdString());
-            oi->add(oa);
-            oa->setAddress(InetAddr(addr.toLatin1().constData()));
-            bool ok = false ;
-            int inetmask = netmask.toInt(&ok);
-            if (ok)
-            {
-                oa->setNetmask(InetAddr(inetmask));
-            }
-            else
-            {
-                oa->setNetmask(InetAddr(netmask.toLatin1().constData()));
-            }
-
-            // create InterfaceOptions object and enable vrrp settings
-            FWOptions *ifopt;
-            ifopt = oi->getOptionsObject();
-            ifopt->setStr("type", "cluster_interface");
+        // create InterfaceOptions object and enable vrrp settings
+        FWOptions *ifopt;
+        ifopt = oi->getOptionsObject();
+        ifopt->setStr("type", "cluster_interface");
 
 
-            // create vrrp cluster group for this interface
-            ClusterGroup *failover_grp;
-            QString grpname = QString("%1:%2:members")
-                              .arg(m_dialog->obj_name->text())
-                              .arg(name);
+        // create vrrp cluster group for this interface
+        ClusterGroup *failover_grp;
+        QString grpname = QString("%1:%2:members")
+                          .arg(m_dialog->obj_name->text())
+                          .arg(name);
 
-            failover_grp = ClusterGroup::cast(
-                db->create(FailoverClusterGroup::TYPENAME));
-            failover_grp->setName(grpname.toStdString());
-            oi->add(failover_grp);
+        failover_grp = ClusterGroup::cast(
+            db->create(FailoverClusterGroup::TYPENAME));
+        failover_grp->setName(grpname.toStdString());
+        oi->add(failover_grp);
 
 //            QString failover_protocol_name = m_dialog->failover_protocol->itemData(
 //                m_dialog->failover_protocol->currentIndex()).toString();
 
-            QString failover_protocol_name = protocol;
+        QString failover_protocol_name = protocol;
 
-            failover_grp->setStr(
-                "type", failover_protocol_name.toAscii().constData());
+        failover_grp->setStr(
+            "type", failover_protocol_name.toAscii().constData());
 
-            if (failover_protocol_name == "vrrp")
-            {
-                FWOptions *grp_opt = failover_grp->getOptionsObject();
-                grp_opt->setStr("vrrp_secret", secret.toStdString());
-                grp_opt->setStr("vrrp_vrid", vrid.toStdString());
-            }
+        if (failover_protocol_name == "vrrp")
+        {
+            FWOptions *grp_opt = failover_grp->getOptionsObject();
+            grp_opt->setStr("vrrp_secret", secret.toStdString());
+            grp_opt->setStr("vrrp_vrid", vrid.toStdString());
+        }
 
-            if (failover_protocol_name == "carp")
-            {
-                FWOptions *grp_opt = failover_grp->getOptionsObject();
-                grp_opt->setStr("carp_password", secret.toStdString());
-                grp_opt->setStr("carp_vhid", vrid.toStdString());
-            }
+        if (failover_protocol_name == "carp")
+        {
+            FWOptions *grp_opt = failover_grp->getOptionsObject();
+            grp_opt->setStr("carp_password", secret.toStdString());
+            grp_opt->setStr("carp_vhid", vrid.toStdString());
+        }
 
 //            mw->activeProject()->updateObjName(oi, "", "", false);
 
-            itm_index++;
-            itm = m_dialog->iface_list->topLevelItem(itm_index);
-        }
+        itm_index++;
+        itm = m_dialog->iface_list->topLevelItem(itm_index);
     }
+    //}
 
     if (unloadTemplatesLib)
     {

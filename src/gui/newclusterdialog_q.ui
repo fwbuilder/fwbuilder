@@ -122,7 +122,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="page_1">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -159,15 +159,6 @@
           <bool>false</bool>
          </attribute>
          <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderHighlightSections">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
          <attribute name="verticalHeaderHighlightSections">
@@ -837,7 +828,7 @@ p, li { white-space: pre-wrap; }
           <item row="3" column="1">
            <widget class="QStackedWidget" name="failover_protocol_widget">
             <property name="currentIndex">
-             <number>3</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="unknown"/>
             <widget class="QWidget" name="vrrp">
@@ -997,7 +988,7 @@ p, li { white-space: pre-wrap; }
            </rect>
           </property>
           <property name="pixmap">
-           <pixmap resource="MainRes.qrc">:/Icons/host_64.png</pixmap>
+           <pixmap>:/Icons/host_64.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>false</bool>
@@ -1216,9 +1207,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>finishButton</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>
- <resources>
-  <include location="MainRes.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>obj_name_old</sender>
