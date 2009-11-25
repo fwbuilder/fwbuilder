@@ -568,11 +568,15 @@ void FWObject::setStr(const string &name, const string &val)
 
 int FWObject::getInt(const string &name) const
 {
-    string s=getStr(name);
-    if(s!="") 
-        return( atol(s.c_str()) );
-    else   
-        return(-1);
+    string val = getStr(name);
+    size_t n = val.find_first_of(" \n\r\t");
+    while (n != string::npos)
+    {
+        val = val.erase(n, 1);
+        n = val.find_first_of(" \n\r\t");
+    }
+    if (val != "") return( atol(val.c_str()) );
+    else return(-1);
 }
 
 void FWObject::setInt(const string &name, int val)
@@ -590,6 +594,12 @@ bool FWObject::getBool(const string &name) const
 {
 // 10/21/2008 --vk
     string val = getStr(name);
+    size_t n = val.find_first_of(" \n\r\t");
+    while (n != string::npos)
+    {
+        val = val.erase(n, 1);
+        n = val.find_first_of(" \n\r\t");
+    }
     return (val=="1" || cxx_strcasecmp(val.c_str() , "true")==0);
 }
 
