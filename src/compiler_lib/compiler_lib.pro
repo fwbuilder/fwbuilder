@@ -13,6 +13,7 @@ SOURCES	 =  CompilerDriver.cpp \
 			Configlet.cpp \
 			interfaceProperties.cpp \
 			linux24Interfaces.cpp \
+			bsdInterfaces.cpp \
 			iosInterfaces.cpp \
 			pixInterfaces.cpp \
 			interfacePropertiesObjectFactory.cpp
@@ -22,6 +23,7 @@ HEADERS	 = ../../config.h \
 			Configlet.h \
 			interfaceProperties.h \
 			linux24Interfaces.h \
+			bsdInterfaces.h \
 			iosInterfaces.h \
 			pixInterfaces.h \
 			interfacePropertiesObjectFactory.h

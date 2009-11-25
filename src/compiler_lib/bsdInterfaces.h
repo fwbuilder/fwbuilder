@@ -23,27 +23,18 @@
 
 */
 
-#include "interfacePropertiesObjectFactory.h"
+#ifndef BSD_INTERFACE_PROPERTIES_HH
+#define BSD_INTERFACE_PROPERTIES_HH
+
 #include "interfaceProperties.h"
-#include "linux24Interfaces.h"
-#include "iosInterfaces.h"
-#include "bsdInterfaces.h"
-#include "pixInterfaces.h"
-
-#include <iostream>
-
-using namespace std;
 
 
-interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-    const std::string &os_family)
+class bsdInterfaces : public interfaceProperties
 {
-    if (os_family == "linux24") return new linux24Interfaces();
-    if (os_family == "ios") return new iosInterfaces();
-    if (os_family == "pix_os" || os_family == "ios") return new pixInterfaces();
-    if (os_family == "openbsd" || os_family == "freebsd") return new bsdInterfaces();
-    // by default return object of the base class. It performs some
-    // reasonable default actions.
-    return new interfaceProperties();
-}
- 
+
+public:
+    bsdInterfaces() : interfaceProperties() {}
+    virtual bool parseVlan(const QString&, QString*, int*);
+};
+
+#endif

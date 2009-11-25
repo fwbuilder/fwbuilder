@@ -23,27 +23,19 @@
 
 */
 
-#include "interfacePropertiesObjectFactory.h"
-#include "interfaceProperties.h"
-#include "linux24Interfaces.h"
-#include "iosInterfaces.h"
 #include "bsdInterfaces.h"
-#include "pixInterfaces.h"
 
-#include <iostream>
+#include <QRegExp>
 
-using namespace std;
-
-
-interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-    const std::string &os_family)
+bool bsdInterfaces::parseVlan(const QString &name, QString *base_name, int *vlan_id)
 {
-    if (os_family == "linux24") return new linux24Interfaces();
-    if (os_family == "ios") return new iosInterfaces();
-    if (os_family == "pix_os" || os_family == "ios") return new pixInterfaces();
-    if (os_family == "openbsd" || os_family == "freebsd") return new bsdInterfaces();
-    // by default return object of the base class. It performs some
-    // reasonable default actions.
-    return new interfaceProperties();
+    QRegExp vlan_name_pattern(QRegExp("(vlan)(\\d{1,})"));
+    if (vlan_name_pattern.indexIn(name) != -1)
+    {
+        if (base_name!=NULL) *base_name = vlan_name_pattern.cap(1);
+        if (vlan_id!=NULL) *vlan_id = vlan_name_pattern.cap(2).toInt();
+        return true;
+    }
+    return false;
 }
- 
+
