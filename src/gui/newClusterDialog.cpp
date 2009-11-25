@@ -656,8 +656,46 @@ void newClusterDialog::finishClicked()
         ncl->add(oi);
         oi->setLabel(string(data.label.toUtf8().constData()));
 
+        QString addrname = QString("%1:%2:ip")
+                           .arg(m_dialog->obj_name->text())
+                           .arg(data.name);
+        IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+        oa->setName(string(addrname.toUtf8().constData()));
+        oi->add(oa);
+        foreach (AddressInfo address, data.addresses)
+        {
+            oa->setAddress(InetAddr(address.address.toLatin1().constData()));
+            bool ok = false ;
+            int inetmask = address.netmask.toInt(&ok);
+            if (ok)
+            {
+                oa->setNetmask(InetAddr(inetmask));
+            }
+            else
+            {
+                oa->setNetmask(InetAddr(address.netmask.toLatin1().constData()));
+            }
+        }
+
+        FWOptions *ifopt;
+        ifopt = oi->getOptionsObject();
+        ifopt->setStr("type", "cluster_interface");
 
 
+        // create vrrp cluster group for this interface
+        ClusterGroup *failover_grp;
+        QString grpname = QString("%1:%2:members")
+                          .arg(m_dialog->obj_name->text())
+                          .arg(data.name);
+
+        failover_grp = ClusterGroup::cast(
+            db->create(FailoverClusterGroup::TYPENAME));
+        failover_grp->setName(string(grpname.toUtf8().constData()));
+        oi->add(failover_grp);
+
+        QString failover_protocol_name = data.protocol.toLower();
+
+        failover_grp->setStr("type", failover_protocol_name.toAscii().constData());
     }
 
     // create cluster interfaces and cluster groups
@@ -710,6 +748,8 @@ void newClusterDialog::finishClicked()
                           .arg(m_dialog->obj_name->text())
                           .arg(name);
 
+                          ==
+
         failover_grp = ClusterGroup::cast(
             db->create(FailoverClusterGroup::TYPENAME));
         failover_grp->setName(grpname.toStdString());
@@ -722,6 +762,8 @@ void newClusterDialog::finishClicked()
 
         failover_grp->setStr(
             "type", failover_protocol_name.toAscii().constData());
+
+            ****
 
         if (failover_protocol_name == "vrrp")
         {
