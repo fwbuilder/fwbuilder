@@ -68,8 +68,6 @@ class Group : virtual public FWObject
      * grops that hold actual objects, it calls shallowDuplicate()
      */
     virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
-
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 };
 
 }

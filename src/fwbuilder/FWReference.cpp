@@ -107,6 +107,14 @@ FWObject& FWReference::shallowDuplicate(const FWObject *_other,
     return *this;
 }
 
+bool FWReference::cmp(const FWObject *obj, bool recursive) throw(FWException)
+{
+    const FWReference *rx = FWReference::constcast(obj);
+    if (rx == NULL) return false;
+    if (int_ref != rx->int_ref || str_ref != rx->str_ref) return false;
+    return true;
+}
+
 void FWReference::add(FWObject*)
 {
     throw std::string("Can't add to a reference !");
