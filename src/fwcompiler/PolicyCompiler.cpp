@@ -885,11 +885,11 @@ bool PolicyCompiler::ConvertToAtomicForAddresses::processNext()
 	    FWObject *s;
 	    s=r->getSrc();	assert(s);
 	    s->clearChildren();
-	    s->add( *i1 );
+	    s->addCopyOf( *i1 );
 
 	    s=r->getDst();	assert(s);
 	    s->clearChildren();
-	    s->add( *i2 );
+	    s->addCopyOf( *i2 );
 
 	    tmp_queue.push_back(r);
 	}
@@ -918,7 +918,7 @@ bool PolicyCompiler::ConvertToAtomicForIntervals::processNext()
 
         s=r->getWhen();	assert(s);
         s->clearChildren();
-        s->add( *i1 );
+        s->addCopyOf( *i1 );
 
         tmp_queue.push_back(r);
     }
@@ -945,15 +945,15 @@ bool  PolicyCompiler::ConvertToAtomic::processNext()
                 FWObject *s;
                 s=r->getSrc();	assert(s);
                 s->clearChildren();
-                s->add( *i1 );
+                s->addCopyOf( *i1 );
 
                 s=r->getDst();	assert(s);
                 s->clearChildren();
-                s->add( *i2 );
+                s->addCopyOf( *i2 );
 
                 s=r->getSrv();	assert(s);
                 s->clearChildren();
-                s->add( *i3 );
+                s->addCopyOf( *i3 );
 
                 tmp_queue.push_back(r);
 	    }

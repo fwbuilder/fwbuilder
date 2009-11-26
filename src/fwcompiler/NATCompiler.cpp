@@ -440,15 +440,15 @@ bool NATCompiler::ConvertToAtomicForOriginal::processNext()
 
                 s=r->getOSrc();	assert(s);
                 s->clearChildren();
-                s->add( *i1 );
+                s->addCopyOf( *i1 );
 
                 s=r->getODst();	assert(s);
                 s->clearChildren();
-                s->add( *i2 );
+                s->addCopyOf( *i2 );
 
                 s=r->getOSrv();	assert(s);
                 s->clearChildren();
-                s->add( *i3 );
+                s->addCopyOf( *i3 );
 
                 tmp_queue.push_back(r);
 	    }
@@ -488,22 +488,22 @@ bool NATCompiler::ConvertToAtomicForAddresses::processNext()
 
 		    s=r->getOSrc();	assert(s);
 		    s->clearChildren();
-		    s->add( *i1 );
+		    s->addCopyOf( *i1 );
 
 		    s=r->getODst();	assert(s);
 		    s->clearChildren();
-		    s->add( *i2 );
+		    s->addCopyOf( *i2 );
 
 //		    s=r->getOSrv();	assert(s);
 //		    *s=*osrv;
 
 		    s=r->getTSrc();	assert(s);
 		    s->clearChildren();
-		    s->add( *i4 );
+		    s->addCopyOf( *i4 );
 
 		    s=r->getTDst();	assert(s);
 		    s->clearChildren();
-		    s->add( *i5 );
+		    s->addCopyOf( *i5 );
 
 //		    s=r->getTSrv();	assert(s);
 //		    *s=*tsrv;
@@ -534,7 +534,7 @@ bool NATCompiler::ConvertToAtomicForTSrc::processNext()
 
         s=r->getTSrc();	assert(s);
         s->clearChildren();
-        s->add( *i1 );
+        s->addCopyOf( *i1 );
 
         tmp_queue.push_back(r);
     }
@@ -559,7 +559,7 @@ bool NATCompiler::ConvertToAtomicForTDst::processNext()
 
         s=r->getTDst();	assert(s);
         s->clearChildren();
-        s->add( *i1 );
+        s->addCopyOf( *i1 );
 
         tmp_queue.push_back(r);
     }
@@ -584,7 +584,7 @@ bool NATCompiler::ConvertToAtomicForTSrv::processNext()
 
         s=r->getTSrv();	assert(s);
         s->clearChildren();
-        s->add( *i1 );
+        s->addCopyOf( *i1 );
 
         tmp_queue.push_back(r);
     }
