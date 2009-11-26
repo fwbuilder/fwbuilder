@@ -17,6 +17,9 @@
     <normaloff>:/Images/fwbuilder3.png</normaloff>:/Images/fwbuilder3.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2" >
+   <property name="margin" >
+    <number>2</number>
+   </property>
    <item row="0" column="0" >
     <widget class="QSplitter" name="topSplitter" >
      <property name="orientation" >
