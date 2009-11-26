@@ -34,6 +34,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 #include <qpixmapcache.h>
 #include <qfiledialog.h>
@@ -265,7 +267,7 @@ void newClusterDialog::showPage(const int page)
                 QStringList addresses;
                 foreach (AddressInfo addr, iface.addresses)
                 {
-                    if (iface.addresses.count() > 0)
+                    if (iface.addresses.count() > 1)
                         addresses.append("    " + addr.address + "/" + addr.netmask);
                     else addresses.append(addr.address + "/" + addr.netmask);
                 }
@@ -658,22 +660,45 @@ void newClusterDialog::finishClicked()
 
         foreach (AddressInfo address, data.addresses)
         {
-            QString addrname = QString("%1:%2:ip")
-                           .arg(m_dialog->obj_name->text())
-                           .arg(data.name);
-            IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
-            oa->setName(string(addrname.toUtf8().constData()));
-            oi->add(oa);
-            oa->setAddress(InetAddr(address.address.toLatin1().constData()));
-            bool ok = false ;
-            int inetmask = address.netmask.toInt(&ok);
-            if (ok)
+            if (address.ipv4)
             {
-                oa->setNetmask(InetAddr(inetmask));
+                QString addrname = QString("%1:%2:ip")
+                               .arg(m_dialog->obj_name->text())
+                               .arg(data.name);
+                IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+                oa->setName(string(addrname.toUtf8().constData()));
+                oi->add(oa);
+                oa->setAddress(InetAddr(address.address.toLatin1().constData()));
+                bool ok = false ;
+                int inetmask = address.netmask.toInt(&ok);
+                if (ok)
+                {
+                    oa->setNetmask(InetAddr(inetmask));
+                }
+                else
+                {
+                    oa->setNetmask(InetAddr(address.netmask.toLatin1().constData()));
+                }
             }
             else
             {
-                oa->setNetmask(InetAddr(address.netmask.toLatin1().constData()));
+                QString addrname = QString("%1:%2:ip")
+                               .arg(m_dialog->obj_name->text())
+                               .arg(data.name);
+                IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
+                oa->setName(string(addrname.toUtf8().constData()));
+                oi->add(oa);
+                oa->setAddress(InetAddr(AF_INET6, address.address.toLatin1().constData()));
+                bool ok = false ;
+                int inetmask = address.netmask.toInt(&ok);
+                if (ok)
+                {
+                    oa->setNetmask(InetAddr(AF_INET6, inetmask));
+                }
+                else
+                {
+                    oa->setNetmask(InetAddr(AF_INET6, address.netmask.toLatin1().constData()));
+                }
             }
         }
 
