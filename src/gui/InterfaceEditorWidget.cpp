@@ -248,14 +248,21 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
     res.protocol = this->m_ui->protocol->currentText();
 
     res.mac = this->m_ui->mac->text();
-    for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
-    {
-        AddressInfo info;
-        info.address = rows[i].first->text();
-        info.netmask = rows[i].second->text();
-        info.ipv4 = types[i]->currentIndex() == 0;
-        res.addresses.insert(fwaddrs[i], info);
-    }
+    bool noAddrs = false;
+    if (clusterMode)
+        noAddrs = Resources::os_res[os.toStdString()]->getResourceBool(
+                    "/FWBuilderResources/Target/protocols/"
+                    + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok");
+
+    if (!noAddrs)
+        for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
+        {
+            AddressInfo info;
+            info.address = rows[i].first->text();
+            info.netmask = rows[i].second->text();
+            info.ipv4 = types[i]->currentIndex() == 0;
+            res.addresses.insert(fwaddrs[i], info);
+        }
     return res;
 }
 
@@ -293,6 +300,16 @@ bool InterfaceEditorWidget::isValid()
                         + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok");
     }
 
+    if (clusterMode && no_addr_ok)
+        if (this->m_ui->addresses->rowCount() != 0)
+        {
+        QMessageBox::warning(this,"Firewall Builder",
+                     tr("Interface %1 should not have any interfaces").arg(this->m_ui->name->text()),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+            return false;
+        }
+
+
     if (!no_addr_ok && this->m_ui->addresses->rowCount() == 0)
     {
         if ( (this->m_ui->type->currentIndex() == 0) &&
@@ -305,7 +322,6 @@ bool InterfaceEditorWidget::isValid()
             return false;
         }
     }
-
 
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
@@ -411,4 +427,20 @@ void InterfaceEditorWidget::setClusterMode(bool st)
     this->m_ui->macLabel->setVisible(!st);
     this->m_ui->type->setVisible(!st);
     this->m_ui->typeLabel->setVisible(!st);
+}
+
+void InterfaceEditorWidget::protocolChanged(QString name)
+{
+    if (clusterMode)
+    {
+        bool noaddr = Resources::os_res[os.toStdString()]->getResourceBool(
+                        "/FWBuilderResources/Target/protocols/"
+                        + name.toLower().toStdString() + "/no_ip_ok");
+        if (noaddr)
+            while ( this->m_ui->addresses->rowCount() )
+                this->m_ui->addresses->removeRow(0);
+        this->m_ui->addresses->setEnabled(!noaddr);
+        this->m_ui->addAddress->setEnabled(!noaddr);
+    }
+
 }

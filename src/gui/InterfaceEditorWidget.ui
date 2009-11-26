@@ -212,12 +212,28 @@
    <slot>addressChanged(int,int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>41</x>
-     <y>318</y>
+     <x>53</x>
+     <y>430</y>
     </hint>
     <hint type="destinationlabel">
      <x>3</x>
      <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>protocol</sender>
+   <signal>activated(QString)</signal>
+   <receiver>InterfaceEditorWidget</receiver>
+   <slot>protocolChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>102</x>
+     <y>309</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>278</y>
     </hint>
    </hints>
   </connection>
@@ -229,5 +245,6 @@
   <slot>typeChanged(int)</slot>
   <slot>addressChanged(int,int)</slot>
   <slot>addressChanged(int,int,int,int)</slot>
+  <slot>protocolChanged(QString)</slot>
  </slots>
 </ui>

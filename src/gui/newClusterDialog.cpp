@@ -257,7 +257,7 @@ void newClusterDialog::showPage(const int page)
             if (iface.type == 1) str += tr("dynamic ");
             if (iface.type == 1) str += tr("unnumbered ");
             str += iface.name;
-            if (iface.type == 0)
+            if (iface.type == 0 && iface.addresses.count() > 0)
             {
                 str += " with address";
                 if (iface.addresses.count() > 1) str += "es:\n";
@@ -656,14 +656,14 @@ void newClusterDialog::finishClicked()
         ncl->add(oi);
         oi->setLabel(string(data.label.toUtf8().constData()));
 
-        QString addrname = QString("%1:%2:ip")
-                           .arg(m_dialog->obj_name->text())
-                           .arg(data.name);
-        IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
-        oa->setName(string(addrname.toUtf8().constData()));
-        oi->add(oa);
         foreach (AddressInfo address, data.addresses)
         {
+            QString addrname = QString("%1:%2:ip")
+                           .arg(m_dialog->obj_name->text())
+                           .arg(data.name);
+            IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
+            oa->setName(string(addrname.toUtf8().constData()));
+            oi->add(oa);
             oa->setAddress(InetAddr(address.address.toLatin1().constData()));
             bool ok = false ;
             int inetmask = address.netmask.toInt(&ok);
