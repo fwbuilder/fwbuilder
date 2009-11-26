@@ -105,7 +105,10 @@ QList<ClusterInterfaceData> ClusterInterfacesSelectorWidget::getInterfaces()
 {
     QList<ClusterInterfaceData> res;
     foreach ( ClusterInterfaceWidget* editor, this->editors )
-        res.append(editor->getInterfaceData());
+    {
+        if (this->indexOf(editor) != -1)
+            res.append(editor->getInterfaceData());
+    }
     return res;
 }
 
