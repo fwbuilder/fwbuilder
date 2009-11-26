@@ -69,12 +69,14 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
         for ( ; iter != iter.end() ; ++iter )
         {
             Interface *iface = Interface::cast(*iter);
+            if (iface->isLoopback()) continue;
             QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(list, QStringList() << QString::fromUtf8(iface->getName().c_str()));
             if (!interfaceSelectable(iface))
                 ifaceitem->setFlags(Qt::ItemIsEnabled);
             FWObjectTypedChildIterator iter2 = iface->findByType(Interface::TYPENAME);
             for ( ; iter2 != iter2.end() ; ++iter2 )
             {
+                if (iface->isLoopback()) return;
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
                 if (!interfaceSelectable(subiface))

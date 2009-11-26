@@ -156,6 +156,7 @@ bool FirewallSelectorWidget::isValid()
         FWObjectTypedChildIterator intrs =  fws.first().first->findByType(Interface::TYPENAME);
         for ( ; intrs!=intrs.end(); ++intrs )
         {
+            if (Interface::cast(*intrs)->isLoopback()) continue;
             string name = Interface::cast(*intrs)->getName();
             int got = 0;
             for ( int j = 0; j < fws.count(); j++)
