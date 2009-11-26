@@ -110,7 +110,6 @@ void DNSNameDialog::validate(bool *res)
     DNSName *s = dynamic_cast<DNSName*>(obj);
     assert(s!=NULL);
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
@@ -131,7 +130,11 @@ void DNSNameDialog::applyChanges()
     s->setSourceName( m_dialog->dnsrec->text().toLatin1().constData() );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
     
 }
 

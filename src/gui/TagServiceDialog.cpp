@@ -107,7 +107,6 @@ void TagServiceDialog::validate(bool *res)
     TagService *s = dynamic_cast<TagService*>(obj);
     assert(s!=NULL);
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
@@ -127,7 +126,11 @@ void TagServiceDialog::applyChanges()
 
     s->setCode( m_dialog->tagcode->text().toLatin1().constData() );
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
     
 }
 

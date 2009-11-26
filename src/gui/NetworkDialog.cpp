@@ -101,7 +101,6 @@ void NetworkDialog::validate(bool *result)
 {
     *result=true;
 
-    if (!isTreeReadWrite(this,obj)) { *result=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text()))
     {
         *result=false;
@@ -203,7 +202,11 @@ void NetworkDialog::applyChanges()
 //        bool ok = false ;
     }
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
     
 }
 

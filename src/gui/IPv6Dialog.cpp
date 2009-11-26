@@ -143,7 +143,6 @@ void IPv6Dialog::validate(bool *res)
 {
     *res=true;
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
     IPv6 *s = dynamic_cast<IPv6*>(obj);
@@ -210,7 +209,11 @@ void IPv6Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr(AF_INET6, 0));
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
 }
 
 void IPv6Dialog::DNSlookup()

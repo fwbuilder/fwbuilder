@@ -128,7 +128,6 @@ void IPv4Dialog::validate(bool *result)
 {
     *result=true;
 
-    if (!isTreeReadWrite(this,obj)) { *result=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text()))
     {
         *result=false;
@@ -196,7 +195,11 @@ void IPv4Dialog::applyChanges()
     } else
         s->setNetmask(InetAddr());
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
 
 }
 

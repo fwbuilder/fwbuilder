@@ -260,10 +260,6 @@ void ClusterGroupDialog::changed()
 void ClusterGroupDialog::validate(bool *res)
 {
     *res = true;
-    if (!isTreeReadWrite(this, obj))
-    {
-        *res = false;
-    }
     if (!validateName(this, obj, m_dialog->obj_name->text()))
     {
         *res = false;
@@ -284,8 +280,11 @@ void ClusterGroupDialog::applyChanges()
 
     saveGroupType(new_state);
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
-    
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
 }
 
 /*

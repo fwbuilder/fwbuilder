@@ -116,7 +116,6 @@ void AddressTableDialog::validate(bool *res)
     AddressTable *s = dynamic_cast<AddressTable*>(obj);
     assert(s!=NULL);
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
@@ -137,7 +136,11 @@ void AddressTableDialog::applyChanges()
     s->setSourceName( (const char *)cs );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
    
 }
 

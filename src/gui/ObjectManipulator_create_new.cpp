@@ -286,7 +286,6 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     FWObject *new_state = cmd->getNewState();
     new_state->add(nobj);
     m_project->undoStack->push(cmd);
-
     m_project->db()->setDirty(true);
     return nobj;
 }

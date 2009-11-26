@@ -133,16 +133,16 @@ void LibraryDialog::applyChanges()
     new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     new_state->setStr("color", color.toLatin1().constData());
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
-    
-    //if (color!=oldcolor) m_project->updateLibColor(obj);
-
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
 }
 
 void LibraryDialog::validate(bool *res)
 {
     *res=true;
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 

@@ -109,7 +109,6 @@ void NetworkDialogIPv6::validate(bool *res)
 {
     *res=true;
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text()))
     {
         *res=false;
@@ -179,7 +178,11 @@ void NetworkDialogIPv6::applyChanges()
 
     }
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
     
 
 }

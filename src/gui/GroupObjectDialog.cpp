@@ -380,7 +380,6 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
 void GroupObjectDialog::validate(bool *res)
 {
     *res=true;
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this, obj, m_dialog->obj_name->text()))
     {
         *res=false;
@@ -457,7 +456,11 @@ void GroupObjectDialog::applyChanges()
 
     saveColumnWidths();
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
 }
 
 void GroupObjectDialog::switchToIconView()

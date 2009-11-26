@@ -124,7 +124,6 @@ void NATRuleOptionsDialog::validate(bool *res)
 
 void NATRuleOptionsDialog::applyChanges()
 {
-    if (!isTreeReadWrite(this,obj)) return;
 
     FWCmdChange* cmd = new FWCmdChangeRuleOptions(m_project, obj);
     // new_state  is a copy of the rule object
@@ -135,7 +134,11 @@ void NATRuleOptionsDialog::applyChanges()
     data.saveAll(new_rule_options);
     init = false;
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
 
 }
 

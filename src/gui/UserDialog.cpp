@@ -96,7 +96,6 @@ void UserDialog::validate(bool *res)
 {
     *res=true;
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
     UserService *s = dynamic_cast<UserService*>(obj);
@@ -118,6 +117,10 @@ void UserDialog::applyChanges()
     s->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
     s->setUserId( string(m_dialog->userid->text().toUtf8().constData()) );
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
 }
 

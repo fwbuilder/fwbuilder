@@ -212,7 +212,6 @@ void TimeDialog::validate(bool *res)
 
 void TimeDialog::applyChanges()
 {
-    if (!isTreeReadWrite(this,obj)) return;
 
     FWCmdChange* cmd = new FWCmdChange(m_project, obj);
     FWObject* new_state = cmd->getNewState();
@@ -269,6 +268,10 @@ void TimeDialog::applyChanges()
 
     interval->setDaysOfWeek(weekDays.join(",").toAscii().data());
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
 }
 

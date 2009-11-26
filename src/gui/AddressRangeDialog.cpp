@@ -102,7 +102,6 @@ void AddressRangeDialog::validate(bool *res)
 {
     *res=true;
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
     AddressRange *s = dynamic_cast<AddressRange*>(obj);
@@ -154,7 +153,11 @@ void AddressRangeDialog::applyChanges()
 
     }
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
     
 }
 

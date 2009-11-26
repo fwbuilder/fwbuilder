@@ -162,7 +162,6 @@ void RuleSetDialog::loadFWObject(FWObject *o)
 void RuleSetDialog::validate(bool *res)
 {
     *res = true;
-    if (!isTreeReadWrite(this, obj)) { *res = false; return; }
     if (!validateName(this, obj, m_dialog->obj_name->text())) { *res = false; return; }
 
     // Do not allow ':' in the rule set names because this character is
@@ -221,7 +220,11 @@ void RuleSetDialog::applyChanges()
                             m_dialog->ipt_mangle_table->isChecked());
     }
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
     
 }
 

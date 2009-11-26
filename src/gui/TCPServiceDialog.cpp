@@ -171,7 +171,6 @@ void TCPServiceDialog::validate(bool *res)
 
     *res=true;
 
-    if (!isTreeReadWrite(this,obj)) { *res=false; return; }
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
     // check port ranges (bug #1695481, range start must be <= range end)
@@ -234,7 +233,11 @@ void TCPServiceDialog::applyChanges()
 
     new_state->setBool("established",  m_dialog->established->isChecked());
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+    {
+        if (obj->isReadOnly()) return;
+        m_project->undoStack->push(cmd);
+    }
     
 }
 
