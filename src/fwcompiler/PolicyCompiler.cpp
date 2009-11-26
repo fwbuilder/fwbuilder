@@ -92,6 +92,7 @@ int PolicyCompiler::prolog()
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
     {
 	PolicyRule *r = PolicyRule::cast(*i);
+        if (r == NULL) continue; // skip RuleSetOptions object
 
 	if (r->isDisabled()) continue;
 

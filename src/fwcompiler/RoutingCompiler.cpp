@@ -87,6 +87,7 @@ int RoutingCompiler::prolog()
     for (list<FWObject*>::iterator j=l.begin(); j!=l.end(); ++j) 
     {
 	Rule *r= Rule::cast(*j);
+        if (r == NULL) continue; // skip RuleSetOptions object
 	if (r->isDisabled()) continue;
 	r->setInterfaceId(-1);
 	r->setLabel( createRuleLabel("", "main", r->getPosition()) );

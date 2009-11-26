@@ -94,6 +94,7 @@ int NATCompiler::prolog()
     {
 
 	Rule *r= Rule::cast(*i);
+        if (r == NULL) continue; // skip RuleSetOptions object
 	if (r->isDisabled()) continue;
 	r->setInterfaceId(-1);
 	r->setLabel( createRuleLabel(label_prefix, "NAT", r->getPosition()) );
@@ -626,28 +627,28 @@ bool NATCompiler::ConvertToAtomic::processNext()
 
 			    s=r->getOSrc();	assert(s);
 			    s->clearChildren();
-			    s->add( *i1 );
+			    s->addCopyOf( *i1 );
 
 			    s=r->getODst();	assert(s);
 			    s->clearChildren();
-			    s->add( *i2 );
+			    s->addCopyOf( *i2 );
 
 			    s=r->getOSrv();	assert(s);
 			    s->clearChildren();
-			    s->add( *i3 );
+			    s->addCopyOf( *i3 );
 
 
 			    s=r->getTSrc();	assert(s);
 			    s->clearChildren();
-			    s->add( *i4 );
+			    s->addCopyOf( *i4 );
 
 			    s=r->getTDst();	assert(s);
 			    s->clearChildren();
-			    s->add( *i5 );
+			    s->addCopyOf( *i5 );
 
 			    s=r->getTSrv();	assert(s);
 			    s->clearChildren();
-			    s->add( *i6 );
+			    s->addCopyOf( *i6 );
 
 			    tmp_queue.push_back(r);
 
@@ -840,8 +841,8 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
     FWObject::iterator i6 = tsrvrel->begin();
 
     while ( i1!=osrcrel->end() || i2!=odstrel->end() || i3!=osrvrel->end() ||
-            i4!=tsrcrel->end() || i5!=tdstrel->end() || i6!=tsrvrel->end() ) {
-
+            i4!=tsrcrel->end() || i5!=tdstrel->end() || i6!=tsrvrel->end() )
+    {
         str  << endl;
 
         string osrc = " ";
@@ -860,44 +861,51 @@ string NATCompiler::debugPrintRule(libfwbuilder::Rule *r)
         int tdst_id = -1;
         int tsrv_id = -1;
 
-        if (i1!=osrcrel->end()) {
+        if (i1!=osrcrel->end())
+        {
             FWObject *o = FWReference::getObject(*i1);
             osrc=o->getName();
             osrc_id=o->getId();
         }
 
-        if (i2!=odstrel->end()) {
+        if (i2!=odstrel->end())
+        {
             FWObject *o = FWReference::getObject(*i2);
             odst=o->getName();
             odst_id=o->getId();
         }
 
-        if (i3!=osrvrel->end()) {
+        if (i3!=osrvrel->end())
+        {
             FWObject *o = FWReference::getObject(*i3);
             osrv=o->getName();
             osrv_id=o->getId();
         }
 
-        if (i4!=tsrcrel->end()) {
+        if (i4!=tsrcrel->end())
+        {
             FWObject *o = FWReference::getObject(*i4);
             tsrc=o->getName();
             tsrc_id=o->getId();
         }
 
-        if (i5!=tdstrel->end()) {
+        if (i5!=tdstrel->end())
+        {
             FWObject *o = FWReference::getObject(*i5);
             tdst=o->getName();
             tdst_id=o->getId();
         }
 
-        if (i6!=tsrvrel->end()) {
+        if (i6!=tsrvrel->end())
+        {
             FWObject *o = FWReference::getObject(*i6);
             tsrv=o->getName();
             tsrv_id=o->getId();
         }
 
         int w=0;
-        if (no==0) {
+        if (no==0)
+        {
             str << rule->getLabel();
             w=rule->getLabel().length();
         }
