@@ -443,12 +443,6 @@ int PolicyCompiler_ipt::prolog()
 
     FWOptions *fwopt = getCachedFwOpt();
 
-    istringstream is(fwopt->getStr("ipt_mangle_only_rulesets"));
-    std::copy(istream_iterator<string>(is),
-              istream_iterator<string>(),
-              back_inserter(mangle_only_rulesets));
-
-
     // initialize counters for the standard chains
     for (list<string>::const_iterator i =
              PolicyCompiler_ipt::getStandardChains().begin();
@@ -776,7 +770,8 @@ bool PolicyCompiler_ipt::dropMangleTableRules::processNext()
 
     string ruleset_name = compiler->getRuleSetName();
 
-    if (ipt_comp->isMangleOnlyRuleSet(ruleset_name)) return true;
+    FWOptions *rulesetopts = ipt_comp->getSourceRuleSet()->getOptionsObject();
+    if (rulesetopts->getBool("mangle_only_rule_set")) return true;
 
     if (rule->getAction() == PolicyRule::Tag ||
         rule->getAction() == PolicyRule::Route ||
@@ -4593,13 +4588,6 @@ bool PolicyCompiler_ipt::newIptables(const string &version)
 {
     return (version.empty() || version=="ge_1.2.6" ||
             XMLTools::version_compare(version, "1.2.6")>0);
-}
-
-bool PolicyCompiler_ipt::isMangleOnlyRuleSet(const string &ruleset_name)
-{
-    return (std::find(mangle_only_rulesets.begin(),
-                      mangle_only_rulesets.end(),
-                      ruleset_name) != mangle_only_rulesets.end());
 }
 
 void PolicyCompiler_ipt::insertConntrackRule()

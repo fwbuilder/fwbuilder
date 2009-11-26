@@ -195,6 +195,7 @@ list<triplet> NATCompiler_pix::findDNATForAddress(Address *src,
          i!=final_ruleset->end(); ++i)
     {
         NATRule *rule=NATRule::cast(*i);
+        if (rule == NULL) continue; // skip RuleSetOptions object
 
         switch (rule->getRuleType())
         {
@@ -409,36 +410,6 @@ bool NATCompiler_pix::verifyInterfaces::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
     tmp_queue.push_back(rule);
-
-#ifdef WRONG_CHECK
-    if ( rule->getInt("nat_iface_orig")!=rule->getInt("nat_iface_trn") )
-    {
-	if (rule->getRuleType()==NATRule::SNAT)
-        {
-	    Interface *iface1=
-		Interface::cast( rule->getRoot()->findInIndex(
-                                     rule->getInt("nat_iface_orig")) );
-	    Interface *iface2=
-		Interface::cast( rule->getRoot()->findInIndex(
-                                     rule->getInt("nat_iface_trn")) );
-
-	    if ( iface1->getSecurityLevel() <= iface2->getSecurityLevel() )
-            {
-		char lvl1[32];
-		char lvl2[32];
-		sprintf(lvl1,"%d",iface1->getSecurityLevel());
-		sprintf(lvl2,"%d",iface2->getSecurityLevel());
-		compiler->abort(
-                    
-                        rule, 
-                        "Security level of internal interface "+
-                        iface1->getName() + " (level "+ lvl1 +") "+
-                        " set lower than that of external interface "+
-                        iface2->getName() + " (level "+ lvl2 +") ");
-	    }
-	}
-    }
-#endif
     return true;
 }
 
@@ -543,7 +514,8 @@ bool NATCompiler_pix::fillTranslatedSrv::processNext()
     Service  *osrv_o=compiler->getFirstOSrv(rule);
     Service  *tsrv_o=compiler->getFirstTSrv(rule);
 
-    if ( ! osrv_o->isAny()  && tsrv_o->isAny() ) {
+    if ( ! osrv_o->isAny()  && tsrv_o->isAny() )
+    {
 	RuleElementTSrv  *tsrv=rule->getTSrv();
 	tsrv->addRef(osrv_o);
     }
@@ -888,7 +860,7 @@ bool NATCompiler_pix::createStaticCmd::processNext()
     NATRule *rule=getNext(); if (rule==NULL) return false;
     tmp_queue.push_back(rule);
 
-    if (rule->getRuleType()==NATRule::DNAT) 
+    if (rule->getRuleType()==NATRule::DNAT)
     {
 	Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
 	Address  *odst=compiler->getFirstODst(rule);  assert(odst);

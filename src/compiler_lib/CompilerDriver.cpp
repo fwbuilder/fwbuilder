@@ -593,6 +593,7 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
         for (list<FWObject*>::iterator r=(*i)->begin(); r!=(*i)->end(); ++r)
         {
             Rule *rule = Rule::cast(*r);
+            if (rule == NULL) continue; // skip RuleSetOptions object
             RuleSet *ruleset = rule->getBranch();
 
             if (ruleset!=NULL && !ruleset->isChildOf(fw))

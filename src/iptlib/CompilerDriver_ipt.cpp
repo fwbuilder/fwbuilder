@@ -64,6 +64,7 @@ void CompilerDriver_ipt::assignRuleSetChain(RuleSet *ruleset)
     for (FWObject::iterator r=ruleset->begin(); r!=ruleset->end(); r++)
     {
         Rule *rule = Rule::cast(*r);
+        if (rule == NULL) continue; // skip RuleSetOptions object
         if (rule->isDisabled()) continue;
 
         //rule->setStr("parent_rule_num", parentRuleNum);
@@ -90,6 +91,7 @@ void CompilerDriver_ipt::findBranchesInMangleTable(Firewall*,
                  r!=(*i)->end(); ++r)
             {
                 PolicyRule *rule = PolicyRule::cast(*r);
+                if (rule == NULL) continue; // skip RuleSetOptions object
                 FWOptions *ruleopt = rule->getOptionsObject();
                 if (rule->getAction() == PolicyRule::Branch &&
                     ruleopt->getBool("ipt_branch_in_mangle"))
@@ -99,6 +101,7 @@ void CompilerDriver_ipt::findBranchesInMangleTable(Firewall*,
                          br!=ruleset->end(); ++br)
                     {
                         Rule *b_rule = Rule::cast(*br);
+                        if (b_rule == NULL) continue; // skip RuleSetOptions object
                         ruleopt = b_rule->getOptionsObject();
                         ruleopt->setBool("put_in_mangle_table", true);
                     }

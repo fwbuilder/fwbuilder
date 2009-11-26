@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1257560955" id="root">
-  <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="id16325X21455"/>
-    <ServiceRef ref="sysid1"/>
-    <ObjectRef ref="sysid0"/>
-    <ObjectRef ref="sysid0"/>
-  </Library>
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1257560955" id="root">
+  <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
     <ObjectGroup id="stdid01_1" name="Objects" comment="" ro="False">
@@ -110,7 +104,7 @@
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts" comment="" ro="False">
         <Host id="id3F8F9622" name="DMZhost1" comment="" ro="False">
-          <Interface id="id3F8F9624" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3F8F9624" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3F8F9625" name="DMZhost:interface1(ip)" comment="" ro="False" address="192.0.2.20" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -128,7 +122,7 @@
           </HostOptions>
         </Host>
         <Host id="id3F8F9692" name="DMZhost2" comment="" ro="False">
-          <Interface id="id3F8F9694" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3F8F9694" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3F8F9695" name="DMZhost2:interface1(ip)" comment="" ro="False" address="192.0.2.21" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -142,7 +136,7 @@
           </HostOptions>
         </Host>
         <Host id="id3F8F9698" name="DMZhost3" comment="" ro="False">
-          <Interface id="id3F8F969A" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3F8F969A" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3F8F969B" name="DMZhost3:interface1(ip)" comment="" ro="False" address="192.0.2.23" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -156,7 +150,7 @@
           </HostOptions>
         </Host>
         <Host id="id3B64FFAC" name="broadcast" comment="broadcast on internal subnet" ro="False">
-          <Interface id="id3B64FFAC-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3B64FFAC-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B64FFAC-i-ipv4" name="address" comment="" ro="False" address="192.168.1.255" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -165,7 +159,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34F45" name="dest nat 1" comment="" ro="False">
-          <Interface id="id3FA34F47" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34F47" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34F48" name="dest nat 1:interface1(ip)" comment="" ro="False" address="209.165.201.11" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -179,7 +173,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34F4B" name="dest nat 2" comment="" ro="False">
-          <Interface id="id3FA34F4D" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34F4D" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34F4E" name="dest nat 1:interface1(ip)" comment="" ro="False" address="209.165.200.225" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -197,7 +191,7 @@
           </HostOptions>
         </Host>
         <Host id="id3AFC0F70" name="fw2-eth1" comment="this host has the same IP address as firewall1 and firewall2" ro="False">
-          <Interface id="id3AFC0F70-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFC0F70-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFC0F70-i-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -214,7 +208,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D42052D" name="global-dmz" comment="global address on DMZ for firewall8" ro="False">
-          <Interface id="id3D42052D-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D42052D-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D42052D-i-1-addr" name="address" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -232,7 +226,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D42051B" name="global-ext-1" comment="external global address for firewall8" ro="False">
-          <Interface id="id3D42051B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D42051B-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D42051B-i-1-addr" name="address" comment="" ro="False" address="10.50.70.21" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -250,7 +244,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D420525" name="global-ext-2" comment="" ro="False">
-          <Interface id="id3D420525-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D420525-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D420525-i-1-addr" name="address" comment="" ro="False" address="10.50.70.22" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -268,7 +262,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D42094E" name="global-ext-3" comment="" ro="False">
-          <Interface id="id3D42094E-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D42094E-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D42094E-i-1-addr" name="address" comment="" ro="False" address="10.50.70.23" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -286,7 +280,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D436EA6" name="global-int" comment="" ro="False">
-          <Interface id="id3D436EA6-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D436EA6-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D436EA6-i-1-addr" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -304,7 +298,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34FCB" name="h1" comment="" ro="False">
-          <Interface id="id3FA34FCD" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34FCD" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34FCE" name="h1:interface1(ip)" comment="" ro="False" address="10.1.2.27" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -318,7 +312,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34D2F" name="h192.0.2.20" comment="" ro="False">
-          <Interface id="id3FA34D30" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34D30" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34D31" name="DMZhost:interface1(ip)" comment="" ro="False" address="192.0.2.20" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -336,7 +330,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34D37" name="h192.0.20.21" comment="" ro="False">
-          <Interface id="id3FA34D38" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34D38" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34D39" name="DMZhost2:interface1(ip)" comment="" ro="False" address="192.0.2.21" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -354,7 +348,7 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A53" name="h192.168.1.11" comment="" ro="False">
-          <Interface id="id3CD87A53-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A53-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A53-i-1-addr" name="address" comment="" ro="False" address="192.168.1.11" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -372,7 +366,7 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A5E" name="h192.168.1.12" comment="" ro="False">
-          <Interface id="id3CD87A5E-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A5E-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A5E-i-1-addr" name="address" comment="" ro="False" address="192.168.1.12" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -390,7 +384,7 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A6D" name="h192.168.1.13" comment="" ro="False">
-          <Interface id="id3CD87A6D-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A6D-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A6D-i-1-addr" name="address" comment="" ro="False" address="192.168.1.13" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -408,7 +402,7 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A7C" name="h192.168.1.14" comment="" ro="False">
-          <Interface id="id3CD87A7C-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A7C-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A7C-i-1-addr" name="address" comment="" ro="False" address="192.168.1.14" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -426,7 +420,7 @@
           </HostOptions>
         </Host>
         <Host id="id3CD87A8B" name="h192.168.1.15" comment="" ro="False">
-          <Interface id="id3CD87A8B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A8B-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A8B-i-1-addr" name="address" comment="" ro="False" address="192.168.1.15" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -458,7 +452,7 @@
           </HostOptions>
         </Host>
         <Host id="id3BF1B3E1" name="host-with_mac" comment="" ro="False">
-          <Interface id="id3BF1B3E2" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF1B3E2" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF1B3E2-ipv4" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.0"/>
             <physAddress id="id3BF1B3E2-pa" address="00:10:4b:de:e9:6f" name="unknown(MAC)" comment="" ro="False"/>
             <InterfaceOptions/>
@@ -473,7 +467,7 @@
           </HostOptions>
         </Host>
         <Host id="id3BF1B3E7" name="host-with_mac-2" comment="" ro="False">
-          <Interface id="id3BF1B3E8" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF1B3E8" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF1B3E8-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress id="id3BF1B3E8-pa" address="00:10:4b:de:e9:6f" name="unknown(MAC)" comment="" ro="False"/>
             <InterfaceOptions/>
@@ -491,7 +485,7 @@
           </HostOptions>
         </Host>
         <Host id="host-hostA" name="hostA" comment="" ro="False">
-          <Interface id="host-hostA-i" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="hostA:eth0" comment="" ro="False">
+          <Interface id="host-hostA-i" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="hostA:eth0" comment="" ro="False">
             <IPv4 id="host-hostA-i-ipv4" name="hostA:eth0" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -508,7 +502,7 @@
           </HostOptions>
         </Host>
         <Host id="id3B3D5A3B" name="hostA-2" comment="" ro="False">
-          <Interface id="id3B3D5A3B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3B3D5A3B-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3B3D5A3B-i-1-addr" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -525,7 +519,7 @@
           </HostOptions>
         </Host>
         <Host id="id3AFADBF9" name="hostA-NAT" comment="translated address for hostA" ro="False">
-          <Interface id="id3AFADBF9-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFADBF9-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFADBF9-i-ipv4" name="address" comment="" ro="False" address="22.22.22.23" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -539,7 +533,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D1BFABC" name="hostA-NAT-DMZ" comment="" ro="False">
-          <Interface id="id3D1BFABC-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D1BFABC-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D1BFABC-i-1-addr" name="address" comment="" ro="False" address="192.168.2.23" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -557,7 +551,7 @@
           </HostOptions>
         </Host>
         <Host id="host-hostB" name="hostB" comment="" ro="False">
-          <Interface id="host-hostB-i" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="hostB:eth0" comment="" ro="False">
+          <Interface id="host-hostB-i" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="hostB:eth0" comment="" ro="False">
             <IPv4 id="host-hostB-i-ipv4" name="hostB:eth0" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -571,7 +565,7 @@
           </HostOptions>
         </Host>
         <Host id="id3BD6736B" name="hostB-NAT" comment="" ro="False">
-          <Interface id="id3BD6736B-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BD6736B-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BD6736B-i-ipv4" name="address" comment="" ro="False" address="22.22.23.24" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -580,7 +574,7 @@
           </HostOptions>
         </Host>
         <Host id="id3AFC191C" name="hostF-int" comment="the same address as internal iface of firewall1" ro="False">
-          <Interface id="id3AFC191C-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFC191C-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFC191C-i-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -589,7 +583,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34EFB" name="nat1" comment="" ro="False">
-          <Interface id="id3FA34EFD" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34EFD" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34EFE" name="nat1:interface1(ip)" comment="" ro="False" address="209.165.202.129" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -603,7 +597,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34F01" name="nat2" comment="" ro="False">
-          <Interface id="id3FA34F03" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3FA34F03" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3FA34F04" name="nat1:interface1(ip)" comment="" ro="False" address="209.165.202.130" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -621,7 +615,7 @@
           </HostOptions>
         </Host>
         <Host id="id3B19C5EB" name="outside-host-1" comment="some host outside our network" ro="False">
-          <Interface id="id3B19C5EB-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3B19C5EB-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B19C5EB-i-ipv4" name="address" comment="" ro="False" address="200.200.200.200" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -638,7 +632,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34055" name="outside-host-2" comment="some host outside our network" ro="False">
-          <Interface id="id3FA34056" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3FA34056" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3FA34057" name="address" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -655,7 +649,7 @@
           </HostOptions>
         </Host>
         <Host id="id3FA34B05" name="outside-host-3" comment="some host outside our network" ro="False">
-          <Interface id="id3FA34B06" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3FA34B06" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3FA34B07" name="address" comment="" ro="False" address="200.200.200.201" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -672,7 +666,7 @@
           </HostOptions>
         </Host>
         <Host id="host-secondary1-com" name="secondary1.com" comment="" ro="False">
-          <Interface id="host-secondary1-com-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="host-secondary1-com-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-secondary1-com-i-ipv4" name="address" comment="" ro="False" address="211.11.11.11" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -686,7 +680,7 @@
           </HostOptions>
         </Host>
         <Host id="host-secondary2-com" name="secondary2.com" comment="" ro="False">
-          <Interface id="host-secondary2-com-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="host-secondary2-com-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-secondary2-com-i-ipv4" name="address" comment="" ro="False" address="211.22.22.22" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -700,7 +694,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D1966D8" name="vk" comment="" ro="False">
-          <Interface id="id3D1966D8-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D1966D8-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D1966D8-i-1-addr" name="address" comment="" ro="False" address="10.3.14.30" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -718,7 +712,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D420521" name="websrv" comment="" ro="False">
-          <Interface id="id3D420521-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D420521-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D420521-i-1-addr" name="address" comment="" ro="False" address="192.168.2.100" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -736,7 +730,7 @@
           </HostOptions>
         </Host>
         <Host id="id3BF23930" name="z-host" comment="test" ro="False">
-          <Interface id="id3BF23931" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF23931" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF23931-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress id="id3BF23931-pa" address="00:a0:24:53:06:8c" name="unknown(MAC)" comment="" ro="False"/>
             <InterfaceOptions/>
@@ -754,7 +748,7 @@
           </HostOptions>
         </Host>
         <Host id="id47B7C6CD21818" name="testhost50" comment="This object represents a PC with a single network interface" ro="False">
-          <Interface id="id47B7C6CF21818" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <Interface id="id47B7C6CF21818" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id47B7C6D021818" name="testhost50:eth0:ip" comment="" ro="False" address="10.3.14.50" netmask="255.255.255.0"/>
             <InterfaceOptions/>
           </Interface>
@@ -1177,6 +1171,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="pol-firewall2" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="pol-firewall2-0" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="blocking short fragments">
@@ -1725,6 +1720,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
         <Routing id="fw-firewall2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RoutingRule id="id16355X67574" disabled="False" metric="0" position="0" comment="">
@@ -1775,16 +1771,17 @@
             </RItf>
             <RoutingRuleOptions/>
           </RoutingRule>
+          <RuleSetOptions/>
         </Routing>
-        <Interface id="if-FW-firewall2-eth1" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="if-FW-firewall2-eth1" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth1-ipv4" name="a1" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="if-FW-firewall2-eth0" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="if-FW-firewall2-eth0" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth0-ipv4" name="a0" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D19631F" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id3D19631F" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id3D19631F-ipv4" name="a2" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -2070,6 +2067,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3AF5AA0C" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3C5987DC" disabled="True" log="True" position="0" action="Deny" direction="Both" comment="">
@@ -2493,17 +2491,20 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3AF5AA0A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3AF5AA96" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3AF5AA0A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3AF5AA96" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5AA96-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AF5AA99" dyn="True" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3AF5AA99" dedicated_failover="False" dyn="True" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3AF5AA99-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0B4BC8" dyn="False" label="dmz" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0B4BC8" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0B4BC8-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -2927,6 +2928,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3DB0F9B0" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3DB0FA5E" disabled="True" log="True" position="0" action="Deny" direction="Inbound" comment="blocking short fragments">
@@ -3405,17 +3407,20 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3DB0F914-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3DB0FA5B" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Routing id="id3DB0F914-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3DB0FA5B" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id3DB0FA5C" name="a1" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DB0FA85" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id3DB0FA85" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id3DB0FA86" name="a0" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DB0FAA3" dyn="False" label="dmz" mgmt="False" network_zone="id3F93531C" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id3DB0FAA3" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" network_zone="id3F93531C" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id3DB0FAA4" name="a2" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -3731,6 +3736,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3DF458BD" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3DF458BE" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -3827,18 +3833,21 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3DF45858-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3DF458DC" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3DF45858-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3DF458DC" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3DF458DD" name="firewall11:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
           <IPv4 id="id414419C1" name="firewall11:eth0:ip-1" comment="" ro="False" address="10.5.80.20" netmask="255.255.240.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DF458DF" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3DF458DF" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3DF458E0" name="firewall11:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DF458E2" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3DF458E2" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3DF458E3" name="firewall11:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -4045,6 +4054,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3F8F95AE" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3F8F95AF" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -4145,16 +4155,19 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3F8F9590-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3F8F95E1" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Routing id="id3F8F9590-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3F8F95E1" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3F8F95E3" dyn="False" label="inside" network_zone="id3D385DEC" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id3F8F95E3" dedicated_failover="False" dyn="False" label="inside" network_zone="id3D385DEC" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id3F8F95E4" name="inside" comment="" ro="False" address="10.3.14.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3F8F95E6" dyn="False" label="dmz50" mgmt="False" network_zone="id3F8F97BB" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id3F8F95E6" dedicated_failover="False" dyn="False" label="dmz50" mgmt="False" network_zone="id3F8F97BB" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id3F8F95E7" name="dmz" comment="suppose this is routable address ..." ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -4316,7 +4329,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3FA349A1" host_OS="pix_os" lastCompiled="1145688319" lastInstalled="0" lastModified="0" platform="pix" version="6.3" name="firewall13" comment="various policy NAT rules per examples from&#10;http://www.cisco.com/en/US/products/sw/secursw/ps2120/products_configuration_guide_chapter09186a0080172786.html#1113601&#10;" ro="False">
+      <Firewall id="id3FA349A1" host_OS="pix_os" lastCompiled="1145688319" lastInstalled="0" lastModified="1259202385" platform="pix" version="6.3" name="firewall13" comment="various policy NAT rules per examples from&#10;http://www.cisco.com/en/US/products/sw/secursw/ps2120/products_configuration_guide_chapter09186a0080172786.html#1113601&#10;" ro="False">
         <NAT id="id3FA349A2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3FA349A3" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -4489,6 +4502,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3FA349CF" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3FA349EE" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -4529,13 +4543,16 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3FA349A1-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3FA34A02" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3FA349A1-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3FA34A02" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3FA34A03" name="address" comment="" ro="False" address="209.165.202.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3FA34A08" dyn="False" label="inside" mgmt="True" network_zone="id3FA34EFA" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3FA34A08" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3FA34EFA" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3FA34A09" name="address" comment="" ro="False" address="10.1.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -4734,6 +4751,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3FA74F0D" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3FA74F0E" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -4774,13 +4792,16 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3FA74E98-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3FA74F22" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3FA74E98-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3FA74F22" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3FA74F23" name="address" comment="" ro="False" address="209.165.202.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3FA74F25" dyn="False" label="inside" mgmt="True" network_zone="id3FA34EFA" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3FA74F25" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3FA34EFA" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3FA74F26" name="address" comment="" ro="False" address="10.1.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -5527,6 +5548,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3AFB66E4" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3AFB6708" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
@@ -5670,17 +5692,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3AFB66C6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3AFB6703" dyn="False" label="" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3AFB66C6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3AFB6703" dedicated_failover="False" dyn="False" label="" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AFB6703-ipv4" name="firewall2:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AFB6706" dyn="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3AFB6706" dedicated_failover="False" dyn="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3AFB6706-ipv4" name="firewall2:eth1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0221F1" dyn="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0221F1" dedicated_failover="False" dyn="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0221F1-ipv4" name="firewall2:eth2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -5799,7 +5824,9 @@ no sysopt nodnsalias outbound
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3D6A92A9" host_OS="pix_os" lastCompiled="1145688330" lastInstalled="0" lastModified="0" platform="pix" version="6.2" name="firewall3" comment="testing icmp and ssh/telnet commands" ro="False">
-        <NAT id="id3D6A92AA" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id3D6A92AA" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
         <Policy id="id3D6A9409" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3D6ADB7E" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
@@ -6073,17 +6100,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3D6A92A9-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3D6A940A" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3D6A92A9-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3D6A940A" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3D6A940B" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D6A940D" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3D6A940D" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3D6A940E" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D6A9422" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3D6A9422" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3D6A9423" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -6302,6 +6332,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3B0C639E" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3B0C63BF" disabled="False" log="True" position="0" action="Accept" direction="Both" comment="">
@@ -6407,21 +6438,24 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3B0C6380-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3B0C63DF" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3B0C6380-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3B0C63DF" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3B0C63DF-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0C63E1" dyn="False" label="dmz1" mgmt="False" network_zone="id3D385DED" security_level="40" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3B0C63E1" dedicated_failover="False" dyn="False" label="dmz1" mgmt="False" network_zone="id3D385DED" security_level="40" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3B0C63E1-ipv4" name="address" comment="" ro="False" address="10.2.2.2" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0C63F3" dyn="False" label="dmz2" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0C63F3" dedicated_failover="False" dyn="False" label="dmz2" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0C63F3-ipv4" name="fw4:dmz2" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3CD88A77" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+        <Interface id="id3CD88A77" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3CD88A77-ipv4" name="address" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -6612,6 +6646,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3C698F9D" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3C699028" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="">
@@ -6651,17 +6686,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3C698F1D-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3C699013" dyn="False" label="inside" mgmt="False" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3C698F1D-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3C699013" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3C699013-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C69901D" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3C69901D" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3C69901D-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C699030" dyn="False" label="dmz" mgmt="False" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3C699030" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3C699030-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -6818,6 +6856,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3C69BD51" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3D916646" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="">
@@ -6894,13 +6933,16 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3C69BD4F-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3C69BD5C" dyn="False" label="" mgmt="False" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3C69BD4F-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3C69BD5C" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3C69BD5C-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C69BD5E" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3C69BD5E" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3C69BD5E-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -7143,6 +7185,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3D4204D9" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3DB10B42" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -7201,17 +7244,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3D4204D6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3D4204DF" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3D4204D6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3D4204DF" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3D4204DF-ipv4" name="address" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D4204E2" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3D4204E2" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3D4204E2-ipv4" name="address" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D4204E5" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3D4204E5" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3D4204E5-ipv4" name="address" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -7371,18 +7417,24 @@ no sysopt nodnsalias outbound
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3D8AAF43" host_OS="pix_os" lastCompiled="1145688340" lastInstalled="0" lastModified="0" platform="pix" version="6.3" name="firewall9" comment="this firewall has no rules at all." ro="False">
-        <NAT id="id3D8AAF44" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Policy id="id3D8AAFA8" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Routing id="id3D8AAF43-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3D8AAFA9" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <NAT id="id3D8AAF44" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id3D8AAFA8" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3D8AAF43-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3D8AAFA9" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3D8AAFAA" name="address" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D8AAFAC" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3D8AAFAC" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3D8AAFAD" name="address" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D8AAFAF" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3D8AAFAF" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3D8AAFB0" name="address" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -7533,7 +7585,9 @@ no sysopt nodnsalias outbound
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3AF5A2BA" host_OS="openbsd" lastCompiled="1145688342" lastInstalled="0" lastModified="0" platform="pf" name="host" comment="firewall protects host it is running on" ro="False">
-        <NAT id="id3AF5A2BD" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id3AF5A2BD" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
         <Policy id="id3AF5A2BC" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3BD8ECD0" disabled="False" log="True" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -7676,13 +7730,16 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3AF5A2BA-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3AF5A2CB" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id3AF5A2BA-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3AF5A2CB" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5A2CB-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AFB7090" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id3AFB7090" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3AFB7090-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -7779,6 +7836,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3D385DAC" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3D385DF0" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -7876,12 +7934,15 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3D385DA9-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3D385DE3" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Routing id="id3D385DA9-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3D385DE3" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D385DE6" dyn="False" label="inside" mgmt="True" network_zone="id3D385DEC" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id3D385DE6" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3D385DEC" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id3D385DE6-ipv4" name="address" comment="" ro="False" address="10.3.14.204" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -8080,6 +8141,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id3F957BF5" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id3F957C00" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
@@ -8178,12 +8240,15 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id3F957BF2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id3F957BF9" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Routing id="id3F957BF2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3F957BF9" dedicated_failover="False" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3F957BFB" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id3F957BFB" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id3F957BFD" name="test:ethernet1(ip)" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -8654,6 +8719,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id444A03A49567" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id444A03A59567" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="blocking short fragments">
@@ -9201,17 +9267,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id444A05A09567" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id444A05A19567" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Routing id="id444A05A09567" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id444A05A19567" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id444A05A39567" name="fwsm1:ethernet1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id444A05A49567" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id444A05A49567" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id444A05A69567" name="fwsm1:ethernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id444A05A79567" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id444A05A79567" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id444A05A99567" name="fwsm1:ethernet2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -9540,6 +9609,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id43867C1618346" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id43867C1718346" disabled="False" log="False" position="0" action="Deny" direction="Inbound" comment="">
@@ -9769,12 +9839,15 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id43867C5718346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id43867C5818346" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
+        <Routing id="id43867C5718346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id43867C5818346" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id43867C5C18346" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id43867C5C18346" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id43867C5E18346" name="firewall33:eth1:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -9912,6 +9985,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id4389EDB418346" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id4389EDB518346" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -10129,12 +10203,15 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id4389EE8318346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4389EE8418346" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
+        <Routing id="id4389EE8318346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id4389EE8418346" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4389EE8818346" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id4389EE8818346" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4389EE8A18346" name="firewall34:eth1:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -10570,6 +10647,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id45142F6C28543" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id45142F6D28543" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="blocking short fragments">
@@ -11193,17 +11271,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id4514316828543" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4514316928543" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Routing id="id4514316828543" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id4514316928543" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id4514316B28543" name="firewall50:ethernet1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4514316C28543" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id4514316C28543" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3DAA5110" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id4514316E28543" name="firewall50:ethernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4514316F28543" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
+        <Interface id="id4514316F28543" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="ethernet2" comment="" ro="False">
           <IPv4 id="id4514317128543" name="firewall50:ethernet2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -11534,6 +11615,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id4528A4F920039" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id4528A4FA20039" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -11708,17 +11790,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id4528A58220039" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4528A58320039" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id4528A58220039" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id4528A58320039" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id4528A58520039" name="firewall20:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4528A58620039" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id4528A58620039" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4528A58820039" name="firewall20:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4528A58920039" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id4528A58920039" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id4528A58B20039" name="firewall20:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -11996,6 +12081,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id45293E8120039" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id45293E8220039" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -12442,17 +12528,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id45293F3B20039" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id45293F3C20039" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id45293F3B20039" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id45293F3C20039" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id45293F3E20039" name="firewall21:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id45293F3F20039" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id45293F3F20039" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id45293F4120039" name="firewall21:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id45293F4220039" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id45293F4220039" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id45293F4420039" name="firewall21:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -12730,6 +12819,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id4529E34516799" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id4529E34616799" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -13176,17 +13266,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id4529E49B16799" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4529E49C16799" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id4529E49B16799" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id4529E49C16799" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id4529E49E16799" name="firewall22:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4529E49F16799" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id4529E49F16799" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4529E4A116799" name="firewall22:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4529E4A216799" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id4529E4A216799" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id4529E4A416799" name="firewall22:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -13466,6 +13559,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id4529FD5016799" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id4529FD5116799" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -13912,17 +14006,20 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Routing id="id4529FEA616799" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
-        <Interface id="id4529FEA716799" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Routing id="id4529FEA616799" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id4529FEA716799" dedicated_failover="False" dyn="False" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id4529FEA916799" name="firewall21-1:eth0:ip" comment="" ro="False" address="10.5.70.20" netmask="255.255.240.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4529FEAA16799" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id4529FEAA16799" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3D420A09" security_level="50" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id4529FEAC16799" name="firewall21-1:eth1:ip" comment="" ro="False" address="192.168.2.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id4529FEAD16799" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id4529FEAD16799" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3D420A0B" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id4529FEAF16799" name="firewall21-1:eth2:ip" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -14137,6 +14234,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <RuleSetOptions/>
         </NAT>
         <Policy id="id47B7A6A221818" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <PolicyRule id="id47B7A6BC21818" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
@@ -14254,6 +14352,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
         <Routing id="id47B7A72221818" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RoutingRule id="id64513X21455" disabled="False" group="" metric="0" position="0" comment="The default metric on PIX is 1, so the GUI default value of 0 becomes 1 in&#10;the compiled rules.">
@@ -14280,12 +14379,13 @@ no sysopt nodnsalias outbound
             </RItf>
             <RoutingRuleOptions/>
           </RoutingRule>
+          <RuleSetOptions/>
         </Routing>
-        <Interface id="id47B7A72321818" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id47B7A72321818" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id47B7A72F21818" name="pix515:ethernet0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id47B7A72421818" dyn="False" label="inside" mgmt="True" network_zone="id47B7C22921818" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+        <Interface id="id47B7A72421818" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id47B7C22921818" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
           <IPv4 id="id47B7A72621818" name="pix515:ethernet1:ip" comment="" ro="False" address="10.3.14.206" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -14463,8 +14563,6 @@ no sysopt nodnsalias outbound
     <IntervalGroup id="id4387B44818346" name="Time" comment="" ro="False"/>
   </Library>
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
-    <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
-    <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <ServiceGroup id="stdid06" name="IP" comment="" ro="False">
         <IPService id="ip-IPSEC" fragm="False" lsrr="False" protocol_num="50" rr="False" short_fragm="False" ssrr="False" ts="False" name="ESP" comment="IPSEC Encapsulating Security Payload Protocol" ro="False"/>
@@ -14534,11 +14632,13 @@ no sysopt nodnsalias outbound
         </ServiceGroup>
       </ServiceGroup>
     </ServiceGroup>
+    <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
+    <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
       <ObjectGroup id="stdid02" name="Hosts" comment="" ro="False">
         <Host id="id3D84EECF" name="server on dmz" comment="This host is used in examples and template objects" ro="False">
-          <Interface id="id3D84EEE3" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <Interface id="id3D84EEE3" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id3D84EEE4" name="ip" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.0"/>
             <InterfaceOptions/>
           </Interface>

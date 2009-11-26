@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="13" lastModified="1257560726" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1257560726" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
-    <ServiceRef ref="id151F20845"/>
-    <ServiceRef ref="id464147DA29061"/>
-    <ServiceRef ref="id4226X64279"/>
     <Interface id="id19433X65694" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
       <IPv4 id="id19434X65694" name="firewall-ipv6-1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
       <IPv6 id="id19435X65694" name="firewall-ipv6-1:lo:ipv6" comment="" ro="False" address="::1" netmask="128"/>
       <InterfaceOptions/>
     </Interface>
-    <ObjectRef ref="sysid0"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="id8888X64279"/>
-    <ServiceRef ref="id26068X65694"/>
-    <ObjectRef ref="id46435A0816989"/>
-    <ObjectRef ref="id46412C3F26611"/>
-    <ObjectRef ref="id46435A0C16989"/>
-    <ServiceRef ref="stdid14_1"/>
-    <ServiceRef ref="id5470X38343"/>
-    <ObjectRef ref="id19068X65694"/>
-    <ObjectRef ref="id19240X65694"/>
-    <ObjectRef ref="id4641321126611"/>
-    <ServiceRef ref="id5611X44763"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
-    <ServiceRef ref="sysid1"/>
   </Library>
   <Library id="id4511636323682" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id4511636423682_clusters" name="Clusters" comment="" ro="False"/>
@@ -155,34 +136,34 @@
       <ServiceGroup id="id4511637123682" name="UDP" comment="" ro="False"/>
       <ServiceGroup id="id4511637223682" name="Custom" comment="" ro="False">
         <CustomService id="id4226X64279" name="dscp af11" comment="" ro="False" protocol="tcp" address_family="ipv4">
-          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="fwsm"/>
           <CustomServiceCommand platform="iosacl">dscp af11</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
-          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="iptables"/>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id8888X64279" name="esp dscp af12" comment="" ro="False" protocol="50" address_family="ipv4">
-          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="fwsm"/>
           <CustomServiceCommand platform="iosacl">dscp af12</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
-          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="iptables"/>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id26068X65694" name="esp dscp af11 ipv6" comment="" ro="False" protocol="50" address_family="ipv6">
-          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="fwsm"/>
           <CustomServiceCommand platform="iosacl">dscp af11</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
-          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="iptables"/>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="id4511637323682" name="TagServices" comment="" ro="False"/>
@@ -190,9 +171,11 @@
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls" comment="" ro="False">
       <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1251228626" lastInstalled="0" lastModified="1237473570" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
-        <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id46412B5526577" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id464154BB29061" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
+        <PolicyRule id="id464154BB29061" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
             <Src neg="False">
               <ObjectRef ref="id46412C4226611"/>
             </Src>
@@ -211,8 +194,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641623D29061" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4641623D29061" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -231,8 +213,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46412C3326611" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id46412C3326611" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -252,8 +233,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46415A0129061" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id46415A0129061" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -274,8 +254,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641356226611" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4641356226611" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -295,8 +274,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641359926611" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4641359926611" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -316,8 +294,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46412F0326611" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id46412F0326611" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -337,8 +314,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641357426611" disabled="False" log="False" position="7" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4641357426611" disabled="False" log="False" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -358,8 +334,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641358626611" disabled="False" log="False" position="8" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4641358626611" disabled="False" log="False" position="8" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -379,8 +354,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641456D29061" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4641456D29061" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456929061"/>
             </Src>
@@ -400,8 +374,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641457E29061" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4641457E29061" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456929061"/>
             </Src>
@@ -421,8 +394,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641458F29061" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4641458F29061" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456929061"/>
             </Src>
@@ -442,8 +414,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464147C929061" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="interface ethernet1 has address on network 10.10.10.0/24,&#10;therefore net-10.10.10 is behind the router and we do&#10;not need to put rules 12-18 in outbound acl of eth0">
+          </PolicyRule><PolicyRule id="id464147C929061" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="interface ethernet1 has address on network 10.10.10.0/24,&#10;therefore net-10.10.10 is behind the router and we do&#10;not need to put rules 12-18 in outbound acl of eth0">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -463,8 +434,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46414A3E29061" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id46414A3E29061" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -484,8 +454,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46414A4F29061" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id46414A4F29061" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -505,8 +474,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46414A6029061" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id46414A6029061" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -526,8 +494,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46414CEB29061" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id46414CEB29061" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -547,8 +514,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641521829061" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4641521829061" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -568,8 +534,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46415F6729061" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id46415F6729061" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -589,8 +554,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id5377X64279" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id5377X64279" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -610,8 +574,7 @@
               <Option name="color">#7694C0</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id8889X64279" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id8889X64279" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -631,8 +594,7 @@
               <Option name="color">#7694C0</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46412C2726611" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id46412C2726611" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -651,9 +613,10 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
-        <Routing id="id46412B5726577" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+          </PolicyRule><RuleSetOptions/></Policy>
+        <Routing id="id46412B5726577" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </Routing>
+        
         <Interface id="id46412B5826577" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id46412B5926577" name="testios1:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
@@ -675,10 +638,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -706,8 +669,8 @@
           <Option name="iosacl_logging_trap_level">2</Option>
           <Option name="iosacl_prolog_script">! This is prolog</Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
@@ -718,10 +681,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -742,17 +705,19 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id464131E426611" host_OS="ios" inactive="False" lastCompiled="1251228630" lastInstalled="0" lastModified="1257660998" platform="iosacl" version="12.4" name="testios20" comment="" ro="False">
-        <NAT id="id4641320F26611" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id4641320F26611" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id464131EA26611" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id464131EB26611" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id464131EB26611" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -772,8 +737,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464131F726611" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464131F726611" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -793,8 +757,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464137AA26611" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464137AA26611" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -814,8 +777,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641379926611" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4641379926611" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -835,8 +797,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641378826611" disabled="False" log="False" position="4" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4641378826611" disabled="False" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -856,8 +817,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641377726611" disabled="False" log="False" position="5" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4641377726611" disabled="False" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -877,8 +837,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id152F20845" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id152F20845" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -897,8 +856,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id152220845" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id152220845" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -917,8 +875,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id153D20845" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id153D20845" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -937,8 +894,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id154B20845" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id154B20845" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -958,8 +914,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id7427X44763" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id7427X44763" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -981,8 +936,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id7456X44763" disabled="False" group="" log="False" position="11" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id7456X44763" disabled="False" group="" log="False" position="11" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1001,8 +955,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id85935X7744" disabled="False" group="" log="False" position="12" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id85935X7744" disabled="False" group="" log="False" position="12" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1022,8 +975,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id85953X7744" disabled="False" group="" log="False" position="13" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id85953X7744" disabled="False" group="" log="False" position="13" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1044,8 +996,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id85970X7744" disabled="False" group="" log="False" position="14" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id85970X7744" disabled="False" group="" log="False" position="14" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1065,8 +1016,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id7439X44763" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id7439X44763" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1085,8 +1035,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4641320326611" disabled="False" log="True" position="16" action="Deny" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4641320326611" disabled="False" log="True" position="16" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1105,9 +1054,10 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
-        <Routing id="id4641321026611" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+          </PolicyRule><RuleSetOptions/></Policy>
+        <Routing id="id4641321026611" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </Routing>
+        
         <Interface id="id4641321126611" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id4641321326611" name="testios20:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
@@ -1125,10 +1075,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -1141,21 +1091,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"></Option>
+          <Option name="iosacl_acl_temp_addr"/>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"></Option>
+          <Option name="iosacl_logging_buffered_level"/>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"></Option>
+          <Option name="iosacl_logging_console_level"/>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"></Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_logging_trap_level"/>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -1165,10 +1115,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1190,15 +1140,17 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id464264CC12807" host_OS="ios" inactive="False" lastCompiled="1251228628" lastInstalled="0" lastModified="1237438938" platform="iosacl" version="12.x" name="testios2" comment="" ro="False">
-        <NAT id="id464265C412807" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id464265C412807" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id464264D212807" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id464264D312807" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
+        <PolicyRule id="id464264D312807" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
             <Src neg="False">
               <ObjectRef ref="id46412C4226611"/>
             </Src>
@@ -1217,8 +1169,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464264DF12807" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464264DF12807" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1237,8 +1188,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464264EB12807" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464264EB12807" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1258,8 +1208,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464264F712807" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464264F712807" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1280,8 +1229,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642650412807" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642650412807" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1301,8 +1249,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642651012807" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642651012807" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1322,8 +1269,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642651C12807" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4642651C12807" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1343,8 +1289,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642652812807" disabled="False" log="False" position="7" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4642652812807" disabled="False" log="False" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1364,8 +1309,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642653412807" disabled="False" log="False" position="8" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4642653412807" disabled="False" log="False" position="8" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1385,8 +1329,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642654012807" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642654012807" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456929061"/>
             </Src>
@@ -1406,8 +1349,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642654C12807" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642654C12807" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456929061"/>
             </Src>
@@ -1427,8 +1369,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642655812807" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642655812807" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456929061"/>
             </Src>
@@ -1448,8 +1389,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642656412807" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642656412807" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -1469,8 +1409,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642657012807" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642657012807" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -1490,8 +1429,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642657C12807" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642657C12807" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -1511,8 +1449,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642658812807" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642658812807" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -1532,8 +1469,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4642659412807" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4642659412807" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -1553,8 +1489,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464265A012807" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464265A012807" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -1574,8 +1509,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464265AC12807" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464265AC12807" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4641456629061"/>
             </Src>
@@ -1595,8 +1529,7 @@
               <Option name="color">#C86E6E</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464265B812807" disabled="False" log="True" position="19" action="Deny" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464265B812807" disabled="False" log="True" position="19" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1615,9 +1548,10 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
-        <Routing id="id464265C512807" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+          </PolicyRule><RuleSetOptions/></Policy>
+        <Routing id="id464265C512807" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </Routing>
+        
         <Interface id="id464265C612807" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id464265C812807" name="testios2:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
@@ -1635,8 +1569,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -1653,7 +1587,7 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -1662,10 +1596,10 @@
           <Option name="iosacl_logging_console_level">0</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">0</Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
@@ -1676,10 +1610,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1700,17 +1634,19 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1244751217" lastInstalled="0" lastModified="1252367946" platform="iosacl" version="12.x" name="c3620" comment="" ro="False">
-        <NAT id="id46435A0216989" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id46435A0216989" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id46435A0116989" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id464D2B0E24319" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="interface eth 1/1 has only&#10;inbound access list">
+        <PolicyRule id="id464D2B0E24319" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="interface eth 1/1 has only&#10;inbound access list">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1729,8 +1665,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464C8AAD10931" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464C8AAD10931" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1749,8 +1684,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id464C8AA110931" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id464C8AA110931" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1769,8 +1703,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46435A1C16989" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id46435A1C16989" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id46435A0F16989"/>
             </Src>
@@ -1789,8 +1722,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4643662716989" disabled="False" log="False" position="4" action="Accept" direction="Outbound" comment="">
+          </PolicyRule><PolicyRule id="id4643662716989" disabled="False" log="False" position="4" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id46435A0F16989"/>
             </Src>
@@ -1809,8 +1741,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4643664116989" disabled="False" log="False" position="5" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4643664116989" disabled="False" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1829,8 +1760,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4643663516989" disabled="False" log="False" position="6" action="Accept" direction="Outbound" comment="">
+          </PolicyRule><PolicyRule id="id4643663516989" disabled="False" log="False" position="6" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1849,8 +1779,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4254X38343" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4254X38343" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1869,8 +1798,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4341X97727" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4341X97727" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1891,8 +1819,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4268X38343" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4268X38343" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1911,8 +1838,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id5500X42946" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id5500X42946" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1931,8 +1857,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id46435A1016989" disabled="True" log="True" position="11" action="Deny" direction="Both" comment="disable this rule to make&#10;sure no outbound rules are&#10;generated for eth 1/1">
+          </PolicyRule><PolicyRule id="id46435A1016989" disabled="True" log="True" position="11" action="Deny" direction="Both" comment="disable this rule to make&#10;sure no outbound rules are&#10;generated for eth 1/1">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1951,8 +1876,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
+          </PolicyRule><RuleSetOptions/></Policy>
         <Routing id="id46435A0316989" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RoutingRule id="id4195X90642" disabled="False" metric="1" position="0" comment="">
             <RDst neg="False">
@@ -1990,7 +1914,9 @@
             </RItf>
             <RoutingRuleOptions/>
           </RoutingRule>
+        <RuleSetOptions/>
         </Routing>
+        
         <Interface id="id46435A0416989" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="Ethernet1/0" comment="" ro="False">
           <IPv4 id="id46435A0516989" name="c3620:Ethernet1/0:ip" comment="" ro="False" address="192.168.171.2" netmask="255.255.255.0"/>
           <InterfaceOptions/>
@@ -2020,8 +1946,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -2033,10 +1959,10 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"></Option>
+          <Option name="iosacl_acl_temp_addr"/>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_generate_logging_commands">True</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">True</Option>
@@ -2045,10 +1971,10 @@
           <Option name="iosacl_logging_console_level">5</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">2</Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
           <Option name="iosacl_use_acl_remarks">True</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
@@ -2063,7 +1989,7 @@
           <Option name="mgmt_addr">10.3.14.40</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -2084,17 +2010,19 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id19020X65694" host_OS="ios" inactive="False" lastCompiled="1251228621" lastInstalled="0" lastModified="1237473586" platform="iosacl" version="12.x" name="firewall-ipv6-1" comment="" ro="False">
-        <NAT id="id19428X65694" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id19428X65694" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id19026X65694" name="fw-ipv6-1-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id19054X65694" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id19054X65694" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -2113,8 +2041,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id28332X65694" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id28332X65694" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2134,10 +2061,9 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
+          </PolicyRule><RuleSetOptions/></Policy>
         <Policy id="id19082X65694" name="fw-ipv6-1-ipv6" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
-          <PolicyRule id="id19110X65694" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id19110X65694" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -2156,8 +2082,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19137X65694" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19137X65694" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19151X65694"/>
             </Src>
@@ -2176,8 +2101,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19165X65694" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19165X65694" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19179X65694"/>
             </Src>
@@ -2196,8 +2120,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19194X65694" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19194X65694" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -2216,8 +2139,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19226X65694" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19226X65694" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2236,8 +2158,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19260X65694" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19260X65694" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -2256,8 +2177,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19288X65694" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19288X65694" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2276,8 +2196,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19316X65694" disabled="False" log="True" position="7" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id19316X65694" disabled="False" log="True" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2296,8 +2215,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19344X65694" disabled="False" log="True" position="8" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19344X65694" disabled="False" log="True" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -2316,8 +2234,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19372X65694" disabled="False" log="True" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19372X65694" disabled="False" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -2336,8 +2253,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id19400X65694" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id19400X65694" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2356,8 +2272,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id24941X65694" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id24941X65694" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2377,8 +2292,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id7994X97727" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id7994X97727" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2397,8 +2311,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id9240X97727" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id9240X97727" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2421,9 +2334,10 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
-        <Routing id="id19429X65694" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+          </PolicyRule><RuleSetOptions/></Policy>
+        <Routing id="id19429X65694" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </Routing>
+        
         <Interface id="id19430X65694" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
           <IPv4 id="id19431X65694" name="firewall-ipv6-1:Ethernet0/0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id19432X65694" name="firewall-ipv6-1:Ethernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
@@ -2437,34 +2351,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"></Option>
-          <Option name="freebsd_ip_sourceroute"></Option>
+          <Option name="freebsd_ip_redirect"/>
+          <Option name="freebsd_ip_sourceroute"/>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipfw"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipfw"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -2473,7 +2387,7 @@
           <Option name="iosacl_acl_temp_addr">fe80::21d:9ff:aaaa:bbbb</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -2482,13 +2396,13 @@
           <Option name="iosacl_logging_console_level">0</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">0</Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -2503,18 +2417,18 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"></Option>
+          <Option name="openbsd_ip_directed_broadcast"/>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"></Option>
-          <Option name="openbsd_ip_sourceroute"></Option>
+          <Option name="openbsd_ip_redirect"/>
+          <Option name="openbsd_ip_sourceroute"/>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"></Option>
-          <Option name="openbsd_path_sysctl"></Option>
-          <Option name="output_file"></Option>
+          <Option name="openbsd_path_pfctl"/>
+          <Option name="openbsd_path_sysctl"/>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -2533,7 +2447,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"></Option>
+          <Option name="pf_optimization"/>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -2585,12 +2499,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -2601,9 +2515,11 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id10507X97727" host_OS="ios" inactive="False" lastCompiled="1251228623" lastInstalled="0" lastModified="1236920290" platform="iosacl" version="12.x" name="firewall-ipv6-2" comment="" ro="False">
-        <NAT id="id10713X97727" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id10713X97727" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id10513X97727" name="fw-ipv6-2-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id10514X97727" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id10514X97727" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -2622,8 +2538,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10526X97727" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10526X97727" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2643,10 +2558,9 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
+          </PolicyRule><RuleSetOptions/></Policy>
         <Policy id="id10539X97727" name="fw-ipv6-2-ipv6" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
-          <PolicyRule id="id10540X97727" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id10540X97727" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -2665,8 +2579,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10552X97727" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10552X97727" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19151X65694"/>
             </Src>
@@ -2685,8 +2598,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10564X97727" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10564X97727" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19179X65694"/>
             </Src>
@@ -2705,8 +2617,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10576X97727" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10576X97727" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -2725,8 +2636,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10588X97727" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10588X97727" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2745,8 +2655,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10600X97727" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10600X97727" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -2765,8 +2674,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10612X97727" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10612X97727" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2785,8 +2693,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10624X97727" disabled="False" log="True" position="7" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id10624X97727" disabled="False" log="True" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2805,8 +2712,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10636X97727" disabled="False" log="True" position="8" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10636X97727" disabled="False" log="True" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -2825,8 +2731,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10648X97727" disabled="False" log="True" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10648X97727" disabled="False" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -2845,8 +2750,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10660X97727" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10660X97727" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2865,8 +2769,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10672X97727" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10672X97727" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2886,8 +2789,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10685X97727" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10685X97727" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2906,8 +2808,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id10697X97727" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id10697X97727" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -2930,9 +2831,10 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
-        <Routing id="id10714X97727" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+          </PolicyRule><RuleSetOptions/></Policy>
+        <Routing id="id10714X97727" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </Routing>
+        
         <Interface id="id10715X97727" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
           <IPv4 id="id10718X97727" name="firewall-ipv6-2:Ethernet0/0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id10719X97727" name="firewall-ipv6-2:Ethernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
@@ -2946,34 +2848,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"></Option>
-          <Option name="freebsd_ip_sourceroute"></Option>
+          <Option name="freebsd_ip_redirect"/>
+          <Option name="freebsd_ip_sourceroute"/>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipfw"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipfw"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -2982,7 +2884,7 @@
           <Option name="iosacl_acl_temp_addr">1.1.1.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -2991,13 +2893,13 @@
           <Option name="iosacl_logging_console_level">2</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">2</Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -3016,14 +2918,14 @@
           <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"></Option>
+          <Option name="openbsd_ip_directed_broadcast"/>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"></Option>
-          <Option name="openbsd_ip_sourceroute"></Option>
+          <Option name="openbsd_ip_redirect"/>
+          <Option name="openbsd_ip_sourceroute"/>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"></Option>
-          <Option name="openbsd_path_sysctl"></Option>
-          <Option name="output_file"></Option>
+          <Option name="openbsd_path_pfctl"/>
+          <Option name="openbsd_path_sysctl"/>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -3042,7 +2944,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"></Option>
+          <Option name="pf_optimization"/>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -3094,12 +2996,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -3110,9 +3012,11 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id4881X21941" host_OS="ios" inactive="False" lastCompiled="1251228619" lastInstalled="0" lastModified="1237438894" platform="iosacl" version="12.x" name="ccie4u-r1" comment="CCIE4U router R1&#10;2600&#10;" ro="False">
-        <NAT id="id5087X21941" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id5087X21941" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id4887X21941" name="r1-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id4888X21941" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id4888X21941" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3131,8 +3035,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4900X21941" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4900X21941" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3154,8 +3057,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id15139X21941" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id15139X21941" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3175,10 +3077,9 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
+          </PolicyRule><RuleSetOptions/></Policy>
         <Policy id="id4913X21941" name="r1-ipv6" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
-          <PolicyRule id="id4914X21941" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id4914X21941" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -3197,8 +3098,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4926X21941" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4926X21941" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19151X65694"/>
             </Src>
@@ -3217,8 +3117,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4938X21941" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4938X21941" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19179X65694"/>
             </Src>
@@ -3237,8 +3136,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4950X21941" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4950X21941" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -3257,8 +3155,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4962X21941" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4962X21941" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3277,8 +3174,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4974X21941" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4974X21941" disabled="False" group="" log="True" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -3297,8 +3193,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4986X21941" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id4986X21941" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3317,8 +3212,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id4998X21941" disabled="False" log="True" position="7" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id4998X21941" disabled="False" log="True" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3337,8 +3231,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id5010X21941" disabled="False" log="True" position="8" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id5010X21941" disabled="False" log="True" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -3357,8 +3250,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id5022X21941" disabled="False" log="True" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id5022X21941" disabled="False" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -3377,8 +3269,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id5034X21941" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id5034X21941" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3397,8 +3288,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id5046X21941" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id5046X21941" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3418,8 +3308,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id5059X21941" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id5059X21941" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3438,8 +3327,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id5071X21941" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id5071X21941" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3462,9 +3350,10 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
-        <Routing id="id5088X21941" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+          </PolicyRule><RuleSetOptions/></Policy>
+        <Routing id="id5088X21941" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </Routing>
+        
         <Interface id="id5089X21941" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0" comment="" ro="False">
           <IPv4 id="id5092X21941" name="ccie4u-r1:FastEthernet0/0:ip" comment="" ro="False" address="10.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id5093X21941" name="ccie4u-r1:FastEthernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
@@ -3482,34 +3371,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"></Option>
-          <Option name="freebsd_ip_sourceroute"></Option>
+          <Option name="freebsd_ip_redirect"/>
+          <Option name="freebsd_ip_sourceroute"/>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipfw"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipfw"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -3518,7 +3407,7 @@
           <Option name="iosacl_acl_temp_addr">10.1.1.0</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -3527,13 +3416,13 @@
           <Option name="iosacl_logging_console_level">2</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">2</Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -3552,14 +3441,14 @@
           <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"></Option>
+          <Option name="openbsd_ip_directed_broadcast"/>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"></Option>
-          <Option name="openbsd_ip_sourceroute"></Option>
+          <Option name="openbsd_ip_redirect"/>
+          <Option name="openbsd_ip_sourceroute"/>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"></Option>
-          <Option name="openbsd_path_sysctl"></Option>
-          <Option name="output_file"></Option>
+          <Option name="openbsd_path_pfctl"/>
+          <Option name="openbsd_path_sysctl"/>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -3578,7 +3467,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"></Option>
+          <Option name="pf_optimization"/>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -3630,12 +3519,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -3646,9 +3535,11 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id12133X53662" host_OS="ios" inactive="False" lastCompiled="1251228625" lastInstalled="0" lastModified="1237437327" platform="iosacl" version="12.x" name="firewall-ipv6-3" comment="test &quot;safety net&quot; install in case when there are many rulesets" ro="False">
-        <NAT id="id12339X53662" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id12339X53662" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id12139X53662" name="fw-ipv6-3-ipv4" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id12140X53662" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id12140X53662" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -3667,8 +3558,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id12152X53662" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id12152X53662" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3688,10 +3578,9 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
+          </PolicyRule><RuleSetOptions/></Policy>
         <Policy id="id12165X53662" name="fw-ipv6-3-ipv6-1" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="True">
-          <PolicyRule id="id12166X53662" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id12166X53662" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19068X65694"/>
             </Src>
@@ -3710,8 +3599,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id12202X53662" disabled="False" group="" log="True" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id12202X53662" disabled="False" group="" log="True" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19208X65694"/>
             </Src>
@@ -3730,10 +3618,9 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
+          </PolicyRule><RuleSetOptions/></Policy>
         <Policy id="id18060X53662" name="fw-ipv6-3-ipv6-2" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="False">
-          <PolicyRule id="id21571X53662" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id21571X53662" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id19240X65694"/>
             </Src>
@@ -3753,9 +3640,10 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
-        <Routing id="id12340X53662" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+          </PolicyRule><RuleSetOptions/></Policy>
+        <Routing id="id12340X53662" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </Routing>
+        
         <Interface id="id12341X53662" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="Ethernet0/0" comment="" ro="False">
           <IPv4 id="id12344X53662" name="firewall-ipv6-3:Ethernet0/0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id12345X53662" name="firewall-ipv6-3:Ethernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
@@ -3769,34 +3657,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"></Option>
-          <Option name="freebsd_ip_sourceroute"></Option>
+          <Option name="freebsd_ip_redirect"/>
+          <Option name="freebsd_ip_sourceroute"/>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipfw"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipfw"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -3805,7 +3693,7 @@
           <Option name="iosacl_acl_temp_addr">fe80::21d:9ff:aaaa:bbbb/64</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -3814,13 +3702,13 @@
           <Option name="iosacl_logging_console_level">1</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">1</Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -3835,18 +3723,18 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"></Option>
+          <Option name="openbsd_ip_directed_broadcast"/>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"></Option>
-          <Option name="openbsd_ip_sourceroute"></Option>
+          <Option name="openbsd_ip_redirect"/>
+          <Option name="openbsd_ip_sourceroute"/>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"></Option>
-          <Option name="openbsd_path_sysctl"></Option>
-          <Option name="output_file"></Option>
+          <Option name="openbsd_path_pfctl"/>
+          <Option name="openbsd_path_sysctl"/>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -3865,7 +3753,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"></Option>
+          <Option name="pf_optimization"/>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -3917,12 +3805,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"></Option>
+          <Option name="scpArgs"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -3933,9 +3821,11 @@
         </FirewallOptions>
       </Firewall>
       <Firewall id="id66523X44763" host_OS="ios" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1257560747" platform="iosacl" version="12.3" name="testios20-v12.3" comment="" ro="False">
-        <NAT id="id66712X44763" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+        <NAT id="id66712X44763" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </NAT>
+        
         <Policy id="id66539X44763" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id66540X44763" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+        <PolicyRule id="id66540X44763" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3955,8 +3845,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66552X44763" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id66552X44763" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3976,8 +3865,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66564X44763" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id66564X44763" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3997,8 +3885,7 @@
               <Option name="color">#C0BA44</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66576X44763" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id66576X44763" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4018,8 +3905,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66588X44763" disabled="False" log="False" position="4" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id66588X44763" disabled="False" log="False" position="4" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4039,8 +3925,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66600X44763" disabled="False" log="False" position="5" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id66600X44763" disabled="False" log="False" position="5" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4060,8 +3945,7 @@
               <Option name="color">#8BC065</Option>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66612X44763" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id66612X44763" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4080,8 +3964,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66624X44763" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id66624X44763" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4100,8 +3983,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66636X44763" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id66636X44763" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4120,8 +4002,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66648X44763" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id66648X44763" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4141,8 +4022,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66661X44763" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id66661X44763" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4164,8 +4044,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66676X44763" disabled="False" group="" log="False" position="11" action="Accept" direction="Inbound" comment="">
+          </PolicyRule><PolicyRule id="id66676X44763" disabled="False" group="" log="False" position="11" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4184,8 +4063,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66688X44763" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id66688X44763" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4204,8 +4082,7 @@
             <PolicyRuleOptions>
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id66700X44763" disabled="False" log="True" position="13" action="Deny" direction="Both" comment="">
+          </PolicyRule><PolicyRule id="id66700X44763" disabled="False" log="True" position="13" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4224,9 +4101,10 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule>
-        </Policy>
-        <Routing id="id66713X44763" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"/>
+          </PolicyRule><RuleSetOptions/></Policy>
+        <Routing id="id66713X44763" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        </Routing>
+        
         <Interface id="id66529X44763" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <IPv4 id="id66532X44763" name="testios20-v12.3:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
@@ -4244,10 +4122,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -4260,21 +4138,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"></Option>
+          <Option name="iosacl_acl_temp_addr"/>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_epilog_script"/>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"></Option>
+          <Option name="iosacl_logging_buffered_level"/>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"></Option>
+          <Option name="iosacl_logging_console_level"/>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"></Option>
-          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_logging_trap_level"/>
+          <Option name="iosacl_prolog_script"/>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"></Option>
-          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_syslog_facility"/>
+          <Option name="iosacl_syslog_host"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -4284,10 +4162,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -4309,7 +4187,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -4322,9 +4200,9 @@
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
       </CustomService>
@@ -4361,9 +4239,9 @@
         <IPService id="ip-IP_Fragments" fragm="False" lsrr="False" protocol_num="0" rr="False" short_fragm="True" ssrr="False" ts="False" name="ip_fragments" comment="'Short' fragments" ro="False"/>
       </ServiceGroup>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
       </CustomService>

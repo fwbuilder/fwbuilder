@@ -55,6 +55,7 @@ int MangleTableCompiler_ipt::prolog()
         i!=combined_ruleset->end(); i++)
     {
 	PolicyRule *r = PolicyRule::cast( *i );
+        if (r == NULL) continue; // skip RuleSetOptions object
         FWOptions *ruleopt = r->getOptionsObject();
 	if (r->isDisabled()) continue;
         if (r->getAction() == PolicyRule::Tag ||
@@ -73,7 +74,8 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
 
     string ruleset_name = compiler->getRuleSetName();
 
-    if (ipt_comp->isMangleOnlyRuleSet(ruleset_name))
+    FWOptions *rulesetopts = ipt_comp->getSourceRuleSet()->getOptionsObject();
+    if (rulesetopts->getBool("mangle_only_rule_set"))
         tmp_queue.push_back(rule);
     else
     {
