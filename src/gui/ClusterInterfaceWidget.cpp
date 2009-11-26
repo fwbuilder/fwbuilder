@@ -71,6 +71,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
             Interface *iface = Interface::cast(*iter);
             if (iface->isLoopback()) continue;
             QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(list, QStringList() << QString::fromUtf8(iface->getName().c_str()));
+            ifaceitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
             if (!interfaceSelectable(iface))
                 ifaceitem->setFlags(Qt::ItemIsEnabled);
             FWObjectTypedChildIterator iter2 = iface->findByType(Interface::TYPENAME);
@@ -79,10 +80,12 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
                 if (iface->isLoopback()) return;
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
+                subitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
                 if (!interfaceSelectable(subiface))
                     subitem->setFlags(Qt::NoItemFlags);
             }
         }
+        list->expandAll();
         InterfacesList newlist;
         newlist.label = label;
         newlist.layout = layout;
@@ -92,13 +95,24 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
     }
 }
 
-void ClusterInterfaceWidget::setCurrentInterface(QString name)
+bool ClusterInterfaceWidget::setCurrentInterface(QString name)
 {
     foreach(InterfacesList list, this->lists.values())
     {
-        list.list->setCurrentItem(list.list->findItems(name, Qt::MatchCaseSensitive | Qt::MatchExactly).first());
+        bool gotItem = false;
+        foreach(QTreeWidgetItem *item, list.list->findItems(name, Qt::MatchCaseSensitive | Qt::MatchExactly | Qt::MatchRecursive))
+        {
+            if (item->flags() && Qt::ItemIsSelectable)
+            {
+                list.list->setCurrentItem(item);
+                gotItem = true;
+                break;
+            }
+        }
+        if (!gotItem) return false;
     }
     this->m_ui->name->setText(name);
+    return true;
 }
 
 void ClusterInterfaceWidget::nameChanged(QString newname)

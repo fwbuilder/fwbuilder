@@ -25,6 +25,8 @@
 
 #include "ClusterInterfacesSelectorWidget.h"
 
+#include <QDebug>
+
 using namespace libfwbuilder;
 using namespace std;
 
@@ -50,10 +52,9 @@ void ClusterInterfacesSelectorWidget::setFirewallList(QList<Firewall*> firewalls
     set<string> interfaces;
     foreach ( Firewall* fw, firewalls )
     {
-        FWObjectTypedChildIterator iter = fw->findByType(Interface::TYPENAME);
-        for ( ; iter != iter.end(); ++iter )
+        foreach( FWObject *obj, fw->getByTypeDeep(Interface::TYPENAME) )
         {
-            Interface *iface = Interface::cast(*iter);
+            Interface *iface = Interface::cast(obj);
             interfaces.insert(iface->getName());
         }
     }
@@ -63,10 +64,9 @@ void ClusterInterfacesSelectorWidget::setFirewallList(QList<Firewall*> firewalls
         int used = 0;
         foreach ( Firewall* fw, firewalls )
         {
-            FWObjectTypedChildIterator iter = fw->findByType(Interface::TYPENAME);
-            for ( ; iter != iter.end(); ++iter )
+            foreach( FWObject *obj, fw->getByTypeDeep(Interface::TYPENAME) )
             {
-                Interface *iface = Interface::cast(*iter);
+                Interface *iface = Interface::cast(obj);
                 if (iface->getName() == name )
                 {
                     used++;
@@ -92,8 +92,10 @@ ClusterInterfaceWidget* ClusterInterfacesSelectorWidget::addNewInterface()
 
 void ClusterInterfacesSelectorWidget::addInterface(QString name)
 {
+    qDebug() << "adding interface" << name;
     ClusterInterfaceWidget* widget = addNewInterface();
-    widget->setCurrentInterface(name);
+    if (!widget->setCurrentInterface(name))
+        this->removeTab(this->indexOf(widget));
 }
 
 void ClusterInterfacesSelectorWidget::closeTab()

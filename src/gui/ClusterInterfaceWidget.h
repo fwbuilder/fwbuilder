@@ -64,7 +64,7 @@ public:
     ClusterInterfaceWidget(QWidget *parent = 0);
     ~ClusterInterfaceWidget();
     void setFirewallList(QList<libfwbuilder::Firewall*>);
-    void setCurrentInterface(QString);
+    bool setCurrentInterface(QString);
     ClusterInterfaceData getInterfaceData();
     bool interfaceSelectable(libfwbuilder::Interface*);
 
