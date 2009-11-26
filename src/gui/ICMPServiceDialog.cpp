@@ -37,6 +37,8 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/ICMP6Service.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -121,7 +123,7 @@ void ICMPServiceDialog::validate(bool *res)
 
 void ICMPServiceDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     string oldname = obj->getName();
@@ -134,7 +136,7 @@ void ICMPServiceDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 }
 

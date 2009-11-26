@@ -33,6 +33,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Interface.h"
 
+#include <memory>
+
 #include <qpixmapcache.h>
 #include <qmessagebox.h>
 #include <qdialog.h>
@@ -268,7 +270,7 @@ void ClusterGroupDialog::validate(bool *res)
 
 void ClusterGroupDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     ClusterGroup *g = dynamic_cast<ClusterGroup*>(new_state);
@@ -283,7 +285,7 @@ void ClusterGroupDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 }
 

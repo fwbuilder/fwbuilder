@@ -29,6 +29,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Interface.h"
 
+#include <memory>
+
 #include <qmessagebox.h>
 #include <QDateTime>
 #include <QUndoStack>
@@ -196,7 +198,7 @@ void ClusterDialog::validate(bool *res)
 
 void ClusterDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     Cluster *s = dynamic_cast<Cluster*>(new_state);
@@ -218,7 +220,7 @@ void ClusterDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }    
 
     updateTimeStamps();

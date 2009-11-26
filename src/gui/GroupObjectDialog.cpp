@@ -46,6 +46,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/ServiceGroup.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qtextedit.h>
 #include <qlistwidget.h>
@@ -393,7 +395,7 @@ void GroupObjectDialog::applyChanges()
 {
     if (fwbdebug) qDebug("GroupObjectDialog::applyChanges");
 
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     string oldname = obj->getName();
@@ -459,7 +461,7 @@ void GroupObjectDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 }
 

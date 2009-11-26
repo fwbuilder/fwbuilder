@@ -42,6 +42,8 @@
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/Policy.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -192,7 +194,7 @@ void RuleSetDialog::validate(bool *res)
 
 void RuleSetDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     RuleSet *s = dynamic_cast<RuleSet*>(new_state);
@@ -223,7 +225,7 @@ void RuleSetDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
     
 }

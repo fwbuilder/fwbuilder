@@ -38,6 +38,8 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/FWException.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -120,7 +122,7 @@ void HostDialog::validate(bool *res)
 
 void HostDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     Host *s = dynamic_cast<Host*>(new_state);
@@ -139,7 +141,7 @@ void HostDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 }
 

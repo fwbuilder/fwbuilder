@@ -18,6 +18,8 @@
 #include "global.h"
 #include "platforms.h"
 
+#include <memory>
+
 //#include <arpa/inet.h>
 
 #include "secuwallAdvancedDialog.h"
@@ -227,7 +229,7 @@ void secuwallAdvancedDialog::accept()
     if (!validate()) return;
 
     ProjectPanel *project = mw->activeProject();
-    FWCmdChange* cmd = new FWCmdChange(project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
@@ -236,7 +238,8 @@ void secuwallAdvancedDialog::accept()
 
     data.saveAll(fwoptions);
 
-    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        project->undoStack->push(cmd.release());
     
     QDialog::accept();
 }

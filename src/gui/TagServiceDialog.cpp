@@ -36,6 +36,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -114,7 +116,7 @@ void TagServiceDialog::validate(bool *res)
 
 void TagServiceDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     TagService *s = dynamic_cast<TagService*>(new_state);
@@ -129,7 +131,7 @@ void TagServiceDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
     
 }

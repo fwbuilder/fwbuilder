@@ -36,6 +36,8 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
@@ -157,7 +159,7 @@ ipfAdvancedDialog::ipfAdvancedDialog(QWidget *parent,FWObject *o)
 void ipfAdvancedDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    FWCmdChange* cmd = new FWCmdChange(project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
@@ -173,7 +175,8 @@ void ipfAdvancedDialog::accept()
     pis->setCommand( m_dialog->installScript->text().toLatin1().constData() );
     pis->setArguments( m_dialog->installScriptArgs->text().toLatin1().constData() );
 
-    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        project->undoStack->push(cmd.release());
     
     QDialog::accept();
 }

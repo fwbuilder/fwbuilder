@@ -37,6 +37,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
@@ -170,7 +172,7 @@ void IPv4Dialog::validate(bool *result)
 
 void IPv4Dialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     IPv4 *s = dynamic_cast<IPv4*>(new_state);
@@ -198,7 +200,7 @@ void IPv4Dialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 
 }

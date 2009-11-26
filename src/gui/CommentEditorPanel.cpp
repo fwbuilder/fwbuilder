@@ -34,6 +34,8 @@
 #include "FWWindow.h"
 #include "FWCmdChange.h"
 
+#include <memory>
+
 #include <qmessagebox.h>
 #include <qfiledialog.h>
 #include <qtextedit.h>
@@ -111,7 +113,7 @@ void CommentEditorPanel::changed()
 
 void CommentEditorPanel::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChangeRuleComment(m_project, rule);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeRuleComment(m_project, rule));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
 
@@ -119,7 +121,8 @@ void CommentEditorPanel::applyChanges()
         string(m_widget->editor->toPlainText().toUtf8().constData())
     );
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        m_project->undoStack->push(cmd.release());
 }
 
 void CommentEditorPanel::getHelpName(QString *str)

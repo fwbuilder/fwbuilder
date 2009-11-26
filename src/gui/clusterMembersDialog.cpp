@@ -28,6 +28,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
 #include <algorithm>
 
 #include <qdebug.h>
@@ -393,7 +395,7 @@ void clusterMembersDialog::invalidate()
 void clusterMembersDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    FWCmdChange* cmd = new FWCmdChange(project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
     FWObject* new_state = cmd->getNewState();
 
     bool master_found = false;
@@ -423,7 +425,8 @@ void clusterMembersDialog::accept()
     }
     emit membersChanged();
 
-    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        project->undoStack->push(cmd.release());
     
     QDialog::accept();
 }

@@ -36,6 +36,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -117,7 +119,7 @@ void DNSNameDialog::validate(bool *res)
 
 void DNSNameDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     DNSName *s = dynamic_cast<DNSName*>(new_state);
@@ -133,7 +135,7 @@ void DNSNameDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
     
 }

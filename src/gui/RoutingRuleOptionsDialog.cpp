@@ -42,6 +42,8 @@
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
 #include <qstackedwidget.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
@@ -124,7 +126,7 @@ void RoutingRuleOptionsDialog::validate(bool *res)
 void RoutingRuleOptionsDialog::applyChanges()
 {
 
-    FWCmdChange* cmd = new FWCmdChangeRuleOptions(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeRuleOptions(m_project, obj));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
     FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();
@@ -136,7 +138,7 @@ void RoutingRuleOptionsDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 
 }

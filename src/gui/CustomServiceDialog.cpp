@@ -39,6 +39,8 @@
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qtextedit.h>
 #include <qcombobox.h>
@@ -193,7 +195,7 @@ void CustomServiceDialog::platformChanged()
 
 void CustomServiceDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     CustomService *s = dynamic_cast<CustomService*>(new_state);
@@ -221,7 +223,7 @@ void CustomServiceDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
     
 }

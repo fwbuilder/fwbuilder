@@ -34,6 +34,8 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
@@ -184,7 +186,7 @@ ipcoposAdvancedDialog::ipcoposAdvancedDialog(QWidget *parent,FWObject *o)
 void ipcoposAdvancedDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    FWCmdChange* cmd = new FWCmdChange(project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
@@ -193,7 +195,8 @@ void ipcoposAdvancedDialog::accept()
 
     data.saveAll(fwoptions);
 
-    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        project->undoStack->push(cmd.release());
     
     QDialog::accept();
 }

@@ -37,6 +37,8 @@
 
 #include "fwbuilder/Library.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -124,7 +126,7 @@ void LibraryDialog::applyChanges()
 {
     if (FWBTree().isSystem(obj)) return;
 
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     QString oldcolor = new_state->getStr("color").c_str();
@@ -136,7 +138,7 @@ void LibraryDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 }
 

@@ -40,6 +40,8 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Inet6AddrMask.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -151,7 +153,7 @@ void NetworkDialogIPv6::validate(bool *res)
 
 void NetworkDialogIPv6::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(new_state);
@@ -181,7 +183,7 @@ void NetworkDialogIPv6::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
     
 

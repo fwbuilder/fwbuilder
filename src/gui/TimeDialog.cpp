@@ -38,6 +38,8 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interval.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qtextedit.h>
 #include <qcombobox.h>
@@ -213,7 +215,7 @@ void TimeDialog::validate(bool *res)
 void TimeDialog::applyChanges()
 {
 
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     Interval *interval = dynamic_cast<Interval*>(new_state);
@@ -271,7 +273,7 @@ void TimeDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 }
 

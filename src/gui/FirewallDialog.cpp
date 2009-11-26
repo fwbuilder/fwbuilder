@@ -43,6 +43,8 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -256,7 +258,7 @@ void FirewallDialog::validate(bool *res)
 
 void FirewallDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
@@ -319,7 +321,7 @@ void FirewallDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 
     updateTimeStamps();

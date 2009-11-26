@@ -35,6 +35,8 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Prototype.h"   //  should be an include file for the object type
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qtextedit.h>
 #include <qcombobox.h>
@@ -83,7 +85,7 @@ void PrototypeDialog::validate(bool *res)
 void PrototypeDialog::applyChanges()
 {
 
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     new_state->setName( string(obj_name->text().utf8()) );
@@ -92,7 +94,7 @@ void PrototypeDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
     
 }

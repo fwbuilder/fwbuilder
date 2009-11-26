@@ -54,6 +54,10 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
+#include <memory>
+
 #include <QMessageBox>
 #include <QTextEdit>
 #include <QTime>
@@ -456,12 +460,13 @@ void ObjectManipulator::lockObject()
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
                 lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
             {
-                FWCmdChange* cmd = new FWCmdChange(
+                std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(
                     m_project, obj,
-                    QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str())));
+                    QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str()))));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(true);
-                if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+                if (!cmd->getOldState()->cmp(new_state, true))
+                    m_project->undoStack->push(cmd.release());
             }
         }
         // getCurrentObjectTree()->setLockFlags();
@@ -496,12 +501,13 @@ void ObjectManipulator::unlockObject()
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
                 lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
             {
-                FWCmdChange* cmd = new FWCmdChange(
+                std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(
                     m_project, obj,
-                    QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str())));
+                    QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str()))));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(false);
-                if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+                if (!cmd->getOldState()->cmp(new_state, true))
+                    m_project->undoStack->push(cmd.release());
             }
         }
         //getCurrentObjectTree()->setLockFlags();

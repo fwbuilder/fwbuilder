@@ -42,6 +42,8 @@
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Firewall.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -154,7 +156,7 @@ void ActionsDialog::validate(bool *res)
 
 void ActionsDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChangeRuleAction(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeRuleAction(m_project, obj));
 
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
@@ -223,7 +225,8 @@ void ActionsDialog::applyChanges()
     else
         new_rule_options->setInt("ipfw_classify_method", DUMMYNETQUEUE);
 
-    if (!cmd->getOldState()->cmp(new_state, true)) m_project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        m_project->undoStack->push(cmd.release());
 }
 
 void ActionsDialog::tagvalueChanged(int)

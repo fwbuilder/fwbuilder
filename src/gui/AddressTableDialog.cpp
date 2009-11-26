@@ -38,6 +38,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/FWException.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -123,7 +125,7 @@ void AddressTableDialog::validate(bool *res)
 
 void AddressTableDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     AddressTable *s = dynamic_cast<AddressTable*>(new_state);
@@ -139,7 +141,7 @@ void AddressTableDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
    
 }

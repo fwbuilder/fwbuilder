@@ -34,6 +34,8 @@
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
 #include <qmessagebox.h>
 #include <QUndoStack>
 
@@ -88,12 +90,13 @@ void conntrackOptionsDialog::accept()
     if (!validate()) return;
     // the parent of this dialog is InterfaceDialog, not ProjectPanel
     ProjectPanel *project = mw->activeProject();
-    FWCmdChange* cmd = new FWCmdChangeOptionsObject(project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeOptionsObject(project, obj));
     FWObject* new_state = cmd->getNewState();
 
     data.saveAll(new_state);
 
-    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        project->undoStack->push(cmd.release());
     
     QDialog::accept();
 }

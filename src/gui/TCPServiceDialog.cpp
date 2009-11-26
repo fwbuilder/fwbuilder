@@ -36,6 +36,8 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/TCPService.h"
 
+#include <memory>
+
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -201,7 +203,7 @@ void TCPServiceDialog::validate(bool *res)
 
 void TCPServiceDialog::applyChanges()
 {
-    FWCmdChange* cmd = new FWCmdChange(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     string oldname = obj->getName();
@@ -236,7 +238,7 @@ void TCPServiceDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
     
 }

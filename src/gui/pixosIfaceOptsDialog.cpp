@@ -36,6 +36,8 @@
 #include "FWWindow.h"
 #include "Help.h"
 
+#include <memory>
+
 #include <qmessagebox.h>
 
 using namespace std;
@@ -89,7 +91,7 @@ void pixosIfaceOptsDialog::accept()
     if (!validate())  return;
 
     ProjectPanel *project = mw->activeProject();
-    FWCmdChange* cmd = new FWCmdChange(project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the interface object
     FWObject* new_state = cmd->getNewState();
@@ -108,7 +110,8 @@ void pixosIfaceOptsDialog::accept()
 
     data.saveAll(ifopt);
 
-    if (!cmd->getOldState()->cmp(new_state, true)) project->undoStack->push(cmd);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        project->undoStack->push(cmd.release());
     
     QDialog::accept();
 }

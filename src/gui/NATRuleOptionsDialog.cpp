@@ -38,6 +38,8 @@
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Resources.h"
 
+#include <memory>
+
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qcheckbox.h>
@@ -125,7 +127,7 @@ void NATRuleOptionsDialog::validate(bool *res)
 void NATRuleOptionsDialog::applyChanges()
 {
 
-    FWCmdChange* cmd = new FWCmdChangeRuleOptions(m_project, obj);
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeRuleOptions(m_project, obj));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
     FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();
@@ -137,7 +139,7 @@ void NATRuleOptionsDialog::applyChanges()
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
-        m_project->undoStack->push(cmd);
+        m_project->undoStack->push(cmd.release());
     }
 
 }
