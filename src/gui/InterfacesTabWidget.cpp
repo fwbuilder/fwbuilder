@@ -98,11 +98,11 @@ QList<Interface*> InterfacesTabWidget::getDeletedInterfaces()
     return deleted;
 }
 
-void InterfacesTabWidget::addInterface(Interface *interface)
+void InterfacesTabWidget::addInterface(Interface *iface)
 {
-    InterfaceEditorWidget *w = new InterfaceEditorWidget(this, interface);
+    InterfaceEditorWidget *w = new InterfaceEditorWidget(this, iface);
     w->setClusterMode(clusterMode);
-    this->addTab(w, interface->getName().c_str());
+    this->addTab(w, iface->getName().c_str());
 }
 
 void InterfacesTabWidget::addNewInterface()

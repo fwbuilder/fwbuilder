@@ -53,8 +53,8 @@ void ClusterInterfacesSelectorWidget::setFirewallList(QList<Firewall*> firewalls
         FWObjectTypedChildIterator iter = fw->findByType(Interface::TYPENAME);
         for ( ; iter != iter.end(); ++iter )
         {
-            Interface *interface = Interface::cast(*iter);
-            interfaces.insert(interface->getName());
+            Interface *iface = Interface::cast(*iter);
+            interfaces.insert(iface->getName());
         }
     }
     set<string> usedInterfaces;
@@ -66,8 +66,8 @@ void ClusterInterfacesSelectorWidget::setFirewallList(QList<Firewall*> firewalls
             FWObjectTypedChildIterator iter = fw->findByType(Interface::TYPENAME);
             for ( ; iter != iter.end(); ++iter )
             {
-                Interface *interface = Interface::cast(*iter);
-                if (interface->getName() == name )
+                Interface *iface = Interface::cast(*iter);
+                if (iface->getName() == name )
                 {
                     used++;
                     break;
