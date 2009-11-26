@@ -61,6 +61,18 @@
       </property>
       <widget class="QWidget" name="dockWidgetContents" >
        <layout class="QGridLayout" name="gridLayout" >
+        <property name="leftMargin" >
+         <number>12</number>
+        </property>
+        <property name="topMargin" >
+         <number>2</number>
+        </property>
+        <property name="rightMargin" >
+         <number>2</number>
+        </property>
+        <property name="bottomMargin" >
+         <number>2</number>
+        </property>
         <item row="0" column="0" >
          <widget class="QTabWidget" name="editorPanelTabWidget" >
           <property name="sizePolicy" >
@@ -85,18 +97,40 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex" >
-           <number>1</number>
+           <number>0</number>
           </property>
+          <widget class="QWidget" name="tab_output" >
+           <attribute name="title" >
+            <string>Output</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_43" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <item row="0" column="0" >
+             <widget class="CompilerOutputPanel" native="1" name="output_box" />
+            </item>
+           </layout>
+          </widget>
           <widget class="QWidget" name="tab_find" >
            <attribute name="title" >
             <string>Find</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_2" >
-            <property name="margin" >
-             <number>0</number>
+            <property name="leftMargin" >
+             <number>20</number>
+            </property>
+            <property name="topMargin" >
+             <number>12</number>
+            </property>
+            <property name="rightMargin" >
+             <number>20</number>
+            </property>
+            <property name="bottomMargin" >
+             <number>20</number>
             </property>
             <item row="0" column="0" >
-             <widget class="QFrame" name="auxiliaryPanel" >
+             <widget class="QFrame" name="find_panel" >
               <property name="sizePolicy" >
                <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
                 <horstretch>0</horstretch>

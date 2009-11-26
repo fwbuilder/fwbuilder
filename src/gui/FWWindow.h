@@ -62,6 +62,7 @@ class RuleSetView;
 class findDialog;
 class FindObjectWidget;
 class FindWhereUsedWidget;
+class CompilerOutputPanel;
 
 namespace Ui {
     class FWBMainWindow_q;
@@ -80,8 +81,9 @@ namespace libfwbuilder {
 
 
 #define MAXRECENTFILES 5
-#define EDITOR_PANEL_SEARCH_TAB 0
-#define EDITOR_PANEL_EDITOR_TAB 1
+#define EDITOR_PANEL_EDITOR_TAB 2
+#define EDITOR_PANEL_SEARCH_TAB 1
+#define EDITOR_PANEL_OUTPUT_TAB 0
 
 
 class FWWindow : public QMainWindow {
@@ -128,7 +130,6 @@ public:
     ObjectEditor *oe;
     FindObjectWidget *findObjectWidget;
     FindWhereUsedWidget *findWhereUsedWidget;
-
     QUndoGroup *undoGroup;
 
     ProjectPanel* activeProject();

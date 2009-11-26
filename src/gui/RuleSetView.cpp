@@ -2479,9 +2479,9 @@ void RuleSetView::compileCurrentRule()
     RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
     if (node == 0 || node->type != RuleNode::Rule || node->rule == 0) return;
 
-    if (mw->isEditorVisible() &&
-        !mw->requestEditorOwnership(this, node->rule, ObjectEditor::optRuleCompile, true))
-        return;
+    // if (mw->isEditorVisible() &&
+    //     !mw->requestEditorOwnership(this, node->rule, ObjectEditor::optRuleCompile, true))
+    //     return;
 
     mw->singleRuleCompile(node->rule);
 }

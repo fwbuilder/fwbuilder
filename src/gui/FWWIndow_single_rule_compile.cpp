@@ -41,13 +41,23 @@ using namespace std;
 
 void FWWindow::singleRuleCompile(Rule *rule)
 {
-    showEditor();
-    QSize old_size = m_mainWindow->objectEditorStack->size();
-    oe->openOpt(rule, ObjectEditor::optRuleCompile);
-    m_mainWindow->objectEditorStack->setCurrentIndex(oe->getCurrentDialogIndex());
-    //m_panel->objectEditorFrame->show();
-    m_mainWindow->objectEditorStack->resize(old_size);
+    if (activeProject())
+    {
+        attachEditorToProjectPanel(activeProject());
 
+        QString title_txt;
+        QPixmap title_icon;
+        buildEditorTitleAndIcon(
+            rule, ObjectEditor::optNone,
+            &title_txt, &title_icon,
+            m_mainWindow->m_space->subWindowList(QMdiArea::StackingOrder).size() > 1);
+        m_mainWindow->editorDockWidget->setWindowTitle(title_txt);
+        m_mainWindow->output_box->show();
+        m_mainWindow->editorPanelTabWidget->setCurrentIndex(
+            EDITOR_PANEL_OUTPUT_TAB);
+        m_mainWindow->editorDockWidget->show();
+        m_mainWindow->output_box->loadFWObject(rule);
+    }
 }
 
 

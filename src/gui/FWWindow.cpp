@@ -53,6 +53,7 @@
 #include "DiscoveryDruid.h"
 #include "FindObjectWidget.h"
 #include "FindWhereUsedWidget.h"
+#include "CompilerOutputPanel.h"
 #include "longTextDialog.h"
 #include "Help.h"
 
@@ -192,16 +193,20 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 #endif    
 
     findObjectWidget = new FindObjectWidget(
-        m_mainWindow->auxiliaryPanel, NULL, "findObjectWidget");
+        m_mainWindow->find_panel, NULL, "findObjectWidget");
     findObjectWidget->setFocusPolicy( Qt::NoFocus );
-    m_mainWindow->auxiliaryPanel->layout()->addWidget( findObjectWidget );
+    m_mainWindow->find_panel->layout()->addWidget( findObjectWidget );
     findObjectWidget->show();
 
     findWhereUsedWidget = new FindWhereUsedWidget(
-        m_mainWindow->auxiliaryPanel, NULL, "findWhereUsedWidget");
+        m_mainWindow->find_panel, NULL, "findWhereUsedWidget");
     findWhereUsedWidget->setFocusPolicy( Qt::NoFocus );
-    m_mainWindow->auxiliaryPanel->layout()->addWidget( findWhereUsedWidget );
+    m_mainWindow->find_panel->layout()->addWidget( findWhereUsedWidget );
     findWhereUsedWidget->hide();
+
+    // compiler_output = new CompilerOutputPanel(m_mainWindow->output_panel);
+    // m_mainWindow->output_panel->layout()->addWidget(compiler_output);
+    // compiler_output->show();
 
     // Designer adds editorDockWidget to the child widget of the main
     // window and I can't seem to be able to get rid of this

@@ -53,7 +53,6 @@
 #include "ActionsDialog.h"
 #include "MetricEditorPanel.h"
 #include "CommentEditorPanel.h"
-#include "CompilerOutputPanel.h"
 #include "ObjectManipulator.h"
 #include "Help.h"
 #include "events.h"
@@ -165,7 +164,7 @@ ObjectEditor::ObjectEditor( QWidget *parent):
     registerOptDialog(editorStack, optAction, "w_ActionsDialog");
     registerOptDialog(editorStack, optComment, "w_CommentEditorPanel");
     registerOptDialog(editorStack, optMetric, "w_MetricEditorPanel");
-    registerOptDialog(editorStack, optRuleCompile, "w_CompilerOutputPanel");
+    //registerOptDialog(editorStack, optRuleCompile, "w_CompilerOutputPanel");
 
     registerObjectDialog(editorStack, "BLANK", "w_BlankDialog");
 

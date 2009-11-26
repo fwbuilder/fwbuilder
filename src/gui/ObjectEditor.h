@@ -63,7 +63,7 @@ class ObjectEditor : public QObject {
     void findAndLoadHelp();
 
 public: 
-    enum OptType{optAction, optComment, optMetric, optNone, optRuleCompile};
+    enum OptType{optAction, optComment, optMetric, optNone};
 
 private: 
    OptType  openedOpt;
