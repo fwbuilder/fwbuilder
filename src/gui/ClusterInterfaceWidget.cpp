@@ -178,10 +178,10 @@ bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
 
 bool ClusterInterfaceWidget::isValid()
 {
-    foreach(InterfacesList ifacelist, this->lists.values())
+    foreach(InterfacesList ifacelist, this->lists.values()) // for each interface list
     {
-        QList<QTreeWidgetItem*> items = ifacelist.list->selectedItems();
-        if (items.isEmpty())
+        QList<QTreeWidgetItem*> items = ifacelist.list->selectedItems(); // get list of selected items
+        if (items.isEmpty()) // if nothing is selected in one of interface lists
         {
             QMessageBox::warning(this,"Firewall Builder",
                      tr("Some of the cluster interfaces do not have any "
@@ -189,7 +189,7 @@ bool ClusterInterfaceWidget::isValid()
                     "&Continue", QString::null, QString::null, 0, 1 );
             return false;
         }
-        if (roots.values().contains(items.first()))
+        if (roots.values().contains(items.first())) // if firewall item selected in one of interface lists
         {
             QMessageBox::warning(this,"Firewall Builder",
 
@@ -200,6 +200,7 @@ bool ClusterInterfaceWidget::isValid()
             return false;
         }
     }
+    // at least one item is selected in all object trees and it is not firewall object
     return true;
 }
 
