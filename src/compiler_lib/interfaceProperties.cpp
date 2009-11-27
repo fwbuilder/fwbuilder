@@ -379,3 +379,55 @@ bool interfaceProperties::validateInterface(FWObject *target,
     return false;
 }
 
+/*
+ * Ticket #727
+ *
+ * if type is ethernet and has vlan subinterfaces, not eligible 
+ * if type is vlan, eligible 
+ * if type is bridge, eligible 
+ * if type is bonding, eligible 
+ * if type is ethernet and interface with the same name is used for bonding, then not eligible 
+ * if type is ethernet and parent is bridge, then not eligible 
+ */
+bool interfaceProperties::isEligibleForCluster(Interface *intf)
+{
+    list<FWObject*> subinterfaces = intf->getByType(Interface::TYPENAME);
+    string interface_type = intf->getOptionsObject()->getStr("type");
+
+    if (intf->isBridgePort()) return false;
+
+    if (interface_type.empty()) interface_type = "ethernet";
+    if (interface_type == "8021q") return true;
+    if (interface_type == "bridge") return true;
+    if (interface_type == "bonding") return true;
+
+    if (interface_type == "ethernet")
+    {
+        Interface *parent_iface = Interface::cast(intf->getParent());
+        if (parent_iface &&
+            parent_iface->getOptionsObject()->getStr("type") == "bridge")
+            return false;
+
+        FWObject *fw = intf->getParentHost();
+        list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+        list<FWObject*>::iterator i;
+        for (i=interfaces.begin(); i!=interfaces.end(); ++i )
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+            Interface *parent_iface = Interface::cast(iface->getParent());
+            if (parent_iface == NULL) continue;
+            if (parent_iface->getOptionsObject()->getStr("type") == "bonding" &&
+                iface->getName() == intf->getName())
+            {
+                // @intf is used as a bond slave and can't be used for cluster
+                return false;
+            }
+
+        }
+
+        if (subinterfaces.size() > 0) return false;
+    }
+    return true;
+}
+
