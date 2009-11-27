@@ -48,6 +48,7 @@
 #include "findDialog.h"
 #include "events.h"
 #include "ObjectTreeView.h"
+#include "FWObjectClipboard.h"
 
 #include <QtDebug>
 #include <QMdiSubWindow>
@@ -71,7 +72,6 @@ using namespace std;
 void ProjectPanel::initMain(FWWindow *main)
 {
     mainW = main;
-    closing = false ;
     mdiWindow = NULL;
     treeReloadPending = false;
 
@@ -109,6 +109,18 @@ void ProjectPanel::initMain(FWWindow *main)
 
     fd  = new findDialog(this, this);
     fd->hide();
+}
+
+void ProjectPanel::reset()
+{
+    delete rcs;
+    rcs = NULL;
+    firewalls.clear();
+    visibleFirewall = NULL;
+    visibleRuleSet = NULL;
+    clearFirewallTabs();
+    clearObjects();
+    FWObjectClipboard::obj_clipboard->clear();
 }
 
 ProjectPanel::ProjectPanel(QWidget *parent): 

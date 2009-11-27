@@ -73,7 +73,6 @@ class ProjectPanel: public QWidget {
     bool editingStandardLib;
     bool editingTemplateLib;
     bool ruleSetRedrawPending;
-    bool closing ;
     bool ready;
     
     libfwbuilder::FWObjectDatabase *objdb;
@@ -124,14 +123,14 @@ public:
     { if ((libfwbuilder::FWObject*)(visibleRuleSet)==obj) visibleRuleSet=NULL;};
     
     FWBTree * getFWTree () {return objectTreeFormat;};
-    bool isClosing (){return closing;};
-
 
     ProjectPanel(QWidget *parent);
     ~ProjectPanel();
 
 
     void initMain(FWWindow *main);
+    void reset();
+    
     void loadObjects();
     void loadObjects(libfwbuilder::FWObjectDatabase *db);
     void clearObjects();

@@ -53,6 +53,7 @@
 #include "LibExportDialog.h"
 #include "longTextDialog.h"
 
+#include <QtDebug>
 #include <QMdiSubWindow>
 #include <QMdiArea>
 #include <QStatusBar>
@@ -77,8 +78,7 @@ using namespace std;
 
 bool ProjectPanel::saveIfModified()
 {
-    if (fwbdebug)
-        qDebug("ProjectPanel::saveIfModified()");
+    if (fwbdebug) qDebug() << "ProjectPanel::saveIfModified()";
 
     if (db() && db()->isDirty())
 //    if (db() && db()->isDirty() && rcs && !rcs->getFileName().isEmpty())
@@ -169,8 +169,10 @@ bool ProjectPanel::fileNew()
 
 bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
 {
-    if (fwbdebug) qDebug("ProjectPanel::loadFile  fileName=%s load_rcs_head=%d",
-                         fileName.toLocal8Bit().constData(), load_rcs_head);
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::loadFile  fileName="
+                 << fileName.toLocal8Bit()
+                 << "load_rcs_head=" << load_rcs_head;
 
     RCSFilePreview  fp(this);
     bool hasRCS = fp.showFileRLog(fileName);
@@ -189,7 +191,12 @@ bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
     if (dlg_res!=QDialog::Accepted) return false;
 
     if (!saveIfModified() || !checkin(true)) return false;
-    if (!systemFile && rcs!=NULL) fileClose();
+
+    if (!systemFile && rcs!=NULL)
+    {
+        if (mw->isEditorVisible()) mw->hideEditor();
+        reset();
+    }
 
     //try to get simple rcs instance from RCS preview
     RCS *new_rcs = fp.getSelectedRev();
@@ -222,32 +229,13 @@ bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
 void ProjectPanel::fileClose()
 {
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): start");
-
-    closing = true ;
-
     if (mw->isEditorVisible()) mw->hideEditor();
-
     if (!saveIfModified() || !checkin(true))  return;
-
-    if (rcs) delete rcs;
-    rcs=NULL;
-
-    if (fwbdebug) qDebug("ProjectPanel::fileClose(): clearing widgets");
-
-    FWObjectClipboard::obj_clipboard->clear();
-
+    reset();
     mdiWindow->close();
-
-    firewalls.clear();
-    visibleFirewall = NULL;
-    visibleRuleSet = NULL;
-    clearFirewallTabs();
-    clearObjects();
-
     // reset actions, including Save() which should now
     // be inactive
     mw->prepareFileMenu();
-
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): done");
 }
 

@@ -976,13 +976,11 @@ void FWWindow::prepareWindowsMenu()
         {
             if (fwbdebug) qDebug("FWWindow::prepareWindowsMenu() pp=%p", pp);
 
-            if (pp->isClosing()) continue ;
+            //if (pp->isClosing()) continue ;
 
-//            QString text = pp->windowTitle();
             QString text = pp->getPageTitle();
             windowsTitles.push_back(text);
 
-//            if (text=="") text = "[Noname]";
             QAction * act = m_mainWindow->menuWindow->addAction(text);
             ag->addAction(act);
             act->setCheckable ( true );
