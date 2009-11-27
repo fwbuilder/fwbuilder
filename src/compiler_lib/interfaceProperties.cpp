@@ -395,6 +395,7 @@ bool interfaceProperties::isEligibleForCluster(Interface *intf)
     string interface_type = intf->getOptionsObject()->getStr("type");
 
     if (intf->isBridgePort()) return false;
+    if (intf->isLoopback()) return false;
 
     if (interface_type.empty()) interface_type = "ethernet";
     if (interface_type == "8021q") return true;
