@@ -1,62 +1,107 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" >
  <class>ClusterInterfaceWidget</class>
- <widget class="QWidget" name="ClusterInterfaceWidget">
-  <property name="geometry">
+ <widget class="QWidget" name="ClusterInterfaceWidget" >
+  <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>405</width>
-    <height>372</height>
+    <width>578</width>
+    <height>463</height>
    </rect>
   </property>
-  <property name="windowTitle">
+  <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_1">
-       <property name="text">
+  <layout class="QGridLayout" name="gridLayout_2" >
+   <item row="0" column="0" >
+    <layout class="QGridLayout" name="gridLayout" >
+     <item row="0" column="0" >
+      <widget class="QLabel" name="label_1" >
+       <property name="text" >
         <string>Name:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
+     <item row="1" column="0" >
+      <widget class="QLabel" name="label_2" >
+       <property name="text" >
         <string>Label:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
+     <item row="2" column="0" >
+      <widget class="QLabel" name="label_3" >
+       <property name="text" >
         <string>Comment:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="name"/>
+     <item row="0" column="1" >
+      <widget class="QLineEdit" name="name" />
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="label"/>
+     <item row="1" column="1" >
+      <widget class="QLineEdit" name="label" />
      </item>
-     <item row="2" column="1">
-      <widget class="QTextEdit" name="comment"/>
+     <item row="2" column="1" >
+      <widget class="QTextEdit" name="comment" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>0</width>
+         <height>70</height>
+        </size>
+       </property>
+       <property name="maximumSize" >
+        <size>
+         <width>16777215</width>
+         <height>70</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>Select firewall's interfaces to use in this cluster interface:</string>
+   <item row="1" column="0" >
+    <widget class="QLabel" name="label_5" >
+     <property name="text" >
+      <string>Select firewall interfaces to use with the cluster interface.</string>
      </property>
     </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="interfaces"/>
+   <item row="2" column="0" >
+    <widget class="QLabel" name="label_4" >
+     <property name="text" >
+      <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Configuration of cluster interfaces depends on the failover protocol chosen on the next page. If the protocol creates its own new interfaces, such as &lt;span style=" font-weight:600;">VRRP&lt;/span> or &lt;span style=" font-weight:600;">CARP&lt;/span> that create inetrfaces &lt;span style=" font-weight:600; font-style:italic;">vrrp0&lt;/span> or &lt;span style=" font-weight:600; font-style:italic;">carp0&lt;/span>, then cluster interface objects represent these and should have the name &lt;span style=" font-weight:600; font-style:italic;">vrrp0&lt;/span> or &lt;span style=" font-weight:600; font-style:italic;">carp0&lt;/span>. If failover protocol does not create new interfaces, such as &lt;span style=" font-weight:600;">heartbeat&lt;/span> or &lt;span style=" font-weight:600;">OpenAIS&lt;/span>, then cluster interface should have the same name as member firewall interfaces, that is &lt;span style=" font-weight:600; font-style:italic;">eth0&lt;/span>, &lt;span style=" font-weight:600; font-style:italic;">eth1.102&lt;/span>, &lt;span style=" font-weight:600; font-style:italic;">vlan200&lt;/span>, and so on. In the latter case cluster interface is an abstraction used to define mapping between corresponding interfaces of the member firewalls and to provide place for the configuration of the failover protocol.&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
+     <property name="wordWrap" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" >
+    <layout class="QHBoxLayout" name="interfaces" />
+   </item>
+   <item row="4" column="0" >
+    <spacer name="verticalSpacer" >
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>20</width>
+       <height>91</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
@@ -68,11 +113,11 @@
    <receiver>ClusterInterfaceWidget</receiver>
    <slot>nameChanged(QString)</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>95</x>
      <y>25</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>2</x>
      <y>92</y>
     </hint>

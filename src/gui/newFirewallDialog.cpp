@@ -700,7 +700,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            tr("Invalid address '%1/%2'").arg(addr).arg(netm),
             "&Continue", QString::null, QString::null, 0, 1 );
         return false;
     }
@@ -714,7 +714,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
             {
                 QMessageBox::warning(
                     this,"Firewall Builder",
-                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+                    tr("Invalid address '%1/%2'").arg(addr).arg(netm),
                     "&Continue", QString::null, QString::null, 0, 1 );
                 return false;
             }          
@@ -729,7 +729,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            tr("Invalid address '%1/%2'").arg(addr).arg(netm),
             "&Continue", QString::null, QString::null, 0, 1 );
         return false;
     }

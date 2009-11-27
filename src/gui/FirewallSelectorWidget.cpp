@@ -115,7 +115,8 @@ bool FirewallSelectorWidget::isValid()
     {
         QMessageBox::critical(
                 this, "Firewall Builder",
-                tr("You should select at least one firewall to use in this cluster"),
+                tr("You should select at least one firewall to use "
+                   "with the cluster"),
                 "&Continue", QString::null, QString::null, 0, 1);
         return false;
     }
@@ -126,7 +127,7 @@ bool FirewallSelectorWidget::isValid()
         {
             QMessageBox::critical(
                 this, "Firewall Builder",
-                tr("Host operation systems of chosen firewalls are not the same"),
+                tr("Host operation systems of chosen firewalls are different"),
                 "&Continue", QString::null, QString::null, 0, 1);
             return false;
         }
@@ -135,19 +136,21 @@ bool FirewallSelectorWidget::isValid()
         {
             QMessageBox::critical(
                 this, "Firewall Builder",
-                tr("Platforms of chosen firewalls are not the same"),
+                tr("Platforms of chosen firewalls are different"),
                 "&Continue", QString::null, QString::null, 0, 1);
             return false;
         }
+#ifdef COMPARE_MEMBER_VERSIONS_FOR_CLUSTER
         if (version.isEmpty()) version = fws.at(i).first->getStr("version").c_str();
         else if (version != fws.at(i).first->getStr("version").c_str())
         {
             QMessageBox::critical(
                 this, "Firewall Builder",
-                tr("Versions of chosen firewalls are not the same"),
+                tr("Versions of chosen firewalls are different"),
                 "&Continue", QString::null, QString::null, 0, 1);
             return false;
         }
+#endif
     }
     int ok = false;
     // check for at least one same interface in all firwalls

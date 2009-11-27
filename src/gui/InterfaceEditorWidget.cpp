@@ -300,25 +300,29 @@ bool InterfaceEditorWidget::isValid()
                         + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok");
     }
 
-    if (clusterMode && no_addr_ok)
-        if (this->m_ui->addresses->rowCount() != 0)
-        {
-        QMessageBox::warning(this,"Firewall Builder",
-                     tr("Interface %1 should not have any interfaces").arg(this->m_ui->name->text()),
-                    "&Continue", QString::null, QString::null, 0, 1 );
-            return false;
-        }
-
+    if (clusterMode && no_addr_ok && this->m_ui->addresses->rowCount() != 0)
+    {
+        QMessageBox::warning(
+            this, "Firewall Builder",
+            tr("Failover protocol %1 does not require IP address for interface %2")
+            .arg(this->m_ui->protocol->currentText())
+            .arg(this->m_ui->name->text()),
+            "&Continue", QString::null, QString::null, 0, 1 );
+        return false;
+    }
+    
 
     if (!no_addr_ok && this->m_ui->addresses->rowCount() == 0)
     {
         if ( (this->m_ui->type->currentIndex() == 0) &&
              (this->m_ui->addresses->rowCount() == 0) )
         {
-            QMessageBox::warning(this,"Firewall Builder",
-                     tr("You should enter at least one address for "
-                        "regular interface %1").arg(this->m_ui->name->text()),
-                    "&Continue", QString::null, QString::null, 0, 1 );
+            QMessageBox::warning(
+                this, "Firewall Builder",
+                tr("Failover protocol %1 requires an IP address for interface %2")
+                .arg(this->m_ui->protocol->currentText())
+                .arg(this->m_ui->name->text()),
+                "&Continue", QString::null, QString::null, 0, 1 );
             return false;
         }
     }
@@ -340,9 +344,10 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
 {
     if ( regular && ( addr.isEmpty() || netm.isEmpty() ) )
     {
-        QMessageBox::warning( this, "Firewall Builder",
-                              tr("Empty addrres or netmask field"),
-                              "&Continue", QString::null, QString::null, 0, 1);
+        QMessageBox::warning(
+            this, "Firewall Builder",
+            tr("Empty addrres or netmask field"),
+            "&Continue", QString::null, QString::null, 0, 1);
         return false;
     }
 
@@ -354,8 +359,8 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
     catch (FWException &ex)
     {
         QMessageBox::warning(
-            this,"Firewall Builder",
-            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
+            this, "Firewall Builder",
+            tr("Invalid address '%1/%2'").arg(addr).arg(netm),
             "&Continue", QString::null, QString::null, 0, 1 );
         return false;
     }
@@ -369,7 +374,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
             {
                 QMessageBox::warning(
                     this,"Firewall Builder",
-                    tr("Illegal netmask '%1/%2'").arg(addr).arg(netm),
+                    tr("Invalid netmask '%1/%2'").arg(addr).arg(netm),
                     "&Continue", QString::null, QString::null, 0, 1 );
                 return false;
             }
@@ -384,8 +389,8 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
     catch (FWException &ex)
     {
         QMessageBox::warning(
-            this,"Firewall Builder",
-            tr("Illegal netmask '%1/%2'").arg(addr).arg(netm),
+            this, "Firewall Builder",
+            tr("Invalid netmask '%1/%2'").arg(addr).arg(netm),
             "&Continue", QString::null, QString::null, 0, 1 );
         return false;
     }

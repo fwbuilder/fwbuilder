@@ -178,11 +178,15 @@ bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
 
 bool ClusterInterfaceWidget::isValid()
 {
-    // InterfacesList is a struct containing information about object trees and labels in this widget
-    // this->lists is filled in setFirewallList from list of firewalls (new InterfacesList is created for each firewall)
+    // this->lists is QMap<Firewall*, InterfacesList> where
+    // InterfacesList contains information about object trees and
+    // labels in this widget. Map this->lists is filled in
+    // setFirewallList() from the list of firewalls (new InterfacesList is
+    // created for each firewall)
     foreach(InterfacesList ifacelist, this->lists.values())
     {
-        // get selected items of object tree - QTreeWidget pointed by ifacelist.list
+        // get selected items of object tree - QTreeWidget pointed by
+        // ifacelist.list
         QList<QTreeWidgetItem*> items = ifacelist.list->selectedItems();
         if (items.isEmpty()) // nothing is selected in one of interface lists
         {
@@ -192,13 +196,13 @@ bool ClusterInterfaceWidget::isValid()
                     "&Continue", QString::null, QString::null, 0, 1 );
             return false;
         }
-        if (roots.values().contains(items.first())) // firewall is item selected in one of interface lists
+        if (roots.values().contains(items.first()))
         {
+            // firewall is the item selected in one of interface lists
             QMessageBox::warning(this,"Firewall Builder",
-
-                     tr("It is not possible to use firewall as interface "
-                        "for cluster"),
-
+                     tr("Please select interface of the member firewall "
+                        "rather than the firewall object to be used "
+                        "with cluster interface"),
                     "&Continue", QString::null, QString::null, 0, 1 );
             return false;
         }
