@@ -217,7 +217,7 @@ bool RuleSet::deleteRule(Rule *r)
 {
     if (r!=NULL)
     {
-	remove(r, false);   // do not put in "Deleted objects"
+	remove(r, true); // and delete the rule if ref counter == 0
 	renumberRules();
 	return(true);
     }
