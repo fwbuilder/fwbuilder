@@ -184,14 +184,18 @@ bool ClusterInterfaceWidget::isValid()
         if (items.isEmpty())
         {
             QMessageBox::warning(this,"Firewall Builder",
-                     tr("Some of your interfaces does not have firewall interface selected"),
+                     tr("Some of the cluster interfaces do not have any "
+                        "member firewall interface selected"),
                     "&Continue", QString::null, QString::null, 0, 1 );
             return false;
         }
         if (roots.values().contains(items.first()))
         {
             QMessageBox::warning(this,"Firewall Builder",
-                     tr("It is not possible to use firewall as interface for cluster"),
+
+                     tr("It is not possible to use firewall as interface "
+                        "for cluster"),
+
                     "&Continue", QString::null, QString::null, 0, 1 );
             return false;
         }
