@@ -40,6 +40,9 @@
 #include <qpixmapcache.h>
 #include <qfiledialog.h>
 
+#include <QFontDatabase>
+#include <QDebug>
+
 #include <iostream>
 
 #define OBJECT_NAME_PAGE 0
@@ -240,6 +243,22 @@ void newClusterDialog::showPage(const int page)
     }
     case SUMMARY_PAGE:
     {
+        QFont *monospace = new QFont("Lucida Console");
+        if (!monospace->exactMatch())
+        {
+            monospace->setFixedPitch(true);
+            QFontDatabase fontdb;
+            foreach (QString family, fontdb.families(QFontDatabase::Latin))
+            {
+                if (fontdb.isFixedPitch(family, "normal"))
+                {
+                    monospace->setFamily(family);
+                    break;
+                }
+            }
+        }
+        this->m_dialog->firewallsList->setFont(*monospace);
+        this->m_dialog->interfacesList->setFont(*monospace);
         this->m_dialog->clusterName->setText(this->m_dialog->clusterName->text() + this->m_dialog->obj_name->text());
         QStringList firewalls;
         QList<QPair<Firewall*, bool> > fws = m_dialog->firewallSelector->getSelectedFirewalls();
