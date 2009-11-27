@@ -95,7 +95,11 @@ void ClusterInterfacesSelectorWidget::addInterface(QString name)
     qDebug() << "adding interface" << name;
     ClusterInterfaceWidget* widget = addNewInterface();
     if (!widget->setCurrentInterface(name))
+    {
         this->removeTab(this->indexOf(widget));
+        this->editors.removeOne(widget);
+        delete widget;
+    }
 }
 
 void ClusterInterfacesSelectorWidget::closeTab()
@@ -119,4 +123,13 @@ void ClusterInterfacesSelectorWidget::clear()
     QTabWidget::clear();
     editors.clear();
     fwlist.clear();
+}
+
+bool ClusterInterfacesSelectorWidget::isValid()
+{
+    foreach (ClusterInterfaceWidget *editor, this->editors)
+    {
+        if (!editor->isValid()) return false;
+    }
+    return true;
 }

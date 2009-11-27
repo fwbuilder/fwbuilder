@@ -52,6 +52,7 @@ public:
     ClusterInterfacesSelectorWidget(QWidget *parent = 0);
     void setFirewallList(QList<libfwbuilder::Firewall*>);
     QList<ClusterInterfaceData> getInterfaces();
+    bool isValid();
 
 private:
     QList<ClusterInterfaceWidget*> editors;

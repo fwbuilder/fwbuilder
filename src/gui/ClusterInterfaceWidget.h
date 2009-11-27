@@ -30,6 +30,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QTreeWidget>
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 #include <fwbuilder/Resources.h>
 #include <fwbuilder/Cluster.h>
@@ -67,6 +68,7 @@ public:
     bool setCurrentInterface(QString);
     ClusterInterfaceData getInterfaceData();
     bool interfaceSelectable(libfwbuilder::Interface*);
+    bool isValid();
 
 protected:
     void changeEvent(QEvent *e);
@@ -76,6 +78,8 @@ private:
     QMap<libfwbuilder::Firewall*, InterfacesList> lists;
     ClusterInterfacesSelectorWidget *cisw;
     QString os;
+    QMap<QTreeWidget*, QTreeWidgetItem*> lastSelected;
+    QMap<QTreeWidget*, QTreeWidgetItem*> roots;
 
 public slots:
     void nameChanged(QString);

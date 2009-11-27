@@ -26,6 +26,8 @@
 #include "ClusterInterfaceWidget.h"
 #include "ui_ClusterInterfaceWidget.h"
 
+#include <QDebug>
+
 using namespace libfwbuilder;
 using namespace std;
 
@@ -65,26 +67,36 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
         layout->addWidget(label);
         QTreeWidget *list = new QTreeWidget(this);
         layout->addWidget(list);
+        QTreeWidgetItem* firewall = new QTreeWidgetItem(list, QStringList() << QString::fromUtf8(fw->getName().c_str()));
+        roots[list] = firewall;
+        firewall->setIcon(0, QIcon(":/Icons/Firewall/icon-tree"));
         FWObjectTypedChildIterator iter = fw->findByType(Interface::TYPENAME);
         for ( ; iter != iter.end() ; ++iter )
         {
             Interface *iface = Interface::cast(*iter);
             if (iface->isLoopback()) continue;
-            QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(list, QStringList() << QString::fromUtf8(iface->getName().c_str()));
+            QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(firewall, QStringList() << QString::fromUtf8(iface->getName().c_str()));
             ifaceitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
+            ifaceitem->setDisabled(false);
             if (!interfaceSelectable(iface))
-                ifaceitem->setFlags(Qt::ItemIsEnabled);
+                ifaceitem->setFlags(Qt::NoItemFlags);
+            else
+                ifaceitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             FWObjectTypedChildIterator iter2 = iface->findByType(Interface::TYPENAME);
             for ( ; iter2 != iter2.end() ; ++iter2 )
             {
                 if (iface->isLoopback()) return;
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
+                subitem->setDisabled(false);
                 subitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
                 if (!interfaceSelectable(subiface))
                     subitem->setFlags(Qt::NoItemFlags);
+                else
+                    ifaceitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             }
         }
+        list->topLevelItem(0)->setFlags(list->topLevelItem(0)->flags() & ~Qt::ItemIsSelectable);
         list->expandAll();
         InterfacesList newlist;
         newlist.label = label;
@@ -102,6 +114,7 @@ bool ClusterInterfaceWidget::setCurrentInterface(QString name)
         bool gotItem = false;
         foreach(QTreeWidgetItem *item, list.list->findItems(name, Qt::MatchCaseSensitive | Qt::MatchExactly | Qt::MatchRecursive))
         {
+            if ( item == roots[list.list] ) continue;
             if (item->flags() && Qt::ItemIsSelectable)
             {
                 list.list->setCurrentItem(item);
@@ -129,7 +142,8 @@ ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
     res.comment = this->m_ui->comment->toPlainText();
     foreach(InterfacesList ifacelist, this->lists.values())
     {
-        QString selectedInterface = ifacelist.list->currentItem()->text(0);
+        QString selectedInterface = ifacelist.list->selectedItems().first()->text(0);
+        qDebug() << selectedInterface;
         FWObjectTypedChildIterator iter = ifacelist.firewall->findByType(Interface::TYPENAME);
         for ( ; iter!=iter.end(); ++iter )
         {
@@ -160,5 +174,28 @@ bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
             os_family));
     QString err;
     return int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster), dynamic_cast<FWObject*>(iface), false, err);
+}
+
+bool ClusterInterfaceWidget::isValid()
+{
+    foreach(InterfacesList ifacelist, this->lists.values())
+    {
+        QList<QTreeWidgetItem*> items = ifacelist.list->selectedItems();
+        if (items.isEmpty())
+        {
+            QMessageBox::warning(this,"Firewall Builder",
+                     tr("Some of your interfaces does not have firewall interface selected"),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+            return false;
+        }
+        if (roots.values().contains(items.first()))
+        {
+            QMessageBox::warning(this,"Firewall Builder",
+                     tr("It is not possible to use firewall as interface for cluster"),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+            return false;
+        }
+    }
+    return true;
 }
 

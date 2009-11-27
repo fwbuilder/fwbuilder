@@ -122,7 +122,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="page_1">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -290,6 +290,11 @@ p, li { white-space: pre-wrap; }
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <widget class="QLabel" name="firewallsList">
+            <property name="font">
+             <font>
+              <family>Lucida Console</family>
+             </font>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -332,6 +337,11 @@ p, li { white-space: pre-wrap; }
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
            <widget class="QLabel" name="interfacesList">
+            <property name="font">
+             <font>
+              <family>Lucida Console</family>
+             </font>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -988,7 +998,7 @@ p, li { white-space: pre-wrap; }
            </rect>
           </property>
           <property name="pixmap">
-           <pixmap>:/Icons/host_64.png</pixmap>
+           <pixmap resource="MainRes.qrc">:/Icons/host_64.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>false</bool>
@@ -1207,7 +1217,9 @@ p, li { white-space: pre-wrap; }
   <tabstop>finishButton</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="MainRes.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>obj_name_old</sender>

@@ -261,15 +261,18 @@ void newClusterDialog::showPage(const int page)
             str += iface.name;
             if (iface.type == 0 && iface.addresses.count() > 0)
             {
-                str += " with address";
-                if (iface.addresses.count() > 1) str += "es:\n";
-                else str += ": ";
+                if (iface.addresses.count() == 1)
+                    str += tr(" with address: ");
+                else
+                    str += tr(" with addresses: ");
                 QStringList addresses;
-                foreach (AddressInfo addr, iface.addresses)
+                for (int i = 0; i< iface.addresses.values().count(); i++)
                 {
-                    if (iface.addresses.count() > 1)
-                        addresses.append("    " + addr.address + "/" + addr.netmask);
-                    else addresses.append(addr.address + "/" + addr.netmask);
+                    AddressInfo addr = iface.addresses.values().at(i);
+                    QString addrstr;
+                    if (i > 0) addrstr.fill(' ', str.length());
+                    addrstr += addr.address + "/" + addr.netmask;
+                    addresses.append(addrstr);
                 }
                 str += addresses.join("\n");
             }
@@ -840,6 +843,11 @@ void newClusterDialog::nextClicked()
             "&Continue", QString::null, QString::null, 0, 1);
             return;
         }
+    }
+    if (currentPage() == INTERFACES_PAGE)
+    {
+        if (!this->m_dialog->interfaceSelector->isValid())
+            return;
     }
     if (currentPage() == INTERFACEEDITOR_PAGE)
         if (!this->m_dialog->interfaceEditor->isValid())
