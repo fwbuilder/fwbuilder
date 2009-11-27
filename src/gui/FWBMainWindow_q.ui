@@ -1083,13 +1083,13 @@
     <string>Compile</string>
    </property>
    <property name="toolTip" >
-    <string>Compile rules</string>
+    <string>Compile rules of all firewall and cluster objects</string>
    </property>
    <property name="statusTip" >
-    <string>Compile rules</string>
+    <string>Compile rules of all firewall and cluster objects</string>
    </property>
    <property name="whatsThis" >
-    <string>Compile rules</string>
+    <string>Compile rules of all firewall and cluster objects</string>
    </property>
   </action>
   <action name="installAction" >
@@ -1104,13 +1104,13 @@
     <string>Install</string>
    </property>
    <property name="toolTip" >
-    <string>Install firewall policy</string>
+    <string>Install firewall policy of all firewall and cluster objects</string>
    </property>
    <property name="statusTip" >
-    <string>Install firewall policy</string>
+    <string>Install firewall policy of all firewall and cluster objects</string>
    </property>
    <property name="whatsThis" >
-    <string>Install firewall policy</string>
+    <string>Install firewall policy of all firewall and cluster objects</string>
    </property>
   </action>
   <action name="backAction" >
