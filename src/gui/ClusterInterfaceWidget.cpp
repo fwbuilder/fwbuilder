@@ -237,7 +237,7 @@ bool ClusterInterfaceWidget::isValid()
         {
             // selected interface item can not be used in this cluster
             QMessageBox::warning(this,"Firewall Builder",
-                     tr("%1 can no be used as cluster interface.")
+                     tr("%1 can not be used as cluster interface.")
                         .arg(ifacelist.list->selectedItems().first()->text(0)),
                     "&Continue", QString::null, QString::null, 0, 1 );
             return false;
