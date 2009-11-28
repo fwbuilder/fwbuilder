@@ -31,6 +31,7 @@
 #include <QtGui/QTreeWidget>
 #include <QVBoxLayout>
 #include <QMessageBox>
+#include <QHeaderView>
 
 #include "global.h"
 
@@ -48,6 +49,8 @@ class ClusterInterfacesSelectorWidget;
 struct ClusterInterfaceData;
 
 #include "ClusterInterfacesSelectorWidget.h"
+
+Q_DECLARE_METATYPE(libfwbuilder::Interface*)
 
 namespace Ui {
     class ClusterInterfaceWidget;
@@ -80,9 +83,7 @@ private:
     QMap<libfwbuilder::Firewall*, InterfacesList> lists;
     ClusterInterfacesSelectorWidget *cisw;
     QString os;
-    QMap<QTreeWidget*, QTreeWidgetItem*> lastSelected;
     QMap<QTreeWidget*, QTreeWidgetItem*> roots;
-    QMap<QTreeWidgetItem*, libfwbuilder::Interface*> items;
 
 public slots:
     void nameChanged(QString);

@@ -63,21 +63,29 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
         os = fw->getStr("host_OS").c_str();
         QVBoxLayout *layout = new QVBoxLayout();
         this->m_ui->interfaces->addLayout(layout);
+
+        //create label with firewall name
         QLabel *label = new QLabel(QString::fromUtf8(fw->getName().c_str()), this);
         layout->addWidget(label);
+
+        // create object tree
         QTreeWidget *list = new QTreeWidget(this);
         list->header()->setVisible(false);
         layout->addWidget(list);
+
+        // create firewall item in tree
         QTreeWidgetItem* firewall = new QTreeWidgetItem(list, QStringList() << QString::fromUtf8(fw->getName().c_str()));
         roots[list] = firewall;
         firewall->setIcon(0, QIcon(":/Icons/Firewall/icon-tree"));
+
+        // interfaces and subinterfaces creation
         FWObjectTypedChildIterator iter = fw->findByType(Interface::TYPENAME);
         for ( ; iter != iter.end() ; ++iter )
         {
             Interface *iface = Interface::cast(*iter);
             if (iface->isLoopback()) continue;
             QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(firewall, QStringList() << QString::fromUtf8(iface->getName().c_str()));
-            this->items[ifaceitem] = iface;
+            ifaceitem->setData(0, Qt::UserRole, qVariantFromValue(iface));//QVariant(QVariant::UserType, iface));
             ifaceitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
             ifaceitem->setDisabled(!interfaceSelectable(iface));
             if (!interfaceSelectable(iface))
@@ -91,7 +99,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
                 if (iface->isLoopback()) return;
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
-                this->items[subitem] = subiface;
+                subitem->setData(0, Qt::UserRole, qVariantFromValue(iface));//QVariant(QVariant::UserType, subitem));
                 subitem->setDisabled(!interfaceSelectable(subiface));
                 subitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
                 if (!interfaceSelectable(subiface))
@@ -102,6 +110,8 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
         }
         list->topLevelItem(0)->setFlags(list->topLevelItem(0)->flags() & ~Qt::ItemIsSelectable);
         list->expandAll();
+
+        // add data to map
         InterfacesList newlist;
         newlist.label = label;
         newlist.layout = layout;
@@ -120,14 +130,15 @@ bool ClusterInterfaceWidget::setCurrentInterface(QString name)
         bool gotItem = false;
         foreach(QTreeWidgetItem *item, list.list->findItems(name, Qt::MatchCaseSensitive | Qt::MatchExactly | Qt::MatchRecursive))
         {
+            Interface *iface = item->data(0, Qt::UserRole).value<Interface*>();
             if ( item == roots[list.list] ) continue; // skip firewall object
-            if ( interfaceSelectable(this->items[item]) ) // interface is good for use in cluster
+            if ( interfaceSelectable(iface) ) // interface is good for use in cluster
             {
                 list.list->setCurrentItem(item);
                 gotItem = true;
-                if (label.length() == 0) label = this->items[item]->getLabel();
+                if (label.length() == 0) label = iface->getLabel();
                 else
-                    if (label != this->items[item]->getLabel())
+                    if (label != iface->getLabel())
                         setLabel = false;
                 break;
             }
@@ -222,7 +233,7 @@ bool ClusterInterfaceWidget::isValid()
                     "&Continue", QString::null, QString::null, 0, 1 );
             return false;
         }
-        if (!interfaceSelectable(this->items[ifacelist.list->selectedItems().first()]))
+        if (!interfaceSelectable(ifacelist.list->selectedItems().first()->data(0, Qt::UserRole).value<Interface*>()))
         {
             // selected interface item can not be used in this cluster
             QMessageBox::warning(this,"Firewall Builder",
