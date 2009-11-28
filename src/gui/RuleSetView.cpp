@@ -1586,7 +1586,6 @@ void RuleSetView::selectObject(FWObject *object, const QModelIndex &index)
 
 void RuleSetView::openObjectInTree(FWObject *obj)
 {
-    if (gui_experiment1) return;
     RuleSetModel* md = ((RuleSetModel*)model());
     FWObject *oo = obj;
     if (obj==NULL || Rule::cast(obj)!=NULL)  oo = md->getFirewall();

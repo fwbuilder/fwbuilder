@@ -136,7 +136,6 @@ FWBSettings *st = NULL;
 int fwbdebug = 0;
 bool safemode = false;
 int registered = 0;
-bool gui_experiment1 = false;
 bool cli_print = false;
 QString cli_print_fwname = "";
 
@@ -578,10 +577,6 @@ int main( int argc, char *argv[] )
 	case 'v':
 	    cout << VERSION << endl;
 	    exit(0);
-
-        case 'g':
-            gui_experiment1 = true;
-            break;
 
         case 'P':
             cli_print = true ;
