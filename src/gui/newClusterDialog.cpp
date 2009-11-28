@@ -756,6 +756,7 @@ void newClusterDialog::finishClicked()
         QString failover_protocol_name = data.protocol.toLower();
 
         failover_grp->setStr("type", failover_protocol_name.toAscii().constData());
+
     }
 
     // create cluster interfaces and cluster groups

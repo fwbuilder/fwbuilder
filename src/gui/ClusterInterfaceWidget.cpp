@@ -76,10 +76,12 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
             Interface *iface = Interface::cast(*iter);
             if (iface->isLoopback()) continue;
             QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(firewall, QStringList() << QString::fromUtf8(iface->getName().c_str()));
+            this->items[ifaceitem] = iface;
             ifaceitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
-            ifaceitem->setDisabled(false);
+            ifaceitem->setDisabled(!interfaceSelectable(iface));
             if (!interfaceSelectable(iface))
-                ifaceitem->setFlags(Qt::NoItemFlags);
+                // works only for elements which does not have child elements
+                ifaceitem->setFlags(ifaceitem->flags() & ~Qt::ItemIsSelectable);
             else
                 ifaceitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             FWObjectTypedChildIterator iter2 = iface->findByType(Interface::TYPENAME);
@@ -88,10 +90,11 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
                 if (iface->isLoopback()) return;
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
-                subitem->setDisabled(false);
+                this->items[subitem] = subiface;
+                subitem->setDisabled(!interfaceSelectable(subiface));
                 subitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
                 if (!interfaceSelectable(subiface))
-                    subitem->setFlags(Qt::NoItemFlags);
+                    subitem->setFlags(subitem->flags() & ~Qt::ItemIsSelectable);
                 else
                     ifaceitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             }
@@ -114,8 +117,8 @@ bool ClusterInterfaceWidget::setCurrentInterface(QString name)
         bool gotItem = false;
         foreach(QTreeWidgetItem *item, list.list->findItems(name, Qt::MatchCaseSensitive | Qt::MatchExactly | Qt::MatchRecursive))
         {
-            if ( item == roots[list.list] ) continue;
-            if (item->flags() && Qt::ItemIsSelectable)
+            if ( item == roots[list.list] ) continue; // skip firewall object
+            if ( interfaceSelectable(this->items[item]) ) // interface is good for use in cluster
             {
                 list.list->setCurrentItem(item);
                 gotItem = true;
@@ -162,7 +165,7 @@ bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
 {
     libfwbuilder::Cluster cluster;
 //    cluster.add(iface, false);
-    cluster.setStr("host_os", os.toStdString());
+    cluster.setStr("host_OS", os.toStdString());
 
     Resources* os_res = Resources::os_res[os.toStdString()];
     string os_family = os.toStdString();
@@ -173,10 +176,12 @@ bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             os_family));
     QString err;
-    if (!int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster),
-                                     dynamic_cast<FWObject*>(iface), false, err))
-        return false;
-    return int_prop->isEligibleForCluster(iface);
+    bool res = int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster),
+                                           dynamic_cast<FWObject*>(iface), false, err)
+                   && int_prop->isEligibleForCluster(iface);
+    if (fwbdebug)
+        qDebug() << "interface" << iface->getName().c_str() << "can be used in cluster:" << res;
+    return res;
 }
 
 bool ClusterInterfaceWidget::isValid()
@@ -206,6 +211,15 @@ bool ClusterInterfaceWidget::isValid()
                      tr("Please select interface of the member firewall "
                         "rather than the firewall object to be used "
                         "with cluster interface"),
+                    "&Continue", QString::null, QString::null, 0, 1 );
+            return false;
+        }
+        if (!interfaceSelectable(this->items[ifacelist.list->selectedItems().first()]))
+        {
+            // selected interface item can not be used in this cluster
+            QMessageBox::warning(this,"Firewall Builder",
+                     tr("Interface %1 can no be used in this cluster.")
+                        .arg(ifacelist.list->selectedItems().first()->text(0)),
                     "&Continue", QString::null, QString::null, 0, 1 );
             return false;
         }

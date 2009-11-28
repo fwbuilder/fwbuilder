@@ -32,6 +32,8 @@
 #include <QVBoxLayout>
 #include <QMessageBox>
 
+#include "global.h"
+
 #include <fwbuilder/Resources.h>
 #include <fwbuilder/Cluster.h>
 #include <fwbuilder/Firewall.h>
@@ -80,6 +82,7 @@ private:
     QString os;
     QMap<QTreeWidget*, QTreeWidgetItem*> lastSelected;
     QMap<QTreeWidget*, QTreeWidgetItem*> roots;
+    QMap<QTreeWidgetItem*, libfwbuilder::Interface*> items;
 
 public slots:
     void nameChanged(QString);
