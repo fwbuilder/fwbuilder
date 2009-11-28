@@ -62,7 +62,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
     {
         os = fw->getStr("host_OS").c_str();
         QVBoxLayout *layout = new QVBoxLayout();
-        this->m_ui->interfaces->addLayout(layout);
+        this->m_ui->interfaceBox->addLayout(layout);
 
         //create label with firewall name
         QLabel *label = new QLabel(QString::fromUtf8(fw->getName().c_str()), this);
@@ -99,7 +99,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
                 if (iface->isLoopback()) return;
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
-                subitem->setData(0, Qt::UserRole, qVariantFromValue(iface));//QVariant(QVariant::UserType, subitem));
+                subitem->setData(0, Qt::UserRole, qVariantFromValue(subiface));//QVariant(QVariant::UserType, subitem));
                 subitem->setDisabled(!interfaceSelectable(subiface));
                 subitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
                 if (!interfaceSelectable(subiface))
@@ -125,17 +125,18 @@ bool ClusterInterfaceWidget::setCurrentInterface(QString name)
 {
     string label;
     bool setLabel = true;
+    int gotItems = 0;
     foreach(InterfacesList list, this->lists.values())
     {
-        bool gotItem = false;
         foreach(QTreeWidgetItem *item, list.list->findItems(name, Qt::MatchCaseSensitive | Qt::MatchExactly | Qt::MatchRecursive))
         {
             Interface *iface = item->data(0, Qt::UserRole).value<Interface*>();
+            if (iface == NULL) continue;
             if ( item == roots[list.list] ) continue; // skip firewall object
             if ( interfaceSelectable(iface) ) // interface is good for use in cluster
             {
                 list.list->setCurrentItem(item);
-                gotItem = true;
+                gotItems++;
                 if (label.length() == 0) label = iface->getLabel();
                 else
                     if (label != iface->getLabel())
@@ -143,8 +144,9 @@ bool ClusterInterfaceWidget::setCurrentInterface(QString name)
                 break;
             }
         }
-        if (!gotItem) return false;
+        qDebug() << gotItems << this->lists.values().count();
     }
+    if (gotItems < this->lists.values().count()) return false;
     this->m_ui->name->setText(name);
     if (setLabel) this->m_ui->label->setText(QString::fromUtf8(label.c_str()));
     return true;
@@ -164,18 +166,9 @@ ClusterInterfaceData ClusterInterfaceWidget::getInterfaceData()
     res.comment = this->m_ui->comment->toPlainText();
     foreach(InterfacesList ifacelist, this->lists.values())
     {
-        QString selectedInterface = ifacelist.list->selectedItems().first()->text(0);
-        qDebug() << selectedInterface;
-        FWObjectTypedChildIterator iter = ifacelist.firewall->findByType(Interface::TYPENAME);
-        for ( ; iter!=iter.end(); ++iter )
-        {
-            Interface* iface = Interface::cast(*iter);
-            if (QString::fromUtf8(iface->getName().c_str()) == selectedInterface)
-            {
-                res.interfaces.append(qMakePair(ifacelist.firewall, iface));
-                break;
-            }
-        }
+        QTreeWidgetItem *item = ifacelist.list->selectedItems().first();
+        Interface* iface = item->data(0, Qt::UserRole).value<Interface*>();
+        res.interfaces.append(qMakePair(Firewall::cast(iface->getParent()), iface));
     }
     return res;
 }

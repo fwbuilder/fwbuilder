@@ -96,14 +96,14 @@ void ClusterInterfacesSelectorWidget::addInterface(QString name)
     if (!widget->setCurrentInterface(name))
     {
         this->removeTab(this->indexOf(widget));
-        this->editors.removeOne(widget);
+        this->editors.removeAll(widget);
         delete widget;
     }
 }
 
 void ClusterInterfacesSelectorWidget::closeTab()
 {
-    this->editors.removeOne(dynamic_cast<ClusterInterfaceWidget*>(this->widget(this->currentIndex())));
+    this->editors.removeAll(dynamic_cast<ClusterInterfaceWidget*>(this->widget(this->currentIndex())));
     this->removeTab(this->currentIndex());
 }
 
