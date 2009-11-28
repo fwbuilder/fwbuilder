@@ -44,6 +44,7 @@ public:
     int objectId() {return id;}
     void setObject(libfwbuilder::FWObject *object) {id = object->getId();}
     libfwbuilder::FWObject* getObject();
+    libfwbuilder::FWObject* getObject(int id);
 
 };
 

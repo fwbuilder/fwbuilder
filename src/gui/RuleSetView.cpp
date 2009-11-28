@@ -882,9 +882,7 @@ QModelIndexList RuleSetView::getSelectedRows() const
 void RuleSetView::removeRule()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-    
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     mw->findObjectWidget->reset();
 
@@ -988,8 +986,7 @@ void RuleSetView::renameGroup()
 void RuleSetView::setRuleColor(const QString &c)
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
+    if (!canChange(md)) return;
 
     QModelIndexList selection = getSelectedRows();
 
@@ -1000,8 +997,6 @@ void RuleSetView::setRuleColor(const QString &c)
     QList<QModelIndex> rules;
     QList<QModelIndex> groups;
 
-    QTime t;
-    t.start();
     foreach (QModelIndex index, selection)
     {
         if (md->isIndexRule(index))
@@ -1013,24 +1008,29 @@ void RuleSetView::setRuleColor(const QString &c)
             groups << index;
         }
     }
-    qDebug("t1: %d ms",t.restart());
+
+    QList<Rule*> ruleList;
     if (rules.isEmpty())
     {
         // Let's recolor groups - there are no rules in the selection
-        foreach(QModelIndex index, groups)
+        foreach(QModelIndex grpIndex, groups)
         {
-            md->changeGroupColor(index, c);
+            foreach(RuleNode* node, md->nodeFromIndex(grpIndex)->children)
+            {
+                ruleList.append(node->rule);
+            }
         }
     }
     else
     {
         // There are rules in selection, so recolor them
-        md->changeRuleColor(rules, c);
-    }
-    qDebug("t1: %d ms",t.elapsed());
 
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+        foreach (QModelIndex index, rules)
+        {
+            ruleList.append(md->nodeFromIndex(index)->rule);
+        }
+    }
+    project->undoStack->push(new FWCmdRuleColor(project, md->getRuleSet(), ruleList, c));
 }
 
 void RuleSetView::setColorEmpty()
@@ -1278,13 +1278,10 @@ void RuleSetView::cutRule()
 void RuleSetView::pasteRuleAbove()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     QModelIndexList selection = getSelectedRows();
     QModelIndex index = currentIndex();
-
 
     vector<std::pair<int,ProjectPanel*> >::iterator i;
     for (i= FWObjectClipboard::obj_clipboard->begin();
@@ -1320,9 +1317,7 @@ void RuleSetView::pasteRuleAbove()
 void RuleSetView::pasteRuleBelow()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     QModelIndexList selection = getSelectedRows();
     QModelIndex index = currentIndex();

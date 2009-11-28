@@ -30,6 +30,9 @@
 #include "RuleSetView.h"
 #include "RuleSetModel.h"
 
+#include <QHash>
+#include <QList>
+
 namespace libfwbuilder
 {
     class RuleSet;
@@ -77,6 +80,23 @@ class FWCmdRuleInsert : public FWCmdRule
 public:
     FWCmdRuleInsert(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, int position=0, bool isAfter=false, libfwbuilder::Rule* ruleToInsert=0);
     ~FWCmdRuleInsert();
+
+    void redoOnModel(RuleSetModel *md);
+    void undoOnModel(RuleSetModel *md);
+};
+
+/********************************************************
+ * FWCmdRuleColor
+ ********************************************************/
+
+class FWCmdRuleColor : public FWCmdRule
+{
+    QString newColor;
+    QHash<int,QString> oldColors;
+    QList<int> ruleIds;
+
+public:
+    FWCmdRuleColor(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<libfwbuilder::Rule*> &rules,const QString &newColor);
 
     void redoOnModel(RuleSetModel *md);
     void undoOnModel(RuleSetModel *md);

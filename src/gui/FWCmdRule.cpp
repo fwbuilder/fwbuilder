@@ -31,10 +31,12 @@
 #include "events.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/RuleElement.h"
+
 
 #include <QDebug>
 
@@ -133,4 +135,55 @@ void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
     md->removeRow(index.row(), index.parent());
     // do we need delete insertedRule?
     insertedRule = 0;
+}
+
+/********************************************************
+ * FWCmdRuleDelete
+ ********************************************************/
+
+FWCmdRuleColor::FWCmdRuleColor(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<Rule*> &rules,const QString &newColor):
+        FWCmdRule(project, ruleset),newColor(newColor)
+{
+    foreach(Rule* rule, rules)
+    {
+        int id = rule->getId();
+        FWOptions *ropt = rule->getOptionsObject();
+        QString oldColor = QString::fromUtf8(ropt->getStr("color").c_str());
+
+        oldColors[id] = oldColor;
+    }
+
+    setText(QObject::tr("change rule(s) color"));
+}
+
+void FWCmdRuleColor::redoOnModel(RuleSetModel *md)
+{
+    QList<QModelIndex> indexes;
+
+    foreach(int ruleId, oldColors.keys())
+    {
+        Rule* rule = dynamic_cast<Rule*>(getObject(ruleId));
+        if (rule != 0)
+        {
+            indexes.append(md->index(rule, 0));
+        }
+    }
+
+    md->changeRuleColor(indexes, newColor);
+}
+
+void FWCmdRuleColor::undoOnModel(RuleSetModel *md)
+{
+    QList<QModelIndex> indexes;
+
+    foreach(int ruleId, oldColors.keys())
+    {
+        indexes.clear();
+        Rule* rule = dynamic_cast<Rule*>(getObject(ruleId));
+        if (rule != 0)
+        {
+            indexes.append(md->index(rule, 0));
+        }
+        md->changeRuleColor(indexes, oldColors[ruleId]);
+    }
 }
