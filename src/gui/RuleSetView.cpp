@@ -1354,11 +1354,8 @@ void RuleSetView::pasteRuleBelow()
             project->m_panel->om->reload();
         }
 
-        md->insertRule(Rule::cast(co), index, true);
+        project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), md->getRulePosition(index), true, Rule::cast(co)));
     }
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
 bool RuleSetView::canChange(RuleSetModel* md)
