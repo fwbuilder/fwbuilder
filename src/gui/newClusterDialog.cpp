@@ -211,9 +211,21 @@ void newClusterDialog::showPage(const int page)
     {
         this->m_dialog->interfaceEditor->setClusterMode(true);
         this->m_dialog->interfaceEditor->clear();
-        this->m_dialog->interfaceEditor->setExplanation("You can edit your interfaces here");
+
+        this->m_dialog->interfaceEditor->setExplanation(
+            tr("Depending on the failover protocol, cluster interface "
+               "may or may not need an IP address. <b>VRRP</b> and "
+               "<b>CARP</b> interfaces should have their own unique "
+               "IP addresses different from the addresses of interfaces "
+               "of member firewalls. Other failover protocols such as "
+               "<b>heartbeat</b> or <b>OpenAIS</b> do not create new "
+               "inetrface and therefore do not require additional IP address."
+            )
+        );
+
         while (this->m_dialog->interfaceEditor->count())
             this->m_dialog->interfaceEditor->removeTab(0);
+
         foreach (ClusterInterfaceData iface, this->m_dialog->interfaceSelector->getInterfaces())
         {
             this->m_dialog->interfaceEditor->addClusterInterface(iface);

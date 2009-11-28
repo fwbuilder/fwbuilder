@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" >
  <class>InterfaceEditorWidget</class>
- <widget class="QWidget" name="InterfaceEditorWidget">
-  <property name="geometry">
+ <widget class="QWidget" name="InterfaceEditorWidget" >
+  <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,60 +9,60 @@
     <height>477</height>
    </rect>
   </property>
-  <property name="windowTitle">
+  <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_1">
-       <property name="text">
+    <layout class="QGridLayout" name="gridLayout" >
+     <item row="0" column="0" >
+      <widget class="QLabel" name="label_1" >
+       <property name="text" >
         <string>Name:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="name"/>
+     <item row="0" column="1" >
+      <widget class="QLineEdit" name="name" />
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
+     <item row="1" column="0" >
+      <widget class="QLabel" name="label_2" >
+       <property name="text" >
         <string>Label:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="label"/>
+     <item row="1" column="1" >
+      <widget class="QLineEdit" name="label" />
      </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+     <item row="4" column="0" >
+      <widget class="QLabel" name="label_5" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="text">
+       <property name="text" >
         <string>Comment:</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QTextEdit" name="comment">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <item row="4" column="1" >
+      <widget class="QTextEdit" name="comment" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="minimumSize">
+       <property name="minimumSize" >
         <size>
          <width>0</width>
          <height>70</height>
         </size>
        </property>
-       <property name="maximumSize">
+       <property name="maximumSize" >
         <size>
          <width>16777215</width>
          <height>70</height>
@@ -71,59 +70,59 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="macLabel">
-       <property name="text">
+     <item row="2" column="0" >
+      <widget class="QLabel" name="macLabel" >
+       <property name="text" >
         <string>MAC:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="mac"/>
+     <item row="2" column="1" >
+      <widget class="QLineEdit" name="mac" />
      </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="typeLabel">
-       <property name="text">
+     <item row="3" column="0" >
+      <widget class="QLabel" name="typeLabel" >
+       <property name="text" >
         <string>Type:</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="type">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+     <item row="3" column="1" >
+      <widget class="QComboBox" name="type" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <item>
-        <property name="text">
+        <property name="text" >
          <string>Regular interface</string>
         </property>
        </item>
        <item>
-        <property name="text">
+        <property name="text" >
          <string>Dynamic address</string>
         </property>
        </item>
        <item>
-        <property name="text">
+        <property name="text" >
          <string>Unnumbered interface</string>
         </property>
        </item>
       </widget>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="protocolLabel">
-       <property name="text">
+     <item row="5" column="0" >
+      <widget class="QLabel" name="protocolLabel" >
+       <property name="text" >
         <string>Protocol:</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
-      <widget class="QComboBox" name="protocol">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+     <item row="5" column="1" >
+      <widget class="QComboBox" name="protocol" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -133,53 +132,50 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="explanation">
-     <property name="text">
+    <widget class="QLabel" name="explanation" >
+     <property name="text" >
       <string/>
+     </property>
+     <property name="wordWrap" >
+      <bool>true</bool>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="addresses">
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
+    <widget class="QTableWidget" name="addresses" >
      <column>
-      <property name="text">
+      <property name="text" >
        <string>Address</string>
       </property>
      </column>
      <column>
-      <property name="text">
+      <property name="text" >
        <string>Netmask</string>
       </property>
      </column>
      <column>
-      <property name="text">
+      <property name="text" >
        <string>Type</string>
       </property>
      </column>
      <column>
-      <property name="text">
+      <property name="text" >
        <string>Remove</string>
       </property>
      </column>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout" >
      <item>
-      <widget class="QPushButton" name="addAddress">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+      <widget class="QPushButton" name="addAddress" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="text">
+       <property name="text" >
         <string>Add address</string>
        </property>
       </widget>
@@ -196,11 +192,11 @@
    <receiver>InterfaceEditorWidget</receiver>
    <slot>nameEdited(QString)</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>140</x>
      <y>31</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>6</x>
      <y>69</y>
     </hint>
@@ -212,11 +208,11 @@
    <receiver>InterfaceEditorWidget</receiver>
    <slot>addNewAddress()</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>289</x>
      <y>456</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>289</x>
      <y>238</y>
     </hint>
@@ -228,11 +224,11 @@
    <receiver>InterfaceEditorWidget</receiver>
    <slot>typeChanged(int)</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>139</x>
      <y>123</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>4</x>
      <y>168</y>
     </hint>
@@ -244,11 +240,11 @@
    <receiver>InterfaceEditorWidget</receiver>
    <slot>addressChanged(int,int)</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>53</x>
      <y>430</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>3</x>
      <y>314</y>
     </hint>
@@ -260,11 +256,11 @@
    <receiver>InterfaceEditorWidget</receiver>
    <slot>protocolChanged(QString)</slot>
    <hints>
-    <hint type="sourcelabel">
+    <hint type="sourcelabel" >
      <x>102</x>
      <y>309</y>
     </hint>
-    <hint type="destinationlabel">
+    <hint type="destinationlabel" >
      <x>5</x>
      <y>278</y>
     </hint>
