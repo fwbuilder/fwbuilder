@@ -259,7 +259,6 @@ void newClusterDialog::showPage(const int page)
     {
         foreach (QRadioButton *btn, radios.keys())
         {
-            this->m_dialog->policyLayout->removeWidget(btn);
             btn->close();
             delete btn;
         }
