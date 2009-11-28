@@ -425,6 +425,9 @@ void newFirewallDialog::showPage(const int page)
                 readPlatform(m_dialog->platform).toLatin1().constData(),
                 "security_levels") )
         {
+
+        this->m_dialog->interfaceEditor1->setExplanation("Here you can edit interfaces manually");
+
 /* if chosen fw platform does not support security levels,
  * this is the last page
  */
@@ -517,6 +520,7 @@ void newFirewallDialog::showPage(const int page)
         createFirewallFromTemplate();
 
         setFinishEnabled( 5, true );
+        this->m_dialog->interfaceEditor2->setExplanation("Here you can edit template's interfaces");
         this->m_dialog->interfaceEditor2->clear();
         this->m_dialog->interfaceEditor2->removeTab(0);
         this->m_dialog->interfaceEditor2->setCornerWidgetsVisible(false);

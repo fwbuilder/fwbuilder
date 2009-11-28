@@ -161,7 +161,10 @@ void InterfacesTabWidget::addInterfaceFromData(InterfaceData* idata)
 void InterfacesTabWidget::addTab(QWidget* widget, const QString& title)
 {
     if ( dynamic_cast<InterfaceEditorWidget*>(widget) != NULL )
+    {
+        dynamic_cast<InterfaceEditorWidget*>(widget)->setExplanation(explanation);
         QTabWidget::addTab(widget, title);
+    }
 }
 
 void InterfacesTabWidget::setClusterMode(bool st)
@@ -179,4 +182,13 @@ void InterfacesTabWidget::addClusterInterface(ClusterInterfaceData data)
     InterfaceEditorWidget *w = new InterfaceEditorWidget(this, data);
     w->setClusterMode(true);
     this->addTab(w, data.name);
+}
+
+void InterfacesTabWidget::setExplanation(QString text)
+{
+    explanation = text;
+    for( int i = 0; i < this->count(); i++ )
+    {
+        dynamic_cast<InterfaceEditorWidget*>(this->widget(i))->setExplanation(text);
+    }
 }

@@ -133,6 +133,13 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="explanation">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTableWidget" name="addresses">
      <column>
       <property name="text">

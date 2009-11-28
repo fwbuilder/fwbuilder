@@ -82,6 +82,7 @@ private:
     libfwbuilder::FWObject *currentTemplate;
     QList<libfwbuilder::Interface*> deleted;
     bool clusterMode;
+    QString explanation;
 
 public slots:
     void addInterface(libfwbuilder::Interface*);
@@ -91,6 +92,7 @@ public slots:
     void closeTab();
     void addInterfaceFromData(libfwbuilder::InterfaceData*);
     void addClusterInterface(ClusterInterfaceData);
+    void setExplanation(QString);
     virtual void addTab(QWidget*, const QString&);
 
 };

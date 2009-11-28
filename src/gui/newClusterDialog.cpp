@@ -211,6 +211,7 @@ void newClusterDialog::showPage(const int page)
     {
         this->m_dialog->interfaceEditor->setClusterMode(true);
         this->m_dialog->interfaceEditor->clear();
+        this->m_dialog->interfaceEditor->setExplanation("You can edit your interfaces here");
         while (this->m_dialog->interfaceEditor->count())
             this->m_dialog->interfaceEditor->removeTab(0);
         foreach (ClusterInterfaceData iface, this->m_dialog->interfaceSelector->getInterfaces())

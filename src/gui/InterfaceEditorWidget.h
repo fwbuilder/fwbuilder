@@ -97,6 +97,7 @@ public slots:
     void typeChanged(int);
     void addressChanged(int, int);
     void protocolChanged(QString);
+    void setExplanation(QString);
 
 protected:
     void changeEvent(QEvent *e);
