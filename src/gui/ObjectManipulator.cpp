@@ -1245,6 +1245,7 @@ void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
 FWObject*  ObjectManipulator::getCurrentLib()
 {
     int idx = m_objectManipulator->libs->currentIndex();
+    if (idx == -1 ) return NULL;
     FWObject *lib = idxToLibs[idx];
     if (fwbdebug)
     {
