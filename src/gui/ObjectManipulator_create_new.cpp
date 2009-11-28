@@ -376,7 +376,7 @@ void ObjectManipulator::newFirewall()
     }
 }
 
-void ObjectManipulator::newCluster()
+void ObjectManipulator::newCluster(bool fromSelected)
 {
     FWObject *parent = 
         FWBTree().getStandardSlotForObject(getCurrentLib(), Cluster::TYPENAME);
@@ -386,6 +386,11 @@ void ObjectManipulator::newCluster()
 
     newClusterDialog *ncd = new newClusterDialog(parent);
     if (mw->isEditorVisible())  mw->hideEditor();
+    if (fromSelected)
+    {
+        qDebug() << "creating cluster from selected firewalls";
+        ncd->setFirewallList(getCurrentObjectTree()->getSelectedObjects());
+    }
     ncd->exec();
     FWObject *ncl = ncd->getNewCluster();
     delete ncd;
@@ -409,6 +414,12 @@ void ObjectManipulator::newCluster()
         // QCoreApplication::postEvent(
         //     mw, new dataModifiedEvent(m_project->getFileName(), ncl->getId()));
     }
+}
+
+
+void ObjectManipulator::newClusterFromSelected()
+{
+    newCluster(true);
 }
 
 void ObjectManipulator::newClusterIface()

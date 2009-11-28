@@ -202,7 +202,8 @@ public slots:
      void newLibrary();
      void newObject();
      void newFirewall();
-     void newCluster();
+     void newCluster(bool fromSelected = false);
+     void newClusterFromSelected();
      void newClusterIface();
      void newStateSyncClusterGroup();
      void newFailoverClusterGroup();

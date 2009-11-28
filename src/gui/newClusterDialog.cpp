@@ -64,6 +64,8 @@ newClusterDialog::newClusterDialog(FWObject *_p)
     parent = _p;
     db = parent->getRoot();
 
+    useFirewallList = false;
+
     m_dialog = new Ui::newClusterDialog_q;
     m_dialog->setupUi(this);
 
@@ -169,6 +171,18 @@ bool newClusterDialog::appropriate(const int page) const
     return true;
 }
 
+
+void newClusterDialog::setFirewallList(std::vector<libfwbuilder::FWObject*> data)
+{
+    m_dialog->interfaceSelector->clear();
+    firewallList.clear();
+    typedef QPair<Firewall*, bool> fwpair;
+    foreach ( FWObject *fw, data )
+        firewallList.push_back(Firewall::cast(fw));
+    m_dialog->firewallSelector->setFirewallList(firewallList, true);
+    useFirewallList = true;
+}
+
 void newClusterDialog::showPage(const int page)
 {
     FakeWizard::showPage(page);
@@ -185,9 +199,16 @@ void newClusterDialog::showPage(const int page)
     case FIREWALLS_PAGE:
     {
         m_dialog->firewallSelector->clear();
-        list<Firewall*> fwlist;
-        mw->findAllFirewalls(fwlist);
-        m_dialog->firewallSelector->setFirewallList(fwlist);
+        if (useFirewallList)
+        {
+            m_dialog->firewallSelector->setFirewallList(firewallList, true);
+        }
+        else
+        {
+            list<Firewall*> fwlist;
+            mw->findAllFirewalls(fwlist);
+            m_dialog->firewallSelector->setFirewallList(fwlist);
+        }
 
         setNextEnabled(FIREWALLS_PAGE, !this->m_dialog->obj_name->text().isEmpty());
         setFinishEnabled(FIREWALLS_PAGE, false);

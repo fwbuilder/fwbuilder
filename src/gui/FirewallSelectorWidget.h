@@ -53,7 +53,7 @@ public:
     FirewallSelectorWidget(QWidget *parent = NULL);
     ~FirewallSelectorWidget();
 
-    void setFirewallList(std::list<libfwbuilder::Firewall*>);
+    void setFirewallList(std::list<libfwbuilder::Firewall*>, bool select = false);
 
     //            pointer to firewall , master
     QList<QPair<libfwbuilder::Firewall*, bool> > getSelectedFirewalls();

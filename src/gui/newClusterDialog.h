@@ -53,12 +53,16 @@ class newClusterDialog : public QDialog, public FakeWizard
     void shrinkListOfOS();
     QMap<QRadioButton*, libfwbuilder::Firewall*> radios;
     QMap<int, bool> visited;
+    std::list<libfwbuilder::Firewall*> firewallList;
+    bool useFirewallList;
     
 public:
     newClusterDialog(libfwbuilder::FWObject *parent);
     virtual ~newClusterDialog();
 
     libfwbuilder::Cluster* getNewCluster() { return ncl; };
+
+    void setFirewallList(std::vector<libfwbuilder::FWObject*>);
 
     virtual bool appropriate(const int page) const;
     void showPage(const int page);

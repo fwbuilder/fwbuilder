@@ -662,6 +662,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         (ObjectGroup::cast(currentObj)!=NULL &&
          currentObj->getName()=="Firewalls"))
     {
+        popup_menu->addAction( tr("Cluster"), this, SLOT( newClusterFromSelected() ) );
         popup_menu->addSeparator();
         popup_menu->addAction( tr("Compile"), this, SLOT( compile()));
         popup_menu->addAction( tr("Install"), this, SLOT( install()));

@@ -41,7 +41,7 @@ FirewallSelectorWidget::~FirewallSelectorWidget()
     clear();
 }
 
-void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls)
+void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls, bool select)
 {
     this->clear();
     Firewall *fw;
@@ -68,6 +68,7 @@ void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls)
         this->setItem(rowNumber, 0, title);
         this->setCellWidget(rowNumber, 1, box);
         this->setCellWidget(rowNumber, 2, radio);
+        if (select) box->setChecked(true);
     }
 }
 
