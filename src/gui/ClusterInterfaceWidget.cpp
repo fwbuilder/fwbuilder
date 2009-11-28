@@ -173,7 +173,10 @@ bool ClusterInterfaceWidget::interfaceSelectable(libfwbuilder::Interface* iface)
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             os_family));
     QString err;
-    return int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster), dynamic_cast<FWObject*>(iface), false, err);
+    if (!int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster),
+                                     dynamic_cast<FWObject*>(iface), false, err))
+        return false;
+    return int_prop->isEligibleForCluster(iface);
 }
 
 bool ClusterInterfaceWidget::isValid()
