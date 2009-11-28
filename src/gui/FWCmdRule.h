@@ -76,6 +76,7 @@ class FWCmdRuleInsert : public FWCmdRule
 
 public:
     FWCmdRuleInsert(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, int position=0, bool isAfter=false, libfwbuilder::Rule* ruleToInsert=0);
+    ~FWCmdRuleInsert();
 
     void redoOnModel(RuleSetModel *md);
     void undoOnModel(RuleSetModel *md);

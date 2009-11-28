@@ -536,13 +536,14 @@ Rule* RuleSetModel::insertNewRule(QModelIndex &index, bool isAfter)
     return newrule;
 }
 
-void RuleSetModel::insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter)
+Rule* RuleSetModel::insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter)
 {
+    Rule *newrule = 0;
     if (index.isValid())
     {
         RuleNode *node = nodeFromIndex(index);
         int pos = node->rule->getPosition();
-        Rule *newrule = isAfter?ruleset->appendRuleAfter(pos):ruleset->insertRuleBefore(pos);
+        newrule = isAfter?ruleset->appendRuleAfter(pos):ruleset->insertRuleBefore(pos);
         initRule(newrule, rule);
         string groupName = node->rule->getRuleGroupName();
         newrule->setRuleGroupName(groupName);
@@ -550,11 +551,12 @@ void RuleSetModel::insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool
     }
     else
     {
-        Rule *newrule = getRuleSet()->insertRuleAtTop();
+        newrule = getRuleSet()->insertRuleAtTop();
         initRule(newrule, rule);
         QModelIndex index;
         insertRuleToModel(newrule, index);
     }
+    return newrule;
 }
 
 void RuleSetModel::removeRow(int row,const QModelIndex &parent)
@@ -1142,6 +1144,17 @@ ActionDesc RuleSetModel::getRuleActionDesc(Rule* r) const
 
     return res;
 }
+
+int RuleSetModel::getRulePosition(QModelIndex index)
+{
+    Rule* rule = 0;
+    if (index.isValid())
+    {
+        rule = nodeFromIndex(index)->rule;
+    }
+    return (rule == 0)?0:rule->getPosition();
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PolicyModel

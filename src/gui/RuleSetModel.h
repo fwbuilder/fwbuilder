@@ -123,7 +123,7 @@ public:
     libfwbuilder::Rule* insertNewRule();
     libfwbuilder::Rule* insertNewRule(QModelIndex &index, bool isAfter = false);
 
-    void insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter = false);
+    libfwbuilder::Rule* insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter = false);
 
     virtual void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = NULL) = 0;
 
@@ -144,6 +144,9 @@ public:
 
     bool isIndexRule(const QModelIndex index);
     RuleNode *nodeFromIndex(const QModelIndex &index) const;
+
+    int getRulePosition(QModelIndex index);
+    libfwbuilder::Rule * findRuleForPosition(int position) const;
 
     void setEnabled(const QModelIndex &index, bool flag);
 
@@ -192,7 +195,7 @@ private:
     void removeToList(QList<RuleNode*> &list, const QModelIndex &group, int first, int last);
     void insertFromList(const QList<RuleNode*> &list, const QModelIndex &parent, int position);
 
-    libfwbuilder::Rule * findRuleForPosition(int position) const;
+
 
 };
 

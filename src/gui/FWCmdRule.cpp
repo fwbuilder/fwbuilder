@@ -97,6 +97,11 @@ FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset, int po
     setText(QObject::tr("insert rule"));
 }
 
+FWCmdRuleInsert::~FWCmdRuleInsert()
+{
+
+}
+
 void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
 {
     if (ruleToInsert == 0)
@@ -110,7 +115,10 @@ void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
             insertedRule = md->insertNewRule(index, isAfter);
         }
     } else {
-        //TODO: insert ruleToInsert into the ruleset.
+
+        QModelIndex index = md->indexForPosition(position);
+
+        insertedRule = md->insertRule(ruleToInsert, index, isAfter);
     }
 
     getRuleSetView()->selectRE(insertedRule,0);

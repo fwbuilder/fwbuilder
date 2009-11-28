@@ -1313,12 +1313,8 @@ void RuleSetView::pasteRuleAbove()
             project->m_panel->om->reload();
         }
 
-        md->insertRule(Rule::cast(co), index);
+        project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), md->getRulePosition(index), false, Rule::cast(co)));
     }
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
-
 }
 
 void RuleSetView::pasteRuleBelow()
@@ -1375,14 +1371,7 @@ bool RuleSetView::canChange(RuleSetModel* md)
 void RuleSetView::insertRule(QModelIndex index,bool isAfter) {
     RuleSetModel* md = ((RuleSetModel*)model());
     if (!canChange(md)) return;
-
-    Rule* posRule = 0;
-    if (index.isValid())
-    {
-        posRule = md->nodeFromIndex(index)->rule;
-    }
-
-    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), (posRule == 0)?0:posRule->getPosition(), isAfter));
+    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), md->getRulePosition(index), isAfter));
 }
 
 void RuleSetView::insertRule()
