@@ -66,6 +66,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
         QLabel *label = new QLabel(QString::fromUtf8(fw->getName().c_str()), this);
         layout->addWidget(label);
         QTreeWidget *list = new QTreeWidget(this);
+        list->header()->setVisible(false);
         layout->addWidget(list);
         QTreeWidgetItem* firewall = new QTreeWidgetItem(list, QStringList() << QString::fromUtf8(fw->getName().c_str()));
         roots[list] = firewall;
@@ -112,6 +113,8 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
 
 bool ClusterInterfaceWidget::setCurrentInterface(QString name)
 {
+    string label;
+    bool setLabel = true;
     foreach(InterfacesList list, this->lists.values())
     {
         bool gotItem = false;
@@ -122,12 +125,17 @@ bool ClusterInterfaceWidget::setCurrentInterface(QString name)
             {
                 list.list->setCurrentItem(item);
                 gotItem = true;
+                if (label.length() == 0) label = this->items[item]->getLabel();
+                else
+                    if (label != this->items[item]->getLabel())
+                        setLabel = false;
                 break;
             }
         }
         if (!gotItem) return false;
     }
     this->m_ui->name->setText(name);
+    if (setLabel) this->m_ui->label->setText(QString::fromUtf8(label.c_str()));
     return true;
 }
 

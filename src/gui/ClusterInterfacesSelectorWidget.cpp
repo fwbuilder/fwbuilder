@@ -92,7 +92,6 @@ ClusterInterfaceWidget* ClusterInterfacesSelectorWidget::addNewInterface()
 
 void ClusterInterfacesSelectorWidget::addInterface(QString name)
 {
-    qDebug() << "adding interface" << name;
     ClusterInterfaceWidget* widget = addNewInterface();
     if (!widget->setCurrentInterface(name))
     {
