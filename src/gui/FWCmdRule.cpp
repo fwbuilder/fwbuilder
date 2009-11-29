@@ -138,7 +138,7 @@ void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
 }
 
 /********************************************************
- * FWCmdRuleDelete
+ * FWCmdRuleColor
  ********************************************************/
 
 FWCmdRuleColor::FWCmdRuleColor(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<Rule*> &rules,const QString &newColor):
@@ -186,4 +186,40 @@ void FWCmdRuleColor::undoOnModel(RuleSetModel *md)
         }
         md->changeRuleColor(indexes, oldColors[ruleId]);
     }
+}
+
+/********************************************************
+ * FWCmdRuleChange
+ ********************************************************/
+
+void FWCmdRuleChange::redo()
+{
+    prepareRuleSetView();
+    FWCmdChange::redo();
+    project->getCurrentRuleSetView()->selectRE(getRule(), 0);
+}
+
+void FWCmdRuleChange::undo()
+{
+    prepareRuleSetView();
+    FWCmdChange::undo();
+    project->getCurrentRuleSetView()->selectRE(getRule(), 0);
+}
+
+void FWCmdRuleChange::notify()
+{
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(project->getFileName(), ruleset->getId()));
+}
+
+void FWCmdRuleChange::prepareRuleSetView()
+{
+    RuleSet* crs = project->getCurrentRuleSet();
+    if (crs != ruleset) project->openRuleSet(ruleset, true);
+
+}
+
+libfwbuilder::Rule* FWCmdRuleChange::getRule()
+{
+    return dynamic_cast<Rule*> (getObject());
 }

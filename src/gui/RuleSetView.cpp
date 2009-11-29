@@ -1610,11 +1610,11 @@ void RuleSetView::changeDitection(PolicyRule::Direction dir)
     PolicyRule::Direction old_dir=rule->getDirection();
     if (dir!=old_dir)
     {
-        rule->setDirection( dir );
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+        FWCmdRuleChange* cmd = new FWCmdRuleChange(project,  md->getRuleSet(), rule, tr("change direction"));
+        PolicyRule* newState = PolicyRule::cast(cmd->getNewState());
+        newState->setDirection( dir );
+        project->undoStack->push(cmd);
     }
-
 }
 
 void RuleSetView::changeAction(int act)

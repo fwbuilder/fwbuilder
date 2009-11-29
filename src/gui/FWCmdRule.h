@@ -29,6 +29,7 @@
 #include "FWCmdBasic.h"
 #include "RuleSetView.h"
 #include "RuleSetModel.h"
+#include "FWCmdChange.h"
 
 #include <QHash>
 #include <QList>
@@ -100,6 +101,26 @@ public:
 
     void redoOnModel(RuleSetModel *md);
     void undoOnModel(RuleSetModel *md);
+};
+
+/********************************************************
+ * FWCmdRuleChange
+ ********************************************************/
+
+class FWCmdRuleChange : public FWCmdChange
+{
+    libfwbuilder::RuleSet* ruleset;
+
+    void prepareRuleSetView();
+    libfwbuilder::Rule* getRule();
+
+public:
+    FWCmdRuleChange(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, libfwbuilder::FWObject *obj, QString text=QString()):
+            FWCmdChange(project, obj, text), ruleset(ruleset) {}
+
+    virtual void redo();
+    virtual void undo();
+    virtual void notify();
 };
 
 #endif // FWCMDRULE_H
