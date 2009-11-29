@@ -1679,8 +1679,6 @@ void RuleSetView::changeAction(int act)
         }
     }
 
-    
-
     QCoreApplication::postEvent(
         mw, new openOptObjectInEditorEvent(
             project->getFileName(), node->rule->getId(), ObjectEditor::optAction));
@@ -1775,10 +1773,15 @@ void RuleSetView::changeLogging(bool flag)
     if (node->type != RuleNode::Rule) return;
 
     PolicyRule *rule = PolicyRule::cast( node->rule );
-    rule->setLogging( flag );
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 
+    if (rule->getLogging() == flag) return;
+
+    FWCmdRuleChange* cmd = new FWCmdRuleChange(project,  md->getRuleSet(), rule, tr("change logging"));
+    PolicyRule* newState = PolicyRule::cast(cmd->getNewState());
+
+    newState->setLogging( flag );
+
+    project->undoStack->push(cmd);
 }
 
 void RuleSetView::negateRE()
