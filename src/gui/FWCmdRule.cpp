@@ -208,6 +208,10 @@ void FWCmdRuleChange::undo()
 
 void FWCmdRuleChange::notify()
 {
+    RuleSetView* rsv = project->getCurrentRuleSetView();
+    RuleSetModel* md = (RuleSetModel*)getRuleSetView()->model();
+
+    rsv->updateColumnSizeForIndex(md->index(getRule(), 0));
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(project->getFileName(), ruleset->getId()));
 }

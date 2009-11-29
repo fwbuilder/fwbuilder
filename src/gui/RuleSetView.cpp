@@ -56,6 +56,8 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Cluster.h"
 
+#include <memory>
+
 #include <QtDebug>
 #include <QMouseEvent>
 #include <QtAlgorithms>
@@ -1635,28 +1637,30 @@ void RuleSetView::changeAction(int act)
 
     if (node->type != RuleNode::Rule) return;
 
-    if (PolicyRule::isA(node->rule))
+    std::auto_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChange(project,  md->getRuleSet(), node->rule, tr("change action")));
+    
+    Rule* newRule = dynamic_cast<Rule*>(cmd->getNewState());
+    
+    if (PolicyRule::isA(newRule))
     {
-        PolicyRule *rule = PolicyRule::cast( node->rule );
+        PolicyRule *rule = PolicyRule::cast( newRule );
         FWOptions *ruleopt = rule->getOptionsObject();
         PolicyRule::Action old_act=rule->getAction();
 
-        if (fwbdebug) qDebug() << "PolicyRule  old_action=" << old_act;
+        if (fwbdebug)
+            qDebug() << "PolicyRule  old_action=" << old_act;
 
         RuleSet *subset = NULL;
         if (old_act==PolicyRule::Branch) subset = rule->getBranch();
         if (act!=old_act)
         {
             rule->setAction(PolicyRule::Action(act));
-            QCoreApplication::postEvent(
-                mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+            project->undoStack->push(cmd.release());
         }
         ruleopt->setBool("stateless", getStatelessFlagForAction(rule));
-    }
-
-    if (NATRule::isA(node->rule))
+    } else if (NATRule::isA(newRule))
     {
-        NATRule *rule = NATRule::cast( node->rule );
+        NATRule *rule = NATRule::cast( newRule );
         NATRule::NATAction old_act = rule->getAction();
 
         if (fwbdebug)
@@ -1667,15 +1671,15 @@ void RuleSetView::changeAction(int act)
 
         RuleSet *subset = NULL;
         if (old_act==NATRule::Branch) subset = rule->getBranch();
+
         if (act!=old_act)
         {
             rule->setAction(NATRule::NATAction(act));
-            QCoreApplication::postEvent(
-                mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+            project->undoStack->push(cmd.release());
         }
     }
 
-    updateColumnSizeForIndex(index);
+    
 
     QCoreApplication::postEvent(
         mw, new openOptObjectInEditorEvent(
