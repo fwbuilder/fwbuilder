@@ -104,6 +104,27 @@ public:
 };
 
 /********************************************************
+ * FWCmdRuleMove
+ ********************************************************/
+
+class FWCmdRuleMove : public FWCmdRule
+{
+
+    int firstId;
+    int lastId;
+    bool direction; // true - up, false - down;
+
+    void move(RuleSetModel *md, bool direction);
+
+public:
+    FWCmdRuleMove(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, int firstId, int lastId, bool direction=true);
+
+    void redoOnModel(RuleSetModel *md);
+    void undoOnModel(RuleSetModel *md);
+
+};
+
+/********************************************************
  * FWCmdRuleChange
  ********************************************************/
 

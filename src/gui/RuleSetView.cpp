@@ -1195,10 +1195,15 @@ void RuleSetView::moveRuleUp()
     if (!selection.isEmpty() && isOneLevelRules(selection))
     {
 
-        md->moveRuleUp(selection.first().parent() , selection.first().row(), selection.last().row());
+        RuleSetModelIterator it = md->begin();
+        QModelIndex top = it.index();
+        if (top.parent() == selection.first().parent() && top.row() == selection.first().row()) return;
 
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+
+        FWCmdRuleMove* cmd = new FWCmdRuleMove(project, md->getRuleSet(),
+                                               md->nodeFromIndex(selection.first())->rule->getId(),
+                                               md->nodeFromIndex(selection.last())->rule->getId());
+        project->undoStack->push(cmd);
     }
 }
 
@@ -1213,11 +1218,15 @@ void RuleSetView::moveRuleDown()
 
     if (!selection.isEmpty() && isOneLevelRules(selection))
     {
+        RuleSetModelIterator it = md->end();
+        --it;
+        QModelIndex bottom = it.index();
+        if (bottom.parent() == selection.last().parent() && bottom.row() == selection.last().row()) return;
 
-        md->moveRuleDown(selection.first().parent() , selection.first().row(), selection.last().row());
-
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+        FWCmdRuleMove* cmd = new FWCmdRuleMove(project, md->getRuleSet(),
+                                               md->nodeFromIndex(selection.first())->rule->getId(),
+                                               md->nodeFromIndex(selection.last())->rule->getId(), false);
+        project->undoStack->push(cmd);
     }
 }
 

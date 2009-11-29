@@ -189,6 +189,48 @@ void FWCmdRuleColor::undoOnModel(RuleSetModel *md)
 }
 
 /********************************************************
+ * FWCmdRuleMove
+ ********************************************************/
+
+FWCmdRuleMove::FWCmdRuleMove(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, int firstId, int lastId, bool direction):
+        FWCmdRule(project, ruleset), firstId(firstId), lastId(lastId), direction(direction)
+{
+    setText((direction)?QObject::tr("move rule up"):QObject::tr("move rule down"));
+}
+
+void FWCmdRuleMove::redoOnModel(RuleSetModel *md)
+{
+    move(md, direction);
+}
+
+void FWCmdRuleMove::undoOnModel(RuleSetModel *md)
+{
+    move(md, !direction);
+}
+
+void FWCmdRuleMove::move(RuleSetModel *md, bool direction)
+{
+    QModelIndex index = md->index(Rule::cast(getObject(firstId)), 0);
+    QModelIndex parent = index.parent();
+    int first = index.row();
+    index = md->index(Rule::cast(getObject(lastId)), 0);
+    int last = index.row();
+
+    if (direction)
+    {
+        // up
+        md->moveRuleUp(parent , first, last);
+
+    } else
+    {
+        // down
+        md->moveRuleDown(parent , first, last);
+    }
+}
+
+
+
+/********************************************************
  * FWCmdRuleChange
  ********************************************************/
 
