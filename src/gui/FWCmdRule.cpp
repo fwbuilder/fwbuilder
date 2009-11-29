@@ -211,7 +211,10 @@ void FWCmdRuleChange::notify()
     RuleSetView* rsv = project->getCurrentRuleSetView();
     RuleSetModel* md = (RuleSetModel*)rsv->model();
 
-    rsv->updateColumnSizeForIndex(md->index(getRule(), 0));
+    Rule* rule = getRule();
+
+    md->rowChanged(md->index(rule, 0));
+//    rsv->updateColumnSizeForIndex(md->index(rule, 0));
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(project->getFileName(), ruleset->getId()));
 }

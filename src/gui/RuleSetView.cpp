@@ -1094,18 +1094,24 @@ void RuleSetView::setEnabledRow(bool flag)
 
     if (!selection.isEmpty())
     {
-
         foreach (QModelIndex index, selection)
         {
             if (!index.isValid()) continue;
 
-            md->setEnabled(index, flag);
+            RuleNode *node = md->nodeFromIndex(index);
+            if (node->type != RuleNode::Rule) continue;
+            Rule* rule = node->rule;
+            if (!rule->isDisabled() == flag) continue;
 
+            FWCmdRuleChange* cmd = new FWCmdRuleChange(project,  md->getRuleSet(), rule, (flag)?tr("enable rule"):tr("disable rule"));
+            Rule* newState = Rule::cast(cmd->getNewState());
+            if (flag)
+                newState->enable();
+            else
+                newState->disable();
+            project->undoStack->push(cmd);
         }
     }
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
 void RuleSetView::newGroup()
@@ -1650,14 +1656,13 @@ void RuleSetView::changeAction(int act)
         if (fwbdebug)
             qDebug() << "PolicyRule  old_action=" << old_act;
 
-        RuleSet *subset = NULL;
-        if (old_act==PolicyRule::Branch) subset = rule->getBranch();
         if (act!=old_act)
         {
             rule->setAction(PolicyRule::Action(act));
+            ruleopt->setBool("stateless", getStatelessFlagForAction(rule));
             project->undoStack->push(cmd.release());
         }
-        ruleopt->setBool("stateless", getStatelessFlagForAction(rule));
+
     } else if (NATRule::isA(newRule))
     {
         NATRule *rule = NATRule::cast( newRule );
@@ -1667,14 +1672,10 @@ void RuleSetView::changeAction(int act)
             qDebug() << "NATRule  old_action=" << old_act
                      << "NATRule::Translate=" << NATRule::Translate
                      << "NATRule::Branch=" << NATRule::Branch;
-                          
-
-        RuleSet *subset = NULL;
-        if (old_act==NATRule::Branch) subset = rule->getBranch();
 
         if (act!=old_act)
         {
-            rule->setAction(NATRule::NATAction(act));
+            rule->setAction(NATRule::NATAction(act));            
             project->undoStack->push(cmd.release());
         }
     }
