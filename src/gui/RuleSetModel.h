@@ -147,6 +147,7 @@ public:
 
     int getRulePosition(QModelIndex index);
     libfwbuilder::Rule * findRuleForPosition(int position) const;
+    libfwbuilder::Rule * getRule(QModelIndex index) const;
 
     void setEnabled(const QModelIndex &index, bool flag);
 

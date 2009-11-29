@@ -112,6 +112,7 @@ class FWCmdRuleChange : public FWCmdChange
     libfwbuilder::RuleSet* ruleset;
 
     void prepareRuleSetView();
+    void selectAffectedRule();
     libfwbuilder::Rule* getRule();
 
 public:

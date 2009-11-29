@@ -192,18 +192,28 @@ void FWCmdRuleColor::undoOnModel(RuleSetModel *md)
  * FWCmdRuleChange
  ********************************************************/
 
+void FWCmdRuleChange::selectAffectedRule()
+{
+    RuleSetView* rsv = project->getCurrentRuleSetView();
+    RuleSetModel* md = (RuleSetModel*)rsv->model();
+
+    Rule* currentRule = md->getRule(rsv->currentIndex());
+    if(currentRule == 0 || (currentRule->getId() != getRule()->getId())) rsv->selectRE(getRule(), 0);
+}
+
 void FWCmdRuleChange::redo()
 {
     prepareRuleSetView();
     FWCmdChange::redo();
-    project->getCurrentRuleSetView()->selectRE(getRule(), 0);
+    selectAffectedRule();
+
 }
 
 void FWCmdRuleChange::undo()
 {
     prepareRuleSetView();
     FWCmdChange::undo();
-    project->getCurrentRuleSetView()->selectRE(getRule(), 0);
+    selectAffectedRule();
 }
 
 void FWCmdRuleChange::notify()

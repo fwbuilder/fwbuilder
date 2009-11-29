@@ -325,6 +325,14 @@ Rule * RuleSetModel::findRuleForPosition(int position) const
     return 0;
 }
 
+Rule * RuleSetModel::getRule(QModelIndex index) const
+{
+    if (!index.isValid()) return 0;
+    RuleNode* node = nodeFromIndex(index);
+    if (RuleNode::Rule != node->type) return 0;
+    return node->rule;
+}
+
 QModelIndex RuleSetModel::indexForPosition(int position) const
 {
     Rule * res = findRuleForPosition(position);
