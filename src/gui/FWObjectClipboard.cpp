@@ -94,6 +94,21 @@ void FWObjectClipboard::add(FWObject *obj, ProjectPanel * proj_p)
     ids.push_back( pair<int,ProjectPanel*>(obj->getId(), proj_p) );
 }
 
+void FWObjectClipboard::remove(FWObject* obj)
+{
+    int id = obj->getId();
+    for (vector<std::pair<int,ProjectPanel*> >::iterator i=ids.begin();
+         i!=ids.end(); ++i)
+    {
+        int obj_id = i->first;
+        if (obj_id == id)
+        {
+            ids.erase(i);
+            break;
+        }
+    }
+}
+
 FWObject* FWObjectClipboard::getObject()
 {
     if (ids.size()>0)

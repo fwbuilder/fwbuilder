@@ -1,5 +1,5 @@
 
-<h1>Important Information about Firewall Builder 3.1.0</h1>
+<h1>The 5 minutes introduction to Firewall Builder 3.1.0</h1>
 
 <!--
 <p>
@@ -38,8 +38,8 @@
 <h2>Changes in the GUI</h2>
 
 <p>
-  The editor panel and object tree are now detachable. You can "float"
-  these windows and rearrange them on the screen any way you
+  <b>The editor panel and object tree are now detachable.</b> You can
+  "float" these windows and rearrange them on the screen any way you
   want. There is only one editor panel even when you open several data
   files at the dame time. Each data file is opened in its own project
   window with object tree and rules.
@@ -56,11 +56,12 @@
 </p>
 
 <p>
-  <b>"Single rule compile"</b>: Select a rule in the policy or NAT
-  rule set of a cluster or a firewall and hit "X" on the keyboard to
-  compile it. The result is shown in the editor panel immediately. To
-  select a rule click anywhere in it (any rule element, not just rule
-  number).
+  <b>"Single rule compile"</b>: After you select a rule in policy or
+  NAT rule set, you can compile it and see the result in the editor
+  panel immediately if you hit "X" on the keyboard or use context menu
+  that appears if you click right mouse button. The result is shown in
+  the editor panel immediately. To select a rule click anywhere in it
+  (any rule element, not just rule number).
 </p>
 
 <p>
@@ -72,16 +73,16 @@
 </p>
 
 <p>
-  The GUI can show brief summary of object attributes
-  in the second column in the object tree. This is controlled by a
-  checkbox in the global preferences dialog, tab "Objects". This is
-  off by default. The first column always shows object icon and its
-  name, the second (optional) column shows its attributes. Interface
-  label is shown in the second column. The width of both columns in
-  the tree is set automatically to accommodate all the text, then
-  can be adjusted by the user using mouse. Column width is saved in
-  settings and will be restored upon program restart. Column width
-  is saved per-file, per-library.
+  The GUI can show <b>brief summary of object attributes</b> in the
+  second column in the object tree. This is controlled by a checkbox
+  in the global preferences dialog, tab "Objects". This is off by
+  default. The first column always shows object icon and its name, the
+  second (optional) column shows its attributes. Interface label is
+  shown in the second column. The width of both columns in the tree is
+  set automatically to accommodate all the text, then can be adjusted
+  by the user using mouse. Column width is saved in settings and will
+  be restored upon program restart. Column width is saved per-file,
+  per-library.
 </p>
 
 <p>
@@ -98,9 +99,10 @@
 </p>
 
 <p>
-  The program supports new types of interfaces: VLAN, bridge,
-  bonding. This is fully implemented for Linux and partially for other platforms.
-  VLANs are added as child objects of an interface, like so:
+  The program supports <b>new types of interfaces</b>: VLAN, bridge,
+  bonding. This is fully implemented for Linux and partially for other
+  platforms.  VLANs are added as child objects of an interface, like
+  so:
 </p>
 
 <img src="vlan_interfaces.png" style="float: left; padding: 10px;">
@@ -117,14 +119,16 @@
 </p>
 
 <p>
-  The program can generate commands to confgiure vlans, bridges and bonding 
-  interfaces on Linux. This is off by default and controlled by checkboxes in the
-  "script" tab of the firewall object dialog. Generated script adds and removes
-  vlans, bridges, bridge ports, bond and bond slaves incrementally. That is, the script
-  analyses existing vlan interfaces and compares them with vlan interfaces defined
-  in the Firewall Builder GUI and then adds new ones and removes those that do not
-  exist in fwbuilder. The same algorithm is used to create bridges, add or remove
-  bridge ports and create bonds and then add or remove slave interfaces.
+  The program can <b>generate commands to confgiure vlans, bridges and
+    bonding interfaces</b> on Linux. This is off by default and
+    controlled by checkboxes in the "script" tab of the firewall
+    object dialog. Generated script adds and removes vlans, bridges,
+    bridge ports, bond and bond slaves incrementally. That is, the
+    script analyses existing vlan interfaces and compares them with
+    vlan interfaces defined in the Firewall Builder GUI and then adds
+    new ones and removes those that do not exist in fwbuilder. The
+    same algorithm is used to create bridges, add or remove bridge
+    ports and create bonds and then add or remove slave interfaces.
 </p>
 
 <p>
@@ -178,12 +182,37 @@ rule sets of this object rather than in the actual firewalls.
     </li>
 
     <li>
+      The program guides you through the process of creation of the
+      new Cluster object using wizard-like dialog. You start with the
+      list of firewall objects where you choose which firewalls should
+      become members of the cluster. Next, the program finds
+      interfaces of the member firewalls that have the same name and
+      can be part of the cluster and creates cluster interfaces with
+      the same name. Not all interfaces are eligible, for example
+      bridge ports, bonding interface slaves or parents of vlan
+      interfaces can not be used for the cluster. Cluster interfaces
+      define failover groups. You can add, remove or rename cluster
+      interfaces, as well as change which interfaces of the member
+      firewalls are used with each one. On the next page of the wizard
+      you can change failover protocols and add, remove or change IP
+      addresses of cluster interfaces. Not all failover protocols
+      require IP addresses, for example VRRP or CARP do but heartbeat
+      or OpenAIS don't. Finally, you can choose to use policy and NAT
+      rules of one of the member firewalls to populate Policy and NAT
+      rule sets of the new cluster. If this is done, all references to
+      the original member firewall and its interfaces in rules are
+      replaced with references to the cluster and its interfaces. The
+      program also creates backup copies of the member firewall
+      objects with the name with suffux "-bak" and clears Policy and
+      NAT rule sets of the member firewall objects used with the
+      cluster before new cluster is created.
+    </li>
+
+    <li>
       The Cluster object gets carp or vrrp interfaces. Name them
       "carp0", "carp1", "vrrp0", "vrrp1" or whatever indexes they have
-      on your machines. You can add these when you create new cluster
-      object if you choose manual method in the new cluster
-      wizard. You can add CARP/VRRP password and VRID at the same
-      time, but if you don't, you can add them later.
+      on your machines. You can add CARP/VRRP password and VRID at the
+      same time, but if you don't, you can add them later.
     </li>
 
     <li>

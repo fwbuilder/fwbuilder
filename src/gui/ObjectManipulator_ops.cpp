@@ -563,6 +563,11 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
 
     QCoreApplication::postEvent(
         mw, new closeObjectEvent(m_project->getFileName(), obj->getId()));
+
+    // Remove object we are about to delete from the clipboard.
+    // Sequence "delete then paste" is risky if the object is pasted into
+    // a group or rule where only reference is added
+    FWObjectClipboard::obj_clipboard->remove(obj);
  
     try
     {    
@@ -603,8 +608,6 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
             if (FWReference::cast(o))
             {
                 FWObject *holder = o->getParent();
-                qDebug() << holder->getName().c_str()
-                         << "(" << holder->getTypeName().c_str() << ")";
                 reference_holders.insert(holder);
             }
         }

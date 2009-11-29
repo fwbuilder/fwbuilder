@@ -55,6 +55,10 @@ public:
     libfwbuilder::FWObject* getObject();
 
     /**
+     * removes object from the clipboard if it is there
+     */
+    void remove(libfwbuilder::FWObject*);
+    /**
      * clear the clipboard
      */
     void clear();

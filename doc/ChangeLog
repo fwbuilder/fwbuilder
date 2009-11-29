@@ -1,3 +1,30 @@
+2009-11-29  vadim  <vadim@vk.crocodile.org>
+
+	* newClusterDialog.cpp (newClusterDialog::finishClicked): New
+	feature: the wizard that creates new cluster object starts with
+	the list of firewall objects where the user can choose which
+	firewalls should become members of the cluster. Next, the program
+	finds interfaces of the member firewalls that have the same name
+	and can be part of the cluster and creates cluster interfaces with
+	the same name. Not all interfaces are eligible, for example bridge
+	ports, bonding interface slaves or parents of vlan interfaces can
+	not be used for the cluster. Cluster interfaces define failover
+	groups. The user can add, remove or rename cluster interfaces, as
+	well as change which interfaces of the member firewalls are used
+	with each one. On the next page of the wizard user changes
+	failover protocols and can add or remove or change ip addresses of
+	cluster interfaces. Not all failover protocols require ip
+	addresses, for example VRRP or CARP do but heartbeat or OpenAIS
+	don't. Finally, the user can choose to use policy and NAT rules of
+	one of the member firewalls to populate Policy and NAT rule sets
+	of the new cluster. If this is done, all references to the
+	original member firewall and its interfaces in rules are replaced
+	with references to the cluster and its interfaces. The program
+	also creates backup copies of the member firewall objects with
+	the name with suffux "-bak" and clears Policy and NAT rule sets of
+	the member firewall objects used with the cluster before new cluster
+	is created.
+
 2009-11-21  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectEditor.cpp (ObjectEditor::apply): New feature: behavior of
