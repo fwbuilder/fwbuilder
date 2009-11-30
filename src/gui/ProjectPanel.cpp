@@ -245,7 +245,8 @@ void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
     FWObject *p=obj;
     while (p && RuleSet::cast(p)==NULL ) p=p->getParent();
     if (p==NULL) return;  // something is broken
-    openRuleSet(p);
+    // p is a pointer to RuleSet object @obj belongs to
+    if (p != getCurrentRuleSet()) openRuleSet(p);
     getCurrentRuleSetView()->setFocus();
     getCurrentRuleSetView()->selectRE( obj );    
 }
