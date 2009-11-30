@@ -41,15 +41,9 @@ FirewallSelectorWidget::~FirewallSelectorWidget()
     clear();
 }
 
-bool firewallCompare(Firewall* first, Firewall* second)
-{
-    return first->getName() < second->getName();
-}
-
 void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls, bool select)
 {
     this->clear();
-    firewalls.sort(firewallCompare);
     Firewall *fw;
     for (list<Firewall*>::iterator it = firewalls.begin(); it != firewalls.end(); it++)
     {
@@ -76,6 +70,7 @@ void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls, bool sel
         this->setCellWidget(rowNumber, 2, radio);
         if (select) box->setChecked(true);
     }
+    this->sortItems(0, Qt::AscendingOrder);
 }
 
 
