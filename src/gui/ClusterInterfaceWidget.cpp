@@ -62,7 +62,8 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
     {
         os = fw->getStr("host_OS").c_str();
         QVBoxLayout *layout = new QVBoxLayout();
-        this->m_ui->interfaceBox->addLayout(layout);
+        qFindChild<QHBoxLayout*>(this, "interfaceBox")->addLayout(layout);
+        //this->m_ui->interfaceBox->addLayout(layout);
 
         //create label with firewall name
         QLabel *label = new QLabel(QString::fromUtf8(fw->getName().c_str()), this);

@@ -257,6 +257,7 @@ void newClusterDialog::showPage(const int page)
     }
     case POLICY_PAGE:
     {
+
         foreach (QRadioButton *btn, radios.keys())
         {
             btn->close();
@@ -267,7 +268,7 @@ void newClusterDialog::showPage(const int page)
         for ( int i = 0; i < fws.count() ; i++ )
         {
             QRadioButton *newbox = new QRadioButton(QString::fromUtf8(fws.at(i).first->getName().c_str()), this);
-            this->m_dialog->policyLayout->addWidget(newbox);
+            qFindChild<QVBoxLayout*>(this->m_dialog->page_4, "policyLayout")->addWidget(newbox);
             radios[newbox] = fws.at(i).first;
         }
         setNextEnabled(POLICY_PAGE, true);
