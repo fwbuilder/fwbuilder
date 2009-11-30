@@ -44,6 +44,7 @@
 #include "FWWindow.h"
 #include "RCS.h"
 #include "RuleSetView.h"
+#include "RuleSetModel.h"
 
 #include <QMdiSubWindow>
 #include <QMdiArea>
@@ -133,15 +134,36 @@ bool ProjectPanel::event(QEvent *event)
             }
 
             case UPDATE_OBJECT_EVERYWHERE_EVENT:
-                QCoreApplication::postEvent(this, new updateObjectInTreeEvent(data_file, obj_id));
-                QCoreApplication::postEvent(this, new reloadRulesetEvent(data_file));
-                if (Library::cast(obj))
+            {
+                Rule *rule = NULL;
+                RuleSet* current_ruleset = NULL;
+                RuleSetView* rsv = getCurrentRuleSetView();
+                RuleSetModel* md = NULL;
+                if (rsv)
                 {
-                    m_panel->om->updateLibName(obj);
-                    m_panel->om->updateLibColor(obj);
+                    md = (RuleSetModel*)rsv->model();
+                    current_ruleset = md->getRuleSet();
+                }
+                if (RuleElement::cast(obj)) rule = Rule::cast(obj->getParent());
+                if (Rule::cast(obj)) rule = Rule::cast(obj);
+                if (rule && current_ruleset && md && rule->isChildOf(current_ruleset))
+                {
+                    md->rowChanged(md->index(rule, 0));
+                } else
+                {
+                    QCoreApplication::postEvent(
+                        this, new updateObjectInTreeEvent(data_file, obj_id));
+                    QCoreApplication::postEvent(
+                        this, new reloadRulesetEvent(data_file));
+                    if (Library::cast(obj))
+                    {
+                        m_panel->om->updateLibName(obj);
+                        m_panel->om->updateLibColor(obj);
+                    }
                 }
                 ev->accept();
                 return true;
+            }
 
             case OBJECT_NAME_CHANGED_EVENT:
             {
