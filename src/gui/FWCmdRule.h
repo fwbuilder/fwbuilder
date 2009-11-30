@@ -125,6 +125,22 @@ public:
 };
 
 /********************************************************
+ * FWCmdRuleNegateRE
+ ********************************************************/
+
+class FWCmdRuleNegateRE : public FWCmdRule
+{
+    libfwbuilder::RuleElement* ruleElement;
+
+public:
+    FWCmdRuleNegateRE(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, libfwbuilder::RuleElement* ruleElement);
+
+    void redoOnModel(RuleSetModel *md);
+    void undoOnModel(RuleSetModel *md);
+
+};
+
+/********************************************************
  * FWCmdRuleChange
  ********************************************************/
 

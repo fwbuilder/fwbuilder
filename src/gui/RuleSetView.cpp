@@ -1773,9 +1773,7 @@ void RuleSetView::changeLogToOff()
 void RuleSetView::changeLogging(bool flag)
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     QModelIndex index = currentIndex();
     if (!index.isValid()) return;
@@ -1797,9 +1795,7 @@ void RuleSetView::changeLogging(bool flag)
 void RuleSetView::negateRE()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     QModelIndex index = currentIndex();
     if (!index.isValid()) return;
@@ -1808,11 +1804,7 @@ void RuleSetView::negateRE()
 
     RuleElement *re = getRE(index);
     if (re==NULL) return;
-
-    re->toggleNeg();
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+    project->undoStack->push(new FWCmdRuleNegateRE(project, md->getRuleSet(), re));
 }
 
 void RuleSetView::revealObjectInTree()
@@ -1833,9 +1825,7 @@ void RuleSetView::findWhereUsedSlot()
 void RuleSetView::deleteSelectedObject()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     QModelIndex index = currentIndex();
     if (!index.isValid()) return;
@@ -1879,8 +1869,7 @@ void RuleSetView::cutSelectedObject()
 void RuleSetView::pasteObject()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     vector<std::pair<int,ProjectPanel*> >::iterator i;
     for (i= FWObjectClipboard::obj_clipboard->begin();
@@ -1909,8 +1898,7 @@ void RuleSetView::dropEvent(QDropEvent *ev)
 {
 
     RuleSetModel* md = ((RuleSetModel*)model());
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (!canChange(md)) return;
 
     QModelIndex index = indexAt (ev->pos());
     if (!index.isValid()) return;

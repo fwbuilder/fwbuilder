@@ -228,7 +228,25 @@ void FWCmdRuleMove::move(RuleSetModel *md, bool direction)
     }
 }
 
+/********************************************************
+ * FWCmdRuleNegateRE
+ ********************************************************/
 
+FWCmdRuleNegateRE::FWCmdRuleNegateRE(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, RuleElement* ruleElement):
+        FWCmdRule(project, ruleset), ruleElement(ruleElement)
+{
+    setText(QObject::tr("negate rule element"));
+}
+
+void FWCmdRuleNegateRE::redoOnModel(RuleSetModel *md)
+{
+    ruleElement->toggleNeg();
+}
+
+void FWCmdRuleNegateRE::undoOnModel(RuleSetModel *md)
+{
+    ruleElement->toggleNeg();
+}
 
 /********************************************************
  * FWCmdRuleChange
