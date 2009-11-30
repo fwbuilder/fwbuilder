@@ -1202,17 +1202,19 @@ FWObject::tree_iterator FWObject::tree_iterator::operator++(int )
 /* this is a prefix operator */
 FWObject::tree_iterator& FWObject::tree_iterator::operator++()
 {
-    if (node==(FWObject*)(-1)) return *this;
+    if (node == (FWObject*)(-1)) return *this;
 
 #ifdef TI_DEBUG
+    cerr << endl;
     cerr << "ENTRY  node=" << node << "("
          << node->getTypeName() << " " << node->getName() << ")"
          << endl;
+    node->dump(false, false);
 #endif
 
     if (node->size()!=0)
     {
-        node= node->front();
+        node = node->front();
 
 #ifdef TI_DEBUG
         cerr << "#2     node=" << node << "("
@@ -1221,10 +1223,10 @@ FWObject::tree_iterator& FWObject::tree_iterator::operator++()
         return *this;
     }
 
-    FWObject *p=node;
+    FWObject *p = node;
     while (node->getParent()!=NULL)
     {
-        p=node->getParent();
+        p = node->getParent();
 
 #ifdef TI_DEBUG
         cerr << "       p=" << p << "("
@@ -1232,7 +1234,13 @@ FWObject::tree_iterator& FWObject::tree_iterator::operator++()
 #endif
 
         for (FWObject::iterator i=p->begin(); i!=p->end(); ++i)
-            if ( node==(*i) )
+        {
+#ifdef TI_DEBUG
+            cerr << "       child=" << (*i) << "("
+                 << (*i)->getTypeName() << " " << (*i)->getName() << ")" << endl;
+#endif
+
+            if ( node == (*i) )
             {
                 ++i;
                 if (i==p->end())
@@ -1240,7 +1248,7 @@ FWObject::tree_iterator& FWObject::tree_iterator::operator++()
 #ifdef TI_DEBUG
                     cerr << "      end of list" << endl;
 #endif
-                    node=p;
+                    node = p;
                     break;
                 }
 
@@ -1253,6 +1261,7 @@ FWObject::tree_iterator& FWObject::tree_iterator::operator++()
 #endif
                 return *this;
             }
+        }
     }
     node=(FWObject*)(-1);
 

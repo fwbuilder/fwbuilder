@@ -1,3 +1,10 @@
+2009-11-30  vadim  <vadim@vk.crocodile.org>
+
+	* RuleElement.cpp (RuleElement::toXML): RuleElement objects
+	should have ID, but since DTD does not define one for them,
+	will only keep this ID in the objects in memory and drop it
+	before saving them to XML file.
+
 2009-11-25  vadim  <vadim@vk.crocodile.org>
 
 	* fwbuilder.dtd.in (RuleSetOptions): added XML element

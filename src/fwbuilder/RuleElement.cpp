@@ -62,7 +62,7 @@ RuleElement::RuleElement(const FWObjectDatabase *root, bool prepopulate) :
     FWObject(root,prepopulate)
 {
     setNeg(false);
-    setId(-1);
+//    setId(-1);
 }
 
 void RuleElement::fromXML(xmlNodePtr root) throw(FWException)
@@ -81,9 +81,14 @@ void RuleElement::fromXML(xmlNodePtr root) throw(FWException)
 
 xmlNodePtr RuleElement::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 {
+    int my_id = getId();
+    setId(-1);
+    // FWObject::toXML() skips id if it is == -1. RuleElement objects
+    // have no ID as per DTD (why?)
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
     xmlNewProp(me, TOXMLCAST("neg"),
                TOXMLCAST(((getNeg()) ? "True" : "False")));
+    setId(my_id);
     return me;
 }
 

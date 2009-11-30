@@ -91,6 +91,11 @@ bool Group::hasMember(FWObject *o)
  * Important assumption: groups never have a mix of references and
  * actual objects, it is either one or another. We can check the kind
  * of the group by looking at the first child object.
+ *
+ * Caveat: This breaks FWObject::tree_iterator which is used in long
+ * operations that walk the whole tree so the iterator holds the state
+ * that is broken when objects are added or removed from groups in the
+ * middle of iteration.
  */
 FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
 {
