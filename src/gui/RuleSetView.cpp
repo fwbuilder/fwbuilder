@@ -972,17 +972,15 @@ void RuleSetView::renameGroup()
 
         QString newGroupName = QInputDialog::getText(
         this, "Rename group",
-        tr("Enter group name:"), QLineEdit::Normal,
+        tr("Enter group name:"),
+        QLineEdit::Normal,
         oldGroupName, &ok);
 
         if (ok && !newGroupName.isEmpty() && newGroupName != oldGroupName)
-        {
-            md->renameGroup(index, newGroupName);
+        {            
+            project->undoStack->push(new FWCmdRuleRenameGroup(project, md->getRuleSet(), oldGroupName, newGroupName));
         }
     }
-
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
 void RuleSetView::setRuleColor(const QString &c)

@@ -104,6 +104,22 @@ public:
 };
 
 /********************************************************
+ * FWCmdRuleRenameGroup
+ ********************************************************/
+
+class FWCmdRuleRenameGroup : public FWCmdRule
+{
+    QString newName;
+    QString oldName;
+
+public:
+    FWCmdRuleRenameGroup(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QString oldName, QString newName);
+
+    void redoOnModel(RuleSetModel *md);
+    void undoOnModel(RuleSetModel *md);
+};
+
+/********************************************************
  * FWCmdRuleMove
  ********************************************************/
 

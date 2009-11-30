@@ -366,6 +366,7 @@ QModelIndex RuleSetModel::index(int row, int column, QString groupName) const
             if (node->type == RuleNode::Group && node->name == groupName)
             {
                 parent = node;
+                break;
             }
         }
     }

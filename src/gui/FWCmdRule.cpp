@@ -249,6 +249,33 @@ void FWCmdRuleNegateRE::undoOnModel(RuleSetModel *md)
 }
 
 /********************************************************
+ * FWCmdRuleRenameGroup
+ ********************************************************/
+
+FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QString oldName, QString newName):
+        FWCmdRule(project, ruleset), oldName(oldName), newName(newName)
+{
+    setText(QObject::tr("negate rule element"));
+}
+
+void FWCmdRuleRenameGroup::redoOnModel(RuleSetModel *md)
+{
+//    QModelIndex grp = md->index(0, 0, oldName).parent();
+
+    QModelIndex grp = md->index(0, 0, oldName);//    workaround for #757
+    md->renameGroup(grp, newName);
+}
+
+void FWCmdRuleRenameGroup::undoOnModel(RuleSetModel *md)
+{
+//    QModelIndex grp =  md->index(0, 0, newName).parent();
+
+    QModelIndex grp =  md->index(0, 0, newName);//    workaround for #757
+    md->renameGroup(grp, oldName);
+}
+
+
+/********************************************************
  * FWCmdRuleChange
  ********************************************************/
 
