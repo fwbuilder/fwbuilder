@@ -146,21 +146,34 @@ bool ProjectPanel::event(QEvent *event)
                 }
                 if (RuleElement::cast(obj)) rule = Rule::cast(obj->getParent());
                 if (Rule::cast(obj)) rule = Rule::cast(obj);
+
                 if (rule && current_ruleset && md && rule->isChildOf(current_ruleset))
                 {
                     md->rowChanged(md->index(rule, 0));
-                } else
+                    ev->accept();
+                    return true;
+                }
+
+                if (rule)
                 {
                     QCoreApplication::postEvent(
-                        this, new updateObjectInTreeEvent(data_file, obj_id));
-                    QCoreApplication::postEvent(
-                        this, new reloadRulesetEvent(data_file));
-                    if (Library::cast(obj))
-                    {
-                        m_panel->om->updateLibName(obj);
-                        m_panel->om->updateLibColor(obj);
-                    }
+                        this, new showObjectInRulesetEvent(data_file, obj_id));
+                    ev->accept();
+                    return true;
                 }
+
+                if (Library::cast(obj))
+                {
+                    m_panel->om->updateLibName(obj);
+                    m_panel->om->updateLibColor(obj);
+                }
+
+                QCoreApplication::postEvent(
+                    this, new updateObjectInTreeEvent(data_file, obj_id));
+
+                QCoreApplication::postEvent(
+                    this, new reloadRulesetEvent(data_file));
+
                 ev->accept();
                 return true;
             }
@@ -244,16 +257,88 @@ bool ProjectPanel::event(QEvent *event)
 
             case SHOW_OBJECT_IN_RULESET_EVENT:
             {
-                openRuleSet(obj);
-                // update rule set title as well
-                updateFirewallName();
+                // if obj is child of RuleElement (i.e. a reference object)
+                FWReference *ref = FWReference::cast(obj);
+                if (ref)
+                {
+                    RuleSet* current_ruleset = NULL;
+                    RuleSetView* rsv = getCurrentRuleSetView();
+                    RuleSetModel* md = NULL;
+                    if (rsv)
+                    {
+                        md = (RuleSetModel*)rsv->model();
+                        current_ruleset = md->getRuleSet();
+                    }
+
+                    if (current_ruleset && obj->isChildOf(current_ruleset))
+                    {
+                        clearManipulatorFocus();
+                        rsv->selectRE(ref);
+                        rsv->setFocus(Qt::OtherFocusReason);
+                    } else
+                    {
+                        FWObject *rs = obj;
+                        while (rs && RuleSet::cast(rs)==NULL) rs = rs->getParent();
+                        if (rs)
+                        {
+                            // reopen rule set right now, before we post event
+                            // to show the object in it.
+                            openRuleSet(rs);
+                            QCoreApplication::postEvent(
+                                this, new showObjectInRulesetEvent(data_file, obj_id));
+                        }
+                    }
+                    ev->accept();
+                    return true;
+                }
+
+                // if obj is RuleElement - select its first element
+                RuleElement *re = RuleElement::cast(obj);
+                if (re && re->size() > 0)
+                {
+                    QCoreApplication::postEvent(
+                        this, new showObjectInRulesetEvent(data_file, obj->front()->getId()));
+                    ev->accept();
+                    return true;
+                }
+
+                // if obj is Rule - select its comment (the only common rule element)
+                Rule *rule = Rule::cast(obj);
+                if (rule)
+                {
+                    RuleSet* current_ruleset = NULL;
+                    RuleSetView* rsv = getCurrentRuleSetView();
+                    RuleSetModel* md = NULL;
+                    if (rsv)
+                    {
+                        md = (RuleSetModel*)rsv->model();
+                        current_ruleset = md->getRuleSet();
+                    }
+                    if (current_ruleset && rule->isChildOf(current_ruleset))
+                    {
+                        rsv->selectRE(rule, ColDesc::Comment);
+                        ev->accept();
+                        return true;
+                    } else
+                    {
+                        // this rule does not belong to the current ruleset
+                        // reopen rule set right now, before we post event
+                        // to show the object in it.
+                        openRuleSet(rule->getParent(), true);
+                        QCoreApplication::postEvent(
+                            this, new showObjectInRulesetEvent(data_file, obj->getId()));
+                    }
+                    ev->accept();
+                    return true;
+                }
+
                 ev->accept();
                 return true;
             }
 
             case SHOW_OBJECT_IN_TREE_EVENT:
+                //m_panel->om->setFocus();
                 m_panel->om->openObject(obj);
-                m_panel->om->select();
                 ev->accept();
                 return true;
 

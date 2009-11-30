@@ -29,7 +29,6 @@
 #include "utils.h"
 #include "platforms.h"
 
-#include <QLineEdit>
 #include "FindObjectWidget.h"
 #include "FWWindow.h"
 #include "FWObjectDropArea.h"
@@ -39,6 +38,7 @@
 #include "RuleSetView.h"
 #include "ObjectEditor.h"
 #include "ProjectPanel.h"
+#include "FWCmdChange.h"
 #include "events.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -51,7 +51,9 @@
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 
+#include <QLineEdit>
 #include <QStackedWidget>
+#include <QtDebug>
 #include <qradiobutton.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
@@ -63,6 +65,8 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <memory>
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -124,9 +128,9 @@ void FindObjectWidget::objectInserted()
 
 void FindObjectWidget::reset()
 {
-    lastFound=NULL;
-    lastAttrSearch="";
-    treeSeeker = project_panel->db()->tree_begin();
+    lastFound = NULL;
+    lastAttrSearch = "";
+    found_objects.clear();
 }
 
 
@@ -275,9 +279,60 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
     return res;
 }
 
+/*
+ * Walks the whole tree and fills found_objects list
+ */
+void FindObjectWidget::_findAll()
+{
+    treeSeeker = project_panel->db()->tree_begin();
+    for (; treeSeeker != project_panel->db()->tree_end(); ++treeSeeker)
+    {
+        FWObject *o = *treeSeeker;
+
+        if( RuleElement::cast(o->getParent())!=NULL)
+        {
+            if (m_widget->srScope->currentIndex()==3) // scope == selected firewalls
+            {
+                if ( !inSelectedFirewall(RuleElement::cast(o->getParent())) )
+                {
+                    continue;
+                }
+            } else
+                if (m_widget->srScope->currentIndex()==0) continue ; // scope == tree only
+        } else
+        {
+/* if not in rules, then in the tree. */
+            if (m_widget->srScope->currentIndex()>1) continue; // scope in (firewalls only , selected firewalls)
+        }
+
+        if (FWReference::cast(o)!=NULL)
+        {
+            FWReference *r=FWReference::cast(o);
+            if (matchAttr( r->getPointer()) && matchID(r->getPointer()->getId()))
+            {
+                found_objects.push_back(o);
+            }
+        } else
+        {
+            if (matchAttr(o) && matchID(o->getId()))
+            {
+                found_objects.push_back(o);
+            }
+        }
+    }
+}
+
+/*
+ * Group::duplicateForUndo(), which is used in FWCmdChange::redo() and
+ * undo() breaks FWObject::tree_iterator because it adds or removes
+ * objects to groups. To work around this problem, we fill list
+ * found_objects on the first call to findNext() and then just iterate
+ * over items in this list later.
+ */
 void FindObjectWidget::findNext()
 {
     if (fwbdebug) qDebug("FindObjectWidget::findNext");
+
     if (
         m_widget->findAttr->currentText().isEmpty() &&
         m_widget->findDropArea->isEmpty()) return;
@@ -295,52 +350,20 @@ void FindObjectWidget::findNext()
     else
         selectedFirewall = NULL;
 
-    if (fwbdebug)
-        qDebug("selectedFirewall: %p", selectedFirewall);
+    if (fwbdebug) qDebug() << "selectedFirewall: " << selectedFirewall;
 
 loop:
 
-    QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-
-    for (; treeSeeker != project_panel->db()->tree_end(); ++treeSeeker)
+    if (found_objects.size() == 0)
     {
-        o = *treeSeeker;
+        QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
+        _findAll();
+        QApplication::restoreOverrideCursor();
 
-//        if (fwbdebug)
-//            qDebug("Found object %s (%s)", o->getName().c_str(), o->getTypeName().c_str());
-
-        if( RuleElement::cast(o->getParent())!=NULL)
-        {
-            if (m_widget->srScope->currentIndex()==3) // scope == selected firewalls
-            {
-                if ( !inSelectedFirewall(RuleElement::cast(o->getParent())) )
-                {
-                    continue;
-
-                }
-            } else
-                if (m_widget->srScope->currentIndex()==0) continue ; // scope == tree only
-        } else
-        {
-/* if not in rules, then in the tree. */
-            if (m_widget->srScope->currentIndex()>1) continue; // scope in (firewalls only , selected firewalls)
-        }
-
-        if (FWReference::cast(o)!=NULL)
-        {
-            FWReference *r=FWReference::cast(o);
-            if (matchAttr( r->getPointer() ) &&
-                matchID( r->getPointer()->getId() )) break;
-        } else
-        {
-            if (matchAttr( o ) &&
-                matchID( o->getId() )) break;
-        }
+        found_objects_iter = found_objects.begin();
     }
 
-    QApplication::restoreOverrideCursor();
-
-    if (treeSeeker == project_panel->db()->tree_end())
+    if (found_objects_iter == found_objects.end())
     {
         reset();
         if (m_widget->srScope->currentIndex()==3) // scope ==selected firewalls
@@ -362,20 +385,19 @@ loop:
         }
         return;
     }
-    assert(o!=NULL);
-    lastFound=o;
-/* found object. Shift iterator so it does not return the same object
- * when user hits 'find next'
- */
 
-    ++treeSeeker;
+    o = *found_objects_iter;
+    ++found_objects_iter;
+
+    assert(o!=NULL);
+    lastFound = o;
 
     if (fwbdebug)
     {
-        qDebug("Found object: o=%p  id=%s  name=%s  type=%s",
-               o,
-               FWObjectDatabase::getStringId(o->getId()).c_str(),
-               o->getName().c_str(),o->getTypeName().c_str());
+        qDebug() << "Found object: o=" << o
+                 << "id=" << FWObjectDatabase::getStringId(o->getId()).c_str()
+                 << "name=" << o->getName().c_str()
+                 << "type=" << o->getTypeName().c_str();
     }
     showObject(o);
 }
@@ -413,8 +435,7 @@ bool FindObjectWidget::validateReplaceObject()
 
 void FindObjectWidget::replace()
 {
-    if(!validateReplaceObject())  return;
-
+    if (!validateReplaceObject()) return;
 
     if (lastFound==NULL)
     {
@@ -422,20 +443,7 @@ void FindObjectWidget::replace()
         return;
     }
 
-    QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-    FWObject *res = _replaceCurrent();
-
-    if (res)
-    {
-        showObject(res);
-    }
-    else
-    {
-        // object isn't inserted
-        qDebug("object isn't inserted");
-    }
-
-    QApplication::restoreOverrideCursor();
+    _replaceCurrent();
 }
 
 void FindObjectWidget::replaceAll()
@@ -443,114 +451,77 @@ void FindObjectWidget::replaceAll()
     if(!validateReplaceObject()) return;
     reset();
     FWObject *o=NULL;
+
+    findNext();  // fill found_objects and position to the first found one
+
     int count=0;
-    bool f=true;
-
-    QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-    while (f)
+    for (found_objects_iter=found_objects.begin(); found_objects_iter!=found_objects.end();
+         ++found_objects_iter)
     {
-        for (; treeSeeker != project_panel->db()->tree_end(); ++treeSeeker)
-        {
-            o = *treeSeeker;
-            if( RuleElement::cast(o->getParent())!=NULL)
-            {
-                if (m_widget->srScope->currentIndex()==3) // scope == selected firewalls
-                {
-                    if ( !inSelectedFirewall(RuleElement::cast(o->getParent())) )
-                    {
-                        continue;
-
-                    }
-                } else if (m_widget->srScope->currentIndex()==0) continue ; // scope == tree only
-            } else
-            {
-                /* if not in rules, then in the tree. */
-                if (m_widget->srScope->currentIndex()>1) continue; // scope in (firewalls only , selected firewalls)
-            }
-
-            if (FWReference::cast(o)!=NULL)
-            {
-                FWReference *r=FWReference::cast(o);
-                if (matchAttr( r->getPointer() ) &&
-                    matchID( r->getPointer()->getId() )) break;
-            } else
-            {
-                if (matchAttr( o ) &&
-                    matchID( o->getId() )) break;
-            }
-        }
-        if (treeSeeker == project_panel->db()->tree_end())
-        {
-            f=false;
-
-        } else
-        {
-            lastFound=o;
-            ++treeSeeker;
-            count++;
-            _replaceCurrent();
-        }
+        lastFound = *found_objects_iter;
+        _replaceCurrent();
+        count++;
     }
 
-    QApplication::restoreOverrideCursor();
     QMessageBox::information(
               this, "Firewall Builder",
               tr("Replaced %1 objects.").arg(count));
-
 }
 
-FWObject* FindObjectWidget::_replaceCurrent()
+void FindObjectWidget::_replaceCurrent()
 {
-    FWObject *o=lastFound;
-    FWObject *p=lastFound->getParent();
+    FWObject *o = lastFound;
+    FWObject *p = lastFound->getParent();
 
-    if (p==NULL || o==NULL) return NULL;
-    if (FWReference::cast(o)==NULL) return NULL;
+    if (p==NULL || o==NULL) return;
+    if (FWReference::cast(o)==NULL) return;
 
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project_panel->getFileName(), p->getId()));
+    FWObject *replace_object = m_widget->replaceDropArea->getObject();
 
-    p->removeRef(FWReference::cast(o)->getPointer());
+    std::auto_ptr<FWCmdChange> cmd(
+        new FWCmdChange(project_panel, p, QObject::tr("Replace object")));
+    FWObject *new_state = cmd->getNewState();
+
+    new_state->removeRef(FWReference::cast(o)->getPointer());
 
     // check for duplicates --------
 
-    FWObject *ro=m_widget->replaceDropArea->getObject();
-    if (RuleElement::cast(p)==NULL || !RuleElement::cast(p)->isAny())
+    if (RuleElement::cast(new_state)==NULL ||
+        !RuleElement::cast(new_state)->isAny())
     {
         // avoid duplicates
-        int cp_id = ro->getId();
+        int cp_id = replace_object->getId();
         FWObject *oo;
         FWReference *ref;
 
         list<FWObject*>::iterator j;
-        for(j=p->begin(); j!=p->end(); ++j)
+        for(j=new_state->begin(); j!=new_state->end(); ++j)
         {
-            oo=*j;
-            if(cp_id==oo->getId()) return NULL;
-
-            if( (ref=FWReference::cast(oo))!=NULL &&
-                cp_id==ref->getPointerId()) return NULL;
+            oo = *j;
+            if (cp_id==oo->getId() ||
+                ((ref=FWReference::cast(oo))!=NULL &&
+                 cp_id==ref->getPointerId()))
+            {
+                // replacement object is already a member of this
+                // group or rule element. Do not insert it again to
+                // avoid duplicates. Also check if new_state is
+                // different from old_state. It can be the same if
+                // original object was not a member of the group so
+                // the call to removeRef() above did nothing. This
+                // happens when user hits Replace, then hits it
+                // again without finding next.
+                if (!cmd->getOldState()->cmp(new_state, true))
+                    project_panel->undoStack->push(cmd.release());
+                return;
+            }
         }
     }
 
-    p->addRef(ro);
-    FWObject *to;
-    FWReference *ref;
-    list<FWObject*>::iterator i;
-    int id = m_widget->replaceDropArea->getObject()->getId();
-    for (i=p->begin();i!=p->end();++i)
-    {
-        to=*i;
-        ref=FWReference::cast(to);
-        if(ref && ref->getPointerId()==id)
-        {
-            return to;
-        }
-
-    }
-    return NULL;
-
+    new_state->addRef(replace_object);
+    if (!cmd->getOldState()->cmp(new_state, true))
+        project_panel->undoStack->push(cmd.release());
 }
+
 bool FindObjectWidget::inSelectedFirewall( RuleElement* r)
 {
     FWObject *f=r;
@@ -582,21 +553,16 @@ void FindObjectWidget::showObject(FWObject* o)
         qDebug("FindObjectWidget::showObject  o: %s parent: %s",
                o->getName().c_str(), o->getParent()->getName().c_str());
 
-    FWReference* ref=FWReference::cast(o);
+    FWReference* ref = FWReference::cast(o);
     if (ref!=NULL && RuleElement::cast(o->getParent())!=NULL)
     {
 
         // found object in rules
-        //mw->closeEditor();
-        project_panel->clearManipulatorFocus();
-        project_panel->ensureObjectVisibleInRules( ref );
+        QCoreApplication::postEvent(
+            project_panel, new showObjectInRulesetEvent(
+                project_panel->getFileName(), ref->getId()));
         return;
     }
-
-//    project_panel->unselectRules();
-
-    if (fwbdebug)
-        qDebug("FindObjectWidget::showObject  checkpoint #1");
 
     if (!FWBTree().isStandardFolder(o) &&
         Group::cast(o->getParent())!=NULL &&
@@ -608,15 +574,10 @@ void FindObjectWidget::showObject(FWObject* o)
         return;
     }
 
-    if (fwbdebug)
-        qDebug("FindObjectWidget::showObject  checkpoint #2");
-
-    //mw->closeEditor();
-    //project_panel->openObject( o );
     QCoreApplication::postEvent(
-        mw,
-        new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
-    project_panel->select();  // selects an item in the tree and assigns kbd focus to it
+        mw, new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
+
+    //project_panel->select();  // selects an item in the tree and assigns kbd focus to it
 }
 
 void FindObjectWidget::init()

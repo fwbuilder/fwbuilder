@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>919</width>
-    <height>184</height>
+    <width>933</width>
+    <height>221</height>
    </rect>
   </property>
   <property name="font" >
@@ -15,185 +15,8 @@
   <property name="windowTitle" >
    <string>Form1</string>
   </property>
-  <layout class="QGridLayout" >
-   <item row="2" column="2" colspan="3" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType" >
-      <enum>QSizePolicy::MinimumExpanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0" >
-      <size>
-       <width>75</width>
-       <height>1</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="4" >
-    <widget class="QPushButton" name="repNextButton" >
-     <property name="text" >
-      <string>Replace &amp;&amp; Find</string>
-     </property>
-     <property name="shortcut" >
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item rowspan="2" row="0" column="1" >
-    <widget class="QGroupBox" name="groupBox5" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="font" >
-      <font>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="title" >
-      <string> Replace object </string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout" >
-      <item row="0" column="0" >
-       <widget class="FWObjectDropArea" native="1" name="replaceDropArea" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize" >
-         <size>
-          <width>100</width>
-          <height>80</height>
-         </size>
-        </property>
-        <property name="font" >
-         <font>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label" >
-        <property name="text" >
-         <string>      </string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="6" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType" >
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0" >
-      <size>
-       <width>110</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="6" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType" >
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0" >
-      <size>
-       <width>100</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="2" colspan="3" >
-    <widget class="QGroupBox" name="buttonGroup2" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="font" >
-      <font>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="title" >
-      <string>Scope for search and replace :</string>
-     </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>4</number>
-      </property>
-      <item row="0" column="0" >
-       <widget class="QComboBox" name="srScope" >
-        <item>
-         <property name="text" >
-          <string>Tree only</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Tree and policy of all firewalls</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Policy of all firewalls</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>policy of the opened firewall</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="3" >
-    <widget class="QPushButton" name="replaceButton" >
-     <property name="text" >
-      <string>Replace</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2" >
-    <widget class="QPushButton" name="replaceAllButton" >
-     <property name="text" >
-      <string>Replace all</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="5" >
-    <widget class="QPushButton" name="findButton" >
-     <property name="text" >
-      <string>Next</string>
-     </property>
-     <property name="default" >
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item rowspan="2" row="0" column="0" >
+  <layout class="QGridLayout" name="gridLayout_2" >
+   <item rowspan="3" row="0" column="0" >
     <widget class="QGroupBox" name="groupBox4" >
      <property name="sizePolicy" >
       <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -286,6 +109,183 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item rowspan="3" row="0" column="1" >
+    <widget class="QGroupBox" name="groupBox5" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title" >
+      <string> Replace object </string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout" >
+      <item row="0" column="0" >
+       <widget class="FWObjectDropArea" native="1" name="replaceDropArea" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>100</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="font" >
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="2" colspan="4" >
+    <widget class="QGroupBox" name="buttonGroup2" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title" >
+      <string>Scope for search and replace :</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>4</number>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QComboBox" name="srScope" >
+        <item>
+         <property name="text" >
+          <string>Tree only</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Tree and policy of all firewalls</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Policy of all firewalls</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>policy of the opened firewall</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item rowspan="3" row="0" column="6" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QPushButton" name="findButton" >
+     <property name="text" >
+      <string>Find Next</string>
+     </property>
+     <property name="default" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3" colspan="2" >
+    <widget class="QPushButton" name="replaceButton" >
+     <property name="text" >
+      <string>Replace</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5" >
+    <widget class="QPushButton" name="replaceAllButton" >
+     <property name="text" >
+      <string>Replace all</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2" colspan="2" >
+    <widget class="QPushButton" name="repNextButton" >
+     <property name="text" >
+      <string>Replace &amp;&amp; Find Next</string>
+     </property>
+     <property name="shortcut" >
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4" colspan="2" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>110</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="1" colspan="5" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>75</width>
+       <height>1</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

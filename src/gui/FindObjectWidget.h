@@ -41,21 +41,25 @@ class QWidget;
 
 class FindObjectWidget : public QWidget
 {
-    Q_OBJECT
+    Q_OBJECT;
 
 private:
 
     QString lastAttrSearch;
     libfwbuilder::FWObject *lastFound;
     libfwbuilder::FWObject::tree_iterator  treeSeeker;
+    std::list<libfwbuilder::FWObject*> found_objects;
+    std::list<libfwbuilder::FWObject*>::iterator found_objects_iter;
     libfwbuilder::Firewall* selectedFirewall;
     ProjectPanel *project_panel;
+
+    void _findAll();
+    void _replaceCurrent();
     
     bool matchName(const QString &name);
     bool matchID(int id);
     bool matchAttr(libfwbuilder::FWObject* obj);
     bool validateReplaceObject();
-    libfwbuilder::FWObject* _replaceCurrent();
     bool inSelectedFirewall( libfwbuilder::RuleElement* r);
     
  public:

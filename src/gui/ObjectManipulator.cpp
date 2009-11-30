@@ -1169,6 +1169,7 @@ void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
     otvi->getTree()->scrollToItem( otvi, QAbstractItemView::EnsureVisible );
     otvi->getTree()->setCurrentItem( otvi );
     otvi->setSelected( true );
+    otvi->getTree()->setFocus(Qt::OtherFocusReason);
 }
 
 void ObjectManipulator::libChangedById(int id)
