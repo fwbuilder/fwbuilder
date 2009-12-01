@@ -15,8 +15,8 @@
   <property name="windowTitle" >
    <string>Form1</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2" >
-   <item rowspan="3" row="0" column="0" >
+  <layout class="QGridLayout" name="gridLayout_3" >
+   <item rowspan="2" row="0" column="0" >
     <widget class="QGroupBox" name="groupBox4" >
      <property name="sizePolicy" >
       <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -58,7 +58,7 @@
        <widget class="QComboBox" name="attribute" >
         <property name="font" >
          <font>
-          <pointsize>9</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <item>
@@ -92,7 +92,7 @@
        <widget class="QComboBox" name="findAttr" >
         <property name="font" >
          <font>
-          <pointsize>9</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="editable" >
@@ -102,6 +102,11 @@
       </item>
       <item row="2" column="0" >
        <widget class="QCheckBox" name="useRegexp" >
+        <property name="font" >
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
         <property name="text" >
          <string>Use regular expressions</string>
         </property>
@@ -110,7 +115,7 @@
      </layout>
     </widget>
    </item>
-   <item rowspan="3" row="0" column="1" >
+   <item rowspan="2" row="0" column="1" >
     <widget class="QGroupBox" name="groupBox5" >
      <property name="sizePolicy" >
       <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
@@ -158,7 +163,7 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="2" colspan="4" >
+   <item row="0" column="2" >
     <widget class="QGroupBox" name="buttonGroup2" >
      <property name="sizePolicy" >
       <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -180,6 +185,11 @@
       </property>
       <item row="0" column="0" >
        <widget class="QComboBox" name="srScope" >
+        <property name="font" >
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
         <item>
          <property name="text" >
           <string>Tree only</string>
@@ -205,7 +215,7 @@
      </layout>
     </widget>
    </item>
-   <item rowspan="3" row="0" column="6" >
+   <item row="0" column="3" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
@@ -222,56 +232,60 @@
     </spacer>
    </item>
    <item row="1" column="2" >
-    <widget class="QPushButton" name="findButton" >
-     <property name="text" >
-      <string>Find Next</string>
-     </property>
-     <property name="default" >
-      <bool>true</bool>
-     </property>
-    </widget>
+    <layout class="QGridLayout" name="gridLayout_2" >
+     <item row="0" column="0" >
+      <widget class="QPushButton" name="findButton" >
+       <property name="text" >
+        <string>Find Next</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QPushButton" name="replaceButton" >
+       <property name="text" >
+        <string>Replace</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2" >
+      <widget class="QPushButton" name="replaceAllButton" >
+       <property name="text" >
+        <string>Replace all</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2" >
+      <widget class="QPushButton" name="repNextButton" >
+       <property name="text" >
+        <string>Replace Current &amp;&amp; Find Next</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2" >
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>110</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
-   <item row="1" column="3" colspan="2" >
-    <widget class="QPushButton" name="replaceButton" >
-     <property name="text" >
-      <string>Replace</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="5" >
-    <widget class="QPushButton" name="replaceAllButton" >
-     <property name="text" >
-      <string>Replace all</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2" colspan="2" >
-    <widget class="QPushButton" name="repNextButton" >
-     <property name="text" >
-      <string>Replace &amp;&amp; Find Next</string>
-     </property>
-     <property name="shortcut" >
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="4" colspan="2" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType" >
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0" >
-      <size>
-       <width>110</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="3" column="1" colspan="5" >
+   <item row="2" column="2" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>

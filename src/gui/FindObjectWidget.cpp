@@ -50,6 +50,7 @@
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/MultiAddress.h"
 
 #include <QLineEdit>
 #include <QStackedWidget>
@@ -404,33 +405,45 @@ loop:
 
 bool FindObjectWidget::validateReplaceObject()
 {
-    if (m_widget->findDropArea->isEmpty() || m_widget->replaceDropArea->isEmpty())
+    if (m_widget->findDropArea->isEmpty())
     {
         QMessageBox::warning(
-              this,"Firewall Builder",
-              tr("Search or Replace object ind't specified."));
+              this, "Firewall Builder", tr("Search object is missing."));
         return false;
     }
-    FWObject *findObj, *replObj;
-    findObj=m_widget->findDropArea->getObject();
-    replObj=m_widget->replaceDropArea->getObject();
+
+    if (m_widget->replaceDropArea->isEmpty())
+    {
+        QMessageBox::warning(
+              this, "Firewall Builder", tr("Replace object is missing."));
+        return false;
+    }
+
+    FWObject* findObj = m_widget->findDropArea->getObject();
+    FWObject* replObj = m_widget->replaceDropArea->getObject();
+
     if (findObj==replObj || findObj->getId() == replObj->getId())
     {
         QMessageBox::warning(
               this,"Firewall Builder",
-              tr("Cannot replace object by itself."));
+              tr("Cannot replace object with itself."));
         return false;
     }
-    if (!((Address::cast(findObj)!=NULL && Address::cast(replObj)) ||
-            (Service::cast(findObj)!=NULL && Service::cast(replObj))))
-    {
-        QMessageBox::warning(
-              this,"Firewall Builder",
-              tr("Search and Replace objects are incompatible."));
 
-        return false;
-    }
-    return true;
+    bool obj_1_address = Address::cast(findObj)!=NULL || MultiAddress::cast(findObj)!=NULL;
+    bool obj_2_address = Address::cast(replObj)!=NULL || MultiAddress::cast(replObj)!=NULL;
+
+    bool obj_1_service = Service::cast(findObj)!=NULL;
+    bool obj_2_service = Service::cast(replObj)!=NULL;
+
+    if ((obj_1_address && obj_2_address) || (obj_1_service && obj_2_service))
+        return true;
+
+    QMessageBox::warning(
+        this,"Firewall Builder",
+        tr("Search and Replace objects are incompatible."));
+    
+    return false;
 }
 
 void FindObjectWidget::replace()
