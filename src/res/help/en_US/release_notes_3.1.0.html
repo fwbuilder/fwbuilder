@@ -95,8 +95,8 @@
 
 <p>
   <b>Password caching</b>: Built-in installer can remember
-  firewall password (and enable password for Ciscos) for the
-  duration of the session. Passwords are never stored permanenetly
+  firewall password (and enable password for Cisco) for the
+  duration of the session. Passwords are never stored permanently
   in any form, encrypted or plain text. You need to enter
   password once when you activate generated policy. If you keep
   the program open and need to modify and activate policy again, the
@@ -127,12 +127,12 @@
 </p>
 
 <p>
-  The program can <b>generate commands to confgiure vlans, bridges and
+  The program can <b>generate commands to configure vlans, bridges and
     bonding interfaces</b> on Linux. This is off by default and
     controlled by checkboxes in the "script" tab of the firewall
     object dialog. Generated script adds and removes vlans, bridges,
     bridge ports, bond and bond slaves incrementally. That is, the
-    script analyses existing vlan interfaces and compares them with
+    script analyzes existing vlan interfaces and compares them with
     vlan interfaces defined in the Firewall Builder GUI and then adds
     new ones and removes those that do not exist in fwbuilder. The
     same algorithm is used to create bridges, add or remove bridge
@@ -141,7 +141,7 @@
 
 <p>
   <b>Configlets</b>: generated firewall script (for all platforms) is assembled
-  from small fragments we call "configlets". These fragmens are located in the
+  from small fragments we call "configlets". These fragments are located in the
   /usr/share/fwbuilder/configlets (on Linux). Each configlet is a template
   that uses specially defined macros which the program replaces with actual
   strings and values when it generates firewall configuration. There are separate
@@ -150,7 +150,7 @@
   expansion and conditional "If - then" construct. You can override configlets
   we provide with your own if you create directory "fwbuilder/configlets" in your
   home directory and place files with the same name there. This way, you can change
-  vritually all aspecs of generated confgiuration file.
+  virtually all aspects of generated configuration file.
 </p>
 
 
@@ -175,7 +175,7 @@ rule sets of this object rather than in the actual firewalls.
 
 <p>
   <ul>
-    <li>Create your firewall objects. Assign platform and host os and
+    <li>Create your firewall objects. Assign platform and host OS and
       name interfaces as usual. Do not add any policy or NAT
       rules. These are your real (member) firewalls. Interfaces should
       have their real IP addresses (not CARP or VRRP addresses).
@@ -211,7 +211,7 @@ rule sets of this object rather than in the actual firewalls.
       the original member firewall and its interfaces in rules are
       replaced with references to the cluster and its interfaces. The
       program also creates backup copies of the member firewall
-      objects with the name with suffux "-bak" and clears Policy and
+      objects with the name with suffix "-bak" and clears Policy and
       NAT rule sets of the member firewall objects used with the
       cluster before new cluster is created.
     </li>
@@ -224,7 +224,7 @@ rule sets of this object rather than in the actual firewalls.
     </li>
 
     <li>
-      If you use heatbrat or OpenAIS (on Linux) for failover, cluster
+      If you use heartbeat or OpenAIS (on Linux) for failover, cluster
       interfaces should have the same names as corresponding member
       firewall interfaces. In this case, cluster interfaces are
       virtual entities that represent interfaces of the corresponding
@@ -264,7 +264,7 @@ rule sets of this object rather than in the actual firewalls.
     <li>
       Button "Edit protocol parameters" allows you to edit CARP or
       VRRP password, VHID and other parameters for the failover
-      protocol. This is where you can configure na ddress and port for
+      protocol. This is where you can configure an address and port for
       heartbeat and OpenAIS and other protocol-specific parameters.
     </li>
 
@@ -334,7 +334,7 @@ rule sets of this object rather than in the actual firewalls.
       Cluster interface that corresponds to the failover interface of
       the members should be configured with protocol "PIX failover
       protocol". Click on the "Edit protocol parameters" button to edit
-      timeout, polltime and the key.
+      timeout, poll time and the key.
     </li>
       
     <li>Cluster interfaces that represent regular interfaces of the
@@ -346,7 +346,7 @@ rule sets of this object rather than in the actual firewalls.
     </li>
     
     <li>Cluster object should have State Synchronization group child
-      object. Create it using conext menu "Add State Synchronization
+      object. Create it using context menu "Add State Synchronization
       Group" item if this object does not exist. In this object you
       need to configure member interfaces that should be used for
       state synchronization. You can use separate dedicated interfaces
@@ -427,7 +427,7 @@ rule sets of this object rather than in the actual firewalls.
   In this configuration we have bridge interface <b>br0</b> and two
   bridge ports <b>eth0</b> and <b>eth1</b>. Note how <b>eth0</b>
   and <b>eth1</b> are located in the tree under <b>br0</b>, on the
-  same level as its ip address object.
+  same level as its IP address object.
 </p>
 
 <p>
