@@ -1125,9 +1125,9 @@ void ObjectManipulator::openObject(FWObject *obj)
 void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::openObject   obj=%s (%d)",
-               (obj)?obj->getName().c_str():"NULL",
-               (obj)?obj->getId():0);
+        qDebug() << "ObjectManipulator::openObject"
+                 << "obj:" << ((obj)?obj->getName().c_str():"NULL")
+                 << "id:" << ((obj)?obj->getId():0);
 
     if (obj==NULL) return;
 
@@ -1144,12 +1144,13 @@ void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
         getIdxForLib( obj->getLibrary()));
 
     if (fwbdebug)
-        qDebug("ObjectManipulator::openObject:  libs->currentIndex=%d",
-               m_objectManipulator->libs->currentIndex());
+        qDebug() << "ObjectManipulator::openObject"
+                 << "libs->currentIndex="
+                 << m_objectManipulator->libs->currentIndex();
 
     updateCreateObjectMenu(obj->getLibrary());
 
-    if (fwbdebug) qDebug("ObjectManipulator::openObject: done");
+    if (fwbdebug) qDebug() << "ObjectManipulator::openObject: done";
 }
 
 void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
@@ -1160,7 +1161,10 @@ void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
 
     ObjectTreeView* otv = otvi->getTree();
 
-    if (fwbdebug) qDebug("ObjectManipulator::showObjectInTree  current_tree_view=%p  new_otv=%p",current_tree_view,otv);
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::showObjectInTree"
+                 << "current_tree_view=" << current_tree_view
+                 << "new_otv=" << otv;
 
 //    otv->raise();
     m_objectManipulator->widgetStack->setCurrentWidget(otv);

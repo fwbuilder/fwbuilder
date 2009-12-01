@@ -144,7 +144,7 @@ void FWCmdAddObject::redo()
     // insufficient, we need to reload the whole tree. The caller should have
     // set flag require_complete_tree_reload to signal that.
     if (require_complete_tree_reload)
-        QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+        QCoreApplication::postEvent(mw, new reloadObjectTreeImmediatelyEvent(filename));
     else
         QCoreApplication::postEvent(mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, grp->getId()));
