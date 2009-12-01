@@ -111,7 +111,8 @@ public:
     QModelIndex index(int row, int column, QString groupName) const;
     QModelIndex index(libfwbuilder::Rule *rule, int col=0) const;
     QModelIndex index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re) const;
-    QModelIndex indexForPosition(int position) const;
+    QModelIndex index(QString groupName) const;
+    QModelIndex indexForPosition(int position) const;    
     QModelIndex parent(const QModelIndex &child) const;
 
     bool isEmpty();

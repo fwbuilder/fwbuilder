@@ -352,26 +352,32 @@ QModelIndex RuleSetModel::index(int row, int column, const QModelIndex &parent) 
 
 }
 
-QModelIndex RuleSetModel::index(int row, int column, QString groupName) const
+QModelIndex RuleSetModel::index(QString groupName) const
 {
-    //if (fwbdebug) qDebug() << " RuleSetModel::index(int row, int column, QString groupName)";
-
-    //Find parent index
-    RuleNode *parent = root;
 
     if (!groupName.isEmpty())
     {
+        int row = 0;
         foreach(RuleNode *node, root->children)
         {
             if (node->type == RuleNode::Group && node->name == groupName)
             {
-                parent = node;
-                break;
+
+                return createIndex(row, 0, node);
             }
+            row++;
         }
     }
 
-    return createIndex(row, column, parent);
+    return QModelIndex();
+}
+
+QModelIndex RuleSetModel::index(int row, int column, QString groupName) const
+{
+    //if (fwbdebug) qDebug() << " RuleSetModel::index(int row, int column, QString groupName)";
+
+    QModelIndex parent = index(groupName);
+    return (parent.isValid())?index(row, column, parent):QModelIndex();
 }
 
 QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re) const

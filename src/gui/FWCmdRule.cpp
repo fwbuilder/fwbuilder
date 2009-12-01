@@ -260,17 +260,13 @@ FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(ProjectPanel *project, libfwbuilder::
 
 void FWCmdRuleRenameGroup::redoOnModel(RuleSetModel *md)
 {
-//    QModelIndex grp = md->index(0, 0, oldName).parent();
-
-    QModelIndex grp = md->index(0, 0, oldName);//    workaround for #757
+    QModelIndex grp = md->index(oldName);
     md->renameGroup(grp, newName);
 }
 
 void FWCmdRuleRenameGroup::undoOnModel(RuleSetModel *md)
 {
-//    QModelIndex grp =  md->index(0, 0, newName).parent();
-
-    QModelIndex grp =  md->index(0, 0, newName);//    workaround for #757
+    QModelIndex grp =  md->index(newName);
     md->renameGroup(grp, oldName);
 }
 
