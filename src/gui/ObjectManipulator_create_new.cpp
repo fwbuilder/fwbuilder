@@ -399,6 +399,9 @@ void ObjectManipulator::newCluster(bool fromSelected)
     {
         FWCmdAddObject *cmd = new FWCmdAddObject(
             m_project, parent, NULL, QObject::tr("Create new Cluster"));
+        // newCluster dialog may create backup copies of member firewalls,
+        // to see them in the tree need to reload it.
+        cmd->setNeedTreeReload(true);
         FWObject *new_state = cmd->getNewState();
         parent->remove(ncl, false);
         new_state->add(ncl);

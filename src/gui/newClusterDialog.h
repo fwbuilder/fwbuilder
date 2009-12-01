@@ -43,7 +43,7 @@ class newClusterDialog : public QDialog, public FakeWizard
     libfwbuilder::FWObjectDatabase *tmpldb;
     std::map<QListWidgetItem*, libfwbuilder::FWObject*> templates;
     bool unloadTemplatesLib;
-    QMap<QRadioButton*, libfwbuilder::Firewall*> radios;
+    QMap<QRadioButton*, libfwbuilder::Firewall*> copy_rules_from_buttons;
     QMap<int, bool> visited;
     std::list<libfwbuilder::Firewall*> firewallList;
     bool useFirewallList;
@@ -58,6 +58,8 @@ class newClusterDialog : public QDialog, public FakeWizard
                                 QString *secret, QString *vrid);
     void shrinkListOfPlatforms();
     void shrinkListOfOS();
+    void copyRuleSets(const std::string &type, libfwbuilder::Firewall *src);
+    void deleteRuleSets(const std::string &type, libfwbuilder::Firewall *fw);
     void createNewCluster();
 
 public:

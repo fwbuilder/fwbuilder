@@ -23,6 +23,9 @@
 
 */
 
+#ifndef FWBTREE_H
+#define FWBTREE_H
+
 #include <map>
 
 #include <qstring.h>
@@ -95,3 +98,4 @@ class FWBTree {
     void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size);
 };
 
+#endif

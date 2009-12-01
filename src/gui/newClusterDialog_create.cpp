@@ -31,13 +31,15 @@
 #include "InterfacesTabWidget.h"
 #include "platforms.h"
 #include "FWBTree.h"
+#include "FWCmdAddObject.h"
 
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Resources.h"
-#include "fwbuilder/Library.h"
-#include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Routing.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 
@@ -49,21 +51,18 @@ using namespace std;
 
 void newClusterDialog::createNewCluster()
 {
+    map<int, int> id_mapping;
+
     QList<ClusterInterfaceData> cluster_interfaces =
         this->m_dialog->interfaceSelector->getInterfaces();
     
-    QList<QPair<Firewall*, bool> > member_firewalls = 
-        this->m_dialog->firewallSelector->getSelectedFirewalls();
-
     typedef QPair<Firewall*, bool> fwpair;
     Firewall *master = NULL;
+    QList<QPair<Firewall*, bool> > member_firewalls = 
+        this->m_dialog->firewallSelector->getSelectedFirewalls();
     foreach(fwpair member, member_firewalls)
     {
-        if (member.second) 
-        {
-            master = member.first;
-            break;
-        }
+        if (member.second) { master = member.first; break; }
     }
 
     FWObject *o;
@@ -172,6 +171,9 @@ void newClusterDialog::createNewCluster()
         {
             Firewall *member_fw = intf.first;
             Interface *member_intf = intf.second;
+
+            id_mapping[member_intf->getId()] = oi->getId();
+
             failover_grp->addRef(member_intf);
             if (member_fw == master)
             {
@@ -181,5 +183,73 @@ void newClusterDialog::createNewCluster()
             }
         }
     }
+
+    // Copy rule sets if requested
+    Firewall *source = NULL;
+    foreach (QRadioButton* btn, copy_rules_from_buttons.keys())
+    {
+        if (btn->isChecked() && btn != this->m_dialog->noPolicy)
+        {
+            source = copy_rules_from_buttons[btn];
+            break;
+        }
+    }
+
+    if (source == NULL) return;
+
+    FWObject *fwgroup =
+        FWBTree().getStandardSlotForObject(parent->getLibrary(), Firewall::TYPENAME);
+
+    foreach(fwpair member, member_firewalls)
+    {
+        Firewall *fw = member.first;
+        id_mapping[fw->getId()] = ncl->getId();
+
+        string name_bak = fw->getName() + "-bak";
+        FWCmdAddObject *cmd = new FWCmdAddObject(
+            mw->activeProject(), fwgroup, NULL,
+            QString("Create new Firewall %1")
+            .arg(QString::fromUtf8(name_bak.c_str())));
+        FWObject *new_state = cmd->getNewState();
+        Firewall *bakfw = Firewall::cast(new_state->addCopyOf(fw));
+        bakfw->setName(name_bak);
+        bakfw->setInactive(true);
+        mw->activeProject()->undoStack->push(cmd);
+    }
+
+    copyRuleSets(Policy::TYPENAME, source);
+    copyRuleSets(NAT::TYPENAME, source);
+    copyRuleSets(Routing::TYPENAME, source);
+
+    ncl->getRoot()->fixReferences(ncl, id_mapping);
+
+    foreach(fwpair member, member_firewalls)
+    {
+        Firewall *fw = member.first;
+        deleteRuleSets(Policy::TYPENAME, fw);
+        deleteRuleSets(NAT::TYPENAME, fw);
+        deleteRuleSets(Routing::TYPENAME, fw);
+    }
 }
+
+void newClusterDialog::deleteRuleSets(const string &type, Firewall *fw)
+{
+    list<FWObject*> rule_sets = fw->getByType(type);
+    foreach(FWObject *rs, rule_sets) fw->remove(rs);
+    fw->add(db->create(type));
+}
+
+void newClusterDialog::copyRuleSets(const string &type, Firewall *source)
+{
+    list<FWObject*> old_ones = ncl->getByType(type);
+    foreach(FWObject *old, old_ones)
+        ncl->remove(old);
+
+    FWObjectTypedChildIterator it = source->findByType(type);
+    for (; it != it.end(); ++it)
+    {
+        ncl->addCopyOf(*it);
+    }
+}
+
 

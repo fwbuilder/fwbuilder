@@ -259,18 +259,18 @@ void newClusterDialog::showPage(const int page)
     case POLICY_PAGE:
     {
 
-        foreach (QRadioButton *btn, radios.keys())
+        foreach (QRadioButton *btn, copy_rules_from_buttons.keys())
         {
             btn->close();
             delete btn;
         }
-        radios.clear();
+        copy_rules_from_buttons.clear();
         QList<QPair<Firewall*, bool> > fws = m_dialog->firewallSelector->getSelectedFirewalls();
         for ( int i = 0; i < fws.count() ; i++ )
         {
             QRadioButton *newbox = new QRadioButton(QString::fromUtf8(fws.at(i).first->getName().c_str()), this);
             qFindChild<QVBoxLayout*>(this->m_dialog->page_4, "policyLayout")->addWidget(newbox);
-            radios[newbox] = fws.at(i).first;
+            copy_rules_from_buttons[newbox] = fws.at(i).first;
         }
         setNextEnabled(POLICY_PAGE, true);
         setFinishEnabled(POLICY_PAGE, false);
@@ -334,11 +334,12 @@ void newClusterDialog::showPage(const int page)
         }
         this->m_dialog->interfacesList->setText(interfaces.join("\n"));
         bool doCopy = false;
-        foreach (QRadioButton* btn, radios.keys())
+        foreach (QRadioButton* btn, copy_rules_from_buttons.keys())
         {
             if (btn->isChecked() && btn != this->m_dialog->noPolicy)
             {
-                QString fwname = QString::fromUtf8(radios[btn]->getName().c_str());
+                QString fwname = QString::fromUtf8(
+                    copy_rules_from_buttons[btn]->getName().c_str());
                 this->m_dialog->policyLabel->setText(this->m_dialog->policyLabel->text() + fwname);
                 doCopy = true;
                 break;
