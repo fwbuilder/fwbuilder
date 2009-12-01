@@ -1865,7 +1865,20 @@ void RuleSetView::cutSelectedObject()
         QModelIndex index = currentIndex();
         FWObjectClipboard::obj_clipboard->clear();
         FWObjectClipboard::obj_clipboard->add( fwosm->selectedObject, project );
-        md->deleteObject(index, fwosm->selectedObject);
+
+
+        RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
+        if (re==NULL || re->isAny()) return;
+
+        FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(project, md->getRuleSet(), re, tr("cut object"));
+        RuleElement *newRe = RuleElement::cast(cmd->getNewState());
+        newRe->removeRef(fwosm->selectedObject);
+        if (newRe->isAny()) newRe->setNeg(false);
+
+        fwosm->reset();
+        mw->findObjectWidget->reset();
+
+        project->undoStack->push(cmd);
     }
 }
 
