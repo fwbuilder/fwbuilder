@@ -58,6 +58,7 @@
 using namespace libfwbuilder;
 using namespace std;
 
+
 newClusterDialog::newClusterDialog(FWObject *_p)
     : QDialog(), ncl(NULL), fwlist(NULL), tmpldb(NULL)
 {
@@ -656,6 +657,8 @@ bool newClusterDialog::validateAddressAndMask(const QString &addr,
 
 void newClusterDialog::finishClicked()
 {
+    createNewCluster();
+
     /*
     int p = currentPage();
 
@@ -689,100 +692,6 @@ void newClusterDialog::finishClicked()
     {*/
     // create cluster object
 
-    FWObject *o;
-    o = db->create(Cluster::TYPENAME);
-    o->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
-
-    if (o == NULL)
-    {
-        QDialog::accept();
-        return;
-    }
-
-    parent->add(o);
-
-    ncl = Cluster::cast(o);
-
-    o->setStr("platform", this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("platform"));
-    o->setStr("host_OS", this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("host_OS"));
-
-    foreach(EditedInterfaceData data, this->m_dialog->interfaceEditor->getNewData())
-    {
-        Interface *oi = Interface::cast(db->create(Interface::TYPENAME));
-        oi->setName(string(data.name.toUtf8().constData()));
-
-        ncl->add(oi);
-        oi->setLabel(string(data.label.toUtf8().constData()));
-
-        foreach (AddressInfo address, data.addresses)
-        {
-            if (address.ipv4)
-            {
-                QString addrname = QString("%1:%2:ip")
-                               .arg(m_dialog->obj_name->text())
-                               .arg(data.name);
-                IPv4 *oa = IPv4::cast(db->create(IPv4::TYPENAME));
-                oa->setName(string(addrname.toUtf8().constData()));
-                oi->add(oa);
-                oa->setAddress(InetAddr(address.address.toLatin1().constData()));
-                bool ok = false ;
-                int inetmask = address.netmask.toInt(&ok);
-                if (ok)
-                {
-                    oa->setNetmask(InetAddr(inetmask));
-                }
-                else
-                {
-                    oa->setNetmask(InetAddr(address.netmask.toLatin1().constData()));
-                }
-            }
-            else
-            {
-                QString addrname = QString("%1:%2:ip")
-                               .arg(m_dialog->obj_name->text())
-                               .arg(data.name);
-                IPv6 *oa = IPv6::cast(db->create(IPv6::TYPENAME));
-                oa->setName(string(addrname.toUtf8().constData()));
-                oi->add(oa);
-                oa->setAddress(InetAddr(AF_INET6, address.address.toLatin1().constData()));
-                bool ok = false ;
-                int inetmask = address.netmask.toInt(&ok);
-                if (ok)
-                {
-                    oa->setNetmask(InetAddr(AF_INET6, inetmask));
-                }
-                else
-                {
-                    oa->setNetmask(InetAddr(AF_INET6, address.netmask.toLatin1().constData()));
-                }
-            }
-        }
-
-        FWOptions *ifopt;
-        ifopt = oi->getOptionsObject();
-        ifopt->setStr("type", "cluster_interface");
-
-
-        // create vrrp cluster group for this interface
-        ClusterGroup *failover_grp;
-        QString grpname = QString("%1:%2:members")
-                          .arg(m_dialog->obj_name->text())
-                          .arg(data.name);
-
-        failover_grp = ClusterGroup::cast(
-            db->create(FailoverClusterGroup::TYPENAME));
-        failover_grp->setName(string(grpname.toUtf8().constData()));
-        oi->add(failover_grp);
-
-        QString failover_protocol_name = data.protocol.toLower();
-
-        failover_grp->setStr("type", failover_protocol_name.toAscii().constData());
-
-    }
-
-    // create cluster interfaces and cluster groups
-    int itm_index = 0;
-    QTreeWidgetItem *itm = m_dialog->iface_list->topLevelItem(itm_index);
 /*
     while (itm != NULL)
     {

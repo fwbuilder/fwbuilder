@@ -34,6 +34,8 @@ class newClusterDialog : public QDialog, public FakeWizard
 {
     Q_OBJECT;
 
+    Ui::newClusterDialog_q *m_dialog;
+
     libfwbuilder::Cluster *ncl;
     libfwbuilder::ObjectGroup *fwlist;
     libfwbuilder::FWObject *parent;
@@ -41,8 +43,13 @@ class newClusterDialog : public QDialog, public FakeWizard
     libfwbuilder::FWObjectDatabase *tmpldb;
     std::map<QListWidgetItem*, libfwbuilder::FWObject*> templates;
     bool unloadTemplatesLib;
-    Ui::newClusterDialog_q *m_dialog;
-
+    QMap<QRadioButton*, libfwbuilder::Firewall*> radios;
+    QMap<int, bool> visited;
+    std::list<libfwbuilder::Firewall*> firewallList;
+    bool useFirewallList;
+    QVBoxLayout policies;
+    QRadioButton noPolicy;
+    
     bool validateAddressAndMask(const QString &addr, const QString &netm);
 
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
@@ -51,13 +58,8 @@ class newClusterDialog : public QDialog, public FakeWizard
                                 QString *secret, QString *vrid);
     void shrinkListOfPlatforms();
     void shrinkListOfOS();
-    QMap<QRadioButton*, libfwbuilder::Firewall*> radios;
-    QMap<int, bool> visited;
-    std::list<libfwbuilder::Firewall*> firewallList;
-    bool useFirewallList;
-    QVBoxLayout policies;
-    QRadioButton noPolicy;
-    
+    void createNewCluster();
+
 public:
     newClusterDialog(libfwbuilder::FWObject *parent);
     virtual ~newClusterDialog();

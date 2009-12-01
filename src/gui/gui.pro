@@ -291,6 +291,7 @@ SOURCES += ProjectPanel.cpp \
     newFirewallDialog.cpp \
     newFirewallDialog_from_template.cpp \
     newClusterDialog.cpp \
+    newClusterDialog_create.cpp \
     newHostDialog.cpp \
     ObjConflictResolutionDialog.cpp \
     ColorLabelMenuItem.cpp \
