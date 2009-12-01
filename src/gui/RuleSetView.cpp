@@ -1830,13 +1830,18 @@ void RuleSetView::deleteSelectedObject()
 
     if ( fwosm->selectedObject!=NULL)
     {
-        md->deleteObject(index, fwosm->selectedObject);
-        fwosm->reset();
+        RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
+        if (re==NULL || re->isAny()) return;
 
+        FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(project, md->getRuleSet(), re, tr("delete object"));
+        RuleElement *newRe = RuleElement::cast(cmd->getNewState());
+        newRe->removeRef(fwosm->selectedObject);
+        if (newRe->isAny()) newRe->setNeg(false);
+
+        fwosm->reset();
         mw->findObjectWidget->reset();
 
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+        project->undoStack->push(cmd);
     }
 }
 

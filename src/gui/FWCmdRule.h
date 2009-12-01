@@ -166,7 +166,8 @@ class FWCmdRuleChange : public FWCmdChange
 
     void prepareRuleSetView();
     void selectAffectedRule();
-    libfwbuilder::Rule* getRule();
+protected:
+    virtual libfwbuilder::Rule* getRule();
 
 public:
     FWCmdRuleChange(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, libfwbuilder::FWObject *obj, QString text=QString()):
@@ -175,6 +176,20 @@ public:
     virtual void redo();
     virtual void undo();
     virtual void notify();
+};
+
+/********************************************************
+ * FWCmdRuleChangeRe
+ ********************************************************/
+
+class FWCmdRuleChangeRe : public FWCmdRuleChange
+{
+    libfwbuilder::Rule* getRule();
+
+public:
+    FWCmdRuleChangeRe(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, libfwbuilder::FWObject *obj, QString text=QString()):
+            FWCmdRuleChange(project, ruleset, obj, text) {}
+
 };
 
 #endif // FWCMDRULE_H

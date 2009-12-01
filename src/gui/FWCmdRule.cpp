@@ -323,3 +323,12 @@ libfwbuilder::Rule* FWCmdRuleChange::getRule()
 {
     return dynamic_cast<Rule*> (getObject());
 }
+
+/********************************************************
+ * FWCmdRuleChangeRe
+ ********************************************************/
+
+libfwbuilder::Rule* FWCmdRuleChangeRe::getRule()
+{
+    return dynamic_cast<Rule*> (getObject()->getParent());
+}
