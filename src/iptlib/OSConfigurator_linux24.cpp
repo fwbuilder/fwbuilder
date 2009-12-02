@@ -60,7 +60,7 @@
 
 #include <QString>
 #include <QtDebug>
-#include <QregExp>
+#include <QRegExp>
 #include <QStringList>
 
 
