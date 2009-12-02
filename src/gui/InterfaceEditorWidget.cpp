@@ -76,6 +76,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     m_ui(new Ui::InterfaceEditorWidget)
 {
     os = data.os;
+    clusterMode = true;
     tabw = dynamic_cast<QTabWidget*>(parent);
     m_ui->setupUi(this);
     this->interfacep = NULL;
@@ -129,11 +130,12 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     {
         typenames << pair.second;
         if (pair.second == lastProtocol)
-            toSelect = typenames.length() - 1;
+            toSelect = typenames.count() - 1;
     }
     this->m_ui->protocol->clear();
     this->m_ui->protocol->insertItems(0, typenames);
     this->m_ui->protocol->setCurrentIndex(toSelect);
+    this->protocolChanged(this->m_ui->protocol->currentText());
 }
 
 void InterfaceEditorWidget::setData(InterfaceData *data)
@@ -259,7 +261,7 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
         noAddrs = Resources::os_res[os.toStdString()]->getResourceBool(
                     "/FWBuilderResources/Target/protocols/"
                     + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok");
-
+    if (this->m_ui->protocol->currentText() == "None") noAddrs = true;
     if (!noAddrs)
         for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
         {
@@ -274,6 +276,7 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
 
 void InterfaceEditorWidget::typeChanged(int type)
 {
+    if (clusterMode) return;
     if (type != 0)
     {
         while ( this->m_ui->addresses->rowCount() > 0 )
@@ -447,10 +450,11 @@ void InterfaceEditorWidget::protocolChanged(QString name)
     {
         bool noaddr = Resources::os_res[os.toStdString()]->getResourceBool(
                         "/FWBuilderResources/Target/protocols/"
-                        + name.toLower().toStdString() + "/no_ip_ok");
+                        + name.toLower().toStdString() + "/no_ip_ok") || name == "None";
         if (noaddr)
             while ( this->m_ui->addresses->rowCount() )
                 this->m_ui->addresses->removeRow(0);
+        qDebug() << "setting addresses enabled to" << !noaddr;
         this->m_ui->addresses->setEnabled(!noaddr);
         this->m_ui->addAddress->setEnabled(!noaddr);
         st->setNewClusterFailoverProtocol(name);

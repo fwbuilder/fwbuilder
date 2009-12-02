@@ -20,6 +20,8 @@
 #include <ui_newclusterdialog_q.h>
 
 #include "fakeWizard.h"
+#include <QListWidgetItem>
+
 
 namespace libfwbuilder
 {
@@ -41,7 +43,6 @@ class newClusterDialog : public QDialog, public FakeWizard
     libfwbuilder::FWObject *parent;
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::FWObjectDatabase *tmpldb;
-    std::map<QListWidgetItem*, libfwbuilder::FWObject*> templates;
     bool unloadTemplatesLib;
     QMap<QRadioButton*, libfwbuilder::Firewall*> copy_rules_from_buttons;
     QMap<int, bool> visited;
@@ -49,15 +50,7 @@ class newClusterDialog : public QDialog, public FakeWizard
     bool useFirewallList;
     QVBoxLayout policies;
     QRadioButton noPolicy;
-    
-    bool validateAddressAndMask(const QString &addr, const QString &netm);
 
-    void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
-    void getInterfaceAttributes(QString *addr, QString *netmask,
-                                QString *protocol,
-                                QString *secret, QString *vrid);
-    void shrinkListOfPlatforms();
-    void shrinkListOfOS();
     void copyRuleSets(const std::string &type, libfwbuilder::Firewall *src);
     void deleteRuleSets(const std::string &type, libfwbuilder::Firewall *fw);
     void createNewCluster();
@@ -70,28 +63,14 @@ public:
 
     void setFirewallList(std::vector<libfwbuilder::FWObject*>);
 
-    virtual bool appropriate(const int page) const;
     void showPage(const int page);
 
-public slots:
-    virtual void addInterface();
-    virtual void updateInterface();
-    virtual void deleteInterface();
-    virtual void selectedInterface(QTreeWidgetItem*,QTreeWidgetItem*);
-    virtual void templateSelected(QListWidgetItem *itm);
-    void browseTemplate();
-    void useStandartTemplate();
-    void showHideTemplatePanel();
-    void failoverProtocolChanged();
-    void platformChanged();
-    void changed();
-
-    
 protected slots:
     virtual void finishClicked();
     virtual void cancelClicked();
     virtual void nextClicked();
     virtual void backClicked();
+    virtual void changed();
 };
 
 #endif /* __NEWCLUSTERDIALOG_H */
