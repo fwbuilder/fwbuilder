@@ -32,6 +32,8 @@
 
 #include "OSData.h"
 
+class QString;
+
 namespace libfwbuilder {
     class FWObject;
     class MultiAddressRunTime;
@@ -44,7 +46,8 @@ namespace fwcompiler {
     class OSConfigurator_linux24 : public OSConfigurator {
 
         OSData os_data;
-        
+        Configlet *command_wrappers;
+
         std::map<std::string,std::string> address_table_objects;
 
         // this vector is used to avoid duplication of virtual addresses for nat
@@ -62,10 +65,13 @@ namespace fwcompiler {
         void setConfigletMacroForOptionInt(int opt,
                                            Configlet *c,
                                            const char *option_name);
+        virtual QString addressTableWrapper(libfwbuilder::FWObject *rule,
+                                            const QString &command,
+                                            bool ipv6=false);
 
 public:
 
-	virtual ~OSConfigurator_linux24() {};
+	virtual ~OSConfigurator_linux24();
 	OSConfigurator_linux24(libfwbuilder::FWObjectDatabase *_db,
                                libfwbuilder::Firewall *fw, bool ipv6_policy);
 

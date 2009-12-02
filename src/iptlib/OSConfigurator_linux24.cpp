@@ -59,6 +59,10 @@
 #include <assert.h>
 
 #include <QString>
+#include <QtDebug>
+#include <QregExp>
+#include <QStringList>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -71,6 +75,12 @@ OSConfigurator_linux24::OSConfigurator_linux24(FWObjectDatabase *_db,
                                                bool ipv6_policy) : 
     OSConfigurator(_db, fw, ipv6_policy) , os_data(fw->getStr("host_OS"))
 {
+    command_wrappers = new Configlet(fw, "linux24", "run_time_wrappers");
+}
+
+OSConfigurator_linux24::~OSConfigurator_linux24()
+{
+    delete command_wrappers;
 }
 
 string OSConfigurator_linux24::getInterfaceVarName(FWObject *iface, bool v6)
@@ -406,10 +416,119 @@ string OSConfigurator_linux24::generateCodeForProtocolHandlers()
     return ostr.str();
 }
 
-string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
-                                                     const string &command,
-                                                     bool ipv6)
+QString OSConfigurator_linux24::addressTableWrapper(FWObject *rule,
+                                                    const QString &command,
+                                                    bool ipv6)
 {
+    QString combined_command = command;
+    QRegExp address_table_re("\\$at_(\\S+)");
+    int pos = address_table_re.indexIn(command);
+    if (pos > -1)
+    {
+        QStringList command_lines = QString(command).split("\n", QString::SkipEmptyParts);
+        if (command_lines.size() > 1)
+        {
+            command_lines.push_front("{");
+            command_lines.push_back("}");
+        }
+        combined_command = command_lines.join("\n");
+
+        command_wrappers->clear();
+        command_wrappers->removeComments();
+        command_wrappers->collapseEmptyStrings(true);
+        command_wrappers->setVariable("ipv6", ipv6);
+
+        QString at_var = address_table_re.cap(1);
+        QString at_file = rule->getStr("address_table_file").c_str();
+
+        command_wrappers->setVariable("address_table_file", at_file);
+        command_wrappers->setVariable("address_table_var", at_var);
+        command_wrappers->setVariable("command", combined_command);
+        command_wrappers->setVariable("address_table", true);
+        command_wrappers->setVariable("wildcard_interface", false);
+        command_wrappers->setVariable("no_dyn_addr", false);
+        command_wrappers->setVariable("one_dyn_addr", false);
+        command_wrappers->setVariable("two_dyn_addr", false);
+
+        combined_command = command_wrappers->expand();
+    }
+    return combined_command;
+}
+
+string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
+                                                    const string &command,
+                                                    bool ipv6)
+{
+/* if anywhere in command_line we used variable holding an address of
+ * dynamic interface (named $i_something) then we need to add this
+ * command with a check for the value of this variable. We execute
+ * iptables command only if the value is a non-empty string.
+ *
+ * bug #1851166: there could be two dynamic interfaces in the same
+ * rule.
+ */
+
+    bool wildcard_interface = false;
+    QString combined_command = addressTableWrapper(rule, command.c_str(), ipv6);
+
+    command_wrappers->clear();
+    command_wrappers->removeComments();
+    command_wrappers->collapseEmptyStrings(true);
+    command_wrappers->setVariable("ipv6", ipv6);
+
+    command_wrappers->setVariable("address_table", false);
+
+    QRegExp intf_re("\\$i_(\\S+)");
+
+    QStringList iface_names;
+    QStringList iface_vars;
+    int pos = -1;
+    while ((pos = intf_re.indexIn(combined_command, pos + 1)) > -1)
+    {
+        QString name = intf_re.cap(1);
+        iface_names.push_back(name);
+        iface_vars.push_back("$i_" + name);
+        if (name.contains("*")) 
+        {
+            wildcard_interface = true;
+            QString intf_family = name.section('*', 0);
+            command_wrappers->setVariable("interface_family_name", intf_family);
+            break;
+        }
+    }
+
+    bool no_wrapper = !wildcard_interface && iface_names.size() == 0;
+
+    if (!no_wrapper)
+    {
+        QStringList command_lines = QString(combined_command).split("\n", QString::SkipEmptyParts);
+        if (command_lines.size() > 1)
+        {
+            command_lines.push_front("{");
+            command_lines.push_back("}");
+        }
+        combined_command = command_lines.join("\n");
+    }
+
+    command_wrappers->setVariable("no_wrapper", no_wrapper);
+    command_wrappers->setVariable("wildcard_interface", wildcard_interface);
+    command_wrappers->setVariable("one_dyn_addr",
+                                  !wildcard_interface && iface_names.size() == 1);
+    command_wrappers->setVariable("two_dyn_addr",
+                                  !wildcard_interface && iface_names.size() > 1);
+
+    for (int idx=0; idx<iface_names.size(); ++idx)
+    {
+        QString intf_name = iface_names[idx];
+        if (ipv6) intf_name += "_v6";
+        command_wrappers->setVariable(QString("intf_%1_var_name").arg(idx+1), intf_name);
+    }
+
+    command_wrappers->setVariable("command", combined_command);
+
+    return command_wrappers->expand().toStdString() + "\n";
+
+#if 0
     string command_line = command;
     ostringstream  ext_command_line;
 
@@ -441,16 +560,6 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
         p1=command_line.find_first_not_of("\n\r",p1);
         if (p1==string::npos) break;
     }
-
-/* if anywhere in command_line we used variable holding an address of
- * dynamic interface (named $i_something) then we need to add this
- * command with a check for the value of this variable. We execute
- * iptables command only if the value is a non-empty string.
- *
- * bug #1851166: there could be two dynamic interfaces in the same
- * rule.
- */
-    if (command_line.find("$i_")==string::npos) return command_line;
 
     string getaddr_function_name = "getaddr";
     if (ipv6) getaddr_function_name = "getaddr6";
@@ -508,6 +617,8 @@ string  OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
     }
 
     return res.str();
+#endif
+
 }
 
 string OSConfigurator_linux24::printIPForwardingCommands()

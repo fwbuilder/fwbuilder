@@ -30,6 +30,7 @@
     <li><a href="#cluster">Support for High Availability configurations</a></li>
     <li><a href="#pix_cluster">Cluster configuration for PIX</a></li>
     <li><a href="#bridge">Changes in the support for bridging firewalls</a></li>
+    <li><a href="#iptables">Changes in the policy compiler for iptables</a></li>
   </ul>
 </p>
 
@@ -436,4 +437,23 @@ rule sets of this object rather than in the actual firewalls.
 </p>
 
 
+
+<a name="iptables"></a>
+<h2>Changes in the policy compiler for iptables</h2>
+
+<p>
+  When an <b>interface with dynamic address</b> is used in a policy or
+  NAT rule, compiler generates shell script to read its ip addresses
+  at the time of execution, assigns them to temporary shell variables
+  and uses them in rules. In previous versions (fwbuilder v2 and v3)
+  only the first IPv4 address of an inetrface was used. V4 uses all
+  IPv4 and IPv6 addresses of the interface by creating a shell "for"
+  loop in the script. Note that support for dynamic IPv6 addresses 
+  was broken in v3 completely, it was fixed in v4.
+</p>
+
+<p>
+  Policy compiler for iptables can generate shell commands to
+  configure bridge, bonding and vlan interfaces (see above).
+</p>
 
