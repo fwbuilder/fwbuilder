@@ -1,3 +1,19 @@
+2009-12-01  vadim  <vadim@vk.crocodile.org>
+
+	* src/res/configlets/linux24/run_time_wrappers: fixed #651:
+	"support for dynamic ipv6 addresses is broken". When an interface
+	with dynamic address was used in a rule in IPv6 rule set,
+	generated shell script was supposed to read its IPV6 address and
+	use it in the rule. This code was broken and never worked
+	properly. Implemented idea for getaddr6 code suggested by
+	<j.kammer@eurodata.de>, it now reads all IPv6 addresses of the
+	interface and uses them in the rule via shell "for"
+	loop. Implemented the same change for IPv4 as well. This changes
+	behavior of the generated iptables script compared to fwbuilder v2
+	and v3 where it only used the first IPv4 address of the dynamic
+	interface. In v3.1 and v4 it will use all addresses of such
+	interface.
+
 2009-11-29  vadim  <vadim@vk.crocodile.org>
 
 	* newClusterDialog.cpp (newClusterDialog::finishClicked): New
