@@ -142,7 +142,7 @@ void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
  * FWCmdRuleColor
  ********************************************************/
 
-FWCmdRuleColor::FWCmdRuleColor(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<Rule*> &rules,const QString &newColor):
+FWCmdRuleColor::FWCmdRuleColor(ProjectPanel *project, RuleSet* ruleset, QList<Rule*> &rules,const QString &newColor):
         FWCmdRule(project, ruleset),newColor(newColor)
 {
     foreach(Rule* rule, rules)
@@ -233,7 +233,7 @@ void FWCmdRuleMove::move(RuleSetModel *md, bool direction)
  * FWCmdRuleNegateRE
  ********************************************************/
 
-FWCmdRuleNegateRE::FWCmdRuleNegateRE(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, RuleElement* ruleElement):
+FWCmdRuleNegateRE::FWCmdRuleNegateRE(ProjectPanel *project, RuleSet* ruleset, RuleElement* ruleElement):
         FWCmdRule(project, ruleset), ruleElement(ruleElement)
 {
     setText(QObject::tr("negate rule element"));
@@ -253,7 +253,7 @@ void FWCmdRuleNegateRE::undoOnModel(RuleSetModel *md)
  * FWCmdRuleRenameGroup
  ********************************************************/
 
-FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QString oldName, QString newName):
+FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(ProjectPanel *project, RuleSet* ruleset, QString oldName, QString newName):
         FWCmdRule(project, ruleset), oldName(oldName), newName(newName)
 {
     setText(QObject::tr("negate rule element"));
@@ -271,6 +271,46 @@ void FWCmdRuleRenameGroup::undoOnModel(RuleSetModel *md)
     md->renameGroup(grp, oldName);
 }
 
+/********************************************************
+ * FWCmdRuleRemoveFromGroup
+ ********************************************************/
+
+FWCmdRuleRemoveFromGroup::FWCmdRuleRemoveFromGroup(ProjectPanel* project, RuleSet* ruleset, Rule* firstRule, Rule* lastRule, const QString groupName):
+        FWCmdRule(project, ruleset), firstRule(firstRule), lastRule(lastRule), groupName(groupName)
+{
+    setText(QObject::tr("remove object(s) from group ")+groupName);
+}
+
+void FWCmdRuleRemoveFromGroup::redoOnModel(RuleSetModel *md)
+{
+    QModelIndex group = md->index(groupName);
+    QModelIndex first = md->index(firstRule, 0);
+    QModelIndex last = md->index(lastRule, 0);
+    md->removeFromGroup(group, first.row(), last.row());
+}
+
+void FWCmdRuleRemoveFromGroup::undoOnModel(RuleSetModel *md)
+{
+    QModelIndex group = md->index(groupName);
+    QModelIndex first = md->index(firstRule, 0);
+    QModelIndex last = md->index(lastRule, 0);
+
+    if (group.isValid())
+    {
+        // Group still present in the ruleset. rules need to be added to rhis group.
+        if (first.row() - 1 == group.row())
+        {
+            md->addToGroupAbove(first.row(), last.row());
+        } else
+        {
+            md->addToGroupBelow(first.row(), last.row());
+        }
+    } else
+    {
+        // Group was deleted. It should be created again.
+        md->createNewGroup(groupName, first.row(), last.row());
+    }
+}
 
 /********************************************************
  * FWCmdRuleChange

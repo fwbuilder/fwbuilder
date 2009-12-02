@@ -1466,11 +1466,17 @@ void RuleSetView::removeFromGroup()
     {
         QModelIndex group = i.previous();
         qSort(itemsInGroups[group]);
-        md->removeFromGroup(group, itemsInGroups[group].first(), itemsInGroups[group].last());
+        QModelIndex first = md->index(itemsInGroups[group].first(), 0, group);
+        QModelIndex last = md->index(itemsInGroups[group].last(), 0, group);
+
+        FWCmdRuleRemoveFromGroup *cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), md->nodeFromIndex(first)->rule, md->nodeFromIndex(last)->rule,
+                                                                 md->nodeFromIndex(group)->name);
+        project->undoStack->push(cmd);
+//        md->removeFromGroup(group, itemsInGroups[group].first(), itemsInGroups[group].last());
     }
 
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+//    QCoreApplication::postEvent(
+//        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
 FWObject *RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)

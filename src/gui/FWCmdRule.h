@@ -120,6 +120,24 @@ public:
 };
 
 /********************************************************
+ * FWCmdRuleRemoveFromGroup
+ ********************************************************/
+
+class FWCmdRuleRemoveFromGroup : public FWCmdRule
+{    
+    libfwbuilder::Rule* firstRule;
+    libfwbuilder::Rule* lastRule;
+    QString groupName;
+
+public:
+    FWCmdRuleRemoveFromGroup(ProjectPanel* project, libfwbuilder::RuleSet* ruleset, libfwbuilder::Rule* firstRule, libfwbuilder::Rule* lastRule,
+                             const QString groupName);
+
+    void redoOnModel(RuleSetModel *md);
+    void undoOnModel(RuleSetModel *md);
+};
+
+/********************************************************
  * FWCmdRuleMove
  ********************************************************/
 
