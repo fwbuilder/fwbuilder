@@ -159,22 +159,6 @@ public:
 };
 
 /********************************************************
- * FWCmdRuleNegateRE
- ********************************************************/
-
-class FWCmdRuleNegateRE : public FWCmdRule
-{
-    libfwbuilder::RuleElement* ruleElement;
-
-public:
-    FWCmdRuleNegateRE(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, libfwbuilder::RuleElement* ruleElement);
-
-    void redoOnModel(RuleSetModel *md);
-    void undoOnModel(RuleSetModel *md);
-
-};
-
-/********************************************************
  * FWCmdRuleChange
  ********************************************************/
 
@@ -182,13 +166,14 @@ class FWCmdRuleChange : public FWCmdChange
 {
     libfwbuilder::RuleSet* ruleset;
 
+protected:
     void prepareRuleSetView();
     void selectAffectedRule();
-protected:
     virtual libfwbuilder::Rule* getRule();
 
 public:
-    FWCmdRuleChange(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, libfwbuilder::FWObject *obj, QString text=QString()):
+    FWCmdRuleChange(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
+                    libfwbuilder::FWObject *obj, QString text=QString()):
             FWCmdChange(project, obj, text), ruleset(ruleset) {}
 
     virtual void redo();
@@ -202,13 +187,31 @@ public:
 
 class FWCmdRuleChangeRe : public FWCmdRuleChange
 {
-    libfwbuilder::Rule* getRule();
+protected:
+    virtual libfwbuilder::Rule* getRule();
 
 public:
-    FWCmdRuleChangeRe(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, libfwbuilder::FWObject *obj, QString text=QString()):
+    FWCmdRuleChangeRe(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
+                      libfwbuilder::FWObject *obj, QString text=QString()):
             FWCmdRuleChange(project, ruleset, obj, text) {}
 
     virtual void notify();
+
+};
+
+/********************************************************
+ * FWCmdRuleNegateRE
+ ********************************************************/
+
+class FWCmdRuleNegateRE : public FWCmdRuleChangeRe
+{
+
+public:
+    FWCmdRuleNegateRE(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
+                      libfwbuilder::RuleElement* ruleElement);
+
+    virtual void redo();
+    virtual void undo();
 
 };
 

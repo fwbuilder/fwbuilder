@@ -1808,7 +1808,8 @@ void RuleSetView::negateRE()
 
     RuleElement *re = getRE(index);
     if (re==NULL) return;
-    project->undoStack->push(new FWCmdRuleNegateRE(project, md->getRuleSet(), re));
+    project->undoStack->push(
+        new FWCmdRuleNegateRE(project, md->getRuleSet(), re));
 }
 
 void RuleSetView::revealObjectInTree()
@@ -1952,7 +1953,8 @@ void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, Q
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
     if (re==NULL || re->isAny()) return;
 
-    FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(project, ((RuleSetModel*)model())->getRuleSet(), re, text);
+    FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(
+        project, ((RuleSetModel*)model())->getRuleSet(), re, text);
     RuleElement *newRe = RuleElement::cast(cmd->getNewState());
     newRe->removeRef(obj);
     if (newRe->isAny()) newRe->setNeg(false);

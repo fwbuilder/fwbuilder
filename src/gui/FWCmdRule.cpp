@@ -230,26 +230,6 @@ void FWCmdRuleMove::move(RuleSetModel *md, bool direction)
 }
 
 /********************************************************
- * FWCmdRuleNegateRE
- ********************************************************/
-
-FWCmdRuleNegateRE::FWCmdRuleNegateRE(ProjectPanel *project, RuleSet* ruleset, RuleElement* ruleElement):
-        FWCmdRule(project, ruleset), ruleElement(ruleElement)
-{
-    setText(QObject::tr("negate rule element"));
-}
-
-void FWCmdRuleNegateRE::redoOnModel(RuleSetModel *md)
-{
-    ruleElement->toggleNeg();
-}
-
-void FWCmdRuleNegateRE::undoOnModel(RuleSetModel *md)
-{
-    ruleElement->toggleNeg();
-}
-
-/********************************************************
  * FWCmdRuleRenameGroup
  ********************************************************/
 
@@ -327,6 +307,8 @@ void FWCmdRuleChange::selectAffectedRule()
 
 void FWCmdRuleChange::redo()
 {
+    qDebug() << "FWCmdRuleChange::redo()";
+
     prepareRuleSetView();
     FWCmdChange::redo();
     selectAffectedRule();
@@ -335,6 +317,8 @@ void FWCmdRuleChange::redo()
 
 void FWCmdRuleChange::undo()
 {
+    qDebug() << "FWCmdRuleChange::undo()";
+
     prepareRuleSetView();
     FWCmdChange::undo();
     selectAffectedRule();
@@ -362,16 +346,16 @@ void FWCmdRuleChange::prepareRuleSetView()
 
 libfwbuilder::Rule* FWCmdRuleChange::getRule()
 {
-    return dynamic_cast<Rule*> (getObject());
+    return Rule::cast(getObject());
 }
 
 /********************************************************
  * FWCmdRuleChangeRe
  ********************************************************/
 
-libfwbuilder::Rule* FWCmdRuleChangeRe::getRule()
+Rule* FWCmdRuleChangeRe::getRule()
 {
-    return dynamic_cast<Rule*> (getObject()->getParent());
+    return Rule::cast(getObject()->getParent());
 }
 
 void FWCmdRuleChangeRe::notify()
@@ -381,3 +365,40 @@ void FWCmdRuleChangeRe::notify()
     project->getCurrentRuleSetView()->unselect();
     mw->findObjectWidget->reset();
 }
+
+/********************************************************
+ * FWCmdRuleNegateRE
+ ********************************************************/
+
+FWCmdRuleNegateRE::FWCmdRuleNegateRE(ProjectPanel *project,
+                                     RuleSet* ruleset, RuleElement* ruleElement):
+    FWCmdRuleChangeRe(project, ruleset, ruleElement, QObject::tr("Negate"))
+{
+}
+
+void FWCmdRuleNegateRE::redo()
+{
+    prepareRuleSetView();
+    RuleElement* ruleElement = RuleElement::cast(getObject());
+    ruleElement->toggleNeg();
+
+    RuleSetView* rsv = project->getCurrentRuleSetView();
+    RuleSetModel* md = (RuleSetModel*)rsv->model();
+    md->rowChanged(md->index(getRule(), 0));
+
+    selectAffectedRule();
+}
+
+void FWCmdRuleNegateRE::undo()
+{
+    prepareRuleSetView();
+    RuleElement* ruleElement = RuleElement::cast(getObject());
+    ruleElement->toggleNeg();
+
+    RuleSetView* rsv = project->getCurrentRuleSetView();
+    RuleSetModel* md = (RuleSetModel*)rsv->model();
+    md->rowChanged(md->index(getRule(), 0));
+
+    selectAffectedRule();
+}
+
