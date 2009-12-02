@@ -1830,18 +1830,7 @@ void RuleSetView::deleteSelectedObject()
 
     if ( fwosm->selectedObject!=NULL)
     {
-        RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
-        if (re==NULL || re->isAny()) return;
-
-        FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(project, md->getRuleSet(), re, tr("delete object"));
-        RuleElement *newRe = RuleElement::cast(cmd->getNewState());
-        newRe->removeRef(fwosm->selectedObject);
-        if (newRe->isAny()) newRe->setNeg(false);
-
-        fwosm->reset();
-        mw->findObjectWidget->reset();
-
-        project->undoStack->push(cmd);
+        deleteObject(index, fwosm->selectedObject, tr("delete ")+QString::fromUtf8(fwosm->selectedObject->getName().c_str()));
     }
 }
 
@@ -1866,19 +1855,7 @@ void RuleSetView::cutSelectedObject()
         FWObjectClipboard::obj_clipboard->clear();
         FWObjectClipboard::obj_clipboard->add( fwosm->selectedObject, project );
 
-
-        RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
-        if (re==NULL || re->isAny()) return;
-
-        FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(project, md->getRuleSet(), re, tr("cut object"));
-        RuleElement *newRe = RuleElement::cast(cmd->getNewState());
-        newRe->removeRef(fwosm->selectedObject);
-        if (newRe->isAny()) newRe->setNeg(false);
-
-        fwosm->reset();
-        mw->findObjectWidget->reset();
-
-        project->undoStack->push(cmd);
+        deleteObject(index, fwosm->selectedObject, tr("cut ") + QString::fromUtf8(fwosm->selectedObject->getName().c_str()));
     }
 }
 
@@ -1964,6 +1941,24 @@ void RuleSetView::dropEvent(QDropEvent *ev)
 
     setCurrentIndex(index);
     ev->accept();
+}
+
+void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text)
+{
+    RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
+    if (re==NULL || re->isAny()) return;
+
+    FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(project, ((RuleSetModel*)model())->getRuleSet(), re, text);
+    RuleElement *newRe = RuleElement::cast(cmd->getNewState());
+    newRe->removeRef(obj);
+    if (newRe->isAny()) newRe->setNeg(false);
+
+    project->undoStack->push(cmd);
+}
+
+void RuleSetView::insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text)
+{
+
 }
 
 void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)

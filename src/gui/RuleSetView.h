@@ -207,6 +207,9 @@ protected:
 
     virtual void keyPressEvent( QKeyEvent* ev );
 
+    void deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text);
+    void insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text);
+
 private:
 
     //this bool var is needed for starting drag when user moves the mouse

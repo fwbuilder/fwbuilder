@@ -27,6 +27,7 @@
 
 #include "FWWindow.h"
 #include "FWCmdRule.h"
+#include "FindObjectWidget.h"
 
 #include "events.h"
 
@@ -331,4 +332,12 @@ libfwbuilder::Rule* FWCmdRuleChange::getRule()
 libfwbuilder::Rule* FWCmdRuleChangeRe::getRule()
 {
     return dynamic_cast<Rule*> (getObject()->getParent());
+}
+
+void FWCmdRuleChangeRe::notify()
+{
+    FWCmdRuleChange::notify();
+
+    project->getCurrentRuleSetView()->unselect();
+    mw->findObjectWidget->reset();
 }

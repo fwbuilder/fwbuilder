@@ -108,9 +108,9 @@ public:
  ********************************************************/
 
 class FWCmdRuleRenameGroup : public FWCmdRule
-{
-    QString newName;
+{    
     QString oldName;
+    QString newName;
 
 public:
     FWCmdRuleRenameGroup(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QString oldName, QString newName);
@@ -189,6 +189,8 @@ class FWCmdRuleChangeRe : public FWCmdRuleChange
 public:
     FWCmdRuleChangeRe(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, libfwbuilder::FWObject *obj, QString text=QString()):
             FWCmdRuleChange(project, ruleset, obj, text) {}
+
+    virtual void notify();
 
 };
 
