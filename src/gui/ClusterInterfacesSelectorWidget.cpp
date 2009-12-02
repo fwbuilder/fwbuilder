@@ -90,7 +90,7 @@ ClusterInterfaceWidget* ClusterInterfacesSelectorWidget::addNewInterface()
     return widget;
 }
 
-void ClusterInterfacesSelectorWidget::addInterface(QString name)
+void ClusterInterfacesSelectorWidget::addInterface(const QString& name)
 {
     ClusterInterfaceWidget* widget = addNewInterface();
     if (!widget->setCurrentInterface(name))

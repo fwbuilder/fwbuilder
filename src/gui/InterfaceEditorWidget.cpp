@@ -463,7 +463,7 @@ void InterfaceEditorWidget::protocolChanged(QString name)
 }
 
 
-void InterfaceEditorWidget::setExplanation(QString text)
+void InterfaceEditorWidget::setExplanation(const QString& text)
 {
     this->m_ui->explanation->setText(text);
 }

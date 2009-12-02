@@ -122,7 +122,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
     }
 }
 
-bool ClusterInterfaceWidget::setCurrentInterface(QString name)
+bool ClusterInterfaceWidget::setCurrentInterface(const QString& name)
 {
     string label;
     bool setLabel = true;

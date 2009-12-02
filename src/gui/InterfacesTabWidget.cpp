@@ -184,7 +184,7 @@ void InterfacesTabWidget::addClusterInterface(ClusterInterfaceData data)
     this->addTab(w, data.name);
 }
 
-void InterfacesTabWidget::setExplanation(QString text)
+void InterfacesTabWidget::setExplanation(const QString& text)
 {
     explanation = text;
     for( int i = 0; i < this->count(); i++ )

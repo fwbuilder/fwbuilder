@@ -92,7 +92,7 @@ public slots:
     void closeTab();
     void addInterfaceFromData(libfwbuilder::InterfaceData*);
     void addClusterInterface(ClusterInterfaceData);
-    void setExplanation(QString);
+    void setExplanation(const QString&);
     virtual void addTab(QWidget*, const QString&);
 
 };
