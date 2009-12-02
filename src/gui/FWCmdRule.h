@@ -194,4 +194,5 @@ public:
 
 };
 
+
 #endif // FWCMDRULE_H

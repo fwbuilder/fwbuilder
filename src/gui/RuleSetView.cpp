@@ -1878,8 +1878,6 @@ void RuleSetView::pasteObject()
                 copyAndInsertObject(index, co);
         }
     }
-    QCoreApplication::postEvent(
-        mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
 }
 
 void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
@@ -1923,14 +1921,14 @@ void RuleSetView::dropEvent(QDropEvent *ev)
             clearSelection();
             if (ev->keyboardModifiers() & Qt::ControlModifier)
             {
-                md->insertObject(index, dragobj);
+                insertObject(index, dragobj, "copy-drop "+QString::fromUtf8(dragobj->getName().c_str()));
             }
             else //move
             {
-
-                if (md->insertObject(index, dragobj) )
+                QModelIndex srcIndex = fwosm->index;
+                if (insertObject(index, dragobj, "move-drop "+QString::fromUtf8(dragobj->getName().c_str())) )
                 {
-                    md->deleteObject(fwosm->index, dragobj);
+                    deleteObject(srcIndex, dragobj, "move-delete "+QString::fromUtf8(dragobj->getName().c_str()));
                 }
             }
         }
@@ -1956,9 +1954,54 @@ void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, Q
     project->undoStack->push(cmd);
 }
 
-void RuleSetView::insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text)
+bool RuleSetView::insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text)
 {
+    ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
+    if (colDesc.type != ColDesc::Object && colDesc.type != ColDesc::Time) return false;
 
+    RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
+    assert (re!=NULL);
+
+    if (! re->validateChild(obj) )
+    {
+        if (RuleElementRItf::cast(re))
+        {
+            QMessageBox::information( NULL , "Firewall Builder",
+                "A single interface belonging to this firewall is expected in this field.",
+                QString::null,QString::null);
+        }
+        else if (RuleElementRGtw::cast(re))
+        {
+            QMessageBox::information( NULL , "Firewall Builder",
+                "A single ip adress is expected here. You may also insert a host or a network adapter leading to a single ip adress.",
+                QString::null,QString::null);
+        }
+        return false;
+    }
+
+    if (re->getAnyElementId()==obj->getId()) return false;
+
+    if ( !re->isAny())
+    {
+        /* avoid duplicates */
+        int cp_id = obj->getId();
+        list<FWObject*>::iterator j;
+        for(j=re->begin(); j!=re->end(); ++j)
+        {
+            FWObject *o=*j;
+            if(cp_id==o->getId()) return false;
+
+            FWReference *ref;
+            if( (ref=FWReference::cast(o))!=NULL &&
+                 cp_id==ref->getPointerId()) return false;
+        }
+    }
+
+    FWCmdRuleChangeRe* cmd = new FWCmdRuleChangeRe(project, ((RuleSetModel*)model())->getRuleSet(), re, text);
+    RuleElement *newRe = RuleElement::cast(cmd->getNewState());
+    newRe->addRef(obj);
+    project->undoStack->push(cmd);
+    return true;
 }
 
 void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
@@ -1975,7 +2018,7 @@ void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
         need_to_reload_tree = true;
     }
 
-    md->insertObject(index,object);
+    insertObject(index,object, "insert "+QString::fromUtf8(object->getName().c_str()));
 
     if (need_to_reload_tree)
     {
