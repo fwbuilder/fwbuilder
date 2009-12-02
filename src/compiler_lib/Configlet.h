@@ -61,7 +61,8 @@ public:
     virtual ~Configlet();
 
     bool reload(const std::string &prefix, const QString &filename);
-
+    void clear();
+    
     void setVariable(const QString &name, const QString &value);
     void setVariable(const QString &name, int value);
 

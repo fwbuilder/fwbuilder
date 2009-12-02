@@ -59,9 +59,7 @@ Configlet::Configlet(const std::string &prefix,
                      const std::string &default_prefix,
                      const QString &file_name)
 {
-    remove_comments = true;
-    comment_str = "##";
-    collapse_empty_strings = false;
+    clear();
     if (!reload(prefix, file_name)) reload(default_prefix, file_name);
 }
 
@@ -84,6 +82,14 @@ Configlet::Configlet(FWObject *fw, const std::string &default_prefix,
 
 Configlet::~Configlet()
 {
+}
+
+void Configlet::clear()
+{
+    vars.clear();
+    remove_comments = true;
+    comment_str = "##";
+    collapse_empty_strings = false;
 }
 
 bool Configlet::reload(const std::string &_prefix, const QString &file_name)
