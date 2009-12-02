@@ -306,7 +306,8 @@ bool InterfaceEditorWidget::isValid()
     {
         no_addr_ok = Resources::os_res[os.toStdString()]->getResourceBool(
                         "/FWBuilderResources/Target/protocols/"
-                        + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok");
+                        + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok")
+                     || this->m_ui->protocol->currentText() == "None";
     }
 
     if (clusterMode && no_addr_ok && this->m_ui->addresses->rowCount() != 0)
