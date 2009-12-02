@@ -124,8 +124,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     getFailoverTypesForOS(host_os, types);
     QStringList typenames;
     foreach(QStringPair pair, types)
-        if (pair.first != "none")
-            typenames << pair.second;
+        typenames << pair.second;
     this->m_ui->protocol->clear();
     this->m_ui->protocol->insertItems(0, typenames);
 }
@@ -310,7 +309,7 @@ bool InterfaceEditorWidget::isValid()
             "&Continue", QString::null, QString::null, 0, 1 );
         return false;
     }
-    
+
 
     if (!no_addr_ok && this->m_ui->addresses->rowCount() == 0)
     {
@@ -426,6 +425,7 @@ void InterfaceEditorWidget::addressChanged(int row, int col)
 void InterfaceEditorWidget::setClusterMode(bool st)
 {
     clusterMode = st;
+    this->m_ui->name->setEnabled(!st);
     this->m_ui->protocol->setVisible(st);
     this->m_ui->protocolLabel->setVisible(st);
     this->m_ui->mac->setVisible(!st);
