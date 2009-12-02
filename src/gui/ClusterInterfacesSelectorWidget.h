@@ -50,6 +50,7 @@ class ClusterInterfacesSelectorWidget : public QTabWidget
     Q_OBJECT
 public:
     ClusterInterfacesSelectorWidget(QWidget *parent = 0);
+    ~ClusterInterfacesSelectorWidget();
     void setFirewallList(QList<libfwbuilder::Firewall*>);
     QList<ClusterInterfaceData> getInterfaces();
     bool isValid();

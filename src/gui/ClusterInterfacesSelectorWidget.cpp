@@ -45,6 +45,11 @@ ClusterInterfacesSelectorWidget::ClusterInterfacesSelectorWidget(QWidget *parent
     this->cornerWidget(Qt::TopLeftCorner)->show();
 }
 
+ClusterInterfacesSelectorWidget::~ClusterInterfacesSelectorWidget()
+{
+    this->clear();
+}
+
 void ClusterInterfacesSelectorWidget::setFirewallList(QList<Firewall*> firewalls)
 {
     while ( this->count() ) this->removeTab(0);
@@ -121,6 +126,8 @@ QList<ClusterInterfaceData> ClusterInterfacesSelectorWidget::getInterfaces()
 void ClusterInterfacesSelectorWidget::clear()
 {
     QTabWidget::clear();
+    foreach(ClusterInterfaceWidget *editor, editors)
+        delete editor;
     editors.clear();
     fwlist.clear();
 }

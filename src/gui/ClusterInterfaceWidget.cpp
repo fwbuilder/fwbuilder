@@ -42,6 +42,12 @@ ClusterInterfaceWidget::ClusterInterfaceWidget(QWidget *parent) :
 ClusterInterfaceWidget::~ClusterInterfaceWidget()
 {
     delete m_ui;
+    foreach(InterfacesList list, this->lists)
+    {
+        delete list.list;
+        delete list.label;
+        delete list.layout;
+    }
 }
 
 void ClusterInterfaceWidget::changeEvent(QEvent *e)
