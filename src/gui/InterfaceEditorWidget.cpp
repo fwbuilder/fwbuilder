@@ -123,10 +123,17 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     list<QStringPair> types;
     getFailoverTypesForOS(host_os, types);
     QStringList typenames;
+    QString lastProtocol = st->getNewClusterFailoverProtocol();
+    int toSelect = 0;
     foreach(QStringPair pair, types)
+    {
         typenames << pair.second;
+        if (pair.second == lastProtocol)
+            toSelect = typenames.length() - 1;
+    }
     this->m_ui->protocol->clear();
     this->m_ui->protocol->insertItems(0, typenames);
+    this->m_ui->protocol->setCurrentIndex(toSelect);
 }
 
 void InterfaceEditorWidget::setData(InterfaceData *data)
@@ -446,6 +453,7 @@ void InterfaceEditorWidget::protocolChanged(QString name)
                 this->m_ui->addresses->removeRow(0);
         this->m_ui->addresses->setEnabled(!noaddr);
         this->m_ui->addAddress->setEnabled(!noaddr);
+        st->setNewClusterFailoverProtocol(name);
     }
 
 }

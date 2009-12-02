@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -45,7 +45,7 @@ class QWidget;
  */
 #define LoadStandardObjects 0
 #define LoadLastEditedFile  1
-    
+
 class FWBSettings : public QSettings {
 
  public:
@@ -55,9 +55,9 @@ class FWBSettings : public QSettings {
 
  private:
     QString getLabelColorStr(enum LabelColors c);
-    
+
  public:
-    
+
     FWBSettings();
 
     void init();
@@ -95,7 +95,7 @@ class FWBSettings : public QSettings {
 
     int     getTooltipDelay();
     void    setTooltipDelay(int v);
-    
+
     QString getLastEdited();
     void    setLastEdited(const QString &file);
 
@@ -119,7 +119,7 @@ class FWBSettings : public QSettings {
 
     bool    getDontSaveStdLib();
     void    setDontSaveStdLib( bool f);
-    
+
     QString getStr(const QString &attribute);
     void    setStr(const QString &attribute, const QString &val);
 
@@ -131,7 +131,7 @@ class FWBSettings : public QSettings {
 
     QStringList getList(const QString &attribute);
     void    setList(const QString &attribute, QStringList &list);
-    
+
     bool    haveGeometry(QWidget *w);
     void    restoreGeometry(QWidget *w);
     void    restoreGeometry(QWidget *w, const QRect &defaultGeometry);
@@ -140,7 +140,7 @@ class FWBSettings : public QSettings {
     bool    haveScreenPosition(const QString &wname);
     QPoint  getScreenPosition(const QString &wname);
     void    saveScreenPosition(const QString &wname, const QPoint &p);
-    
+
     QString getLabelColor(enum LabelColors c);
     void    setLabelColor(enum LabelColors c,const QString &s);
     QString getLabelText(enum LabelColors c);
@@ -186,7 +186,7 @@ class FWBSettings : public QSettings {
 
     QString getTargetStatus(const QString &platform, const QString &default_stat);
     void setTargetStatus(const QString &plaform, const QString &status);
-    
+
     QString getCheckUpdatesProxy();
     void setCheckUpdatesProxy(const QString &proxy_line);
 
@@ -204,7 +204,7 @@ class FWBSettings : public QSettings {
                             const QString &lib,
                             int section_index,
                             int size);
-    
+
     int getVisibleRuleSetId(const QString &filename,
                             const QString &lib);
     void setVisibleRuleSet(const QString &filename,
@@ -226,10 +226,13 @@ class FWBSettings : public QSettings {
     QString getNewFirewallPlatform();
     void setNewFirewallPlatform(const QString &platform);
 
+    QString getNewClusterFailoverProtocol();
+    void setNewClusterFailoverProtocol(const QString &protocol);
+
     bool getShowUndoPanel();
     void setShowUndoPanel(bool);
 
-    
+
 private:
     QFont getFontByType(const char*type);
 };

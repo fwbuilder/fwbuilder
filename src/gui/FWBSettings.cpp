@@ -105,6 +105,7 @@ const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
 
 const char* newFirewallPlatform = SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
+const char* newClusterFailoverProtocol = SETTINGS_PATH_PREFIX "/Objects/newClusterFailoverProtocol";
 const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
 
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
@@ -382,8 +383,8 @@ bool FWBSettings::haveScreenPosition(const QString &wname)
 
     if (fwbdebug)
     {
-	qDebug("FWBSettings::haveScreenPosition wname '%s' ret=%d",
-		wname.toLatin1().constData(), res);
+    qDebug("FWBSettings::haveScreenPosition wname '%s' ret=%d",
+        wname.toLatin1().constData(), res);
     }
 
     return res;
@@ -408,8 +409,8 @@ QPoint FWBSettings::getScreenPosition(const QString &wname)
 
     if (fwbdebug)
     {
-	qDebug("FWBSettings::getScreenPosition wname '%s' x=%d y=%d",
-		wname.toLatin1().constData(), x,y );
+    qDebug("FWBSettings::getScreenPosition wname '%s' x=%d y=%d",
+        wname.toLatin1().constData(), x,y );
     }
 
     return QPoint(x,y);
@@ -426,8 +427,8 @@ void FWBSettings::saveScreenPosition(const QString &wname, const QPoint &p)
 
     if (fwbdebug)
     {
-	qDebug("FWBSettings::saveScreenPosition wname '%s' x=%d y=%d",
-		wname.toLatin1().constData(), x,y );
+    qDebug("FWBSettings::saveScreenPosition wname '%s' x=%d y=%d",
+        wname.toLatin1().constData(), x,y );
     }
 
     setValue(QString(screenPositionSetpath)+wname, val );
@@ -460,7 +461,7 @@ void FWBSettings::restoreGeometry(QWidget *w)
 
     if (fwbdebug)
     {
-	qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
+    qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
                name.toAscii().constData(), w->isVisible(), x,y);
     }
 
@@ -490,7 +491,7 @@ void FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
 
     if (fwbdebug)
     {
-	qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
+    qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
                name.toAscii().constData(), w->isVisible(), x,y);
     }
 
@@ -518,7 +519,7 @@ void FWBSettings::saveGeometry(QWidget *w)
 
     if (fwbdebug)
     {
-	qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
+    qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
                name.toAscii().constData(), w->isVisible(), val.toAscii().constData());
     }
 
@@ -889,6 +890,16 @@ void FWBSettings::setNewFirewallPlatform(const QString &platform)
     setValue(newFirewallPlatform, platform);
 }
 
+QString FWBSettings::getNewClusterFailoverProtocol()
+{
+    return value(newClusterFailoverProtocol).toString();
+}
+
+void FWBSettings::setNewClusterFailoverProtocol(const QString &platform)
+{
+    setValue(newClusterFailoverProtocol, platform);
+}
+
 QString FWBSettings::getTargetStatus(const QString &platform,
                                      const QString &default_stat)
 {
@@ -904,5 +915,5 @@ void FWBSettings::setTargetStatus(const QString &platform, const QString &status
     setValue(var_path, status);
 }
 
-    
+
 

@@ -33,6 +33,7 @@
 #include "platforms.h"
 
 #include "InterfacesTabWidget.h"
+#include "FWBSettings.h"
 
 #include <QtGui/QWidget>
 #include <QtGui/QTabWidget>
