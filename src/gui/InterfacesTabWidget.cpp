@@ -35,25 +35,22 @@ InterfacesTabWidget::InterfacesTabWidget(QWidget *parent) :
     m_ui->setupUi(this);
     clusterMode = false;
     clear();
-    newInterface = new QToolButton();
-    delInterface = new QToolButton();
-    connect(newInterface, SIGNAL(clicked()), this, SLOT(addNewInterface()));
-    connect(delInterface, SIGNAL(clicked()), this, SLOT(closeTab()));
-    newInterface->setIcon(QIcon(":/Icons/add.png"));
-    delInterface->setIcon(QIcon(":/Icons/del.png"));
-    newInterface->setToolTip(tr("Add new interface"));
-    delInterface->setToolTip(tr("Delete current interface"));
-    this->setCornerWidget(delInterface, Qt::TopRightCorner);
-    this->setCornerWidget(newInterface, Qt::TopLeftCorner);
+    connect(&newInterface, SIGNAL(clicked()), this, SLOT(addNewInterface()));
+    connect(&delInterface, SIGNAL(clicked()), this, SLOT(closeTab()));
+    newInterface.setIcon(QIcon(":/Icons/add.png"));
+    delInterface.setIcon(QIcon(":/Icons/del.png"));
+    newInterface.setToolTip(tr("Add new interface"));
+    delInterface.setToolTip(tr("Delete current interface"));
+    this->setCornerWidget(&delInterface, Qt::TopRightCorner);
+    this->setCornerWidget(&newInterface, Qt::TopLeftCorner);
     this->cornerWidget(Qt::TopRightCorner)->show();
     this->cornerWidget(Qt::TopLeftCorner)->show();
+    noTabs = true;
 }
 
 InterfacesTabWidget::~InterfacesTabWidget()
 {
     delete m_ui;
-    delete newInterface;
-    delete delInterface;
 }
 
 void InterfacesTabWidget::changeEvent(QEvent *e)
@@ -73,10 +70,12 @@ QMap<Interface*, EditedInterfaceData> InterfacesTabWidget::getData()
     QMap<Interface*, EditedInterfaceData> res;
     for ( int i = 0; i < this->count(); i++ )
     {
-        if ( dynamic_cast<InterfaceEditorWidget*>(this->widget(i))->getInterface() == NULL)
+        InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        if (w == NULL || w->getInterface() == NULL)
             continue;
         InterfaceEditorWidget *intEditor = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
-        res[intEditor->getInterface()] = intEditor->getInterfaceData();
+        if (intEditor != NULL)
+            res[intEditor->getInterface()] = intEditor->getInterfaceData();
     }
     return res;
 }
@@ -87,7 +86,7 @@ QList<EditedInterfaceData> InterfacesTabWidget::getNewData()
     for ( int i = 0; i < this->count(); i++ )
     {
         InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
-        if ( w->getInterface() == NULL)
+        if ( w != NULL && w->getInterface() == NULL)
             res.append(w->getInterfaceData());
     }
     return res;
@@ -100,6 +99,12 @@ QList<Interface*> InterfacesTabWidget::getDeletedInterfaces()
 
 void InterfacesTabWidget::addInterface(Interface *iface)
 {
+    if (noTabs)
+    {
+        this->removeTab(0);
+        noTabs = false;
+        this->delInterface.setEnabled(true);
+    }
     InterfaceEditorWidget *w = new InterfaceEditorWidget(this, iface);
     w->setClusterMode(clusterMode);
     this->addTab(w, iface->getName().c_str());
@@ -107,6 +112,12 @@ void InterfacesTabWidget::addInterface(Interface *iface)
 
 void InterfacesTabWidget::addNewInterface()
 {
+    if (noTabs)
+    {
+        this->removeTab(0);
+        noTabs = false;
+        this->delInterface.setEnabled(true);
+    }
     InterfaceEditorWidget *w = new InterfaceEditorWidget(this);
     w->setClusterMode(clusterMode);
     addTab(w, tr("New interface"));
@@ -126,20 +137,35 @@ void InterfacesTabWidget::clear()
 
 void InterfacesTabWidget::closeTab()
 {
-    if ( this->count() == 1 ) return;
+    if (noTabs) return;
     int idx = this->currentIndex();
     QWidget *w = this->widget(idx);
     Interface *iface = dynamic_cast<InterfaceEditorWidget*>(w)->getInterface() ;
     if ( iface != NULL ) deleted.append( iface );
     this->removeTab(idx);
     delete w;
+    if (this->count() == 0)
+    {
+        noTabs = true;
+        QString text;
+        if (!this->clusterMode)
+            text = tr("This firewall has no interfaces. Add interface using button <img src=\":/Icons/add.png\" width=15 height=15>.");
+        else
+            text = tr("This cluster has no interfaces. Add interface using button <img src=\":/Icons/add.png\" width=15 height=15>.");
+        QLabel *label = new QLabel(text, this);
+        label->setAlignment(Qt::AlignCenter);
+        this->addTab(label, tr("No interfaces"));
+        this->delInterface.setEnabled(false);
+    }
 }
 
 bool InterfacesTabWidget::isValid()
 {
     for (int i = 0; i< this->count(); i++)
     {
-        if (!dynamic_cast<InterfaceEditorWidget*>(this->widget(i))->isValid())
+        InterfaceEditorWidget* w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        if (w == NULL) continue;
+        if (!w->isValid())
             return false;
     }
     return true;
@@ -160,8 +186,10 @@ void InterfacesTabWidget::addInterfaceFromData(InterfaceData* idata)
 
 void InterfacesTabWidget::addTab(QWidget* widget, const QString& title)
 {
-    if ( dynamic_cast<InterfaceEditorWidget*>(widget) != NULL )
+    if ( dynamic_cast<InterfaceEditorWidget*>(widget) != NULL ||
+         (noTabs && dynamic_cast<QLabel*>(widget) != NULL))
     {
+        if (!noTabs)
         dynamic_cast<InterfaceEditorWidget*>(widget)->setExplanation(explanation);
         QTabWidget::addTab(widget, title);
     }
@@ -189,6 +217,7 @@ void InterfacesTabWidget::setExplanation(const QString& text)
     explanation = text;
     for( int i = 0; i < this->count(); i++ )
     {
-        dynamic_cast<InterfaceEditorWidget*>(this->widget(i))->setExplanation(text);
+        InterfaceEditorWidget* w = dynamic_cast<InterfaceEditorWidget*>(this->widget(i));
+        if (w!=NULL) w->setExplanation(text);
     }
 }

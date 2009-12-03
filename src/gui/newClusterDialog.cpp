@@ -148,6 +148,9 @@ void newClusterDialog::showPage(const int page)
     }
     case INTERFACEEDITOR_PAGE:
     {
+        if (this->m_dialog->interfaceSelector->getInterfaces().count() == 0)
+            this->showPage(POLICY_PAGE);
+
         this->m_dialog->interfaceEditor->setClusterMode(true);
         this->m_dialog->interfaceEditor->clear();
 

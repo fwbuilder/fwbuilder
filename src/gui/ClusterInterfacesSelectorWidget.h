@@ -60,6 +60,7 @@ private:
     QList<libfwbuilder::Firewall*> fwlist;
     QToolButton newInterface;
     QToolButton delInterface;
+    bool noTabs;
 
 public slots:
     ClusterInterfaceWidget* addNewInterface();

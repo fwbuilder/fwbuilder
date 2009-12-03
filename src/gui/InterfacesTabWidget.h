@@ -75,14 +75,15 @@ protected:
 
 private:
     Ui::InterfacesTabWidget *m_ui;
-    QToolButton *newInterface;
-    QToolButton *delInterface;
+    QToolButton newInterface;
+    QToolButton delInterface;
     QWidget newInterfaceWidget;
     QHBoxLayout newInterfaceLayout;
     libfwbuilder::FWObject *currentTemplate;
     QList<libfwbuilder::Interface*> deleted;
     bool clusterMode;
     QString explanation;
+    bool noTabs;
 
 public slots:
     void addInterface(libfwbuilder::Interface*);

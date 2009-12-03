@@ -43,6 +43,7 @@ ClusterInterfacesSelectorWidget::ClusterInterfacesSelectorWidget(QWidget *parent
     this->setCornerWidget(&newInterface, Qt::TopLeftCorner);
     this->cornerWidget(Qt::TopRightCorner)->show();
     this->cornerWidget(Qt::TopLeftCorner)->show();
+    noTabs = false;
 }
 
 ClusterInterfacesSelectorWidget::~ClusterInterfacesSelectorWidget()
@@ -88,6 +89,11 @@ void ClusterInterfacesSelectorWidget::setFirewallList(QList<Firewall*> firewalls
 
 ClusterInterfaceWidget* ClusterInterfacesSelectorWidget::addNewInterface()
 {
+    if (noTabs)
+    {
+        this->removeTab(0);
+        noTabs = false;
+    }
     ClusterInterfaceWidget* widget = new ClusterInterfaceWidget(this);
     widget->setFirewallList(this->fwlist);
     this->editors.append(widget);
@@ -110,6 +116,12 @@ void ClusterInterfacesSelectorWidget::closeTab()
 {
     this->editors.removeAll(dynamic_cast<ClusterInterfaceWidget*>(this->widget(this->currentIndex())));
     this->removeTab(this->currentIndex());
+    if (this->count()==0)
+    {
+        noTabs = true;
+        QLabel *label = new QLabel(tr("This cluster has no interfaces. Add interface using button <img src=\":/Icons/add.png\" width=15 height=15>."), this);
+        this->addTab(label, tr("No interfaces"));
+    }
 }
 
 QList<ClusterInterfaceData> ClusterInterfacesSelectorWidget::getInterfaces()

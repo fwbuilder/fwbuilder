@@ -151,7 +151,7 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
     currentTemplate = NULL;
     this->m_dialog->interfaceEditor1->clear();
     this->m_dialog->interfaceEditor2->clear();
-    this->m_dialog->interfaceEditor2->removeTab(0);
+    this->m_dialog->interfaceEditor2->closeTab();//->removeTab(0);
 
     showPage(0);
 
@@ -535,7 +535,7 @@ void newFirewallDialog::showPage(const int page)
         );
 
         this->m_dialog->interfaceEditor2->clear();
-        this->m_dialog->interfaceEditor2->removeTab(0);
+        this->m_dialog->interfaceEditor2->closeTab();//->removeTab(0);
         this->m_dialog->interfaceEditor2->setCornerWidgetsVisible(false);
         QList<Interface*> interfaces;
         FWObjectTypedChildIterator intiter = nfw->findByType(Interface::TYPENAME);
