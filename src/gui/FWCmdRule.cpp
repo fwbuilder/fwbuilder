@@ -307,8 +307,6 @@ void FWCmdRuleChange::selectAffectedRule()
 
 void FWCmdRuleChange::redo()
 {
-    qDebug() << "FWCmdRuleChange::redo()";
-
     prepareRuleSetView();
     FWCmdChange::redo();
     selectAffectedRule();
@@ -317,8 +315,6 @@ void FWCmdRuleChange::redo()
 
 void FWCmdRuleChange::undo()
 {
-    qDebug() << "FWCmdRuleChange::undo()";
-
     prepareRuleSetView();
     FWCmdChange::undo();
     selectAffectedRule();

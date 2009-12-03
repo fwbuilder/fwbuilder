@@ -1912,6 +1912,8 @@ void RuleSetView::dropEvent(QDropEvent *ev)
         if (fwbdebug) qDebug("RuleSetView::dropEvent dragobj=%s",
                              dragobj->getName().c_str());
 
+        if (!validateForInsertion(index, dragobj)) continue;
+
         if (ev->source()!=this)
         {
             // since ev->source()!=this, this is d&d of an object from
@@ -1919,24 +1921,35 @@ void RuleSetView::dropEvent(QDropEvent *ev)
 
             copyAndInsertObject(index, dragobj);
 
-
         } else
         {
             // since ev->source()==this, this is d&d of an object from
             // one rule to another.
 
             clearSelection();
+
             if (ev->keyboardModifiers() & Qt::ControlModifier)
             {
-                insertObject(index, dragobj, "copy-drop "+QString::fromUtf8(dragobj->getName().c_str()));
+                insertObject(
+                    index, dragobj,
+                    "copy-drop "+QString::fromUtf8(dragobj->getName().c_str()));
             }
             else //move
             {
                 QModelIndex srcIndex = fwosm->index;
-                if (insertObject(index, dragobj, "move-drop "+QString::fromUtf8(dragobj->getName().c_str())) )
-                {
-                    deleteObject(srcIndex, dragobj, "move-delete "+QString::fromUtf8(dragobj->getName().c_str()));
-                }
+                // When object is dragged (moved) from one RE to
+                // another, this should appear as single undo
+                // command. Also, we should delete it first and insert
+                // later so that we leave rule set view with the row
+                // where it was inserted selected.
+                project->undoStack->beginMacro("Move object");
+                deleteObject(
+                    srcIndex, dragobj,
+                    "move-delete "+QString::fromUtf8(dragobj->getName().c_str()));
+                insertObject(
+                    index, dragobj,
+                    "move-drop "+QString::fromUtf8(dragobj->getName().c_str()));
+                project->undoStack->endMacro();
             }
         }
     }
@@ -1962,7 +1975,19 @@ void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, Q
     project->undoStack->push(cmd);
 }
 
-bool RuleSetView::insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text)
+bool RuleSetView::insertObject(QModelIndex index, FWObject *obj, QString text)
+{
+    RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
+    assert (re!=NULL);
+    FWCmdRuleChangeRe* cmd = new FWCmdRuleChangeRe(
+        project, ((RuleSetModel*)model())->getRuleSet(), re, text);
+    RuleElement *newRe = RuleElement::cast(cmd->getNewState());
+    newRe->addRef(obj);
+    project->undoStack->push(cmd);
+    return true;
+}
+
+bool RuleSetView::validateForInsertion(QModelIndex index, FWObject *obj)
 {
     ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
     if (colDesc.type != ColDesc::Object && colDesc.type != ColDesc::Time) return false;
@@ -1974,14 +1999,19 @@ bool RuleSetView::insertObject(QModelIndex index, libfwbuilder::FWObject *obj, Q
     {
         if (RuleElementRItf::cast(re))
         {
-            QMessageBox::information( NULL , "Firewall Builder",
-                "A single interface belonging to this firewall is expected in this field.",
+            QMessageBox::information(
+                NULL , "Firewall Builder",
+                "A single interface belonging to this firewall is "
+                "expected in this field.",
                 QString::null,QString::null);
         }
         else if (RuleElementRGtw::cast(re))
         {
-            QMessageBox::information( NULL , "Firewall Builder",
-                "A single ip adress is expected here. You may also insert a host or a network adapter leading to a single ip adress.",
+            QMessageBox::information(
+                NULL , "Firewall Builder",
+                "A single ip adress is expected here. You may also "
+                "insert a host or a network adapter leading to a single "
+                "ip adress.",
                 QString::null,QString::null);
         }
         return false;
@@ -2005,13 +2035,12 @@ bool RuleSetView::insertObject(QModelIndex index, libfwbuilder::FWObject *obj, Q
         }
     }
 
-    FWCmdRuleChangeRe* cmd = new FWCmdRuleChangeRe(project, ((RuleSetModel*)model())->getRuleSet(), re, text);
-    RuleElement *newRe = RuleElement::cast(cmd->getNewState());
-    newRe->addRef(obj);
-    project->undoStack->push(cmd);
     return true;
 }
 
+/* Call validateForInsertion() before calling this function to make
+ * sure @object can be inserted in the RE the @index points to.
+ */ 
 void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
 {
     RuleSetModel* md = ((RuleSetModel*)model());
@@ -2026,7 +2055,9 @@ void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
         need_to_reload_tree = true;
     }
 
-    insertObject(index,object, "insert "+QString::fromUtf8(object->getName().c_str()));
+    insertObject(
+        index, object,
+        "insert "+QString::fromUtf8(object->getName().c_str()));
 
     if (need_to_reload_tree)
     {

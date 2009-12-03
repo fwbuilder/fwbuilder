@@ -207,6 +207,7 @@ protected:
 
     virtual void keyPressEvent( QKeyEvent* ev );
 
+    bool validateForInsertion(QModelIndex index, libfwbuilder::FWObject *obj);
     void deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text);
     bool insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text);
 
