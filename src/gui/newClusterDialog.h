@@ -65,6 +65,9 @@ public:
 
     void showPage(const int page);
 
+protected:
+    int previousRelevant(const int page) const;
+
 protected slots:
     virtual void finishClicked();
     virtual void cancelClicked();

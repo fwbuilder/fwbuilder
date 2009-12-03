@@ -329,4 +329,13 @@ void newClusterDialog::backClicked()
     }
 }
 
+int newClusterDialog::previousRelevant(const int page) const
+{
+    if (page == POLICY_PAGE &&
+        this->m_dialog->interfaceEditor->getNewData().count() == 0)
+    {
+        return INTERFACES_PAGE;
+    }
+    else return FakeWizard::previousRelevant(page);
+}
 

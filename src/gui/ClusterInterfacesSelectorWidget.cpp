@@ -93,6 +93,7 @@ ClusterInterfaceWidget* ClusterInterfacesSelectorWidget::addNewInterface()
     {
         this->removeTab(0);
         noTabs = false;
+        this->delInterface.setEnabled(true);
     }
     ClusterInterfaceWidget* widget = new ClusterInterfaceWidget(this);
     widget->setFirewallList(this->fwlist);
@@ -119,6 +120,7 @@ void ClusterInterfacesSelectorWidget::closeTab()
     if (this->count()==0)
     {
         noTabs = true;
+        this->delInterface.setEnabled(false);
         QLabel *label = new QLabel(tr("This cluster has no interfaces. Add interface using button <img src=\":/Icons/add.png\" width=15 height=15>."), this);
         this->addTab(label, tr("No interfaces"));
     }
