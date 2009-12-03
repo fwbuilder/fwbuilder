@@ -476,7 +476,7 @@ void newFirewallDialog::showPage(const int page)
             {
                 tmpldb->load( m_dialog->templaterFilePath->text().toAscii().data(),
                               &upgrade_predicate, librespath);
-            } 
+            }
             catch (FWException &ex)
             {
                 QMessageBox::critical(
@@ -568,11 +568,11 @@ void newFirewallDialog::fillInterfaceSLList()
                 break;
             }
         }
-        if (!gotIPv4) address = iface.addresses.values().first();
 
         InetAddrMask *iam;// = new InetAddrMask();
         if (iface.type == 0)
         {
+            if (!gotIPv4) address = iface.addresses.values().first();
             if ( address.ipv4 )
                 iam = new InetAddrMask(InetAddr(address.address.toStdString()), InetAddr(address.netmask.toStdString()));
             else
@@ -734,7 +734,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
                     tr("Invalid address '%1/%2'").arg(addr).arg(netm),
                     "&Continue", QString::null, QString::null, 0, 1 );
                 return false;
-            }          
+            }
         }
         else
         {
@@ -833,7 +833,7 @@ void newFirewallDialog::finishClicked()
     if ( p == 5 )
         if ( !this->m_dialog->interfaceEditor2->isValid() )
             return;
- 
+
     string platform = readPlatform(m_dialog->platform).toAscii().constData();
     string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
 
