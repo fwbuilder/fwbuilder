@@ -89,7 +89,8 @@ void FWCmdRule::undo()
  * FWCmdRuleInsert
  ********************************************************/
 
-FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset, int position, bool isAfter, Rule* ruleToInsert):
+FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset,
+                                 int position, bool isAfter, Rule* ruleToInsert):
         FWCmdRule(project, ruleset)
 {
     this->position = position;
@@ -117,15 +118,13 @@ void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
             QModelIndex index = md->indexForPosition(position);
             insertedRule = md->insertNewRule(index, isAfter);
         }
-    } else {
-
-        QModelIndex index = md->indexForPosition(position);
-
+    } else
+    {
+        QModelIndex index;
+        if (position) index = md->indexForPosition(position);
         insertedRule = md->insertRule(ruleToInsert, index, isAfter);
     }
-
     getRuleSetView()->selectRE(insertedRule,0);
-
 }
 
 void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)

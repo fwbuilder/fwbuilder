@@ -1325,7 +1325,10 @@ void RuleSetView::pasteRuleAbove()
             project->m_panel->om->reload();
         }
 
-        project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), md->getRulePosition(index), false, Rule::cast(co)));
+        project->undoStack->push(
+            new FWCmdRuleInsert(
+                project, md->getRuleSet(), md->getRulePosition(index),
+                false, Rule::cast(co)));
     }
 }
 
@@ -1364,7 +1367,10 @@ void RuleSetView::pasteRuleBelow()
             project->m_panel->om->reload();
         }
 
-        project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), md->getRulePosition(index), true, Rule::cast(co)));
+        project->undoStack->push(
+            new FWCmdRuleInsert(
+                project, md->getRuleSet(), md->getRulePosition(index),
+                true, Rule::cast(co)));
     }
 }
 
@@ -1375,10 +1381,13 @@ bool RuleSetView::canChange(RuleSetModel* md)
     return true;
 }
 
-void RuleSetView::insertRule(QModelIndex index,bool isAfter) {
+void RuleSetView::insertRule(QModelIndex index, bool isAfter)
+{
     RuleSetModel* md = ((RuleSetModel*)model());
     if (!canChange(md)) return;
-    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), md->getRulePosition(index), isAfter));
+    project->undoStack->push(
+        new FWCmdRuleInsert(
+            project, md->getRuleSet(), md->getRulePosition(index), isAfter));
 }
 
 void RuleSetView::insertRule()
@@ -1429,7 +1438,9 @@ void RuleSetView::insertNewRuleAtBottom()
     --it;
     Rule* posRule = md->nodeFromIndex(it.index())->rule;
 
-    project->undoStack->push(new FWCmdRuleInsert(project, md->getRuleSet(), posRule->getPosition(), true));
+    project->undoStack->push(
+        new FWCmdRuleInsert(
+            project, md->getRuleSet(), posRule->getPosition(), true));
 }
 
 void RuleSetView::removeFromGroup()
