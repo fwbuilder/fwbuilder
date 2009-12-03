@@ -283,7 +283,7 @@ void instDialog::opError(Firewall *fw)
     setErrorState(opListMapping[(fw)->getId()]);
     currentLabel->setText("");
 }
-    
+
 void instDialog::opCancelled(Firewall *fw)
 {
     opListMapping[(fw)->getId()]->setText(1, tr("Cancelled"));
@@ -705,7 +705,7 @@ void instDialog::setSelectStateAll(int column, Qt::CheckState select)
         if (column == INSTALL_CHECKBOX_COLUMN && Firewall::isA(o))
             (*it)->setCheckState(column, select);
 
-        // Cluster gets checkbox for compile. 
+        // Cluster gets checkbox for compile.
         // Cluster should never get a checkbox if it has no members.
         // Firewall that is not a cluster member gets compile checkbox
         if ((column == COMPILE_CHECKBOX_COLUMN && Cluster::isA(o) && num_members) ||
@@ -829,7 +829,7 @@ bool instDialog::tableHasCheckedItems()
     QTreeWidgetItemIterator it(m_dialog->selectTable);
     while (*it)
     {
-        if ((*it)->checkState(COMPILE_CHECKBOX_COLUMN) || 
+        if ((*it)->checkState(COMPILE_CHECKBOX_COLUMN) ||
             (*it)->checkState(INSTALL_CHECKBOX_COLUMN))
             return true;
         ++it;
@@ -940,7 +940,7 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
             const InetAddr *mgmt_addr = cnf.fwobj->getManagementAddress();
             if (mgmt_addr)
                 cnf.maddr = mgmt_addr->toString().c_str();
-            else 
+            else
                 cnf.maddr = "";
         }
         /*
@@ -1102,5 +1102,11 @@ void instDialog::logItemClicked(QUrl data)
 {
     QStringList parts = data.toString().split(':');
     if (parts[0] == "Error") return;
+    if (parts.length()<3)
+    {
+        if(fwbdebug)
+            cout << "Wrong error message clicked" << endl;
+        return;
+    }
     emit activateRule(project, parts[0], parts[1], parts[2].toInt());
 }
