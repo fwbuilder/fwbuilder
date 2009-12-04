@@ -58,6 +58,8 @@ public:
 
 class FWCmdChangeName : public FWCmdChange
 {
+protected:
+    virtual void notify();
 public:
     FWCmdChangeName(ProjectPanel *project, libfwbuilder::FWObject *obj);
 };

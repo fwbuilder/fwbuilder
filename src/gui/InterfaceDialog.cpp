@@ -98,6 +98,24 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     init = true;
 
+    /*
+     * guessSubInterfaceTypeAndAttributes() changes some attributes of
+     * the object (mostly compensating for missing functions in
+     * auto-upgrade scripts but also makes some guesses based on the
+     * interface name, such as sets its vlan ID if its name looks like
+     * it might be a vlan interface). Since we make changes in the
+     * object here, do it before loading it into the dialog so that it
+     * does not look like it has changed in applyChanges() even if the
+     * user hasn't touched it, which causes new undo command to be
+     * created out of nowhere.
+     *
+     * TODO: better way of course is to call
+     * guessSubInterfaceTypeAndAttributes in places where user changes
+     * something relevant in the interface to complement their changes
+     * and right after the interface has been created.
+     */
+    m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(s);
+
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->label->setText( QString::fromUtf8(s->getLabel().c_str()) );
 
@@ -437,12 +455,15 @@ void InterfaceDialog::applyChanges()
         intf->setManagement( m_dialog->management->isChecked() );
     }
 
-    // ticket #328: automatically assign vlan id to interface based on
-    // interface name
-    m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(intf);
-
     if (!cmd->getOldState()->cmp(new_state, true))
     {
+        // Complement changes made by the user with our guesses, but
+        // do this only if user changed something.
+
+        // ticket #328: automatically assign vlan id to interface based on
+        // interface name
+        m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(intf);
+
         if (obj->isReadOnly()) return;
         m_project->undoStack->push(cmd.release());
     }

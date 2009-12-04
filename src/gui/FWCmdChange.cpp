@@ -92,9 +92,8 @@ void FWCmdChange::notify()
     FWObject* obj = getObject();
     QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
     QCoreApplication::postEvent(
-        mw, new showObjectInTreeEvent(filename, obj->getId()));
-    QCoreApplication::postEvent(
         mw, new updateObjectEverywhereEvent(filename, obj->getId()));
+
     if (oldState->getName() != newState->getName())
     {
         QCoreApplication::postEvent(
@@ -103,9 +102,16 @@ void FWCmdChange::notify()
                 QString::fromUtf8(oldState->getName().c_str()),
                 QString::fromUtf8(newState->getName().c_str())));
     }
+
     if (mw->isEditorVisible())
+    {
         QCoreApplication::postEvent(
             mw, new openObjectInEditorEvent(filename, obj->getId()));
+    } else
+    {
+        QCoreApplication::postEvent(
+            mw, new showObjectInTreeEvent(filename, obj->getId()));
+    }
 }
 
 /********************************************************
@@ -115,6 +121,25 @@ void FWCmdChange::notify()
 FWCmdChangeName::FWCmdChangeName(ProjectPanel *project, FWObject *obj) :
     FWCmdChange(project, obj, QObject::tr("Rename object"))
 {}
+
+/*
+ * Command FWCmdChangeName is used in ObjectManipulator::autorename()
+ * functions that rename children objects when the name of a firewall
+ * or its interface changes. This command should not open object it
+ * renamed in the editor. If it does, the object in the editor changes
+ * when user renames fw or interface. This is especially unexpecred if
+ * renaming was triggered by them changing the name of fw or interface
+ * and then hitting Tab. User expectation is that keyboard should
+ * switch to the next element in the dialog, even if some side effects
+ * do happen. Changing the object in the editor looks confusing.
+ */
+void FWCmdChangeName::notify()
+{
+    FWObject* obj = getObject();
+    QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
+    QCoreApplication::postEvent(
+        mw, new updateObjectEverywhereEvent(filename, obj->getId()));
+}
 
 
 /********************************************************
