@@ -309,7 +309,9 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
     itm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
     itm->setText( 1, getTreeLabel(obj) );
     getCurrentObjectTree()->updateTreeIcons();
-    refreshSubtree(itm->parent(), itm);
+
+    if (itm->parent())
+        refreshSubtree(itm->parent(), itm);
 
     // now if we need to update subtree, call refreshSubtree()
     if (subtree)
