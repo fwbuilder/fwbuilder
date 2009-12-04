@@ -732,6 +732,9 @@ bool PolicyCompiler::verifyCustomServices::processNext()
  * Exceptions: 
  *   - object 'any'
  *   - interface with dynamic address.
+ *
+ * In addition check for address A.B.C.D/0 which is most likely a
+ * mistake if A.B.C.D != 0.0.0.0. See #475
  */
 Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
 {
@@ -749,7 +752,6 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
         
         if (addr==NULL && o!=NULL)
             compiler->warning(
-                
                     re->getParent(), 
                     string("findZeroAddress: Unknown object in rule element: ") +
                     o->getName() +
@@ -771,6 +773,13 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
                 // AddressRange with address 0.0.0.0 is acceptable
                 // (not equivalent to "any")
                 if (ad->isAny() && nm!=NULL && nm->isAny())
+                {
+                    a = addr;
+                    break;
+                }
+                // Address A.B.C.D/0 is most likely a mistake if
+                // A.B.C.D != 0.0.0.0
+                if (!ad->isAny() && nm!=NULL && nm->isAny())
                 {
                     a = addr;
                     break;
@@ -818,7 +827,6 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
 
     if (a!=NULL)
         compiler->abort(
-            
                 rule, "Object '"+a->getName()+
                 "' has no interfaces, therefore it does not have "
                 "address and can not be used in the rule.");
@@ -841,7 +849,7 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
                 err+=" )";
             }
         }
-        err += " has address 0.0.0.0, which is equivalent to 'any'. "
+        err += " has address or netmask 0.0.0.0, which is equivalent to 'any'. "
             "This is likely an error.";
 
         compiler->abort(rule, err);
