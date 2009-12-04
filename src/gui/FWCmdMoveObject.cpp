@@ -74,9 +74,7 @@ FWCmdMoveObject::FWCmdMoveObject(ProjectPanel *project,
 
     if (text.isEmpty())
     {
-        setText(QObject::tr("Move %1 to %2")
-                .arg(QString::fromUtf8(obj->getName().c_str()))
-                .arg(QString::fromUtf8(new_parent->getName().c_str())));
+        setText(QObject::tr("Move object"));
     } else
     {
         setText(text);

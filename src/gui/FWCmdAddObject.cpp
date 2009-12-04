@@ -61,9 +61,7 @@ FWCmdAddObject::FWCmdAddObject(ProjectPanel *project,
 
     if (text.isEmpty())
     {
-        setText(QObject::tr("Add %1 to group %2")
-                .arg(QString::fromUtf8(member->getName().c_str()))
-                .arg(QString::fromUtf8(grp->getName().c_str())));
+        setText(QObject::tr("Add object to group"));
     } else
     {
         setText(text);

@@ -380,6 +380,8 @@ public:
                        bool &delMenuItem,
                        bool &newMenuItem,
                        bool &inDeletedObjects);
+
+     bool getDeleteMenuState(libfwbuilder::FWObject *obj);
     
      void updateLastInstalledTimestamp(libfwbuilder::FWObject *o);
      void updateLastCompiledTimestamp(libfwbuilder::FWObject *o);

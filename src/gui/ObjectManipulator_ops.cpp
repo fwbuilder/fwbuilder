@@ -343,9 +343,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
             if (fwbdebug) qDebug("Copy object %s (%d) to a different object tree",
                                  obj->getName().c_str(), obj->getId());
             FWCmdAddObject *cmd = new FWCmdAddObject(m_project, target, NULL,
-                QObject::tr("Add copy of %1 to %2")
-                .arg(QString::fromUtf8(obj->getName().c_str()))
-                .arg(QString::fromUtf8(ta->getName().c_str())));
+                                                     QObject::tr("Paste object"));
             FWObject *new_state = cmd->getNewState();
             cmd->setNeedTreeReload(true);
             // recursivelyCopySubtree() needs access to the target tree root
@@ -377,9 +375,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
             }
             FWCmdChange *cmd = new FWCmdChange(
                 m_project, grp,
-                QObject::tr("Add %1 to group %2")
-                .arg(QString::fromUtf8(obj->getName().c_str()))
-                .arg(QString::fromUtf8(grp->getName().c_str())));
+                QObject::tr("Paste object"));
             //cmd->setNeedTreeReload(false);
             FWObject *new_state = cmd->getNewState();
             new_state->addRef(obj);
@@ -413,9 +409,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
             }
 
             FWCmdChange *cmd = new FWCmdAddObject(m_project, ta, nobj,
-                QObject::tr("Add copy of %1 to %2")
-                .arg(QString::fromUtf8(obj->getName().c_str()))
-                .arg(QString::fromUtf8(ta->getName().c_str())));
+                                                  QObject::tr("Paste object"));
             FWObject *new_state = cmd->getNewState();
 
             // adding object to new_state is reduntant but
@@ -461,8 +455,8 @@ void ObjectManipulator::lockObject()
                 lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
             {
                 std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(
-                    m_project, obj,
-                    QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str()))));
+                                                    m_project, obj,
+                                                    QString("Lock object")));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(true);
                 if (!cmd->getOldState()->cmp(new_state, true))
@@ -502,8 +496,8 @@ void ObjectManipulator::unlockObject()
                 lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
             {
                 std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(
-                    m_project, obj,
-                    QString("lock %1").arg(QString::fromUtf8(obj->getName().c_str()))));
+                                                    m_project, obj,
+                                                    QString("Unlock object")));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(false);
                 if (!cmd->getOldState()->cmp(new_state, true))
@@ -564,10 +558,12 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
     QCoreApplication::postEvent(
         mw, new closeObjectEvent(m_project->getFileName(), obj->getId()));
 
+#if 0
     // Remove object we are about to delete from the clipboard.
     // Sequence "delete then paste" is risky if the object is pasted into
     // a group or rule where only reference is added
     FWObjectClipboard::obj_clipboard->remove(obj);
+#endif
  
     try
     {    
@@ -618,7 +614,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
             deleted_objects_lib,
             obj,
             reference_holders,
-            QString("Delete object %1").arg(QString::fromUtf8(obj->getName().c_str())));
+            QString("Delete object"));
         m_project->undoStack->push(cmd);
 
         if (ruleset_visible) m_project->closeRuleSetPanel();
@@ -688,8 +684,7 @@ void ObjectManipulator::groupObjects()
         if (newgrp==NULL) return;
 
         FWCmdAddObject *cmd = new FWCmdAddObject(
-            m_project, parent, newgrp,
-            QObject::tr("Create new group %1").arg(objName));
+            m_project, parent, newgrp, QObject::tr("Create new group"));
         FWObject *new_state = cmd->getNewState();
         new_state->add(newgrp);
 

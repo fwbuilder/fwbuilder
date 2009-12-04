@@ -57,6 +57,7 @@
 #include <QTextEdit>
 #include <QTime>
 #include <QtDebug>
+#include <QUndoStack>
 
 #include <memory>
 #include <algorithm>
@@ -143,8 +144,12 @@ void ObjectManipulator::copyObj()
 
 void ObjectManipulator::cutObj()
 {
+    // Start macro to hide the name of the undo command created in
+    // delObj. Normally its name is "Delete object".
+    m_project->undoStack->beginMacro("Cut object");
     copyObj();
     delObj();   // works with the list getCurrentObjectTree()->getSelectedObjects()
+    m_project->undoStack->endMacro();
 }
 
 void ObjectManipulator::pasteObj()
@@ -264,7 +269,7 @@ void ObjectManipulator::delObj()
     
     for (vector<FWObject*>::iterator i=so.begin(); i!=so.end(); ++i)
     {
-        bool del_obj_status = m_project->getDeleteMenuState(*i);
+        bool del_obj_status = getDeleteMenuState(*i);
         if (fwbdebug)
             qDebug("ObjectManipulator::delObj object: %s del_obj_status=%d",
                    (*i)->getName().c_str(), del_obj_status);

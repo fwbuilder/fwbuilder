@@ -113,8 +113,7 @@ void FWCmdChange::notify()
  ********************************************************/
 
 FWCmdChangeName::FWCmdChangeName(ProjectPanel *project, FWObject *obj) :
-    FWCmdChange(project, obj,
-                QObject::tr("Rename %1").arg(QString::fromUtf8(obj->getName().c_str())))
+    FWCmdChange(project, obj, QObject::tr("Rename object"))
 {}
 
 
@@ -213,8 +212,7 @@ void FWCmdChangeRuleComment::notify()
  ********************************************************/
 
 FWCmdChangeOptionsObject::FWCmdChangeOptionsObject(ProjectPanel *project, FWObject *obj) :
-    FWCmdChange(project, obj,
-                QObject::tr("Edit %1").arg(obj->getParent()->getTypeName().c_str()))
+    FWCmdChange(project, obj, QObject::tr("Edit rule options"))
 {}
 
 void FWCmdChangeOptionsObject::notify()

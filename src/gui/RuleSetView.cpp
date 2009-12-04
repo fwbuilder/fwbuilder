@@ -1101,7 +1101,10 @@ void RuleSetView::setEnabledRow(bool flag)
             Rule* rule = node->rule;
             if (!rule->isDisabled() == flag) continue;
 
-            FWCmdRuleChange* cmd = new FWCmdRuleChange(project,  md->getRuleSet(), rule, (flag)?tr("enable rule"):tr("disable rule"));
+            FWCmdRuleChange* cmd =
+                new FWCmdRuleChange(
+                    project,  md->getRuleSet(), rule,
+                    (flag)?tr("Enable rule"):tr("Disable rule"));
             Rule* newState = Rule::cast(cmd->getNewState());
             if (flag)
                 newState->enable();
@@ -1198,9 +1201,10 @@ void RuleSetView::moveRuleUp()
         if (top.parent() == selection.first().parent() && top.row() == selection.first().row()) return;
 
 
-        FWCmdRuleMove* cmd = new FWCmdRuleMove(project, md->getRuleSet(),
-                                               md->nodeFromIndex(selection.first())->rule->getId(),
-                                               md->nodeFromIndex(selection.last())->rule->getId());
+        FWCmdRuleMove* cmd =
+            new FWCmdRuleMove(project, md->getRuleSet(),
+                              md->nodeFromIndex(selection.first())->rule->getId(),
+                              md->nodeFromIndex(selection.last())->rule->getId());
         project->undoStack->push(cmd);
     }
 }
@@ -1221,9 +1225,10 @@ void RuleSetView::moveRuleDown()
         QModelIndex bottom = it.index();
         if (bottom.parent() == selection.last().parent() && bottom.row() == selection.last().row()) return;
 
-        FWCmdRuleMove* cmd = new FWCmdRuleMove(project, md->getRuleSet(),
-                                               md->nodeFromIndex(selection.first())->rule->getId(),
-                                               md->nodeFromIndex(selection.last())->rule->getId(), false);
+        FWCmdRuleMove* cmd =
+            new FWCmdRuleMove(project, md->getRuleSet(),
+                              md->nodeFromIndex(selection.first())->rule->getId(),
+                              md->nodeFromIndex(selection.last())->rule->getId(), false);
         project->undoStack->push(cmd);
     }
 }
@@ -1480,8 +1485,11 @@ void RuleSetView::removeFromGroup()
         QModelIndex first = md->index(itemsInGroups[group].first(), 0, group);
         QModelIndex last = md->index(itemsInGroups[group].last(), 0, group);
 
-        FWCmdRuleRemoveFromGroup *cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), md->nodeFromIndex(first)->rule, md->nodeFromIndex(last)->rule,
-                                                                 md->nodeFromIndex(group)->name);
+        FWCmdRuleRemoveFromGroup *cmd =
+            new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(),
+                                         md->nodeFromIndex(first)->rule,
+                                         md->nodeFromIndex(last)->rule,
+                                         md->nodeFromIndex(group)->name);
         project->undoStack->push(cmd);
 //        md->removeFromGroup(group, itemsInGroups[group].first(), itemsInGroups[group].last());
     }
@@ -1642,7 +1650,9 @@ void RuleSetView::changeDitection(PolicyRule::Direction dir)
     PolicyRule::Direction old_dir=rule->getDirection();
     if (dir!=old_dir)
     {
-        FWCmdRuleChange* cmd = new FWCmdRuleChange(project,  md->getRuleSet(), rule, tr("change direction"));
+        FWCmdRuleChange* cmd =
+            new FWCmdRuleChange(
+                project,  md->getRuleSet(), rule, tr("Change direction"));
         PolicyRule* newState = PolicyRule::cast(cmd->getNewState());
         newState->setDirection( dir );
         project->undoStack->push(cmd);
@@ -1667,7 +1677,9 @@ void RuleSetView::changeAction(int act)
 
     if (node->type != RuleNode::Rule) return;
 
-    std::auto_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChange(project,  md->getRuleSet(), node->rule, tr("change action")));
+    std::auto_ptr<FWCmdRuleChange> cmd(
+        new FWCmdRuleChange(project,
+                            md->getRuleSet(), node->rule, tr("Change action")));
     
     Rule* newRule = dynamic_cast<Rule*>(cmd->getNewState());
     
@@ -1799,7 +1811,8 @@ void RuleSetView::changeLogging(bool flag)
 
     if (rule->getLogging() == flag) return;
 
-    FWCmdRuleChange* cmd = new FWCmdRuleChange(project,  md->getRuleSet(), rule, tr("change logging"));
+    FWCmdRuleChange* cmd = new FWCmdRuleChange(
+        project,  md->getRuleSet(), rule, tr("Change logging"));
     PolicyRule* newState = PolicyRule::cast(cmd->getNewState());
 
     newState->setLogging( flag );

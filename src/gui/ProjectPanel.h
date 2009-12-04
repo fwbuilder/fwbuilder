@@ -336,10 +336,6 @@ public:
     QString printHeader();
 
     bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
-    bool getCopyMenuState(const QString &objPath);
-    bool getCutMenuState(const QString &objPath);
-    bool getPasteMenuState(const QString &objPath);
-    bool getDeleteMenuState(libfwbuilder::FWObject *obj);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
     void toggleViewTree(bool f);

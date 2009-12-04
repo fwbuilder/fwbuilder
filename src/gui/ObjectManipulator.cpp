@@ -751,6 +751,29 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     popup_menu->exec( objTreeView->mapToGlobal( pos ) );
 }
 
+bool ObjectManipulator::getDeleteMenuState(FWObject *obj)
+{
+    QString objPath = obj->getPath(true).c_str();
+    bool del_menu_item_state = FWBTree().getDeleteMenuState(objPath);
+
+    // can't delete last policy, nat and routing child objects
+    // also can't delete "top" policy ruleset
+    if (del_menu_item_state && RuleSet::cast(obj))
+    {
+        //if (dynamic_cast<RuleSet*>(obj)->isTop()) del_menu_item_state = false;
+        //else
+        //{
+            FWObject *fw = obj->getParent();
+            // fw can be NULL if this ruleset is in the Deleted objects
+            // library
+            if (fw==NULL) return del_menu_item_state;
+            list<FWObject*> child_objects = fw->getByType(obj->getTypeName());
+            if (child_objects.size()==1) del_menu_item_state = false;
+        //}
+    }
+    return del_menu_item_state;
+}
+
 void ObjectManipulator::getMenuState(bool haveMoveTargets,
                                      bool &dupMenuItem,
                                      bool &moveMenuItem,
@@ -783,11 +806,11 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 
         QString object_path = obj->getPath(true).c_str();
 
-        copyMenuItem = copyMenuItem && m_project->getCopyMenuState(object_path);
+        copyMenuItem = copyMenuItem && FWBTree().getCopyMenuState(object_path);
         pasteMenuItem = pasteMenuItem &&
-            m_project->getPasteMenuState(object_path) &&
+            FWBTree().getPasteMenuState(object_path) &&
             (FWObjectClipboard::obj_clipboard->size()!=0);
-        delMenuItem = delMenuItem && m_project->getDeleteMenuState(obj);
+        delMenuItem = delMenuItem && getDeleteMenuState(obj);
         delMenuItem = delMenuItem && 
             current_library->getId() != FWObjectDatabase::STANDARD_LIB_ID &&
             current_library->getId() != FWObjectDatabase::TEMPLATE_LIB_ID;
