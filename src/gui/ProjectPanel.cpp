@@ -478,17 +478,6 @@ void ProjectPanel::updateObjectInTree(FWObject *obj, bool subtree)
     m_panel->om->updateObjectInTree(obj, subtree);
 }
 
-void ProjectPanel::loadDataFromFw(Firewall *fw)
-{
-    m_panel->om->loadObjects();
-
-    if (fw)
-    {
-        m_panel->om->updateObjName(fw,"", false);
-        m_panel->om->editObject(fw);
-    }
-}
-
 void ProjectPanel::insertObjectInTree(FWObject *parent, FWObject *obj)
 {
     m_panel->om->insertObjectInTree(parent, obj);

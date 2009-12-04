@@ -91,27 +91,31 @@ void FWCmdChange::notify()
 {
     FWObject* obj = getObject();
     QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
-    QCoreApplication::postEvent(
-        mw, new updateObjectEverywhereEvent(filename, obj->getId()));
 
     if (oldState->getName() != newState->getName())
     {
+        // objectNameChangedEvent event triggers actions, such as
+        // automatic renaming of child objects. This should only be
+        // done once, even if we have the same data file opened in
+        // several project panels.
         QCoreApplication::postEvent(
-            mw, new objectNameChangedEvent(
+            mw->activeProject(), new objectNameChangedEvent(
                 filename, obj->getId(),
                 QString::fromUtf8(oldState->getName().c_str()),
                 QString::fromUtf8(newState->getName().c_str())));
     }
 
+    QCoreApplication::postEvent(
+        mw, new updateObjectEverywhereEvent(filename, obj->getId()));
+
     if (mw->isEditorVisible())
     {
         QCoreApplication::postEvent(
             mw, new openObjectInEditorEvent(filename, obj->getId()));
-    } else
-    {
-        QCoreApplication::postEvent(
-            mw, new showObjectInTreeEvent(filename, obj->getId()));
     }
+
+    QCoreApplication::postEvent(
+        mw, new showObjectInTreeEvent(filename, obj->getId()));
 }
 
 /********************************************************
@@ -137,8 +141,14 @@ void FWCmdChangeName::notify()
 {
     FWObject* obj = getObject();
     QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
-    QCoreApplication::postEvent(
-        mw, new updateObjectEverywhereEvent(filename, obj->getId()));
+
+    // when object's name changes, its position in the tree changes
+    // too to keep the tree sorted. Need to update the object
+    // everywhere, as well as its parent's subtree.
+
+    QCoreApplication::postEvent(mw, new updateObjectInTreeEvent(filename,
+                                                                obj->getId()));
+    QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
 }
 
 

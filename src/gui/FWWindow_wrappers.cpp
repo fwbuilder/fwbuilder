@@ -405,12 +405,6 @@ FWObject* FWWindow::getCurrentLib()
     return 0;
 }
 
-void FWWindow::loadDataFromFw(Firewall *fw)
-{
-    if (activeProject())
-        activeProject()->loadDataFromFw(fw);
-}
-
 void FWWindow::insertObjectInTree(FWObject *parent, FWObject *obj)
 {
     if (activeProject())

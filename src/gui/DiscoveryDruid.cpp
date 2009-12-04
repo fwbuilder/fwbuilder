@@ -27,6 +27,7 @@
 #include "../../config.h"
 #include "global.h"
 #include "utils.h"
+#include "events.h"
 
 #include <qradiobutton.h>
 #include <qlineedit.h>
@@ -73,6 +74,7 @@
 #include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/Inet6AddrMask.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Policy.h"
 
 #include "fwbuilder/dns.h"
 #include "fwbuilder/snmp.h"
@@ -1312,8 +1314,22 @@ void DiscoveryDruid::loadDataFromImporter()
     if (imp!=NULL)
     {
         Firewall *fw = imp->finalize();
+        ProjectPanel *pp = mw->activeProject();
+        QString filename = pp->getFileName();
+        pp->m_panel->om->reload();
+        pp->m_panel->om->autoRenameChildren(fw, "", false);
+        QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+        if (mw->isEditorVisible())
+            QCoreApplication::postEvent(
+                mw, new openObjectInEditorEvent(filename, fw->getId()));
+        QCoreApplication::postEvent(
+            mw, new showObjectInTreeEvent(filename, fw->getId()));
+        // Open first created Policy ruleset object
+        FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
+        if (first_policy)
+            QCoreApplication::postEvent(
+                mw, new openRulesetEvent(filename, first_policy->getId()));
 
-        mw->loadDataFromFw(fw);
     }
 }
 

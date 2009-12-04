@@ -122,59 +122,37 @@ QString ObjectManipulator::getTreeLabel( FWObject *obj )
 void ObjectManipulator::refreshSubtree(QTreeWidgetItem *itm)
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::refreshSubtree %s", itm->text(0).toLatin1().constData());
+        qDebug() << "ObjectManipulator::refreshSubtree itm:" << itm->text(0);
 
     QTreeWidgetItem *parent = itm->parent();
     if (parent)
     {
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::refreshSubtree parent:"
+                     << parent->text(0);
         /*
          * re-sorting parent tree item causes havoc. If I do not
-         * collapse/expand it, I get strange glitches in display. If I
-         * collapse/expand it, it scrolls the tree up. If I use
-         * scrollToItem() to force scrolling position, I get problems
-         * when this method is called from ProjectPanel::updateLastModifiedTimestampForAllFirewalls
-         * (via event) since the user modified one object, but this method
-         * repositions the tree to show the firewall that uses it.
-         *
-         * To work around this I sort the parent and see if the item
-         * next to the itm has changed. If it has, then sorting order
-         * has changed and we need to collapse then expand and
-         * scroll. If sorting order has not changed, this means the
-         * update was only to the attributes of the object or the name
-         * sorted in the same order and we do not need to
-         * expand/collapse the subtree.
+         * collapse/expand it, I get strange glitches in display. 
          */
-
-        QTreeWidgetItemIterator old_neighbor_iter(itm);
-        old_neighbor_iter--;
-        QTreeWidgetItem *old_neighbor = *old_neighbor_iter;
-
         parent->sortChildren(0, Qt::AscendingOrder);//();
 
-        QTreeWidgetItemIterator new_neighbor_iter(itm);
-        new_neighbor_iter--;
-        QTreeWidgetItem *new_neighbor = *new_neighbor_iter;
-
-        if (old_neighbor != new_neighbor)
-        {
-            if (fwbdebug)
-                qDebug("ObjectManipulator::refreshSubtree expand/collapse parent");
-            /*
-             * workaround for QT4 bug 
-             * http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=233975
-             * Affects QT 4.4.1
-             *
-             * This has a side effect in that the tree loses its scrollong
-             * position and scrolls all the way to the top. If the object
-             * being edited was in the middle or close to the bottom, it disappears
-             * from view. Call to scrollToItem() fixes this.
-             */
-            parent->setExpanded(false);
-            parent->setExpanded(true);
-            //getCurrentObjectTree()->header()->resizeSections(QHeaderView::ResizeToContents);
-            getCurrentObjectTree()->scrollToItem(itm, QAbstractItemView::EnsureVisible);
-            getCurrentObjectTree()->update();
-        }
+        if (fwbdebug)
+            qDebug("ObjectManipulator::refreshSubtree expand/collapse parent");
+        /*
+         * workaround for QT4 bug 
+         * http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=233975
+         * Affects QT 4.4.1
+         *
+         * This has a side effect in that the tree loses its scrollong
+         * position and scrolls all the way to the top. If the object
+         * being edited was in the middle or close to the bottom, it disappears
+         * from view. Call to scrollToItem() fixes this.
+         */
+        parent->setExpanded(false);
+        parent->setExpanded(true);
+        //getCurrentObjectTree()->header()->resizeSections(QHeaderView::ResizeToContents);
+        getCurrentObjectTree()->scrollToItem(itm, QAbstractItemView::EnsureVisible);
+        getCurrentObjectTree()->update();
     }
 }
 

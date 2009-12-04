@@ -318,8 +318,6 @@ public slots:
     void moveObject(const QString &targetLibName,
                     libfwbuilder::FWObject *obj);
 
-    void loadDataFromFw(libfwbuilder::Firewall *fw);
-
     void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);
     ObjectTreeView* getCurrentObjectTree();
 

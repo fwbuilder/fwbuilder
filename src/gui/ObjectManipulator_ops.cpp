@@ -70,24 +70,21 @@
 using namespace std;
 using namespace libfwbuilder;
 
+
 /*
- * TODO: make this signal/slot. Dialogs just emit signal
- * 'updateObject_sign', which objectManipulator should have connected
- * to its slot which would do what updateObjName does now, and more.
+ * this method initiates automatic renaming of children objects if necessary
  */
-void ObjectManipulator::updateObjName(FWObject *obj,
-                                      const QString &oldName,
-                                      bool  askForAutorename)
+void ObjectManipulator::autoRenameChildren(FWObject *obj,
+                                           const QString &oldName,
+                                           bool  askForAutorename)
 {
     if (fwbdebug)
-        qDebug() << "ObjectManipulator::updateObjName  changing name "
+        qDebug() << "ObjectManipulator::autoRenameChildren  changing name "
                  << oldName.toLatin1()
                  << "->"
                  << QString::fromUtf8(obj->getName().c_str());
     
     if (oldName == QString::fromUtf8(obj->getName().c_str())) return;
-    
-    //if (obj!=getSelectedObject()) openObject(obj);
     
     QTreeWidgetItem *itm = allItems[obj];
     assert(itm!=NULL);
@@ -98,8 +95,8 @@ void ObjectManipulator::updateObjName(FWObject *obj,
         autorename(obj, askForAutorename);
     }
 
-    QCoreApplication::postEvent(
-        mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
+    // QCoreApplication::postEvent(
+    //     mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
 }
 
 void ObjectManipulator::autorename(FWObject *obj, bool ask)

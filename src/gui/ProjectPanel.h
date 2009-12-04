@@ -170,8 +170,6 @@ public:
     void registerTreeReloadRequest();
     void registerRuleSetRedrawRequest();
 
-    void loadDataFromFw(libfwbuilder::Firewall *fw);
-    
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                     libfwbuilder::FWObject *obj);
     void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);

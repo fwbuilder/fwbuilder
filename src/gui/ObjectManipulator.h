@@ -317,9 +317,9 @@ public:
      void updateLibColor(libfwbuilder::FWObject *lib);
      void updateLibName(libfwbuilder::FWObject *lib);
 
-     void updateObjName(libfwbuilder::FWObject *obj,
-                        const QString &oldName,
-                        bool  askForAutorename=true);
+     void autoRenameChildren(libfwbuilder::FWObject *obj,
+                             const QString &oldName,
+                             bool  askForAutorename=true);
     void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
     
      ObjectTreeView* getCurrentObjectTree();

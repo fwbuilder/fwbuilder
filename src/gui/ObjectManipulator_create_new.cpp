@@ -363,16 +363,6 @@ void ObjectManipulator::newFirewall()
         parent->remove(nfw, false);
         new_state->add(nfw);
         m_project->undoStack->push(cmd);
-
-        // insertSubtree(parent_item, nfw);
-        // updateObjName(nfw, "", false);
-        // // Reload object tree because when we create fw object from a template,
-        // // we copy objects it uses in rules recursively.
-        // loadObjects();
-        // openObject(nfw);
-        // editObject(nfw);
-        // QCoreApplication::postEvent(
-        //     mw, new dataModifiedEvent(m_project->getFileName(), nfw->getId()));
     }
 }
 
@@ -406,16 +396,6 @@ void ObjectManipulator::newCluster(bool fromSelected)
         parent->remove(ncl, false);
         new_state->add(ncl);
         m_project->undoStack->push(cmd);
-
-        // insertSubtree(parent_item, ncl);
-        // updateObjName(ncl, "", false);
-        // // Reload object tree because when we create fw object from a template,
-        // // we copy objects it uses in rules recursively.
-        // loadObjects();
-        // openObject(ncl);
-        // editObject(ncl);
-        // QCoreApplication::postEvent(
-        //     mw, new dataModifiedEvent(m_project->getFileName(), ncl->getId()));
     }
 }
 
