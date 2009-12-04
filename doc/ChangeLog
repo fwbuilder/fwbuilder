@@ -1,3 +1,12 @@
+2009-12-04  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/res/platform/pf.xml, iptables.xml: unified terminology
+	for policy rule actions that create branching in the rule set or
+	tag packets. Now we call these actions "Branch" and "Tag" for all
+	platforms. Before, the name was different and matched original
+	action on each platform, that is for PF it was "Anchor" and "Tag"
+	and for iptables "Chain" and "Mark" respectively.
+
 2009-12-01  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/configlets/linux24/run_time_wrappers: fixed #651:

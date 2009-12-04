@@ -70,7 +70,7 @@
             </Accounting>
             <Tag>
                 <supported>True</supported>
-                <description>Mark</description>
+                <description>Tag</description>
                 <dialog_page>TagInt</dialog_page>
             </Tag>
             <Pipe>
@@ -90,7 +90,7 @@
             </Custom>
             <Branch>
                 <supported>True</supported>
-                <description>Chain</description>
+                <description>Branch</description>
                 <dialog_page>BranchChain</dialog_page>
             </Branch>
             <Route>

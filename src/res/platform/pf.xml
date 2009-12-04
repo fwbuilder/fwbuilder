@@ -84,7 +84,7 @@
             </Custom>
             <Branch>
                 <supported>True</supported>
-                <description>Anchor</description>
+                <description>Branch</description>
                 <dialog_page>BranchAnchor</dialog_page>
             </Branch>
             <Route>

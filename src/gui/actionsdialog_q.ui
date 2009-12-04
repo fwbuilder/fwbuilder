@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>852</width>
-    <height>228</height>
+    <height>229</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -37,10 +37,13 @@
          <enum>QFrame::Plain</enum>
         </property>
         <property name="currentIndex" >
-         <number>13</number>
+         <number>7</number>
         </property>
         <widget class="QWidget" name="TagStrPage" >
          <layout class="QGridLayout" >
+          <property name="spacing" >
+           <number>12</number>
+          </property>
           <item row="0" column="0" colspan="2" >
            <widget class="QLabel" name="textLabel4" >
             <property name="text" >
@@ -106,10 +109,10 @@
         <widget class="QWidget" name="RejectPage" >
          <layout class="QGridLayout" >
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="spacing" >
-           <number>2</number>
+           <number>12</number>
           </property>
           <item row="1" column="0" colspan="3" >
            <widget class="QLabel" name="textLabel3" >
@@ -187,7 +190,10 @@
         <widget class="QWidget" name="NonePage" >
          <layout class="QGridLayout" >
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
+          </property>
+          <property name="spacing" >
+           <number>12</number>
           </property>
           <item row="0" column="0" >
            <widget class="QLabel" name="textLabel5" >
@@ -206,6 +212,9 @@
         </widget>
         <widget class="QWidget" name="TagIntPage" >
          <layout class="QGridLayout" >
+          <property name="spacing" >
+           <number>12</number>
+          </property>
           <item row="0" column="0" colspan="2" >
            <widget class="QLabel" name="textLabel4_2" >
             <property name="text" >
@@ -259,7 +268,7 @@
              <string>Requires CONNMARK target</string>
             </property>
             <property name="text" >
-             <string>Mark connections created by packets that match this rule</string>
+             <string>Tag connections created by packets that match this rule</string>
             </property>
            </widget>
           </item>
@@ -305,7 +314,10 @@ tab of the firewall object properties dialog activates emulation.</string>
         <widget class="QWidget" name="AccountingStrPage" >
          <layout class="QGridLayout" >
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
+          </property>
+          <property name="spacing" >
+           <number>12</number>
           </property>
           <item row="1" column="0" >
            <widget class="QLabel" name="textLabel1_4" >
@@ -344,10 +356,10 @@ tab of the firewall object properties dialog activates emulation.</string>
         <widget class="QWidget" name="ClassifyArgsIPFW" >
          <layout class="QGridLayout" >
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="spacing" >
-           <number>2</number>
+           <number>12</number>
           </property>
           <item row="0" column="0" colspan="3" >
            <widget class="QLabel" name="textLabel1" >
@@ -369,10 +381,10 @@ tab of the firewall object properties dialog activates emulation.</string>
             </property>
             <layout class="QGridLayout" >
              <property name="margin" >
-              <number>2</number>
+              <number>12</number>
              </property>
              <property name="spacing" >
-              <number>2</number>
+              <number>12</number>
              </property>
              <item row="1" column="0" >
               <widget class="QRadioButton" name="useDummyNetPipe" >
@@ -451,10 +463,10 @@ tab of the firewall object properties dialog activates emulation.</string>
         <widget class="QWidget" name="CustomStrPage" >
          <layout class="QVBoxLayout" >
           <property name="spacing" >
-           <number>2</number>
+           <number>12</number>
           </property>
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
           </property>
           <item>
            <widget class="QLabel" name="textLabel1_2" >
@@ -490,7 +502,10 @@ tab of the firewall object properties dialog activates emulation.</string>
         <widget class="QWidget" name="ClassifyStrPage" >
          <layout class="QGridLayout" >
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
+          </property>
+          <property name="spacing" >
+           <number>12</number>
           </property>
           <item row="0" column="0" >
            <widget class="QLabel" name="textLabel2_3" >
@@ -525,8 +540,8 @@ tab of the firewall object properties dialog activates emulation.</string>
            <widget class="QLabel" name="classify_terminating" >
             <property name="toolTip" >
              <string>Note:  CLASSIFY target in iptables is non-terminating,
-that is other rules with Classify or Mark
-target below this will process the same packet.
+this means other rules with Classify or Branch
+target below this one will process the same packet.
 However, Firewall Builder can emulate terminating
 behavior for this action. Emulation is activated
 by an option in the "compiler" tab of the firewall
@@ -548,7 +563,10 @@ object properties dialog.</string>
         <widget class="QWidget" name="PipeArgsIPFW" >
          <layout class="QGridLayout" >
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
+          </property>
+          <property name="spacing" >
+           <number>12</number>
           </property>
           <item row="1" column="0" >
            <widget class="QLabel" name="textLabel2_2_2" >
@@ -609,6 +627,9 @@ object properties dialog.</string>
         </widget>
         <widget class="QWidget" name="BranchChainPage" >
          <layout class="QGridLayout" >
+          <property name="spacing" >
+           <number>12</number>
+          </property>
           <item row="0" column="0" colspan="2" >
            <widget class="QLabel" name="textLabel1_3" >
             <property name="text" >
@@ -680,6 +701,9 @@ object properties dialog.</string>
         </widget>
         <widget class="QWidget" name="BranchAnchorPage" >
          <layout class="QGridLayout" >
+          <property name="spacing" >
+           <number>12</number>
+          </property>
           <item row="0" column="0" colspan="2" >
            <widget class="QLabel" name="textLabel2_4" >
             <property name="text" >
@@ -745,10 +769,10 @@ object properties dialog.</string>
         <widget class="QWidget" name="RouteIPFPage" >
          <layout class="QGridLayout" >
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="spacing" >
-           <number>2</number>
+           <number>12</number>
           </property>
           <item row="2" column="0" >
            <spacer>
@@ -768,6 +792,12 @@ object properties dialog.</string>
           </item>
           <item row="1" column="0" >
            <layout class="QHBoxLayout" >
+            <property name="spacing" >
+             <number>12</number>
+            </property>
+            <property name="margin" >
+             <number>12</number>
+            </property>
             <item>
              <widget class="QComboBox" name="ipf_route_option" >
               <item>
@@ -819,8 +849,17 @@ object properties dialog.</string>
         </widget>
         <widget class="QWidget" name="RoutePFPage" >
          <layout class="QGridLayout" >
+          <property name="spacing" >
+           <number>12</number>
+          </property>
           <item row="1" column="0" colspan="5" >
            <layout class="QHBoxLayout" >
+            <property name="spacing" >
+             <number>12</number>
+            </property>
+            <property name="margin" >
+             <number>12</number>
+            </property>
             <item>
              <widget class="QComboBox" name="pf_route_option" >
               <item>
@@ -966,10 +1005,10 @@ object properties dialog.</string>
         <widget class="QWidget" name="RouteIPTPage" >
          <layout class="QGridLayout" >
           <property name="margin" >
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="spacing" >
-           <number>2</number>
+           <number>12</number>
           </property>
           <item row="0" column="0" >
            <widget class="QLabel" name="textLabel4_3" >
@@ -1044,6 +1083,9 @@ object properties dialog.</string>
         </widget>
         <widget class="QWidget" name="NATBranchPage" >
          <layout class="QGridLayout" name="gridLayout_2" >
+          <property name="spacing" >
+           <number>12</number>
+          </property>
           <item row="0" column="0" colspan="2" >
            <widget class="QLabel" name="label_2" >
             <property name="text" >
