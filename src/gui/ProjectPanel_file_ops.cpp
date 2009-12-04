@@ -1310,7 +1310,7 @@ void ProjectPanel::save()
                rcs->isTemp(),
                rcs->getFileName().toLocal8Bit().constData());
 
-    undoStack->clear();
+    //undoStack->clear();
 
     if (!rcs->isRO() && !rcs->isTemp())
     {
