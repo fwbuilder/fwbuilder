@@ -6527,6 +6527,8 @@
             </TSrv>
             <NATRuleOptions>
               <Option name="id"></Option>
+              <Option name="ipt_snat_random">True</Option>
+              <Option name="ipt_use_snat_instead_of_masq">False</Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3CABE6DF" disabled="False" position="8" action="Translate" comment="">

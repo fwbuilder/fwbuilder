@@ -320,14 +320,12 @@ bool isDefaultNATRuleOptions(FWOptions *opt)
 
     QString platform = p->getStr("platform").c_str();
 
-//    if (fwbdebug)
-//        qDebug(QString("Options object type: %1   platform: %2   pf_pool_type_none: '%3'").arg(opt->getTypeName()).arg(platform).arg(opt->getStr("pf_pool_type_none").c_str()));
-
     if (NATRuleOptions::isA(opt))
     {
 	if (platform=="iptables")
         {
-            res = !opt->getBool("ipt_use_snat_instead_of_masq");
+            res = !opt->getBool("ipt_use_snat_instead_of_masq") &&
+                !opt->getBool("ipt_snat_random");
         }
 
 	if (platform=="pf")

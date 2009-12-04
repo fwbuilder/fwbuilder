@@ -597,6 +597,8 @@ bool NATCompiler_ipt::PrintRule::processNext()
     NATRule *rule=getNext(); 
     if (rule==NULL) return false;
 
+    FWOptions *ropt = rule->getOptionsObject();
+
     string chain = rule->getStr("ipt_chain");
     if (ipt_comp->chain_usage_counter[chain] == 0)
     {
@@ -693,6 +695,10 @@ bool NATCompiler_ipt::PrintRule::processNext()
             if (!tsrc->isAny()) cmdout << _printAddr(tsrc, false, true);
 	    string ports = _printSNATPorts(tsrv);
 	    if (!ports.empty()) cmdout << ":" << ports;
+
+            if (ropt->getBool("ipt_snat_random"))
+                cmdout << " --random";
+
 	}
 	break;
 /*
