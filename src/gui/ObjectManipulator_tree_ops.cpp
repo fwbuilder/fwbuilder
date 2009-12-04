@@ -554,6 +554,8 @@ void ObjectManipulator::addTreePage( FWObject *lib)
     m_objectManipulator->filter->connect(m_objectManipulator->filter,
                                          SIGNAL(editTextChanged(QString)),
                                          objTreeView, SLOT(setFilter(QString)));
+    QCoreApplication::postEvent(
+        m_project, new showObjectInTreeEvent(m_project->getFileName(), lib->getId()));
 }
 
 void ObjectManipulator::removeLib(FWObject* lib)
