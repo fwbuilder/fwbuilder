@@ -288,8 +288,6 @@ public:
                      const std::string &namesuffix);
      void autorenameVlans(std::list<libfwbuilder::FWObject*> &obj_list);
 
-     void guessSubInterfaceTypeAndAttributes(libfwbuilder::Interface *intf);
-
      void reload();
      
      void loadObjects();

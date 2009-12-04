@@ -30,10 +30,22 @@
 #include "bsdInterfaces.h"
 #include "pixInterfaces.h"
 
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/Resources.h"
+
 #include <iostream>
 
+using namespace libfwbuilder;
 using namespace std;
 
+interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObject(FWObject *fw)
+{
+    Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
+    string os_family = fw->getStr("host_OS");
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+    return getInterfacePropertiesObject(os_family);
+}
 
 interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObject(
     const std::string &os_family)

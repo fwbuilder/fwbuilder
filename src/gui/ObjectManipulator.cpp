@@ -316,14 +316,9 @@ void ObjectManipulator::makeNameUnique(FWObject *target, FWObject *obj)
         FWObject *fw = target;
         while (fw && !Firewall::cast(fw)) fw = fw->getParent();
 
-        Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
-        string os_family = fw->getStr("host_OS");
-        if (os_res!=NULL)
-            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
         std::auto_ptr<interfaceProperties> int_prop(
-            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                os_family));
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(fw));
+
         if (int_prop->looksLikeVlanInterface(obj_name)) return;
     }
     QString newname = makeNameUnique(target,
@@ -962,14 +957,8 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
 
     if (parent_fw && Interface::isA(obj))
     {
-        Resources* os_res = Resources::os_res[parent_fw->getStr("host_OS")];
-        string os_family = parent_fw->getStr("host_OS");
-        if (os_res!=NULL)
-            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
         std::auto_ptr<interfaceProperties> int_prop(
-            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                os_family));
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent_fw));
 
         return int_prop->validateInterface(ta, obj, false, err);
     }
@@ -1582,58 +1571,4 @@ void ObjectManipulator::setAttributesColumnEnabled(bool)
     }
 }
 
-/*
- * This method tries to guess appropriate interface type and some other
- * attributes for subinterfaces.
- */
-void ObjectManipulator::guessSubInterfaceTypeAndAttributes(Interface *intf)
-{
-    Interface *parent_intf = Interface::cast(intf->getParent());
-
-    if (parent_intf == NULL) return;
-
-    FWObject *f = intf->getParentHost();
-
-    Resources* os_res = Resources::os_res[f->getStr("host_OS")];
-    string os_family = f->getStr("host_OS");
-    if (os_res!=NULL)
-        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
-    interfaceProperties *int_prop =
-        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            os_family);
-    QString err;
-    if (int_prop->looksLikeVlanInterface(intf->getName().c_str()) &&
-        int_prop->isValidVlanInterfaceName(intf->getName().c_str(),
-                                           intf->getParent()->getName().c_str(),
-                                           err)
-    )
-    {
-        InterfaceData *idata = new InterfaceData(*intf);
-        //int_prop->parseVlan(idata);
-        idata->interface_type = "8021q";
-        int_prop->parseVlan(idata->name.c_str(), NULL, &(idata->vlan_id));
-        if (!idata->interface_type.empty())
-        {
-            intf->getOptionsObject()->setStr("type", idata->interface_type);
-            if (idata->interface_type == "8021q")
-                intf->getOptionsObject()->setInt("vlan_id", idata->vlan_id);
-        }
-        delete idata;
-    } else
-    {
-        if (parent_intf->getOptionsObject()->getStr("type") == "bridge")
-        {
-            intf->getOptionsObject()->setStr("type", "ethernet");
-        }
-
-        if (parent_intf->getOptionsObject()->getStr("type") == "bonding")
-        {
-            intf->getOptionsObject()->setStr("type", "ethernet");
-            intf->setUnnumbered(true);
-        }
-    }
-
-    delete int_prop;
-}
 

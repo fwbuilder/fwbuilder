@@ -30,10 +30,16 @@
 
 #include "interfaceProperties.h"
 
+namespace libfwbuilder {
+    class FWObject;
+}
+
+
 class interfacePropertiesObjectFactory {
 
 public:
     static interfaceProperties* getInterfacePropertiesObject(const std::string &host_os);
+    static interfaceProperties* getInterfacePropertiesObject(libfwbuilder::FWObject *fw);
 
 };
 

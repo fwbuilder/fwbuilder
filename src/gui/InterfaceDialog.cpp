@@ -114,7 +114,11 @@ void InterfaceDialog::loadFWObject(FWObject *o)
      * something relevant in the interface to complement their changes
      * and right after the interface has been created.
      */
-    m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(s);
+    interfaceProperties *int_prop =
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            s->getParentHost());
+    int_prop->guessSubInterfaceTypeAndAttributes(s);
+    delete int_prop;
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->label->setText( QString::fromUtf8(s->getLabel().c_str()) );
@@ -378,15 +382,10 @@ void InterfaceDialog::validate(bool *res)
         return;
     }
 
-    FWObject *f = Interface::cast(obj)->getParentHost();
-
-    Resources* os_res = Resources::os_res[f->getStr("host_OS")];
-    string os_family = f->getStr("host_OS");
-    if (os_res!=NULL)
-        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
     interfaceProperties *int_prop =
-        interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            Interface::cast(obj)->getParentHost());
+
     QString err;
     if ( ! int_prop->validateInterface(obj->getParent(), obj_name, err))
     {
@@ -462,7 +461,11 @@ void InterfaceDialog::applyChanges()
 
         // ticket #328: automatically assign vlan id to interface based on
         // interface name
-        m_project->m_panel->om->guessSubInterfaceTypeAndAttributes(intf);
+        interfaceProperties *int_prop =
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                Interface::cast(obj)->getParentHost());
+        int_prop->guessSubInterfaceTypeAndAttributes(intf);
+        delete int_prop;
 
         if (obj->isReadOnly()) return;
         m_project->undoStack->push(cmd.release());

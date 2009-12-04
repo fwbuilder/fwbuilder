@@ -218,14 +218,9 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
         assert(fw);
         QString obj_name = QString::fromUtf8(obj->getName().c_str());
 
-        Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
-        string os_family = fw->getStr("host_OS");
-        if (os_res!=NULL)
-            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
         std::auto_ptr<interfaceProperties> int_prop(
-            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                os_family));
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(fw));
+
         if (int_prop->looksLikeVlanInterface(obj_name))
         {
             // even though we only call this function if the type of

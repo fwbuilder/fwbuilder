@@ -2285,16 +2285,9 @@ void DiscoveryDruid::createRealObjects()
                         }
                     }
 
-                    Resources* os_res = Resources::os_res[o->getStr("host_OS")];
-                    string os_family = o->getStr("host_OS");
-                    if (os_res!=NULL)
-                        os_family = os_res->getResourceStr(
-                            "/FWBuilderResources/Target/family");
-
                     list<InterfaceData*> interface_tree;
                     std::auto_ptr<interfaceProperties> int_prop(
-                        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                            os_family));
+                        interfacePropertiesObjectFactory::getInterfacePropertiesObject(o));
                     int_prop->rearrangeInterfaces(od.interfaces, interface_tree);
 
                     if (interface_tree.size() != od.interfaces.size())

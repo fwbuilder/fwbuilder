@@ -432,3 +432,48 @@ bool interfaceProperties::isEligibleForCluster(Interface *intf)
     return true;
 }
 
+void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
+{
+    Interface *parent_intf = Interface::cast(intf->getParent());
+
+    if (parent_intf == NULL) return;
+
+    FWObject *f = intf->getParentHost();
+
+    Resources* os_res = Resources::os_res[f->getStr("host_OS")];
+    string os_family = f->getStr("host_OS");
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+    QString err;
+    if (looksLikeVlanInterface(intf->getName().c_str()) &&
+        isValidVlanInterfaceName(intf->getName().c_str(),
+                                 intf->getParent()->getName().c_str(), err)
+    )
+    {
+        InterfaceData *idata = new InterfaceData(*intf);
+        //parseVlan(idata);
+        idata->interface_type = "8021q";
+        parseVlan(idata->name.c_str(), NULL, &(idata->vlan_id));
+        if (!idata->interface_type.empty())
+        {
+            intf->getOptionsObject()->setStr("type", idata->interface_type);
+            if (idata->interface_type == "8021q")
+                intf->getOptionsObject()->setInt("vlan_id", idata->vlan_id);
+        }
+        delete idata;
+    } else
+    {
+        if (parent_intf->getOptionsObject()->getStr("type") == "bridge")
+        {
+            intf->getOptionsObject()->setStr("type", "ethernet");
+        }
+
+        if (parent_intf->getOptionsObject()->getStr("type") == "bonding")
+        {
+            intf->getOptionsObject()->setStr("type", "ethernet");
+            intf->setUnnumbered(true);
+        }
+    }
+}
+

@@ -582,8 +582,14 @@ void ObjectManipulator::newInterface()
     if (new_interface == NULL) return;
 
     if (Interface::isA(parent))
-        guessSubInterfaceTypeAndAttributes(new_interface);
-    else
+    {
+        interfaceProperties *int_prop =
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                new_interface->getParentHost());
+        int_prop->guessSubInterfaceTypeAndAttributes(new_interface);
+        delete int_prop;
+        //guessSubInterfaceTypeAndAttributes(new_interface);
+    } else
         new_interface->getOptionsObject()->setStr("type", "ethernet");
 }
 

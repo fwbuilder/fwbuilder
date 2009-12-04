@@ -84,6 +84,8 @@ public:
 
     virtual bool isEligibleForCluster(libfwbuilder::Interface *intf);
 
+    virtual void guessSubInterfaceTypeAndAttributes(libfwbuilder::Interface *intf);
+
     /**
      * for the given interface return list of its ip addresses that we
      * should manage using update_addresses shell function and list of
