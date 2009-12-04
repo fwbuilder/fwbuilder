@@ -151,6 +151,7 @@ newFirewallDialog::newFirewallDialog(FWObject *_p) : QDialog()
     currentTemplate = NULL;
     this->m_dialog->interfaceEditor1->clear();
     this->m_dialog->interfaceEditor2->clear();
+    this->m_dialog->interfaceEditor1->closeTab();
     this->m_dialog->interfaceEditor2->closeTab();//->removeTab(0);
 
     showPage(0);
