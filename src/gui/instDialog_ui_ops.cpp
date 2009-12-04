@@ -1102,7 +1102,7 @@ void instDialog::logItemClicked(QUrl data)
 {
     QStringList parts = data.toString().split(':');
     if (parts[0] == "Error") return;
-    if (parts.length()<3)
+    if (parts.size()<3)
     {
         if(fwbdebug)
             cout << "Wrong error message clicked" << endl;
