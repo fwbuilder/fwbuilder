@@ -785,11 +785,6 @@ bool ProjectPanel::validateForInsertion(FWObject *target, FWObject *obj)
     return objectTreeFormat->validateForInsertion(target, obj);
 }
 
-FWObject* ProjectPanel::createNewLibrary(FWObjectDatabase *db)
-{
-    return objectTreeFormat->createNewLibrary(db);
-}
-
 void ProjectPanel::registerRuleSetRedrawRequest()
 {
     if (!ruleSetRedrawPending)

@@ -292,8 +292,8 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
 
 void ObjectManipulator::newLibrary()
 {
-    FWObject *nlib = m_project->createNewLibrary(m_project->db());
-    addTreePage( nlib );
+    FWObject *nlib = FWBTree().createNewLibrary(m_project->db()); //   m_project->createNewLibrary(m_project->db());
+    addLib( nlib );
 }
 
 void ObjectManipulator::newPolicyRuleSet ()

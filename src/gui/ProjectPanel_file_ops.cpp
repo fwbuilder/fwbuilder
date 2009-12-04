@@ -52,6 +52,7 @@
 #include "ObjConflictResolutionDialog.h"
 #include "LibExportDialog.h"
 #include "longTextDialog.h"
+#include "FWBTree.h"
 
 #include <QtDebug>
 #include <QMdiSubWindow>
@@ -900,7 +901,7 @@ void ProjectPanel::loadStandardObjects()
 
         if (fwbdebug) qDebug("ProjectPanel::load(): create User library");
 
-        FWObject *userLib = createNewLibrary( objdb );
+        FWObject *userLib = FWBTree().createNewLibrary(objdb);
         userLib->setName("User");
         userLib->setStr("color","#d2ffd0");
 

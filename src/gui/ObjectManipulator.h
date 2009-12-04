@@ -110,14 +110,13 @@ class ObjectManipulator : public QWidget
 
     QString getTreeLabel( libfwbuilder::FWObject *obj );
 
-    void addTreePage(libfwbuilder::FWObject *lib);
     void showObjectInTree(ObjectTreeViewItem *otvi);
 
     void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm);
     
     int  getIdxForLib(libfwbuilder::FWObject*);
-    void addLib( libfwbuilder::FWObject *lib, QTreeWidget* otv=NULL);
-    void removeLib(libfwbuilder::FWObject*);
+    void addLib(libfwbuilder::FWObject *lib);
+    void removeLib(libfwbuilder::FWObject *lib);
     void removeLib(int idx);
     void updateCreateObjectMenu(libfwbuilder::FWObject* lib);
 

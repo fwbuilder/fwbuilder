@@ -147,7 +147,7 @@ void ObjectManipulator::showDeletedObjects(bool f)
         if (f)
         {
             if (idx>=0) return;
-            addTreePage( dobj );
+            addLib( dobj );
             openLib( dobj );
         } else
         {

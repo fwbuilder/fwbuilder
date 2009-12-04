@@ -334,7 +334,6 @@ public:
     QString printHeader();
 
     bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
-    libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
     void toggleViewTree(bool f);
 

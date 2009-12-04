@@ -285,7 +285,7 @@ void ObjectManipulator::updateLibName(FWObject *lib)
     if (m_objectManipulator->libs->itemText(oldidx) != newlibname)
     {
         removeLib(oldidx);
-        addLib(lib, objTreeView);
+        addLib(lib);
     }
 }
 
@@ -436,7 +436,7 @@ void ObjectManipulator::loadObjects()
              lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID &&
              firstUserLib==NULL) firstUserLib = *i;
 
-        addTreePage( lib );
+        addLib( lib );
 
         if (fwbdebug) qDebug("ObjectManipulator::loadObjects %p added lib %s",
                              this, lib->getName().c_str());
@@ -447,43 +447,31 @@ void ObjectManipulator::loadObjects()
     if (fwbdebug) qDebug("ObjectManipulator::loadObjects %p done", this);
 }
 
-void ObjectManipulator::addLib( FWObject *lib, QTreeWidget* otv)
+void ObjectManipulator::addLib(FWObject *lib)
 {
+    if (fwbdebug) qDebug("Object Manipulator::addLib lib: %s",
+                         lib->getName().c_str());
+
+    ObjectTreeView *objTreeView = new ObjectTreeView(
+        m_project, m_objectManipulator->widgetStack, OBJTREEVIEW_WIDGET_NAME );
+
     QString newlibname = QString::fromUtf8(lib->getName().c_str());
-    int              N = m_objectManipulator->libs->count();
-    int            idx = 0;
+    int N = m_objectManipulator->libs->count();
+    int idx = 0;
     vector<FWObject*>::iterator  i1=idxToLibs.begin();
     vector<QTreeWidget*>::iterator i2=idxToTrees.begin();
     for ( ; idx<N; ++idx,++i1,++i2)
         if ( m_objectManipulator->libs->itemText(idx) > newlibname ) break;
 
-    string icn=":/Icons/"+lib->getTypeName()+"/icon-tree";
-            //Resources::global_res->getObjResourceStr(lib,"icon-tree").c_str();
     QPixmap pm;
-    if ( ! QPixmapCache::find( icn.c_str(), pm) )
-    {
-        pm.load( icn.c_str() );
-        QPixmapCache::insert( icn.c_str(), pm);
-    }
+    FWBTree().setObjectIcon(lib, &pm, 0);
+
     m_objectManipulator->libs->insertItem( idx, pm, newlibname);
-//    idx=libs->count()-1;
 
     m_objectManipulator->libs->setCurrentIndex(idx);
 
-    idxToLibs.insert(i1,lib);
-    if (otv!=NULL) idxToTrees.insert(i2,otv);
-
-}
-
-void ObjectManipulator::addTreePage( FWObject *lib)
-{
-    if (fwbdebug) qDebug("Object Manipulator::addTreePage %p lib: %s",
-                         this, lib->getName().c_str());
-
-    ObjectTreeView *objTreeView = new ObjectTreeView(
-        m_project, m_objectManipulator->widgetStack, OBJTREEVIEW_WIDGET_NAME );
-
-    addLib(lib, objTreeView);
+    idxToLibs.insert(i1, lib);
+    idxToTrees.insert(i2, objTreeView);
 
     QSizePolicy policy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     policy.setHorizontalStretch(0);
@@ -534,9 +522,6 @@ void ObjectManipulator::addTreePage( FWObject *lib)
 
     itm1->setText( 0, QString::fromUtf8(lib->getName().c_str()) );
     itm1->setText( 1, getTreeLabel(lib) );
-
-    QPixmap pm;
-    FWBTree().setObjectIcon(lib, &pm, 0);
     itm1->setIcon( 0, pm);
 
     itm1->setProperty("type", lib->getTypeName().c_str() );
