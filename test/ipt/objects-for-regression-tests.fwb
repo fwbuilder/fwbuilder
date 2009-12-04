@@ -2692,6 +2692,7 @@
         <NetworkIPv6 id="id4834B9206131" name="net-fe80" comment="" ro="False" address="fe80::" netmask="64"/>
         <NetworkIPv6 id="id48416A7016880" name="DIGITAL-CA-DEC" comment="" ro="False" address="3ffe:1200:2000::" netmask="36"/>
         <NetworkIPv6 id="id48416A7316880" name="HEXAGO-V6-NET1" comment="" ro="False" address="2001:5c0::" netmask="32"/>
+        <Network id="id86213X27543" name="net-err" comment="It should be impossible to create network object with netmask 0.0.0.0 in the GUI; this object was created manually and is used to test compiler check for this kind of misconfigured object" ro="False" address="1.2.3.0" netmask="0.0.0.0"/>
         <Network id="id86936X27543" name="net-1.1.1" comment="" ro="False" address="1.1.1.0" netmask="255.255.255.0"/>
         <NetworkIPv6 id="id40507X82687" name="3ffff:ffff::/32" comment="" ro="False" address="3fff:ffff::" netmask="32"/>
         <NetworkIPv6 id="id40508X82687" name="2001:db8::/32" comment="" ro="False" address="2001:db8::" netmask="32"/>
@@ -6339,7 +6340,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1251648690" lastInstalled="1142003872" lastModified="1250096529" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1251648690" lastInstalled="1142003872" lastModified="1259953340" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -8079,7 +8080,7 @@
           </PolicyRule>
           <PolicyRule id="id3AFB66F9" disabled="False" log="True" position="29" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
-              <ObjectRef ref="sysid0"/>
+              <ObjectRef ref="id86213X27543"/>
             </Src>
             <Dst neg="False">
               <ObjectRef ref="sysid0"/>
