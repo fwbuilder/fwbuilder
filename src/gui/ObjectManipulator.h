@@ -108,8 +108,6 @@ class ObjectManipulator : public QWidget
                                      libfwbuilder::FWObject *obj);
     void insertSubtree( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
 
-    void removeObjectFromTreeView(libfwbuilder::FWObject *obj );
-
     QString getTreeLabel( libfwbuilder::FWObject *obj );
 
     void addTreePage(libfwbuilder::FWObject *lib);
@@ -149,7 +147,7 @@ class ObjectManipulator : public QWidget
     void findWhereUsedRecursively(libfwbuilder::FWObject *obj,
                                   libfwbuilder::FWObject *top,
                                   std::set<libfwbuilder::FWObject*> &resset);
-    void refreshSubtree(QTreeWidgetItem *itm);
+    void refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem *itm);
 
 public slots:
      virtual void libChanged(int l);
@@ -297,6 +295,9 @@ public:
 
      void insertObjectInTree(libfwbuilder::FWObject *parent,
                              libfwbuilder::FWObject *obj);
+     void insertSubtree(libfwbuilder::FWObject *parent,
+                        libfwbuilder::FWObject *obj);
+    void removeObjectFromTreeView(libfwbuilder::FWObject *obj );
 
      void openObject(libfwbuilder::FWObject *obj, bool register_in_history);
      void openObject(ObjectTreeViewItem *otvi,    bool register_in_history);

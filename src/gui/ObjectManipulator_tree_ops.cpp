@@ -181,6 +181,13 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     return nitm;
 }
 
+void ObjectManipulator::insertSubtree(FWObject *parent,
+                                      FWObject *obj )
+{
+    ObjectTreeViewItem* parent_item = allItems[parent];
+    insertSubtree(parent_item, obj);
+}
+
 /**
  * This method enforces certain order of items in the tree depending
  * on the parent item type.
@@ -296,18 +303,38 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
     QTreeWidgetItem *itm = allItems[obj];
     if (itm==NULL) return;
 
+    // first, update tree item that represents @obj. Its name or label
+    // (second column) might have changed
+    QString old_itm_text = itm->text(0);
+    itm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
+    itm->setText( 1, getTreeLabel(obj) );
+    getCurrentObjectTree()->updateTreeIcons();
+    refreshSubtree(itm->parent(), itm);
+
+    // now if we need to update subtree, call refreshSubtree()
+    if (subtree)
+        refreshSubtree(itm, NULL);
+
+// no need in the hacks below after I added events insertObjectInTreeEvent and
+// removeObjectFromTreeEvent. These events are posted by FWCmdAddObject::undo()
+// and redo() functions.
+
+#if 0
     if (subtree)
     {
+
         QTreeWidgetItem *parent_itm = itm->parent();
         bool was_expanded = itm->isExpanded();
 
         qDebug() << "Remove QTreeWidgetItem from the tree: "
                  << "itm=" << itm
+                 << itm->text(0)
                  << "parent_itm=" << parent_itm;
         if (parent_itm)
         {
             parent_itm->removeChild(itm);
             insertSubtree(dynamic_cast<ObjectTreeViewItem*>(parent_itm), obj);
+            refreshSubtree(parent_itm, itm);
         } else
         {
             int idx = itm->treeWidget()->indexOfTopLevelItem(itm);
@@ -320,7 +347,7 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
         if (itm)
         {
             itm->setExpanded(was_expanded);
-            refreshSubtree(itm);
+            refreshSubtree(itm->parent(), itm);
         }
     } else
     {
@@ -328,8 +355,9 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
         itm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
         itm->setText( 1, getTreeLabel(obj) );
         getCurrentObjectTree()->updateTreeIcons();
-        refreshSubtree(itm);
+        refreshSubtree(itm->parent(), itm);
     }
+#endif
 }
 
 void ObjectManipulator::clearObjects()
@@ -547,5 +575,37 @@ void ObjectManipulator::removeLib(int id)
             break;
         }
     }
+}
+
+void ObjectManipulator::refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem *itm)
+{
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::refreshSubtree parent:"
+                 << parent->text(0)
+                 << "itm:" << QString((itm)?itm->text(0):"");
+    /*
+     * re-sorting parent tree item causes havoc. If I do not
+     * collapse/expand it, I get strange glitches in display. 
+     */
+    parent->sortChildren(0, Qt::AscendingOrder);//();
+
+    if (fwbdebug)
+        qDebug("ObjectManipulator::refreshSubtree expand/collapse parent");
+    /*
+     * workaround for QT4 bug 
+     * http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=233975
+     * Affects QT 4.4.1
+     *
+     * This has a side effect in that the tree loses its scrollong
+     * position and scrolls all the way to the top. If the object
+     * being edited was in the middle or close to the bottom, it disappears
+     * from view. Call to scrollToItem() fixes this.
+     */
+    parent->setExpanded(false);
+    parent->setExpanded(true);
+    //getCurrentObjectTree()->header()->resizeSections(QHeaderView::ResizeToContents);
+    if (itm)
+        getCurrentObjectTree()->scrollToItem(itm, QAbstractItemView::EnsureVisible);
+    getCurrentObjectTree()->update();
 }
 

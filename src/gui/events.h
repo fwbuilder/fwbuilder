@@ -50,6 +50,8 @@ enum EVENT_CODES {
     SHOW_OBJECT_IN_TREE_EVENT ,
     SHOW_OBJECT_IN_RULESET_EVENT ,
     SELECT_RULE_ELEMENT_EVENT,
+    INSERT_OBJECT_IN_TREE_EVENT,
+    REMOVE_OBJECT_FROM_TREE_EVENT,
     RELOAD_OBJECT_TREE_EVENT ,
     RELOAD_OBJECT_TREE_IMMEDIATELY_EVENT ,
     OPEN_RULESET_EVENT ,
@@ -176,6 +178,27 @@ public:
                      QEvent::Type(QEvent::User + SELECT_RULE_ELEMENT_EVENT),
                      "selectRuleElementEvent")
     { column_type = ct; }
+};
+
+
+class insertObjectInTreeEvent : public fwbUpdateEvent {
+public:
+    int parent_id;
+    insertObjectInTreeEvent(const QString &file_name, int p_id, int obj_id) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + INSERT_OBJECT_IN_TREE_EVENT),
+                   "insertObjectInTreeEvent")
+    { parent_id = p_id; }
+};
+
+
+class removeObjectFromTreeEvent : public fwbUpdateEvent {
+public:
+    removeObjectFromTreeEvent(const QString &file_name, int obj_id) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + REMOVE_OBJECT_FROM_TREE_EVENT),
+                   "removeObjectFromTreeEvent")
+    {}
 };
 
 

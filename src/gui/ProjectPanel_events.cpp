@@ -225,6 +225,23 @@ bool ProjectPanel::event(QEvent *event)
 
             switch (event->type() - QEvent::User)
             {
+            case INSERT_OBJECT_IN_TREE_EVENT:
+            {
+                FWObject *parent =
+                    db()->findInIndex(
+                        dynamic_cast<insertObjectInTreeEvent*>(event)->parent_id);
+                m_panel->om->insertSubtree(parent, obj);
+                ev->accept();
+                return true;
+            }
+
+            case REMOVE_OBJECT_FROM_TREE_EVENT:
+            {
+                m_panel->om->removeObjectFromTreeView(obj);
+                ev->accept();
+                return true;
+            }
+
             case UPDATE_OBJECT_IN_TREE_EVENT:
                 registerObjectToUpdateInTree(obj, false);
                 ev->accept();

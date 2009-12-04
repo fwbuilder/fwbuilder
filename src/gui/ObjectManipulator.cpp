@@ -119,43 +119,6 @@ QString ObjectManipulator::getTreeLabel( FWObject *obj )
     return FWObjectPropertiesFactory::getObjectPropertiesBrief(obj);
 }
 
-void ObjectManipulator::refreshSubtree(QTreeWidgetItem *itm)
-{
-    if (fwbdebug)
-        qDebug() << "ObjectManipulator::refreshSubtree itm:" << itm->text(0);
-
-    QTreeWidgetItem *parent = itm->parent();
-    if (parent)
-    {
-        if (fwbdebug)
-            qDebug() << "ObjectManipulator::refreshSubtree parent:"
-                     << parent->text(0);
-        /*
-         * re-sorting parent tree item causes havoc. If I do not
-         * collapse/expand it, I get strange glitches in display. 
-         */
-        parent->sortChildren(0, Qt::AscendingOrder);//();
-
-        if (fwbdebug)
-            qDebug("ObjectManipulator::refreshSubtree expand/collapse parent");
-        /*
-         * workaround for QT4 bug 
-         * http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=233975
-         * Affects QT 4.4.1
-         *
-         * This has a side effect in that the tree loses its scrollong
-         * position and scrolls all the way to the top. If the object
-         * being edited was in the middle or close to the bottom, it disappears
-         * from view. Call to scrollToItem() fixes this.
-         */
-        parent->setExpanded(false);
-        parent->setExpanded(true);
-        //getCurrentObjectTree()->header()->resizeSections(QHeaderView::ResizeToContents);
-        getCurrentObjectTree()->scrollToItem(itm, QAbstractItemView::EnsureVisible);
-        getCurrentObjectTree()->update();
-    }
-}
-
 void ObjectManipulator::showDeletedObjects(bool f)
 {
     try

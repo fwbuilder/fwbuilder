@@ -90,11 +90,21 @@ void FWCmdAddObject::undo()
 
     QString filename = QString::fromUtf8(grp->getRoot()->getFileName().c_str());
 
-    QCoreApplication::postEvent(mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
-    QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, grp->getId()));
+    QCoreApplication::postEvent(
+        mw, new removeObjectFromTreeEvent(filename, member->getId()));
+
+    QCoreApplication::postEvent(
+        mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
+
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(filename, grp->getId()));
+
     if (mw->isEditorVisible())
-        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, grp->getId()));
-    QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, grp->getId()));
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(filename, grp->getId()));
+
+    QCoreApplication::postEvent(
+        mw, new showObjectInTreeEvent(filename, grp->getId()));
 }
 
 void FWCmdAddObject::redo()
@@ -142,10 +152,19 @@ void FWCmdAddObject::redo()
     // insufficient, we need to reload the whole tree. The caller should have
     // set flag require_complete_tree_reload to signal that.
     if (require_complete_tree_reload)
-        QCoreApplication::postEvent(mw, new reloadObjectTreeImmediatelyEvent(filename));
+        QCoreApplication::postEvent(
+            mw, new reloadObjectTreeImmediatelyEvent(filename));
     else
-        QCoreApplication::postEvent(mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
+    {
+        QCoreApplication::postEvent(
+            mw, new insertObjectInTreeEvent(filename, grp->getId(), member->getId()));
+
+        QCoreApplication::postEvent(
+            mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
+    }
+
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, grp->getId()));
+
     // post openObjectInEditorEvent first so that editor panel opens
     // this matters if the tree needs to scroll to show the object when
     // showObjectInTreeEvent is posted because vertical size of the tree
