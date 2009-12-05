@@ -316,7 +316,6 @@ public:
                                      libfwbuilder::FWObject *obj);
      
      void updateLibColor(libfwbuilder::FWObject *lib);
-     void updateLibName(libfwbuilder::FWObject *lib);
 
      void autoRenameChildren(libfwbuilder::FWObject *obj,
                              const QString &oldName,
