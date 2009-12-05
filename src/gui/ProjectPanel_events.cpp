@@ -242,6 +242,16 @@ bool ProjectPanel::event(QEvent *event)
                 return true;
             }
 
+            case ADD_TREE_PAGE_EVENT:
+                m_panel->om->addLib(obj);
+                ev->accept();
+                return true;
+
+            case REMOVE_TREE_PAGE_EVENT:
+                m_panel->om->removeLib(obj);
+                ev->accept();
+                return true;
+
             case UPDATE_OBJECT_IN_TREE_EVENT:
                 registerObjectToUpdateInTree(obj, false);
                 ev->accept();

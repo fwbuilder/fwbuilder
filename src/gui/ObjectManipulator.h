@@ -115,8 +115,6 @@ class ObjectManipulator : public QWidget
     void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm);
     
     int  getIdxForLib(libfwbuilder::FWObject*);
-    void addLib(libfwbuilder::FWObject *lib);
-    void removeLib(libfwbuilder::FWObject *lib);
     void removeLib(int idx);
     void updateCreateObjectMenu(libfwbuilder::FWObject* lib);
 
@@ -296,8 +294,11 @@ public:
                              libfwbuilder::FWObject *obj);
      void insertSubtree(libfwbuilder::FWObject *parent,
                         libfwbuilder::FWObject *obj);
-    void removeObjectFromTreeView(libfwbuilder::FWObject *obj );
+     void removeObjectFromTreeView(libfwbuilder::FWObject *obj );
 
+     void addLib(libfwbuilder::FWObject *lib);
+     void removeLib(libfwbuilder::FWObject *lib);
+     
      void openObject(libfwbuilder::FWObject *obj, bool register_in_history);
      void openObject(ObjectTreeViewItem *otvi,    bool register_in_history);
 

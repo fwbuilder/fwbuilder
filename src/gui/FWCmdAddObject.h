@@ -34,10 +34,12 @@
 
 class FWCmdAddObject : public FWCmdChange
 {
+protected:
     libfwbuilder::FWObject *member;
     bool require_complete_tree_reload;
-protected:
     virtual void notify();
+
+    void prepareStatesForRedo();
 
 public:
     FWCmdAddObject(ProjectPanel *project,
@@ -46,6 +48,22 @@ public:
                    QString text=QString());
     ~FWCmdAddObject();
     void setNeedTreeReload(bool f) { require_complete_tree_reload = f; }
+    virtual void redo();
+    virtual void undo();
+};
+
+/********************************************************
+ * FWCmdAddLibrary
+ ********************************************************/
+
+class FWCmdAddLibrary : public FWCmdAddObject
+{
+public:
+    FWCmdAddLibrary(ProjectPanel *project,
+                    libfwbuilder::FWObject *root,
+                    libfwbuilder::FWObject *lib,
+                    QString text=QString());
+    ~FWCmdAddLibrary();
     virtual void redo();
     virtual void undo();
 };

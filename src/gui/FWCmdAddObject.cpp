@@ -107,7 +107,7 @@ void FWCmdAddObject::undo()
         mw, new showObjectInTreeEvent(filename, grp->getId()));
 }
 
-void FWCmdAddObject::redo()
+void FWCmdAddObject::prepareStatesForRedo()
 {
     // newState should have the new group member. Add it to the group.
     // This member could have been added to the newState, if so,
@@ -139,9 +139,19 @@ void FWCmdAddObject::redo()
         member->ref();
         new_grp->remove(member, false); // and do not delete
     }
+}
+
+void FWCmdAddObject::redo()
+{
+    prepareStatesForRedo();
+
+    FWObject* grp = getObject();
+
     grp->add(member);
+
     if (fwbdebug) qDebug() << "FWCmdAddObject::redo() member->ref_counter=" 
                            << member->getRefCounter();
+
     QString filename = QString::fromUtf8(grp->getRoot()->getFileName().c_str());
 
     // updateObjectAndSubtreeImmediatelyEvent updates the part of the
@@ -176,5 +186,76 @@ void FWCmdAddObject::redo()
 
 void FWCmdAddObject::notify()
 {
+}
+
+
+/********************************************************
+ * FWCmdAddLibrary
+ *
+ ********************************************************/
+
+FWCmdAddLibrary::FWCmdAddLibrary(ProjectPanel *project,
+                                 FWObject *root,
+                                 FWObject *lib,
+                                 QString text):
+    FWCmdAddObject(project, root, lib, text)
+{
+    assert(FWObjectDatabase::cast(root)!=NULL);
+
+    if (text.isEmpty())
+    {
+        setText(QObject::tr("Add library"));
+    } else
+    {
+        setText(text);
+    }
+}
+
+FWCmdAddLibrary::~FWCmdAddLibrary() {}
+
+void FWCmdAddLibrary::undo()
+{
+    FWObject* root = getObject();
+    FWObject* lib = member;
+
+    root->remove(lib, false);
+
+    QString filename = QString::fromUtf8(FWObjectDatabase::cast(root)->getFileName().c_str());
+
+    QCoreApplication::postEvent(
+        mw, new removeTreePageEvent(filename, lib->getId()));
+
+    // switch to another library
+    QCoreApplication::postEvent(
+        mw, new showObjectInTreeEvent(filename, 
+                                      FWObjectDatabase::STANDARD_LIB_ID));
+}
+
+void FWCmdAddLibrary::redo()
+{
+    prepareStatesForRedo();
+
+    FWObject* root = getObject();
+    FWObject* lib = member;
+
+    getObject()->add(lib);
+
+    QString filename = QString::fromUtf8(FWObjectDatabase::cast(root)->getFileName().c_str());
+
+    QCoreApplication::postEvent(
+        mw, new addTreePageEvent(filename, lib->getId()));
+
+    QCoreApplication::postEvent(
+        mw, new updateObjectAndSubtreeImmediatelyEvent(filename, lib->getId()));
+
+    QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, lib->getId()));
+
+    // post openObjectInEditorEvent first so that editor panel opens
+    // this matters if the tree needs to scroll to show the object when
+    // showObjectInTreeEvent is posted because vertical size of the tree
+    // changes when editor opens
+    if (mw->isEditorVisible())
+        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, lib->getId()));
+    QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, lib->getId()));
 }
 

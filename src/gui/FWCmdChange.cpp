@@ -52,8 +52,15 @@ FWCmdChange::FWCmdChange(ProjectPanel *project, FWObject *obj, QString text):
 
     FWObjectDatabase* db = obj->getRoot();
 
-    this->oldState = db->create(obj->getTypeName());
-    this->newState = db->create(obj->getTypeName());
+    if (db == obj)
+    {
+        this->oldState = new FWObjectDatabase();
+        this->newState = new FWObjectDatabase();
+    } else
+    {
+        this->oldState = db->create(obj->getTypeName());
+        this->newState = db->create(obj->getTypeName());
+    }
 
     this->oldState->duplicateForUndo(obj);
     this->newState->duplicateForUndo(obj);

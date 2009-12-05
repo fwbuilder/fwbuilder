@@ -293,7 +293,18 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
 void ObjectManipulator::newLibrary()
 {
     FWObject *nlib = FWBTree().createNewLibrary(m_project->db()); //   m_project->createNewLibrary(m_project->db());
-    addLib( nlib );
+    // At this point new library is already inserted into the object tree
+    // but it has not been added to the QTreeWidget yet.
+    FWCmdAddLibrary *cmd = new FWCmdAddLibrary(
+        m_project, m_project->db(), NULL, QObject::tr("Create library"));
+    FWObject *new_state = cmd->getNewState();
+    m_project->db()->remove(nlib, false);
+    new_state->add(nlib);
+
+    m_project->undoStack->push(cmd);
+    m_project->db()->setDirty(true);
+
+    //addLib( nlib );
 }
 
 void ObjectManipulator::newPolicyRuleSet ()

@@ -52,6 +52,8 @@ enum EVENT_CODES {
     SELECT_RULE_ELEMENT_EVENT,
     INSERT_OBJECT_IN_TREE_EVENT,
     REMOVE_OBJECT_FROM_TREE_EVENT,
+    ADD_TREE_PAGE_EVENT,
+    REMOVE_TREE_PAGE_EVENT,
     RELOAD_OBJECT_TREE_EVENT ,
     RELOAD_OBJECT_TREE_IMMEDIATELY_EVENT ,
     OPEN_RULESET_EVENT ,
@@ -198,6 +200,26 @@ public:
     fwbUpdateEvent(file_name, obj_id,
                    QEvent::Type(QEvent::User + REMOVE_OBJECT_FROM_TREE_EVENT),
                    "removeObjectFromTreeEvent")
+    {}
+};
+
+
+class addTreePageEvent : public fwbUpdateEvent {
+public:
+    addTreePageEvent(const QString &file_name, int obj_id) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + ADD_TREE_PAGE_EVENT),
+                   "addTreePageEvent")
+    {}
+};
+
+
+class removeTreePageEvent : public fwbUpdateEvent {
+public:
+    removeTreePageEvent(const QString &file_name, int obj_id) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + REMOVE_TREE_PAGE_EVENT),
+                   "removeTreePageEvent")
     {}
 };
 
