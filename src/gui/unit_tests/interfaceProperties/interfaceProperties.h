@@ -23,6 +23,19 @@
 
 */
 
+
+#ifndef INTERFACEPROPERTIESTEST
+#define INTERFACEPROPERTIESTEST
+
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Cluster.h"
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
+
 #include <cppunit/TestCase.h>
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
@@ -30,12 +43,10 @@
 #include <string>
 
 
-#ifndef INTERFACEPROPERTIESTEST
-#define INTERFACEPROPERTIESTEST
 
 class interfacePropertiesTest: public CppUnit::TestCase
 {
-    std::vector<std::vector<std::string> > testData;
+    libfwbuilder::FWObjectDatabase *db;
 public:
   //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
 

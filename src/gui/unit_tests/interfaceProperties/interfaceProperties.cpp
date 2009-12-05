@@ -25,65 +25,13 @@
 
 #include "interfaceProperties.h"
 
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/FWObject.h"
-#include "fwbuilder/Cluster.h"
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/Interface.h"
-#include "fwbuilder/Cluster.h"
-#include "interfaceProperties.h"
-#include "interfacePropertiesObjectFactory.h"
-//#include "../global.h"
-
-#include <QDebug>
-
 using namespace std;
 using namespace libfwbuilder;
 using namespace CppUnit;
 
 void interfacePropertiesTest::validateInterface()
 {
-    CPPUNIT_ASSERT (1 != 0);
-    for (unsigned int i = 0; i<testData.size(); i++)
-    {
-        string host_OS = testData[i][0];
-        string parent_type = testData[i][1];
-        string type = testData[i][2];
-        bool unnumbered = testData[i][3] == "true";
-        bool answer = testData[i][4] == "true";
-        FWObjectDatabase db;
-        Cluster cluster;
-        Interface parent;
-        Interface iface;
-
-        db.add(&cluster);
-        db.add(&parent);
-        parent.add(&iface, false);
-        parent.getOptionsObject()->setStr("type", parent_type);
-
-        iface.setUnnumbered(unnumbered);
-        iface.getOptionsObject()->setStr("type", type);
-        cluster.setStr("host_OS", host_OS);
-
-        Resources* os_res = Resources::os_res[host_OS];
-        string os_family = host_OS;
-        if (os_res!=NULL)
-            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
-        interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
-
-        QString err;
-
-        CPPUNIT_ASSERT(int_prop != NULL);
-
-        bool result = int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster),
-                                               dynamic_cast<FWObject*>(&iface), false, err);
-        CPPUNIT_ASSERT(result == answer);
-    }
-}
-
-void interfacePropertiesTest::setUp()
-{
+    vector<vector<string> > testData;
     vector<string> row;
     row.push_back("linux24");
     row.push_back("ethernet");
@@ -115,5 +63,48 @@ void interfacePropertiesTest::setUp()
     row.push_back("false");
     row.push_back("false");
     testData.push_back(row);
+
+    for (unsigned int i = 0; i<testData.size(); i++)
+    {
+        string host_OS = testData[i][0];
+        string parent_type = testData[i][1];
+        string type = testData[i][2];
+        bool unnumbered = testData[i][3] == "true";
+        bool answer = testData[i][4] == "true";
+
+        Cluster cluster;
+        Interface parent;
+        Interface iface;
+
+        db->add(&cluster);
+        db->add(&parent);
+        parent.add(&iface, false);
+        parent.getOptionsObject()->setStr("type", parent_type);
+
+        iface.setUnnumbered(unnumbered);
+        iface.getOptionsObject()->setStr("type", type);
+        cluster.setStr("host_OS", host_OS);
+
+        Resources* os_res = Resources::os_res[host_OS];
+        string os_family = host_OS;
+        if (os_res!=NULL)
+            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+        interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
+
+        QString err;
+
+        CPPUNIT_ASSERT(int_prop != NULL);
+
+        bool result = int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster),
+                                               dynamic_cast<FWObject*>(&iface), false, err);
+        CPPUNIT_ASSERT(result == answer);
+        CPPUNIT_ASSERT(err.isEmpty() == answer);
+    }
+}
+
+void interfacePropertiesTest::setUp()
+{
+    db = new FWObjectDatabase();
 }
 
