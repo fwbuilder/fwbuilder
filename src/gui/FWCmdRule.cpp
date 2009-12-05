@@ -292,6 +292,36 @@ void FWCmdRuleRemoveFromGroup::undoOnModel(RuleSetModel *md)
 }
 
 /********************************************************
+ * FWCmdRuleNewGroup
+ ********************************************************/
+
+FWCmdRuleNewGroup::FWCmdRuleNewGroup(ProjectPanel* project, RuleSet* ruleset, Rule* firstRule, Rule* lastRule, const QString groupName):
+        FWCmdRule(project, ruleset), firstRule(firstRule), lastRule(lastRule)
+{
+    this->groupName = getRuleSetModel()->findUniqueNameForGroup(groupName);
+
+    setText(QObject::tr("create new group ")+this->groupName);
+}
+
+void FWCmdRuleNewGroup::redoOnModel(RuleSetModel *md)
+{
+    QModelIndex first = md->index(firstRule, 0);
+    QModelIndex last = md->index(lastRule, 0);
+    QModelIndex index = md->createNewGroup(groupName, first.row(), last.row());
+
+    project->getCurrentRuleSetView()->setFirstColumnSpanned(index.row(), QModelIndex(), true);
+}
+
+void FWCmdRuleNewGroup::undoOnModel(RuleSetModel *md)
+{
+    QModelIndex group = md->index(groupName);
+    QModelIndex first = md->index(firstRule, 0);
+    QModelIndex last = md->index(lastRule, 0);
+
+    md->removeFromGroup(group, first.row(), last.row());
+}
+
+/********************************************************
  * FWCmdRuleChange
  ********************************************************/
 

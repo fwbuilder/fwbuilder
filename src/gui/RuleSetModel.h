@@ -166,6 +166,7 @@ public:
     RuleSetModelIterator end();
 
     void resetAllSizes();
+    QString findUniqueNameForGroup(const QString &groupName);
 
 protected:
     libfwbuilder::RuleElement *getRuleElementByRole(libfwbuilder::Rule* r, std::string roleName) const;
@@ -191,7 +192,7 @@ private:
     virtual QVariant getRuleDataForDisplayRole(const QModelIndex &index, RuleNode* node) const = 0;
     QVariant getColumnDesc(const QModelIndex &index) const;
 
-    QString findUniqueNameForGroup(const QString &groupName);
+
     void moveToGroup(RuleNode *targetGroup, int first, int last, bool append=true);
 
     void removeToList(QList<RuleNode*> &list, const QModelIndex &group, int first, int last);

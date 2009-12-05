@@ -1126,7 +1126,6 @@ void RuleSetView::newGroup()
 
     if (!selection.isEmpty() && isOnlyTopLevelRules(selection))
     {
-
         bool ok;
 
         QString newGroupName = QInputDialog::getText(
@@ -1136,12 +1135,13 @@ void RuleSetView::newGroup()
 
         if (ok && !newGroupName.isEmpty())
         {
-            QModelIndex index = md->createNewGroup(newGroupName, selection.first().row(), selection.last().row());
 
-            setFirstColumnSpanned(index.row(), QModelIndex(), true);
-
-            QCoreApplication::postEvent(
-                mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+            FWCmdRuleNewGroup* cmd = new FWCmdRuleNewGroup(
+                    project, md->getRuleSet(),
+                    md->nodeFromIndex(selection.first())->rule,
+                    md->nodeFromIndex(selection.last())->rule,
+                    newGroupName);
+            project->undoStack->push(cmd);
         }
     }
 }
