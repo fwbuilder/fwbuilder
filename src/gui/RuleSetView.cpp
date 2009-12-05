@@ -1148,24 +1148,15 @@ void RuleSetView::newGroup()
 
 void RuleSetView::addToGroupAbove()
 {
-    RuleSetModel* md = ((RuleSetModel*)model());
-    if(!isTreeReadWrite(this,md->getRuleSet())) return;
-
-    QModelIndexList selection = getSelectedRows();
-
-    // we cannot perform this action if the selection contains groups or rules assigned to groups
-
-    if (!selection.isEmpty() && isOnlyTopLevelRules(selection))
-    {
-
-        md->addToGroupAbove(selection.first().row(), selection.last().row());
-
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
-    }
+    addToGroup(true);
 }
 
 void RuleSetView::addToGroupBelow()
+{
+    addToGroup(false);
+}
+
+void RuleSetView::addToGroup(bool isAbove)
 {
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
@@ -1176,11 +1167,12 @@ void RuleSetView::addToGroupBelow()
 
     if (!selection.isEmpty() && isOnlyTopLevelRules(selection))
     {
-
-        md->addToGroupBelow(selection.first().row(), selection.last().row());
-
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+        FWCmdRuleAddToGroup* cmd = new FWCmdRuleAddToGroup(
+                project, md->getRuleSet(),
+                md->nodeFromIndex(selection.first())->rule,
+                md->nodeFromIndex(selection.last())->rule,
+                isAbove);
+        project->undoStack->push(cmd);
     }
 }
 

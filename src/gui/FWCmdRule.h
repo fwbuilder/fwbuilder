@@ -156,6 +156,25 @@ public:
 };
 
 /********************************************************
+ * FWCmdRuleAddToGroup
+ ********************************************************/
+
+class FWCmdRuleAddToGroup : public FWCmdRule
+{
+    libfwbuilder::Rule* firstRule;
+    libfwbuilder::Rule* lastRule;
+    bool isAbove;
+    QString groupName;
+
+public:
+    FWCmdRuleAddToGroup(ProjectPanel* project, libfwbuilder::RuleSet* ruleset, libfwbuilder::Rule* firstRule, libfwbuilder::Rule* lastRule,
+                             bool isAbove = true);
+
+    void redoOnModel(RuleSetModel *md);
+    void undoOnModel(RuleSetModel *md);
+};
+
+/********************************************************
  * FWCmdRuleMove
  ********************************************************/
 

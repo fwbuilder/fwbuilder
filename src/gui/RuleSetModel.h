@@ -134,8 +134,8 @@ public:
     void renameGroup(QModelIndex group, const QString &newName);
     void removeFromGroup(QModelIndex group, int first, int last);
     QModelIndex createNewGroup(QString groupName, int first, int last);
-    void addToGroupAbove(int first, int last);
-    void addToGroupBelow(int first, int last);
+    QString addToGroupAbove(int first, int last);
+    QString addToGroupBelow(int first, int last);
 
     void moveRuleUp(const QModelIndex &group, int first, int last);
     void moveRuleDown(const QModelIndex &group, int first, int last);

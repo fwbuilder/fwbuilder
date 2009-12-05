@@ -113,6 +113,7 @@ public:
     void updateWidget();
 
     void setModel(QAbstractItemModel *model);
+    void addToGroup(bool isAbove);
 
 public slots:
 

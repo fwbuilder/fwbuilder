@@ -911,16 +911,18 @@ void RuleSetModel::removeFromGroup(QModelIndex group, int first, int last)
     emit endInsertRows();
 }
 
-void RuleSetModel::addToGroupAbove(int first, int last)
+QString RuleSetModel::addToGroupAbove(int first, int last)
 {
     RuleNode *targetGroup = root->children.at(first - 1);
     moveToGroup(targetGroup, first, last);
+    return targetGroup->name;
 }
 
-void RuleSetModel::addToGroupBelow(int first, int last)
+QString RuleSetModel::addToGroupBelow(int first, int last)
 {
     RuleNode *targetGroup = root->children.at(last + 1);
     moveToGroup(targetGroup, first, last, false);
+    return targetGroup->name;
 }
 
 void RuleSetModel::moveToGroup(RuleNode *targetGroup, int first, int last, bool append)

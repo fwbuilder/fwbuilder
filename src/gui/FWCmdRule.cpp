@@ -322,6 +322,35 @@ void FWCmdRuleNewGroup::undoOnModel(RuleSetModel *md)
 }
 
 /********************************************************
+ * FWCmdRuleAddToGroup
+ ********************************************************/
+
+FWCmdRuleAddToGroup::FWCmdRuleAddToGroup(ProjectPanel* project, RuleSet* ruleset, Rule* firstRule, Rule* lastRule, bool isAbove):
+        FWCmdRule(project, ruleset), firstRule(firstRule), lastRule(lastRule), isAbove(isAbove)
+{
+    setText((isAbove)?QObject::tr("add to group above"):QObject::tr("add to group below"));
+}
+
+void FWCmdRuleAddToGroup::redoOnModel(RuleSetModel *md)
+{
+    QModelIndex first = md->index(firstRule, 0);
+    QModelIndex last = md->index(lastRule, 0);
+
+    groupName = (isAbove)?
+                md->addToGroupAbove(first.row(), last.row()):
+                md->addToGroupBelow(first.row(), last.row());
+}
+
+void FWCmdRuleAddToGroup::undoOnModel(RuleSetModel *md)
+{
+    QModelIndex group = md->index(groupName);
+    QModelIndex first = md->index(firstRule, 0);
+    QModelIndex last = md->index(lastRule, 0);
+
+    md->removeFromGroup(group, first.row(), last.row());
+}
+
+/********************************************************
  * FWCmdRuleChange
  ********************************************************/
 
