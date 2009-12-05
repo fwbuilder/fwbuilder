@@ -6,7 +6,7 @@
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
-  $Id: InterfaceEditorWidget.cpp 2006 2009-12-02 19:10:48Z a2k $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

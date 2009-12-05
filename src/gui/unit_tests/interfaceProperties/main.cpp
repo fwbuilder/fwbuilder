@@ -23,23 +23,17 @@
 
 */
 
-#ifndef INTERFACEPROPERTIESTEST_H
-#define INTERFACEPROPERTIESTEST_H
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/CompilerOutputter.h>
+#include "interfaceProperties.h"
+#include <string>
 
-#include <QtTest/QtTest>
-
-class InterfacePropertiesTest : public QObject
+int main( int, char** )
 {
-Q_OBJECT
-public:
-    explicit InterfacePropertiesTest(QObject *parent = 0);
+    CppUnit::TextUi::TestRunner runner;
+    runner.addTest( interfacePropertiesTest::suite() );
+    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
+                                                         std::cerr ) );
 
-signals:
-
-private slots:
-    void validateInterface();
-    void validateInterface_data();
-
-};
-
-#endif // INTERFACEPROPERTIESTEST_H
+    return runner.run();
+}

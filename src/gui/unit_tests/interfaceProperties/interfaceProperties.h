@@ -23,23 +23,35 @@
 
 */
 
-#ifndef INTERFACEPROPERTIESTEST_H
-#define INTERFACEPROPERTIESTEST_H
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
+#include <list>
+#include <string>
 
-#include <QtTest/QtTest>
 
-class InterfacePropertiesTest : public QObject
+#ifndef INTERFACEPROPERTIESTEST
+#define INTERFACEPROPERTIESTEST
+
+class interfacePropertiesTest: public CppUnit::TestCase
 {
-Q_OBJECT
+    std::vector<std::vector<std::string> > testData;
 public:
-    explicit InterfacePropertiesTest(QObject *parent = 0);
+  //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
 
-signals:
+  void validateInterface();
+  void setUp();
 
-private slots:
-    void validateInterface();
-    void validateInterface_data();
+  static CppUnit::Test *suite()
+  {
+    CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "interfaceProperties" );
+    suiteOfTests->addTest( new CppUnit::TestCaller<interfacePropertiesTest>(
+                                 "validateInterface",
+                                 &interfacePropertiesTest::validateInterface ) );
+    return suiteOfTests;
+  }
 
 };
 
-#endif // INTERFACEPROPERTIESTEST_H
+#endif
+
