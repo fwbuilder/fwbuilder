@@ -51,11 +51,16 @@ void InterfacePropertiesTest::validateInterface()
     QFETCH(bool, unnumbered);
     QFETCH(bool, result);
 
-    libfwbuilder::Cluster cluster;
-    libfwbuilder::Interface parent;
-    libfwbuilder::Interface iface;
-    //parent.add(&iface, false);
-    //parent.setStr("type", parent_type.toStdString());
+    FWObjectDatabase db;
+    Cluster cluster;
+    Interface parent;
+    Interface iface;
+
+    db.add(&cluster);
+    db.add(&parent);
+    parent.add(&iface, false);
+    parent.setStr("type", parent_type.toStdString());
+
     iface.setUnnumbered(unnumbered);
     iface.setStr("type", type.toStdString());
     cluster.setStr("host_OS", host_OS.toStdString());
