@@ -129,9 +129,12 @@ void FWCmdMoveObject::notify()
     // This command should only operate on moving objects from one
     // place in the tree to another but within the same data file
     QString filename = project->getFileName();
-    QCoreApplication::postEvent(mw, new reloadObjectTreeImmediatelyEvent(filename));
-    QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, old_parent->getId()));
-    QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, new_parent->getId()));
+    QCoreApplication::postEvent(
+        mw, new reloadObjectTreeImmediatelyEvent(filename));
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(filename, old_parent->getId()));
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(filename, new_parent->getId()));
     // post openObjectInEditorEvent first so that editor panel opens.
     // This matters if the tree needs to scroll to show the object when
     // showObjectInTreeEvent is posted because vertical size of the tree
@@ -153,6 +156,6 @@ void FWCmdMoveObject::notify()
     }
     // always reload rule set because the object we just moved might
     // be shown there. 
-    QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
+    //QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
 }
 

@@ -303,8 +303,6 @@ void ObjectManipulator::newLibrary()
 
     m_project->undoStack->push(cmd);
     m_project->db()->setDirty(true);
-
-    //addLib( nlib );
 }
 
 void ObjectManipulator::newPolicyRuleSet ()

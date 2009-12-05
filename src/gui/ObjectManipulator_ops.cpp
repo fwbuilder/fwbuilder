@@ -41,6 +41,7 @@
 #include "interfacePropertiesObjectFactory.h"
 #include "FWCmdChange.h"
 #include "FWCmdAddObject.h"
+#include "FWCmdDeleteObject.h"
 #include "FWCmdMoveObject.h"
 #include "FWBTree.h"
 #include "FWWindow.h"
@@ -508,7 +509,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
     bool firstAction = true ;
 
     if (fwbdebug)
-        qDebug() << "ObjectManipulator::delObj"
+        qDebug() << "ObjectManipulator::deleteObject"
                  << "obj=" << obj
                  << "name=" << obj->getName().c_str()
                  << "openobj=" << openobj;
@@ -560,26 +561,34 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
     try
     {    
         if (fwbdebug)
-            qDebug() << "ObjectManipulator::delObj"
+            qDebug() << "ObjectManipulator::deleteObject"
                      << "is_library=" << is_library
                      << "is_firewall= " << is_firewall
                      << "ruleset_visible=" << ruleset_visible
                      << "is_deleted_object="<< is_deleted_object;
         if (is_deleted_object)
         {
-            if (QMessageBox::question(
-                    m_project, "Firewall Builder",
-                    QObject::tr("You are trying to delete objects in "
-                                "the Deleted Objects library. This can "
-                                "not be undone. Do you want to continue ?"),
-                    QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
-                return;
+            // if (QMessageBox::question(
+            //         m_project, "Firewall Builder",
+            //         QObject::tr("You are trying to delete objects in "
+            //                     "the Deleted Objects library. This can "
+            //                     "not be undone. Do you want to continue ?"),
+            //         QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
+            //     return;
 
             unselect();
-            removeObjectFromTreeView(obj);
-            obj->getParent()->remove(obj);
-            QString filename = m_project->getFileName();
-            QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+
+            // removeObjectFromTreeView(obj);
+            // obj->getParent()->remove(obj);
+            // QString filename = m_project->getFileName();
+            // QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+
+            FWCmdDeleteObject *cmd = new FWCmdDeleteObject(
+                m_project,
+                obj,
+                QString("Delete object"));
+            m_project->undoStack->push(cmd);
+
             return;
         }
 
@@ -614,7 +623,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
     catch (FWException &ex)
     {
         if (fwbdebug)
-            qDebug("ObjectManipulator::delObj: catch:  restoreOverrideCursor");
+            qDebug("ObjectManipulator::deleteObject: catch:  restoreOverrideCursor");
         QApplication::restoreOverrideCursor();
         QMessageBox::warning(
             this,"Firewall Builder",
@@ -624,7 +633,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
         throw(ex);
     }
 
-    if (fwbdebug) qDebug("ObjectManipulator::delObj  done");
+    if (fwbdebug) qDebug("ObjectManipulator::deleteObject  done");
 
     firstAction = false ;
 }

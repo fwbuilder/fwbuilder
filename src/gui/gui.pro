@@ -164,6 +164,7 @@ HEADERS += ../../config.h \
     FWCmdBasic.h \
     FWCmdChange.h \
     FWCmdAddObject.h \
+    FWCmdDeleteObject.h \
     FWCmdMoveObject.h \
     InterfacesTabWidget.h \
     FirewallSelectorWidget.h \
@@ -331,6 +332,7 @@ SOURCES += ProjectPanel.cpp \
     FWCmdBasic.cpp \
     FWCmdChange.cpp \
     FWCmdAddObject.cpp \
+    FWCmdDeleteObject.cpp \
     FWCmdMoveObject.cpp \
     InterfacesTabWidget.cpp \
     FirewallSelectorWidget.cpp \
