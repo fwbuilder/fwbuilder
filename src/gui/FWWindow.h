@@ -235,6 +235,8 @@ public slots:
     void tableResolutionSettingChanged(int );
 
     void activateRule(ProjectPanel*, QString, QString, int);
+
+    void undoViewVisibilityChanged(bool);
     
  public:
     Ui::FWBMainWindow_q *m_mainWindow;

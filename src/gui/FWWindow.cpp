@@ -231,6 +231,9 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     else
         m_mainWindow->undoDockWidget->hide();
 
+    connect(m_mainWindow->undoDockWidget, SIGNAL(visibilityChanged(bool)),
+            this, SLOT(undoViewVisibilityChanged(bool)));
+
     redoAction = undoGroup->createRedoAction(this);
     QList<QKeySequence> redoShortcuts;
     redoShortcuts << tr("Ctrl+Y") << tr("Shift+Ctrl+Z");
@@ -996,6 +999,7 @@ void FWWindow::activatePreviousSubWindow()
     //previous_subwindow->raise();
 }
  
+
 /**
  * QMdiArea emits this signal after window has been activated. When
  * window is 0, QMdiArea has just deactivated its last active window,
@@ -1349,4 +1353,10 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
     if (idx.isValid())
         project->getCurrentRuleSetView()->selectionModel()->select(
                 idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+}
+
+void FWWindow::undoViewVisibilityChanged(bool visible)
+{
+   if(mw->isVisible())
+       st->setShowUndoPanel(visible);
 }
