@@ -394,13 +394,17 @@ bool interfaceProperties::isEligibleForCluster(Interface *intf)
     list<FWObject*> subinterfaces = intf->getByType(Interface::TYPENAME);
     string interface_type = intf->getOptionsObject()->getStr("type");
 
-    if (intf->isBridgePort()) return false;
-    //if (intf->isLoopback()) return false;
+    if (intf->isBridgePort())
+        return false;
 
-    if (interface_type.empty()) interface_type = "ethernet";
-    if (interface_type == "8021q") return true;
-    if (interface_type == "bridge") return true;
-    if (interface_type == "bonding") return true;
+    if (interface_type.empty())
+        interface_type = "ethernet";
+    if (interface_type == "8021q")
+        return true;
+    if (interface_type == "bridge")
+        return true;
+    if (interface_type == "bonding")
+        return true;
 
     if (interface_type == "ethernet")
     {
@@ -417,7 +421,8 @@ bool interfaceProperties::isEligibleForCluster(Interface *intf)
             Interface *iface = Interface::cast(*i);
             assert(iface);
             Interface *parent_iface = Interface::cast(iface->getParent());
-            if (parent_iface == NULL) continue;
+            if (parent_iface == NULL)
+		 continue;
             if (parent_iface->getOptionsObject()->getStr("type") == "bonding" &&
                 iface->getName() == intf->getName())
             {
@@ -427,7 +432,8 @@ bool interfaceProperties::isEligibleForCluster(Interface *intf)
 
         }
 
-        if (subinterfaces.size() > 0) return false;
+        if (subinterfaces.size() > 0)
+            return false;
     }
     return true;
 }
@@ -436,7 +442,8 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
 {
     Interface *parent_intf = Interface::cast(intf->getParent());
 
-    if (parent_intf == NULL) return;
+    if (parent_intf == NULL)
+	 return;
 
     FWObject *f = intf->getParentHost();
 

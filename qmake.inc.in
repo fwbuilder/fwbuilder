@@ -69,8 +69,8 @@ unix {
         CONFIG += warn_on debug
         QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
         QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
-        QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter @CXXFLAGS@
-        QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
+        QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter
+        QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter
     }
 }
 

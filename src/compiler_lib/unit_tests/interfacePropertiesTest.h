@@ -6,7 +6,7 @@
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
-  $Id$
+  $Id: interfaceProperties.h 2043 2009-12-06 01:10:10Z a2k $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

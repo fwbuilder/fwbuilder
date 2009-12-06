@@ -6,7 +6,7 @@
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
-  $Id$
+  $Id: main.cpp 2039 2009-12-05 20:16:44Z a2k $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -25,8 +25,11 @@
 
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
-#include "interfaceProperties.h"
+#include "interfacePropertiesTest.h"
 #include <string>
+
+int build_num = 0;
+std::string respath;
 
 int main( int, char** )
 {
