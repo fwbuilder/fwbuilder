@@ -51,6 +51,7 @@ public:
   //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
 
   void validateInterface();
+  void isEligibleForCluster();
   void setUp();
 
   static CppUnit::Test *suite()
@@ -59,6 +60,9 @@ public:
     suiteOfTests->addTest( new CppUnit::TestCaller<interfacePropertiesTest>(
                                  "validateInterface",
                                  &interfacePropertiesTest::validateInterface ) );
+    suiteOfTests->addTest( new CppUnit::TestCaller<interfacePropertiesTest>(
+                                 "validateInterface",
+                                 &interfacePropertiesTest::isEligibleForCluster ) );
     return suiteOfTests;
   }
 
