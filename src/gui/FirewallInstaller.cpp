@@ -403,7 +403,7 @@ void FirewallInstaller::runJobs()
     if (job_list.size()==0)
     {
         if (fwbdebug) qDebug("FirewallInstaller::runJobs:  job list is empty");
-        QTimer::singleShot( 1000, this, SLOT(mainLoopInstall()));
+        QTimer::singleShot( 1000, inst_dlg, SLOT(mainLoopInstall()));
         return;
     }
 
@@ -467,7 +467,7 @@ void FirewallInstaller::executeExternalInstallScript(const QString &command,
 
     inst_dlg->setUpProcessToInstall();
     if (!inst_dlg->executeCommand(command.trimmed(), args))
-        QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
+        QTimer::singleShot( 0, inst_dlg, SLOT(mainLoopInstall()));
 }
 
 void FirewallInstaller::executeCommand(const QString &cmd)
@@ -483,7 +483,7 @@ void FirewallInstaller::executeCommand(const QString &cmd)
 
     inst_dlg->setUpProcessToInstall();
     if (!inst_dlg->executeCommand(path, args))
-        QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
+        QTimer::singleShot( 0, inst_dlg, SLOT(mainLoopInstall()));
 }
 
 // ************************************************************************
