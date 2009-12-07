@@ -339,8 +339,11 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     popup_menu->clear();
 
-    QAction *edtID = popup_menu->addAction(
-        tr("Edit"), this, SLOT( editSelectedObject()));
+    QAction *edtID =
+        popup_menu->addAction(tr("Edit"), this, SLOT( editSelectedObject()));
+
+    if (RuleSet::cast(currentObj))
+        popup_menu->addAction(tr("Open"), this, SLOT( openSelectedRuleSet()));
 
     QMenu *duptargets  = NULL;
     QAction *dupID = NULL;
@@ -955,11 +958,25 @@ void ObjectManipulator::editSelectedObject()
 
     FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
-//    obj->dump(false,false);
-    if (RuleSet::cast(obj)!=NULL && m_project->getCurrentRuleSet()!=obj)
-        m_project->openRuleSet(obj);
 
-    editObject(obj);
+    if (RuleSet::cast(obj)!=NULL && m_project->getCurrentRuleSet()!=obj)
+        QCoreApplication::postEvent(
+            m_project, new openRulesetEvent(m_project->getFileName(), obj->getId()));
+
+    QCoreApplication::postEvent(
+        mw, new openObjectInEditorEvent(m_project->getFileName(), obj->getId()));
+}
+
+void ObjectManipulator::openSelectedRuleSet()
+{
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
+
+    FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
+    if (obj==NULL) return;
+
+    if (RuleSet::cast(obj)!=NULL && m_project->getCurrentRuleSet()!=obj)
+        QCoreApplication::postEvent(
+            m_project, new openRulesetEvent(m_project->getFileName(), obj->getId()));
 }
 
 bool ObjectManipulator::editObject(FWObject *obj)
@@ -1001,7 +1018,6 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
     mw->openEditor(obj); // opens object in the editor
     //currentObj = obj;
     active = true;
-    //openObject(obj);  // position the tree so that obj is visible
 
     if (fwbdebug) qDebug("ObjectManipulator::switchObjectInEditor done");
     

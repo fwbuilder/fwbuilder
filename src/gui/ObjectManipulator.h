@@ -172,7 +172,8 @@ public slots:
      void closeObject();
 
      void editSelectedObject();
-     
+     void openSelectedRuleSet();
+
      void contextMenuRequested(const QPoint &pos);
 
      /*
