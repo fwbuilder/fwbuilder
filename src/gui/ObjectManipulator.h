@@ -244,8 +244,8 @@ public slots:
      
      void groupObjects();
      
-     void openObject(QTreeWidgetItem *otvi);
-     void openObject(libfwbuilder::FWObject *obj);
+     void openObjectInTree(QTreeWidgetItem *otvi);
+     void openObjectInTree(libfwbuilder::FWObject *obj);
 
      void find();
      void findObject();
@@ -300,8 +300,8 @@ public:
      void addLib(libfwbuilder::FWObject *lib);
      void removeLib(libfwbuilder::FWObject *lib);
      
-     void openObject(libfwbuilder::FWObject *obj, bool register_in_history);
-     void openObject(ObjectTreeViewItem *otvi,    bool register_in_history);
+     void openObjectInTree(libfwbuilder::FWObject *obj, bool register_in_history);
+     void openObjectInTree(ObjectTreeViewItem *otvi,    bool register_in_history);
 
      libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
                                              libfwbuilder::FWObject *obj,

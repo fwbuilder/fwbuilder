@@ -242,7 +242,6 @@ private:
     void editSelected(const QModelIndex &index);
     bool switchObjectInEditor(const QModelIndex &index, bool validate=true);
 
-    void openObjectInTree(libfwbuilder::FWObject *obj);
     void addColumnRelatedMenu(QMenu *menu,const QModelIndex &index, RuleNode *node, const QPoint& pos);
 
     void changeDitection(libfwbuilder::PolicyRule::Direction dir);

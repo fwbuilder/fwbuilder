@@ -413,7 +413,7 @@ void ObjectManipulator::back()
             return;
         }
 
-        openObject( history.top().item(), false );
+        openObjectInTree( history.top().item(), false );
 
         if (mw->isEditorVisible())
         {

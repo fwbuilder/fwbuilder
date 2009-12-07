@@ -750,7 +750,6 @@ void RuleSetView::itemDoubleClicked(const QModelIndex& index)
             mw,
             new showObjectInTreeEvent(project->getFileName(), fwosm->selectedObject->getId()));
 
-        //openObjectInTree(fwosm->selectedObject);
     }
     editSelected(index);
 }
@@ -1593,20 +1592,6 @@ void RuleSetView::selectObject(FWObject *object, const QModelIndex &index)
     fwosm->setSelected(object, index);
     setCurrentIndex(index);
     viewport()->update((viewport()->rect()));
-
-    //openObjectInTree(object);
-}
-
-void RuleSetView::openObjectInTree(FWObject *obj)
-{
-    RuleSetModel* md = ((RuleSetModel*)model());
-    FWObject *oo = obj;
-    if (obj==NULL || Rule::cast(obj)!=NULL)  oo = md->getFirewall();
-    if (oo==NULL) return;
-
-    QCoreApplication::postEvent(
-        mw, new showObjectInTreeEvent(QString::fromUtf8(oo->getRoot()->getFileName().c_str()),
-                                      oo->getId()));
 }
 
 void RuleSetView::changeDirectionToIn()
@@ -2078,9 +2063,9 @@ void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
     if (need_to_reload_tree)
     {
         project->m_panel->om->reload();
-        project->m_panel->om->openObject(object);
+        project->m_panel->om->openObjectInTree(object);
         // but still need to reopen this ruleset
-        project->m_panel->om->openObject(md->getRuleSet());
+        project->m_panel->om->openObjectInTree(md->getRuleSet());
     }
 }
 

@@ -332,7 +332,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (otvi==NULL)  return;  // happens when user clicks outside an item
 
     if (!getCurrentObjectTree()->isSelected(otvi->getFWObject()))
-        openObject( otvi, true );
+        openObjectInTree( otvi, true );
 
     //if (currentObj==NULL)  currentObj=otvi->getFWObject();
     FWObject *currentObj = getSelectedObject();
@@ -1066,35 +1066,35 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
     if (fwbdebug) qDebug("ObjectManipulator::selectionChanged done");
 }
 
-void ObjectManipulator::openObject(ObjectTreeViewItem *otvi,
+void ObjectManipulator::openObjectInTree(ObjectTreeViewItem *otvi,
                                    bool register_in_history)
 {
-    openObject(otvi->getFWObject(),register_in_history);
+    openObjectInTree(otvi->getFWObject(),register_in_history);
 }
 
 /*
  * I could use default value for the parameter register_in_history,
  * but that caused problems when this method was used as a slot
  */
-void ObjectManipulator::openObject(QTreeWidgetItem *item)
+void ObjectManipulator::openObjectInTree(QTreeWidgetItem *item)
 {
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(item);
-    openObject(otvi,true);
+    openObjectInTree(otvi,true);
 }
 
-void ObjectManipulator::openObject(FWObject *obj)
+void ObjectManipulator::openObjectInTree(FWObject *obj)
 {
-    openObject(obj,true);
+    openObjectInTree(obj,true);
 }
 
 /* This method is called from the GroupObjectDialog when user double
  * clicks on the object in a group, so first we should check if this
  * object is shown in the tree and if not, find and open it.
  */
-void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
+void ObjectManipulator::openObjectInTree(FWObject *obj, bool /*register_in_history*/)
 {
     if (fwbdebug)
-        qDebug() << "ObjectManipulator::openObject"
+        qDebug() << "ObjectManipulator::openObjectInTree"
                  << "obj:" << ((obj)?obj->getName().c_str():"NULL")
                  << "id:" << ((obj)?obj->getId():0);
 
@@ -1113,13 +1113,13 @@ void ObjectManipulator::openObject(FWObject *obj, bool /*register_in_history*/)
         getIdxForLib( obj->getLibrary()));
 
     if (fwbdebug)
-        qDebug() << "ObjectManipulator::openObject"
+        qDebug() << "ObjectManipulator::openObjectInTree"
                  << "libs->currentIndex="
                  << m_objectManipulator->libs->currentIndex();
 
     updateCreateObjectMenu(obj->getLibrary());
 
-    if (fwbdebug) qDebug() << "ObjectManipulator::openObject: done";
+    if (fwbdebug) qDebug() << "ObjectManipulator::openObjectInTree: done";
 }
 
 void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
@@ -1236,7 +1236,7 @@ ObjectTreeView* ObjectManipulator::getCurrentObjectTree()
 
 void ObjectManipulator::openLib(FWObject *obj)
 {
-    openObject(obj->getLibrary(),false);
+    openObjectInTree(obj->getLibrary(),false);
 }
 
 void ObjectManipulator::newObject()

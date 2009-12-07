@@ -225,7 +225,7 @@ void ProjectPanel::loadOpenedRuleSet()
         FWObject *obj = db()->getById(id, true);
         if (obj)
         {
-            m_panel->om->openObject(obj);
+            m_panel->om->openObjectInTree(obj);
 
             time_t last_modified = db()->getTimeLastModified();
             if (fwbdebug)
@@ -307,7 +307,6 @@ void ProjectPanel::loadLastOpenedLib()
             }
         }
         if (first_non_system_lib)
-            //m_panel->om->openObject(first_non_system_lib);
             m_panel->om->libChangedById(first_non_system_lib->getId());
     }
 

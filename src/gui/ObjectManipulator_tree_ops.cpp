@@ -393,7 +393,7 @@ void ObjectManipulator::reload()
     loadExpandedTreeItems();
     loadSectionSizes();
 
-    if (currentObj) openObject(currentObj);
+    if (currentObj) openObjectInTree(currentObj);
 }
 
 void ObjectManipulator::loadObjects()
@@ -487,7 +487,7 @@ void ObjectManipulator::addLib(FWObject *lib)
              this, SLOT( delObj() ) );
 
     connect(objTreeView, SIGNAL( objectDropped_sign(libfwbuilder::FWObject*) ),
-             this, SLOT( openObject(libfwbuilder::FWObject*) ) );
+             this, SLOT( openObjectInTree(libfwbuilder::FWObject*) ) );
 
     connect(objTreeView, SIGNAL( contextMenuRequested_sign(const QPoint&) ),
              this, SLOT( contextMenuRequested(const QPoint&) ) );

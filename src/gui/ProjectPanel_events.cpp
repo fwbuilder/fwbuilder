@@ -365,7 +365,7 @@ bool ProjectPanel::event(QEvent *event)
 
             case SHOW_OBJECT_IN_TREE_EVENT:
                 //m_panel->om->setFocus();
-                m_panel->om->openObject(obj);
+                m_panel->om->openObjectInTree(obj);
                 ev->accept();
                 return true;
 

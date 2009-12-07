@@ -463,7 +463,6 @@ void FindObjectWidget::replaceAll()
 {
     if(!validateReplaceObject()) return;
     reset();
-    FWObject *o=NULL;
 
     findNext();  // fill found_objects and position to the first found one
 
