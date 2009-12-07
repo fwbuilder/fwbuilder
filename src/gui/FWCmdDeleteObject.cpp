@@ -55,6 +55,7 @@ FWCmdDeleteObject::FWCmdDeleteObject(ProjectPanel *project,
     FWCmdChange(project, obj, text)
 {
     delobj = obj;
+    delobj->ref();
     parent = delobj->getParent();
     
     if (text.isEmpty())
@@ -82,6 +83,9 @@ void FWCmdDeleteObject::undo()
     if (delobj && !parent->hasChild(delobj))
     {
         parent->add(delobj);
+        if (fwbdebug)
+            qDebug() << "FWCmdDeleteObject::undo()"
+                     << "delobj->getRefCounter()=" << delobj->getRefCounter();
 
         QCoreApplication::postEvent(
             mw, new insertObjectInTreeEvent(filename, parent->getId(), delobj->getId()));
@@ -122,7 +126,11 @@ void FWCmdDeleteObject::redo()
         mw, new showObjectInTreeEvent(filename, parent->getId()));
 
     parent->remove(delobj, false);
-    delobj->ref();
+
+    if (fwbdebug)
+        qDebug() << "FWCmdDeleteObject::redo()"
+                 << "delobj->getRefCounter()=" << delobj->getRefCounter();
+
 }
 
 void FWCmdDeleteObject::notify()
