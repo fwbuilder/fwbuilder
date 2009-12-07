@@ -50,6 +50,7 @@
 #include <QTextCodec>
 #include <QTimer>
 #include <QMessageBox>
+#include <QtDebug>
 
 
 using namespace std;
@@ -57,12 +58,15 @@ using namespace libfwbuilder;
 
 bool instDialog::runInstaller(Firewall *fw)
 {
-    if (fwbdebug) qDebug("instDialog::runInstaller");
-
     cnf.fwobj = fw;
     cnf.maddr = "";
 
-    if (!getInstOptions(fw)) 
+    if (fwbdebug)
+        qDebug() << "instDialog::runInstaller: built-in installer"
+                 << fw->getName().c_str()
+                 << " cnf.user=" << cnf.user;
+
+    if (!getInstOptions(fw))
     {
         QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
         return false;
@@ -103,8 +107,8 @@ bool instDialog::runInstaller(Firewall *fw)
 
         addToLog("\n");
 
-        if (fwbdebug) qDebug("built-in installer firewall %s",
-                             fw->getName().c_str());
+        if (fwbdebug)
+            qDebug() << "instDialog::runInstaller:" << " cnf.user=" << cnf.user;
 
         if (installer!=NULL)
             delete installer;

@@ -57,6 +57,7 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QDir>
+#include <QtDebug>
 
 
 using namespace std;
@@ -65,7 +66,11 @@ using namespace libfwbuilder;
 
 bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
 {
-    if (fwbdebug) qDebug("FirewallInstallerUnx::packInstallJobList");
+    if (fwbdebug)
+    {
+        qDebug() << "FirewallInstallerUnx::packInstallJobList";
+        qDebug() << "cnf->user=" << cnf->user;
+    }
 
     job_list.clear();
 

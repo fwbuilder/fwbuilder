@@ -29892,7 +29892,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="action_on_reject"></Option>
           <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser">vadim</Option>
+          <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
@@ -29900,7 +29900,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">True</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -29982,6 +29985,8 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
@@ -38996,7 +39001,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="action_on_reject"></Option>
           <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser">vadim</Option>
+          <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
@@ -39004,7 +39009,10 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">True</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -39087,6 +39095,8 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>

@@ -67,6 +67,7 @@
 #include <QTextBlockFormat>
 #include <QBrush>
 #include <QTextFormat>
+#include <QtDebug>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -857,8 +858,15 @@ bool instDialog::getInstOptions(Firewall *fw)
     readInstallerOptionsFromSettings();
     readInstallerOptionsFromFirewallObject(fw);
 
-    if (!m_dialog->batchInstall->isChecked())
+    if (m_dialog->batchInstall->isChecked() && batch_inst_opt_dlg)
     {
+        // in batch install mode we use the same dialog to fill cnf
+        // without showing it to the user again
+        readInstallerOptionsFromDialog(fw, batch_inst_opt_dlg);
+    } else
+    {
+        // In non-batch mode installer options from the dialog
+        // overwrite options set in the fw object itself.
         instOptionsDialog *inst_opt_dlg = new instOptionsDialog(this, &cnf);
         if (inst_opt_dlg->exec()==QDialog::Rejected)
         {
@@ -880,18 +888,23 @@ bool instDialog::getBatchInstOptions()
 
     readInstallerOptionsFromSettings();
 
-    instBatchOptionsDialog *inst_opt_dlg = new instBatchOptionsDialog(this,
-                                                                      &cnf);
-    if (inst_opt_dlg->exec()==QDialog::Rejected)
+    if (batch_inst_opt_dlg != NULL) delete batch_inst_opt_dlg;
+
+    batch_inst_opt_dlg = new instBatchOptionsDialog(this, &cnf);
+
+    if (batch_inst_opt_dlg->exec()==QDialog::Rejected)
     {
-        delete inst_opt_dlg;
         stopProcessFlag = true;
         showPage(0);
         return false;
     }
     // clear aternative address in the dialog
-    inst_opt_dlg->m_dialog->altAddress->setText("");
-    readInstallerOptionsFromDialog(NULL, inst_opt_dlg);
+    batch_inst_opt_dlg->m_dialog->altAddress->setText("");
+    readInstallerOptionsFromDialog(NULL, batch_inst_opt_dlg);
+
+    if (fwbdebug)
+        qDebug() << "instDialog::getBatchInstOptions():  cnf.user=" << cnf.user;
+
     return verifyManagementAddress();
 }
 

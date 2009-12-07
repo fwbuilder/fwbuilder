@@ -51,6 +51,7 @@
 #include "fwbuilder/FWObjectDatabase.h"
 
 class FirewallInstaller;
+class instBatchOptionsDialog;
 
 class QEventLoop;
 class QTextEdit;
@@ -92,7 +93,8 @@ class instDialog : public QDialog, public FakeWizard
     Page1Operation page_1_op;
     FirewallInstaller *installer;
     ProjectPanel *project;
-        
+    instBatchOptionsDialog *batch_inst_opt_dlg;
+
     // proc is used to launch external oprocess, such as compiler or
     // user-defined installer script
     QProcess       proc;

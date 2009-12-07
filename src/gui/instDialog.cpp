@@ -94,6 +94,8 @@ instDialog::instDialog(QWidget* p,
     m_dialog = new Ui::instDialog_q;
     m_dialog->setupUi(this);
 
+    batch_inst_opt_dlg = NULL;
+
     project = mw->activeProject();
 
     setControlWidgets(this,
@@ -234,6 +236,7 @@ instDialog::instDialog(QWidget* p,
 
 instDialog::~instDialog()
 {
+    if (batch_inst_opt_dlg != NULL) delete batch_inst_opt_dlg;
     delete m_dialog;
 }
 
