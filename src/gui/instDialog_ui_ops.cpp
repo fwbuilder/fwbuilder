@@ -1013,8 +1013,14 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
     if (fwbdebug) qDebug("instDialog::readInstallerOptionsFromDialog");
 
     cnf.fwobj = fw;
+    QString adm_user;
+
     FWOptions *fwopt = NULL;
-    if (fw) fwopt = cnf.fwobj->getOptionsObject();
+    if (fw)
+    {
+        fwopt = cnf.fwobj->getOptionsObject();
+        adm_user = fwopt->getStr("admUser").c_str();
+    }
 
     cnf.incremental = dlg->m_dialog->incr->isChecked();
     cnf.dry_run     = dlg->m_dialog->test->isChecked();
@@ -1042,7 +1048,13 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
             qDebug("alternative addr %s", aaddr.toAscii().constData());
     }
 
-    cnf.user          = dlg->m_dialog->uname->text();
+    // user name set in the dialog overrides that set in the fw object
+    // But the dialog user name input field can be left blank, in which
+    // case we use the one configured in the object
+    if (!adm_user.isEmpty()) cnf.user = adm_user;
+    if (!dlg->m_dialog->uname->text().isEmpty())
+        cnf.user = dlg->m_dialog->uname->text();
+
     cnf.pwd           = dlg->m_dialog->pwd->text();
     cnf.epwd          = dlg->m_dialog->epwd->text();
     cnf.quiet         = dlg->m_dialog->quiet->isChecked();
