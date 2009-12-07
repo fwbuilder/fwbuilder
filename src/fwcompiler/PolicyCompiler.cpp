@@ -32,6 +32,7 @@
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPService.h"
@@ -779,7 +780,8 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
                 }
                 // Address A.B.C.D/0 is most likely a mistake if
                 // A.B.C.D != 0.0.0.0
-                if (!ad->isAny() && nm!=NULL && nm->isAny())
+                if ((Network::cast(addr) || NetworkIPv6::cast(addr)) &&
+                    !ad->isAny() && nm!=NULL && nm->isAny())
                 {
                     a = addr;
                     break;
