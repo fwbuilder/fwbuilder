@@ -29180,7 +29180,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1251648548" lastInstalled="0" lastModified="1247356067" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
+      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1260217773" lastInstalled="0" lastModified="1247356067" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id4833F62F6131" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -29876,7 +29876,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id4833F6306131" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id4833F6316131" dedicated_failover="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id4833F6316131" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="50" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id4833F6326131" name="firewall-ipv6-1:eth0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id4833F6346131" name="firewall-ipv6-1:eth0:ipv6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
           <InterfaceOptions/>
@@ -29892,7 +29892,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="action_on_reject"></Option>
           <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
+          <Option name="admUser">vadim</Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
@@ -38269,7 +38269,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id55972X87590" host_OS="linux24" inactive="False" lastCompiled="1251648555" lastInstalled="0" lastModified="1247356189" platform="iptables" version="" name="firewall-ipv6-2" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
+      <Firewall id="id55972X87590" host_OS="linux24" inactive="False" lastCompiled="1260217780" lastInstalled="0" lastModified="1247356189" platform="iptables" version="" name="firewall-ipv6-2" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id56353X87590" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -38980,7 +38980,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
         <Routing id="id56354X87590" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id56355X87590" dedicated_failover="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id56355X87590" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="50" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id56358X87590" name="firewall-ipv6-2:eth0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
           <IPv6 id="id56359X87590" name="firewall-ipv6-2:eth0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
           <InterfaceOptions/>
@@ -38996,7 +38996,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="action_on_reject"></Option>
           <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"></Option>
+          <Option name="admUser">vadim</Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>

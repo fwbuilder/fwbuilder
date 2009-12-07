@@ -58,23 +58,29 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     m_dialog->setupUi(this);
     cnf = _cnf;
 
-    Firewall *fw = Firewall::cast(cnf->fwobj);
-    QString usrname = fw->getOptionsObject()->getStr("admUser").c_str();
+    int fw_id = -1;
+    if (cnf->fwobj)
+    {
+        // Note cnf->fwobj == NULL during batch install
+        fw_id = cnf->fwobj->getId();
+    }
+
+    QString username = cnf->user;
     bool savePassEnabled = st->getBool("Environment/RememberSshPassEnabled");
     m_dialog->rememberPass->setEnabled( savePassEnabled );
     if (savePassEnabled)
     {
-        m_dialog->rememberPass->setChecked( st->getBool("Environment/RememberSshPass") );
-        QPair<QString, QString> passwds = mw->passwords[qMakePair(cnf->fwobj->getId(),
-                                                                  usrname)];
+        m_dialog->rememberPass->setChecked(
+            st->getBool("Environment/RememberSshPass"));
+        QPair<QString, QString> passwds = mw->passwords[qMakePair(fw_id, username)];
         m_dialog->pwd->setText(passwds.first);
         m_dialog->epwd->setText(passwds.second);
     }
     else
-        m_dialog->rememberPass->setChecked( false );
+        m_dialog->rememberPass->setChecked(false);
 
-    m_dialog->pwd->setEchoMode( QLineEdit::Password );
-    m_dialog->epwd->setEchoMode( QLineEdit::Password );
+    m_dialog->pwd->setEchoMode(QLineEdit::Password);
+    m_dialog->epwd->setEchoMode(QLineEdit::Password);
 
     m_dialog->uname->setText( cnf->user );
     m_dialog->incr->setChecked( cnf->incremental );
@@ -190,13 +196,19 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
 
 void instOptionsDialog::savePassword()
 {
-    Firewall *fw = Firewall::cast(cnf->fwobj);
-    fw->getOptionsObject()->setStr("admUser", m_dialog->uname->text().toStdString());
+    int fw_id = -1;
+    if (cnf->fwobj)
+    {
+        // Note cnf->fwobj == NULL during batch install
+        fw_id = cnf->fwobj->getId();
+    }
+
     if ( m_dialog->rememberPass->isChecked() )
-        mw->passwords[qMakePair(cnf->fwobj->getId(), m_dialog->uname->text())] =
+        mw->passwords[qMakePair(fw_id, m_dialog->uname->text())] =
                  qMakePair(m_dialog->pwd->text(), m_dialog->epwd->text());
     else
-        mw->passwords.remove(qMakePair(cnf->fwobj->getId(), m_dialog->uname->text()));
+        mw->passwords.remove(qMakePair(fw_id, m_dialog->uname->text()));
+
     st->setBool("Environment/RememberSshPass", m_dialog->rememberPass->isChecked());
 }
 
