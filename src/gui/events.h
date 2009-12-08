@@ -57,6 +57,7 @@ enum EVENT_CODES {
     RELOAD_OBJECT_TREE_EVENT ,
     RELOAD_OBJECT_TREE_IMMEDIATELY_EVENT ,
     OPEN_RULESET_EVENT ,
+    OPEN_RULESET_IMMEDIATELY_EVENT ,
     RELOAD_RULESET_EVENT ,
     RELOAD_RULESET_IMMEDIATELY_EVENT ,
     OPEN_OBJECT_IN_EDITOR_EVENT ,
@@ -270,6 +271,16 @@ public:
     fwbUpdateEvent(file_name, obj_id,
                    QEvent::Type(QEvent::User + OPEN_RULESET_EVENT),
                    "openRulesetEvent")
+    {}
+};
+
+
+class openRulesetImmediatelyEvent : public fwbUpdateEvent {
+public:
+    openRulesetImmediatelyEvent(const QString &file_name, int obj_id) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + OPEN_RULESET_IMMEDIATELY_EVENT),
+                   "openRulesetImmediatelyEvent")
     {}
 };
 

@@ -45,6 +45,7 @@
 #include "RCS.h"
 #include "RuleSetView.h"
 #include "RuleSetModel.h"
+#include "ColDesc.h"
 
 #include <QMdiSubWindow>
 #include <QMdiArea>
@@ -273,11 +274,19 @@ bool ProjectPanel::event(QEvent *event)
                 ev->accept();
                 return true;
 
+            case OPEN_RULESET_IMMEDIATELY_EVENT:
+                openRuleSet(obj, true);
+                // update rule set title as well
+                //updateFirewallName();
+                ev->accept();
+                return true;
+
             case SELECT_RULE_ELEMENT_EVENT:
             {
-                getCurrentRuleSetView()->selectRE(
-                    Rule::cast(obj),
-                    dynamic_cast<selectRuleElementEvent*>(event)->column_type);
+                RuleSetView* rsv = getCurrentRuleSetView();
+                rsv->selectRE(Rule::cast(obj),
+                              dynamic_cast<selectRuleElementEvent*>(event)->column_type);
+                rsv->setFocus(Qt::OtherFocusReason);
                 ev->accept();
                 return true;
             }
@@ -344,6 +353,7 @@ bool ProjectPanel::event(QEvent *event)
                     if (current_ruleset && rule->isChildOf(current_ruleset))
                     {
                         rsv->selectRE(rule, ColDesc::Comment);
+                        rsv->setFocus(Qt::OtherFocusReason);
                         ev->accept();
                         return true;
                     } else

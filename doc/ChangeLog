@@ -1,3 +1,11 @@
+2009-12-07  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::getInstOptions): fixed bug
+	#2908220 (fwbuilder bug #803): "Running fwbuilder as root
+	hardcodes batch install user".  Built-in installer ignored user
+	name entered in the installer options dialog and communicated with
+	the firewall using the name of the user running the program.
+
 2009-12-04  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/res/platform/pf.xml, iptables.xml: unified terminology

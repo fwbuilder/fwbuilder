@@ -40,6 +40,7 @@
 #include "ObjectTreeView.h"
 #include "RuleSetView.h"
 #include "ProjectPanel.h"
+#include "ColDesc.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWReference.h"
@@ -217,41 +218,41 @@ void FindWhereUsedWidget::showObject(FWObject* o)
 
     if (object==NULL || o==NULL) return;
 
-    if (RuleElement::cast(o)!=NULL)
+    if (RuleElement::cast(o)!=NULL || RuleElement::cast(o->getParent())!=NULL)
     {
-        project_panel->openRuleSet(o->getParent()->getParent());
-        project_panel->clearManipulatorFocus();
-        RuleSetView *rsv = project_panel->getCurrentRuleSetView();
-        rsv->selectRE(RuleElement::cast(o), object);
-        rsv->setFocus(Qt::MouseFocusReason);
+        QCoreApplication::postEvent(
+            project_panel,
+            new showObjectInRulesetEvent(project_panel->getFileName(), o->getId()));
+        return;
+    }
+
+    if (Rule::cast(o)!=NULL)
+    {
+        QCoreApplication::postEvent(
+            project_panel,
+            new openRulesetImmediatelyEvent(project_panel->getFileName(),
+                                            o->getParent()->getId()));
+        QCoreApplication::postEvent(
+            project_panel,
+            new selectRuleElementEvent(project_panel->getFileName(),
+                                       o->getId(), ColDesc::Action));
+        return;
+    }
+
+    project_panel->unselectRules();
+
+    if (Group::cast(o)!=NULL)
+    {
+        QCoreApplication::postEvent(
+            project_panel,
+            new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
+        project_panel->unselectRules();
     } else
     {
-        if (Rule::cast(o)!=NULL)
-        {
-            project_panel->openRuleSet(o->getParent());
-            project_panel->clearManipulatorFocus();
-            RuleSetView *rsv = project_panel->getCurrentRuleSetView();
-            rsv->selectRE(Rule::cast(o),rsv->getColByType(ColDesc::Action));
-        } else
-        {
-            project_panel->unselectRules();
-
-            if (Group::cast(o)!=NULL)
-            {
-                //project_panel->openObject(o);
-                QCoreApplication::postEvent(
-                    mw,
-                    new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
-                project_panel->unselectRules();
-            } else
-            {
-                //project_panel->openObject( object );
-                QCoreApplication::postEvent(
-                    mw,
-                    new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
-                project_panel->unselectRules();
-            }
-        }
+        QCoreApplication::postEvent(
+            project_panel,
+            new showObjectInTreeEvent(project_panel->getFileName(), o->getId()));
+        project_panel->unselectRules();
     }
 }
 
@@ -263,9 +264,14 @@ void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
     {
         FWObject *obj = NULL;
         FWReference  *ref = FWReference::cast(*i);
-        if (ref)
+        // event showObjectInRulesetEvent that finds an object and
+        // highlight it in rules requires reference or object itself
+        // as an argument. So, when parent is RuleElement, preserve
+        // reference.
+
+        if (ref && RuleElement::cast(ref->getParent()) == NULL)
         {
-            obj = ref->getParent();  // NB! We need parent of this ref.
+            obj = ref->getParent();  // NB! We need parent of this ref for groups
         } else
             obj = *i;
         if (fwbdebug)
@@ -291,7 +297,9 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
 
     if (tree_format.isSystem(container) || Library::cast(container)) return NULL;
 
-    if (RuleElement::cast(container)!=NULL || Rule::cast(container)!=NULL)
+    // container can be a Rule if user searched for an object used in action
+    if (RuleElement::cast(container->getParent())!=NULL ||
+        Rule::cast(container)!=NULL)
     {
         fw = container;
         while (fw!=NULL && Firewall::cast(fw)==NULL) // Firewall::cast matches also Cluster
@@ -320,9 +328,11 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
         }
 
         QString rule_element_name;
-        if (RuleElement::cast(container)!=NULL)
+
+        if (RuleElement::cast(container->getParent())!=NULL)
             rule_element_name = 
-                getReadableRuleElementName(container->getTypeName());
+                getReadableRuleElementName(container->getParent()->getTypeName());
+
         if (Rule::cast(container)!=NULL)
             rule_element_name = "Action";
 
