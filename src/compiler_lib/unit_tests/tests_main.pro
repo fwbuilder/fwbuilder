@@ -42,7 +42,7 @@ QMAKE_CLEAN = *.gc??
 
 QMAKE_EXTRA_TARGETS += run
 
-run.commands = ./${TARGET} && gcov -o . ../*.h ../*.cpp
+run.commands = ./${TARGET} && gcov -o . ../*.h ../*.cpp >/dev/null
 run.depends = all
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER
