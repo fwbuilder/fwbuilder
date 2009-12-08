@@ -1285,17 +1285,20 @@ bool ObjectManipulator::isSelected()
 
 /*
  * per bug #2412334, FWObjectDatabase::findWhereObjectIsUsed finds
- * only "direct" uses of object (i.e. it finds group the object is
- * member of, but not other groups or rules the group is member of).
- * This method is recursive wrapper around FWObjectDatabase::findWhereObjectIsUsed
+ * only "direct" uses of @obj (i.e. it finds group @obj is member of,
+ * but not other groups or rules the group is member of). However here
+ * we need to find all objects that use @obj, including nested groups
+ * and so on. This method is recursive wrapper around
+ * FWObjectDatabase::findWhereObjectIsUsed() that does this.
+ *
  */
-void ObjectManipulator::findWhereUsedRecursively(FWObject *obj,
-                                                 FWObject *top,
-                                                 set<FWObject*> &resset)
+void ObjectManipulator::findWhereUsedRecursively(
+    FWObject *obj, FWObject *top, set<FWObject*> &resset)
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::findWhereUsedRecursively obj=%s (%s)",
-               obj->getName().c_str(), obj->getTypeName().c_str());
+        qDebug() << "ObjectManipulator::findWhereUsedRecursively obj="
+                 << obj->getName().c_str()
+                 << "(" << obj->getTypeName().c_str() << ")";
 
     set<FWObject*> resset_tmp;
 
@@ -1315,8 +1318,19 @@ void ObjectManipulator::findWhereUsedRecursively(FWObject *obj,
     {
         FWObject *parent_obj = *i;
         FWReference  *ref = FWReference::cast(parent_obj);
-        if (ref)
-            parent_obj = ref->getParent();  // NB! We need parent of this ref.
+        if (ref && RuleElement::cast(ref->getParent()) == NULL)
+        {
+            // NB! We need parent of this ref for regular groups There
+            // is no need to repeat search for the parent if it is
+            // RuleElement because rule elements can not be members of
+            // groups
+            parent_obj = ref->getParent();
+        }
+
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::findWhereUsedRecursively"
+                     << "paerent_obj=" << parent_obj->getName().c_str()
+                     << "(" << parent_obj->getTypeName().c_str() << ")";
 
         // add new results to a separate set to avoid modifying the resset_tmp
         // in the middle of iteration
@@ -1341,22 +1355,24 @@ list<Firewall*> ObjectManipulator::findFirewallsForObject(FWObject *o)
 
     findWhereUsedRecursively(o, m_project->db(), resset);
 
-    //m_project->db()->findWhereObjectIsUsed(o, m_project->db(), resset);
-
-    FindWhereUsedWidget::humanizeSearchResults(resset);
+    //FindWhereUsedWidget::humanizeSearchResults(resset);
 
     set<FWObject *>::iterator i = resset.begin();
-    for ( ;i!=resset.end();++i)
+    for ( ;i!=resset.end(); ++i)
     {
-        RuleElement *re = RuleElement::cast(*i);
-        if (re==NULL) continue;
+        FWObject *obj = *i;
+        FWReference  *ref = FWReference::cast(*i);
+        if (ref && RuleElement::cast(ref->getParent()) != NULL)
+            obj = ref->getParent();
+        else
+            continue;
 
-        Rule *r=Rule::cast(re->getParent());
+        Rule *r = Rule::cast(obj->getParent());
         if (r && !r->isDisabled())
         {
-            f=r;
-            while (f!=NULL && !Firewall::isA(f)) f=f->getParent();
-            if (f && std::find(fws.begin(),fws.end(),f)==fws.end())
+            f = r;
+            while (f!=NULL && Firewall::cast(f) == NULL) f = f->getParent();
+            if (f && std::find(fws.begin(), fws.end(), f) == fws.end())
             {
                 fws.push_back(Firewall::cast(f));
             }

@@ -123,6 +123,9 @@ void FWCmdChange::notify()
 
     QCoreApplication::postEvent(
         mw, new showObjectInTreeEvent(filename, obj->getId()));
+
+    QCoreApplication::postEvent(mw, new dataModifiedEvent(filename,
+                                                          obj->getId()));
 }
 
 /********************************************************
@@ -156,6 +159,7 @@ void FWCmdChangeName::notify()
     QCoreApplication::postEvent(mw, new updateObjectInTreeEvent(filename,
                                                                 obj->getId()));
     QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
+    QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, obj->getId()));
 }
 
 
