@@ -1358,7 +1358,6 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
 
     if (idx.isValid())
     {
-        view->scrollTo(idx);
         view->selectionModel()->select(idx, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
         view->scrollTo(idx);
     }
