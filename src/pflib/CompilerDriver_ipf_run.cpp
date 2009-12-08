@@ -101,7 +101,7 @@ QString CompilerDriver_ipf::composeActivationCommand(libfwbuilder::Firewall *fw,
     return act.expand();
 }
 
-QString CompilerDriver_ipf::assembleManifest(Cluster *cluster, Firewall* fw, bool )
+QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 {
     FWOptions* options = fw->getOptionsObject();
     QFileInfo fw_file_info(fw_file_name);
@@ -320,6 +320,19 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
 
         if (have_filter) 
         {
+            QFileInfo finfo(ipf_file_name);
+            if (finfo.isRelative())
+            {
+                // if ipf_file_name is relative, it is relative to the
+                // directory the program started in, which can be
+                // different from wdir and different from the current dir
+                // at this point because we do chdir to the directory
+                // defined by the -d command line option
+                QFileInfo new_finfo(start_current_dir, ipf_file_name);
+                ipf_file_name = new_finfo.absoluteFilePath();
+            }
+
+            info("Output file name: " + ipf_file_name.toStdString());
             QFile ipf_file(ipf_file_name);
             if (ipf_file.open(QIODevice::WriteOnly))
             {
@@ -340,9 +353,8 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
                                         QFile::ExeOther );
             } else
             {
-                abort(string(" Failed to open file ") +
-                      ipf_file_name.toStdString() +
-                      " for writing");
+                QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
+                abort(err.arg(ipf_file.fileName()).arg(ipf_file.error()).arg(QDir::current().path()).toStdString());
             }
 
             QString filePath;
@@ -356,6 +368,19 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
 
         if (have_nat) 
         {
+            QFileInfo finfo(nat_file_name);
+            if (finfo.isRelative())
+            {
+                // if nat_file_name is relative, it is relative to the
+                // directory the program started in, which can be
+                // different from wdir and different from the current dir
+                // at this point because we do chdir to the directory
+                // defined by the -d command line option
+                QFileInfo new_finfo(start_current_dir, nat_file_name);
+                nat_file_name = new_finfo.absoluteFilePath();
+            }
+
+            info("Output file name: " + nat_file_name.toStdString());
             QFile nat_file(nat_file_name);
             if (nat_file.open(QIODevice::WriteOnly))
             {
@@ -376,9 +401,8 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
                                         QFile::ExeOther );
             } else
             {
-                abort(string(" Failed to open file ") +
-                      nat_file_name.toStdString() +
-                      " for writing");
+                QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
+                abort(err.arg(nat_file.fileName()).arg(nat_file.error()).arg(QDir::current().path()).toStdString());
             }
 
             QString filePath;
@@ -395,8 +419,19 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
             cluster, fw, !cluster_id.empty(), oscnf.get());
 
 
-        info("Output file name: " + fw_file_name.toStdString());
+        QFileInfo fw_finfo(fw_file_name);
+        if (fw_finfo.isRelative())
+        {
+            // if fw_file_name is relative, it is relative to the
+            // directory the program started in, which can be
+            // different from wdir and different from the current dir
+            // at this point because we do chdir to the directory
+            // defined by the -d command line option
+            QFileInfo new_finfo(start_current_dir, fw_file_name);
+            fw_file_name = new_finfo.absoluteFilePath();
+        }
 
+        info("Output file name: " + fw_file_name.toStdString());
         QFile fw_file(fw_file_name);
         if (fw_file.open(QIODevice::WriteOnly))
         {
@@ -412,9 +447,8 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
             info(" Compiled successfully");
         } else
         {
-            abort(string(" Failed to open file ") +
-                  fw_file_name.toStdString() +
-                  " for writing");
+            QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
+            abort(err.arg(fw_file.fileName()).arg(fw_file.error()).arg(QDir::current().path()).toStdString());
         }
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)

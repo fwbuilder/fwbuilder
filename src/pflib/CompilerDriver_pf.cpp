@@ -78,7 +78,8 @@ string CompilerDriver_pf::getConfFileName(const string &ruleset_name,
     }
 
     QFileInfo fi(fw_file_name.c_str());
-    return fi.completeBaseName().toStdString() + suffix + ".conf";
+    QString new_name(fi.path() + "/" + fi.completeBaseName() + suffix.c_str() + ".conf");
+    return new_name.toUtf8().constData();
 }
 
 string CompilerDriver_pf::getRemoteConfFileName(const string &ruleset_name,

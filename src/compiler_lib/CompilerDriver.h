@@ -33,6 +33,7 @@
 #include <string>
 #include <sstream>
 
+#include <QDir>
 #include <QTextStream>
 #include <QString>
 #include <QStringList>
@@ -67,6 +68,7 @@ protected:
         int fwbdebug;
         std::string filename;
         std::string wdir;
+        QDir start_current_dir;
         QString fwobjectname;
         QString current_firewall_name;
         // fw_file_name is the name of the output file. Can be enforced via -o command

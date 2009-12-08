@@ -96,6 +96,7 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
     epilog_done = false;
     have_filter = false;
     have_nat = false;
+    start_current_dir = QDir::current();
 }
 
 CompilerDriver::~CompilerDriver()

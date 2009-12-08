@@ -84,8 +84,9 @@
 #include <QStringList>
 #include <QFileInfo>
 #include <QFile>
+#include <QDir>
 #include <QTextStream>
-
+#include <QtDebug>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -667,6 +668,18 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
         script_skeleton.setVariable("errors_and_warnings",
                                     prepend("# ", all_errors.join("\n")));
 
+        QFileInfo finfo(fw_file_name);
+        if (finfo.isRelative())
+        {
+            // if fw_file_name is relative, it is relative to the
+            // directory the program started in, which can be
+            // different from wdir and different from the current dir
+            // at this point because we do chdir to the directory
+            // defined by the -d command line option
+            QFileInfo new_finfo(start_current_dir, fw_file_name);
+            fw_file_name = new_finfo.absoluteFilePath();
+        }
+
         info("Output file name: " + fw_file_name.toStdString());
 
         QFile fw_file(fw_file_name);
@@ -685,8 +698,8 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
 
         } else
         {
-            abort(string(" Failed to open file ") + fw_file_name.toStdString() +
-                  " for writing");
+            QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
+            abort(err.arg(fw_file.fileName()).arg(fw_file.error()).arg(QDir::current().path()).toStdString());
         }
 
     }

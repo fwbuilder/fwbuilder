@@ -134,7 +134,7 @@ QString CompilerDriver_pf::printActivationCommands(Firewall *fw)
     return activation_commands.join("\n");
 }
 
-QString CompilerDriver_pf::assembleManifest(Cluster *cluster, Firewall* fw, bool )
+QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* fw, bool )
 {
     QFileInfo fw_file_info(fw_file_name);
     QString script_buffer;
@@ -531,12 +531,25 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
              fi!=generated_scripts.end(); fi++)
         {
             string ruleset_name = fi->first;
-            string file_name = conf_files[ruleset_name];
+            QString file_name = conf_files[ruleset_name].c_str();
             ostringstream *strm = fi->second;
 
             if (ruleset_name.find("/*")!=string::npos) continue;
 
-            QFile pf_file(file_name.c_str());
+            QFileInfo finfo(file_name);
+            if (finfo.isRelative())
+            {
+                // if file_name is relative, it is relative to the
+                // directory the program started in, which can be
+                // different from wdir and different from the current dir
+                // at this point because we do chdir to the directory
+                // defined by the -d command line option
+                QFileInfo new_finfo(start_current_dir, file_name);
+                file_name = new_finfo.absoluteFilePath();
+            }
+
+            info("Output file name: " + file_name.toStdString());
+            QFile pf_file(file_name);
             if (pf_file.open(QIODevice::WriteOnly))
             {
                 QTextStream pf_str(&pf_file);
@@ -560,7 +573,8 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                 table_factories.clear();
                 generated_scripts.clear();
 
-                abort(string(" Failed to open file ") + file_name + " for writing");
+                QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
+                abort(err.arg(pf_file.fileName()).arg(pf_file.error()).arg(QDir::current().path()).toStdString());
             }
 
         }
@@ -574,8 +588,19 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
         table_factories.clear();
         generated_scripts.clear();
 
-        info("Output file name: " + fw_file_name.toStdString());
+        QFileInfo finfo(fw_file_name);
+        if (finfo.isRelative())
+        {
+            // if fw_file_name is relative, it is relative to the
+            // directory the program started in, which can be
+            // different from wdir and different from the current dir
+            // at this point because we do chdir to the directory
+            // defined by the -d command line option
+            QFileInfo new_finfo(start_current_dir, fw_file_name);
+            fw_file_name = new_finfo.absoluteFilePath();
+        }
 
+        info("Output file name: " + fw_file_name.toStdString());
         QFile fw_file(fw_file_name);
         if (fw_file.open(QIODevice::WriteOnly))
         {
@@ -591,9 +616,8 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
             info(" Compiled successfully");
         } else
         {
-            abort(string(" Failed to open file ") +
-                  fw_file_name.toStdString() +
-                  " for writing");
+            QString err(" Failed to open file %1 for writing: %2; Current dir: %3");
+            abort(err.arg(fw_file.fileName()).arg(fw_file.error()).arg(QDir::current().path()).toStdString());
         }
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
