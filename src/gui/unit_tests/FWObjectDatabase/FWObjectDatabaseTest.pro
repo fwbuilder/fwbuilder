@@ -13,17 +13,9 @@ TARGET = FWObjectDatabaseTest
 TEMPLATE = app
 SOURCES += main.cpp \
     FWObjectDatabaseTest.cpp \
-    ../../ObjectManipulator.cpp \
-    ../../ObjectManipulator_create_new.cpp \
-    ../../ObjectManipulator_ops.cpp \
-    ../../ObjectManipulator_slots.cpp \
-    ../../ObjectManipulator_tree_ops.cpp \
-    ../../FWWindow.cpp \
-    ../../FWWindowPrint.cpp \
-    ../../FWWindow_editor.cpp \
-    ../../FWWindow_wrappers.cpp
+    ../../UsageResolver.cpp
 
-HEADERS += FWObjectDatabaseTest.h ../../ObjectManipulator.h ../../FWWindow.h
+HEADERS += FWObjectDatabaseTest.h ../../UsageResolver.h
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER
 LIBS += -lgcov -lcppunit

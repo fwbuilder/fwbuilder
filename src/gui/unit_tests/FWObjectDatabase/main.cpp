@@ -30,6 +30,7 @@
 
 //int build_num = 0;
 std::string respath;
+bool fwbdebug = false;
 
 int main( int, char** )
 {

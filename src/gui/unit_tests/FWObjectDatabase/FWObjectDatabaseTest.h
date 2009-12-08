@@ -5,6 +5,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Group.h"
 #include "fwbuilder/Policy.h"
+#include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Address.h"
 
 #include <cppunit/TestCase.h>
