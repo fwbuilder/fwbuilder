@@ -36,6 +36,7 @@
 #include <QRegExp>
 #include <QMessageBox>
 #include <QTime>
+#include <QtAlgorithms>
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Firewall.h"
@@ -551,7 +552,7 @@ Rule* RuleSetModel::insertNewRule(QModelIndex &index, bool isAfter)
     return newrule;
 }
 
-Rule* RuleSetModel::insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter)
+Rule* RuleSetModel::insertRule(Rule *rule, QModelIndex &index, bool isAfter)
 {
     Rule *newrule = 0;
     if (index.isValid())
@@ -572,6 +573,37 @@ Rule* RuleSetModel::insertRule(libfwbuilder::Rule *rule, QModelIndex &index, boo
         insertRuleToModel(newrule, index);
     }
     return newrule;
+}
+
+void RuleSetModel::restoreRule(Rule* rule)
+{
+
+}
+
+void RuleSetModel::restoreRules(QList<Rule*> rules, bool topLevel)
+{
+    qDebug() << "RuleSetModel::restoreRules(QList<Rule*> rules)";
+    qDebug() << "Size:" << rules.size();
+    int pos = rules.first()->getPosition()-1;
+    Rule* pivotRule = ruleset->getRuleByNum(pos);
+    QModelIndex pivotIndex = index(pivotRule, 0);
+
+    // We need a toplevel index
+    if (topLevel && pivotIndex.parent().isValid())
+    {
+        pivotIndex = pivotIndex.parent();
+    }
+
+    for (int i=rules.size()-1; i>=0; i--)
+    {
+        Rule* rule = rules.at(i);
+        qDebug() << i << " * " << rule->getPosition();
+        ruleset->insert_after(pivotRule, rule);
+
+        insertRuleToModel(rule, pivotIndex, true);
+
+    }
+    ruleset->renumberRules();
 }
 
 void RuleSetModel::removeRow(int row,const QModelIndex &parent)

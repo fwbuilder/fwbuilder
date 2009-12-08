@@ -87,6 +87,45 @@ public:
 };
 
 /********************************************************
+ * FWCmdRuleDelete
+ ********************************************************/
+
+class FWCmdRuleDelete : public FWCmdRule
+{    
+    int row;
+
+    void copyRules(QList<libfwbuilder::Rule*> &rules);
+protected:
+    QList<libfwbuilder::Rule*> rulesToDelete;
+    void unrefAll();
+public:
+    FWCmdRuleDelete(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<libfwbuilder::Rule*> &rulesToDelete);
+    ~FWCmdRuleDelete();
+
+    virtual void redoOnModel(RuleSetModel *md);
+    virtual void undoOnModel(RuleSetModel *md);
+};
+
+/********************************************************
+ * FWCmdRuleDeleteFromGroup
+ ********************************************************/
+
+class FWCmdRuleDeleteFromGroup : public FWCmdRuleDelete
+{
+//    int ruleId;
+//    int row;
+//    libfwbuilder::Rule* deletedRule;
+//    QList<libfwbuilder::Rule*> rulesToDelete;
+
+public:
+    FWCmdRuleDeleteFromGroup(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<libfwbuilder::Rule*> rulesToDelete);
+
+
+//    void redoOnModel(RuleSetModel *md);
+    void undoOnModel(RuleSetModel *md);
+};
+
+/********************************************************
  * FWCmdRuleColor
  ********************************************************/
 

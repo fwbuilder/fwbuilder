@@ -167,6 +167,8 @@ public:
 
     void resetAllSizes();
     QString findUniqueNameForGroup(const QString &groupName);
+    void restoreRules(QList<libfwbuilder::Rule*> rules, bool topLevel = true);
+    void restoreRule(libfwbuilder::Rule* rule);
 
 protected:
     libfwbuilder::RuleElement *getRuleElementByRole(libfwbuilder::Rule* r, std::string roleName) const;

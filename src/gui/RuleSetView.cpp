@@ -892,9 +892,9 @@ void RuleSetView::removeRule()
     if (!selection.isEmpty())
     {
         QMap<QModelIndex,QList<int> > itemsInGroups;
-        QList<int> topLevelItems;
+        QList<Rule*> rulesToDelete;
 
-
+// Sort rules to the corresponding groups
         foreach (QModelIndex index, selection)
         {
             if (!index.isValid() || !md->isIndexRule(index)) continue;
@@ -907,46 +907,103 @@ void RuleSetView::removeRule()
             {
                 itemsInGroups[parent] << index.row();
             }
-            else
-            {
-                topLevelItems << index.row();
-            }
+
+            RuleNode* node = md->nodeFromIndex(index);
+            if (node->type == RuleNode::Rule)
+                rulesToDelete << node->rule;
+
 
         }
 
-        // Remove items in groups
+        //Special case - all rows are inside one group (excluding the first item of the group)
+        if (itemsInGroups.size() == 1 &&
+            itemsInGroups[itemsInGroups.keys().first()].size() == rulesToDelete.size())
+        {
+            bool containsFirstRow = false;
+            foreach(int row, itemsInGroups[itemsInGroups.keys().first()])
+            {
+                if (0 == row)
+                {
+                    containsFirstRow = true;
+                    break;
+                }
+            }
+
+            if (!containsFirstRow)
+            {
+                FWCmdRuleDeleteFromGroup* cmd = new FWCmdRuleDeleteFromGroup(project, md->getRuleSet(), rulesToDelete);
+                project->undoStack->push(cmd);
+                return;
+            }
+        }
+
+// Remove items from groups
         QList<QModelIndex> groups = itemsInGroups.keys();
         if (!groups.isEmpty())
         {
             foreach(QModelIndex group, groups)
             {
                 qSort(itemsInGroups[group]);
-                for (int i = itemsInGroups[group].size() - 1; i>=0 ; i--)
-                {
-                    md->removeRow(itemsInGroups[group].at(i),group);
-                }
+
+                Rule* first = md->nodeFromIndex(md->index(itemsInGroups[group].at(0), 0, group))->rule;
+                Rule* last = md->nodeFromIndex(md->index(itemsInGroups[group].at(itemsInGroups[group].size() - 1), 0, group))->rule;
+                QString groupName = md->nodeFromIndex(group)->name;
+
+                FWCmdRuleRemoveFromGroup* cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), first, last, groupName);
+                project->undoStack->push(cmd);
+
+            }
+        }
+
+
+
+//        QList<QModelIndex> groups = itemsInGroups.keys();
+//        if (!groups.isEmpty())
+//        {
+//            foreach(QModelIndex group, groups)
+//            {
+//                qSort(itemsInGroups[group]);
+//
+//                Rule* first = md->nodeFromIndex(md->index(itemsInGroups[group].at(0), 0, group))->rule;
+//                Rule* last = md->nodeFromIndex(md->index(itemsInGroups[group].at(itemsInGroups[group].size() - 1), 0, group))->rule;
+//                QString groupName = md->nodeFromIndex(group)->name;
+//
+//                FWCmdRuleRemoveFromGroup* cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), first, last, groupName);
+//                project->undoStack->push(cmd);
 
                 // if group gets empty it should be removed as well
-                if (md->rowCount(group) == 0)
-                    topLevelItems << group.row();
+//                if (md->rowCount(group) == 0)
+//                    topLevelItems << group.row();
 
-            }
-        }
+//            }
+//        }
 
-        // Remove top level items
-        if (!topLevelItems.isEmpty())
+
+
+
+
+        // Remove rows
+        if (!rulesToDelete.isEmpty())
         {
-            QModelIndex parent;
-            qSort(topLevelItems);
-            for(int i = topLevelItems.size() - 1; i>=0; i--)
-            {
-                md->removeRow(topLevelItems.at(i), parent);
-            }
+
+            FWCmdRuleDelete* cmd =  new FWCmdRuleDelete(project, md->getRuleSet(), rulesToDelete);
+            project->undoStack->push(cmd);
+//            foreach(Rule* rule, rulesToDelete)
+//            {
+//                FWCmdRuleDeleteOne* cmd = new FWCmdRuleDeleteOne(project, md->getRuleSet(), rule->getId());
+//                project->undoStack->push(cmd);
+//            }
+//            QModelIndex parent;
+//            qSort(rulesToDelete);
+//            for(int i = rulesToDelete.size() - 1; i>=0; i--)
+//            {
+//                md->removeRow(rulesToDelete.at(i), parent);
+//            }
 
         }
 
-        QCoreApplication::postEvent(
-            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+//        QCoreApplication::postEvent(
+//            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
     }
 }
 
