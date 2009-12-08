@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -42,6 +42,8 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/ObjectGroup.h"
 
+#include "UsageResolver.h"
+
 #include <stack>
 #include <set>
 
@@ -53,7 +55,7 @@ class QPixmap;
 class ProjectPanel;
 
 
-namespace libfwbuilder 
+namespace libfwbuilder
 {
     class Firewall;
     class Cluster;
@@ -79,13 +81,13 @@ class ObjectManipulator : public QWidget
     std::vector<libfwbuilder::FWObject*> idxToLibs;
     std::vector<QTreeWidget*> idxToTrees;
     int previous_lib_index;
-    QSet<int> ids ;     
+    QSet<int> ids ;
     std::stack<HistoryItem> history;
     int cacheHits;
 
     //libfwbuilder::FWObject *currentObj;
     ObjectTreeView *current_tree_view;
-    
+
     int treeWidth;
     int treeHeight;
 
@@ -97,13 +99,13 @@ class ObjectManipulator : public QWidget
  * quickly locate given object in the tree and open it
  */
     std::map<libfwbuilder::FWObject*, ObjectTreeViewItem*> allItems;
-    
+
     ProjectPanel *m_project;
 
     int dedup_marker_global_counter;
 
     void buildNewObjectMenu();
-    
+
     ObjectTreeViewItem* insertObject(ObjectTreeViewItem *itm,
                                      libfwbuilder::FWObject *obj);
     void insertSubtree( ObjectTreeViewItem *itm,libfwbuilder::FWObject *obj );
@@ -113,7 +115,7 @@ class ObjectManipulator : public QWidget
     void showObjectInTree(ObjectTreeViewItem *otvi);
 
     void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm);
-    
+
     int  getIdxForLib(libfwbuilder::FWObject*);
     void removeLib(int idx);
     void updateCreateObjectMenu(libfwbuilder::FWObject* lib);
@@ -122,7 +124,7 @@ class ObjectManipulator : public QWidget
 
     /* find the name of the interface that was created last */
     QString findNewestInterfaceName(libfwbuilder::FWObject *parent);
-    
+
     libfwbuilder::FWObject* actuallyCreateObject(
         libfwbuilder::FWObject *parent,
         const QString &objType,
@@ -132,7 +134,7 @@ class ObjectManipulator : public QWidget
     void autorename(libfwbuilder::FWObject *obj, bool ask=true);
     void extractFirewallsFromGroup(libfwbuilder::ObjectGroup *gr,
                                    std::set<libfwbuilder::Firewall*> &fo);
-    
+
     libfwbuilder::FWObject* actuallyPasteTo(libfwbuilder::FWObject *target,
                                             libfwbuilder::FWObject *obj,
                                             std::map<int,int> &map_ids);
@@ -140,10 +142,11 @@ class ObjectManipulator : public QWidget
     bool validateForPaste(libfwbuilder::FWObject *target,
                           libfwbuilder::FWObject *obj,
                           QString &err);
-    
+
     void findWhereUsedRecursively(libfwbuilder::FWObject *obj,
                                   libfwbuilder::FWObject *top,
                                   std::set<libfwbuilder::FWObject*> &resset);
+
     void refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem *itm);
 
 public slots:
@@ -185,11 +188,11 @@ public slots:
       */
      libfwbuilder::FWObject* prepareForInsertion(libfwbuilder::FWObject *target,
                                                  libfwbuilder::FWObject *obj);
-     
+
      libfwbuilder::FWObject* createObject(const QString &objType,
                                           const QString &objName,
                                           libfwbuilder::FWObject *copyFrom=NULL);
-     
+
      libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
                                           const QString &objType,
                                           const QString &objName,
@@ -206,7 +209,7 @@ public slots:
      void newHost();
      void newInterface();
      void newNetwork();
-     void newNetworkIPv6(); 
+     void newNetworkIPv6();
      void newAddress();
      void newAddressIPv6();
      void newInterfaceAddress();
@@ -216,7 +219,7 @@ public slots:
      void newObjectGroup();
      void newDNSName();
      void newAddressTable();
-     
+
      void newCustom();
      void newIP();
      void newICMP();
@@ -226,7 +229,7 @@ public slots:
      void newTagService();
      void newUserService();
      void newServiceGroup();
-     
+
      void newInterval();
      void newPolicyRuleSet ();
      void newNATRuleSet ();
@@ -241,29 +244,29 @@ public slots:
 
      void duplicateObj(QAction*);
      void moveObj(QAction*);
-     
+
      void groupObjects();
-     
+
      void openObjectInTree(QTreeWidgetItem *otvi);
      void openObjectInTree(libfwbuilder::FWObject *obj);
 
      void find();
      void findObject();
-     
+
      virtual void back();
      virtual void lockObject();
      virtual void unlockObject();
      virtual void simulateInstall();
      virtual void findWhereUsedSlot();
 
-     
+
 public:
 
      ObjectManipulator(QWidget *parent);
      ~ObjectManipulator();
 
      void setupProject(ProjectPanel *project);
-     
+
      void libChangedById(int id);
      void changeFirstNotSystemLib();
      std::vector<QTreeWidget*> getTreeWidgets() { return idxToTrees;};
@@ -278,17 +281,17 @@ public:
 
      QString makeNameUnique(libfwbuilder::FWObject* parent,
                             const QString &obj_name, const QString &obj_type);
-     
+
      void autorename(std::list<libfwbuilder::FWObject*> &obj_list,
                      const std::string &objtype,
                      const std::string &namesuffix);
      void autorenameVlans(std::list<libfwbuilder::FWObject*> &obj_list);
 
      void reload();
-     
+
      void loadObjects();
      void clearObjects();
-    
+
      void reopenCurrentItemParent();
 
      void insertObjectInTree(libfwbuilder::FWObject *parent,
@@ -299,7 +302,7 @@ public:
 
      void addLib(libfwbuilder::FWObject *lib);
      void removeLib(libfwbuilder::FWObject *lib);
-     
+
      void openObjectInTree(libfwbuilder::FWObject *obj, bool register_in_history);
      void openObjectInTree(ObjectTreeViewItem *otvi,    bool register_in_history);
 
@@ -315,14 +318,14 @@ public:
 
      libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                      libfwbuilder::FWObject *obj);
-     
+
      void updateLibColor(libfwbuilder::FWObject *lib);
 
      void autoRenameChildren(libfwbuilder::FWObject *obj,
                              const QString &oldName,
                              bool  askForAutorename=true);
     void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
-    
+
      ObjectTreeView* getCurrentObjectTree();
      libfwbuilder::FWObject* getSelectedObject();
 
@@ -370,7 +373,7 @@ public:
      /**
       * get boolean flags that describe state of the menu items.
       * Can be used for both pop-up context menu and the main menu.
-      */ 
+      */
      void getMenuState(bool haveMoveTargets,
                        bool &dupMenuItem,
                        bool &moveMenuItem,
@@ -381,12 +384,13 @@ public:
                        bool &inDeletedObjects);
 
      bool getDeleteMenuState(libfwbuilder::FWObject *obj);
-    
+
      void updateLastInstalledTimestamp(libfwbuilder::FWObject *o);
      void updateLastCompiledTimestamp(libfwbuilder::FWObject *o);
-    
+
      std::list<libfwbuilder::Firewall*> findFirewallsForObject(
          libfwbuilder::FWObject *o);
+
      void findAllFirewalls(std::list<libfwbuilder::Firewall*> &fws);
 
      std::list<libfwbuilder::Cluster*> findClustersUsingFirewall(libfwbuilder::FWObject *fw);

@@ -123,7 +123,7 @@ void ProjectPanel::reset()
     FWObjectClipboard::obj_clipboard->clear();
 }
 
-ProjectPanel::ProjectPanel(QWidget *parent): 
+ProjectPanel::ProjectPanel(QWidget *parent):
     QWidget(parent), // , Qt::WindowSystemMenuHint|Qt::Window),
     mainW(0),
     rcs(0),
@@ -248,10 +248,10 @@ void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
     // p is a pointer to RuleSet object @obj belongs to
     if (p != getCurrentRuleSet()) openRuleSet(p);
     getCurrentRuleSetView()->setFocus();
-    getCurrentRuleSetView()->selectRE( obj );    
+    getCurrentRuleSetView()->selectRE( obj );
 }
 
-RuleSetView * ProjectPanel::getCurrentRuleSetView() 
+RuleSetView * ProjectPanel::getCurrentRuleSetView()
 {
     return dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
 }
@@ -297,7 +297,7 @@ void ProjectPanel::reopenFirewall()
         qDebug("ProjectPanel::reopenFirewall(): checkpoint 3: "
                "dirty=%d last_modified=%s",
                db()->isDirty(), ctime(&last_modified));
-    
+
     if (visibleRuleSet==NULL) return ;
 
     for (int i =0 ; i < m_panel->ruleSets->count (); i++)
@@ -312,7 +312,7 @@ void ProjectPanel::reopenFirewall()
                "dirty=%d last_modified=%s",
                db()->isDirty(), ctime(&last_modified));
 
-    RuleSetView* rulesetview = 
+    RuleSetView* rulesetview =
         RuleSetView::getRuleSetViewByType(this, visibleRuleSet, NULL);
     if (rulesetview)
     {
@@ -323,11 +323,11 @@ void ProjectPanel::reopenFirewall()
             qDebug("ProjectPanel::reopenFirewall(): checkpoint 5: "
                    "dirty=%d last_modified=%s",
                    db()->isDirty(), ctime(&last_modified));
-    
+
         m_panel->ruleSets->setCurrentIndex(currentPage);
         rv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
         rv->restoreCurrentRowColumn(memento);
-    
+
         changingTabs = false;
         mainW->setEnabledAfterRF();
 
@@ -802,7 +802,7 @@ void ProjectPanel::redrawRuleSets()
 }
 
 void ProjectPanel::showEvent(QShowEvent *ev)
-{ 
+{
     if (fwbdebug) qDebug("ProjectPanel::showEvent %p title=%s",
                          this, getPageTitle().toAscii().constData());
     QWidget::showEvent(ev);
@@ -816,7 +816,7 @@ void ProjectPanel::hideEvent(QHideEvent *ev)
 }
 
 void ProjectPanel::closeEvent(QCloseEvent * ev)
-{   
+{
     if (fwbdebug)
         qDebug() << "ProjectPanel::closeEvent title=" << getPageTitle();
 
@@ -1004,7 +1004,7 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
      */
     m_panel->treeDockWidget->disconnect(SIGNAL(topLevelChanged(bool)));
     m_panel->treeDockWidget->disconnect(SIGNAL(visibilityChanged(bool)));
-    
+
     if (f)
     {
         m_panel->treeDockWidget->setParent(mw);
@@ -1030,7 +1030,7 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
     } else
     {
         saveMainSplitter();
-        // expand rules 
+        // expand rules
         collapseTree();
         m_panel->treeDockWidget->widget()->update();
     }
@@ -1050,7 +1050,7 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
     } else
     {
         saveMainSplitter();
-        // expand rules 
+        // expand rules
         collapseTree();
         m_panel->treeDockWidget->widget()->update();
     }

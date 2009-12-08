@@ -31,6 +31,8 @@
 #include "platforms.h"
 #include "events.h"
 
+
+#include "ProjectPanel.h"
 #include "ObjectManipulator.h"
 #include "ObjectEditor.h"
 #include "ObjectTreeViewItem.h"
@@ -47,7 +49,6 @@
 #include "interfacePropertiesObjectFactory.h"
 #include "FWBTree.h"
 #include "FWWindow.h"
-#include "ProjectPanel.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/RuleSet.h"
@@ -452,7 +453,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                         (h->getStr("host_OS"), "supports_subinterfaces");
             } catch (FWException &ex) { }
 
-            /* 
+            /*
              * check if this interface can have subinterfaces. Show "Add Interface"
              * menu item only if host_os has attribute "supports_subinterfaces"
              * and if parent interface (currentObj) has the type that can have
@@ -750,7 +751,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             FWBTree().getPasteMenuState(object_path) &&
             (FWObjectClipboard::obj_clipboard->size()!=0);
         delMenuItem = delMenuItem && getDeleteMenuState(obj);
-        delMenuItem = delMenuItem && 
+        delMenuItem = delMenuItem &&
             current_library->getId() != FWObjectDatabase::STANDARD_LIB_ID &&
             current_library->getId() != FWObjectDatabase::TEMPLATE_LIB_ID;
 
@@ -889,7 +890,7 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
         .arg(obj->getName().c_str())
         .arg(obj->getTypeName().c_str())
         .arg(ta->getName().c_str());
-    
+
     if (FWBTree().isSystem(ta))
         return m_project->validateForInsertion(ta, obj);
 
@@ -924,7 +925,7 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
 
     Group *grp=Group::cast(ta);
     if (grp!=NULL) return grp->validateChild(obj);
-    
+
     return false;
 }
 
@@ -1000,11 +1001,11 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 
     if (RuleSet::cast(obj)!=NULL)
     {
-        if (obj!=m_project->getCurrentRuleSet()) 
-        {           
+        if (obj!=m_project->getCurrentRuleSet())
+        {
             m_project->openRuleSet(obj);
         }
-    
+
     }
     if (!mw->isEditorVisible()) return false;
 
@@ -1020,7 +1021,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
     active = true;
 
     if (fwbdebug) qDebug("ObjectManipulator::switchObjectInEditor done");
-    
+
     return true;      // successfully (re)opened obj in the editor
 }
 
@@ -1283,109 +1284,6 @@ bool ObjectManipulator::isSelected()
     return active;
 }
 
-/*
- * per bug #2412334, FWObjectDatabase::findWhereObjectIsUsed finds
- * only "direct" uses of @obj (i.e. it finds group @obj is member of,
- * but not other groups or rules the group is member of). However here
- * we need to find all objects that use @obj, including nested groups
- * and so on. This method is recursive wrapper around
- * FWObjectDatabase::findWhereObjectIsUsed() that does this.
- *
- */
-void ObjectManipulator::findWhereUsedRecursively(
-    FWObject *obj, FWObject *top, set<FWObject*> &resset)
-{
-    if (fwbdebug)
-        qDebug() << "ObjectManipulator::findWhereUsedRecursively obj="
-                 << obj->getName().c_str()
-                 << "(" << obj->getTypeName().c_str() << ")";
-
-    set<FWObject*> resset_tmp;
-
-/*
- * findWhereObjectIsUsed() finds references to object 'obj' in a subtree
- *  rooted at object 'top'.
- */
-    m_project->db()->findWhereObjectIsUsed(obj, top, resset_tmp);
-    set<FWObject *>::iterator i = resset.begin();
-    for ( ; i!=resset.end(); ++i)
-        if (resset_tmp.count(*i)) resset_tmp.erase(*i);
-
-    resset.insert(resset_tmp.begin(), resset_tmp.end());
-
-    i = resset_tmp.begin();
-    for ( ; i!=resset_tmp.end(); ++i)
-    {
-        FWObject *parent_obj = *i;
-        FWReference  *ref = FWReference::cast(parent_obj);
-        if (ref && RuleElement::cast(ref->getParent()) == NULL)
-        {
-            // NB! We need parent of this ref for regular groups There
-            // is no need to repeat search for the parent if it is
-            // RuleElement because rule elements can not be members of
-            // groups
-            parent_obj = ref->getParent();
-        }
-
-        if (fwbdebug)
-            qDebug() << "ObjectManipulator::findWhereUsedRecursively"
-                     << "paerent_obj=" << parent_obj->getName().c_str()
-                     << "(" << parent_obj->getTypeName().c_str() << ")";
-
-        // add new results to a separate set to avoid modifying the resset_tmp
-        // in the middle of iteration
-        if (Group::cast(parent_obj) && !RuleElement::cast(parent_obj))
-            findWhereUsedRecursively(parent_obj, top, resset);
-    }
-}
-
-list<Firewall*> ObjectManipulator::findFirewallsForObject(FWObject *o)
-{
-    if (fwbdebug)
-        qDebug("ObjectManipulator::findFirewallsForObject");
-
-    list<Firewall *> fws;
-
-    set<FWObject *> resset;
-    QTime tt;
-    tt.start();
-    FWObject *f=o;
-    while (f!=NULL && !Firewall::cast(f)) f=f->getParent();
-    if (f) fws.push_back(Firewall::cast(f));
-
-    findWhereUsedRecursively(o, m_project->db(), resset);
-
-    //FindWhereUsedWidget::humanizeSearchResults(resset);
-
-    set<FWObject *>::iterator i = resset.begin();
-    for ( ;i!=resset.end(); ++i)
-    {
-        FWObject *obj = *i;
-        FWReference  *ref = FWReference::cast(*i);
-        if (ref && RuleElement::cast(ref->getParent()) != NULL)
-            obj = ref->getParent();
-        else
-            continue;
-
-        Rule *r = Rule::cast(obj->getParent());
-        if (r && !r->isDisabled())
-        {
-            f = r;
-            while (f!=NULL && Firewall::cast(f) == NULL) f = f->getParent();
-            if (f && std::find(fws.begin(), fws.end(), f) == fws.end())
-            {
-                fws.push_back(Firewall::cast(f));
-            }
-        }
-    }
-
-    if (fwbdebug)
-        qDebug(QString("Program spent %1 ms searching for firewalls.")
-               .arg(tt.elapsed()).toAscii().constData());
-
-    return fws;
-}
-
 list<Cluster*> ObjectManipulator::findClustersUsingFirewall(FWObject *fw)
 {
     list<Cluster*> res;
@@ -1477,11 +1375,11 @@ void ObjectManipulator::loadSectionSizes()
             dynamic_cast<ObjectTreeView*>(idxToTrees[i]);
         FWObject *lib = idxToLibs[i];
         objTreeView->header()->resizeSection(
-            0, 
+            0,
             st->getTreeSectionSize(
                 m_project->getFileName(), lib->getName().c_str(), 0));
         objTreeView->header()->resizeSection(
-            1, 
+            1,
             st->getTreeSectionSize(
                 m_project->getFileName(), lib->getName().c_str(), 1));
     }
@@ -1544,4 +1442,16 @@ void ObjectManipulator::setAttributesColumnEnabled(bool)
     }
 }
 
+void ObjectManipulator::findWhereUsedRecursively(libfwbuilder::FWObject *obj,
+                              libfwbuilder::FWObject *top,
+                              std::set<libfwbuilder::FWObject*> &resset)
+{
+    UsageResolver::findWhereUsedRecursively(obj, top, resset, this->m_project->db());
+}
+
+std::list<libfwbuilder::Firewall*> ObjectManipulator::findFirewallsForObject(
+    libfwbuilder::FWObject *o)
+{
+    return UsageResolver::findFirewallsForObject(o, this->m_project->db());
+}
 

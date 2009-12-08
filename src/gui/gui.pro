@@ -170,7 +170,8 @@ HEADERS += ../../config.h \
     FirewallSelectorWidget.h \
     ClusterInterfacesSelectorWidget.h \
     ClusterInterfaceWidget.h \
-    FWCmdRule.h
+    FWCmdRule.h \
+    UsageResolver.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -338,7 +339,8 @@ SOURCES += ProjectPanel.cpp \
     FirewallSelectorWidget.cpp \
     ClusterInterfacesSelectorWidget.cpp \
     ClusterInterfaceWidget.cpp \
-    FWCmdRule.cpp
+    FWCmdRule.cpp \
+    UsageResolver.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
