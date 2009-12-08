@@ -167,7 +167,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
                        previous_subwindow(0),
                        instd(0),
                        instDialogOnScreenTimer(
-                           new QTimer(static_cast<QObject*>(this))), 
+                           new QTimer(static_cast<QObject*>(this))),
                        editorOwner(0),
                        printer(0), searchObject(0), replaceObject(0),
                        auto_load_from_rcs_head_revision(0),
@@ -187,10 +187,10 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     // ProjectPanel *proj = newProjectPanel();
     // showSub(proj);
-    
+
 #ifdef Q_OS_MACX
     m_mainWindow->m_space->setViewMode(QMdiArea::TabbedView);
-#endif    
+#endif
 
     findObjectWidget = new FindObjectWidget(
         m_mainWindow->find_panel, NULL, "findObjectWidget");
@@ -282,7 +282,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
             this,  SLOT( prepareWindowsMenu()  ));
 
     connect( m_mainWindow->m_space, SIGNAL(subWindowActivated(QMdiSubWindow*)),
-             this, SLOT(subWindowActivated(QMdiSubWindow*))); 
+             this, SLOT(subWindowActivated(QMdiSubWindow*)));
 
     disableActions(false);
 
@@ -583,7 +583,7 @@ void FWWindow::fileOpen()
         tr("Open File"),
         dir,
         "FWB files (*.fwb *.fwl *.xml);;All Files (*)");
-    
+
     if (fileName.isEmpty())
     {
         m_mainWindow->m_space->setActiveSubWindow(last_active_window);
@@ -667,7 +667,7 @@ void FWWindow::fileExit()
 
 void FWWindow::toolsDiscoveryDruid()
 {
-    if (activeProject()) 
+    if (activeProject())
     {
         DiscoveryDruid druid(this);
         druid.exec();
@@ -676,7 +676,7 @@ void FWWindow::toolsDiscoveryDruid()
 
 void FWWindow::importPolicy()
 {
-    if (activeProject()) 
+    if (activeProject())
     {
         DiscoveryDruid druid(this, true);
         druid.exec();
@@ -911,7 +911,7 @@ void FWWindow::prepareFileMenu()
     bool in_rcs = (activeProject()->getRCS() != NULL &&
                    activeProject()->getRCS()->isCheckedOut());
     bool needs_saving = (db() && db()->isDirty());
-    
+
     m_mainWindow->fileSaveAction->setEnabled(real_file_opened && needs_saving);
     m_mainWindow->fileCloseAction->setEnabled(real_file_opened);
     m_mainWindow->filePropAction->setEnabled(real_file_opened);
@@ -998,12 +998,12 @@ void FWWindow::activatePreviousSubWindow()
     m_mainWindow->m_space->setActiveSubWindow(previous_subwindow);
     //previous_subwindow->raise();
 }
- 
+
 
 /**
  * QMdiArea emits this signal after window has been activated. When
  * window is 0, QMdiArea has just deactivated its last active window,
- * and there are no active windows on the workspace. 
+ * and there are no active windows on the workspace.
  *
  * During the call to this method @subwindow is already current (equal
  * to the pointer returned by m_mainWindow->m_space->currentSubWindow())
@@ -1015,7 +1015,7 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     if (fwbdebug)
         qDebug() << "FWWindow::subWindowActivated subwindow="
                  << subwindow
-                 << " " 
+                 << " "
                  << subwindow->windowTitle();
 
     if (previous_subwindow == subwindow) return;
@@ -1026,7 +1026,7 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     //     // Roll back switch of subwindows
 
     //     if (fwbdebug)
-    //         qDebug() << "Activating previous subwindow " 
+    //         qDebug() << "Activating previous subwindow "
     //                  << previous_subwindow
     //                  << " "
     //                  << previous_subwindow->windowTitle();
@@ -1254,7 +1254,7 @@ void FWWindow::checkForUpgrade(const QString& server_response)
     } else
     {
         if (fwbdebug)
-            qDebug("Update check error:  %s", 
+            qDebug("Update check error:  %s",
                    current_version_http_getter->getLastError().
                    toLatin1().constData());
     }
@@ -1312,6 +1312,7 @@ void FWWindow::enableBackAction()
 
 void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setname, int rule)
 {
+    // Get project window and make it active
     QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
         QMdiArea::StackingOrder);
     foreach(QMdiSubWindow* win, subwindows)
@@ -1323,6 +1324,8 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
                 m_mainWindow->m_space->setActiveSubWindow(win);
         }
     }
+
+    // Find firewall object tree item
     ObjectTreeViewItem* firewall = NULL;
     foreach(QTreeWidgetItem* item,
             project->getCurrentObjectTree()->findItems(fwname,
@@ -1336,6 +1339,7 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
     }
     if (firewall == NULL) return;
 
+    // Find rule set item in object tree and select it
     foreach(QTreeWidgetItem* item,
             project->getCurrentObjectTree()->findItems(setname,
                                      Qt::MatchExactly | Qt::MatchRecursive, 0))
@@ -1347,12 +1351,17 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
             project->openRuleSet(((ObjectTreeViewItem*)item)->getFWObject());
         }
     }
-    project->getCurrentRuleSetView()->clearSelection();
-    QModelIndex idx = project->getCurrentRuleSetView()->model()->
-                                                 index(rule, 0, QModelIndex());
+
+    RuleSetView* view = project->getCurrentRuleSetView();
+    view->clearSelection();
+    QModelIndex idx = view->model()->index(rule, 0, QModelIndex());
+
     if (idx.isValid())
-        project->getCurrentRuleSetView()->selectionModel()->select(
-                idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+    {
+        view->scrollTo(idx);
+        view->selectionModel()->select(idx, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
+        view->scrollTo(idx);
+    }
 }
 
 void FWWindow::undoViewVisibilityChanged(bool visible)
