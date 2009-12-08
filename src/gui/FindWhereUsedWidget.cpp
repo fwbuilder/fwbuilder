@@ -256,6 +256,17 @@ void FindWhereUsedWidget::showObject(FWObject* o)
     }
 }
 
+/*
+ * This method post-processes the list of objects found by
+ * findFirewallsForObject to make them suitable for presentation.
+ * First, it does deduplication.  Event showObjectInRulesetEvent that
+ * finds an object and highlights it in rules requires reference or
+ * object itself as an argument. So, when parent is RuleElement,
+ * preserve reference. But for regular groups we find and highlight
+ * the group itself, so in that case replace reference to the object
+ * with the group, which is its parent.
+ *
+ */
 void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
 {
     set<FWObject*> tmp_res;  // set deduplicates items automatically
@@ -264,11 +275,6 @@ void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
     {
         FWObject *obj = NULL;
         FWReference  *ref = FWReference::cast(*i);
-        // event showObjectInRulesetEvent that finds an object and
-        // highlight it in rules requires reference or object itself
-        // as an argument. So, when parent is RuleElement, preserve
-        // reference.
-
         if (ref && RuleElement::cast(ref->getParent()) == NULL)
         {
             obj = ref->getParent();  // NB! We need parent of this ref for groups
