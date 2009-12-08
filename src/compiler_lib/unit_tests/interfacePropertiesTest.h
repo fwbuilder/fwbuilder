@@ -33,8 +33,8 @@
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Cluster.h"
-#include "interfaceProperties.h"
-#include "interfacePropertiesObjectFactory.h"
+#include "../interfaceProperties.h"
+#include "../interfacePropertiesObjectFactory.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/TestSuite.h>

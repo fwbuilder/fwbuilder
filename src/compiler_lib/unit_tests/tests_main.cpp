@@ -38,5 +38,6 @@ int main( int, char** )
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
                                                          std::cerr ) );
 
-    return runner.run();
+    runner.run();
+    return 0;
 }
