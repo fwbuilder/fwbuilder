@@ -251,7 +251,7 @@ void FWObjectDropArea::editObject()
     if (pp!=NULL)
     {
         QCoreApplication::postEvent(
-            pp, new openObjectInEditorEvent(pp->getFileName(), object->getId()));
+            mw, new openObjectInEditorEvent(pp->getFileName(), object->getId()));
         QCoreApplication::postEvent(
             pp, new showObjectInTreeEvent(pp->getFileName(), object->getId()));
     }
