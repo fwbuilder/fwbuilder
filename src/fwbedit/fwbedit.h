@@ -37,7 +37,7 @@
 
 // can't use 'DELETE' in this enum because it is degined somewhere on windows
 typedef enum { NONE, ADDGRP, REMGRP, DELOBJECT, NEWOBJECT, MODOBJECT,
-               LIST, STRUCT, UPGRADE} command;
+               LIST, STRUCT, UPGRADE, MERGE} command;
 
 class OperandsError : public std::exception {};
 
@@ -69,6 +69,9 @@ extern void modObject(libfwbuilder::FWObjectDatabase *objdb,
 
 extern void checkAndRepairTree(libfwbuilder::FWObjectDatabase *objdb);
 
+extern void mergeTree(libfwbuilder::FWObjectDatabase *objdb,
+                      const std::string &mergefile, int conflict_res);
+
 extern int splitStr(char ch,std::string s, operands * ops);
 extern std::string getNextOpt(operands &ops);
 extern std::string fixPath(const std::string &obj_path);
@@ -80,4 +83,5 @@ extern void findObjects(const std::string &obj_path,
 extern bool getBool(std::string s);
 extern void usage();
 
+extern std::string librespath;
 

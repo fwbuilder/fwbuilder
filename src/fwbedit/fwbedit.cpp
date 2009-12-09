@@ -98,6 +98,7 @@ extern int errno;
 #include "../common/init.cpp"
 
 #include "fwbedit.h"
+#include "upgradePredicate.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -107,34 +108,14 @@ command cmd = NONE;
 
 bool autoupgrade_flag = false;
 string filename = "";
+string filemerge = "";
+int conflict_res = 1;
 
 vector<string> platforms;
 
 FWObjectDatabase *objdb = NULL;
 
 int fwbdebug = 0;
-
-class UpgradePredicate: public XMLTools::UpgradePredicate
-{
-    public:
-    virtual bool operator()(const string&) const 
-    {
-        bool res=false;
-        cout << "Data file has been created in the old version of Firewall Builder." << endl << flush;
-        if (autoupgrade_flag)
-        {
-            cout << "Do you want to convert it? (Y/n)" << endl;
-            int a = getchar();
-            if (a=='y' || a=='Y' || a=='\n' ) res= true;
-        }
-        else
-        {
-            cout << "Use option '-u' to upgrade the file. Alternatively,\nfwbuilder GUI can convert it." << endl;
-        }
-        if (res) cout << "Upgrading the file now ..." << endl;
-        return res;
-    }
-};
 
 void usage()
 {
@@ -153,8 +134,8 @@ void usage()
     cout << "      add         add object to a group" << endl;
     cout << "      remove      remove object from a group" << endl;
     cout << "      upgrade     upgrade data file" << endl;
-    cout << "      checktree   check object tree and repair if necessary"
-         << endl;
+    cout << "      checktree   check object tree and repair if necessary" << endl;
+    cout << "      merge       merge one data file into another" << endl;
     cout << endl;
 
     cout << "Options:" << endl;
@@ -221,15 +202,28 @@ void usage()
     cout << endl;
 
     cout <<
-        "  upgrade -f file.fwb\n"
+        "   upgrade -f file.fwb\n"
         "\n"
         "          -f file.fwb: data file\n";
     cout << endl;
 
     cout <<
-        "checktree -f file.fwb\n"
+        "   checktree -f file.fwb\n"
         "\n"
         "          -f file.fwb: data file\n";
+    cout << endl;
+
+    cout <<
+        "   merge -f file1.fwb -i file2.fwb -c[1|2]\n"
+        "\n"
+        "          -f file1.fwb: data file #1\n"
+        "          -i file2.fwb: data file #2\n"
+        "          -cN in case of conflict (the same object is found in both files),\n"
+        "           keep the object from the file N (can be '1' or '2').\n"
+        "           Default is '1'.\n"
+        "           Objects from the file2.fwb are merged with objects in file1\n"
+        "           and combined object tree saved in file1.fwb\n";
+
     cout << endl;
 
     cout << "Attributes for the new objects, by type:" << endl;
@@ -410,6 +404,7 @@ int main(int argc, char * const *argv)
     if (cmd_str=="list") cmd = LIST;
     if (cmd_str=="upgrade") cmd = UPGRADE;
     if (cmd_str=="checktree") cmd = STRUCT;
+    if (cmd_str=="merge") cmd = MERGE;
 
     char * const *args = argv;
     args++;
@@ -536,6 +531,19 @@ int main(int argc, char * const *argv)
         }
         break;
     
+    case MERGE:
+        // -f file1.fwb -i file2.fwb
+        while( (opt=getopt(argc, args, "f:i:c:")) != EOF )
+        {
+            switch(opt)
+            {
+            case 'f': filename = optarg; break;
+            case 'i': filemerge = optarg; break;
+            case 'c': conflict_res = atoi(optarg); break;
+            }
+        }
+        break;
+
     case NONE:
         break;
     }
@@ -558,11 +566,20 @@ int main(int argc, char * const *argv)
         objdb = new FWObjectDatabase();
 
         /* load the data file */
-        UpgradePredicate upgrade_predicate; 
+        UpgradePredicate upgrade_predicate(autoupgrade_flag); 
 
         objdb->load(filename,  &upgrade_predicate, librespath);
     
-        if (cmd == STRUCT)
+        if (cmd == MERGE)
+        {
+            if (filemerge.empty())
+            {
+                usage();
+                exit(1);
+            }
+            mergeTree(objdb, filemerge, conflict_res);
+        }
+        else if (cmd == STRUCT)
         {
             checkAndRepairTree(objdb);
         }
@@ -649,16 +666,16 @@ int main(int argc, char * const *argv)
         }
 
     } catch(FWException &ex)  {
-    cerr << ex.toString() << endl;
+        cerr << ex.toString() << endl;
         exit(1);
     } catch (std::string s) {
-    cerr << s;
+        cerr << s;
         exit(1);
     } catch (std::exception ex) {
-    cerr << ex.what();
+        cerr << ex.what();
         exit(1);
     } catch (...) {
-    cerr << "Unsupported exception";
+        cerr << "Unsupported exception";
         exit(1);
     }
 

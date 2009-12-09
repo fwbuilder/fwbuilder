@@ -1,3 +1,10 @@
+2009-12-08  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/fwbedit/merge.cpp: fixed bug #2794851 (fwbuilder bug
+	#202): "Ability to import Library using fwbedit". User can now
+	merge objects from two files together using fwbedit just like the
+	"Import library" function in the GUI.
+
 2009-12-07  vadim  <vadim@vk.crocodile.org>
 
 	* instDialog_ui_ops.cpp (instDialog::getInstOptions): fixed bug

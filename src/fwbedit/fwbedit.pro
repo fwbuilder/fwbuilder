@@ -6,8 +6,8 @@ include(../../qmake.inc)
 
 TEMPLATE = app
 
-SOURCES	 = fwbedit.cpp new_object.cpp repair_tree.cpp list_object.cpp
-HEADERS	 = ../../config.h fwbedit.h
+SOURCES	 = fwbedit.cpp new_object.cpp repair_tree.cpp list_object.cpp merge.cpp
+HEADERS	 = ../../config.h fwbedit.h upgradePredicate.h
 
 TARGET = fwbedit
 
