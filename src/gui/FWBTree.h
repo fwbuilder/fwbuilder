@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -30,6 +30,8 @@
 
 #include <qstring.h>
 
+#include "LibraryManipulator.h"
+
 namespace libfwbuilder {
     class FWObject;
     class FWObjectDatabase;
@@ -37,7 +39,7 @@ namespace libfwbuilder {
 
 class QPixmap;
 
-class FWBTree {
+class FWBTree: public LibraryManipulator {
 
     std::map<QString,QString>  systemGroupTypes;
     std::map<QString,QString>  systemGroupNames;
@@ -46,15 +48,15 @@ class FWBTree {
     std::map<QString,bool>     cutMenuState;
     std::map<QString,bool>     pasteMenuState;
     std::map<QString,bool>     deleteMenuState;
-    
+
  public:
-    
+
     FWBTree();
 
     bool isSystem(libfwbuilder::FWObject *obj);
     bool isStandardFolder(libfwbuilder::FWObject *obj);
     bool isStandardId(libfwbuilder::FWObject *obj);
-    
+
     bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
 
     /**
@@ -87,13 +89,20 @@ class FWBTree {
         else
             return true;
     }
-    
+
     void getStandardSlotForObject(const QString &objType,
                                          QString &parentType,
                                          QString &parentName);
     libfwbuilder::FWObject* getStandardSlotForObject(libfwbuilder::FWObject* lib,
-                                                            const QString &objType);
-    libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
+                                                            const QString &objType)
+    {
+        return LibraryManipulator::getStandardSlotForObject(lib, objType);
+    }
+
+    libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db)
+    {
+        return LibraryManipulator::createNewLibrary(db);
+    }
 
     void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size);
 };

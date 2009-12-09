@@ -387,7 +387,7 @@ bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj)
     if (parentType.isEmpty() || parentName.isEmpty()) return false;
 
     if (target->getTypeName() == string(parentType.toLatin1()) &&
-	target->getName()     == string(parentName.toLatin1()) )
+    target->getName()     == string(parentName.toLatin1()) )
         return true;
 
     return false;
@@ -406,6 +406,7 @@ void FWBTree::getStandardSlotForObject(const QString &objType,
  * type in a given library. This method implemented our standard tree
  * structure (the one that is created in the method createNewLibrary)
  */
+/*
 FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType)
 {
     QString path = systemGroupPaths[objType];
@@ -516,6 +517,7 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
 
     return nlib;
 }
+*/
 
 /*
  * @icon_size:  0 - small (16x16) , 1 - medium (25x25), 2 - big (64x64)

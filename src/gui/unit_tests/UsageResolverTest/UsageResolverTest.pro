@@ -7,15 +7,16 @@ include(../../../../qmake.inc)
 QT += gui network
 
 INCLUDEPATH += ../../.ui ../../../compiler_lib/
-TARGET = FWObjectDatabaseTest
+TARGET = UsageResolverTest
 #CONFIG += console
 #CONFIG -= app_bundle
 TEMPLATE = app
 SOURCES += main.cpp \
-    FWObjectDatabaseTest.cpp \
-    ../../UsageResolver.cpp
+    UsageResolverTest.cpp \
+    ../../UsageResolver.cpp \
+    ../../LibraryManipulator.cpp
 
-HEADERS += FWObjectDatabaseTest.h ../../UsageResolver.h
+HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../LibraryManipulator.h
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER
 LIBS += -lgcov -lcppunit

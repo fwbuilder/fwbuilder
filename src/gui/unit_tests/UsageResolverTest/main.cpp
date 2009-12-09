@@ -25,7 +25,7 @@
 
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
-#include "FWObjectDatabaseTest.h"
+#include "UsageResolverTest.h"
 #include <string>
 
 //int build_num = 0;
@@ -35,7 +35,7 @@ bool fwbdebug = false;
 int main( int, char** )
 {
     CppUnit::TextUi::TestRunner runner;
-    runner.addTest( FWObjectDatabaseTest::suite() );
+    runner.addTest( UsageResolverTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
                                                          std::cerr ) );
 

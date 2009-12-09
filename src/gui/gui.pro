@@ -171,7 +171,8 @@ HEADERS += ../../config.h \
     ClusterInterfacesSelectorWidget.h \
     ClusterInterfaceWidget.h \
     FWCmdRule.h \
-    UsageResolver.h
+    UsageResolver.h \
+    LibraryManipulator.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -340,7 +341,8 @@ SOURCES += ProjectPanel.cpp \
     ClusterInterfacesSelectorWidget.cpp \
     ClusterInterfaceWidget.cpp \
     FWCmdRule.cpp \
-    UsageResolver.cpp
+    UsageResolver.cpp \
+    LibraryManipulator.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
