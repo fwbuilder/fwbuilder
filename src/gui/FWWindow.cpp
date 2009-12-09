@@ -1312,6 +1312,10 @@ void FWWindow::enableBackAction()
 
 void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setname, int rule)
 {
+    QCoreApplication::postEvent(
+        mw, new openRulesetEvent(project->getFileName(), 0));//project->get obj->getParent()->getId()));
+    return;
+
     // Get project window and make it active
     QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
         QMdiArea::StackingOrder);

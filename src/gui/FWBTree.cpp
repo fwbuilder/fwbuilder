@@ -30,7 +30,6 @@
 #include <QPixmap>
 
 #include "FWBTree.h"
-#include "utils.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Library.h"
@@ -405,9 +404,7 @@ void FWBTree::getStandardSlotForObject(const QString &objType,
  * this method finds standard system folder for an object of a given
  * type in a given library. This method implemented our standard tree
  * structure (the one that is created in the method createNewLibrary)
- */
-/*
-FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType)
+ */FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType)
 {
     QString path = systemGroupPaths[objType];
 
@@ -517,34 +514,6 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
 
     return nlib;
 }
-*/
 
-/*
- * @icon_size:  0 - small (16x16) , 1 - medium (25x25), 2 - big (64x64)
- */
-void FWBTree::setObjectIcon(FWObject *obj, QPixmap *pm, int icon_size)
-{
-    QString icn_alias;
-    QString icn_sfx;
-
-    switch (icon_size)
-    {
-    case 0: icn_sfx = "icon-tree"; break;
-    case 2: icn_sfx = "icon-big"; break;
-    default: icn_sfx = "icon"; break;
-    }
-
-    if (obj->getRO())
-        icn_alias = ":/Icons/lock";
-    else
-    {
-        if (FWBTree().isStandardFolder(obj))
-            icn_alias = ":/Icons/SystemGroup/" + icn_sfx;
-        else
-            icn_alias = QString(":/Icons/") + obj->getTypeName().c_str() + "/" + icn_sfx;
-    }
-
-    LoadPixmap(icn_alias, *pm);  // in utils.cpp
-}
 
 

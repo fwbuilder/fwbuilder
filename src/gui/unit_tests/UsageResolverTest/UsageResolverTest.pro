@@ -14,9 +14,9 @@ TEMPLATE = app
 SOURCES += main.cpp \
     UsageResolverTest.cpp \
     ../../UsageResolver.cpp \
-    ../../LibraryManipulator.cpp
+    ../../FWBTree.cpp
 
-HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../LibraryManipulator.h
+HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../FWBTree.h
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER
 LIBS += -lgcov -lcppunit

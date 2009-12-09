@@ -71,6 +71,8 @@
 #include <algorithm>
 #include <cctype>
 
+#include "FWBTree.h"
+
 using namespace std;
 using namespace libfwbuilder;
 

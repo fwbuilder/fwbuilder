@@ -25,7 +25,6 @@
 
 #include "UsageResolverTest.h"
 #include "UsageResolver.h"
-#include "LibraryManipulator.h"
 
 #include <QDebug>
 #include <set>
@@ -36,14 +35,14 @@ using namespace libfwbuilder;
 
 void UsageResolverTest::addToLib(FWObject* obj)
 {
-    LibraryManipulator().getStandardSlotForObject(lib, obj->TYPENAME)->add(obj);
+    FWBTree().getStandardSlotForObject(lib, obj->TYPENAME)->add(obj);
 }
 
 void UsageResolverTest::setUp()
 {
     db = new FWObjectDatabase();
     db->setName("Database");
-    lib = Library::cast(LibraryManipulator().createNewLibrary(db));
+    lib = Library::cast(FWBTree().createNewLibrary(db));
     lib->setName("Library");
     Firewall *fw1 = Firewall::cast(db->create(Firewall::TYPENAME));
     Firewall *fw2 = Firewall::cast(db->create(Firewall::TYPENAME));

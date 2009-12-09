@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -122,5 +122,8 @@ extern void LoadPixmap(const QString path, QPixmap &where);
 extern QPixmap LoadPixmap(const QString path);
 extern QString calculateIconName(const QString &_icn, bool negation);
 
+/*
+ * @icon_size:  0 - small (16x16) , 1 - medium (25x25), 2 - big (64x64)
+ */
 
 #endif

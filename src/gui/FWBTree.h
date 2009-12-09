@@ -30,16 +30,17 @@
 
 #include <qstring.h>
 
-#include "LibraryManipulator.h"
+#include "IconSetter.h"
 
 namespace libfwbuilder {
     class FWObject;
     class FWObjectDatabase;
 };
 
+
 class QPixmap;
 
-class FWBTree: public LibraryManipulator {
+class FWBTree: public IconSetter {
 
     std::map<QString,QString>  systemGroupTypes;
     std::map<QString,QString>  systemGroupNames;
@@ -94,17 +95,13 @@ class FWBTree: public LibraryManipulator {
                                          QString &parentType,
                                          QString &parentName);
     libfwbuilder::FWObject* getStandardSlotForObject(libfwbuilder::FWObject* lib,
-                                                            const QString &objType)
-    {
-        return LibraryManipulator::getStandardSlotForObject(lib, objType);
-    }
+                                                            const QString &objType);
+    libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
-    libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db)
+    void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size)
     {
-        return LibraryManipulator::createNewLibrary(db);
+        return IconSetter::setObjectIcon(obj, pm, icon_size);
     }
-
-    void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size);
 };
 
 #endif

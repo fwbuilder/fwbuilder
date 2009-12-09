@@ -28,9 +28,8 @@
 #include "UsageResolverTest.h"
 #include <string>
 
-//int build_num = 0;
 std::string respath;
-bool fwbdebug = false;
+int fwbdebug = 0;
 
 int main( int, char** )
 {
