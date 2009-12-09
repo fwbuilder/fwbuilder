@@ -9,10 +9,21 @@
 #  include <QDir>
 #  include <QApplication>
 //#  include <QCoreApplication>
-#  include <QString>
 #else
 #  include <limits.h>
 #  include <unistd.h>
+#endif
+
+#include <QString>
+#include <QtDebug>
+
+#ifndef _WIN32
+#  include <unistd.h>
+#  include <pwd.h>
+#else
+#  include <direct.h>
+#  include <stdlib.h>
+#  include <io.h>
 #endif
 
 #include <string>
@@ -31,7 +42,9 @@ std::string sysfname;
 std::string tempfname;
 std::string argv0;
 std::string ee;
+
 QString build_num = QString("").setNum(BUILD_NUM);
+QString user_name;
 
 extern int fwbdebug;
 
@@ -102,4 +115,18 @@ void init(char * const*)
     userDataDir = string(getenv("HOME"));
 #endif
 
+#ifdef _WIN32
+    char* _user_name=getenv("USERNAME");
+#else
+    struct passwd *pwd = getpwuid(getuid());
+    assert(pwd);
+    char *_user_name = pwd->pw_name;
+#endif
+    if (_user_name==NULL)
+    {
+        _user_name = getenv("LOGNAME");
+        if (user_name == NULL)
+            qDebug() << "Can't figure out your user name";
+    }
+    user_name = QString(_user_name);
 }

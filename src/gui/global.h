@@ -52,6 +52,7 @@ extern std::string     ee;
 extern int             fwbdebug;
 extern int             registered;
 extern QString         build_num;
+extern QString         user_name;
 
 #define SETTINGS_PATH_PREFIX  "/3.1"
 

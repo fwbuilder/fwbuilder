@@ -29,15 +29,6 @@
 #include <iostream>
 #include <iomanip>
 
-#ifndef _WIN32
-#  include <unistd.h>
-#  include <pwd.h>
-#else
-#  include <direct.h>
-#  include <stdlib.h>
-#  include <io.h>
-#endif
-
 #include "CompilerDriver.h"
 #include "Configlet.h"
 
@@ -57,6 +48,7 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 extern QString build_num;
+extern QString user_name;
 
 
 QString CompilerDriver::printPathForAllTools(Firewall*, const std::string &)
@@ -105,20 +97,6 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
     stm = localtime(&tm);
     timestr = strdup(ctime(&tm));
     timestr[strlen(timestr)-1] = '\0';
-    
-#ifdef _WIN32
-    char* user_name=getenv("USERNAME");
-#else
-    struct passwd *pwd=getpwuid(getuid());
-    assert(pwd);
-    char *user_name=pwd->pw_name;
-#endif
-    if (user_name==NULL)
-    {
-        user_name=getenv("LOGNAME");
-        if (user_name==NULL)
-            abort("Can't figure out your user name");
-    }
 
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);

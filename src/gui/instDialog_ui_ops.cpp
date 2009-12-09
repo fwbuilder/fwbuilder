@@ -351,15 +351,16 @@ void instDialog::summary()
     QStringList str;
 
     str.append(QObject::tr("Summary:"));
-    str.append(QObject::tr("* firewall name : %1")
+    str.append(QObject::tr("* Running as user : %1").arg(user_name));
+    str.append(QObject::tr("* Firewall name : %1")
                .arg(QString::fromUtf8(cnf.fwobj->getName().c_str())));
-    str.append(QObject::tr("* user name : %1").arg(cnf.user));
-    str.append(QObject::tr("* management address : %1").arg(cnf.maddr));
-    str.append(QObject::tr("* platform : %1")
+    str.append(QObject::tr("* Installer uses user name : %1").arg(cnf.user));
+    str.append(QObject::tr("* Management address : %1").arg(cnf.maddr));
+    str.append(QObject::tr("* Platform : %1")
               .arg(cnf.fwobj->getStr("platform").c_str()));
-    str.append( QObject::tr("* host OS : %1")
+    str.append(QObject::tr("* Host OS : %1")
               .arg(cnf.fwobj->getStr("host_OS").c_str()));
-    str.append( QObject::tr("* Loading configuration from file %1")
+    str.append(QObject::tr("* Loading configuration from file %1")
               .arg(cnf.fwbfile));
 
     if (cnf.incremental)

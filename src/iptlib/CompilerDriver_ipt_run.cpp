@@ -25,15 +25,6 @@
 
 #include "../../config.h"
 
-#ifndef _WIN32
-#  include <unistd.h>
-#  include <pwd.h>
-#else
-#  include <direct.h>
-#  include <stdlib.h>
-#  include <io.h>
-#endif
-
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -50,13 +41,9 @@
 #include <memory>
 
 #include "CompilerDriver_ipt.h"
-
 #include "PolicyCompiler_ipt.h"
-
 #include "NATCompiler_ipt.h"
-
 #include "RoutingCompiler_ipt.h"
-
 #include "OSConfigurator_linux24.h"
 #include "OSConfigurator_secuwall.h"
 #include "OSConfigurator_ipcop.h"
@@ -88,11 +75,13 @@
 #include <QTextStream>
 #include <QtDebug>
 
+
 using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
 extern QString build_num;
+extern QString user_name;
 
 /*
  * Go through paces to compile firewall which may be a member of a
@@ -446,22 +435,6 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
         stm = localtime(&tm);
         timestr = strdup(ctime(&tm));
         timestr[strlen(timestr)-1] = '\0';
-
-#ifdef _WIN32
-        char* user_name = getenv("USERNAME");
-#else
-        struct passwd *pwd = getpwuid(getuid());
-        assert(pwd);
-        char *user_name = pwd->pw_name;
-#endif
-
-        if (user_name == NULL)
-        {
-            user_name = getenv("LOGNAME");
-            if (user_name == NULL)
-                abort("Can't figure out your user name");
-
-        }
 
 /*
  * assemble the script and then perhaps post-process it if it should
