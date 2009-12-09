@@ -33,6 +33,8 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Rule.h"
 
+#include <algorithm>
+
 using namespace std;
 using namespace libfwbuilder;
 
