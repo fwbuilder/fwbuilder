@@ -638,6 +638,11 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
     firstAction = false ;
 }
 
+void ObjectManipulator::objectMoved(FWObject* obj)
+{
+    openLibForObject(obj);
+}
+
 void ObjectManipulator::groupObjects()
 {
     if (getCurrentObjectTree()->getNumSelected()==0) return;

@@ -63,8 +63,10 @@ enum EVENT_CODES {
     OPEN_OBJECT_IN_EDITOR_EVENT ,
     OPEN_OPT_OBJECT_IN_EDITOR_EVENT ,
     CLOSE_OBJECT_EVENT ,
-    OBJECT_NAME_CHANGED_EVENT
+    OBJECT_NAME_CHANGED_EVENT,
+    OPEN_LIBRARY_FOR_OBJECT_EVENT
 };
+
 
 class fwbUpdateEvent : public QEvent {
     QString data_file_name;
@@ -327,6 +329,19 @@ public:
                    "objectNameChangedEvent")
     { old_name = _old_name; new_name = _new_name; }
 };
+
+
+class openLibraryForObjectEvent : public fwbUpdateEvent {
+public:
+    QString old_name;
+    QString new_name;
+    openLibraryForObjectEvent(const QString &file_name, int obj_id) :
+    fwbUpdateEvent(file_name, obj_id,
+                   QEvent::Type(QEvent::User + OPEN_LIBRARY_FOR_OBJECT_EVENT),
+                   "openLibraryForObjectEvent")
+    {}
+};
+
 
 
 

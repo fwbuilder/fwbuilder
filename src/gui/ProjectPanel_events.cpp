@@ -379,6 +379,11 @@ bool ProjectPanel::event(QEvent *event)
                 ev->accept();
                 return true;
 
+            case OPEN_LIBRARY_FOR_OBJECT_EVENT:
+                m_panel->om->openLibForObject(obj);
+                ev->accept();
+                return true;
+
             case CLOSE_OBJECT_EVENT:
                 if (RuleSet::cast(obj))
                 {

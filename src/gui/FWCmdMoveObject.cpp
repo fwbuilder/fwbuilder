@@ -32,6 +32,7 @@
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
+#include "fwbuilder/Library.h"
 
 #include <QObject>
 #include <QtDebug>
@@ -139,23 +140,33 @@ void FWCmdMoveObject::notify()
     // This matters if the tree needs to scroll to show the object when
     // showObjectInTreeEvent is posted because vertical size of the tree
     // changes when editor opens
-    if (obj->getLibrary()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
+    FWObject *new_obj = NULL;
+    if (obj->getParent()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
     {
-        if (mw->isEditorVisible())
-            QCoreApplication::postEvent(mw, new openObjectInEditorEvent(
-                                            filename, old_parent->getId()));
-        QCoreApplication::postEvent(mw, new showObjectInTreeEvent(
-                                        filename, old_parent->getId()));
+        if (Library::isA(obj))
+        {
+            // looks like the object that moved into Deleted Objects is
+            // another library. Show Deleted Objects library.
+            new_obj = obj->getParent();
+        }else
+            new_obj = old_parent;
     } else
     {
-        if (mw->isEditorVisible())
-            QCoreApplication::postEvent(mw, new openObjectInEditorEvent(
-                                            filename, obj->getId()));
-        QCoreApplication::postEvent(mw, new showObjectInTreeEvent(
-                                        filename, obj->getId()));
+        new_obj = obj;
     }
-    // always reload rule set because the object we just moved might
-    // be shown there. 
-    //QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
+
+    QCoreApplication::postEvent(mw, new openLibraryForObjectEvent(
+                                    filename, new_obj->getId()));
+
+    if (mw->isEditorVisible())
+        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(
+                                        filename, new_obj->getId()));
+
+    QCoreApplication::postEvent(mw, new showObjectInTreeEvent(
+                                    filename, new_obj->getId()));
+
+    // // switch the tree to the library where object is now located
+    // QCoreApplication::postEvent(mw, new openLibraryForObjectEvent(
+    //                                 filename, obj->getId()));
 }
 

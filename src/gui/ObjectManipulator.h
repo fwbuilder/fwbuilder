@@ -302,7 +302,8 @@ public:
 
      void addLib(libfwbuilder::FWObject *lib);
      void removeLib(libfwbuilder::FWObject *lib);
-
+     void openLibForObject(libfwbuilder::FWObject *obj);
+     
      void openObjectInTree(libfwbuilder::FWObject *obj, bool register_in_history);
      void openObjectInTree(ObjectTreeViewItem *otvi,    bool register_in_history);
 
@@ -316,6 +317,12 @@ public:
 
      void moveObject(const QString &targetLibName, libfwbuilder::FWObject *obj);
 
+     // This method is called toprocess event objectMovedEvent. this event is
+     // posted by FWCmdMoveObject after the object is moved from one
+     // part of the tree to another, including when an object moves to the
+     // Deleted Objects library
+     void objectMoved(libfwbuilder::FWObject *obj);
+     
      libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                      libfwbuilder::FWObject *obj);
 

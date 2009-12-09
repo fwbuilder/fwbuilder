@@ -174,8 +174,19 @@ void ObjectManipulator::showDeletedObjects(bool f)
 
 int ObjectManipulator::getIdxForLib(FWObject* lib)
 {
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::getIdxForLib"
+                 << "lib=" << lib->getName().c_str();
+
     for (int i=0; i<m_objectManipulator->libs->count(); i++)
-        if ( idxToLibs[i]->getId() == lib->getId() ) return i;
+    {
+        if ( idxToLibs[i]->getId() == lib->getId() )
+        {
+            if (fwbdebug) qDebug() << "Index=" << i;
+            return i;
+        }
+    }
+    if (fwbdebug) qDebug() << "Library not found";
 
     return -1;
 }
@@ -1101,17 +1112,15 @@ void ObjectManipulator::openObjectInTree(FWObject *obj, bool /*register_in_histo
 
     if (obj==NULL) return;
 
+    openLibForObject(obj);
+
     //raise();
     FWObject *o=obj;
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     ObjectTreeViewItem *otvi = allItems[o];
-
-// this changes selection and thus calls slot slectionChanged
+    // this changes selection and thus calls slot slectionChanged
     showObjectInTree(otvi);
-
-    m_objectManipulator->libs->setCurrentIndex(
-        getIdxForLib( obj->getLibrary()));
 
     if (fwbdebug)
         qDebug() << "ObjectManipulator::openObjectInTree"
@@ -1121,6 +1130,19 @@ void ObjectManipulator::openObjectInTree(FWObject *obj, bool /*register_in_histo
     updateCreateObjectMenu(obj->getLibrary());
 
     if (fwbdebug) qDebug() << "ObjectManipulator::openObjectInTree: done";
+}
+
+void ObjectManipulator::openLibForObject(FWObject *obj)
+{
+    // if obj is Library, its getLibrary() method returns itself. If
+    // this library has been deleted and is now in the Deleted Objects
+    // library, getIdxForLib() is not going to find it.
+    if (FWObjectDatabase::isA(obj->getParent()))
+        m_objectManipulator->libs->setCurrentIndex(
+            getIdxForLib(obj->getLibrary()));
+    else
+        m_objectManipulator->libs->setCurrentIndex(
+            getIdxForLib(obj->getParent()->getLibrary()));
 }
 
 void ObjectManipulator::showObjectInTree(ObjectTreeViewItem *otvi)
