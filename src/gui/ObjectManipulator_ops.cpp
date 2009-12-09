@@ -504,15 +504,14 @@ void ObjectManipulator::unlockObject()
     }
 }
 
-void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
+void ObjectManipulator::deleteObject(FWObject *obj)
 {
     bool firstAction = true ;
 
     if (fwbdebug)
         qDebug() << "ObjectManipulator::deleteObject"
                  << "obj=" << obj
-                 << "name=" << obj->getName().c_str()
-                 << "openobj=" << openobj;
+                 << "name=" << obj->getName().c_str();
 
     FWObject *object_library = obj->getLibrary();
     FWObject *parent = obj->getParent();
@@ -568,20 +567,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, bool openobj)
                      << "is_deleted_object="<< is_deleted_object;
         if (is_deleted_object)
         {
-            // if (QMessageBox::question(
-            //         m_project, "Firewall Builder",
-            //         QObject::tr("You are trying to delete objects in "
-            //                     "the Deleted Objects library. This can "
-            //                     "not be undone. Do you want to continue ?"),
-            //         QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
-            //     return;
-
             unselect();
-
-            // removeObjectFromTreeView(obj);
-            // obj->getParent()->remove(obj);
-            // QString filename = m_project->getFileName();
-            // QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
 
             FWCmdDeleteObject *cmd = new FWCmdDeleteObject(
                 m_project,

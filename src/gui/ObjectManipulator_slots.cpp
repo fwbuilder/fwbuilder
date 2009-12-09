@@ -310,7 +310,6 @@ void ObjectManipulator::delObj()
                             tr(
                                 "When you delete a library, all objects that belong to it\n"
                                 "disappear from the tree and all groups and rules that reference them.\n"
-                                "You won't be able to reverse this operation later.\n"
                                 "Do you still want to delete library %1?")
                             .arg(QString::fromUtf8(obj->getName().c_str())),
                             tr("&Yes"), tr("&No"), QString::null,
@@ -320,7 +319,7 @@ void ObjectManipulator::delObj()
                 if (mw->isEditorVisible() && mw->getOpenedEditor()==obj)
                     mw->hideEditor();
 
-                deleteObject(obj, false);
+                deleteObject(obj);
             }
         }
     }

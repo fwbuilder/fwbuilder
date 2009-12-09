@@ -172,12 +172,9 @@ public:
 
     libfwbuilder::FWObject* pasteTo(libfwbuilder::FWObject *target,
                                     libfwbuilder::FWObject *obj);
-    void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);
 
     ObjectTreeView* getCurrentObjectTree();
-    //void openObject(QTreeWidgetItem *otvi);
-    //void openObject(libfwbuilder::FWObject *obj);
-    //bool editObject(libfwbuilder::FWObject *obj);
+
     void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
 
     libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,

@@ -515,11 +515,6 @@ FWObject* ProjectPanel::pasteTo(FWObject *target, FWObject *obj)
     return m_panel->om->pasteTo(target, obj);
 }
 
-void ProjectPanel::deleteObject(FWObject *obj,bool openobj)
-{
-    m_panel->om->deleteObject(obj, openobj);
-}
-
 ObjectTreeView* ProjectPanel::getCurrentObjectTree()
 {
     return m_panel->om->getCurrentObjectTree();

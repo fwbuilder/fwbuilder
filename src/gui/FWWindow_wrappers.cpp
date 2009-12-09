@@ -452,14 +452,6 @@ void FWWindow::moveObject(const QString &targetLibName, FWObject *obj)
     }
 }
 
-void FWWindow::deleteObject(FWObject *obj,bool openobj)
-{
-    if (activeProject())
-    {
-        activeProject()->deleteObject(obj, openobj);
-    }
-}
-
 ObjectTreeView* FWWindow::getCurrentObjectTree()
 {
     if (activeProject()) return activeProject()->getCurrentObjectTree();

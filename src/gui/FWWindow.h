@@ -320,7 +320,6 @@ public slots:
     void moveObject(const QString &targetLibName,
                     libfwbuilder::FWObject *obj);
 
-    void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);
     ObjectTreeView* getCurrentObjectTree();
 
     void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);

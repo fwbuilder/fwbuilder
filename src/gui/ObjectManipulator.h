@@ -353,7 +353,7 @@ public:
       */
      void closeSystemLib();
 
-     void deleteObject(libfwbuilder::FWObject *obj,bool openobj=true);
+     void deleteObject(libfwbuilder::FWObject *obj);
 
      /**
       * select whatever object is current in the tree (used to restore
