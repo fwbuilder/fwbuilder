@@ -1,3 +1,13 @@
+2009-12-09  vadim  <vadim@vk.crocodile.org>
+
+	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::_find): "Find
+	where used" function can now find all uses of the given object, as
+	well as all uses of its children. For example, if the object is
+	firewall, then this function can find all groups and rules that
+	refer to it directly, or to it and all its interfaces and their
+	addresses. This extension is optional, it is controlled by a
+	checkbox in the "Find" dialog.
+
 2009-12-08  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/fwbedit/merge.cpp: fixed bug #2794851 (fwbuilder bug
