@@ -164,6 +164,13 @@ void UsageResolver::findAllReferenceHolders(
     root->getRoot()->findWhereObjectIsUsed(obj, root->getRoot(), res_tmp);
     foreach(FWObject* o, res_tmp)
     {
+        if (fwbdebug)
+            qDebug() << "UsageResolver::findAllReferenceHolders"
+                     << "obj=" << obj->getName().c_str()
+                     << "(" << obj->getTypeName().c_str() << ")"
+                     << "container=" << o->getName().c_str()
+                     << "(" << o->getTypeName().c_str() << ")";
+
         if (FWReference::cast(o))
         {
             FWObject *holder = o->getParent();
@@ -182,8 +189,10 @@ void UsageResolver::findAllReferenceHolders(
     for (FWObject::iterator i=obj->begin(); i!=obj->end(); ++i)
     {
         if ((*i)->getId() == -1) continue;
+        if (FWOptions::cast(*i)) continue;
         if (FWReference::cast(*i)) continue;
         if (RuleElement::cast(*i)) continue;
+        if (Rule::cast(*i)) continue;
         UsageResolver::findAllReferenceHolders(*i, root, res);
     }
 }
