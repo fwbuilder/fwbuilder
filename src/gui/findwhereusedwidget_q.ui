@@ -99,7 +99,7 @@
    <item row="1" column="0" >
     <widget class="QCheckBox" name="includeChildren" >
      <property name="toolTip" >
-      <string>Include children of the object in search. For example, if the object is a firewall, results will include all rules and groups using it and its interfaces and their addresses</string>
+      <string>Include children of the object in search. For example, if the object is a firewall, results will include all rules and groups using it, its interfaces and their addresses</string>
      </property>
      <property name="text" >
       <string>Include children</string>
