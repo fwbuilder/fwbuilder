@@ -95,7 +95,7 @@ FindWhereUsedWidget::FindWhereUsedWidget(QWidget *p,
     flShowObject=true;
     if (f_mini)
     {
-        m_widget->buttonsBox->hide();
+        m_widget->pushButton2->hide();
         m_widget->dropBox->hide();
     }
     else
@@ -183,6 +183,9 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     for (it=reference_holders.begin(); it!=reference_holders.end(); ++it)
     {
         FWObject *c_obj = project_panel->db()->findInIndex(it->first);
+
+        if (!m_widget->includeChildren->isChecked() && c_obj != obj) continue;
+
         foreach(FWObject *container, it->second)
         {
             QTreeWidgetItem *item;

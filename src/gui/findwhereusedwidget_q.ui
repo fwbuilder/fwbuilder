@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>867</width>
-    <height>164</height>
+    <width>895</width>
+    <height>199</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -18,20 +18,20 @@
   <property name="windowTitle" >
    <string>Form1</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>6</number>
-   </property>
+  <layout class="QGridLayout" name="gridLayout_2" >
    <item row="0" column="0" >
     <widget class="QGroupBox" name="dropBox" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title" >
       <string>Object:</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>6</number>
-      </property>
-      <item>
+     <layout class="QGridLayout" name="gridLayout" >
+      <item row="0" column="0" >
        <widget class="FWObjectDropArea" native="1" name="dropArea" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -50,29 +50,13 @@
         </property>
        </widget>
       </item>
-      <item>
-       <spacer>
-        <property name="orientation" >
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType" >
-         <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0" >
-         <size>
-          <width>20</width>
-          <height>31</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
-   <item row="0" column="1" >
+   <item rowspan="3" row="0" column="1" >
     <widget class="QGroupBox" name="groupBox4" >
      <property name="sizePolicy" >
-      <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
+      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -86,6 +70,9 @@
       </property>
       <item row="0" column="0" >
        <widget class="QTreeWidget" name="resListView" >
+        <property name="sortingEnabled" >
+         <bool>true</bool>
+        </property>
         <property name="allColumnsShowFocus" >
          <bool>true</bool>
         </property>
@@ -96,7 +83,7 @@
         </column>
         <column>
          <property name="text" >
-          <string>Parent</string>
+          <string>Used by</string>
          </property>
         </column>
         <column>
@@ -109,42 +96,21 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="2" >
-    <widget class="QFrame" name="buttonsBox" >
-     <property name="frameShape" >
-      <enum>QFrame::NoFrame</enum>
+   <item row="1" column="0" >
+    <widget class="QCheckBox" name="includeChildren" >
+     <property name="toolTip" >
+      <string>Include children of the object in search. For example, if the object is a firewall, results will include all rules and groups using it and its interfaces and their addresses</string>
      </property>
-     <property name="frameShadow" >
-      <enum>QFrame::Raised</enum>
+     <property name="text" >
+      <string>Include children</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>0</number>
-      </property>
-      <item row="0" column="0" >
-       <spacer>
-        <property name="orientation" >
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType" >
-         <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0" >
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="0" >
-       <widget class="QPushButton" name="pushButton2" >
-        <property name="text" >
-         <string>Find</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QPushButton" name="pushButton2" >
+     <property name="text" >
+      <string>Find</string>
+     </property>
     </widget>
    </item>
   </layout>
@@ -160,26 +126,9 @@
  </customwidgets>
  <tabstops>
   <tabstop>resListView</tabstop>
-  <tabstop>pushButton2</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>pushButton2</sender>
-   <signal>clicked()</signal>
-   <receiver>findWhereUsedWidget_q</receiver>
-   <slot>find()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>resListView</sender>
    <signal>itemClicked(QTreeWidgetItem*,int)</signal>
@@ -196,9 +145,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton2</sender>
+   <signal>pressed()</signal>
+   <receiver>findWhereUsedWidget_q</receiver>
+   <slot>find()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>76</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>447</x>
+     <y>99</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>itemActivated(QTreeWidgetItem*,int)</slot>
   <slot>itemClicked(QTreeWidgetItem*,int)</slot>
+  <slot>find()</slot>
  </slots>
 </ui>
