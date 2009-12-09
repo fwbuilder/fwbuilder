@@ -565,16 +565,15 @@ void ObjectManipulator::deleteObject(FWObject *obj)
                      << "is_firewall= " << is_firewall
                      << "ruleset_visible=" << ruleset_visible
                      << "is_deleted_object="<< is_deleted_object;
+
         if (is_deleted_object)
         {
             unselect();
-
             FWCmdDeleteObject *cmd = new FWCmdDeleteObject(
                 m_project,
                 obj,
                 QString("Delete object"));
             m_project->undoStack->push(cmd);
-
             return;
         }
 
@@ -582,28 +581,8 @@ void ObjectManipulator::deleteObject(FWObject *obj)
 
         if (is_library) parent = m_project->db()->getFirstByType(Library::TYPENAME);
 
-        set<FWObject*> reference_holders;
-        set<FWObject*> res;
-        m_project->db()->findWhereObjectIsUsed(obj, m_project->db(), res);
-
-        foreach(FWObject* o, res)
-        {
-            if (FWReference::cast(o))
-            {
-                FWObject *holder = o->getParent();
-                reference_holders.insert(holder);
-            }
-        }
+        actuallyDeleteObject(obj);
         
-        FWCmdMoveObject *cmd = new FWCmdMoveObject(
-            m_project,
-            obj->getParent(),
-            deleted_objects_lib,
-            obj,
-            reference_holders,
-            QString("Delete object"));
-        m_project->undoStack->push(cmd);
-
         if (ruleset_visible) m_project->closeRuleSetPanel();
     }
     catch (FWException &ex)
@@ -622,6 +601,38 @@ void ObjectManipulator::deleteObject(FWObject *obj)
     if (fwbdebug) qDebug("ObjectManipulator::deleteObject  done");
 
     firstAction = false ;
+}
+
+/* 
+ * Here we build set of dependencies for @obj, create command to
+ * delete it and push it to the undo stack.
+ */
+void ObjectManipulator::actuallyDeleteObject(FWObject *obj)
+{
+    set<FWObject*> reference_holders;
+    set<FWObject*> res;
+    m_project->db()->findWhereObjectIsUsed(obj, m_project->db(), res);
+
+    foreach(FWObject* o, res)
+    {
+        if (FWReference::cast(o))
+        {
+            FWObject *holder = o->getParent();
+            reference_holders.insert(holder);
+        }
+    }
+        
+    FWObject *deleted_objects_lib = m_project->db()->findInIndex(
+        FWObjectDatabase::DELETED_OBJECTS_ID );
+
+    FWCmdMoveObject *cmd = new FWCmdMoveObject(
+        m_project,
+        obj->getParent(),
+        deleted_objects_lib,
+        obj,
+        reference_holders,
+        QString("Delete object"));
+    m_project->undoStack->push(cmd);
 }
 
 void ObjectManipulator::objectMoved(FWObject* obj)

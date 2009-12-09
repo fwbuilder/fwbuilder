@@ -139,6 +139,8 @@ class ObjectManipulator : public QWidget
                                             libfwbuilder::FWObject *obj,
                                             std::map<int,int> &map_ids);
 
+    void actuallyDeleteObject(libfwbuilder::FWObject *obj);
+
     bool validateForPaste(libfwbuilder::FWObject *target,
                           libfwbuilder::FWObject *obj,
                           QString &err);
