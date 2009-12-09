@@ -277,11 +277,12 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
 
     if (!grp->isReadOnly())
     {
-        set<FWObject*> reference_holders;
+        map<int, set<FWObject*> > reference_holders;
         FWCmdMoveObject *cmd = new FWCmdMoveObject(m_project,
                                                    obj->getParent(),
                                                    grp,
-                                                   obj, reference_holders,
+                                                   obj,
+                                                   reference_holders,
                                                    "Move object");
         m_project->undoStack->push(cmd);
     }
@@ -609,21 +610,11 @@ void ObjectManipulator::deleteObject(FWObject *obj)
  */
 void ObjectManipulator::actuallyDeleteObject(FWObject *obj)
 {
-    set<FWObject*> reference_holders;
-    set<FWObject*> res;
-    m_project->db()->findWhereObjectIsUsed(obj, m_project->db(), res);
+    map<int, set<FWObject*> > reference_holders;
+    UsageResolver::findAllReferenceHolders(obj, m_project->db(), reference_holders);
 
-    foreach(FWObject* o, res)
-    {
-        if (FWReference::cast(o))
-        {
-            FWObject *holder = o->getParent();
-            reference_holders.insert(holder);
-        }
-    }
-        
     FWObject *deleted_objects_lib = m_project->db()->findInIndex(
-        FWObjectDatabase::DELETED_OBJECTS_ID );
+        FWObjectDatabase::DELETED_OBJECTS_ID);
 
     FWCmdMoveObject *cmd = new FWCmdMoveObject(
         m_project,
@@ -632,6 +623,7 @@ void ObjectManipulator::actuallyDeleteObject(FWObject *obj)
         obj,
         reference_holders,
         QString("Delete object"));
+
     m_project->undoStack->push(cmd);
 }
 

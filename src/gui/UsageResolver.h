@@ -29,10 +29,12 @@
 
 #include "global.h"
 
-#include <set>
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
+
+#include <map>
+#include <set>
 
 class UsageResolver
 {
@@ -44,6 +46,10 @@ public:
 
     static std::list<libfwbuilder::Firewall*> findFirewallsForObject(
         libfwbuilder::FWObject*, libfwbuilder::FWObjectDatabase*);
+
+    static void findAllReferenceHolders(
+        libfwbuilder::FWObject *obj, libfwbuilder::FWObject *root,
+        std::map<int, std::set<libfwbuilder::FWObject*> > &res);
 };
 
 #endif // USAGERESOLVER_H

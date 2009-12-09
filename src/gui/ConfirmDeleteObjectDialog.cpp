@@ -35,7 +35,7 @@
 #include "ObjectManipulator.h"
 #include "FWWindow.h"
 #include "FWBTree.h"
-
+#include "UsageResolver.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWObject.h"
@@ -87,44 +87,26 @@ void ConfirmDeleteObjectDialog::load(vector<FWObject *> objs)
 
 void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
 {
-    set<FWObject*> resset;
-    //objectsView->clear();
-    //mapping.clear();
-    //resset.clear();
-
     QPixmap pm0;
-    QString icn_file = (":/Icons/" + obj->getTypeName() + "/icon-tree").c_str();
+    loadIcon(pm0, obj);
 
-    if ( ! QPixmapCache::find( icn_file, pm0) )
+    map<int, set<FWObject*> > reference_holders;
+    UsageResolver::findAllReferenceHolders(obj, obj->getRoot(), reference_holders);
+
+    set<FWObject*> simplified_holders;
+    map<int, set<FWObject*> >::iterator it;
+    for (it=reference_holders.begin(); it!=reference_holders.end(); ++it)
     {
-        pm0.load( icn_file );
-        QPixmapCache::insert( icn_file, pm0);
+        foreach(FWObject *o, it->second)
+        {
+            if (o == obj || o->isChildOf(obj)) continue;
+            simplified_holders.insert(o);
+        }
     }
-
-    FWObjectDatabase *db = obj->getRoot();
-    assert(db);
-
-    db->findWhereObjectIsUsed(obj, db, resset);
-    FindWhereUsedWidget::humanizeSearchResults(resset);
-
-    if (fwbdebug)
-    {
-        qDebug(QString("ConfirmDeleteObjectDialog::findForObject   deleting obj=%1").
-               arg(obj->getName().c_str()).toAscii().constData());
-        qDebug(QString("resset.size()==%1").arg(resset.size()).toAscii().constData());
-    }
-
-    set<FWObject*>::iterator i=resset.begin();
 
     int itemCounter = 0;
-
-    for (;i!=resset.end();++i)
+    foreach(FWObject *o, simplified_holders)
     {
-        FWObject* o = *i;
-
-        // one of the objects returned by findWhereObjectIsUsed is a group
-        // object <o> belongs to. We need to skip this group.
-        //if (findRef(obj,o)==NULL) continue;
         QTreeWidgetItem *item = FindWhereUsedWidget::createQTWidgetItem(obj, o);
         if (item==NULL) continue;
         m_dialog->objectsView->addTopLevelItem(item);

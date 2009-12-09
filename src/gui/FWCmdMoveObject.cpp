@@ -60,14 +60,14 @@ using namespace std;
  *
  ********************************************************/
 
-FWCmdMoveObject::FWCmdMoveObject(ProjectPanel *project,
-                                 FWObject *old_p,
-                                 FWObject *new_p,
-                                 FWObject *o,
-                                 set<FWObject*> &reference_holder_objects,
-                                 QString text):
-    FWCmdBasic(project),
-    reference_holders(reference_holder_objects)
+FWCmdMoveObject::FWCmdMoveObject(
+    ProjectPanel *project,
+    FWObject *old_p,
+    FWObject *new_p,
+    FWObject *o,
+    map<int, set<FWObject*> > &reference_holder_objects,
+    QString text) : FWCmdBasic(project),
+                    reference_holders(reference_holder_objects)
 {
     old_parent = old_p;
     new_parent = new_p;
@@ -98,9 +98,15 @@ void FWCmdMoveObject::undo()
 
     if (reference_holders.size())
     {
-        foreach(FWObject *o, reference_holders)
+        map<int, set<FWObject*> >::iterator it;
+        for (it=reference_holders.begin(); it!=reference_holders.end(); ++it)
         {
-            o->addRef(obj);
+            int obj_id = it->first;
+            foreach(FWObject *o, it->second)
+            {
+                FWObject *cobj = project->db()->findInIndex(obj_id);
+                if (cobj) o->addRef(cobj);
+            }
         }
     }
     notify();
@@ -117,9 +123,15 @@ void FWCmdMoveObject::redo()
                            << obj->getRefCounter();
     if (reference_holders.size())
     {
-        foreach(FWObject *o, reference_holders)
+        map<int, set<FWObject*> >::iterator it;
+        for (it=reference_holders.begin(); it!=reference_holders.end(); ++it)
         {
-            o->removeRef(obj);
+            int obj_id = it->first;
+            foreach(FWObject *o, it->second)
+            {
+                FWObject *cobj = project->db()->findInIndex(obj_id);
+                if (cobj) o->removeRef(cobj);
+            }
         }
     }
     notify();
@@ -164,9 +176,5 @@ void FWCmdMoveObject::notify()
 
     QCoreApplication::postEvent(mw, new showObjectInTreeEvent(
                                     filename, new_obj->getId()));
-
-    // // switch the tree to the library where object is now located
-    // QCoreApplication::postEvent(mw, new openLibraryForObjectEvent(
-    //                                 filename, obj->getId()));
 }
 

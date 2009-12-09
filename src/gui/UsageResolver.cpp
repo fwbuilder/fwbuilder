@@ -32,6 +32,8 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Rule.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/Management.h"
 
 #include <algorithm>
 
@@ -147,3 +149,41 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatab
     return fws;
 }
 
+/*
+ * another wrapper around FWObjectDatabase::findWhereObjectIsUsed This
+ * method finds all rule elements and groups that have references to
+ * @obj and any of its children. The key in the map @res is object ID
+ * and the value is a set of all Groups or RE that hold references to
+ * it.
+ */
+void UsageResolver::findAllReferenceHolders(
+    FWObject *obj, FWObject *root, std::map<int, std::set<FWObject*> > &res)
+{
+    set<FWObject*> reference_holders;
+    set<FWObject*> res_tmp;
+    root->getRoot()->findWhereObjectIsUsed(obj, root->getRoot(), res_tmp);
+    foreach(FWObject* o, res_tmp)
+    {
+        if (FWReference::cast(o))
+        {
+            FWObject *holder = o->getParent();
+            reference_holders.insert(holder);
+        }
+        if (Rule::cast(o))
+            reference_holders.insert(o);
+    }
+    
+    int obj_id = obj->getId();
+    foreach(FWObject *o, reference_holders)
+    {
+        res[obj_id].insert(o);
+    }
+
+    for (FWObject::iterator i=obj->begin(); i!=obj->end(); ++i)
+    {
+        if ((*i)->getId() == -1) continue;
+        if (FWReference::cast(*i)) continue;
+        if (RuleElement::cast(*i)) continue;
+        UsageResolver::findAllReferenceHolders(*i, root, res);
+    }
+}

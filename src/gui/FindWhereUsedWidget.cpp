@@ -175,29 +175,27 @@ void FindWhereUsedWidget::_find(FWObject *obj)
 
     if (project_panel==NULL) return;
 
-    project_panel->db()->findWhereObjectIsUsed(obj, project_panel->db(), resset);
-    humanizeSearchResults(resset);
+    map<int, set<FWObject*> > reference_holders;
+    UsageResolver::findAllReferenceHolders(obj, obj->getRoot(), reference_holders);
 
-    set<FWObject*>::iterator i=resset.begin();
-
-    for (;i!=resset.end();++i)
+    int itemCounter = 0;
+    map<int, set<FWObject*> >::iterator it;
+    for (it=reference_holders.begin(); it!=reference_holders.end(); ++it)
     {
-        FWObject *o = *i;
-
-        if (fwbdebug) qDebug("Search result object id=%d type=%s name=%s",
-                             o->getId(),
-                             o->getTypeName().c_str(),
-                             o->getName().c_str());
-
-        QTreeWidgetItem *item = createQTWidgetItem(obj, o);
-        if (item==NULL) continue;
-        m_widget->resListView->addTopLevelItem(item);
+        FWObject *c_obj = project_panel->db()->findInIndex(it->first);
+        foreach(FWObject *container, it->second)
+        {
+            QTreeWidgetItem *item;
+            item = createQTWidgetItem(c_obj, container);
+            if (item==NULL) continue;
+            m_widget->resListView->addTopLevelItem(item);
+        }
     }
+
     m_widget->resListView->resizeColumnToContents(0);
     m_widget->resListView->resizeColumnToContents(1);
     show();
 }
-
 
 void FindWhereUsedWidget::init()
 {
@@ -261,10 +259,10 @@ void FindWhereUsedWidget::showObject(FWObject* o)
  * findFirewallsForObject to make them suitable for presentation.
  * First, it does deduplication.  Event showObjectInRulesetEvent that
  * finds an object and highlights it in rules requires reference or
- * object itself as an argument. So, when parent is RuleElement,
- * preserve reference. But for regular groups we find and highlight
- * the group itself, so in that case replace reference to the object
- * with the group, which is its parent.
+ * object itself as an argument. So, when parent is RuleElement, we
+ * preserve the reference. But for regular groups we find and
+ * highlight the group itself, so in that case replace reference to
+ * the object with the group, which is its parent.
  *
  */
 void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
@@ -273,17 +271,17 @@ void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
     set<FWObject*>::iterator i = resset.begin();
     for (;i!=resset.end();++i)
     {
-        FWObject *obj = NULL;
+        FWObject *obj = *i;
+        if (fwbdebug)
+            qDebug() << "humanizeSearchResults:"
+                     << obj->getName().c_str()
+                     << " (" << obj->getTypeName().c_str() << ")";
         FWReference  *ref = FWReference::cast(*i);
         if (ref && RuleElement::cast(ref->getParent()) == NULL)
         {
             obj = ref->getParent();  // NB! We need parent of this ref for groups
         } else
             obj = *i;
-        if (fwbdebug)
-            qDebug() << "humanizeSearchResults: adding "
-                     << obj->getName().c_str()
-                     << " (" << obj->getTypeName().c_str() << ")";
         tmp_res.insert(obj);
     }
     resset.clear();
@@ -293,6 +291,11 @@ void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
 QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
                                                          FWObject *container)
 {
+    if (fwbdebug)
+        qDebug() << "FindWhereUsedWidget::createQTWidgetItem"
+                 << "container:" << container->getName().c_str()
+                 << "(" << container->getTypeName().c_str() << ")";
+
     QString c1, c2;
     FWObject *fw = NULL;
     Rule *r = NULL;
@@ -304,8 +307,7 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
     if (tree_format.isSystem(container) || Library::cast(container)) return NULL;
 
     // container can be a Rule if user searched for an object used in action
-    if (RuleElement::cast(container->getParent())!=NULL ||
-        Rule::cast(container)!=NULL)
+    if (RuleElement::cast(container)!=NULL || Rule::cast(container)!=NULL)
     {
         fw = container;
         while (fw!=NULL && Firewall::cast(fw)==NULL) // Firewall::cast matches also Cluster
@@ -335,7 +337,7 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
 
         QString rule_element_name;
 
-        if (RuleElement::cast(container->getParent())!=NULL)
+        if (RuleElement::cast(container)!=NULL)
             rule_element_name = 
                 getReadableRuleElementName(container->getParent()->getTypeName());
 
