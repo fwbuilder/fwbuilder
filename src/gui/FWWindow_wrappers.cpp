@@ -404,12 +404,6 @@ FWObject* FWWindow::getCurrentLib()
     return 0;
 }
 
-void FWWindow::insertObjectInTree(FWObject *parent, FWObject *obj)
-{
-    if (activeProject())
-        activeProject()->insertObjectInTree(parent, obj);
-}
-
 FWObject* FWWindow::createObject(const QString &objType,
                                                const QString &objName,
                                                FWObject *copyFrom)

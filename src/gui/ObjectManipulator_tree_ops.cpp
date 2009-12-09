@@ -140,12 +140,6 @@ using namespace libfwbuilder;
 
 
 
-void ObjectManipulator::insertObjectInTree(FWObject *parent, FWObject *obj)
-{
-    ObjectTreeViewItem* parent_item = allItems[parent];
-    insertObject(parent_item, obj);
-}
-
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {

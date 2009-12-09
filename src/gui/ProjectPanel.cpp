@@ -478,11 +478,6 @@ void ProjectPanel::updateObjectInTree(FWObject *obj, bool subtree)
     m_panel->om->updateObjectInTree(obj, subtree);
 }
 
-void ProjectPanel::insertObjectInTree(FWObject *parent, FWObject *obj)
-{
-    m_panel->om->insertObjectInTree(parent, obj);
-}
-
 FWObject* ProjectPanel::createObject(const QString &objType,
                                      const QString &objName,
                                      FWObject *copyFrom)

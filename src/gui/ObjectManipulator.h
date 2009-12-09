@@ -296,8 +296,6 @@ public:
 
      void reopenCurrentItemParent();
 
-     void insertObjectInTree(libfwbuilder::FWObject *parent,
-                             libfwbuilder::FWObject *obj);
      void insertSubtree(libfwbuilder::FWObject *parent,
                         libfwbuilder::FWObject *obj);
      void removeObjectFromTreeView(libfwbuilder::FWObject *obj );
