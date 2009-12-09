@@ -146,3 +146,4 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatab
 
     return fws;
 }
+

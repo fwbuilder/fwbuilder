@@ -38,8 +38,12 @@ class UsageResolver
 {
 public:
     //UsageResolver();
-    static void findWhereUsedRecursively(libfwbuilder::FWObject *, libfwbuilder::FWObject *, std::set<libfwbuilder::FWObject*> &, libfwbuilder::FWObjectDatabase*);
-    static std::list<libfwbuilder::Firewall*> findFirewallsForObject(libfwbuilder::FWObject*, libfwbuilder::FWObjectDatabase*);
+    static void findWhereUsedRecursively(
+        libfwbuilder::FWObject *, libfwbuilder::FWObject *,
+        std::set<libfwbuilder::FWObject*> &, libfwbuilder::FWObjectDatabase*);
+
+    static std::list<libfwbuilder::Firewall*> findFirewallsForObject(
+        libfwbuilder::FWObject*, libfwbuilder::FWObjectDatabase*);
 };
 
 #endif // USAGERESOLVER_H
