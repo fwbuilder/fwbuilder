@@ -37,12 +37,16 @@ class FWCmdChange : public FWCmdBasic
 
     libfwbuilder::FWObject *oldState;
     libfwbuilder::FWObject *newState;
+    bool rename_children;
 
 protected:
     virtual void notify();
 
 public:
-    FWCmdChange(ProjectPanel *project, libfwbuilder::FWObject *obj, QString text=QString());
+    FWCmdChange(ProjectPanel *project,
+                libfwbuilder::FWObject *obj,
+                QString text=QString(),
+                bool rename_children = false);
     ~FWCmdChange();
 
     libfwbuilder::FWObject* getOldState() {return oldState;}

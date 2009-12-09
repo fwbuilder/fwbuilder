@@ -183,8 +183,11 @@ bool ProjectPanel::event(QEvent *event)
                 objectNameChangedEvent *name_change_event =
                     dynamic_cast<objectNameChangedEvent*>(event);
                 m_panel->om->updateObjectInTree(obj);
-                // This performs automatic renaming of child objects if necessary
-                m_panel->om->autoRenameChildren(obj, name_change_event->old_name, true);
+                if (name_change_event->rename_children)
+                {
+                    // This performs automatic renaming of child objects if necessary
+                    m_panel->om->autoRenameChildren(obj, name_change_event->old_name);
+                }
                 ev->accept();
                 return true;
             }

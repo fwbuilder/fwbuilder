@@ -76,8 +76,7 @@ using namespace libfwbuilder;
  * this method initiates automatic renaming of children objects if necessary
  */
 void ObjectManipulator::autoRenameChildren(FWObject *obj,
-                                           const QString &oldName,
-                                           bool  askForAutorename)
+                                           const QString &oldName)
 {
     if (fwbdebug)
         qDebug() << "ObjectManipulator::autoRenameChildren  changing name "
@@ -93,40 +92,20 @@ void ObjectManipulator::autoRenameChildren(FWObject *obj,
     if ((QString::fromUtf8(obj->getName().c_str())!=oldName) &&
         (Host::isA(obj) || Firewall::isA(obj) || Interface::isA(obj)))
     {
-        autorename(obj, askForAutorename);
+        autorename(obj);
     }
 
     // QCoreApplication::postEvent(
     //     mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
 }
 
-void ObjectManipulator::autorename(FWObject *obj, bool ask)
+void ObjectManipulator::autorename(FWObject *obj)
 {
     if (Host::isA(obj) || Firewall::isA(obj) || Cluster::isA(obj))
     {
-        QString dialog_txt = tr(
-"The name of the object '%1' has changed. The program can also "
-"rename IP address objects that belong to this object, "
-"using standard naming scheme 'host_name:interface_name:ip'. "
-"This makes it easier to distinguish what host or a firewall "
-"given IP address object belongs to when it is used in "
-"the policy or NAT rule. The program also renames MAC address "
-"objects using scheme 'host_name:interface_name:mac'. "
-"Do you want to rename child IP and MAC address objects now? "
-"(If you click 'No', names of all address objects that belong to "
-"%2 will stay the same.)")
-            .arg(QString::fromUtf8(obj->getName().c_str()))
-            .arg(QString::fromUtf8(obj->getName().c_str()));
-
-        if (!ask || QMessageBox::warning(
-                this,"Firewall Builder", dialog_txt,
-                tr("&Yes"), tr("&No"), QString::null,
-                0, 1 )==0 )
-        {
-            list<FWObject*> il = obj->getByType(Interface::TYPENAME);
-            for (list<FWObject*>::iterator i=il.begin(); i!=il.end(); ++i)
-                autorename(*i, false);
-        }
+        list<FWObject*> il = obj->getByType(Interface::TYPENAME);
+        for (list<FWObject*>::iterator i=il.begin(); i!=il.end(); ++i)
+            autorename(*i);
     }
  
     if (Interface::isA(obj))
@@ -137,49 +116,27 @@ void ObjectManipulator::autorename(FWObject *obj, bool ask)
             obj->getByType(physAddress::TYPENAME).size() ||
             subinterfaces.size())
         {
-            QString dialog_txt = tr(
-                "The name of the interface '%1' has changed. The program can also "
-                "rename IP address objects that belong to this interface, "
-                "using standard naming scheme 'host_name:interface_name:ip'. "
-                "This makes it easier to distinguish what host or a firewall "
-                "given IP address object belongs to when it is used in "
-                "the policy or NAT rule. The program also renames MAC address "
-                "objects using scheme 'host_name:interface_name:mac'. "
-                "Do you want to rename child IP and MAC address objects now? "
-                "(If you click 'No', names of all address objects that belong to "
-                "interface '%2' will stay the same.)")
-                .arg(QString::fromUtf8(obj->getName().c_str()))
-                .arg(QString::fromUtf8(obj->getName().c_str()));
-
-            if (!ask || QMessageBox::warning(
-                    this, "Firewall Builder", dialog_txt,
-                    tr("&Yes"), tr("&No"), QString::null,
-                    0, 1 )==0 )
+            list<FWObject*> vlans;
+            for (list<FWObject*>::iterator j=subinterfaces.begin();
+                 j!=subinterfaces.end(); ++j)
             {
-                list<FWObject*> vlans;
-                for (list<FWObject*>::iterator j=subinterfaces.begin();
-                     j!=subinterfaces.end(); ++j)
-                {
-                    Interface *intf = Interface::cast(*j);
-                    if (intf->getOptionsObject()->getStr("type") == "8021q")
-                        vlans.push_back(intf);
-                }
-
-                if (vlans.size()) autorenameVlans(vlans);
-
-                for (list<FWObject*>::iterator j=subinterfaces.begin();
-                     j!=subinterfaces.end(); ++j)
-                    autorename(*j, false);
-
-                list<FWObject*> obj_list = obj->getByType(IPv4::TYPENAME);
-                autorename(obj_list, IPv4::TYPENAME, "ip");
-                obj_list = obj->getByType(IPv6::TYPENAME);
-                autorename(obj_list, IPv6::TYPENAME, "ip6");
-                obj_list = obj->getByType(physAddress::TYPENAME);
-                autorename(obj_list, physAddress::TYPENAME, "mac");
-
+                Interface *intf = Interface::cast(*j);
+                if (intf->getOptionsObject()->getStr("type") == "8021q")
+                    vlans.push_back(intf);
             }
 
+            if (vlans.size()) autorenameVlans(vlans);
+
+            for (list<FWObject*>::iterator j=subinterfaces.begin();
+                 j!=subinterfaces.end(); ++j)
+                autorename(*j);
+
+            list<FWObject*> obj_list = obj->getByType(IPv4::TYPENAME);
+            autorename(obj_list, IPv4::TYPENAME, "ip");
+            obj_list = obj->getByType(IPv6::TYPENAME);
+            autorename(obj_list, IPv6::TYPENAME, "ip6");
+            obj_list = obj->getByType(physAddress::TYPENAME);
+            autorename(obj_list, physAddress::TYPENAME, "mac");
         }
     }
 }

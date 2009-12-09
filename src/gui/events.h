@@ -322,12 +322,14 @@ class objectNameChangedEvent : public fwbUpdateEvent {
 public:
     QString old_name;
     QString new_name;
+    bool rename_children;
     objectNameChangedEvent(const QString &file_name, int obj_id,
-                           const QString &_old_name, const QString &_new_name) :
+                           const QString &_old_name, const QString &_new_name,
+                           bool _rename_children) :
     fwbUpdateEvent(file_name, obj_id,
                    QEvent::Type(QEvent::User + OBJECT_NAME_CHANGED_EVENT),
                    "objectNameChangedEvent")
-    { old_name = _old_name; new_name = _new_name; }
+    { old_name = _old_name; new_name = _new_name; rename_children = _rename_children; }
 };
 
 

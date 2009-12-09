@@ -122,7 +122,29 @@ void HostDialog::validate(bool *res)
 
 void HostDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    bool autorename_chidren = false;
+    QString dialog_txt = tr(
+        "The name of the object '%1' has changed. The program can also "
+        "rename IP address objects that belong to this object, "
+        "using standard naming scheme 'host_name:interface_name:ip'. "
+        "This makes it easier to distinguish what host or a firewall "
+        "given IP address object belongs to when it is used in "
+        "the policy or NAT rule. The program also renames MAC address "
+        "objects using scheme 'host_name:interface_name:mac'. "
+        "Do you want to rename child IP and MAC address objects now? "
+        "(If you click 'No', names of all address objects that belong to "
+        "%2 will stay the same.)")
+        .arg(QString::fromUtf8(obj->getName().c_str()))
+        .arg(QString::fromUtf8(obj->getName().c_str()));
+
+    if (obj->getName() != m_dialog->obj_name->text().toUtf8().constData())
+        autorename_chidren = (QMessageBox::warning(
+                                  this,"Firewall Builder", dialog_txt,
+                                  tr("&Yes"), tr("&No"), QString::null,
+                                  0, 1 )==0 );
+
+    std::auto_ptr<FWCmdChange> cmd(
+        new FWCmdChange(m_project, obj, "", autorename_chidren));
     FWObject* new_state = cmd->getNewState();
 
     Host *s = dynamic_cast<Host*>(new_state);

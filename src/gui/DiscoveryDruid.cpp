@@ -1317,7 +1317,7 @@ void DiscoveryDruid::loadDataFromImporter()
         ProjectPanel *pp = mw->activeProject();
         QString filename = pp->getFileName();
         pp->m_panel->om->reload();
-        pp->m_panel->om->autoRenameChildren(fw, "", false);
+        pp->m_panel->om->autoRenameChildren(fw, "");
         QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
         if (mw->isEditorVisible())
             QCoreApplication::postEvent(

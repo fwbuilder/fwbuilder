@@ -74,7 +74,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
     m_dialog->setupUi(static_cast<QDialog*>(this));
     obj=o;
 
-    Firewall  *fw=Firewall::cast(obj);
+    //Firewall  *fw=Firewall::cast(obj);
     //FWOptions *fwopt=fw->getOptionsObject();
 
     string vers="version_"+obj->getStr("version");

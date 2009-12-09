@@ -45,10 +45,12 @@ using namespace std;
  * FWCmdChange
  ********************************************************/
 
-FWCmdChange::FWCmdChange(ProjectPanel *project, FWObject *obj, QString text):
+FWCmdChange::FWCmdChange(ProjectPanel *project,
+                         FWObject *obj, QString text, bool _rename_children):
     FWCmdBasic(project)
 {
     setObject(obj);
+    rename_children = _rename_children;
 
     FWObjectDatabase* db = obj->getRoot();
 
@@ -109,7 +111,8 @@ void FWCmdChange::notify()
             mw->activeProject(), new objectNameChangedEvent(
                 filename, obj->getId(),
                 QString::fromUtf8(oldState->getName().c_str()),
-                QString::fromUtf8(newState->getName().c_str())));
+                QString::fromUtf8(newState->getName().c_str()),
+                rename_children));
     }
 
     QCoreApplication::postEvent(

@@ -47,6 +47,8 @@
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
 #include <memory>
 
@@ -402,7 +404,39 @@ void InterfaceDialog::validate(bool *res)
 
 void InterfaceDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    bool autorename_children = false;
+    list<FWObject*> subinterfaces = obj->getByType(Interface::TYPENAME);
+    if (obj->getName() != m_dialog->obj_name->text().toUtf8().constData() &&
+        (
+            obj->getByType(IPv4::TYPENAME).size() ||
+            obj->getByType(IPv6::TYPENAME).size() ||
+            obj->getByType(physAddress::TYPENAME).size() ||
+            subinterfaces.size()
+        )
+    )
+    {
+        QString dialog_txt = tr(
+            "The name of the interface '%1' has changed. The program can also "
+            "rename IP address objects that belong to this interface, "
+            "using standard naming scheme 'host_name:interface_name:ip'. "
+            "This makes it easier to distinguish what host or a firewall "
+            "given IP address object belongs to when it is used in "
+            "the policy or NAT rule. The program also renames MAC address "
+            "objects using scheme 'host_name:interface_name:mac'. "
+            "Do you want to rename child IP and MAC address objects now? "
+            "(If you click 'No', names of all address objects that belong to "
+            "interface '%2' will stay the same.)")
+            .arg(QString::fromUtf8(obj->getName().c_str()))
+            .arg(QString::fromUtf8(obj->getName().c_str()));
+
+        autorename_children = (QMessageBox::warning(
+                                   this, "Firewall Builder", dialog_txt,
+                                   tr("&Yes"), tr("&No"), QString::null,
+                                   0, 1 )==0 );
+    }
+
+    std::auto_ptr<FWCmdChange> cmd(
+        new FWCmdChange(m_project, obj, "", autorename_children));
     FWObject* new_state = cmd->getNewState();
 
     Interface *intf = Interface::cast(new_state);

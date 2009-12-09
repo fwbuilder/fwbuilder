@@ -131,7 +131,7 @@ class ObjectManipulator : public QWidget
         const QString &objName,
         libfwbuilder::FWObject *copyFrom=NULL);
 
-    void autorename(libfwbuilder::FWObject *obj, bool ask=true);
+    void autorename(libfwbuilder::FWObject *obj);
     void extractFirewallsFromGroup(libfwbuilder::ObjectGroup *gr,
                                    std::set<libfwbuilder::Firewall*> &fo);
 
@@ -331,8 +331,7 @@ public:
      void updateLibColor(libfwbuilder::FWObject *lib);
 
      void autoRenameChildren(libfwbuilder::FWObject *obj,
-                             const QString &oldName,
-                             bool  askForAutorename=true);
+                             const QString &oldName);
     void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
 
      ObjectTreeView* getCurrentObjectTree();
