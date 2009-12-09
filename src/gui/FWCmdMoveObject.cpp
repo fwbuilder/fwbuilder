@@ -71,6 +71,7 @@ FWCmdMoveObject::FWCmdMoveObject(
 {
     old_parent = old_p;
     new_parent = new_p;
+    current_parent = NULL;
     obj = o;
 
     if (text.isEmpty())
@@ -92,6 +93,7 @@ void FWCmdMoveObject::undo()
     {
         new_parent->remove(obj, false);
         old_parent->add(obj);
+        current_parent = old_parent;
     }
     if (fwbdebug) qDebug() << "FWCmdMoveObject::undo() obj->ref_counter=" 
                            << obj->getRefCounter();
@@ -118,6 +120,7 @@ void FWCmdMoveObject::redo()
     {
         old_parent->remove(obj, false);
         new_parent->add(obj);
+        current_parent = new_parent;
     }
     if (fwbdebug) qDebug() << "FWCmdMoveObject::redo() obj->ref_counter=" 
                            << obj->getRefCounter();
@@ -142,24 +145,28 @@ void FWCmdMoveObject::notify()
     // This command should only operate on moving objects from one
     // place in the tree to another but within the same data file
     QString filename = project->getFileName();
+    // QCoreApplication::postEvent(
+    //     mw, new reloadObjectTreeImmediatelyEvent(filename));
+
     QCoreApplication::postEvent(
-        mw, new reloadObjectTreeImmediatelyEvent(filename));
+        mw, new removeObjectFromTreeEvent(filename, obj->getId()));
+    QCoreApplication::postEvent(
+        mw, new insertObjectInTreeEvent(filename, current_parent->getId(),
+                                        obj->getId()));
+
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(filename, old_parent->getId()));
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(filename, new_parent->getId()));
-    // post openObjectInEditorEvent first so that editor panel opens.
-    // This matters if the tree needs to scroll to show the object when
-    // showObjectInTreeEvent is posted because vertical size of the tree
-    // changes when editor opens
+
     FWObject *new_obj = NULL;
-    if (obj->getParent()->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
+    if (current_parent->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
     {
         if (Library::isA(obj))
         {
             // looks like the object that moved into Deleted Objects is
             // another library. Show Deleted Objects library.
-            new_obj = obj->getParent();
+            new_obj = current_parent;
         }else
             new_obj = old_parent;
     } else
@@ -170,6 +177,10 @@ void FWCmdMoveObject::notify()
     QCoreApplication::postEvent(mw, new openLibraryForObjectEvent(
                                     filename, new_obj->getId()));
 
+    // post openObjectInEditorEvent first so that editor panel opens.
+    // This matters if the tree needs to scroll to show the object when
+    // showObjectInTreeEvent is posted because vertical size of the tree
+    // changes when editor opens
     if (mw->isEditorVisible())
         QCoreApplication::postEvent(mw, new openObjectInEditorEvent(
                                         filename, new_obj->getId()));

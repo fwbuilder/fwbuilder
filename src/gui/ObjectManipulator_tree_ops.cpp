@@ -181,11 +181,13 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     return nitm;
 }
 
-void ObjectManipulator::insertSubtree(FWObject *parent,
-                                      FWObject *obj )
+void ObjectManipulator::insertSubtree(FWObject *parent, FWObject *obj)
 {
     ObjectTreeViewItem* parent_item = allItems[parent];
     insertSubtree(parent_item, obj);
+    QTreeWidgetItem *itm = allItems[parent];
+    if (itm==NULL) return;
+    refreshSubtree(itm, NULL);
 }
 
 /**
@@ -303,50 +305,6 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
     // now if we need to update subtree, call refreshSubtree()
     if (subtree)
         refreshSubtree(itm, NULL);
-
-// no need in the hacks below after I added events insertObjectInTreeEvent and
-// removeObjectFromTreeEvent. These events are posted by FWCmdAddObject::undo()
-// and redo() functions.
-
-#if 0
-    if (subtree)
-    {
-
-        QTreeWidgetItem *parent_itm = itm->parent();
-        bool was_expanded = itm->isExpanded();
-
-        qDebug() << "Remove QTreeWidgetItem from the tree: "
-                 << "itm=" << itm
-                 << itm->text(0)
-                 << "parent_itm=" << parent_itm;
-        if (parent_itm)
-        {
-            parent_itm->removeChild(itm);
-            insertSubtree(dynamic_cast<ObjectTreeViewItem*>(parent_itm), obj);
-            refreshSubtree(parent_itm, itm);
-        } else
-        {
-            int idx = itm->treeWidget()->indexOfTopLevelItem(itm);
-
-            qDebug() << "itm index=" << idx;
-
-            itm->treeWidget()->takeTopLevelItem(idx);
-        }
-        itm = allItems[obj];
-        if (itm)
-        {
-            itm->setExpanded(was_expanded);
-            refreshSubtree(itm->parent(), itm);
-        }
-    } else
-    {
-        QString old_itm_text = itm->text(0);
-        itm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
-        itm->setText( 1, getTreeLabel(obj) );
-        getCurrentObjectTree()->updateTreeIcons();
-        refreshSubtree(itm->parent(), itm);
-    }
-#endif
 }
 
 void ObjectManipulator::clearObjects()

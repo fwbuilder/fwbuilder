@@ -38,6 +38,7 @@ class FWCmdMoveObject : public FWCmdBasic
 {
     libfwbuilder::FWObject *old_parent;
     libfwbuilder::FWObject *new_parent;
+    libfwbuilder::FWObject *current_parent;
     libfwbuilder::FWObject *obj;
     std::map<int, std::set<libfwbuilder::FWObject*> > reference_holders;
 
