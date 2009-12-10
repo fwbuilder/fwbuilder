@@ -51,12 +51,6 @@
 #include <QLibraryInfo>
 #include <QtDebug>
 
-/*
-#ifdef _WIN32
-#  include <windows.h>
-#endif
-*/
-
 #include "FWBSettings.h"
 #include "RCS.h"
 #include "FWWindow.h"
@@ -101,29 +95,21 @@
 #include <util.h>
 #endif
 
-//#ifdef Q_OS_MACX
-//#  include <util.h>
-//#endif
-
 #include <errno.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
 #include "../common/init.cpp"
 
-#ifdef ELC
-extern int init2(const QString &a1,
-                 const QString &moduleName,
-                 const QString &rp1,
-                 const QString &rp2,
-                 const QString &rp3,
-                 bool f1, bool f2, bool d);
-#endif
-
 #if defined(Q_WS_MAC)
 extern void connectOdocHandler();
 #endif
 
+#ifndef INIT2
+#define INIT2
+#endif
+
+extern void extras();
 
 using namespace libfwbuilder;
 using namespace std;
@@ -607,16 +593,7 @@ int main( int argc, char *argv[] )
 
     QPixmapCache::setCacheLimit(4096);
 
-//        app->setFont(st->getTreeFont());
-
-#ifdef ELC
-    init2(argv0.c_str(),
-          "Firewall Builder",
-          "fwb_gui30",
-          FWBSettings::getApplicationNameForSettings(),
-          "3.1",
-          true, true, fwbdebug);
-#endif
+    INIT2;
 
     string full_res_path = respath + FS_SEPARATOR + "resources.xml";
 
