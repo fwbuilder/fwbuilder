@@ -153,13 +153,13 @@ FWCmdRuleDelete::FWCmdRuleDelete(ProjectPanel *project, RuleSet* ruleset, QList<
 void FWCmdRuleDelete::copyRules(QList<Rule*> &rules)
 {
     qDebug() << "FWCmdRuleDelete::copyRules(QList<Rule*> &rules)";
-    qDebug() << "size:" << rules.size();
     QList<int> positions;
     positions.append(-100);
 
     foreach(Rule* rule, rules)
     {        
         int pos = rule->getPosition();
+        rule->ref();
         for(int i=positions.size()-1; i>=0; i-- )
         {
             if (pos > positions.at(i))
@@ -177,18 +177,31 @@ void FWCmdRuleDelete::copyRules(QList<Rule*> &rules)
 
 FWCmdRuleDelete::~FWCmdRuleDelete()
 {
-
+    qDebug() << "FWCmdRuleDelete::~FWCmdRuleDelete()";
+   foreach(Rule* rule, rulesToDelete)
+   {
+       if (rule != 0)
+       {
+           if (rule->getRefCounter() <= 1)
+           {
+               qDebug() << "* delete rule:" << rule->getId();
+               delete rule;
+           }
+           else
+           {
+               qDebug() << "* unref rule:" << rule->getId();
+               rule->unref();
+           }
+       }
+   }
 }
 
 void FWCmdRuleDelete::redoOnModel(RuleSetModel *md)
 {
     qDebug() << "FWCmdRuleDelete::redoOnModel(RuleSetModel *md)";
-    qDebug() << "size:" << rulesToDelete.size();
     foreach(Rule* rule, rulesToDelete)
     {
-        rule->ref();
         QModelIndex index = md->index(rule, 0);
-        qDebug() << "index:" << index.isValid();
         md->removeRow(index.row(), index.parent());
     }
 }
@@ -196,16 +209,8 @@ void FWCmdRuleDelete::redoOnModel(RuleSetModel *md)
 void FWCmdRuleDelete::undoOnModel(RuleSetModel *md)
 {
     md->restoreRules(rulesToDelete);
-    unrefAll();
 }
 
-void FWCmdRuleDelete::unrefAll()
-{
-    foreach(Rule* rule, rulesToDelete)
-    {
-        rule->unref();
-    }
-}
 
 /********************************************************
  * FWCmdRuleDeleteFromGroup
@@ -217,39 +222,9 @@ FWCmdRuleDeleteFromGroup::FWCmdRuleDeleteFromGroup(ProjectPanel *project, RuleSe
     setText(QObject::tr("delete rules from group"));
 }
 
-
-
-//void FWCmdRuleDeleteFromGroup::redoOnModel(RuleSetModel *md)
-//{
-
-
-//    Rule* rule = Rule::cast(project->db()->getById(ruleId));
-//    rule->ref();
-//    QModelIndex index = md->index(rule, 0);
-//    QModelIndex parent = index.parent();
-//    md->removeRow(index.row(), parent);
-//    //TODO: remove group
-//
-//    if (parent.isValid()) {
-//        RuleNode* node = md->nodeFromIndex(parent);
-//        if (node->children.size()==0)
-//            md->removeRow(parent.row(), parent.parent());
-//    }
-//
-//    //TODO: remove and store references on this rule
-//    deletedRule = rule;
-//}
-
 void FWCmdRuleDeleteFromGroup::undoOnModel(RuleSetModel *md)
 {
-    qDebug() << "FWCmdRuleDeleteFromGroup::undoOnModel(RuleSetModel *md)";
-    qDebug() << "size:" << rulesToDelete.size();
     md->restoreRules(rulesToDelete, false);
-    unrefAll();
-    //TODO: unref rules
-//    md->restoreRule(deletedRule);
-//    deletedRule->unref();
-//    deletedRule=0;
 }
 
 /********************************************************

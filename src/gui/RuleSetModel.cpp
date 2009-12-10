@@ -582,8 +582,8 @@ void RuleSetModel::restoreRule(Rule* rule)
 
 void RuleSetModel::restoreRules(QList<Rule*> rules, bool topLevel)
 {
-    qDebug() << "RuleSetModel::restoreRules(QList<Rule*> rules)";
-    qDebug() << "Size:" << rules.size();
+//    qDebug() << "RuleSetModel::restoreRules(QList<Rule*> rules)";
+
     int pos = rules.first()->getPosition()-1;
     Rule* pivotRule = ruleset->getRuleByNum(pos);
     QModelIndex pivotIndex = index(pivotRule, 0);
@@ -597,7 +597,6 @@ void RuleSetModel::restoreRules(QList<Rule*> rules, bool topLevel)
     for (int i=rules.size()-1; i>=0; i--)
     {
         Rule* rule = rules.at(i);
-        qDebug() << i << " * " << rule->getPosition();
         ruleset->insert_after(pivotRule, rule);
 
         insertRuleToModel(rule, pivotIndex, true);
