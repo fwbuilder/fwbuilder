@@ -30,17 +30,15 @@
 
 #include <qstring.h>
 
-#include "IconSetter.h"
-
 namespace libfwbuilder {
     class FWObject;
     class FWObjectDatabase;
 };
 
-
 class QPixmap;
 
-class FWBTree: public IconSetter {
+class FWBTree
+{
 
     std::map<QString,QString>  systemGroupTypes;
     std::map<QString,QString>  systemGroupNames;
@@ -98,10 +96,7 @@ class FWBTree: public IconSetter {
                                                             const QString &objType);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
-    void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size)
-    {
-        return IconSetter::setObjectIcon(obj, pm, icon_size);
-    }
+    void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size);
 };
 
 #endif

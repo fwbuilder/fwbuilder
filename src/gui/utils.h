@@ -125,5 +125,6 @@ extern QString calculateIconName(const QString &_icn, bool negation);
 /*
  * @icon_size:  0 - small (16x16) , 1 - medium (25x25), 2 - big (64x64)
  */
+extern void doSetObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size);
 
 #endif

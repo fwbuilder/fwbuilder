@@ -60,6 +60,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "utils.h"
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -515,5 +517,8 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
     return nlib;
 }
 
-
+void FWBTree::setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size)
+{
+    doSetObjectIcon(obj, pm, icon_size);
+}
 
