@@ -27,6 +27,9 @@
 #ifndef __ABOUTDIALOG_H_
 #define __ABOUTDIALOG_H_
 
+#ifndef ABOUT_DLG_BLANKS
+#define ABOUT_DLG_BLANKS
+#endif
 
 #include <ui_aboutdialog_q.h>
 
