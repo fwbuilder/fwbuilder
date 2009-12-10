@@ -591,7 +591,7 @@ int main( int argc, char *argv[] )
     if (fwbdebug) qDebug("Creating app ...");
     //QApplication::setDesktopSettingsAware(desktopaware);
     app = new QApplication( argc, argv );
-    app->setOrganizationName(QLatin1String("NetCitadel LLC"));
+    app->setOrganizationName(QLatin1String("NetCitadel"));
     app->setApplicationName(QLatin1String("Firewall Builder"));
 
 /* need to initialize in order to be able to use FWBSettings */
@@ -613,7 +613,7 @@ int main( int argc, char *argv[] )
     registered = init2(argv0,
                        "Firewall Builder",
                        "fwb_gui30",
-                       "3.0",
+                       "3.1",
                        true, true, fwbdebug);
 #endif
 

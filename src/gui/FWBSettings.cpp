@@ -110,11 +110,15 @@ const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
 
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
 
+
+
+/**
+ * Settings path defined here should match Windows registry paths used
+ * in the Windows installer/uninstaller scripts.
+ */
 FWBSettings::FWBSettings() :
-    QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder")
+    QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder 3.1")
 {
-//    writeEntry( DTDSetpath, librespath.c_str() );
-//    writeEntry( ResSetpath, respath.c_str() );
 }
 
 /**
