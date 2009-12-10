@@ -159,12 +159,13 @@ void FWCmdRuleDelete::copyRules(QList<Rule*> &rules)
     foreach(Rule* rule, rules)
     {        
         int pos = rule->getPosition();
-        rule->ref();
+
         for(int i=positions.size()-1; i>=0; i-- )
         {
             if (pos > positions.at(i))
             {
                 positions.insert(i+1, pos);
+                rule->ref();
                 rulesToDelete.insert(i, rule);
                 break;
             }

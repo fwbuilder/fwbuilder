@@ -585,8 +585,32 @@ void RuleSetModel::restoreRules(QList<Rule*> rules, bool topLevel)
 //    qDebug() << "RuleSetModel::restoreRules(QList<Rule*> rules)";
 
     int pos = rules.first()->getPosition()-1;
-    Rule* pivotRule = ruleset->getRuleByNum(pos);
-    QModelIndex pivotIndex = index(pivotRule, 0);
+    int last = 0;
+    Rule* pivotRule = 0;
+    QModelIndex pivotIndex;
+
+    //The very top rule should be inserted BEFORE others
+    if (pos < 0)
+    {
+        Rule* rule = rules.first();
+        pivotRule = ruleset->getRuleByNum(0);
+        ruleset->insert_before(pivotRule, rule);
+        pivotIndex = index(pivotRule, 0);
+
+        if (topLevel && pivotIndex.parent().isValid())
+        {
+            pivotIndex = pivotIndex.parent();
+        }
+        insertRuleToModel(rule, pivotIndex, false);
+
+        pivotRule = rule;
+        last++;
+    } else
+    {
+        pivotRule = ruleset->getRuleByNum(pos);
+    }
+
+    pivotIndex = index(pivotRule, 0);
 
     // We need a toplevel index
     if (topLevel && pivotIndex.parent().isValid())
@@ -594,7 +618,7 @@ void RuleSetModel::restoreRules(QList<Rule*> rules, bool topLevel)
         pivotIndex = pivotIndex.parent();
     }
 
-    for (int i=rules.size()-1; i>=0; i--)
+    for (int i=rules.size()-1; i>=last; i--)
     {
         Rule* rule = rules.at(i);
         ruleset->insert_after(pivotRule, rule);

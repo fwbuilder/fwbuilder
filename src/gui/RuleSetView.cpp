@@ -937,7 +937,9 @@ void RuleSetView::removeRule()
             }
         }
 
-// Remove items from groups
+        project->undoStack->beginMacro(tr("delete rules"));
+
+        // Remove items from groups
         QList<QModelIndex> groups = itemsInGroups.keys();
         if (!groups.isEmpty())
         {
@@ -956,54 +958,13 @@ void RuleSetView::removeRule()
         }
 
 
-
-//        QList<QModelIndex> groups = itemsInGroups.keys();
-//        if (!groups.isEmpty())
-//        {
-//            foreach(QModelIndex group, groups)
-//            {
-//                qSort(itemsInGroups[group]);
-//
-//                Rule* first = md->nodeFromIndex(md->index(itemsInGroups[group].at(0), 0, group))->rule;
-//                Rule* last = md->nodeFromIndex(md->index(itemsInGroups[group].at(itemsInGroups[group].size() - 1), 0, group))->rule;
-//                QString groupName = md->nodeFromIndex(group)->name;
-//
-//                FWCmdRuleRemoveFromGroup* cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), first, last, groupName);
-//                project->undoStack->push(cmd);
-
-                // if group gets empty it should be removed as well
-//                if (md->rowCount(group) == 0)
-//                    topLevelItems << group.row();
-
-//            }
-//        }
-
-
-
-
-
         // Remove rows
         if (!rulesToDelete.isEmpty())
         {
-
             FWCmdRuleDelete* cmd =  new FWCmdRuleDelete(project, md->getRuleSet(), rulesToDelete);
             project->undoStack->push(cmd);
-//            foreach(Rule* rule, rulesToDelete)
-//            {
-//                FWCmdRuleDeleteOne* cmd = new FWCmdRuleDeleteOne(project, md->getRuleSet(), rule->getId());
-//                project->undoStack->push(cmd);
-//            }
-//            QModelIndex parent;
-//            qSort(rulesToDelete);
-//            for(int i = rulesToDelete.size() - 1; i>=0; i--)
-//            {
-//                md->removeRow(rulesToDelete.at(i), parent);
-//            }
-
         }
-
-//        QCoreApplication::postEvent(
-//            mw, new dataModifiedEvent(project->getFileName(), md->getRuleSet()->getId()));
+        project->undoStack->endMacro();
     }
 }
 

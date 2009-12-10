@@ -97,7 +97,7 @@ class FWCmdRuleDelete : public FWCmdRule
     void copyRules(QList<libfwbuilder::Rule*> &rules);
 protected:
     QList<libfwbuilder::Rule*> rulesToDelete;
-    void unrefAll();
+
 public:
     FWCmdRuleDelete(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<libfwbuilder::Rule*> &rulesToDelete);
     ~FWCmdRuleDelete();
