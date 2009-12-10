@@ -36,6 +36,8 @@
 
 using namespace std;
 
+extern int getRegistrationStatus();
+
 HttpGet::HttpGet(QObject *parent) : QObject(parent), strm(&contents)
 {
     last_error = "";
@@ -106,8 +108,8 @@ bool HttpGet::get(const QUrl &url)
     agent += locale;
     agent += QString("; b:%1; ").arg(build_num);
 #ifdef ELC
-    if (registered==2) agent += "r";
-    else               agent += "u";
+    if (getRegistrationStatus()==2) agent += "r";
+    else                            agent += "u";
 #else
     agent += "u";
 #endif

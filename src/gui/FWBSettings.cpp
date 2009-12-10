@@ -117,7 +117,7 @@ const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
  * in the Windows installer/uninstaller scripts.
  */
 FWBSettings::FWBSettings() :
-    QSettings(QSettings::UserScope, "netcitadel.com", "Firewall Builder 3.1")
+    QSettings(QSettings::UserScope, "netcitadel.com", getApplicationNameForSettings())
 {
 }
 

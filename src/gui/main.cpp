@@ -112,10 +112,11 @@
 #include "../common/init.cpp"
 
 #ifdef ELC
-extern int init2(const std::string &a1,
-                 const std::string &moduleName,
-                 const std::string &rp,
-                 const std::string &rp1,
+extern int init2(const QString &a1,
+                 const QString &moduleName,
+                 const QString &rp1,
+                 const QString &rp2,
+                 const QString &rp3,
                  bool f1, bool f2, bool d);
 #endif
 
@@ -135,7 +136,6 @@ FWWindow *mw = NULL;
 FWBSettings *st = NULL;
 int fwbdebug = 0;
 bool safemode = false;
-int registered = 0;
 bool cli_print = false;
 QString cli_print_fwname = "";
 
@@ -610,11 +610,12 @@ int main( int argc, char *argv[] )
 //        app->setFont(st->getTreeFont());
 
 #ifdef ELC
-    registered = init2(argv0,
-                       "Firewall Builder",
-                       "fwb_gui30",
-                       "3.1",
-                       true, true, fwbdebug);
+    init2(argv0.c_str(),
+          "Firewall Builder",
+          "fwb_gui30",
+          FWBSettings::getApplicationNameForSettings(),
+          "3.1",
+          true, true, fwbdebug);
 #endif
 
     string full_res_path = respath + FS_SEPARATOR + "resources.xml";

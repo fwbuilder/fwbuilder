@@ -50,7 +50,6 @@ extern std::string     tempfname;
 extern std::string     argv0;
 extern std::string     ee;
 extern int             fwbdebug;
-extern int             registered;
 extern QString         build_num;
 extern QString         user_name;
 
