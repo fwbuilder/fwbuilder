@@ -159,7 +159,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     nitm->setText( 1, getTreeLabel(obj) );
 
     QPixmap pm;
-    FWBTree().setObjectIcon(obj, &pm, 0);
+    doSetObjectIcon(obj, &pm, 0);
 
     nitm->setIcon( 0, QIcon(pm) );
 //    nitm->setIcon( 1, QIcon(pm) );
@@ -251,7 +251,7 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
     QTreeWidget *objTreeView = idxToTrees[current_lib_idx];
     assert(objTreeView);
     dynamic_cast<ObjectTreeView*>(objTreeView)->clearLastSelected();
-    
+
     ObjectTreeViewItem *itm = allItems[obj];
     allItems[obj] = NULL;
     itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
@@ -312,8 +312,8 @@ void ObjectManipulator::clearObjects()
     if (fwbdebug)
     {
         qDebug("ObjectManipulator::clearObjects %d libs, "
-               "idxToLibs size: %d, idxToTrees size: %d", N, 
-               int(idxToLibs.size()), 
+               "idxToLibs size: %d, idxToTrees size: %d", N,
+               int(idxToLibs.size()),
                int(idxToTrees.size()));
     }
 
@@ -403,7 +403,7 @@ void ObjectManipulator::addLib(FWObject *lib)
         if ( m_objectManipulator->libs->itemText(idx) > newlibname ) break;
 
     QPixmap pm;
-    FWBTree().setObjectIcon(lib, &pm, 0);
+    doSetObjectIcon(lib, &pm, 0);
 
     m_objectManipulator->libs->insertItem( idx, pm, newlibname);
 
@@ -511,14 +511,14 @@ void ObjectManipulator::refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem 
                  << "itm:" << QString((itm)?itm->text(0):"");
     /*
      * re-sorting parent tree item causes havoc. If I do not
-     * collapse/expand it, I get strange glitches in display. 
+     * collapse/expand it, I get strange glitches in display.
      */
     parent->sortChildren(0, Qt::AscendingOrder);//();
 
     if (fwbdebug)
         qDebug("ObjectManipulator::refreshSubtree expand/collapse parent");
     /*
-     * workaround for QT4 bug 
+     * workaround for QT4 bug
      * http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=233975
      * Affects QT 4.4.1
      *

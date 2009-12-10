@@ -96,7 +96,6 @@ class FWBTree
                                                             const QString &objType);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
-    void setObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size);
 };
 
 #endif

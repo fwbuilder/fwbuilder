@@ -190,7 +190,7 @@ void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
             QString icn = ":/Icons/" + getRuleAction(rule) + "/icon-big";
             LoadPixmap(icn, *pm);  // in utils.cpp
         } else
-            FWBTree().setObjectIcon(obj_for_icon, pm, 2); // big icon
+            doSetObjectIcon(obj_for_icon, pm, 2); // big icon
     }
 }
 
@@ -250,7 +250,7 @@ void FWWindow::findWhereUsed(FWObject * obj, ProjectPanel *pp)
     if (fwbdebug)
         qDebug() << "FWWindow::findWhereUsed findWhereUsedWidget="
                  << findWhereUsedWidget
-                 << " project panel: " 
+                 << " project panel: "
                  << pp;
 
     attachEditorToProjectPanel(pp);
