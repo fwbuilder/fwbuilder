@@ -737,9 +737,14 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
              * all rule sets from the cluster that do not have
              * matching ones in the member firewall are merged into
              * the firewall before compilation and used.
+             *
+             * Note that rule set object has two different kinds of
+             * children: rules and RuleSetOption objects. Check if it
+             * has any rules.
              */
 
-            if (fw_ruleset->size() > 0)
+            list<FWObject*> all_rules = fw_ruleset->getByType(type);
+            if (all_rules.size() > 0)
             {
                 QString err("ignoring cluster rule set \"%1\" "
                             "because member firewall \"%2\" "
