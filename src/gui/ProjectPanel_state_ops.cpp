@@ -105,7 +105,7 @@ void ProjectPanel::loadState(bool)
         int y = st->getInt("Window/"+filename+"/y");
         int width = st->getInt("Window/"+filename+"/width");
         int height = st->getInt("Window/"+filename+"/height");
-        if (width==0 || height==0)
+        if ( (width==0 || height==0) && filename != "" )
         {
             x = 10;
             y = 10;
@@ -115,8 +115,10 @@ void ProjectPanel::loadState(bool)
         if (fwbdebug)
             qDebug("ProjectPanel::loadState  set geometry: %d %d %d %d",
                    x,y,width,height);
-        
-        mdiWindow->setGeometry(x,y,width,height);
+        if (width == 0 && height == 0 && filename == "")
+            this->showMaximized();
+        else
+            mdiWindow->setGeometry(x,y,width,height);
     }
 
     loadMainSplitter();
@@ -162,7 +164,7 @@ void ProjectPanel::loadMainSplitter()
     if (rcs!=NULL) FileName = rcs->getFileName();
     QString h_splitter_setting = "Window/" + FileName + "/MainWindowSplitter";
     QString val = st->getStr(h_splitter_setting);
-    
+
     int w1 = 0;
     int w2 = 0;
     QStringList ws = val.split(',');
@@ -182,7 +184,7 @@ void ProjectPanel::loadMainSplitter()
                arg(w1).arg(w2).toAscii().constData());
 
     setMainSplitterPosition(w1, w2);
-}    
+}
 
 void ProjectPanel::setMainSplitterPosition(int w1, int w2)
 {
@@ -257,7 +259,7 @@ void ProjectPanel::saveOpenedRuleSet()
         getCurrentRuleSetView()->saveCollapsedGroups();
     }
 }
-     
+
 void ProjectPanel::saveLastOpenedLib()
 {
     QString filename = "";
@@ -268,10 +270,10 @@ void ProjectPanel::saveLastOpenedLib()
     {
         std::string sid = FWObjectDatabase::getStringId(obj->getId());
         st->setStr("Window/" + filename + "/LastLib", sid.c_str() );
-        
+
     }
 }
-    
+
 void ProjectPanel::loadLastOpenedLib()
 {
     if (fwbdebug) qDebug("ProjectPanel::loadLastOpenedLib()");
