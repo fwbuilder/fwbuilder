@@ -1312,23 +1312,6 @@ void FWWindow::enableBackAction()
 
 void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setname, int rule)
 {
-    QCoreApplication::postEvent(
-        mw, new openRulesetEvent(project->getFileName(), 0));//project->get obj->getParent()->getId()));
-    return;
-
-    // Get project window and make it active
-    QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
-        QMdiArea::StackingOrder);
-    foreach(QMdiSubWindow* win, subwindows)
-    {
-        ProjectPanel *current = dynamic_cast<ProjectPanel*>(win->widget());
-        if (current->getFileName() == project->getFileName())
-        {
-            if (m_mainWindow->m_space->activeSubWindow() != win)
-                m_mainWindow->m_space->setActiveSubWindow(win);
-        }
-    }
-
     // Find firewall object tree item
     ObjectTreeViewItem* firewall = NULL;
     foreach(QTreeWidgetItem* item,
@@ -1350,21 +1333,16 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
     {
         if (item->parent() == firewall)
         {
-            project->getCurrentObjectTree()->clearSelection();
-            item->setSelected(true);
-            project->openRuleSet(((ObjectTreeViewItem*)item)->getFWObject());
+            QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(),
+                                   ((ObjectTreeViewItem*)item)->getFWObject()->getId()));
+            break;
         }
     }
 
-    RuleSetView* view = project->getCurrentRuleSetView();
-    view->clearSelection();
-    QModelIndex idx = view->model()->index(rule, 0, QModelIndex());
+    QCoreApplication::postEvent(mw, new selectRuleElementEvent(project->getFileName(),
+                                 project->getCurrentRuleSet()->getRuleByNum(rule-1)->getId(),
+                                 ColDesc::Action));
 
-    if (idx.isValid())
-    {
-        view->selectionModel()->select(idx, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
-        view->scrollTo(idx);
-    }
 }
 
 void FWWindow::undoViewVisibilityChanged(bool visible)
