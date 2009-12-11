@@ -482,7 +482,7 @@ void instDialog::cancelClicked()
 
 void instDialog::showEvent( QShowEvent *ev)
 {
-    st->restoreGeometry(this, QRect(200,100,480,500) );
+    st->restoreGeometry(this, QRect(200,100,780,500) );
     QDialog::showEvent(ev);
 }
 

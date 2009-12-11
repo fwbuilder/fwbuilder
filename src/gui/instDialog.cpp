@@ -200,7 +200,7 @@ instDialog::instDialog(QWidget* p,
     case BATCH_COMPILE:
     { // only compilation's requested
         m_dialog->selectInfoLabel->setText(
-            tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls for compilation.</font></b></p>"));
+            tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls to compile.</font></b></p>"));
         m_dialog->batchInstFlagFrame->hide();
         setAppropriate(2,false);
         m_dialog->selectTable->hideColumn(INSTALL_CHECKBOX_COLUMN);
