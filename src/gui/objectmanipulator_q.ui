@@ -69,7 +69,7 @@ QComboBox {
         </property>
         <property name="icon" >
          <iconset resource="MainRes.qrc" >
-          <normaloff>:/Icons/Return</normaloff>:/Icons/Return</iconset>
+          <normaloff>:/Icons/Return/icon</normaloff>:/Icons/Return/icon</iconset>
         </property>
         <property name="autoRaise" >
          <bool>true</bool>
