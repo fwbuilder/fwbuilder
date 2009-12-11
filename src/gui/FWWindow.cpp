@@ -455,18 +455,12 @@ void FWWindow::updateWindowTitle()
 
 void FWWindow::startupLoad()
 {
-
-
     if (st->getCheckUpdates())
     {
         // start http query to get latest version from the web site
         QString url = QString(CHECK_UPDATE_URL).arg(VERSION).arg(st->getAppGUID());
         current_version_http_getter->get(QUrl(url));
     }
-
-    if (fwbdebug)
-        qDebug() << "FWWindow::startupLoad 1 "
-                 << " activeProject()=" << activeProject();
 
     if (activeProject())
     {
@@ -475,11 +469,6 @@ void FWWindow::startupLoad()
         activeProject()->loadState(true);
     }
 
-    if (fwbdebug)
-        qDebug() << "FWWindow::startupLoad 2 "
-                 << " activeProject()=" << activeProject();
-
-    // foreach is QT macro
     foreach (QString file, openDocFiles)
     {
         loadFile(file, auto_load_from_rcs_head_revision);
@@ -489,35 +478,46 @@ void FWWindow::startupLoad()
 //    m_mainWindow->m_space->setActiveSubWindow(
 //        m_mainWindow->m_space->currentSubWindow());
 
-    if (fwbdebug)
-        qDebug() << "FWWindow::startupLoad 3 "
-                 << " activeProject()=" << activeProject();
-
     QString release_notes_flag = QString("UI/%1/ReleaseNotesShown").arg(VERSION);
-//    if (!st->getBool(release_notes_flag))
-//    {
-    showReleaseNotes();
-    st->setBool(release_notes_flag, true);
-//    }
 
+/*
+ * During beta testing we always show release notes and dont show tip
+ * of the day. Switch to normal sequence near the end of beta (show
+ * release notes once and then show tip of the day)
+ */
+#define ONLY_RELEASE_NOTES 1
+
+#if SHOW_RELEASE_NOTES_ONCE
+    if (!st->getBool(release_notes_flag))
+    {
+        showReleaseNotes();
+        st->setBool(release_notes_flag, true);
+    } else
+    {
+        // show tip of the day only if we did not show release notes.
+        // Two start-time pop-up dialogs == bad.
+        if (! st->getBool("UI/NoStartTip"))
+        {
+            StartTipDialog *stdlg = new StartTipDialog();
+            stdlg->run();
+        }
+    }
+#endif
+
+#if ONLY_RELEASE_NOTES
+    showReleaseNotes();
+#endif
+
+#if RELEASE_NOTES_AND_TIP
+    showReleaseNotes();
     if (! st->getBool("UI/NoStartTip"))
     {
         StartTipDialog *stdlg = new StartTipDialog();
         stdlg->run();
-
-        //stdlg->show();
-        //stdlg->raise();
     }
-
-    if (fwbdebug)
-        qDebug() << "FWWindow::startupLoad 4 "
-                 << " activeProject()=" << activeProject();
+#endif
 
     prepareFileMenu();
-
-    if (fwbdebug)
-        qDebug() << "FWWindow::startupLoad 5 "
-                 << " activeProject()=" << activeProject();
 }
 
 void FWWindow::helpAbout()
