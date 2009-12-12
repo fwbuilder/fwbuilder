@@ -1,3 +1,21 @@
+2009-12-11  vadim  <vadim@vk.crocodile.org>
+
+	* GroupObjectDialog.cpp (GroupObjectDialog::newObject):
+	Implemented feature request #2245537 "Add service object to
+	service groups directly from groups". Group object dialog now has
+	a button that shows a menu when clicked, this menu allows the user
+	to create new object and add it to the group in one operation.
+	This fixes #119
+
+	* ObjectManipulator::addNewObjectMenuItem: fixes #850 Redesigned
+	methods used to create "new object" menu and call functions that
+	create new objects to be able to build menus with limited sets
+	of new object types.
+
+	* ../src/gui/FWBTree.h (class FWBTree): added methods
+	getTranslatableObjectTypeName and getTranslatableNewObjectMenuText
+	that return translatable strings for the given object type name.
+
 2009-12-09  vadim  <vadim@vk.crocodile.org>
 
 	* FindWhereUsedWidget.cpp (FindWhereUsedWidget::_find): "Find

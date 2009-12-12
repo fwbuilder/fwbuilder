@@ -28,6 +28,7 @@
 
 #include <QtDebug>
 #include <QPixmap>
+#include <QString>
 
 #include "FWBTree.h"
 
@@ -516,4 +517,62 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
 
     return nlib;
 }
+
+/*
+ * return string that can be translated for the object type name
+ */
+QString FWBTree::getTranslatableObjectTypeName(const QString &type_name)
+{
+    if (type_name ==  Library::TYPENAME) return QObject::tr("Library");
+    if (type_name ==  Firewall::TYPENAME) return QObject::tr("Firewall");
+    if (type_name ==  Cluster::TYPENAME) return QObject::tr("Cluster");
+    if (type_name ==  Host::TYPENAME) return QObject::tr("Host");
+    if (type_name == Interface::TYPENAME) return QObject::tr("Interface");
+    if (type_name == Network::TYPENAME) return QObject::tr("Network");
+    if (type_name == NetworkIPv6::TYPENAME) return QObject::tr("Network IPv6");
+    if (type_name == IPv4::TYPENAME) return QObject::tr("Address");
+    if (type_name == IPv6::TYPENAME) return QObject::tr("Address IPv6");
+    if (type_name == DNSName::TYPENAME) return QObject::tr("DNS Name");
+    if (type_name == AddressTable::TYPENAME) return QObject::tr("Address Table");
+    if (type_name == AddressRange::TYPENAME) return QObject::tr("Address Range");
+    if (type_name == ObjectGroup::TYPENAME) return QObject::tr("Object Group");
+    if (type_name == CustomService::TYPENAME) return QObject::tr("Custom Service");
+    if (type_name == IPService::TYPENAME) return QObject::tr("IP Service");
+    if (type_name == ICMPService::TYPENAME) return QObject::tr("ICMP Service");
+    if (type_name == ICMP6Service::TYPENAME) return QObject::tr("ICMP6 Service");
+    if (type_name == TCPService::TYPENAME) return QObject::tr("TCP Serivce");
+    if (type_name == UDPService::TYPENAME) return QObject::tr("UDP Service");
+    if (type_name == TagService::TYPENAME) return QObject::tr("TagService");
+    if (type_name == UserService::TYPENAME) return QObject::tr("User Service");
+    if (type_name == ServiceGroup::TYPENAME) return QObject::tr("Service Group");
+    if (type_name == Interval::TYPENAME) return QObject::tr( "Time Interval");
+}
+
+QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
+{
+    if (type_name ==  Library::TYPENAME) return QObject::tr("New Library");
+    if (type_name ==  Firewall::TYPENAME) return QObject::tr("New Firewall");
+    if (type_name ==  Cluster::TYPENAME) return QObject::tr("New Cluster");
+    if (type_name ==  Host::TYPENAME) return QObject::tr("New Host");
+    if (type_name == Interface::TYPENAME) return QObject::tr("New Interface");
+    if (type_name == Network::TYPENAME) return QObject::tr("New Network");
+    if (type_name == NetworkIPv6::TYPENAME) return QObject::tr("New Network IPv6");
+    if (type_name == IPv4::TYPENAME) return QObject::tr("New Address");
+    if (type_name == IPv6::TYPENAME) return QObject::tr("New Address IPv6");
+    if (type_name == DNSName::TYPENAME) return QObject::tr("New DNS Name");
+    if (type_name == AddressTable::TYPENAME) return QObject::tr("New Address Table");
+    if (type_name == AddressRange::TYPENAME) return QObject::tr("New Address Range");
+    if (type_name == ObjectGroup::TYPENAME) return QObject::tr("New Object Group");
+    if (type_name == CustomService::TYPENAME) return QObject::tr("New Custom Service");
+    if (type_name == IPService::TYPENAME) return QObject::tr("New IP Service");
+    if (type_name == ICMPService::TYPENAME) return QObject::tr("New ICMP Service");
+    if (type_name == ICMP6Service::TYPENAME) return QObject::tr("New ICMP6 Service");
+    if (type_name == TCPService::TYPENAME) return QObject::tr("New TCP Serivce");
+    if (type_name == UDPService::TYPENAME) return QObject::tr("New UDP Service");
+    if (type_name == TagService::TYPENAME) return QObject::tr("New TagService");
+    if (type_name == UserService::TYPENAME) return QObject::tr("New User Service");
+    if (type_name == ServiceGroup::TYPENAME) return QObject::tr("New Service Group");
+    if (type_name == Interval::TYPENAME) return QObject::tr( "Time Interval");
+}
+
 

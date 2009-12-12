@@ -41,6 +41,7 @@
 
 class ObjectIconViewItem;
 class ObjectListViewItem;
+class QMenu;
 class ProjectPanel;
 
 class GroupObjectDialog : public BaseObjectDialog
@@ -49,8 +50,9 @@ class GroupObjectDialog : public BaseObjectDialog
 
 
     Ui::GroupObjectDialog_q *m_dialog;
-    ObjectIconView          *iconView;
-    ObjectListView          *listView;
+    ObjectIconView *iconView;
+    ObjectListView *listView;
+    QMenu *new_object_menu;
 
     std::vector<int> selectedObjects;
 
@@ -96,6 +98,8 @@ class GroupObjectDialog : public BaseObjectDialog
     
     void selectObject(libfwbuilder::FWObject *o);
 
+    void newObject();
+    
  private:
 
     static enum viewType vt;

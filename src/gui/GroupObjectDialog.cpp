@@ -45,6 +45,9 @@
 #include "fwbuilder/Group.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/ServiceGroup.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/FWIntervalReference.h"
 
 #include <memory>
 
@@ -64,13 +67,15 @@
 #include <qpixmapcache.h>
 #include <QCoreApplication>
 #include <QUndoStack>
+#include <QtDebug>
 
 #include <iostream>
 #include <algorithm>
-#include "FWBSettings.h"
+
 
 using namespace std;
 using namespace libfwbuilder;
+
 
 enum GroupObjectDialog::viewType GroupObjectDialog::vt = GroupObjectDialog::Icon;
 
@@ -84,8 +89,9 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     m_dialog = new Ui::GroupObjectDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
-    selectedObject=NULL;
+    obj = NULL;
+    selectedObject = NULL;
+    new_object_menu = NULL;
 
     listView = new ObjectListView( m_dialog->objectViewsStack, "listView" );
     QStringList sl;
@@ -691,3 +697,34 @@ void GroupObjectDialog::selectObject(FWObject *o)
         }
     }
 }
+
+void GroupObjectDialog::newObject()
+{
+    if (new_object_menu)
+    {
+        new_object_menu->clear();
+        m_dialog->newButton->setMenu(NULL);
+        delete new_object_menu;
+    }
+
+    new_object_menu = new QMenu(this);
+
+    Group *grp = Group::cast(obj);
+
+    list<string> types_list;
+    grp->getAllowedTypesOfChildren(types_list);
+    foreach(string tn, types_list)
+    {
+        if (tn == FWObjectReference::TYPENAME ||
+            tn == FWServiceReference::TYPENAME ||
+            tn == FWIntervalReference::TYPENAME) continue;
+        if (fwbdebug)
+            qDebug() << "Adding type" << tn.c_str() << "to the new object menu";
+        m_project->m_panel->om->addNewObjectMenuItem(new_object_menu, tn.c_str(),
+                                                     "", grp->getId());
+    }
+
+    m_dialog->newButton->setMenu( new_object_menu );
+    m_dialog->newButton->showMenu();
+}
+

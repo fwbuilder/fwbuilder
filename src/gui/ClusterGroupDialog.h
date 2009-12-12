@@ -66,7 +66,7 @@ public slots:
     void openObject(QTreeWidgetItem *item);
     void objectChanged();
     void openParametersEditor();
-    
+
 };
 
 #endif /* __CLUSTERDIALOG_H_ */

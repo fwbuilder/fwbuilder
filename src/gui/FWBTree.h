@@ -28,7 +28,8 @@
 
 #include <map>
 
-#include <qstring.h>
+#include <QString>
+#include <QStringList>
 
 namespace libfwbuilder {
     class FWObject;
@@ -93,9 +94,11 @@ class FWBTree
                                          QString &parentType,
                                          QString &parentName);
     libfwbuilder::FWObject* getStandardSlotForObject(libfwbuilder::FWObject* lib,
-                                                            const QString &objType);
+                                                     const QString &objType);
     libfwbuilder::FWObject* createNewLibrary(libfwbuilder::FWObjectDatabase *db);
 
+    QString getTranslatableObjectTypeName(const QString &type_name);
+    QString getTranslatableNewObjectMenuText(const QString &type_name);
 };
 
 #endif

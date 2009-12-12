@@ -83,90 +83,136 @@
 #include <QAction>
 
 
-
 using namespace std;
 using namespace libfwbuilder;
 
+
 void ObjectManipulator::buildNewObjectMenu()
 {
-    QString icon_path=":/Icons/";
-
     popup_menu = new QMenu(this);
 
     QMenu* newObjectPopup = new QMenu( this );
 
-    newObjectPopup->addAction(QIcon(icon_path+Library::TYPENAME+"/icon-tree"),
-                              tr( "New &Library"), this, SLOT( newLibrary() ));
+    addNewObjectMenuItem(newObjectPopup, Library::TYPENAME, tr( "New &Library"));
 
     newObjectPopup->addSeparator();
-    newObjectPopup->addAction(QIcon(icon_path+Firewall::TYPENAME+"/icon-tree"), 
-                              tr("New Firewall"), this, SLOT( newFirewall()));
-    newObjectPopup->addAction(QIcon(icon_path+Cluster::TYPENAME+"/icon-tree"),
-                              tr("New Cluster"), this, SLOT(newCluster()));
-    newObjectPopup->addAction(QIcon(icon_path+Host::TYPENAME+"/icon-tree"),
-                              tr("New Host"), this, SLOT( newHost() ));
-    newObjectPopup->addAction(QIcon(icon_path+Interface::TYPENAME+"/icon-tree"),
-                              tr("New Interface"), this, SLOT(newInterface()));
-    newObjectPopup->addAction(QIcon(icon_path+Network::TYPENAME+"/icon-tree"), 
-                              tr("New Network"), this, SLOT( newNetwork() ));
-    newObjectPopup->addAction(QIcon(icon_path+NetworkIPv6::TYPENAME+"/icon-tree"),
-                              tr("New Network IPv6"), this,
-                              SLOT(newNetworkIPv6() ));    
-    newObjectPopup->addAction(QIcon(icon_path+IPv4::TYPENAME+"/icon-tree"),
-                              tr("New Address"), this, SLOT(newAddress() ));
-    newObjectPopup->addAction(QIcon(icon_path+IPv6::TYPENAME+"/icon-tree"),
-                              tr("New Address IPv6"), this,
-                              SLOT(newAddressIPv6() ));
-    newObjectPopup->addAction(QIcon(icon_path+DNSName::TYPENAME+"/icon-tree"),
-                              tr("New DNS Name"), this, SLOT(newDNSName() ));
-    newObjectPopup->addAction(QIcon(icon_path+AddressTable::TYPENAME+"/icon-tree"),
-                              tr("New Address Table"), this,
-                              SLOT(newAddressTable() ));
-    newObjectPopup->addAction(QIcon(icon_path+AddressRange::TYPENAME+"/icon-tree"),
-                              tr("New Address Range"), this,
-                              SLOT(newAddressRange() ));
-    newObjectPopup->addAction(QIcon(icon_path+ObjectGroup::TYPENAME+"/icon-tree"),
-                              tr("New Object Group"), this,
-                              SLOT(newObjectGroup() ));
+
+    addNewObjectMenuItem(newObjectPopup, Firewall::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, Cluster::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, Host::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, Network::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, NetworkIPv6::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, IPv4::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, IPv6::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, DNSName::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, AddressTable::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, AddressRange::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, ObjectGroup::TYPENAME);
 
     newObjectPopup->addSeparator();
-    newObjectPopup->addAction(QIcon(icon_path+CustomService::TYPENAME+"/icon-tree"),
-                              tr("New Custom Service"), this,
-                              SLOT(newCustom() ));
-    newObjectPopup->addAction(QIcon(icon_path+IPService::TYPENAME+"/icon-tree"),
-                              tr("New IP Service"), this,
-                              SLOT(newIP() ));
-    newObjectPopup->addAction(QIcon(icon_path+ICMPService::TYPENAME+"/icon-tree"),
-                              tr("New ICMP Service"), this,
-                              SLOT(newICMP() ));
-    newObjectPopup->addAction(QIcon(icon_path+ICMP6Service::TYPENAME+"/icon-tree"),
-                              tr("New ICMP6 Service"), this,
-                              SLOT(newICMP6() ));
-    newObjectPopup->addAction(QIcon(icon_path+TCPService::TYPENAME+"/icon-tree"),
-                              tr("New TCP Serivce"), this,
-                              SLOT(newTCP() ));
-    newObjectPopup->addAction(QIcon(icon_path+UDPService::TYPENAME+"/icon-tree"),
-                              tr("New UDP Service"), this,
-                              SLOT(newUDP() ));
-    newObjectPopup->addAction(QIcon(icon_path+TagService::TYPENAME+"/icon-tree"),
-                              tr("New TagService"), this,
-                              SLOT(newTagService() ));
-    newObjectPopup->addAction(QIcon(icon_path+UserService::TYPENAME+"/icon-tree"),
-                              tr("New User Service"), this,
-                              SLOT(newUserService() ));
-    newObjectPopup->addAction(QIcon(icon_path+ServiceGroup::TYPENAME+"/icon-tree"),
-                              tr("New Service Group"), this,
-                              SLOT(newServiceGroup() ));
+
+    addNewObjectMenuItem(newObjectPopup, CustomService::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, IPService::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, ICMPService::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, ICMP6Service::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, TCPService::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, UDPService::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, TagService::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, UserService::TYPENAME);
+    addNewObjectMenuItem(newObjectPopup, ServiceGroup::TYPENAME);
 
     newObjectPopup->addSeparator();
-    newObjectPopup->addAction(QIcon(icon_path+Interval::TYPENAME+"/icon-tree"),
-                              tr( "New Time Interval"), this,
-                              SLOT( newInterval() ));
-//    QToolButton *btn = (QToolButton*)toolBar->child("newObjectAction_action_button");
+
+    addNewObjectMenuItem(newObjectPopup, Interval::TYPENAME);
 
     m_objectManipulator->newButton->setMenu( newObjectPopup );
 }
 
+void ObjectManipulator::addNewObjectMenuItem(QMenu *menu,
+                                             const char* type_name,
+                                             const QString &text,
+                                             int add_to_group_id)
+{
+    QString icon_path=":/Icons/";
+    QAction *act;
+    QString menu_item_text = text;
+    if (menu_item_text.isEmpty())
+        menu_item_text = FWBTree().getTranslatableNewObjectMenuText(type_name);
+
+    act = menu->addAction(QIcon(icon_path + QString(type_name) + "/icon-tree"),
+                          menu_item_text, this, SLOT( createNewObject() ));
+    QMap<QString, QVariant> d;
+    d["type_name"] = QVariant(QString(type_name));
+    d["add_to_group"] = QVariant(add_to_group_id);
+    act->setData(QVariant(d));
+}
+
+void ObjectManipulator::createNewObject()
+{
+    const QAction *action = dynamic_cast<const QAction*>(sender());
+    assert(action!=NULL);
+    QVariant v = action->data();
+    if (!v.isValid()) return;
+
+    QMap<QString, QVariant> d =  v.value<QMap<QString, QVariant> >();
+
+    QVariant v1 = d["type_name"];
+    QString type_name = v1.value<QString>();
+
+    QVariant v2 = d["add_to_group"];
+    int add_to_group_id = v2.value<int>();
+
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::createNewObject()"
+                 << "type:" << type_name
+                 << "add_to_group_id:" << add_to_group_id;
+
+    FWObject *new_obj = NULL;
+
+    QString descr = FWBTree().getTranslatableObjectTypeName(type_name);
+
+    m_project->undoStack->beginMacro("Create and add to group");
+
+    if (type_name ==  Library::TYPENAME) new_obj = newLibrary();
+    if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall();
+    if (type_name ==  Cluster::TYPENAME) new_obj = newCluster();
+    if (type_name ==  Host::TYPENAME) new_obj = newHost();
+    if (new_obj == NULL) new_obj = createObject(type_name, descr);
+    
+    if (new_obj == NULL)
+    {
+        m_project->undoStack->endMacro();
+        return;
+    }
+
+    if (add_to_group_id != -1)
+    {
+        FWObject *grp = m_project->db()->findInIndex(add_to_group_id);
+
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::createNewObject()"
+                     << "Adding to group grp=" << grp;
+
+        if (grp)
+        {            
+            FWCmdChange *cmd = new FWCmdChange(
+                m_project, grp, QObject::tr("Add object to group"));
+            FWObject *new_state = cmd->getNewState();
+            new_state->addRef(new_obj);
+            m_project->undoStack->push(cmd);
+
+            // if we add new object to a group, we should still open
+            // the object in the editor rather than the group. Command
+            // that adds it to the group opens the group though. Send
+            // event to open the object.
+
+            QCoreApplication::postEvent(
+                mw, new openObjectInEditorEvent(
+                    m_project->getFileName(), new_obj->getId()));
+        }
+    }
+    m_project->undoStack->endMacro();
+}
 
 FWObject* ObjectManipulator::createObject(const QString &objType,
                                           const QString &objName,
@@ -290,7 +336,7 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     return nobj;
 }
 
-void ObjectManipulator::newLibrary()
+FWObject* ObjectManipulator::newLibrary()
 {
     FWObject *nlib = FWBTree().createNewLibrary(m_project->db()); //   m_project->createNewLibrary(m_project->db());
     // At this point new library is already inserted into the object tree
@@ -303,12 +349,14 @@ void ObjectManipulator::newLibrary()
 
     m_project->undoStack->push(cmd);
     m_project->db()->setDirty(true);
+
+    return nlib;
 }
 
-void ObjectManipulator::newPolicyRuleSet ()
+FWObject* ObjectManipulator::newPolicyRuleSet()
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
+    if ( currentObj->isReadOnly() ) return NULL;
     QString name = "Policy";
     Firewall * fw = Firewall::cast(currentObj);
     if (fw!=NULL)
@@ -322,15 +370,15 @@ void ObjectManipulator::newPolicyRuleSet ()
             name+=QString().setNum(count);
         }
     }
-    createObject(currentObj,Policy::TYPENAME,name);
-
+    FWObject *o = createObject(currentObj, Policy::TYPENAME, name);
     this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
+    return o;
 }
 
-void ObjectManipulator::newNATRuleSet ()
+FWObject* ObjectManipulator::newNATRuleSet()
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
+    if ( currentObj->isReadOnly() ) return NULL;
     QString name = "NAT";
     Firewall * fw = Firewall::cast(currentObj);
     if (fw!=NULL)
@@ -345,12 +393,12 @@ void ObjectManipulator::newNATRuleSet ()
             name += QString().setNum(count);
         }
     }
-    createObject(currentObj,NAT::TYPENAME,name);
-
+    FWObject *o = createObject(currentObj, NAT::TYPENAME, name);
     this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
+    return o;
 }
 
-void ObjectManipulator::newFirewall()
+FWObject* ObjectManipulator::newFirewall()
 {
     FWObject *parent = 
         FWBTree().getStandardSlotForObject(getCurrentLib(), Firewall::TYPENAME);
@@ -373,9 +421,11 @@ void ObjectManipulator::newFirewall()
         new_state->add(nfw);
         m_project->undoStack->push(cmd);
     }
+
+    return nfw;
 }
 
-void ObjectManipulator::newCluster(bool fromSelected)
+FWObject* ObjectManipulator::newCluster(bool fromSelected)
 {
     FWObject *parent = 
         FWBTree().getStandardSlotForObject(getCurrentLib(), Cluster::TYPENAME);
@@ -406,23 +456,24 @@ void ObjectManipulator::newCluster(bool fromSelected)
         new_state->add(ncl);
         m_project->undoStack->push(cmd);
     }
+
+    return ncl;
 }
 
 
-void ObjectManipulator::newClusterFromSelected()
+FWObject* ObjectManipulator::newClusterFromSelected()
 {
-    newCluster(true);
+    return newCluster(true);
 }
 
-void ObjectManipulator::newClusterIface()
+FWObject* ObjectManipulator::newClusterIface()
 {
     FWObject *currentObj = getSelectedObject();
-    if (currentObj->isReadOnly()) return;
-
+    if ( currentObj->isReadOnly() ) return NULL;
     QString new_name = makeNameUnique(currentObj,
                                       findNewestInterfaceName(currentObj),
                                       Interface::TYPENAME);
-    createObject(currentObj, Interface::TYPENAME, new_name);
+    return createObject(currentObj, Interface::TYPENAME, new_name);
 }
 
 /*
@@ -430,10 +481,10 @@ void ObjectManipulator::newClusterIface()
  * associated with Cluster object.
  * By default assume conntrack protocol and set group type accordingly.
  */
-void ObjectManipulator::newStateSyncClusterGroup()
+FWObject* ObjectManipulator::newStateSyncClusterGroup()
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
+    if ( currentObj->isReadOnly() ) return NULL;
 
     FWObject *o = NULL;
 
@@ -451,7 +502,7 @@ void ObjectManipulator::newStateSyncClusterGroup()
             this,"Firewall Builder",
             tr("Cluster host OS %1 does not support state synchronization").arg(host_os),
             "&Continue", QString::null, QString::null, 0, 1 );
-        return;
+        return NULL;
     }
 
     QString group_type = lst.front().first;
@@ -459,6 +510,7 @@ void ObjectManipulator::newStateSyncClusterGroup()
     o = createObject(currentObj, StateSyncClusterGroup::TYPENAME,
                      tr("State Sync Group"));
     o->setStr("type", group_type.toStdString());
+    return o;
 }
 
 /*
@@ -466,10 +518,10 @@ void ObjectManipulator::newStateSyncClusterGroup()
  * associated with Interface object if its parent is a Cluster object
  * By default assume VRRP protocol and set group type accordingly.
  */
-void ObjectManipulator::newFailoverClusterGroup()
+FWObject* ObjectManipulator::newFailoverClusterGroup()
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
+    if ( currentObj->isReadOnly() ) return NULL;
 
     FWObject *o = NULL;
 
@@ -480,15 +532,16 @@ void ObjectManipulator::newFailoverClusterGroup()
     } else
     {
         qWarning("newClusterGroup: invalid currentObj");
-        return;
+        return NULL;
     }
 
     o = createObject(currentObj, FailoverClusterGroup::TYPENAME,
                      tr("Failover group"));
     o->setStr("type", group_type.toStdString());
+    return o;
 }
 
-void ObjectManipulator::newHost()
+FWObject* ObjectManipulator::newHost()
 {
     FWObject *parent = 
         FWBTree().getStandardSlotForObject(getCurrentLib(), Host::TYPENAME);
@@ -508,6 +561,8 @@ void ObjectManipulator::newHost()
         new_state->add(o);
         m_project->undoStack->push(cmd);
     }
+
+    return o;
 }
 
 QString ObjectManipulator::findNewestInterfaceName(FWObject *parent)
@@ -529,10 +584,10 @@ QString ObjectManipulator::findNewestInterfaceName(FWObject *parent)
     return newest_interface_name;
 }
 
-void ObjectManipulator::newInterface()
+FWObject* ObjectManipulator::newInterface()
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
+    if ( currentObj->isReadOnly() ) return NULL;
 
     Interface *new_interface = NULL;
     FWObject *parent = NULL;
@@ -560,7 +615,7 @@ void ObjectManipulator::newInterface()
     {
         // since we can;t find quitable parent for the new interface,
         // we can't create it.
-        return;
+        return NULL;
     }
 
     QString new_name = makeNameUnique(parent, findNewestInterfaceName(parent),
@@ -568,7 +623,7 @@ void ObjectManipulator::newInterface()
     new_interface = Interface::cast(
         createObject(parent, Interface::TYPENAME, new_name));
 
-    if (new_interface == NULL) return;
+    if (new_interface == NULL) return NULL;
 
     if (Interface::isA(parent))
     {
@@ -580,89 +635,50 @@ void ObjectManipulator::newInterface()
         //guessSubInterfaceTypeAndAttributes(new_interface);
     } else
         new_interface->getOptionsObject()->setStr("type", "ethernet");
+
+    return new_interface;
 }
 
-void ObjectManipulator::newNetwork()
-{
-    createObject(Network::TYPENAME,tr("Network"));
-}
-void ObjectManipulator::newNetworkIPv6()
-{
-    createObject(NetworkIPv6::TYPENAME,tr("Network IPv6"));
-}
-
-void ObjectManipulator::newAddress()
+FWObject* ObjectManipulator::newInterfaceAddress()
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
-    createObject(IPv4::TYPENAME, tr("Address"));
-}
-
-void ObjectManipulator::newAddressIPv6()
-{
-    FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
-    createObject(IPv6::TYPENAME,tr("Address IPv6"));
-}
-
-void ObjectManipulator::newDNSName()
-{
-    createObject(DNSName::TYPENAME,tr("DNS Name"));
-}
-
-void ObjectManipulator::newAddressTable()
-{
-    createObject(AddressTable::TYPENAME,tr("Address Table"));
-}
-
-void ObjectManipulator::newInterfaceAddress()
-{
-    FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
+    if ( currentObj->isReadOnly() ) return NULL;
 
     if (Interface::isA(currentObj))
     {
         Interface *intf = Interface::cast(currentObj);
         if (intf &&
             (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
-        ) return;
+        ) return NULL;
         QString iname = getStandardName(currentObj, IPv4::TYPENAME, "ip");
         iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
-        createObject(currentObj, IPv4::TYPENAME, iname);
+        return createObject(currentObj, IPv4::TYPENAME, iname);
     }
+    return NULL;
 }
 
-void ObjectManipulator::newInterfaceAddressIPv6()
+FWObject* ObjectManipulator::newInterfaceAddressIPv6()
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
+    if ( currentObj->isReadOnly() ) return NULL;
 
     if (Interface::isA(currentObj))
     {
         Interface *intf = Interface::cast(currentObj);
         if (intf &&
             (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
-        ) return;
+        ) return NULL;
         QString iname = getStandardName(currentObj, IPv4::TYPENAME, "ipv6");
         iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
-        createObject(currentObj, IPv6::TYPENAME, iname);
+        return createObject(currentObj, IPv6::TYPENAME, iname);
     }
+    return NULL;
 }
 
-void ObjectManipulator::newTagService()
-{
-    createObject(TagService::TYPENAME,tr("TagService"));
-}
-
-void ObjectManipulator::newUserService()
-{
-    createObject(UserService::TYPENAME,tr("User Service"));
-}
-
-void ObjectManipulator::newPhysicalAddress()
+FWObject* ObjectManipulator::newPhysicalAddress()
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return;
+    if ( currentObj->isReadOnly() ) return NULL;
 
     if (Interface::isA(currentObj))
     {
@@ -672,59 +688,11 @@ void ObjectManipulator::newPhysicalAddress()
             QString iname=QString("%1:%2:mac")
                 .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
                 .arg(QString::fromUtf8(currentObj->getName().c_str()));
-            createObject(currentObj,physAddress::TYPENAME,iname);
+            return createObject(currentObj,physAddress::TYPENAME,iname);
         }
     }
-}
-
-void ObjectManipulator::newAddressRange()
-{
-    createObject(AddressRange::TYPENAME,tr("Address Range"));
-}
-
-void ObjectManipulator::newObjectGroup()
-{
-    createObject(ObjectGroup::TYPENAME,tr("Object Group"));
+    return NULL;
 }
 
 
-void ObjectManipulator::newCustom()
-{
-    createObject(CustomService::TYPENAME,tr("Custom Service"));
-}
-
-void ObjectManipulator::newIP()
-{
-    createObject(IPService::TYPENAME,tr("IP Service"));
-}
-
-void ObjectManipulator::newICMP()
-{
-    createObject(ICMPService::TYPENAME,tr("ICMP Service"));
-}
-
-void ObjectManipulator::newICMP6()
-{
-    createObject(ICMP6Service::TYPENAME,tr("ICMP6 Service"));
-}
-
-void ObjectManipulator::newTCP()
-{
-    createObject(TCPService::TYPENAME,tr("TCP Service"));
-}
-
-void ObjectManipulator::newUDP()
-{
-    createObject(UDPService::TYPENAME,tr("UDP Service"));
-}
-
-void ObjectManipulator::newServiceGroup()
-{
-    createObject(ServiceGroup::TYPENAME,tr("Service Group"));
-}
-
-void ObjectManipulator::newInterval()
-{
-    createObject(Interval::TYPENAME,tr("Time Interval"));
-}
 

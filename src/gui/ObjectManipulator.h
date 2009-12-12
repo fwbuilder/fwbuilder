@@ -152,6 +152,22 @@ class ObjectManipulator : public QWidget
 
     void refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem *itm);
 
+    libfwbuilder::FWObject* newLibrary();
+    libfwbuilder::FWObject* newHost();
+    libfwbuilder::FWObject* newInterface();
+    libfwbuilder::FWObject* newFirewall();
+    libfwbuilder::FWObject* newCluster(bool fromSelected = false);
+    libfwbuilder::FWObject* newClusterFromSelected();
+    libfwbuilder::FWObject* newClusterIface();
+    libfwbuilder::FWObject* newStateSyncClusterGroup();
+    libfwbuilder::FWObject* newFailoverClusterGroup();
+    libfwbuilder::FWObject* newInterfaceAddress();
+    libfwbuilder::FWObject* newInterfaceAddressIPv6();
+    libfwbuilder::FWObject* newPhysicalAddress();
+    libfwbuilder::FWObject* newPolicyRuleSet ();
+    libfwbuilder::FWObject* newNATRuleSet ();
+
+   
 public slots:
      virtual void libChanged(int l);
      virtual void switchingTrees(QWidget* w);
@@ -201,41 +217,10 @@ public slots:
                                           const QString &objName,
                                           libfwbuilder::FWObject *copyFrom=NULL);
 
-     void newLibrary();
      void newObject();
-     void newFirewall();
-     void newCluster(bool fromSelected = false);
-     void newClusterFromSelected();
-     void newClusterIface();
-     void newStateSyncClusterGroup();
-     void newFailoverClusterGroup();
-     void newHost();
-     void newInterface();
-     void newNetwork();
-     void newNetworkIPv6();
-     void newAddress();
-     void newAddressIPv6();
-     void newInterfaceAddress();
-     void newInterfaceAddressIPv6();
-     void newPhysicalAddress();
-     void newAddressRange();
-     void newObjectGroup();
-     void newDNSName();
-     void newAddressTable();
 
-     void newCustom();
-     void newIP();
-     void newICMP();
-     void newICMP6();
-     void newTCP();
-     void newUDP();
-     void newTagService();
-     void newUserService();
-     void newServiceGroup();
+     void createNewObject();
 
-     void newInterval();
-     void newPolicyRuleSet ();
-     void newNATRuleSet ();
      void copyObj();
      void cutObj();
      void pasteObj();
@@ -410,6 +395,12 @@ public:
      void saveSectionSizes();
 
      void setAttributesColumnEnabled(bool f);
+
+     void addNewObjectMenuItem(QMenu *menu,
+                               const char* type_name,
+                               const QString &text=QString(),
+                               int add_to_group_id=-1);
+                                  
 };
 
 #endif
