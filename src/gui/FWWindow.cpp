@@ -1326,33 +1326,28 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
     }
     if (firewall == NULL) return;
 
-    // Find rule set item in object tree and select it
-    foreach(QTreeWidgetItem* item,
-            project->getCurrentObjectTree()->findItems(setname,
-                                     Qt::MatchExactly | Qt::MatchRecursive, 0))
+    RuleSet *set = NULL;
+    for ( Firewall::iterator iter = Firewall::cast(firewall->getFWObject())->begin();
+          iter!= Firewall::cast(firewall->getFWObject())->end();
+          iter++)
     {
-        if (item->parent() == firewall)
+        if (setname == FWObject::cast(*iter)->getName().c_str())
         {
-            QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(),
-                                   ((ObjectTreeViewItem*)item)->getFWObject()->getId()));
+            set = RuleSet::cast(*iter);
             break;
         }
     }
+    if (set == NULL) return;
+
+    QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(),
+                                                         set->getId()));
+
+    FWObject *ruleObject = set->getRuleByNum(rule-1);
+    if (ruleObject == NULL) return;
 
     QCoreApplication::postEvent(mw, new selectRuleElementEvent(project->getFileName(),
-                                 project->getCurrentRuleSet()->getRuleByNum(rule-1)->getId(),
+                                 ruleObject->getId(),
                                  ColDesc::Action));
-/*
-    RuleSetView* view = project->getCurrentRuleSetView();
-    view->clearSelection();
-    QModelIndex idx = view->model()->index(rule, 0, QModelIndex());
-
-    if (idx.isValid())
-    {
-        view->selectionModel()->select(idx, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
-        view->scrollTo(idx);
-    }
-*/
 }
 
 void FWWindow::undoViewVisibilityChanged(bool visible)
