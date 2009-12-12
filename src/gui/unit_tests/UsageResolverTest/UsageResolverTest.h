@@ -45,14 +45,15 @@ class UsageResolverTest : public CppUnit::TestCase
 public:
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::Library *lib;
-    libfwbuilder::Address *addr1;
-    libfwbuilder::Address *addr2;
+    libfwbuilder::IPv4 *addr1;
+    libfwbuilder::IPv4 *addr2;
     libfwbuilder::PolicyRule *r1, *r2, *r3, *r4;
 
     void setUp();
 
     void findWhereObjectIsUsed();
     void findFirewallsForObject();
+    void humanizeSearchResults();
 
     static CppUnit::Test *suite()
     {
@@ -63,6 +64,9 @@ public:
       suiteOfTests->addTest( new CppUnit::TestCaller<UsageResolverTest>(
                                    "findFirewallsForObject",
                                    &UsageResolverTest::findFirewallsForObject ) );
+      suiteOfTests->addTest( new CppUnit::TestCaller<UsageResolverTest>(
+                                   "humanizeSearchResults",
+                                   &UsageResolverTest::humanizeSearchResults ) );
       return suiteOfTests;
     }
 };
