@@ -1,10 +1,11 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>GroupObjectDialog_q</class>
- <widget class="QWidget" name="GroupObjectDialog_q" >
-  <property name="enabled" >
+ <widget class="QWidget" name="GroupObjectDialog_q">
+  <property name="enabled">
    <bool>true</bool>
   </property>
-  <property name="geometry" >
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -12,55 +13,55 @@
     <height>245</height>
    </rect>
   </property>
-  <property name="sizePolicy" >
-   <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Group</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
-   <item row="0" column="0" >
-    <widget class="QFrame" name="frame16" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QFrame" name="frame16">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="frameShape" >
+     <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
-     <property name="frameShadow" >
+     <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3" >
-      <item rowspan="2" row="0" column="0" >
-       <widget class="QGroupBox" name="buttonGroup2" >
-        <property name="styleSheet" >
-         <string notr="true" >QGroupBox {
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0" rowspan="2">
+       <widget class="QGroupBox" name="buttonGroup2">
+        <property name="styleSheet">
+         <string notr="true">QGroupBox {
 	margin: 0px;
 	padding: 4px;
 }</string>
         </property>
-        <property name="flat" >
+        <property name="flat">
          <bool>true</bool>
         </property>
-        <layout class="QGridLayout" >
-         <property name="topMargin" >
+        <layout class="QGridLayout">
+         <property name="topMargin">
           <number>2</number>
          </property>
-         <property name="bottomMargin" >
+         <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0" >
+         <item row="0" column="0">
           <spacer>
-           <property name="orientation" >
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>31</width>
              <height>26</height>
@@ -68,64 +69,64 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="1" >
-          <widget class="QToolButton" name="iconViewBtn" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+         <item row="0" column="1">
+          <widget class="QToolButton" name="iconViewBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="minimumSize" >
+           <property name="minimumSize">
             <size>
              <width>20</width>
              <height>0</height>
             </size>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>I</string>
            </property>
-           <property name="checkable" >
+           <property name="checkable">
             <bool>true</bool>
            </property>
-           <property name="checked" >
+           <property name="checked">
             <bool>true</bool>
            </property>
-           <property name="autoExclusive" >
+           <property name="autoExclusive">
             <bool>true</bool>
            </property>
-           <property name="autoRaise" >
+           <property name="autoRaise">
             <bool>false</bool>
            </property>
           </widget>
          </item>
-         <item row="0" column="2" >
-          <widget class="QToolButton" name="listViewBtn" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+         <item row="0" column="2">
+          <widget class="QToolButton" name="listViewBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="minimumSize" >
+           <property name="minimumSize">
             <size>
              <width>20</width>
              <height>0</height>
             </size>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>L</string>
            </property>
-           <property name="checkable" >
+           <property name="checkable">
             <bool>true</bool>
            </property>
-           <property name="autoExclusive" >
+           <property name="autoExclusive">
             <bool>true</bool>
            </property>
-           <property name="autoRepeatInterval" >
+           <property name="autoRepeatInterval">
             <number>100</number>
            </property>
-           <property name="autoRaise" >
+           <property name="autoRaise">
             <bool>false</bool>
            </property>
           </widget>
@@ -133,122 +134,120 @@
         </layout>
        </widget>
       </item>
-      <item rowspan="3" row="0" column="1" >
-       <widget class="QStackedWidget" name="objectViewsStack" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+      <item row="0" column="1" rowspan="3">
+       <widget class="QStackedWidget" name="objectViewsStack">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
           <horstretch>250</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>250</width>
           <height>100</height>
          </size>
         </property>
-        <property name="acceptDrops" >
+        <property name="acceptDrops">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="WStackPage" >
-         <zorder>frame7</zorder>
-        </widget>
+        <widget class="QWidget" name="WStackPage"/>
        </widget>
       </item>
-      <item row="0" column="2" >
-       <widget class="QLabel" name="textLabel2" >
-        <property name="text" >
+      <item row="0" column="2">
+       <widget class="QLabel" name="textLabel2">
+        <property name="text">
          <string>Comment:</string>
         </property>
-        <property name="wordWrap" >
+        <property name="wordWrap">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item rowspan="2" row="1" column="2" >
-       <widget class="TextEditWidget" name="comment" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+      <item row="1" column="2" rowspan="2">
+       <widget class="TextEditWidget" name="comment">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>200</width>
           <height>0</height>
          </size>
         </property>
-        <property name="tabChangesFocus" >
+        <property name="tabChangesFocus">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
-       <widget class="QFrame" name="frame7" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+      <item row="2" column="0">
+       <widget class="QFrame" name="frame7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>350</width>
           <height>0</height>
          </size>
         </property>
-        <property name="maximumSize" >
+        <property name="maximumSize">
          <size>
           <width>350</width>
           <height>16777215</height>
          </size>
         </property>
-        <property name="frameShape" >
+        <property name="frameShape">
          <enum>QFrame::Box</enum>
         </property>
-        <property name="frameShadow" >
+        <property name="frameShadow">
          <enum>QFrame::Sunken</enum>
         </property>
-        <layout class="QGridLayout" name="gridLayout_2" >
-         <item row="0" column="0" >
-          <widget class="QLabel" name="textLabel1" >
-           <property name="text" >
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="textLabel1">
+           <property name="text">
             <string>Name:</string>
            </property>
-           <property name="wordWrap" >
+           <property name="wordWrap">
             <bool>false</bool>
            </property>
           </widget>
          </item>
-         <item row="0" column="1" colspan="2" >
-          <widget class="QLineEdit" name="obj_name" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="obj_name">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>200</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="minimumSize" >
+           <property name="minimumSize">
             <size>
              <width>0</width>
              <height>0</height>
             </size>
            </property>
-           <property name="cursor" >
+           <property name="cursor">
             <cursorShape>ArrowCursor</cursorShape>
            </property>
           </widget>
          </item>
-         <item row="1" column="1" >
+         <item row="1" column="1">
           <spacer>
-           <property name="orientation" >
+           <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
-           <property name="sizeType" >
+           <property name="sizeType">
             <enum>QSizePolicy::MinimumExpanding</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
              <height>2</height>
@@ -256,36 +255,45 @@
            </property>
           </spacer>
          </item>
-         <item row="2" column="0" colspan="2" >
-          <widget class="QLabel" name="label" >
-           <property name="text" >
-            <string>Create new object and add it to this group</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2" >
-          <widget class="QToolButton" name="newButton" >
-           <property name="toolTip" >
+         <item row="2" column="0" colspan="2">
+          <widget class="QPushButton" name="newButton">
+           <property name="toolTip">
             <string>New Object</string>
            </property>
-           <property name="whatsThis" >
+           <property name="whatsThis">
             <string>Create New Object</string>
            </property>
-           <property name="icon" >
-            <iconset resource="MainRes.qrc" >
+           <property name="text">
+            <string>Create new object and add to this group</string>
+           </property>
+           <property name="icon">
+            <iconset resource="MainRes.qrc">
              <normaloff>:/Icons/newobject_25.png</normaloff>:/Icons/newobject_25.png</iconset>
            </property>
-           <property name="autoRaise" >
-            <bool>true</bool>
+           <property name="flat">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
-         <item row="3" column="1" >
-          <spacer name="verticalSpacer" >
-           <property name="orientation" >
+         <item row="2" column="2">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="3" column="1">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
              <height>18</height>
@@ -313,10 +321,10 @@
   <tabstop>comment</tabstop>
  </tabstops>
  <includes>
-  <include location="local" >ObjectListView.h</include>
+  <include location="local">ObjectListView.h</include>
  </includes>
  <resources>
-  <include location="MainRes.qrc" />
+  <include location="MainRes.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -325,11 +333,11 @@
    <receiver>GroupObjectDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -341,11 +349,11 @@
    <receiver>GroupObjectDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -357,11 +365,11 @@
    <receiver>GroupObjectDialog_q</receiver>
    <slot>switchToIconView()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -373,11 +381,11 @@
    <receiver>GroupObjectDialog_q</receiver>
    <slot>switchToListView()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -389,11 +397,11 @@
    <receiver>GroupObjectDialog_q</receiver>
    <slot>newObject()</slot>
    <hints>
-    <hint type="sourcelabel" >
-     <x>348</x>
-     <y>160</y>
+    <hint type="sourcelabel">
+     <x>168</x>
+     <y>161</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>466</x>
      <y>122</y>
     </hint>
