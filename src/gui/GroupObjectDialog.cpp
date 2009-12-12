@@ -68,6 +68,7 @@
 #include <QCoreApplication>
 #include <QUndoStack>
 #include <QtDebug>
+#include <QHeaderView>
 
 #include <iostream>
 #include <algorithm>
@@ -167,9 +168,9 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     listView->setColumnWidth(0,col0);
     listView->setColumnWidth(1,col1);
 
-    QString mode=st->getGroupViewMode();
+    QString mode = st->getGroupViewMode();
     if (mode==ICON_VIEW_MODE) switchToIconView();
-    if (mode==LIST_VIEW_MODE) switchToListView();
+    else switchToListView();
 }
 
 GroupObjectDialog::~GroupObjectDialog()
@@ -323,17 +324,6 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     Group *g = Group::cast(obj);
     assert(g!=NULL);
 
-
-    // if (ServiceGroup::cast(obj)!=NULL)
-    // {
-    //     m_dialog->icon->setPixmap(QIcon(":/Icons/ServiceGroup/icon").pixmap(
-    //                                   25,25));
-    // }
-    // else
-    // {
-    //     m_dialog->icon->setPixmap(QIcon(":/Icons/ObjectGroup/icon").pixmap(
-    //                                   25,25));
-    // }
     init=true;
 
     m_dialog->obj_name->setText( QString::fromUtf8(g->getName().c_str()) );
@@ -349,7 +339,7 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     iconView->setDB(o->getRoot());
 
     iconView->setResizeMode( QListWidget::Adjust );
-    iconView->setGridSize ( QSize(50, 40) );
+    iconView->setGridSize( QSize(50, 40) );
 
     switch (vt)
     {
@@ -367,6 +357,7 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     for (FWObject::iterator i=g->begin(); i!=g->end(); i++)
         addIcon( *i );
 
+    listView->header()->resizeSections(QHeaderView::ResizeToContents);
 
     //apply->setEnabled( false );
 
@@ -506,7 +497,7 @@ void GroupObjectDialog::applyChanges()
 
 void GroupObjectDialog::switchToIconView()
 {
-    if (vt == Icon) return;
+    //if (vt == Icon) return;
     vt = Icon;
 
     if ( ! m_dialog->iconViewBtn->isChecked() ) m_dialog->iconViewBtn->toggle();
@@ -518,7 +509,7 @@ void GroupObjectDialog::switchToIconView()
 
 void GroupObjectDialog::switchToListView()
 {
-    if (vt == List) return;
+    //if (vt == List) return;
     vt = List;
 
     if ( ! m_dialog->listViewBtn->isChecked() ) m_dialog->listViewBtn->toggle();
