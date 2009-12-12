@@ -1313,30 +1313,24 @@ void FWWindow::enableBackAction()
 void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setname, int rule)
 {
     // Find firewall object tree item
-    ObjectTreeViewItem* firewall = NULL;
+    FWObject* firewall = NULL;
     foreach(QTreeWidgetItem* item,
             project->getCurrentObjectTree()->findItems(fwname,
                                      Qt::MatchExactly | Qt::MatchRecursive, 0))
     {
-        if(Firewall::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())!=NULL)
+        if (Firewall::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())!=NULL)
         {
-            firewall = dynamic_cast<ObjectTreeViewItem*>(item);
+            firewall = dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject();
             break;
         }
     }
     if (firewall == NULL) return;
 
-    RuleSet *set = NULL;
-    for ( Firewall::iterator iter = Firewall::cast(firewall->getFWObject())->begin();
-          iter!= Firewall::cast(firewall->getFWObject())->end();
-          iter++)
-    {
-        if (setname == FWObject::cast(*iter)->getName().c_str())
-        {
-            set = RuleSet::cast(*iter);
-            break;
-        }
-    }
+    FWObject::const_iterator i =
+        find_if(firewall->begin(), firewall->end(),
+                FWObjectNameEQPredicate(string(setname.toUtf8().constData())));
+    if (i==firewall->end()) return;
+    RuleSet *set = RuleSet::cast(*i);
     if (set == NULL) return;
 
     QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(),
