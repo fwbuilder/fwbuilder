@@ -756,11 +756,15 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
             {
                 fw_ruleset->clear();
                 fw_ruleset->duplicate(ruleset, false);
+                fw_ruleset->setStr(".ruleset_owner", cluster->getName());
+                fw_ruleset->setInt(".ruleset_owner_id", cluster->getId());
             }
         } else
         {
             // fw does not have rule set with this name
-            fw->addCopyOf(ruleset, false);
+            FWObject *copy_ruleset = fw->addCopyOf(ruleset, false);
+            copy_ruleset->setStr(".ruleset_owner", cluster->getName());
+            copy_ruleset->setInt(".ruleset_owner_id", cluster->getId());
         }
     }
 }
