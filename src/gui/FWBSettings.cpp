@@ -232,6 +232,8 @@ void FWBSettings::init()
     if (getSSHPath().isEmpty())  setSSHPath("ssh");
     if (getSCPPath().isEmpty())  setSCPPath("scp");
 #endif
+
+    if (!contains("Window/maximized")) setInt("Window/maximized", 1);
 }
 
 QString FWBSettings::getAppGUID()

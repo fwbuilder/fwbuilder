@@ -1342,7 +1342,17 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
     QCoreApplication::postEvent(mw, new selectRuleElementEvent(project->getFileName(),
                                  project->getCurrentRuleSet()->getRuleByNum(rule-1)->getId(),
                                  ColDesc::Action));
+/*
+    RuleSetView* view = project->getCurrentRuleSetView();
+    view->clearSelection();
+    QModelIndex idx = view->model()->index(rule, 0, QModelIndex());
 
+    if (idx.isValid())
+    {
+        view->selectionModel()->select(idx, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
+        view->scrollTo(idx);
+    }
+*/
 }
 
 void FWWindow::undoViewVisibilityChanged(bool visible)

@@ -105,7 +105,7 @@ void ProjectPanel::loadState(bool)
         int y = st->getInt("Window/"+filename+"/y");
         int width = st->getInt("Window/"+filename+"/width");
         int height = st->getInt("Window/"+filename+"/height");
-        if ( (width==0 || height==0) && filename != "" )
+        if (width==0 || height==0)
         {
             x = 10;
             y = 10;
@@ -115,10 +115,8 @@ void ProjectPanel::loadState(bool)
         if (fwbdebug)
             qDebug("ProjectPanel::loadState  set geometry: %d %d %d %d",
                    x,y,width,height);
-        if (width == 0 && height == 0 && filename == "")
-            this->showMaximized();
-        else
-            mdiWindow->setGeometry(x,y,width,height);
+
+        mdiWindow->setGeometry(x,y,width,height);
     }
 
     loadMainSplitter();
