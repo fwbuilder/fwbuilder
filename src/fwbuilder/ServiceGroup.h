@@ -51,6 +51,12 @@ class ServiceGroup : public Group
     virtual bool validateChild(FWObject *o);
     virtual FWReference* createRef();
 
+    /**
+     * get the list of object type names that can be inserted into
+     * given object group. This reflects definition of the group XML
+     * element in DTD.
+     */
+    virtual void getAllowedTypesOfChildren(std::list<std::string> &types_list);
 };
 
 }

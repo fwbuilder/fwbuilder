@@ -116,3 +116,11 @@ FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
     return *this;
 }
 
+/*
+ * this is virtual function. Overloaded functions in derived classes
+ * return some meaningful list of types.
+ */
+void Group::getAllowedTypesOfChildren(std::list<std::string>&)
+{
+}
+

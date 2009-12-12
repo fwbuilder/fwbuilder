@@ -27,6 +27,7 @@
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/IntervalGroup.h>
+#include <fwbuilder/Interval.h>
 #include <fwbuilder/FWIntervalReference.h>
 #include <fwbuilder/FWObjectDatabase.h>
 
@@ -73,5 +74,12 @@ xmlNodePtr IntervalGroup::toXML(xmlNodePtr parent) throw(FWException)
         (*j)->toXML(me);
 
     return me;
+}
+
+void IntervalGroup::getAllowedTypesOfChildren(std::list<std::string> &types_list)
+{
+    types_list.clear();
+    types_list.push_back(Interval::TYPENAME);
+    types_list.push_back(FWIntervalReference::TYPENAME);
 }
 

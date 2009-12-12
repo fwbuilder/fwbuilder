@@ -36,6 +36,16 @@
 #include <fwbuilder/Address.h>
 #include <fwbuilder/Interval.h>
 
+#include <fwbuilder/IPService.h>
+#include <fwbuilder/ICMPService.h>
+#include <fwbuilder/ICMP6Service.h>
+#include <fwbuilder/TCPService.h>
+#include <fwbuilder/UDPService.h>
+#include <fwbuilder/CustomService.h>
+#include <fwbuilder/TagService.h>
+#include <fwbuilder/UserService.h>
+#include <fwbuilder/FWServiceReference.h>
+
 #include <iostream>
 
 using namespace std;
@@ -78,6 +88,20 @@ xmlNodePtr ServiceGroup::toXML(xmlNodePtr parent) throw(FWException)
         (*j)->toXML(me);
 
     return me;
+}
+
+void ServiceGroup::getAllowedTypesOfChildren(std::list<std::string> &types_list)
+{
+    types_list.clear();
+    types_list.push_back(IPService::TYPENAME);
+    types_list.push_back(ICMPService::TYPENAME);
+    types_list.push_back(ICMP6Service::TYPENAME);
+    types_list.push_back(TCPService::TYPENAME);
+    types_list.push_back(UDPService::TYPENAME);
+    types_list.push_back(CustomService::TYPENAME);
+    types_list.push_back(TagService::TYPENAME);
+    types_list.push_back(UserService::TYPENAME);
+    types_list.push_back(FWServiceReference::TYPENAME);
 }
 
 

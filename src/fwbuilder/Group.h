@@ -68,6 +68,14 @@ class Group : virtual public FWObject
      * grops that hold actual objects, it calls shallowDuplicate()
      */
     virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+
+    /**
+     * get the list of object type names that can be inserted into
+     * given object group. For example, if the group is ObjectGroup,
+     * then the list will include all objects but not services. This
+     * reflects definition of the group XML element in DTD.
+     */
+    virtual void getAllowedTypesOfChildren(std::list<std::string> &types_list);
 };
 
 }

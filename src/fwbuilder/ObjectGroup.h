@@ -50,6 +50,13 @@ class ObjectGroup : public Group
      */
     virtual bool    validateChild(FWObject *o);
 
+    /**
+     * get the list of object type names that can be inserted into
+     * given object group. For example, if the group is ObjectGroup,
+     * then the list will include all objects but not services. This
+     * reflects definition of the group XML element in DTD.
+     */
+    virtual void getAllowedTypesOfChildren(std::list<std::string> &types_list);
 };
 
 }

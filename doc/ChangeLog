@@ -1,3 +1,9 @@
+2009-12-11  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/fwbuilder/Group.h (libfwbuilder): Added method
+	getAllowedTypesOfChildren() that returns a list of allowed
+	children object types (should reflect DTD)
+
 2009-11-30  vadim  <vadim@vk.crocodile.org>
 
 	* RuleElement.cpp (RuleElement::toXML): RuleElement objects
