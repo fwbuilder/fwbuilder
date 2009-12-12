@@ -84,7 +84,19 @@ string BaseCompiler::stdErrorMessage(FWObject *fw,
 {
     ostringstream tmpstr;
 
-    if (fw) tmpstr << fw->getName();
+    // TODO: (some day) get rid of the argument @fw and use attribute
+    // ".ruleset_owner" instead. Set this attribute in the place where
+    // we prepare rules for processing and copy them to the
+    // queue. This way, when CompilerDriver prepares rules from the
+    // cluster, it can override the same attribute to make error and
+    // warning messges refer to correct object that really owns rule
+    // sets.
+    string original_ruleset_parent_name = ruleset->getStr(".ruleset_owner");
+    if (!original_ruleset_parent_name.empty()) tmpstr << original_ruleset_parent_name;
+    else
+    {
+        if (fw) tmpstr << fw->getName();
+    }
     tmpstr << ":";
     if (ruleset) tmpstr << ruleset->getName();
     tmpstr << ":";
