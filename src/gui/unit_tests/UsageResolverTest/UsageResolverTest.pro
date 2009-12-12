@@ -20,3 +20,7 @@ HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../FWBTree.h
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER
 LIBS += -lgcov -lcppunit
+
+run.commands = ./${TARGET}
+
+QMAKE_EXTRA_TARGETS += run
