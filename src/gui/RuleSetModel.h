@@ -174,7 +174,6 @@ protected:
     libfwbuilder::RuleElement *getRuleElementByRole(libfwbuilder::Rule* r, std::string roleName) const;
 
     void insertRuleToModel(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter = false);
-    void copyRuleContent(libfwbuilder::Rule *dst, libfwbuilder::Rule *src);
     int columnForRuleElementType(QString) const;
 
     QString getPositionAsString(RuleNode *node) const;

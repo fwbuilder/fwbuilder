@@ -1030,34 +1030,6 @@ void RuleSetModel::setEnabled(const QModelIndex &index, bool flag)
     rowChanged(index);
 }
 
-/*
- * TODO: should just use FWObject::duplucate() since it does all of this
- */
-void RuleSetModel::copyRuleContent(Rule *dst, Rule *src)
-{
-    int id = dst->getId();
-    int p = dst->getPosition();
-
-    if ( src->isDisabled() ) dst->disable();
-    else                     dst->enable();
-
-    dst->shallowDuplicate(src,false);
-
-    dst->setComment( src->getComment() );
-
-    list<FWObject*>::iterator j;
-    for(j=dst->begin(); j!=dst->end(); ++j)
-    {
-        string    dtype= (*j)->getTypeName();
-        FWObject *selem= src->getFirstByType(dtype);
-        if (selem!=NULL)
-            (*j)->duplicate(selem);
-    }
-
-    if (id > -1) dst->setId(id);
-    dst->setPosition(p);
-}
-
 void RuleSetModel::deleteObject(QModelIndex &index, FWObject* obj)
 {
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
@@ -1333,7 +1305,7 @@ void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
         ruleopt->setBool("stateless",
                          getStatelessFlagForAction(newrule_as_policy_rule));
     }
-    if (old_rule!=NULL)  copyRuleContent(new_rule, old_rule);
+    if (old_rule!=NULL)  new_rule->duplicate(old_rule);
 }
 
 bool PolicyModel::checkRuleType(libfwbuilder::Rule *rule)
@@ -1425,7 +1397,7 @@ void NatModel::initRule(Rule *new_rule, Rule *old_rule)
     if (natRule)
         natRule->setAction(NATRule::Translate);
 
-    if (old_rule!=NULL)  copyRuleContent(new_rule, old_rule);
+    if (old_rule!=NULL)  new_rule->duplicate(old_rule);
 }
 
 bool NatModel::checkRuleType(libfwbuilder::Rule *rule)
@@ -1508,7 +1480,7 @@ QStringList RoutingModel::getRuleOptions(Rule* r) const
 void RoutingModel::initRule(Rule *new_rule, Rule *old_rule)
 {
     //if (fwbdebug) qDebug() << "RoutingModel::initRule";
-    if (old_rule!=NULL)  copyRuleContent(new_rule, old_rule);
+    if (old_rule!=NULL)  new_rule->duplicate(old_rule);
 }
 
 bool RoutingModel::checkRuleType(libfwbuilder::Rule *rule)
