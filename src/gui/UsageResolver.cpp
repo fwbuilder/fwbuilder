@@ -179,7 +179,7 @@ void UsageResolver::findAllReferenceHolders(
         if (Rule::cast(o))
             reference_holders.insert(o);
     }
-    
+
     int obj_id = obj->getId();
     foreach(FWObject *o, reference_holders)
     {
@@ -195,4 +195,38 @@ void UsageResolver::findAllReferenceHolders(
         if (Rule::cast(*i)) continue;
         UsageResolver::findAllReferenceHolders(*i, root, res);
     }
+}
+
+/*
+ * This method post-processes the list of objects found by
+ * findFirewallsForObject to make them suitable for presentation.
+ * First, it does deduplication.  Event showObjectInRulesetEvent that
+ * finds an object and highlights it in rules requires reference or
+ * object itself as an argument. So, when parent is RuleElement, we
+ * preserve the reference. But for regular groups we find and
+ * highlight the group itself, so in that case replace reference to
+ * the object with the group, which is its parent.
+ *
+ */
+void UsageResolver::humanizeSearchResults(std::set<FWObject *> &resset)
+{
+    set<FWObject*> tmp_res;  // set deduplicates items automatically
+    set<FWObject*>::iterator i = resset.begin();
+    for (;i!=resset.end();++i)
+    {
+        FWObject *obj = *i;
+        if (fwbdebug)
+            qDebug() << "humanizeSearchResults:"
+                     << obj->getName().c_str()
+                     << " (" << obj->getTypeName().c_str() << ")";
+        FWReference  *ref = FWReference::cast(*i);
+        if (ref && RuleElement::cast(ref->getParent()) == NULL)
+        {
+            obj = ref->getParent();  // NB! We need parent of this ref for groups
+        } else
+            obj = *i;
+        tmp_res.insert(obj);
+    }
+    resset.clear();
+    resset = tmp_res;
 }

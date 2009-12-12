@@ -50,6 +50,17 @@ public:
     static void findAllReferenceHolders(
         libfwbuilder::FWObject *obj, libfwbuilder::FWObject *root,
         std::map<int, std::set<libfwbuilder::FWObject*> > &res);
+
+    /**
+     * Post-process set of FWObject* returned by
+     * FWObjectDatabase::findWhereObjectIsUsed to make it more
+     * suitable for the user. Since findWhereObjectIsUsed returns
+     * actual reference objects that point at the object we search
+     * for, humanizeSearchResults replaces them with appropriate
+     * parent objects. These can be either groups that hold
+     * references, or rules, which are two levels up.
+     */
+    static void humanizeSearchResults(std::set<libfwbuilder::FWObject *>&);
 };
 
 #endif // USAGERESOLVER_H

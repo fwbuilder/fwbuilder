@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -56,7 +56,7 @@ private:
     libfwbuilder::FWObject* object;
     std::set<libfwbuilder::FWObject *> resset;
     Ui::findWhereUsedWidget_q *m_widget;
-    
+
     void showObject(libfwbuilder::FWObject*);
     void _find(libfwbuilder::FWObject *obj);
 
@@ -68,19 +68,9 @@ public:
     void setShowObject(bool fl);
     void attachToProjectWindow(ProjectPanel *pp) { project_panel = pp; }
 
-    /**
-     * Post-process set of FWObject* returned by
-     * FWObjectDatabase::findWhereObjectIsUsed to make it more
-     * suitable for the user. Since findWhereObjectIsUsed returns
-     * actual reference objects that point at the object we search
-     * for, humanizeSearchResults replaces them with appropriate
-     * parent objects. These can be either groups that hold
-     * references, or rules, which are two levels up.
-     */
-    static void humanizeSearchResults(std::set<libfwbuilder::FWObject *>&);
     static QTreeWidgetItem* createQTWidgetItem(libfwbuilder::FWObject* obj,
                                                libfwbuilder::FWObject* container);
-    
+
 public slots:
     virtual void find();
     virtual void find(libfwbuilder::FWObject *obj);
@@ -88,9 +78,9 @@ public slots:
     void itemActivated(QTreeWidgetItem*, int);
     void itemClicked(QTreeWidgetItem*, int);
     void findFromDrop();
-    
+
  signals:
     void close();
 };
 
-#endif 
+#endif

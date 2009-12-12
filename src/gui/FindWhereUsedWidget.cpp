@@ -136,7 +136,7 @@ void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item, int)
  * The specified item is the item that was clicked, or 0 if no item
  * was clicked. The column is the item's column that was clicked. If
  * no item was clicked, no signal will be emitted.
- * 
+ *
  */
 void FindWhereUsedWidget::itemClicked(QTreeWidgetItem* item, int)
 {
@@ -256,40 +256,6 @@ void FindWhereUsedWidget::showObject(FWObject* o)
     }
 }
 
-/*
- * This method post-processes the list of objects found by
- * findFirewallsForObject to make them suitable for presentation.
- * First, it does deduplication.  Event showObjectInRulesetEvent that
- * finds an object and highlights it in rules requires reference or
- * object itself as an argument. So, when parent is RuleElement, we
- * preserve the reference. But for regular groups we find and
- * highlight the group itself, so in that case replace reference to
- * the object with the group, which is its parent.
- *
- */
-void FindWhereUsedWidget::humanizeSearchResults(std::set<FWObject *> &resset)
-{
-    set<FWObject*> tmp_res;  // set deduplicates items automatically
-    set<FWObject*>::iterator i = resset.begin();
-    for (;i!=resset.end();++i)
-    {
-        FWObject *obj = *i;
-        if (fwbdebug)
-            qDebug() << "humanizeSearchResults:"
-                     << obj->getName().c_str()
-                     << " (" << obj->getTypeName().c_str() << ")";
-        FWReference  *ref = FWReference::cast(*i);
-        if (ref && RuleElement::cast(ref->getParent()) == NULL)
-        {
-            obj = ref->getParent();  // NB! We need parent of this ref for groups
-        } else
-            obj = *i;
-        tmp_res.insert(obj);
-    }
-    resset.clear();
-    resset = tmp_res;
-}
-
 QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
                                                          FWObject *container)
 {
@@ -340,7 +306,7 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
         QString rule_element_name;
 
         if (RuleElement::cast(container)!=NULL)
-            rule_element_name = 
+            rule_element_name =
                 getReadableRuleElementName(container->getParent()->getTypeName());
 
         if (Rule::cast(container)!=NULL)
@@ -360,7 +326,7 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject* o,
 
         loadIcon(parent_icon, container);
     }
-    
+
     loadIcon(object_icon, o);
 
     QStringList qsl;
