@@ -1333,10 +1333,11 @@ void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setna
     RuleSet *set = RuleSet::cast(*i);
     if (set == NULL) return;
 
-    QCoreApplication::postEvent(mw, new openRulesetEvent(project->getFileName(),
-                                                         set->getId()));
+    QCoreApplication::postEvent(
+        mw, new openRulesetImmediatelyEvent(project->getFileName(),
+                                            set->getId()));
 
-    FWObject *ruleObject = set->getRuleByNum(rule-1);
+    FWObject *ruleObject = set->getRuleByNum(rule);
     if (ruleObject == NULL) return;
 
     QCoreApplication::postEvent(mw, new selectRuleElementEvent(project->getFileName(),
