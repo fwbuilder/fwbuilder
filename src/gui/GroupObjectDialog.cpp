@@ -319,9 +319,10 @@ void GroupObjectDialog::getHelpName(QString *str)
 
 void GroupObjectDialog::loadFWObject(FWObject *o)
 {
-    obj=o;
+    obj = o;
     Group *g = Group::cast(obj);
     assert(g!=NULL);
+
 
     // if (ServiceGroup::cast(obj)!=NULL)
     // {
@@ -381,8 +382,40 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
 //    iconView->setEnabled(!o->isReadOnly());
     setDisabledPalette(iconView);
 
-
     init=false;
+
+    if (FWBTree().isSystem(g))
+    {
+        m_dialog->newButton->hide();
+        return;
+    }
+
+    if (new_object_menu)
+    {
+        new_object_menu->clear();
+        m_dialog->newButton->setMenu(NULL);
+        delete new_object_menu;
+    }
+
+    new_object_menu = new QMenu(this);
+
+    int add_to_group_id = g->getId();
+
+    list<string> types_list;
+    g->getAllowedTypesOfChildren(types_list);
+    foreach(string tn, types_list)
+    {
+        if (tn == FWObjectReference::TYPENAME ||
+            tn == FWServiceReference::TYPENAME ||
+            tn == FWIntervalReference::TYPENAME) continue;
+        if (fwbdebug)
+            qDebug() << "Adding type" << tn.c_str() << "to the new object menu";
+        m_project->m_panel->om->addNewObjectMenuItem(
+            new_object_menu, tn.c_str(), "", add_to_group_id);
+    }
+
+    m_dialog->newButton->setMenu( new_object_menu );
+    m_dialog->newButton->show();
 }
 
 void GroupObjectDialog::validate(bool *res)
@@ -700,31 +733,6 @@ void GroupObjectDialog::selectObject(FWObject *o)
 
 void GroupObjectDialog::newObject()
 {
-    if (new_object_menu)
-    {
-        new_object_menu->clear();
-        m_dialog->newButton->setMenu(NULL);
-        delete new_object_menu;
-    }
-
-    new_object_menu = new QMenu(this);
-
-    Group *grp = Group::cast(obj);
-
-    list<string> types_list;
-    grp->getAllowedTypesOfChildren(types_list);
-    foreach(string tn, types_list)
-    {
-        if (tn == FWObjectReference::TYPENAME ||
-            tn == FWServiceReference::TYPENAME ||
-            tn == FWIntervalReference::TYPENAME) continue;
-        if (fwbdebug)
-            qDebug() << "Adding type" << tn.c_str() << "to the new object menu";
-        m_project->m_panel->om->addNewObjectMenuItem(new_object_menu, tn.c_str(),
-                                                     "", grp->getId());
-    }
-
-    m_dialog->newButton->setMenu( new_object_menu );
     m_dialog->newButton->showMenu();
 }
 
