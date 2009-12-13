@@ -1,3 +1,4 @@
+#-*- mode: makefile; tab-width: 4; -*-
 
 include(../../../qmake.inc)
 
@@ -37,15 +38,15 @@ SOURCES += tests_main.cpp interfacePropertiesTest.cpp
 CONFIG -= release
 CONFIG += debug
 OBJECTS_DIR = .
-QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
+QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
 QMAKE_CLEAN = *.gc??
 
-QMAKE_EXTRA_TARGETS += run
+LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
+LIBS += -lgcov
 
 run.commands = ./${TARGET} && gcov -o . ../*.h ../*.cpp >/dev/null
 run.depends = all
 
-LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER
-LIBS += -lgcov -lcppunit
+QMAKE_EXTRA_TARGETS += run
 
 

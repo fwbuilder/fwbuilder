@@ -30,6 +30,7 @@
 
 std::string respath;
 int fwbdebug = 0;
+QString user_name;
 
 int main( int, char** )
 {

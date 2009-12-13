@@ -91,6 +91,8 @@
 
 #undef HAVE_QTDBUS
 
+#undef HAVE_CPPUNIT
+
 /*
  *  on some platforms (OpenBSD) the second parameter to dlopen is different
  */

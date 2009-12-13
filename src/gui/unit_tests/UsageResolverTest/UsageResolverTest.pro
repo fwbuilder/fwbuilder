@@ -1,3 +1,4 @@
+#-*- mode: makefile; tab-width: 4; -*-
 # -------------------------------------------------
 # Project created by QtCreator 2009-12-08T19:22:04
 # -------------------------------------------------
@@ -18,9 +19,16 @@ SOURCES += main.cpp \
 
 HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../FWBTree.h
 
-LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER
-LIBS += -lgcov -lcppunit
+CONFIG -= release
+CONFIG += debug
+OBJECTS_DIR = .
+QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
+QMAKE_CLEAN = *.gc??
 
-run.commands = ./${TARGET}
+LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
+LIBS += -lgcov
+
+run.commands = ./${TARGET} && gcov -o . ../../UsageResolver.cpp >/dev/null
+run.depends = all
 
 QMAKE_EXTRA_TARGETS += run
