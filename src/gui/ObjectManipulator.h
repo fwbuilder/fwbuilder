@@ -157,7 +157,6 @@ class ObjectManipulator : public QWidget
     libfwbuilder::FWObject* newInterface();
     libfwbuilder::FWObject* newFirewall();
     libfwbuilder::FWObject* newCluster(bool fromSelected = false);
-    libfwbuilder::FWObject* newClusterFromSelected();
     libfwbuilder::FWObject* newClusterIface();
     libfwbuilder::FWObject* newStateSyncClusterGroup();
     libfwbuilder::FWObject* newFailoverClusterGroup();
@@ -173,6 +172,8 @@ public slots:
      virtual void switchingTrees(QWidget* w);
      virtual void currentTreePageChanged(int i);
 
+     libfwbuilder::FWObject* newClusterFromSelected();
+     
      void selectionChanged(QTreeWidgetItem *cur);
 
      /**
@@ -396,10 +397,10 @@ public:
 
      void setAttributesColumnEnabled(bool f);
 
-     void addNewObjectMenuItem(QMenu *menu,
-                               const char* type_name,
-                               const QString &text=QString(),
-                               int add_to_group_id=-1);
+     QAction* addNewObjectMenuItem(QMenu *menu,
+                                   const char* type_name,
+                                   const QString &text=QString(),
+                                   int add_to_group_id=-1);
                                   
 };
 

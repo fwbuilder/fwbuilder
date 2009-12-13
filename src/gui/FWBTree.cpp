@@ -32,31 +32,36 @@
 
 #include "FWBTree.h"
 
+#include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/CustomService.h"
+#include "fwbuilder/DNSName.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Host.h"
-#include "fwbuilder/Cluster.h"
-#include "fwbuilder/Network.h"
-#include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/ICMP6Service.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/IPService.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
-#include "fwbuilder/DNSName.h"
-#include "fwbuilder/AddressTable.h"
-#include "fwbuilder/AddressRange.h"
-#include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/Interface.h"
-#include "fwbuilder/CustomService.h"
-#include "fwbuilder/IPService.h"
-#include "fwbuilder/ICMPService.h"
-#include "fwbuilder/ICMP6Service.h"
-#include "fwbuilder/TCPService.h"
-#include "fwbuilder/UDPService.h"
-#include "fwbuilder/UserService.h"
-#include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/Interval.h"
 #include "fwbuilder/IntervalGroup.h"
-#include <fwbuilder/TagService.h>
+#include "fwbuilder/Library.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/ServiceGroup.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UDPService.h"
+#include "fwbuilder/UserService.h"
 
 #include <iostream>
 #include <algorithm>
@@ -523,10 +528,10 @@ FWObject* FWBTree::createNewLibrary(FWObjectDatabase *db)
  */
 QString FWBTree::getTranslatableObjectTypeName(const QString &type_name)
 {
-    if (type_name ==  Library::TYPENAME) return QObject::tr("Library");
-    if (type_name ==  Firewall::TYPENAME) return QObject::tr("Firewall");
-    if (type_name ==  Cluster::TYPENAME) return QObject::tr("Cluster");
-    if (type_name ==  Host::TYPENAME) return QObject::tr("Host");
+    if (type_name == Library::TYPENAME) return QObject::tr("Library");
+    if (type_name == Firewall::TYPENAME) return QObject::tr("Firewall");
+    if (type_name == Cluster::TYPENAME) return QObject::tr("Cluster");
+    if (type_name == Host::TYPENAME) return QObject::tr("Host");
     if (type_name == Interface::TYPENAME) return QObject::tr("Interface");
     if (type_name == Network::TYPENAME) return QObject::tr("Network");
     if (type_name == NetworkIPv6::TYPENAME) return QObject::tr("Network IPv6");
@@ -546,14 +551,24 @@ QString FWBTree::getTranslatableObjectTypeName(const QString &type_name)
     if (type_name == UserService::TYPENAME) return QObject::tr("User Service");
     if (type_name == ServiceGroup::TYPENAME) return QObject::tr("Service Group");
     if (type_name == Interval::TYPENAME) return QObject::tr( "Time Interval");
+    if (type_name == physAddress::TYPENAME) return QObject::tr( "MAC Address");
+
+    if (type_name == Policy::TYPENAME) return QObject::tr( "Policy Rule Set");
+    if (type_name == NAT::TYPENAME) return QObject::tr( "NAT Rule Set");
+    if (type_name == Routing::TYPENAME) return QObject::tr( "Routing Rule Set");
+
+    if (type_name == FailoverClusterGroup::TYPENAME) return QObject::tr("Failover group");
+    if (type_name == StateSyncClusterGroup::TYPENAME) return QObject::tr("State synchronization group");
+
+    return "";
 }
 
 QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
 {
-    if (type_name ==  Library::TYPENAME) return QObject::tr("New Library");
-    if (type_name ==  Firewall::TYPENAME) return QObject::tr("New Firewall");
-    if (type_name ==  Cluster::TYPENAME) return QObject::tr("New Cluster");
-    if (type_name ==  Host::TYPENAME) return QObject::tr("New Host");
+    if (type_name == Library::TYPENAME) return QObject::tr("New Library");
+    if (type_name == Firewall::TYPENAME) return QObject::tr("New Firewall");
+    if (type_name == Cluster::TYPENAME) return QObject::tr("New Cluster");
+    if (type_name == Host::TYPENAME) return QObject::tr("New Host");
     if (type_name == Interface::TYPENAME) return QObject::tr("New Interface");
     if (type_name == Network::TYPENAME) return QObject::tr("New Network");
     if (type_name == NetworkIPv6::TYPENAME) return QObject::tr("New Network IPv6");
@@ -573,6 +588,16 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     if (type_name == UserService::TYPENAME) return QObject::tr("New User Service");
     if (type_name == ServiceGroup::TYPENAME) return QObject::tr("New Service Group");
     if (type_name == Interval::TYPENAME) return QObject::tr( "Time Interval");
+    if (type_name == physAddress::TYPENAME) return QObject::tr( "New MAC Address");
+
+    if (type_name == Policy::TYPENAME) return QObject::tr( "New Policy Rule Set");
+    if (type_name == NAT::TYPENAME) return QObject::tr( "New NAT Rule Set");
+    if (type_name == Routing::TYPENAME) return QObject::tr( "New Routing Rule Set");
+
+    if (type_name == FailoverClusterGroup::TYPENAME) return QObject::tr("New failover group");
+    if (type_name == StateSyncClusterGroup::TYPENAME) return QObject::tr("New state synchronization group");
+
+    return "";
 }
 
 

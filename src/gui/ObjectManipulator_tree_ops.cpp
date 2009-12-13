@@ -184,10 +184,6 @@ void ObjectManipulator::insertSubtree(FWObject *parent, FWObject *obj)
     refreshSubtree(itm, NULL);
 }
 
-/**
- * This method enforces certain order of items in the tree depending
- * on the parent item type.
- */
 void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 {
     this->m_objectManipulator->filter->clearEditText();

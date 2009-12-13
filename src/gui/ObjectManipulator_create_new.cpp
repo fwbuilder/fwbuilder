@@ -128,10 +128,10 @@ void ObjectManipulator::buildNewObjectMenu()
     m_objectManipulator->newButton->setMenu( newObjectPopup );
 }
 
-void ObjectManipulator::addNewObjectMenuItem(QMenu *menu,
-                                             const char* type_name,
-                                             const QString &text,
-                                             int add_to_group_id)
+QAction* ObjectManipulator::addNewObjectMenuItem(QMenu *menu,
+                                                 const char* type_name,
+                                                 const QString &text,
+                                                 int add_to_group_id)
 {
     QString icon_path=":/Icons/";
     QAction *act;
@@ -145,6 +145,7 @@ void ObjectManipulator::addNewObjectMenuItem(QMenu *menu,
     d["type_name"] = QVariant(QString(type_name));
     d["add_to_group"] = QVariant(add_to_group_id);
     act->setData(QVariant(d));
+    return act;
 }
 
 void ObjectManipulator::createNewObject()
@@ -177,6 +178,16 @@ void ObjectManipulator::createNewObject()
     if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall();
     if (type_name ==  Cluster::TYPENAME) new_obj = newCluster();
     if (type_name ==  Host::TYPENAME) new_obj = newHost();
+    if (type_name ==  Interface::TYPENAME) new_obj = newInterface();
+    if (type_name ==  IPv4::TYPENAME) new_obj = newInterfaceAddress();
+    if (type_name ==  IPv6::TYPENAME) new_obj = newInterfaceAddressIPv6();
+    if (type_name ==  physAddress::TYPENAME) new_obj = newPhysicalAddress();
+    if (type_name ==  FailoverClusterGroup::TYPENAME) new_obj = newFailoverClusterGroup();
+    if (type_name ==  StateSyncClusterGroup::TYPENAME) new_obj = newStateSyncClusterGroup();
+    if (type_name ==  Policy::TYPENAME) new_obj = newPolicyRuleSet();
+    if (type_name ==  NAT::TYPENAME) new_obj = newNATRuleSet();
+    //if (type_name ==  Routing::TYPENAME) new_obj = newRoutingRuleSet();
+
     if (new_obj == NULL) new_obj = createObject(type_name, descr);
     
     if (new_obj == NULL)
@@ -592,7 +603,8 @@ FWObject* ObjectManipulator::newInterface()
     Interface *new_interface = NULL;
     FWObject *parent = NULL;
 
-    if (Host::isA(currentObj) || Firewall::isA(currentObj))
+    // Note that Firewall::cast matches Firewall and Cluster
+    if (Host::isA(currentObj) || Firewall::cast(currentObj))
         parent = currentObj;
 
     if (Interface::isA(currentObj))
@@ -654,6 +666,9 @@ FWObject* ObjectManipulator::newInterfaceAddress()
         iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
         return createObject(currentObj, IPv4::TYPENAME, iname);
     }
+    // if current object is not interface, create address in the standard folder
+    createObject(IPv4::TYPENAME,
+                 FWBTree().getTranslatableObjectTypeName(IPv4::TYPENAME));
     return NULL;
 }
 
@@ -672,6 +687,9 @@ FWObject* ObjectManipulator::newInterfaceAddressIPv6()
         iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
         return createObject(currentObj, IPv6::TYPENAME, iname);
     }
+    // if current object is not interface, create address in the standard folder
+    createObject(IPv6::TYPENAME,
+                 FWBTree().getTranslatableObjectTypeName(IPv6::TYPENAME));
     return NULL;
 }
 
