@@ -81,6 +81,9 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
         qDebug("CompilerOutputPanel::loadFWObject  obj id=%s",
                FWObjectDatabase::getStringId(obj->getId()).c_str());
 
+    m_widget->compiler_output_panel->clear();
+    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
     list<string> err_re;
     BaseCompiler::errorRegExp(&err_re);
     foreach(string re, err_re)
@@ -136,7 +139,7 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
     warning_format.setForeground(QBrush(Qt::blue));
     warning_format.setProperty(QTextFormat::FontWeight, 99);
 
-    m_widget->compiler_output_panel->clear();
+    //m_widget->compiler_output_panel->clear();
 
     try
     {
@@ -144,6 +147,7 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
             dr->compileSingleRule(FWObjectDatabase::getStringId(rule->getId())));
 
         QTextCursor cursor = m_widget->compiler_output_panel->textCursor();
+
         while (it.hasNext())
         {
             it.next();
