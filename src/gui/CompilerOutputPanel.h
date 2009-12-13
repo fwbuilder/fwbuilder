@@ -1,11 +1,11 @@
-/* 
+/*
 
-                       Firewall Builder 
+                       Firewall Builder
 
                  Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
-  
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -49,12 +49,12 @@ class CompilerOutputPanel : public BaseObjectDialog
     Ui::CompilerOutputPanel_q *m_widget;
     std::list<QRegExp> error_re;
     std::list<QRegExp> warning_re;
-    
+
  public:
 
     CompilerOutputPanel(QWidget* parent);
     ~CompilerOutputPanel();
-    
+
 public slots:
 
     virtual void changed();
@@ -63,7 +63,9 @@ public slots:
     virtual void validate(bool*);
     virtual void getHelpName(QString*);
     virtual void closeEvent(QCloseEvent *e);
-    
+
+protected:
+    virtual void resizeEvent ( QResizeEvent * event );
 
 };
 

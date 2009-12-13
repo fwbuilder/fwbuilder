@@ -21,7 +21,11 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QTextBrowser" name="compiler_output_panel"/>
+    <widget class="QTextBrowser" name="compiler_output_panel">
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

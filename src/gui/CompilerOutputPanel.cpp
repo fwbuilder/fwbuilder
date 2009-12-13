@@ -41,6 +41,8 @@
 
 #include <QTextFormat>
 #include <QStatusBar>
+#include <QScrollBar>
+#include <QDebug>
 
 #include <fstream>
 
@@ -210,3 +212,8 @@ void CompilerOutputPanel::closeEvent(QCloseEvent *)
 {
 }
 
+void CompilerOutputPanel::resizeEvent ( QResizeEvent * event )
+{
+    this->m_widget->compiler_output_panel->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    this->m_widget->compiler_output_panel->setVerticalScrollBar(new QScrollBar());
+}
