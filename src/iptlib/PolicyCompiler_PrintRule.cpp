@@ -165,32 +165,40 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
             "/FWBuilderResources/Target/options/suppress_comments");
 
     string rl=rule->getLabel();
-    if (!compiler->inSingleRuleCompileMode() && rl != current_rule_label)
+    if (rl != current_rule_label)
     {
-        if (!nocomm)
+        if (!compiler->inSingleRuleCompileMode())
         {
-            res << "# " << endl;
-            res << "# Rule " << rl << endl;
+            if (!nocomm)
+            {
+                res << "# " << endl;
+                res << "# Rule " << rl << endl;
+                res << "# " << endl;
+            }
+            res << "echo " << _quote(string("Rule ")+rl) << endl;
             res << "# " << endl;
         }
-        res << "echo " << _quote(string("Rule ")+rl) << endl;
-        res << "# " << endl;
 
 /* do not put comment in the script if it is intended for linksys */
-        if (!nocomm)
+        if (!nocomm || compiler->inSingleRuleCompileMode())
         {
-            string    comm=rule->getComment();
-            string::size_type c1,c2;
-            c1=0;
-            while ( (c2=comm.find('\n',c1))!=string::npos ) {
-                res << "# " << comm.substr(c1,c2-c1) << endl;
-                c1=c2+1;
+            string comm = rule->getComment();
+            if (!comm.empty())
+            {
+                string::size_type c1,c2;
+                c1=0;
+                while ( (c2=comm.find('\n',c1))!=string::npos )
+                {
+                    res << "# " << comm.substr(c1,c2-c1) << endl;
+                    c1=c2+1;
+                }
+                res << "# " << comm.substr(c1) << endl;
+                res << "# " << endl;
             }
-            res << "# " << comm.substr(c1) << endl;
-            res << "# " << endl;
         }
-        current_rule_label=rl;
     }
+
+    current_rule_label=rl;
 
     string err = rule->getStr(".error_msg");
     if (!err.empty()) res << "# " << err << endl;
