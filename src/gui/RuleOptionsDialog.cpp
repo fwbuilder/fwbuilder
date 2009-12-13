@@ -32,13 +32,13 @@
 #include "RuleOptionsDialog.h"
 #include "RuleSetView.h"
 #include "FWWindow.h"
-#include "FWCmdChange.h"
+#include "FWCmdRule.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Resources.h"
-#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleSet.h"
 
 #include <memory>
 
@@ -309,12 +309,10 @@ void RuleOptionsDialog::validate(bool *res)
     *res=true;
 }
 
-
-
 void RuleOptionsDialog::applyChanges()
 {
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeRuleOptions(m_project, obj));
+    std::auto_ptr<FWCmdChange> cmd( new FWCmdRuleChangeOptions(m_project, obj));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
     FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();

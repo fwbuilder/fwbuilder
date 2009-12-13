@@ -478,8 +478,10 @@ void FWCmdRuleChange::notify()
 
     md->rowChanged(md->index(rule, 0));
 //    rsv->updateColumnSizeForIndex(md->index(rule, 0));
+
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(project->getFileName(), ruleset->getId()));
+
 }
 
 void FWCmdRuleChange::prepareRuleSetView()
@@ -492,6 +494,60 @@ void FWCmdRuleChange::prepareRuleSetView()
 libfwbuilder::Rule* FWCmdRuleChange::getRule()
 {
     return Rule::cast(getObject());
+}
+
+/********************************************************
+ * FWCmdRuleChangeAction
+ ********************************************************/
+
+FWCmdRuleChangeAction::FWCmdRuleChangeAction(ProjectPanel *project, libfwbuilder::FWObject *obj):
+        FWCmdRuleChange(project, RuleSet::cast(obj->getParent()), obj, QObject::tr("Edit Rule Action")) {};
+
+void FWCmdRuleChangeAction::notify()
+{
+    FWCmdRuleChange::notify();
+
+    if (mw->isEditorVisible())
+    {
+        QCoreApplication::postEvent(mw, new openOptObjectInEditorEvent(project->getFileName(),
+                                                                       getRule()->getId(), ObjectEditor::optAction));
+    }
+}
+
+/********************************************************
+ * FWCmdRuleChangeComment
+ ********************************************************/
+
+FWCmdRuleChangeComment::FWCmdRuleChangeComment(ProjectPanel *project, libfwbuilder::FWObject *obj):
+        FWCmdRuleChange(project, RuleSet::cast(obj->getParent()), obj, QObject::tr("Edit Rule Comment")) {};
+
+void FWCmdRuleChangeComment::notify()
+{
+    FWCmdRuleChange::notify();
+
+    if (mw->isEditorVisible())
+    {
+        QCoreApplication::postEvent(mw, new openOptObjectInEditorEvent(project->getFileName(),
+                                                                       getRule()->getId(), ObjectEditor::optComment));
+    }
+}
+
+/********************************************************
+ * FWCmdRuleChangeOptions
+ ********************************************************/
+
+FWCmdRuleChangeOptions::FWCmdRuleChangeOptions(ProjectPanel *project, libfwbuilder::FWObject *obj):
+        FWCmdRuleChange(project, RuleSet::cast(obj->getParent()), obj, QObject::tr("Edit Rule Options")) {};
+
+void FWCmdRuleChangeOptions::notify()
+{
+    FWCmdRuleChange::notify();
+
+    if (mw->isEditorVisible())
+    {
+        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(project->getFileName(), getRule()->getId()));
+
+    }
 }
 
 /********************************************************

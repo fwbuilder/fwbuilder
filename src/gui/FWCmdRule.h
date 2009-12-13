@@ -258,6 +258,45 @@ public:
 };
 
 /********************************************************
+ * FWCmdRuleChangeAction
+ ********************************************************/
+
+class FWCmdRuleChangeAction : public FWCmdRuleChange
+{
+
+public:
+    FWCmdRuleChangeAction(ProjectPanel *project, libfwbuilder::FWObject *obj);
+
+    virtual void notify();
+};
+
+/********************************************************
+ * FWCmdRuleChangeComment
+ ********************************************************/
+
+class FWCmdRuleChangeComment : public FWCmdRuleChange
+{
+
+public:
+    FWCmdRuleChangeComment(ProjectPanel *project, libfwbuilder::FWObject *obj);
+
+    virtual void notify();
+};
+
+/********************************************************
+ * FWCmdRuleChangeOptions
+ ********************************************************/
+
+class FWCmdRuleChangeOptions : public FWCmdRuleChange
+{
+
+public:
+    FWCmdRuleChangeOptions(ProjectPanel *project, libfwbuilder::FWObject *obj);
+
+    virtual void notify();
+};
+
+/********************************************************
  * FWCmdRuleChangeRe
  ********************************************************/
 
@@ -290,6 +329,5 @@ public:
     virtual void undo();
 
 };
-
 
 #endif // FWCMDRULE_H

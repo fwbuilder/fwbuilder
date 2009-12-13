@@ -81,44 +81,5 @@ public:
     FWCmdChangeOptionsObject(ProjectPanel *project, libfwbuilder::FWObject *obj);
 };
 
-/********************************************************
- * FWCmdChangeRuleAction
- ********************************************************/
-
-class FWCmdChangeRuleAction : public FWCmdChange
-{
-protected:
-    virtual void notify();
-
-public:
-    FWCmdChangeRuleAction(ProjectPanel *project, libfwbuilder::FWObject *obj);
-};
-
-/********************************************************
- * FWCmdChangeRuleOptions
- ********************************************************/
-
-class FWCmdChangeRuleOptions : public FWCmdChange
-{
-protected:
-    virtual void notify();
-
-public:
-    FWCmdChangeRuleOptions(ProjectPanel *project, libfwbuilder::FWObject *obj);
-};
-
-/********************************************************
- * FWCmdChangeRuleComment
- ********************************************************/
-
-class FWCmdChangeRuleComment : public FWCmdChange
-{
-protected:
-    virtual void notify();
-
-public:
-    FWCmdChangeRuleComment(ProjectPanel *project, libfwbuilder::FWObject *obj);
-};
-
 
 #endif // FWCMDCHANGE_H

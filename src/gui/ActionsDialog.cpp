@@ -33,7 +33,7 @@
 #include "FWWindow.h"
 #include "FWObjectDropArea.h"
 #include "DialogFactory.h"
-#include "FWCmdChange.h"
+#include "FWCmdRule.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Interface.h"
@@ -156,7 +156,7 @@ void ActionsDialog::validate(bool *res)
 
 void ActionsDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeRuleAction(m_project, obj));
+    std::auto_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeAction(m_project, obj));
 
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();

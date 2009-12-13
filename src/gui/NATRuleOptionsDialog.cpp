@@ -31,7 +31,7 @@
 #include "RuleSetView.h"
 #include "FWWindow.h"
 #include "ProjectPanel.h"
-#include "FWCmdChange.h"
+#include "FWCmdRule.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Rule.h"
@@ -129,7 +129,7 @@ void NATRuleOptionsDialog::validate(bool *res)
 void NATRuleOptionsDialog::applyChanges()
 {
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeRuleOptions(m_project, obj));
+    std::auto_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeOptions(m_project, obj));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
     FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();

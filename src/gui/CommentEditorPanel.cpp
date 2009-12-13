@@ -32,7 +32,7 @@
 #include "FWBSettings.h"
 #include "ObjectManipulator.h"
 #include "FWWindow.h"
-#include "FWCmdChange.h"
+#include "FWCmdRule.h"
 
 #include <memory>
 
@@ -113,7 +113,7 @@ void CommentEditorPanel::changed()
 
 void CommentEditorPanel::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeRuleComment(m_project, rule));
+    std::auto_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeComment(m_project, rule));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
 

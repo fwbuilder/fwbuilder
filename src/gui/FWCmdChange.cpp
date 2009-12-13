@@ -37,6 +37,7 @@
 #include "events.h"
 
 #include <QObject>
+#include <QDebug>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -98,6 +99,7 @@ void FWCmdChange::redo()
 
 void FWCmdChange::notify()
 {
+//    qDebug() << "FWCmdChange::notify()";
     FWObject* obj = getObject();
     QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
 
@@ -163,97 +165,6 @@ void FWCmdChangeName::notify()
                                                                 obj->getId()));
     QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, obj->getId()));
-}
-
-
-/********************************************************
- * FWCmdChangeRuleAction
- ********************************************************/
-
-FWCmdChangeRuleAction::FWCmdChangeRuleAction(ProjectPanel *project, FWObject *obj) :
-    FWCmdChange(project, obj, QObject::tr("Edit Rule Action"))
-{}
-
-void FWCmdChangeRuleAction::notify()
-{
-    FWObject* obj = getObject();
-    QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
-    // obj here is a Rule. We need to select RuleSet in the tree and
-    // redraw it in the rule set panel. To do so, using
-    // obj->getParent(). Note that rule set hasn't changed, so we send
-    // showObjectInTreeEvent rather than
-    // updateObjectInTreeEvent. Redraw whole rule set since there is
-    // no way to redraw single rule at this time.
-    QCoreApplication::postEvent(
-        mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
-    QCoreApplication::postEvent(
-        mw, new openRulesetEvent(filename, obj->getParent()->getId()));
-    QCoreApplication::postEvent(
-        mw, new selectRuleElementEvent(
-            filename, obj->getId(), ColDesc::Action));
-    QCoreApplication::postEvent(
-        mw, new openOptObjectInEditorEvent(
-            filename, obj->getId(), ObjectEditor::optAction));
-}
-
-/********************************************************
- * FWCmdChangeRuleOptions
- ********************************************************/
-
-FWCmdChangeRuleOptions::FWCmdChangeRuleOptions(ProjectPanel *project, FWObject *obj) :
-    FWCmdChange(project, obj, QObject::tr("Edit Rule Options"))
-{}
-
-void FWCmdChangeRuleOptions::notify()
-{
-    FWObject* obj = getObject();
-    QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
-    // obj here is a Rule. We need to select RuleSet in the tree and
-    // redraw it in the rule set panel. To do so, using
-    // obj->getParent(). Note that rule set hasn't changed, so we send
-    // showObjectInTreeEvent rather than
-    // updateObjectInTreeEvent. Redraw whole rule set since there is
-    // no way to redraw single rule at this time.
-
-    QCoreApplication::postEvent(
-        mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
-    QCoreApplication::postEvent(
-        mw, new openRulesetEvent(filename, obj->getParent()->getId()));
-    QCoreApplication::postEvent(
-        mw, new selectRuleElementEvent(
-            filename, obj->getId(), ColDesc::Options));
-    QCoreApplication::postEvent(
-        mw, new openObjectInEditorEvent(filename, obj->getId()));
-}
-
-/********************************************************
- * FWCmdChangeRuleComment
- ********************************************************/
-
-FWCmdChangeRuleComment::FWCmdChangeRuleComment(ProjectPanel *project, FWObject *obj) :
-    FWCmdChange(project, obj, QObject::tr("Edit Rule Comment"))
-{}
-
-void FWCmdChangeRuleComment::notify()
-{
-    FWObject* obj = getObject();
-    QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
-    // obj here is a Rule. We need to select RuleSet in the tree and
-    // redraw it in the rule set panel. To do so, using
-    // obj->getParent(). Note that rule set hasn't changed, so we send
-    // showObjectInTreeEvent rather than
-    // updateObjectInTreeEvent. Redraw whole rule set since there is
-    // no way to redraw single rule at this time.
-
-    QCoreApplication::postEvent(
-        mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
-    QCoreApplication::postEvent(
-        mw, new openRulesetEvent(filename, obj->getParent()->getId()));
-    QCoreApplication::postEvent(
-        mw, new selectRuleElementEvent(
-            filename, obj->getId(), ColDesc::Comment));
-    QCoreApplication::postEvent(
-        mw, new openOptObjectInEditorEvent(filename, obj->getId(), ObjectEditor::optComment));
 }
 
 /********************************************************
