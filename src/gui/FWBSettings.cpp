@@ -207,13 +207,7 @@ void FWBSettings::init()
     if (!ok) setUiFont(QApplication::font());
 
     ok = contains(compilerOutputFont);
-    if (!ok)
-    {
-        // make compiler output panel font smaller than regular font
-        QFont compiler_output_font(QApplication::font());
-        compiler_output_font.setPointSizeF(compiler_output_font.pointSizeF() * 0.75);
-        setCompilerOutputFont(compiler_output_font);
-    }
+    if (!ok) setCompilerOutputFont(QApplication::font());
 
     if (fwbdebug)
         qDebug("Default application font: %s",
