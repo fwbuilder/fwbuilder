@@ -1,10 +1,11 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CompilerOutputPanel_q</class>
- <widget class="QWidget" name="CompilerOutputPanel_q" >
-  <property name="enabled" >
+ <widget class="QWidget" name="CompilerOutputPanel_q">
+  <property name="enabled">
    <bool>true</bool>
   </property>
-  <property name="geometry" >
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -12,37 +13,19 @@
     <height>262</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Script Editor</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" >
-    <widget class="QTextEdit" name="compiler_output_panel" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="verticalScrollBarPolicy" >
-      <enum>Qt::ScrollBarAlwaysOn</enum>
-     </property>
-     <property name="readOnly" >
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags" >
-      <set>Qt::TextSelectableByMouse</set>
-     </property>
-    </widget>
+   <item row="0" column="0">
+    <widget class="QTextBrowser" name="compiler_output_panel"/>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
- <resources>
-  <include location="MainRes.qrc" />
- </resources>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
  <connections/>
 </ui>
