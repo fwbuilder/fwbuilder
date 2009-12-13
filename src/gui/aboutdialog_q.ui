@@ -450,10 +450,8 @@
      </property>
      <property name="font" >
       <font>
-       <family>Aharoni</family>
        <pointsize>24</pointsize>
        <weight>75</weight>
-       <italic>true</italic>
        <bold>true</bold>
       </font>
      </property>
