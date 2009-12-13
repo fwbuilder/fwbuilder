@@ -216,4 +216,5 @@ void CompilerOutputPanel::resizeEvent ( QResizeEvent * event )
 {
     this->m_widget->compiler_output_panel->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     this->m_widget->compiler_output_panel->setVerticalScrollBar(new QScrollBar());
+    this->m_widget->compiler_output_panel->verticalScrollBar()->show();
 }
