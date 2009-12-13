@@ -67,7 +67,7 @@ QVariant ObjectTreeViewItem::data(int column, int role) const
         return QTreeWidgetItem::data(column, role);
 }
 
-bool ObjectTreeViewItem::operator<( const QTreeWidgetItem & other ) const 
+bool ObjectTreeViewItem::operator<( const QTreeWidgetItem & other ) const
 {
     int rank1 = -1 ;
     int rank2 = -1;
@@ -81,42 +81,43 @@ bool ObjectTreeViewItem::operator<( const QTreeWidgetItem & other ) const
 
     if (Interface::cast(otvi->objptr)!=NULL)
     {
-        rank1=0;
+        rank1=3;
     }
     if (Policy::cast(otvi->objptr)!=NULL)
     {
-        rank1=1;
+        rank1=0;
     }
     if (NAT::cast(otvi->objptr)!=NULL)
     {
-        rank1=2;
+        rank1=1;
     }
     if (Routing::cast(otvi->objptr)!=NULL)
     {
-        rank1=3;
+        rank1=2;
     }
     if (Interface::cast(objptr)!=NULL)
     {
-        rank2=0;
+        rank2=3;
     }
     if (Policy::cast(objptr)!=NULL)
     {
-        rank2=1;
+        rank2=0;
     }
     if (NAT::cast(objptr)!=NULL)
     {
-        rank2=2;
+        rank2=1;
     }
     if (Routing::cast(objptr)!=NULL)
     {
-        rank2=3;
+        rank2=2;
     }
 
     if (rank1==rank2)
     {
-        QString s1 = objptr->getName ().c_str();
-        QString s2 = otvi->objptr->getName ().c_str();  
-        return ( s1 < s2);
+        QString s1 = objptr->getName().c_str();
+        QString s2 = otvi->objptr->getName ().c_str();
+        //return ( s1 < s2);
+        return ( s1.toLower() < s2.toLower());
     }
     if (rank1>rank2)
     {
