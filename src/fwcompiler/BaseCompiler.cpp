@@ -91,13 +91,14 @@ string BaseCompiler::stdErrorMessage(FWObject *fw,
     // cluster, it can override the same attribute to make error and
     // warning messges refer to correct object that really owns rule
     // sets.
-    string original_ruleset_parent_name = ruleset->getStr(".ruleset_owner");
-    if (!original_ruleset_parent_name.empty()) tmpstr << original_ruleset_parent_name;
-    else
+    string ruleset_owner;
+    if (ruleset)
     {
-        if (fw) tmpstr << fw->getName();
+        ruleset_owner = ruleset->getStr(".ruleset_owner");
+        if (ruleset_owner.empty() && fw) ruleset_owner = fw->getName();
     }
-    tmpstr << ":";
+
+    tmpstr << ruleset_owner << ":";
     if (ruleset) tmpstr << ruleset->getName();
     tmpstr << ":";
     if (rule && Rule::cast(rule)) tmpstr << Rule::cast(rule)->getPosition();
