@@ -32,13 +32,7 @@
     <normaloff>:/Images/fwbuilder3.png</normaloff>:/Images/fwbuilder3.png</iconset>
   </property>
   <widget class="QWidget" name="widget" >
-   <layout class="QGridLayout" name="gridLayout_3" >
-    <property name="verticalSpacing" >
-     <number>0</number>
-    </property>
-    <property name="margin" >
-     <number>0</number>
-    </property>
+   <layout class="QGridLayout" name="gridLayout_4" >
     <item row="0" column="0" >
      <widget class="QMdiArea" name="m_space" />
     </item>
@@ -53,7 +47,7 @@
       <property name="maximumSize" >
        <size>
         <width>524287</width>
-        <height>300</height>
+        <height>524287</height>
        </size>
       </property>
       <property name="allowedAreas" >
@@ -76,14 +70,14 @@
         <item row="0" column="0" >
          <widget class="QTabWidget" name="editorPanelTabWidget" >
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize" >
            <size>
-            <width>1000</width>
+            <width>100</width>
             <height>200</height>
            </size>
           </property>
@@ -97,7 +91,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex" >
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_output" >
            <attribute name="title" >
@@ -171,11 +165,17 @@
            <attribute name="title" >
             <string>Editor</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_4" >
-            <property name="margin" >
+           <layout class="QGridLayout" name="gridLayout_3" >
+            <property name="topMargin" >
              <number>0</number>
             </property>
-            <item row="0" column="0" >
+            <property name="bottomMargin" >
+             <number>0</number>
+            </property>
+            <property name="verticalSpacing" >
+             <number>0</number>
+            </property>
+            <item rowspan="2" row="0" column="0" >
              <layout class="QVBoxLayout" name="verticalLayout" >
               <property name="topMargin" >
                <number>12</number>
@@ -259,7 +259,7 @@
               <property name="maximumSize" >
                <size>
                 <width>16777215</width>
-                <height>16777215</height>
+                <height>250</height>
                </size>
               </property>
               <property name="focusPolicy" >
@@ -685,22 +685,22 @@
               </widget>
              </widget>
             </item>
+            <item row="1" column="1" >
+             <spacer name="verticalSpacer_2" >
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>20</width>
+                <height>6</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
          </widget>
-        </item>
-        <item row="0" column="1" >
-         <spacer name="horizontalSpacer" >
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0" >
-           <size>
-            <width>55</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
