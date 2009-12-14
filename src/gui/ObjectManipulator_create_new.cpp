@@ -337,6 +337,24 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
     if (nobj->isReadOnly()) nobj->setReadOnly(false);
     nobj->setName( string(objName.toUtf8().constData()) );
 
+    if (objType == DNSName::TYPENAME)
+    {
+        if (st->getBool("Objects/DNSName/useCompileTimeForNewObjects"))
+            DNSName::cast(nobj)->setRunTime(false);
+        else
+            DNSName::cast(nobj)->setRunTime(true);
+        if (st->getBool("Objects/DNSName/useNameForDNSRecord"))
+            DNSName::cast(nobj)->setSourceName(nobj->getName());
+    }
+
+    if (objType == AddressTable::TYPENAME)
+    {
+        if (st->getBool("Objects/AddressTable/useCompileTimeForNewObjects"))
+            AddressTable::cast(nobj)->setRunTime(false);
+        else
+            AddressTable::cast(nobj)->setRunTime(true);
+    }
+
     FWCmdAddObject *cmd = new FWCmdAddObject(
         m_project, parent, nobj,
         QObject::tr("Create new %1").arg(objType));

@@ -29,6 +29,7 @@
 
 #include "DNSNameDialog.h"
 #include "ProjectPanel.h"
+#include "FWBSettings.h"
 #include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"
@@ -101,6 +102,8 @@ void DNSNameDialog::loadFWObject(FWObject *o)
     m_dialog->comment->setReadOnly(o->isReadOnly());
     setDisabledPalette(m_dialog->comment);
 
+    if (st->getBool("Objects/DNSName/useNameForDNSRecord"))
+        m_dialog->dnsrec->setEnabled(false);
 
 
     init=false;
@@ -129,8 +132,13 @@ void DNSNameDialog::applyChanges()
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
-    s->setSourceName( m_dialog->dnsrec->text().toLatin1().constData() );
     s->setRunTime(m_dialog->r_runtime->isChecked() );
+
+    if (st->getBool("Objects/DNSName/useNameForDNSRecord") &&
+        m_dialog->obj_name->text() != m_dialog->dnsrec->text())
+        m_dialog->dnsrec->setText(m_dialog->obj_name->text());
+
+    s->setSourceName( m_dialog->dnsrec->text().toLatin1().constData() );
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {

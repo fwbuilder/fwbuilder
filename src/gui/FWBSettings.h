@@ -122,6 +122,8 @@ class FWBSettings : public QSettings {
     bool    getDontSaveStdLib();
     void    setDontSaveStdLib( bool f);
 
+    bool hasKey(const QString &attribute);
+    
     QString getStr(const QString &attribute);
     void    setStr(const QString &attribute, const QString &val);
 

@@ -210,8 +210,8 @@ void FWBSettings::init()
     if (!ok) setCompilerOutputFont(QApplication::font());
 
     if (fwbdebug)
-        qDebug("Default application font: %s",
-               QApplication::font().toString().toLatin1().constData());
+        qDebug() << "Default application font:"
+                 << QApplication::font();
 
     ok = contains(clipComment);
     if (!ok) setClipComment(true);
@@ -227,7 +227,23 @@ void FWBSettings::init()
     if (getSCPPath().isEmpty())  setSCPPath("scp");
 #endif
 
-    if (!contains("Window/maximized")) setInt("Window/maximized", 1);
+    // Note: hasKey calls QSettings::contains using path given as
+    // argument, prepended with SETTINGS_PATH_PREFIX
+    if (!hasKey("Window/maximized")) setInt("Window/maximized", 1);
+
+    if (!hasKey("Objects/DNSName/useCompileTimeForNewObjects"))
+        setBool("Objects/DNSName/useCompileTimeForNewObjects", true);
+
+    if (!hasKey("Objects/DNSName/useNameForDNSRecord"))
+        setBool("Objects/DNSName/useNameForDNSRecord", false);
+
+    if (!hasKey("Objects/AddressTable/useCompileTimeForNewObjects"))
+        setBool("Objects/AddressTable/useCompileTimeForNewObjects", true);
+}
+
+bool FWBSettings::hasKey(const QString &attribute)
+{
+    return QSettings::contains(SETTINGS_PATH_PREFIX "/" + attribute);
 }
 
 QString FWBSettings::getAppGUID()
@@ -237,50 +253,50 @@ QString FWBSettings::getAppGUID()
 
 QString FWBSettings::getStr(const QString &attribute)
 {
-    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    QString path = SETTINGS_PATH_PREFIX "/" + attribute;
     return value(path).toString();
 }
 
 void FWBSettings::setStr(const QString &attribute,
                             const QString &val)
 {
-    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    QString path = SETTINGS_PATH_PREFIX "/" + attribute;
     setValue(path,val);
 }
 
 bool FWBSettings::getBool(const QString &attribute)
 {
-    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    QString path = SETTINGS_PATH_PREFIX "/" + attribute;
     return value(path).toBool();
 }
 
 void FWBSettings::setBool(const QString &attribute, bool val )
 {
-    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    QString path = SETTINGS_PATH_PREFIX "/" + attribute;
     setValue(path,val);
 }
 
 int FWBSettings::getInt(const QString &attribute)
 {
-    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    QString path = SETTINGS_PATH_PREFIX "/" + attribute;
     return value(path).toInt();
 }
 
 void FWBSettings::setInt(const QString &attribute, int val )
 {
-    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    QString path = SETTINGS_PATH_PREFIX "/" + attribute;
     setValue(path,val);
 }
 
 QStringList FWBSettings::getList(const QString &attribute)
 {
-    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    QString path = SETTINGS_PATH_PREFIX "/" + attribute;
     return value(path).toStringList();
 }
 
 void FWBSettings::setList(const QString &attribute, QStringList &list)
 {
-    QString path=SETTINGS_PATH_PREFIX "/"+attribute;
+    QString path = SETTINGS_PATH_PREFIX "/" + attribute;
     setValue(path, list);
 }
 

@@ -118,6 +118,19 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->deletedObj->setChecked( st->getBool("UI/ShowDeletedObjects") );
     m_dialog->attributesInTree->setChecked( st->getBool("UI/ShowObjectsAttributesInTree") );
 
+    m_dialog->new_dns_name_compile_tm->setChecked(
+        st->getBool("Objects/DNSName/useCompileTimeForNewObjects"));
+    m_dialog->new_dns_name_run_tm->setChecked(
+        ! st->getBool("Objects/DNSName/useCompileTimeForNewObjects"));
+    m_dialog->use_name_for_dns_record->setChecked(
+        st->getBool("Objects/DNSName/useNameForDNSRecord"));
+
+    m_dialog->new_addr_tbl_compile_tm->setChecked(
+        st->getBool("Objects/AddressTable/useCompileTimeForNewObjects"));
+    m_dialog->new_addr_tbl_run_tm->setChecked(
+        ! st->getBool("Objects/AddressTable/useCompileTimeForNewObjects"));
+
+
     m_dialog->emptyRCSLog->setChecked( st->getRCSLogState() );
 
     m_dialog->autosaveFile->setChecked(st->getBool("Environment/autoSaveFile"));
@@ -402,6 +415,14 @@ void PrefsDialog::accept()
         if (m_dialog->attributesInTree->isChecked())
             pp->m_panel->om->loadSectionSizes();
     }
+
+    st->setBool("Objects/DNSName/useCompileTimeForNewObjects",
+                m_dialog->new_dns_name_compile_tm->isChecked());
+    st->setBool("Objects/DNSName/useNameForDNSRecord",
+                m_dialog->use_name_for_dns_record->isChecked());
+
+    st->setBool("Objects/AddressTable/useCompileTimeForNewObjects",
+                m_dialog->new_addr_tbl_compile_tm->isChecked());
 
 //  QToolTip::setWakeUpDelay( st->getTooltipDelay()*1000 );
 

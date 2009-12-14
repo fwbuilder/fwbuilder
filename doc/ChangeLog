@@ -1,3 +1,22 @@
+2009-12-14  vadim  <vadim@vk.crocodile.org>
+
+	* PrefsDialog.cpp (PrefsDialog::accept): Added a place in the
+	global Preferences dialog for options specific for different
+	object types. First parameters include options for DNSName and
+	AddressTable to let the user decide if the newly created objects
+	of these types should be automatically configured with "Compile
+	Time" or "Run Time" mode. Also, added an option that makes DNSName
+	object editor copy the name of the object into the DNS record
+	input field when new object is created or whenever the name
+	changes.  This is useful when the user does not want to keep
+	object name and dns record different because they need to enter
+	the name only once.
+
+	* DNSNameDialog.cpp (DNSNameDialog::applyChanges): If global
+	Preferences option "Use DNS Name object name for the DNS record"
+	is turned on, copy the name into the record on every name change.
+	Fixes #866
+
 2009-12-11  vadim  <vadim@vk.crocodile.org>
 
 	* GroupObjectDialog.cpp (GroupObjectDialog::newObject):

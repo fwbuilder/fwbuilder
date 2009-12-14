@@ -19,10 +19,59 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" >
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk" >
+       <property name="text" >
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral" >
       <attribute name="title" >
@@ -187,9 +236,6 @@
        <string>Objects</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2" >
-       <property name="verticalSpacing" >
-        <number>20</number>
-       </property>
        <property name="topMargin" >
         <number>20</number>
        </property>
@@ -201,19 +247,6 @@
         </widget>
        </item>
        <item row="0" column="1" >
-        <spacer name="horizontalSpacer_3" >
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>106</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="2" >
         <widget class="QLabel" name="textLabel1_6" >
          <property name="text" >
           <string>Tooltip delay:</string>
@@ -223,14 +256,14 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3" >
+       <item row="0" column="2" >
         <widget class="QSpinBox" name="tooltipDelay" >
          <property name="minimum" >
           <number>1</number>
          </property>
         </widget>
        </item>
-       <item row="0" column="4" >
+       <item row="0" column="3" >
         <spacer name="spacer_2" >
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -246,39 +279,195 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" colspan="5" >
+       <item row="1" column="0" colspan="3" >
         <widget class="QCheckBox" name="deletedObj" >
          <property name="text" >
           <string>Show deleted objects</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="5" >
+       <item row="1" column="3" >
         <widget class="QCheckBox" name="attributesInTree" >
          <property name="text" >
           <string>Show object attributes in the tree</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="5" >
+       <item row="2" column="0" colspan="4" >
         <widget class="QCheckBox" name="chClipComment" >
          <property name="text" >
           <string>Clip comments in rules</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="2" >
-        <spacer name="verticalSpacer" >
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
+       <item row="3" column="0" colspan="4" >
+        <widget class="QLabel" name="label_9" >
+         <property name="text" >
+          <string>Properties of specific object types</string>
          </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>20</width>
-           <height>183</height>
-          </size>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="4" >
+        <widget class="QTabWidget" name="tabWidget_2" >
+         <property name="currentIndex" >
+          <number>0</number>
          </property>
-        </spacer>
+         <widget class="QWidget" name="DNSName" >
+          <attribute name="title" >
+           <string>DNS Name</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_11" >
+           <property name="horizontalSpacing" >
+            <number>20</number>
+           </property>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="label_10" >
+             <property name="text" >
+              <string/>
+             </property>
+             <property name="pixmap" >
+              <pixmap resource="MainRes.qrc" >:/Icons/DNSName/icon-big</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QFrame" name="frame" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="frameShape" >
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_10" >
+              <property name="leftMargin" >
+               <number>0</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>19</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QRadioButton" name="new_dns_name_compile_tm" >
+                <property name="text" >
+                 <string>Create new objects in "Compile Time" mode by default</string>
+                </property>
+                <property name="checked" >
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QRadioButton" name="new_dns_name_run_tm" >
+                <property name="text" >
+                 <string>Create new objects in "Run Time" mode by default</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QCheckBox" name="use_name_for_dns_record" >
+             <property name="text" >
+              <string>Use object name for the DNS record in all objects of this type</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" >
+            <spacer name="verticalSpacer" >
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>20</width>
+               <height>106</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="AddressTable" >
+          <attribute name="title" >
+           <string>Address Table</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_13" >
+           <property name="horizontalSpacing" >
+            <number>20</number>
+           </property>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="label_11" >
+             <property name="text" >
+              <string/>
+             </property>
+             <property name="pixmap" >
+              <pixmap resource="MainRes.qrc" >:/Icons/AddressTable/icon-big</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QFrame" name="frame_2" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="frameShape" >
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_12" >
+              <property name="leftMargin" >
+               <number>0</number>
+              </property>
+              <property name="verticalSpacing" >
+               <number>19</number>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QRadioButton" name="new_addr_tbl_compile_tm" >
+                <property name="text" >
+                 <string>Create new objects in "Compile Time" mode by default</string>
+                </property>
+                <property name="checked" >
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QRadioButton" name="new_addr_tbl_run_tm" >
+                <property name="text" >
+                 <string>Create new objects in "Run Time" mode by default</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <spacer name="verticalSpacer_4" >
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>20</width>
+               <height>136</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -1028,55 +1217,6 @@ are never stored permanently)</string>
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonOk" >
-       <property name="text" >
-        <string>&amp;OK</string>
-       </property>
-       <property name="shortcut" >
-        <string/>
-       </property>
-       <property name="autoDefault" >
-        <bool>true</bool>
-       </property>
-       <property name="default" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonCancel" >
-       <property name="text" >
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="shortcut" >
-        <string/>
-       </property>
-       <property name="autoDefault" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <tabstops>
@@ -1103,7 +1243,9 @@ are never stored permanently)</string>
   <tabstop>grayBtn</tabstop>
   <tabstop>grayText</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>buttonOk</sender>

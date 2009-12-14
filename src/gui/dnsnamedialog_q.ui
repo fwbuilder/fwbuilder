@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>638</width>
-    <height>215</height>
+    <width>712</width>
+    <height>239</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -48,10 +48,7 @@
         <property name="frameShadow" >
          <enum>QFrame::Sunken</enum>
         </property>
-        <layout class="QGridLayout" >
-         <property name="spacing" >
-          <number>12</number>
-         </property>
+        <layout class="QGridLayout" name="gridLayout_2" >
          <item row="0" column="0" >
           <widget class="QLabel" name="textLabel1" >
            <property name="text" >
@@ -62,7 +59,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1" >
+         <item row="0" column="1" colspan="2" >
           <widget class="QLineEdit" name="obj_name" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -88,7 +85,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1" >
+         <item row="1" column="1" colspan="2" >
           <widget class="QLineEdit" name="dnsrec" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -102,16 +99,24 @@
              <height>0</height>
             </size>
            </property>
+           <property name="toolTip" >
+            <string>DNS 'A' record name entered in this input field will be converted to
+IP address using DNS query during policy compilation if checkbox 
+"Compile time" is turned on, or during firewall policy activation if 
+"Run Time" mode is used. This field can be automatically populated 
+using object name, this is controlled by an option in the global 
+Preferences dialog, tab "Objects"</string>
+           </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="2" >
+         <item row="2" column="0" colspan="3" >
           <widget class="QRadioButton" name="r_compiletime" >
            <property name="text" >
             <string>Compile Time</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2" >
+         <item row="3" column="0" colspan="3" >
           <widget class="QRadioButton" name="r_runtime" >
            <property name="text" >
             <string>Run Time</string>
@@ -166,11 +171,6 @@
    <class>TextEditWidget</class>
    <extends>QTextEdit</extends>
    <header>TextEditWidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>QLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -248,4 +248,7 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>copyNameToRecord()</slot>
+ </slots>
 </ui>

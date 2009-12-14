@@ -52,7 +52,6 @@ public slots:
     virtual void validate(bool*);
     virtual void getHelpName(QString*);
     
-
 };
 
 #endif 
