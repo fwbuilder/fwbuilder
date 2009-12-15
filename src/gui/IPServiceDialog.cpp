@@ -122,6 +122,19 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 
     //apply->setEnabled( false );
 
+    // See #893 No need to show object attributes if the object is "Any"
+    if (obj->getId() == FWObjectDatabase::ANY_SERVICE_ID)
+    {
+        m_dialog->object_attributes_1->hide();
+        m_dialog->object_attributes_2->hide();
+        m_dialog->object_attributes_3->hide();
+    } else
+    {
+        m_dialog->object_attributes_1->show();
+        m_dialog->object_attributes_2->show();
+        m_dialog->object_attributes_3->show();
+    }
+
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);
 

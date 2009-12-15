@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>830</width>
-    <height>249</height>
+    <width>952</width>
+    <height>254</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -32,7 +32,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3" >
       <item rowspan="2" row="0" column="0" >
-       <widget class="QFrame" name="frame35" >
+       <widget class="QFrame" name="object_attributes_1" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
           <horstretch>0</horstretch>
@@ -41,13 +41,13 @@
         </property>
         <property name="minimumSize" >
          <size>
-          <width>300</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize" >
          <size>
-          <width>300</width>
+          <width>350</width>
           <height>16777215</height>
          </size>
         </property>
@@ -150,7 +150,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QFrame" name="frame" >
+         <widget class="QFrame" name="object_attributes_2" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="MinimumExpanding" hsizetype="Preferred" >
             <horstretch>0</horstretch>
@@ -226,7 +226,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_2" >
+         <widget class="QFrame" name="object_attributes_3" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
             <horstretch>0</horstretch>

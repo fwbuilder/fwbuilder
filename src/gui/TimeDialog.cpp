@@ -94,30 +94,6 @@ void TimeDialog::loadFWObject(FWObject *o)
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
     m_dialog->comment->setPlainText( QString::fromUtf8(s->getComment().c_str()) );
 
-    /*switch (m_dialog->startDate->order())
-    {
-    case QDateEdit::MDY:
-        m_dialog->startDateLabel->setText( tr("(M/D/Y)") );
-        m_dialog->endDateLabel->setText(   tr("(M/D/Y)") );
-        break;
-
-    case QDateEdit::DMY:
-        m_dialog->startDateLabel->setText( tr("(D/M/Y)") );
-        m_dialog->endDateLabel->setText(   tr("(D/M/Y)") );
-        break;
-
-    case QDateEdit::YMD:
-        m_dialog->startDateLabel->setText( tr("(Y/M/D)") );
-        m_dialog->endDateLabel->setText(   tr("(Y/M/D)") );
-        break;
-
-    case QDateEdit::YDM:
-        m_dialog->startDateLabel->setText( tr("(Y/D/M)") );
-        m_dialog->endDateLabel->setText(   tr("(Y/D/M)") );
-        break;
-
-    }*/
-
     int fromH = obj->getInt("from_hour");
     int fromM = obj->getInt("from_minute");
     if (fromH<0) fromH=0;
@@ -165,6 +141,17 @@ void TimeDialog::loadFWObject(FWObject *o)
     bool using_end_date = (y>0 && m>0 && d>0);
     m_dialog->endDate->setDate( (using_end_date)?QDate( y, m, d ):QDate() );
     m_dialog->useEndDate->setChecked(using_end_date);
+
+    // See #893 No need to show object attributes if the object is "Any"
+    if (obj->getId() == FWObjectDatabase::ANY_INTERVAL_ID)
+    {
+        m_dialog->object_attributes_1->hide();
+        m_dialog->object_attributes_2->hide();
+    } else
+    {
+        m_dialog->object_attributes_1->show();
+        m_dialog->object_attributes_2->show();
+    }
 
     setDisabledPalette(m_dialog->obj_name);
     setDisabledPalette(m_dialog->comment);

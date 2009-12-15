@@ -82,7 +82,16 @@ void NetworkDialog::loadFWObject(FWObject *o)
     m_dialog->netmask->setText( s->getNetmaskPtr()->toString().c_str() );
     m_dialog->comment->setText( QString::fromUtf8(s->getComment().c_str()) );
 
-    //apply->setEnabled( false );
+    // See #893 No need to show address and mask 0.0.0.0 to the user
+    // if the object is "Any", especially because the same object is
+    // used as "any" for both ipv4 and ipv6 rules. It can be confusing
+    // if they see address "0.0.0.0" while they want to find object
+    // "any" for ipv6.
+    if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID)
+        m_dialog->object_attributes->hide();
+    else
+        m_dialog->object_attributes->show();
+
 
     m_dialog->obj_name->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->obj_name);

@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>869</width>
+    <width>949</width>
     <height>258</height>
    </rect>
   </property>
@@ -38,7 +38,7 @@
      </property>
      <layout class="QGridLayout" >
       <item rowspan="2" row="0" column="0" >
-       <widget class="QFrame" name="frame50" >
+       <widget class="QFrame" name="object_attributes" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Expanding" hsizetype="Fixed" >
           <horstretch>0</horstretch>
@@ -200,11 +200,6 @@
    <class>TextEditWidget</class>
    <extends>QTextEdit</extends>
    <header>TextEditWidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>QLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
