@@ -264,6 +264,7 @@ void ObjectManipulator::updateLibColor(FWObject *lib)
         if (clr=="" || clr=="#000000" || clr=="black") clr="#FFFFFF";
         QPalette palette = objTreeView->palette();
         palette.setColor(QPalette::Active, QPalette::Base, QColor( clr ));
+        palette.setColor(QPalette::Inactive, QPalette::Base, QColor( clr ));
         objTreeView->setPalette(palette);
     }
 }
