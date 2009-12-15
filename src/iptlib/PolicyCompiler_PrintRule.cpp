@@ -53,6 +53,8 @@
 
 #include "combinedAddress.h"
 
+#include "Configlet.h"
+
 #include <QStringList>
 
 #include <iostream>
@@ -1583,11 +1585,6 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
     ostringstream res;
     bool isIPv6 = ipt_comp->ipv6;
 
-/*
- * bug #1092141: "irritating FORWARD rule for established connections"
- * Need rules in FORWARD chain only if ip forwarding is on or set to
- * "no change"
- */
     string s = compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
     bool ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
     s = compiler->getCachedFwOpt()->getStr("linux24_ipv6_forward");
@@ -1595,35 +1592,19 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
     bool ipforw = ((!ipt_comp->ipv6 && ipforward) ||
                    (ipt_comp->ipv6 && ip6forward));
 
-    if ( compiler->getCachedFwOpt()->getBool("accept_established") &&
-         ipt_comp->my_table=="filter") 
-    {
-        res << _startRuleLine()
-            << "INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT"
-            << _endRuleLine();
+    Configlet configlet(compiler->fw, "linux24", "automatic_rules");
+    configlet.removeComments();
+    configlet.collapseEmptyStrings(true);
 
-        res << _startRuleLine()
-            << "OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT"
-            << _endRuleLine();
+    configlet.setVariable("begin_rule", _startRuleLine().c_str());
+    configlet.setVariable("end_rule", _endRuleLine().c_str());
 
-        if (ipforw)
-            res << _startRuleLine()
-                << "FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT"
-                << _endRuleLine();
+    configlet.setVariable("ipforw", ipforw);
+                              
+    configlet.setVariable("accept_established", 
+                          compiler->getCachedFwOpt()->getBool("accept_established") &&
+                          ipt_comp->my_table=="filter");
 
-        res << endl;
-    }
-
-/*
- * it helps to add backup ssh access rule as early as possible so that
- * ssh session opened from the management station won't break after
- * all chains are flushed. The installation process may stall if
- * stdout buffer gets filled with diagnostic or progress output from
- * this script printed after chains are flushed but before a rule
- * permitting ssh is installed. This may happen if script debugging is
- * on or there are many NAT rules (so it prints a lot of "Rule NN
- * (NAT)" lines).
- */
     if ( compiler->getCachedFwOpt()->getBool("mgmt_ssh") &&
          ! compiler->getCachedFwOpt()->getStr("mgmt_addr").empty() )
     {
@@ -1653,132 +1634,69 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
         }
         if (addr_is_good)
         {
-            res << "# backup ssh access" << endl;
-            res << "#" << endl;
-/* bug #1106701: 'backup ssh access' and statefulness interation
- * Need to add rules with ESTABLISHED and RELATED to make sure backup ssh access
- * works even when global rule that accepts ESTABLISHED and RELATED is disabled
- */
-            res << _startRuleLine() << "INPUT  -p tcp -m tcp  -s "
-                << inet_addr->toString()
-                << "  --dport 22  -m state --state NEW,ESTABLISHED -j ACCEPT"
-                << _endRuleLine();
-
-            res << _startRuleLine() << "OUTPUT  -p tcp -m tcp  -d "
-                << inet_addr->toString()
-                << "  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT"
-                << _endRuleLine();
-
-            res << endl;
+            configlet.setVariable("mgmt_access", 1);
+            configlet.setVariable("management_address", inet_addr->toString().c_str());
+        } else
+        {
+            QString err("Backup ssh access rule could not be added "
+                        "because specified address '%1' is invalid");
+            compiler->warning(err.arg(addr_str.c_str()).toStdString());
         }
     }
 
-    if ( ! compiler->getCachedFwOpt()->getBool("accept_new_tcp_with_no_syn") ) 
-    {
-        res << "# drop TCP sessions opened prior firewall restart" 
-            << endl;
-
-        res << "#"    << endl;
-
-        res << _startRuleLine()
-            << "INPUT   -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP"
-            << _endRuleLine();
-
-        res << _startRuleLine()
-            << "OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP"
-            << _endRuleLine();
-
-        if (ipforw)
-            res << _startRuleLine()
-                << "FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP"
-                << _endRuleLine();
-
-        res << endl;
-    }
-
-    if ( compiler->getCachedFwOpt()->getBool("drop_invalid") ) 
-    {
-        res << "# drop packets that do not match any valid state "
-               << endl;
-        res << "#"    << endl;
-
-        if ( !compiler->getCachedFwOpt()->getBool("log_invalid"))
-        {
-            res << _startRuleLine()
-                << "OUTPUT   -m state --state INVALID  -j DROP"
-                << _endRuleLine();
-
-            res << _startRuleLine()
-                << "INPUT    -m state --state INVALID  -j DROP"
-                << _endRuleLine();
-
-            if (ipforw)
-                res << _startRuleLine()
-                    << "FORWARD  -m state --state INVALID  -j DROP"
-                    << _endRuleLine();
-        } else
-        {
-            res << _createChain("drop_invalid");
-
-            res << _startRuleLine()
-                << "OUTPUT   -m state --state INVALID  -j drop_invalid"
-                << _endRuleLine();
-
-            res << _startRuleLine()
-                << "INPUT    -m state --state INVALID  -j drop_invalid"
-                << _endRuleLine();
-
-            if (ipforw)
-                res << _startRuleLine()
-                    << "FORWARD  -m state --state INVALID  -j drop_invalid"
-                    << _endRuleLine();
+    configlet.setVariable(
+        "drop_new_tcp_with_no_syn",
+        ! compiler->getCachedFwOpt()->getBool("accept_new_tcp_with_no_syn")); 
 
 
-            res << _startRuleLine();
+    configlet.setVariable(
+        "add_rules_for_ipv6_neighbor_discovery",
+        isIPv6 && 
+        compiler->getCachedFwOpt()->getBool("add_rules_for_ipv6_neighbor_discovery")); 
 
 
-            // Note: there is no ULOG for ip6tables yet
-	    if (!isIPv6 && compiler->getCachedFwOpt()->getBool("use_ULOG")) 
-	    {  
-	    	string s = compiler->getCachedFwOpt()->getStr("ulog_nlgroup");
+    configlet.setVariable("drop_invalid",
+                          compiler->getCachedFwOpt()->getBool("drop_invalid") &&
+                          !compiler->getCachedFwOpt()->getBool("log_invalid"));
 
-                res  << "drop_invalid -j ULOG ";
+    configlet.setVariable("drop_invalid_and_log",
+                          compiler->getCachedFwOpt()->getBool("drop_invalid") &&
+                          compiler->getCachedFwOpt()->getBool("log_invalid"));
 
-        	if (!s.empty()) 
-            	    res << "--ulog-nlgroup " << s << " ";
+    configlet.setVariable("create_drop_invalid_chain",
+                          _createChain("drop_invalid").c_str());
 
-		int r;
-        	if ((r = compiler->getCachedFwOpt()->getInt("ulog_cprange"))!=0)  
-		     res << "--ulog-cprange " << r << " ";
 
-        	if ((r = compiler->getCachedFwOpt()->getInt("ulog_qthreshold"))!=0)  
-	  	     res << " --ulog-qthreshold " << r << " ";
-               
-	        res << "--ulog-prefix "; 
+    if (compiler->getCachedFwOpt()->getBool("log_invalid") &&
+        !isIPv6 &&
+        compiler->getCachedFwOpt()->getBool("use_ULOG"))
+    {  
+        configlet.setVariable("use_ulog", 1);
 
-	    } else {
-                   res << "drop_invalid -j LOG "
-		       << "--log-level debug --log-prefix ";
-            }
+        string s = compiler->getCachedFwOpt()->getStr("ulog_nlgroup");
+        configlet.setVariable("use_nlgroup", !s.empty());
+        configlet.setVariable("nlgroup", s.c_str());
 
-            s = "INVALID state -- DENY ";
+        int r = compiler->getCachedFwOpt()->getInt("ulog_cprange");
+        configlet.setVariable("use_cprange", r!=0);
+        configlet.setVariable("cprange", r);
 
-	    res << _printLogPrefix("-1",
-                                   "DENY",
-                                   "global",
-                                   "drop_invalid",
-                                   "Policy",
-                                   "BLOCK INVALID",
-                                   s)
-	        << _endRuleLine()
-                << _startRuleLine() << "drop_invalid  -j DROP"
-                << _endRuleLine();
- 
-	}
-        res << endl;
-    }
+        r = compiler->getCachedFwOpt()->getInt("ulog_qthreshold");
+        configlet.setVariable("use_qthreshold", r!=0);
+        configlet.setVariable("qthreshold", r);
+    } else
+        configlet.setVariable("not_use_ulog", 1);
 
-    return res.str();
+    configlet.setVariable("invalid_match_log_prefix",
+                          _printLogPrefix("-1",
+                                          "DENY",
+                                          "global",
+                                          "drop_invalid",
+                                          "Policy",
+                                          "BLOCK INVALID",
+                                          "INVALID state -- DENY ").c_str());
+
+    return configlet.expand().toStdString();
 }
 
 string PolicyCompiler_ipt::PrintRule::_quote(const string &s)

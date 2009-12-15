@@ -29180,7 +29180,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1260217773" lastInstalled="0" lastModified="1247356067" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
+      <Firewall id="id4833F62B6131" host_OS="linux24" inactive="False" lastCompiled="1260831611" lastInstalled="0" lastModified="1260831598" platform="iptables" version="" name="firewall-ipv6-1" comment="Using ULOG globally, but ipv6 rules&#10;should fall back to LOG because&#10;there is no ULOG for ip6tables yet&#10;Bug 2141911&#10;" ro="False">
         <NAT id="id4833F62F6131" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -29892,6 +29892,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="action_on_reject"></Option>
           <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">True</Option>
           <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>

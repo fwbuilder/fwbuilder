@@ -135,7 +135,10 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->clampMSStoMTU, fwoptions, "clamp_mss_to_mtu");
     data.registerOption(m_dialog->makeTagClassifyTerminating,
                         fwoptions, "classify_mark_terminating");
-    slm=getActionsOnReject( obj->getStr("platform").c_str());
+    data.registerOption(m_dialog->ipv6NeighborDiscovery,
+                        fwoptions, "add_rules_for_ipv6_neighbor_discovery");
+
+    slm = getActionsOnReject( obj->getStr("platform").c_str());
     m_dialog->actionOnReject->clear();
     m_dialog->actionOnReject->addItems(getScreenNames(slm));
     data.registerOption(m_dialog-> actionOnReject,

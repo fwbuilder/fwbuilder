@@ -1,5 +1,14 @@
 2009-12-14  vadim  <vadim@vk.crocodile.org>
 
+	* src/res/configlets/linux24/automatic_rules: Generation of the
+	automatic rules (matching ESTABLISHED and INVALID states,
+	backup ssh access and others) now uses configlet. Fixes #883
+
+	* src/res/configlets/linux24/automatic_rules: generated script can
+	now include automatic rules to match IPv6 neighbor discovery ICMP6
+	packets. This is controlled by a checkbox in the iptables
+	"advanced" settings dialog and is off by default. Fixes #878
+
 	* PrefsDialog.cpp (PrefsDialog::accept): Added a place in the
 	global Preferences dialog for options specific for different
 	object types. First parameters include options for DNSName and
