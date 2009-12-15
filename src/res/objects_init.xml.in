@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1257167351" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1260911621" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -15,10 +15,15 @@
           <ObjectRef ref="id3DC75CE6"/>
           <ObjectRef ref="id3DC75CE7"/>
         </ObjectGroup>
+        <ObjectGroup id="id3292X75851" name="ipv6 private" comment="These are various ipv6 networks that should not be routed on the Internet&#10;" ro="False">
+          <ObjectRef ref="id2088X75851"/>
+          <ObjectRef ref="id2986X75851"/>
+          <ObjectRef ref="id2383X75851"/>
+        </ObjectGroup>
       </ObjectGroup>
       <ObjectGroup id="stdid02" name="Hosts" comment="" ro="False">
         <Host id="id3D84EECE" name="internal server" comment="This host is used in examples and template objects" ro="False">
-          <Interface id="id3D84EED2" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <Interface id="id3D84EED2" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id3D84EED3" name="ip" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.0"/>
             <InterfaceOptions/>
           </Interface>
@@ -36,7 +41,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D84EECF" name="server on dmz" comment="This host is used in examples and template objects" ro="False">
-          <Interface id="id3D84EEE3" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <Interface id="id3D84EEE3" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id3D84EEE4" name="ip" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.0"/>
             <InterfaceOptions/>
           </Interface>
@@ -65,6 +70,10 @@
         <Network id="id3F4ECE40" name="this-net" comment="0.0.0.0/8 - Addresses in this block refer to source hosts on &quot;this&quot;&#10;network.  Address 0.0.0.0/32 may be used as a source address for this&#10;host on this network; other addresses within 0.0.0.0/8 may be used to&#10;refer to specified hosts on this network [RFC1700, page 4]." ro="False" address="0.0.0.0" netmask="255.0.0.0"/>
         <Network id="id3DC75CE7-1" name="net-192.168.1.0" comment="192.168.1.0/24 - Address often used for home and small office networks.&#10;" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
         <Network id="id3DC75CE7-2" name="net-192.168.2.0" comment="192.168.2.0/24 - Address often used for home and small office networks.&#10;" ro="False" address="192.168.2.0" netmask="255.255.255.0"/>
+        <NetworkIPv6 id="id2088X75851" name="documentation net" comment="RFC3849" ro="False" address="2001:db8::" netmask="32"/>
+        <NetworkIPv6 id="id2383X75851" name="link-local ipv6" comment="RFC4291   Link-local unicast net" ro="False" address="fe80::" netmask="10"/>
+        <NetworkIPv6 id="id2685X75851" name="multicast ipv6" comment="RFC4291  ipv6 multicast addresses" ro="False" address="ff00::" netmask="8"/>
+        <NetworkIPv6 id="id2986X75851" name="experimental ipv6" comment="RFC2928, RFC4773 &#10;&#10;&quot;The block of Sub-TLA IDs assigned to the IANA&#10;(i.e., 2001:0000::/29 - 2001:01F8::/29) is for&#10;assignment for testing and experimental usage to&#10;support activities such as the 6bone, and&#10;for new approaches like exchanges.&quot;  [RFC2928]&#10;&#10;" ro="False" address="2001::" netmask="23"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3F6D115C" name="broadcast" comment="" ro="False" start_address="255.255.255.255" end_address="255.255.255.255"/>
@@ -191,8 +200,8 @@
         <IPService id="id3D703C8E" fragm="False" lsrr="False" protocol_num="57" rr="False" short_fragm="False" ssrr="False" ts="False" name="SKIP" comment="IPSEC Simple Key Management for Internet Protocols" ro="False"/>
         <IPService id="id3D703C8F" fragm="False" lsrr="False" protocol_num="47" rr="False" short_fragm="False" ssrr="False" ts="False" name="GRE" comment="Generic Routing Encapsulation&#10;" ro="False"/>
         <IPService id="id3D703C95" fragm="False" lsrr="False" protocol_num="112" rr="False" short_fragm="False" ssrr="False" ts="False" name="vrrp" comment="Virtual Router Redundancy Protocol" ro="False"/>
-        <IPService id="ip-IGMP" fragm="False" lsrr="False" protocol_num="2" rr="False" short_fragm="False" ssrr="False" ts="False" name="IGMP" rtralt="True" rtralt_value="0" comment="Internet Group Management Protocol, Version 3, RFC 3376" ro="False"/>
-        <IPService id="ip-PIM" fragm="False" lsrr="False" protocol_num="103" rr="False" short_fragm="False" ssrr="False" ts="False" name="PIM" rtralt="False" rtralt_value="0" comment="Protocol Independent Multicast - Dense Mode (PIM-DM), RFC 3973, or Protocol Independent Multicast-Sparse Mode (PIM-SM) RFC 2362" ro="False"/>
+        <IPService id="ip-IGMP" fragm="False" lsrr="False" protocol_num="2" rr="False" rtralt="True" rtralt_value="0" short_fragm="False" ssrr="False" ts="False" name="IGMP" comment="Internet Group Management Protocol, Version 3, RFC 3376" ro="False"/>
+        <IPService id="ip-PIM" fragm="False" lsrr="False" protocol_num="103" rr="False" rtralt="False" rtralt_value="0" short_fragm="False" ssrr="False" ts="False" name="PIM" comment="Protocol Independent Multicast - Dense Mode (PIM-DM), RFC 3973, or Protocol Independent Multicast-Sparse Mode (PIM-SM) RFC 2362" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="stdid09" name="TCP" comment="" ro="False">
         <TCPService id="tcp-ALL_TCP_Masqueraded" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ALL TCP Masqueraded" comment="ipchains used to use this range of port numbers for masquerading. " ro="False" src_range_start="61000" src_range_end="65095" dst_range_start="0" dst_range_end="0"/>

@@ -1,5 +1,13 @@
 2009-12-15  vadim  <vadim@vk.crocodile.org>
 
+	* objects_init.xml: Standard objects library now comes with new
+	IPv6 Network objects. These objects represent IPv6 networks that
+	should not be routed on the Internet. Included: RFC3849
+	"Documentation Network" 2001:db8::; RFC4291 "Link local"
+	fe80::/10; RFC4773 "Experimental Network" 2001:0000::/29 to
+	2001:01F8::/29. Also added a group "ipv6 private" that includes
+	all these networks. Fixes #888
+
 	* instDialog.cpp (instDialog::instDialog): Moved "batch install"
 	checkbox to the page that shows compiler progress so the user can
 	decide to do batch install right before they perform installations
