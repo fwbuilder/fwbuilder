@@ -369,6 +369,8 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
                                            mangle_rules_stream.str(),
                                            filter_rules_stream.str(),
                                            ipv6_policy);
+            if (single_rule_compile_on)
+                generated_script += "\n\n";
         }
 
         std::auto_ptr<RoutingCompiler_ipt> routing_compiler(
