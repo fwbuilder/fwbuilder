@@ -28,9 +28,9 @@
 #include "interfacePropertiesTest.h"
 #include <string>
 
-int build_num = 0;
-std::string respath;
-QString user_name;
+//int build_num = 0;
+//std::string respath;
+//QString user_name;
 
 int main( int, char** )
 {

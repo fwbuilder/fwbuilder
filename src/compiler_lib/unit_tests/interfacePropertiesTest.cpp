@@ -25,6 +25,8 @@
 
 #include "interfacePropertiesTest.h"
 
+#include <common/init.cpp>
+
 #include <QDebug>
 
 using namespace std;
@@ -35,7 +37,6 @@ void interfacePropertiesTest::validateInterface()
 {
     vector<vector<string> > testData;
     vector<string> row;
-    row.push_back("linux24");  // host_OS
     row.push_back("ethernet"); // type
     row.push_back("ethernet"); // parent_type
     row.push_back("false");    // is unnumbered
@@ -43,7 +44,6 @@ void interfacePropertiesTest::validateInterface()
     testData.push_back(row);
 
     row.clear();
-    row.push_back("linux24");
     row.push_back("ethernet");
     row.push_back("ethernet");
     row.push_back("true");
@@ -51,7 +51,6 @@ void interfacePropertiesTest::validateInterface()
     testData.push_back(row);
 
     row.clear();
-    row.push_back("linux24");
     row.push_back("bonding");
     row.push_back("ethernet");
     row.push_back("false");
@@ -59,20 +58,29 @@ void interfacePropertiesTest::validateInterface()
     testData.push_back(row);
 
     row.clear();
-    row.push_back("linux24");
     row.push_back("bridge");
     row.push_back("ethernet");
     row.push_back("false");
     row.push_back("false");
     testData.push_back(row);
 
+    string host_OS = "linux24";
+
+    Resources* os_res = Resources::os_res[host_OS];
+    string os_family = host_OS;
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+    interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
+
+    QString err;
+
     for (unsigned int i = 0; i<testData.size(); i++)
     {
-        string host_OS = testData[i][0];
-        string parent_type = testData[i][1];
-        string type = testData[i][2];
-        bool unnumbered = testData[i][3] == "true";
-        bool answer = testData[i][4] == "true";
+        string parent_type = testData[i][0];
+        string type = testData[i][1];
+        bool unnumbered = testData[i][2] == "true";
+        bool answer = testData[i][3] == "true";
 
         Cluster cluster;
         Interface parent;
@@ -87,14 +95,6 @@ void interfacePropertiesTest::validateInterface()
         iface.getOptionsObject()->setStr("type", type);
         cluster.setStr("host_OS", host_OS);
 
-        Resources* os_res = Resources::os_res[host_OS];
-        string os_family = host_OS;
-        if (os_res!=NULL)
-            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
-        interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
-
-        QString err;
 
         CPPUNIT_ASSERT(int_prop != NULL);
 
@@ -103,6 +103,76 @@ void interfacePropertiesTest::validateInterface()
         CPPUNIT_ASSERT(result == answer);
         CPPUNIT_ASSERT(err.isEmpty() == answer);
     }
+
+    Firewall fw;
+    fw.setStr("host_OS", host_OS);
+    db->add(&fw);
+
+    Interface* parent = Interface::cast(db->create(Interface::TYPENAME));
+    Interface* iface = Interface::cast(db->create(Interface::TYPENAME));
+    Interface* subiface = Interface::cast(db->create(Interface::TYPENAME));
+
+    fw.add(parent);
+
+    init();
+
+    Resources("../../res/resources.xml");
+
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+                                               dynamic_cast<FWObject*>(iface), true, err)
+                   == false);
+
+    parent->getOptionsObject()->setStr("type", "bridge");
+    iface->getOptionsObject()->setStr("type", "ethernet");
+
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+                                               FWObject::cast(iface), true, err)
+                   == true);
+
+    iface->getOptionsObject()->setStr("type", "ethernet");
+    iface->add(subiface);
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                   == false);
+    iface->remove(subiface);
+
+    Cluster *cluster = Cluster::cast(db->create(Cluster::TYPENAME));
+
+    iface->setName("vlan0");
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                   == true);
+
+    iface->setName("vlan34324");
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                   == false);
+
+    parent->setName("vlan");
+    parent->getOptionsObject()->setStr("type", "bridge");
+    iface->setName("vlan1");
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                       == true);
+
+    IPv4 *adr = IPv4::cast(db->create(IPv4::TYPENAME));
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(adr),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                       == false);
+
+    parent->setName("notAVlan");
+    parent->getOptionsObject()->setStr("type", "ethernet");
+    iface->setName("vlan1");
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                       == true);
+
+
+    iface->setName("eth0");
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                       == false);
+
 }
 
 void interfacePropertiesTest::isEligibleForCluster()
@@ -144,6 +214,13 @@ void interfacePropertiesTest::isEligibleForCluster()
     row.push_back("false");
     testData.push_back(row);
 
+    Resources* os_res = Resources::os_res["linux24"];
+    string os_family = "linux24";
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+    interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
+
     for (unsigned int i = 0; i<testData.size(); i++)
     {
         string type = testData[i][0];
@@ -160,19 +237,26 @@ void interfacePropertiesTest::isEligibleForCluster()
         iface.getOptionsObject()->setStr("type", type);
         iface.getParent()->setStr("type", parent_type);
 
-        Resources* os_res = Resources::os_res["linux24"];
-        string os_family = "linux24";
-        if (os_res!=NULL)
-            os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
-
-        interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
-
         CPPUNIT_ASSERT(int_prop != NULL);
 
         bool result = int_prop->isEligibleForCluster(&iface);
 
         CPPUNIT_ASSERT(result == answer);
     }
+
+    Firewall *fw = Firewall::cast(db->create(Firewall::TYPENAME));
+    fw->setName("iface");
+    Interface *iface = Interface::cast(db->create(Interface::TYPENAME));
+    iface->setName("iface1");
+    Interface *subface = Interface::cast(db->create(Interface::TYPENAME));
+    subface->setName("iface");
+    fw->add(iface);
+    fw->add(subface);
+    iface->getOptionsObject()->setStr("type", "bonding");
+    iface->add(subface);
+    CPPUNIT_ASSERT ( interfaceProperties().isEligibleForCluster(subface) == false );
+    iface->getOptionsObject()->setStr("type", "ethernet");
+    CPPUNIT_ASSERT ( interfaceProperties().isEligibleForCluster(iface) == false );
 }
 
 void interfacePropertiesTest::setUp()

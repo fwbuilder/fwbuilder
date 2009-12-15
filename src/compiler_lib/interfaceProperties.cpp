@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -39,6 +39,7 @@
 #include <list>
 #include <algorithm>
 
+#include <QDebug>
 #include <QObject>
 #include <QStringList>
 
@@ -78,7 +79,7 @@ bool interfaceProperties::isValidVlanInterfaceName(const QString &subint_name,
         err = QObject::tr("'%1' is not a valid vlan interface name").arg(subint_name);
         return false;
     }
- 
+
     QString parent_name_from_regex;
     int vlan_id;
     if (parseVlan(subint_name, &parent_name_from_regex, &vlan_id))
@@ -148,7 +149,7 @@ bool interfaceProperties::manageIpAddresses(Interface *intf,
     if (intf->isBridgePort()) return false;
     if (intf->isSlave()) return false;
 
-    string intf_name = intf->getName(); 
+    string intf_name = intf->getName();
 
     if (intf->getOptionsObject()->getBool("cluster_interface"))
     {
@@ -382,12 +383,12 @@ bool interfaceProperties::validateInterface(FWObject *target,
 /*
  * Ticket #727
  *
- * if type is ethernet and has vlan subinterfaces, not eligible 
- * if type is vlan, eligible 
- * if type is bridge, eligible 
- * if type is bonding, eligible 
- * if type is ethernet and interface with the same name is used for bonding, then not eligible 
- * if type is ethernet and parent is bridge, then not eligible 
+ * if type is ethernet and has vlan subinterfaces, not eligible
+ * if type is vlan, eligible
+ * if type is bridge, eligible
+ * if type is bonding, eligible
+ * if type is ethernet and interface with the same name is used for bonding, then not eligible
+ * if type is ethernet and parent is bridge, then not eligible
  */
 bool interfaceProperties::isEligibleForCluster(Interface *intf)
 {
@@ -422,7 +423,7 @@ bool interfaceProperties::isEligibleForCluster(Interface *intf)
             assert(iface);
             Interface *parent_iface = Interface::cast(iface->getParent());
             if (parent_iface == NULL)
-		 continue;
+         continue;
             if (parent_iface->getOptionsObject()->getStr("type") == "bonding" &&
                 iface->getName() == intf->getName())
             {
@@ -443,7 +444,7 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
     Interface *parent_intf = Interface::cast(intf->getParent());
 
     if (parent_intf == NULL)
-	 return;
+     return;
 
     FWObject *f = intf->getParentHost();
 
