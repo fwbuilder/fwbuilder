@@ -178,20 +178,12 @@ void ObjectManipulator::createNewObject()
     if (type_name ==  Firewall::TYPENAME)
     {
         new_obj = newFirewall();
-        if (new_obj == NULL)
-        {
-            m_project->undoStack->endMacro();
-            return;
-        }
+        if (new_obj == NULL) return;
     }
     if (type_name ==  Cluster::TYPENAME)
     {
         new_obj = newCluster();
-        if (new_obj == NULL)
-        {
-            m_project->undoStack->endMacro();
-            return;
-        }
+        if (new_obj == NULL) return;
     }
     if (type_name ==  Host::TYPENAME) new_obj = newHost();
     if (type_name ==  Interface::TYPENAME) new_obj = newInterface();
