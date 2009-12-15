@@ -49,6 +49,7 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <QUndoStack>
+#include <QtDebug>
 
 
 using namespace std;
@@ -101,11 +102,13 @@ void NetworkDialog::loadFWObject(FWObject *o)
 
 void NetworkDialog::validate(bool *result)
 {
-    *result=true;
+    if (fwbdebug) qDebug() << "NetworkDialog::validate";
+
+    *result = true;
 
     if (!validateName(this,obj,m_dialog->obj_name->text()))
     {
-        *result=false;
+        *result = false;
         return;
     }
 
@@ -116,38 +119,58 @@ void NetworkDialog::validate(bool *result)
         InetAddr( m_dialog->address->text().toStdString() );
     } catch (FWException &ex)
     {
-        *result=false;
+        *result = false;
         QMessageBox::critical(
             this, "Firewall Builder",
             tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
             tr("&Continue"), 0, 0,
             0 );
+        return;
     }
+
+    InetAddr addr(m_dialog->address->text().toStdString());
+
     try
     {
         QString len = m_dialog->netmask->text() ;
         bool ok = false ;
-        int ilen = len.toInt (&ok);
+        int ilen = len.toInt(&ok);
         if (ok)
         {
+            // permit netmask 0.0.0.0 if the address is also 0.0.0.0
+            if (addr.isAny() && ilen == 0) return;
+
             if (ilen>0 && ilen < 32)
             {
                 return ;
             }
             else
             {
-                *result=false;
+                *result = false;
                 QMessageBox::critical(
                     this, "Firewall Builder",
                     tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
                     tr("&Continue"), 0, 0,
                     0 );
+                return;
             }
         }
+
         InetAddr nm( m_dialog->netmask->text().toStdString() );
-        // Do not allow netmask of 0 bits See #251
         if (nm.isAny())
-            throw FWException("Network object can not have netmask 0.0.0.0");
+        {
+            // permit netmask 0.0.0.0 if the address is also 0.0.0.0
+            if (addr.isAny()) return;
+            {
+                // Do not allow netmask of 0 bits See #251
+                QMessageBox::critical(
+                    this, "Firewall Builder",
+                    tr("Network object should not have netmask '0.0.0.0'"),
+                    tr("&Continue"), 0, 0,
+                    0 );
+                return;
+            }
+        }
 
     } catch (FWException &ex)
     {

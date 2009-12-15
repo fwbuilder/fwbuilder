@@ -128,6 +128,8 @@ void IPv4Dialog::loadFWObject(FWObject *o)
 
 void IPv4Dialog::validate(bool *result)
 {
+    if (fwbdebug) qDebug() << "IPv4Dialog::validate()";
+
     *result=true;
 
     if (!validateName(this,obj,m_dialog->obj_name->text()))
@@ -151,14 +153,14 @@ void IPv4Dialog::validate(bool *result)
             0 );
     }
 
-    if ( showNetmask )
+    if (showNetmask)
     {
         try
         {
             InetAddr( m_dialog->netmask->text().toLatin1().constData() );
         } catch (FWException &ex)
         {
-            *result=false;
+            *result = false;
             QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()),

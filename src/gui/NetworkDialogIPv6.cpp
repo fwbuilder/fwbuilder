@@ -109,22 +109,22 @@ void NetworkDialogIPv6::changed()
 
 void NetworkDialogIPv6::validate(bool *res)
 {
-    *res=true;
+    *res = true;
 
     if (!validateName(this,obj,m_dialog->obj_name->text()))
     {
-        *res=false;
+        *res = false;
         return;
     }
 
     NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
-    assert(s!=NULL);
+    assert(s != NULL);
     try
     {
         InetAddr(AF_INET6, m_dialog->address->text().toStdString() );
     } catch (FWException &ex)
     {
-        *res=false;
+        *res = false;
         QMessageBox::critical(this, "Firewall Builder",
                               tr("Illegal IPv6 address '%1'").arg(
                                   m_dialog->address->text()),
@@ -137,10 +137,11 @@ void NetworkDialogIPv6::validate(bool *res)
     // Do not allow netmask of 0 bits. See #251
     if (ok && range > 0 && range < 128)
     {
+        return;
     }
     else
     {
-        *res=false;
+        *res = false;
         QMessageBox::critical(this, "Firewall Builder",
                               tr("Illegal netmask '%1'").arg(
                                   m_dialog->netmask->text() ),
