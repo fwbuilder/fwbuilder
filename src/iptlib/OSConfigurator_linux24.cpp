@@ -520,7 +520,7 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
     for (int idx=0; idx<iface_names.size(); ++idx)
     {
         QString intf_name = iface_names[idx];
-        if (ipv6) intf_name += "_v6";
+        //if (ipv6) intf_name += "_v6";
         command_wrappers->setVariable(QString("intf_%1_var_name").arg(idx+1), intf_name);
     }
 
