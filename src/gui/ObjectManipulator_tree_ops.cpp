@@ -250,8 +250,11 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
 
     ObjectTreeViewItem *itm = allItems[obj];
     allItems[obj] = NULL;
-    itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
-    delete itm;
+    if (itm && itm->parent())
+    {
+        itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
+        delete itm;
+    }
 }
 
 void ObjectManipulator::updateLibColor(FWObject *lib)
