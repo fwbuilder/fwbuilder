@@ -69,6 +69,7 @@ void UsageResolverTest::setUp()
     grp1->setName("Group 1");
     grp2->setName("Group 2");
     grp3->setName("Group 3");
+    grp1->addRef(addr1);
 
     addToLib(grp1);
     addToLib(grp2);
@@ -121,7 +122,7 @@ void UsageResolverTest::findWhereObjectIsUsed()
     set<FWObject*> res;
 
     db->findWhereObjectIsUsed(addr1, db, res);
-    CPPUNIT_ASSERT(res.size() == 3);
+    CPPUNIT_ASSERT(res.size() == 4);
 
     set<FWObject*>::iterator iter = res.begin();
     while (iter!=res.end())
@@ -134,8 +135,8 @@ void UsageResolverTest::findWhereObjectIsUsed()
         {
             // if we get reference, the parent must be rule element
             obj = obj->getParent();
-            CPPUNIT_ASSERT(obj->getTypeName() == RuleElementSrc::TYPENAME);
-            CPPUNIT_ASSERT(obj->getParent()->getName() == "PolicyRule 1 of Firewall 1");
+            CPPUNIT_ASSERT(obj->getTypeName() == RuleElementSrc::TYPENAME || obj->getTypeName() == ObjectGroup::TYPENAME);
+            CPPUNIT_ASSERT(obj->getParent()->getName() == "PolicyRule 1 of Firewall 1" || obj->getParent()->getName() == "Group 2");
         } else
         {
             // otherwise we should get the group grp1 or
@@ -177,5 +178,13 @@ void UsageResolverTest::findFirewallsForObject()
 
 void UsageResolverTest::humanizeSearchResults()
 {
-    //UsageResolver::humanizeSearchResults(UsageResolver::findFirewallsForObject())
+    set<FWObject*> res;
+    db->findWhereObjectIsUsed(addr1, db, res);
+    UsageResolver::humanizeSearchResults(res);
+    set<FWObject*>::iterator iter = res.begin();
+    while (iter!=res.end())
+    {
+        string name = (*iter++)->getName();
+        CPPUNIT_ASSERT ( name == "Group 1" || name == "Addresses" || (*iter)->getTypeName() == "ObjectGroup" );
+    }
 }
