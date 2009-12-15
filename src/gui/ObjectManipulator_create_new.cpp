@@ -175,8 +175,24 @@ void ObjectManipulator::createNewObject()
     m_project->undoStack->beginMacro("Create and add to group");
 
     if (type_name ==  Library::TYPENAME) new_obj = newLibrary();
-    if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall();
-    if (type_name ==  Cluster::TYPENAME) new_obj = newCluster();
+    if (type_name ==  Firewall::TYPENAME)
+    {
+        new_obj = newFirewall();
+        if (new_obj == NULL)
+        {
+            m_project->undoStack->endMacro();
+            return;
+        }
+    }
+    if (type_name ==  Cluster::TYPENAME)
+    {
+        new_obj = newCluster();
+        if (new_obj == NULL)
+        {
+            m_project->undoStack->endMacro();
+            return;
+        }
+    }
     if (type_name ==  Host::TYPENAME) new_obj = newHost();
     if (type_name ==  Interface::TYPENAME) new_obj = newInterface();
     if (type_name ==  IPv4::TYPENAME) new_obj = newInterfaceAddress();
@@ -189,7 +205,7 @@ void ObjectManipulator::createNewObject()
     //if (type_name ==  Routing::TYPENAME) new_obj = newRoutingRuleSet();
 
     if (new_obj == NULL) new_obj = createObject(type_name, descr);
-    
+
     if (new_obj == NULL)
     {
         m_project->undoStack->endMacro();
@@ -205,7 +221,7 @@ void ObjectManipulator::createNewObject()
                      << "Adding to group grp=" << grp;
 
         if (grp)
-        {            
+        {
             FWCmdChange *cmd = new FWCmdChange(
                 m_project, grp, QObject::tr("Add object to group"));
             FWObject *new_state = cmd->getNewState();
@@ -268,7 +284,7 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
         i++;
     }
 
-    FWObject *parent = 
+    FWObject *parent =
         m_project->getFWTree()->getStandardSlotForObject(lib, objType);
 
     if (parent==NULL)
@@ -321,7 +337,7 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
 
     if (parent==NULL) parent=lib;
 
-    return actuallyCreateObject(parent, objType, objName, copyFrom);   
+    return actuallyCreateObject(parent, objType, objName, copyFrom);
 }
 
 FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
@@ -429,7 +445,7 @@ FWObject* ObjectManipulator::newNATRuleSet()
 
 FWObject* ObjectManipulator::newFirewall()
 {
-    FWObject *parent = 
+    FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Firewall::TYPENAME);
     assert(parent);
     ObjectTreeViewItem* parent_item = allItems[parent];
@@ -456,7 +472,7 @@ FWObject* ObjectManipulator::newFirewall()
 
 FWObject* ObjectManipulator::newCluster(bool fromSelected)
 {
-    FWObject *parent = 
+    FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Cluster::TYPENAME);
     assert(parent);
     ObjectTreeViewItem* parent_item = allItems[parent];
@@ -469,7 +485,8 @@ FWObject* ObjectManipulator::newCluster(bool fromSelected)
         qDebug() << "creating cluster from selected firewalls";
         ncd->setFirewallList(getCurrentObjectTree()->getSelectedObjects());
     }
-    ncd->exec();
+    if ( ! ncd->exec() == QDialog::Accepted) return NULL;
+
     FWObject *ncl = ncd->getNewCluster();
     delete ncd;
 
@@ -572,7 +589,7 @@ FWObject* ObjectManipulator::newFailoverClusterGroup()
 
 FWObject* ObjectManipulator::newHost()
 {
-    FWObject *parent = 
+    FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Host::TYPENAME);
     assert(parent);
     newHostDialog *nhd = new newHostDialog(parent);
