@@ -1,3 +1,10 @@
+2009-12-15  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog.cpp (instDialog::instDialog): Moved "batch install"
+	checkbox to the page that shows compiler progress so the user can
+	decide to do batch install right before they perform installations
+	instead of doing this before they start compile.
+
 2009-12-14  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/configlets/linux24/automatic_rules: Generation of the

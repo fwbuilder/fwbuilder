@@ -244,7 +244,6 @@ public slots:
     void updateProgressBar(int n,bool setsize);
 
     void saveLog();
-    void togleDetailMC();
 
     void readFromStdout();
     void selectAllFirewalls();

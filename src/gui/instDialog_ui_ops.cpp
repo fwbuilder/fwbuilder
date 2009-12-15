@@ -304,22 +304,6 @@ void instDialog::backClicked()
         showPage(previousRelevant( currentPage() ));
 }
 
-void instDialog::togleDetailMC()
-{
-    if (m_dialog->detailMCframe->isVisible())
-    {
-        m_dialog->detailsButton->setText(tr("Show details"));
-        m_dialog->detailMCframe->hide();
-        st->setValue(SETTINGS_PATH_PREFIX"/Installer/ShowDetails",false);
-    }
-    else
-    {
-        m_dialog->detailsButton->setText(tr("Hide details"));
-        m_dialog->detailMCframe->show();
-        st->setValue(SETTINGS_PATH_PREFIX"/Installer/ShowDetails",true);
-    }
-}
-
 void instDialog::prepareInstConf(Firewall *)
 {
     if (fwbdebug) qDebug("instDialog::prepareInstConf");

@@ -230,8 +230,6 @@ instDialog::instDialog(QWidget* p,
         m_dialog->detailMCframe->show();
     else
         m_dialog->detailMCframe->hide();
-
-    togleDetailMC();
 }
 
 instDialog::~instDialog()
