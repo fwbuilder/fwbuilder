@@ -55,7 +55,7 @@ void UsageResolverTest::setUp()
     addToLib(fw1);
     addToLib(fw2);
     addToLib(fw3);
-    
+
     addr1 = IPv4::cast(db->create(IPv4::TYPENAME));
     addr2 = IPv4::cast(db->create(IPv4::TYPENAME));
     addr1->setName("Address 1");
@@ -65,11 +65,14 @@ void UsageResolverTest::setUp()
 
     FWObject *grp1 = db->create(ObjectGroup::TYPENAME);
     FWObject *grp2 = db->create(ObjectGroup::TYPENAME);
+    FWObject *grp3 = db->create(ObjectGroup::TYPENAME);
     grp1->setName("Group 1");
     grp2->setName("Group 2");
+    grp3->setName("Group 3");
 
     addToLib(grp1);
     addToLib(grp2);
+    addToLib(grp3);
 
     // addr1 belongs to grp1
     // addr2 belongs to grp2
@@ -77,7 +80,8 @@ void UsageResolverTest::setUp()
     grp1->add(addr1);
     grp2->add(addr2);
     grp2->add(grp1);
-    
+    grp3->add(grp2);
+
     Policy *policy = Firewall::cast(fw1)->getPolicy();
     PolicyRule *rule;
     rule = PolicyRule::cast(policy->createRule());
@@ -95,6 +99,18 @@ void UsageResolverTest::setUp()
     rule->getSrc()->addRef(grp2);
     policy->add(rule);
 
+    rule = PolicyRule::cast(Firewall::cast(fw2)->getPolicy()->createRule());
+    rule->setName("PolicyRule 1 of Firewall 2");
+    rule->getSrc()->addRef(addr2);
+    Firewall::cast(fw2)->getPolicy()->add(rule);
+
+    rule = PolicyRule::cast(Firewall::cast(fw3)->getPolicy()->createRule());
+    rule->setName("PolicyRule 1 of Firewall 3");
+    //rule->getSrc()->addRef(addr2);
+    rule->getSrc()->addRef(grp3);
+    //rule->getSrc()->addRef(grp2);
+    Firewall::cast(fw3)->getPolicy()->add(rule);
+
 }
 
 
@@ -102,7 +118,6 @@ void UsageResolverTest::findWhereObjectIsUsed()
 {
 //    db->dump(true, true);
 
-    qDebug() << "running FWObjectDatabase::findWhereObjectIsUsed";
     set<FWObject*> res;
 
     db->findWhereObjectIsUsed(addr1, db, res);
@@ -114,8 +129,6 @@ void UsageResolverTest::findWhereObjectIsUsed()
         FWObject *obj = *iter;
 
         string name = obj->getName();
-        qDebug() << "got object: '" << name.c_str()
-                 << "' (" << obj->getTypeName().c_str() << ")";
 
         if (FWReference::cast(obj))
         {
@@ -139,16 +152,26 @@ void UsageResolverTest::findWhereObjectIsUsed()
 
 void UsageResolverTest::findFirewallsForObject()
 {
-    qDebug() << "running UsageResolver::findFirewallsForObject";
     list<Firewall*> res = UsageResolver::findFirewallsForObject(addr1, db);
     list<Firewall*>::iterator iter = res.begin();
     CPPUNIT_ASSERT(res.size() == 2);
     while (iter!=res.end())
     {
         string name = (*iter++)->getName();
-        qDebug() << "got object: '" << name.c_str()
-                 << "' (" << (*iter)->getTypeName().c_str() << ")";
-        //CPPUNIT_ASSERT ( name == "Firewall 1" || name == "Firewall 2" );
+        //qDebug() << "got object: '" << name.c_str()
+        //         << "' (" << (*iter)->getTypeName().c_str() << ")";
+        CPPUNIT_ASSERT ( name == "Firewall 1" || name == "Firewall 3" );
+    }
+
+    res = UsageResolver::findFirewallsForObject(addr2, db);
+    iter = res.begin();
+    CPPUNIT_ASSERT(res.size() == 3);
+    while (iter!=res.end())
+    {
+        string name = (*iter++)->getName();
+        //qDebug() << "got object: '" << name.c_str();
+        //         << "' (" << (*iter)->getTypeName().c_str() << ")";
+        CPPUNIT_ASSERT ( name == "Firewall 1" || name == "Firewall 2" || name == "Firewall 3" );
     }
 }
 

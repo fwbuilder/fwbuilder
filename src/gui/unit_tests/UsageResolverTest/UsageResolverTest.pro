@@ -5,6 +5,8 @@
 
 include(../../../../qmake.inc)
 
+QMAKE_CXX = g++
+
 QT += gui network
 
 INCLUDEPATH += ../../.ui ../../../compiler_lib/
@@ -26,9 +28,9 @@ QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
 QMAKE_CLEAN = *.gc??
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov
+LIBS += -lgcov -lcppunit
 
-run.commands = ./${TARGET} && gcov -o . ../../UsageResolver.cpp >/dev/null
+run.commands = ./${TARGET} && gcov -o . ../../UsageResolver.cpp >/dev/null 2>/dev/null
 run.depends = all
 
 QMAKE_EXTRA_TARGETS += run
