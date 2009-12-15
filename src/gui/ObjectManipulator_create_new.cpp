@@ -175,16 +175,8 @@ void ObjectManipulator::createNewObject()
     m_project->undoStack->beginMacro("Create and add to group");
 
     if (type_name ==  Library::TYPENAME) new_obj = newLibrary();
-    if (type_name ==  Firewall::TYPENAME)
-    {
-        new_obj = newFirewall();
-        if (new_obj == NULL) return;
-    }
-    if (type_name ==  Cluster::TYPENAME)
-    {
-        new_obj = newCluster();
-        if (new_obj == NULL) return;
-    }
+    if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall();
+    if (type_name ==  Cluster::TYPENAME) new_obj = newCluster();
     if (type_name ==  Host::TYPENAME) new_obj = newHost();
     if (type_name ==  Interface::TYPENAME) new_obj = newInterface();
     if (type_name ==  IPv4::TYPENAME) new_obj = newInterfaceAddress();
