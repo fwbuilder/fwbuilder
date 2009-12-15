@@ -51,6 +51,7 @@ class DialogFactory {
         throw(libfwbuilder::FWException);
     static QWidget *createClusterConfDialog(QWidget *parent, libfwbuilder::FWObject *o)
         throw(libfwbuilder::FWException);
+    static QString getClusterGroupOptionsDialogName(libfwbuilder::FWObject *o);
     static QWidget *createClusterGroupOptionsDialog(QWidget *parent, libfwbuilder::FWObject *o)
         throw(libfwbuilder::FWException);
 

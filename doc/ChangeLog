@@ -1,5 +1,12 @@
 2009-12-15  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/res/os/linux24.xml: the GUI and compiler should not
+	assume that when failover protocol is VRRP, then there should be
+	interface vrrpN. This seems to be the case and the default only
+	for Secunet Secuwall firewall. Vrrpd daemon on Linux does not
+	create vrrp inetrfaces and just manipulates alias IP and MAC
+	addresses. Fixes #895
+
 	* objects_init.xml: Standard objects library now comes with new
 	IPv6 Network objects. These objects represent IPv6 networks that
 	should not be routed on the Internet. Included: RFC3849

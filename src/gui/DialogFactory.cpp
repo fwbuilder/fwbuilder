@@ -315,7 +315,6 @@ QWidget *DialogFactory::createClusterConfDialog(QWidget *parent, FWObject *o)
 
     string host_OS = objparent->getStr("host_OS");
     Resources *os = Resources::os_res[host_OS];
-
     string dlgname = os->Resources::getResourceStr("/FWBuilderResources/Target/cluster_dialog");
 
     // add further dlgname support here ...
@@ -333,25 +332,40 @@ QWidget *DialogFactory::createClusterConfDialog(QWidget *parent, FWObject *o)
  *  cluster group type. Argument <o> is FWOptions object which is
  *  a child of ClusterGroup object
  */
-QWidget *DialogFactory::createClusterGroupOptionsDialog(QWidget *parent,
-                                                        FWObject *o)
-        throw(libfwbuilder::FWException)
+QString DialogFactory::getClusterGroupOptionsDialogName(FWObject *o)
 {
     FWObject *cluster_group = o->getParent();
     assert(ClusterGroup::cast(cluster_group)!=NULL);
 
     string type = ClusterGroup::cast(cluster_group)->getStr("type");
 
-    if (type == "conntrack")  return new conntrackOptionsDialog(parent, o);
-    if (type == "pfsync")  return new pfsyncOptionsDialog(parent, o);
-    if (type == "pix_state_sync")  return new pixFailoverOptionsDialog(parent, o);
+    FWObject *fw = o;
+    while (fw && Firewall::cast(fw)==NULL) fw = fw->getParent();
+    if (fw)
+    {
+        string host_OS = fw->getStr("host_OS");
+        Resources *os = Resources::os_res[host_OS];
+        return os->Resources::getResourceStr(
+            "/FWBuilderResources/Target/protocols/" + type + "/dialog").c_str();
+    }
+    return QString();
+}
 
-    if (type == "vrrp")  return new vrrpOptionsDialog(parent, o);
-    if (type == "carp")  return new carpOptionsDialog(parent, o);
-    if (type == "heartbeat")  return new heartbeatOptionsDialog(parent, o);
-    if (type == "openais")  return new openaisOptionsDialog(parent, o);
+QWidget *DialogFactory::createClusterGroupOptionsDialog(
+    QWidget *parent, FWObject *o) throw(libfwbuilder::FWException)
+{
+    QString dlgname = getClusterGroupOptionsDialogName(o);
+
+    if (dlgname == "conntrack")  return new conntrackOptionsDialog(parent, o);
+    if (dlgname == "pfsync")  return new pfsyncOptionsDialog(parent, o);
+    if (dlgname == "pix_state_sync")  return new pixFailoverOptionsDialog(parent, o);
+
+    if (dlgname == "vrrp")  return new vrrpOptionsDialog(parent, o);
+    if (dlgname == "carp")  return new carpOptionsDialog(parent, o);
+    if (dlgname == "heartbeat")  return new heartbeatOptionsDialog(parent, o);
+    if (dlgname == "openais")  return new openaisOptionsDialog(parent, o);
+
     // Add more cluster group options dialog here
-
     return NULL;
 }
 

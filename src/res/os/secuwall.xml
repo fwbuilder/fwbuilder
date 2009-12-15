@@ -141,11 +141,13 @@ sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
           <needs_master>True</needs_master>
           <default_address>225.0.0.50</default_address>
           <default_port>3780</default_port>
+          <dialog>conntrack</dialog>
         </conntrack>
 
         <vrrp>
           <needs_master>True</needs_master>
           <manage_addresses>True</manage_addresses>
+          <dialog>vrrp</dialog>
         </vrrp>
       </protocols>
 

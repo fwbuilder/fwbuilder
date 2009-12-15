@@ -174,6 +174,14 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
     m_dialog->fwMemberTree->resizeColumnToContents(2);
     m_dialog->fwMemberTree->resizeColumnToContents(3);
 
+    QString dlgname = DialogFactory::getClusterGroupOptionsDialogName(
+        ClusterGroup::cast(obj)->getOptionsObject());
+
+    if (fwbdebug)
+        qDebug() << "ClusterGroupDialog::loadFWObject dlgname=" << dlgname;
+
+    m_dialog->editParameters->setEnabled(!dlgname.isEmpty());
+
     init = false;
 }
 
@@ -281,6 +289,14 @@ void ClusterGroupDialog::applyChanges()
     new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
 
     saveGroupType(new_state);
+
+    QString dlgname = DialogFactory::getClusterGroupOptionsDialogName(
+        ClusterGroup::cast(new_state)->getOptionsObject());
+
+    if (fwbdebug)
+        qDebug() << "ClusterGroupDialog::applyChanges dlgname=" << dlgname;
+
+    m_dialog->editParameters->setEnabled(!dlgname.isEmpty());
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {

@@ -287,10 +287,10 @@ rule sets of this object rather than in the actual firewalls.
     </li>
 
     <li>
-      The Cluster object gets carp or vrrp interfaces. Name them
-      "carp0", "carp1", "vrrp0", "vrrp1" or whatever indexes they have
-      on your machines. You can add CARP/VRRP password and VRID at the
-      same time, but if you don't, you can add them later.
+      OpenBSD or FreeBSD cluster gets carp interfaces. Name them
+      "carp0", "carp1" or whatever indexes they have on your
+      machines. You can add CARP password and ID at the same time, but
+      if you don't, you can add them later.
     </li>
 
     <li>
@@ -332,16 +332,16 @@ rule sets of this object rather than in the actual firewalls.
     </li>
 
     <li>
-      Button "Edit protocol parameters" allows you to edit CARP or
-      VRRP password, VHID and other parameters for the failover
-      protocol. This is where you can configure an address and port for
-      heartbeat and OpenAIS and other protocol-specific parameters.
+      Button "Edit protocol parameters" allows you to edit some
+      parameters for chosen failover protocol. This is where you can
+      configure an address and port for heartbeat and OpenAIS.
     </li>
 
     <li>
-      There are few new checkboxes in the "Script" tab of the firewall object
-      dialog. These allow you to control whether the program will add
-      shell commands to create and configure vrrp/carp interfaces.
+      There are few new checkboxes in the "Script" tab of the firewall
+      object dialog. These allow you to control whether the program
+      will add shell commands to create and configure bonding, bridge
+      and VLAN interfaces.
     </li>
 
     <li>

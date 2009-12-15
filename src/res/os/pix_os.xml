@@ -90,18 +90,21 @@
           <needs_master>True</needs_master>
           <no_ip_ok>True</no_ip_ok>
           <manage_addresses>True</manage_addresses>
+          <dialog>pix_state_sync</dialog>
         </pix_state_sync>
 
         <pix_failover>
           <needs_master>True</needs_master>
           <no_ip_ok>True</no_ip_ok>
           <manage_addresses>True</manage_addresses>
+          <dialog></dialog>
         </pix_failover>
 
         <none>
           <needs_master>True</needs_master>
           <no_ip_ok>True</no_ip_ok>
           <manage_addresses>True</manage_addresses>
+          <dialog></dialog>
         </none>
       </protocols>
 
