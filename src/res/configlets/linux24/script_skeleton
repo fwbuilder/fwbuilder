@@ -2,6 +2,10 @@
 ##
 ## Double '##' comments are removed when configlet is processed.
 ## Single '#' comments stay.
+##
+## Some shells (not bash) do not like empty functions. Placing a comment
+## inside the function does not help. Using dummy ":" as a placeholder.
+##
 {{$top_comment}}
 
 {{$errors_and_warnings}}
@@ -18,10 +22,12 @@ FWBDEBUG=""
 {{$shell_functions}}
 
 load_modules() {
+    :
     {{$load_modules}}
 }
 
 verify_interfaces() {
+    :
     {{$verify_interfaces}}
 }
 
@@ -41,6 +47,7 @@ run_epilog_and_exit() {
 }
 
 configure_interfaces() {
+    :
     {{$configure_interfaces}}
 }
 
@@ -49,10 +56,12 @@ script_body() {
 }
 
 ip_forward() {
+    :
     {{$ip_forward_commands}}
 }
 
 reset_all() {
+    :
     {{$reset_all}}
 }
 
