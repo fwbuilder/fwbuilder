@@ -96,7 +96,7 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             fw->getStr("host_OS")));
 
-    QStringList interfaces_with_addresses;
+    QStringList known_interfaces;
     list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
     list<FWObject*>::iterator i;
     for (i=interfaces.begin(); i!=interfaces.end(); ++i )
@@ -132,18 +132,19 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
                 FWObject *parent_iface = iface->getParent();
                 iface_spec = QString("%1@%2").arg(iface_name.c_str()).arg(parent_iface->getName().c_str());
             }
-
-            interfaces_with_addresses.push_back(iface_spec);
         }
+
+        known_interfaces.push_back(iface_name.c_str());
     }
-    if (interfaces_with_addresses.size() > 0)
+
+    if (known_interfaces.size() > 0)
     {
         // last resort protection: if there are no interfaces with
         // addresses in fwbuilder configuration, we should not kill
         // all addresses of all interfaces on the firewall
-        interfaces_with_addresses.push_front(
+        known_interfaces.push_front(
             "clear_addresses_except_known_interfaces");
-        gencmd.push_back(interfaces_with_addresses.join(" "));
+        gencmd.push_back(known_interfaces.join(" "));
     }
     return gencmd.join("\n").toStdString() + "\n";
 }
