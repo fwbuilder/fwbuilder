@@ -1,3 +1,18 @@
+2009-12-16  vadim  <vadim@vk.crocodile.org>
+
+	* src/res/configlets/linux24/installer_commands_root: Added
+	command "chomd +x" to make firewall script executable on the
+	firewall. Before, this was only done when the program used
+	regular user account rather than root. Fixes #909
+
+	* src/res/configlets/linux24/installer_commands_root: Built-in
+	policy installer gets commands that it needs to execute on the
+	firewall from configlets (small scripts using simple macro
+	language) that are installed in the
+	/usr/share/fwbuilder-3.1.0/configlets on Linux. User can modify
+	them by making a copy in $HOME/fwbuilder/configlets without having
+	to touch the code. Fixes #268.
+
 2009-12-15  vadim  <vadim@vk.crocodile.org>
 
 	* FirewallInstaller.cpp (FirewallInstaller::readManifest): fixed

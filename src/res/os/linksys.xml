@@ -19,68 +19,9 @@
         </default>
 
         <activation>
-
           <fwdir>/tmp</fwdir>
-
           <fwdir_test>/tmp</fwdir_test>
-
           <timeout_units>sec</timeout_units>
-
-          <root>
-            <run>
-              <copy>
-/tmp/
-              </copy>
-
-              <compression>
-echo '%FWBPROMPT%';
-mv /tmp/%FWSCRIPT% /tmp/fwb;
-/usr/sbin/nvram unset rc_firewall;
-/usr/sbin/nvram set rc_firewall="/usr/sbin/nvram get fwb|uudecode|gzip -dc|sh";
-/usr/sbin/nvram unset fwb;
-/usr/sbin/nvram set fwb="`cat /tmp/fwb|gzip|uuencode -`" || exit 1;
-rm /tmp/fwb;
-echo "Saving data to flash memory";
-/usr/sbin/nvram commit || exit 1;
-echo "Flash memory:";
-/usr/sbin/nvram show >/dev/null;
-echo "Activating policy";
-/usr/sbin/nvram get fwb|uudecode|gzip -dc|sh &#38;&#38; (killall reboot;echo 'Policy activated')
-              </compression>
-
-              <no_compression>
-echo '%FWBPROMPT%';
-mv /tmp/%FWSCRIPT% /tmp/fwb;
-/usr/sbin/nvram set rc_firewall="/usr/sbin/nvram get fwb|sh";
-/usr/sbin/nvram unset fwb;
-/usr/sbin/nvram set fwb="`cat /tmp/fwb`" || exit 1;
-rm /tmp/fwb;
-echo "Saving data to flash memory";
-/usr/sbin/nvram commit || exit 1;
-echo "Flash memory:";
-/usr/sbin/nvram show >/dev/null;
-echo "Activating policy";
-/usr/sbin/nvram get fwb|sh &#38;&#38; (killall reboot; echo 'Policy activated')
-              </no_compression>
-            </run>
-
-            <test>
-              <copy>
-/tmp/
-              </copy>
-
-              <rollback>
-echo '%FWBPROMPT%';
-cp /tmp/crontab /tmp/crontab.o;
-echo '* * * * * root cat /tmp/crontab.o > /tmp/crontab; reboot -d%RBTIMEOUT%' >> /tmp/crontab;
-sh /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
-              </rollback>
-              <no_rollback>
-echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
-              </no_rollback>
-            </test>
-
-          </root>
         </activation>
 
 <!-- set to True if you want to suppress comments in the generated script -->

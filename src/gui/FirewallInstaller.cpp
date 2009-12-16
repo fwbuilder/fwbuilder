@@ -33,6 +33,7 @@
 #include "FWBSettings.h"
 #include "FWWindow.h"
 #include "SSHSession.h"
+#include "Configlet.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -41,9 +42,14 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
 
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <qstring.h>
+#include <QDir>
+#include <QFileInfo>
+#include <QMessageBox>
+#include <QString>
+#include <QTextCodec>
+#include <QTextStream>
+#include <QTimer>
+#include <QtDebug>
 
 #ifndef _WIN32
 #  include <unistd.h>     // for access(2) and getdomainname
@@ -51,11 +57,6 @@
 
 #include <errno.h>
 #include <iostream>
-
-#include <QTextCodec>
-#include <QTimer>
-#include <QMessageBox>
-#include <QTextStream>
 
 
 using namespace std;
@@ -555,76 +556,71 @@ QString FirewallInstaller::getActivationCmd()
         return cnf->activationCmd;
     }
 
-    QString cmd = "";
+    QString configlet_name = "installer_commands_";
+    if (cnf->user=="root") configlet_name += "root";
+    else                   configlet_name += "reg_user";
 
-    string optpath = "activation/";
+    string host_os = cnf->fwobj->getStr("host_OS");
+    string os_family = Resources::os_res[host_os]->
+        getResourceStr("/FWBuilderResources/Target/family");
 
-    if (cnf->user=="root") optpath += "root/";
-    else                   optpath += "reg_user/";
+    // installer configlets should be different for each OS, but if
+    // some OS can use the same script, it will be placed in the file
+    // under os_family name. For example:
+    // for linksys/sveasoft configlet is in src/res/configlets/sveasoft
+    // but since linux24 and openwrt can use the same script, it is
+    // located in src/res/configlets/linux24 (openwrt.xml file defines
+    // family as "linux24")
+    Configlet configlet(host_os, os_family, configlet_name);
+    configlet.removeComments();
+    configlet.setVariable("test",  cnf->testRun);
+    configlet.setVariable("run", ! cnf->testRun);
+    configlet.setVariable("with_rollback",   cnf->rollback);
+    configlet.setVariable("no_rollback",   ! cnf->rollback);
+    configlet.setVariable("with_compression",  cnf->compressScript);
+    configlet.setVariable("no_compression",  ! cnf->compressScript);
 
-    if (cnf->testRun)
-    {
-        optpath += "test/";
-        if (cnf->rollback) optpath += "rollback/";
-        else               optpath += "no_rollback/";
-    } else
-    {
-        optpath += "run/";
-        if (cnf->compressScript) optpath += "compression/";
-        else                     optpath += "no_compression/";
-    }
+    inst_dlg->replaceMacrosInCommand(&configlet);
 
-    cmd = Resources::getTargetOptionStr(cnf->fwobj->getStr("host_OS"),
-                                        optpath).c_str();
-    return inst_dlg->replaceMacrosInCommand(cmd);
+    return configlet.expand();
 }
 
 /*
- * Takes destination directory defined in the configlet (or XML resource file)
- * and substitutes %FWBDIR% macro with @fwdir. Returned directory path
- * always ends with separator ("/")
+ * Takes destination directory defined in the configlet (or XML
+ * resource file) and substitutes {{$fwbdir}} macro with
+ * @fwdir. Returned directory path always ends with separator ("/")
  *
  * Main purpose of this method is to get the right directory depending
- * on the setting of the administration user account and "test
- * install" option. In case of test install we copy all files into a
- * different directory and run them from there. The directory is
- * defined in the resource (or configlet) file. Directory can be
- * different depending on combination of the user used to install and
- * run the script (root or regular user) and setting of the "test
- * install" option.
+ * on the setting of the "test install" option. In case of test
+ * install we copy all files into a different directory and run them
+ * from there. The directory is defined in the resource (or configlet)
+ * file.
  */
 QString FirewallInstaller::getDestinationDir(const QString &fwdir)
 {
     QString dir = "";
 
-    string optpath = "activation/";
-
-    if (cnf->user=="root") optpath += "root/";
-    else                   optpath += "reg_user/";
-
-    if (cnf->testRun) optpath += "test/copy/";
-    else              optpath += "run/copy/";
-
-    dir = Resources::getTargetOptionStr(cnf->fwobj->getStr("host_OS"),
-                                        optpath).c_str();
-    // need to trim dir because it picks up '\n' and possibly spaces
-    // from XML element body text formatting
-    dir = dir.trimmed();
+    if (cnf->testRun)
+    {
+        string optpath = "activation/fwdir_test/";
+        dir = Resources::getTargetOptionStr(cnf->fwobj->getStr("host_OS"),
+                                            optpath).c_str();
+        // need to trim dir because it picks up '\n' and possibly spaces
+        // from XML element body text formatting
+        dir = dir.trimmed();
+    }
 
     if (fwbdebug)
-        qDebug("FirewallInstaller::getDestinationDir:  "
-               "optpath=%s  "
-               "destination directory=%s  "
-               "cnf->fwdir=%s",
-               optpath.c_str(),
-               dir.toAscii().constData(),
-               cnf->fwdir.toAscii().constData());
+        qDebug() << "FirewallInstaller::getDestinationDir:  "
+                 << "destination directory=" << dir
+                 << "cnf->fwdir=" << cnf->fwdir;
     
     // dir can contain macro %FWDIR% which should be replaced with cnf->fwdir
     // empty dir is equivalent to just the value of cnf->fwdir
 
-    if (dir.isEmpty()) return fwdir;
-    dir.replace("%FWDIR%", fwdir);
+    if (!dir.isEmpty())
+        dir.replace("{{$fwdir}}", fwdir);
+
     if (!dir.endsWith(QDir::separator())) return dir + QDir::separator();
     return dir;
 }

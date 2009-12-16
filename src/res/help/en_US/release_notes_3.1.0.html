@@ -165,17 +165,29 @@
 </p>
 
 <p>
-  <b>Configlets</b>: generated firewall script (for all platforms) is assembled
-  from small fragments we call "configlets". These fragments are located in the
-  /usr/share/fwbuilder/configlets (on Linux). Each configlet is a template
-  that uses specially defined macros which the program replaces with actual
-  strings and values when it generates firewall configuration. There are separate
-  templates for different firewall platforms and for different parts of the 
-  configuration file to be created. Supported macros  include simple variable
-  expansion and conditional "If - then" construct. You can override configlets
-  we provide with your own if you create directory "fwbuilder/configlets" in your
-  home directory and place files with the same name there. This way, you can change
-  virtually all aspects of generated configuration file.
+  <b>Configlets</b>: generated firewall script (for all platforms) is
+  assembled from small fragments we call "configlets". These fragments
+  are located in the /usr/share/fwbuilder/configlets (on Linux). Each
+  configlet is a template that uses specially defined macros which the
+  program replaces with actual strings and values when it generates
+  firewall configuration. There are separate templates for different
+  firewall platforms and for different parts of the configuration file
+  to be created. Supported macros include simple variable expansion
+  and conditional "If - then" construct. You can override configlets
+  we provide with your own if you create directory
+  "fwbuilder/configlets" in your home directory and place files with
+  the same name there. This way, you can change virtually all aspects
+  of generated configuration file.
+</p>
+
+<p>
+  Built-in policy installer gets commands that it needs to execute on
+  the firewall from configlets. Two configlets are used for Unix-based
+  firewalls (Linux, OpenWRT, Sveasoft, IPCOP and its variants,
+  OpenBSD, FreeBSD, MacOSX, Solaris): "installer_commands_reg_user"
+  and "installer_commands_root". You can change the behavior of the
+  installer without having to touch C++ code, just create a copy of
+  the configlet file in $HOME/fwbuilder/configlets and modify it.
 </p>
 
 <p>

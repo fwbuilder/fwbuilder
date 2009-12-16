@@ -61,6 +61,7 @@
 #include <qfileinfo.h>
 #include <qtextstream.h>
 #include <QDateTime>
+#include <QtDebug>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -395,37 +396,41 @@ void instDialog::showPage(const int page)
     setCurrentPage(page);
 }
 
-QString instDialog::replaceMacrosInCommand(const QString &ocmd)
+void instDialog::replaceMacrosInCommand(Configlet *conf)
 {
-
-/* replace macros in activation command:
+/* replace macros in activation commands:
  *
- * %FWSCRIPT%, %FWDIR%, %FWBPROMPT%, %RBTIMEOUT%
- *
- * check if cnf.script is a full path. If it is, strip the path part
- * and use only the file name for %FWSCRIPT%
+ * {{$fwbpromp}}   -- "magic" prompt that installer uses to detect when it is logged in
+ * {{$fwdir}}      -- directory on the firewall
+ * {{$fwscript}}   -- script name on the firewall
+ * {{$rbtimeout}}  -- rollbak timeout
  */
-    QString cmd = ocmd;
+
+/*
+ * TODO: it does not make sense to split remote_script and then
+ * reassemble it again from the file name and cnf.fwdir. We should set
+ * variable $remote_script and use it in the configlets instead, but
+ * keep $fwbscript and $fwdir for backwards compatibility
+ */
+
     QString fwbscript = QFileInfo(cnf.remote_script).fileName();
+
     if (fwbdebug)
     {
-        qDebug("Macro substitutions:");
-        qDebug("  cnf.script=%s", cnf.script.toAscii().constData());
-        qDebug("  %%FWSCRIPT%%=%s", fwbscript.toAscii().constData());
-        qDebug("  %%FWDIR%%=%s", cnf.fwdir.toAscii().constData());
+        qDebug() << "Macro substitutions:";
+        qDebug() << "  $fwdir=" << cnf.fwdir;
+        qDebug() << "  cnf.script=" << cnf.script;
+        qDebug() << "  cnf.remote_script=" << cnf.remote_script;
+        qDebug() << "  $fwscript=" << fwbscript;
     }
 
-    cmd.replace("%FWSCRIPT%", fwbscript);
-    cmd.replace("%FWDIR%", cnf.fwdir);
-    cmd.replace("%FWBPROMPT%", fwb_prompt);
+    conf->setVariable("fwbprompt", fwb_prompt);
+    conf->setVariable("fwdir", cnf.fwdir);
+    conf->setVariable("fwscript", fwbscript);
 
-    int r = cnf.rollbackTime;
-    if (cnf.rollbackTimeUnit=="sec")  r = r*60;
-
-    QString rbt;
-    rbt.setNum(r);
-    cmd.replace("%RBTIMEOUT%",rbt);
-    return cmd;
+    int rbt = cnf.rollbackTime;
+    if (cnf.rollbackTimeUnit=="sec")  rbt = rbt * 60;
+    conf->setVariable("rbtimeout", rbt);
 }
 
 void instDialog::testRunRequested()

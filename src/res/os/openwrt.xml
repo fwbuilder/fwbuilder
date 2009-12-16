@@ -18,83 +18,9 @@
         </default>
 
         <activation>
-
           <fwdir>/etc/fw</fwdir>
-
-          <fwdir_test>/tmp</fwdir_test>
-
+          <fwdir_test>{{$fwdir}}/tmp</fwdir_test>
           <timeout_units>min</timeout_units>
-
-          <reg_user>
-            <run>
-              <copy>
-%FWDIR%
-              </copy>
-
-              <compression>
-echo '%FWBPROMPT%';
-chmod +x %FWDIR%/%FWSCRIPT%;
-sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; sudo -S pkill shutdown; echo 'Policy activated' )
-              </compression>
-              <no_compression>
-echo '%FWBPROMPT%';
-chmod +x %FWDIR%/%FWSCRIPT%;
-sudo -S %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; sudo -S pkill shutdown; echo 'Policy activated' )
-              </no_compression>
-            </run>
-
-            <test>
-              <copy>
-%FWDIR%/tmp
-              </copy>
-
-              <rollback>
-echo '%FWBPROMPT%';
-echo 'sudo -S /sbin/shutdown -r +%RBTIMEOUT%'|batch;
-chmod +x %FWDIR%/tmp/%FWSCRIPT%;
-sudo -S %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
-              </rollback>
-              <no_rollback>
-echo '%FWBPROMPT%';
-chmod +x %FWDIR%/tmp/%FWSCRIPT%;
-sudo -S %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
-              </no_rollback>
-            </test>
-          </reg_user>
-
-          <root>
-            <run>
-              <copy>
-%FWDIR%
-              </copy>
-
-              <compression>
-echo '%FWBPROMPT%';
-sh %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; pkill shutdown; echo 'Policy activated' )
-              </compression>
-              <no_compression>
-echo '%FWBPROMPT%';
-sh %FWDIR%/%FWSCRIPT% &#38;&#38; ( which pkill > /dev/null &#38;&#38; pkill shutdown; echo 'Policy activated' )
-              </no_compression>
-            </run>
-
-            <test>
-              <copy>
-%FWDIR%/tmp
-              </copy>
-
-              <rollback>
-echo '%FWBPROMPT%';
-echo '/sbin/shutdown -r +%RBTIMEOUT%'|batch;
-sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
-              </rollback>
-              <no_rollback>
-echo '%FWBPROMPT%';
-sh %FWDIR%/tmp/%FWSCRIPT% &#38;&#38; echo 'Policy activated'
-              </no_rollback>
-            </test>
-
-          </root>
         </activation>
 
 <!-- set to True if you want to suppress comments in the generated script -->

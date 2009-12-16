@@ -32,6 +32,7 @@
 #include "instDialog.h"
 #include "SSHPIX.h"
 #include "SSHIOS.h"
+#include "Configlet.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -100,7 +101,6 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
                                 cnf->epwd,
                                 list<string>());
     }
-
     /*
      * TODO:
      * the structure of scriptlets (command templates) for PIX and
@@ -113,37 +113,40 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     QStringList pre_config_commands;
     QStringList post_config_commands;
 
-    cmd = cnf->getCmdFromResource("pre_config_commands");
-    pre_config_commands =
-        inst_dlg->replaceMacrosInCommand(cmd).split("\n", QString::SkipEmptyParts);
+    string host_os = cnf->fwobj->getStr("host_OS");
+    string os_family = Resources::os_res[host_os]->
+        getResourceStr("/FWBuilderResources/Target/family");
 
-    if (cnf->rollback)
-    {
-        cmd = cnf->getCmdFromResource("schedule_rollback");
-        pre_config_commands = pre_config_commands +
-            inst_dlg->replaceMacrosInCommand(cmd).split("\n", QString::SkipEmptyParts);
-    }
+    // installer configlets should be different for each OS, but if
+    // some OS can use the same script, it will be placed in the file
+    // under os_family name. For example:
+    // for PIX configlet is in src/res/configlets/pix_os
+    // but since fwsm and pix can use the same script and fwsm_os.xml
+    // declares family as "pix_os", it uses the same configlet.
 
-    cmd = cnf->getCmdFromResource("post_config_commands");
-    post_config_commands =
-        inst_dlg->replaceMacrosInCommand(cmd).split("\n", QString::SkipEmptyParts);
+    Configlet pre_config(host_os, os_family, "installer_commands_pre_config");
+    pre_config.removeComments();
+    pre_config.setVariable("test",   cnf->testRun);
+    pre_config.setVariable("run",  ! cnf->testRun);
+    pre_config.setVariable("schedule_rollback", cnf->rollback);
+    pre_config.setVariable("cancel_rollback", cnf->cancelRollbackIfSuccess);
+    pre_config.setVariable("save_standby", cnf->saveStandby);
+    inst_dlg->replaceMacrosInCommand(&pre_config);
 
-    if (cnf->cancelRollbackIfSuccess)
-    {
-        cmd = cnf->getCmdFromResource("cancel_rollback");
-        post_config_commands = post_config_commands +
-            inst_dlg->replaceMacrosInCommand(cmd).split("\n", QString::SkipEmptyParts);
-    }
+    Configlet post_config(host_os, os_family, "installer_commands_post_config");
+    post_config.removeComments();
+    post_config.setVariable("test",   cnf->testRun);
+    post_config.setVariable("run",  ! cnf->testRun);
+    post_config.setVariable("schedule_rollback", cnf->rollback);
+    post_config.setVariable("cancel_rollback", cnf->cancelRollbackIfSuccess);
+    post_config.setVariable("save_standby", cnf->saveStandby);
+    inst_dlg->replaceMacrosInCommand(&post_config);
 
-    if (cnf->saveStandby)
-    {
-        cmd = cnf->getCmdFromResource("save_standby");
-        post_config_commands = post_config_commands +
-            inst_dlg->replaceMacrosInCommand(cmd).split("\n", QString::SkipEmptyParts);
-    }
+    ssh_object->loadPreConfigCommands(
+        pre_config.expand().split("\n", QString::SkipEmptyParts) );
 
-    ssh_object->loadPreConfigCommands( pre_config_commands );
-    ssh_object->loadPostConfigCommands( post_config_commands );
+    ssh_object->loadPostConfigCommands(
+        post_config.expand().split("\n", QString::SkipEmptyParts) );
 
     runSSHSession(ssh_object);
 

@@ -1,0 +1,73 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+##
+## These are commands built-in policy installer runs on the firewall if
+## installation is performed using root account for authentication
+##
+##  Variables:
+##
+##  {{$fwbpromp}}   -- "magic" prompt that installer uses to detect when it is logged in
+##  {{$fwdir}}      -- directory on the firewall
+##  {{$fwscript}}   -- script name on the firewall
+##  {{$rbtimeout}}  -- rollback timeout
+##
+
+
+{{if run}}
+
+{{if with_compression}}
+echo '{{$fwbprompt}}';
+mv /tmp/{{$fwscript}} /tmp/fwb;
+/usr/sbin/nvram unset rc_firewall;
+/usr/sbin/nvram set rc_firewall="/usr/sbin/nvram get fwb|uudecode|gzip -dc|sh";
+/usr/sbin/nvram unset fwb;
+/usr/sbin/nvram set fwb="`cat /tmp/fwb|gzip|uuencode -`" || exit 1;
+rm /tmp/fwb;
+echo "Saving data to flash memory";
+/usr/sbin/nvram commit || exit 1;
+echo "Flash memory:";
+/usr/sbin/nvram show >/dev/null;
+echo "Activating policy";
+/usr/sbin/nvram get fwb|uudecode|gzip -dc|sh && (killall reboot;echo 'Policy activated')
+{{endif}}
+
+{{if no_compression}}
+echo '{{$fwbprompt}}';
+mv /tmp/{{$fwscript}} /tmp/fwb;
+/usr/sbin/nvram set rc_firewall="/usr/sbin/nvram get fwb|sh";
+/usr/sbin/nvram unset fwb;
+/usr/sbin/nvram set fwb="`cat /tmp/fwb`" || exit 1;
+rm /tmp/fwb;
+echo "Saving data to flash memory";
+/usr/sbin/nvram commit || exit 1;
+echo "Flash memory:";
+/usr/sbin/nvram show >/dev/null;
+echo "Activating policy";
+/usr/sbin/nvram get fwb|sh && (killall reboot; echo 'Policy activated')
+{{endif}}
+
+{{endif}}
+
+
+
+{{if test}}
+
+{{if with_rollback}}
+echo '{{$fwbprompt}}';
+cp /tmp/crontab /tmp/crontab.o;
+echo '* * * * * root cat /tmp/crontab.o > /tmp/crontab; reboot -d{{$rbtimeout}}' >> /tmp/crontab;
+sh /tmp/{{$fwscript}} && echo 'Policy activated'
+{{endif}}
+
+{{if no_rollback}}
+echo '{{$fwbprompt}}'; sh /tmp/{{$fwscript}} && echo 'Policy activated'
+{{endif}}
+
+
+{{endif}}
+
+
