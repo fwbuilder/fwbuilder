@@ -1305,7 +1305,12 @@ void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
         ruleopt->setBool("stateless",
                          getStatelessFlagForAction(newrule_as_policy_rule));
     }
-    if (old_rule!=NULL)  new_rule->duplicate(old_rule);
+    if (old_rule!=NULL)
+    {
+        int oldPos = new_rule->getPosition();
+        new_rule->duplicate(old_rule);
+        new_rule->setPosition(oldPos);
+    }
 }
 
 bool PolicyModel::checkRuleType(libfwbuilder::Rule *rule)
