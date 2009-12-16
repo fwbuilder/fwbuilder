@@ -163,16 +163,20 @@ void ObjectManipulator::createNewObject()
     QVariant v2 = d["add_to_group"];
     int add_to_group_id = v2.value<int>();
 
+    fwbdebug = true;
     if (fwbdebug)
         qDebug() << "ObjectManipulator::createNewObject()"
                  << "type:" << type_name
                  << "add_to_group_id:" << add_to_group_id;
-
+    fwbdebug = false;
     FWObject *new_obj = NULL;
 
     QString descr = FWBTree().getTranslatableObjectTypeName(type_name);
 
-    m_project->undoStack->beginMacro("Create and add to group");
+    if (add_to_group_id == -1)
+        m_project->undoStack->beginMacro("Create new object");
+    else
+        m_project->undoStack->beginMacro("Create and add to group");
 
     if (type_name ==  Library::TYPENAME) new_obj = newLibrary();
     if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall();
