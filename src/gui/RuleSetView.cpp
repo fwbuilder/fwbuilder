@@ -714,6 +714,9 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
 
     label = (selectionSize==1)?tr("Remove Rule"):tr("Remove Rules");
     menu->addAction( label, this, SLOT( removeRule()));
+
+    menu->addSeparator();
+
     label = (selectionSize==1)?tr("Move Rule up"):tr("Move Rules up");
     menu->addAction( label, this, SLOT( moveRuleUp()));
     label = (selectionSize==1)?tr("Move Rule down"):tr("Move Rules down");
