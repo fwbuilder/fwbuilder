@@ -137,7 +137,8 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
         known_interfaces.push_back(iface_name.c_str());
     }
 
-    if (known_interfaces.size() > 0)
+    if (fw->getOptionsObject()->getBool("clear_unknown_interfaces") &&
+        known_interfaces.size() > 0)
     {
         // last resort protection: if there are no interfaces with
         // addresses in fwbuilder configuration, we should not kill

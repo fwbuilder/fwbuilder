@@ -151,6 +151,8 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
 
     data.registerOption(m_dialog->configureInterfaces,
                         fwoptions, "configure_interfaces");
+    data.registerOption(m_dialog->clearUnknownInterfaces,
+                        fwoptions, "clear_unknown_interfaces");
     data.registerOption(m_dialog->configure_vlan_interfaces,
                         fwoptions, "configure_vlan_interfaces");
     data.registerOption(m_dialog->configure_bridge_interfaces,
