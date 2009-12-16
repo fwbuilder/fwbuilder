@@ -880,7 +880,9 @@ bool instDialog::getBatchInstOptions()
     if (batch_inst_opt_dlg->exec()==QDialog::Rejected)
     {
         stopProcessFlag = true;
-        showPage(0);
+        this->m_dialog->finishButton->setEnabled(true);
+        foreach(Firewall *fw, this->install_fw_list)
+            this->opCancelled(fw);
         return false;
     }
     // clear aternative address in the dialog
