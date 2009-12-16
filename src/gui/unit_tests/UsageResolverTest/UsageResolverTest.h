@@ -57,7 +57,7 @@ public:
 
     static CppUnit::Test *suite()
     {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "FWObjectDatabase" );
+      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "UsageResolver" );
       suiteOfTests->addTest( new CppUnit::TestCaller<UsageResolverTest>(
                                    "findWhereObjectIsUsed",
                                    &UsageResolverTest::findWhereObjectIsUsed ) );
