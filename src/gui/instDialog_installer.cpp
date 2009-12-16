@@ -69,6 +69,7 @@ bool instDialog::runInstaller(Firewall *fw)
     if (!getInstOptions(fw))
     {
         QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
+        this->opCancelled(fw);
         return false;
     }
 
@@ -89,7 +90,7 @@ bool instDialog::runInstaller(Firewall *fw)
             arg(QString::fromUtf8(fw->getName().c_str() )));
 
         currentSearchString = tr("Install firewall: ");
-        currentFirewallsBar->setValue(install_list_initial_size - 
+        currentFirewallsBar->setValue(install_list_initial_size -
                                       install_fw_list.size());
         currentProgressBar->reset();
         currentProgressBar->setFormat("%v/%m");
@@ -102,7 +103,7 @@ bool instDialog::runInstaller(Firewall *fw)
         setInProcessState(item);
         item->setText(1, tr("Installing ..."));
         currentLabel->setText(tr("Installing ..."));
-        
+
         qApp->processEvents();
 
         addToLog("\n");
