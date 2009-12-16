@@ -1,5 +1,19 @@
 2009-12-15  vadim  <vadim@vk.crocodile.org>
 
+	* FirewallInstaller.cpp (FirewallInstaller::readManifest): fixed
+	bug in installer: when the GUI ran on Windows, the path of the
+	file on the firewall was generated with mixed separators '/' and
+	'\'. As the result, pscp.exe failed to copy the file to the
+	firewall.
+
+	* OSConfigurator_linux24::printInterfaceConfigurationCommands:
+	call shell function clear_addresses_except_known_interfaces() with
+	a list of all interfaces configured in fwbuilder. This will clear
+	ip addresses of interfaces that are not configured in fwbuilder
+	and bring them down. Before, the call to this function did not
+	include dynamic interfaces and as the result, the script deleted
+	their addresses and brought them down.
+
 	* ../src/res/os/linux24.xml: the GUI and compiler should not
 	assume that when failover protocol is VRRP, then there should be
 	interface vrrpN. This seems to be the case and the default only
