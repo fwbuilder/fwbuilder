@@ -223,13 +223,7 @@ instDialog::instDialog(QWidget* p,
     }
     }
 
-    //hide all details
-    bool fs = st->value(
-        SETTINGS_PATH_PREFIX"/Installer/ShowDetails").toBool();
-    if (fs)
-        m_dialog->detailMCframe->show();
-    else
-        m_dialog->detailMCframe->hide();
+    m_dialog->detailMCframe->show();
 }
 
 instDialog::~instDialog()
