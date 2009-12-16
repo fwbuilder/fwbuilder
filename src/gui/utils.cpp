@@ -257,45 +257,6 @@ QString quoteString(const QString &str)
     return res;
 }
 
-QString getUserName()
-{
-    QString uname;
-
-#ifdef _WIN32
-
-#define INFO_BUFFER_SIZE 32767
-
-TCHAR  infoBuf[INFO_BUFFER_SIZE];
-DWORD  bufCharCount = INFO_BUFFER_SIZE;
-
-  bufCharCount = INFO_BUFFER_SIZE;
-  if( GetUserName( infoBuf, &bufCharCount ) )
-  {
-#ifdef UNICODE
-      uname = QString::fromUtf16((ushort*)infoBuf);
-#else
-      uname = QString::fromLocal8Bit(infoBuf);
-#endif
-  }
-
-  uname = uname.replace(' ','_');
-
-#else
-
-    char *lname = getenv("LOGNAME");
-    if (lname!=NULL)
-        uname = QString(lname);
-    else
-    {
-        struct passwd *pwd = getpwuid(getuid());
-        assert(pwd);
-        uname = QString(pwd->pw_name);
-    }
-#endif
-    return uname;
-}
-
-
 QString getFileDir(const QString &file)
 {
     int sn1  = file.lastIndexOf("/",-1);

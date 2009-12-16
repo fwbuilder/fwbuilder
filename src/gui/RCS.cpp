@@ -64,6 +64,44 @@
 
 #include <iostream>
 
+QString getUserName()
+{
+    QString uname;
+
+#ifdef _WIN32
+
+#define INFO_BUFFER_SIZE 32767
+
+TCHAR  infoBuf[INFO_BUFFER_SIZE];
+DWORD  bufCharCount = INFO_BUFFER_SIZE;
+
+  bufCharCount = INFO_BUFFER_SIZE;
+  if( GetUserName( infoBuf, &bufCharCount ) )
+  {
+#ifdef UNICODE
+      uname = QString::fromUtf16((ushort*)infoBuf);
+#else
+      uname = QString::fromLocal8Bit(infoBuf);
+#endif
+  }
+
+  uname = uname.replace(' ','_');
+
+#else
+
+    char *lname = getenv("LOGNAME");
+    if (lname!=NULL)
+        uname = QString(lname);
+    else
+    {
+        struct passwd *pwd = getpwuid(getuid());
+        assert(pwd);
+        uname = QString(pwd->pw_name);
+    }
+#endif
+    return uname;
+}
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -192,7 +230,7 @@ RCSEnvFix::RCSEnvFix()
     TZOffset = tzsign + TZOffset;
 
     if (fwbdebug)
-	qDebug("tzoffset: %d TZOffset: '%s'",tzoffset,TZOffset.toAscii().constData());
+    qDebug("tzoffset: %d TZOffset: '%s'",tzoffset,TZOffset.toAscii().constData());
 
 #ifdef _WIN32
 /* need this crap because Windows does not set environment variable TZ
@@ -362,7 +400,7 @@ RCS::RCS(const QString &file)
                 r.log += log_rx.cap(1);
 
             r.log.replace('\r',"");
-            
+
 
             if (r.rev != "")
             {
@@ -532,7 +570,7 @@ void RCS::add() throw(libfwbuilder::FWException)
     }
     QByteArray outp = proc->readAllStandardOutput();
     QString msg=QObject::tr("Fatal error during initial RCS checkin of file %1 :\n %2\nExit status %3")
-	.arg(filename).arg(outp.data()).arg(proc->exitCode());
+    .arg(filename).arg(outp.data()).arg(proc->exitCode());
     throw(FWException( msg.toLatin1().constData()  ));
 }
 
@@ -560,11 +598,11 @@ bool RCS::isInRCS()
     {
 /* exist status '1' means the file is not in RCS */
         inrcs=false;
-	if (fwbdebug)
-	{
+    if (fwbdebug)
+    {
           QByteArray outp = proc->readAllStandardOutput();
           qDebug("Error running rlog: %s",outp.data());
-	}
+    }
         return false;
     }
     inrcs=true;
@@ -660,20 +698,20 @@ bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
                 strcat(tname,"_temp_XXXXXX");
                 int fd = mkstemp(tname);
 #endif
-		if (fd<0)
-		{
+        if (fd<0)
+        {
                     QString err = tr("Error creating temporary file ")+tname+QString(" :\n")+strerror(errno);
                     QMessageBox::critical(app->activeWindow(), "Firewall Builder", err, tr("&Continue") );
                     throw(FWException(err.toLatin1().constData()));
-		}
+        }
 #ifdef _WIN32
                 if (_write(fd,stdoutBuffer.toLatin1().constData(),stdoutBuffer.length() )<0)
-		{
-		    _close(fd);
+        {
+            _close(fd);
 #else
                 if ( write(fd,stdoutBuffer.toLatin1().constData(),stdoutBuffer.length() )<0)
-		{
-		    close(fd);
+        {
+            close(fd);
 #endif
                     QString err = tr("Error writing to temporary file ")+tname+QString(" :\n")+strerror(errno);
                     QMessageBox::critical(app->activeWindow(), "Firewall Builder", err, tr("&Continue") );
@@ -989,4 +1027,3 @@ QString RCS::getSelectedRev()
     if (isInRCS()) return selectedRev;
     return "";
 }
-

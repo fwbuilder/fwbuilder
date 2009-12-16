@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -35,13 +35,30 @@
 
 #include "fwbuilder/FWException.h"
 
+#if defined(_WIN32)
+#  include <stdio.h>
+#  include <sys/timeb.h>
+#  include <sys/stat.h>
+#  include <fcntl.h>
+#  include <time.h>
+#  include <windows.h>
+#else
+#  include <unistd.h>
+#  include <string.h>
+#  include <errno.h>
+#  include <pwd.h>
+#endif
+
+
+extern QString getUserName();
+
 class RCS;
 class RCSFilePreview;
 
 class Revision {
 
     friend class RCS;
-    
+
  public:
 
     QString filename;
@@ -76,7 +93,7 @@ class RCSEnvFix {
 class RCS : public QObject {
 
     friend class RCSFilePreview;
-    
+
     Q_OBJECT
 
     /*
@@ -86,7 +103,7 @@ class RCS : public QObject {
      * Windows.
      */
     static RCSEnvFix     *rcsenvfix;
-        
+
     static QString        rcs_file_name     ;
     static QString        rcsdiff_file_name ;
     static QString        rlog_file_name    ;
@@ -117,11 +134,12 @@ class RCS : public QObject {
      */
     QString rlog() throw(libfwbuilder::FWException);
 
+
  public:
 
     RCS( const QString &filename );
     virtual ~RCS();
-     
+
     /**
      * returns head revision of the file
      */
@@ -130,19 +148,19 @@ class RCS : public QObject {
 
     QList<Revision>::iterator begin() { return revisions.begin(); }
     QList<Revision>::iterator end()   { return revisions.end();   }
-    
+
     void  add() throw(libfwbuilder::FWException);
 
     /**
      * this makes RCS object "forget" about the file
      */
     void  abandon();
-    
-    /** 
+
+    /**
      * tells whether the file associated with RCS object is in RCS
      */
     bool   isInRCS();
-    
+
     /**
      * RCS checkout. Returns true if successfull and false if file is
      * not in RCS. In case of error throws exception
@@ -153,7 +171,7 @@ class RCS : public QObject {
      * checks out currently selected revision (set using setSelectedRev)
      */
     bool  co(bool force=false) throw(libfwbuilder::FWException);
-    
+
     /**
      * RCS checkin. Returns true if successfull and false if file is
      * not in RCS. In case of error throws exception
@@ -194,12 +212,12 @@ class RCS : public QObject {
      * flag 'temp' indicates checkout has been done into temporary file
      */
     bool isTemp() { return temp; }
-    
+
     /**
      * returns head revision of the file
      */
     QString getHead();
-    
+
     /**
      * returns selected revision of the file. If the file has been
      * checked out, this is the revision that was chosen for checkout;
