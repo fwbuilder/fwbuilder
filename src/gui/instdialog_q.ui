@@ -269,9 +269,6 @@
             <property name="sortingEnabled" >
              <bool>true</bool>
             </property>
-            <property name="headerHidden" >
-             <bool>false</bool>
-            </property>
             <column>
              <property name="text" >
               <string>Firewall</string>
