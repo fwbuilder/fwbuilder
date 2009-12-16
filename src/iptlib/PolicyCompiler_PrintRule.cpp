@@ -1620,6 +1620,10 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
             } catch(const FWException &ex)  {
                 // address does not parse as ipv6, skip this rule.
                 addr_is_good = false;
+                QString err("Backup ssh access rule could not be added "
+                            "to IPv6 policy because specified address "
+                            "'%1' is invalid");
+                compiler->warning(err.arg(addr_str.c_str()).toStdString());
             }
         } else
         {
@@ -1630,17 +1634,16 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
             } catch(const FWException &ex)  {
                 // address does not parse
                 addr_is_good = false;
+                QString err("Backup ssh access rule could not be added "
+                            "to IPv4 policy because specified address "
+                            "'%1' is invalid");
+                compiler->warning(err.arg(addr_str.c_str()).toStdString());
             }
         }
         if (addr_is_good)
         {
             configlet.setVariable("mgmt_access", 1);
             configlet.setVariable("management_address", inet_addr->toString().c_str());
-        } else
-        {
-            QString err("Backup ssh access rule could not be added "
-                        "because specified address '%1' is invalid");
-            compiler->warning(err.arg(addr_str.c_str()).toStdString());
         }
     }
 
