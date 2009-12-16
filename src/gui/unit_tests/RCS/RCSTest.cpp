@@ -35,12 +35,13 @@
 
 #include <iostream>
 
+#include <QProcess>
+#include <QRegExp>
 #include <QDebug>
 
 using namespace std;
 using namespace libfwbuilder;
 
-QApplication      *app        = NULL;
 int                fwbdebug   = 0;
 
 QString            test_file = "zu.fwb";
@@ -48,43 +49,80 @@ QString            rlog_unit_test_log_file = "rlog_unit_test.log";
 
 void RCSTest::verifyRevisions()
 {
-    /*
-    app = new QApplication( argc, argv );
-    QWidget w;
-    app->setMainWidget(&w);
-    w.show();
-*/
+
     RCS *rcs = new RCS(test_file);
 
-    QString reverse_engineered_rlog;
-
-    QList<Revision>::iterator i;
-    for (i=rcs->begin(); i!=rcs->end(); ++i)
+    QList<Revision> rcsrevs;
+    for (QList<Revision>::iterator i=rcs->begin(); i!=rcs->end(); ++i)
     {
-        reverse_engineered_rlog += "---------------------------------\n";
-        reverse_engineered_rlog += "revision: " + (*i).rev + "\n";
-        reverse_engineered_rlog += "date: " + (*i).date + "\n";
-        reverse_engineered_rlog += "author: " + (*i).author + "\n";
-        reverse_engineered_rlog += "locked by: " + (*i).locked_by + "\n";
-        reverse_engineered_rlog += "log: " + (*i).log + "\n";
+        Revision rev = *i;
+        QStringList log = rev.log.split("\n");
+        log.removeFirst();
+        rev.log = log.join("\n");
+        rcsrevs.append(rev);
+    }
+    QProcess rlog;
+    rlog.start("rlog", QStringList() << test_file);
+
+    rlog.waitForFinished();
+
+    QList<Revision> realrevs;
+    QRegExp revlock("revision\\s+([\\.\\d]+)(\\s+locked by: (\\w+);)?\\n");
+    revlock.setPatternSyntax(QRegExp::RegExp2);
+    QRegExp dateauth("date: (\\d\\d\\d\\d/\\d\\d/\\d\\d \\d\\d\\:\\d\\d\\:\\d\\d);\\s+author\\: (\\w+);\\s+state\\: (\\w+);(\\s+lines: \\+(\\d+) \\-(\\d+))?\\n");
+
+    QMap <QString, Revision> realrevsmap;
+
+    QString line;
+
+    while (!rlog.atEnd() && line != "----------------------------\n") // skip header
+        line = rlog.readLine();
+    while (!rlog.atEnd())
+    {
+        QStringList lines;
+        while (!rlog.atEnd())
+        {
+            line = rlog.readLine();
+            if (line != "----------------------------\n" &&
+                line != "=============================================================================\n")
+                lines.append(line);
+            else
+                break;
+        }
+        QStringList comment;
+        for (int i = 2; i< lines.length(); i++)
+            comment.append(lines.at(i));
+        Revision rev;
+        rev.log = comment.join("");
+        revlock.indexIn(lines[0]);
+        rev.locked_by = revlock.capturedTexts()[3];
+        rev.rev = revlock.capturedTexts()[1];
+        dateauth.indexIn(lines[1]);
+        rev.date = dateauth.capturedTexts()[1].replace("/", "-");
+        rev.author = dateauth.capturedTexts()[2];
+        rev.filename = test_file;
+
+        realrevs.insert(0, rev);
+        realrevsmap[rev.rev] = rev;
     }
 
-    QFile rlog_test_file(rlog_unit_test_log_file);
-    if (rlog_test_file.open( QFile::ReadOnly ))
+    CPPUNIT_ASSERT(realrevs.size() == rcsrevs.size());
+
+    for (int i = 0; i < realrevs.size(); i++)
     {
-        QTextStream strm( &rlog_test_file );
-        QString test_str = strm.readAll();
-        rlog_test_file.close();
-
-        if (test_str != reverse_engineered_rlog)
-        {
-            qDebug() << reverse_engineered_rlog;
-
-//            cout << "################################################################" << endl;
-
-//            cout << test_str << endl;
-        }
-
+        Revision rcsr = rcsrevs.at(i);
+        Revision realr = realrevsmap[rcsr.rev];
+/*
+        qDebug() << realr.author << rcsr.author;
+        qDebug() << realr.date << rcsr.date;
+        qDebug() << realr.filename << rcsr.filename;
+        qDebug() << realr.locked_by << rcsr.locked_by;
+        qDebug() << realr.log << rcsr.log;
+        qDebug() << realr.rev << rcsr.rev;
+        qDebug() << "----------";
+        qDebug() << (realr == rcsr);
+*/
+        CPPUNIT_ASSERT (realr == rcsr);
     }
 
 }
