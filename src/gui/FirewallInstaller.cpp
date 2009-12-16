@@ -224,7 +224,6 @@ bool FirewallInstaller::readManifest(const QString &script,
                             remote_name;
                     }
                 }
-
                 (*all_files)[local_name] = remote_name;
             }
         } while  (!line.isNull());
@@ -254,6 +253,15 @@ bool FirewallInstaller::readManifest(const QString &script,
                     getDestinationDir(cnf->fwdir) + remote_name;
         }
 
+        // make sure remote_name has '/' as a separator. If the program
+        // runs on windows, QFileInfo may return path with native
+        // separators '\'
+        cnf->remote_script = QDir::fromNativeSeparators(cnf->remote_script);
+        for (it=all_files->begin(); it!=all_files->end(); ++it)
+        {
+            QString local_name = it.key();
+            (*all_files)[local_name] = QDir::fromNativeSeparators(it.value());
+        }
         return true;
     } else
     {
