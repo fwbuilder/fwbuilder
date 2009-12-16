@@ -35,23 +35,6 @@
 
 #include "fwbuilder/FWException.h"
 
-#if defined(_WIN32)
-#  include <stdio.h>
-#  include <sys/timeb.h>
-#  include <sys/stat.h>
-#  include <fcntl.h>
-#  include <time.h>
-#  include <windows.h>
-#else
-#  include <unistd.h>
-#  include <string.h>
-#  include <errno.h>
-#  include <pwd.h>
-#endif
-
-
-extern QString getUserName();
-
 class RCS;
 class RCSFilePreview;
 
