@@ -6,7 +6,7 @@
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
-  $Id: main.cpp 2039 2009-12-05 20:16:44Z a2k $
+  $Id: UsageResolverTest.h 2161 2009-12-16 11:41:47Z a2k $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -23,23 +23,26 @@
 
 */
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
-#include "RCSTest.h"
-#include <QString>
-#include <string>
+#ifndef IMPORTERTEST_H
+#define IMPORTERTEST_H
 
-//std::string respath;
-//int fwbdebug = 0;
-QString user_name;
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
 
-int main( int, char** )
+class ImporterTest : public CppUnit::TestCase
 {
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( RCSTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
+public:
+    void testImporter();
 
-    runner.run();
-    return 0;
-}
+    static CppUnit::Test *suite()
+    {
+      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "ImporterTest" );
+      suiteOfTests->addTest( new CppUnit::TestCaller<ImporterTest>(
+                                   "testImporter",
+                                   &ImporterTest::testImporter ) );
+      return suiteOfTests;
+    }
+};
+
+#endif // IMPORTERTEST_H

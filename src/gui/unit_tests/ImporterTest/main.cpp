@@ -25,18 +25,20 @@
 
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
-#include "RCSTest.h"
+#include "ImporterTest.h"
 #include <QString>
 #include <string>
+#include "../../../common/init.cpp"
 
 //std::string respath;
-//int fwbdebug = 0;
-QString user_name;
+int fwbdebug = 0;
+//QString user_name;
 
 int main( int, char** )
 {
+    init();
     CppUnit::TextUi::TestRunner runner;
-    runner.addTest( RCSTest::suite() );
+    runner.addTest( ImporterTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
                                                          std::cerr ) );
 
