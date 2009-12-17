@@ -520,14 +520,6 @@ void ProjectPanel::findAllFirewalls (std::list<Firewall *> &fws)
     m_panel->om->findAllFirewalls(fws);
 }
 
-FWObject* ProjectPanel::duplicateObject(FWObject *target,
-                                        FWObject *obj,
-                                        const QString &name,
-                                        bool  askForAutorename)
-{
-    return m_panel->om->duplicateObject(target, obj, name, askForAutorename);
-}
-
 void ProjectPanel::showDeletedObjects(bool f)
 {
     m_panel->om->showDeletedObjects(f);

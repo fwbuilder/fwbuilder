@@ -457,17 +457,6 @@ void FWWindow::findAllFirewalls (std::list<Firewall *> &fws)
     if (activeProject()) activeProject()->findAllFirewalls (fws);
 }
 
-FWObject* FWWindow::duplicateObject(FWObject *target,
-                                    FWObject *obj,
-                                    const QString &name,
-                                    bool  askForAutorename)
-{
-    if (activeProject())
-        return activeProject()->duplicateObject(target,
-                                                obj, name, askForAutorename);
-    return 0;
-}
-
 void FWWindow::showDeletedObjects(bool f)
 {
     if (activeProject()) activeProject()->showDeletedObjects(f);

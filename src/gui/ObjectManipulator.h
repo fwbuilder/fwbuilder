@@ -295,9 +295,7 @@ public:
      void openObjectInTree(ObjectTreeViewItem *otvi,    bool register_in_history);
 
      libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
-                                             libfwbuilder::FWObject *obj,
-                                             const QString &name = QString::null,
-                                             bool  askForAutorename=true);
+                                             libfwbuilder::FWObject *obj);
 
      void moveObject(libfwbuilder::FWObject *target,
                      libfwbuilder::FWObject *obj);

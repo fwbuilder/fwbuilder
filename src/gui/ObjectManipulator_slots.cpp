@@ -239,7 +239,7 @@ void ObjectManipulator::duplicateObj(QAction *action)
         obj= *i;
         if ( FWBTree().isSystem(obj) || Interface::isA(obj) ) continue;
         FWObject *cl = idxToLibs[libid];
-        nobj = duplicateObject(cl, obj, "", false);
+        nobj = duplicateObject(cl, obj);
     }
     editObject(nobj);
     ot->freezeSelection(false);

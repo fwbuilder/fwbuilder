@@ -204,16 +204,14 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
     }
 }
 
-FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib,
-                                             FWObject *obj,
-                                             const QString &name,
-                                             bool)
+FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib, FWObject *obj)
 {
     if (!isTreeReadWrite(this, targetLib)) return NULL;
     openLib(targetLib);
-    QString newName;
-    if (!name.isEmpty()) newName = name;
-    else                 newName = QString::fromUtf8(obj->getName().c_str());
+    QString newName =
+        makeNameUnique(obj->getParent(),
+                       QString::fromUtf8(obj->getName().c_str()),
+                       obj->getTypeName().c_str());
     return createObject(obj->getTypeName().c_str(), newName, obj);
 }
 

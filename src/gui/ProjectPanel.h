@@ -174,10 +174,6 @@ public:
 
     void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
 
-    libfwbuilder::FWObject* duplicateObject(libfwbuilder::FWObject *target,
-                                            libfwbuilder::FWObject *obj,
-                                            const QString &name = QString::null,
-                                            bool  askForAutorename=true);
     void showDeletedObjects(bool f);
     void select();
     void unselect();
