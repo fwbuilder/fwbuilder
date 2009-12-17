@@ -2078,7 +2078,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
         }
     }
 
-    if (RuleElementItf::cast(re))
+    if (RuleElementItf::cast(re) || RuleElementRItf::cast(re))
         return validateForInsertionToInterfaceRE(RuleElementItf::cast(re), obj);
 
     return true;
