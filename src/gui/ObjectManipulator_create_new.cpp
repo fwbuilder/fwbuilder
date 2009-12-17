@@ -163,12 +163,10 @@ void ObjectManipulator::createNewObject()
     QVariant v2 = d["add_to_group"];
     int add_to_group_id = v2.value<int>();
 
-    fwbdebug = true;
     if (fwbdebug)
         qDebug() << "ObjectManipulator::createNewObject()"
                  << "type:" << type_name
                  << "add_to_group_id:" << add_to_group_id;
-    fwbdebug = false;
     FWObject *new_obj = NULL;
 
     QString descr = FWBTree().getTranslatableObjectTypeName(type_name);
@@ -690,9 +688,8 @@ FWObject* ObjectManipulator::newInterfaceAddress()
         return createObject(currentObj, IPv4::TYPENAME, iname);
     }
     // if current object is not interface, create address in the standard folder
-    createObject(IPv4::TYPENAME,
-                 FWBTree().getTranslatableObjectTypeName(IPv4::TYPENAME));
-    return NULL;
+    return createObject(IPv4::TYPENAME,
+                        FWBTree().getTranslatableObjectTypeName(IPv4::TYPENAME));
 }
 
 FWObject* ObjectManipulator::newInterfaceAddressIPv6()
@@ -711,9 +708,8 @@ FWObject* ObjectManipulator::newInterfaceAddressIPv6()
         return createObject(currentObj, IPv6::TYPENAME, iname);
     }
     // if current object is not interface, create address in the standard folder
-    createObject(IPv6::TYPENAME,
-                 FWBTree().getTranslatableObjectTypeName(IPv6::TYPENAME));
-    return NULL;
+    return createObject(IPv6::TYPENAME,
+                        FWBTree().getTranslatableObjectTypeName(IPv6::TYPENAME));
 }
 
 FWObject* ObjectManipulator::newPhysicalAddress()
