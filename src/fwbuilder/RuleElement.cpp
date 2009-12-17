@@ -699,11 +699,6 @@ RuleElementRItf::RuleElementRItf()  {}
 RuleElementRItf::RuleElementRItf(const FWObjectDatabase *root,bool prepopulate) :
     RuleElementItf(root,prepopulate) {}
 
-/**
- * Unlike RuleElementItf, RuleElementRItf can hold only single object.
- * Both RuleElementItf and RuleElementRItf can only hold Interface objects
- * which must belong to the same firewall the rule element belongs to.
- */
 bool RuleElementRItf::validateChild(FWObject *o)
 {
     if (FWObjectReference::cast(o)!=NULL) return true;
@@ -711,8 +706,7 @@ bool RuleElementRItf::validateChild(FWObject *o)
     if (getChildrenCount() > 0 && !isAny()) return false;
 
     if ( o->getId() == getAnyElementId()) return true;
-    if (Interface::cast(o)!=NULL) return checkItfChildOfThisFw(o);
 
-    return false;
+    return (Interface::cast(o)!=NULL);
 }
 
