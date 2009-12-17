@@ -14,14 +14,14 @@ win32:CONFIG += console
 
 # unix { !macx: CONFIG -= qt }
 
-INCLUDEPATH += ../pflib ../compiler_lib
+INCLUDEPATH += ../common ../pflib ../compiler_lib
 DEPENDPATH   = ../pflib
 
-win32:LIBS  += ../pflib/release/fwbpf.lib ../compiler_lib/release/compilerdriver.lib
-!win32:LIBS += ../pflib/libfwbpf.a ../compiler_lib/libcompilerdriver.a
+win32:LIBS  += ../common/release/libcommon.lib ../pflib/release/fwbpf.lib ../compiler_lib/release/compilerdriver.lib
+!win32:LIBS += ../common/libcommon.a ../pflib/libfwbpf.a ../compiler_lib/libcompilerdriver.a
 
-win32:PRE_TARGETDEPS  = ../pflib/release/fwbpf.lib ../compiler_lib/release/compilerdriver.lib
-!win32:PRE_TARGETDEPS = ../pflib/libfwbpf.a ../compiler_lib/libcompilerdriver.a
+win32:PRE_TARGETDEPS  = ../common/release/libcommon.lib ../pflib/release/fwbpf.lib ../compiler_lib/release/compilerdriver.lib
+!win32:PRE_TARGETDEPS = ../common/libcommon.a ../pflib/libfwbpf.a ../compiler_lib/libcompilerdriver.a
 
 LIBS  += $$LIBS_FWCOMPILER
 

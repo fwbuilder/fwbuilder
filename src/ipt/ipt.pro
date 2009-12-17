@@ -14,14 +14,14 @@ win32: CONFIG += console
 
 LIBS += $$LIBS_FWCOMPILER
 
-INCLUDEPATH += ../iptlib ../compiler_lib/
-DEPENDPATH   = ../iptlib ../compiler_lib
+INCLUDEPATH += ../common ../iptlib ../compiler_lib/
+DEPENDPATH   = ../common ../iptlib ../compiler_lib
 
-win32:LIBS  += ../iptlib/release/iptlib.lib ../compiler_lib/release/compilerdriver.lib 
-!win32:LIBS += ../iptlib/libiptlib.a ../compiler_lib/libcompilerdriver.a
+win32:LIBS  += ../common/release/libcommon.lib ../iptlib/release/iptlib.lib ../compiler_lib/release/compilerdriver.lib 
+!win32:LIBS += ../common/libcommon.a ../iptlib/libiptlib.a ../compiler_lib/libcompilerdriver.a
 
-win32:PRE_TARGETDEPS  = ../iptlib/release/iptlib.lib ../compiler_lib/release/compilerdriver.lib
-!win32:PRE_TARGETDEPS = ../iptlib/libiptlib.a ../compiler_lib/libcompilerdriver.a
+win32:PRE_TARGETDEPS  = ../common/release/libcommon.lib ../iptlib/release/iptlib.lib ../compiler_lib/release/compilerdriver.lib
+!win32:PRE_TARGETDEPS = ../common/libcommon.a ../iptlib/libiptlib.a ../compiler_lib/libcompilerdriver.a
 
 TARGET = fwb_ipt
 

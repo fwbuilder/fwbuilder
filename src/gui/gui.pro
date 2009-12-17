@@ -463,27 +463,33 @@ contains( HAVE_QTDBUS, 1 ):unix {
 }
 
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
-INCLUDEPATH += ../iptlib \
+INCLUDEPATH += ../common \
+	../iptlib \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib/
-DEPENDPATH = ../iptlib \
+DEPENDPATH = ../common \
+	../iptlib \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib
-win32:LIBS += ../iptlib/release/iptlib.lib \
+win32:LIBS += ../common/release/libcommon.lib \
+	../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
     ../compiler_lib/release/compilerdriver.lib
-!win32:LIBS += ../iptlib/libiptlib.a \
+!win32:LIBS += ../common/libcommon.a \
+	../iptlib/libiptlib.a \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a
-win32:PRE_TARGETDEPS = ../iptlib/release/iptlib.lib \
+win32:PRE_TARGETDEPS = ../common/release/libcommon.lib \
+	../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
     ../compiler_lib/release/compilerdriver.lib
-!win32:PRE_TARGETDEPS = ../iptlib/libiptlib.a \
+!win32:PRE_TARGETDEPS = ../common/libcommon.a \
+	../iptlib/libiptlib.a \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a

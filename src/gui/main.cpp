@@ -99,8 +99,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "../common/init.cpp"
-
 #if defined(Q_WS_MAC)
 extern void connectOdocHandler();
 #endif
