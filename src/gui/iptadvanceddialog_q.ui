@@ -34,7 +34,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab0" >
       <attribute name="title" >
@@ -1197,23 +1197,7 @@ with this address:</string>
        <string>Script</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4" >
-       <property name="topMargin" >
-        <number>20</number>
-       </property>
-       <item row="0" column="0" colspan="2" >
-        <widget class="QLabel" name="textLabel8" >
-         <property name="text" >
-          <string>These options enable auxiliary sections in the generated shell script.</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item rowspan="3" row="1" column="0" >
+       <item row="0" column="0" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -1224,12 +1208,12 @@ with this address:</string>
          <property name="sizeHint" stdset="0" >
           <size>
            <width>30</width>
-           <height>120</height>
+           <height>20</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="1" column="1" >
+       <item row="0" column="1" >
         <widget class="QCheckBox" name="loadModules" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1238,11 +1222,37 @@ with this address:</string>
           </sizepolicy>
          </property>
          <property name="text" >
-          <string>Load modules</string>
+          <string>Load iptables modules</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
+       <item row="1" column="1" >
+        <spacer name="verticalSpacer_4" >
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>556</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="0" colspan="2" >
+        <widget class="QLabel" name="label_6" >
+         <property name="text" >
+          <string>If debugging is turned on, the script will run with shell option "-x" that makes it print every command it executes. Warning: this produces a lot of debugging output.</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
         <widget class="QCheckBox" name="iptDebug" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1255,7 +1265,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1" >
+       <item row="4" column="1" >
         <spacer name="verticalSpacer_3" >
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -1266,19 +1276,19 @@ with this address:</string>
          <property name="sizeHint" stdset="0" >
           <size>
            <width>556</width>
-           <height>40</height>
+           <height>18</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="4" column="1" >
+       <item row="5" column="0" colspan="2" >
         <widget class="QLabel" name="label_3" >
          <property name="text" >
           <string>Managing interfaces and addresses</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" >
+       <item row="6" column="1" >
         <widget class="QCheckBox" name="verifyInterfaces" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1291,7 +1301,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1" >
+       <item row="7" column="1" >
         <widget class="QCheckBox" name="configureInterfaces" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1304,14 +1314,14 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1" >
+       <item row="8" column="1" >
         <widget class="QCheckBox" name="clearUnknownInterfaces" >
          <property name="text" >
-          <string>Clear ip addresses and bring down inetrfaces not configured in fwbuilder</string>
+          <string>Clear ip addresses and bring down interfaces not configured in fwbuilder</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="1" >
+       <item row="9" column="1" >
         <widget class="QCheckBox" name="configure_vlan_interfaces" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1324,7 +1334,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1" >
+       <item row="10" column="1" >
         <widget class="QCheckBox" name="configure_bridge_interfaces" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1337,7 +1347,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="10" column="1" >
+       <item row="11" column="1" >
         <widget class="QCheckBox" name="configure_bonding_interfaces" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1350,7 +1360,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="11" column="1" >
+       <item row="12" column="1" >
         <widget class="QCheckBox" name="addVirtualsforNAT" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1363,7 +1373,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="12" column="1" >
+       <item row="13" column="1" >
         <spacer name="verticalSpacer_2" >
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -1379,7 +1389,17 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="13" column="1" >
+       <item row="14" column="0" colspan="2" >
+        <widget class="QLabel" name="label_5" >
+         <property name="text" >
+          <string>Generated script can load rules one by one by calling iptables command line utility, or activate them all at once using iptables-restore. In both cases you just run the script with command line parameter "start" to activate the policy, the script will use iptables-restore automatically if this checkbox is on</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="1" >
         <widget class="QCheckBox" name="iptablesRestoreActivation" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1395,7 +1415,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="14" column="1" >
+       <item row="16" column="1" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
