@@ -620,6 +620,8 @@ QString FirewallInstaller::getDestinationDir(const QString &fwdir)
 
     if (!dir.isEmpty())
         dir.replace("{{$fwdir}}", fwdir);
+    else
+        dir = fwdir;
 
     if (!dir.endsWith(QDir::separator())) return dir + QDir::separator();
     return dir;
