@@ -299,6 +299,7 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
         args.push_back("-ssh");
         args.push_back("-pw");
         args.push_back(cnf->pwd);
+        args.push_back("-t");
     }
 
 #else
