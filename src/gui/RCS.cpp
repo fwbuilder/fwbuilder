@@ -218,12 +218,14 @@ RCSEnvFix::RCSEnvFix()
 
 /* also need to set env variable USER for rcs tools, but if the user name
  * contains spaces, replace them with underscores (like "John Smith")
+ *
+ * global variable QString user_name is set in common/init.cpp
  */
-    QString uname=getUserName();
+    QString uname = user_name;
 
-    env.push_back( QString("USER=")+uname);
-    env.push_back( QString("LOGNAME=")+uname);
-    if (getenv("TMP")!=NULL)
+    env.push_back( QString("USER=") + uname);
+    env.push_back( QString("LOGNAME=") + uname);
+    if (getenv("TMP") != NULL)
         env.push_back( QString("TMP=") + getenv("TMP"));
     if (getenv("TEMP")!=NULL)
         env.push_back( QString("TEMP=") + getenv("TEMP"));
@@ -699,7 +701,8 @@ bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
 
     } else
     {
-        QString me=getUserName();
+        /* global variable QString user_name is set in common/init.cpp */
+        QString me = user_name;
         if (locked)
         {
 /* the file is already locked, can not just check it out like that */

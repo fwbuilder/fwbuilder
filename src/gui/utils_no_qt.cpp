@@ -36,20 +36,6 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Resources.h"
 
-#if defined(_WIN32)
-#  include <stdio.h>
-#  include <sys/timeb.h>
-#  include <sys/stat.h>
-#  include <fcntl.h>
-#  include <time.h>
-#  include <windows.h>
-#else
-#  include <unistd.h>
-#  include <string.h>
-#  include <errno.h>
-#  include <pwd.h>
-#endif
-
 #include <iostream>
 #include <algorithm>
 #include <cctype>
@@ -140,3 +126,4 @@ string getPathToBinary(const string &pgm_name)
 {
     return appRootDir + FS_SEPARATOR + pgm_name;
 }
+

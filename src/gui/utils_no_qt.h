@@ -82,5 +82,4 @@ extern std::string strip(const std::string &s);
 
 extern std::string getPathToBinary(const std::string &pgm_name);
 
-
 #endif

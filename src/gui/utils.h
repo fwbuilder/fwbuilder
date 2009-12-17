@@ -107,7 +107,6 @@ extern bool validateName(QWidget *parent,
  */
 extern QString quoteString(const QString &str);
 
-extern QString getUserName();
 extern QString getFileDir(const QString &file);
 
 extern void loadIcon(QPixmap &pm, libfwbuilder::FWObject *obj);

@@ -115,18 +115,36 @@ void init(char * const*)
     userDataDir = string(getenv("HOME"));
 #endif
 
+
 #ifdef _WIN32
-    char* _user_name=getenv("USERNAME");
+
+#define INFO_BUFFER_SIZE 32767
+
+TCHAR  infoBuf[INFO_BUFFER_SIZE];
+DWORD  bufCharCount = INFO_BUFFER_SIZE;
+
+  bufCharCount = INFO_BUFFER_SIZE;
+  if( GetUserName( infoBuf, &bufCharCount ) )
+  {
+#ifdef UNICODE
+      user_name = QString::fromUtf16((ushort*)infoBuf);
 #else
-    struct passwd *pwd = getpwuid(getuid());
-    assert(pwd);
-    char *_user_name = pwd->pw_name;
+      user_name = QString::fromLocal8Bit(infoBuf);
 #endif
-    if (_user_name==NULL)
+  }
+
+  user_name = user_name.replace(' ','_');
+
+#else
+
+    char *lname = getenv("LOGNAME");
+    if (lname!=NULL)
+        user_name = QString(lname);
+    else
     {
-        _user_name = getenv("LOGNAME");
-        if (user_name == NULL)
-            qDebug() << "Can't figure out your user name";
+        struct passwd *pwd = getpwuid(getuid());
+        assert(pwd);
+        user_name = QString(pwd->pw_name);
     }
-    user_name = QString(_user_name);
+#endif
 }
