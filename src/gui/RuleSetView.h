@@ -44,6 +44,7 @@ namespace libfwbuilder {
     class NAT;
     class Routing;
     class RuleElement;
+    class RuleElementItf;
     class NATRule;
     class RoutingRule;
 }
@@ -212,6 +213,11 @@ protected:
     void deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text);
     bool insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text);
 
+    bool validateForInsertion(libfwbuilder::RuleElement *re,
+                              libfwbuilder::FWObject *obj, bool quiet=false);
+    bool validateForInsertionToInterfaceRE(libfwbuilder::RuleElementItf *re,
+                                           libfwbuilder::FWObject *obj);
+    
 private:
 
     //this bool var is needed for starting drag when user moves the mouse

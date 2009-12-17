@@ -2009,6 +2009,20 @@ bool RuleSetView::insertObject(QModelIndex index, FWObject *obj, QString text)
     return true;
 }
 
+/* RuleElementItd::validateChild() accepts any Interface object.  We
+ * should apply additional restriction though: only interface of the
+ * same firewall should be allowed. It turns out to be very hard to
+ * implement this restriction in RuleElementItd::validateChild()
+ * because when the operation is performed via redo(), the
+ * RuleElementItf object we have to use is not part of the tree and
+ * therefore does not have any parent firewall to compare with.
+ */
+bool RuleSetView::validateForInsertionToInterfaceRE(RuleElementItf *re,
+                                                    FWObject *obj)
+{
+    return re->validateChild(obj) && re->checkItfChildOfThisFw(obj);
+}
+
 bool RuleSetView::validateForInsertion(QModelIndex index, FWObject *obj)
 {
     ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
@@ -2016,25 +2030,32 @@ bool RuleSetView::validateForInsertion(QModelIndex index, FWObject *obj)
 
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
     assert (re!=NULL);
+    return validateForInsertion(re, obj);
+}
 
+bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quiet)
+{
     if (! re->validateChild(obj) )
     {
-        if (RuleElementRItf::cast(re))
+        if (!quiet)
         {
-            QMessageBox::information(
-                NULL , "Firewall Builder",
-                "A single interface belonging to this firewall is "
-                "expected in this field.",
-                QString::null,QString::null);
-        }
-        else if (RuleElementRGtw::cast(re))
-        {
-            QMessageBox::information(
-                NULL , "Firewall Builder",
-                "A single ip adress is expected here. You may also "
-                "insert a host or a network adapter leading to a single "
-                "ip adress.",
-                QString::null,QString::null);
+            if (RuleElementRItf::cast(re))
+            {
+                QMessageBox::information(
+                    NULL , "Firewall Builder",
+                    "A single interface belonging to this firewall is "
+                    "expected in this field.",
+                    QString::null,QString::null);
+            }
+            else if (RuleElementRGtw::cast(re))
+            {
+                QMessageBox::information(
+                    NULL , "Firewall Builder",
+                    "A single ip adress is expected here. You may also "
+                    "insert a host or a network adapter leading to a single "
+                    "ip adress.",
+                    QString::null,QString::null);
+            }
         }
         return false;
     }
@@ -2056,6 +2077,9 @@ bool RuleSetView::validateForInsertion(QModelIndex index, FWObject *obj)
                  cp_id==ref->getPointerId()) return false;
         }
     }
+
+    if (RuleElementItf::cast(re))
+        return validateForInsertionToInterfaceRE(RuleElementItf::cast(re), obj);
 
     return true;
 }
@@ -2135,7 +2159,7 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
                     dragobj = dynamic_cast<FWObject*>(*i);
                     if(dragobj!=NULL)
                     {
-                        acceptE &= re->validateChild(dragobj);
+                        acceptE &= validateForInsertion(re, dragobj, true);
                     }
                 }
                 ev->setAccepted( acceptE );
