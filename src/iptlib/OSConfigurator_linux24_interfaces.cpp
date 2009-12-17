@@ -442,7 +442,7 @@ bool OSConfigurator_linux24::validateInterfaces()
             FWObject::const_iterator it = find_if(
                 fw->begin(), fw->end(),
                 FWObjectNameEQPredicate(subinterface->getName()));
-            if (it != iface->end() && Interface::isA(*it))
+            if (it != fw->end() && Interface::isA(*it))
             {
                 Interface *other_iface = Interface::cast(*it);
                 // Have top-level interface with the same name
