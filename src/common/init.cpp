@@ -1,21 +1,22 @@
 
+
 #include "../../config.h"
 #include "../../build_num"
 
+#include <string>
+#include <assert.h>
+
 #include <qglobal.h>
-
-#include <unistd.h>
-
 #include <QString>
 #include <QtDebug>
-
-#include <string>
 
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/Resources.h"
 #include "commoninit.h"
 
+
+// TODO: switch to QString 
 std::string appRootDir;
 std::string userDataDir;
 std::string respath; 
@@ -25,9 +26,22 @@ std::string sysfname;
 std::string tempfname;
 std::string argv0;
 std::string ee;
-
 QString build_num = QString("").setNum(BUILD_NUM);
 QString user_name;
+
+
+
+#if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
+extern void init_win();
+void init(char * const*)
+{
+    init_win();
+}
+
+#else
+
+#include <unistd.h>
+#include <pwd.h>
 
 extern int fwbdebug;
 
@@ -35,17 +49,8 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-#if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
-extern void init_win();
-#endif
-
 void init(char * const*)
 {
-#if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
-
-    init_win();
-
-#else
     appRootDir = string(PREFIX) + FS_SEPARATOR + "bin";
 
 /* On Unix RES_DIR and LIBFWBUILDER_TEMPLATE_DIR are absolute paths */
@@ -76,5 +81,6 @@ void init(char * const*)
         assert(pwd);
         user_name = QString(pwd->pw_name);
     }
-#endif
 }
+
+#endif
