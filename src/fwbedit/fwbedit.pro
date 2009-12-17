@@ -20,5 +20,5 @@ DEPENDPATH = ../common
 
 win32:CONFIG += console
 
-win32:LIBS += ../common/libcommon.lib
-win32:PRE_TARGETDEPS = ../common/libcommon.lib
+win32:LIBS += ../common/release/common.lib
+win32:PRE_TARGETDEPS = ../common/release/common.lib

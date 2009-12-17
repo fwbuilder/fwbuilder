@@ -473,7 +473,7 @@ DEPENDPATH = ../common \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib
-win32:LIBS += ../common/release/libcommon.lib \
+win32:LIBS += ../common/release/common.lib \
 	../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
@@ -483,7 +483,7 @@ win32:LIBS += ../common/release/libcommon.lib \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a
-win32:PRE_TARGETDEPS = ../common/release/libcommon.lib \
+win32:PRE_TARGETDEPS = ../common/release/common.lib \
 	../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \

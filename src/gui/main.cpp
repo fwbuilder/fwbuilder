@@ -76,7 +76,7 @@
 #  include <sys/select.h>
 #  include <utmp.h>
 #else
-#  include <direct.h>
+//#  include <direct.h>
 #endif
 
 #ifdef HAVE_SIGNAL_H
