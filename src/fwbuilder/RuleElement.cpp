@@ -307,8 +307,9 @@ bool RuleElementItf::validateChild(FWObject *o)
 {
     if (FWObjectReference::cast(o)!=NULL) return true;
 
-    if ( o->getId() == getAnyElementId()) return true;
-    if (Interface::cast(o)!=NULL) return checkItfChildOfThisFw(o);
+    if (o->getId() == getAnyElementId()) return true;
+
+    if (Interface::cast(o)!=NULL) return true;
 
     if (ObjectGroup::cast(o)!=NULL)
     {
@@ -337,29 +338,27 @@ bool RuleElementItf::validateChild(FWObject *o)
  * clipboard using 'cut', it won't validate because the original has
  * lost its parent.
  * 
+ * After implementing undo(), we now run into the same problem with
+ * the rule element object because the GUI tries to call addRef()
+ * using a copy of the RuleElement object (the copy is a part of the
+ * undo command) and this copy does not have any parent either. The
+ * trick with using object Id does not work in this case though
+ * because the copy of RuleElement stored in the command has different
+ * ID. Will call this function from the GUI to do additional check
+ * where appropriate, but validateChild() will accept any Interface
+ * object.
  */
 bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
 {
     FWObject* o_tmp = getRoot()->findInIndex(o->getId());
-    FWObject* o_tmp2 = this;
+    FWObject* o_tmp2 = getRoot()->findInIndex(this->getId());
 
-    while (o_tmp)
-    {
-        if (Firewall::cast(o_tmp))
-        {
-            // Check if the Firewall the Interface belongs to is the same this
-            // RuleElement belongs to
-            while (o_tmp2)
-            {
-                if (Firewall::cast(o_tmp2) && o_tmp->getId()==o_tmp2->getId())
-                    return true;
-                o_tmp2 = o_tmp2->getParent();
-            }
-            return false;
-        }
-        o_tmp = o_tmp->getParent();
-    }
-    return false;
+    FWObject *fw1 = o_tmp;
+    while (fw1 && Firewall::cast(fw1) == NULL) fw1 = fw1->getParent();
+    FWObject *fw2 = o_tmp2;
+    while (fw2 && Firewall::cast(fw2) == NULL) fw2 = fw2->getParent();
+
+    return (fw1 == fw2);
 }
 
 
