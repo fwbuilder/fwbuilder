@@ -24,6 +24,7 @@
 #  include <direct.h>
 #  include <stdlib.h>
 #  include <io.h>
+#  include <windows.h>
 #endif
 
 #include <string>
