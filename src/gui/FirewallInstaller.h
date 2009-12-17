@@ -98,6 +98,7 @@ public:
         inst_dlg = _dlg;
         cnf = _cnf;
         fwb_prompt = prompt;
+        session = NULL;
     }
 
     void packSSHArgs(QStringList &args);
@@ -105,6 +106,8 @@ public:
     QString getActivationCmd();
     QString getDestinationDir(const QString &dir);
 
+    void terminate();
+    
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
     virtual void copyFile(const QString &local_name, const QString &remote_name);
     virtual void executeCommand(const QString &cmd);

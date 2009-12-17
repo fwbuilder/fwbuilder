@@ -459,8 +459,17 @@ void instDialog::cancelClicked()
         rejectDialogFlag = true;
         proc.kill();
     }
-    else
-        QDialog::reject();
+
+    if (installer != NULL)
+    {
+        if (fwbdebug)
+            qDebug() << "instDialog::cancelClicked  killing installer";
+        installer->terminate();
+        delete installer;
+        installer = NULL;
+    }
+
+    QDialog::reject();
 }
 
 
@@ -1121,4 +1130,23 @@ void instDialog::logItemClicked(QUrl data)
         return;
     }
     emit activateRule(project, parts[0], parts[1], parts[2].toInt());
+}
+
+void instDialog::closeEvent(QCloseEvent *event)
+{
+    if (fwbdebug) qDebug() << "instDialog::closeEvent";
+    if (proc.state() == QProcess::Running)
+    {
+        if (fwbdebug)
+            qDebug() << "instDialog::closeEvent  killing process";
+        proc.kill();
+    }
+    if (installer != NULL)
+    {
+        if (fwbdebug)
+            qDebug() << "instDialog::closeEvent  killing installer";
+        installer->terminate();
+        delete installer;
+        installer = NULL;
+    }
 }

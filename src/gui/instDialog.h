@@ -168,7 +168,9 @@ class instDialog : public QDialog, public FakeWizard
     bool checkIfNeedToInstall(libfwbuilder::Firewall *fw);
     QTreeWidgetItem *createTreeItem(QTreeWidgetItem* parent,
                                     libfwbuilder::Firewall *fw);
-    
+
+    virtual void closeEvent(QCloseEvent *event);
+ 
  public:
    
     instDialog(QWidget* p, BatchOperation op,

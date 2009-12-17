@@ -651,3 +651,11 @@ QString FirewallInstaller::getGeneratedFileFullPath(Firewall *fw)
     return QDir::toNativeSeparators(generated_file);
 }
  
+void FirewallInstaller::terminate()
+{
+    if (session != NULL)
+    {
+        session->terminate();
+    }
+}
+

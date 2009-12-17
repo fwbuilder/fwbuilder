@@ -42,6 +42,7 @@
 #include <qtextcodec.h>
 #include <qapplication.h>
 #include <qdatetime.h>
+#include <QtDebug>
 
 #include <iostream>
 
@@ -247,31 +248,30 @@ void SSHSession::setOptions(instConf *cnf)
 void SSHSession::terminate()
 {
     if (fwbdebug)
-        qDebug("SSHSession::terminate     this=%p  proc=%p   heartBeatTimer=%p",
-               this,proc,heartBeatTimer);
+        qDebug() << "SSHSession::terminate     this=" << this
+                 << "proc=" << proc
+                 << "heartBeatTimer=" << heartBeatTimer;
 
     stopHeartBeat();
 
     if (proc!=NULL)
     {
-//        disconnect(proc,SIGNAL(readyReadStdout()),
-//                   this,SLOT(readFromStdout() ) );
-//        disconnect(proc,SIGNAL(readyReadStderr()),
-//                   this,SLOT(readFromStderr() ) );
-
         disconnect(proc,SIGNAL(finished(int, QProcess::ExitStatus)),
                    this,SLOT(finished(int) ) );
 
         if (fwbdebug)
-            qDebug("SSHSession::terminate   terminating child process");
+            qDebug() << "SSHSession::terminate   terminating child process";
+
 #ifdef _WIN32
         if (proc->pid() != NULL)
 #else
-            if (proc->pid() != -1)
+        if (proc->pid() != -1)
 #endif
         {
+            if (fwbdebug) qDebug() << "Process is running pid=" << proc->pid();
+
             // process is stll alive, killing
-            QString s=QString(proc->readAllStandardOutput());
+            QString s = QString(proc->readAllStandardOutput());
             if (!quiet)
             {
                 s.replace('\r',"");
@@ -279,11 +279,11 @@ void SSHSession::terminate()
             }
             proc->kill();
             delete proc;
-            proc=NULL;
-            retcode=-1;
-//            processExited();
+            proc = NULL;
+            retcode = -1;
         }
     }
+
     if (fwbdebug) qDebug("SSHSession::terminate   done");
 }
 
