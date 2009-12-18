@@ -95,8 +95,8 @@ string BaseCompiler::stdErrorMessage(FWObject *fw,
     if (ruleset)
     {
         ruleset_owner = ruleset->getStr(".ruleset_owner");
-        if (ruleset_owner.empty() && fw) ruleset_owner = fw->getName();
     }
+    if (ruleset_owner.empty() && fw) ruleset_owner = fw->getName();
 
     tmpstr << ruleset_owner << ":";
     if (ruleset) tmpstr << ruleset->getName();
