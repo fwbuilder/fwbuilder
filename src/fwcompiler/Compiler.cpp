@@ -74,14 +74,8 @@ Compiler::~Compiler() {}
 
 int Compiler::prolog() 
 {
-    temp=new Group();
-
-    fw->add(temp,false);
-
-    fw_id=fw->getId();
-
-    fwopt = fw->getOptionsObject();
-
+    temp = new Group();
+    fw->add(temp, false);
     return 0;
 }
 
@@ -158,6 +152,9 @@ void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
     single_rule_mode = false;
     single_rule_ruleset_name = "";
     single_rule_position = -1;
+
+    fw_id = _fw->getId();
+    fwopt = _fw->getOptionsObject();
 
     assert(_fw->getRoot() == _db);
 
