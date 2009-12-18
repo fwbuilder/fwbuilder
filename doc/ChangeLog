@@ -1,3 +1,31 @@
+2009-12-17  vadim  <vadim@vk.crocodile.org>
+
+	* fixed bug in the GUI: when user duplicated an object, it was
+	created with the same name as the original, then the program
+	complained about duplicate name on every attempt to modify it.
+
+	* creating IPv4 or IPv6 address object using main "New object"
+	menu ended up creating two identical objects instead of one
+
+	* built-in policy installer failed if the GUI was running on
+	Windows, the firewall was running CentOS5 system and regular user
+	account was used to authenticate
+
+	* fixed bug in the GUI: it was not possible to add interface
+	object to the "Interface" rule element of Policy and Routing
+	rules.
+
+	* fixed bug in the GUI: if the user hit Tab to move from one
+	input field in the object editor to another after making some
+	changes, keyboard focus jumped to the object tree.
+
+	* improvement in the built-in policy installer: now installer
+	dialog terminates background ssh or scp process if user clicks
+	"Cancel" or closes dialog window in the middle of the process.
+
+	* documentation: Added comment to all configlet files explaining
+	how user can modify them.
+
 2009-12-16  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/configlets/linux24/installer_commands_root: Added
