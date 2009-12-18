@@ -184,6 +184,7 @@ SOURCES += ProjectPanel.cpp \
     TextEditWidget.cpp \
     ObjectEditorDockWidget.cpp \
     main.cpp \
+	ssh_wrappers.cpp \
     utils.cpp \
     utils_no_qt.cpp \
     Importer.cpp \
