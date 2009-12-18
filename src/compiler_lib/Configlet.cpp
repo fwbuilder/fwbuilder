@@ -112,6 +112,7 @@ bool Configlet::reload(const std::string &_prefix, const QString &file_name)
                 QString line = ts.readLine();
                 code.push_back(line);
             } while (!ts.atEnd());
+            removeComments();
             return true;
         }
     }
@@ -161,8 +162,21 @@ QString Configlet::expand()
     QRegExp var_re("\\{\\{\\$([^}]*)\\}\\}", Qt::CaseSensitive, QRegExp::RegExp2);
     var_re.setMinimal(true);
 
-    QStringList res;
-    QString all_code = code.join("\n");
+    // remove comments before processing {{$var}} and {{if var}} so we can
+    // use these in comments
+    QString all_code;
+    if (remove_comments)
+    {
+        QStringList res;
+        foreach(QString line, code)
+        {
+            if (line.startsWith(comment_str)) continue;
+            res.push_back(line);
+        }
+        all_code = res.join("\n");
+    } else
+        all_code = code.join("\n");
+
     while (all_code.contains(var_re))
     {
         QString var = var_re.cap(1);
@@ -180,30 +194,18 @@ QString Configlet::expand()
 
     while (processIf(all_code, 0));
 
-    QStringList code_lines = all_code.split("\n");
-    if (remove_comments)
-    {
-        res.clear();
-        foreach(QString line, code_lines)
-        {
-            if (line.startsWith(comment_str)) continue;
-            res.push_back(line);
-        }
-        code_lines = res;
-    }
-
     if (collapse_empty_strings)
     {
-        res.clear();
-        foreach(QString line, code_lines)
+        QStringList res;
+        foreach(QString line, all_code.split("\n"))
         {
             if (line.trimmed().isEmpty()) continue;
             res.push_back(line);
         }
-        code_lines = res;
+        return res.join("\n");
     }
 
-    return code_lines.join("\n");
+    return all_code;
 }
 
 /*

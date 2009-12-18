@@ -1,8 +1,15 @@
 ## -*- mode: shell-script; -*- 
 ##
-## Lines that start with "##" will be removed before this code is
-## added to the generated script. Regular shell comments can be added
-## using single "#", these will appear in the script.
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/bsd/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
 ##
 ##
 ## These are commands built-in policy installer runs on the firewall if
