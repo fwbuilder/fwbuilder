@@ -602,6 +602,9 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
 
         script_buffer = "";
 
+        Configlet stop_action(fw, "linux24", "stop_action");
+        script_skeleton.setVariable("stop_action", stop_action.expand());
+
         Configlet top_comment(fw, "linux24", "top_comment");
 
         top_comment.setVariable("version", VERSION);
