@@ -399,6 +399,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                     current_firewall_name.toUtf8().constData(),
                     fw_file_name.toUtf8().constData());
 
+
                 remote_conf_files[ruleset_name] = getRemoteConfFileName(
                     ruleset_name,
                     conf_files[ruleset_name],

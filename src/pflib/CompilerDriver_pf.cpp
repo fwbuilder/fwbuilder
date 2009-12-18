@@ -77,8 +77,15 @@ string CompilerDriver_pf::getConfFileName(const string &ruleset_name,
         return fwobjectname + suffix + ".conf";
     }
 
+    QString new_name;
     QFileInfo fi(fw_file_name.c_str());
-    QString new_name(fi.path() + "/" + fi.completeBaseName() + suffix.c_str() + ".conf");
+    if (fi.isRelative())
+    {
+        new_name = QString(fi.completeBaseName() + suffix.c_str() + ".conf");
+    } else
+    {
+        new_name = QString(fi.path() + "/" + fi.completeBaseName() + suffix.c_str() + ".conf");
+    }
     return new_name.toUtf8().constData();
 }
 

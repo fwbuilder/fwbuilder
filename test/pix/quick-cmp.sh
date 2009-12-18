@@ -7,6 +7,6 @@ for f in $(ls *.fw.orig)
 do
     V="$f   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     echo "echo \"$V\" | cut -c1-72"
-    new_f=$(echo $f | sed 's/.org//')
+    new_f=$(echo $f | sed 's/.orig//')
     echo "$DIFFCMD $f $new_f"
 done
