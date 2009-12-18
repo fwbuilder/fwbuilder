@@ -858,9 +858,13 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
                                          iface_addr->getAddressPtr())
                         )
                         {
-                            QString err("%1 and %2 are not on the same subnet");
+                            QString err("Interfaces %1:%2 and %3:%4 are not on "
+                                        "the same subnet");
                             warning(fw, NULL, NULL,
-                                    err.arg(cluster_interface->getName().c_str())
+                                    err
+                                    .arg(cluster->getName().c_str())
+                                    .arg(cluster_interface->getName().c_str())
+                                    .arg(fw->getName().c_str())
                                     .arg(iface->getName().c_str()).toStdString());
                         }
                     }
