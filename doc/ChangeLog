@@ -1,3 +1,12 @@
+2009-12-18  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): generated
+	script can now install backup ssh access rule when it shuts down
+	the firewall. This is optional and is controlled by a checkbox in
+	the "advanced settings" dialog for iptables firewall. To shut down
+	the firewall user should run the script with command line option
+	"stop". fixes #939
+
 2009-12-17  vadim  <vadim@vk.crocodile.org>
 
 	* fixed bug in the GUI: when user duplicated an object, it was
