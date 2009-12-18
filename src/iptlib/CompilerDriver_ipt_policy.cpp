@@ -177,28 +177,8 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         }
     }
 
-    std::auto_ptr<PolicyCompiler_ipt> policy_compiler;
-
-    if (fw->getStr("host_OS") == "secuwall") {
-        policy_compiler = std::auto_ptr<PolicyCompiler_ipt>(
-            new PolicyCompiler_secuwall(objdb,fw, ipv6_policy, oscnf,
-                                        &minus_n_commands_filter));
-    } else {
-        policy_compiler = std::auto_ptr<PolicyCompiler_ipt>(
-            new PolicyCompiler_ipt(objdb,fw, ipv6_policy, oscnf,
-                                   &minus_n_commands_filter));
-    }
-
-    if (policy_compiler.get()==NULL)
-        abort("Unrecognized firewall platform " +
-              fw->getStr("platform") +
-              "  (family " + platform_family+")");
-
-    if (!policy->isTop())
-        policy_compiler->registerRuleSetChain(branch_name);
-
-    policy_compiler->setSourceRuleSet( policy );
-    policy_compiler->setRuleSetName(branch_name);
+    std::auto_ptr<PolicyCompiler_ipt> policy_compiler = createPolicyCompiler(
+        fw, ipv6_policy, oscnf,  &minus_n_commands_filter);
 
     policy_compiler->setSingleRuleCompileMode(single_rule_id);
     policy_compiler->setDebugLevel( dl );
@@ -207,7 +187,11 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
     policy_compiler->setHaveDynamicInterfaces(have_dynamic_interfaces);
     if (inTestMode()) policy_compiler->setTestMode();
     if (inEmbeddedMode()) policy_compiler->setEmbeddedMode();
-    
+    if (!policy->isTop()) policy_compiler->registerRuleSetChain(branch_name);
+
+    policy_compiler->setSourceRuleSet( policy );
+    policy_compiler->setRuleSetName(branch_name);
+
     if ( (policy_rules_count=policy_compiler->prolog()) > 0 )
     {
         policy_compiler->compile();

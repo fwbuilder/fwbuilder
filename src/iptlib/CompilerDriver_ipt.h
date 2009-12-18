@@ -28,6 +28,7 @@
 
 #include "../compiler_lib/CompilerDriver.h"
 
+#include "PolicyCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
 
 #include <string>
@@ -65,6 +66,12 @@ namespace fwcompiler {
         // or "POSTROUTING"
         std::map<std::string, std::list<std::string> > branch_ruleset_to_chain_mapping;
        
+        std::auto_ptr<PolicyCompiler_ipt> createPolicyCompiler(
+            libfwbuilder::Firewall *fw,
+            bool ipv6_policy,
+            fwcompiler::OSConfigurator *_oscnf,
+            std::map<const std::string, bool> *m_n_commands_map);
+
 public:
 
         CompilerDriver_ipt(libfwbuilder::FWObjectDatabase *db);

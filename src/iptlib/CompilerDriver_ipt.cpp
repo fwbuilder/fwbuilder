@@ -27,6 +27,8 @@
 
 #include "Configlet.h"
 #include "CompilerDriver_ipt.h"
+#include "PolicyCompiler_ipt.h"
+#include "PolicyCompiler_secuwall.h"
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -175,6 +177,36 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
     delete conf;
 
     return res.str();
+}
+
+std::auto_ptr<PolicyCompiler_ipt> CompilerDriver_ipt::createPolicyCompiler(
+    Firewall *fw,
+    bool ipv6_policy,
+    OSConfigurator *oscnf,
+    std::map<const std::string, bool> *minus_n_commands_filter)
+{
+    string platform = fw->getStr("platform");
+    string platform_family = Resources::platform_res[platform]->
+        getResourceStr("/FWBuilderResources/Target/family");
+
+    std::auto_ptr<PolicyCompiler_ipt> policy_compiler;
+
+    if (fw->getStr("host_OS") == "secuwall") {
+        policy_compiler = std::auto_ptr<PolicyCompiler_ipt>(
+            new PolicyCompiler_secuwall(objdb,fw, ipv6_policy, oscnf,
+                                        minus_n_commands_filter));
+    } else {
+        policy_compiler = std::auto_ptr<PolicyCompiler_ipt>(
+            new PolicyCompiler_ipt(objdb,fw, ipv6_policy, oscnf,
+                                   minus_n_commands_filter));
+    }
+
+    if (policy_compiler.get()==NULL)
+        abort("Unrecognized firewall platform " +
+              fw->getStr("platform") +
+              "  (family " + platform_family+")");
+
+    return policy_compiler;
 }
 
 

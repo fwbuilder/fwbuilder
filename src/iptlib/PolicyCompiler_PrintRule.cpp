@@ -1605,47 +1605,7 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
                           compiler->getCachedFwOpt()->getBool("accept_established") &&
                           ipt_comp->my_table=="filter");
 
-    if ( compiler->getCachedFwOpt()->getBool("mgmt_ssh") &&
-         ! compiler->getCachedFwOpt()->getStr("mgmt_addr").empty() )
-    {
-        string addr_str = compiler->getCachedFwOpt()->getStr("mgmt_addr");
-        InetAddrMask *inet_addr = NULL;
-        bool addr_is_good = true;
-        if (isIPv6)
-        {
-            // check if given address is ipv6
-            try
-            {
-                inet_addr = new Inet6AddrMask(addr_str);
-            } catch(const FWException &ex)  {
-                // address does not parse as ipv6, skip this rule.
-                addr_is_good = false;
-                QString err("Backup ssh access rule could not be added "
-                            "to IPv6 policy because specified address "
-                            "'%1' is invalid");
-                compiler->warning(err.arg(addr_str.c_str()).toStdString());
-            }
-        } else
-        {
-            // check if given address parses as ipv4
-            try
-            {
-                inet_addr = new InetAddrMask(addr_str);
-            } catch(const FWException &ex)  {
-                // address does not parse
-                addr_is_good = false;
-                QString err("Backup ssh access rule could not be added "
-                            "to IPv4 policy because specified address "
-                            "'%1' is invalid");
-                compiler->warning(err.arg(addr_str.c_str()).toStdString());
-            }
-        }
-        if (addr_is_good)
-        {
-            configlet.setVariable("mgmt_access", 1);
-            configlet.setVariable("management_address", inet_addr->toString().c_str());
-        }
-    }
+    _printBackupSSHAccessRules(&configlet);
 
     configlet.setVariable(
         "drop_new_tcp_with_no_syn",
@@ -1700,6 +1660,55 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
                                           "INVALID state -- DENY ").c_str());
 
     return configlet.expand().toStdString();
+}
+
+void PolicyCompiler_ipt::PrintRule::_printBackupSSHAccessRules(Configlet *conf)
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    bool isIPv6 = ipt_comp->ipv6;
+    if ( compiler->getCachedFwOpt()->getBool("mgmt_ssh") &&
+         ! compiler->getCachedFwOpt()->getStr("mgmt_addr").empty() )
+    {
+        string addr_str = compiler->getCachedFwOpt()->getStr("mgmt_addr");
+        InetAddrMask *inet_addr = NULL;
+        bool addr_is_good = true;
+        if (isIPv6)
+        {
+            // check if given address is ipv6
+            try
+            {
+                inet_addr = new Inet6AddrMask(addr_str);
+            } catch(const FWException &ex)  {
+                // address does not parse as ipv6, skip this rule.
+                addr_is_good = false;
+                QString err("Backup ssh access rule could not be added "
+                            "to IPv6 policy because specified address "
+                            "'%1' is invalid");
+                compiler->warning(err.arg(addr_str.c_str()).toStdString());
+            }
+        } else
+        {
+            // check if given address parses as ipv4
+            try
+            {
+                inet_addr = new InetAddrMask(addr_str);
+            } catch(const FWException &ex)  {
+                // address does not parse
+                addr_is_good = false;
+                QString err("Backup ssh access rule could not be added "
+                            "to IPv4 policy because specified address "
+                            "'%1' is invalid");
+                compiler->warning(err.arg(addr_str.c_str()).toStdString());
+            }
+        }
+        if (addr_is_good)
+        {
+            conf->setVariable("begin_rule", _startRuleLine().c_str());
+            conf->setVariable("end_rule", _endRuleLine().c_str());
+            conf->setVariable("mgmt_access", 1);
+            conf->setVariable("management_address", inet_addr->toString().c_str());
+        }
+    }
 }
 
 string PolicyCompiler_ipt::PrintRule::_quote(const string &s)

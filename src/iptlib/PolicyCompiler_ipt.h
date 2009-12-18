@@ -31,6 +31,7 @@
 #include "fwcompiler/PolicyCompiler.h"
 #include "fwbuilder/RuleElement.h"
 #include "config.h"
+#include "Configlet.h"
 
 namespace libfwbuilder
 {
@@ -56,9 +57,11 @@ namespace fwcompiler
 {
     class PolicyCompiler_ipt : public PolicyCompiler
     {
-	protected:
-
+public:
         class PrintRule;
+
+
+protected:
 
         bool                           have_dynamic_interfaces;
         bool                           have_connmark;
@@ -102,8 +105,6 @@ namespace fwcompiler
             const std::string label,
             const bool related = false);
         
-        PolicyCompiler_ipt::PrintRule* createPrintRuleProcessor();
-
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
                                         bool v6=false);
         std::string getAddressTableVarName(libfwbuilder::FWObject *iface);
@@ -869,6 +870,78 @@ namespace fwcompiler
         DECLARE_POLICY_RULE_PROCESSOR(countChainUsage);
 
         
+
+	virtual std::string myPlatformName();
+
+        /**
+         * TODO: move these two to class fwcompiler::PolicyCompiler,
+         * then create enum for all possible actions on reject in that
+         * class and use it instead of string.
+         */
+        std::string getActionOnReject(libfwbuilder::PolicyRule *rule);
+        bool isActionOnRejectTCPRST(libfwbuilder::PolicyRule *rule);
+        void resetActionOnReject(libfwbuilder::PolicyRule *rule);
+
+public:
+
+	PolicyCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
+                           libfwbuilder::Firewall *fw,
+                           bool ipv6_policy,
+                           fwcompiler::OSConfigurator *_oscnf,
+                           std::map<const std::string, bool> *m_n_commands_map
+        ) :
+        PolicyCompiler(_db, fw, ipv6_policy, _oscnf)
+        {
+            have_dynamic_interfaces = false;
+            have_connmark = false;
+            have_connmark_in_output = false;
+            my_table = "filter";
+            minus_n_commands = m_n_commands_map;
+        }
+        virtual ~PolicyCompiler_ipt();
+
+	/**
+	 * Add some predefined rules controlled by checkboxes in
+	 * firewall settings dialog
+	 */
+	virtual void addPredefinedPolicyRules();
+
+        virtual void verifyPlatform();
+	virtual int  prolog();
+	virtual void compile();
+	virtual void epilog();
+
+        /**
+         * addRuleFilter() is a hook where we can add a rule processor to filter
+         * some of the rules out before we begin actual processing
+         */
+        virtual void addRuleFilter();
+
+        /**
+         * this method registers chain used for the ruleset (most
+         * often branch rule set). Since rules in the same ruleset do
+         * not use this chain as target, rule processor
+         * countChainUsage considers it unused.  Registering it makes
+         * sure its usage counter is > 0.
+         */
+        void registerRuleSetChain(const std::string &chain_name);
+        
+        void setHaveDynamicInterfaces(bool f) { have_dynamic_interfaces=f; }
+        
+        virtual std::string flushAndSetDefaultPolicy();
+        virtual std::string printAutomaticRules();
+        std::string commit();
+
+	std::string getNewTmpChainName(libfwbuilder::PolicyRule *rule);
+	std::string getNewChainName(libfwbuilder::PolicyRule *rule,libfwbuilder::Interface *rule_iface);
+
+        bool haveConnMarkRules() { return have_connmark; }
+        bool haveConnMarkRulesInOutput() { return have_connmark_in_output; }
+
+        std::list<std::string> getUsedChains();
+        
+        PolicyCompiler_ipt::PrintRule* createPrintRuleProcessor();
+
 	/**
 	 *  prints single policy rule, assuming all groups have been
 	 *  expanded, so source, destination and service hold exactly
@@ -963,6 +1036,8 @@ namespace fwcompiler
             virtual std::string _startRuleLine();
             virtual std::string _endRuleLine();
             
+            virtual void _printBackupSSHAccessRules(Configlet *c);
+
             virtual bool processNext();
 
             std::string PolicyRuleToString(libfwbuilder::PolicyRule *r);
@@ -1003,76 +1078,6 @@ namespace fwcompiler
         };
         friend class PolicyCompiler_ipt::PrintRuleIptRstEcho;
 
-
-	virtual std::string myPlatformName();
-
-        /**
-         * TODO: move these two to class fwcompiler::PolicyCompiler,
-         * then create enum for all possible actions on reject in that
-         * class and use it instead of string.
-         */
-        std::string getActionOnReject(libfwbuilder::PolicyRule *rule);
-        bool isActionOnRejectTCPRST(libfwbuilder::PolicyRule *rule);
-        void resetActionOnReject(libfwbuilder::PolicyRule *rule);
-
-	public:
-
-	PolicyCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
-                           libfwbuilder::Firewall *fw,
-                           bool ipv6_policy,
-                           fwcompiler::OSConfigurator *_oscnf,
-                           std::map<const std::string, bool> *m_n_commands_map
-        ) :
-        PolicyCompiler(_db, fw, ipv6_policy, _oscnf)
-        {
-            have_dynamic_interfaces = false;
-            have_connmark = false;
-            have_connmark_in_output = false;
-            my_table = "filter";
-            minus_n_commands = m_n_commands_map;
-        }
-        virtual ~PolicyCompiler_ipt();
-
-	/**
-	 * Add some predefined rules controlled by checkboxes in
-	 * firewall settings dialog
-	 */
-	virtual void addPredefinedPolicyRules();
-
-        virtual void verifyPlatform();
-	virtual int  prolog();
-	virtual void compile();
-	virtual void epilog();
-
-        /**
-         * addRuleFilter() is a hook where we can add a rule processor to filter
-         * some of the rules out before we begin actual processing
-         */
-        virtual void addRuleFilter();
-
-        /**
-         * this method registers chain used for the ruleset (most
-         * often branch rule set). Since rules in the same ruleset do
-         * not use this chain as target, rule processor
-         * countChainUsage considers it unused.  Registering it makes
-         * sure its usage counter is > 0.
-         */
-        void registerRuleSetChain(const std::string &chain_name);
-        
-        void setHaveDynamicInterfaces(bool f) { have_dynamic_interfaces=f; }
-        
-        virtual std::string flushAndSetDefaultPolicy();
-        virtual std::string printAutomaticRules();
-        std::string commit();
-
-	std::string getNewTmpChainName(libfwbuilder::PolicyRule *rule);
-	std::string getNewChainName(libfwbuilder::PolicyRule *rule,libfwbuilder::Interface *rule_iface);
-
-        bool haveConnMarkRules() { return have_connmark; }
-        bool haveConnMarkRulesInOutput() { return have_connmark_in_output; }
-
-        std::list<std::string> getUsedChains();
-        
     };
 
 

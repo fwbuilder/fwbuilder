@@ -29,7 +29,7 @@ reset_all
 
 {{if mgmt_access}}
 # backup ssh access
-$IPTABLES INPUT  -p tcp -m tcp  -s {{$management_address}}  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT
-$IPTABLES OUTPUT  -p tcp -m tcp  -d {{$management_address}}  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT  -p tcp -m tcp  -s {{$management_address}}  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT
+$IPTABLES -A OUTPUT  -p tcp -m tcp  -d {{$management_address}}  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT
 {{endif}}
 

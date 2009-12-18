@@ -32,6 +32,7 @@
 
 #include <string>
 #include <sstream>
+#include <memory>
 
 #include <QDir>
 #include <QTextStream>
@@ -133,7 +134,7 @@ protected:
                                               Configlet *script_skeleton,
                                               Configlet *top_comment,
                                               const QString &comment_char);
-        
+
 public:
 
         CompilerDriver(libfwbuilder::FWObjectDatabase *db);

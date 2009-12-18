@@ -4528,7 +4528,7 @@ void PolicyCompiler_ipt::epilog()
 PolicyCompiler_ipt::PrintRule* PolicyCompiler_ipt::createPrintRuleProcessor()
 {
     PolicyCompiler_ipt::PrintRule* print_rule = NULL;
-    if (fwopt->getBool("use_iptables_restore"))
+    if (fw->getOptionsObject()->getBool("use_iptables_restore"))
     {
         // bug #1812295: we should use PrintRuleIptRstEcho not only
         // when we have dynamic interfaces, but also when we have
