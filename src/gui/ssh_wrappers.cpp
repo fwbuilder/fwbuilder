@@ -66,6 +66,10 @@ using namespace std;
 extern FWBSettings *st;
 extern int fwbdebug;
 
+static struct termios save_termios;
+static int ttysavefd = -1;
+static pid_t pid = 0;
+
 
 #ifndef HAVE_CFMAKERAW
 static inline void cfmakeraw(struct termios *termios_p)
@@ -161,9 +165,6 @@ int forkpty (int *amaster, char *name, void *unused1, void *unused2)
 
 #endif
 
-static struct termios save_termios;
-static int            ttysavefd = -1;
-
 int tty_raw(int fd)
 {
     struct termios buf;
@@ -253,6 +254,26 @@ char* strndup(const char* s,int n)
 }
 #endif
 
+void catch_sign(int sig)
+{
+    cerr << "Wrapper caight signal " << sig << endl;
+    cerr << "Child process pid " << pid << endl;
+    if (pid != 0)
+    {
+        int stat;
+        kill(pid, SIGTERM);
+        int timeout = 0;
+        pid_t cp = 0;
+        while ( (cp = waitpid(pid, &stat, WNOHANG)) == 0 && timeout < 5)
+        {
+            sleep(1);
+            timeout++;
+        }
+        if (cp == 0) kill(pid, SIGKILL);
+    }
+    exit(1);
+}
+
 void ssh_wrapper( int argc, char *argv[] )
 {
     bool ssh_wrapper = false;
@@ -314,7 +335,6 @@ void ssh_wrapper( int argc, char *argv[] )
 /* forks ssh with a pty and proxies its communication on stdin/stdout
  * to avoid having to deal with pty. This is only needed on Unix.
  */
-        pid_t pid;
         int   mfd;
         char  slave_name[64];
 //        char  *pgm;
@@ -341,6 +361,13 @@ void ssh_wrapper( int argc, char *argv[] )
             qDebug("Exec error: %s %s",strerror(errno),arg[0]);
             exit(1);
         }
+
+        cerr << "Wrapper: install signal handlers" << endl;
+
+        signal(SIGHUP, catch_sign);
+        signal(SIGINT, catch_sign);
+        signal(SIGTERM, catch_sign);
+        signal(SIGQUIT, catch_sign);
 
         tty_raw(mfd);
 
