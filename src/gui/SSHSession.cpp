@@ -309,7 +309,11 @@ void SSHSession::terminate()
                         emit printStdout_sign(s);
                     }
                     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+#ifdef _WIN32
+                    Sleep(1000);
+#else
                     sleep(1);
+#endif
                 }
 
                 if (fwbdebug) qDebug() << "Reading last output buffers";
