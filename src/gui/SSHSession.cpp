@@ -268,16 +268,64 @@ void SSHSession::terminate()
         if (proc->pid() != -1)
 #endif
         {
-            if (fwbdebug) qDebug() << "Process is running pid=" << proc->pid();
-
-            // process is stll alive, killing
-            QString s = QString(proc->readAllStandardOutput());
-            if (!quiet)
+            if (proc->state() == QProcess::Running)
             {
-                s.replace('\r',"");
-                emit printStdout_sign(s);
+                Q_PID pid = proc->pid();
+
+                if (fwbdebug)
+                    qDebug() << "Process is running pid=" << pid;
+
+                emit printStdout_sign(
+                    QString("Stopping background process pid=%1").arg(pid));
+
+                /*
+                 * on windows proc->terminate() posts a WM_CLOSE
+                 * message to all toplevel windows of the child
+                 * process. However, since our child process is a
+                 * console app (ssh client), this does nothing. Need
+                 * to use proc->kill() on windows right away to avoid
+                 * timeout.
+                 */
+#ifdef _WIN32
+                proc->kill();
+#else
+                proc->terminate();
+#endif
+
+                if (fwbdebug)
+                    qDebug() << "Terminate signal sent, waiting for it to finish";
+
+                for (int timeout = 0; timeout < 10; ++timeout)
+                {
+                    QString s = QString(proc->readAllStandardOutput());
+                    if (!quiet)
+                    {
+                        s.replace('\r',"");
+                        emit printStdout_sign(s);
+                    }
+                    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+                    if (proc->state() != QProcess::Running) break;
+                    sleep(1);
+                }
+
+                if (fwbdebug) qDebug() << "Reading last output buffers";
+
+                QString s = QString(proc->readAllStandardOutput());
+                if (!quiet)
+                {
+                    s.replace('\r',"");
+                    emit printStdout_sign(s);
+                }
+
+                if (fwbdebug) qDebug() << "done reading I/O buffers";
+
+                if (proc->state() == QProcess::Running)
+                {
+                    if (fwbdebug) qDebug() << "Still running, killing";
+                    proc->kill();
+                }
             }
-            proc->kill();
+
             delete proc;
             proc = NULL;
             retcode = -1;

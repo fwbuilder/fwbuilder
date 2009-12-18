@@ -258,6 +258,7 @@ void catch_sign(int sig)
 {
     cerr << "Wrapper caight signal " << sig << endl;
     cerr << "Child process pid " << pid << endl;
+
     if (pid != 0)
     {
         int stat;
@@ -266,10 +267,15 @@ void catch_sign(int sig)
         pid_t cp = 0;
         while ( (cp = waitpid(pid, &stat, WNOHANG)) == 0 && timeout < 5)
         {
+            cerr << "Waiting for pid " << pid << " to finish" << endl;
             sleep(1);
             timeout++;
         }
-        if (cp == 0) kill(pid, SIGKILL);
+        if (cp == 0)
+        {
+            cerr << "Timeout, child process is still running. Killing it." << endl;
+            kill(pid, SIGKILL);
+        }
     }
     exit(1);
 }
@@ -361,8 +367,6 @@ void ssh_wrapper( int argc, char *argv[] )
             qDebug("Exec error: %s %s",strerror(errno),arg[0]);
             exit(1);
         }
-
-        cerr << "Wrapper: install signal handlers" << endl;
 
         signal(SIGHUP, catch_sign);
         signal(SIGINT, catch_sign);
