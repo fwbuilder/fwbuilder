@@ -256,8 +256,11 @@ char* strndup(const char* s,int n)
 
 void catch_sign(int sig)
 {
-    cerr << "Wrapper caight signal " << sig << endl;
-    cerr << "Child process pid " << pid << endl;
+    if (fwbdebug) 
+    {
+        cerr << "Wrapper caight signal " << sig << endl;
+        cerr << "Child process pid " << pid << endl;
+    }
 
     if (pid != 0)
     {
@@ -265,15 +268,17 @@ void catch_sign(int sig)
         kill(pid, SIGTERM);
         int timeout = 0;
         pid_t cp = 0;
-        while ( (cp = waitpid(pid, &stat, WNOHANG)) == 0 && timeout < 5)
+        while ( (cp = waitpid(pid, &stat, WNOHANG)) == 0 && timeout < 10)
         {
-            cerr << "Waiting for pid " << pid << " to finish" << endl;
+            if (fwbdebug) 
+                cerr << "Waiting for pid " << pid << " to finish" << endl;
             sleep(1);
             timeout++;
         }
         if (cp == 0)
         {
-            cerr << "Timeout, child process is still running. Killing it." << endl;
+            if (fwbdebug) 
+                cerr << "Timeout, child process is still running. Killing it." << endl;
             kill(pid, SIGKILL);
         }
     }

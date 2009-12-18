@@ -271,12 +271,8 @@ void SSHSession::terminate()
             if (proc->state() == QProcess::Running)
             {
                 Q_PID pid = proc->pid();
-
-                if (fwbdebug)
-                    qDebug() << "Process is running pid=" << pid;
-
-                emit printStdout_sign(
-                    QString("Stopping background process pid=%1").arg(pid));
+                if (fwbdebug) qDebug() << "Process is running pid=" << pid;
+                emit printStdout_sign(QString("Stopping background process"));
 
                 /*
                  * on windows proc->terminate() posts a WM_CLOSE
@@ -295,8 +291,17 @@ void SSHSession::terminate()
                 if (fwbdebug)
                     qDebug() << "Terminate signal sent, waiting for it to finish";
 
-                for (int timeout = 0; timeout < 10; ++timeout)
+                int time_to_wait = 20;
+                for (int timeout = 0; timeout < time_to_wait; timeout++)
                 {
+                    if (proc->state() != QProcess::Running) break;
+                    // print countdown only if we've been waiting more than 3 sec
+                    if (timeout > 3)
+                        emit printStdout_sign(
+                            QString(
+                                "Background process is still running. "
+                                "Will wait %1 sec").arg(time_to_wait - timeout));
+
                     QString s = QString(proc->readAllStandardOutput());
                     if (!quiet)
                     {
@@ -304,7 +309,6 @@ void SSHSession::terminate()
                         emit printStdout_sign(s);
                     }
                     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-                    if (proc->state() != QProcess::Running) break;
                     sleep(1);
                 }
 
