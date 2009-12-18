@@ -126,8 +126,8 @@ void FWCmdChange::notify()
             mw, new openObjectInEditorEvent(filename, obj->getId()));
     }
 
-    QCoreApplication::postEvent(
-        mw, new showObjectInTreeEvent(filename, obj->getId()));
+    // QCoreApplication::postEvent(
+    //     mw, new showObjectInTreeEvent(filename, obj->getId()));
 
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename,
                                                           obj->getId()));
