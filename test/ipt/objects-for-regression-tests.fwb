@@ -2942,7 +2942,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1251648535" lastInstalled="1142003872" lastModified="1257712157" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1261179871" lastInstalled="1142003872" lastModified="1261179770" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -4799,14 +4799,21 @@
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">True</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
           <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
           <Option name="cmdline">-v</Option>
           <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">True</Option>
           <Option name="dyn_addr">False</Option>
@@ -4818,6 +4825,7 @@
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">5</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -4863,7 +4871,9 @@
           <Option name="platform">iptables</Option>
           <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
           <Option name="script_env_path"></Option>
+          <Option name="script_name_on_firewall"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
@@ -45401,7 +45411,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id304832X79913" host_OS="linux24" inactive="False" lastCompiled="1260914872" lastInstalled="0" lastModified="1260914853" platform="iptables" version="1.4.0" name="firewall-ipv6-7" comment="one interface has dynamic address, testing functions that get the address at run time" ro="False">
+      <Firewall id="id304832X79913" host_OS="linux24" inactive="False" lastCompiled="1261179782" lastInstalled="0" lastModified="1260914853" platform="iptables" version="1.4.0" name="firewall-ipv6-7" comment="one interface has dynamic address, testing functions that get the address at run time" ro="False">
         <NAT id="id304996X79913" name="NAT" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>

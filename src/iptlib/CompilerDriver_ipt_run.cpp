@@ -605,13 +605,16 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
         Configlet stop_action(fw, "linux24", "stop_action");
         stop_action.collapseEmptyStrings(true);
 
-        std::auto_ptr<PolicyCompiler_ipt> policy_compiler = createPolicyCompiler(
-            fw, false, NULL,  NULL);
-        PolicyCompiler_ipt::PrintRule* print_rule =
-            policy_compiler->createPrintRuleProcessor();
-
-        print_rule->setContext(policy_compiler.get());
-        print_rule->_printBackupSSHAccessRules(&stop_action);
+        if (fw->getOptionsObject()->getBool("add_mgmt_ssh_rule_when_stoped"))
+        {
+            std::auto_ptr<PolicyCompiler_ipt> policy_compiler = createPolicyCompiler(
+                fw, false, NULL,  NULL);
+            PolicyCompiler_ipt::PrintRule* print_rule =
+                policy_compiler->createPrintRuleProcessor();
+            print_rule->setContext(policy_compiler.get());
+            print_rule->_printBackupSSHAccessRules(&stop_action);
+        } else
+            stop_action->setVariable("mgmt_access", 0);
 
         script_skeleton.setVariable("stop_action", stop_action.expand());
 

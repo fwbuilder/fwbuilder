@@ -146,6 +146,8 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
 
     data.registerOption(m_dialog->mgmt_ssh, fwoptions, "mgmt_ssh");
     data.registerOption(m_dialog->mgmt_addr, fwoptions, "mgmt_addr");
+    data.registerOption(m_dialog->add_mgmt_ssh_rule_when_stoped,
+                        fwoptions, "add_mgmt_ssh_rule_when_stoped");
     data.registerOption(m_dialog->addVirtualsforNAT,
                         fwoptions, "manage_virtual_addr");
 
