@@ -2280,6 +2280,8 @@ void RuleSetView::updateWidget()
 
 bool RuleSetView::showToolTip(QEvent *event)
 {
+    if (!st->getObjTooltips()) return true;
+
     QHelpEvent *he = (QHelpEvent*) event;
 
     QPoint pos = viewport()->mapFromGlobal(he->globalPos());
