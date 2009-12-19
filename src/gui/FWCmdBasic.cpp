@@ -24,6 +24,7 @@
 */
 
 #include "FWCmdBasic.h"
+#include <QDebug>
 
 using namespace libfwbuilder;
 
@@ -34,10 +35,35 @@ FWCmdBasic::FWCmdBasic(ProjectPanel *project)
 
 FWObject* FWCmdBasic::getObject()
 {
-    return getObject(id);
+    return getObject(obj_id);
 }
 
 FWObject* FWCmdBasic::getObject(int id)
 {
     return project->db()->findInIndex(id);
+}
+
+bool FWCmdBasic::mergeWith(const QUndoCommand *other)
+{
+    qDebug() << "FWCmdBasic::mergeWith(const QUndoCommand *other)";
+    qDebug() << "cmd:" << other->text();
+
+    const FWCmdTerm* term = dynamic_cast<const FWCmdTerm*> (other);
+
+    return term != 0;
+}
+
+
+
+void undoAndRemoveLastCommand(QUndoStack* undoStack)
+{
+    qDebug() << "undoAndRemoveLastCommand(QUndoStack undoStack)";
+    undoStack->undo();
+    qDebug() << "count:" << undoStack->count();
+    if (undoStack->count() == 1) {
+        undoStack->clear();
+    } else {
+        FWCmdTerm* cmd = new FWCmdTerm();
+        undoStack->push(cmd);
+    }
 }

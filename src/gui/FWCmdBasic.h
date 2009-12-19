@@ -27,6 +27,8 @@
 #define FWCMDBASIC_H
 
 #include <QUndoCommand>
+#include <QUndoStack>
+#include <QDebug>
 
 #include "ProjectPanel.h"
 
@@ -34,18 +36,29 @@
 
 class FWCmdBasic : public QUndoCommand
 {
-    int id;
+    int obj_id;
 protected:
 
     ProjectPanel *project;
 
 public:
     FWCmdBasic(ProjectPanel *project);
-    int objectId() {return id;}
-    void setObject(libfwbuilder::FWObject *object) {id = object->getId();}
+    int objectId() {return obj_id;}
+    void setObject(libfwbuilder::FWObject *object) {obj_id = object->getId();}
     libfwbuilder::FWObject* getObject();
     libfwbuilder::FWObject* getObject(int id);
+    int id() const {return 1;}
+    bool mergeWith(const QUndoCommand *other);
 
 };
+
+class FWCmdTerm : public QUndoCommand
+{
+public:
+    FWCmdTerm() : QUndoCommand() {setText("Terminator");}
+    int id() const {return 1;}
+};
+
+void undoAndRemoveLastCommand(QUndoStack* undoStack);
 
 #endif // FWCMDBASIC_H
