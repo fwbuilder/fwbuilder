@@ -28,7 +28,7 @@
 #include "ImporterTest.h"
 #include <QString>
 #include <string>
-#include "../../../common/init.cpp"
+//#include "../../../common/init.cpp"
 
 //std::string respath;
 int fwbdebug = 0;
@@ -36,7 +36,7 @@ int fwbdebug = 0;
 
 int main( int, char** args)
 {
-    init(args);
+    //init(args);
     CppUnit::TextUi::TestRunner runner;
     runner.addTest( ImporterTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),

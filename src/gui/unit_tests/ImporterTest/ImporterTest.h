@@ -26,21 +26,36 @@
 #ifndef IMPORTERTEST_H
 #define IMPORTERTEST_H
 
+#include "fwbuilder/Resources.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/Logger.h"
+
 #include <cppunit/TestCase.h>
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
 class ImporterTest : public CppUnit::TestCase
 {
+    libfwbuilder::FWObjectDatabase *db;
+    libfwbuilder::Library *lib;
+    libfwbuilder::QueueLogger *logger;
+
 public:
-    void testImporter();
+    void setUp();
+    void IOSImporterTest();
+    void IPTImporterTest();
 
     static CppUnit::Test *suite()
     {
       CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "ImporterTest" );
       suiteOfTests->addTest( new CppUnit::TestCaller<ImporterTest>(
-                                   "testImporter",
-                                   &ImporterTest::testImporter ) );
+                                   "IOSImporterTest",
+                                   &ImporterTest::IOSImporterTest ) );
+      suiteOfTests->addTest( new CppUnit::TestCaller<ImporterTest>(
+                                   "IPTImporterTest",
+                                   &ImporterTest::IPTImporterTest ) );
       return suiteOfTests;
     }
 };

@@ -36,11 +36,6 @@
 
 #include "../../FWBTree.h"
 
-#include "fwbuilder/Resources.h"
-#include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/Library.h"
-#include "fwbuilder/FWException.h"
-#include "fwbuilder/Logger.h"
 
 #ifdef HAVE_GETOPT_H
   #include <getopt.h>
@@ -53,8 +48,9 @@
 #endif
 
 #include <QDebug>
+#include <QFile>
 #include <QStringList>
-//#include "../../../common/init.cpp"
+#include "../../../common/init.cpp"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -68,78 +64,78 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     }
 };
 
-void ImporterTest::testImporter()
+void ImporterTest::setUp()
 {
-
     init();
-    string platform("linux24");
+    QStringList path;
+    path << ".." << ".." << ".." << "res" << "resources.xml";
+    new Resources(path.join(FS_SEPARATOR).toStdString());
+    new FWBTree();
 
-    try
-    {
-        QStringList path;
-        path << ".." << ".." << ".." << "res" << "resources.xml";
-        new Resources(path.join(FS_SEPARATOR).toStdString());
-        new FWBTree();
+    /* create database */
+    db = new FWObjectDatabase();
 
-        qDebug() << "1";
-        /* create database */
-        FWObjectDatabase *objdb = new FWObjectDatabase();
+    /* load the data file */
+    UpgradePredicate upgrade_predicate;
 
-        /* load the data file */
-        UpgradePredicate upgrade_predicate;
+    db->setReadOnly( false );
+    db->load( sysfname, &upgrade_predicate, librespath);
+    db->setFileName("");
+    lib = Library::cast(db->create(Library::TYPENAME));
+    lib->setName("User");
+    db->add(lib);
 
-        objdb->setReadOnly( false );
-        objdb->load( sysfname, &upgrade_predicate, librespath);
-        objdb->setFileName("");
-        FWObject *lib = objdb->create(Library::TYPENAME);
-        lib->setName("User");
-        objdb->add(lib);
+    logger = new QueueLogger();
+}
 
-        libfwbuilder::QueueLogger *logger = new libfwbuilder::QueueLogger();
+void ImporterTest::IOSImporterTest()
+{
+    QFile f("test_data/test1.conf");
+    f.open(QFile::ReadOnly);
 
-        qDebug() << "2";
+    string buffer = QString(f.readAll()).toStdString();
+    f.close();
 
-        string buffer;
-        string s;
-        while (!cin.eof())
-        {
-            getline(cin,s);
-            buffer += s;
-            buffer += '\n';
-        }
+    std::istringstream instream(buffer);
 
-        std::istringstream instream(buffer);
+    Importer* imp = new IOSImporter(lib, instream, logger);
 
-        Importer* imp;
-        if (platform=="iosacl")
-            imp = new IOSImporter(lib, instream, logger);
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
 
-        if (platform == "iptables")
-            imp = new IPTImporter(lib, instream, logger);
 
-        CPPUNIT_ASSERT_THROW(imp->run(), ImporterException);
-        while (logger->ready())
-            cout << logger->getLine();
+    QString result;
+    while (logger->ready())
+        result.append(logger->getLine().c_str());
 
-        imp->finalize();
+    imp->finalize();
 
-        cout << endl;
-        cout << flush;
 
-    } catch(const FWException &ex)  {
-        qDebug() << ex.toString().c_str();
-        CPPUNIT_ASSERT(false);
-#if __GNUC__ >= 3
-/* need to check version because std::ios::failure does not seem to be
- * supported in gcc 2.9.5 on FreeBSD 4.10 */
-    } catch (const std::ios::failure &e) {
-        CPPUNIT_ASSERT(false);
-#endif
-    } catch (const std::string &s) {
-        CPPUNIT_ASSERT(false);
-    } catch (const std::exception &ex) {
-        CPPUNIT_ASSERT(false);
-    } catch (...) {
-        CPPUNIT_ASSERT(false);
-    }
+    QString rightResult = QFile("test_data/test1.result").readAll();
+
+    CPPUNIT_ASSERT(result == rightResult);
+}
+
+void ImporterTest::IPTImporterTest()
+{
+    QFile f("test_data/iptables_test1.conf");
+    f.open(QFile::ReadOnly);
+
+    string buffer = QString(f.readAll()).toStdString();
+    f.close();
+
+    std::istringstream instream(buffer);
+
+    Importer* imp = new IPTImporter(lib, instream, logger);
+
+    CPPUNIT_ASSERT_NO_THROW(imp->run());
+    QString result;
+    while (logger->ready())
+        result.append(logger->getLine().c_str());
+
+    imp->finalize();
+
+    QString rightResult = QFile("test_data/iptables_test1.result").readAll();
+
+    CPPUNIT_ASSERT(result == rightResult);
+
 }
