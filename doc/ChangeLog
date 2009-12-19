@@ -1,5 +1,11 @@
 2009-12-19  vadim  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (RuleSetView::changeAction): fixed #957: when
+	user changes action of a policy rule, it should be opened in the
+	editor only if the new action has some parameters that can be
+	edited. Such actions as "accept" and "deny" have no parameters and
+	it does not make sense to open blank editor panel.
+
 	* Ticket #959 (context menu items appear rearranged) closed by a2k
 	fixed: (In [2212]) Fixed #959
 

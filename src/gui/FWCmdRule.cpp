@@ -247,7 +247,7 @@ void FWCmdRuleColor::redoOnModel(RuleSetModel *md)
 
     foreach(int ruleId, oldColors.keys())
     {
-        Rule* rule = dynamic_cast<Rule*>(getObject(ruleId));
+        Rule* rule = Rule::cast(getObject(ruleId));
         if (rule != 0)
         {
             indexes.append(md->index(rule, 0));
@@ -492,6 +492,10 @@ libfwbuilder::Rule* FWCmdRuleChange::getRule()
 
 /********************************************************
  * FWCmdRuleChangeAction
+ *
+ * This command is used when user modifies parameters of an action, not
+ * when they change action of a rule.
+ *
  ********************************************************/
 
 FWCmdRuleChangeAction::FWCmdRuleChangeAction(ProjectPanel *project, libfwbuilder::FWObject *obj):
@@ -503,8 +507,10 @@ void FWCmdRuleChangeAction::notify()
 
     if (mw->isEditorVisible())
     {
-        QCoreApplication::postEvent(mw, new openOptObjectInEditorEvent(project->getFileName(),
-                                                                       getRule()->getId(), ObjectEditor::optAction));
+        QCoreApplication::postEvent(
+            mw, new openOptObjectInEditorEvent(project->getFileName(),
+                                               getRule()->getId(),
+                                               ObjectEditor::optAction));
     }
 }
 

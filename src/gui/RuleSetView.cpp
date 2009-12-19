@@ -46,6 +46,7 @@
 #include "ProjectPanel.h"
 #include "FindObjectWidget.h"
 #include "events.h"
+#include "DialogFactory.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
@@ -1714,9 +1715,27 @@ void RuleSetView::changeAction(int act)
         }
     }
 
-    QCoreApplication::postEvent(
-        mw, new openOptObjectInEditorEvent(
-            project->getFileName(), node->rule->getId(), ObjectEditor::optAction));
+
+    // See #957. It makes sense to open action in the edtor only
+    // if this action has some parameters to edit.
+    FWObject *fw = node->rule;
+    while (fw && Firewall::cast(fw)==NULL) fw = fw->getParent();
+    if (fw)
+    {
+        QString editor =
+            DialogFactory::getActionDialogPageName(
+                Firewall::cast(fw), node->rule).c_str();
+        editor = editor.toLower();
+        // open action in the editor if the editor is already visible
+        // or if it is not, only if there is something to edit in this
+        // action
+        if (mw->isEditorVisible() ||
+            (!editor.isEmpty() && editor != "none"))
+            QCoreApplication::postEvent(
+                mw, new openOptObjectInEditorEvent(
+                    project->getFileName(), node->rule->getId(),
+                    ObjectEditor::optAction));
+    }
 }
 
 void RuleSetView::changeActionToAccept()
