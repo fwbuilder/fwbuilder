@@ -495,6 +495,7 @@ win32:PRE_TARGETDEPS = ../common/release/common.lib \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a
+macx:LIBS += -framework Carbon
 RESOURCES += MainRes.qrc
 TRANSLATIONS = fwbuilder_ru.ts \
     fwbuilder_ja.ts

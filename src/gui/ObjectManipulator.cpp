@@ -697,7 +697,20 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         (ObjectGroup::cast(currentObj)!=NULL &&
          currentObj->getName()=="Firewalls"))
     {
-        popup_menu->addAction( tr("New cluster from selected firewalls"), this, SLOT( newClusterFromSelected() ) );
+        bool canCreateCluster = true;
+        if (getCurrentObjectTree()->getNumSelected() > 1)
+        {
+            foreach( FWObject *obj, getCurrentObjectTree()->getSelectedObjects())
+            {
+                if (!Firewall::isA(obj))
+                {
+                    canCreateCluster = false;
+                    break;
+                }
+            }
+        } else canCreateCluster = false;
+        if (canCreateCluster)
+            popup_menu->addAction( tr("New cluster from selected firewalls"), this, SLOT( newClusterFromSelected() ) );
         popup_menu->addSeparator();
         popup_menu->addAction( tr("Compile"), this, SLOT( compile()));
         popup_menu->addAction( tr("Install"), this, SLOT( install()));
