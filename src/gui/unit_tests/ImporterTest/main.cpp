@@ -34,9 +34,9 @@
 int fwbdebug = 0;
 //QString user_name;
 
-int main( int, char** )
+int main( int, char** args)
 {
-    init();
+    init(args);
     CppUnit::TextUi::TestRunner runner;
     runner.addTest( ImporterTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
