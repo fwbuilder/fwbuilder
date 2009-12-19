@@ -176,10 +176,24 @@ void ObjectManipulator::createNewObject()
     else
         m_project->undoStack->beginMacro("Create and add to group");
 
+    if (type_name ==  Firewall::TYPENAME ||
+        type_name ==  Cluster::TYPENAME ||
+        type_name ==  Host::TYPENAME)
+    {
+        // These three functions call separate modal dialogs that can
+        // be cancelled by the user
+        if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall();
+        if (type_name ==  Cluster::TYPENAME) new_obj = newCluster();
+        if (type_name ==  Host::TYPENAME) new_obj = newHost();
+        if (new_obj == NULL)
+        {
+            m_project->undoStack->endMacro();
+            undoAndRemoveLastCommand(m_project->undoStack);
+            return;
+        } 
+    }
+
     if (type_name ==  Library::TYPENAME) new_obj = newLibrary();
-    if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall();
-    if (type_name ==  Cluster::TYPENAME) new_obj = newCluster();
-    if (type_name ==  Host::TYPENAME) new_obj = newHost();
     if (type_name ==  Interface::TYPENAME) new_obj = newInterface();
     if (type_name ==  IPv4::TYPENAME) new_obj = newInterfaceAddress();
     if (type_name ==  IPv6::TYPENAME) new_obj = newInterfaceAddressIPv6();
@@ -195,6 +209,7 @@ void ObjectManipulator::createNewObject()
     if (new_obj == NULL)
     {
         m_project->undoStack->endMacro();
+        undoAndRemoveLastCommand(m_project->undoStack);
         return;
     }
 
