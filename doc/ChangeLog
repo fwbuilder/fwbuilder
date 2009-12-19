@@ -1,3 +1,25 @@
+2009-12-19  vadim  <vadim@vk.crocodile.org>
+
+	* Ticket #958 (when user compiles single firewall, skip the first
+	page of the wizard) closed by a2k fixed: (In [2210]) Fixed #958
+
+	* Ticket #952 (tooltips in RuleSetView should be controlled by ...)
+	closed by yalovoy fixed: (In [2209]) fixes #952 tooltips in
+	RuleSetView? should be controlled by …
+
+	* Ticket #941 (Add Rule Below adds the new rule above) closed by
+	yalovoy fixed: (In [2208]) fixes #941 Add Rule Below adds the new
+	rule above
+
+	* Ticket #951 (double click on an object in the group member list
+	should open it in the ...) closed by a2k fixed: (In [2206]) Fixed
+	#951
+
+	* Ticket #931 (context menu item "New cluster from selected
+	firewalls" should be enabled ...) closed by a2k fixed: (In [2205])
+	Fixed #931
+
+
 2009-12-18  vadim  <vadim@vk.crocodile.org>
 
 	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): generated
