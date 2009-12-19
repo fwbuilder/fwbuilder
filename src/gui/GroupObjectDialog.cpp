@@ -145,6 +145,9 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     connect( iconView, SIGNAL( delObject_sign() ),
              this,     SLOT( deleteObj() ) );
 
+    connect( iconView, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+             this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+
 
     connect( listView, SIGNAL( currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*) ),
              this,     SLOT( listViewCurrentChanged(QTreeWidgetItem*) ) );
@@ -157,6 +160,9 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
              this,     SLOT( listContextMenu(const QPoint&) ) );
     connect( listView, SIGNAL( delObject_sign() ),
              this,     SLOT( deleteObj() ) );
+
+    connect( listView, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+             this, SLOT(itemDoubleClicked(QTreeWidgetItem*, int)));
 
     QString s    = st->getGroupViewColumns();
     int     col0 = s.section(',',0,0).toInt();
@@ -727,3 +733,12 @@ void GroupObjectDialog::newObject()
     m_dialog->newButton->showMenu();
 }
 
+void GroupObjectDialog::itemDoubleClicked(QListWidgetItem*)
+{
+    openObject();
+}
+
+void GroupObjectDialog::itemDoubleClicked(QTreeWidgetItem*, int)
+{
+    openObject();
+}

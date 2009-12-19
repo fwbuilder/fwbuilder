@@ -99,6 +99,9 @@ class GroupObjectDialog : public BaseObjectDialog
     void selectObject(libfwbuilder::FWObject *o);
 
     void newObject();
+
+    void itemDoubleClicked(QListWidgetItem*);
+    void itemDoubleClicked(QTreeWidgetItem*, int);
     
  private:
 
