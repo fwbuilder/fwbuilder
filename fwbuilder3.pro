@@ -5,7 +5,17 @@ TEMPLATE = subdirs
 
 SUBDIRS = src doc
 
-tests.commands = cd src && cd compiler_lib && cd unit_tests && qmake && make run; \
-                cd .. && cd .. && cd gui && unit_tests && qmake && make run
+DOLLAR = $
+
+tests.commands = for directory in `find . -name unit_tests`; \
+                 do \
+                    home=`pwd`; \
+                    echo; \
+                    echo "Running test in "$${DOLLAR}$${DOLLAR}directory; \
+                    cd $${DOLLAR}$${DOLLAR}directory; \
+                    qmake; \
+                    make run; \
+                    cd $${DOLLAR}$${DOLLAR}home; \
+                done
 
 QMAKE_EXTRA_TARGETS += tests

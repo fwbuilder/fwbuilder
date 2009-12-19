@@ -1,7 +1,13 @@
+DOLLAR = $
+
 run.commands = echo "Running tests..." && \
-			   cd FWBTree && qmake && make run; cd ..; \
-			   cd ImporterTest && qmake && make run; cd ..; \
-			   cd RCS && qmake && make run; cd ..; \
-			   cd UsageResolverTest && qmake && make run; cd ..;
+               for directory in `find . -type d -maxdepth 1 -regex \'\./[A-Za-z0-9\-\_]*\'`; \
+               do \
+                    home=`pwd`; \
+                    cd $${DOLLAR}$${DOLLAR}directory; \
+                    qmake; \
+                    make run; \
+                    cd $${DOLLAR}$${DOLLAR}home; \
+                done
 			
 QMAKE_EXTRA_TARGETS += run
