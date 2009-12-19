@@ -709,8 +709,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 }
             }
         } else canCreateCluster = false;
-        //if (canCreateCluster)
-        popup_menu->addAction( tr("New cluster from selected firewalls"), this, SLOT( newClusterFromSelected() ) )->setEnabled(canCreateCluster);
+        popup_menu->addAction( tr("New cluster from selected firewalls"),
+                               this, SLOT( newClusterFromSelected() ) )->setEnabled(canCreateCluster);
         popup_menu->addSeparator();
         popup_menu->addAction( tr("Compile"), this, SLOT( compile()));
         popup_menu->addAction( tr("Install"), this, SLOT( install()));

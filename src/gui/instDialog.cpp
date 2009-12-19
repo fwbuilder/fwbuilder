@@ -196,6 +196,9 @@ instDialog::instDialog(QWidget* p,
 
     showPage(0);
 
+    if (reqFirewalls_.size() == 1)
+        showPage(1);
+
     switch(op)
     {
     case BATCH_COMPILE:
