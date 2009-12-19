@@ -415,6 +415,7 @@ FORMS = FWBMainWindow_q.ui \
     tagservicedialog_q.ui \
     actionsdialog_q.ui \
     simpletextview_q.ui \
+	helpview_q.ui \
     discoverydruid_q.ui \
     filterdialog_q.ui \
     natruleoptionsdialog_q.ui \

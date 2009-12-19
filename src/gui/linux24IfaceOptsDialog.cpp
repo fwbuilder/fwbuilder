@@ -50,6 +50,7 @@ linux24IfaceOptsDialog::linux24IfaceOptsDialog(QWidget *parent, FWObject *o)
 {
     m_dialog = new Ui::linux24IfaceOptsDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
     obj = o;
 
     FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();
@@ -134,8 +135,10 @@ void linux24IfaceOptsDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
                             m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this, "Interface Linux 2.4/2.6");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Interface Linux 2.4/2.6");
     h->setSource(QUrl("linux24IfaceOptsDialog.html#" + anchor));
+    h->raise();
     h->show();
 }
 

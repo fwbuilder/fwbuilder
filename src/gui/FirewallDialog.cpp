@@ -353,7 +353,7 @@ void FirewallDialog::openFWDialog()
 {
     try
     {
-        QWidget *w = DialogFactory::createFWDialog(this,obj);
+        QWidget *w = DialogFactory::createFWDialog(mw, obj);
         if (w==NULL)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
         assert(d!=NULL);
@@ -376,7 +376,7 @@ void FirewallDialog::openOSDialog()
 {
     try
     {
-        QWidget *w = DialogFactory::createOSDialog(this,obj);
+        QWidget *w = DialogFactory::createOSDialog(mw, obj);
         if (w==NULL)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
         assert(d!=NULL);

@@ -49,6 +49,7 @@ clusterMembersDialog::clusterMembersDialog(QWidget *parent, FWObject *o)
 {
     m_dialog = new Ui::clusterMembersDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
 
     // assign clustergroup object
     obj = o;
@@ -441,8 +442,10 @@ void clusterMembersDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
                             m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this, "Cluster-Member Management");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Cluster-Member Management");
     h->setSource(QUrl("clusterMembersDialog.html#" + anchor));
+    h->raise();
     h->show();
 }
 

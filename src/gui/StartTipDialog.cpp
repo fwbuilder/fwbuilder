@@ -65,6 +65,9 @@ StartTipDialog::StartTipDialog()
     current_tip = -1;
 
     // preload tips that come with the package
+    
+    // we use separate Help() object for the tip of the day becayse it should
+    // have different size and should not be persistent
     Help *h = new Help(NULL, "");
     int tip_no = 1;
     while (true)

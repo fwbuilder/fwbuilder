@@ -61,6 +61,7 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::iptAdvancedDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
 
     obj=o;
     QStringList slm;
@@ -284,9 +285,11 @@ void iptAdvancedDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
         m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this, "Firewall platform: iptables");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Firewall platform: iptables");
     h->setSource(QUrl("iptAdvancedDialog.html#" + anchor));
     h->show();
+    h->raise();
 }
 
 

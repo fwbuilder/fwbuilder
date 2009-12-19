@@ -54,6 +54,7 @@ secuwallAdvancedDialog::secuwallAdvancedDialog(QWidget *parent, FWObject *o)
 {
     m_dialog = new Ui::secuwallAdvancedDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
     obj = o;
 
     FWOptions *fwopt = (Firewall::cast(obj))->getOptionsObject();
@@ -254,8 +255,10 @@ void secuwallAdvancedDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
                             m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this,                        "Host secunet wall");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Host secunet wall");
     h->setSource(QUrl("secuwallAdvancedDialog.html#" + anchor));
+    h->raise();
     h->show();
 }
 

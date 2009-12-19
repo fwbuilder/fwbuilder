@@ -333,8 +333,9 @@ void ObjectEditor::help()
     emit getHelpName_sign(&help_name);
     if (fwbdebug)
         qDebug("ObjectEditor::help: %s", help_name.toStdString().c_str());
-    Help *h = new Help(editorStack, "");
+    Help *h = Help::getHelpWindow(mw);
     h->setSource(QUrl(help_name + ".html"));
+    h->raise();
     h->show();
 }
 
@@ -344,9 +345,8 @@ void ObjectEditor::findAndLoadHelp()
     emit getHelpName_sign(&help_name);
 
     // is help available?
-    Help *h = new Help(editorStack, "");
+    Help *h = Help::getHelpWindow(mw);
     helpButton->setEnabled(!h->findHelpFile(help_name + ".html").isEmpty());
-    delete h;
 }
 
 void ObjectEditor::load()

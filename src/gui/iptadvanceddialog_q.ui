@@ -1,6 +1,9 @@
 <ui version="4.0" >
  <class>iptAdvancedDialog_q</class>
  <widget class="QDialog" name="iptAdvancedDialog_q" >
+  <property name="windowModality" >
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="enabled" >
    <bool>true</bool>
   </property>

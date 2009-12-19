@@ -31,14 +31,14 @@
 
 #include <QEvent>
 
-class  QString;
-class  QApplication;
-class  FWWindow;
-class  FWBSettings;
+class QString;
+class QApplication;
+class FWWindow;
+class FWBSettings;
 
-extern QApplication      *app;
-extern FWWindow          *mw;
-extern FWBSettings       *st;
+extern QApplication *app;
+extern FWWindow *mw;
+extern FWBSettings *st;
 
 extern std::string     appRootDir;
 extern std::string     userDataDir;

@@ -1274,8 +1274,9 @@ void FWWindow::projectWindowClosed()
 
 void FWWindow::help()
 {
-    Help *h = new Help(this, "Firewall Builder");
+    Help *h = Help::getHelpWindow(this);
     h->setSource(QUrl("main.html"));
+    h->raise();
     h->show();
 }
 
@@ -1285,20 +1286,20 @@ void FWWindow::showReleaseNotes()
     // Show "release notes" dialog only if corresponding file
     // exists.
     QString contents;
-    Help *h = new Help(this, "Important Information About This Release");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Important Information About This Release");
     if (h->findHelpFile(file_name).isEmpty())
     {
         // the file does not exist
-        delete h;
+        h->hide();
     } else
     {
         // I do not know why, but url "file://file_name" does not seem to work.
         // But "file:file_name" works.
         h->setSource(QUrl("file:" + file_name));
-        h->setModal(false);
-        h->resize(600, 700);
+        h->raise();
         h->show();
-        h->exec();
+        //h->exec();
         // Class Help uses attribute Qt::WA_DeleteOnClose which
         // means the system will delete the object on close.  No
         // need to delete it explicitly if it was shown.

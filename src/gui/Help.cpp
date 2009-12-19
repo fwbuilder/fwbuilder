@@ -28,6 +28,7 @@
 #include "utils.h"
 
 #include "Help.h"
+#include "FWWindow.h"
 
 #include <QFile>
 #include <QLocale>
@@ -35,9 +36,17 @@
 
 using namespace std;
 
-Help::Help(QWidget *parent, const QString &title) : SimpleTextView(parent)
+Help* Help::help_window = NULL;
+
+Help::Help(QWidget *parent, const QString &title) : QMainWindow(parent)
 {
-    setAttribute(Qt::WA_DeleteOnClose);
+    m_dialog = new Ui::HelpView_q;
+    m_dialog->setupUi(this);
+    setWindowTitle("Firewall Builder Help");
+    setWindowFlags( windowFlags() | Qt::WindowStaysOnTopHint);
+
+    m_dialog->menubar->hide();
+    m_dialog->statusbar->hide();
 
     QString locale = QLocale::system().name(); //"en_US";
 
@@ -48,11 +57,26 @@ Help::Help(QWidget *parent, const QString &title) : SimpleTextView(parent)
     m_dialog->textview->setOpenLinks(true);
     m_dialog->textview->setOpenExternalLinks(true);
 
-    setModal(false);
     setName(title);
-    resize(500, 600);
-    raise();
+    resize(600, 700);
+    //raise();
+
+    flags = windowFlags() | Qt::Dialog;
 };
+
+Help* Help::getHelpWindow(QWidget*)
+{
+    if (help_window == NULL)
+        help_window = new Help(NULL, "Firewall Builder");
+
+    //if (parent != mw) help_window->setParent(parent, help_window->flags);
+    return help_window;
+}
+
+void Help::setName(const QString &name)
+{
+    m_dialog->objectname->setText(name);
+}
 
 QString Help::findHelpFile(const QString &file_base_name)
 {
@@ -68,3 +92,20 @@ QString Help::findHelpFile(const QString &file_base_name)
     return "";
 }
 
+void Help::closeEvent(QCloseEvent *event)
+{
+    window_geometry = QWidget::saveGeometry();
+    QMainWindow::closeEvent(event);
+}
+
+void Help::hideEvent(QHideEvent *event)
+{
+    restoreGeometry(window_geometry);
+    QMainWindow::hideEvent(event);
+}
+
+void Help::showEvent(QShowEvent *event)
+{
+    restoreGeometry(window_geometry);
+    QMainWindow::showEvent(event);
+}

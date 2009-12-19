@@ -28,23 +28,39 @@
 #define __HELP_H_
 
 #include "../../config.h"
-#include "SimpleTextView.h"
+#include "ui_helpview_q.h"
 
+#include <QMainWindow>
 #include <QStringList>
 #include <QUrl>
+#include <QByteArray>
 
-class Help : public SimpleTextView
+
+class Help : public QMainWindow
 {
+    Q_OBJECT;
 
     QStringList paths;
-    
+    QByteArray window_geometry;
+    Qt::WindowFlags flags;
+
 public:
+    Ui::HelpView_q *m_dialog;
     
     Help(QWidget *parent, const QString &title);
     virtual ~Help() {};
 
     void setSource(const QUrl &url) { m_dialog->textview->setSource(url); }
     QString findHelpFile(const QString &file_base_name);
+
+    void setName(const QString &name);
+    
+    virtual void closeEvent(QCloseEvent *event);
+    virtual void hideEvent(QHideEvent *event);
+    virtual void showEvent(QShowEvent *event);
+
+    static Help* getHelpWindow(QWidget *parent);
+    static Help* help_window;
 };
 
 #endif 

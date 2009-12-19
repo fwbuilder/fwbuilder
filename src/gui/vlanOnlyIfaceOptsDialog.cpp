@@ -48,6 +48,7 @@ vlanOnlyIfaceOptsDialog::vlanOnlyIfaceOptsDialog(QWidget *parent, FWObject *o)
 {
     m_dialog = new Ui::vlanOnlyIfaceOptsDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
     obj = o;
 
     FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();
@@ -124,8 +125,10 @@ void vlanOnlyIfaceOptsDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
                             m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this, "Interface Properties");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Interface Properties");
     h->setSource(QUrl("vlanOnlyIfaceOptsDialog.html#" + anchor));
+    h->raise();
     h->show();
 }
 

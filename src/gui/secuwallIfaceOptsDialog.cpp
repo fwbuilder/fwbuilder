@@ -38,6 +38,7 @@ secuwallIfaceOptsDialog::secuwallIfaceOptsDialog(QWidget *parent, FWObject *o)
 {
     m_dialog = new Ui::secuwallIfaceOptsDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
     obj = o;
 
     FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();
@@ -130,8 +131,10 @@ void secuwallIfaceOptsDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
                             m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this,                        "Interface secunet wall");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Interface secunet wall");
     h->setSource(QUrl("secuwallIfaceOptsDialog.html#" + anchor));
+    h->raise();
     h->show();
 }
 

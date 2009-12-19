@@ -48,6 +48,7 @@ pixosIfaceOptsDialog::pixosIfaceOptsDialog(QWidget *parent, FWObject *o)
 {
     m_dialog = new Ui::pixosIfaceOptsDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
     obj = o;
 
     FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();
@@ -126,8 +127,10 @@ void pixosIfaceOptsDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
                             m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this, "PIX Interface");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("PIX Interface");
     h->setSource(QUrl("pixosIfaceOptsDialog.html#" + anchor));
+    h->raise();
     h->show();
 }
 

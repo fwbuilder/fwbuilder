@@ -60,6 +60,7 @@ ipcoposAdvancedDialog::ipcoposAdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::ipcoposAdvancedDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
     obj=o;
 
     string host_os = obj->getStr("host_OS");
@@ -211,8 +212,10 @@ void ipcoposAdvancedDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
         m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this, "Host type IPCOP");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Host type IPCOP");
     h->setSource(QUrl("ipcoposAdvancedDialog.html#" + anchor));
+    h->raise();
     h->show();
 }
 

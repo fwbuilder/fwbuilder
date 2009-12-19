@@ -61,6 +61,7 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
 {
     m_dialog = new Ui::linux24AdvancedDialog_q;
     m_dialog->setupUi(this);
+    setWindowModality(Qt::WindowModal);
     obj=o;
 
     string host_os = obj->getStr("host_OS");
@@ -224,8 +225,10 @@ void linux24AdvancedDialog::help()
     QString tab_title = m_dialog->tabWidget->tabText(
         m_dialog->tabWidget->currentIndex());
     QString anchor = tab_title.replace('/', '-').replace(' ', '-').toLower();
-    Help *h = new Help(this, "Host type Linux 2.4/2.6");
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Host type Linux 2.4/2.6");
     h->setSource(QUrl("linux24AdvancedDialog.html#" + anchor));
+    h->raise();
     h->show();
 }
 
