@@ -1,5 +1,8 @@
 2009-12-19  vadim  <vadim@vk.crocodile.org>
 
+	* Ticket #959 (context menu items appear rearranged) closed by a2k
+	fixed: (In [2212]) Fixed #959
+
 	* Ticket #958 (when user compiles single firewall, skip the first
 	page of the wizard) closed by a2k fixed: (In [2210]) Fixed #958
 
