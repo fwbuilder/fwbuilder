@@ -452,11 +452,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     QAction * delID = popup_menu->addAction( tr("Delete"), this,
                                         SLOT( delObj() ) );
 
+    popup_menu->addSeparator();
+
     QList<QAction*> AddObjectActions;
 
     if (getCurrentObjectTree()->getNumSelected()==1)
     {
-        popup_menu->addSeparator();
 
         if ( (Firewall::isA(currentObj) || Host::isA(currentObj)) &&
              ! currentObj->isReadOnly() )
@@ -688,10 +689,11 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         popup_menu->addAction( tr("Find"), this, SLOT( findObject()));
 
         popup_menu->addAction( tr("Where used"), this, SLOT( findWhereUsedSlot()));
-    } else
-    {
-        popup_menu->addAction( tr("Group"), this, SLOT( groupObjects() ) );
     }
+
+    popup_menu->addSeparator();
+    popup_menu->addAction( tr("Group"), this, SLOT( groupObjects() ) )
+            ->setDisabled(getCurrentObjectTree()->getNumSelected()==1);
 
     if (Firewall::cast(currentObj)!=NULL ||
         (ObjectGroup::cast(currentObj)!=NULL &&
