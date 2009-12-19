@@ -374,6 +374,8 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         } else if (Interface::isA(obj))
         {
             Interface *intf = Interface::cast(obj);
+            str << "Label: "
+                << QString::fromUtf8(intf->getLabel().c_str()) << "<br>";
             FWObjectTypedChildIterator j = obj->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j)
             {
@@ -642,6 +644,9 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         {
             Interface *intf = Interface::cast(obj);
             //str += QObject::tr("<b>Path:</b> ")+ path +"<br>\n";
+            str += "<b>Label: </b>";
+            str += QString::fromUtf8(intf->getLabel().c_str());
+            str += "<br>";
 
             FWObjectTypedChildIterator j = obj->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j)
