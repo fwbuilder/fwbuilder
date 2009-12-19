@@ -614,7 +614,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
             print_rule->setContext(policy_compiler.get());
             print_rule->_printBackupSSHAccessRules(&stop_action);
         } else
-            stop_action->setVariable("mgmt_access", 0);
+            stop_action.setVariable("mgmt_access", 0);
 
         script_skeleton.setVariable("stop_action", stop_action.expand());
 
