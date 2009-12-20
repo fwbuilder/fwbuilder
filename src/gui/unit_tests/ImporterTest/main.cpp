@@ -31,7 +31,7 @@
 #include "../../../common/init.cpp"
 
 //std::string respath;
-int fwbdebug = 1;
+int fwbdebug = 0;
 //QString user_name;
 std::string platform;
 

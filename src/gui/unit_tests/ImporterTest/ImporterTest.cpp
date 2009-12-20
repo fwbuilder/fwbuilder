@@ -82,9 +82,10 @@ void ImporterTest::setUp()
     UpgradePredicate upgrade_predicate;
 
     db->setReadOnly( false );
-    sysfname = "../../../res/objects_init.xml";
-    librespath = ".";
-    qDebug() << sysfname.c_str() << librespath.c_str();
+    path.pop_back();
+    path << "objects_init.xml";
+    sysfname = path.join(FS_SEPARATOR).toStdString();
+    librespath = string(PREFIX) + "/share/libfwbuilder";
     db->load( sysfname, &upgrade_predicate, librespath);
     db->setFileName("");
     lib = Library::cast(db->create(Library::TYPENAME));
@@ -110,7 +111,6 @@ void ImporterTest::IOSImporterTest()
 
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->run();
-
 
     QString result;
     while (logger->ready())
