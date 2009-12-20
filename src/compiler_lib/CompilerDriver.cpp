@@ -66,6 +66,7 @@
 #include "fwcompiler/Compiler.h"
 
 #include <QStringList>
+#include <QtDebug>
 
 
 using namespace std;
@@ -875,7 +876,15 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
                         "failover_group_id",
                         FWObjectDatabase::getStringId(failover_group->getId()));
 
+                    // per #971: cluster interface should inherit attributes
+                    // of the member interfaces: regular / dynamic / unnimbered
+                    cluster_interface->setDyn(iface->isDyn());
+                    cluster_interface->setUnnumbered(iface->isUnnumbered());
+                    cluster_interface->setUnprotected(iface->isUnprotected());
+                    cluster_interface->setSecurityLevel(iface->getSecurityLevel());
+
                     copyFailoverInterface(cluster, fw, failover_group, iface);
+
                 }
             }
         } else
@@ -913,7 +922,7 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
 }
 
 /*
- * Perform checks for fialover interfaces and their addresses, add a
+ * Perform checks for failover interfaces and their addresses, add a
  * copy of failover interface form the cluster to the firewall object.
  *
  * This method assumes the following:

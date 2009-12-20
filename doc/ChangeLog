@@ -1,3 +1,13 @@
+2009-12-20  vadim  <vadim@vk.crocodile.org>
+
+	* interfaceProperties.cpp (interfaceProperties::validateInterface):
+	permit unnumbered cluster interfaces. If member firewalls have
+	unnumbered interfaces that user wants to use in rules, then
+	cluster needs corresponding cluster interface as well. Previously
+	the GUI did not allow copy/paste of an unnumbered interface from a
+	firewall to a cluster and compiler complained about such interface
+	not having ip address. Now both operations are permitted.
+
 2009-12-19  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/configlets/linux24/status_action: Fixes #954 : generated

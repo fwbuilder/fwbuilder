@@ -275,15 +275,6 @@ bool interfaceProperties::validateInterface(FWObject *target,
 
     if (Cluster::cast(target) && Interface::cast(intf))
     {
-        // per ticket #487
-        if (Interface::cast(intf)->isUnnumbered())
-        {
-            err = QObject::tr("Interface %1 is unnumbered, "
-                              "it can not belong to a cluster")
-                .arg(intf->getName().c_str());
-            return false;
-        }
-
         // Note that @target may not be actually a parent of @intf at
         // the time of call to this function. We use this function to
         // validate operation of making @intf a child of @target. @intf

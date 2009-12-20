@@ -47,7 +47,7 @@ void interfacePropertiesTest::validateInterface()
     row.push_back("ethernet");
     row.push_back("ethernet");
     row.push_back("true");
-    row.push_back("false");
+    row.push_back("true");
     testData.push_back(row);
 
     row.clear();
