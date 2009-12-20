@@ -100,10 +100,11 @@ bool Group::hasMember(FWObject *o)
 FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
 {
     setRO(false);
-    if (obj->size() && FWReference::cast(obj->front())!=NULL)
+    if ((obj->size() && FWReference::cast(obj->front())!=NULL) ||
+        (this->size() && FWReference::cast(this->front())!=NULL))
     {
         destroyChildren();
-        for(list<FWObject*>::const_iterator m=obj->begin(); m!=obj->end(); ++m) 
+        for(list<FWObject*>::const_iterator m=obj->begin(); m!=obj->end(); ++m)
         {
             if (FWReference::cast(*m))
             {
