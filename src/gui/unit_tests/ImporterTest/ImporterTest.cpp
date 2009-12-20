@@ -91,8 +91,6 @@ void ImporterTest::setUp()
     lib->setName("User");
     db->add(lib);
 
-    db->dump(cout, true, true, 0);
-
     logger = new QueueLogger();
 }
 

@@ -59,7 +59,7 @@ DEFINES		 += $$ANTLR_DEFINES
 
 
 run.commands = echo "Running tests..." \
-    && ./${TARGET} && echo "Running gcov..." && \
+    && ./${TARGET} 2>/dev/null && echo "Running gcov..." && \
     gcov ${SOURCES} >/dev/null 2>/dev/null && \
     echo "OK" || echo "FAILED"
 run.depends = all
