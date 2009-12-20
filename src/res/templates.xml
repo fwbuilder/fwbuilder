@@ -839,7 +839,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id40941EA0" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id40941ED5" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id40941ED5" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id40941E8C"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -858,7 +858,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941EE6" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id40941EE6" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1135,7 +1135,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id40986B12" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id40986B47" disabled="False" log="True" position="4" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id40986B47" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id40986AFE"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -1155,7 +1155,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40986B58" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id40986B58" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1425,7 +1425,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id409878F8" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id4098792D" disabled="False" log="True" position="6" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id4098792D" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id409878E4"/>
             </Src>
@@ -1443,7 +1443,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4098793E" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id4098793E" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1596,7 +1596,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id4129347C" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id412934E4" disabled="False" log="True" position="8" action="Deny" direction="Inbound" comment="anti spoofing rule">
+          <PolicyRule id="id412934E4" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
             <Src neg="False">
               <ObjectRef ref="id41293477"/>
               <ObjectRef ref="id3DC75CE7-1"/>
@@ -1615,7 +1615,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id412934F5" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id412934F5" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1910,7 +1910,7 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="id41293563" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id4129359C" disabled="False" log="True" position="10" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id4129359C" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id4129355E"/>
             </Src>
@@ -1928,7 +1928,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id412935A9" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id412935A9" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
