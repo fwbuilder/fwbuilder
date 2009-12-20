@@ -618,6 +618,10 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
 
         script_skeleton.setVariable("stop_action", stop_action.expand());
 
+        Configlet status_action(fw, "linux24", "status_action");
+        status_action.collapseEmptyStrings(true);
+        script_skeleton.setVariable("status_action", status_action.expand());
+
         Configlet top_comment(fw, "linux24", "top_comment");
 
         top_comment.setVariable("version", VERSION);

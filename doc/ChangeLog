@@ -1,5 +1,18 @@
 2009-12-19  vadim  <vadim@vk.crocodile.org>
 
+	* src/res/configlets/linux24/status_action: Fixes #954 : generated
+	iptables script now recognizes "status" command line
+	parameter. When the script runs with this parameter, its exist
+	status code indicates the state of the firewall: 0 means iptables
+	modules are loaded and some rules are configured; 3 means either
+	modules are not loaded or there are no tables. The script can not
+	verify that the rules are those configured in fwbuilder, it only
+	verifies that modules are loaded and there are some
+	rules. Configuration with no rules but with default policies, even
+	if these policies are ACCEPT in all chanins, returns "0" return
+	code. This is consistent with behavior of
+	/etc/rc.d/init.d/iptables script on Fedora Core Linux.
+
 	* RuleSetView.cpp (RuleSetView::changeAction): fixed #957: when
 	user changes action of a policy rule, it should be opened in the
 	editor only if the new action has some parameters that can be

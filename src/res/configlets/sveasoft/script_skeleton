@@ -74,10 +74,7 @@ reset_all() {
     {{$reset_all}}
 }
 
-stop_action() {
-    :
-    {{$stop_action}}
-}
+{{$stop_action}}
 
 # For backwards compatibility missing argument is equivalent to 'start'
 test -z "$1" && {

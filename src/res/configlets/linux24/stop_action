@@ -16,7 +16,8 @@
 ## tables and chains using function reset_all and optionally adds backup
 ## ssh access rules.
 
-reset_all
+stop_action() {
+    reset_all
 
 ## it helps to add backup ssh access rule as early as possible so that
 ## ssh session opened from the management station won't break after
@@ -28,8 +29,9 @@ reset_all
 ## (NAT)" lines).
 
 {{if mgmt_access}}
-# backup ssh access
-$IPTABLES -A INPUT  -p tcp -m tcp  -s {{$management_address}}  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT
-$IPTABLES -A OUTPUT  -p tcp -m tcp  -d {{$management_address}}  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT
+    # backup ssh access
+    $IPTABLES -A INPUT  -p tcp -m tcp  -s {{$management_address}}  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT
+    $IPTABLES -A OUTPUT  -p tcp -m tcp  -d {{$management_address}}  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT
 {{endif}}
+}
 

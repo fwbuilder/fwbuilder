@@ -65,10 +65,9 @@ reset_all() {
     {{$reset_all}}
 }
 
-stop_action() {
-    :
-    {{$stop_action}}
-}
+{{$stop_action}}
+
+{{$status_action}}
 
 # See how we were called.
 # For backwards compatibility missing argument is equivalent to 'start'
@@ -92,29 +91,40 @@ case "$1" in
         script_body
         ip_forward
         epilog_commands
+        RETVAL=$?
         ;;
 
     stop)
         stop_action
+        RETVAL=$?
+        ;;
+
+    status)
+        status_action
+        RETVAL=$?
         ;;
 
     reload)
         $0 stop
         $0 start
+        RETVAL=$?
         ;;
 
     interfaces)
         configure_interfaces
+        RETVAL=$?
         ;;
 
     test_interfaces)
         FWBDEBUG="echo"
         configure_interfaces
+        RETVAL=$?
         ;;
 
     *)
-        echo "Usage $0 {start|stop|reload|interfaces|test_interfaces}"
+        echo "Usage $0 {start|stop|status|reload|interfaces|test_interfaces}"
         ;;
 
 esac
 
+exit $RETVAL
