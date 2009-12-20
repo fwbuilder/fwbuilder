@@ -44,6 +44,14 @@ QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 LIBS += -lgcov #-lcppunit
 
+!win32:LIBS += ../../common/libcommon.a
+!win32:PRE_TARGETDEPS = ../../common/libcommon.a
+
+win32:CONFIG += console
+
+win32:LIBS += ../../common/release/common.lib
+win32:PRE_TARGETDEPS = ../../common/release/common.lib
+
 run.commands = echo "Running tests..." && ./${TARGET} && \
                echo "Running gcov..." && gcov ${SOURCES} >/dev/null 2>/dev/null && echo "OK" || echo "FAILED"
 run.depends = all

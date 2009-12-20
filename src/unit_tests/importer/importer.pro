@@ -29,6 +29,15 @@ SOURCES += importer_test.cpp \
 TARGET = importer_test
 #TARGETDEPS += unit_test
 
+!win32:LIBS += ../../common/libcommon.a
+!win32:PRE_TARGETDEPS = ../../common/libcommon.a
+
+win32:CONFIG += console
+
+win32:LIBS += ../../common/release/common.lib
+win32:PRE_TARGETDEPS = ../../common/release/common.lib
+
+
 contains( HAVE_ANTLR_RUNTIME, 1 ) {
 	INCLUDEPATH	 += $$ANTLR_INCLUDEPATH
 	LIBS		 += ../../parsers/libfwbparser.a  $$ANTLR_LIBS 

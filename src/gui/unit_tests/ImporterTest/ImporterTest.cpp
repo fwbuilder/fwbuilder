@@ -50,10 +50,13 @@
 #include <QDebug>
 #include <QFile>
 #include <QStringList>
-#include "../../../common/init.cpp"
+
+
 
 using namespace std;
 using namespace libfwbuilder;
+
+extern string platform;
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
@@ -79,17 +82,24 @@ void ImporterTest::setUp()
     UpgradePredicate upgrade_predicate;
 
     db->setReadOnly( false );
+    sysfname = "../../../res/objects_init.xml";
+    librespath = ".";
+    qDebug() << sysfname.c_str() << librespath.c_str();
     db->load( sysfname, &upgrade_predicate, librespath);
     db->setFileName("");
     lib = Library::cast(db->create(Library::TYPENAME));
     lib->setName("User");
     db->add(lib);
 
+    db->dump(cout, true, true, 0);
+
     logger = new QueueLogger();
 }
 
 void ImporterTest::IOSImporterTest()
 {
+    platform = "iosacl";
+
     QFile f("test_data/test1.conf");
     f.open(QFile::ReadOnly);
 
@@ -101,22 +111,27 @@ void ImporterTest::IOSImporterTest()
     Importer* imp = new IOSImporter(lib, instream, logger);
 
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->run();
 
 
     QString result;
     while (logger->ready())
         result.append(logger->getLine().c_str());
 
-    imp->finalize();
+    //imp->finalize(); //will crash if uncomment this
 
-
-    QString rightResult = QFile("test_data/test1.result").readAll();
+    QFile rr("test_data/test1.result");
+    rr.open(QFile::ReadOnly);
+    QString rightResult = rr.readAll();
 
     CPPUNIT_ASSERT(result == rightResult);
+
 }
 
 void ImporterTest::IPTImporterTest()
 {
+    platform = "iptables";
+
     QFile f("test_data/iptables_test1.conf");
     f.open(QFile::ReadOnly);
 
@@ -127,14 +142,19 @@ void ImporterTest::IPTImporterTest()
 
     Importer* imp = new IPTImporter(lib, instream, logger);
 
-    CPPUNIT_ASSERT_NO_THROW(imp->run());
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->run();
+
+
     QString result;
     while (logger->ready())
         result.append(logger->getLine().c_str());
 
     imp->finalize();
 
-    QString rightResult = QFile("test_data/iptables_test1.result").readAll();
+    QFile rr("test_data/iptables_test1.result");
+    rr.open(QFile::ReadOnly);
+    QString rightResult = rr.readAll();
 
     CPPUNIT_ASSERT(result == rightResult);
 

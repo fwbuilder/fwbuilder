@@ -28,15 +28,16 @@
 #include "ImporterTest.h"
 #include <QString>
 #include <string>
-//#include "../../../common/init.cpp"
+#include "../../../common/init.cpp"
 
 //std::string respath;
-int fwbdebug = 0;
+int fwbdebug = 1;
 //QString user_name;
+std::string platform;
 
-int main( int, char** args)
+int main( int, char** argv)
 {
-    //init(args);
+    init(argv);
     CppUnit::TextUi::TestRunner runner;
     runner.addTest( ImporterTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),

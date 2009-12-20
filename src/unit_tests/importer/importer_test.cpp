@@ -90,7 +90,7 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     public:
     virtual bool operator()(const string &msg) const 
     { 
-	cout << _("Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it.") << endl;
+	cout << "Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it." << endl;
 	return false;
     }
 };
@@ -131,7 +131,7 @@ int main(int argc, char * const *argv)
 	/* load the data file */
 	UpgradePredicate upgrade_predicate; 
 
-	cout << _(" *** Loading standard data file ...");
+	cout << " *** Loading standard data file ...";
 
         objdb->setReadOnly( false );
         objdb->load( sysfname, &upgrade_predicate, librespath);
@@ -139,7 +139,7 @@ int main(int argc, char * const *argv)
         FWObject *lib = objdb->create(Library::TYPENAME);
         lib->setName("User");
         objdb->add(lib);
-	cout << _(" done\n");
+	cout << " done\n";
 
         //objdb->dump(true,true);
 
@@ -198,7 +198,7 @@ int main(int argc, char * const *argv)
 	cerr << ex.what() << endl;
         return 1;
     } catch (...) {
-	cerr << _("Unsupported exception") << endl;
+	cerr << "Unsupported exception" << endl;
         return 1;
     }
 
