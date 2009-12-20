@@ -941,7 +941,7 @@ void RuleSetView::removeRule()
             }
         }
 
-        project->undoStack->beginMacro(tr("delete rules"));
+        FWCmdMacro* macro = new FWCmdMacro("delete rules");
 
         // Remove items from groups
         QList<QModelIndex> groups = itemsInGroups.keys();
@@ -955,8 +955,8 @@ void RuleSetView::removeRule()
                 Rule* last = md->nodeFromIndex(md->index(itemsInGroups[group].at(itemsInGroups[group].size() - 1), 0, group))->rule;
                 QString groupName = md->nodeFromIndex(group)->name;
 
-                FWCmdRuleRemoveFromGroup* cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), first, last, groupName);
-                project->undoStack->push(cmd);
+                FWCmdRuleRemoveFromGroup* cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), first, last, groupName, macro);
+//                project->undoStack->push(cmd);
 
             }
         }
@@ -965,10 +965,10 @@ void RuleSetView::removeRule()
         // Remove rows
         if (!rulesToDelete.isEmpty())
         {
-            FWCmdRuleDelete* cmd =  new FWCmdRuleDelete(project, md->getRuleSet(), rulesToDelete);
-            project->undoStack->push(cmd);
+            FWCmdRuleDelete* cmd =  new FWCmdRuleDelete(project, md->getRuleSet(), rulesToDelete, macro);
+//            project->undoStack->push(cmd);
         }
-        project->undoStack->endMacro();
+        project->undoStack->push(macro);
     }
 }
 
@@ -1983,14 +1983,19 @@ void RuleSetView::dropEvent(QDropEvent *ev)
                 // command. Also, we should delete it first and insert
                 // later so that we leave rule set view with the row
                 // where it was inserted selected.
-                project->undoStack->beginMacro("Move object");
+
+                FWCmdMacro* macro = new  FWCmdMacro(tr("Move object"));
+
                 deleteObject(
                     srcIndex, dragobj,
-                    "move-delete "+QString::fromUtf8(dragobj->getName().c_str()));
+                    "move-delete "+QString::fromUtf8(dragobj->getName().c_str()),
+                    macro);
                 insertObject(
                     index, dragobj,
-                    "move-drop "+QString::fromUtf8(dragobj->getName().c_str()));
-                project->undoStack->endMacro();
+                    "move-drop "+QString::fromUtf8(dragobj->getName().c_str()),
+                    macro);
+
+                project->undoStack->push(macro);
             }
         }
     }
@@ -2002,29 +2007,30 @@ void RuleSetView::dropEvent(QDropEvent *ev)
     ev->accept();
 }
 
-void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text)
+void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text, QUndoCommand* macro)
 {
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
     if (re==NULL || re->isAny()) return;
 
     FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(
-        project, ((RuleSetModel*)model())->getRuleSet(), re, text);
+        project, ((RuleSetModel*)model())->getRuleSet(), re, text, macro);
     RuleElement *newRe = RuleElement::cast(cmd->getNewState());
     newRe->removeRef(obj);
     if (newRe->isAny()) newRe->setNeg(false);
-
-    project->undoStack->push(cmd);
+    if (macro == 0)
+        project->undoStack->push(cmd);
 }
 
-bool RuleSetView::insertObject(QModelIndex index, FWObject *obj, QString text)
+bool RuleSetView::insertObject(QModelIndex index, FWObject *obj, QString text, QUndoCommand* macro)
 {
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
     assert (re!=NULL);
     FWCmdRuleChangeRe* cmd = new FWCmdRuleChangeRe(
-        project, ((RuleSetModel*)model())->getRuleSet(), re, text);
+        project, ((RuleSetModel*)model())->getRuleSet(), re, text, macro);
     RuleElement *newRe = RuleElement::cast(cmd->getNewState());
     newRe->addRef(obj);
-    project->undoStack->push(cmd);
+    if (macro == 0)
+        project->undoStack->push(cmd);
     return true;
 }
 

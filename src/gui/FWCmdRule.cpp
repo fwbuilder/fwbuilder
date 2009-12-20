@@ -47,7 +47,7 @@ using namespace libfwbuilder;
  * FWCmdRule
  ********************************************************/
 
-FWCmdRule::FWCmdRule(ProjectPanel *project, libfwbuilder::RuleSet* ruleset) : FWCmdBasic(project)
+FWCmdRule::FWCmdRule(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QUndoCommand* macro) : FWCmdBasic(project, macro)
 {
     this->ruleset = ruleset;
 }
@@ -135,8 +135,8 @@ void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
  * FWCmdRuleDelete
  ********************************************************/
 
-FWCmdRuleDelete::FWCmdRuleDelete(ProjectPanel *project, RuleSet* ruleset, QList<Rule*> &rulesToDelete):
-        FWCmdRule(project, ruleset)
+FWCmdRuleDelete::FWCmdRuleDelete(ProjectPanel *project, RuleSet* ruleset, QList<Rule*> &rulesToDelete, QUndoCommand* macro):
+        FWCmdRule(project, ruleset, macro)
 {
     copyRules(rulesToDelete);
 
@@ -211,8 +211,9 @@ void FWCmdRuleDelete::undoOnModel(RuleSetModel *md)
  * FWCmdRuleDeleteFromGroup
  ********************************************************/
 
-FWCmdRuleDeleteFromGroup::FWCmdRuleDeleteFromGroup(ProjectPanel *project, RuleSet* ruleset, QList<libfwbuilder::Rule*> rulesToDelete):
-        FWCmdRuleDelete(project, ruleset, rulesToDelete)
+FWCmdRuleDeleteFromGroup::FWCmdRuleDeleteFromGroup(ProjectPanel *project, RuleSet* ruleset, QList<libfwbuilder::Rule*> rulesToDelete,
+                                                   QUndoCommand* macro):
+        FWCmdRuleDelete(project, ruleset, rulesToDelete, macro)
 {
     setText(QObject::tr("delete rules from group"));
 }
@@ -339,8 +340,8 @@ void FWCmdRuleRenameGroup::undoOnModel(RuleSetModel *md)
  * FWCmdRuleRemoveFromGroup
  ********************************************************/
 
-FWCmdRuleRemoveFromGroup::FWCmdRuleRemoveFromGroup(ProjectPanel* project, RuleSet* ruleset, Rule* firstRule, Rule* lastRule, const QString groupName):
-        FWCmdRule(project, ruleset), firstRule(firstRule), lastRule(lastRule), groupName(groupName)
+FWCmdRuleRemoveFromGroup::FWCmdRuleRemoveFromGroup(ProjectPanel* project, RuleSet* ruleset, Rule* firstRule, Rule* lastRule, const QString groupName, QUndoCommand* macro):
+        FWCmdRule(project, ruleset, macro), firstRule(firstRule), lastRule(lastRule), groupName(groupName)
 {
     setText(QObject::tr("remove object(s) from group ")+groupName);
 }

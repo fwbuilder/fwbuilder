@@ -460,7 +460,7 @@ void ObjectManipulator::unlockObject()
     }
 }
 
-void ObjectManipulator::deleteObject(FWObject *obj)
+void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
 {
     bool firstAction = true ;
 
@@ -528,8 +528,10 @@ void ObjectManipulator::deleteObject(FWObject *obj)
             FWCmdDeleteObject *cmd = new FWCmdDeleteObject(
                 m_project,
                 obj,
-                QString("Delete object"));
-            m_project->undoStack->push(cmd);
+                QString("Delete object"),
+                macro);
+            if (macro==0)
+                m_project->undoStack->push(cmd);
             return;
         }
 
@@ -563,7 +565,7 @@ void ObjectManipulator::deleteObject(FWObject *obj)
  * Here we build set of dependencies for @obj, create command to
  * delete it and push it to the undo stack.
  */
-void ObjectManipulator::actuallyDeleteObject(FWObject *obj)
+void ObjectManipulator::actuallyDeleteObject(FWObject *obj, QUndoCommand* macro)
 {
     map<int, set<FWObject*> > reference_holders;
     UsageResolver::findAllReferenceHolders(obj, m_project->db(), reference_holders);
@@ -577,9 +579,11 @@ void ObjectManipulator::actuallyDeleteObject(FWObject *obj)
         deleted_objects_lib,
         obj,
         reference_holders,
-        QString("Delete object"));
+        QString("Delete object"),
+        macro);
 
-    m_project->undoStack->push(cmd);
+    if (macro == 0)
+        m_project->undoStack->push(cmd);
 }
 
 void ObjectManipulator::objectMoved(FWObject* obj)

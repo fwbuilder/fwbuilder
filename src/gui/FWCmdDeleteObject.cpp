@@ -51,8 +51,9 @@ using namespace std;
 
 FWCmdDeleteObject::FWCmdDeleteObject(ProjectPanel *project,
                                      FWObject *obj,
-                                     QString text):
-    FWCmdChange(project, obj, text)
+                                     QString text,
+                                     QUndoCommand* macro):
+    FWCmdChange(project, obj, text, false, macro)
 {
     delobj = obj;
     delobj->ref();

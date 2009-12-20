@@ -47,8 +47,8 @@ using namespace std;
  ********************************************************/
 
 FWCmdChange::FWCmdChange(ProjectPanel *project,
-                         FWObject *obj, QString text, bool _rename_children):
-    FWCmdBasic(project)
+                         FWObject *obj, QString text, bool _rename_children, QUndoCommand* macro):
+    FWCmdBasic(project, macro)
 {
     setObject(obj);
     rename_children = _rename_children;

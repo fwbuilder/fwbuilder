@@ -43,7 +43,8 @@ protected:
 public:
     FWCmdDeleteObject(ProjectPanel *project,
                       libfwbuilder::FWObject *obj,
-                      QString text=QString());
+                      QString text=QString(),
+                      QUndoCommand* macro=0);
     ~FWCmdDeleteObject();
     virtual void redo();
     virtual void undo();

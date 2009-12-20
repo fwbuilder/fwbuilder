@@ -34,6 +34,14 @@
 
 #include "fwbuilder/FWObject.h"
 
+class FWCmdMacro : public QUndoCommand
+{
+public:
+    FWCmdMacro(QString text) : QUndoCommand() {setText(text);}
+    int id() const {return 1;}
+    bool mergeWith(const QUndoCommand *other);
+};
+
 class FWCmdBasic : public QUndoCommand
 {
     int obj_id;
@@ -42,7 +50,7 @@ protected:
     ProjectPanel *project;
 
 public:
-    FWCmdBasic(ProjectPanel *project);
+    FWCmdBasic(ProjectPanel *project, QUndoCommand* macro = 0);
     int objectId() {return obj_id;}
     void setObject(libfwbuilder::FWObject *object) {obj_id = object->getId();}
     libfwbuilder::FWObject* getObject();
@@ -60,5 +68,7 @@ public:
 };
 
 void undoAndRemoveLastCommand(QUndoStack* undoStack);
+
+
 
 #endif // FWCMDBASIC_H

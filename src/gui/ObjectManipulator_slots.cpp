@@ -146,10 +146,11 @@ void ObjectManipulator::cutObj()
 {
     // Start macro to hide the name of the undo command created in
     // delObj. Normally its name is "Delete object".
-    m_project->undoStack->beginMacro("Cut object");
+    FWCmdMacro* macro = new FWCmdMacro(tr("Cut object"));
     copyObj();
-    delObj();   // works with the list getCurrentObjectTree()->getSelectedObjects()
-    m_project->undoStack->endMacro();
+    delObj(macro);   // works with the list getCurrentObjectTree()->getSelectedObjects()
+
+    m_project->undoStack->push(macro);
 }
 
 void ObjectManipulator::pasteObj()
@@ -249,7 +250,7 @@ void ObjectManipulator::duplicateObj(QAction *action)
  * Note: this slot gets controlwhen user presses "Delete" key in
  * addition to menu items activation
  */
-void ObjectManipulator::delObj()
+void ObjectManipulator::delObj(QUndoCommand* macro)
 {
     if (fwbdebug)
         qDebug("ObjectManipulator::delObj selected %d objects ",

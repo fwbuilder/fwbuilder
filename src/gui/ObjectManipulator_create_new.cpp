@@ -170,11 +170,13 @@ void ObjectManipulator::createNewObject()
     FWObject *new_obj = NULL;
 
     QString descr = FWBTree().getTranslatableObjectTypeName(type_name);
-
+    // FWCmdMacro should be used for commands grouping
+    FWCmdMacro* macro = 0;
     if (add_to_group_id == -1)
-        m_project->undoStack->beginMacro("Create new object");
+        macro = new FWCmdMacro(tr("Create new object"));
     else
-        m_project->undoStack->beginMacro("Create and add to group");
+        macro = new FWCmdMacro(tr("Create and add to group"));
+
 
     if (type_name ==  Firewall::TYPENAME ||
         type_name ==  Cluster::TYPENAME ||
@@ -182,13 +184,12 @@ void ObjectManipulator::createNewObject()
     {
         // These three functions call separate modal dialogs that can
         // be cancelled by the user
-        if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall();
+        if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall(macro);
         if (type_name ==  Cluster::TYPENAME) new_obj = newCluster();
         if (type_name ==  Host::TYPENAME) new_obj = newHost();
         if (new_obj == NULL)
         {
-            m_project->undoStack->endMacro();
-            undoAndRemoveLastCommand(m_project->undoStack);
+            delete macro;
             return;
         } 
     }
@@ -208,8 +209,7 @@ void ObjectManipulator::createNewObject()
 
     if (new_obj == NULL)
     {
-        m_project->undoStack->endMacro();
-        undoAndRemoveLastCommand(m_project->undoStack);
+        delete macro;
         return;
     }
 
@@ -239,7 +239,7 @@ void ObjectManipulator::createNewObject()
                     m_project->getFileName(), new_obj->getId()));
         }
     }
-    m_project->undoStack->endMacro();
+    m_project->undoStack->push(macro);
 }
 
 FWObject* ObjectManipulator::createObject(const QString &objType,
@@ -444,7 +444,7 @@ FWObject* ObjectManipulator::newNATRuleSet()
     return o;
 }
 
-FWObject* ObjectManipulator::newFirewall()
+FWObject* ObjectManipulator::newFirewall(QUndoCommand* macro)
 {
     FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Firewall::TYPENAME);
@@ -461,11 +461,10 @@ FWObject* ObjectManipulator::newFirewall()
     if (nfw!=NULL)
     {
         FWCmdAddObject *cmd = new FWCmdAddObject(
-            m_project, parent, NULL, QObject::tr("Create new Firewall"));
+            m_project, parent, NULL, QObject::tr("Create new Firewall"), macro);
         FWObject *new_state = cmd->getNewState();
         parent->remove(nfw, false);
         new_state->add(nfw);
-        m_project->undoStack->push(cmd);
     }
 
     return nfw;

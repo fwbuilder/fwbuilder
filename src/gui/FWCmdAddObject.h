@@ -45,7 +45,8 @@ public:
     FWCmdAddObject(ProjectPanel *project,
                    libfwbuilder::FWObject *grp,
                    libfwbuilder::FWObject *member,
-                   QString text=QString());
+                   QString text=QString(),
+                   QUndoCommand* macro=0);
     ~FWCmdAddObject();
     void setNeedTreeReload(bool f) { require_complete_tree_reload = f; }
     virtual void redo();

@@ -27,6 +27,7 @@
 #define RULESETVIEW_H
 
 #include <QtGui/QTreeView>
+#include <QUndoCommand>
 
 #include "fwbuilder/Rule.h"
 
@@ -210,8 +211,8 @@ protected:
     virtual void keyPressEvent( QKeyEvent* ev );
 
     bool validateForInsertion(QModelIndex index, libfwbuilder::FWObject *obj);
-    void deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text);
-    bool insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text);
+    void deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text, QUndoCommand* makro = 0);
+    bool insertObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text, QUndoCommand* makro = 0);
 
     bool validateForInsertion(libfwbuilder::RuleElement *re,
                               libfwbuilder::FWObject *obj, bool quiet=false);

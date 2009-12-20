@@ -51,7 +51,8 @@ public:
                     libfwbuilder::FWObject *new_parent,
                     libfwbuilder::FWObject *obj,
                     std::map<int, std::set<libfwbuilder::FWObject*> >  &reference_holders,
-                    QString text=QString());
+                    QString text=QString(),
+                    QUndoCommand* macro = 0);
     ~FWCmdMoveObject();
     virtual void redo();
     virtual void undo();

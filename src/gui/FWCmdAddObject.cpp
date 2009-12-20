@@ -53,8 +53,9 @@ using namespace std;
 FWCmdAddObject::FWCmdAddObject(ProjectPanel *project,
                                FWObject *grp,
                                FWObject *mem,
-                               QString text):
-    FWCmdChange(project, grp, text)
+                               QString text,
+                               QUndoCommand* macro):
+    FWCmdChange(project, grp, text, false, macro)
 {
     member = mem;
     require_complete_tree_reload = false;

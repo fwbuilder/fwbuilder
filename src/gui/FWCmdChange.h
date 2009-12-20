@@ -46,7 +46,8 @@ public:
     FWCmdChange(ProjectPanel *project,
                 libfwbuilder::FWObject *obj,
                 QString text=QString(),
-                bool rename_children = false);
+                bool rename_children = false,
+                QUndoCommand* macro = 0);
     ~FWCmdChange();
 
     libfwbuilder::FWObject* getOldState() {return oldState;}

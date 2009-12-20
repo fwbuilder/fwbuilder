@@ -52,6 +52,7 @@ class ObjectTreeView;
 class ObjectTreeViewItem;
 class QComboBox;
 class QPixmap;
+class QUndoCommand;
 
 class ProjectPanel;
 
@@ -140,7 +141,7 @@ class ObjectManipulator : public QWidget
                                             libfwbuilder::FWObject *obj,
                                             std::map<int,int> &map_ids);
 
-    void actuallyDeleteObject(libfwbuilder::FWObject *obj);
+    void actuallyDeleteObject(libfwbuilder::FWObject *obj, QUndoCommand* macro = 0);
 
     bool validateForPaste(libfwbuilder::FWObject *target,
                           libfwbuilder::FWObject *obj,
@@ -155,7 +156,7 @@ class ObjectManipulator : public QWidget
     libfwbuilder::FWObject* newLibrary();
     libfwbuilder::FWObject* newHost();
     libfwbuilder::FWObject* newInterface();
-    libfwbuilder::FWObject* newFirewall();
+    libfwbuilder::FWObject* newFirewall(QUndoCommand* macro);
     libfwbuilder::FWObject* newCluster(bool fromSelected = false);
     libfwbuilder::FWObject* newClusterIface();
     libfwbuilder::FWObject* newStateSyncClusterGroup();
@@ -225,7 +226,7 @@ public slots:
      void copyObj();
      void cutObj();
      void pasteObj();
-     void delObj();
+     void delObj(QUndoCommand* macro = 0);
      void dumpObj();
      void compile();
      void install();
@@ -337,7 +338,7 @@ public:
       */
      void closeSystemLib();
 
-     void deleteObject(libfwbuilder::FWObject *obj);
+     void deleteObject(libfwbuilder::FWObject *obj, QUndoCommand* macro = 0);
 
      /**
       * select whatever object is current in the tree (used to restore

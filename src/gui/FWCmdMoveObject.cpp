@@ -66,7 +66,7 @@ FWCmdMoveObject::FWCmdMoveObject(
     FWObject *new_p,
     FWObject *o,
     map<int, set<FWObject*> > &reference_holder_objects,
-    QString text) : FWCmdBasic(project),
+    QString text, QUndoCommand* macro) : FWCmdBasic(project, macro),
                     reference_holders(reference_holder_objects)
 {
     old_parent = old_p;

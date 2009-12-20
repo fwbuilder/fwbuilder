@@ -57,7 +57,7 @@ protected:
     virtual void notify();
 
 public:
-    FWCmdRule(ProjectPanel *project, libfwbuilder::RuleSet* ruleset);
+    FWCmdRule(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QUndoCommand* macro=0);
 
     virtual void redo();
     virtual void undo();
@@ -99,7 +99,7 @@ protected:
     QList<libfwbuilder::Rule*> rulesToDelete;
 
 public:
-    FWCmdRuleDelete(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<libfwbuilder::Rule*> &rulesToDelete);
+    FWCmdRuleDelete(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<libfwbuilder::Rule*> &rulesToDelete, QUndoCommand* macro=0);
     ~FWCmdRuleDelete();
 
     virtual void redoOnModel(RuleSetModel *md);
@@ -118,7 +118,7 @@ class FWCmdRuleDeleteFromGroup : public FWCmdRuleDelete
 //    QList<libfwbuilder::Rule*> rulesToDelete;
 
 public:
-    FWCmdRuleDeleteFromGroup(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<libfwbuilder::Rule*> rulesToDelete);
+    FWCmdRuleDeleteFromGroup(ProjectPanel *project, libfwbuilder::RuleSet* ruleset, QList<libfwbuilder::Rule*> rulesToDelete, QUndoCommand* macro=0);
 
 
 //    void redoOnModel(RuleSetModel *md);
@@ -170,7 +170,7 @@ class FWCmdRuleRemoveFromGroup : public FWCmdRule
 
 public:
     FWCmdRuleRemoveFromGroup(ProjectPanel* project, libfwbuilder::RuleSet* ruleset, libfwbuilder::Rule* firstRule, libfwbuilder::Rule* lastRule,
-                             const QString groupName);
+                             const QString groupName, QUndoCommand* macro=0);
 
     void redoOnModel(RuleSetModel *md);
     void undoOnModel(RuleSetModel *md);
@@ -249,8 +249,8 @@ protected:
 
 public:
     FWCmdRuleChange(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
-                    libfwbuilder::FWObject *obj, QString text=QString()):
-            FWCmdChange(project, obj, text), ruleset(ruleset) {}
+                    libfwbuilder::FWObject *obj, QString text=QString(), QUndoCommand* macro = 0):
+            FWCmdChange(project, obj, text, false, macro), ruleset(ruleset) {}
 
     virtual void redo();
     virtual void undo();
@@ -307,8 +307,8 @@ protected:
 
 public:
     FWCmdRuleChangeRe(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
-                      libfwbuilder::FWObject *obj, QString text=QString()):
-            FWCmdRuleChange(project, ruleset, obj, text) {}
+                      libfwbuilder::FWObject *obj, QString text=QString(), QUndoCommand* macro = 0):
+            FWCmdRuleChange(project, ruleset, obj, text, macro) {}
 
     virtual void notify();
 
