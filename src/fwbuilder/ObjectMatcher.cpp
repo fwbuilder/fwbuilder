@@ -32,6 +32,7 @@
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/Interface.h"
@@ -66,6 +67,15 @@ using namespace std;
 bool ObjectMatcher::complexMatch(Address *obj1, Address *obj2)
 {
     if (obj1->getId()==obj2->getId()) return true;
+
+    if (Cluster::cast(obj1) && Firewall::cast(obj2))
+    {
+        // "parent_cluster_id" is set in CompilerDriver::populateClusterElements()
+        // which unfortunately is part of fwbuilder rather than fwcompiler
+        int cluster_id = obj2->getInt("parent_cluster_id");
+        if (obj1->getId() == cluster_id) return true;
+    }
+
     return obj1->dispatchComplexMatch(this, obj2);
 }
 
@@ -183,8 +193,7 @@ bool ObjectMatcher::checkComplexMatch(IPv6 *obj1, FWObject *obj2)
     return checkComplexMatchForSingleAddress(obj1, obj2);
 }
 
-bool ObjectMatcher::checkComplexMatch(Host *obj1,
-                                      FWObject *obj2)
+bool ObjectMatcher::checkComplexMatch(Host *obj1, FWObject *obj2)
 {
 /*
  *  match only if all interfaces of obj1 match obj2
