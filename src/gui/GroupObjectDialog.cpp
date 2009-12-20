@@ -451,7 +451,7 @@ void GroupObjectDialog::applyChanges()
         newobj.insert(obj_id);
     }
 
-    for (FWObject::iterator j=new_state->begin(); j!=new_state->end(); ++j)
+    for (FWObject::iterator j=obj->begin(); j!=obj->end(); ++j)
     {
         FWObject *o = *j;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
@@ -469,10 +469,15 @@ void GroupObjectDialog::applyChanges()
     for (set<int>::iterator k=diff.begin(); k!=diff.end(); ++k)
     {
         FWObject *o = m_project->db()->findInIndex(*k);
-        if (FWBTree().isSystem(new_state))
+        // Note: FWBTree::isSystem() would not work for new_state because
+        // it is not part of the tree and isSystem() relies on the tree path
+        if (FWBTree().isSystem(obj))
+        {
             m_project->m_panel->om->deleteObject(o);
-        else
+        } else
+        {
             new_state->removeRef(o);
+        }
     }
 
     diff.clear();
@@ -486,10 +491,13 @@ void GroupObjectDialog::applyChanges()
     for (set<int>::iterator k1=diff.begin(); k1!=diff.end(); ++k1)
     {
         FWObject *o = m_project->db()->findInIndex(*k1);
-        if (FWBTree().isSystem(o))
+        if (FWBTree().isSystem(obj))
+        {
             m_project->pasteTo(new_state, o);
-        else
+        } else
+        {
             new_state->addRef(o);
+        }
     }
 
     saveColumnWidths();
