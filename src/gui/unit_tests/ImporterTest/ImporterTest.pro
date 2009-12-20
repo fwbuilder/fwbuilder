@@ -41,7 +41,8 @@ OBJECTS_DIR = .
 QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
 QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov
+LIBS += -lgcov -l antlr
+LIBS += -L../../../antlr
 DEPENDPATH = ../../../common
 
 !win32:LIBS += ../../../common/libcommon.a

@@ -29,7 +29,7 @@ QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 LIBS += -lgcov #-lcppunit
 
-run.commands = echo "Running tests..." && ${TARGET} && \
+run.commands = echo "Running tests..." && ./${TARGET} && \
                echo "Running gcov..." && gcov ${SOURCES} >/dev/null 2>/dev/null && echo "OK" || echo "FAILED"
 run.depends = all
 

@@ -1,7 +1,7 @@
 DOLLAR = $
 
 run.commands = echo "Running tests..." && \
-               for directory in `find . -type d -maxdepth 1 -regex \'\./[A-Za-z0-9\-\_]*\'`; \
+               for directory in `find . -maxdepth 1 -type d -regex \'\./[A-Za-z0-9\-\_]*\'`; \
                do \
                     home=`pwd`; \
                     cd $${DOLLAR}$${DOLLAR}directory; \
