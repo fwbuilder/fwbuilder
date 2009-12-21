@@ -542,6 +542,59 @@ rule sets of this object rather than in the actual firewalls.
   Added support for option "--random" in SNAT rules
 </p>
 
+<p>
+  Generated script can adjust <b>conntrack</b> kernel module
+  parameters to tune its performance for firewalls that handle heavy
+  traffic.
+</p>
+
+<p>
+  Generated iptables script now has standard structure per LSB ("Linux
+  Standard Base Core Specification 3.1"). The script has the following
+  actions controlled by the command line arguments: "start", "stop",
+  "reload", "status". Action "start" reconfigured interfaces and then
+  flushes current iptables tables and chains and loads new iptables
+  configuration. Action "stop" flushes all tables and chains and sets
+  default policy in all chains to "DROP" to shut down the firewall to
+  all kinds of traffic. It can also optionally install iptables rules
+  to permit ssh access to the firewall from the management
+  workstation.  Action "status" returns return code per LSB
+  specification. Code 0 means the firewall is loaded and is running
+  (but it does not check that the rules it is running with are those
+  defined in fwbuilder). Return code 3 means iptables modules are not
+  loaded or there are no tables. This return code means the firewall
+  is not running or not configured.  It also supports additional
+  actions "interfaces" and "test_interfaces". Action "interfaces" only
+  runs commands that manage ip addresses of interfaces, as well as
+  configure vlan, bridge and bonding interfaces. Action
+  "test_interfaces" runs the same commands in the test mode when it
+  prints commands that would be executed but does not actually execute
+  them.
+</p>
+
+<p>
+  Firewall Builder v4.0 comes with experimental integration
+  with <b>IPCOP</b> firewalls. To turn it on, choose platform
+  "iptables" and host OS "IPCOP firewall appliance". Generated script
+  is supposed to be installed on the firewall as
+  /etc/rc.d/rc.firewall.local and restarted by the command
+  "/etc/rc.d/rc.firewall restart". Built-in policy installer in
+  Firewall Builder GUI installs it using this name and run the restart
+  command to activate it. Firewall Builder does not manage interfaces
+  of IPCOP firewall to avoid conflicts with IPCOP itself, use
+  fwbuilder only to generate iptables rules. The program comes with
+  some template objects for IPCOP firewalls, you can use them when you
+  create new Firewall object if you choose to create it from a
+  template.
+</p>
+
+<p>
+  Another new host OS supported in Firewall Builder v4.0 is
+  <b>OpenWRT</b>. This OS is very close to the stock Linux, the only
+  difference is path to the system utilities such as lsmod, modprobe,
+  vconfig and others can be slightly different.
+</p>
+
 
 <a name="fwbedit"></a>
 <h2>Changes in the command linbe tool fwbedit</h2>

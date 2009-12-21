@@ -185,3 +185,44 @@ IPv6 related kernel settings are documented here:
   are located in non-standard directories (such as "/usr/local/bin",
   "/use/local/sbin" etc.) Leave these blank if tools you expect to use
   are in standard system directories.
+
+<hr>
+<h2>Tab conntrack</h2>
+<p>
+  In this tab you can adjust parameters of the <b>conntrack</b> module
+  to tune its performance. This is useful for firewalls passing a lot
+  of traffic but probably is not necessary in most cases. See
+  <a href="http://www.wallfire.org/misc/netfilter_conntrack_perf.txt">
+    http://www.wallfire.org/misc/netfilter_conntrack_perf.txt</a> for
+    the detailed explanation.
+</p>
+
+<p>
+  You can adjust the following parameters:
+</p>
+
+<p>
+  <ul>
+    <li><b>CONNTRACK_MAX</b> is the maximum number of "sessions"
+      (connection tracking entries) that can be handled simultaneously
+      by netfilter in kernel memory.</li>
+
+    <li>The hash table contains <b>HASHSIZE</b> linked lists.  When
+      the limit is reached (the total number of conntrack entries
+      being stored has reached <b>CONNTRACK_MAX</b>), each list will
+      contain ideally (in the optimal case) about
+      <b>CONNTRACK_MAX/HASHSIZE</b> entries. The hash table occupies a
+      fixed amount of non-swappable kernel memory, whether you have
+      any connections or not.  But the maximum number of conntrack
+      entries determines how many conntrack entries can be stored
+      (globally into the linked lists), i.e. how much kernel memory
+      they will be able to occupy at most.</li>
+
+    <li><b>"Disable TCP window tracking"</b>: this is needed if you
+      run conntrackd daemon in state synchronization mode for a
+      firewall cluster and have kernel &lt; 2.6.22.
+      See <a href="http://conntrack-tools.netfilter.org/manual.html">
+      http://conntrack-tools.netfilter.org/manual.html</a> for more
+      details.</li>
+  </ul>
+</p>
