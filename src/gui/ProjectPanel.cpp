@@ -1016,7 +1016,7 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
 
     if (!m_panel->treeDockWidget->isWindow())
     {
-        loadMainSplitter();
+        //loadMainSplitter();
     } else
     {
         saveMainSplitter();

@@ -116,7 +116,7 @@ void ImporterTest::IOSImporterTest()
     while (logger->ready())
         result.append(logger->getLine().c_str());
 
-    //imp->finalize(); //will crash if uncomment this
+    imp->finalize(); //will crash if uncomment this
 
     QFile rr("test_data/test1.result");
     rr.open(QFile::ReadOnly);
