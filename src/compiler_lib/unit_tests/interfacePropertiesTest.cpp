@@ -35,35 +35,6 @@ using namespace CppUnit;
 
 void interfacePropertiesTest::validateInterface()
 {
-    vector<vector<string> > testData;
-    vector<string> row;
-    row.push_back("ethernet"); // type
-    row.push_back("ethernet"); // parent_type
-    row.push_back("false");    // is unnumbered
-    row.push_back("true");     // right answer
-    testData.push_back(row);
-
-    row.clear();
-    row.push_back("ethernet");
-    row.push_back("ethernet");
-    row.push_back("true");
-    row.push_back("true");
-    testData.push_back(row);
-
-    row.clear();
-    row.push_back("bonding");
-    row.push_back("ethernet");
-    row.push_back("false");
-    row.push_back("false");
-    testData.push_back(row);
-
-    row.clear();
-    row.push_back("bridge");
-    row.push_back("ethernet");
-    row.push_back("false");
-    row.push_back("false");
-    testData.push_back(row);
-
     string host_OS = "linux24";
 
     Resources* os_res = Resources::os_res[host_OS];
@@ -73,36 +44,40 @@ void interfacePropertiesTest::validateInterface()
 
     interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 
+    CPPUNIT_ASSERT(int_prop != NULL);
+
     QString err;
 
-    for (unsigned int i = 0; i<testData.size(); i++)
-    {
-        string parent_type = testData[i][0];
-        string type = testData[i][1];
-        bool unnumbered = testData[i][2] == "true";
-        bool answer = testData[i][3] == "true";
+    Cluster *cluster1 = Cluster::cast(db->create(Cluster::TYPENAME));
+    Interface *parent1 = Interface::cast(db->create(Interface::TYPENAME));
+    Interface *iface1 = Interface::cast(db->create(Interface::TYPENAME));
 
-        Cluster cluster;
-        Interface parent;
-        Interface iface;
+    db->add(cluster1);
+    db->add(parent1);
+    parent1->add(iface1, false);
+    parent1->getOptionsObject()->setStr("type", "eternet");
 
-        db->add(&cluster);
-        db->add(&parent);
-        parent.add(&iface, false);
-        parent.getOptionsObject()->setStr("type", parent_type);
+    iface1->setUnnumbered(false);
+    iface1->getOptionsObject()->setStr("type", "ethernet");
+    cluster1->setStr("host_OS", host_OS);
 
-        iface.setUnnumbered(unnumbered);
-        iface.getOptionsObject()->setStr("type", type);
-        cluster.setStr("host_OS", host_OS);
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
+                                           dynamic_cast<FWObject*>(iface1), false, err) == true );
 
+    iface1->setUnnumbered(true);
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
+                                           dynamic_cast<FWObject*>(iface1), false, err) == true );
 
-        CPPUNIT_ASSERT(int_prop != NULL);
+    parent1->getOptionsObject()->setStr("type", "bonding");
+    iface1->setUnnumbered(false);
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
+                                           dynamic_cast<FWObject*>(iface1), false, err) == false );
 
-        bool result = int_prop->validateInterface(dynamic_cast<FWObject*>(&cluster),
-                                               dynamic_cast<FWObject*>(&iface), false, err);
-        CPPUNIT_ASSERT(result == answer);
-        CPPUNIT_ASSERT(err.isEmpty() == answer);
-    }
+    parent1->getOptionsObject()->setStr("type", "bridge");
+    iface1->setUnnumbered(false);
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
+                                           dynamic_cast<FWObject*>(iface1), false, err) == false );
+
 
     Firewall fw;
     fw.setStr("host_OS", host_OS);
@@ -177,43 +152,6 @@ void interfacePropertiesTest::validateInterface()
 
 void interfacePropertiesTest::isEligibleForCluster()
 {
-    vector<vector<string> > testData;
-    vector<string> row;
-    row.push_back("ethernet"); // type
-    row.push_back("ethernet"); // parent_type
-    row.push_back("true");     // right answer
-    testData.push_back(row);
-
-    row.clear();
-    row.push_back("ethernet");
-    row.push_back("bridge");
-    row.push_back("false");
-    testData.push_back(row);
-
-    row.clear();
-    row.push_back("bonding");
-    row.push_back("ethernet");
-    row.push_back("true");
-    testData.push_back(row);
-
-    row.clear();
-    row.push_back("bridge");
-    row.push_back("ethernet");
-    row.push_back("true");
-    testData.push_back(row);
-
-    row.clear();
-    row.push_back("8021q");
-    row.push_back("ethernet");
-    row.push_back("true");
-    testData.push_back(row);
-
-    row.clear();
-    row.push_back("ethernet");
-    row.push_back("bridge");
-    row.push_back("false");
-    testData.push_back(row);
-
     Resources* os_res = Resources::os_res["linux24"];
     string os_family = "linux24";
     if (os_res!=NULL)
@@ -221,28 +159,37 @@ void interfacePropertiesTest::isEligibleForCluster()
 
     interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 
-    for (unsigned int i = 0; i<testData.size(); i++)
-    {
-        string type = testData[i][0];
-        string parent_type = testData[i][1];
-        bool answer = testData[i][2] == "true";
+    CPPUNIT_ASSERT(int_prop != NULL);
 
-        Interface parent;
-        Interface iface;
+    Interface *parent1 = Interface::cast(db->create(Interface::TYPENAME));
+    Interface *iface1 = Interface::cast(db->create(Interface::TYPENAME));
+    db->add(parent1);
+    db->add(iface1);
+    parent1->add(iface1);
 
-        db->add(&parent);
-        parent.add(&iface, true);
-        parent.getOptionsObject()->setStr("type", parent_type);
+    iface1->getOptionsObject()->setStr("type", "ethernet");
+    parent1->getOptionsObject()->setStr("type", "ethernet");
+    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == true);
 
-        iface.getOptionsObject()->setStr("type", type);
-        iface.getParent()->setStr("type", parent_type);
+    iface1->getOptionsObject()->setStr("type", "ethernet");
+    parent1->getOptionsObject()->setStr("type", "bridge");
+    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == false);
 
-        CPPUNIT_ASSERT(int_prop != NULL);
+    iface1->getOptionsObject()->setStr("type", "bonding");
+    parent1->getOptionsObject()->setStr("type", "ethernet");
+    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == true);
 
-        bool result = int_prop->isEligibleForCluster(&iface);
+    iface1->getOptionsObject()->setStr("type", "bridge");
+    parent1->getOptionsObject()->setStr("type", "ethernet");
+    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == true);
 
-        CPPUNIT_ASSERT(result == answer);
-    }
+    iface1->getOptionsObject()->setStr("type", "8021q");
+    parent1->getOptionsObject()->setStr("type", "ethernet");
+    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == true);
+
+    iface1->getOptionsObject()->setStr("type", "ethernet");
+    parent1->getOptionsObject()->setStr("type", "bridge");
+    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == false);
 
     Firewall *fw = Firewall::cast(db->create(Firewall::TYPENAME));
     fw->setName("iface");
@@ -255,8 +202,10 @@ void interfacePropertiesTest::isEligibleForCluster()
     iface->getOptionsObject()->setStr("type", "bonding");
     iface->add(subface);
     CPPUNIT_ASSERT ( interfaceProperties().isEligibleForCluster(subface) == false );
+
     iface->getOptionsObject()->setStr("type", "ethernet");
     CPPUNIT_ASSERT ( interfaceProperties().isEligibleForCluster(iface) == false );
+
 }
 
 void interfacePropertiesTest::setUp()
