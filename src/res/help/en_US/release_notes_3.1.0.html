@@ -31,6 +31,7 @@
     <li><a href="#pix_cluster">Cluster configuration for PIX</a></li>
     <li><a href="#bridge">Changes in the support for bridging firewalls</a></li>
     <li><a href="#iptables">Changes in the policy compiler for iptables</a></li>
+    <li><a href="#pf">Changes in the policy compiler for PF</a></li>
     <li><a href="#fwbedit">Changes in the command line tool fwbedit</a></li>
   </ul>
 </p>
@@ -55,6 +56,22 @@
   libraries to find objects. Switching to another library or
   accidentally clicking on a wrong object in the tree does not cause
   editor to switch.
+</p>
+
+<p>
+  Full implementation of the <b>"undo" facility</b> for all operations
+  in the GUI. You can also monitor undo stack in the "Undo stack window"
+  that you can open using main menu item "View/Undo Stack".
+</p>
+
+<p>
+  <b>Behavior of all object dialogs has changed</b>. According to the
+  results of the user community opinion poll and discussion, object
+  dialogs are losing button "Apply". All changes made in dialog entry
+  fields are saved into the object immediately. This does not change
+  the data in the .fwb file, only objects in memory. Combined with
+  Undo, this allows for faster object editing and roll back of
+  changes.
 </p>
 
 <p>
@@ -85,11 +102,12 @@
 </p>
 
 <p>
-  Right above the panel showing rules there are now two new buttons. These
-  allow you to compile and install policy for the firewall object shown 
-  in the rules panel at the moment. The same functions are available via context
-  menu associated with the firewall or cluster object in the object
-  tree, but these buttons are easier to use.
+  Right above the panel showing rules there are now two new
+  buttons. These allow you to compile and install policy for the
+  firewall object shown in the rules panel at the moment. The same
+  functions are available via context menu associated with the
+  firewall or cluster object in the object tree, but these buttons are
+  easier to use.
 </p>
 
 <p>
@@ -117,6 +135,15 @@
   that match original temlpate addresses and replaces them with
   network objects that match new ones.
 </p>
+
+<p>
+  <b>"Add object to a groups directly from the group
+  dialog"</b>. Group object dialog now has a button that shows a menu
+  when clicked, this menu allowsyou to create new object and add it to
+  the group in one operation.
+</p>
+
+<img src="create_and_add_to_group.png"/>
 
 <p>
   <b>Password caching</b>: Built-in installer can remember
@@ -236,6 +263,17 @@
   Network" 2001:0000::/29 to 2001:01F8::/29. Also added a group "ipv6
   private" that includes all these networks.
 </p>
+
+<p>
+  Added GUI elements to support <b>IP option "router-alert"</b> which
+  is now available as an attribute of IPService object.
+</p>
+
+
+
+
+
+
 
 <a name="cluster"></a>
 <h2>Support for High Availability configurations</h2>
@@ -539,7 +577,22 @@ rule sets of this object rather than in the actual firewalls.
 </p>
 
 <p>
+  Added support for <b>branching rules in NAT</b>.
+</p>
+
+<p>
   Added support for option "--random" in SNAT rules
+</p>
+
+<p>
+  <b>"SNAT instead of MASQUERADE on dynamic interfaces"</b>. NAT rule
+  options dialog now has a checkbox that makes compiler use SNAT
+  target instead of MASQUERADING when checked when TSrc has dynamic
+  interface. Apparently MASQ target has problems when iptables NAT is
+  used in combination with policy routing. Using SNAT with a variable
+  that gets interface address solves the problem. By default this
+  option is off, that is compiler uses MASQUERADE target when TSrc has
+  dynamic interface.
 </p>
 
 <p>
@@ -594,6 +647,30 @@ rule sets of this object rather than in the actual firewalls.
   difference is path to the system utilities such as lsmod, modprobe,
   vconfig and others can be slightly different.
 </p>
+
+
+<a name="pf"></a>
+<h2>Changes in the policy compiler for pf</h2>
+
+<p>
+  Added support for <b>branching rules in NAT</b>. Compiler generates
+  keyword "anchor" if PF version is 4.3 or later and "nat-anchor" and
+  "rdr-anchor" for earlier versions.
+</p>
+
+<p>
+  Optimization: rules that have several interface objects (or a group)
+  in the "Interface" column are compiled using "{ }" grouping to
+  produce only one configuration line instead of several for such
+  rule.
+</p>
+
+<p>
+  Compiler for PF generates "allow-opts" keyword when IPService object
+  used in the rule has IP options. This includes new option
+  "router-alert".
+</p>
+
 
 
 <a name="fwbedit"></a>
