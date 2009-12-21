@@ -1,10 +1,10 @@
- *** Loading standard data file ... done
 Ruleset: user_chain
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Address object: h-21.21.21.21
 TCP Service object: tcp 22-22:
+Custom Service object: cust-0-tcp
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Interface: lo
 TCP Service object: tcp 0-8000
@@ -105,4 +105,3 @@ Address object: h-192.168.1.22
 Address object: h-192.168.2.10
 Address object: h-22.22.22.23
 ICMP Service object: icmp 11/0
-
