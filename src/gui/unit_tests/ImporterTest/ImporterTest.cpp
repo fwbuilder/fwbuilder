@@ -99,7 +99,7 @@ void ImporterTest::IOSImporterTest()
 {
     platform = "iosacl";
 
-    QFile f("test_data/test1.conf");
+    QFile f("test_data/ios.test");
     f.open(QFile::ReadOnly);
 
     string buffer = QString(f.readAll()).toStdString();
@@ -118,7 +118,7 @@ void ImporterTest::IOSImporterTest()
 
     imp->finalize(); //will crash if uncomment this
 
-    QFile rr("test_data/test1.result");
+    QFile rr("test_data/ios.result");
     rr.open(QFile::ReadOnly);
     QString rightResult = rr.readAll();
 
@@ -130,7 +130,7 @@ void ImporterTest::IPTImporterTest()
 {
     platform = "iptables";
 
-    QFile f("test_data/iptables_test1.conf");
+    QFile f("test_data/ipt.test");
     f.open(QFile::ReadOnly);
 
     string buffer = QString(f.readAll()).toStdString();
@@ -150,7 +150,7 @@ void ImporterTest::IPTImporterTest()
 
     imp->finalize();
 
-    QFile rr("test_data/iptables_test1.result");
+    QFile rr("test_data/ipt.result");
     rr.open(QFile::ReadOnly);
     QString rightResult = rr.readAll();
 
