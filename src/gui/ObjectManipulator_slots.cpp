@@ -259,8 +259,7 @@ void ObjectManipulator::delObj(QUndoCommand* macro)
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
     FWObject *current_library = getCurrentLib();
-    if (current_library->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
-        current_library->getId() == FWObjectDatabase::TEMPLATE_LIB_ID)
+    if (current_library->getId() == FWObjectDatabase::STANDARD_LIB_ID)
         return;
 
     FWObject *obj;

@@ -400,8 +400,7 @@ void ObjectManipulator::lockObject()
             FWObject *lib = obj->getLibrary();
             // these lbraries are locked anyway, do not let the user
             // lock objects inside because they won't be able to unlock them.
-            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
-                lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
+            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
             {
                 std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(
                                                     m_project, obj,
@@ -441,8 +440,7 @@ void ObjectManipulator::unlockObject()
         {
             obj= *i;
             FWObject *lib = obj->getLibrary();
-            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
-                lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
+            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
             {
                 std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(
                                                     m_project, obj,
@@ -484,8 +482,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
         deleted_objects_lib = dobj;
     }
 
-    if (object_library->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
-        object_library->getId() == FWObjectDatabase::TEMPLATE_LIB_ID)
+    if (object_library->getId() == FWObjectDatabase::STANDARD_LIB_ID)
         return;
 
     if (obj->getId() == FWObjectDatabase::STANDARD_LIB_ID ||
