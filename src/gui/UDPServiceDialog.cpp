@@ -111,37 +111,13 @@ void UDPServiceDialog::loadFWObject(FWObject *o)
 
 void UDPServiceDialog::validate(bool *res)
 {
-    if (fwbdebug) qDebug("UDPServiceDialog::validate");
-
-    *res=true;
-
-    if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
-
-    // check port ranges (bug #1695481, range start must be <= range end)
-    int sps = m_dialog->ss->value();
-    int spe = m_dialog->se->value();
-    int dps = m_dialog->ds->value();
-    int dpe = m_dialog->de->value();
-
-    if (sps > spe)
+    *res = true;
+    if (!validateName(this,obj,m_dialog->obj_name->text()))
     {
-        QMessageBox::warning(this, "Firewall Builder",
-          QObject::tr("Invalid range defined for the source port."),
-          QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
-        *res = false;
-        return;
-    }
-    if (dps > dpe)
-    {
-        QMessageBox::warning(this, "Firewall Builder",
-          QObject::tr("Invalid range defined for the destination port."),
-          QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
         *res = false;
         return;
     }
 }
-
-
 
 void UDPServiceDialog::applyChanges()
 {
@@ -152,8 +128,32 @@ void UDPServiceDialog::applyChanges()
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     new_state->setComment( string(m_dialog->comment->toPlainText().toUtf8().constData()) );
 
-    if (m_dialog->ss->value()!=0 && m_dialog->se->value()==0) m_dialog->se->setValue( m_dialog->ss->value() );
-    if (m_dialog->ds->value()!=0 && m_dialog->de->value()==0) m_dialog->de->setValue( m_dialog->ds->value() );
+    // check port ranges (bug #1695481, range start must be <= range end)
+    int sps = m_dialog->ss->value();
+    int spe = m_dialog->se->value();
+    int dps = m_dialog->ds->value();
+    int dpe = m_dialog->de->value();
+
+    if (sps!=0 && spe==0) m_dialog->se->setValue( m_dialog->ss->value() );
+    if (dps!=0 && dpe==0) m_dialog->de->setValue( m_dialog->ds->value() );
+
+    spe = m_dialog->se->value();
+    dpe = m_dialog->de->value();
+
+    if (sps > spe)
+    {
+        QMessageBox::warning(this, "Firewall Builder",
+          QObject::tr("Invalid range defined for the source port."),
+          QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
+        return;
+    }
+    if (dps > dpe)
+    {
+        QMessageBox::warning(this, "Firewall Builder",
+          QObject::tr("Invalid range defined for the destination port."),
+          QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
+        return;
+    }
 
     TCPUDPService::cast(new_state)->setSrcRangeStart(m_dialog->ss->value());
     TCPUDPService::cast(new_state)->setSrcRangeEnd(m_dialog->se->value());
