@@ -8,6 +8,25 @@
 	firewall to a cluster and compiler complained about such interface
 	not having ip address. Now both operations are permitted.
 
+	* minor bug fixes:
+
+	Ticket #971 (cluster interface should inherit properties of the
+	member interfaces) closed by vadim fixed: (In [2225]) refs #487
+	fixes #966, #971
+
+	Ticket #947 (Add new options to the "help" dialog) closed by vadim
+
+	Ticket #975 (if fw object has empty platform, it can not be
+	changed) closed by vadim fixed: (In [2228])
+
+	Ticket #977 (context menu items Delete and Cut are disabled if
+	library is Template ...) closed by vadim fixed: (In [2229])
+
+	Ticket #974 (fw template 3 is broken) closed by vadim
+
+	Ticket #979 (recognize extension .fwl for the template file)
+	closed by vadim
+
 2009-12-19  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/configlets/linux24/status_action: Fixes #954 : generated
