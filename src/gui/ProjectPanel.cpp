@@ -787,6 +787,7 @@ void ProjectPanel::showEvent(QShowEvent *ev)
 {
     if (fwbdebug) qDebug("ProjectPanel::showEvent %p title=%s",
                          this, getPageTitle().toAscii().constData());
+    m_panel->treeDockWidget->raise();
     QWidget::showEvent(ev);
 }
 
@@ -987,7 +988,7 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
     m_panel->treeDockWidget->disconnect(SIGNAL(topLevelChanged(bool)));
     m_panel->treeDockWidget->disconnect(SIGNAL(visibilityChanged(bool)));
 
-    if (f)
+    if (f)  // window becomes detached
     {
         m_panel->treeDockWidget->setParent(mw);
         mw->addDockWidget(Qt::LeftDockWidgetArea, m_panel->treeDockWidget);
@@ -996,7 +997,11 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
     {
         mw->removeDockWidget(m_panel->treeDockWidget);
         m_panel->treeDockWidget->setParent(m_panel->treeDockWidgetParentFrame);
-        m_panel->treeDockWidgetParentFrame->layout()->addWidget(m_panel->treeDockWidget);
+        m_panel->treeDockWidgetParentFrameLayout->addWidget(
+            m_panel->treeDockWidget, 0, 0, 1, 1);
+
+        // m_panel->treeDockWidgetParentFrame->layout()->addWidget(
+        //     m_panel->treeDockWidget);
         m_panel->treeDockWidget->show();
     }
     m_panel->treeDockWidget->setFloating(f);
@@ -1005,6 +1010,9 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
             this, SLOT(topLevelChangedForTreePanel(bool)));
     connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
             this, SLOT(visibilityChangedForTreePanel(bool)));
+
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::topLevelChangedForTreePanel check 1";
 
     if (!m_panel->treeDockWidget->isWindow())
     {
@@ -1016,6 +1024,9 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
         collapseTree();
         m_panel->treeDockWidget->widget()->update();
     }
+
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::topLevelChangedForTreePanel check 2";
 }
 
 void ProjectPanel::visibilityChangedForTreePanel(bool f)
