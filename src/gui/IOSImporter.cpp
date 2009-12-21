@@ -360,7 +360,11 @@ FWObject* IOSImporter::createUDPService()
 void IOSImporter::merge_rule::operator()(FWObject* r)
 {
     PolicyRule *rule = PolicyRule::cast(r);
-    assert(rule!=NULL);
+    // Note that Policy object can have children that are objects of
+    // classes PolicyRule and RuleSetOptions. If r does not cast to
+    // PolicyRule, then it must be RuleSetOptions and we should just
+    // skip it.
+    if (rule==NULL) return;
 
     target_ruleset->add(rule);
 //    target_ruleset->renumberRules();
