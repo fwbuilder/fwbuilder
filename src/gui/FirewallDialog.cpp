@@ -201,52 +201,28 @@ void FirewallDialog::saveVersion(FWObject *o)
 
 void FirewallDialog::platformChanged()
 {
+    if (fwbdebug)
+        qDebug() << "FirewallDialog::platformChanged()";
     fillVersion();
-    changed();
-
     QString platform = readPlatform(m_dialog->platform);
-
     setHostOS( m_dialog->hostOS, platform, "");
-
     QString pl = readPlatform(m_dialog->platform);
     m_dialog->fwAdvanced->setEnabled( pl!="unknown" );
+    //changed();
 }
 
 void FirewallDialog::hostOSChanged()
 {
-    changed();
+    if (fwbdebug)
+        qDebug() << "FirewallDialog::hostOSChanged()";
     QString ho = readHostOS(m_dialog->hostOS);
     m_dialog->osAdvanced->setEnabled( ho!="unknown_os" );
+    //changed();
 }
 
 void FirewallDialog::validate(bool *res)
 {
     *res = true;
-
-    QString platform = readPlatform(m_dialog->platform);
-    if (platform.isEmpty())
-    {
-        *res=false;
-        QMessageBox::critical(
-            this, "Firewall Builder",
-            tr("Platform setting can not be empty"),
-            tr("&Continue"), 0, 0,
-            0 );
-        return;
-    }
-
-    QString ho = readHostOS(m_dialog->hostOS);
-    if (ho.isEmpty())
-    {
-        *res=false;
-        QMessageBox::critical(
-            this, "Firewall Builder",
-            tr("Host OS setting can not be empty"),
-            tr("&Continue"), 0, 0,
-            0 );
-        return;
-    }
-
     if (!validateName(this,obj,m_dialog->obj_name->text()))
     {
         *res = false;
@@ -298,23 +274,23 @@ void FirewallDialog::applyChanges()
     new_state->setName(new_name);
     new_state->setComment(string(m_dialog->comment->toPlainText().toUtf8().constData()));
 
-    string new_platform = readPlatform(m_dialog->platform).toLatin1().constData();
-    new_state->setStr("platform", new_platform );
-
-    string new_host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();
-    new_state->setStr("host_OS", new_host_os);
-
     s->setInactive(m_dialog->inactive->isChecked());
 
     saveVersion(new_state);
 
     string new_version = new_state->getStr("version");
 
+    string new_platform = readPlatform(m_dialog->platform).toLatin1().constData();
+    if (new_platform.empty()) new_platform = "unknown";
+    new_state->setStr("platform", new_platform );
+
     if (old_platform!=new_platform)
     {
         if (fwbdebug)
-            qDebug("FirewallDialog::applyChanges() platform has changed to %s - "
-                   "clear option 'compiler'", new_platform.c_str());
+            qDebug() << "FirewallDialog::applyChanges() platform has changed"
+                     << old_platform.c_str() << "->" << new_platform.c_str()
+                     << "clearing option 'compiler'";
+        platformChanged();
         FWOptions  *opt =s->getOptionsObject();
         opt->setStr("compiler", "");
 
@@ -322,13 +298,38 @@ void FirewallDialog::applyChanges()
         Resources::setDefaultTargetOptions(new_platform, s);
     }
 
+    string new_host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();
+    if (new_host_os.empty()) new_host_os = "unknown_os";
+    new_state->setStr("host_OS", new_host_os);
+
     if (old_host_os!=new_host_os)
     {
         if (fwbdebug)
-            qDebug("FirewallDialog::applyChanges() host_OS has changed to %s",
-                   new_host_os.c_str());
+            qDebug() << "FirewallDialog::applyChanges() host_OS has changed"
+                     << old_host_os.c_str() << "->" << new_host_os.c_str();
+        hostOSChanged();
         // Set default options for the new host os
         Resources::setDefaultTargetOptions(new_host_os, s);
+    }
+
+    if (new_platform.empty())
+    {
+        QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("Platform setting can not be empty"),
+            tr("&Continue"), 0, 0,
+            0 );
+        return;
+    }
+
+    if (new_host_os.empty())
+    {
+        QMessageBox::critical(
+            this, "Firewall Builder",
+            tr("Host OS setting can not be empty"),
+            tr("&Continue"), 0, 0,
+            0 );
+        return;
     }
 
     if (old_platform!=new_platform || old_host_os!=new_host_os ||

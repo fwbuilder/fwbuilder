@@ -451,11 +451,6 @@
    <extends>QTextEdit</extends>
    <header>TextEditWidget.h</header>
   </customwidget>
-  <customwidget>
-   <class>QLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>QLineEdit.h</header>
-  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>obj_name</tabstop>
@@ -555,7 +550,7 @@
    <sender>platform</sender>
    <signal>activated(int)</signal>
    <receiver>FirewallDialog_q</receiver>
-   <slot>platformChanged()</slot>
+   <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>
@@ -587,7 +582,7 @@
    <sender>hostOS</sender>
    <signal>activated(int)</signal>
    <receiver>FirewallDialog_q</receiver>
-   <slot>hostOSChanged()</slot>
+   <slot>changed()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>

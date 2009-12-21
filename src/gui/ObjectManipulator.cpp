@@ -417,7 +417,6 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
             FWObject *lib   = *i;
 
             if ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
-                 lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
                  lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
                  lib->isReadOnly())
                 continue;
