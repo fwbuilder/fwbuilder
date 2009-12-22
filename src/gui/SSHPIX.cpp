@@ -38,6 +38,7 @@
 #include <qapplication.h>
 #include <qeventloop.h>
 #include <qfileinfo.h>
+#include <QtDebug>
 
 #include <iostream>
 
