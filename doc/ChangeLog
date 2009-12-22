@@ -1,4 +1,39 @@
+2009-12-21  vadim  <vadim@vk.crocodile.org>
+
+	* bug fixes and changes for 2009-12-21:
+
+	Ticket #982 (raise floating tree window when user switches between
+	different project windows) closed by vadim fixed: (In [2233])
+
+	Ticket #981 (Error entering new service. User could not change
+	port range start before changing port range end for TCP and UDP
+	services) closed by vadim fixed: (In [2234])
+
+	Ticket #983 (crash on IOS configuration import) closed by vadim
+	fixed: (In [2235])
+
+	Ticket #875 (unit tests for the policy importers) closed by a2k
+	fixed: (In [2237])
+
+	Ticket #897 (Add paragraph to the release notes explaining new
+	"conntrack" tab in host OS dialog for Linux) closed by vadim
+	fixed: (In [2239])
+
+	Ticket #901 (mention support for openWRT in release notes) closed
+	by vadim fixed: (In [2239])
+
+	Ticket #900 (mention support for ipcop in release notes) closed by
+	vadim fixed: (In [2239])
+
+	Ticket #899 (paragraph about script structure and command line
+	args in release notes) closed by vadim fixed: (In [2239])
+
+	Ticket #788 (review ChangeLog and update release notes for v4.0)
+	closed by vadim fixed: (In [2240])
+
+
 2009-12-20  vadim  <vadim@vk.crocodile.org>
+
 
 	* interfaceProperties.cpp (interfaceProperties::validateInterface):
 	permit unnumbered cluster interfaces. If member firewalls have
