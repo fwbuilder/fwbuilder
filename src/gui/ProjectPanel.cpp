@@ -985,38 +985,37 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
      * back and stick it into the layout of the ProjectPanel when it
      * is docked.
      */
-    m_panel->treeDockWidget->disconnect(SIGNAL(topLevelChanged(bool)));
-    m_panel->treeDockWidget->disconnect(SIGNAL(visibilityChanged(bool)));
+
+    m_panel->treeDockWidget->blockSignals(true);
 
     if (f)  // window becomes detached
     {
         m_panel->treeDockWidget->setParent(mw);
         mw->addDockWidget(Qt::LeftDockWidgetArea, m_panel->treeDockWidget);
         m_panel->treeDockWidget->show();
+        m_panel->treeDockWidget->blockSignals(false);
     } else
     {
+#if QT_VERSION < 0x040500
+// See bug #973 for details
+        QTimer::singleShot(0, this, SLOT(setTreeDockPosition()));
+#else
+// Setting widget position here causes crash on Qt < 4.5.
         mw->removeDockWidget(m_panel->treeDockWidget);
         m_panel->treeDockWidget->setParent(m_panel->treeDockWidgetParentFrame);
-        m_panel->treeDockWidgetParentFrameLayout->addWidget(
-            m_panel->treeDockWidget, 0, 0, 1, 1);
-
-        // m_panel->treeDockWidgetParentFrame->layout()->addWidget(
-        //     m_panel->treeDockWidget);
+        m_panel->treeDockWidgetParentFrame->layout()->addWidget(m_panel->treeDockWidget);
         m_panel->treeDockWidget->show();
+        m_panel->treeDockWidget->blockSignals(false);
+#endif
     }
     m_panel->treeDockWidget->setFloating(f);
-
-    connect(m_panel->treeDockWidget, SIGNAL(topLevelChanged(bool)),
-            this, SLOT(topLevelChangedForTreePanel(bool)));
-    connect(m_panel->treeDockWidget, SIGNAL(visibilityChanged(bool)),
-            this, SLOT(visibilityChangedForTreePanel(bool)));
 
     if (fwbdebug)
         qDebug() << "ProjectPanel::topLevelChangedForTreePanel check 1";
 
     if (!m_panel->treeDockWidget->isWindow())
     {
-        //loadMainSplitter();
+        loadMainSplitter();
     } else
     {
         saveMainSplitter();
@@ -1053,3 +1052,14 @@ void ProjectPanel::setActive()
 {
     undoStack->setActive(true);
 }
+
+#if QT_VERSION < 0x040500
+void ProjectPanel::setTreeDockPosition()
+{
+    mw->removeDockWidget(m_panel->treeDockWidget);
+    m_panel->treeDockWidget->setParent(m_panel->treeDockWidgetParentFrame);
+    m_panel->treeDockWidgetParentFrame->layout()->addWidget(m_panel->treeDockWidget);
+    m_panel->treeDockWidget->blockSignals(false);
+    m_panel->treeDockWidget->show();
+}
+#endif

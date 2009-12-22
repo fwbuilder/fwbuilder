@@ -283,6 +283,10 @@ public:
     void updateObjectInTree();
     void reloadTree();
 
+#if QT_VERSION < 0x040500
+    void setTreeDockPosition();
+#endif
+
 public:
     QString getFileName();
     bool editingLibrary();
