@@ -571,7 +571,7 @@ void newFirewallDialog::fillInterfaceSLList()
         }
 
         InetAddrMask *iam;// = new InetAddrMask();
-        if (iface.type == 0)
+        if (iface.type == 0 && iface.addresses.size() != 0)
         {
             if (!gotIPv4) address = iface.addresses.values().first();
             if ( address.ipv4 )
@@ -580,9 +580,8 @@ void newFirewallDialog::fillInterfaceSLList()
             {
                 iam = new InetAddrMask(InetAddr(AF_INET6, address.address.toStdString()), InetAddr(AF_INET6, address.netmask.toStdString()));
             }
+            idata.addr_mask.push_back(iam);
         }
-
-        idata.addr_mask.push_back(iam);
 
         if (gotIPv4)
         {
