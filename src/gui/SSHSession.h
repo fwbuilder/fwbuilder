@@ -118,7 +118,8 @@ class SSHSession : public QObject {
     QString     normal_prompt;
     QString     fwb_prompt;
     QString     enable_prompt;
-    QString     pwd_prompt;
+    QString     pwd_prompt_1;
+    QString     pwd_prompt_2;
     QString     putty_pwd_prompt;
     QString     ssh_pwd_prompt;
     QString     thinkfinger_pwd_prompt;

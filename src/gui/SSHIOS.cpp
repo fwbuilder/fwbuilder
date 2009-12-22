@@ -50,7 +50,8 @@ SSHIOS::SSHIOS(QWidget *_par,
     normal_prompt=">$";
     fwb_prompt="--**--**--";
     enable_prompt="#$";
-    pwd_prompt="'s password: $";
+    pwd_prompt_1="'s password: $";
+    pwd_prompt_2="Password: ";
     epwd_prompt="Password: ";
     ssh_pwd_prompt="'s password: ";
     ssoft_config_prompt="> ";

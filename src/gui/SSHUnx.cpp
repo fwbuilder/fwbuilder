@@ -51,7 +51,8 @@ SSHUnx::SSHUnx(QWidget *_par,
 {
     normal_prompt="> ";
     enable_prompt="# ";
-    pwd_prompt="'s password: ";
+    pwd_prompt_1="'s password: ";
+    pwd_prompt_2="'s password: ";
     thinkfinger_pwd_prompt="Password or swipe finger:";
     epwd_prompt="Password: ";
     ssh_pwd_prompt="'s password: ";
