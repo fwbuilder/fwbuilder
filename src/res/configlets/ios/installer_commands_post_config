@@ -12,17 +12,22 @@
 ##
 
 
+{{if version_lt_124}}
+{{if cancel_rollback}}
+reload cancel
+{{endif}}
+{{endif}}
+
+
+{{if version_ge_124}}
+{{if cancel_rollback}}
+config term
+no event manager applet fwbuilder-rollback
+exit
+{{endif}}
+{{endif}}
+
 {{if run}}
 wr mem
-{{if cancel_rollback}}
-reload cancel
-{{endif}}
 {{endif}}
 
-
-
-{{if test}}
-{{if cancel_rollback}}
-reload cancel
-{{endif}}
-{{endif}}

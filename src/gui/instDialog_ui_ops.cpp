@@ -985,10 +985,6 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
         cnf.scpArgs = fwopt->getStr("scpArgs").c_str();
         cnf.activationCmd = fwopt->getStr("activationCmd").c_str();
 
-        cnf.rollbackTimeUnit =
-            Resources::getTargetOptionStr(
-                host_OS, "activation/timeout_units").c_str();
-
         if (fwbdebug)
         {
             qDebug("platform: %s", platform.c_str());

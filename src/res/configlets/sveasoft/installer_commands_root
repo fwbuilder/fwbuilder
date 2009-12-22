@@ -20,7 +20,8 @@
 ##  {{$fwbpromp}}   -- "magic" prompt that installer uses to detect when it is logged in
 ##  {{$fwdir}}      -- directory on the firewall
 ##  {{$fwscript}}   -- script name on the firewall
-##  {{$rbtimeout}}  -- rollback timeout
+##  {{$rbtimeout}}  -- rollback timeout (min)
+##  {{$rbtimeout_sec}}  -- rollback timeout (sec)
 ##
 
 
@@ -66,7 +67,7 @@ echo "Activating policy";
 {{if with_rollback}}
 echo '{{$fwbprompt}}';
 cp /tmp/crontab /tmp/crontab.o;
-echo '* * * * * root cat /tmp/crontab.o > /tmp/crontab; reboot -d{{$rbtimeout}}' >> /tmp/crontab;
+echo '* * * * * root cat /tmp/crontab.o > /tmp/crontab; reboot -d{{$rbtimeout_sec}}' >> /tmp/crontab;
 sh /tmp/{{$fwscript}} && echo 'Policy activated'
 {{endif}}
 

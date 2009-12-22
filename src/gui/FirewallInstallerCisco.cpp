@@ -40,6 +40,7 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
+#include "fwbuilder/XMLTools.h"
 
 #ifndef _WIN32
 #  include <unistd.h>     // for access(2) and getdomainname
@@ -113,6 +114,10 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     QStringList pre_config_commands;
     QStringList post_config_commands;
 
+    string version = cnf->fwobj->getStr("version");
+    bool version_lt_124 = XMLTools::version_compare(version, "12.4") < 0;
+    bool version_ge_124 = XMLTools::version_compare(version, "12.4") >= 0;
+
     string host_os = cnf->fwobj->getStr("host_OS");
     string os_family = Resources::os_res[host_os]->
         getResourceStr("/FWBuilderResources/Target/family");
@@ -131,6 +136,8 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     pre_config.setVariable("schedule_rollback", cnf->rollback);
     pre_config.setVariable("cancel_rollback", cnf->cancelRollbackIfSuccess);
     pre_config.setVariable("save_standby", cnf->saveStandby);
+    pre_config.setVariable("version_lt_124", version_lt_124);
+    pre_config.setVariable("version_ge_124", version_ge_124);
     inst_dlg->replaceMacrosInCommand(&pre_config);
 
     Configlet post_config(host_os, os_family, "installer_commands_post_config");
@@ -140,6 +147,8 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     post_config.setVariable("schedule_rollback", cnf->rollback);
     post_config.setVariable("cancel_rollback", cnf->cancelRollbackIfSuccess);
     post_config.setVariable("save_standby", cnf->saveStandby);
+    post_config.setVariable("version_lt_124", version_lt_124);
+    post_config.setVariable("version_ge_124", version_ge_124);
     inst_dlg->replaceMacrosInCommand(&post_config);
 
     ssh_object->loadPreConfigCommands(

@@ -21,7 +21,6 @@
         <activation>
           <fwdir>/tmp</fwdir>
           <fwdir_test>/tmp</fwdir_test>
-          <timeout_units>sec</timeout_units>
         </activation>
 
 <!-- set to True if you want to suppress comments in the generated script -->

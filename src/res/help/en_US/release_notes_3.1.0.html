@@ -30,8 +30,9 @@
     <li><a href="#cluster">Support for High Availability configurations</a></li>
     <li><a href="#pix_cluster">Cluster configuration for PIX</a></li>
     <li><a href="#bridge">Changes in the support for bridging firewalls</a></li>
-    <li><a href="#iptables">Changes in the policy compiler for iptables</a></li>
-    <li><a href="#pf">Changes in the policy compiler for PF</a></li>
+    <li><a href="#iptables">Changes in support for iptables</a></li>
+    <li><a href="#pf">Changes in support for PF</a></li>
+    <li><a href="#ios">Changes in support for Cisco IOS ACL</a></li>
     <li><a href="#fwbedit">Changes in the command line tool fwbedit</a></li>
   </ul>
 </p>
@@ -558,7 +559,7 @@ rule sets of this object rather than in the actual firewalls.
 
 
 <a name="iptables"></a>
-<h2>Changes in the policy compiler for iptables</h2>
+<h2>Changes in support for iptables</h2>
 
 <p>
   When an <b>interface with dynamic address</b> is used in a policy or
@@ -650,7 +651,7 @@ rule sets of this object rather than in the actual firewalls.
 
 
 <a name="pf"></a>
-<h2>Changes in the policy compiler for pf</h2>
+<h2>Changes in support for PF</h2>
 
 <p>
   Added support for <b>branching rules in NAT</b>. Compiler generates
@@ -672,6 +673,47 @@ rule sets of this object rather than in the actual firewalls.
 </p>
 
 
+<a name="ios"></a>
+<h2>Changes in support for for Cisco IOS ACL</h2>
+
+<p>
+Built-in policy installe uses EEM (Embedded Event Manager) on IOS 12.4
+or later to schedule automatic configuration rollback instead of
+reloading the router.  EEM appears in IOS 12.4 and supports background
+operations that can be triggered by some events on the router or by
+timers. In this new feature, fwbuilder creates EEM applet with a
+countdown timer that executes command "config replace
+nvram:startup-config force" when timer expires. User has the following
+options:
+</p>
+
+<p>
+  <ul>
+    <li>Schedule automatic rollback in a few minutes and install
+      updated ACL configuration. This can be used to test new policy
+      and revert to the original one after some short period of
+      time. This also helps to avoid a situation when updated policy
+      blocks access to the router because of an error; rolling back to
+      the ACL configuration that was running before the update will
+      restore access automatically.</li>
+
+    <li>Schedule rollback in a few minutes, install updated ACL but
+      cancel rollback if installation of the new configuration was
+      successful. This is mostly intended to prevent blocking access
+      to the router in case of an error in the new ACL
+      configuration. If fwbuilder was able to enter all lines of the
+      new configuration all the way to the end, this means new
+      configuration does not block access and installer executes
+      command "no event manager applet fwbuilder-rollback" to cancel
+      scheduled rollback.</li>
+  </ul>
+</p>
+
+<p>
+  Since IOS before 12.4 does not have EEM, automatic rollback on these
+  older versions is implemented by scheduling router reload with command
+  "reload in ". This hasn't changed since Firewall Builder v3.0
+</p>
 
 <a name="fwbedit"></a>
 <h2>Changes in the command linbe tool fwbedit</h2>

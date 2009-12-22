@@ -20,7 +20,8 @@
 ##  {{$fwbprompt}} -- "magic" prompt that installer uses to detect when it is logged in
 ##  {{$fwdir}}     -- directory on the firewall
 ##  {{$fwscript}}  -- script name on the firewall
-##  {{$rbtimeout}} -- rollback timeout
+##  {{$rbtimeout}} -- rollback timeout (min)
+##  {{$rbtimeout_sec}} -- rollback timeout (sec)
 ##
 
 
@@ -36,7 +37,7 @@ sudo -S {{$fwdir}}/{{$fwscript}} && sudo -S pkill shutdown; echo 'Policy activat
 {{if with_rollback}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/tmp/{{$fwscript}};
-echo 'sudo -S /sbin/shutdown -y -i6 -g{{$rbtimeout}} &' | sh;
+echo 'sudo -S /sbin/shutdown -y -i6 -g{{$rbtimeout_sec}} &' | sh;
 sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
 {{endif}}
 

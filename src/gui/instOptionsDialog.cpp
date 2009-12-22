@@ -125,27 +125,31 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
         );
 
         QString platform = cnf->fwobj->getStr("platform").c_str();
+        string version = cnf->fwobj->getStr("version");
 
         if (platform=="pix" || platform=="fwsm" || platform=="iosacl")
         {
             m_dialog->copyFWB->hide();
-            // Hide elements of installOptions dialog for which we do not
-            // have commands
-            QString cmd = cnf->getCmdFromResource("schedule_rollback");
-            // option "schedule_rollback" is currently used to control rollback
-            // behavior only for pix, fwsm and ios
-            if (cmd.isEmpty())
+            if (platform == "iosacl")
             {
-                m_dialog->rollback->hide();
-                m_dialog->rollbackTime->hide();
-                m_dialog->rollbackTimeUnit->hide();
-                m_dialog->cancelRollbackIfSuccess->hide();
+                if (XMLTools::version_compare(version, "12.4") >= 0)
+                {
+                    m_dialog->rollback->setText("Schedule roll back using EEM in ");
+                    m_dialog->cancelRollbackIfSuccess->setText(
+                        "Cancel rollback if policy activation was successfull");
+                } else
+                {
+                    m_dialog->rollback->setText("Schedule reboot in ");
+                    m_dialog->cancelRollbackIfSuccess->setText(
+                        "Cancel reboot if policy activation was successfull");
+                }
             }
-
             if (platform=="iosacl") m_dialog->PIXgroupBox->hide();
-
         } else
         {
+            m_dialog->rollback->setText("Schedule reboot in ");
+            m_dialog->cancelRollbackIfSuccess->setText(
+                "Cancel reboot if policy activation was successfull");
             m_dialog->epwd->hide();
             m_dialog->epwdLbl->hide();
             m_dialog->PIXgroupBox->hide();

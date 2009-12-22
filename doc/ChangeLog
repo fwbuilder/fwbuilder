@@ -1,3 +1,32 @@
+2009-12-22  vadim  <vadim@vk.crocodile.org>
+
+	* src/res/configlets/ios/installer_commands_pre_config: Built-in
+	policy installer uses EEM (Embedded Event Manager) on IOS 12.4 or
+	later to schedule automatic configuration rollback instead of
+	reloading the router.  EEM appears in IOS 12.4 and supports
+	background operations that can be triggered by some events on the
+	router or by timers. In this new feature, fwbuilder creates EEM
+	applet with a countdown timer that executes command "config
+	replace nvram:startup-config force" when timer expires. User has
+	the following options:
+
+	 - install updated ACL configuration and schedule automatic
+	rollback in a few minutes. This can be used to test new policy and
+	revert to the original one after some short period of time. This
+	also helps to avoid a situation when updated policy blocks access
+	to the router because of an error; rolling back to the ACL
+	configuration that was running before the update will restore
+	access automatically.
+
+	 - install updated ACL, schedule rollback in a few minutes but
+	cancel rollback if installation of the new configuration was
+	successful. This is mostly intended to prevent blocking access to
+	the router in case of an error in the new ACL configuration. If
+	fwbuilder was able to enter all lines of the new configuration all
+	the way to the end, then new configuration does not block access
+	and installer executes command "no event manager applet
+	fwbuilder-rollback" to cancel scheduled rollback.
+
 2009-12-21  vadim  <vadim@vk.crocodile.org>
 
 	* bug fixes and changes for 2009-12-21:

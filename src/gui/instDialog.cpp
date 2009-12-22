@@ -431,9 +431,8 @@ void instDialog::replaceMacrosInCommand(Configlet *conf)
     conf->setVariable("fwdir", cnf.fwdir);
     conf->setVariable("fwscript", fwbscript);
 
-    int rbt = cnf.rollbackTime;
-    if (cnf.rollbackTimeUnit=="sec")  rbt = rbt * 60;
-    conf->setVariable("rbtimeout", rbt);
+    conf->setVariable("rbtimeout", cnf.rollbackTime);
+    conf->setVariable("rbtimeout_sec", cnf.rollbackTime * 60);
 }
 
 void instDialog::testRunRequested()
