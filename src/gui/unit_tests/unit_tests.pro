@@ -5,7 +5,7 @@ run.commands = echo "Running tests..." && \
                do \
                     home=`pwd`; \
                     cd $${DOLLAR}$${DOLLAR}directory; \
-                    qmake; \
+                    qmake -spec $${DOLLAR}$${DOLLAR}QMAKESPEC; \
                     make run; \
                     cd $${DOLLAR}$${DOLLAR}home; \
                 done

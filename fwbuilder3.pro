@@ -13,7 +13,7 @@ tests.commands = for directory in `find . -name unit_tests`; \
                     echo; \
                     echo "Running test in "$${DOLLAR}$${DOLLAR}directory; \
                     cd $${DOLLAR}$${DOLLAR}directory; \
-                    qmake; \
+                    qmake -spec $${DOLLAR}$${DOLLAR}QMAKESPEC; \
                     make run; \
                     cd $${DOLLAR}$${DOLLAR}home; \
                 done
