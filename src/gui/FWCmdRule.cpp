@@ -110,8 +110,14 @@ void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
 {
     if (ruleToInsert == 0)
     {
-        QModelIndex index = md->indexForPosition(position);
-        insertedRule = md->insertNewRule(index, isAfter);
+        if (position == 0 && !isAfter)
+        {
+            insertedRule = md->insertNewRule();
+        } else
+        {
+            QModelIndex index = md->indexForPosition(position);
+            insertedRule = md->insertNewRule(index, isAfter);
+        }
     } else
     {
         QModelIndex index;
