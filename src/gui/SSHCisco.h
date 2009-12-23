@@ -24,13 +24,13 @@
 */
 
 
-#ifndef  __SSHPIX_H_
-#define  __SSHPIX_H_
+#ifndef  __SSHCISCO_H_
+#define  __SSHCISCO_H_
 
 #include "../../config.h"
 #include "global.h"
 
-#include "SSHCisco.h"
+#include "SSHSession.h"
 
 #include <qstring.h>
 #include <qstringlist.h>
@@ -38,29 +38,47 @@
 #include <list>
 #include <string>
 
-class SSHPIX : public SSHCisco {
+class QEventLoop;
+
+class SSHCisco : public SSHSession {
 
     Q_OBJECT;
 
+    int         nLines;
+    int         ncmd;
+
+protected:
+    QEventLoop *local_event_loop;
+
+    QStringList newAcls;
+    QStringList currentAcls;
+        
+    QStringList newObjectGroups;
+    QStringList currentObjectGroups;
+    
+    QStringList pre_config_commands;
+    QStringList post_config_commands;
+    QStringList activation_commands;
+    
 public:
     
-    SSHPIX(QWidget *parent,
-           const QString &host,
-           const QStringList &args,
-           const QString &pwd,
-           const QString &epwd,
-           const std::list<std::string> &in);
-    virtual ~SSHPIX();
+    SSHCisco(QWidget *parent,
+             const QString &host,
+             const QStringList &args,
+             const QString &pwd,
+             const QString &epwd,
+             const std::list<std::string> &in);
+    virtual ~SSHCisco();
 
+    virtual bool checkForErrors();
     virtual void stateMachine();
 
-public slots:
-    void PIXbackup();
-    void getACLs();
-    void clearACLs();
-    void getObjectGroups();
-    void clearObjectGroups();
-     
+    QString cmd(QProcess *proc,const QString &cmd);
+
+    void loadPreConfigCommands(const QStringList &cl);
+    void loadPostConfigCommands(const QStringList &cl);
+    void loadActivationCommands(const QStringList &cl);
+    
 };
 
 #endif

@@ -30,11 +30,11 @@
 #include "../../config.h"
 #include "global.h"
 
-#include "SSHPIX.h"
+#include "SSHCisco.h"
 
 #include <QString>
 
-class SSHIOS : public SSHPIX {
+class SSHIOS : public SSHCisco {
 
     Q_OBJECT;
 

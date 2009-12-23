@@ -29,6 +29,7 @@ HEADERS += ../../config.h \
     IPTImporter.h \
     SSHSession.h \
     SSHUnx.h \
+    SSHCisco.h \
     SSHPIX.h \
     SSHIOS.h \
     debugDialog.h \
@@ -194,6 +195,7 @@ SOURCES += ProjectPanel.cpp \
     IPTImporterRun.cpp \
     SSHSession.cpp \
     SSHUnx.cpp \
+    SSHCisco.cpp \
     SSHPIX.cpp \
     SSHIOS.cpp \
     debugDialog.cpp \

@@ -140,7 +140,7 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     packSSHArgs(args);
     if (cnf->verbose) inst_dlg->displayCommand(args);
 
-    SSHPIX *ssh_object = NULL;
+    SSHCisco *ssh_object = NULL;
     if (cnf->fwobj->getStr("platform")=="pix" ||
         cnf->fwobj->getStr("platform")=="fwsm")
     {

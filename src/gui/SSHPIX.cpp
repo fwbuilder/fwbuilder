@@ -40,12 +40,6 @@
 #include <qfileinfo.h>
 #include <QtDebug>
 
-#include <iostream>
-
-#include <errno.h>
-#ifndef errno
-extern int errno;
-#endif
 
 using namespace std;
 
@@ -54,117 +48,13 @@ SSHPIX::SSHPIX(QWidget *_par,
                const QStringList &args,
                const QString &_p,
                const QString &_ep,
-               const std::list<std::string> &_in) : SSHSession(_par,_h,args,_p,_ep,_in)
+               const std::list<std::string> &_in) :
+    SSHCisco(_par,_h,args,_p,_ep,_in)
 {
-    normal_prompt="> $";
-    fwb_prompt="--**--**--";
-    enable_prompt="# $|# *Access Rules Download Complete";
-    config_prompt="\\(config(|-.*)\\)#";
-    pwd_prompt_1="'s password: $";
-    pwd_prompt_2="'s password: $";
-    epwd_prompt="Password: ";
-    ssh_pwd_prompt="'s password: ";
-    ssoft_config_prompt="> ";
-    putty_pwd_prompt="Password: ";
-    passphrase_prompt="Enter passphrase for key ";
-
-    errorsInit.push_back("Permission denied");
-    errorsInit.push_back("Invalid password");
-    errorsInit.push_back("Access denied");
-    errorsInit.push_back("Unable to authenticate");
-    errorsInit.push_back("Too many authentication failures");
-
-    errorsLoggedin.push_back("Invalid password");
-    errorsLoggedin.push_back("ERROR: ");
-    errorsLoggedin.push_back("Not enough arguments");
-    errorsLoggedin.push_back("cannot find");
-
-    errorsEnabledState.push_back("ERROR: ");
-    errorsEnabledState.push_back("Type help");
-    errorsEnabledState.push_back("Not enough arguments");
-    errorsEnabledState.push_back("Invalid");
-    errorsEnabledState.push_back("invalid");
-    errorsEnabledState.push_back("cannot find");
-    errorsEnabledState.push_back("An object-group with the same id but different type");
-
-    local_event_loop = new QEventLoop();
-}
-
-void SSHPIX::loadPreConfigCommands(const QStringList &cl)
-{
-    pre_config_commands = cl;
-}
-
-void SSHPIX::loadPostConfigCommands(const QStringList &cl)
-{
-    post_config_commands = cl;
-}
-
-void SSHPIX::loadActivationCommands(const QStringList &cl)
-{
-    activation_commands = cl;
-    foreach(QString line, activation_commands)
-    {
-        /*
-         * store names of access-lists and object-groups
-         * actually used in the config
-         */
-        if (line.indexOf("access-list ")==0)
-            newAcls.push_back(line.section(' ',1,1));
-        if (line.indexOf("object-group ")==0)
-            newObjectGroups.push_back(line.section(' ',1,1));
-    }
-    emit updateProgressBar_sign(activation_commands.size(), true);
 }
 
 SSHPIX::~SSHPIX()
 {
-}
-
-QString SSHPIX::cmd(QProcess *proc,const QString &cmd)
-{
-    if (fwbdebug) qDebug("Command '%s'", cmd.toAscii().constData());
-    stdoutBuffer="";
-
-    proc->write( (cmd + "\n").toAscii() );
-    state = EXECUTING_COMMAND;
-    local_event_loop->exec();
-    //qApp->processEvents();
-
-    if (fwbdebug) qDebug("Command '%s' completed", cmd.toAscii().constData());
-
-    return stdoutBuffer;
-}
-
-
-bool SSHPIX::checkForErrors()
-{
-    QStringList *errptr;
-
-    switch (state)
-    {
-    case LOGGEDIN:  errptr= &errorsLoggedin;     break;
-    case ENABLE:    errptr= &errorsEnabledState; break;
-    default:        errptr= &errorsInit;         break;
-    }
-
-    for (QStringList::const_iterator i=errptr->begin();
-         i!=errptr->end(); ++i)
-    {
-        if ( stdoutBuffer.lastIndexOf(*i,-1)!=-1 )
-        {
-            if (fwbdebug)
-                qDebug(QString("Got known error message: %1").arg(stdoutBuffer).toAscii().constData());
-
-            emit printStdout_sign( tr("\n*** Fatal error :") );
-            emit printStdout_sign( stdoutBuffer+"\n" );
-            stdoutBuffer="";
-//            terminate();
-            sessionComplete(true);   // finish with error status
-            return true;
-        }
-    }
-    return false;
 }
 
 void SSHPIX::stateMachine()
@@ -179,117 +69,6 @@ void SSHPIX::stateMachine()
 
     switch (state)
     {
-    case NONE:
-    {
-        if ( cmpPrompt(stdoutBuffer,QRegExp(pwd_prompt_1)) ||
-             cmpPrompt(stdoutBuffer,QRegExp(pwd_prompt_2)) )
-        {
-            stdoutBuffer="";
-            proc->write( (pwd + "\n").toAscii() );
-            break;
-        }
-/* we may get to LOGGEDIN state directly from NONE, for example when
- * password is supplied on command line to plink.exe
- */
-        if (cmpPrompt(stdoutBuffer, QRegExp(normal_prompt)) )
-        {
-            stdoutBuffer="";
-            state=LOGGEDIN;
-            emit printStdout_sign( "\n");
-            emit printStdout_sign( tr("Logged in") + "\n" );
-            emit printStdout_sign( tr("Switching to enable mode...") + "\n");
-            stdoutBuffer="";
-            proc->write( "enable\n" );
-        }
-
-/* we may even get straight to the enable prompt, e.g. if
- * user account is configured with "privilege 15"
- */
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
-        {
-            state=WAITING_FOR_ENABLE;
-            stateMachine();
-            break;
-        }
-
-        QString fingerprint;
-        //int n1,n2;
-        if (stdoutBuffer.indexOf(newKeyOpenSSH)!=-1 ||
-            stdoutBuffer.indexOf(newKeyPlink)!=-1   ||
-            stdoutBuffer.indexOf(newKeySSHComm)!=-1)
-        {
-/* new key */
-            bool unix_y_n = (stdoutBuffer.indexOf(newKeyOpenSSH)!=-1 ||
-                             stdoutBuffer.indexOf(newKeySSHComm)!=-1);
-
-            if (fwbdebug) qDebug("New host key message detected");
-
-            fingerprint = findKeyFingerprint(stdoutBuffer);
-
-            QString msg = newKeyMsg.arg(host).arg(fingerprint).arg(host);
-
-            stopHeartBeat();
-
-            int res = QMessageBox::warning( parent, tr("New RSA key"), msg,
-                                            tr("Yes"), tr("No"), 0,
-                                            0, -1 );
-
-            if (fwbdebug)
-                qDebug("User said: res=%d", res);
-
-            startHeartBeat();
-
-            stdoutBuffer="";
-            if (res==0)
-            {
-                if (unix_y_n) proc->write( "yes\n" );
-                else          proc->write( "y\n" );
-                break;
-            } else
-            {
-                sessionComplete(true);   // finish with error status
-                return;
-//                state=EXIT;
-//                goto entry;
-            }
-        }
-    }
-    break;
-
-    case LOGGEDIN:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(epwd_prompt)) )
-        {
-            stdoutBuffer="";
-            if (!epwd.isEmpty()) proc->write( (epwd + "\n").toAscii() );
-            else                 proc->write( "\n" );
-            state=WAITING_FOR_ENABLE;
-        }
-        break;
-
-    case WAITING_FOR_ENABLE:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(epwd_prompt)) )
-        {
-            stdoutBuffer="";
-            if (!epwd.isEmpty()) proc->write( (epwd + "\n").toAscii() );
-            else                 proc->write( "\n" );
-            state=WAITING_FOR_ENABLE;
-            break;
-        }
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
-        {
-            emit printStdout_sign( tr("In enable mode."));
-            emit printStdout_sign( "\n");
-            state=ENABLE;  // and go to ENABLE target in switch
-
-            /* give classes derived from SSHPIX a chance to do
-             * something before we switch to config mode. If <this> is
-             * SSHPIX class, the stateMachine method will simply call
-             * itself and will fall through to the ENABLE state.
-             */
-            stateMachine();
-            break;
-        }
-
     case ENABLE:
         if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
         {
@@ -328,29 +107,6 @@ void SSHPIX::stateMachine()
         }
         break;
 
-    case SCHEDULE_RELOAD_DIALOG:
-        if ( cmpPrompt(stdoutBuffer,
-                       QRegExp("System config.* modified\\. Save?")) )
-        {
-            stdoutBuffer="";
-            proc->write( "n" );  // no \n needed
-            break;
-        }
-        if ( cmpPrompt(stdoutBuffer, QRegExp("Proceed with reload?")) )
-        {
-            stdoutBuffer="";
-            proc->write( "y" );  // no \n needed
-            break;
-        }
-        if ( cmpPrompt(stdoutBuffer, QRegExp("SHUTDOWN")) )
-        {
-            stdoutBuffer="";
-            proc->write( "\n" );
-            state = ENABLE;
-            break;
-        }
-        break;
-
     case EXECUTING_COMMAND:
         if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
         {
@@ -359,74 +115,6 @@ void SSHPIX::stateMachine()
             if (fwbdebug) qDebug("Switching to COMMAND_DONE state; state=%d",
                                  state);
             if (local_event_loop->isRunning()) local_event_loop->exit();
-        }
-        break;
-
-    case WAITING_FOR_CONFIG_PROMPT:
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
-        {
-            /* install full policy */
-            state = PUSHING_CONFIG; // and drop to PUSHING_CONFIG case
-            if (!dry_run)
-                emit printStdout_sign(tr("Pushing firewall configuration"));
-            emit printStdout_sign( "\n");
-            stdoutBuffer = "";
-            proc->write("\n");
-            ncmd=0;
-        }
-        break;
-
-    case PUSHING_CONFIG:
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)))  // config_prompt)) )
-        {
-            if (fwbdebug)
-                qDebug() << "SSHPIX::stateMachine() activation_commands.size()="
-                         << activation_commands.size();
-        loop1:
-            if ( activation_commands.size()!=0 )
-            {
-                QString s;
-
-                do {
-                    s = activation_commands.front();
-                    activation_commands.pop_front();
-                } while (stripComments && s[0]=='!');
-
-                emit updateProgressBar_sign(activation_commands.size(),false);
-
-                s.replace('\"','\'');
-
-                if (!verbose)
-                {
-                    QString rl="";
-                    if (s.indexOf("! Rule ")!=-1)  rl=s.mid(7);
-                    if ( !rl.isEmpty())
-                    {
-                        emit printStdout_sign( tr("Rule %1").arg(rl) + "\n" );
-                    }
-                }
-
-                if (!dry_run)
-                {
-                    if ( !s.isEmpty())  ncmd++;
-                    stdoutBuffer="";
-                    proc->write( (s+"\n").toAscii() ); // send even if s is empty
-                    break;
-                } else
-                {
-                    emit printStdout_sign( s+"\n" );
-                }
-                break;
-            } else
-            {
-                /* activation_commands.size()==0 */
-                state = EXIT_FROM_CONFIG;
-                emit printStdout_sign( tr("End") + "\n" );
-                //proc->write( "exit\n" ); now part of the configlet
-                // kick it so we get some output from the router and
-                // continue the state machine
-                proc->write("\n"); 
-            }
         }
         break;
 
@@ -459,37 +147,7 @@ void SSHPIX::stateMachine()
         }
         break;
 
-
-    case EXIT_FROM_CONFIG:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
-        {
-            /*
-             * NOTE: at this point we are still in the config mode!
-             *
-             * Execute post_config_commands and exit from config mode.
-             */
-            if (post_config_commands.size()>0)
-            {
-                stdoutBuffer="";
-
-                QString cmd = post_config_commands.front();
-                post_config_commands.pop_front();
-
-                proc->write( (cmd + "\n").toAscii() );
-                //proc->write( "\n" );
-                break;
-            }
-
-            stdoutBuffer="";
-            state=EXIT;
-            proc->write( "exit\n");
-        }
-        break;
-
     case EXIT:
-//        emit printStdout_sign( tr("Terminating session\n") );
-//        terminate();
-//        state=FINISH;
         break;
 
     case FINISH:

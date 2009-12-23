@@ -40,7 +40,8 @@ SSHIOS::SSHIOS(QWidget *_par,
                const QStringList &args,
                const QString &_p,
                const QString &_ep,
-               const std::list<std::string> &_in) : SSHPIX(_par,_h,args,_p,_ep,_in)
+               const std::list<std::string> &_in) :
+    SSHCisco(_par,_h,args,_p,_ep,_in)
 {
     normal_prompt=">$";
     fwb_prompt="--**--**--";
@@ -89,26 +90,6 @@ void SSHIOS::stateMachine()
 
     switch (state)
     {
-    // case ENABLE:
-    //     if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
-    //     {
-    //         if (pre_config_commands.size()>0)
-    //         {
-    //             stdoutBuffer="";
-
-    //             QString cmd = pre_config_commands.front();
-    //             pre_config_commands.pop_front();
-
-    //             if (cmd.indexOf("reload in")!=-1)
-    //                 state = SCHEDULE_RELOAD_DIALOG;
-
-    //             proc->write( cmd.toAscii() );
-    //             proc->write( "\n" );
-    //             break;
-    //         } else
-    //             SSHPIX::stateMachine();
-    //     }
-    //     break;
 
     case SCHEDULE_RELOAD_DIALOG:
         if ( cmpPrompt(stdoutBuffer,
@@ -133,11 +114,11 @@ void SSHIOS::stateMachine()
             stdoutBuffer="";
             proc->write("\n"); // accept default file name
         } else
-            SSHPIX::stateMachine();
+            SSHCisco::stateMachine();
         break;
 
     default:
-        SSHPIX::stateMachine();
+        SSHCisco::stateMachine();
         break;
     }
 }
