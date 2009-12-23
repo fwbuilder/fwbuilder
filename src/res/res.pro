@@ -29,18 +29,30 @@ res.files = objects_init.xml templates.xml resources.xml
 res_os.files = os/*.xml
 res_platform.files = platform/*.xml
 res_help_en_US.files = help/en_US/*.html help/en_US/*.png help/en_US/*.jpg
-res_configlets_linux24.files = configlets/linux24/*
-res_configlets_ipcop.files = configlets/ipcop/*
-res_configlets_sveasoft.files = configlets/sveasoft/*
+
+#dirs = $$system("ls configlets")
+#for(dir, dirs) {
+#	message($${dir})
+#	$${configlet$${dir}}.files = $$system("ls configlets/$$dir/*")
+#	message($$configlet$$dir.files)
+#	$${configlet$${dir}}.path = $$PREFIX/resources/configlets/$$dir
+#	message($$configlet$${dir}.path)
+#	configlet$${dir}.path = $$PREFIX/resources/configlets/$$dir
+#	configlet\$\$\{dir\}.path = $$PREFIX/resources/configlets/$$dir
+#	INSTALLS += configlet$${dir}
+#}
+
+res_configlets.path = $$PREFIX/resources/configlets
+unix:res_configlets.commands = tar cf - --exclude .svn {*.xml,os/*.xml,platform/*.xml,help,configlets} | \
+  						  tar -C  $${PREFIX}/resources/ -xf -
+
 
 INSTALLS -= target
 INSTALLS += res 
 INSTALLS += res_os
 INSTALLS += res_platform
 INSTALLS += res_help_en_US
-INSTALLS += res_configlets_linux24
-INSTALLS += res_configlets_ipcop
-INSTALLS += res_configlets_sveasoft
+INSTALLS += res_configlets
 
 unix {
 !macx {
