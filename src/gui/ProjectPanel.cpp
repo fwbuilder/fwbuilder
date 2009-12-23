@@ -154,6 +154,9 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     setWindowTitle(getPageTitle());
 
     if (fwbdebug) qDebug("New ProjectPanel  %p", this);
+
+    connect(m_panel->topSplitter, SIGNAL(splitterMoved(int,int)),
+            this, SLOT(splitterPositionChanged(int,int)));
 }
 
 ProjectPanel::~ProjectPanel()
@@ -1015,10 +1018,11 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
 
     if (!m_panel->treeDockWidget->isWindow())
     {
+#if QT_VERSION > 0x040500
         loadMainSplitter();
+#endif
     } else
     {
-        saveMainSplitter();
         // expand rules
         collapseTree();
         m_panel->treeDockWidget->widget()->update();
@@ -1041,11 +1045,11 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
         loadMainSplitter();
     } else
     {
-        saveMainSplitter();
         // expand rules
         collapseTree();
         m_panel->treeDockWidget->widget()->update();
     }
+
 }
 
 void ProjectPanel::setActive()
@@ -1061,5 +1065,11 @@ void ProjectPanel::setTreeDockPosition()
     m_panel->treeDockWidgetParentFrame->layout()->addWidget(m_panel->treeDockWidget);
     m_panel->treeDockWidget->blockSignals(false);
     m_panel->treeDockWidget->show();
+    loadMainSplitter();
 }
 #endif
+
+void ProjectPanel::splitterPositionChanged(int,int)
+{
+    saveMainSplitter();
+}

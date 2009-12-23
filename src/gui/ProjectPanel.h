@@ -287,6 +287,8 @@ public:
     void setTreeDockPosition();
 #endif
 
+    void splitterPositionChanged(int, int);
+
 public:
     QString getFileName();
     bool editingLibrary();
