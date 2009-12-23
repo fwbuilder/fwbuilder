@@ -444,3 +444,22 @@ bool Interface::isFailoverInterface() const
 {
     return getFirstByType(FailoverClusterGroup::TYPENAME) != NULL;
 }
+
+void Interface::replaceReferenceInternal(int old_id, int new_id, int &counter)
+{
+    if (old_id == new_id) return;
+
+    FWObject::replaceReferenceInternal(old_id, new_id, counter);
+
+    string nzid = getStr("network_zone");
+    if (!nzid.empty())
+    {
+        int nzid_int = FWObjectDatabase::getIntId(nzid);
+        if (nzid_int == old_id)
+        {
+            setStr("network_zone", FWObjectDatabase::getStringId(new_id));
+            counter++;
+        }
+    }
+}
+

@@ -36,6 +36,7 @@
 #include <fwbuilder/Group.h>
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/RuleSet.h>
+#include <fwbuilder/ClusterGroup.h>
 #include <fwbuilder/FWReference.h>
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWServiceReference.h>
@@ -111,6 +112,8 @@ void FWObjectTreeScanner::walkTree(map<int,FWObject*> &m,
 
 void FWObjectTreeScanner::addRecursively(FWObject *src)
 {
+    if (src==NULL) return;
+
     if (treeRoot->getId()==src->getId()) return ;
 
     addRecursively(src->getParent());
@@ -451,7 +454,7 @@ FWObject* FWObjectDatabase::recursivelyCopySubtree(FWObject *target,
     sprintf(s, ".copy_of_%p", source->getRoot());
     string dedup_attribute = s;
 
-    FWObject *nobj = _recursivelyCopySubtree(target, source, id_map,
+    FWObject *nobj = _recursively_copy_subtree(target, source, id_map,
                                              dedup_attribute);
 
     fixReferences(nobj, id_map);
@@ -482,11 +485,31 @@ int FWObjectDatabase::fixReferences(FWObject *obj, const map<int,int> &map_ids)
     return total_counter;
 }
 
-FWObject* FWObjectDatabase::_recursivelyCopySubtree(
+FWObject* FWObjectDatabase::_recursively_copy_subtree(
     FWObject *target, FWObject *source, std::map<int,int> &id_map,
     const string &dedup_attribute)
 {
     target->checkReadOnly();
+
+    // TODO: get rid of references in attributes, they suck. ticket #1004
+    if (Interface::cast(source))
+    {
+        int nzid = FWObjectDatabase::getIntId(source->getStr("network_zone"));
+        // check if we have seen old_ptr_obj already.
+        if (nzid!= 0 && id_map.count(nzid) == 0 && findInIndex(nzid)==NULL)
+        {
+            FWObject *netzone = source->getRoot()->findInIndex(nzid);
+            if (netzone)
+                _copy_foreign_obj_aux(target, netzone, id_map, dedup_attribute);
+        }
+    }
+
+    if (ClusterGroup::cast(source))
+    {
+        int miface_id = FWObjectDatabase::getIntId(source->getStr("master_iface"));
+        FWObject *miface = source->getRoot()->findInIndex(miface_id);
+        if (miface) _copy_foreign_obj_aux(target, miface, id_map, dedup_attribute);
+    }
 
     FWObject *nobj = create(source->getTypeName());
     nobj->clearChildren();
@@ -501,13 +524,15 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(
     {
         FWObject *old_obj = *m;
         if (RuleSet::cast(old_obj)!=NULL) continue;
-        _recursivelyCopySubtree(nobj, old_obj, id_map, dedup_attribute);
+        if (FWReference::cast(old_obj)!=NULL) continue;
+        _recursively_copy_subtree(nobj, old_obj, id_map, dedup_attribute);
     }
 
     for(list<FWObject*>::iterator m=source->begin(); m!=source->end(); ++m) 
     {
         FWObject *old_obj = *m;
         if (id_map.count(old_obj->getId()) > 0) continue;
+
         if (FWReference::cast(old_obj))
         {
             FWReference *old_ref_obj = FWReference::cast(old_obj);
@@ -546,48 +571,53 @@ FWObject* FWObjectDatabase::_recursivelyCopySubtree(
             // Problem: what if old_ptr_obj is interface or an address of
             // interface or a rule etc ? Check isPrimaryObject().
             // 
-
-            FWObject *parent_old_ptr_obj = old_ptr_obj;
-            while (parent_old_ptr_obj && !parent_old_ptr_obj->isPrimaryObject())
-                parent_old_ptr_obj = parent_old_ptr_obj->getParent();
-
-            // check if this parent (which is a primary object) is
-            // unknown. If it is known or exist in our tree, no need
-            // to create a copy.
-            if (parent_old_ptr_obj && 
-                id_map.count(parent_old_ptr_obj->getId()) == 0 &&
-                !Library::isA(parent_old_ptr_obj))
-            {
-                FWObject *new_parent = reproduceRelativePath(
-                    target->getLibrary(), parent_old_ptr_obj);
-
-                // (parent_old_ptr_obj at this point is either pointer
-                // to the same old_ptr_obj or pointer to its parent
-                // object that we can copy as a whole. The latter
-                // happens if old_ptr_obj is an interface or address
-                // of an interface.
-                new_parent = _recursivelyCopySubtree(new_parent,
-                                                     parent_old_ptr_obj,
-                                                     id_map,
-                                                     dedup_attribute);
-                // we just copied old object to the target data tree.
-                // Copy of old_ptr_obj is either new_parent, or one of its
-                // children. In the process of making this copy,
-                // its ID should have been added to id_map.
-                assert(id_map.count(old_ptr_obj->getId()) > 0);
-
-                n_ptr_obj = new_parent->getById(
-                    id_map[old_ptr_obj->getId()], true);
-                nobj->addRef(n_ptr_obj);
-            }
+            _copy_foreign_obj_aux(nobj, old_ptr_obj, id_map, dedup_attribute);
 
         } else
-            _recursivelyCopySubtree(nobj, old_obj, id_map, dedup_attribute);
+            _recursively_copy_subtree(nobj, old_obj, id_map, dedup_attribute);
     }
 
     return nobj;
 }
 
+void FWObjectDatabase::_copy_foreign_obj_aux(
+    FWObject *target, FWObject *source,
+    map<int,int> &id_map, const std::string &dedup_attribute)
+{
+    FWObject *parent_obj = source;
+    while (parent_obj && !parent_obj->isPrimaryObject())
+        parent_obj = parent_obj->getParent();
+
+    // check if this parent (which is a primary object) is
+    // unknown. If it is known or exist in our tree, no need
+    // to create a copy.
+    if (parent_obj && 
+        id_map.count(parent_obj->getId()) == 0 &&
+        !Library::isA(parent_obj))
+    {
+        FWObject *new_parent = reproduceRelativePath(
+            target->getLibrary(), parent_obj);
+
+        // (parent_obj at this point is either pointer
+        // to the same obj or pointer to its parent
+        // object that we can copy as a whole. The latter
+        // happens if obj is an interface or address
+        // of an interface.
+        new_parent = _recursively_copy_subtree(new_parent,
+                                               parent_obj,
+                                               id_map,
+                                               dedup_attribute);
+        // we just copied old object to the target data tree.
+        // Copy of obj is either new_parent, or one of its
+        // children. In the process of making this copy,
+        // its ID should have been added to id_map.
+        assert(id_map.count(source->getId()) > 0);
+
+        FWObject *n_ptr_obj = new_parent->getById(id_map[source->getId()], true);
+        target->addRef(n_ptr_obj);
+    }
+
+}
 
 /**
  * Create groups to reproduce path inside given library. If groups

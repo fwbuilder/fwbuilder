@@ -65,6 +65,10 @@ private:
         bool ostatus;
         int  snmp_type;
 
+protected:
+
+    virtual void replaceReferenceInternal(int oldfw_id, int newfw_id, int &counter);
+        
 public:
     
         Interface();

@@ -30,7 +30,11 @@ namespace libfwbuilder
 
     class ClusterGroup : public ObjectGroup
     {
-    public:
+protected:
+
+        virtual void replaceReferenceInternal(int oldfw_id, int newfw_id, int &counter);
+        
+public:
         ClusterGroup();
         ClusterGroup(const FWObjectDatabase *root, bool prepopulate);
         virtual ~ClusterGroup() {};

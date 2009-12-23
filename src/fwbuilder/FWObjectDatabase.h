@@ -154,10 +154,13 @@ private:
             std::set<libfwbuilder::FWObject *> &res);
         Firewall* _findFirewallByNameRecursive(
             FWObject* db, const std::string &name) throw(FWException);
-        FWObject* _recursivelyCopySubtree(FWObject *target,
-                                          FWObject *source,
-                                          std::map<int,int> &id_map,
-                                          const std::string &dedup_attribute);
+        FWObject* _recursively_copy_subtree(FWObject *target,
+                                            FWObject *source,
+                                            std::map<int,int> &id_map,
+                                            const std::string &dedup_attribute);
+        void _copy_foreign_obj_aux(FWObject *target, FWObject *source,
+                                   std::map<int,int> &id_map,
+                                   const std::string &dedup_attribute);
 
 protected:
 

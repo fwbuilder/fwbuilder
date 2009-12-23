@@ -52,6 +52,24 @@ bool ClusterGroup::validateChild(FWObject *o)
              otype == FWObjectReference::TYPENAME));
 }
 
+void ClusterGroup::replaceReferenceInternal(int old_id, int new_id, int &counter)
+{
+    if (old_id == new_id) return;
+
+    FWObject::replaceReferenceInternal(old_id, new_id, counter);
+
+    string master_iface_id = getStr("master_iface");
+    if (!master_iface_id.empty())
+    {
+        int master_iface_id_int = FWObjectDatabase::getIntId(master_iface_id);
+        if (master_iface_id_int == old_id)
+        {
+            setStr("master_iface", FWObjectDatabase::getStringId(new_id));
+            counter++;
+        }
+    }
+}
+
 void ClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
 {
     FWObject::fromXML(parent);
