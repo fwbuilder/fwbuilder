@@ -78,7 +78,7 @@ void SSHPIX::stateMachine()
                 QString cmd = pre_config_commands.front();
                 pre_config_commands.pop_front();
                 if (cmd.indexOf("reload in")!=-1) state = SCHEDULE_RELOAD_DIALOG;
-                proc->write( (cmd + "\n").toAscii() );
+                sendCommand(cmd);
                 break;
             }
 
@@ -99,7 +99,6 @@ void SSHPIX::stateMachine()
                 break;
             }
 
-            //proc->write( "config t\n" );  now part of configlet installer_commands_reg_user
             state = WAITING_FOR_CONFIG_PROMPT;
             // kick it so we get some output from the router and
             // continue the state machine

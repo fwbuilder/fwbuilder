@@ -615,4 +615,17 @@ bool SSHSession::cmpPrompt(const QString &str,const QRegExp &prompt)
 }
 
 
+void SSHSession::sendCommand(const QString &cmd)
+{
+    stdoutBuffer = "";
+    if (!dry_run)
+    {
+        proc->write((cmd + "\n").toAscii());
+    } else
+    {
+        emit printStdout_sign(QString("[DRY RUN] %1\n").arg(cmd));
+        proc->write("\n");
+    }
+}
+
 

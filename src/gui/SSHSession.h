@@ -158,6 +158,10 @@ class SSHSession : public QObject {
     void startHeartBeat();
     void stopHeartBeat();
 
+protected:
+
+    void sendCommand(const QString &cmd);
+
 public:
     
     SSHSession(QWidget *parent,

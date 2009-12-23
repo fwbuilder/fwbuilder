@@ -124,15 +124,12 @@ SSHCisco::~SSHCisco()
 QString SSHCisco::cmd(QProcess *proc,const QString &cmd)
 {
     if (fwbdebug) qDebug("Command '%s'", cmd.toAscii().constData());
-    stdoutBuffer="";
-
-    proc->write( (cmd + "\n").toAscii() );
+    sendCommand(cmd);
+    //stdoutBuffer = "";
+    //proc->write( (cmd + "\n").toAscii() );
     state = EXECUTING_COMMAND;
     local_event_loop->exec();
-    //qApp->processEvents();
-
     if (fwbdebug) qDebug("Command '%s' completed", cmd.toAscii().constData());
-
     return stdoutBuffer;
 }
 
@@ -299,7 +296,8 @@ void SSHCisco::stateMachine()
                 QString cmd = pre_config_commands.front();
                 pre_config_commands.pop_front();
                 if (cmd.indexOf("reload in")!=-1) state = SCHEDULE_RELOAD_DIALOG;
-                proc->write( (cmd + "\n").toAscii() );
+                sendCommand(cmd);
+                //proc->write( (cmd + "\n").toAscii() );
                 break;
             }
 
@@ -320,7 +318,6 @@ void SSHCisco::stateMachine()
                 break;
             }
 
-            //proc->write( "config t\n" );  now part of configlet installer_commands_reg_user
             state = WAITING_FOR_CONFIG_PROMPT;
             // kick it so we get some output from the router and
             // continue the state machine
@@ -344,6 +341,14 @@ void SSHCisco::stateMachine()
         }
         if ( cmpPrompt(stdoutBuffer, QRegExp("SHUTDOWN")) )
         {
+            stdoutBuffer="";
+            proc->write( "\n" );
+            state = ENABLE;
+            break;
+        }
+        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
+        {
+            // reload did not ask for confirmation
             stdoutBuffer="";
             proc->write( "\n" );
             state = ENABLE;
@@ -402,23 +407,14 @@ void SSHCisco::stateMachine()
                     }
                 }
 
-                if (!dry_run)
-                {
-                    if ( !s.isEmpty())  ncmd++;
-                    stdoutBuffer="";
-                    proc->write( (s+"\n").toAscii() ); // send even if s is empty
-                    break;
-                } else
-                {
-                    emit printStdout_sign( s+"\n" );
-                }
+                sendCommand(s);
+
                 break;
             } else
             {
                 /* activation_commands.size()==0 */
                 state = EXIT_FROM_CONFIG;
                 emit printStdout_sign( tr("End") + "\n" );
-                //proc->write( "exit\n" ); now part of the configlet
                 // kick it so we get some output from the router and
                 // continue the state machine
                 proc->write("\n"); 
@@ -430,19 +426,14 @@ void SSHCisco::stateMachine()
         if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
         {
             /*
-             * NOTE: at this point we are still in the config mode!
-             *
-             * Execute post_config_commands and exit from config mode.
+             * Execute post_config_commands
              */
             if (post_config_commands.size()>0)
             {
-                stdoutBuffer="";
-
+                stdoutBuffer = "";
                 QString cmd = post_config_commands.front();
                 post_config_commands.pop_front();
-
-                proc->write( (cmd + "\n").toAscii() );
-                //proc->write( "\n" );
+                sendCommand(cmd);
                 break;
             }
 
