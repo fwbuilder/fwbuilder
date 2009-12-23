@@ -1,5 +1,14 @@
 2009-12-23  vadim  <vadim@vk.crocodile.org>
 
+	* instOptionsDialog.cpp (instOptionsDialog::instOptionsDialog):
+	Added support for the "dry run" installer option for Cisco
+	routers.  When this option is on, installer logs into the router
+	and switches to the enable mode, but does not execute any actual
+	commands. If scp is used to copy configuration to the router,
+	installer will copy the file but will not activate it. This tests
+	ssh session in general, login password, enable password and scp
+	but does not make any changes to the router configuration.
+
 	* OSConfigurator_pix_os.cpp (OSConfigurator_pix_os::_printSSHConfiguration):
 	Implemented pushing of the PIX configuration using scp. This
 	requires PIX v7, ssh v2 and scp should be enabled on the

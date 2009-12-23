@@ -191,17 +191,10 @@ are never stored permanently)</string>
          <property name="margin" >
           <number>12</number>
          </property>
-         <item row="4" column="0" colspan="2" >
+         <item row="3" column="0" colspan="2" >
           <widget class="QCheckBox" name="saveStandby" >
            <property name="text" >
             <string>Write configuration to standby PIX</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="2" >
-          <widget class="QCheckBox" name="test" >
-           <property name="text" >
-            <string>Dry run (commands won't be executed on the firewall)</string>
            </property>
           </widget>
          </item>
@@ -293,36 +286,43 @@ are never stored permanently)</string>
         <property name="frameShadow" >
          <enum>QFrame::Plain</enum>
         </property>
-        <layout class="QGridLayout" >
+        <layout class="QGridLayout" name="gridLayout_2" >
          <item row="0" column="0" >
+          <widget class="QCheckBox" name="test" >
+           <property name="text" >
+            <string>Dry run (commands won't be executed on the firewall)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
           <widget class="QCheckBox" name="quiet" >
            <property name="text" >
             <string>Quiet install: do not print anything as commands are executed on the firewall</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" >
+         <item row="2" column="0" >
           <widget class="QCheckBox" name="verbose" >
            <property name="text" >
             <string>Verbose: print all commands as they are executed on the firewall</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0" >
+         <item row="3" column="0" >
           <widget class="QCheckBox" name="stripComments" >
            <property name="text" >
             <string>Remove comments from configuration</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" >
+         <item row="4" column="0" >
           <widget class="QCheckBox" name="compressScript" >
            <property name="text" >
             <string>Compress script</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" >
+         <item row="5" column="0" >
           <widget class="QCheckBox" name="copyFWB" >
            <property name="text" >
             <string>Store a copy of fwb file on the firewall</string>
@@ -514,7 +514,6 @@ are never stored permanently)</string>
   <tabstop>epwd</tabstop>
   <tabstop>backupConfigFile</tabstop>
   <tabstop>saveDiff</tabstop>
-  <tabstop>test</tabstop>
   <tabstop>saveStandby</tabstop>
   <tabstop>altAddress</tabstop>
   <tabstop>quiet</tabstop>

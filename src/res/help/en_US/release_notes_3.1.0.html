@@ -763,6 +763,16 @@ rule sets of this object rather than in the actual firewalls.
   "reload in ". This hasn't changed since Firewall Builder v3.0
 </p>
 
+<p>
+  Added support for the <b>"dry run"</b> installer option for Cisco
+  routers.  When this option is on, installer logs into the router and
+  switches to the enable mode, but does not execute any actual
+  commands. If scp is used to copy configuration to the router,
+  installer will copy the file but will not activate it. This tests
+  ssh session in general, login password, enable password and scp but
+  does not make any changes to the router configuration.
+</p>
+
 <a name="pix"></a>
 <h2>Changes in support for for Cisco ASA (PIX)</h2>
 
