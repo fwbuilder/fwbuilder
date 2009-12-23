@@ -1,0 +1,34 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/pix_os/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+
+{{if clear}}
+{{if pix_version_lt_70}}
+clear ssh
+{{endif}}
+{{if pix_version_ge_70}}
+clear config ssh
+{{endif}}
+{{endif}}
+
+aaa authentication ssh console LOCAL
+
+{{if use_scp}}
+ssh version 2
+ssh scopy enable
+{{endif}}
+
+{{if ssh_timeout}}
+ssh timeout {{$ssh_timeout}}
+{{endif}}
+

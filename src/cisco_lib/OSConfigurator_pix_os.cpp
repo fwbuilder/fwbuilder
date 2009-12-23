@@ -94,6 +94,9 @@ void OSConfigurator_pix_os::processFirewallOptions()
     output << _printTimeouts();
     output << endl;
 
+    output << _printSSHConfiguration();
+    output << endl;
+
     output << _printSNMP();
     output << endl;
 
@@ -193,7 +196,7 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
     ostringstream res;
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
-    string::size_type n;
+    //string::size_type n;
 
     bool configure_address = fw->getOptionsObject()->getBool("pix_ip_address");
     bool configure_standby_address =
@@ -292,7 +295,7 @@ string OSConfigurator_pix_os::_printFailoverConfiguration()
     ostringstream res;
     string version = fw->getStr("version");
     string platform = fw->getStr("platform");
-    string::size_type n;
+    //string::size_type n;
 
     QString configlet_name = "failover_commands_";
     if (XMLTools::version_compare(version, "7.0") < 0)  configlet_name += "6";
@@ -748,13 +751,9 @@ string OSConfigurator_pix_os::_printTimeouts()
     res << endl;
 
     int to;
-    to=fw->getOptionsObject()->getInt("pix_telnet_timeout");
+    to = fw->getOptionsObject()->getInt("pix_telnet_timeout");
     if (to>60)  abort("Telnet timeout should not exceed 60 minutes");
     if (to!=0)  res << "telnet timeout " << to << endl;
-
-    to=fw->getOptionsObject()->getInt("pix_ssh_timeout");
-    if (to>60)  abort("SSH timeout should not exceed 60 minutes");
-    if (to!=0)  res << "ssh timeout " << to << endl;
 
     return res.str();
 }
@@ -766,5 +765,30 @@ void OSConfigurator_pix_os::addVirtualAddressForNAT(const Address*)
 
 void OSConfigurator_pix_os::addVirtualAddressForNAT(const Network*)
 {
+}
+
+string OSConfigurator_pix_os::_printSSHConfiguration()
+{
+    string platform = fw->getStr("platform");
+    string version = fw->getStr("version");
+
+    bool version_ge_70 = XMLTools::version_compare(version, "7.0") >= 0;
+
+    Configlet cnf(fw, "pix_os", "ssh");
+    cnf.removeComments();
+    cnf.collapseEmptyStrings(true);
+    cnf.setVariable("pix_version_lt_70", ! version_ge_70);
+    cnf.setVariable("pix_version_ge_70",   version_ge_70);
+
+    cnf.setVariable("clear", 1);
+    cnf.setVariable("use_scp", fw->getOptionsObject()->getBool("use_scp"));
+
+    int to = fw->getOptionsObject()->getInt("pix_ssh_timeout");
+    if (to>60)  abort("SSH timeout should not exceed 60 minutes");
+    cnf.setVariable("ssh_timeout", to);
+
+    // ssh accress control is added later when we generate rules
+
+    return cnf.expand().toStdString() + "\n";
 }
 

@@ -17,6 +17,12 @@
 ##  {{$rbtimeout_sec}} -- rollback timeout (sec)
 ##
 
+{{if using_scp}}
+copy /noconfirm {{$fwscript}} running-config
+{{endif}}
+
+{{if not_using_scp}}
 config term
 {{$fwbuilder_generated_configuration_lines}}
 exit
+{{endif}}

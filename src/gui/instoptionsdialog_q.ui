@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>732</width>
-    <height>978</height>
+    <width>619</width>
+    <height>845</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -254,33 +254,7 @@ are never stored permanently)</string>
         </layout>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2" >
-       <widget class="QGroupBox" name="IOSgroupBox" >
-        <property name="title" >
-         <string/>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_2" >
-         <item row="0" column="0" >
-          <widget class="QLabel" name="label" >
-           <property name="text" >
-            <string>Instead of running generated configuration on the router line by line, installer can use scp to copy the file to the router and then "copy file running-config" command to activate it. Ssh v2 and scp servers should be configured on the router for this to work. This method is much faster than running configuration line by line.</string>
-           </property>
-           <property name="wordWrap" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QCheckBox" name="use_scp" >
-           <property name="text" >
-            <string>Copy IOS configuration file to the router using scp</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="3" column="0" >
+      <item row="2" column="0" >
        <widget class="QLabel" name="altAddressLabel" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -299,7 +273,7 @@ are never stored permanently)</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1" >
+      <item row="2" column="1" >
        <widget class="QLineEdit" name="altAddress" >
         <property name="minimumSize" >
          <size>
@@ -315,7 +289,7 @@ are never stored permanently)</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0" colspan="2" >
+      <item row="3" column="0" colspan="2" >
        <widget class="QFrame" name="generalOptionsBox" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -368,7 +342,7 @@ are never stored permanently)</string>
         </layout>
        </widget>
       </item>
-      <item row="5" column="0" colspan="2" >
+      <item row="4" column="0" colspan="2" >
        <widget class="QFrame" name="testOptionsBox" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -472,7 +446,7 @@ are never stored permanently)</string>
         </layout>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2" >
+      <item row="5" column="0" colspan="2" >
        <spacer name="verticalSpacer" >
         <property name="orientation" >
          <enum>Qt::Vertical</enum>
@@ -480,7 +454,7 @@ are never stored permanently)</string>
         <property name="sizeHint" stdset="0" >
          <size>
           <width>568</width>
-          <height>28</height>
+          <height>37</height>
          </size>
         </property>
        </spacer>

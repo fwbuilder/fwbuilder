@@ -56,10 +56,12 @@ FirewallInstallerCisco::FirewallInstallerCisco(instDialog *_dlg,
                                                instConf *_cnf, const QString &_p):
     FirewallInstaller(_dlg, _cnf, _p)
 {
-    if (cnf->fwdir.isEmpty()) cnf->fwdir = "nvram:";
-
-    string platform = cnf->fwobj->getStr("platform");
-    if (platform!="iosacl") cnf->useSCPForCisco = false;
+    // string platform = cnf->fwobj->getStr("platform");
+    // if (cnf->fwdir.isEmpty())
+    // {
+    //     if (platform=="iosacl") cnf->fwdir = "nvram:";
+    //     else cnf->fwdir = "flash:";
+    // }
 }
 
 bool FirewallInstallerCisco::packInstallJobsList(Firewall*)

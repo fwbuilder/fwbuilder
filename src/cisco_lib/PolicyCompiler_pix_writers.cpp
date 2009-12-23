@@ -81,9 +81,6 @@ bool PolicyCompiler_pix::PrintObjectGroupsAndClearCommands::processNext()
     string clearTelnetcmd = Resources::platform_res[platform]->getResourceStr(
         string("/FWBuilderResources/Target/options/")+
         "version_"+vers+"/pix_commands/clear_telnet");
-    string clearSSHcmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/pix_commands/clear_ssh");
 
 
     slurp();
@@ -115,7 +112,6 @@ bool PolicyCompiler_pix::PrintObjectGroupsAndClearCommands::processNext()
         {
             compiler->output << clearICMPcmd    << endl;
             compiler->output << clearTelnetcmd  << endl;
-            compiler->output << clearSSHcmd     << endl;
         }
     }
 

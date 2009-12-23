@@ -283,6 +283,10 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->sshArgs, fwoptions, "sshArgs");
     data.registerOption( m_dialog->scpArgs, fwoptions, "scpArgs");
 
+    data.registerOption( m_dialog->use_scp, fwoptions, "use_scp");
+    data.registerOption( m_dialog->filesystem, fwoptions, "filesystem");
+    data.registerOption( m_dialog->filesystem, fwoptions, "firewall_dir");
+
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
     m_dialog->installScript->setText(pis->getCommand().c_str() );

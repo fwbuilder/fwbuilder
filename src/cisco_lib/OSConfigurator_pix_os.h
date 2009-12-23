@@ -72,6 +72,7 @@ namespace fwcompiler {
         std::string _printNTP();
         std::string _printServiceTimeout(const std::string &pix_service);
         std::string _printTimeouts();
+        std::string _printSSHConfiguration();
         std::string _printFixupCommand(const std::string &fixup_name,
                                        const std::string &sw,
                                        int   arg1, 

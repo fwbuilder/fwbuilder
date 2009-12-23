@@ -10,13 +10,13 @@
       <cluster_dialog>basic</cluster_dialog>
 
       <options>
-        <user_can_change_install_dir>false</user_can_change_install_dir>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
         <default>
         </default>
 
         <activation>
-          <fwdir></fwdir>
-          <fwdir_test></fwdir_test>
+          <fwdir>flash:</fwdir>
+          <fwdir_test>flash:</fwdir_test>
         </activation>
 
       </options>

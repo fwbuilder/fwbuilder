@@ -8,13 +8,13 @@
       <dialog>ios</dialog>
 
       <options>
-        <user_can_change_install_dir>false</user_can_change_install_dir>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
         <default>
         </default>
 
         <activation>
-          <fwdir></fwdir>
-          <fwdir_test></fwdir_test>
+          <fwdir>nvram:</fwdir>
+          <fwdir_test>nvram:</fwdir_test>
         </activation>
       </options>
 

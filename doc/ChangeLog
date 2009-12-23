@@ -1,3 +1,12 @@
+2009-12-23  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_pix_os.cpp (OSConfigurator_pix_os::_printSSHConfiguration):
+	Implemented pushing of the PIX configuration using scp. This
+	requires PIX v7, ssh v2 and scp should be enabled on the
+	firewall. This method is much faster than running configuration
+	line by line. Controlled by a checkbox in the pix advanced
+	settings dialog. fixes #995
+
 2009-12-22  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/configlets/ios/installer_commands_reg_user: Built-in
