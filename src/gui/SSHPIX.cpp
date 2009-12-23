@@ -153,7 +153,9 @@ void SSHPIX::stateMachine()
     case FINISH:
         break;
 
-    default:    break;
+    default:
+        SSHCisco::stateMachine();
+        break;
     }
 }
 

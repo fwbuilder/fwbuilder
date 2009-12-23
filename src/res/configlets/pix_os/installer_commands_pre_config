@@ -12,10 +12,8 @@
 ##
 
 
-{{if test}}
 {{if schedule_rollback}}
 reload in {{$rbtimeout}}
-{{endif}}
 {{endif}}
 
 

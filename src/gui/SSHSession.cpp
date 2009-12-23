@@ -51,6 +51,8 @@
 #endif
 
 
+//#define STATE_MACHINE_DEBUG 1
+
 using namespace std;
 
 const char  *SSHSession::newKeyOpenSSH  ="Are you sure you want to continue connecting (yes/no)?";

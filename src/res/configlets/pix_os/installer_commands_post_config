@@ -12,23 +12,16 @@
 ##
 
 
+{{if cancel_rollback}}
+reload cancel
+{{endif}}
+
 {{if run}}
 wr mem
-{{if cancel_rollback}}
-reload cancel
 {{endif}}
+
 {{if save_standby}}
 wr standby
 {{endif}}
-{{endif}}
 
 
-
-{{if test}}
-{{if cancel_rollback}}
-reload cancel
-{{endif}}
-{{if save_standby}}
-wr standby
-{{endif}}
-{{endif}}

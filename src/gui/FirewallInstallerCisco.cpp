@@ -57,6 +57,9 @@ FirewallInstallerCisco::FirewallInstallerCisco(instDialog *_dlg,
     FirewallInstaller(_dlg, _cnf, _p)
 {
     if (cnf->fwdir.isEmpty()) cnf->fwdir = "nvram:";
+
+    string platform = cnf->fwobj->getStr("platform");
+    if (platform!="iosacl") cnf->useSCPForCisco = false;
 }
 
 bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
@@ -106,7 +109,8 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
         return false;
     }
 
-    // Should be optional
+    string platform = cnf->fwobj->getStr("platform");
+
     if (cnf->useSCPForCisco)
     {
         QMap<QString,QString> all_files;
