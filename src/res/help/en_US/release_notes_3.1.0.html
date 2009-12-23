@@ -33,6 +33,7 @@
     <li><a href="#iptables">Changes in support for iptables</a></li>
     <li><a href="#pf">Changes in support for PF</a></li>
     <li><a href="#ios">Changes in support for Cisco IOS ACL</a></li>
+    <li><a href="#pix">Changes in support for Cisco ASA (PIX)</a></li>
     <li><a href="#fwbedit">Changes in the command line tool fwbedit</a></li>
   </ul>
 </p>
@@ -682,20 +683,28 @@ rule sets of this object rather than in the actual firewalls.
   activate it.  This method is much faster than running configuration
   line by line.  The router should be configured with ssh v2 and scp
   server. This method can be combined with rollback (by reload or
-  EEM).
+  EEM). This method can be combined with rollback. To use this method,
+  turn on checkbox in the tab "Installer" of the "advanced settings"
+  dialog of the router object.  Since this option is configured
+  separately for each firewall object, you can have a mix of
+  installation methods if some routers do not support scp.
 </p>
 
 <p>
   For instructions how to configure scp see
   <a href="http://www.cisco.com/en/US/docs/ios/12_2t/12_2t2/feature/guide/ftscp.html">
-    Secure Copy</a>. You need to crate RSA keys, enable ssh v2 and scp
-  servers using commands: <b>"ip ssh version 2"</b> and <b>"ip scp
-  server enable"</b>. User account used to copy the policy should have
-  privilege 15: <b>"username vadim privilege 15 password 7
-  XXXXXXXXXXX"</b>. Note that installer does not use
-  command <b>"config replace"</b> because configuration created by
-  fwbuilder is incomplete and should be merged with running config
-  rather than replace it.
+    Secure Copy</a>. You need to do the following:
+  <ul>
+    <li>Crate RSA keys</li>
+    <li>enable ssh v2 using command <b>"ip ssh version 2"</b></li>
+    <li>enable scp server using command <b>"ip scp server enable"</b>.</li>
+    <li> User account used to copy the policy should have
+      privilege 15: <b>"username vadim privilege 15 password 7
+        XXXXXXXXXXX"</b>.</li>
+  </ul>
+  Note that installer does not use command <b>"config replace"</b>
+  because configuration created by fwbuilder is incomplete and should
+  be merged with running config rather than replace it.
 </p>
 
 <p>
@@ -735,6 +744,52 @@ rule sets of this object rather than in the actual firewalls.
   Since IOS before 12.4 does not have EEM, automatic rollback on these
   older versions is implemented by scheduling router reload with command
   "reload in ". This hasn't changed since Firewall Builder v3.0
+</p>
+
+<a name="pix"></a>
+<h2>Changes in support for for Cisco ASA (PIX)</h2>
+
+<p>
+  Built-in <b>installer can use command scp to copy generated
+  configuration to the firewall</b> and then command "copy file
+  running-config" to activate it.  This method is much faster than
+  running configuration line by line.  The firewall should be
+  configured with ssh v2 and scp server. This method can be combined
+  with rollback. To use this method, turn on checkbox in the tab
+  "Installer" of the "advanced settings" dialog of the PIX firewall.
+  Since this option is configured separately for each firewall object,
+  you can have a mix of installation methods if some firewalls do not
+  support scp.
+</p>
+
+<p>
+  To configure scp on the PIX firewall you need to do the following:
+  <ul>
+    <li>Crate RSA keys</li>
+    <li>enable ssh v2 using command <b>"ssh version 2"</b> in configuration
+    mode</li>
+    <li>enable scp using command <b>"ssh scopy enable"</b> in configuration
+    mode</li>
+    <li>make sure user account used to copy configuration has
+      "privilege 15": <b>"username fwbadmin password XXXXXXX priviege
+      15"</b></li>
+  </ul>
+  Use command "debug ssh 10" on PIX to troubleshoot if scp is not working.
+</p>
+
+<p>
+  Note that when fwbuilder uses command "copy file.fw running-config"
+  to activate uploaded policy, the firewall does not print it. If
+  there are errors, they are printed but the lines they refer to are
+  not printed. Some configuration lines trigger lines because they try
+  to configure things that are already configured, such as some
+  parameters of interfaces, global pools etc.
+</p>
+
+<p>
+  Generated PIX configuration will include commands that enable ssh v2
+  and enable scopy if this option is turned on to make sure they stay
+  enabled after configuration is reloaded from the file.
 </p>
 
 <a name="fwbedit"></a>
