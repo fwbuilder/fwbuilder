@@ -173,6 +173,8 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
     FWOptions *fwoptions = (Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
 
+/* Page Script */
+
     bool f1=fwoptions->getBool("pix_acl_basic");
     bool f2=fwoptions->getBool("pix_acl_no_clear");
     bool f3=fwoptions->getBool("pix_acl_substitution");
@@ -193,6 +195,8 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*, FWObject *o)//(parent)
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=NULL);
+
+    data.registerOption( m_dialog->short_script, fwoptions, "short_script");
 
 /* Page "Compiler Options" */
 

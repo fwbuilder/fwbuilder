@@ -139,6 +139,8 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
     top_comment.setVariable("generate_outb_acls", QString((generate_outb_acls)?"yes":"no"));
     top_comment.setVariable("afpa", QString((afpa)?"yes":"no"));
 
+    script_skeleton.setVariable("short_script", options->getBool("short_script"));
+    script_skeleton.setVariable("not_short_script", ! options->getBool("short_script"));
     script_skeleton.setVariable("system_configuration_script", system_configuration_script.c_str());
     script_skeleton.setVariable("policy_script", policy_script.c_str());
     script_skeleton.setVariable("nat_script", nat_script.c_str());

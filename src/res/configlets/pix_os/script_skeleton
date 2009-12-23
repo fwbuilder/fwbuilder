@@ -25,7 +25,15 @@
 ! End of prolog script:
 !
 
+{{if short_script}}
+! This script was generated with option "Generate only access-list, access-group,
+! nat, static, global" commands turned on in the "Script" tab of the firewall
+! object advanced settings dialog. Skipping system configuration commands.
+{{endif}}
+
+{{if not_short_script}}
 {{$system_configuration_script}}
+{{endif}}
 
 {{$policy_script}}
 
