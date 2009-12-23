@@ -202,7 +202,13 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
                 if (id > 0)
                 {
                     FWObject *nz_obj = obj->getRoot()->findInIndex(id);
-                    q.push_back(QString("network zone: %1").arg(nz_obj->getName().c_str()));
+                    if (nz_obj)
+                        q.push_back(
+                            QString("network zone: %1")
+                            .arg(nz_obj->getName().c_str()));
+                    else
+                        q.push_back(QString("network zone: not configured"));
+
                 }
             }
             if (intf->isDyn())         q.push_back("dyn");
