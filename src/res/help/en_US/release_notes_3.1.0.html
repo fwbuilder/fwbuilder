@@ -686,14 +686,27 @@ rule sets of this object rather than in the actual firewalls.
 </p>
 
 <p>
-Built-in policy installe uses EEM (Embedded Event Manager) on IOS 12.4
-or later to schedule automatic configuration rollback instead of
-reloading the router.  EEM appears in IOS 12.4 and supports background
-operations that can be triggered by some events on the router or by
-timers. In this new feature, fwbuilder creates EEM applet with a
-countdown timer that executes command "config replace
-nvram:startup-config force" when timer expires. User has the following
-options:
+  For instructions how to configure scp see
+  <a href="http://www.cisco.com/en/US/docs/ios/12_2t/12_2t2/feature/guide/ftscp.html">
+    Secure Copy</a>. You need to crate RSA keys, enable ssh v2 and scp
+  servers using commands: <b>"ip ssh version 2"</b> and <b>"ip scp
+  server enable"</b>. User account used to copy the policy should have
+  privilege 15: <b>"username vadim privilege 15 password 7
+  XXXXXXXXXXX"</b>. Note that installer does not use
+  command <b>"config replace"</b> because configuration created by
+  fwbuilder is incomplete and should be merged with running config
+  rather than replace it.
+</p>
+
+<p>
+  Built-in policy installe uses EEM (Embedded Event Manager) on IOS
+  12.4 or later to schedule automatic configuration rollback instead
+  of reloading the router.  EEM appears in IOS 12.4 and supports
+  background operations that can be triggered by some events on the
+  router or by timers. In this new feature, fwbuilder creates EEM
+  applet with a countdown timer that executes command "config replace
+  nvram:startup-config force" when timer expires. User has the
+  following options:
 </p>
 
 <p>
