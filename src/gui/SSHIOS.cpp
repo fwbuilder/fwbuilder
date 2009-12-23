@@ -27,16 +27,11 @@
 
 #include "../../config.h"
 #include "global.h"
-#include "utils.h"
 
 #include "SSHIOS.h"
 
-#include <iostream>
+#include <QtDebug>
 
-#include <errno.h>
-#ifndef errno
-extern int errno;
-#endif
 
 using namespace std;
 
@@ -94,29 +89,30 @@ void SSHIOS::stateMachine()
 
     switch (state)
     {
-    case ENABLE:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
-        {
-            if (pre_config_commands.size()>0)
-            {
-                stdoutBuffer="";
+    // case ENABLE:
+    //     if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
+    //     {
+    //         if (pre_config_commands.size()>0)
+    //         {
+    //             stdoutBuffer="";
 
-                QString cmd = pre_config_commands.front();
-                pre_config_commands.pop_front();
+    //             QString cmd = pre_config_commands.front();
+    //             pre_config_commands.pop_front();
 
-                if (cmd.indexOf("reload in")!=-1)
-                    state = SCHEDULE_RELOAD_DIALOG;
+    //             if (cmd.indexOf("reload in")!=-1)
+    //                 state = SCHEDULE_RELOAD_DIALOG;
 
-                proc->write( cmd.toAscii() );
-                proc->write( "\n" );
-                break;
-            } else
-                SSHPIX::stateMachine();
-        }
-        break;
+    //             proc->write( cmd.toAscii() );
+    //             proc->write( "\n" );
+    //             break;
+    //         } else
+    //             SSHPIX::stateMachine();
+    //     }
+    //     break;
 
     case SCHEDULE_RELOAD_DIALOG:
-        if ( cmpPrompt(stdoutBuffer,QRegExp("System config.* modified\\. Save?")) )
+        if ( cmpPrompt(stdoutBuffer,
+                       QRegExp("System config.* modified\\. Save?")) )
         {
             stdoutBuffer="";
             proc->write( "no\n" );
@@ -129,6 +125,15 @@ void SSHIOS::stateMachine()
             state = ENABLE;
             break;
         }
+        break;
+
+    case PUSHING_CONFIG:
+        if ( cmpPrompt(stdoutBuffer, QRegExp("Destination filename [.*]?")) )
+        {
+            stdoutBuffer="";
+            proc->write("\n"); // accept default file name
+        } else
+            SSHPIX::stateMachine();
         break;
 
     default:

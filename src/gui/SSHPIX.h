@@ -42,12 +42,12 @@ class QEventLoop;
 
 class SSHPIX : public SSHSession {
 
-    Q_OBJECT
+    Q_OBJECT;
 
     QEventLoop *local_event_loop;
     int         nLines;
     int         ncmd;
-    QStringList allConfig;
+    //QStringList allConfig;
 
     QStringList newAcls;
     QStringList currentAcls;
@@ -55,11 +55,12 @@ class SSHPIX : public SSHSession {
     QStringList newObjectGroups;
     QStringList currentObjectGroups;
     
-    std::ifstream   *config_file;
+    //std::ifstream   *config_file;
 
 protected:
-    QStringList      pre_config_commands;
-    QStringList      post_config_commands;
+    QStringList pre_config_commands;
+    QStringList post_config_commands;
+    QStringList activation_commands;
     
 public:
     
@@ -78,6 +79,7 @@ public:
 
     void loadPreConfigCommands(const QStringList &cl);
     void loadPostConfigCommands(const QStringList &cl);
+    void loadActivationCommands(const QStringList &cl);
     
 public slots:
  void PIXbackup();
@@ -85,7 +87,6 @@ public slots:
  void clearACLs();
  void getObjectGroups();
  void clearObjectGroups();
- void PIXincrementalInstall();
      
 };
 

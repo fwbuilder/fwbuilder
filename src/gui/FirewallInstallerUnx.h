@@ -53,7 +53,6 @@ public:
     FirewallInstaller(_dlg, _cnf, _p) {}
 
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
-    virtual void copyFile(const QString &local_name, const QString &remote_name);
     virtual void activatePolicy(const QString &script,  const QString &args);
     
 };

@@ -677,6 +677,15 @@ rule sets of this object rather than in the actual firewalls.
 <h2>Changes in support for for Cisco IOS ACL</h2>
 
 <p>
+  Built-in installer can use command scp to copy IOS configuration to
+  the router using ssh and then command "copy file running-config" to
+  activate it.  This method is much faster than running configuration
+  line by line.  The router should be configured with ssh v2 and scp
+  server. This method can be combined with rollback (by reload or
+  EEM).
+</p>
+
+<p>
 Built-in policy installe uses EEM (Embedded Event Manager) on IOS 12.4
 or later to schedule automatic configuration rollback instead of
 reloading the router.  EEM appears in IOS 12.4 and supports background

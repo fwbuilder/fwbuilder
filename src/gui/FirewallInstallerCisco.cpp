@@ -42,15 +42,22 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/XMLTools.h"
 
-#ifndef _WIN32
-#  include <unistd.h>     // for access(2) and getdomainname
-#endif
+#include <QFileInfo>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QtDebug>
 
-#include <errno.h>
-#include <iostream>
 
 using namespace std;
 using namespace libfwbuilder;
+
+
+FirewallInstallerCisco::FirewallInstallerCisco(instDialog *_dlg,
+                                               instConf *_cnf, const QString &_p):
+    FirewallInstaller(_dlg, _cnf, _p)
+{
+    if (cnf->fwdir.isEmpty()) cnf->fwdir = "nvram:";
+}
 
 bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
 {
@@ -72,7 +79,57 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
         return true;
     }
 
-    job_list.push_back(instJob(ACTIVATE_POLICY, cnf->script, ""));
+    // Load configuration file early so we can abort installation if
+    // it is not accessible
+    QString ff;
+    QFileInfo script_info(cnf->script);
+    if (script_info.isAbsolute()) ff = cnf->script;
+    else ff = cnf->wdir + "/" + cnf->script;
+
+    QFile data(ff);
+    if (data.open(QFile::ReadOnly))
+    {
+        QTextStream strm(&data);
+        QString line;
+        do
+        {
+            line = strm.readLine();
+            config_lines.push_back(line.trimmed());
+        } while (!strm.atEnd());
+    } else
+    {
+        QMessageBox::critical(
+            inst_dlg, "Firewall Builder",
+            tr("Can not read generated script %1").arg(ff),
+            tr("&Continue"), QString::null,QString::null,
+            0, 1 );
+        return false;
+    }
+
+    // Should be optional
+    if (cnf->useSCPForCisco)
+    {
+        QMap<QString,QString> all_files;
+
+        // readManifest() modifies cnf (assigns cnf->remote_script) !
+        if (readManifest(cnf->script, &all_files))
+        {
+            QMap<QString, QString>::iterator it;
+            for (it=all_files.begin(); it!=all_files.end(); ++it)
+            {
+                QString local_name = it.key();
+                QString remote_name = it.value();
+                job_list.push_back(instJob(COPY_FILE, local_name, remote_name));
+            }
+        }
+
+        QString cmd = getActivationCmd();
+        job_list.push_back(instJob(ACTIVATE_POLICY, cmd, ""));
+    } else
+    {
+        job_list.push_back(instJob(ACTIVATE_POLICY, cnf->script, ""));
+    }
+
     return true;
 }
 
@@ -157,9 +214,51 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     ssh_object->loadPostConfigCommands(
         post_config.expand().split("\n", QString::SkipEmptyParts) );
 
+    Configlet activation(host_os, os_family, "installer_commands_reg_user");
+    activation.removeComments();
+    inst_dlg->replaceMacrosInCommand(&activation);
+    activation.setVariable("using_scp",       cnf->useSCPForCisco);
+    activation.setVariable("not_using_scp", ! cnf->useSCPForCisco);
+
+    if ( ! cnf->useSCPForCisco)
+    {
+        activation.setVariable("fwbuilder_generated_configuration_lines",
+                               config_lines.join("\n"));
+    }
+
+    ssh_object->loadActivationCommands(
+        activation.expand().split("\n", QString::SkipEmptyParts) );
+
     runSSHSession(ssh_object);
 
     return;
+}
+
+bool FirewallInstallerCisco::readManifest(const QString &script, 
+                                          QMap<QString, QString> *all_files)
+{
+    if (fwbdebug)
+        qDebug("FirewallInstaller::readManifest");
+    QString dest_dir = getDestinationDir(cnf->fwdir);
+    // path returned by getDestinationDir always ends with separator
+    // in case of IOS, it is ":"
+    QFileInfo file_base(script);
+    QString remote_file = dest_dir + file_base.fileName();
+    QString local_name = script;
+    cnf->remote_script = remote_file;
+    (*all_files)[local_name] = remote_file;
+    return true;
+}
+
+QString FirewallInstallerCisco::getDestinationDir(const QString &fwdir)
+{
+    if (fwbdebug)
+        qDebug() << "FirewallInstallerCisco::getDestinationDir:  "
+                 << "fwdir=" << fwdir;
+
+    QString dir = fwdir;
+    if (!dir.endsWith(":")) return dir + ":";
+    return dir;
 }
 
 

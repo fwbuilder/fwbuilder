@@ -86,11 +86,12 @@ protected:
                            QString *remote_file_name,
                            bool *main_script);
 
-    bool readManifest(const QString &conffie, QMap<QString, QString> *all_files);
-
     void executeExternalInstallScript(const QString &script,
                                       const QString &script_args);
     
+    virtual bool readManifest(const QString &conffie,
+                              QMap<QString, QString> *all_files);
+
 public:
 
     FirewallInstaller(instDialog *_dlg, instConf *_cnf, const QString &prompt)
@@ -104,7 +105,7 @@ public:
     void packSSHArgs(QStringList &args);
     void packSCPArgs(const QString &local_name, const QString &remote_name, QStringList &args);
     QString getActivationCmd();
-    QString getDestinationDir(const QString &dir);
+    virtual QString getDestinationDir(const QString &dir);
 
     void terminate();
     

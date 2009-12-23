@@ -322,6 +322,7 @@ void instDialog::storeInstallerOptions()
     st->setValue(SETTINGS_PATH_PREFIX"/Installer/compressScript",
                  cnf.compressScript);
     st->setValue(SETTINGS_PATH_PREFIX"/Installer/copyFWB",  cnf.copyFWB);
+    st->setValue(SETTINGS_PATH_PREFIX"/Installer/useSCPForCisco",  cnf.useSCPForCisco);
     st->setValue(SETTINGS_PATH_PREFIX"/Installer/testRun",  cnf.testRun);
     st->setValue(SETTINGS_PATH_PREFIX"/Installer/rollback", cnf.rollback);
     st->setValue(SETTINGS_PATH_PREFIX"/Installer/rollbackTime",
@@ -535,8 +536,8 @@ void instDialog::saveLog()
  */
 void instDialog::addToLog(const QString &line)
 {
-    if (fwbdebug)
-        qDebug("instDialog::addToLog: '%s'", line.toLatin1().constData());
+    // if (fwbdebug)
+    //     qDebug("instDialog::addToLog: '%s'", line.toLatin1().constData());
 
     if (line.isEmpty()) return;
 
@@ -921,6 +922,7 @@ void instDialog::readInstallerOptionsFromSettings()
     cnf.stripComments  = st->value(SETTINGS_PATH_PREFIX"/Installer/stripComments").toBool();
     cnf.compressScript = st->value(SETTINGS_PATH_PREFIX"/Installer/compressScript").toBool();
     cnf.copyFWB = st->value(SETTINGS_PATH_PREFIX"/Installer/copyFWB").toBool();
+    cnf.useSCPForCisco = st->value(SETTINGS_PATH_PREFIX"/Installer/useSCPForCisco").toBool();
     cnf.testRun = st->value(SETTINGS_PATH_PREFIX"/Installer/testRun").toBool();
     cnf.rollback = st->value(SETTINGS_PATH_PREFIX"/Installer/rollback").toBool();
     cnf.rollbackTime = st->value(SETTINGS_PATH_PREFIX"/Installer/rollbackTime").toInt();
@@ -1054,6 +1056,7 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
     cnf.stripComments = dlg->m_dialog->stripComments->isChecked();
     cnf.compressScript= dlg->m_dialog->compressScript->isChecked();
     cnf.copyFWB       = dlg->m_dialog->copyFWB->isChecked();
+    cnf.useSCPForCisco= dlg->m_dialog->use_scp->isChecked();
     cnf.testRun       = dlg->m_dialog->testRun->isChecked();
     cnf.rollback      = dlg->m_dialog->rollback->isChecked();
     cnf.rollbackTime  = dlg->m_dialog->rollbackTime->value();

@@ -59,6 +59,7 @@ SSHPIX::SSHPIX(QWidget *_par,
     normal_prompt="> $";
     fwb_prompt="--**--**--";
     enable_prompt="# $|# *Access Rules Download Complete";
+    config_prompt="\\(config(|-.*)\\)#";
     pwd_prompt_1="'s password: $";
     pwd_prompt_2="'s password: $";
     epwd_prompt="Password: ";
@@ -97,6 +98,23 @@ void SSHPIX::loadPreConfigCommands(const QStringList &cl)
 void SSHPIX::loadPostConfigCommands(const QStringList &cl)
 {
     post_config_commands = cl;
+}
+
+void SSHPIX::loadActivationCommands(const QStringList &cl)
+{
+    activation_commands = cl;
+    foreach(QString line, activation_commands)
+    {
+        /*
+         * store names of access-lists and object-groups
+         * actually used in the config
+         */
+        if (line.indexOf("access-list ")==0)
+            newAcls.push_back(line.section(' ',1,1));
+        if (line.indexOf("object-group ")==0)
+            newObjectGroups.push_back(line.section(' ',1,1));
+    }
+    emit updateProgressBar_sign(activation_commands.size(), true);
 }
 
 SSHPIX::~SSHPIX()
@@ -153,6 +171,12 @@ void SSHPIX::stateMachine()
 {
     if (checkForErrors()) return;
 
+    if (fwbdebug)
+        qDebug() << "SSHPIX::stateMachine()  state=" << state
+                 << "(ENABLE=" << ENABLE << ")"
+                 << "(PUSHING_CONFIG=" << PUSHING_CONFIG << ")"
+                 << " stdoutBuffer=" << stdoutBuffer;
+
     switch (state)
     {
     case NONE:
@@ -162,13 +186,12 @@ void SSHPIX::stateMachine()
         {
             stdoutBuffer="";
             proc->write( (pwd + "\n").toAscii() );
-            // proc->write( "\n" );
             break;
         }
 /* we may get to LOGGEDIN state directly from NONE, for example when
  * password is supplied on command line to plink.exe
  */
-        if (cmpPrompt(stdoutBuffer,QRegExp(normal_prompt)) )
+        if (cmpPrompt(stdoutBuffer, QRegExp(normal_prompt)) )
         {
             stdoutBuffer="";
             state=LOGGEDIN;
@@ -177,13 +200,12 @@ void SSHPIX::stateMachine()
             emit printStdout_sign( tr("Switching to enable mode...") + "\n");
             stdoutBuffer="";
             proc->write( "enable\n" );
-            //proc->write( "\n" );
         }
 
 /* we may even get straight to the enable prompt, e.g. if
  * user account is configured with "privilege 15"
  */
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
         {
             state=WAITING_FOR_ENABLE;
             stateMachine();
@@ -269,20 +291,15 @@ void SSHPIX::stateMachine()
         }
 
     case ENABLE:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
         {
             if (pre_config_commands.size()>0)
             {
                 stdoutBuffer="";
-
                 QString cmd = pre_config_commands.front();
                 pre_config_commands.pop_front();
-
-                if (cmd.indexOf("reload in")!=-1)
-                    state = SCHEDULE_RELOAD_DIALOG;
-
+                if (cmd.indexOf("reload in")!=-1) state = SCHEDULE_RELOAD_DIALOG;
                 proc->write( (cmd + "\n").toAscii() );
-                // proc->write( "\n" );
                 break;
             }
 
@@ -303,26 +320,29 @@ void SSHPIX::stateMachine()
                 break;
             }
 
-            proc->write( "config t\n" );
-            //proc->write( "\n" );
-            state=WAITING_FOR_CONFIG_PROMPT;
+            //proc->write( "config t\n" );  now part of configlet installer_commands_reg_user
+            state = WAITING_FOR_CONFIG_PROMPT;
+            // kick it so we get some output from the router and
+            // continue the state machine
+            proc->write("\n"); 
         }
         break;
 
     case SCHEDULE_RELOAD_DIALOG:
-        if ( cmpPrompt(stdoutBuffer,QRegExp("System config.* modified\\. Save?")) )
+        if ( cmpPrompt(stdoutBuffer,
+                       QRegExp("System config.* modified\\. Save?")) )
         {
             stdoutBuffer="";
             proc->write( "n" );  // no \n needed
             break;
         }
-        if ( cmpPrompt(stdoutBuffer,QRegExp("Proceed with reload?")) )
+        if ( cmpPrompt(stdoutBuffer, QRegExp("Proceed with reload?")) )
         {
             stdoutBuffer="";
             proc->write( "y" );  // no \n needed
             break;
         }
-        if ( cmpPrompt(stdoutBuffer,QRegExp("SHUTDOWN")) )
+        if ( cmpPrompt(stdoutBuffer, QRegExp("SHUTDOWN")) )
         {
             stdoutBuffer="";
             proc->write( "\n" );
@@ -343,88 +363,36 @@ void SSHPIX::stateMachine()
         break;
 
     case WAITING_FOR_CONFIG_PROMPT:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
         {
-            state=CONFIG;
-
-/* install full policy */
-            QString ff;
-            QFileInfo script_info(script);
-            if (script_info.isAbsolute()) ff = script;
-            else ff = wdir + "/" + script;
-
-            config_file = new ifstream(ff.toLatin1().constData());
-            if ( ! *config_file)
-            {
-                emit printStdout_sign(
-                    QObject::tr("Can not open file %1").arg(ff) + "\n"
-                );
-                state=FINISH;
-                break;
-            } else
-            {
-/* read the whole file */
-                string s0;
-                nLines =0;
-                bool   store=!incremental;
-                while ( !config_file->eof() )
-                {
-                    getline( *config_file, s0);
-                    if (!store)
-                    {
-                        store=(s0.find("!################")==0);
-                    }
-                    if (store)
-                    {
-                        QString s(s0.c_str());
-                        s = s.trimmed();
-                        allConfig.push_back(s);
-                        nLines++;
-/*
- * store names of access-lists and object-groups actually used in the config
- */
-                        if (s.indexOf("access-list ")==0)
-                            newAcls.push_back(s.section(' ',1,1));
-                        if (s.indexOf("object-group ")==0)
-                            newObjectGroups.push_back(s.section(' ',1,1));
-                    }
-                }
-                config_file->close();
-                delete config_file;
-                config_file=NULL;
-
-                emit updateProgressBar_sign(nLines,true);
-            }
-            state=PUSHING_CONFIG; // and drop to PUSHING_CONFIG case
+            /* install full policy */
+            state = PUSHING_CONFIG; // and drop to PUSHING_CONFIG case
             if (!dry_run)
                 emit printStdout_sign(tr("Pushing firewall configuration"));
             emit printStdout_sign( "\n");
+            stdoutBuffer = "";
+            proc->write("\n");
             ncmd=0;
         }
-#if 0
-        else
-        {
-/* install incrementally */
-
-            QTimer::singleShot( 1, this, SLOT(PIXincrementalInstall()) );
-            break;
-        }
-#endif
+        break;
 
     case PUSHING_CONFIG:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)))  // config_prompt)) )
         {
+            if (fwbdebug)
+                qDebug() << "SSHPIX::stateMachine() activation_commands.size()="
+                         << activation_commands.size();
         loop1:
-            if ( allConfig.size()!=0 )
+            if ( activation_commands.size()!=0 )
             {
                 QString s;
 
                 do {
-                    s = allConfig.front();
-                    allConfig.pop_front();
+                    s = activation_commands.front();
+                    activation_commands.pop_front();
                 } while (stripComments && s[0]=='!');
 
-                emit updateProgressBar_sign(allConfig.size(),false);
+                emit updateProgressBar_sign(activation_commands.size(),false);
 
                 s.replace('\"','\'');
 
@@ -435,7 +403,6 @@ void SSHPIX::stateMachine()
                     if ( !rl.isEmpty())
                     {
                         emit printStdout_sign( tr("Rule %1").arg(rl) + "\n" );
-                        //emit printStdout_sign( "\n");
                     }
                 }
 
@@ -444,24 +411,21 @@ void SSHPIX::stateMachine()
                     if ( !s.isEmpty())  ncmd++;
                     stdoutBuffer="";
                     proc->write( (s+"\n").toAscii() ); // send even if s is empty
-                    qApp->processEvents();
                     break;
                 } else
                 {
                     emit printStdout_sign( s+"\n" );
-                    goto loop1;
                 }
                 break;
             } else
             {
-                /* allConfig.size()==0 */
-
-//                state=GET_ACLS;
-//                goto entry;
-
+                /* activation_commands.size()==0 */
                 state = EXIT_FROM_CONFIG;
                 emit printStdout_sign( tr("End") + "\n" );
-                proc->write( "exit\n" );
+                //proc->write( "exit\n" ); now part of the configlet
+                // kick it so we get some output from the router and
+                // continue the state machine
+                proc->write("\n"); 
             }
         }
         break;
@@ -707,114 +671,5 @@ void SSHPIX::clearObjectGroups()
     state = EXIT_FROM_CONFIG;
     emit printStdout_sign( tr("*** End ") + "\n" );
     proc->write( "exit\n" );
-}
-
-void SSHPIX::PIXincrementalInstall()
-{
-    QString current_config;
-
-    bool sv=verbose;
-    verbose=false;
-
-    emit printStdout_sign(tr("Reading current firewall configuration"));
-    emit printStdout_sign( "\n");
-
-    current_config = cmd(proc, "show run | grep ^telnet|^ssh|^icmp");
-    if (state==FINISH) return;
-    current_config += cmd(proc, "show object-group");
-    if (state==FINISH) return;
-    current_config += cmd(proc, "show access-list");
-    if (state==FINISH) return;
-    current_config += cmd(proc, "show global");
-    if (state==FINISH) return;
-    current_config += cmd(proc, "show nat");
-    if (state==FINISH) return;
-    current_config += cmd(proc, "show static");
-    if (state==FINISH) return;
-
-    verbose=sv;
-
-    if (state==COMMAND_DONE)
-    {
-        QString statefile;
-        QFileInfo script_info(script);
-        if (script_info.isAbsolute()) statefile = script + "_current";
-        else statefile = wdir + "/" + script + "_current";
-
-        ofstream ofs(statefile.toLatin1().constData());
-        ofs << current_config.toAscii().constData();
-        ofs.close();
-
-        emit printStdout_sign(tr("Generating configuration diff"));
-        emit printStdout_sign( "\n");
-
-        QString cm = diff_pgm + " \"" + statefile + "\" \"";
-        if (script_info.isAbsolute()) cm += wdir + "/";
-        cm += script + "\"";
-
-//        emit printStdout_sign(tr("Running command: %1\n").arg(cm));
-
-#ifdef _WIN32
-        FILE *f = _popen( cm.toLatin1().constData(), "r");
-#else
-        FILE *f = popen( cm.toLatin1().constData(), "r");
-#endif
-        if (f==NULL)
-        {
-            emit printStdout_sign(
-                tr("Fork failed for %1").arg(diff_pgm));
-            emit printStdout_sign( "\n");
-            switch (errno)
-            {
-            case EAGAIN:
-            case ENOMEM:
-                emit printStdout_sign(tr("Not enough memory.") + "\n");
-                break;
-            case EMFILE:
-            case ENFILE:
-                emit printStdout_sign(
-                    tr("Too many opened file descriptors in the system.") + "\n");
-                break;
-
-            }
-            emit printStdout_sign( "\n");
-            state=FINISH;
-            proc->write( "\n" );
-            return;
-        }
-
-        char buf[1024];
-        int  nLines=0;
-        while (fgets(buf,1024,f))
-        {
-            allConfig += buf;
-            nLines++;
-        }
-#ifdef _WIN32
-        _pclose(f);
-#else
-        pclose(f);
-#endif
-
-	if (allConfig.isEmpty())
-	{
-	    allConfig=QStringList();
-            emit printStdout_sign(tr("Empty configuration diff"));
-            emit printStdout_sign( "\n");
-	}
-
-        if (save_diff)
-        {
-            ofstream odiff((wdir+"/"+diff_file).toLatin1().constData());
-            odiff << allConfig.join("").toAscii().constData();
-            odiff.close();
-        }
-
-        state=PUSHING_CONFIG;
-        emit updateProgressBar_sign(nLines,true);
-        if (!dry_run)
-            emit printStdout_sign(tr("Pushing firewall configuration") + "\n");
-    }
-    proc->write( "\n" );
 }
 

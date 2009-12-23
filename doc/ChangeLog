@@ -1,5 +1,13 @@
 2009-12-22  vadim  <vadim@vk.crocodile.org>
 
+	* src/res/configlets/ios/installer_commands_reg_user: Built-in
+	installer can use command scp to copy IOS configuration to the
+	router using ssh and then command "copy file running-config" to
+	activate it.  This method is much faster than running
+	configuration line by line.  The router should be configured with
+	ssh v2 and scp server. This method can be combined with
+	rollback (by reload or EEM).
+
 	* src/res/configlets/ios/installer_commands_pre_config: Built-in
 	policy installer uses EEM (Embedded Event Manager) on IOS 12.4 or
 	later to schedule automatic configuration rollback instead of

@@ -32,9 +32,11 @@
 
 #include "SSHPIX.h"
 
+#include <QString>
+
 class SSHIOS : public SSHPIX {
 
-    Q_OBJECT
+    Q_OBJECT;
 
 public:
     

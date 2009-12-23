@@ -94,6 +94,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     m_dialog->stripComments->setChecked( cnf->stripComments );
     m_dialog->compressScript->setChecked( cnf->compressScript );
     m_dialog->copyFWB->setChecked( cnf->copyFWB );
+    m_dialog->use_scp->setChecked( cnf->useSCPForCisco );
     m_dialog->testRun->setChecked( cnf->testRun );
     m_dialog->rollback->setChecked( cnf->rollback );
     m_dialog->rollbackTime->setValue( cnf->rollbackTime );
@@ -145,6 +146,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
                 }
             }
             if (platform=="iosacl") m_dialog->PIXgroupBox->hide();
+            else m_dialog->IOSgroupBox->hide();
         } else
         {
             m_dialog->rollback->setText("Schedule reboot in ");
@@ -153,6 +155,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
             m_dialog->epwd->hide();
             m_dialog->epwdLbl->hide();
             m_dialog->PIXgroupBox->hide();
+            m_dialog->IOSgroupBox->hide();
             // cancelling rollback at the end of activation is currently
             // only supported on pix,fwsm and ios
             m_dialog->cancelRollbackIfSuccess->hide();

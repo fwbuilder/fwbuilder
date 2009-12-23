@@ -36,6 +36,7 @@
 #include <qstringlist.h>
 #include <qprocess.h>
 #include <qobject.h>
+#include <QStringList>
 
 namespace libfwbuilder
 {
@@ -44,12 +45,17 @@ namespace libfwbuilder
 
 class FirewallInstallerCisco : public FirewallInstaller
 {
-    Q_OBJECT
+    Q_OBJECT;
 
+    QStringList config_lines;
+
+    virtual QString getDestinationDir(const QString &dir);
+    
+    virtual bool readManifest(const QString &conffie,
+                              QMap<QString, QString> *all_files);
 public:
 
-    FirewallInstallerCisco(instDialog *_dlg, instConf *_cnf, const QString &_p):
-        FirewallInstaller(_dlg, _cnf, _p) {}
+    FirewallInstallerCisco(instDialog *_dlg, instConf *_cnf, const QString &_p);
 
     virtual bool packInstallJobsList(libfwbuilder::Firewall*);
     virtual void activatePolicy(const QString &script, const QString &args);

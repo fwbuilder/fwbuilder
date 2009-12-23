@@ -189,34 +189,3 @@ void FirewallInstallerUnx::executeSession(const QString &cmd)
                               list<string>()), false );
 }
 
-// ************************************************************************
-
-void FirewallInstallerUnx::copyFile(const QString &local_name,
-                                    const QString &remote_name)
-{
-    QString platform = cnf->fwobj->getStr("platform").c_str();
-
-//    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("latin1"));
-
-    QStringList args;
-    packSCPArgs(local_name, remote_name, args);
-
-    inst_dlg->addToLog( tr("Copying %1 -> %2:%3\n")
-                        .arg(QString::fromUtf8(local_name.toAscii().constData()))
-                        .arg(cnf->maddr)
-                        .arg(QString::fromUtf8(remote_name.toAscii().constData())));
-
-    if (cnf->verbose) inst_dlg->displayCommand(args);
-    qApp->processEvents();
-
-    // Need session for scp copy because we need to enter password
-    runSSHSession( new SSHUnx(inst_dlg,
-                              cnf->fwobj->getName().c_str(),
-                              args,
-                              cnf->pwd,
-                              "",
-                              list<string>()), true );
-}
-
-// ************************************************************************
-

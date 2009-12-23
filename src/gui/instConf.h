@@ -53,7 +53,8 @@ class instConf {
     bool      cancelRollbackIfSuccess;
     bool      saveStandby;
     bool      batchInstall;
-    
+    bool      useSCPForCisco;
+
     QString   pgm;
     QString   wdir;
     QString   diff_pgm;
