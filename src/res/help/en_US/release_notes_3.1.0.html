@@ -702,6 +702,23 @@ rule sets of this object rather than in the actual firewalls.
       privilege 15: <b>"username vadim privilege 15 password 7
         XXXXXXXXXXX"</b>.</li>
   </ul>
+</p>
+
+<p>
+  To troubleshoot when scp is not working:
+  <ul>
+    <li>Test using command line scp tool rather than fwbuilder installer. Use
+      <b>"scp"</b> on Linux and Mac OS X and <b>"pscp.exe"</b> on Windows
+      like this: "scp file.fw router:nvram:file.fw"</li>
+    <li>check that ssh and scp are enabled on the router (see commands above)</li>
+    <li>check that user account has privilege 15</li>
+    <li>Use command "debug ip ssh" on the router to turn debugging
+      on. Diagnostic messages that it prints to the console and to log
+      may help you identify the problem</li>
+  </ul>
+</p>
+
+<p>
   Note that installer does not use command <b>"config replace"</b>
   because configuration created by fwbuilder is incomplete and should
   be merged with running config rather than replace it.
@@ -774,7 +791,20 @@ rule sets of this object rather than in the actual firewalls.
       "privilege 15": <b>"username fwbadmin password XXXXXXX priviege
       15"</b></li>
   </ul>
-  Use command "debug ssh 10" on PIX to troubleshoot if scp is not working.
+</p>
+
+<p>
+  To troubleshoot when scp is not working:
+  <ul>
+    <li>Test using command line scp tool rather than fwbuilder installer. Use
+      <b>"scp"</b> on Linux and Mac OS X and <b>"pscp.exe"</b> on Windows
+      like this: "scp file.fw firewall:flash:file.fw"</li>
+    <li>check that ssh and scopy are enabled on the firewall</li>
+    <li>check that user account has privilege 15</li>
+    <li>Use command "debug ssh 10" on PIX to turn debugging
+      on. Diagnostic messages that it prints to the console and to log
+      may help you identify the problem</li>
+  </ul>
 </p>
 
 <p>
