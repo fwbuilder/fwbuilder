@@ -83,7 +83,6 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     m_dialog->epwd->setEchoMode(QLineEdit::Password);
 
     m_dialog->uname->setText( cnf->user );
-    m_dialog->incr->setChecked( cnf->incremental );
     m_dialog->test->setChecked( cnf->dry_run );
     m_dialog->backupConfigFile->setText( cnf->backup_file );
     m_dialog->saveDiff->setChecked( cnf->save_diff );

@@ -235,7 +235,7 @@ void SSHSession::setOptions(instConf *cnf)
     setVerbose(cnf->verbose);
     setBackup(cnf->backup);
     setBackupFile(cnf->backup_file);
-    setIncr(cnf->incremental);
+    //setIncr(cnf->incremental);
     setDryRun(cnf->dry_run);
     setSaveStandby(cnf->saveStandby);
     setTestRun(cnf->testRun);

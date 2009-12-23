@@ -311,7 +311,6 @@ void instDialog::prepareInstConf(Firewall *)
 
 void instDialog::storeInstallerOptions()
 {
-    st->setValue(SETTINGS_PATH_PREFIX"/Installer/incr",    cnf.incremental);
     st->setValue(SETTINGS_PATH_PREFIX"/Installer/savediff",cnf.save_diff);
     st->setValue(SETTINGS_PATH_PREFIX"/Installer/saveStandby",cnf.saveStandby);
     st->setValue(SETTINGS_PATH_PREFIX"/Installer/dryrun"  ,cnf.dry_run);
@@ -347,10 +346,7 @@ void instDialog::summary()
     str.append(QObject::tr("* Loading configuration from file %1")
               .arg(cnf.fwbfile));
 
-    if (cnf.incremental)
-        str.append(QObject::tr("* Incremental install"));
-
-    if (cnf.save_diff && cnf.incremental)
+    if (cnf.save_diff)
         str.append(QObject::tr("* Configuration diff will be saved in file %1").
                    arg(cnf.diff_file));
 
@@ -912,7 +908,6 @@ void instDialog::readInstallerOptionsFromSettings()
 
     cnf.batchInstall = m_dialog->batchInstall->isChecked();
 
-    cnf.incremental= st->value(SETTINGS_PATH_PREFIX"/Installer/incr").toBool();
     cnf.save_diff = st->value(SETTINGS_PATH_PREFIX"/Installer/savediff").toBool();
     cnf.saveStandby = st->value(SETTINGS_PATH_PREFIX"/Installer/saveStandby").toBool();
     cnf.dry_run = st->value(SETTINGS_PATH_PREFIX"/Installer/dryrun").toBool();
@@ -1016,7 +1011,6 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
         adm_user = fwopt->getStr("admUser").c_str();
     }
 
-    cnf.incremental = dlg->m_dialog->incr->isChecked();
     cnf.dry_run     = dlg->m_dialog->test->isChecked();
     cnf.backup_file = dlg->m_dialog->backupConfigFile->text();
     cnf.backup      = !cnf.backup_file.isEmpty();

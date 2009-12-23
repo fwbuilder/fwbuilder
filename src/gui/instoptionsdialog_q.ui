@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>619</width>
-    <height>845</height>
+    <width>616</width>
+    <height>842</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -191,34 +191,24 @@ are never stored permanently)</string>
          <property name="margin" >
           <number>12</number>
          </property>
-         <item row="5" column="0" colspan="2" >
+         <item row="4" column="0" colspan="2" >
           <widget class="QCheckBox" name="saveStandby" >
            <property name="text" >
             <string>Write configuration to standby PIX</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="2" >
+         <item row="3" column="0" colspan="2" >
           <widget class="QCheckBox" name="test" >
            <property name="text" >
             <string>Dry run (commands won't be executed on the firewall)</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2" >
+         <item row="2" column="0" colspan="2" >
           <widget class="QCheckBox" name="saveDiff" >
            <property name="text" >
             <string>Store configuration diff in a file</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="2" >
-          <widget class="QCheckBox" name="incr" >
-           <property name="toolTip" >
-            <string>Calculate difference between current firewall state and generated configuration and install only those commands that update state of the firewall</string>
-           </property>
-           <property name="text" >
-            <string>install only ACL, 'icmp', 'telnet', 'ssh', 'nat', 'global' and 'static' commands</string>
            </property>
           </widget>
          </item>
@@ -523,7 +513,6 @@ are never stored permanently)</string>
   <tabstop>pwd</tabstop>
   <tabstop>epwd</tabstop>
   <tabstop>backupConfigFile</tabstop>
-  <tabstop>incr</tabstop>
   <tabstop>saveDiff</tabstop>
   <tabstop>test</tabstop>
   <tabstop>saveStandby</tabstop>

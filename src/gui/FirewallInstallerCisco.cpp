@@ -86,6 +86,24 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
 
     // Load configuration file early so we can abort installation if
     // it is not accessible
+
+    // Note about option "install only acl, icmp, telnet, ssh, nat,
+    // global and static" for PIX. This option used to read generated
+    // config but cuts off everything before the magic comment line
+    // "!################". This way, it only read object-group,
+    // access-list, access-group, nat, static and global commands. It
+    // skipped all interface configurations, timeouts and inspector
+    // commands. It is difficult to implement now that we (can) use
+    // scp to copy configuration to the firewall. We would have to
+    // create temporary file with modified configuration in order to
+    // do this.  To avoid hassles with temporary files, we move the
+    // same function to the compiler. The checkbox moves to the
+    // "script" tab of the pix advanced settings dialog and when it is on,
+    // compiler generates the script with only acl, icmp, telnet, ssh
+    // nat,static and global commands
+    //
+    // This mode of installation is not supported on IOS at all.
+    
     QString ff;
     QFileInfo script_info(cnf->script);
     if (script_info.isAbsolute()) ff = cnf->script;
