@@ -11,14 +11,14 @@
 ##  Variables:
 ##
 ##  {{$fwbprompt}} -- "magic" prompt that installer uses to detect when it is logged in
-##  {{$fwdir}}     -- directory on the firewall
-##  {{$fwscript}}  -- script name on the firewall (including directory. "nvram:" for IOS)
+##  {{$fwdir}}     -- directory on the firewall (in case of PIX, "flash:" or similar)
+##  {{$fwscript}}  -- script name on the firewall
 ##  {{$rbtimeout}} -- rollback timeout
 ##  {{$rbtimeout_sec}} -- rollback timeout (sec)
 ##
 
 {{if using_scp}}
-copy /noconfirm {{$fwscript}} running-config
+copy /noconfirm {{$fwdir}}{{$fwscript}} running-config
 {{endif}}
 
 {{if not_using_scp}}

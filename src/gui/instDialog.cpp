@@ -416,7 +416,17 @@ void instDialog::replaceMacrosInCommand(Configlet *conf)
  * keep $fwbscript and $fwdir for backwards compatibility
  */
 
+/*
+ * remote_script is a full path, which in case of Cisco can be
+ * something like "flash:file.fw". This means we have a problem with
+ * QFileInfo that interprets it as path:filename on Window or just
+ * file name with no directory path on Unix. As the result, fwbscript
+ * becomes just "file.fw" on Windows and stays "flash:file.fw" on
+ * Unix.
+ */
+
     QString fwbscript = QFileInfo(cnf.remote_script).fileName();
+    if (fwbscript.indexOf(":")!=-1) fwbscript = fwbscript.section(':', 1, 1);
 
     if (fwbdebug)
     {
