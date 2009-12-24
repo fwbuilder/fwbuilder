@@ -55,6 +55,7 @@ unix {
         res_help_C.path = $$res.path/help/C
         res_help_en_US.path = $$res.path/help/en_US
         res_desktop.path = @DATADIR@/applications/
+        res_configlets.path = $$res.path/configlets
 
         INSTALLS += res 
         INSTALLS += res_os
