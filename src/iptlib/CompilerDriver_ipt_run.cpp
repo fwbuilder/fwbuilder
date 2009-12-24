@@ -276,6 +276,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
             {
                 Preprocessor* prep = new Preprocessor(
                     objdb , fw, ipv6_policy);
+                prep->setSingleRuleCompileMode(single_rule_id);
                 if (inTestMode()) prep->setTestMode();
                 if (inEmbeddedMode()) prep->setEmbeddedMode();
                 prep->compile();

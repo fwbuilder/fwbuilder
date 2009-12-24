@@ -134,16 +134,16 @@ int main(int argc, char **argv)
 	/* load the data file */
 	UpgradePredicate upgrade_predicate; 
 
-	cout << " *** Loading data ...";
-        cout << flush;
+	cerr << " *** Loading data ...";
+        cerr << flush;
 
         objdb->setReadOnly( false );
         objdb->load( filename, &upgrade_predicate, librespath);
         objdb->setFileName(filename);
         objdb->reIndex();
 
-	cout << " done\n";
-        cout << flush;
+	cerr << " done\n";
+        cerr << flush;
 
         FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
         if (slib && slib->isReadOnly()) slib->setReadOnly(false);
