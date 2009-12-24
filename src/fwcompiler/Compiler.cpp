@@ -214,6 +214,7 @@ void Compiler::setSingleRuleCompileMode(const string &rule_id)
         if (rule)
         {
             single_rule_mode = true;
+            single_rule_compile_rule = rule;
             single_rule_position = rule->getPosition();
             single_rule_ruleset_name = rule->getParent()->getName();
         }

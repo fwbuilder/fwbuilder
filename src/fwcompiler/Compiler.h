@@ -227,6 +227,7 @@ protected:
         bool single_rule_mode;
         std::string single_rule_ruleset_name;
         int single_rule_position;
+        libfwbuilder::Rule *single_rule_compile_rule;
 
 	fwcompiler::OSConfigurator *osconfigurator;
 	libfwbuilder::FWObjectDatabase *dbcopy;

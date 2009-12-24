@@ -45,7 +45,8 @@ namespace fwcompiler {
 
     class Preprocessor : public Compiler {
 
-        bool isUsedByThisFirewall(libfwbuilder::FWObject *obj);
+        void findMultiAddressObjectsUsedInRules(
+            libfwbuilder::FWObject *top, std::set<libfwbuilder::FWObject*> *resset);
 
 public:
 	virtual std::string myPlatformName();
@@ -53,13 +54,6 @@ public:
 	virtual ~Preprocessor();
 	Preprocessor(libfwbuilder::FWObjectDatabase *_db,
                      libfwbuilder::Firewall *fw, bool ipv6_policy);
-
-        /**
-         * converts  MultiAddress objects cobnfigured to be
-         * expanded at compile time. Will add other similar object
-         * types in the future.
-         */
-        void convertObjectsRecursively(libfwbuilder::FWObject *obj);
 
         /**
          * converts a single object. convertObjects calls this method for every

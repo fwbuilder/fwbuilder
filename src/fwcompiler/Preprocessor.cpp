@@ -60,7 +60,7 @@ Preprocessor::Preprocessor(FWObjectDatabase *_db,
 void Preprocessor::convertObject(FWObject *obj)
 {
     MultiAddress *adt = MultiAddress::cast(obj);
-    if (adt!=NULL && adt->isCompileTime() && isUsedByThisFirewall(obj))
+    if (adt!=NULL && adt->isCompileTime())
     {
         try
         {
@@ -72,82 +72,64 @@ void Preprocessor::convertObject(FWObject *obj)
     }
 }
 
-/*
- * Check if object obj is used in any rules of the firewall we compile.
- * Tricky part: object might be used by a group and then the group used
- * in a rule
- */
-bool Preprocessor::isUsedByThisFirewall(FWObject *obj)
-{
-    int marker = obj->getInt(".convert_objects_recursion_breaker");
-    if (marker == infinite_recursion_breaker) return false;
-    obj->setInt(".convert_objects_recursion_breaker",
-                infinite_recursion_breaker);
-
-    set<FWObject*> resset;
-    obj->getRoot()->findWhereObjectIsUsed(obj, obj->getRoot(), resset);
-
-    set<FWObject*>::iterator i;
-    for (i=resset.begin(); i!=resset.end(); ++i)
-    {
-        FWObject *p;
-        if (FWReference::cast(*i))
-            p = (*i)->getParent();  // NB! We need parent of this ref.
-        else
-            p = *i;
-
-        if (obj->getId() == p->getId()) continue;
-
-        if (RuleElement::cast(p)!=NULL || Rule::cast(p)!=NULL)
-        {
-            FWObject *q = p;
-            while (q && !Firewall::isA(q)) q = q->getParent();
-            if (q && q->getId()==fw->getId()) return true;
-            continue;
-        }
-
-        if (ObjectGroup::isA(p) || ServiceGroup::isA(p) || IntervalGroup::isA(p))
-        {
-            // object (*i) is used in a group. Check if the group is
-            // used in any rule. Note that this recursive call back to
-            // isUsedByThisFirewall() also covers the case where group
-            // <p> might belong to another group which is used in a
-            // rule of the firewall (and so on, recursively, if necessary).
-            if (isUsedByThisFirewall(p)) return true;
-            // but if this group is not used in any rule of this firewall
-            // we should keep scanning objects in resset
-            continue;
-        }
-
-    }
-    return false;
-}
-
-void Preprocessor::convertObjectsRecursively(FWObject *o)
-{
-    infinite_recursion_breaker++;
-    for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
-    {
-        FWObject *obj = *i;
-        convertObject(obj);
-// we only need to convert objects in system groups where objects
-// represent themselves (rather than by reference)
-// All other objects that have children must be ignored, these are
-// hosts, firewalls etc. Objects DNSName and MultiAddress can only
-// be in groups.
-        if (Group::cast(obj)!=NULL) convertObjectsRecursively(obj);
-    }
-}
-
 int  Preprocessor::prolog()
 {
     return 0;
 }
 
+void Preprocessor::findMultiAddressObjectsUsedInRules(FWObject *top,
+                                                      set<FWObject*> *resset)
+{
+    if (top->getInt(".recursion_breaker") == infinite_recursion_breaker)
+        return;
+    top->setInt(".recursion_breaker", infinite_recursion_breaker);
+
+    for (FWObject::iterator i=top->begin(); i!=top->end(); ++i)
+    {
+        FWObject *obj = *i;
+        FWReference *ref = FWReference::cast(obj);
+        if (ref == NULL)
+            findMultiAddressObjectsUsedInRules(obj, resset);
+        else
+        {
+            FWObject *obj_ptr = FWReference::getObject(obj);
+            if (MultiAddress::cast(obj_ptr))
+                resset->insert(obj_ptr);
+            else
+            {
+                // Note that MultiAddress inherits ObjectGroup
+                if (Group::cast(obj_ptr))
+                    findMultiAddressObjectsUsedInRules(obj_ptr, resset);
+            }
+        }
+    }
+}
+
 void Preprocessor::compile()
 {
+    // find all MultiAddress objects used in rules of this firewall,
+    // directly or as group members. A bit of optimisation:
+    // MultiAddress objects (DNSName and AddressTable) can not be used
+    // in netowrk zone of interfaces and rule actions.
+
+    // Note: fw belongs to the original object tree rather than dbcopy
+    infinite_recursion_breaker++;
+    set<FWObject*> resset;
+    if (single_rule_mode)
+    {
+        FWObject *rule_copy = dbcopy->findInIndex(single_rule_compile_rule->getId());
+        findMultiAddressObjectsUsedInRules(rule_copy, &resset);
+    } else
+    {
+        FWObject *fwcopy = dbcopy->findInIndex(fw->getId());
+        findMultiAddressObjectsUsedInRules(fwcopy, &resset);
+    }
+    for (set<FWObject*>::iterator it=resset.begin(); it!=resset.end(); ++it)
+    {
+        convertObject(*it);
+    }
 /* resolving MultiAddress objects */
-    convertObjectsRecursively(dbcopy);
+//    convertObjectsRecursively(dbcopy);
 }
 
 void Preprocessor::epilog()

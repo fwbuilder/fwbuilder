@@ -1,3 +1,19 @@
+2009-12-24  vadim  <vadim@vk.crocodile.org>
+
+	* Preprocessor.cpp (Preprocessor::findMultiAddressObjectsUsedInRules):
+	Eliminated bottleneck that caused noticeable delay in
+	Preprocessor::compile(). Old code would find all MultiAddress
+	objects in the tree and then check if they were used by the
+	firewall we are compiling. This caused multiple tree walks. New
+	approach is to walk all the rules of the firewall, looking for
+	objects used in the rules. If the object is MultiAddress, it is
+	pushed to the list, if it is a group, the group members are
+	scanned in turn. Groups are scanned recursively. This way we first
+	build a list of MultiAddress objects used in rules by doing single
+	scan of the subtree rather than multiple scans of the whole tree.
+	In addition, in single rule compile mode we scan only single
+	rule rather than all rules of the firewall.
+
 2009-12-11  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/fwbuilder/Group.h (libfwbuilder): Added method
