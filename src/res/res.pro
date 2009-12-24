@@ -11,7 +11,6 @@ win32 {
   QMAKE_RUN_CC  = echo
   QMAKE_RUN_CXX = echo
   QMAKE_LINK    = echo
-  QMAKE_COPY_DIR = C:\Windows\System32\xcopy /I /Y /S /Q
 }
 
 !win32 {
@@ -30,16 +29,8 @@ res.files = objects_init.xml templates.xml resources.xml
 res_os.files = os/*.xml
 res_platform.files = platform/*.xml
 res_help_en_US.files = help/en_US/*.html help/en_US/*.png help/en_US/*.jpg
+res_configlets.files = configlets/*
 
-
-unix {
-	res_configlets.files = $$system(find configlets/*  -path \'*/.svn*\' -prune -o -type d -print)
-}
-
-win32 {
-	res_configlets.files = configlets/*
-#	res_configlets.files = $$system(dir /B configlets)
-}
 
 INSTALLS -= target
 INSTALLS += res 
