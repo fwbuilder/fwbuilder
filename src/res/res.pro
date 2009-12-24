@@ -30,22 +30,10 @@ res_os.files = os/*.xml
 res_platform.files = platform/*.xml
 res_help_en_US.files = help/en_US/*.html help/en_US/*.png help/en_US/*.jpg
 
-#dirs = $$system("ls configlets")
-#for(dir, dirs) {
-#	message($${dir})
-#	$${configlet$${dir}}.files = $$system("ls configlets/$$dir/*")
-#	message($$configlet$$dir.files)
-#	$${configlet$${dir}}.path = $$PREFIX/resources/configlets/$$dir
-#	message($$configlet$${dir}.path)
-#	configlet$${dir}.path = $$PREFIX/resources/configlets/$$dir
-#	configlet\$\$\{dir\}.path = $$PREFIX/resources/configlets/$$dir
-#	INSTALLS += configlet$${dir}
-#}
-
-res_configlets.path = $$PREFIX/resources/configlets
-unix:res_configlets.commands = tar cf - --exclude .svn {*.xml,os/*.xml,platform/*.xml,help,configlets} | \
-  						  tar -C  $${PREFIX}/resources/ -xf -
-
+unix {
+	res_configlets.path = $$res.path/configlets
+	res_configlets.files = $$system(find configlets/*  -path \'*/.svn*\' -prune -o -type d -print)
+}
 
 INSTALLS -= target
 INSTALLS += res 
