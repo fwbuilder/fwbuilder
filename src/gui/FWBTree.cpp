@@ -98,243 +98,264 @@ const char* standardFolders[] = {
     NULL
 };
 
-map<string,bool> standardIDs;
+QSet<QString>          FWBTree::standardIDs;
+QMap<QString,QString>  FWBTree::systemGroupTypes;
+QMap<QString,QString>  FWBTree::systemGroupNames;
+QMap<QString,QString>  FWBTree::systemGroupPaths;
+
+QMap<QString,bool>     FWBTree::copyMenuState;
+QMap<QString,bool>     FWBTree::cutMenuState;
+QMap<QString,bool>     FWBTree::pasteMenuState;
+QMap<QString,bool>     FWBTree::deleteMenuState;
+
 
 FWBTree::FWBTree()
 {
-    systemGroupPaths[Library::TYPENAME]       = "";
+    init_statics();
+}
 
-    systemGroupPaths[IPv4::TYPENAME]          = "Objects/Addresses";
-    systemGroupPaths[IPv6::TYPENAME]          = "Objects/Addresses";
-    systemGroupPaths[DNSName::TYPENAME]       = "Objects/DNS Names";
-    systemGroupPaths[AddressTable::TYPENAME]  = "Objects/Address Tables";
-    systemGroupPaths[AddressRange::TYPENAME]  = "Objects/Address Ranges";
-    systemGroupPaths[ObjectGroup::TYPENAME]   = "Objects/Groups";
-    systemGroupPaths[Host::TYPENAME]          = "Objects/Hosts";
-    systemGroupPaths[Network::TYPENAME]       = "Objects/Networks";
-    systemGroupPaths[NetworkIPv6::TYPENAME]   = "Objects/Networks";
+void FWBTree::init_statics()
+{
+    if (systemGroupPaths.size() == 0)
+    {
+        systemGroupPaths[Library::TYPENAME]       = "";
 
-    systemGroupPaths[ServiceGroup::TYPENAME]  = "Services/Groups";
-    systemGroupPaths[CustomService::TYPENAME] = "Services/Custom";
-    systemGroupPaths[IPService::TYPENAME]     = "Services/IP";
-    systemGroupPaths[ICMPService::TYPENAME]   = "Services/ICMP";
-    systemGroupPaths[ICMP6Service::TYPENAME]  = "Services/ICMP";
-    systemGroupPaths[TCPService::TYPENAME]    = "Services/TCP";
-    systemGroupPaths[UDPService::TYPENAME]    = "Services/UDP";
-    systemGroupPaths[UserService::TYPENAME]   = "Services/Users";
+        systemGroupPaths[IPv4::TYPENAME]          = "Objects/Addresses";
+        systemGroupPaths[IPv6::TYPENAME]          = "Objects/Addresses";
+        systemGroupPaths[DNSName::TYPENAME]       = "Objects/DNS Names";
+        systemGroupPaths[AddressTable::TYPENAME]  = "Objects/Address Tables";
+        systemGroupPaths[AddressRange::TYPENAME]  = "Objects/Address Ranges";
+        systemGroupPaths[ObjectGroup::TYPENAME]   = "Objects/Groups";
+        systemGroupPaths[Host::TYPENAME]          = "Objects/Hosts";
+        systemGroupPaths[Network::TYPENAME]       = "Objects/Networks";
+        systemGroupPaths[NetworkIPv6::TYPENAME]   = "Objects/Networks";
 
-    systemGroupPaths[TagService::TYPENAME]    = "Services/TagServices";
+        systemGroupPaths[ServiceGroup::TYPENAME]  = "Services/Groups";
+        systemGroupPaths[CustomService::TYPENAME] = "Services/Custom";
+        systemGroupPaths[IPService::TYPENAME]     = "Services/IP";
+        systemGroupPaths[ICMPService::TYPENAME]   = "Services/ICMP";
+        systemGroupPaths[ICMP6Service::TYPENAME]  = "Services/ICMP";
+        systemGroupPaths[TCPService::TYPENAME]    = "Services/TCP";
+        systemGroupPaths[UDPService::TYPENAME]    = "Services/UDP";
+        systemGroupPaths[UserService::TYPENAME]   = "Services/Users";
 
-    systemGroupPaths[Firewall::TYPENAME]      = "Firewalls";
-    systemGroupPaths[Cluster::TYPENAME]       = "Clusters";
+        systemGroupPaths[TagService::TYPENAME]    = "Services/TagServices";
 
-    systemGroupPaths[Interval::TYPENAME]      = "Time";
+        systemGroupPaths[Firewall::TYPENAME]      = "Firewalls";
+        systemGroupPaths[Cluster::TYPENAME]       = "Clusters";
 
-
-
-    systemGroupTypes[Firewall::TYPENAME]=      ObjectGroup::TYPENAME;
-    systemGroupNames[Firewall::TYPENAME]=      "Firewalls"    ;
-
-    systemGroupTypes[Cluster::TYPENAME]=       ObjectGroup::TYPENAME;
-    systemGroupNames[Cluster::TYPENAME]=       "Clusters";
-
-    systemGroupTypes[Host::TYPENAME]=          ObjectGroup::TYPENAME;
-    systemGroupNames[Host::TYPENAME]=          "Hosts"          ;
-
-    systemGroupTypes[Network::TYPENAME]=       ObjectGroup::TYPENAME;
-    systemGroupNames[Network::TYPENAME]=       "Networks"       ;
-
-    systemGroupTypes[NetworkIPv6::TYPENAME]=   ObjectGroup::TYPENAME;
-    systemGroupNames[NetworkIPv6::TYPENAME]=   "Networks"       ;
-
-    systemGroupTypes[IPv4::TYPENAME]=          ObjectGroup::TYPENAME;
-    systemGroupNames[IPv4::TYPENAME]=          "Addresses"      ;
-
-    systemGroupTypes[IPv6::TYPENAME]=          ObjectGroup::TYPENAME;
-    systemGroupNames[IPv6::TYPENAME]=          "Addresses"      ;
-
-    systemGroupTypes[DNSName::TYPENAME]=       ObjectGroup::TYPENAME;
-    systemGroupNames[DNSName::TYPENAME]=       "DNS Names"      ;
-
-    systemGroupTypes[AddressTable::TYPENAME]=  ObjectGroup::TYPENAME;
-    systemGroupNames[AddressTable::TYPENAME]=  "Address Tables"      ;
-
-    systemGroupTypes[AddressRange::TYPENAME]=  ObjectGroup::TYPENAME;
-    systemGroupNames[AddressRange::TYPENAME]=  "Address Ranges" ;
-
-    systemGroupTypes[ObjectGroup::TYPENAME]=   ObjectGroup::TYPENAME;
-    systemGroupNames[ObjectGroup::TYPENAME]=   "Groups"         ;
-
-    systemGroupTypes[CustomService::TYPENAME]= ServiceGroup::TYPENAME;
-    systemGroupNames[CustomService::TYPENAME]= "Custom";
-
-    systemGroupTypes[IPService::TYPENAME]=     ServiceGroup::TYPENAME;
-    systemGroupNames[IPService::TYPENAME]=     "IP"            ;
-
-    systemGroupTypes[ICMPService::TYPENAME]=   ServiceGroup::TYPENAME;
-    systemGroupNames[ICMPService::TYPENAME]=   "ICMP"          ;
-
-    systemGroupTypes[ICMP6Service::TYPENAME]=  ServiceGroup::TYPENAME;
-    systemGroupNames[ICMP6Service::TYPENAME]=  "ICMP"          ;
-
-    systemGroupTypes[TCPService::TYPENAME]=    ServiceGroup::TYPENAME;
-    systemGroupNames[TCPService::TYPENAME]=    "TCP"           ;
-
-    systemGroupTypes[UDPService::TYPENAME]=    ServiceGroup::TYPENAME;
-    systemGroupNames[UDPService::TYPENAME]=    "UDP"           ;
-
-    systemGroupTypes[TagService::TYPENAME]=    ServiceGroup::TYPENAME;
-    systemGroupNames[TagService::TYPENAME]=    "TagService"    ;
-
-    systemGroupTypes[UserService::TYPENAME]=   ServiceGroup::TYPENAME;
-    systemGroupNames[UserService::TYPENAME]=   "Users"    ;
-
-    systemGroupTypes[ServiceGroup::TYPENAME]=  ServiceGroup::TYPENAME;
-    systemGroupNames[ServiceGroup::TYPENAME]=  "Groups"        ;
-
-    systemGroupTypes[Interval::TYPENAME]=      IntervalGroup::TYPENAME;
-    systemGroupNames[Interval::TYPENAME]=      "Time"         ;
-
-    systemGroupTypes[Interface::TYPENAME]=     "";
-    systemGroupNames[Interface::TYPENAME]=     "";
-
-    systemGroupTypes[Library::TYPENAME]=      FWObjectDatabase::TYPENAME;
-    systemGroupNames[Library::TYPENAME]=      "FWObjectDatabase";
-
-    standardIDs["syslib000"]=true;
-    standardIDs["syslib001"]=true;
-
-    standardIDs["sysid0"]   =true;
-    standardIDs["sysid1"]   =true;
-    standardIDs["sysid2"]   =true;
-    standardIDs["sysid99"]  =true;
-
-    standardIDs["stdid01"]  =true;
-    standardIDs["stdid01_1"]=true;
-    standardIDs["stdid02"]  =true;
-    standardIDs["stdid02_1"]=true;
-    standardIDs["stdid03"]  =true;
-    standardIDs["stdid03_1"]=true;
-    standardIDs["stdid04"]  =true;
-    standardIDs["stdid04_1"]=true;
-    standardIDs["stdid05"]  =true;
-    standardIDs["stdid05_1"]=true;
-    standardIDs["stdid06"]  =true;
-    standardIDs["stdid06_1"]=true;
-    standardIDs["stdid07"]  =true;
-    standardIDs["stdid07_1"]=true;
-    standardIDs["stdid08"]  =true;
-    standardIDs["stdid08_1"]=true;
-    standardIDs["stdid09"]  =true;
-    standardIDs["stdid09_1"]=true;
-    standardIDs["stdid10"]  =true;
-    standardIDs["stdid10_1"]=true;
-    standardIDs["stdid11"]  =true;
-    standardIDs["stdid11_1"]=true;
-    standardIDs["stdid12"]  =true;
-    standardIDs["stdid12_1"]=true;
-    standardIDs["stdid13"]  =true;
-    standardIDs["stdid13_1"]=true;
-    standardIDs["stdid14"]  =true;
-    standardIDs["stdid14_1"]=true;
-    standardIDs["stdid15"]  =true;
-    standardIDs["stdid15_1"]=true;
-    standardIDs["stdid16"]  =true;
-    standardIDs["stdid16_1"]=true;
-    standardIDs["stdid17"]  =true;
-    standardIDs["stdid17_1"]=true;
-    standardIDs["stdid18"]  =true;
-    standardIDs["stdid18_1"]=true;
-    standardIDs["stdid19"]  =true;
-    standardIDs["stdid19_1"]=true;
+        systemGroupPaths[Interval::TYPENAME]      = "Time";
 
 
-    copyMenuState[""] = false;
-    copyMenuState["Firewalls"] = false;
-    copyMenuState["Clusters"] = false;
-    copyMenuState["Objects"] = false;
-    copyMenuState["Objects/Addresses"] = false;
-    copyMenuState["Objects/DNS Names"] = false;
-    copyMenuState["Objects/Address Tables"] = false;
-    copyMenuState["Objects/Address Ranges"] = false;
-    copyMenuState["Objects/Groups"] = false;
-    copyMenuState["Objects/Hosts"] = false;
-    copyMenuState["Objects/Networks"] = false;
-    copyMenuState["Services"] = false;
-    copyMenuState["Services/Custom"] = false;
-    copyMenuState["Services/Groups"] = false;
-    copyMenuState["Services/ICMP"] = false;
-    copyMenuState["Services/IP"] = false;
-    copyMenuState["Services/TCP"] = false;
-    copyMenuState["Services/UDP"] = false;
-    copyMenuState["Services/TagServices"] = false;
-    copyMenuState["Time"] = false;
 
-    cutMenuState[""] = true;
-    cutMenuState["Firewalls"] = false;
-    cutMenuState["Clusters"] = false;
-    cutMenuState["Objects"] = false;
-    cutMenuState["Objects/Addresses"] = false;
-    cutMenuState["Objects/DNS Names"] = false;
-    cutMenuState["Objects/Address Tables"] = false;
-    cutMenuState["Objects/Address Ranges"] = false;
-    cutMenuState["Objects/Groups"] = false;
-    cutMenuState["Objects/Hosts"] = false;
-    cutMenuState["Objects/Networks"] = false;
-    cutMenuState["Services"] = false;
-    cutMenuState["Services/Custom"] = false;
-    cutMenuState["Services/Groups"] = false;
-    cutMenuState["Services/ICMP"] = false;
-    cutMenuState["Services/IP"] = false;
-    cutMenuState["Services/TCP"] = false;
-    cutMenuState["Services/UDP"] = false;
-    cutMenuState["Services/Users"] = false;
-    cutMenuState["Services/TagServices"] = false;
-    cutMenuState["Time"] = false;
+        systemGroupTypes[Firewall::TYPENAME]=      ObjectGroup::TYPENAME;
+        systemGroupNames[Firewall::TYPENAME]=      "Firewalls"    ;
 
-    pasteMenuState[""] = false;
-    pasteMenuState["Firewalls"] = true;
-    pasteMenuState["Clusters"] = true;
-    pasteMenuState["Objects"] = false;
-    pasteMenuState["Objects/Addresses"] = true;
-    pasteMenuState["Objects/DNS Names"] = true;
-    pasteMenuState["Objects/Address Tables"] = true;
-    pasteMenuState["Objects/Address Ranges"] = true;
-    pasteMenuState["Objects/Groups"] = true;
-    pasteMenuState["Objects/Hosts"] = true;
-    pasteMenuState["Objects/Networks"] = true;
-    pasteMenuState["Services"] = false;
-    pasteMenuState["Services/Custom"] = true;
-    pasteMenuState["Services/Groups"] = true;
-    pasteMenuState["Services/ICMP"] = true;
-    pasteMenuState["Services/IP"] = true;
-    pasteMenuState["Services/TCP"] = true;
-    pasteMenuState["Services/UDP"] = true;
-    pasteMenuState["Services/Users"] = true;
-    pasteMenuState["Services/TagServices"] = true;
-    pasteMenuState["Time"] = true;
+        systemGroupTypes[Cluster::TYPENAME]=       ObjectGroup::TYPENAME;
+        systemGroupNames[Cluster::TYPENAME]=       "Clusters";
 
-    deleteMenuState[""] = true;
-    deleteMenuState["Firewalls"] = false;
-    deleteMenuState["Clusters"] = false;
-    deleteMenuState["Objects"] = false;
-    deleteMenuState["Objects/Addresses"] = false;
-    deleteMenuState["Objects/DNS Names"] = false;
-    deleteMenuState["Objects/Address Tables"] = false;
-    deleteMenuState["Objects/Address Ranges"] = false;
-    deleteMenuState["Objects/Groups"] = false;
-    deleteMenuState["Objects/Hosts"] = false;
-    deleteMenuState["Objects/Networks"] = false;
-    deleteMenuState["Services"] = false;
-    deleteMenuState["Services/Custom"] = false;
-    deleteMenuState["Services/Groups"] = false;
-    deleteMenuState["Services/ICMP"] = false;
-    deleteMenuState["Services/IP"] = false;
-    deleteMenuState["Services/TCP"] = false;
-    deleteMenuState["Services/UDP"] = false;
-    deleteMenuState["Services/Users"] = false;
-    deleteMenuState["Services/TagServices"] = false;
-    deleteMenuState["Time"] = false;
+        systemGroupTypes[Host::TYPENAME]=          ObjectGroup::TYPENAME;
+        systemGroupNames[Host::TYPENAME]=          "Hosts"          ;
+
+        systemGroupTypes[Network::TYPENAME]=       ObjectGroup::TYPENAME;
+        systemGroupNames[Network::TYPENAME]=       "Networks"       ;
+
+        systemGroupTypes[NetworkIPv6::TYPENAME]=   ObjectGroup::TYPENAME;
+        systemGroupNames[NetworkIPv6::TYPENAME]=   "Networks"       ;
+
+        systemGroupTypes[IPv4::TYPENAME]=          ObjectGroup::TYPENAME;
+        systemGroupNames[IPv4::TYPENAME]=          "Addresses"      ;
+
+        systemGroupTypes[IPv6::TYPENAME]=          ObjectGroup::TYPENAME;
+        systemGroupNames[IPv6::TYPENAME]=          "Addresses"      ;
+
+        systemGroupTypes[DNSName::TYPENAME]=       ObjectGroup::TYPENAME;
+        systemGroupNames[DNSName::TYPENAME]=       "DNS Names"      ;
+
+        systemGroupTypes[AddressTable::TYPENAME]=  ObjectGroup::TYPENAME;
+        systemGroupNames[AddressTable::TYPENAME]=  "Address Tables"      ;
+
+        systemGroupTypes[AddressRange::TYPENAME]=  ObjectGroup::TYPENAME;
+        systemGroupNames[AddressRange::TYPENAME]=  "Address Ranges" ;
+
+        systemGroupTypes[ObjectGroup::TYPENAME]=   ObjectGroup::TYPENAME;
+        systemGroupNames[ObjectGroup::TYPENAME]=   "Groups"         ;
+
+        systemGroupTypes[CustomService::TYPENAME]= ServiceGroup::TYPENAME;
+        systemGroupNames[CustomService::TYPENAME]= "Custom";
+
+        systemGroupTypes[IPService::TYPENAME]=     ServiceGroup::TYPENAME;
+        systemGroupNames[IPService::TYPENAME]=     "IP"            ;
+
+        systemGroupTypes[ICMPService::TYPENAME]=   ServiceGroup::TYPENAME;
+        systemGroupNames[ICMPService::TYPENAME]=   "ICMP"          ;
+
+        systemGroupTypes[ICMP6Service::TYPENAME]=  ServiceGroup::TYPENAME;
+        systemGroupNames[ICMP6Service::TYPENAME]=  "ICMP"          ;
+
+        systemGroupTypes[TCPService::TYPENAME]=    ServiceGroup::TYPENAME;
+        systemGroupNames[TCPService::TYPENAME]=    "TCP"           ;
+
+        systemGroupTypes[UDPService::TYPENAME]=    ServiceGroup::TYPENAME;
+        systemGroupNames[UDPService::TYPENAME]=    "UDP"           ;
+
+        systemGroupTypes[TagService::TYPENAME]=    ServiceGroup::TYPENAME;
+        systemGroupNames[TagService::TYPENAME]=    "TagService"    ;
+
+        systemGroupTypes[UserService::TYPENAME]=   ServiceGroup::TYPENAME;
+        systemGroupNames[UserService::TYPENAME]=   "Users"    ;
+
+        systemGroupTypes[ServiceGroup::TYPENAME]=  ServiceGroup::TYPENAME;
+        systemGroupNames[ServiceGroup::TYPENAME]=  "Groups"        ;
+
+        systemGroupTypes[Interval::TYPENAME]=      IntervalGroup::TYPENAME;
+        systemGroupNames[Interval::TYPENAME]=      "Time"         ;
+
+        systemGroupTypes[Interface::TYPENAME]=     "";
+        systemGroupNames[Interface::TYPENAME]=     "";
+
+        systemGroupTypes[Library::TYPENAME]=      FWObjectDatabase::TYPENAME;
+        systemGroupNames[Library::TYPENAME]=      "FWObjectDatabase";
+
+        standardIDs.insert("syslib000");
+        standardIDs.insert("syslib001");
+
+        standardIDs.insert("sysid0");
+        standardIDs.insert("sysid1");
+        standardIDs.insert("sysid2");
+        standardIDs.insert("sysid99");
+
+        standardIDs.insert("stdid01");
+        standardIDs.insert("stdid01_1");
+        standardIDs.insert("stdid02");
+        standardIDs.insert("stdid02_1");
+        standardIDs.insert("stdid03");
+        standardIDs.insert("stdid03_1");
+        standardIDs.insert("stdid04");
+        standardIDs.insert("stdid04_1");
+        standardIDs.insert("stdid05");
+        standardIDs.insert("stdid05_1");
+        standardIDs.insert("stdid06");
+        standardIDs.insert("stdid06_1");
+        standardIDs.insert("stdid07");
+        standardIDs.insert("stdid07_1");
+        standardIDs.insert("stdid08");
+        standardIDs.insert("stdid08_1");
+        standardIDs.insert("stdid09");
+        standardIDs.insert("stdid09_1");
+        standardIDs.insert("stdid10");
+        standardIDs.insert("stdid10_1");
+        standardIDs.insert("stdid11");
+        standardIDs.insert("stdid11_1");
+        standardIDs.insert("stdid12");
+        standardIDs.insert("stdid12_1");
+        standardIDs.insert("stdid13");
+        standardIDs.insert("stdid13_1");
+        standardIDs.insert("stdid14");
+        standardIDs.insert("stdid14_1");
+        standardIDs.insert("stdid15");
+        standardIDs.insert("stdid15_1");
+        standardIDs.insert("stdid16");
+        standardIDs.insert("stdid16_1");
+        standardIDs.insert("stdid17");
+        standardIDs.insert("stdid17_1");
+        standardIDs.insert("stdid18");
+        standardIDs.insert("stdid18_1");
+        standardIDs.insert("stdid19");
+        standardIDs.insert("stdid19_1");
+
+        // these can not be replaced with set<QString> because they
+        // are effectively three-state: if the key is missing in the
+        // map, the result is assumed to be "true", otherwise it is
+        // either "true" or "false" depending on the map entry.
+        copyMenuState[""] = false;
+        copyMenuState["Firewalls"] = false;
+        copyMenuState["Clusters"] = false;
+        copyMenuState["Objects"] = false;
+        copyMenuState["Objects/Addresses"] = false;
+        copyMenuState["Objects/DNS Names"] = false;
+        copyMenuState["Objects/Address Tables"] = false;
+        copyMenuState["Objects/Address Ranges"] = false;
+        copyMenuState["Objects/Groups"] = false;
+        copyMenuState["Objects/Hosts"] = false;
+        copyMenuState["Objects/Networks"] = false;
+        copyMenuState["Services"] = false;
+        copyMenuState["Services/Custom"] = false;
+        copyMenuState["Services/Groups"] = false;
+        copyMenuState["Services/ICMP"] = false;
+        copyMenuState["Services/IP"] = false;
+        copyMenuState["Services/TCP"] = false;
+        copyMenuState["Services/UDP"] = false;
+        copyMenuState["Services/TagServices"] = false;
+        copyMenuState["Time"] = false;
+
+        cutMenuState[""] = true;
+        cutMenuState["Firewalls"] = false;
+        cutMenuState["Clusters"] = false;
+        cutMenuState["Objects"] = false;
+        cutMenuState["Objects/Addresses"] = false;
+        cutMenuState["Objects/DNS Names"] = false;
+        cutMenuState["Objects/Address Tables"] = false;
+        cutMenuState["Objects/Address Ranges"] = false;
+        cutMenuState["Objects/Groups"] = false;
+        cutMenuState["Objects/Hosts"] = false;
+        cutMenuState["Objects/Networks"] = false;
+        cutMenuState["Services"] = false;
+        cutMenuState["Services/Custom"] = false;
+        cutMenuState["Services/Groups"] = false;
+        cutMenuState["Services/ICMP"] = false;
+        cutMenuState["Services/IP"] = false;
+        cutMenuState["Services/TCP"] = false;
+        cutMenuState["Services/UDP"] = false;
+        cutMenuState["Services/Users"] = false;
+        cutMenuState["Services/TagServices"] = false;
+        cutMenuState["Time"] = false;
+
+        pasteMenuState[""] = false;
+        pasteMenuState["Firewalls"] = true;
+        pasteMenuState["Clusters"] = true;
+        pasteMenuState["Objects"] = false;
+        pasteMenuState["Objects/Addresses"] = true;
+        pasteMenuState["Objects/DNS Names"] = true;
+        pasteMenuState["Objects/Address Tables"] = true;
+        pasteMenuState["Objects/Address Ranges"] = true;
+        pasteMenuState["Objects/Groups"] = true;
+        pasteMenuState["Objects/Hosts"] = true;
+        pasteMenuState["Objects/Networks"] = true;
+        pasteMenuState["Services"] = false;
+        pasteMenuState["Services/Custom"] = true;
+        pasteMenuState["Services/Groups"] = true;
+        pasteMenuState["Services/ICMP"] = true;
+        pasteMenuState["Services/IP"] = true;
+        pasteMenuState["Services/TCP"] = true;
+        pasteMenuState["Services/UDP"] = true;
+        pasteMenuState["Services/Users"] = true;
+        pasteMenuState["Services/TagServices"] = true;
+        pasteMenuState["Time"] = true;
+
+        deleteMenuState[""] = true;
+        deleteMenuState["Firewalls"] = false;
+        deleteMenuState["Clusters"] = false;
+        deleteMenuState["Objects"] = false;
+        deleteMenuState["Objects/Addresses"] = false;
+        deleteMenuState["Objects/DNS Names"] = false;
+        deleteMenuState["Objects/Address Tables"] = false;
+        deleteMenuState["Objects/Address Ranges"] = false;
+        deleteMenuState["Objects/Groups"] = false;
+        deleteMenuState["Objects/Hosts"] = false;
+        deleteMenuState["Objects/Networks"] = false;
+        deleteMenuState["Services"] = false;
+        deleteMenuState["Services/Custom"] = false;
+        deleteMenuState["Services/Groups"] = false;
+        deleteMenuState["Services/ICMP"] = false;
+        deleteMenuState["Services/IP"] = false;
+        deleteMenuState["Services/TCP"] = false;
+        deleteMenuState["Services/UDP"] = false;
+        deleteMenuState["Services/Users"] = false;
+        deleteMenuState["Services/TagServices"] = false;
+        deleteMenuState["Time"] = false;
+
+    }
 }
 
 /**
@@ -370,7 +391,7 @@ bool FWBTree::isStandardFolder(FWObject *obj)
 
 bool FWBTree::isStandardId(FWObject *obj)
 {
-    return standardIDs[ FWObjectDatabase::getStringId(obj->getId()).c_str() ];
+    return standardIDs.contains(FWObjectDatabase::getStringId(obj->getId()).c_str());
 }
 
 bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj)

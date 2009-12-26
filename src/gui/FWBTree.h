@@ -26,29 +26,34 @@
 #ifndef FWBTREE_H
 #define FWBTREE_H
 
-#include <map>
 
 #include <QString>
 #include <QStringList>
+#include <QMap>
+#include <QSet>
+
 
 namespace libfwbuilder {
     class FWObject;
     class FWObjectDatabase;
 };
 
-class QPixmap;
 
 class FWBTree
 {
 
-    std::map<QString,QString>  systemGroupTypes;
-    std::map<QString,QString>  systemGroupNames;
-    std::map<QString,QString>  systemGroupPaths;
-    std::map<QString,bool>     copyMenuState;
-    std::map<QString,bool>     cutMenuState;
-    std::map<QString,bool>     pasteMenuState;
-    std::map<QString,bool>     deleteMenuState;
+    static QMap<QString,QString>  systemGroupTypes;
+    static QMap<QString,QString>  systemGroupNames;
+    static QMap<QString,QString>  systemGroupPaths;
+    static QSet<QString>          standardIDs;
 
+    static QMap<QString,bool>     copyMenuState;
+    static QMap<QString,bool>     cutMenuState;
+    static QMap<QString,bool>     pasteMenuState;
+    static QMap<QString,bool>     deleteMenuState;
+
+    void init_statics();
+    
  public:
 
     FWBTree();
