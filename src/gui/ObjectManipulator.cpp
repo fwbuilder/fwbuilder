@@ -871,7 +871,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
              * pasted. The problem with this is that there was no
              * indication why Paste operation was not allowed. Since
              * we call validateForPaste during actual Paste operation
-             * anyway, so is more user friendly to let them try and
+             * anyway, it is more user friendly to let them try and
              * actually see the error if it fails.
              */
             vector<std::pair<int,ProjectPanel*> >::iterator i;
@@ -886,7 +886,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                 }
                 QString s3 = obj->getTypeName().c_str();
                 QString err;
-                bool validated = validateForPaste(obj, co, err);
+                bool validated = FWBTree().validateForInsertion(obj, co, err);
                 pasteMenuItem = pasteMenuItem && validated;
             }
         }
@@ -987,58 +987,6 @@ void ObjectManipulator::extractFirewallsFromGroup(ObjectGroup *gr,
        if (Firewall::cast(*i)) fo.insert(Firewall::cast(*i));
 }
 
-bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
-                                         QString &err)
-{
-    FWObject *ta = target;
-    if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
-
-    err = QObject::tr("Impossible to insert object %1 (type %2) into %3\n"
-                      "because of incompatible type.")
-        .arg(obj->getName().c_str())
-        .arg(obj->getTypeName().c_str())
-        .arg(ta->getName().c_str());
-
-    FWBTree objtree;
-    if (objtree.isSystem(ta))
-        return objtree.validateForInsertion(ta, obj);
-
-    Host *hst = Host::cast(ta);
-    Firewall *fw = Firewall::cast(ta);
-    Interface *intf = Interface::cast(ta);
-    FWObject *parent_fw = ta;
-    while (parent_fw && Firewall::cast(parent_fw)==NULL)
-        parent_fw = parent_fw->getParent();
-
-    if (parent_fw && Interface::isA(obj))
-    {
-        std::auto_ptr<interfaceProperties> int_prop(
-            interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent_fw));
-
-        return int_prop->validateInterface(ta, obj, false, err);
-    }
-
-    if (fw!=NULL)
-    {
-        // inserting some object into firewall or cluster
-        if (!fw->validateChild(obj)) return false;
-        return true;
-    }
-
-    if (hst!=NULL)  return (hst->validateChild(obj));
-
-    if (intf!=NULL)
-    {
-        if (!intf->validateChild(obj)) return false;
-        return true;
-    }
-
-    Group *grp=Group::cast(ta);
-    if (grp!=NULL) return grp->validateChild(obj);
-
-    return false;
-}
-
 FWObject* ObjectManipulator::prepareForInsertion(FWObject *target, FWObject *obj)
 {
     if (fwbdebug)
@@ -1048,7 +996,7 @@ FWObject* ObjectManipulator::prepareForInsertion(FWObject *target, FWObject *obj
     FWObject *ta = target;
     if (IPv4::isA(ta) || IPv6::isA(ta)) ta = ta->getParent();
     QString err;
-    if (!validateForPaste(ta, obj, err))
+    if (! FWBTree().validateForInsertion(ta, obj, err))
     {
         QMessageBox::critical(
             this,"Firewall Builder",

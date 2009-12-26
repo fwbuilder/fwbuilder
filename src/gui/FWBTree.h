@@ -62,7 +62,9 @@ class FWBTree
     bool isStandardFolder(libfwbuilder::FWObject *obj);
     bool isStandardId(libfwbuilder::FWObject *obj);
 
-    bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
+    bool validateForInsertion(libfwbuilder::FWObject *target,
+                              libfwbuilder::FWObject *obj,
+                              QString &err);
 
     /**
      * returns boolean value that defines whether menu item "Copy"

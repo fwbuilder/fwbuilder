@@ -143,10 +143,6 @@ class ObjectManipulator : public QWidget
 
     void actuallyDeleteObject(libfwbuilder::FWObject *obj, QUndoCommand* macro = 0);
 
-    bool validateForPaste(libfwbuilder::FWObject *target,
-                          libfwbuilder::FWObject *obj,
-                          QString &err);
-
     void findWhereUsedRecursively(libfwbuilder::FWObject *obj,
                                   libfwbuilder::FWObject *top,
                                   std::set<libfwbuilder::FWObject*> &resset);

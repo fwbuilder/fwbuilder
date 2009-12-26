@@ -31,6 +31,8 @@
 #include <QString>
 
 #include "FWBTree.h"
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
@@ -394,29 +396,77 @@ bool FWBTree::isStandardId(FWObject *obj)
     return standardIDs.contains(FWObjectDatabase::getStringId(obj->getId()).c_str());
 }
 
-bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj)
+bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj, QString &err)
 {
     if (fwbdebug) qDebug("FWBTree::validateForInsertion  target %s  obj %s",
                          target->getTypeName().c_str(),
                          obj->getTypeName().c_str());
 
-    if (Host::isA(target)      && Interface::isA(obj))   return true;
-    if (Firewall::isA(target)  && Interface::isA(obj))   return true;
-    if (Interface::isA(target) && IPv4::isA(obj))        return true;
-    if (Interface::isA(target) && IPv6::isA(obj))        return true;
-    if (Interface::isA(target) && physAddress::isA(obj)) return true;
+    FWObject *ta = target;
+    if (IPv4::isA(ta) || IPv6::isA(ta)) ta=ta->getParent();
 
-    QString parentType = systemGroupTypes[obj->getTypeName().c_str()];
-    QString parentName = systemGroupNames[obj->getTypeName().c_str()];
+    err = QObject::tr("Impossible to insert object %1 (type %2) into %3\n"
+                      "because of incompatible type.")
+        .arg(obj->getName().c_str())
+        .arg(obj->getTypeName().c_str())
+        .arg(ta->getName().c_str());
+
+    FWBTree objtree;
+    if (objtree.isSystem(ta))
+    {
+        if (Host::isA(ta)      && Interface::isA(obj))   return true;
+        if (Firewall::isA(ta)  && Interface::isA(obj))   return true;
+        if (Interface::isA(ta) && IPv4::isA(obj))        return true;
+        if (Interface::isA(ta) && IPv6::isA(obj))        return true;
+        if (Interface::isA(ta) && physAddress::isA(obj)) return true;
+
+        QString parentType = systemGroupTypes[obj->getTypeName().c_str()];
+        QString parentName = systemGroupNames[obj->getTypeName().c_str()];
 
 /* parentType or/and parentName are going to be empty if information
  * about object obj is missing in systemGroupTypes/Names tables
  */
-    if (parentType.isEmpty() || parentName.isEmpty()) return false;
+        if (parentType.isEmpty() || parentName.isEmpty()) return false;
 
-    if (target->getTypeName() == string(parentType.toLatin1()) &&
-    target->getName()     == string(parentName.toLatin1()) )
+        if (ta->getTypeName() == string(parentType.toLatin1()) &&
+            ta->getName()     == string(parentName.toLatin1()) )
+            return true;
+
+        return false;
+    }
+
+    Host *hst = Host::cast(ta);
+    Firewall *fw = Firewall::cast(ta);
+    Interface *intf = Interface::cast(ta);
+    FWObject *parent_fw = ta;
+    while (parent_fw && Firewall::cast(parent_fw)==NULL)
+        parent_fw = parent_fw->getParent();
+
+    if (parent_fw && Interface::isA(obj))
+    {
+        std::auto_ptr<interfaceProperties> int_prop(
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent_fw));
+
+        return int_prop->validateInterface(ta, obj, false, err);
+    }
+
+    if (fw!=NULL)
+    {
+        // inserting some object into firewall or cluster
+        if (!fw->validateChild(obj)) return false;
         return true;
+    }
+
+    if (hst!=NULL)  return (hst->validateChild(obj));
+
+    if (intf!=NULL)
+    {
+        if (!intf->validateChild(obj)) return false;
+        return true;
+    }
+
+    Group *grp=Group::cast(ta);
+    if (grp!=NULL) return grp->validateChild(obj);
 
     return false;
 }
