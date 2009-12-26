@@ -67,7 +67,6 @@ class ProjectPanel: public QWidget {
 
     FWWindow *mainW;
     RCS *rcs;
-    FWBTree *objectTreeFormat;
     bool systemFile;
     bool safeMode;
     bool editingStandardLib;
@@ -122,8 +121,6 @@ public:
     void closeRuleSet(libfwbuilder::FWObject *obj)
     { if ((libfwbuilder::FWObject*)(visibleRuleSet)==obj) visibleRuleSet=NULL;};
     
-    FWBTree * getFWTree () {return objectTreeFormat;};
-
     ProjectPanel(QWidget *parent);
     ~ProjectPanel();
 
@@ -328,8 +325,6 @@ public:
     QString getCurrentFileName();
     RCS * getRCS();
     QString printHeader();
-
-    bool validateForInsertion(libfwbuilder::FWObject *target,libfwbuilder::FWObject *obj);
 
     void toggleViewTree(bool f);
 

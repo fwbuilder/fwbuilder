@@ -127,7 +127,6 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     QWidget(parent), // , Qt::WindowSystemMenuHint|Qt::Window),
     mainW(0),
     rcs(0),
-    objectTreeFormat(new FWBTree),
     systemFile(true),
     safeMode(false),
     editingStandardLib(false),
@@ -763,11 +762,6 @@ QString ProjectPanel::printHeader()
     if (rcs->isInRCS())
         headerText = headerText + ", rev " + rcs->getSelectedRev();
     return headerText;
-}
-
-bool ProjectPanel::validateForInsertion(FWObject *target, FWObject *obj)
-{
-    return objectTreeFormat->validateForInsertion(target, obj);
 }
 
 void ProjectPanel::registerRuleSetRedrawRequest()

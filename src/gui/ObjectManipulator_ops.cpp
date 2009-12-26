@@ -225,7 +225,7 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
     if (FWObjectDatabase::isA(targetLib)) grp = targetLib;
     else
     {
-        grp = m_project->getFWTree()->getStandardSlotForObject(
+        grp = FWBTree().getStandardSlotForObject(
             targetLib, obj->getTypeName().c_str());
     }
     if (grp==NULL) grp=targetLib;
@@ -619,7 +619,7 @@ void ObjectManipulator::groupObjects()
  * the pull-down only with names of read-write libraries
  */
                 if (lib->isReadOnly()) return;
-                parent = m_project->getFWTree()->getStandardSlotForObject(lib,type);
+                parent = FWBTree().getStandardSlotForObject(lib,type);
                 if (parent==NULL)
                 {
                     if (fwbdebug)

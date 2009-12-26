@@ -285,8 +285,7 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
         i++;
     }
 
-    FWObject *parent =
-        m_project->getFWTree()->getStandardSlotForObject(lib, objType);
+    FWObject *parent = FWBTree().getStandardSlotForObject(lib, objType);
 
     if (parent==NULL)
     {

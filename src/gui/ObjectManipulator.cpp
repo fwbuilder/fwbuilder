@@ -999,14 +999,16 @@ bool ObjectManipulator::validateForPaste(FWObject *target, FWObject *obj,
         .arg(obj->getTypeName().c_str())
         .arg(ta->getName().c_str());
 
-    if (FWBTree().isSystem(ta))
-        return m_project->validateForInsertion(ta, obj);
+    FWBTree objtree;
+    if (objtree.isSystem(ta))
+        return objtree.validateForInsertion(ta, obj);
 
     Host *hst = Host::cast(ta);
     Firewall *fw = Firewall::cast(ta);
     Interface *intf = Interface::cast(ta);
     FWObject *parent_fw = ta;
-    while (parent_fw && Firewall::cast(parent_fw)==NULL) parent_fw = parent_fw->getParent();
+    while (parent_fw && Firewall::cast(parent_fw)==NULL)
+        parent_fw = parent_fw->getParent();
 
     if (parent_fw && Interface::isA(obj))
     {

@@ -2119,7 +2119,7 @@ void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
     if (md->getRuleSet()->getRoot()!=object->getRoot())
     {
         // object is being copied from another project file
-        FWObject *target = project->getFWTree()->getStandardSlotForObject(
+        FWObject *target = FWBTree().getStandardSlotForObject(
             md->getRuleSet()->getLibrary(), object->getTypeName().c_str());
         map<int,int> map_ids;
         object = project->db()->recursivelyCopySubtree(target, object, map_ids);
