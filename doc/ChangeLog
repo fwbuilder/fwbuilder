@@ -1,3 +1,10 @@
+2009-12-25  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::contextMenuRequested):
+	fixed bug #1022: context menu item "New Interface" is disabled.
+	if user selected an interface object in the tree and opens context
+	menu, the "New Interface" menu item was always disabled.
+
 2009-12-23  vadim  <vadim@vk.crocodile.org>
 
 	* instOptionsDialog.cpp (instOptionsDialog::instOptionsDialog):

@@ -504,7 +504,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                 list<QStringPair> subint_types;
                 getSubInterfaceTypes(iface, subint_types);
                 if (subint_types.size())
-                    AddObjectActions.append(addNewObjectMenuItem(popup_menu, Interface::TYPENAME));
+                    addNewObjectMenuItem(popup_menu, Interface::TYPENAME);
                     // popup_menu->addAction(
                     //     tr("Add Interface"), this, SLOT( newInterface() ) );
             }
