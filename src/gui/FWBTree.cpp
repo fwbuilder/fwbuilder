@@ -67,6 +67,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <memory>
 
 #include "utils.h"
 
