@@ -956,8 +956,6 @@ void RuleSetView::removeRule()
                 QString groupName = md->nodeFromIndex(group)->name;
 
                 FWCmdRuleRemoveFromGroup* cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), first, last, groupName, macro);
-//                project->undoStack->push(cmd);
-
             }
         }
 
@@ -966,7 +964,6 @@ void RuleSetView::removeRule()
         if (!rulesToDelete.isEmpty())
         {
             FWCmdRuleDelete* cmd =  new FWCmdRuleDelete(project, md->getRuleSet(), rulesToDelete, macro);
-//            project->undoStack->push(cmd);
         }
         project->undoStack->push(macro);
     }
