@@ -208,8 +208,11 @@ FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib, FWObject *obj)
 {
     if (!isTreeReadWrite(this, targetLib)) return NULL;
     openLib(targetLib);
+    FWObject *new_parent = FWBTree().getStandardSlotForObject(
+        targetLib, obj->getTypeName().c_str());
+    if (new_parent == NULL) new_parent = obj->getParent();
     QString newName =
-        makeNameUnique(obj->getParent(),
+        makeNameUnique(new_parent,
                        QString::fromUtf8(obj->getName().c_str()),
                        obj->getTypeName().c_str());
     return createObject(obj->getTypeName().c_str(), newName, obj);
@@ -284,6 +287,10 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
         qDebug() << "ObjectManipulator::actuallyPasteTo"
                  << "target=" << target->getPath().c_str()
                  << "ta=" << ta->getPath().c_str();
+
+    QString new_name = makeNameUnique(
+        target, obj->getName().c_str(), obj->getTypeName().c_str());
+
     try
     {
 /* clipboard holds a copy of the object */
@@ -299,6 +306,8 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
             // when it copies subtree, so have to copy into the actual target
             // tree.
             FWObject *nobj = m_project->db()->recursivelyCopySubtree(target, obj, map_ids);
+            if (new_name != nobj->getName().c_str())
+                nobj->setName(string(new_name.toUtf8()));
             target->remove(nobj, false);
             new_state->add(nobj);
             m_project->undoStack->push(cmd);
@@ -345,6 +354,8 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
             assert(nobj!=NULL);
             //nobj->ref();
             nobj->duplicate(obj, true);
+            if (new_name != nobj->getName().c_str())
+                nobj->setName(string(new_name.toUtf8()));
 
             // If we paste interface, reset the type of the copy
             // See #299

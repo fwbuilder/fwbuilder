@@ -1,3 +1,17 @@
+2009-12-26  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator_ops.cpp (ObjectManipulator::actuallyPasteTo):
+	when an object was duplicated to another library, suffix "-1" was
+	appended to its name even if there were no other objects with the
+	same name. Also when an object was pasted into a group, its name
+	was preserved. If the group had an object with the same name and
+	user opened new one in the editor and tried to change anything,
+	the program complained about duplicate name. fixes #1028
+
+	* newClusterDialog.cpp: program crashed when user tried to create
+	new cluster dialog and turned the option to copy rules from one
+	of the members to the cluster. Fixes #1026
+
 2009-12-25  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator.cpp (ObjectManipulator::contextMenuRequested):
