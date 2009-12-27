@@ -162,7 +162,6 @@ void ObjectManipulator::pasteObj()
     vector<std::pair<int,ProjectPanel*> >::iterator i;
     int idx = 0;
     FWObject *last_object = NULL;
-    bool need_to_reload = false;
     map<int,int> map_ids;
     if (fwbdebug)
     {
@@ -212,17 +211,9 @@ void ObjectManipulator::pasteObj()
             target_object->getRoot()->findObjectByAttribute(dedup_attribute, s);
         if (n_obj) continue;
 
-        if (target_object->getRoot() != co->getRoot()) need_to_reload = true;
-
         last_object = actuallyPasteTo(target_object, co, map_ids);
     }
     if (fwbdebug) qDebug("**************** pasteObj loop done");
-
-    // Note that now all notifications are done by FWCmdAddObject or
-    // FWCmdChange
-    //
-    // if (need_to_reload) loadObjects();
-    // openObject(last_object);
 }
 
 void ObjectManipulator::duplicateObj(QAction *action)

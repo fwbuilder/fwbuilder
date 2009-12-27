@@ -289,7 +289,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
                  << "ta=" << ta->getPath().c_str();
 
     QString new_name = makeNameUnique(
-        target, obj->getName().c_str(), obj->getTypeName().c_str());
+        ta, obj->getName().c_str(), obj->getTypeName().c_str());
 
     try
     {
