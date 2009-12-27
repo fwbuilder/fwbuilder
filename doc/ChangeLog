@@ -1,3 +1,17 @@
+2009-12-27  vadim  <vadim@vk.crocodile.org>
+
+	* bug fixes and changes 2009-12-27:
+
+	Ticket #1032 ("creating cluster from selected firewalls" does not
+	work) closed by vadim fixed: (In [2279])
+
+	Ticket #1031 ("New Cluster" function creates two undo commands and
+	two cluster objects) closed by vadim fixed: (In [2278])
+
+	Ticket #969 ("Create and add to group" creates several undo
+	commands) closed by yalovoy fixed: (In [2277])
+
+
 2009-12-26  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectManipulator_ops.cpp (ObjectManipulator::actuallyPasteTo):
