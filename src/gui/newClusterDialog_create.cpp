@@ -51,6 +51,8 @@ using namespace std;
 
 void newClusterDialog::createNewCluster()
 {
+    if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster()";
+
     map<int, int> id_mapping;
 
     QList<ClusterInterfaceData> cluster_interfaces =
@@ -67,13 +69,14 @@ void newClusterDialog::createNewCluster()
 
     FWObject *o;
     o = db->create(Cluster::TYPENAME);
-    o->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
 
     if (o == NULL)
     {
         QDialog::accept();
         return;
     }
+
+    o->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
 
     parent->add(o);
 
@@ -83,6 +86,8 @@ void newClusterDialog::createNewCluster()
               this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("platform"));
     o->setStr("host_OS",
               this->m_dialog->firewallSelector->getSelectedFirewalls().first().first->getStr("host_OS"));
+
+    if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster() checkpoint 1";
 
     foreach(EditedInterfaceData data, this->m_dialog->interfaceEditor->getNewData())
     {
@@ -147,6 +152,9 @@ void newClusterDialog::createNewCluster()
             }
         }
 
+        if (fwbdebug)
+            qDebug() << "newClusterDialog::createNewCluster() checkpoint 2";
+
         FWOptions *ifopt;
         ifopt = oi->getOptionsObject();
         ifopt->setStr("type", "cluster_interface");
@@ -184,6 +192,8 @@ void newClusterDialog::createNewCluster()
         }
     }
 
+    if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster() checkpoint 3";
+
     // Copy rule sets if requested
     Firewall *source = NULL;
     foreach (QRadioButton* btn, copy_rules_from_buttons.keys())
@@ -194,6 +204,8 @@ void newClusterDialog::createNewCluster()
             break;
         }
     }
+
+    if (fwbdebug) qDebug() << "newClusterDialog::createNewCluster() checkpoint 4";
 
     if (source == NULL) return;
 

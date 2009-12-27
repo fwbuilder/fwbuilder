@@ -173,7 +173,8 @@ void ObjectManipulator::createNewObject()
     // FWCmdMacro should be used for commands grouping
     FWCmdMacro* macro = 0;
     if (add_to_group_id == -1)
-        macro = new FWCmdMacro(tr("Create new object"));
+        macro = new FWCmdMacro(
+            FWBTree().getTranslatableNewObjectMenuText(type_name));
     else
         macro = new FWCmdMacro(tr("Create and add to group"));
 
@@ -485,7 +486,8 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
     if (mw->isEditorVisible())  mw->hideEditor();
     if (fromSelected)
     {
-        qDebug() << "creating cluster from selected firewalls";
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::newCluster: creating cluster from selected firewalls";
         ncd->setFirewallList(getCurrentObjectTree()->getSelectedObjects());
     }
     if ( ! ncd->exec() == QDialog::Accepted) return NULL;
@@ -495,6 +497,9 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
 
     if (ncl)
     {
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::newCluster checkpoint 1";
+
         FWCmdAddObject *cmd = new FWCmdAddObject(
             m_project, parent, NULL, QObject::tr("Create new Cluster"), macro);
         // newCluster dialog may create backup copies of member firewalls,
@@ -512,9 +517,17 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
 }
 
 
-FWObject* ObjectManipulator::newClusterFromSelected()
+void ObjectManipulator::newClusterFromSelected()
 {
-    return newCluster(0, true);
+    FWCmdMacro* macro = new FWCmdMacro(
+        FWBTree().getTranslatableNewObjectMenuText(Cluster::TYPENAME));
+    FWObject *ncl = newCluster(macro, true);
+    if (ncl == NULL)
+    {
+        delete macro;
+        return;
+    }
+    m_project->undoStack->push(macro);
 }
 
 FWObject* ObjectManipulator::newClusterIface(QUndoCommand* macro)

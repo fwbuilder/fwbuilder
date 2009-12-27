@@ -170,7 +170,7 @@ public slots:
      virtual void switchingTrees(QWidget* w);
      virtual void currentTreePageChanged(int i);
 
-     libfwbuilder::FWObject* newClusterFromSelected();
+     void newClusterFromSelected();
      
      void selectionChanged(QTreeWidgetItem *cur);
 
