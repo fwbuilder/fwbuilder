@@ -210,6 +210,7 @@ void newClusterDialog::createNewCluster()
             mw->activeProject(), fwgroup, NULL,
             QString("Create new Firewall %1")
             .arg(QString::fromUtf8(name_bak.c_str())));
+        cmd->setNeedTreeReload(true);
         FWObject *new_state = cmd->getNewState();
         Firewall *bakfw = Firewall::cast(new_state->addCopyOf(fw));
         bakfw->setName(name_bak);

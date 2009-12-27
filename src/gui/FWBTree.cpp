@@ -411,15 +411,15 @@ bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj, QString &err
         .arg(obj->getTypeName().c_str())
         .arg(ta->getName().c_str());
 
+    if (Host::isA(ta)      && Interface::isA(obj))   return true;
+    if (Firewall::isA(ta)  && Interface::isA(obj))   return true;
+    if (Interface::isA(ta) && IPv4::isA(obj))        return true;
+    if (Interface::isA(ta) && IPv6::isA(obj))        return true;
+    if (Interface::isA(ta) && physAddress::isA(obj)) return true;
+
     FWBTree objtree;
     if (objtree.isSystem(ta))
     {
-        if (Host::isA(ta)      && Interface::isA(obj))   return true;
-        if (Firewall::isA(ta)  && Interface::isA(obj))   return true;
-        if (Interface::isA(ta) && IPv4::isA(obj))        return true;
-        if (Interface::isA(ta) && IPv6::isA(obj))        return true;
-        if (Interface::isA(ta) && physAddress::isA(obj)) return true;
-
         QString parentType = systemGroupTypes[obj->getTypeName().c_str()];
         QString parentName = systemGroupNames[obj->getTypeName().c_str()];
 
