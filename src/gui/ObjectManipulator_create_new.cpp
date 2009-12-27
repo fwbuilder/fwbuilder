@@ -503,8 +503,8 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
         FWObject *new_state = cmd->getNewState();
         parent->remove(ncl, false);
         new_state->add(ncl);
-        if (macro)
-            m_project->undoStack->push(cmd);
+        // if (macro)
+        //     m_project->undoStack->push(cmd);
 
     }
 
