@@ -198,8 +198,9 @@ void FWCmdAddObject::notify()
 FWCmdAddLibrary::FWCmdAddLibrary(ProjectPanel *project,
                                  FWObject *root,
                                  FWObject *lib,
-                                 QString text):
-    FWCmdAddObject(project, root, lib, text)
+                                 QString text,
+                                 QUndoCommand* macro):
+    FWCmdAddObject(project, root, lib, text, macro)
 {
     assert(FWObjectDatabase::cast(root)!=NULL);
 

@@ -63,7 +63,8 @@ public:
     FWCmdAddLibrary(ProjectPanel *project,
                     libfwbuilder::FWObject *root,
                     libfwbuilder::FWObject *lib,
-                    QString text=QString());
+                    QString text=QString(),
+                    QUndoCommand* macro=0);
     ~FWCmdAddLibrary();
     virtual void redo();
     virtual void undo();

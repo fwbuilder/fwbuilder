@@ -131,7 +131,8 @@ class ObjectManipulator : public QWidget
         libfwbuilder::FWObject *parent,
         const QString &objType,
         const QString &objName,
-        libfwbuilder::FWObject *copyFrom=NULL);
+        libfwbuilder::FWObject *copyFrom=NULL,
+        QUndoCommand* macro = 0);
 
     void autorename(libfwbuilder::FWObject *obj);
     void extractFirewallsFromGroup(libfwbuilder::ObjectGroup *gr,
@@ -149,19 +150,19 @@ class ObjectManipulator : public QWidget
 
     void refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem *itm);
 
-    libfwbuilder::FWObject* newLibrary();
-    libfwbuilder::FWObject* newHost();
-    libfwbuilder::FWObject* newInterface();
+    libfwbuilder::FWObject* newLibrary(QUndoCommand* macro);
+    libfwbuilder::FWObject* newHost(QUndoCommand* macro);
+    libfwbuilder::FWObject* newInterface(QUndoCommand* macro);
     libfwbuilder::FWObject* newFirewall(QUndoCommand* macro);
-    libfwbuilder::FWObject* newCluster(bool fromSelected = false);
-    libfwbuilder::FWObject* newClusterIface();
-    libfwbuilder::FWObject* newStateSyncClusterGroup();
-    libfwbuilder::FWObject* newFailoverClusterGroup();
-    libfwbuilder::FWObject* newInterfaceAddress();
-    libfwbuilder::FWObject* newInterfaceAddressIPv6();
-    libfwbuilder::FWObject* newPhysicalAddress();
-    libfwbuilder::FWObject* newPolicyRuleSet ();
-    libfwbuilder::FWObject* newNATRuleSet ();
+    libfwbuilder::FWObject* newCluster(QUndoCommand* macro, bool fromSelected = false);
+    libfwbuilder::FWObject* newClusterIface(QUndoCommand* macro);
+    libfwbuilder::FWObject* newStateSyncClusterGroup(QUndoCommand* macro);
+    libfwbuilder::FWObject* newFailoverClusterGroup(QUndoCommand* macro);
+    libfwbuilder::FWObject* newInterfaceAddress(QUndoCommand* macro);
+    libfwbuilder::FWObject* newInterfaceAddressIPv6(QUndoCommand* macro);
+    libfwbuilder::FWObject* newPhysicalAddress(QUndoCommand* macro);
+    libfwbuilder::FWObject* newPolicyRuleSet (QUndoCommand* macro);
+    libfwbuilder::FWObject* newNATRuleSet (QUndoCommand* macro);
 
    
 public slots:
@@ -208,12 +209,14 @@ public slots:
 
      libfwbuilder::FWObject* createObject(const QString &objType,
                                           const QString &objName,
-                                          libfwbuilder::FWObject *copyFrom=NULL);
+                                          libfwbuilder::FWObject *copyFrom=NULL,
+                                          QUndoCommand* macro = 0);
 
      libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
                                           const QString &objType,
                                           const QString &objName,
-                                          libfwbuilder::FWObject *copyFrom=NULL);
+                                          libfwbuilder::FWObject *copyFrom=NULL,
+                                          QUndoCommand* macro = 0);
 
      void newObject();
 

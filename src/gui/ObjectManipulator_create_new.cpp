@@ -185,8 +185,8 @@ void ObjectManipulator::createNewObject()
         // These three functions call separate modal dialogs that can
         // be cancelled by the user
         if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall(macro);
-        if (type_name ==  Cluster::TYPENAME) new_obj = newCluster();
-        if (type_name ==  Host::TYPENAME) new_obj = newHost();
+        if (type_name ==  Cluster::TYPENAME) new_obj = newCluster(macro);
+        if (type_name ==  Host::TYPENAME) new_obj = newHost(macro);
         if (new_obj == NULL)
         {
             delete macro;
@@ -194,18 +194,18 @@ void ObjectManipulator::createNewObject()
         } 
     }
 
-    if (type_name ==  Library::TYPENAME) new_obj = newLibrary();
-    if (type_name ==  Interface::TYPENAME) new_obj = newInterface();
-    if (type_name ==  IPv4::TYPENAME) new_obj = newInterfaceAddress();
-    if (type_name ==  IPv6::TYPENAME) new_obj = newInterfaceAddressIPv6();
-    if (type_name ==  physAddress::TYPENAME) new_obj = newPhysicalAddress();
-    if (type_name ==  FailoverClusterGroup::TYPENAME) new_obj = newFailoverClusterGroup();
-    if (type_name ==  StateSyncClusterGroup::TYPENAME) new_obj = newStateSyncClusterGroup();
-    if (type_name ==  Policy::TYPENAME) new_obj = newPolicyRuleSet();
-    if (type_name ==  NAT::TYPENAME) new_obj = newNATRuleSet();
+    if (type_name ==  Library::TYPENAME) new_obj = newLibrary(macro);
+    if (type_name ==  Interface::TYPENAME) new_obj = newInterface(macro);
+    if (type_name ==  IPv4::TYPENAME) new_obj = newInterfaceAddress(macro);
+    if (type_name ==  IPv6::TYPENAME) new_obj = newInterfaceAddressIPv6(macro);
+    if (type_name ==  physAddress::TYPENAME) new_obj = newPhysicalAddress(macro);
+    if (type_name ==  FailoverClusterGroup::TYPENAME) new_obj = newFailoverClusterGroup(macro);
+    if (type_name ==  StateSyncClusterGroup::TYPENAME) new_obj = newStateSyncClusterGroup(macro);
+    if (type_name ==  Policy::TYPENAME) new_obj = newPolicyRuleSet(macro);
+    if (type_name ==  NAT::TYPENAME) new_obj = newNATRuleSet(macro);
     //if (type_name ==  Routing::TYPENAME) new_obj = newRoutingRuleSet();
 
-    if (new_obj == NULL) new_obj = createObject(type_name, descr);
+    if (new_obj == NULL) new_obj = createObject(type_name, descr, NULL, macro);
 
     if (new_obj == NULL)
     {
@@ -224,10 +224,9 @@ void ObjectManipulator::createNewObject()
         if (grp)
         {
             FWCmdChange *cmd = new FWCmdChange(
-                m_project, grp, QObject::tr("Add object to group"));
+                m_project, grp, QObject::tr("Add object to group"), false, macro);
             FWObject *new_state = cmd->getNewState();
             new_state->addRef(new_obj);
-            m_project->undoStack->push(cmd);
 
             // if we add new object to a group, we should still open
             // the object in the editor rather than the group. Command
@@ -244,7 +243,8 @@ void ObjectManipulator::createNewObject()
 
 FWObject* ObjectManipulator::createObject(const QString &objType,
                                           const QString &objName,
-                                          FWObject *copyFrom)
+                                          FWObject *copyFrom,
+                                          QUndoCommand* macro)
 {
     if (fwbdebug) qDebug("ObjectManipulator::createObject   check 1");
 
@@ -300,13 +300,14 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
       return NULL;
     }
 
-    return actuallyCreateObject(parent, objType, objName, copyFrom);
+    return actuallyCreateObject(parent, objType, objName, copyFrom, macro);
 }
 
 FWObject* ObjectManipulator::createObject(FWObject *parent,
                                           const QString &objType,
                                           const QString &objName,
-                                          FWObject *copyFrom)
+                                          FWObject *copyFrom,
+                                          QUndoCommand* macro)
 {
     FWObject *lib  = getCurrentLib();
     int       i = 0;
@@ -337,13 +338,14 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
 
     if (parent==NULL) parent=lib;
 
-    return actuallyCreateObject(parent, objType, objName, copyFrom);
+    return actuallyCreateObject(parent, objType, objName, copyFrom, macro);
 }
 
 FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
                                                   const QString &objType,
                                                   const QString &objName,
-                                                  FWObject *copyFrom)
+                                                  FWObject *copyFrom,
+                                                  QUndoCommand* macro)
 {
     FWObject *nobj=NULL;
     if (!isTreeReadWrite(this, parent)) return NULL;
@@ -373,32 +375,34 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
 
     FWCmdAddObject *cmd = new FWCmdAddObject(
         m_project, parent, nobj,
-        QObject::tr("Create new %1").arg(objType));
+        QObject::tr("Create new %1").arg(objType), macro);
     FWObject *new_state = cmd->getNewState();
     new_state->add(nobj);
-    m_project->undoStack->push(cmd);
+    if (!macro)
+        m_project->undoStack->push(cmd);
     m_project->db()->setDirty(true);
     return nobj;
 }
 
-FWObject* ObjectManipulator::newLibrary()
+FWObject* ObjectManipulator::newLibrary(QUndoCommand* macro)
 {
     FWObject *nlib = FWBTree().createNewLibrary(m_project->db()); //   m_project->createNewLibrary(m_project->db());
     // At this point new library is already inserted into the object tree
     // but it has not been added to the QTreeWidget yet.
     FWCmdAddLibrary *cmd = new FWCmdAddLibrary(
-        m_project, m_project->db(), NULL, QObject::tr("Create library"));
+        m_project, m_project->db(), NULL, QObject::tr("Create library"), macro);
     FWObject *new_state = cmd->getNewState();
     m_project->db()->remove(nlib, false);
     new_state->add(nlib);
 
-    m_project->undoStack->push(cmd);
+//    m_project->undoStack->push(cmd);
+
     m_project->db()->setDirty(true);
 
     return nlib;
 }
 
-FWObject* ObjectManipulator::newPolicyRuleSet()
+FWObject* ObjectManipulator::newPolicyRuleSet(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
@@ -415,12 +419,12 @@ FWObject* ObjectManipulator::newPolicyRuleSet()
             name+=QString().setNum(count);
         }
     }
-    FWObject *o = createObject(currentObj, Policy::TYPENAME, name);
+    FWObject *o = createObject(currentObj, Policy::TYPENAME, name, NULL, macro);
     this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
     return o;
 }
 
-FWObject* ObjectManipulator::newNATRuleSet()
+FWObject* ObjectManipulator::newNATRuleSet(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
@@ -438,7 +442,7 @@ FWObject* ObjectManipulator::newNATRuleSet()
             name += QString().setNum(count);
         }
     }
-    FWObject *o = createObject(currentObj, NAT::TYPENAME, name);
+    FWObject *o = createObject(currentObj, NAT::TYPENAME, name, NULL, macro);
     this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
     return o;
 }
@@ -469,7 +473,7 @@ FWObject* ObjectManipulator::newFirewall(QUndoCommand* macro)
     return nfw;
 }
 
-FWObject* ObjectManipulator::newCluster(bool fromSelected)
+FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
 {
     FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Cluster::TYPENAME);
@@ -492,14 +496,16 @@ FWObject* ObjectManipulator::newCluster(bool fromSelected)
     if (ncl)
     {
         FWCmdAddObject *cmd = new FWCmdAddObject(
-            m_project, parent, NULL, QObject::tr("Create new Cluster"));
+            m_project, parent, NULL, QObject::tr("Create new Cluster"), macro);
         // newCluster dialog may create backup copies of member firewalls,
         // to see them in the tree need to reload it.
         cmd->setNeedTreeReload(true);
         FWObject *new_state = cmd->getNewState();
         parent->remove(ncl, false);
         new_state->add(ncl);
-        m_project->undoStack->push(cmd);
+        if (macro)
+            m_project->undoStack->push(cmd);
+
     }
 
     return ncl;
@@ -508,17 +514,17 @@ FWObject* ObjectManipulator::newCluster(bool fromSelected)
 
 FWObject* ObjectManipulator::newClusterFromSelected()
 {
-    return newCluster(true);
+    return newCluster(0, true);
 }
 
-FWObject* ObjectManipulator::newClusterIface()
+FWObject* ObjectManipulator::newClusterIface(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
     QString new_name = makeNameUnique(currentObj,
                                       findNewestInterfaceName(currentObj),
                                       Interface::TYPENAME);
-    return createObject(currentObj, Interface::TYPENAME, new_name);
+    return createObject(currentObj, Interface::TYPENAME, new_name, NULL, macro);
 }
 
 /*
@@ -526,7 +532,7 @@ FWObject* ObjectManipulator::newClusterIface()
  * associated with Cluster object.
  * By default assume conntrack protocol and set group type accordingly.
  */
-FWObject* ObjectManipulator::newStateSyncClusterGroup()
+FWObject* ObjectManipulator::newStateSyncClusterGroup(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
@@ -553,7 +559,7 @@ FWObject* ObjectManipulator::newStateSyncClusterGroup()
     QString group_type = lst.front().first;
 
     o = createObject(currentObj, StateSyncClusterGroup::TYPENAME,
-                     tr("State Sync Group"));
+                     tr("State Sync Group"), NULL, macro);
     o->setStr("type", group_type.toStdString());
     return o;
 }
@@ -563,7 +569,7 @@ FWObject* ObjectManipulator::newStateSyncClusterGroup()
  * associated with Interface object if its parent is a Cluster object
  * By default assume VRRP protocol and set group type accordingly.
  */
-FWObject* ObjectManipulator::newFailoverClusterGroup()
+FWObject* ObjectManipulator::newFailoverClusterGroup(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
@@ -581,12 +587,12 @@ FWObject* ObjectManipulator::newFailoverClusterGroup()
     }
 
     o = createObject(currentObj, FailoverClusterGroup::TYPENAME,
-                     tr("Failover group"));
+                     tr("Failover group"), NULL, macro);
     o->setStr("type", group_type.toStdString());
     return o;
 }
 
-FWObject* ObjectManipulator::newHost()
+FWObject* ObjectManipulator::newHost(QUndoCommand* macro)
 {
     FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Host::TYPENAME);
@@ -600,11 +606,10 @@ FWObject* ObjectManipulator::newHost()
     if (o!=NULL)
     {
         FWCmdAddObject *cmd = new FWCmdAddObject(
-            m_project, parent, NULL, QObject::tr("Create new Host"));
+            m_project, parent, NULL, QObject::tr("Create new Host"), macro);
         FWObject *new_state = cmd->getNewState();
         parent->remove(o, false);
         new_state->add(o);
-        m_project->undoStack->push(cmd);
     }
 
     return o;
@@ -629,7 +634,7 @@ QString ObjectManipulator::findNewestInterfaceName(FWObject *parent)
     return newest_interface_name;
 }
 
-FWObject* ObjectManipulator::newInterface()
+FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
@@ -667,7 +672,7 @@ FWObject* ObjectManipulator::newInterface()
     QString new_name = makeNameUnique(parent, findNewestInterfaceName(parent),
                                       Interface::TYPENAME);
     new_interface = Interface::cast(
-        createObject(parent, Interface::TYPENAME, new_name));
+        createObject(parent, Interface::TYPENAME, new_name, NULL, macro));
 
     if (new_interface == NULL) return NULL;
 
@@ -685,7 +690,7 @@ FWObject* ObjectManipulator::newInterface()
     return new_interface;
 }
 
-FWObject* ObjectManipulator::newInterfaceAddress()
+FWObject* ObjectManipulator::newInterfaceAddress(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
@@ -702,10 +707,10 @@ FWObject* ObjectManipulator::newInterfaceAddress()
     }
     // if current object is not interface, create address in the standard folder
     return createObject(IPv4::TYPENAME,
-                        FWBTree().getTranslatableObjectTypeName(IPv4::TYPENAME));
+                        FWBTree().getTranslatableObjectTypeName(IPv4::TYPENAME), NULL, macro);
 }
 
-FWObject* ObjectManipulator::newInterfaceAddressIPv6()
+FWObject* ObjectManipulator::newInterfaceAddressIPv6(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
@@ -718,14 +723,14 @@ FWObject* ObjectManipulator::newInterfaceAddressIPv6()
         ) return NULL;
         QString iname = getStandardName(currentObj, IPv4::TYPENAME, "ipv6");
         iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
-        return createObject(currentObj, IPv6::TYPENAME, iname);
+        return createObject(currentObj, IPv6::TYPENAME, iname, NULL, macro);
     }
     // if current object is not interface, create address in the standard folder
     return createObject(IPv6::TYPENAME,
-                        FWBTree().getTranslatableObjectTypeName(IPv6::TYPENAME));
+                        FWBTree().getTranslatableObjectTypeName(IPv6::TYPENAME), NULL, macro);
 }
 
-FWObject* ObjectManipulator::newPhysicalAddress()
+FWObject* ObjectManipulator::newPhysicalAddress(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
     if ( currentObj->isReadOnly() ) return NULL;
@@ -738,7 +743,7 @@ FWObject* ObjectManipulator::newPhysicalAddress()
             QString iname=QString("%1:%2:mac")
                 .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
                 .arg(QString::fromUtf8(currentObj->getName().c_str()));
-            return createObject(currentObj,physAddress::TYPENAME,iname);
+            return createObject(currentObj, physAddress::TYPENAME, iname, NULL, macro);
         }
     }
     return NULL;
