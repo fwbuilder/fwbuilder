@@ -110,11 +110,15 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
     if ( getCachedFwOpt()->getBool("mgmt_ssh") &&
          !getCachedFwOpt()->getStr("mgmt_addr").empty() )
     {
-        PolicyRule *r;
         TCPService *ssh = dbcopy->createTCPService();
         ssh->setDstRangeStart(22);
         ssh->setDstRangeEnd(22);
-        dbcopy->add(ssh,false);
+        dbcopy->add(ssh, false);
+
+        TCPService *ssh_rev = dbcopy->createTCPService();
+        ssh_rev->setSrcRangeStart(22);
+        ssh_rev->setSrcRangeEnd(22);
+        dbcopy->add(ssh_rev, false);
 
         Network *mgmt_workstation = dbcopy->createNetwork();
         mgmt_workstation->setAddressNetmask(
@@ -122,52 +126,11 @@ void PolicyCompiler_cisco::addDefaultPolicyRule()
 
         dbcopy->add(mgmt_workstation, false);
 
-        r= dbcopy->createPolicyRule();
-        temp_ruleset->add(r);
-        r->setAction(PolicyRule::Accept);
-        r->setLogging(false);
-        r->setDirection(PolicyRule::Inbound);
-        r->setPosition(-1);
-//        r->setComment("   backup ssh access rule ");
-        r->setHidden(true);
-        r->setFallback(false);
-        r->setLabel("backup ssh access rule");
-
-        RuleElement *src=RuleElement::cast(
-            r->getFirstByType(RuleElementSrc::TYPENAME) );
-        src->addRef(mgmt_workstation);
-
-        RuleElement *dst=RuleElement::cast(
-            r->getFirstByType(RuleElementDst::TYPENAME) );
-        dst->addRef(fw);
-
-        RuleElement *srv=RuleElement::cast(
-            r->getFirstByType(RuleElementSrv::TYPENAME) );
-        srv->addRef(ssh);
-
-        combined_ruleset->push_front(r);
+        PolicyCompiler::addMgmtRule(
+            mgmt_workstation, fw, ssh,
+            NULL, PolicyRule::Inbound, PolicyRule::Accept,
+            "backup ssh access rule");
     }
-
-    // Ciscos provide built-in fallback rule so we do not need
-    // this. Besides, desired behavior is that if the user did not
-    // create any rules for a given interface (at all), then generated
-    // config file should have none. Adding fallback rule here creates
-    // 'deny any any' rule for such interfaces and screws things big
-    // time.
-#if 0
-    PolicyRule *r= dbcopy->createPolicyRule();
-
-    temp_ruleset->add(r);
-    r->setAction(PolicyRule::Deny);
-    r->setLogging(false);
-//    r->setDirection(PolicyRule::Both);
-    r->setPosition(10000);
-    r->setComment("   fallback rule ");
-    r->setLabel("fallback rule");
-    r->setFallback(true);
-    r->setHidden(true);
-    combined_ruleset->push_back(r);
-#endif
 }
 
 bool PolicyCompiler_cisco::splitIfSrcAny::processNext()

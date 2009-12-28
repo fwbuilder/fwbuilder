@@ -55,6 +55,8 @@ namespace fwcompiler {
 
         protected:
 
+	virtual void addDefaultPolicyRule();
+
         /**
          * dynamic interfaces can not be used in policy rules in IOS ACLs
          */

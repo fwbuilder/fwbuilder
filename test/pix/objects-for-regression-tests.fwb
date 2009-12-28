@@ -892,7 +892,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1231214031" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1261965298" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1808,6 +1808,7 @@
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
+          <Option name="filesystem"></Option>
           <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
@@ -1828,6 +1829,7 @@
           <Option name="inst_cmdline"></Option>
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -1844,8 +1846,8 @@
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
-          <Option name="mgmt_ssh">False</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
@@ -1880,6 +1882,7 @@
           <Option name="pix_epilog_script"></Option>
           <Option name="pix_floodguard">False</Option>
           <Option name="pix_fragguard">True</Option>
+          <Option name="pix_generate_out_acl">False</Option>
           <Option name="pix_h323_abs">True</Option>
           <Option name="pix_h323_hh">0</Option>
           <Option name="pix_h323_inact">False</Option>
@@ -1888,11 +1891,11 @@
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
           <Option name="pix_logging_buffered">False</Option>
-          <Option name="pix_logging_buffered_level">0</Option>
+          <Option name="pix_logging_buffered_level">1</Option>
           <Option name="pix_logging_console">False</Option>
-          <Option name="pix_logging_console_level">0</Option>
+          <Option name="pix_logging_console_level">1</Option>
           <Option name="pix_logging_timestamp">False</Option>
-          <Option name="pix_logging_trap_level">0</Option>
+          <Option name="pix_logging_trap_level">1</Option>
           <Option name="pix_max_conns">0</Option>
           <Option name="pix_nodnsalias_inbound">True</Option>
           <Option name="pix_nodnsalias_outbound">True</Option>
@@ -1956,6 +1959,7 @@
           <Option name="pix_unauth_mm">0</Option>
           <Option name="pix_unauth_ss">0</Option>
           <Option name="pix_use_acl_remarks">False</Option>
+          <Option name="pix_use_manual_commit">False</Option>
           <Option name="pix_xlate_abs">True</Option>
           <Option name="pix_xlate_hh">3</Option>
           <Option name="pix_xlate_inact">False</Option>
@@ -1968,7 +1972,9 @@
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">0 514 0 nil 0</Option>
           <Option name="rtsp_fixup">0 554 0 nil 0</Option>
+          <Option name="scpArgs"></Option>
           <Option name="script_env_path"></Option>
+          <Option name="short_script">False</Option>
           <Option name="sip_fixup">0 5060 5060 nil 0</Option>
           <Option name="sip_hh">0</Option>
           <Option name="sip_media_hh">0</Option>
@@ -1996,6 +2002,7 @@
           <Option name="udp_mm">2</Option>
           <Option name="udp_ss">0</Option>
           <Option name="use_numeric_log_levels">False</Option>
+          <Option name="use_scp">False</Option>
           <Option name="xlate_hh">3</Option>
           <Option name="xlate_mm">0</Option>
           <Option name="xlate_ss">0</Option>

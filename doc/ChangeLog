@@ -1,5 +1,10 @@
 2009-12-27  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::addDefaultPolicyRule):
+	compiler for IOS ACL added only inbound automatic rule to permit
+	ssh access from the management workstation but did not add a rule
+	to permit reply packets. This fixes #993
+
 	* CompilerDriver_iosacl_run.cpp (CompilerDriver_iosacl::run):
 	fixed bug (no #): compiler for iosacl failed to open output file
 	because of the wrong path.

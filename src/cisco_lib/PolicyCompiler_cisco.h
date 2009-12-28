@@ -58,7 +58,7 @@ protected:
 	 * this unconditional blocking rule in the end. See also comment
 	 * in the code regarding "pass_all_out" option
 	 */
-	void addDefaultPolicyRule();
+	virtual void addDefaultPolicyRule();
 
         /**
          * prints rule in some universal format (close to that visible
