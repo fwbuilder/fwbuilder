@@ -83,6 +83,7 @@
 #include <QMdiArea>
 #include <QRegExp>
 #include <QUndoStack>
+#include <QScrollBar>
 
 #include "DialogFactory.h"
 #include "FWBTree.h"
@@ -509,6 +510,12 @@ void ObjectManipulator::refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem 
         qDebug() << "ObjectManipulator::refreshSubtree parent:"
                  << parent->text(0)
                  << "itm:" << QString((itm)?itm->text(0):"");
+
+    QScrollBar* scrollbar = getCurrentObjectTree()->verticalScrollBar();
+
+    // remember current scrolling position
+    int y_pos = scrollbar->value();
+
     /*
      * re-sorting parent tree item causes havoc. If I do not
      * collapse/expand it, I get strange glitches in display.
@@ -529,9 +536,12 @@ void ObjectManipulator::refreshSubtree(QTreeWidgetItem *parent, QTreeWidgetItem 
      */
     parent->setExpanded(false);
     parent->setExpanded(true);
-    //getCurrentObjectTree()->header()->resizeSections(QHeaderView::ResizeToContents);
+
     if (itm)
         getCurrentObjectTree()->scrollToItem(itm, QAbstractItemView::EnsureVisible);
+
+    scrollbar->setValue(y_pos);
+
     getCurrentObjectTree()->update();
 }
 
