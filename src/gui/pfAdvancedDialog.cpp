@@ -107,13 +107,13 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     slm.push_back("");
     slm.push_back("");
     slm.push_back(QObject::tr("Aggressive"));
-    slm.push_back("Aggressive");
+    slm.push_back("aggressive");
     slm.push_back(QObject::tr("Conservative"));
-    slm.push_back("Conservative");
+    slm.push_back("conservative");
     slm.push_back(QObject::tr("For high latency"));
-    slm.push_back("For high latency");
+    slm.push_back("high-latency");
     slm.push_back(QObject::tr("Normal"));
-    slm.push_back("Normal");
+    slm.push_back("normal");
     m_dialog->pf_optimization->clear();
     m_dialog->pf_optimization->addItems(getScreenNames(slm));
     data.registerOption( m_dialog->pf_optimization, fwopt, "pf_optimization", slm);

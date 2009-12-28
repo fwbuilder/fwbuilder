@@ -1,5 +1,11 @@
 2009-12-27  vadim  <vadim@vk.crocodile.org>
 
+	* pfAdvancedDialog.cpp (pfAdvancedDialog::pfAdvancedDialog): fixed
+	SF bug #2919941 "Wrong optimization flag for PF". If "For high
+	latency" is selected the compiler outputs the following value for
+	OpenBSD PF: "set optimization For high latency". Which is wrong
+	syntax, should be high-latency. Fixes #1005
+
 	* bug fixes and changes 2009-12-27:
 
 	Ticket #1032 ("creating cluster from selected firewalls" does not
