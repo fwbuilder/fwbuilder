@@ -326,7 +326,7 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
             // different from wdir and different from the current dir
             // at this point because we do chdir to the directory
             // defined by the -d command line option
-            QFileInfo new_finfo(start_current_dir, fw_file_name);
+            QFileInfo new_finfo(start_current_dir, ofname);
             ofname = new_finfo.absoluteFilePath();
         }
 

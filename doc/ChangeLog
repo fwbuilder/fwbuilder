@@ -1,5 +1,9 @@
 2009-12-27  vadim  <vadim@vk.crocodile.org>
 
+	* CompilerDriver_iosacl_run.cpp (CompilerDriver_iosacl::run):
+	fixed bug (no #): compiler for iosacl failed to open output file
+	because of the wrong path.
+
 	* pfAdvancedDialog.cpp (pfAdvancedDialog::pfAdvancedDialog): fixed
 	SF bug #2919941 "Wrong optimization flag for PF". If "For high
 	latency" is selected the compiler outputs the following value for
