@@ -767,7 +767,7 @@ void instDialog::setSelectStateAll(int column, Qt::CheckState select)
         int num_members = (*it)->data(2, Qt::UserRole).toInt();
 
         Qt::ItemFlags flags = (*it)->flags();
-        if (flags & Qt::ItemIsUserCheckable != 0)
+        if ((flags & Qt::ItemIsUserCheckable) != 0)
         {
             // firewalls only get checkboxes for install,
             if (column == INSTALL_CHECKBOX_COLUMN && Firewall::isA(o))
