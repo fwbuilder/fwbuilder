@@ -342,9 +342,14 @@ QModelIndex RuleSetModel::indexForPosition(int position) const
 
 QModelIndex RuleSetModel::index(int row, int column, const QModelIndex &parent) const
 {
-    //if (fwbdebug) qDebug() << "RuleSetModel::index(int row, int column, const QModelIndex &parent)";
+    // if (fwbdebug)
+    //     qDebug() << "RuleSetModel::index(int row, int column, const QModelIndex &parent)"
+    //              << "row=" << row
+    //              << "column=" << column;
+
     if (row < 0 || column < 0)
         return QModelIndex();
+
     RuleNode *parentNode = nodeFromIndex(parent);
     RuleNode *childNode = parentNode->children.value(row);
     if (!childNode)
@@ -355,7 +360,6 @@ QModelIndex RuleSetModel::index(int row, int column, const QModelIndex &parent) 
 
 QModelIndex RuleSetModel::index(QString groupName) const
 {
-
     if (!groupName.isEmpty())
     {
         int row = 0;
@@ -363,47 +367,43 @@ QModelIndex RuleSetModel::index(QString groupName) const
         {
             if (node->type == RuleNode::Group && node->name == groupName)
             {
-
                 return createIndex(row, 0, node);
             }
             row++;
         }
     }
-
     return QModelIndex();
 }
 
 QModelIndex RuleSetModel::index(int row, int column, QString groupName) const
 {
-    //if (fwbdebug) qDebug() << " RuleSetModel::index(int row, int column, QString groupName)";
-
+    // if (fwbdebug)
+    //     qDebug() << " RuleSetModel::index(int row, int column, QString groupName)";
     QModelIndex parent = index(groupName);
-    return (parent.isValid())?index(row, column, parent):QModelIndex();
+    return (parent.isValid()) ? index(row, column, parent) : QModelIndex();
 }
 
 QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re) const
 {
-    //if (fwbdebug) qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col)";
+    // if (fwbdebug)
+    //     qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col)";
     int col = columnForRuleElementType(re->getTypeName().c_str());
     return index(rule, col);
 }
 
 QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col) const
 {
-    //if (fwbdebug) qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
-
+    // if (fwbdebug)
+    //     qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
     if (col < 0 || rule == 0) return QModelIndex();
     QModelIndex parent;
     QString groupName = QString::fromUtf8(rule->getRuleGroupName().c_str());
-
     if (!groupName.isEmpty())
     {
         QList<RuleNode *> topLevel = root->children;
-
         int row = 0;
         foreach (RuleNode * node, topLevel)
         {
-
             if (node->type == RuleNode::Group && node->name == groupName)
             {
                 parent = createIndex(row, 0, node);
@@ -412,9 +412,7 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col) const
             row++;
         }
     }
-
     RuleNode *parentNode = nodeFromIndex(parent);
-
     int row = 0;
     RuleNode* child = NULL;
     foreach(RuleNode *node, parentNode->children)
@@ -426,15 +424,14 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col) const
         }
         row++;
     }
-
     if (child == NULL) return QModelIndex();
-
     return createIndex(row, col, child);
 }
 
 int RuleSetModel::columnForRuleElementType(QString typeName) const
 {
-    //if (fwbdebug) qDebug() << "RuleSetModel::columnForRuleElementType(QString typeName)";
+    // if (fwbdebug)
+    //     qDebug() << "RuleSetModel::columnForRuleElementType(QString typeName)";
     int col = 1;
     foreach (ColDesc cd, header)
     {
@@ -442,13 +439,13 @@ int RuleSetModel::columnForRuleElementType(QString typeName) const
             break;
         col++;
     }
-
     return col;
 }
 
 int RuleSetModel::columnByType(ColDesc::ColumnType type)
 {
-    if (fwbdebug) qDebug() << "RuleSetModel::columnByType(ColDesc::ColumnType type)";
+    // if (fwbdebug)
+    //     qDebug() << "RuleSetModel::columnByType(ColDesc::ColumnType type)";
     int col = 1;
     foreach (ColDesc cd, header)
     {
@@ -456,7 +453,6 @@ int RuleSetModel::columnByType(ColDesc::ColumnType type)
             break;
         col++;
     }
-
     return col;
 }
 

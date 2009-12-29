@@ -58,8 +58,8 @@ class RuleSetModel;
 class SelectionMemento
 {
     public:
-    QString groupName;
-    int row;
+    SelectionMemento() { rule_id = -1; column = -1; }
+    int rule_id;
     int column;
 };
 

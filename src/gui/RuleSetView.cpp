@@ -167,7 +167,9 @@ RuleSetView* RuleSetView::getRuleSetViewByType(ProjectPanel *project,
 void RuleSetView::selectRE(QModelIndex index)
 {
     if (fwbdebug)
-        qDebug() << "RuleSetView::selectRE(QModelIndex index)";
+        qDebug() << "RuleSetView::selectRE(QModelIndex index)"
+                 << index;
+
     if (fwosm->index != index)
     {
         fwosm->selectedObject = NULL;
@@ -2207,23 +2209,28 @@ FWObject* RuleSetView::getSelectedObject()
 
 void RuleSetView::saveCurrentRowColumn(SelectionMemento &memento)
 {
+    RuleSetModel* md = ((RuleSetModel*)model());
     QModelIndex index = fwosm->index;
-
-    memento.column = index.column();
-    memento.row = index.row();
-    RuleNode* node = static_cast<RuleNode *>(index.internalPointer());
-
-    if (node!=NULL && node->parent !=NULL && !node->parent->isRoot())
+    if (index.isValid())
     {
-        memento.groupName = node->parent->name;
+        memento.column = index.column();
+        memento.rule_id = md->nodeFromIndex(index)->rule->getId();
+    } else
+    {
+        memento.column = -1;
+        memento.rule_id = -1;
     }
 }
 
 void RuleSetView::restoreCurrentRowColumn(SelectionMemento &memento)
 {
-    RuleSetModel* md = ((RuleSetModel*)model());
-    QModelIndex index = md->index(memento.row, memento.column, memento.groupName);
-    selectRE(index);
+    if (memento.rule_id != -1)
+    {
+        RuleSetModel* md = ((RuleSetModel*)model());
+        Rule *rule = Rule::cast(project->db()->findInIndex(memento.rule_id));
+        QModelIndex index = md->index(rule, memento.column);
+        selectRE(index);
+    }
 }
 
 void RuleSetView::updateCurrentCell()

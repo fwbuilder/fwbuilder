@@ -93,14 +93,15 @@ bool ProjectPanel::event(QEvent *event)
             case RELOAD_RULESET_EVENT:
                 registerRuleSetRedrawRequest();
                 // update rule set title as well
-                updateFirewallName();
+                //updateFirewallName();
                 ev->accept();
                 return true;
 
             case RELOAD_RULESET_IMMEDIATELY_EVENT:
-                reopenFirewall();
+                redrawRuleSets();
+                //reopenFirewall();
                 // update rule set title as well
-                updateFirewallName();
+                //updateFirewallName();
                 ev->accept();
                 return true;
             }

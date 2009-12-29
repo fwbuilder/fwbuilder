@@ -59,6 +59,7 @@
 #include <QApplication>
 #include <QUndoStack>
 #include <QUndoGroup>
+#include <QScrollBar>
 
 #include <iostream>
 
