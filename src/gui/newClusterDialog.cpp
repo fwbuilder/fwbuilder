@@ -171,10 +171,14 @@ void newClusterDialog::showPage(const int page, bool blank)
             tr("Depending on the failover protocol, cluster interface "
                "may or may not need an IP address. <b>VRRP</b> and "
                "<b>CARP</b> interfaces should have their own unique "
-               "IP addresses different from the addresses of interfaces "
-               "of member firewalls. Other failover protocols such as "
+               "IP addresses different from the member firewall interfaces. "
+               "Other failover protocols such as "
                "<b>heartbeat</b> or <b>OpenAIS</b> do not create new "
-               "inetrface and therefore do not require additional IP address."
+               "interface and therefore do not require additional IP address. "
+               "<br>"
+               "<br>"
+               "List of available failover protocols depends on the firewall "
+               "platform."
             )
         );
 
