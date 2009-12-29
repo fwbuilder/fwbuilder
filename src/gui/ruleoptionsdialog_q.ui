@@ -62,7 +62,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex" >
-          <number>0</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="tab1" >
           <attribute name="title" >
@@ -2066,13 +2066,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>QLineEdit.h</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>pix_disable_rule_log</tabstop>
   <tabstop>pix_logLevel</tabstop>
@@ -2252,7 +2245,7 @@
   </connection>
   <connection>
    <sender>pf_logPrefix</sender>
-   <signal>textChanged(QString)</signal>
+   <signal>editingFinished()</signal>
    <receiver>RuleOptionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -2460,7 +2453,7 @@
   </connection>
   <connection>
    <sender>ipt_logPrefix</sender>
-   <signal>textChanged(QString)</signal>
+   <signal>editingFinished()</signal>
    <receiver>RuleOptionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>
@@ -2620,7 +2613,7 @@
   </connection>
   <connection>
    <sender>pf_overload_table</sender>
-   <signal>textChanged(QString)</signal>
+   <signal>editingFinished()</signal>
    <receiver>RuleOptionsDialog_q</receiver>
    <slot>changed()</slot>
    <hints>

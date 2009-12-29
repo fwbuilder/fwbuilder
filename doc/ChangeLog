@@ -6,6 +6,12 @@
 	master by looking in the StateSyncGroup object (state
 	synchronization cluster group). Fixes #998
 
+	* fixed a bug in the rule options dialog: if user tried to edit
+	iptables log prefix for the rule and deleted a character in the
+	middle of the string, cursor jumped to the end of the line. Also,
+	undo command was created for each keystroke in this input field.
+	fixes #1037
+
 2009-12-27  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::addDefaultPolicyRule):
