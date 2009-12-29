@@ -35,7 +35,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>8</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -2316,8 +2316,16 @@ with this address:</string>
   <tabstop>compiler</tabstop>
   <tabstop>compilerArgs</tabstop>
   <tabstop>outputFileName</tabstop>
-  <tabstop>buttonOk</tabstop>
-  <tabstop>buttonCancel</tabstop>
+  <tabstop>fileNameOnFw</tabstop>
+  <tabstop>confFileNameOnFw</tabstop>
+  <tabstop>pf_accept_new_tcp_with_no_syn</tabstop>
+  <tabstop>pf_modulate_state</tabstop>
+  <tabstop>pf_check_shadowing</tabstop>
+  <tabstop>pf_ignore_empty_groups</tabstop>
+  <tabstop>pf_optimization</tabstop>
+  <tabstop>pf_state_policy</tabstop>
+  <tabstop>mgmt_ssh</tabstop>
+  <tabstop>mgmt_addr</tabstop>
   <tabstop>pf_scrub_no_df</tabstop>
   <tabstop>pf_scrub_random_id</tabstop>
   <tabstop>pf_scrub_use_minttl</tabstop>
@@ -2378,6 +2386,7 @@ with this address:</string>
   <tabstop>altAddress</tabstop>
   <tabstop>activationCmd</tabstop>
   <tabstop>sshArgs</tabstop>
+  <tabstop>scpArgs</tabstop>
   <tabstop>installScript</tabstop>
   <tabstop>installScriptArgs</tabstop>
   <tabstop>prologPlace</tabstop>
@@ -2389,8 +2398,15 @@ with this address:</string>
   <tabstop>pf_fallback_log</tabstop>
   <tabstop>pf_debug</tabstop>
   <tabstop>pf_configure_interfaces</tabstop>
+  <tabstop>pf_configure_carp_interfaces</tabstop>
+  <tabstop>pf_configure_pfsync_interfaces</tabstop>
+  <tabstop>pf_configure_vlan_interfaces</tabstop>
   <tabstop>pf_manage_virtual_addr</tabstop>
+  <tabstop>pf_flush_states</tabstop>
   <tabstop>ipv4before</tabstop>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>buttonHelp</tabstop>
  </tabstops>
  <resources/>
  <connections>

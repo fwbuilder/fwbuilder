@@ -1528,7 +1528,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>18</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -4435,21 +4435,15 @@ the packet should go to, and which is the next hop
   <tabstop>pix_check_overlapping_global_statics</tabstop>
   <tabstop>mgmt_ssh</tabstop>
   <tabstop>mgmt_addr</tabstop>
-  <tabstop>pix_smtp_port1</tabstop>
-  <tabstop>pix_smtp_port2</tabstop>
-  <tabstop>pix_sqlnet_switch</tabstop>
-  <tabstop>pix_tftp_port</tabstop>
-  <tabstop>pix_tftp_switch</tabstop>
-  <tabstop>pix_pptp_switch</tabstop>
-  <tabstop>pix_pptp_port</tabstop>
-  <tabstop>disableAllFixupsButton</tabstop>
-  <tabstop>skipAllFixupsButton</tabstop>
-  <tabstop>pix_prolog_script</tabstop>
   <tabstop>user</tabstop>
   <tabstop>altAddress</tabstop>
   <tabstop>sshArgs</tabstop>
+  <tabstop>scpArgs</tabstop>
+  <tabstop>use_scp</tabstop>
+  <tabstop>filesystem</tabstop>
   <tabstop>installScript</tabstop>
   <tabstop>installScriptArgs</tabstop>
+  <tabstop>pix_prolog_script</tabstop>
   <tabstop>edit_prolog_button</tabstop>
   <tabstop>pix_epilog_script</tabstop>
   <tabstop>edit_epilog_button</tabstop>
@@ -4480,10 +4474,10 @@ the packet should go to, and which is the next hop
   <tabstop>uauth_hh</tabstop>
   <tabstop>uauth_mm</tabstop>
   <tabstop>uauth_ss</tabstop>
-  <tabstop>uauth_abs</tabstop>
-  <tabstop>uauth_inact</tabstop>
   <tabstop>telnet_timeout</tabstop>
   <tabstop>ssh_timeout</tabstop>
+  <tabstop>uauth_abs</tabstop>
+  <tabstop>uauth_inact</tabstop>
   <tabstop>defaultTimeoutsButton</tabstop>
   <tabstop>fixup_notebook</tabstop>
   <tabstop>pix_ctiqbe_switch</tabstop>
@@ -4510,10 +4504,56 @@ the packet should go to, and which is the next hop
   <tabstop>pix_mgcp_switch</tabstop>
   <tabstop>pix_mgcp_gateway_port</tabstop>
   <tabstop>pix_mgcp_call_agent_port</tabstop>
+  <tabstop>pix_pptp_switch</tabstop>
+  <tabstop>pix_pptp_port</tabstop>
+  <tabstop>pix_rsh_switch</tabstop>
+  <tabstop>pix_rsh_port1</tabstop>
+  <tabstop>pix_rtsp_switch</tabstop>
+  <tabstop>pix_rtsp_port</tabstop>
+  <tabstop>pix_sip_switch</tabstop>
+  <tabstop>pix_sip_port1</tabstop>
+  <tabstop>pix_sip_port2</tabstop>
+  <tabstop>pix_sipudp_switch</tabstop>
+  <tabstop>pix_sip_udp_port1</tabstop>
+  <tabstop>pix_skinny_switch</tabstop>
+  <tabstop>pix_skinny_port1</tabstop>
+  <tabstop>pix_skinny_port2</tabstop>
+  <tabstop>pix_smtp_switch</tabstop>
+  <tabstop>pix_smtp_port1</tabstop>
+  <tabstop>pix_smtp_port2</tabstop>
+  <tabstop>pix_sqlnet_switch</tabstop>
+  <tabstop>pix_sqlnet_port1</tabstop>
+  <tabstop>pix_sqlnet_port2</tabstop>
+  <tabstop>pix_tftp_switch</tabstop>
+  <tabstop>pix_tftp_port</tabstop>
+  <tabstop>enableAllFixupsButton</tabstop>
+  <tabstop>disableAllFixupsButton</tabstop>
+  <tabstop>skipAllFixupsButton</tabstop>
+  <tabstop>pix_generated_fixup</tabstop>
+  <tabstop>syslog_host</tabstop>
+  <tabstop>syslog_queue_size</tabstop>
+  <tabstop>syslog_facility</tabstop>
+  <tabstop>logging_trap_level</tabstop>
+  <tabstop>emblem_log_format</tabstop>
+  <tabstop>syslog_device_id_hostname</tabstop>
+  <tabstop>syslog_device_id_interface</tabstop>
+  <tabstop>syslog_device_id_interface_val</tabstop>
+  <tabstop>syslog_device_id_string</tabstop>
+  <tabstop>syslog_device_id_string_val</tabstop>
+  <tabstop>logging_timestamp</tabstop>
   <tabstop>logging_buffered</tabstop>
   <tabstop>logging_buffered_level</tabstop>
   <tabstop>logging_console</tabstop>
   <tabstop>logging_console_level</tabstop>
+  <tabstop>pix_acl_basic</tabstop>
+  <tabstop>pix_acl_no_clear</tabstop>
+  <tabstop>pix_acl_substitution</tabstop>
+  <tabstop>pix_acl_temp_addr</tabstop>
+  <tabstop>short_script</tabstop>
+  <tabstop>pix_include_comments</tabstop>
+  <tabstop>pix_use_acl_remarks</tabstop>
+  <tabstop>pix_regroup_commands</tabstop>
+  <tabstop>pix_use_manual_commit</tabstop>
   <tabstop>resetinbound</tabstop>
   <tabstop>resetoutside</tabstop>
   <tabstop>connection_timewait</tabstop>
@@ -4524,46 +4564,10 @@ the packet should go to, and which is the next hop
   <tabstop>nodnsalias_outbound</tabstop>
   <tabstop>max_conns</tabstop>
   <tabstop>emb_limit</tabstop>
-  <tabstop>syslog_device_id_string_val</tabstop>
-  <tabstop>logging_timestamp</tabstop>
-  <tabstop>syslog_device_id_string</tabstop>
-  <tabstop>enableAllFixupsButton</tabstop>
-  <tabstop>pix_sqlnet_port1</tabstop>
-  <tabstop>pix_rsh_port1</tabstop>
-  <tabstop>pix_rsh_switch</tabstop>
-  <tabstop>pix_rtsp_port</tabstop>
-  <tabstop>pix_rtsp_switch</tabstop>
-  <tabstop>pix_sip_port2</tabstop>
-  <tabstop>pix_sip_port1</tabstop>
-  <tabstop>pix_sip_switch</tabstop>
-  <tabstop>pix_sip_udp_port1</tabstop>
-  <tabstop>pix_sipudp_switch</tabstop>
-  <tabstop>pix_skinny_port1</tabstop>
-  <tabstop>pix_skinny_port2</tabstop>
-  <tabstop>pix_skinny_switch</tabstop>
-  <tabstop>pix_sqlnet_port2</tabstop>
-  <tabstop>pix_smtp_switch</tabstop>
-  <tabstop>pix_acl_basic</tabstop>
-  <tabstop>textLabel3</tabstop>
-  <tabstop>pix_acl_no_clear</tabstop>
-  <tabstop>pix_acl_substitution</tabstop>
-  <tabstop>pix_acl_temp_addr</tabstop>
-  <tabstop>pix_include_comments</tabstop>
-  <tabstop>pix_use_acl_remarks</tabstop>
-  <tabstop>pix_regroup_commands</tabstop>
-  <tabstop>pix_use_manual_commit</tabstop>
-  <tabstop>pix_generated_fixup</tabstop>
-  <tabstop>syslog_device_id_hostname</tabstop>
-  <tabstop>syslog_device_id_interface_val</tabstop>
+  <tabstop>ipv4before_2</tabstop>
   <tabstop>ok_button</tabstop>
   <tabstop>cancel_button</tabstop>
-  <tabstop>syslog_device_id_interface</tabstop>
-  <tabstop>logging_trap_level</tabstop>
-  <tabstop>emblem_log_format</tabstop>
-  <tabstop>syslog_host</tabstop>
-  <tabstop>syslog_queue_size</tabstop>
-  <tabstop>syslog_facility</tabstop>
-  <tabstop>ipv4before_2</tabstop>
+  <tabstop>textLabel3</tabstop>
  </tabstops>
  <resources/>
  <connections>

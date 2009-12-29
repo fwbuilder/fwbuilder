@@ -1,119 +1,44 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>openbsdAdvancedDialog_q</class>
- <widget class="QDialog" name="openbsdAdvancedDialog_q" >
-  <property name="geometry" >
+ <widget class="QDialog" name="openbsdAdvancedDialog_q">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
+    <width>432</width>
     <height>330</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>OpenBSD: advanced settings</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="leftMargin" >
+  <layout class="QGridLayout">
+   <property name="margin">
     <number>11</number>
    </property>
-   <property name="topMargin" >
-    <number>11</number>
-   </property>
-   <property name="rightMargin" >
-    <number>11</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>11</number>
-   </property>
-   <property name="horizontalSpacing" >
+   <property name="spacing">
     <number>6</number>
    </property>
-   <property name="verticalSpacing" >
-    <number>6</number>
-   </property>
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonOk" >
-       <property name="text" >
-        <string>&amp;OK</string>
-       </property>
-       <property name="shortcut" >
-        <string/>
-       </property>
-       <property name="autoDefault" >
-        <bool>true</bool>
-       </property>
-       <property name="default" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonCancel" >
-       <property name="text" >
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="shortcut" >
-        <string/>
-       </property>
-       <property name="autoDefault" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget" >
-     <property name="currentIndex" >
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="tab0" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab0">
+      <attribute name="title">
        <string>Options</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <item row="0" column="0" >
+      <layout class="QGridLayout">
+       <item row="0" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>20</height>
@@ -121,50 +46,50 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="label534" >
-         <property name="text" >
+       <item row="1" column="0">
+        <widget class="QLabel" name="label534">
+         <property name="text">
           <string>IPv4 Packet forwarding</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="1" >
-        <widget class="QComboBox" name="openbsd_ip_forward" >
-         <property name="currentIndex" >
+       <item row="1" column="1">
+        <widget class="QComboBox" name="openbsd_ip_forward">
+         <property name="currentIndex">
           <number>0</number>
          </property>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="1" column="2" >
+       <item row="1" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>20</height>
@@ -172,146 +97,146 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label534_2" >
-         <property name="text" >
+       <item row="2" column="0">
+        <widget class="QLabel" name="label534_2">
+         <property name="text">
           <string>IPv6 Packet forwarding</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
-        <widget class="QComboBox" name="openbsd_ipv6_forward" >
-         <property name="currentIndex" >
+       <item row="2" column="1">
+        <widget class="QComboBox" name="openbsd_ipv6_forward">
+         <property name="currentIndex">
           <number>0</number>
          </property>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label536" >
-         <property name="text" >
+       <item row="3" column="0">
+        <widget class="QLabel" name="label536">
+         <property name="text">
           <string>Enable directed broadcast</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="3" column="1" >
-        <widget class="QComboBox" name="openbsd_ip_directed_broadcast" >
+       <item row="3" column="1">
+        <widget class="QComboBox" name="openbsd_ip_directed_broadcast">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="4" column="0" >
-        <widget class="QLabel" name="label538" >
-         <property name="text" >
+       <item row="4" column="0">
+        <widget class="QLabel" name="label538">
+         <property name="text">
           <string>Forward source routed packets</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="4" column="1" >
-        <widget class="QComboBox" name="openbsd_ip_sourceroute" >
+       <item row="4" column="1">
+        <widget class="QComboBox" name="openbsd_ip_sourceroute">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="5" column="0" >
-        <widget class="QLabel" name="label539" >
-         <property name="text" >
+       <item row="5" column="0">
+        <widget class="QLabel" name="label539">
+         <property name="text">
           <string>Generate ICMP redirects</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" >
-        <widget class="QComboBox" name="openbsd_ip_redirect" >
+       <item row="5" column="1">
+        <widget class="QComboBox" name="openbsd_ip_redirect">
          <item>
-          <property name="text" >
+          <property name="text">
            <string>No change</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>On</string>
           </property>
          </item>
          <item>
-          <property name="text" >
+          <property name="text">
            <string>Off</string>
           </property>
          </item>
         </widget>
        </item>
-       <item row="6" column="0" >
+       <item row="6" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>231</width>
            <height>20</height>
@@ -319,15 +244,15 @@
          </property>
         </spacer>
        </item>
-       <item row="6" column="1" >
+       <item row="6" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>93</width>
            <height>51</height>
@@ -337,45 +262,33 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab1" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab1">
+      <attribute name="title">
        <string>Path</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="leftMargin" >
+      <layout class="QGridLayout">
+       <property name="margin">
         <number>6</number>
        </property>
-       <property name="topMargin" >
+       <property name="spacing">
         <number>6</number>
        </property>
-       <property name="rightMargin" >
-        <number>6</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>6</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
-        <number>6</number>
-       </property>
-       <item row="1" column="1" >
-        <widget class="QLabel" name="label575" >
-         <property name="text" >
+       <item row="1" column="1">
+        <widget class="QLabel" name="label575">
+         <property name="text">
           <string>pfctl:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="2" >
-        <widget class="QLineEdit" name="openbsd_path_pfctl" >
-         <property name="minimumSize" >
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="openbsd_path_pfctl">
+         <property name="minimumSize">
           <size>
            <width>200</width>
            <height>0</height>
@@ -383,9 +296,9 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="2" >
-        <widget class="QLineEdit" name="openbsd_path_sysctl" >
-         <property name="minimumSize" >
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="openbsd_path_sysctl">
+         <property name="minimumSize">
           <size>
            <width>200</width>
            <height>0</height>
@@ -393,41 +306,41 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
-        <widget class="QLabel" name="label582" >
-         <property name="text" >
+       <item row="2" column="1">
+        <widget class="QLabel" name="label582">
+         <property name="text">
           <string>sysctl:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="0" colspan="4" >
-        <widget class="QLabel" name="label574" >
-         <property name="text" >
+       <item row="0" column="0" colspan="4">
+        <widget class="QLabel" name="label574">
+         <property name="text">
           <string>Specify directory path and a file name for the following utilities on the OS your firewall machine is running. Leave these empty if you want to use default values.</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="3" column="2" >
+       <item row="3" column="2">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -435,15 +348,15 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="3" >
+       <item row="1" column="3">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>20</height>
@@ -451,15 +364,15 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0" >
+       <item row="1" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>20</height>
@@ -471,9 +384,64 @@
      </widget>
     </widget>
    </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk">
+       <property name="text">
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>openbsd_ip_forward</tabstop>
@@ -481,10 +449,10 @@
   <tabstop>openbsd_ip_directed_broadcast</tabstop>
   <tabstop>openbsd_ip_sourceroute</tabstop>
   <tabstop>openbsd_ip_redirect</tabstop>
-  <tabstop>buttonOk</tabstop>
-  <tabstop>buttonCancel</tabstop>
   <tabstop>openbsd_path_pfctl</tabstop>
   <tabstop>openbsd_path_sysctl</tabstop>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>buttonCancel</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -494,11 +462,11 @@
    <receiver>openbsdAdvancedDialog_q</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -510,11 +478,11 @@
    <receiver>openbsdAdvancedDialog_q</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>20</x>
      <y>20</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
