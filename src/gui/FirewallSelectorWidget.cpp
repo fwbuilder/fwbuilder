@@ -43,6 +43,19 @@ FirewallSelectorWidget::~FirewallSelectorWidget()
 
 void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls, bool select)
 {
+    QSet<Firewall*> nonuniq;
+    foreach (Firewall* fw1, firewalls)
+    {
+        foreach (Firewall* fw2, firewalls)
+        {
+            if (fw1 != fw2 && fw1->getName() == fw2->getName() && fw2->getLibraryName() != fw1->getLibraryName())
+            {
+                nonuniq.insert(fw1);
+                nonuniq.insert(fw2);
+            }
+        }
+    }
+
     this->clear();
     Firewall *fw;
     for (list<Firewall*>::iterator it = firewalls.begin(); it != firewalls.end(); it++)
@@ -50,6 +63,8 @@ void FirewallSelectorWidget::setFirewallList(list<Firewall*> firewalls, bool sel
         fw = *it;
         QTableWidgetItem *title = new QTableWidgetItem(QIcon(":/Icons/Firewall/icon"),
                                                        QString::fromUtf8(fw->getName().c_str()));
+        if (nonuniq.contains(fw))
+            title->setText((fw->getLibraryName() + " / " + fw->getName()).c_str());
         title->setFlags(Qt::ItemIsEnabled);
         QCheckBox *box = new QCheckBox(this);
         connect(box, SIGNAL(toggled(bool)), this, SLOT(usageChanged(bool)));

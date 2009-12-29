@@ -467,4 +467,5 @@ void InterfaceEditorWidget::protocolChanged(QString name)
 void InterfaceEditorWidget::setExplanation(const QString& text)
 {
     this->m_ui->explanation->setText(text);
+    this->m_ui->explanation->setFont(QApplication::font());
 }
