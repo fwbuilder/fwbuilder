@@ -76,6 +76,7 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
 
 #ifndef _WIN32
 #  include <unistd.h>     // for access(2) and getdomainname
@@ -114,11 +115,6 @@ bool instDialog::checkIfNeedToInstall(Firewall *fw)
 QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
                                             Firewall *fw)
 {
-    time_t lm = fw->getInt("lastModified");
-    time_t lc = fw->getInt("lastCompiled");
-    time_t li = fw->getInt("lastInstalled");
-    QDateTime dt;
-
     QTreeWidgetItem* item;
     QStringList sl;
     sl.push_back(fw->getName().c_str());
@@ -128,14 +124,78 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
     else
         item = new QTreeWidgetItem(sl);
 
-    QString icn_filename = (":/Icons/"+fw->getTypeName()+"/icon").c_str();
+    QString icn_filename = (":/Icons/" + fw->getTypeName() + "/icon").c_str();
     QPixmap pm;
-    if ( ! QPixmapCache::find( icn_filename, pm) )
+    if ( ! QPixmapCache::find(icn_filename, pm))
     {
-        pm.load( icn_filename );
-        QPixmapCache::insert( icn_filename, pm);
+        pm.load(icn_filename);
+        QPixmapCache::insert(icn_filename, pm);
     }
-    item->setIcon( 0, QIcon(pm) );
+    item->setIcon(0, QIcon(pm));
+
+    item->setData(0, Qt::UserRole, QVariant(fw->getId()));
+
+    // Mark cluster members
+    // If parent!=NULL, new tree item corresponds to the cluster member
+    item->setData(1, Qt::UserRole, QVariant(parent!=NULL));
+
+    // it is useful to know how many members does this cluster have. If this is
+    // not a cluster, store 0
+    list<Firewall*> members;
+    if (Cluster::isA(fw))
+        Cluster::cast(fw)->getMembersList(members);
+    int num_members = members.size();
+
+    item->setData(2, Qt::UserRole, QVariant(num_members));
+
+    return item;
+}
+
+void instDialog::setFlags(QTreeWidgetItem* item)
+{
+    int obj_id = item->data(0, Qt::UserRole).toInt();
+    Firewall *fw = Firewall::cast(project->db()->findInIndex(obj_id));
+    QTreeWidgetItem* parent = item->parent();
+
+    time_t lm = fw->getInt("lastModified");
+    time_t lc = fw->getInt("lastCompiled");
+    time_t li = fw->getInt("lastInstalled");
+    QDateTime dt;
+
+    // need to skip the secondary cluster members if platform only
+    // allows installations on the primary (e.g. PIX).  Note that
+    // platform attribute must be the same in the cluster and member
+    // firewalls objects. See #998
+
+    string platform = fw->getStr("platform");
+    bool install_only_on_primary_member = Resources::getTargetCapabilityBool(
+        platform, "install_only_on_primary");
+
+    Cluster *cluster = NULL;
+    FWObject *master_interface = NULL;
+
+    if (parent)
+    {
+        int obj_id = parent->data(0, Qt::UserRole).toInt();
+        cluster = Cluster::cast(project->db()->findInIndex(obj_id));
+        if (cluster)
+        {
+            FWObject *state_sync_group =
+                cluster->getFirstByType(StateSyncClusterGroup::TYPENAME);
+            string master_id = state_sync_group->getStr("master_iface");
+            for (FWObjectTypedChildIterator grp_it =
+                     state_sync_group->findByType(FWObjectReference::TYPENAME);
+                 grp_it != grp_it.end(); ++grp_it)
+            {
+                FWObject *iface = FWObjectReference::getObject(*grp_it);
+                if (FWObjectDatabase::getStringId(iface->getId()) == master_id)
+                {
+                    master_interface = iface;
+                    break;
+                }
+            }
+        }
+    }
 
     // Real firewalls get checkbox for install
     if (Firewall::isA(fw))
@@ -144,23 +204,41 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
         if (operation==BATCH_INSTALL)
         {
             checked = checkIfNeedToInstall(fw);
-            if (parent)
+            if (cluster)
             {
                 // override if checkIfNeedToCompile() is true for the
-                // parent cluster
-                int obj_id = parent->data(0, Qt::UserRole).toInt();
-                Cluster *cluster = Cluster::cast(project->db()->findInIndex(obj_id));
-                if (cluster && checkIfNeedToCompile(cluster))
+                // parent cluster.
+                if (checkIfNeedToCompile(cluster))
+                {
                     checked = true;
+                }
             }
             item->setCheckState(INSTALL_CHECKBOX_COLUMN,
                                 checked?Qt::Checked:Qt::Unchecked);
         }
 
-        if (parent==NULL)
+        // If this platform requires installation only on
+        // the master, disable and uncheck checkbox for the standby.
+        if (install_only_on_primary_member && master_interface != NULL)
         {
-            // If parent==NULL, we are adding firewall that is not
-            // cluster member, it needs "compile" checkbox
+            QString txt = item->text(0);
+            if (master_interface->isChildOf(fw))
+            {
+                // Master
+                item->setText(0, QString("%1 (master)").arg(txt));
+            } else
+            {
+                // Standby
+                item->setText(0, QString("%1 (standby)").arg(txt));
+                item->setCheckState(INSTALL_CHECKBOX_COLUMN, Qt::Unchecked);
+                item->setFlags(Qt::NoItemFlags);
+            }
+        }
+
+        if (cluster==NULL)
+        {
+            // we are adding firewall that is not cluster member, it
+            // needs "compile" checkbox
             checked = checkIfNeedToCompile(fw);
             item->setCheckState(COMPILE_CHECKBOX_COLUMN,
                                 checked?Qt::Checked:Qt::Unchecked);
@@ -199,18 +277,6 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
 
     dt.setTime_t(li);
     item->setText(LAST_INSTALLED_COLUMN, (li)?dt.toString():QString("Never"));
-
-    item->setData(0, Qt::UserRole, QVariant(fw->getId()));
-
-    // Mark cluster members
-    // If parent!=NULL, new tree item corresponds to the cluster member
-    item->setData(1, Qt::UserRole, QVariant(parent!=NULL));
-
-    // it is useful to know how many members does this cluster have. If this is
-    // not a cluster, store 0
-    item->setData(2, Qt::UserRole, QVariant(num_members));
-
-    return item;
 }
 
 /*
@@ -378,6 +444,7 @@ void instDialog::fillCompileSelectList()
     for (list<Cluster *>::iterator i=clusters.begin(); i!=clusters.end(); ++i)
     {
         cl = *i;
+
         QTreeWidgetItem* cluster_item = createTreeItem(NULL, cl);
         m_dialog->selectTable->addTopLevelItem(cluster_item);
 
@@ -387,7 +454,7 @@ void instDialog::fillCompileSelectList()
         for (list<Firewall*>::iterator member=members.begin();
              member!=members.end(); ++member)
         {
-            createTreeItem(cluster_item, *member);
+            QTreeWidgetItem *itm = createTreeItem(cluster_item, *member);
             working_list_of_firewalls.remove(*member);
         }
         cluster_item->setExpanded(true);
@@ -399,6 +466,13 @@ void instDialog::fillCompileSelectList()
         fw = *i;
         QTreeWidgetItem* fw_item = createTreeItem(NULL, fw);
         m_dialog->selectTable->addTopLevelItem(fw_item);
+    }
+
+    QTreeWidgetItemIterator it(m_dialog->selectTable);
+    while (*it)
+    {
+        setFlags(*it);
+        ++it;
     }
 
     creatingTable = false;
@@ -692,16 +766,20 @@ void instDialog::setSelectStateAll(int column, Qt::CheckState select)
         bool cluster_member = (*it)->data(1, Qt::UserRole).toBool();
         int num_members = (*it)->data(2, Qt::UserRole).toInt();
 
-        // firewalls only get checkboxes for install,
-        if (column == INSTALL_CHECKBOX_COLUMN && Firewall::isA(o))
-            (*it)->setCheckState(column, select);
+        Qt::ItemFlags flags = (*it)->flags();
+        if (flags & Qt::ItemIsUserCheckable != 0)
+        {
+            // firewalls only get checkboxes for install,
+            if (column == INSTALL_CHECKBOX_COLUMN && Firewall::isA(o))
+                (*it)->setCheckState(column, select);
 
-        // Cluster gets checkbox for compile.
-        // Cluster should never get a checkbox if it has no members.
-        // Firewall that is not a cluster member gets compile checkbox
-        if ((column == COMPILE_CHECKBOX_COLUMN && Cluster::isA(o) && num_members) ||
-            (Firewall::isA(o) && !cluster_member))
-            (*it)->setCheckState(column, select);
+            // Cluster gets checkbox for compile.
+            // Cluster should never get a checkbox if it has no members.
+            // Firewall that is not a cluster member gets compile checkbox
+            if ((column == COMPILE_CHECKBOX_COLUMN && Cluster::isA(o) && num_members) ||
+                (Firewall::isA(o) && !cluster_member))
+                (*it)->setCheckState(column, select);
+        }
         ++it;
     }
 }

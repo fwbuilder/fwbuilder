@@ -28,6 +28,7 @@
         <unprotected_interfaces>False</unprotected_interfaces>
         <supports_prolog_epilog>False</supports_prolog_epilog>
         <supports_cluster>False</supports_cluster>
+        <install_only_on_primary>False</install_only_on_primary>
         <actions>
             <Accept>
                 <supported>True</supported>

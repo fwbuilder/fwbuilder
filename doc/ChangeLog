@@ -1,3 +1,11 @@
+2009-12-28  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::setFlags): For the PIX
+	cluster, built-in installer installs generated configuration only
+	on the master member firewall. It determines which one is the
+	master by looking in the StateSyncGroup object (state
+	synchronization cluster group). Fixes #998
+
 2009-12-27  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::addDefaultPolicyRule):

@@ -134,6 +134,7 @@ nameif %in %il security%sl
         <unprotected_interfaces>False</unprotected_interfaces>
         <supports_prolog_epilog>True</supports_prolog_epilog>
         <supports_cluster>True</supports_cluster>
+        <install_only_on_primary>True</install_only_on_primary>
         <actions>
             <Accept>
                 <supported>True</supported>

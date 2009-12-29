@@ -495,10 +495,27 @@ rule sets of this object rather than in the actual firewalls.
       have IP addresses and these addresses must be different but
       belong to the same subnet.
     </li>
-
-
   </ul>
 </p>
+
+<p>
+  Built-in policy installer treats PIX clusters in a special way:
+  <ul>
+    <li> For the PIX cluster, built-in installer installs generated
+      configuration only on the master PIX unit. It determines which
+      one is the master by looking in the StateSyncGroup object (state
+      synchronization cluster group).
+    </li>
+    <li>
+      Dialog where user enters authentication credentials and other
+      parameters for the installer has a checkbox that makes installer
+      initiate copy of the configuration to the standby PIX if
+      installation was successfull.
+    </li>
+  </ul>
+</p>
+
+
 
 <a name="bridge"></a>
 <h2>Changes in the support for bridging firewalls</h2>
