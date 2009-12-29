@@ -101,7 +101,7 @@ void newClusterDialog::setFirewallList(std::vector<libfwbuilder::FWObject*> data
     useFirewallList = true;
 }
 
-void newClusterDialog::showPage(const int page)
+void newClusterDialog::showPage(const int page, bool blank)
 {
     FakeWizard::showPage(page);
 
@@ -116,38 +116,44 @@ void newClusterDialog::showPage(const int page)
     {
     case FIREWALLS_PAGE:
     {
-        m_dialog->firewallSelector->clear();
-        if (useFirewallList)
+        if (blank)
         {
-            m_dialog->firewallSelector->setFirewallList(firewallList, true);
-        }
-        else
-        {
-            list<Firewall*> fwlist;
-            mw->findAllFirewalls(fwlist);
-            m_dialog->firewallSelector->setFirewallList(fwlist);
+            m_dialog->firewallSelector->clear();
+            if (useFirewallList)
+            {
+                m_dialog->firewallSelector->setFirewallList(firewallList, true);
+            }
+            else
+            {
+                list<Firewall*> fwlist;
+                mw->findAllFirewalls(fwlist);
+                m_dialog->firewallSelector->setFirewallList(fwlist);
+            }
         }
 
         setNextEnabled(FIREWALLS_PAGE, !this->m_dialog->obj_name->text().isEmpty());
         setFinishEnabled(FIREWALLS_PAGE, false);
-
         break;
     }
     case INTERFACES_PAGE:
     {
-        m_dialog->interfaceSelector->clear();
-        QList<Firewall*> firewalls;
-        typedef QPair<Firewall*, bool> fwpair;
-        foreach ( fwpair fw, m_dialog->firewallSelector->getSelectedFirewalls() )
-            firewalls.append(fw.first);
-        this->m_dialog->interfaceSelector->setFirewallList(firewalls);
-
+        if (blank)
+        {
+            m_dialog->interfaceSelector->clear();
+            QList<Firewall*> firewalls;
+            typedef QPair<Firewall*, bool> fwpair;
+            foreach ( fwpair fw, m_dialog->firewallSelector->getSelectedFirewalls() )
+                firewalls.append(fw.first);
+            this->m_dialog->interfaceSelector->setFirewallList(firewalls);
+        }
         setNextEnabled(INTERFACES_PAGE, true);
         setFinishEnabled(INTERFACES_PAGE, false);
         break;
     }
     case INTERFACEEDITOR_PAGE:
     {
+        if (blank)
+        {
         if (this->m_dialog->interfaceSelector->getInterfaces().count() == 0)
             this->showPage(POLICY_PAGE);
 
@@ -172,13 +178,15 @@ void newClusterDialog::showPage(const int page)
         {
             this->m_dialog->interfaceEditor->addClusterInterface(iface);
         }
+        }
         setNextEnabled(INTERFACEEDITOR_PAGE, true);
         setFinishEnabled(INTERFACEEDITOR_PAGE, false);
         break;
     }
     case POLICY_PAGE:
     {
-
+        if (blank)
+        {
         foreach (QRadioButton *btn, copy_rules_from_buttons.keys())
         {
             btn->close();
@@ -191,6 +199,7 @@ void newClusterDialog::showPage(const int page)
             QRadioButton *newbox = new QRadioButton(QString::fromUtf8(fws.at(i).first->getName().c_str()), this);
             qFindChild<QVBoxLayout*>(this->m_dialog->page_4, "policyLayout")->addWidget(newbox);
             copy_rules_from_buttons[newbox] = fws.at(i).first;
+        }
         }
         setNextEnabled(POLICY_PAGE, true);
         setFinishEnabled(POLICY_PAGE, false);
@@ -325,7 +334,7 @@ void newClusterDialog::backClicked()
 {
     if (previousRelevant(currentPage()) > -1)
     {
-        showPage(previousRelevant(currentPage()));
+        showPage(previousRelevant(currentPage()), false);
     }
 }
 

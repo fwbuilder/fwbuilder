@@ -63,7 +63,7 @@ public:
 
     void setFirewallList(std::vector<libfwbuilder::FWObject*>);
 
-    void showPage(const int page);
+    void showPage(const int page, bool blank = true);
 
 protected:
     int previousRelevant(const int page) const;

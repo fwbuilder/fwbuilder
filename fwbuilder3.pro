@@ -18,4 +18,6 @@ tests.commands = for directory in `find . -name unit_tests`; \
                     cd $${DOLLAR}$${DOLLAR}home; \
                 done
 
+tests.depends = all
+
 QMAKE_EXTRA_TARGETS += tests
