@@ -134,14 +134,14 @@
   change addresses and interface types (static or dynamic). The
   program not only changes addresses of interfaces, it also scans
   policy and NAT rules of the template looking for network objects
-  that match original temlpate addresses and replaces them with
+  that match original template addresses and replaces them with
   network objects that match new ones.
 </p>
 
 <p>
   <b>"Add object to a groups directly from the group
   dialog"</b>. Group object dialog now has a button that shows a menu
-  when clicked, this menu allowsyou to create new object and add it to
+  when clicked, this menu allows you to create new object and add it to
   the group in one operation.
 </p>
 
@@ -510,7 +510,7 @@ rule sets of this object rather than in the actual firewalls.
       Dialog where user enters authentication credentials and other
       parameters for the installer has a checkbox that makes installer
       initiate copy of the configuration to the standby PIX if
-      installation was successfull.
+      installation was successful.
     </li>
   </ul>
 </p>
@@ -584,7 +584,7 @@ rule sets of this object rather than in the actual firewalls.
   NAT rule, compiler generates shell script to read its ip addresses
   at the time of execution, assigns them to temporary shell variables
   and uses them in rules. In previous versions (fwbuilder v2 and v3)
-  only the first IPv4 address of an inetrface was used. V4 uses all
+  only the first IPv4 address of an interface was used. V4 uses all
   IPv4 and IPv6 addresses of the interface by creating a shell "for"
   loop in the script. Note that support for dynamic IPv6 addresses 
   was broken in v3 completely, it was fixed in v4.
@@ -742,7 +742,7 @@ rule sets of this object rather than in the actual firewalls.
 </p>
 
 <p>
-  Built-in policy installe uses EEM (Embedded Event Manager) on IOS
+  Built-in policy installer uses EEM (Embedded Event Manager) on IOS
   12.4 or later to schedule automatic configuration rollback instead
   of reloading the router.  EEM appears in IOS 12.4 and supports
   background operations that can be triggered by some events on the
@@ -815,7 +815,7 @@ rule sets of this object rather than in the actual firewalls.
     <li>enable scp using command <b>"ssh scopy enable"</b> in configuration
     mode</li>
     <li>make sure user account used to copy configuration has
-      "privilege 15": <b>"username fwbadmin password XXXXXXX priviege
+      "privilege 15": <b>"username fwbadmin password XXXXXXX privilege
       15"</b></li>
   </ul>
 </p>
@@ -866,7 +866,7 @@ rule sets of this object rather than in the actual firewalls.
 
 
 <a name="fwbedit"></a>
-<h2>Changes in the command linbe tool fwbedit</h2>
+<h2>Changes in the command line tool fwbedit</h2>
 
 <p>
   User can now <b>merge objects from two data files</b> together using
