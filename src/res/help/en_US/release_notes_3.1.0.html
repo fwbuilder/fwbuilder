@@ -849,6 +849,22 @@ rule sets of this object rather than in the actual firewalls.
   enabled after configuration is reloaded from the file.
 </p>
 
+<p>
+  When certain PIX configuration commands are executed again during
+  configuration update, PIX detects this as an error. Commands that
+  fall into this category are "inspect", "service-policy" and some
+  "failover" commands, to name a few. To avoid this kind of errors
+  while updating PIX using built-in installer and avoid entering
+  commands for parts of configuration that do not change often, you
+  can use <b>checkbox "Generate only access-list,
+  access-group... commands"</b> in the "Script" tab of the PIX
+  firewall "advanced" options dialog. If this checkbox is on,
+  generated configuration file will only include "access-list",
+  "access-group", "telnet", "ssh", "nat", "global" and "static"
+  commands.
+</p>
+
+
 <a name="fwbedit"></a>
 <h2>Changes in the command linbe tool fwbedit</h2>
 
