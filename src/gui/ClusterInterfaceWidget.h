@@ -84,6 +84,7 @@ private:
     ClusterInterfacesSelectorWidget *cisw;
     QString os;
     QMap<QTreeWidget*, QTreeWidgetItem*> roots;
+    QHBoxLayout* interfaceBox;
 
 public slots:
     void nameChanged(QString);

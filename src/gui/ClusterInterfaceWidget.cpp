@@ -25,7 +25,7 @@
 
 #include "ClusterInterfaceWidget.h"
 #include "ui_ClusterInterfaceWidget.h"
-
+#include <QSpacerItem>
 #include <QDebug>
 
 using namespace libfwbuilder;
@@ -37,6 +37,9 @@ ClusterInterfaceWidget::ClusterInterfaceWidget(QWidget *parent) :
 {
     cisw = dynamic_cast<ClusterInterfacesSelectorWidget*>(parent);
     m_ui->setupUi(this);
+    interfaceBox = new QHBoxLayout(this);
+    this->layout()->addItem(interfaceBox);
+    this->layout()->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Minimum));
 }
 
 ClusterInterfaceWidget::~ClusterInterfaceWidget()
@@ -68,7 +71,8 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
     {
         os = fw->getStr("host_OS").c_str();
         QVBoxLayout *layout = new QVBoxLayout();
-        qFindChild<QHBoxLayout*>(this, "interfaceBox")->addLayout(layout);
+        //qFindChild<QHBoxLayout*>(this, "interfaceBox")
+                interfaceBox->addLayout(layout);
         //this->m_ui->interfaceBox->addLayout(layout);
 
         //create label with firewall name
