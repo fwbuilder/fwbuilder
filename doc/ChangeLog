@@ -1,5 +1,40 @@
 2009-12-28  vadim  <vadim@vk.crocodile.org>
 
+	Ticket #1040 (Another GUI crash in newClusterDialog) closed by a2k
+	fixed
+
+	Ticket #1038 (GUI crash in newClusterDialog on Ubuntu 8.04) closed
+	by a2k fixed: (In [2296]) Fixed #1038
+
+	Ticket #1014 (fix tab order of elements in iptadvanceddialog_q.ui)
+	closed by a2k fixed: (In [2292]) Fixed #1013, #1014, #1015, #1016,
+	#1017
+
+	Ticket #1015 (fix tab order in pixadvanceddialog_q.ui) closed by
+	a2k fixed: (In [2292]) Fixed #1013, #1014, #1015, #1016, #1017
+
+	Ticket #1016 (fix tab order in pfadvanceddialog_q.ui) closed by
+	a2k fixed: (In [2292]) Fixed #1013, #1014, #1015, #1016, #1017
+
+	Ticket #1017 (fix tab order in openbsdadvanceddialog_q.ui) closed
+	by a2k fixed: (In [2292]) Fixed #1013, #1014, #1015, #1016, #1017
+
+	Ticket #1013 (fix tab order of elements in
+	iosacladvanceddialog_q.ui) closed by a2k fixed: (In [2292]) Fixed
+	#1013, #1014, #1015, #1016, #1017
+
+	Ticket #1030 (firewall name should be prepended with library name
+	in the list on the ...) closed by a2k fixed: (In [2290]) Fixed
+	#1030
+
+	Ticket #1025 (newCLuster dialog loses all interface addresses if
+	user hits Back on the ...) closed by a2k fixed: (In [2289]) Fixed
+	#1025, #1019
+
+	Ticket #1019 (unit test failure) closed by a2k fixed: (In [2289])
+	Fixed #1025, #1019
+
+
 	* instDialog_ui_ops.cpp (instDialog::setFlags): For the PIX
 	cluster, built-in installer installs generated configuration only
 	on the master member firewall. It determines which one is the
