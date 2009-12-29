@@ -37,7 +37,7 @@ ClusterInterfaceWidget::ClusterInterfaceWidget(QWidget *parent) :
 {
     cisw = dynamic_cast<ClusterInterfacesSelectorWidget*>(parent);
     m_ui->setupUi(this);
-    interfaceBox = new QHBoxLayout(this);
+    interfaceBox = new QHBoxLayout();//this->layout());
     this->layout()->addItem(interfaceBox);
     this->layout()->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Minimum));
 }
@@ -155,7 +155,6 @@ bool ClusterInterfaceWidget::setCurrentInterface(const QString& name)
                 break;
             }
         }
-        qDebug() << gotItems << this->lists.values().count();
     }
     if (gotItems < this->lists.values().count()) return false;
     this->m_ui->name->setText(name);
