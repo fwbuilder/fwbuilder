@@ -37,7 +37,7 @@ ClusterInterfaceWidget::ClusterInterfaceWidget(QWidget *parent) :
 {
     cisw = dynamic_cast<ClusterInterfacesSelectorWidget*>(parent);
     m_ui->setupUi(this);
-    interfaceBox = new QHBoxLayout();//this->layout());
+    interfaceBox = new QHBoxLayout();
     this->layout()->addItem(interfaceBox);
     this->layout()->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Minimum));
 }

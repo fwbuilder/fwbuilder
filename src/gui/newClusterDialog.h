@@ -48,8 +48,9 @@ class newClusterDialog : public QDialog, public FakeWizard
     QMap<int, bool> visited;
     std::list<libfwbuilder::Firewall*> firewallList;
     bool useFirewallList;
-    QVBoxLayout policies;
-    QRadioButton noPolicy;
+    QVBoxLayout *policies;
+    QRadioButton *noPolicy;
+    QSpacerItem *spacer;
 
     void copyRuleSets(const std::string &type, libfwbuilder::Firewall *src);
     void deleteRuleSets(const std::string &type, libfwbuilder::Firewall *fw);

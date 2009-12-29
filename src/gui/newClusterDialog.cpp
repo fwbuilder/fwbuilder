@@ -76,6 +76,13 @@ newClusterDialog::newClusterDialog(FWObject *_p)
 
     m_dialog->obj_name->setFocus();
 
+    this->noPolicy = new QRadioButton(m_dialog->page_4);
+    this->noPolicy->setChecked(true);
+    this->spacer = new QSpacerItem(10, 1000);
+    this->m_dialog->page_4->layout()->addWidget(noPolicy);
+    this->m_dialog->page_4->layout()->addItem(spacer);
+    noPolicy->setText(tr("do not use any, i will create new policy and NAT rules"));
+
     showPage(0);
 }
 
@@ -194,12 +201,14 @@ void newClusterDialog::showPage(const int page, bool blank)
         }
         copy_rules_from_buttons.clear();
         QList<QPair<Firewall*, bool> > fws = m_dialog->firewallSelector->getSelectedFirewalls();
+        this->m_dialog->page_4->layout()->removeItem(spacer);
         for ( int i = 0; i < fws.count() ; i++ )
         {
-            QRadioButton *newbox = new QRadioButton(QString::fromUtf8(fws.at(i).first->getName().c_str()), this);
-            qFindChild<QVBoxLayout*>(this->m_dialog->page_4, "policyLayout")->addWidget(newbox);
+            QRadioButton *newbox = new QRadioButton(QString::fromUtf8(fws.at(i).first->getName().c_str()), m_dialog->page_4);
+            this->m_dialog->page_4->layout()->addWidget(newbox);
             copy_rules_from_buttons[newbox] = fws.at(i).first;
         }
+        this->m_dialog->page_4->layout()->addItem(spacer);
         }
         setNextEnabled(POLICY_PAGE, true);
         setFinishEnabled(POLICY_PAGE, false);
@@ -265,7 +274,7 @@ void newClusterDialog::showPage(const int page, bool blank)
         bool doCopy = false;
         foreach (QRadioButton* btn, copy_rules_from_buttons.keys())
         {
-            if (btn->isChecked() && btn != this->m_dialog->noPolicy)
+            if (btn->isChecked() && btn != noPolicy)
             {
                 QString fwname = QString::fromUtf8(
                     copy_rules_from_buttons[btn]->getName().c_str());

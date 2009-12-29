@@ -198,7 +198,7 @@ void newClusterDialog::createNewCluster()
     Firewall *source = NULL;
     foreach (QRadioButton* btn, copy_rules_from_buttons.keys())
     {
-        if (btn->isChecked() && btn != this->m_dialog->noPolicy)
+        if (btn->isChecked() && btn != noPolicy)
         {
             source = copy_rules_from_buttons[btn];
             break;
