@@ -2465,7 +2465,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         if ((newColumn <= 0) || (newColumn > md->header.size()))
             return;
 
-/* keyboard 'Left' or 'Right', switch to the object with the same
+/* keyboard 'Left' or 'Ri`ght', switch to the object with the same
  * number in the cell to the left or to the right
  */
 
@@ -2531,6 +2531,8 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
             newIndex = md->index(currentIndex().row(), oldIndex.column(), currentIndex().parent());
             if (!md->isGroup(newIndex)) 
             {
+                qDebug() << "* select index: "<< newIndex.row();
+                selectionModel()->select(newIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
                 setCurrentIndex(newIndex);
                 fwosm->setSelected(NULL, newIndex);
                 if (mw->isEditorVisible()) switchObjectInEditor(newIndex);
@@ -2564,6 +2566,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                 // It needs to move to another row
                 QTreeView::keyPressEvent(ev);
                 newIndex = md->index(currentIndex().row(), oldIndex.column(), currentIndex().parent());
+                selectionModel()->select(newIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
 
                 if (oldIndex.row() == newIndex.row())
                 {
