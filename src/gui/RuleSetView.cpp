@@ -2470,7 +2470,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         if ((newColumn <= 0) || (newColumn > md->header.size()))
             return;
 
-/* keyboard 'Left' or 'Ri`ght', switch to the object with the same
+/* keyboard 'Left' or 'Right', switch to the object with the same
  * number in the cell to the left or to the right
  */
 
