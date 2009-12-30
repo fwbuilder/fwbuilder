@@ -241,7 +241,11 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
 
     const QModelIndex index = currentIndex();//indexAt (ev->pos());
 
-    if (index.column() == 0) return;
+    if (index.column() == 0)
+    {
+        fwosm->setSelected(NULL, index);
+        return;
+    }
 
     FWObject *object = getObject(ev->pos(), index);
 
@@ -2456,6 +2460,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
     RuleElement *re;
 
     QModelIndex oldIndex = fwosm->index;
+
     int objno = getObjectNumber(fwosm->selectedObject, oldIndex);
 
     if (ev->key()==Qt::Key_Left || ev->key()==Qt::Key_Right)
@@ -2531,7 +2536,6 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
             newIndex = md->index(currentIndex().row(), oldIndex.column(), currentIndex().parent());
             if (!md->isGroup(newIndex)) 
             {
-                qDebug() << "* select index: "<< newIndex.row();
                 selectionModel()->select(newIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
                 setCurrentIndex(newIndex);
                 fwosm->setSelected(NULL, newIndex);
