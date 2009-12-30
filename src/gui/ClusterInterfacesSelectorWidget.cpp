@@ -148,9 +148,38 @@ void ClusterInterfacesSelectorWidget::clear()
 
 bool ClusterInterfacesSelectorWidget::isValid()
 {
+    // this->editor is a list of ClusterInterfaceWidgets
+    // each of them contains data about one cluster interface
     foreach (ClusterInterfaceWidget *editor, this->editors)
     {
+        // all cluster interfaces should be valid here
         if (!editor->isValid()) return false;
     }
+
+    // checking if one firewall interface is used in two different cluster interfaces
+    foreach(ClusterInterfaceWidget *editor1, this->editors)
+    {
+        foreach(ClusterInterfaceWidget *editor2, this->editors)
+        {
+            if (editor1 == editor2) continue; // skip checking interfaces for same editor
+            QPair<libfwbuilder::Firewall*, libfwbuilder::Interface*> iface1, iface2;
+            foreach(iface1, editor1->getInterfaceData().interfaces)
+            {
+                foreach(iface2, editor2->getInterfaceData().interfaces)
+                {
+                    // compare pointers to interfaces selected in two different tabs
+                    if (iface1.second == iface2.second)
+                    {
+                        QMessageBox::warning(this,"Firewall Builder",
+                                 tr("Interface %1 of firewall %2 is used in more than one cluster interface.")
+                                    .arg(iface1.second->getName().c_str()).arg(iface1.first->getName().c_str()),
+                                "&Continue", QString::null, QString::null, 0, 1 );
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
     return true;
 }
