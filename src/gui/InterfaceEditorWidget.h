@@ -76,6 +76,7 @@ public:
     bool isValid();
     void updateColumnsSizes();
     void setClusterMode(bool);
+    void setProtocolIndex(int);
 
 private:
     QTabWidget *tabw;
@@ -93,6 +94,7 @@ private:
 
 public slots:
     int addNewAddress();
+    void addNewAddress(QString address, QString netmask, bool ipv4);
     void deleteAddress();
     void nameEdited(QString);
     void typeChanged(int);

@@ -223,6 +223,15 @@ int InterfaceEditorWidget::addNewAddress()
     return row;
 }
 
+
+void InterfaceEditorWidget::addNewAddress(QString address, QString netmask, bool ipv4)
+{
+    int row = addNewAddress();
+    types[row]->setCurrentIndex(!ipv4);
+    rows[row].first->setText(address);
+    rows[row].second->setText(netmask);
+}
+
 void InterfaceEditorWidget::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
@@ -455,7 +464,6 @@ void InterfaceEditorWidget::protocolChanged(QString name)
         if (noaddr)
             while ( this->m_ui->addresses->rowCount() )
                 this->m_ui->addresses->removeRow(0);
-        qDebug() << "setting addresses enabled to" << !noaddr;
         this->m_ui->addresses->setEnabled(!noaddr);
         this->m_ui->addAddress->setEnabled(!noaddr);
         st->setNewClusterFailoverProtocol(name);
@@ -468,4 +476,9 @@ void InterfaceEditorWidget::setExplanation(const QString& text)
 {
     this->m_ui->explanation->setText(text);
     this->m_ui->explanation->setFont(QApplication::font());
+}
+
+void InterfaceEditorWidget::setProtocolIndex(int idx)
+{
+    this->m_ui->protocol->setCurrentIndex(idx);
 }

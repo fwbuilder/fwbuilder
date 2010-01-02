@@ -11,7 +11,8 @@ class newClusterDialogTest : public QObject
 {
     Q_OBJECT
 private slots:
-    void runTest();
+    void test1();
+    void test2();
 
 };
 

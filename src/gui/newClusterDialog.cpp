@@ -14,7 +14,6 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "FWWindow.h"
 #include "newClusterDialog.h"
 
 #include "global.h"
@@ -97,15 +96,14 @@ newClusterDialog::~newClusterDialog()
     delete m_dialog;
 }
 
-void newClusterDialog::setFirewallList(std::vector<libfwbuilder::FWObject*> data)
+void newClusterDialog::setFirewallList(std::vector<libfwbuilder::FWObject*> data, bool select)
 {
     m_dialog->interfaceSelector->clear();
     firewallList.clear();
     typedef QPair<Firewall*, bool> fwpair;
     foreach ( FWObject *fw, data )
         firewallList.push_back(Firewall::cast(fw));
-    m_dialog->firewallSelector->setFirewallList(firewallList, true);
-    useFirewallList = true;
+    m_dialog->firewallSelector->setFirewallList(firewallList, select);
 }
 
 void newClusterDialog::showPage(const int page, bool blank)
@@ -126,16 +124,13 @@ void newClusterDialog::showPage(const int page, bool blank)
         if (blank)
         {
             m_dialog->firewallSelector->clear();
-            if (useFirewallList)
-            {
-                m_dialog->firewallSelector->setFirewallList(firewallList, true);
-            }
-            else
+            m_dialog->firewallSelector->setFirewallList(firewallList, true);
+            /*else
             {
                 list<Firewall*> fwlist;
                 mw->findAllFirewalls(fwlist);
                 m_dialog->firewallSelector->setFirewallList(fwlist);
-            }
+            }*/
         }
 
         setNextEnabled(FIREWALLS_PAGE, !this->m_dialog->obj_name->text().isEmpty());
@@ -209,6 +204,7 @@ void newClusterDialog::showPage(const int page, bool blank)
         for ( int i = 0; i < fws.count() ; i++ )
         {
             QRadioButton *newbox = new QRadioButton(QString::fromUtf8(fws.at(i).first->getName().c_str()), m_dialog->page_4);
+            newbox->setObjectName(fws.at(i).first->getName().c_str());
             this->m_dialog->page_4->layout()->addWidget(newbox);
             copy_rules_from_buttons[newbox] = fws.at(i).first;
         }

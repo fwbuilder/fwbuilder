@@ -488,7 +488,16 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
     {
         if (fwbdebug)
             qDebug() << "ObjectManipulator::newCluster: creating cluster from selected firewalls";
-        ncd->setFirewallList(getCurrentObjectTree()->getSelectedObjects());
+        ncd->setFirewallList(getCurrentObjectTree()->getSelectedObjects(), true);
+    }
+    else
+    {
+        list<Firewall*> fwlist;
+        mw->findAllFirewalls(fwlist);
+        vector<FWObject*> fwvector;
+        foreach(Firewall* fw, fwlist)
+            fwvector.push_back(FWObject::cast(fw));
+        ncd->setFirewallList(fwvector);
     }
     if ( ! ncd->exec() == QDialog::Accepted) return NULL;
 

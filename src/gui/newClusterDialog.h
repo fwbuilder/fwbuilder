@@ -36,7 +36,6 @@ class newClusterDialog : public QDialog, public FakeWizard
 {
     Q_OBJECT;
 
-    Ui::newClusterDialog_q *m_dialog;
 
     libfwbuilder::Cluster *ncl;
     libfwbuilder::ObjectGroup *fwlist;
@@ -62,11 +61,12 @@ public:
 
     libfwbuilder::Cluster* getNewCluster() { return ncl; };
 
-    void setFirewallList(std::vector<libfwbuilder::FWObject*>);
+    void setFirewallList(std::vector<libfwbuilder::FWObject*>, bool select = false);
 
     void showPage(const int page, bool blank = true);
 
 protected:
+    Ui::newClusterDialog_q *m_dialog;
     int previousRelevant(const int page) const;
 
 protected slots:
