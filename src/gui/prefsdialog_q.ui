@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>805</width>
-    <height>529</height>
+    <width>699</width>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -18,60 +18,11 @@
   <property name="sizeGripEnabled" >
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" >
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonOk" >
-       <property name="text" >
-        <string>&amp;OK</string>
-       </property>
-       <property name="shortcut" >
-        <string/>
-       </property>
-       <property name="autoDefault" >
-        <bool>true</bool>
-       </property>
-       <property name="default" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonCancel" >
-       <property name="text" >
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="shortcut" >
-        <string/>
-       </property>
-       <property name="autoDefault" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
+  <layout class="QGridLayout" name="gridLayout" >
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabGeneral" >
       <attribute name="title" >
@@ -565,13 +516,10 @@
      </widget>
      <widget class="QWidget" name="tabSSH" >
       <attribute name="title" >
-       <string>SSH</string>
+       <string>Installer</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" >
-       <property name="topMargin" >
-        <number>20</number>
-       </property>
-       <item row="0" column="0" colspan="3" >
+      <layout class="QGridLayout" name="gridLayout_14" >
+       <item row="0" column="0" colspan="2" >
         <widget class="QLabel" name="textLabel1_5_2" >
          <property name="text" >
           <string>A full path to the Secure Shell utility (remote command execution; for example ssh on Unix or plink.exe  on Windows):</string>
@@ -584,7 +532,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3" >
+       <item row="0" column="2" >
         <widget class="QPushButton" name="browseForSSH" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -600,7 +548,7 @@
        <item row="1" column="0" colspan="2" >
         <widget class="QLineEdit" name="sshPath" />
        </item>
-       <item row="2" column="0" colspan="3" >
+       <item row="2" column="0" colspan="2" >
         <widget class="QLabel" name="textLabel1_5_3" >
          <property name="text" >
           <string>A full path to the SCP utility (file copy over ssh; for example scp on Unix or pscp.exe on Windows):</string>
@@ -613,7 +561,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="3" >
+       <item row="2" column="2" >
         <widget class="QPushButton" name="browseForSCP" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -645,7 +593,7 @@
          </property>
         </spacer>
        </item>
-       <item row="5" column="0" colspan="4" >
+       <item row="5" column="0" colspan="3" >
         <widget class="QTextBrowser" name="plink_hint" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -656,13 +604,13 @@
          <property name="minimumSize" >
           <size>
            <width>0</width>
-           <height>100</height>
+           <height>50</height>
           </size>
          </property>
          <property name="maximumSize" >
           <size>
            <width>16777215</width>
-           <height>100</height>
+           <height>50</height>
           </size>
          </property>
          <property name="autoFillBackground" >
@@ -679,15 +627,14 @@
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;">Download plink.exe and pscp.exe  from the web site at  &lt;/span>&lt;a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; text-decoration: underline; color:#0000ff;">http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span>&lt;/a>&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;">&lt;/p>&lt;/body>&lt;/html></string>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Download plink.exe and pscp.exe from the web site at &lt;a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">&lt;span style=" text-decoration: underline; color:#0000ff;">http://www.chiark.greenend.org.uk/~sgtatham/putty/&lt;/span>&lt;/a>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <property name="openExternalLinks" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="6" column="2" >
+       <item row="6" column="1" >
         <spacer name="verticalSpacer_2" >
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -703,17 +650,31 @@ p, li { white-space: pre-wrap; }
          </property>
         </spacer>
        </item>
-       <item row="7" column="0" colspan="4" >
+       <item row="7" column="0" colspan="3" >
         <widget class="QLabel" name="label_8" >
          <property name="text" >
-          <string>Built-in policy installer can remember passwords for the duration of the session. Passwords are never stored permanently.</string>
+          <string>Built-in policy installer can remember passwords for the duration of the session. Passwords are never stored permanently, they are only kept in memory. In order to use this feature, you also need to configure user name used to authenticate to the firewall in the "advanced" settings dialog of the firewall object. </string>
          </property>
          <property name="wordWrap" >
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="8" column="0" colspan="4" >
+       <item row="8" column="0" colspan="3" >
+        <widget class="QLabel" name="label_12" >
+         <property name="text" >
+          <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600;">Warning&lt;/span>: using this feature creates certain risk if working Firewall Builder GUI is left unattended on the unlocked workstation. Someone may walk up to the machine and make changes to the firewall using cached password of the administrator who used the same GUI session before. Always lock the screen or exit Firewall Builder GUI when leaving computer.&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0" colspan="3" >
         <widget class="QCheckBox" name="rememberSshPass" >
          <property name="toolTip" >
           <string>Enable password caching for the duration of the session (passwords
@@ -724,7 +685,7 @@ are never stored permanently)</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1" colspan="2" >
+       <item row="10" column="1" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -1216,6 +1177,55 @@ are never stored permanently)</string>
       </layout>
      </widget>
     </widget>
+   </item>
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk" >
+       <property name="text" >
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

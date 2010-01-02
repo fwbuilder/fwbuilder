@@ -950,11 +950,12 @@ bool instDialog::getInstOptions(Firewall *fw)
 /*
  * getBatchInstOptions() fills attributes of the cnf object for batch install
  */
-bool instDialog::getBatchInstOptions()
+bool instDialog::getBatchInstOptions(Firewall *first_fw)
 {
-    cnf.fwobj = NULL;
+    cnf.fwobj = first_fw;   // NULL;
 
     readInstallerOptionsFromSettings();
+    readInstallerOptionsFromFirewallObject(first_fw);
 
     if (batch_inst_opt_dlg != NULL) delete batch_inst_opt_dlg;
 

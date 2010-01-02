@@ -148,16 +148,24 @@
 <img src="create_and_add_to_group.png"/>
 
 <p>
-  <b>Password caching</b>: Built-in installer can remember
-  firewall password (and enable password for Cisco) for the
-  duration of the session. Passwords are never stored permanently
-  in any form, encrypted or plain text. You need to enter
-  password once when you activate generated policy. If you keep
-  the program open and need to modify and activate policy again, the
-  password fields in the installer dialog can be filled
-  automatically. The feature is optional and is off by default.
-  Cached passwords are associated with the firewall object and
-  account name used to activate policy.
+  <b>Password caching</b>: Built-in installer can remember firewall
+  password (and enable password for Cisco) for the duration of the
+  session. Passwords are never stored permanently in any form,
+  encrypted or plain text, they are only kept in memory of working
+  Firewall Builder GUI instance. You need to enter password once when
+  you activate generated policy. If you keep the program open and need
+  to modify and activate policy again, the password fields in the
+  installer dialog can be filled automatically. The feature is
+  optional and is off by default. Cached passwords are associated with
+  the firewall object and account name used to activate policy. To use
+  this feature, turn it on in Preferences and configure user name used
+  to authenticate to the firewall in the "advanced" settings dialog of
+  the firewall object.  <b>Warning</b>: using this feature creates
+  certain risk if working Firewall Builder GUI is left unattended on
+  the unlocked workstation. Someone may walk up to the machine and
+  make changes to the firewall using cached password of the
+  administrator who used the same GUI session before. Always lock the
+  screen or exit Firewall Builder GUI when leaving computer.
 </p>
 
 <p>

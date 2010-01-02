@@ -67,17 +67,19 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
 
     QString username = cnf->user;
     bool savePassEnabled = st->getBool("Environment/RememberSshPassEnabled");
-    m_dialog->rememberPass->setEnabled( savePassEnabled );
-    if (savePassEnabled)
+    if (savePassEnabled && !username.isEmpty())
     {
-        m_dialog->rememberPass->setChecked(
-            st->getBool("Environment/RememberSshPass"));
+        m_dialog->rememberPass->setEnabled(true);
+        m_dialog->rememberPass->setChecked(true);
         QPair<QString, QString> passwds = mw->passwords[qMakePair(fw_id, username)];
         m_dialog->pwd->setText(passwds.first);
         m_dialog->epwd->setText(passwds.second);
     }
     else
+    {
+        m_dialog->rememberPass->setEnabled(false);
         m_dialog->rememberPass->setChecked(false);
+    }
 
     m_dialog->pwd->setEchoMode(QLineEdit::Password);
     m_dialog->epwd->setEchoMode(QLineEdit::Password);

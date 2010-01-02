@@ -211,7 +211,7 @@ protected:
     virtual void hideEvent( QHideEvent *ev);
 
     bool getInstOptions(libfwbuilder::Firewall *fw);
-    bool getBatchInstOptions();
+    bool getBatchInstOptions(libfwbuilder::Firewall *first_fw);
     
     void prepareInstConf(libfwbuilder::Firewall *fw);
 

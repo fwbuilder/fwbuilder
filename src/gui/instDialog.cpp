@@ -285,16 +285,17 @@ void instDialog::mainLoopInstall()
 
     if (install_fw_list.size())
     {
+        Firewall *fw = install_fw_list.front();
+
         if (install_fw_list.size() == install_list_initial_size)
         {
             // this is the first firewall. If batch mode was requested, show
             // installer options dialog (this will be the only time it is 
             // shown)
-            if (m_dialog->batchInstall->isChecked() && !getBatchInstOptions())
+            if (m_dialog->batchInstall->isChecked() && !getBatchInstOptions(fw))
                 return;
         }
 
-        Firewall *fw = install_fw_list.front();
         install_fw_list.pop_front();
         runInstaller(fw);
         return;

@@ -159,8 +159,10 @@
          <item row="3" column="0" >
           <widget class="QCheckBox" name="rememberPass" >
            <property name="toolTip" >
-            <string>Enable password caching for the duration of the session (passwords
-are never stored permanently)</string>
+            <string>Remember passwords for the duration of the session (passwords
+are never stored permanently). To enable this option turn it on
+in Preferences and configure user name used to authenticate to
+the firewall in the "advanced" settings dialog of the firewall object.</string>
            </property>
            <property name="layoutDirection" >
             <enum>Qt::LeftToRight</enum>
