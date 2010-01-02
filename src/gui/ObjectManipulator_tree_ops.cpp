@@ -273,6 +273,16 @@ void ObjectManipulator::updateLibColor(FWObject *lib)
     }
 }
 
+void ObjectManipulator::updateLibName(FWObject *lib)
+{
+    int index = getIdxForLib(lib);
+    if (index >= 0)
+    {
+        QString newlibname = QString::fromUtf8(lib->getName().c_str());
+        m_objectManipulator->libs->setItemText(index, newlibname);
+    }
+}
+
 /*
  * Update tree item for the given object, including its name and brief summary
  * of properties. If @subtree=true, do the same for all its children as well.

@@ -166,6 +166,7 @@ bool ProjectPanel::event(QEvent *event)
 
                 if (Library::cast(obj))
                 {
+                    m_panel->om->updateLibName(obj);
                     m_panel->om->updateLibColor(obj);
                 }
 
