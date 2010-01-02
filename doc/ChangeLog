@@ -1,3 +1,15 @@
+2010-01-01  vadim  <vadim@vk.crocodile.org>
+
+	* instOptionsDialog.cpp (instOptionsDialog::instOptionsDialog):
+	fixed bug #1043: added explanation of the risk associated with
+	password caching to the Preferences dialog and Release Notes;
+	checkbox "remember passwords" will be disabled if user name is not
+	configured
+
+	* ObjectManipulator_tree_ops.cpp (ObjectManipulator::updateLibName):
+	fixed bug #1042: editing name of a library updates it in the tree
+	but does not update it in the drop-down list
+
 2009-12-29  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::restoreCurrentRowColumn): fixed
