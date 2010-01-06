@@ -44,6 +44,7 @@
 
 #include <QFileInfo>
 #include <QDir>
+#include <QtDebug>
 
 
 using namespace std;
@@ -72,6 +73,9 @@ string CompilerDriver_pf::getConfFileName(const string &ruleset_name,
     string suffix = string("-") + ruleset_name;
     if (ruleset_name == "__main__") suffix = "";
 
+    qDebug() << "CompilerDriver_pf::getConfFileName"
+             << "fw_file_name=" << fw_file_name.c_str();
+
     if (fw_file_name.empty())
     {
         return fwobjectname + suffix + ".conf";
@@ -86,6 +90,10 @@ string CompilerDriver_pf::getConfFileName(const string &ruleset_name,
     {
         new_name = QString(fi.path() + "/" + fi.completeBaseName() + suffix.c_str() + ".conf");
     }
+
+    qDebug() << "CompilerDriver_pf::getConfFileName"
+             << "new_name=" << new_name;
+
     return new_name.toUtf8().constData();
 }
 
@@ -98,6 +106,12 @@ string CompilerDriver_pf::getRemoteConfFileName(const string &ruleset_name,
     string suffix = string("-") + ruleset_name;
     if (ruleset_name == "__main__") suffix = "";
 
+    qDebug() << "CompilerDriver_pf::getRemoteConfFileName"
+             << "local_conf_name=" << local_conf_name.c_str()
+             << "remote_conf_name=" << remote_conf_name.c_str()
+             << "remote_fw_name=" << remote_fw_name.c_str();
+
+
     if (remote_conf_name.empty() && remote_fw_name.empty())
         return local_conf_name;
 
@@ -109,6 +123,10 @@ string CompilerDriver_pf::getRemoteConfFileName(const string &ruleset_name,
 
     string new_name = fi.completeBaseName().toStdString() + suffix + ".conf";
     QString path = fi.path();
+
+    qDebug() << "CompilerDriver_pf::getRemoteConfFileName"
+             << "new_name=" << new_name.c_str()
+             << "path=" << path;
 
     if (path == ".") return new_name;
     else return path.toStdString() + "/" + new_name;
