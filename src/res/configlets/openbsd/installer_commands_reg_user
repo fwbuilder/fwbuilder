@@ -1,0 +1,51 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/bsd/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+## These are commands built-in policy installer runs on the firewall if
+## installation is performed using regular user account for authentication
+##
+##  Variables:
+##
+##  {{$fwbprompt}} -- "magic" prompt that installer uses to detect when it is logged in
+##  {{$fwdir}}     -- directory on the firewall
+##  {{$fwscript}}  -- script name on the firewall
+##  {{$rbtimeout}} -- rollback timeout
+##
+
+
+{{if run}}
+echo '{{$fwbprompt}}';
+chmod +x {{$fwdir}}/{{$fwscript}};
+sudo -S {{$fwdir}}/{{$fwscript}} && sudo -S pkill shutdown; echo 'Policy activated'
+{{endif}}
+
+
+{{if test}}
+
+{{if with_rollback}}
+echo '{{$fwbprompt}}';
+chmod +x {{$fwdir}}/tmp/{{$fwscript}};
+sudo -S /sbin/shutdown -r +{{$rbtimeout}};
+sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
+{{endif}}
+
+{{if no_rollback}}
+echo '{{$fwbprompt}}';
+chmod +x {{$fwdir}}/tmp/{{$fwscript}};
+sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
+{{endif}}
+
+
+{{endif}}
+
+
