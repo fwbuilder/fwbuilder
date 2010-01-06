@@ -113,7 +113,12 @@ string CompilerDriver_pf::getRemoteConfFileName(const string &ruleset_name,
 
 
     if (remote_conf_name.empty() && remote_fw_name.empty())
-        return local_conf_name;
+    {
+        // local_conf_name may be a relative or absolute path. Return
+        // just the file name
+        QFileInfo fi(local_conf_name.c_str());
+        return fi.fileName().toStdString();
+    }
 
     QFileInfo fi;
 

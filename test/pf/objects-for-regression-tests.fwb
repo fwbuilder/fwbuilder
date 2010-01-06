@@ -18141,7 +18141,7 @@
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id47B07CD419082" host_OS="openbsd" inactive="False" lastCompiled="1255112555" lastInstalled="1255112564" lastModified="1255112550" platform="pf" version="4.x" name="openbsd-4.2" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" ro="False">
+      <Firewall id="id47B07CD419082" host_OS="openbsd" inactive="False" lastCompiled="1262822165" lastInstalled="1255112564" lastModified="1255112550" platform="pf" version="4.x" name="openbsd-4.2" comment="firewall protects host it is running on&#10;&#10;Note that we set output file name to  /tmp/labfw.fw to test what compiler is going to do (since it generates three files rather than one), as well as to test installer in this case&#10;" ro="False">
         <NAT id="id47B07D4319082" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
