@@ -1,3 +1,9 @@
+2010-01-06  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_pf.cpp (CompilerDriver_pf::getRemoteConfFileName):
+	fixed bug #1049 '(windows only) installer uses incorrect path on
+	the OpenBSD firewall'
+
 2010-01-01  vadim  <vadim@vk.crocodile.org>
 
 	* instOptionsDialog.cpp (instOptionsDialog::instOptionsDialog):
