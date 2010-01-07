@@ -15,7 +15,7 @@
 
         <activation>
           <fwdir>/etc/fw</fwdir>
-          <fwdir_test>/tmp</fwdir_test>
+          <fwdir_test>{{$fwdir}}/tmp</fwdir_test>
         </activation>
 
       </options>
