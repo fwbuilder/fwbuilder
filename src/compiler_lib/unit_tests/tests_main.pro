@@ -52,8 +52,11 @@ win32:CONFIG += console
 win32:LIBS += ../../common/release/common.lib
 win32:PRE_TARGETDEPS = ../../common/release/common.lib
 
-run.commands = echo "Running tests..." && ./${TARGET} && \
-               echo "Running gcov..." && gcov ${SOURCES} >/dev/null 2>/dev/null && echo "OK" || echo "FAILED"
+run.commands = echo "Running tests..." && \
+    ./${TARGET} && \
+    echo "Running gcov..." && \
+    gcov ${SOURCES} >/dev/null 2>/dev/null && \
+    echo "OK" || { echo "FAILED"; exit 1 }
 run.depends = all
 
 QMAKE_EXTRA_TARGETS += run
