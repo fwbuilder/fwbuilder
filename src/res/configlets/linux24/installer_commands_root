@@ -28,13 +28,13 @@ sh {{$fwdir}}/{{$fwscript}} && ( which pkill > /dev/null && pkill shutdown; echo
 {{if with_rollback}}
 echo '{{$fwbprompt}}';
 echo '/sbin/shutdown -r +{{$rbtimeout}}'|batch;
-chmod +x {{$fwdir}}/{{$fwscript}};
+chmod +x {{$fwdir}}/tmp/{{$fwscript}};
 sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
 {{endif}}
 
 {{if no_rollback}}
 echo '{{$fwbprompt}}';
-chmod +x {{$fwdir}}/{{$fwscript}};
+chmod +x {{$fwdir}}/tmp/{{$fwscript}};
 sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
 {{endif}}
 
