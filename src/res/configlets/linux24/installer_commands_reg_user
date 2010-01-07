@@ -20,7 +20,7 @@
 {{if run}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
-sudo -S {{$fwdir}}/{{$fwscript}} && ( which pkill > /dev/null && sudo -S pkill shutdown; echo 'Policy activated' )
+sudo -S {{$fwdir}}/{{$fwscript}} && ( sudo -S shutdown -c; echo 'Policy activated' )
 {{endif}}
 
 
@@ -28,7 +28,7 @@ sudo -S {{$fwdir}}/{{$fwscript}} && ( which pkill > /dev/null && sudo -S pkill s
 
 {{if with_rollback}}
 echo '{{$fwbprompt}}';
-echo 'sudo -S /sbin/shutdown -r +{{$rbtimeout}}'|batch;
+sudo -S -b /sbin/shutdown -r +{{$rbtimeout}}
 chmod +x {{$fwdir}}/tmp/{{$fwscript}};
 sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
 {{endif}}
