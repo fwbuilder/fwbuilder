@@ -1,12 +1,15 @@
 2010-01-06  vadim  <vadim@vk.crocodile.org>
 
+	* bug fixes in installer for PF: fixed commands it runs on the
+	firewall when it authenticates as regular user.
+
 	* ObjectManipulator_create_new.cpp (ObjectManipulator::newInterface):
 	fixed bug #1051: GUI crash when user tried to add an interface to
 	an interface.
 
 	* CompilerDriver_pf.cpp (CompilerDriver_pf::getRemoteConfFileName):
-	fixed bug #1049 '(windows only) installer uses incorrect path on
-	the OpenBSD firewall'
+	fixed bug #1049 (SourceForge bug #2927165) '(windows only)
+	installer uses incorrect path on the OpenBSD firewall'
 
 2010-01-01  vadim  <vadim@vk.crocodile.org>
 
