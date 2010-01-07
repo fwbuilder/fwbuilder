@@ -439,10 +439,10 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
 
     FWObject *f = intf->getParentHost();
 
-    Resources* os_res = Resources::os_res[f->getStr("host_OS")];
-    string os_family = f->getStr("host_OS");
-    if (os_res!=NULL)
-        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+    // Resources* os_res = Resources::os_res[f->getStr("host_OS")];
+    // string os_family = f->getStr("host_OS");
+    // if (os_res!=NULL)
+    //     os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     QString err;
     if (looksLikeVlanInterface(intf->getName().c_str()) &&

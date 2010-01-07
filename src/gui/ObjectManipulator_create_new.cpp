@@ -702,7 +702,7 @@ FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
     {
         interfaceProperties *int_prop =
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                new_interface->getParentHost());
+                Interface::cast(parent)->getParentHost());
         int_prop->guessSubInterfaceTypeAndAttributes(new_interface);
         delete int_prop;
         //guessSubInterfaceTypeAndAttributes(new_interface);
