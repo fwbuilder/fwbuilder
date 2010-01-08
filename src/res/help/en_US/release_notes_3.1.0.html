@@ -204,17 +204,21 @@
 <p>
   <b>Configlets</b>: generated firewall script (for all platforms) is
   assembled from small fragments we call "configlets". These fragments
-  are located in the /usr/share/fwbuilder/configlets (on Linux). Each
-  configlet is a template that uses specially defined macros which the
-  program replaces with actual strings and values when it generates
-  firewall configuration. There are separate templates for different
-  firewall platforms and for different parts of the configuration file
-  to be created. Supported macros include simple variable expansion
-  and conditional "If - then" construct. You can override configlets
-  we provide with your own if you create directory
-  "fwbuilder/configlets" in your home directory and place files with
-  the same name there. This way, you can change virtually all aspects
-  of generated configuration file.
+  are located in the "/usr/share/fwbuilder/configlets" (on
+  Linux). Each configlet is a template that uses specially defined
+  macros which the program replaces with actual strings and values
+  when it generates firewall configuration. There are separate
+  templates for different firewall platforms and for different parts
+  of the configuration file to be created. Supported macros include
+  simple variable expansion and conditional "If - then" construct. You
+  can override configlets we provide with your own if you create
+  directory "fwbuilder/configlets" in your home directory and place
+  files with the same name there. You need to retain the structure of
+  subdirectories inside this directory, that is, the directory should
+  be "$HOME/fwbuilder/configlets/linux24" for the configlets installed
+  in "linux24" subdirectory under
+  "/usr/share/fwbuilder/configlets". This way, you can change
+  virtually all aspects of generated configuration file.
 </p>
 
 <p>
