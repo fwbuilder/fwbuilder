@@ -152,7 +152,8 @@ FWCmdRuleDelete::FWCmdRuleDelete(ProjectPanel *project, RuleSet* ruleset, QList<
 
 void FWCmdRuleDelete::copyRules(QList<Rule*> &rules)
 {
-    qDebug() << "FWCmdRuleDelete::copyRules(QList<Rule*> &rules)";
+    if (fwbdebug)
+        qDebug() << "FWCmdRuleDelete::copyRules(QList<Rule*> &rules)";
     QList<int> positions;
     positions.append(-100);
 
@@ -172,34 +173,39 @@ void FWCmdRuleDelete::copyRules(QList<Rule*> &rules)
         }
     }
 
-    qDebug() << "size:" << rulesToDelete.size();
+    if (fwbdebug)
+        qDebug() << "size:" << rulesToDelete.size();
     row = getRuleSetModel()->index(rulesToDelete.first(),0).row() - 1;
 }
 
 FWCmdRuleDelete::~FWCmdRuleDelete()
 {
-    qDebug() << "FWCmdRuleDelete::~FWCmdRuleDelete()";
-   foreach(Rule* rule, rulesToDelete)
-   {
-       if (rule != 0)
-       {
-           if (rule->getRefCounter() <= 1)
-           {
-               qDebug() << "* delete rule:" << rule->getId();
-               delete rule;
-           }
-           else
-           {
-               qDebug() << "* unref rule:" << rule->getId();
-               rule->unref();
-           }
-       }
-   }
+    if (fwbdebug)
+        qDebug() << "FWCmdRuleDelete::~FWCmdRuleDelete()";
+    foreach(Rule* rule, rulesToDelete)
+    {
+        if (rule != 0)
+        {
+            if (rule->getRefCounter() <= 1)
+            {
+                if (fwbdebug)
+                    qDebug() << "* delete rule:" << rule->getId();
+                delete rule;
+            }
+            else
+            {
+                if (fwbdebug)
+                    qDebug() << "* unref rule:" << rule->getId();
+                rule->unref();
+            }
+        }
+    }
 }
 
 void FWCmdRuleDelete::redoOnModel(RuleSetModel *md)
 {
-    qDebug() << "FWCmdRuleDelete::redoOnModel(RuleSetModel *md)";
+    if (fwbdebug)
+        qDebug() << "FWCmdRuleDelete::redoOnModel(RuleSetModel *md)";
     foreach(Rule* rule, rulesToDelete)
     {
         QModelIndex index = md->index(rule, 0);
