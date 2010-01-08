@@ -456,11 +456,13 @@ int RuleSetModel::columnByType(ColDesc::ColumnType type)
     return col;
 }
 
-RuleNode *RuleSetModel::nodeFromIndex(const QModelIndex &index) const
+RuleNode* RuleSetModel::nodeFromIndex(const QModelIndex &index) const
 {
-    if (index.isValid()) {
+    if (index.isValid())
+    {
         return static_cast<RuleNode *>(index.internalPointer());
-    } else {
+    } else
+    {
         return root;
     }
 }

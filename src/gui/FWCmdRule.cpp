@@ -205,6 +205,9 @@ void FWCmdRuleDelete::redoOnModel(RuleSetModel *md)
         QModelIndex index = md->index(rule, 0);
         md->removeRow(index.row(), index.parent());
     }
+    // invalidate selection in RuleSetView
+
+    getRuleSetView()->unselect();
 }
 
 void FWCmdRuleDelete::undoOnModel(RuleSetModel *md)

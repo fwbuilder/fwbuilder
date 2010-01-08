@@ -2218,7 +2218,8 @@ void RuleSetView::saveCurrentRowColumn(SelectionMemento &memento)
     if (index.isValid())
     {
         memento.column = index.column();
-        memento.rule_id = md->nodeFromIndex(index)->rule->getId();
+        RuleNode* node = md->nodeFromIndex(index);
+        memento.rule_id = node->rule->getId();
     } else
     {
         memento.column = -1;
