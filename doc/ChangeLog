@@ -1,5 +1,10 @@
 2010-01-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectPropertiesBrief):
+	fixes #1059: "set attribute field in gui tree for policy and nat
+	based on its settings". Show "top ruleset" and "ipv4" or "ipv6" in
+	the second column of the object tree for rule set objects.
+
 	* ProjectPanel_file_ops.cpp (ProjectPanel::loadLibrary): fixed bug
 	#1053 "duplicate objects created on "Import library" operation".
 	When user used "File/Import Library" function, the library is

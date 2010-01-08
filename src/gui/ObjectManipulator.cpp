@@ -139,9 +139,6 @@ void ObjectManipulator::setupProject(ProjectPanel *project)
  */
 QString ObjectManipulator::getTreeLabel( FWObject *obj )
 {
-    QString name;
-    if (RuleSet::cast(obj)) return "";
-
     return FWObjectPropertiesFactory::getObjectPropertiesBrief(obj);
 }
 

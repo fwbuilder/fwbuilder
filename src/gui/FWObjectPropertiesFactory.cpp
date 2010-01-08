@@ -62,6 +62,7 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleSet.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/UDPService.h"
@@ -247,6 +248,18 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
         {
             const UserService* user_srv = UserService::constcast(obj);
             str << "User id: \"" << user_srv->getUserId().c_str() << "\"" ;
+        } else if (RuleSet::cast(obj) != NULL)
+        {
+            QStringList attrs;
+            RuleSet *rs = RuleSet::cast(obj);
+            if (rs->isTop()) attrs.push_back("top ruleset");
+            if (rs->isDual()) attrs.push_back("ipv4/ipv6");
+            else
+            {
+                if (rs->isV4()) attrs.push_back("ipv4");
+                if (rs->isV6()) attrs.push_back("ipv6");
+            }
+            str << attrs.join(" ");
         } else if (Interval::isA(obj))
         {
 
