@@ -156,13 +156,15 @@ string NATCompiler_ipt::getNewTmpChainName(NATRule *rule)
 
 string NATCompiler_ipt::debugPrintRule(Rule *r)
 {
-    NATRule *rule=NATRule::cast(r);
+    NATRule *rule = NATRule::cast(r);
+    string   iface_name = rule->getInterfaceStr();
 
     return NATCompiler::debugPrintRule(rule)+
         " " + FWObjectDatabase::getStringId(rule->getInterfaceId()) +
         " c=" + rule->getStr("ipt_chain") +
         " t=" + rule->getStr("ipt_target") +
-        " (type="+rule->getRuleTypeAsString()+")";
+        " (type="+rule->getRuleTypeAsString()+")" +
+        " intf=" + iface_name;
 }
 
 void NATCompiler_ipt::verifyPlatform()
@@ -2118,6 +2120,7 @@ bool NATCompiler_ipt::decideOnTarget::processNext()
  */
 bool NATCompiler_ipt::AssignInterface::processNext()
 {
+    NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
 //    Address  *a=NULL;
@@ -2136,23 +2139,40 @@ bool NATCompiler_ipt::AssignInterface::processNext()
                 iface->isBridgePort()
             ) continue;
 
-            char *in=strdup( iface->getName().c_str() );
-            char *cptr=in;
-            while (*cptr && *cptr!='*' && !isdigit(*cptr)) ++cptr;
+            /* Bug #1064: "Dedicated IPv6 interfaces show up in
+             * IPv4-NAT rules". Use interface only if it has addresses
+             * that match address family we compile for
+             *
+             * Include interfaces that have no addresses in the list
+             * for backwards compatibility.
+             */
+            FWObjectTypedChildIterator ipv4_addresses = iface->findByType(IPv4::TYPENAME);
+            FWObjectTypedChildIterator ipv6_addresses = iface->findByType(IPv6::TYPENAME);
+
+            if ((ipt_comp->ipv6 && ipv6_addresses != ipv6_addresses.end()) ||
+                (!ipt_comp->ipv6 && ipv4_addresses != ipv4_addresses.end()) ||
+                ipv4_addresses == ipv4_addresses.end() && ipv6_addresses == ipv6_addresses.end())
+            {
+
+                char *in=strdup( iface->getName().c_str() );
+                char *cptr=in;
+                while (*cptr && *cptr!='*' && !isdigit(*cptr)) ++cptr;
+
 /* if interface name ends with '*', this is wildcard interface. Just
  * replace '*' with '+'. If interace name does not end with '*',
  * replace numeric interface index with '+'. Either way, cptr points
  * at the first caracter after the 'family' name of the interface (is
  * there a better term?) which will be either a digit or '*'.
  */
-            *cptr='\0';
-            string inexp=string(in)+"+";
-            if ( std::find(regular_interfaces.begin(),
-                           regular_interfaces.end(),
-                           inexp)==regular_interfaces.end() )
-                regular_interfaces.push_back( inexp );
+                *cptr='\0';
+                string inexp=string(in)+"+";
+                if ( std::find(regular_interfaces.begin(),
+                               regular_interfaces.end(),
+                               inexp)==regular_interfaces.end() )
+                    regular_interfaces.push_back( inexp );
 
-            free(in);
+                free(in);
+            }
         }
     }
 

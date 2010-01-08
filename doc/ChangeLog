@@ -1,3 +1,10 @@
+2010-01-08  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* NATCompiler_ipt.cpp (AssignInterface::processNext): fixed bug
+	#1064: "Dedicated IPv6 interfaces show up in IPv4-NAT rules". Use
+	interface only if it has addresses that match address family we
+	compile for.
+
 2010-01-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectPropertiesBrief):
