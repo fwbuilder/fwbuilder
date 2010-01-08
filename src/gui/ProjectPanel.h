@@ -309,7 +309,7 @@ public:
     void loadLastOpenedLib();
     
     bool checkin(bool unlock);
-    void loadLibrary(const std::string &libfpath);
+    libfwbuilder::FWObject* loadLibrary(const std::string &libfpath);
     
     bool exportLibraryTest(std::list<libfwbuilder::FWObject*> &selectedLibs);
     void exportLibraryTo(QString fname,

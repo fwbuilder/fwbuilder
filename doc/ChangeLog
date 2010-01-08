@@ -1,3 +1,14 @@
+2010-01-07  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::loadLibrary): fixed bug
+	#1053 "duplicate objects created on "Import library" operation".
+	When user used "File/Import Library" function, the library is
+	checked for objects with duplicate IDs. Library name is also
+	checked for duplicates and changed by adding suffix "-1" if it
+	matches existing library name. This means the same library can now
+	be imported several times, which creates several copies (all with
+	their unique IDs to make XML file valid)
+
 2010-01-06  vadim  <vadim@vk.crocodile.org>
 
 	* bug fixes in installer for PF: fixed commands it runs on the

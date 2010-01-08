@@ -28,6 +28,7 @@
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
+#include "events.h"
 
 #include <fwbuilder/RuleSet.h>
 #include <fwbuilder/Policy.h>
@@ -415,13 +416,18 @@ void ProjectPanel::fileImport()
 
     if (fname.isEmpty()) return;   // Cancel  - keep working with old file
 
-    loadLibrary( fname.toLocal8Bit().constData() );
+    FWObject *new_lib = loadLibrary( fname.toLocal8Bit().constData() );
 
     loadObjects();
 
     // reset actions, including Save() which should now
     // be inactive
     mw->prepareFileMenu();
+
+    //QCoreApplication::postEvent(this, new openLibraryForObjectEvent(
+    //                                getFileName(), new_lib->getId()));
+
+    m_panel->om->openLib(new_lib);
 }
 
 
@@ -529,7 +535,7 @@ void ProjectPanel::fileCompare()
                            tr( "TXT Files (*.txt);;All Files (*)" ));
 
             if (fwbdebug)
-                qDebug( QString("Saving report to %1").arg(fn).toAscii().constData() );
+                qDebug() << QString("Saving report to %1").arg(fn);
 
             if (fn.isEmpty() ) return ;   // Cancel
 
@@ -740,7 +746,7 @@ bool ProjectPanel::exportLibraryTest(list<FWObject*> &selectedLibs)
             }
             s = s + "\n";
 
-            if (fwbdebug) qDebug(s.toAscii().constData());
+            if (fwbdebug) qDebug() << s;
 
             objlist = objlist + s;
         }
@@ -833,9 +839,14 @@ void ProjectPanel::findExternalRefs(FWObject *lib,
     }
 }
 
-void ProjectPanel::loadLibrary(const string &libfpath)
+/**
+ * Load library or several libraries from an external file. Return
+ * pointer to the last new imported library.
+ */
+FWObject* ProjectPanel::loadLibrary(const string &libfpath)
 {
     MessageBoxUpgradePredicate upgrade_predicate(mainW);
+    FWObject *last_new_lib = NULL;
 
     try
     {
@@ -845,9 +856,44 @@ void ProjectPanel::loadLibrary(const string &libfpath)
         FWObject *dobj = ndb->findInIndex(FWObjectDatabase::DELETED_OBJECTS_ID);
         if (dobj) ndb->remove(dobj, false);
 
+        set<int> duplicate_ids;
+        db()->findDuplicateIds(ndb, duplicate_ids);
+
+        map<int, int> id_mapping;
+        for (set<int>::iterator it=duplicate_ids.begin(); it!=duplicate_ids.end();
+             ++it)
+        {
+            FWObject *obj = ndb->findInIndex(*it);
+            assert(obj!=NULL);
+            int new_id = FWObjectDatabase::generateUniqueId();
+            obj->setId(new_id);
+            id_mapping[*it] = new_id;
+
+            // cerr << "Duplicate ID: " << *it 
+            //      << " " << FWObjectDatabase::getStringId(*it)
+            //      << obj->getPath()
+            //      << endl;
+        }
+        ndb->fixReferences(ndb, id_mapping);
+
+        int new_lib_id = -1;
+
+        // check for duplicate library names
+        FWObjectTypedChildIterator it2 = ndb->findByType(Library::TYPENAME);
+        for (; it2!=it2.end(); ++it2)
+        {
+            QString new_name = m_panel->om->makeNameUnique(
+                db(), QString::fromUtf8((*it2)->getName().c_str()), Library::TYPENAME);
+            (*it2)->setName(string(new_name.toUtf8()));
+            if ((*it2)->getId() != FWObjectDatabase::STANDARD_LIB_ID)
+                new_lib_id = (*it2)->getId();
+        }
+
         MergeConflictRes mcr(this);
         db()->merge(ndb, &mcr);
         delete ndb;
+
+        last_new_lib = db()->findInIndex(new_lib_id);
     } catch(FWException &ex)
     {
         QString error_txt = ex.toString().c_str();
@@ -864,6 +910,7 @@ void ProjectPanel::loadLibrary(const string &libfpath)
             tr("&Continue"), QString::null,QString::null,
             0, 1 );
     }
+    return last_new_lib;
 }
 
 /*
