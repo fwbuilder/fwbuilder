@@ -117,9 +117,6 @@ bool ProjectPanel::event(QEvent *event)
                 // we post updateObjectInTreeEvent even here to
                 // trigger UI updates.
 
-                // This should enable "Save" action since something has changed
-                mw->prepareFileMenu();
-
                 FWObject *p = obj;
                 while (p && Firewall::cast(p)==NULL) p = p->getParent();
                 Firewall *f = Firewall::cast(p);
