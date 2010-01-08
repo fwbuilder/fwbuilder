@@ -1,3 +1,8 @@
+2010-01-07  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase_tree_ops.cpp (FWObjectDatabase::findDuplicateIds):
+	function to find objects with duplicate IDs in two object trees.
+
 2009-12-24  vadim  <vadim@vk.crocodile.org>
 
 	* Preprocessor.cpp (Preprocessor::findMultiAddressObjectsUsedInRules):

@@ -221,15 +221,19 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
 
 //#define DEBUG_MERGE 1
 
-void FWObjectTreeScanner::merge(FWObject *dst,FWObject *src)
+void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
 {
     int dobjId = FWObjectDatabase::DELETED_OBJECTS_ID;
 
     if (dst==NULL)
     {
-        dst=treeRoot;
+        /* dst == NULL on the first call to this function */
+
+        dst = treeRoot;
+
         walkTree(dstMap,treeRoot);
         walkTree(srcMap, src);
+        
 
         /**
          * find deleted objects library in src and check if any object
@@ -427,6 +431,41 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( FWObject *lib )
     ndb->init = false;
 
     return ndb;
+}
+
+/**
+ * check if source and destination files have objects with the
+ * same ID. To do this, compare keys in obj_index in this and
+ * ndb. 
+ */
+void FWObjectDatabase::findDuplicateIds(FWObjectDatabase *ndb, set<int> &dupids)
+{
+    FWObjectDatabase *db1;
+    FWObjectDatabase *db2;
+    if (obj_index.size() > ndb->obj_index.size()) 
+    {
+        db1 = ndb;
+        db2 = this;
+    } else
+    {
+        db2 = ndb;
+        db1 = this;
+    }
+    for (map<int, FWObject*>::iterator it=db1->obj_index.begin();
+         it!=db1->obj_index.end(); ++it)
+    {
+        int id = it->first;
+        if (db2->obj_index.count(id) != 0)
+        {
+            // skip standard IDs
+            if (id <= DELETED_OBJECTS_ID) continue;
+            FWObject *obj = db1->findInIndex(id);
+            assert(obj);
+            if (obj->getLibrary()->getId() == STANDARD_LIB_ID ||
+                obj->getLibrary()->getId() == DELETED_OBJECTS_ID) continue;
+            dupids.insert(id);
+        }
+    }
 }
 
 void FWObjectDatabase::merge( FWObjectDatabase *ndb,
