@@ -5,6 +5,10 @@
 	interface only if it has addresses that match address family we
 	compile for.
 
+	* PolicyCompiler.cpp (PolicyCompiler::checkInterfacesForShadowing):
+	(change in libfwbuilder) include interface rule element in the
+	shadowing detection algorithm. See ticket #1068
+
 2010-01-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectPropertiesBrief):
