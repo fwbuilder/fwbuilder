@@ -109,6 +109,20 @@ namespace fwcompiler {
                                libfwbuilder::PolicyRule &r2);
 
         /**
+         * compare interfaces of rules r1 and r2.
+         *
+         * Return true if r2 shadows r1 (only inetrface rule element
+         * is checked)
+         *
+         * If interface element is "all" (empty), it shadows any
+         * specific interface in the other rule, also "all" shadows
+         * "all". If neither is "all", return true if both rules refer
+         * the same interface, otherwise return false.
+         */
+        bool checkInterfacesForShadowing(libfwbuilder::PolicyRule &r1,
+                                         libfwbuilder::PolicyRule &r2);
+
+        /**
          * detects if rules r1 and r2 are identical (that is, have the
          * same effect, rather than use the same objects)
          *

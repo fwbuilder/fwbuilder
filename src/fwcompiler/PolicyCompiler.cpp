@@ -276,6 +276,27 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
     return false;
 }
 
+/**
+ * compare interfaces of rules r1 and r2.
+ *
+ * Return true if r2 shadows r1 (only inetrface rule element is
+ * checked)
+ *
+ * If interface element is "all" (empty), it shadows any specific
+ * interface in the other rule, also "all" shadows "all". If neither
+ * is "all", return true if both rules refer the same interface,
+ * otherwise return false.
+ */
+bool PolicyCompiler::checkInterfacesForShadowing(PolicyRule &r1, PolicyRule &r2)
+{
+    int intf1_id = r1.getInterfaceId();
+    int intf2_id = r2.getInterfaceId();
+
+    if (intf2_id == -1) return true;  // "eth0" -- "all" or "all" -- "all"
+    return (intf1_id == intf2_id);
+}
+
+
 bool PolicyCompiler::cmpRules(PolicyRule &r1, PolicyRule &r2)
 {
     if (r1.getSrc()->getNeg()!=r2.getSrc()->getNeg()) return false;
@@ -994,8 +1015,13 @@ PolicyCompiler::findMoreGeneralRule::find_more_general_rule(
     {
 	PolicyRule *r = PolicyRule::cast( *j );
 
-	if (! check_interface || 
-	    (rule->getInterfaceId()==r->getInterfaceId()) ) 
+        bool intf_cr = false;
+        if (reverse)
+            intf_cr = pcomp->checkInterfacesForShadowing( *r , *rule );
+        else
+            intf_cr = pcomp->checkInterfacesForShadowing( *rule , *r );
+
+	if (! check_interface || intf_cr)
         {
             bool cr = false;
             if (reverse)
@@ -1023,7 +1049,6 @@ PolicyCompiler::findMoreGeneralRule::find_more_general_rule(
     }
     return j;
 }
-
 
 bool PolicyCompiler::DetectShadowing::processNext()
 {
