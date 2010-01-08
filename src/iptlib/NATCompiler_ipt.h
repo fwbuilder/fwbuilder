@@ -34,6 +34,9 @@
 #include <map>
 #include <string>
 
+#include <QSet>
+#include <QString>
+
 namespace libfwbuilder {
     class Host;
     class IPService;
@@ -236,7 +239,7 @@ namespace fwcompiler {
         friend class AssignInterface;
         class AssignInterface : public NATRuleProcessor
         {
-            std::list<std::string> regular_interfaces;
+            QSet<QString> regular_interfaces;
             public:
             AssignInterface(const std::string &name) : NATRuleProcessor(name) {}
             virtual bool processNext();

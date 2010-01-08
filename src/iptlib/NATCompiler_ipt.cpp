@@ -53,6 +53,9 @@
 
 #include "config.h"
 
+#include <QString>
+#include <QRegExp>
+
 #include <algorithm>
 #include <functional>
 #include <iomanip>
@@ -2153,25 +2156,20 @@ bool NATCompiler_ipt::AssignInterface::processNext()
                 (!ipt_comp->ipv6 && ipv4_addresses != ipv4_addresses.end()) ||
                 ipv4_addresses == ipv4_addresses.end() && ipv6_addresses == ipv6_addresses.end())
             {
+                /* 
+                 * if interface name ends with '*', this is wildcard
+                 * interface. Just replace '*' with '+'. If interace
+                 * name does not end with '*', replace numeric
+                 * interface index with '+'. Either way, cptr points
+                 * at the first caracter after the 'family' name of
+                 * the interface (is there a better term?) which will
+                 * be either a digit or '*'.
+                 */
 
-                char *in=strdup( iface->getName().c_str() );
-                char *cptr=in;
-                while (*cptr && *cptr!='*' && !isdigit(*cptr)) ++cptr;
-
-/* if interface name ends with '*', this is wildcard interface. Just
- * replace '*' with '+'. If interace name does not end with '*',
- * replace numeric interface index with '+'. Either way, cptr points
- * at the first caracter after the 'family' name of the interface (is
- * there a better term?) which will be either a digit or '*'.
- */
-                *cptr='\0';
-                string inexp=string(in)+"+";
-                if ( std::find(regular_interfaces.begin(),
-                               regular_interfaces.end(),
-                               inexp)==regular_interfaces.end() )
-                    regular_interfaces.push_back( inexp );
-
-                free(in);
+                QString iname = QString(iface->getName().c_str());
+                iname.replace(QRegExp("[0-9]{1,}$"), "+");
+                iname.replace("*", "+");
+                regular_interfaces.insert(iname);
             }
         }
     }
@@ -2231,14 +2229,12 @@ bool NATCompiler_ipt::AssignInterface::processNext()
  * but I do it anyway.
  */
         int n=0;
-        for (list<string>::iterator i=regular_interfaces.begin(); i!=regular_interfaces.end(); i++)
+        foreach(QString intf_name, regular_interfaces)
         {
             NATRule *r = compiler->dbcopy->createNATRule();
             r->duplicate(rule);
             compiler->temp_ruleset->add(r);
-
-            r->setInterfaceStr( *i );
-            
+            r->setInterfaceStr(intf_name.toStdString());
             tmp_queue.push_back(r);
             n++;
         }
