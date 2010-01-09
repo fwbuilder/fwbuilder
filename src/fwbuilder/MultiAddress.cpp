@@ -92,7 +92,7 @@ bool MultiAddress::validateChild(FWObject *o)
     return ObjectGroup::validateChild(o);
 }
 
-void MultiAddress::loadFromSource(bool) throw(FWException)
+void MultiAddress::loadFromSource(bool, bool) throw(FWException)
 {
     cerr << "virtual function MultiAddress::loadFromSource is not implemented"
          << endl;

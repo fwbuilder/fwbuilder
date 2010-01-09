@@ -1,3 +1,13 @@
+2010-01-09  vadim  <vadim@vk.crocodile.org>
+
+	* DNSName.cpp (DNSName::loadFromSource): method loadFromSource()
+	now takes second argument "bool test_mode". When compiler runs in
+	a test mode, it passes true in this argument to loadFromSource()
+	to make it use dummy ip address in case it can not resolve
+	requested DNS record. This helps test compiler on data files that
+	use compile-time DNSName objects that do not resolve. The same
+	argument is now available in AddressTable::loadFromSource() method.
+
 2010-01-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::checkInterfacesForShadowing):

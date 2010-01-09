@@ -95,7 +95,7 @@ xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-void AddressTable::loadFromSource(bool ipv6) throw(FWException)
+void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
 {
     ifstream fs(getStr("filename").c_str());
     ostringstream exmess;
@@ -181,9 +181,34 @@ void AddressTable::loadFromSource(bool ipv6) throw(FWException)
     }
     else
     {
+        // in test mode we use dummy address but still throw exception.
+        // Compiler should print error message but continue.
+        if (test_mode)
+        {
+            if (ipv6)
+            {
+                NetworkIPv6 *net = getRoot()->createNetworkIPv6();
+                net->setAddressNetmask("2001:db8::/32");
+                new_addr = net;
+            } else
+            {
+                Network *net = getRoot()->createNetwork();
+                net->setAddressNetmask("192.0.2.0/24");
+                new_addr = net;
+            }
+            root->add(new_addr);
+            new_addr->setName(buf);
+            if (validateChild(new_addr))
+            {
+                addRef(new_addr);
+                cntr++;
+            }
+        }
         exmess << "File not found for Address Table: "
                << getName()
                << " (" << getStr("filename") << ")";
+        if (test_mode)
+            exmess << " Using dummy address in test mode";
         throw FWException(exmess.str());
     }
 }
