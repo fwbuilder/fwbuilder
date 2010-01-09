@@ -249,7 +249,7 @@ bool NATCompiler_pf::PrintRule::processNext()
             ruleset_name = "UNKNOWN";
         }
 
-        if (XMLTools::version_compare(version, "4.2")>=0)
+        if (XMLTools::version_compare(version, "4.6")>=0)
         {
             _printAnchorRule("anchor", ruleset_name, iface_name, rule);
         } else
