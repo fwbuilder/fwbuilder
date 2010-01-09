@@ -73,6 +73,7 @@ namespace libfwbuilder
 
 enum BatchOperation {BATCH_INSTALL, BATCH_COMPILE} ;
 enum Page1Operation {INST_DLG_COMPILE, INST_DLG_INSTALL};
+enum InstDialogState {NONE, COMPILE_DONE, INSTALL_DONE };
 
 typedef std::pair<QString,QString> t_procMess; // first - compilation result, second - installation result;
 
@@ -92,6 +93,7 @@ class instDialog : public QDialog, public FakeWizard
     Ui::instDialog_q *m_dialog;
     instConf cnf;
     Page1Operation page_1_op;
+    InstDialogState state;
     FirewallInstaller *installer;
     ProjectPanel *project;
     instBatchOptionsDialog *batch_inst_opt_dlg;

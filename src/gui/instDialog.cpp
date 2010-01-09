@@ -113,6 +113,7 @@ instDialog::instDialog(QWidget* p,
     finished = false;
 
     page_1_op = INST_DLG_COMPILE;
+    state = NONE;
 
     rejectDialogFlag = false;
 
@@ -261,6 +262,7 @@ void instDialog::mainLoopCompile()
         // that we "uncheck" "install" checkboxes in the first page of
         // the wizard on compile failure, so we need to rebuild install_fw_list
         // here.
+        state = COMPILE_DONE;
         fillInstallOpList();
         if (install_fw_list.size() > 0)
         {
@@ -301,6 +303,7 @@ void instDialog::mainLoopInstall()
         return;
     }
 
+    state = INSTALL_DONE;
     finished = true;
     setFinishEnabled(currentPage(), true);
 }
@@ -310,17 +313,23 @@ void instDialog::mainLoopInstall()
 
 void instDialog::showPage(const int page)
 {
+    // see #1044   Hide batch install label and checkbox once user moves to
+    // the install phase, otherwise it looks confusing.
+    if (page_1_op == INST_DLG_INSTALL)
+    {
+        m_dialog->batchInstFlagFrame->hide();
+    }
+
     FakeWizard::showPage(page);
 
     if (fwbdebug && reqFirewalls.empty())
-        qDebug("instDialog::showPage reqFirewalls is empty");
+        qDebug() << "instDialog::showPage reqFirewalls is empty";
 
-    if (fwbdebug) qDebug("instDialog::showPage");
     int p = page;
 
     if (fwbdebug)
-        qDebug(QString("to page: %1  from page: %2").
-               arg(p).arg(lastPage).toAscii().constData());
+        qDebug() << QString("State %1  page_1_op %2  page %3 ---> %4")
+            .arg(state).arg(page_1_op).arg(lastPage).arg(page);
 
     if (p==2)
     {
@@ -343,7 +352,8 @@ void instDialog::showPage(const int page)
         setNextEnabled(1, false);
 
         fillCompileOpList();
-        fillInstallOpList();
+        
+        fillInstallOpList(); // fill install_fw_list 
 
         // Page 1 of the wizard does both compile and install
         // controlled by flag page_1_op
