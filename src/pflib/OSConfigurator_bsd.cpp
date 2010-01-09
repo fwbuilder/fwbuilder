@@ -32,6 +32,7 @@
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
 
@@ -74,12 +75,23 @@ void OSConfigurator_bsd::addVirtualAddressForNAT(const Address *addr)
         {
             Address *iaddr_addr = Address::cast(iaddr);
             assert(iaddr_addr!=NULL);
+            const InetAddr *ipaddr = iaddr_addr->getAddressPtr();
+            const InetAddr *ipnetm = iaddr_addr->getNetmaskPtr();
+
             Interface *iface = Interface::cast(iaddr->getParent());
             assert(iface!=NULL);
 
-            output << "add_addr " << addr->getAddressPtr()->toString() << " "
-                   << iaddr_addr->getNetmaskPtr()->toString() <<  " "
-                   << iface->getName() << endl;
+            if (ipaddr->isV6())
+            {
+                output << "add_addr6 " << addr->getAddressPtr()->toString() << " "
+                       << ipnetm->getLength() <<  " "
+                       << iface->getName() << endl;
+            } else
+            {
+                output << "add_addr " << addr->getAddressPtr()->toString() << " "
+                       << ipnetm->toString() <<  " "
+                       << iface->getName() << endl;
+            }
         
             virtual_addresses.push_back(*(addr->getAddressPtr()));
         } else
@@ -157,10 +169,23 @@ string OSConfigurator_bsd::configureInterfaces()
             for ( ; j!=j.end(); ++j ) 
             {
                 Address *iaddr = Address::cast(*j);
-                ostr << "add_addr "
-                       << iaddr->getAddressPtr()->toString() << " "
-                       << iaddr->getNetmaskPtr()->toString() << " "
-                       << iface->getName() << endl;
+                const InetAddr *ipaddr = iaddr->getAddressPtr();
+                const InetAddr *ipnetm = iaddr->getNetmaskPtr();
+
+                if (ipaddr->isV6())
+                {
+                    output << "add_addr6 "
+                           << ipaddr->toString() << " "
+                           << ipnetm->getLength() <<  " "
+                           << iface->getName() << endl;
+                } else
+                {
+                    output << "add_addr "
+                           << ipaddr->toString() << " "
+                           << ipnetm->toString() <<  " "
+                           << iface->getName() << endl;
+                }
+
                 virtual_addresses.push_back(*(iaddr->getAddressPtr()));
             }
         }
@@ -211,6 +236,7 @@ string OSConfigurator_bsd::configureInterfaces()
                 FWOptions *failover_opts =
                     FailoverClusterGroup::cast(failover_group)->getOptionsObject();
                 string carp_password = failover_opts->getStr("carp_password");
+                if (carp_password.empty()) carp_password = "\"\"";
                 string vhid = failover_opts->getStr("carp_vhid");
                 int advbase = failover_opts->getInt("carp_advbase");
                 int master_advskew = failover_opts->getInt("carp_master_advskew");
@@ -222,6 +248,7 @@ string OSConfigurator_bsd::configureInterfaces()
                 if (master_advskew == default_advskew) default_advskew++;
 
                 have_carp_interfaces = true;
+
 
                 carp_output << "ifconfig " << iface->getName() << " create" << endl;
 
@@ -247,18 +274,35 @@ string OSConfigurator_bsd::configureInterfaces()
                 if (use_advskew > 0)
                     carp_output << " advskew " << use_advskew;
 
-                // TODO: How do we add support for ipv6 CARP interfaces ?
-                // Currently support only IPv4 and only one address 
-                // per carp interface
-                IPv4 *ipv4 = IPv4::cast(iface->getFirstByType(IPv4::TYPENAME));
-                const InetAddr *addr = ipv4->getAddressPtr();
-                const InetAddr *mask = ipv4->getNetmaskPtr();
-
-                carp_output << " " << addr->toString()
-                            << " netmask " << mask->toString();
                 carp_output << endl;
+
+                list<FWObject*> all_addr = iface->getByType(IPv4::TYPENAME);
+                list<FWObject*> all_ipv6 = iface->getByType(IPv6::TYPENAME);
+                all_addr.insert(all_addr.begin(), all_ipv6.begin(), all_ipv6.end());
+
+                for (list<FWObject*>::iterator j = all_addr.begin();
+                     j != all_addr.end(); ++j) 
+                {
+                    Address *address = Address::cast(*j);
+                    const InetAddr *addr = address->getAddressPtr();
+                    const InetAddr *mask = address->getNetmaskPtr();
+
+                    carp_output << "ifconfig " << iface->getName();
+                    if (addr->isV6())
+                        carp_output << " inet6";
+                    else
+                        carp_output << " inet";
+
+                    carp_output << " " << addr->toString();
+
+                    carp_output << " prefixlen " << mask->getLength();
+
+                    carp_output << endl;
+                }
+
             }
         }
+
         if (have_carp_interfaces)
         {
             ostr << "$SYSCTL -w net.inet.carp.allow=1" << endl;

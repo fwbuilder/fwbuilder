@@ -1,3 +1,9 @@
+2010-01-09  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
+	Added support for configuring ipv6 addresses of interfaces for *BSD,
+	including CARP cluster interfaces
+
 2010-01-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* NATCompiler_ipt.cpp (AssignInterface::processNext): fixed bug

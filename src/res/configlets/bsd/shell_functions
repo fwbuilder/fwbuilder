@@ -27,6 +27,17 @@ add_addr() {
     } 
 }
 
+add_addr6() {
+  addr=$1
+  nm=$2
+  dev=$3
+  ( ifconfig $dev | egrep -q "inet6 +${addr} " ) || 
+    { 
+      echo "$dev: $addr/$nm"
+      ifconfig $dev inet6 $addr prefixlen $nm alias
+    } 
+}
+
 {{if dyn_addr}}
 getaddr() {
   intf=$1
