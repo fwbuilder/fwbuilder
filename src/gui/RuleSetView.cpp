@@ -1323,33 +1323,13 @@ void RuleSetView::pasteRuleAbove()
     for (i= FWObjectClipboard::obj_clipboard->begin();
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
-        ProjectPanel *proj_p = i->second;
-        FWObject *co = proj_p->db()->findInIndex(i->first);
-        Rule *rule = Rule::cast(co);
+        Rule *rule = Rule::cast(createInsertTemplate(i->second, i->first));
 
         if (!rule || !md->checkRuleType(rule)) continue;
 
-        if (proj_p!=project)
-        {
-            // rule is being copied from another project file
-            map<int,int> map_ids;
-            co = project->db()->recursivelyCopySubtree(md->getRuleSet(), co, map_ids);
-            // Note that FWObjectDatabase::recursivelyCopySubtree adds
-            // a copy it creates to the end of the list of children of
-            // the object passed as its first arg., which is in this
-            // case ruleset. This works only if we paste rule at the
-            // bottom of ruleset, otherwise need to move them to the
-            // proper location.
-            co->ref();
-            md->getRuleSet()->remove(co);
-
-            project->m_panel->om->reload();
-        }
-
         project->undoStack->push(
             new FWCmdRuleInsert(
-                project, md->getRuleSet(), md->getRulePosition(index),
-                false, Rule::cast(co)));
+                project, md->getRuleSet(), md->getRulePosition(index), false, rule));
     }
 }
 
@@ -1365,34 +1345,45 @@ void RuleSetView::pasteRuleBelow()
     for (i= FWObjectClipboard::obj_clipboard->rbegin();
          i!=FWObjectClipboard::obj_clipboard->rend(); ++i)
     {
-        ProjectPanel *proj_p = i->second;
-        FWObject *co = proj_p->db()->findInIndex(i->first);
-        Rule *rule = Rule::cast(co);
+        Rule *rule = Rule::cast(createInsertTemplate(i->second, i->first));
 
         if (!rule || !md->checkRuleType(rule)) continue;
 
-        if (proj_p!=project)
-        {
-            // rule is being copied from another project file
-            map<int,int> map_ids;
-            co = project->db()->recursivelyCopySubtree(md->getRuleSet(), co, map_ids);
-            // Note that FWObjectDatabase::recursivelyCopySubtree adds
-            // a copy it creates to the end of the list of children of
-            // the object passed as its first arg., which is in this
-            // case ruleset. This works only if we paste rule at the
-            // bottom of ruleset, otherwise need to move them to the
-            // proper location.
-            co->ref();
-            md->getRuleSet()->remove(co);
-
-            project->m_panel->om->reload();
-        }
-
         project->undoStack->push(
             new FWCmdRuleInsert(
-                project, md->getRuleSet(), md->getRulePosition(index),
-                true, Rule::cast(co)));
+                project, md->getRuleSet(), md->getRulePosition(index), true, rule));
     }
+}
+
+FWObject* RuleSetView::createInsertTemplate(ProjectPanel* proj_p, int id)
+{
+    RuleSetModel* md = ((RuleSetModel*)model());
+    FWObject* co = proj_p->db()->findInIndex(id);
+    FWObject* t = 0;
+
+    if (!Rule::cast(co)) return 0;
+
+    if (proj_p!=project)
+    {
+        // rule is being copied from another project file
+        map<int,int> map_ids;
+        t = project->db()->recursivelyCopySubtree(md->getRuleSet(), co, map_ids);
+        // Note that FWObjectDatabase::recursivelyCopySubtree adds
+        // a copy it creates to the end of the list of children of
+        // the object passed as its first arg., which is in this
+        // case ruleset. This works only if we paste rule at the
+        // bottom of ruleset, otherwise need to move them to the
+        // proper location.
+        t->ref();
+        md->getRuleSet()->remove(t);
+
+        project->m_panel->om->reload();
+    } else {
+        t = proj_p->db()->create(co->getTypeName());
+        t->duplicate(co);
+    }
+
+    return t;
 }
 
 bool RuleSetView::canChange(RuleSetModel* md)

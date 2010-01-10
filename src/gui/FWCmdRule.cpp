@@ -97,13 +97,15 @@ FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset,
     this->isAfter = isAfter;
     this->ruleToInsert = ruleToInsert;
     this->insertedRule = 0;
+    this->insertedId = -1000;
+
 
     setText(QObject::tr("insert rule"));
 }
 
 FWCmdRuleInsert::~FWCmdRuleInsert()
 {
-
+    if (ruleToInsert) delete ruleToInsert;
 }
 
 void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
@@ -124,6 +126,15 @@ void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
         if (position) index = md->indexForPosition(position);
         insertedRule = md->insertRule(ruleToInsert, index, isAfter);
     }
+
+    if (insertedId < 0)
+    {
+        insertedId = insertedRule->getId();
+    } else
+    {
+        insertedRule->setId(insertedId);
+    }
+
     getRuleSetView()->selectRE(insertedRule,0);
 }
 

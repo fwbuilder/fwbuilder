@@ -74,6 +74,7 @@ public:
 class FWCmdRuleInsert : public FWCmdRule
 {
     int position;
+    int insertedId;
     libfwbuilder::Rule * ruleToInsert;
     libfwbuilder::Rule * insertedRule;
     bool isAfter;
