@@ -588,6 +588,9 @@ QString CompilerDriver::determineOutputFileName(Cluster *cluster,
 void CompilerDriver::findImportedRuleSets(Firewall *fw,
                                           list<FWObject*> &all_policies)
 {
+    bool cluster_member = fw->getOptionsObject()->getBool("cluster_member");
+    int cluster_id = fw->getInt("parent_cluster_id");
+
     list<FWObject*> imported_policies;
     for (list<FWObject*>::iterator i=all_policies.begin();
          i!=all_policies.end(); ++i)
@@ -598,8 +601,17 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
             if (rule == NULL) continue; // skip RuleSetOptions object
             RuleSet *ruleset = rule->getBranch();
 
-            if (ruleset!=NULL && !ruleset->isChildOf(fw))
+            if (ruleset!=NULL)
             {
+                if (ruleset->isChildOf(fw)) continue;
+
+                // Additional check: the rule set may be child of a
+                // cluster this firewall is member of. If it is, it
+                // has been taken care of in CompilerDriver::mergeRuleSets()
+                FWObject *ruleset_parent = ruleset->getParent();
+                if (cluster_member && Cluster::isA(ruleset_parent) &&
+                    ruleset_parent->getId() == cluster_id) continue;
+
                 ruleset->setTop(false);
                 imported_policies.push_back(ruleset);
             }
@@ -718,11 +730,13 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
          p != all_rulesets.end(); ++p)
     {
         FWObject *ruleset = *p;
+
         FWObject::iterator i = std::find_if(fw->begin(), fw->end(),
                                             FWObjectNameEQPredicate(ruleset->getName()));
         if (i!=fw->end() && (*i)->getTypeName() == type)
         {
             FWObject *fw_ruleset = *i;
+
             /*
              * fw has rule set with the same name.  See ticket #372
              * for details.
@@ -744,8 +758,14 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
              * has any rules.
              */
 
-            list<FWObject*> all_rules = fw_ruleset->getByType(type);
-            if (all_rules.size() > 0)
+            int rule_cntr = 0;
+            list<FWObject*>::iterator it = fw_ruleset->begin();
+            for ( ; it!=fw_ruleset->end(); ++it)
+            {
+                if (Rule::cast(*it)!=NULL) rule_cntr++;
+            }
+
+            if (rule_cntr > 0)
             {
                 QString err("ignoring cluster rule set \"%1\" "
                             "because member firewall \"%2\" "

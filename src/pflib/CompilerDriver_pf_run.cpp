@@ -263,6 +263,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
         list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
 
         findImportedRuleSets(fw, all_policies);
+        findImportedRuleSets(fw, all_nat);
 
         vector<int> ipv4_6_runs;
 

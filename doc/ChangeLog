@@ -1,5 +1,13 @@
 2010-01-10  vadim  <vadim@vk.crocodile.org>
 
+	* CompilerDriver.cpp (CompilerDriver::findImportedRuleSets): fixed
+	bug #1072: "member ruleset override produces empty config files
+	for PF". In this case, cluster nat rule branched to a separate nat
+	rule set. There was nat rule set with the same name in the member
+	firewall but compiler seemed to ignore it and produced empty .conf
+	file for this rule set. The warning about member having rule set
+	with the same name was not issued
+
 	* NATCompiler_pf.cpp (checkForDynamicInterfacesOfOtherObjects::findDynamicInterfaces):
 	fixed bug #1071 "can't use dynamic cluster interface in NAT rules
 	for PF". In this case, cluster has interface rl1 which is mapped
