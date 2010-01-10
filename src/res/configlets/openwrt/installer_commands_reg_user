@@ -1,0 +1,35 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/sveasoft/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+##
+## These are commands built-in policy installer runs on the firewall if
+## installation is performed using regular user account for authentication
+##
+##  Variables:
+##
+##  {{$fwbprompt}} -- "magic" prompt that installer uses to detect when it is logged in
+##  {{$fwdir}}     -- directory on the firewall
+##  {{$fwscript}}  -- script name on the firewall
+##  {{$rbtimeout}} -- rollback timeout
+##
+##
+##  We only use root to authenticate to linksys/sveasoft firewall
+
+{{if run}}
+{{endif}}
+
+
+{{if test}}
+{{endif}}
+
+

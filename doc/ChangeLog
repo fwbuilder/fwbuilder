@@ -1,5 +1,16 @@
 2010-01-09  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* src/res/configlets/openwrt/installer_commands_root: Added
+	support for OpenWRT. Generated iptables script has standard format
+	of the OpenWRT system scripts and should be installed in
+	/etc/init.d/. The script loads firewall policy when it is started
+	with command line argument "start" and stops it when it runs with
+	argument "stop". Other standard arguments recognized by OpenWRT
+	startup scripts are also supported. To make the system run
+	fwbuilder script during boot, run it with argument "enable".  See
+	Release Notes for more details.
+
+
 	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
 	Added support for configuring ipv6 addresses of interfaces for *BSD,
 	including CARP cluster interfaces

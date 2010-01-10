@@ -176,6 +176,10 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
             oscnf = std::auto_ptr<OSConfigurator_linux24>(
                 new OSConfigurator_linux24(objdb , fw, false));
 
+        if (os_family == "openwrt")
+            oscnf = std::auto_ptr<OSConfigurator_linux24>(
+                new OSConfigurator_linux24(objdb , fw, false));
+
         if (os_family == "secuwall")
             oscnf = std::auto_ptr<OSConfigurator_linux24>(
                 new OSConfigurator_secuwall(objdb , fw, false));

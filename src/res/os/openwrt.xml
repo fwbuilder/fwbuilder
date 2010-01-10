@@ -3,7 +3,7 @@
     <Target name="openwrt">
       <description>OpenWRT</description>
       <status>active</status>
-      <family>linux24</family>
+      <family>openwrt</family>
       <dialog>linux24</dialog>
       <interface_dialog>linux24</interface_dialog>
       <cluster_dialog>basic</cluster_dialog>
@@ -15,11 +15,14 @@
           <loopback_interface>lo</loopback_interface>
           <flush_and_set_default_policy>True</flush_and_set_default_policy>
           <modules_dir>/lib/modules/`uname -r`/</modules_dir>
+          <firewall_dir>/etc/init.d</firewall_dir>
+          <output_file>fwbuilder.fw</output_file>
+          <admUser>root</admUser>
         </default>
 
         <activation>
-          <fwdir>/etc/fw</fwdir>
-          <fwdir_test>{{$fwdir}}/tmp</fwdir_test>
+          <fwdir>/etc/</fwdir>
+          <fwdir_test>/tmp</fwdir_test>
         </activation>
 
 <!-- set to True if you want to suppress comments in the generated script -->
@@ -110,17 +113,17 @@
       <tools>
         <Unknown>
           <path_lsmod>/sbin/lsmod</path_lsmod>
-          <path_modprobe>/sbin/modprobe</path_modprobe>
-          <path_iptables>/sbin/iptables</path_iptables>
-          <path_ip6tables>/sbin/ip6tables</path_ip6tables>
-          <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
-          <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
-          <path_ip>/sbin/ip</path_ip>
+          <path_modprobe></path_modprobe>
+          <path_iptables>/usr/sbin/iptables</path_iptables>
+          <path_ip6tables>/usr/sbin/ip6tables</path_ip6tables>
+          <path_iptables_restore>/usr/sbin/iptables-restore</path_iptables_restore>
+          <path_ip6tables_restore>/usr/sbin/ip6tables-restore</path_ip6tables_restore>
+          <path_ip>/usr/sbin/ip</path_ip>
           <path_logger>/usr/bin/logger</path_logger>
           <path_expect>/usr/bin/expect</path_expect>
           <path_ifconfig>/sbin/ifconfig</path_ifconfig>
           <path_vconfig>/sbin/vconfig</path_vconfig>
-          <path_brctl>/sbin/brctl</path_brctl>
+          <path_brctl>/usr/sbin/brctl</path_brctl>
           <path_ifenslave>/sbin/ifenslave</path_ifenslave>
         </Unknown>
       </tools>
