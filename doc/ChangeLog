@@ -1,5 +1,9 @@
 2010-01-10  vadim  <vadim@vk.crocodile.org>
 
+	* TableFactory.cpp (TableFactory::PrintTables): suppress comment
+	"Tables: (0)" in the compiler for PF output when there are no
+	tables.
+
 	* CompilerDriver.cpp (CompilerDriver::findImportedRuleSets): fixed
 	bug #1072: "member ruleset override produces empty config files
 	for PF". In this case, cluster nat rule branched to a separate nat

@@ -162,8 +162,9 @@ void TableFactory::createTablesForRE(RuleElement *re,Rule *rule)
 
 string TableFactory::PrintTables()
 {
+    if (tables.size() == 0) return "";
+
     stringstream output;
-    output << endl;
     output << endl;
     output << "# Tables: (" << tables.size() << ")" << endl;
 

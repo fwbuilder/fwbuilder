@@ -442,13 +442,29 @@ rule sets of this object rather than in the actual firewalls.
     </li>
 
     <li>
-      If you want to have most rules in the cluster and some in the
-      member, you can create separate rule set object in the member
-      and pass control to it using branching rule. You need to create
-      rule set with the same name in the cluster too, so that you can
-      drag it into the "branch" rule action. Leave this cluster
-      ruleset object empty so you can put rules in the member
-      firewall.
+      Here is what you need to do if you want to have most rules
+      defined in the cluster so they will translate into rules for all
+      member firewalls, but have some rules defined in the members so
+      you can make configurations of the members slightly different:
+      <ul>
+        <li>Create separate rule set object in the cluster and in each
+          member. Use name different from "Policy" or "NAT". Lets use
+          name "member_override".</li>
+        <li>Create a rule with action "Branch" in the main Policy or
+          NAT rule set of the cluster, drag rule set object
+          "member_override" that belongs to the cluster to the well in
+          the Branch action parameters dialog.</li>
+        <li>Leave "member_override" rule set that is a child of the cluster
+          object empty (no rules)</li>
+        <li>Add rules to the rule set "member_override" in each member
+        firewall</li>
+        <li>Make sure rule set "member_override" is not marked as "Top
+          ruleset" in the cluster and each member. This rule set
+          translates into user-defined chain (iptables) or anchor (PF)
+          and should not be the "top ruleset".</li>
+      </ul>
+      This method works for both policy and NAT rules for all
+      platforms.
     </li>
 
   </ul>
