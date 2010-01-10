@@ -42,6 +42,8 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Cluster.h"
 
 #include <iostream>
 #include <iomanip>
@@ -121,6 +123,8 @@ bool NATCompiler_pf::assignInterfaceToNATRule(Rule *rule, Address *addr)
         FWObject *p = addr;
         while ( ! Interface::isA(p) ) p=p->getParent();
         Interface *intf = Interface::cast(p);
+
+        // TODO: use  replaceFailoverInterfaceInRE to replace cluster interfaces
         if (intf->getOptionsObject()->getBool("cluster_interface"))
         {
             string base_interface_id = intf->getOptionsObject()->getStr("base_interface_id");
@@ -131,6 +135,7 @@ bool NATCompiler_pf::assignInterfaceToNATRule(Rule *rule, Address *addr)
                 if (base_interface) intf = Interface::cast(base_interface);
             }
         }
+
         rule->setInterfaceId(intf->getId());
         rule->setInterfaceStr(intf->getName());
         return true;
@@ -1030,16 +1035,38 @@ void NATCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfa
     list<FWObject*> cl;
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
-        FWObject *o   = *i1;
+        FWObject *o = *i1;
         FWObject *obj = o;
         if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-        Interface  *ifs   =Interface::cast( obj );
+        Interface  *ifs = Interface::cast(obj);
 
-        if (ifs!=NULL && ifs->isDyn() && ! ifs->isChildOf(compiler->fw))        
+        if (ifs && Cluster::isA(ifs->getParent()))
+        {
+            FailoverClusterGroup *failover_group =
+                FailoverClusterGroup::cast(
+                    ifs->getFirstByType(FailoverClusterGroup::TYPENAME));
+            if (failover_group)
+            {
+                for (FWObjectTypedChildIterator it =
+                         failover_group->findByType(FWObjectReference::TYPENAME);
+                     it != it.end(); ++it)
+                {
+                    Interface *member_iface = Interface::cast(FWObjectReference::getObject(*it));
+                    assert(member_iface);
+                    if (member_iface->isChildOf(compiler->fw))
+                    {
+                        ifs = member_iface;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (ifs && ifs->isDyn() && ! ifs->isChildOf(compiler->fw))        
         {
             char errstr[2048];
             sprintf(errstr,
-                    "Can not build rule using dynamic interface '%s' of the object '%s' because its address in unknown.",
+                    "Can not build rule using dynamic interface '%s' of the object '%s' because its address is unknown.",
                     ifs->getName().c_str(), 
                     ifs->getParent()->getName().c_str());
 

@@ -1,3 +1,14 @@
+2010-01-10  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_pf.cpp (checkForDynamicInterfacesOfOtherObjects::findDynamicInterfaces):
+	fixed bug #1071 "can't use dynamic cluster interface in NAT rules
+	for PF". In this case, cluster has interface rl1 which is mapped
+	to dynamic interfaces rl1 of two member firewalls. Cluster
+	interface object is used in the TSrc of a NAT rule. Compiler
+	refused to compile this rule with error "cluster:NAT:2: error: Can
+	not build rule using dynamic interface 'rl1' of the object 'member1'
+	because its address in unknown."
+
 2010-01-09  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* src/res/configlets/openwrt/installer_commands_root: Added

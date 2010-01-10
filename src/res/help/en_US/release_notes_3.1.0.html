@@ -426,6 +426,31 @@ rule sets of this object rather than in the actual firewalls.
       object there instead, except the program automatically picks the
       member firewall it compiles the policy for.
     </li>
+
+    <li>
+      First, the program looks at Policy and NAT rule set objects of
+      the cluster and member firewalls and compares their names. If
+      there is rule set object with the same name in both the cluster
+      and member firewall and both have non-zero number of rules, the
+      rule set object from the member is used and the one from the
+      cluster is ignored. The program prints a warning message when
+      this is done. If rule set objects with the same name exist but
+      the one in the member firewall has zero rules, it is ignored and
+      the one from the cluster is used (no warning is
+      issued). Likewise, if there are rule sets with the same name but
+      the one in the cluster has zero rules, it is ignored.
+    </li>
+
+    <li>
+      If you want to have most rules in the cluster and some in the
+      member, you can create separate rule set object in the member
+      and pass control to it using branching rule. You need to create
+      rule set with the same name in the cluster too, so that you can
+      drag it into the "branch" rule action. Leave this cluster
+      ruleset object empty so you can put rules in the member
+      firewall.
+    </li>
+
   </ul>
 </p>
 
