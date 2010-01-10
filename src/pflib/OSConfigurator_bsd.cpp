@@ -165,28 +165,33 @@ string OSConfigurator_bsd::configureInterfaces()
             if (!iface->isRegular()) continue;
             if (iface->isFailoverInterface()) continue;
 
-            FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
-            for ( ; j!=j.end(); ++j ) 
+            list<FWObject*> all_addr = iface->getByType(IPv4::TYPENAME);
+            list<FWObject*> all_ipv6 = iface->getByType(IPv6::TYPENAME);
+            all_addr.insert(all_addr.begin(), all_ipv6.begin(), all_ipv6.end());
+
+            for (list<FWObject*>::iterator j = all_addr.begin();
+                 j != all_addr.end(); ++j) 
             {
                 Address *iaddr = Address::cast(*j);
+
                 const InetAddr *ipaddr = iaddr->getAddressPtr();
                 const InetAddr *ipnetm = iaddr->getNetmaskPtr();
 
                 if (ipaddr->isV6())
                 {
-                    output << "add_addr6 "
-                           << ipaddr->toString() << " "
-                           << ipnetm->getLength() <<  " "
-                           << iface->getName() << endl;
+                    ostr << "add_addr6 "
+                         << ipaddr->toString() << " "
+                         << ipnetm->getLength() <<  " "
+                         << iface->getName() << endl;
                 } else
                 {
-                    output << "add_addr "
-                           << ipaddr->toString() << " "
-                           << ipnetm->toString() <<  " "
-                           << iface->getName() << endl;
+                    ostr << "add_addr "
+                         << ipaddr->toString() << " "
+                         << ipnetm->toString() <<  " "
+                         << iface->getName() << endl;
                 }
 
-                virtual_addresses.push_back(*(iaddr->getAddressPtr()));
+                virtual_addresses.push_back(*ipaddr);
             }
         }
         ostr << endl;
