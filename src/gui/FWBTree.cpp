@@ -617,7 +617,7 @@ QString FWBTree::getTranslatableObjectTypeName(const QString &type_name)
     if (type_name == IPService::TYPENAME) return QObject::tr("IP Service");
     if (type_name == ICMPService::TYPENAME) return QObject::tr("ICMP Service");
     if (type_name == ICMP6Service::TYPENAME) return QObject::tr("ICMP6 Service");
-    if (type_name == TCPService::TYPENAME) return QObject::tr("TCP Serivce");
+    if (type_name == TCPService::TYPENAME) return QObject::tr("TCP Service");
     if (type_name == UDPService::TYPENAME) return QObject::tr("UDP Service");
     if (type_name == TagService::TYPENAME) return QObject::tr("TagService");
     if (type_name == UserService::TYPENAME) return QObject::tr("User Service");
@@ -654,7 +654,7 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     if (type_name == IPService::TYPENAME) return QObject::tr("New IP Service");
     if (type_name == ICMPService::TYPENAME) return QObject::tr("New ICMP Service");
     if (type_name == ICMP6Service::TYPENAME) return QObject::tr("New ICMP6 Service");
-    if (type_name == TCPService::TYPENAME) return QObject::tr("New TCP Serivce");
+    if (type_name == TCPService::TYPENAME) return QObject::tr("New TCP Service");
     if (type_name == UDPService::TYPENAME) return QObject::tr("New UDP Service");
     if (type_name == TagService::TYPENAME) return QObject::tr("New TagService");
     if (type_name == UserService::TYPENAME) return QObject::tr("New User Service");
