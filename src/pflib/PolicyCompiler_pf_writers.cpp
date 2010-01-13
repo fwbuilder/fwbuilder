@@ -60,6 +60,9 @@
 
 #include <assert.h>
 
+#include <QStringList>
+
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
@@ -919,37 +922,12 @@ bool PolicyCompiler_pf::PrintRule::processNext()
     FWOptions  *ruleopt =rule->getOptionsObject();
     string version=compiler->fw->getStr("version");
 
-//    cerr << endl;
-//    cerr << "Rule " << rule->getPosition() << endl;
-
     tmp_queue.push_back(rule);
 
-    if (!compiler->inSingleRuleCompileMode())
-    {
-        string rl = rule->getLabel();
-        if (rl!=current_rule_label)
-        {
-        
-            compiler->output << "# " << endl;
-            compiler->output << "# Rule  " << rl << endl;
+    compiler->output << compiler->printComment(rule, current_rule_label, "#");
 
-            string comm = rule->getComment();
-            string::size_type c1,c2;
-            c1=0;
-            while ( (c2=comm.find('\n',c1))!=string::npos )
-            {
-                compiler->output << "# " << comm.substr(c1,c2-c1) << endl;
-                c1=c2+1;
-            }
-            compiler->output << "# " << comm.substr(c1) << endl;
-            compiler->output << "# " << endl;
-
-            current_rule_label=rl;
-        }
-    }
-
-    string err = rule->getStr(".error_msg");
-    if (!err.empty()) compiler->output << "# " << err << endl;
+    // string err = rule->getStr(".error_msg");
+    // if (!err.empty()) compiler->output << "# " << err << endl;
 
     RuleElementSrc *srcrel=rule->getSrc();
 //    Address        *src   =compiler->getFirstSrc(rule);  assert(src);

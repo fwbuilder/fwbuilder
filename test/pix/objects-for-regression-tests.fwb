@@ -892,7 +892,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1261965298" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1263417413" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1174,7 +1174,27 @@
           <RuleSetOptions/>
         </NAT>
         <Policy id="pol-firewall2" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="pol-firewall2-0" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="blocking short fragments">
+          <PolicyRule id="id1056956X42230" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-0" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="blocking short fragments">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1190,23 +1210,6 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id3B09D29D" disabled="True" log="True" position="1" action="Deny" direction="Inbound" comment="">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="fw-firewall2"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="ip-IP_Fragments"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="if-FW-firewall2-eth1"/>
-            </Itf>
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
@@ -14640,8 +14643,8 @@ no sysopt nodnsalias outbound
       </ServiceGroup>
     </ServiceGroup>
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
-    <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
+    <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
     <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
       <ObjectGroup id="stdid02" name="Hosts" comment="" ro="False">
         <Host id="id3D84EECF" name="server on dmz" comment="This host is used in examples and template objects" ro="False">

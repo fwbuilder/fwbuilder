@@ -313,7 +313,7 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
             }
 
             return
-                all_errors.join("\n").toStdString() + 
+                //all_errors.join("\n").toStdString() + 
                 ostr.str();
         }
 
@@ -340,9 +340,12 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
                 if (c.haveErrorsAndWarnings())
                 {
                     all_errors.push_back(c.getErrors("").c_str());
-                    ipf_str << "# Policy compiler errors and warnings:"
-                            << endl;
-                    ipf_str << c.getErrors("# ");
+                    if (!single_rule_compile_on)
+                    {
+                        ipf_str << "# Policy compiler errors and warnings:"
+                                << endl;
+                        ipf_str << c.getErrors("# ");
+                    }
                 }
                 ipf_str << c.getCompiledScript();
                 ipf_file.close();
@@ -388,9 +391,12 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
                 if (n.haveErrorsAndWarnings())
                 {
                     all_errors.push_back(n.getErrors("").c_str());
-                    nat_str << "# NAT compiler errors and warnings:"
-                            << endl;
-                    nat_str << n.getErrors("# ");
+                    if (!single_rule_compile_on)
+                    {
+                        nat_str << "# NAT compiler errors and warnings:"
+                                << endl;
+                        nat_str << n.getErrors("# ");
+                    }
                 }
                 nat_str << n.getCompiledScript();
                 nat_file.close();

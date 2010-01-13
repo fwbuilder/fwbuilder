@@ -311,7 +311,7 @@ string CompilerDriver_iosacl::run(const std::string &cluster_id,
 
         if (single_rule_compile_on)
         {
-            return all_errors.join("\n").toStdString() +
+            return //all_errors.join("\n").toStdString() +
                 policy_script + routing_script;
         }
 

@@ -162,6 +162,7 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
         print_once_on_top = false;
     }
     
+    // TODO: convert this into virtual function RoutingCompiler_ipt::printComment()
     string rl = rule->getLabel();
     string comm = rule->getComment();
     string::size_type c1,c2;

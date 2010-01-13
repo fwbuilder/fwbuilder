@@ -166,6 +166,7 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
         Resources::getResourceBool(
             "/FWBuilderResources/Target/options/suppress_comments");
 
+    // TODO: convert this into virtual function PolicyCompiler_ipt::printComment()
     string rl=rule->getLabel();
     if (rl != current_rule_label)
     {
@@ -184,19 +185,12 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
 /* do not put comment in the script if it is intended for linksys */
         if (!nocomm || compiler->inSingleRuleCompileMode())
         {
-            string comm = rule->getComment();
-            if (!comm.empty())
+            QStringList comm = QString(rule->getComment().c_str()).split("\n", QString::SkipEmptyParts);
+            foreach(QString line, comm)
             {
-                string::size_type c1,c2;
-                c1=0;
-                while ( (c2=comm.find('\n',c1))!=string::npos )
-                {
-                    res << "# " << comm.substr(c1,c2-c1) << endl;
-                    c1=c2+1;
-                }
-                res << "# " << comm.substr(c1) << endl;
-                res << "# " << endl;
+                res << "# " << line.toStdString() << endl;
             }
+            //res << "# " << endl;
         }
     }
 

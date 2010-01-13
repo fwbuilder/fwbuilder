@@ -43,6 +43,8 @@
 
 #include <assert.h>
 
+#include <QStringList>
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
@@ -84,17 +86,18 @@ string PolicyCompiler_ipt::PrintRuleIptRst::_endRuleLine()
 
 string PolicyCompiler_ipt::PrintRuleIptRst::_printRuleLabel(PolicyRule *rule)
 {
-    ostringstream res;
-
     bool nocomm =
         Resources::os_res[compiler->fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_comments");
 
-    if (compiler->inSingleRuleCompileMode()) return "";
+    return compiler->printComment(rule, current_rule_label, "#", nocomm);
+
+#if 0
+    ostringstream res;
 
     string rl=rule->getLabel();
     if (rl!=current_rule_label)
     {
-        if (!nocomm)
+        if (!compiler->inSingleRuleCompileMode() && !nocomm)
         {
             res << "# " << endl;
             res << "# Rule " << rl << endl;
@@ -102,21 +105,19 @@ string PolicyCompiler_ipt::PrintRuleIptRst::_printRuleLabel(PolicyRule *rule)
         }
 
 /* do not put comment in the script if it is intended for linksys */
-        if (!nocomm)
+        if (!nocomm || compiler->inSingleRuleCompileMode())
         {
-            string    comm=rule->getComment();
-            string::size_type c1,c2;
-            c1=0;
-            while ( (c2=comm.find('\n',c1))!=string::npos ) {
-                res << "# " << comm.substr(c1,c2-c1) << endl;
-                c1=c2+1;
+            QStringList comm = QString(rule->getComment().c_str()).split("\n");
+            foreach(QString line, comm)
+            {
+                res << "# " << line.toStdString() << endl;
             }
-            res << "# " << comm.substr(c1) << endl;
-            res << "# " << endl;
+            //res << "# " << endl;
         }
         current_rule_label=rl;
     }
     return res.str();
+#endif
 }
 
 bool  PolicyCompiler_ipt::PrintRuleIptRst::processNext()

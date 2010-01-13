@@ -24166,7 +24166,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43BBF18E9745" host_OS="linux24" inactive="False" lastCompiled="1247364104" lastInstalled="1142003872" lastModified="1215124213" platform="iptables" version="1.3.0" name="firewall38" comment="testing TAG rules&#10;&#10;using  iptables-restore&#10;" ro="False">
+      <Firewall id="id43BBF18E9745" host_OS="linux24" inactive="False" lastCompiled="1263405289" lastInstalled="1142003872" lastModified="1263410373" platform="iptables" version="1.3.0" name="firewall38" comment="testing TAG rules&#10;&#10;using  iptables-restore&#10;" ro="False">
         <NAT id="id43BBF1E99745" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id43BBF1EA9745" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -24302,7 +24302,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="tagobject_id">id43EC877332486</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id462DEFE630547" disabled="False" log="False" position="4" action="Tag" direction="Both" comment="">
+          <PolicyRule id="id462DEFE630547" disabled="False" log="False" position="4" action="Tag" direction="Both" comment="rule comment: rule 4">
             <Src neg="False">
               <ObjectRef ref="id43BBF18E9745"/>
             </Src>

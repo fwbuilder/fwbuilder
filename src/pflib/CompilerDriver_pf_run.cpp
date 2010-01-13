@@ -386,10 +386,13 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                         // store errors and warnings so they will appear on top
                         // of .fw file in addition to the .conf file
                         all_errors.push_back(n.getErrors("").c_str());
-                        *(generated_scripts[ruleset_name])
-                            << "# NAT compiler errors and warnings:"
-                            << endl;
-                        *(generated_scripts[ruleset_name]) << n.getErrors("# ");
+                        if (!single_rule_compile_on)
+                        {
+                            *(generated_scripts[ruleset_name])
+                                << "# NAT compiler errors and warnings:"
+                                << endl;
+                            *(generated_scripts[ruleset_name]) << n.getErrors("# ");
+                        }
                     }
                     *(generated_scripts[ruleset_name]) << n.getCompiledScript();
                     *(generated_scripts[ruleset_name]) << endl;
@@ -474,10 +477,13 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                     if (c.haveErrorsAndWarnings())
                     {
                         all_errors.push_back(c.getErrors("").c_str());
-                        *(generated_scripts[ruleset_name])
-                            << "# Policy compiler errors and warnings:"
-                            << endl;
-                        *(generated_scripts[ruleset_name]) << c.getErrors("# ");
+                        if (!single_rule_compile_on)
+                        {
+                            *(generated_scripts[ruleset_name])
+                                << "# Policy compiler errors and warnings:"
+                                << endl;
+                            *(generated_scripts[ruleset_name]) << c.getErrors("# ");
+                        }
                     }
                     *(generated_scripts[ruleset_name]) << c.getCompiledScript();
                     *(generated_scripts[ruleset_name]) << endl;
@@ -521,9 +527,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
             table_factories.clear();
             generated_scripts.clear();
 
-            return
-                all_errors.join("\n").toStdString() + 
-                buffer.toStdString();
+            return buffer.toStdString();
         }
 
 /*

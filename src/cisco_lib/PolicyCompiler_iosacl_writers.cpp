@@ -200,31 +200,10 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     ostringstream  ruleout;
     ostringstream  aclstr;
 
-    string rl=rule->getLabel();
+    compiler->output << compiler->printComment(rule, current_rule_label1, "!");
 
-    if (write_comments && !compiler->inSingleRuleCompileMode())
-    {
-        if (rl!=current_rule_label1)
-        {
-            ruleout << "! " << endl;
-            ruleout << "! Rule  " << rl << endl;
-
-            string    comm=rule->getComment();
-            string::size_type c1,c2;
-            c1=0;
-            while ( (c2=comm.find('\n',c1))!=string::npos ) {
-                ruleout << "! " << comm.substr(c1,c2-c1) << endl;
-                c1=c2+1;
-            }
-            ruleout << "! " << comm.substr(c1) << endl;
-            ruleout << "! " << endl;
-
-            current_rule_label1=rl;
-        }
-    }
-
-    string err = rule->getStr(".error_msg");
-    if (!err.empty()) ruleout << "! " << err << endl;
+    // string err = rule->getStr(".error_msg");
+    // if (!err.empty()) ruleout << "! " << err << endl;
 
     /*
      * all three rule elements contain exactly one object, which can

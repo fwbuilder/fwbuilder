@@ -560,8 +560,10 @@ bool PolicyCompiler_pix::PrintRule::processNext()
 
     ostringstream  comment;
     
-    string rl=rule->getLabel();
+    compiler->output << compiler->printComment(rule, current_rule_label1, "!");
 
+#if 0
+    string rl=rule->getLabel();
     if (write_comments && !compiler->inSingleRuleCompileMode())
     {
         if (rl!=current_rule_label1)
@@ -586,6 +588,7 @@ bool PolicyCompiler_pix::PrintRule::processNext()
 
     string err = rule->getStr(".error_msg");
     if (!err.empty()) compiler->output << "! " << err << endl;
+#endif
 
     if (rule->getBool("icmp_cmd"))
     {

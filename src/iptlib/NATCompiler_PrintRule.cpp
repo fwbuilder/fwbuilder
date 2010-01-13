@@ -60,6 +60,8 @@
 
 #include <assert.h>
 
+#include <QStringList>
+
 using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
@@ -156,10 +158,11 @@ string NATCompiler_ipt::PrintRule::_printRuleLabel(NATRule *rule)
     bool nocomm =
         Resources::os_res[compiler->fw->getStr("host_OS")]->Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_comments");
 
+    // TODO: convert this into virtual function NATCompiler_ipt::printComment()
     string rl=rule->getLabel();
-    if (!compiler->inSingleRuleCompileMode() && rl != current_rule_label)
+    if (rl != current_rule_label)
     {
-        if (!nocomm)
+        if (!compiler->inSingleRuleCompileMode() && !nocomm)
         {
             res << "# " << endl;
             res << "# Rule " << rl << endl;
@@ -169,17 +172,14 @@ string NATCompiler_ipt::PrintRule::_printRuleLabel(NATRule *rule)
         res << "# " << endl;
 
 /* do not put comment in the script if it is intended for linksys */
-        if (!nocomm)
+        if (!nocomm || compiler->inSingleRuleCompileMode())
         {
-            string    comm=rule->getComment();
-            string::size_type c1,c2;
-            c1=0;
-            while ( (c2=comm.find('\n',c1))!=string::npos ) {
-                res << "# " << comm.substr(c1,c2-c1) << endl;
-                c1=c2+1;
+            QStringList comm = QString(rule->getComment().c_str()).split("\n", QString::SkipEmptyParts);
+            foreach(QString line, comm)
+            {
+                res << "# " << line.toStdString() << endl;
             }
-            res << "# " << comm.substr(c1) << endl;
-//            res << "# " << endl;
+            //res << "# " << endl;
         }
         current_rule_label=rl;
     }

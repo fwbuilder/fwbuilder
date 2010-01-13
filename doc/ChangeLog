@@ -1,3 +1,12 @@
+2010-01-13  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRuleIptRst.cpp (PrintRuleIptRst::_printRuleLabel):
+	really fixed #869 '"compile rule" should also print the comment'.
+	Printing rule comment in the compiler output in the single rule
+	compile mode when firewall object is configured to use
+	iptables-restore. Code that prints rule label and comment has been
+	unified for compilers for all firewall platforms.
+
 2010-01-12  vadim  <vadim@vk.crocodile.org>
 
 	* TCPServiceDialog.cpp (TCPServiceDialog::applyChanges): fixed bug

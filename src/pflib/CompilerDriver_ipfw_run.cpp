@@ -294,7 +294,7 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
         if (single_rule_compile_on)
         {
             return
-                all_errors.join("\n").toStdString() + 
+                //all_errors.join("\n").toStdString() + 
                 generated_script;
         }
 
