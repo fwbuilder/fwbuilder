@@ -1280,3 +1280,36 @@ bool Compiler::isFirewallOrCluster(FWObject *obj)
     return obj->getId() == fw_id || obj->getId() == cluster_id;
 }
 
+string Compiler::printComment(Rule *rule, string &prev_rule_label,
+                              const std::string &prefix, bool suppress_comment)
+{
+    ostringstream res;
+    string rl = rule->getLabel();
+    if (rl != prev_rule_label)
+    {
+        if ( ! inSingleRuleCompileMode())
+        {
+            res << prefix << " " << endl;
+            res << prefix << " Rule  " << rl << endl;
+        }
+        string comm = rule->getComment();
+        if ( ! suppress_comment && ! comm.empty())
+        {
+            string::size_type c1, c2;
+            c1 = 0;
+            while ( (c2 = comm.find('\n', c1)) != string::npos )
+            {
+                res << prefix << " " << comm.substr(c1, c2 - c1) << endl;
+                c1 = c2 + 1;
+            }
+            string remainder =  comm.substr(c1);
+            if (!remainder.empty())
+                res << prefix << " " << remainder << endl;
+        }
+        prev_rule_label = rl;
+    }
+    string err = rule->getStr(".error_msg");
+    if (!err.empty()) res << prefix << " " << err << endl;
+    return res.str();
+}
+

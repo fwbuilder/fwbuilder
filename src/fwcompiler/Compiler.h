@@ -646,6 +646,10 @@ protected:
 	virtual std::string createRuleLabel(const std::string &prefix,
                                             const std::string &txt,
                                             int rule_num);
+        virtual std::string printComment(libfwbuilder::Rule *rule,
+                                         std::string &prev_rule_label,
+                                         const std::string &prefix,
+                                         bool suppress_comment=false);
 
 	/**
 	 * prolog should pack rules into combined_ruleset and return
