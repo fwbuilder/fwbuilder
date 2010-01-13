@@ -65,7 +65,8 @@ string NATCompiler_ipt::PrintRuleIptRstEcho::_createChain(const string &chain)
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
-	res = "echo \":" + chain + " - [0:0]\"\n";
+        if ( ! compiler->inSingleRuleCompileMode())
+            res = "echo \":" + chain + " - [0:0]\"\n";
 	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res;

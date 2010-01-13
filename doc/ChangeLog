@@ -1,5 +1,11 @@
 2010-01-13  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::flushAndSetDefaultPolicy):
+	fixes #178: "remove chain initialization commands in the single
+	rule compile output". Lines that create chains do not need to be
+	printed when user compiles just one rule, they take up display space
+	and do not provide any useful information.
+
 	* PolicyCompiler_PrintRuleIptRst.cpp (PrintRuleIptRst::_printRuleLabel):
 	really fixed #869 '"compile rule" should also print the comment'.
 	Printing rule comment in the compiler output in the single rule

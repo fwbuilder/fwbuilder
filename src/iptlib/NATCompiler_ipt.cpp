@@ -2622,7 +2622,7 @@ string NATCompiler_ipt::flushAndSetDefaultPolicy()
 {
     string res="";
 
-    if (fwopt->getBool("use_iptables_restore"))
+    if (fwopt->getBool("use_iptables_restore") && ! inSingleRuleCompileMode())
     {
         res += "echo :PREROUTING ACCEPT [0:0]\n";
         res += "echo :POSTROUTING ACCEPT [0:0]\n";
