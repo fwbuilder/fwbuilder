@@ -27,6 +27,7 @@
 <p>
   <ul>
     <li><a href="#gui">Changes in the GUI</a></li>
+    <li><a href="#compilers">Common changes in all policy compilers</a></li>
     <li><a href="#cluster">Support for High Availability configurations</a></li>
     <li><a href="#pix_cluster">Cluster configuration for PIX</a></li>
     <li><a href="#bridge">Changes in the support for bridging firewalls</a></li>
@@ -288,7 +289,22 @@
 
 
 
+<a name="compilers"></a>
+<h2>Common changes in all policy compilers</h2>
 
+<p>
+  All compilers issue a warning when the firewall has no top level NAT
+  or Policy rule set. Top rule set is used to generate iptables rules
+  in the built-in chains INPUT/OUTPUT/FORWARD or the rules in the main
+  PF configuration file (not anchors).  If the firewall object has
+  other not-top Poluicy and NAT rule sets but no top rule set, packets
+  will never reach any rules.  However there are legitimate cases when
+  administrator may want to use fwbuilder to only generate iptables
+  commands for a custom chain or configuration for a custom PF anchor,
+  in which case this is not an error. Compilers generate warning for
+  this condition to bring it to the attention of administrator but
+  continue processing the rules.
+</p>
 
 
 <a name="cluster"></a>

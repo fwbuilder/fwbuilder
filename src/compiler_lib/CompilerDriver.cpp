@@ -318,6 +318,35 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
         validateClusterGroups(cluster);
     }
 
+
+    list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
+    list<FWObject*> all_nat = fw->getByType(NAT::TYPENAME);
+
+    bool have_top = false;
+    for (list<FWObject*>::iterator p=all_nat.begin(); p!=all_nat.end(); ++p)
+    {
+        if (RuleSet::cast(*p)->isTop())
+        {
+            have_top = true;
+            break;
+        }
+    }
+    if ( ! have_top )
+        warning(fw, NULL, NULL,"Missing top level NAT ruleset");
+
+    have_top = false;
+    for (list<FWObject*>::iterator p=all_policies.begin(); p!=all_policies.end(); ++p)
+    {
+        if (RuleSet::cast(*p)->isTop())
+        {
+            have_top = true;
+            break;
+        }
+    }
+    if ( ! have_top )
+        warning(fw, NULL, NULL,"Missing top level Policy ruleset");
+
+
     list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=interfaces.begin(); i!=interfaces.end(); ++i)
     {
