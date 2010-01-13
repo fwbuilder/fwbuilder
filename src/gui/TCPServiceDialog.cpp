@@ -198,26 +198,11 @@ void TCPServiceDialog::applyChanges()
     int dps = m_dialog->ds->value();
     int dpe = m_dialog->de->value();
 
-    if (sps!=0 && spe==0) m_dialog->se->setValue( m_dialog->ss->value() );
-    if (dps!=0 && dpe==0) m_dialog->de->setValue( m_dialog->ds->value() );
+    if (sps > spe) m_dialog->se->setValue( m_dialog->ss->value() );
+    if (dps > dpe) m_dialog->de->setValue( m_dialog->ds->value() );
 
     spe = m_dialog->se->value();
     dpe = m_dialog->de->value();
-
-    if (sps > spe)
-    {
-        QMessageBox::warning(this, "Firewall Builder",
-          QObject::tr("Invalid range defined for the source port."),
-          QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
-        return;
-    }
-    if (dps > dpe)
-    {
-        QMessageBox::warning(this, "Firewall Builder",
-          QObject::tr("Invalid range defined for the destination port."),
-          QObject::tr("&Continue editing"), NULL, NULL, 0, 2 );
-        return;
-    }
 
     TCPUDPService::cast(new_state)->setSrcRangeStart(m_dialog->ss->value());
     TCPUDPService::cast(new_state)->setSrcRangeEnd(m_dialog->se->value());

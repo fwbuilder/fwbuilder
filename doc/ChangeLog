@@ -1,3 +1,10 @@
+2010-01-12  vadim  <vadim@vk.crocodile.org>
+
+	* TCPServiceDialog.cpp (TCPServiceDialog::applyChanges): fixed bug
+	#1076: "when the start of a port range is greater than the end,
+	the GUI goes into a loop showing error dialogs". Ths problem
+	affected TCP and UDP service objects
+
 2010-01-10  vadim  <vadim@vk.crocodile.org>
 
 	* TableFactory.cpp (TableFactory::PrintTables): suppress comment
