@@ -39,6 +39,7 @@
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/RuleSet.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <memory>
 
@@ -206,12 +207,23 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
 
     if (platform=="pf")
     {
+        string version = p->getStr("version");
+
+        bool ge_4_5 = XMLTools::version_compare(version, "4.5")>=0;
+
+        m_dialog->pf_no_sync->setEnabled(ge_4_5);
+        m_dialog->pf_pflow->setEnabled(ge_4_5);
+        
         data.registerOption(m_dialog->pf_logPrefix, ropt,
                             "log_prefix");
         data.registerOption(m_dialog->pf_stateless, ropt,
                             "stateless");
         data.registerOption(m_dialog->pf_keep_state, ropt,
                             "pf_keep_state");
+        data.registerOption(m_dialog->pf_no_sync, ropt,
+                            "pf_no_sync");
+        data.registerOption(m_dialog->pf_pflow, ropt,
+                            "pf_pflow");
         data.registerOption(m_dialog->pf_sloppy_tracker, ropt,
                             "pf_sloppy_tracker");
         data.registerOption(m_dialog->pf_rule_max_state, ropt,
@@ -225,19 +237,19 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->pf_max_src_conn, ropt,
                             "pf_max_src_conn");
         data.registerOption(m_dialog->pf_overload_table, ropt,
-                             "pf_max_src_conn_overload_table");
+                            "pf_max_src_conn_overload_table");
         data.registerOption(m_dialog->pf_flush, ropt,
                             "pf_max_src_conn_flush");
         data.registerOption(m_dialog->pf_global, ropt,
                             "pf_max_src_conn_global");
         data.registerOption(m_dialog->pf_max_src_conn_rate_num, ropt,
-                             "pf_max_src_conn_rate_num");
+                            "pf_max_src_conn_rate_num");
         data.registerOption(m_dialog->pf_max_src_conn_rate_seconds, ropt,
-                             "pf_max_src_conn_rate_seconds");
+                            "pf_max_src_conn_rate_seconds");
         data.registerOption(m_dialog->pf_modulate, ropt,
-                             "pf_modulate_state");
+                            "pf_modulate_state");
         data.registerOption(m_dialog->pf_synproxy, ropt,
-                             "pf_synproxy");
+                            "pf_synproxy");
     }
 
     if (platform=="ipfw")

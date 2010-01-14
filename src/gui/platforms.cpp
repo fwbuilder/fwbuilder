@@ -244,27 +244,37 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
 
 	if (platform=="pf")
         {
-            string vers=p->getStr("version");
-            if (vers=="4.x")
+            string version = p->getStr("version");
+            bool ge_4_0 = XMLTools::version_compare(version, "4.0")>=0;
+            bool ge_4_5 = XMLTools::version_compare(version, "4.5")>=0;
+            if (ge_4_5)
             {
-                res= ( opt->getStr("log_prefix").empty()       &&
-                       opt->getInt("pf_rule_max_state")<=0     &&
-                       ! opt->getBool("pf_source_tracking")    &&
-                       opt->getInt("pf_max_src_conn")<=0       &&
-                       opt->getInt("pf_max_src_conn_rate_num")<=0       &&
-                       opt->getInt("pf_max_src_conn_rate_seconds")<=0 &&
-                       ! opt->getBool("pf_keep_state") &&
-                       ! opt->getBool("pf_sloppy_tracker")
+                res = (!opt->getBool("pf_no_sync") && opt->getBool("pf_pflow"));
+            }
+
+            if (ge_4_0)
+            {
+                res = res &&
+                    ( opt->getStr("log_prefix").empty()       &&
+                      opt->getInt("pf_rule_max_state")<=0     &&
+                      ! opt->getBool("pf_source_tracking")    &&
+                      opt->getInt("pf_max_src_conn")<=0       &&
+                      opt->getInt("pf_max_src_conn_rate_num")<=0       &&
+                      opt->getInt("pf_max_src_conn_rate_seconds")<=0 &&
+                      ! opt->getBool("pf_keep_state") &&
+                      ! opt->getBool("pf_sloppy_tracker")
                 );
             }else
             {
-                res= ( opt->getStr("log_prefix").empty()       &&
-                       opt->getInt("pf_rule_max_state")<=0     &&
-                       ! opt->getBool("pf_source_tracking")    &&
-                       opt->getInt("pf_max_src_conn")<=0       &&
-                       opt->getInt("pf_max_src_conn_rate_num")<=0       &&
-                       opt->getInt("pf_max_src_conn_rate_seconds")<=0 &&
-                       ! opt->getBool("pf_sloppy_tracker")
+                res = res &&
+                    ( opt->getStr("log_prefix").empty()       &&
+                      opt->getInt("pf_rule_max_state")<=0     &&
+                      ! opt->getBool("pf_source_tracking")    &&
+                      opt->getInt("pf_max_src_conn")<=0       &&
+                      opt->getInt("pf_max_src_conn_rate_num")<=0       &&
+                        opt->getInt("pf_max_src_conn_rate_seconds")<=0 &&
+                      ! opt->getBool("pf_keep_state") &&
+                      ! opt->getBool("pf_sloppy_tracker")
                 );
             }
 	}
@@ -408,6 +418,7 @@ void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &res
 		res.push_back(QStringPair("ge_3.7", QObject::tr("3.7 to 3.9")));
                 res.push_back(QStringPair("4.0", QObject::tr("4.0 to 4.2")));
                 res.push_back(QStringPair("4.3", QObject::tr("4.3")));
+                res.push_back(QStringPair("4.5", QObject::tr("4.5")));
                 res.push_back(QStringPair("4.6", QObject::tr("4.6 and later")));
 /* add pf versions here */
             } else

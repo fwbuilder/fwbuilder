@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1258399519" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1263499279" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <Library id="id40E233F3" color="#FFFFFF" name="West Coast" comment="" ro="False">
@@ -1087,6 +1087,7 @@
         <Option name="use_tables">True</Option>
       </FirewallOptions>
     </Firewall>
+    <IPv4 id="id20241X55531" name="firewall80:en1:ip-1" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -17078,6 +17079,513 @@
           <Option name="sshArgs"></Option>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
+          <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id20228X55531" host_OS="openbsd" inactive="False" lastCompiled="1157930823" lastInstalled="0" lastModified="1263499555" platform="pf" version="ge_3.7" name="firewall80" comment="Testin state tracking options&#10;" ro="False">
+        <NAT id="id20330X55531" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id20256X55531" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id47259X55531" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20240X55531"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">False</Option>
+              <Option name="pf_pflow">False</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id47213X55531" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20240X55531"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">True</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">False</Option>
+              <Option name="pf_pflow">False</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id47167X55531" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20240X55531"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">False</Option>
+              <Option name="pf_pflow">False</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">True</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id20293X55531" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20240X55531"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">10</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">False</Option>
+              <Option name="pf_pflow">False</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">True</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id20317X55531" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id20458X55531" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id20236X55531" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+          <IPv4 id="id20240X55531" name="firewall80:en1:ip" comment="" ro="False" address="33.33.33.34" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id20243X55531" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+          <IPv4 id="id20246X55531" name="firewall80:en0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id20248X55531" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id20251X55531" name="firewall80:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id20253X55531" dedicated_failover="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="check_shading">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">True</Option>
+          <Option name="log_prefix"></Option>
+          <Option name="manage_virtual_addr">False</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="openbsd_path_pfctl">/usr/sbin/pfctl</Option>
+          <Option name="openbsd_path_sysctl">/usr/sbin/sysctl</Option>
+          <Option name="pass_all_out">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id20420X57591" host_OS="openbsd" inactive="False" lastCompiled="1157930823" lastInstalled="0" lastModified="1263499340" platform="pf" version="4.5" name="firewall80-4.5" comment="Testin state tracking options&#10;" ro="False">
+        <NAT id="id20508X57591" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id20446X57591" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id20447X57591" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20431X57591"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">False</Option>
+              <Option name="pf_pflow">False</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id20459X57591" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20431X57591"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">True</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">False</Option>
+              <Option name="pf_pflow">False</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">False</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id20471X57591" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20431X57591"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">0</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">False</Option>
+              <Option name="pf_pflow">False</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">True</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id20483X57591" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20431X57591"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">10</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">False</Option>
+              <Option name="pf_pflow">False</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">True</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id20602X57591" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20431X57591"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_keep_state">False</Option>
+              <Option name="pf_max_src_conn">0</Option>
+              <Option name="pf_max_src_conn_flush">False</Option>
+              <Option name="pf_max_src_conn_global">False</Option>
+              <Option name="pf_max_src_conn_overload_table"></Option>
+              <Option name="pf_max_src_conn_rate_num">0</Option>
+              <Option name="pf_max_src_conn_rate_seconds">0</Option>
+              <Option name="pf_max_src_nodes">10</Option>
+              <Option name="pf_max_src_states">0</Option>
+              <Option name="pf_modulate_state">False</Option>
+              <Option name="pf_no_sync">True</Option>
+              <Option name="pf_pflow">True</Option>
+              <Option name="pf_rule_max_state">0</Option>
+              <Option name="pf_sloppy_tracker">False</Option>
+              <Option name="pf_source_tracking">True</Option>
+              <Option name="pf_synproxy">False</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id20495X57591" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id20510X57591" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id20428X57591" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+          <IPv4 id="id20431X57591" name="firewall80-4.5:en1:ip" comment="" ro="False" address="33.33.33.34" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id20433X57591" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+          <IPv4 id="id20436X57591" name="firewall80-4.5:en0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id20438X57591" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+          <IPv4 id="id20441X57591" name="firewall80-4.5:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id20443X57591" dedicated_failover="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="check_shading">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">True</Option>
+          <Option name="log_prefix"></Option>
+          <Option name="manage_virtual_addr">False</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="openbsd_path_pfctl">/usr/sbin/pfctl</Option>
+          <Option name="openbsd_path_sysctl">/usr/sbin/sysctl</Option>
+          <Option name="pass_all_out">False</Option>
+          <Option name="pf_do_scrub">True</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">1</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
           <Option name="use_tables">True</Option>
         </FirewallOptions>
       </Firewall>

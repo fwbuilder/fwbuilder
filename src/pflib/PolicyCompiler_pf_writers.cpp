@@ -1055,6 +1055,8 @@ bool PolicyCompiler_pf::PrintRule::processNext()
         if (ruleopt->getStr("pf_max_src_conn_overload_table")!="") nopt++;
         if (ruleopt->getInt("pf_max_src_conn_rate_num")>0) nopt++;
         if (ruleopt->getBool("pf_sloppy_tracker"))         nopt++;
+        if (ruleopt->getBool("pf_no_sync"))                nopt++;
+        if (ruleopt->getBool("pf_pflow"))                  nopt++;
 
         bool not_the_first = false;
         if (nopt)
@@ -1072,6 +1074,20 @@ bool PolicyCompiler_pf::PrintRule::processNext()
             {
                 if (not_the_first) compiler->output << ",";
                 compiler->output << " sloppy ";
+                not_the_first = true;
+            }
+
+            if (ruleopt->getBool("pf_no_sync"))
+            {
+                if (not_the_first) compiler->output << ",";
+                compiler->output << " no-sync ";
+                not_the_first = true;
+            }
+
+            if (ruleopt->getBool("pf_pflow"))
+            {
+                if (not_the_first) compiler->output << ",";
+                compiler->output << " pflow ";
                 not_the_first = true;
             }
 
@@ -1113,6 +1129,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
                                      "pf_max_src_conn_rate_seconds");
                 check_overload_opts = true;
             }
+
             if (check_overload_opts)
             {
                 if (ruleopt->getStr("pf_max_src_conn_overload_table")!="")

@@ -1065,13 +1065,33 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
             if (ropt->getBool("stateless"))
             {
                 res+=QObject::tr("<li><b>Stateless</b></li> ");
-                res+="<br>\n";
+                //res+="<br>\n";
+            }
+            if (ropt->getBool("pf_keep_state"))
+            {
+                res+=QObject::tr("<li><b>Force 'keep-state'</b></li> ");
+                //res+="<br>\n";
+            }
+            if (ropt->getBool("pf_no_sync"))
+            {
+                res+=QObject::tr("<li><b>no-sync</b></li> ");
+                //res+="<br>\n";
+            }
+            if (ropt->getBool("pf_pflow"))
+            {
+                res+=QObject::tr("<li><b>pflow</b></li> ");
+                //res+="<br>\n";
+            }
+            if (ropt->getBool("pf_sloppy_tracker"))
+            {
+                res+=QObject::tr("<li><b>sloppy-tracker</b></li> ");
+                //res+="<br>\n";
             }
             
             if (ropt->getBool("pf_source_tracking"))
             {
                 res+=QObject::tr("<li><b>Source tracking</b></li> ");
-                res+="<br>\n";
+                //res+="<br>\n";
                 
                 res+=QObject::tr("<b>Max src nodes :</b> ");
                 res+=QString(ropt->getStr("pf_max_src_nodes").c_str())+"<br>\n";

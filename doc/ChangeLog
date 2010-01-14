@@ -1,3 +1,10 @@
+2010-01-14  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): Added
+	support for pf state tracking options "no-sync" and "pflow". Set
+	version to "4.5" or "4.6" in the firewall object to be able to use
+	these new options.
+
 2010-01-13  vadim  <vadim@vk.crocodile.org>
 
 	* CompilerDriver.cpp (CompilerDriver::commonChecks2): fixes #1080:
