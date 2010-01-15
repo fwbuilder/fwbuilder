@@ -75,7 +75,7 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-QString CompilerDriver_ipfw::assembleManifest(Cluster *cluster, Firewall* fw, bool )
+QString CompilerDriver_ipfw::assembleManifest(Cluster*, Firewall* fw, bool )
 {
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
@@ -106,9 +106,9 @@ QString CompilerDriver_ipfw::assembleFwScript(Cluster *cluster,
     return script_skeleton.expand();
 }
 
-string CompilerDriver_ipfw::run(const std::string &cluster_id,
-                                const std::string &firewall_id,
-                                const std::string &single_rule_id)
+QString CompilerDriver_ipfw::run(const std::string &cluster_id,
+                                 const std::string &firewall_id,
+                                 const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
     if (!cluster_id.empty())
@@ -293,14 +293,13 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
 
         if (single_rule_compile_on)
         {
-            return
-                //all_errors.join("\n").toStdString() + 
-                generated_script;
+            return QString::fromUtf8(generated_script.c_str());
         }
 
         PolicyCompiler_ipfw c(objdb, fw, false, oscnf.get());
         activation_commands.push_back(c.defaultRules().c_str());
-        activation_commands.push_back(generated_script.c_str());
+        activation_commands.push_back(
+            QString::fromUtf8(generated_script.c_str()));
 
 /*
  * assemble the script and then perhaps post-process it if needed
@@ -342,7 +341,7 @@ string CompilerDriver_ipfw::run(const std::string &cluster_id,
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        return getErrors("");
+        return QString::fromUtf8(getErrors("").c_str());
     }
 
     return "";

@@ -149,10 +149,11 @@ QMap<QString,QString> CompilerDriver::compileSingleRule(const string &rule_id)
             cl_driver->single_rule_compile_on = true;
             if (inTestMode()) cl_driver->setTestMode();
             if (inEmbeddedMode()) cl_driver->setEmbeddedMode();
-            result[(*it)->getName().c_str()] = cl_driver->run(
-                objdb->getStringId(cluster->getId()),
-                objdb->getStringId((*it)->getId()),
-                rule_id).c_str();
+            result[(*it)->getName().c_str()] = 
+                cl_driver->run(
+                    objdb->getStringId(cluster->getId()),
+                    objdb->getStringId((*it)->getId()),
+                    rule_id);
             delete cl_driver;
         }
     } else
@@ -160,7 +161,7 @@ QMap<QString,QString> CompilerDriver::compileSingleRule(const string &rule_id)
         commonChecks(fw);
         single_rule_compile_on = true;
         result[fw->getName().c_str()] = 
-            run("", objdb->getStringId(fw->getId()), rule_id).c_str();
+            run("", objdb->getStringId(fw->getId()), rule_id);
     }
     return result;
 }

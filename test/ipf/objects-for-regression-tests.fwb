@@ -711,7 +711,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="freebsd" inactive="False" lastCompiled="1249841462" lastInstalled="0" lastModified="1263416864" platform="ipf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="freebsd" inactive="False" lastCompiled="1249841462" lastInstalled="0" lastModified="1263586644" platform="ipf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="comment : rule 0">
             <OSrc neg="False">
@@ -881,7 +881,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3EDC2CC7" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="">
+          <PolicyRule id="id3EDC2CC7" disabled="False" log="False" position="3" action="Accept" direction="Inbound" comment="комментарий по-русски">
             <Src neg="False">
               <ObjectRef ref="id3EDC2CF8"/>
             </Src>

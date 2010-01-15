@@ -1,3 +1,9 @@
+2010-01-15  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): Refs #869
+	making sure non-english comments appear correctly in the single
+	rule compile output and generated configuration files and scripts.
+
 2010-01-14  vadim  <vadim@vk.crocodile.org>
 
 	* FirewallInstaller.cpp: fixed #1083: "installer uses incorrect

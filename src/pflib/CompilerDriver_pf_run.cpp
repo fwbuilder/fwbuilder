@@ -186,9 +186,9 @@ QString CompilerDriver_pf::assembleFwScript(Cluster *cluster,
     return script_skeleton.expand();
 }
 
-string CompilerDriver_pf::run(const std::string &cluster_id,
-                              const std::string &firewall_id,
-                              const std::string &single_rule_id)
+QString CompilerDriver_pf::run(const std::string &cluster_id,
+                               const std::string &firewall_id,
+                               const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
     if (!cluster_id.empty())
@@ -520,14 +520,14 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                 string ruleset_name = fi->first;
                 ostringstream *strm = fi->second;
                 pf_str << table_factories[ruleset_name]->PrintTables();
-                pf_str << strm->str();
+                pf_str << QString::fromUtf8(strm->str().c_str());
             }
 
             // clear() calls destructors of all elements in the container
             table_factories.clear();
             generated_scripts.clear();
 
-            return buffer.toStdString();
+            return buffer;
         }
 
 /*
@@ -571,7 +571,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
                     pf_str << table_factories[ruleset_name]->PrintTables();
                 }
 
-                pf_str << strm->str();
+                pf_str << QString::fromUtf8(strm->str().c_str());
                 pf_file.close();
             } else
             {
@@ -628,7 +628,7 @@ string CompilerDriver_pf::run(const std::string &cluster_id,
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        return getErrors("");
+        return QString::fromUtf8(getErrors("").c_str());
     }
 
     return "";

@@ -161,9 +161,9 @@ QString CompilerDriver_ipf::printActivationCommands(libfwbuilder::Firewall*)
     return activation_commands.join("\n");
 }
 
-string CompilerDriver_ipf::run(const std::string &cluster_id,
-                               const std::string &firewall_id,
-                               const std::string &single_rule_id)
+QString CompilerDriver_ipf::run(const std::string &cluster_id,
+                                const std::string &firewall_id,
+                                const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
     if (!cluster_id.empty())
@@ -314,7 +314,7 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
 
             return
                 //all_errors.join("\n").toStdString() + 
-                ostr.str();
+                QString::fromUtf8(ostr.str().c_str());
         }
 
 
@@ -344,10 +344,10 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
                     {
                         ipf_str << "# Policy compiler errors and warnings:"
                                 << endl;
-                        ipf_str << c.getErrors("# ");
+                        ipf_str << QString::fromUtf8(c.getErrors("# ").c_str());
                     }
                 }
-                ipf_str << c.getCompiledScript();
+                ipf_str << QString::fromUtf8(c.getCompiledScript().c_str());
                 ipf_file.close();
                 ipf_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
                                         QFile::ReadGroup | QFile::ReadOther |
@@ -395,10 +395,10 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
                     {
                         nat_str << "# NAT compiler errors and warnings:"
                                 << endl;
-                        nat_str << n.getErrors("# ");
+                        nat_str << QString::fromUtf8(n.getErrors("# ").c_str());
                     }
                 }
-                nat_str << n.getCompiledScript();
+                nat_str << QString::fromUtf8(n.getCompiledScript().c_str());
                 nat_file.close();
                 nat_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner |
                                         QFile::ReadGroup | QFile::ReadOther |
@@ -459,7 +459,7 @@ string CompilerDriver_ipf::run(const std::string &cluster_id,
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        return getErrors("");
+        return QString::fromUtf8(getErrors("").c_str());
     }
     
         

@@ -170,7 +170,7 @@
       <ServiceGroup id="id4511636C23682_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls" comment="" ro="False">
-      <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1261963115" lastInstalled="0" lastModified="1261963111" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
+      <Firewall id="id46412B5226577" host_OS="ios" inactive="False" lastCompiled="1261963115" lastInstalled="0" lastModified="1263587164" platform="iosacl" version="12.x" name="testios1" comment="" ro="False">
         <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -195,7 +195,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4641623D29061" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4641623D29061" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="комментарий по-русски">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

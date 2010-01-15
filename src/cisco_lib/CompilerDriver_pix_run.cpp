@@ -141,18 +141,23 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
 
     script_skeleton.setVariable("short_script", options->getBool("short_script"));
     script_skeleton.setVariable("not_short_script", ! options->getBool("short_script"));
-    script_skeleton.setVariable("system_configuration_script", system_configuration_script.c_str());
-    script_skeleton.setVariable("policy_script", policy_script.c_str());
-    script_skeleton.setVariable("nat_script", nat_script.c_str());
-    script_skeleton.setVariable("routing_script", routing_script.c_str());
+
+    script_skeleton.setVariable("system_configuration_script", 
+                                QString::fromUtf8(system_configuration_script.c_str()));
+    script_skeleton.setVariable("policy_script",
+                                QString::fromUtf8(policy_script.c_str()));
+    script_skeleton.setVariable("nat_script",
+                                QString::fromUtf8(nat_script.c_str()));
+    script_skeleton.setVariable("routing_script",
+                                QString::fromUtf8(routing_script.c_str()));
 
     assembleFwScriptInternal(cluster, fw, cluster_member, oscnf, &script_skeleton, &top_comment, "!");
     return script_skeleton.expand();
 }
 
-string CompilerDriver_pix::run(const std::string &cluster_id,
-                               const std::string &firewall_id,
-                               const std::string &single_rule_id)
+QString CompilerDriver_pix::run(const std::string &cluster_id,
+                                const std::string &firewall_id,
+                                const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
     if (!cluster_id.empty())
@@ -620,8 +625,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
 
         if (single_rule_compile_on)
         {
-            return //all_errors.join("\n").toStdString() +
-                policy_script + nat_script + routing_script;
+            return QString::fromUtf8((policy_script + nat_script + routing_script).c_str());
         }
 
         QFileInfo finfo(ofname);
@@ -658,7 +662,7 @@ string CompilerDriver_pix::run(const std::string &cluster_id,
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        return getErrors("");
+        return QString::fromUtf8(getErrors("").c_str());
     }
 
     return "";

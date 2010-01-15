@@ -90,9 +90,9 @@ extern QString user_name;
  * operates with a copy of the object database which is not exposed
  * outside, so the caller can not provide pointers to these obejcts.
  */
-string CompilerDriver_ipt::run(const std::string &cluster_id,
-                               const std::string &firewall_id,
-                               const std::string &single_rule_id)
+QString CompilerDriver_ipt::run(const std::string &cluster_id,
+                                const std::string &firewall_id,
+                                const std::string &single_rule_id)
 {
     Cluster *cluster = NULL;
     if (!cluster_id.empty())
@@ -412,9 +412,10 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
             // rule. CompilerDriver errors, however, need to be added on
             // top.
             return
-                getErrors("") + 
-//            all_errors.join("\n").toStdString() + 
-                generated_script + routing_compiler->getCompiledScript();
+                QString::fromUtf8(
+                    (getErrors("") + 
+                     generated_script +
+                     routing_compiler->getCompiledScript()).c_str());
         }
 
         if (haveErrorsAndWarnings())
@@ -443,15 +444,27 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
         timestr = strdup(ctime(&tm));
         timestr[strlen(timestr)-1] = '\0';
 
-/*
- * assemble the script and then perhaps post-process it if it should
- * run on Linksys device with sveasoft firmware
- */
+        /*
+         * assemble the script and then perhaps post-process it if it
+         * should run on Linksys device with sveasoft firmware
+         */
         Configlet script_skeleton(fw, "linux24", "script_skeleton");
         script_skeleton.removeComments();
 
         QString script_buffer;
         QTextStream script(&script_buffer, QIODevice::WriteOnly);
+
+        /*
+         * text comes from the compiler in UTF-8 (because all comments
+         * and object names are stored in UTF-8 in objects and
+         * compilers do not decode). We have a choice: 1) apply
+         * QString::fromUtf8() to all strings coming from the compiler
+         * to convert to Unicode and rely on QTextStream to convert
+         * back to UTF-8 in the generated file, or 2) leavle strings
+         * coming from compilers as-is and tell the stream to not
+         * covert.
+         */
+
         script_buffer = "";
 
         script_skeleton.setVariable("shell_debug", shell_dbg);
@@ -576,13 +589,17 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
         if (oscnf->haveErrorsAndWarnings())
         {
             all_errors.push_back(oscnf->getErrors("").c_str());
-//        script << "# OS configuration errors and warnings:" << "\n";
-//        script << oscnf->getErrors("# ");
         }
 
-        script << oscnf->getCompiledScript();
-        script << generated_script;
-        script << routing_compiler->getCompiledScript();
+        // convert from UTF8 to make sure localized comments are shown correctly
+        // script << oscnf->getCompiledScript().c_str();
+        // script << generated_script.c_str();
+        // script << routing_compiler->getCompiledScript().c_str();
+
+        script << QString::fromUtf8(oscnf->getCompiledScript().c_str());
+        script << QString::fromUtf8(generated_script.c_str());
+        script << QString::fromUtf8(routing_compiler->getCompiledScript().c_str());
+
         script << endl;
 
         script_skeleton.setVariable("script_body", indent(4, script_buffer));
@@ -705,7 +722,7 @@ string CompilerDriver_ipt::run(const std::string &cluster_id,
     }
     catch (FatalErrorInSingleRuleCompileMode &ex)
     {
-        return getErrors("");
+        return QString::fromUtf8(getErrors("").c_str());
     }
     
     return "";

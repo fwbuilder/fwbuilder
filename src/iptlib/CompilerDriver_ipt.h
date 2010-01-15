@@ -79,9 +79,9 @@ public:
         // create a copy of itself, including objdb
         virtual CompilerDriver* clone();
     
-        virtual std::string run(const std::string &cluster_id,
-                                const std::string &firewall_id,
-                                const std::string &single_rule_id);
+        virtual QString run(const std::string &cluster_id,
+                            const std::string &firewall_id,
+                            const std::string &single_rule_id);
 
         void assignRuleSetChain(libfwbuilder::RuleSet *ruleset);
         void findBranchesInMangleTable(libfwbuilder::Firewall*,

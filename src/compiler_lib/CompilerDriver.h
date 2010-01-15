@@ -165,9 +165,9 @@ public:
          * normal (not single rule) compile mode returned string is
          * undefined and should not be used.
          */
-        virtual std::string run(const std::string &cluster_id,
-                                const std::string &firewall_id,
-                                const std::string &single_rule_id);
+        virtual QString run(const std::string &cluster_id,
+                            const std::string &firewall_id,
+                            const std::string &single_rule_id);
 
         virtual void commonChecks(libfwbuilder::Firewall *fw);
         virtual void commonChecks2(libfwbuilder::Cluster *cluster,

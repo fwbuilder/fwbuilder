@@ -1695,7 +1695,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1249943117" lastInstalled="0" lastModified="1249943111" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="openbsd" inactive="False" lastCompiled="1249943117" lastInstalled="0" lastModified="1263586319" platform="pf" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1842,7 +1842,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3B92DFC5" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3B92DFC5" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="комментарий по-русски, Проверяем конвертацию в Utf-8">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>

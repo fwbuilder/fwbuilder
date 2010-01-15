@@ -119,7 +119,7 @@
       </ObjectGroup>
       <ObjectGroup id="stdid02_1" name="Hosts" comment="" ro="False">
         <Host id="id3B64FFAC" name="broadcast" comment="broadcast on internal subnet" ro="False">
-          <Interface id="id3B64FFAC-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3B64FFAC-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B64FFAC-i-ipv4" name="address" comment="" ro="False" address="192.168.1.255" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -128,7 +128,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D265845" name="fw2-dmz-iface" comment="" ro="False">
-          <Interface id="id3D265845-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D265845-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D265845-i-1-addr" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -138,15 +138,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3AFC191C" name="fw2-int-iface" comment="the same address as internal iface of firewall1" ro="False">
-          <Interface id="id3AFC191C-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFC191C-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFC191C-i-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -156,14 +156,14 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3D265477" name="host-dmz1" comment="host on the DMZ net" ro="False">
-          <Interface id="id3D265477-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D265477-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D265477-i-1-addr" name="address" comment="" ro="False" address="192.168.2.10" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -173,15 +173,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3D26547B" name="host-dmz1-NAT" comment="" ro="False">
-          <Interface id="id3D26547B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D26547B-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D26547B-i-1-addr" name="address" comment="" ro="False" address="22.22.22.24" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -191,15 +191,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3DEA665F" name="host-ext1" comment="" ro="False">
-          <Interface id="id3DEA6663" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3DEA6663" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3DEA6664" name="host-ext1" comment="" ro="False" address="22.22.22.24" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -213,7 +213,7 @@
           </HostOptions>
         </Host>
         <Host id="id3AFC0F70" name="host-fw2" comment="this host has the same IP address as firewall1 and firewall2" ro="False">
-          <Interface id="id3AFC0F70-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFC0F70-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFC0F70-i-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -222,7 +222,7 @@
           </HostOptions>
         </Host>
         <Host id="id3BF1B3E1" name="host-with_mac" comment="" ro="False">
-          <Interface id="id3BF1B3E2" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF1B3E2" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF1B3E2-ipv4" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.0"/>
             <physAddress id="id3BF1B3E2-pa" address="00:10:4b:de:e9:6f" name="unknown-pa" comment="" ro="False"/>
             <InterfaceOptions/>
@@ -237,7 +237,7 @@
           </HostOptions>
         </Host>
         <Host id="id3BF1B3E7" name="host-with_mac-2" comment="" ro="False">
-          <Interface id="id3BF1B3E8" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF1B3E8" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF1B3E8-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress id="id3BF1B3E8-pa" address="00:10:4b:de:e9:6f" name="unknown-pa" comment="" ro="False"/>
             <InterfaceOptions/>
@@ -248,14 +248,14 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr_filter">True</Option>
           </HostOptions>
         </Host>
         <Host id="host-hostA" name="hostA" comment="" ro="False">
-          <Interface id="host-hostA-i" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="int1" comment="" ro="False">
+          <Interface id="host-hostA-i" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="int1" comment="" ro="False">
             <IPv4 id="host-hostA-i-ipv4" name="hostA:int1" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -269,7 +269,7 @@
           </HostOptions>
         </Host>
         <Host id="id3B3D5A3B" name="hostA" comment="" ro="False">
-          <Interface id="id3B3D5A3B-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3B3D5A3B-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B3D5A3B-i-ipv4" name="address" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -283,7 +283,7 @@
           </HostOptions>
         </Host>
         <Host id="id3AFADBF9" name="hostA-NAT" comment="translated address for hostA" ro="False">
-          <Interface id="id3AFADBF9-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3AFADBF9-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3AFADBF9-i-ipv4" name="address" comment="" ro="False" address="22.22.22.23" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -292,7 +292,7 @@
           </HostOptions>
         </Host>
         <Host id="host-hostB" name="hostB" comment="" ro="False">
-          <Interface id="host-hostB-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="host-hostB-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-hostB-i-ipv4" name="address" comment="" ro="False" address="192.168.1.20" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -306,7 +306,7 @@
           </HostOptions>
         </Host>
         <Host id="id3BD6736B" name="hostB-NAT" comment="" ro="False">
-          <Interface id="id3BD6736B-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BD6736B-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BD6736B-i-ipv4" name="address" comment="" ro="False" address="22.22.23.24" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -315,7 +315,7 @@
           </HostOptions>
         </Host>
         <Host id="id3D58227A" name="hostC" comment="" ro="False">
-          <Interface id="id3D58227A-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3D58227A-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3D58227A-i-1-addr" name="address" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -325,15 +325,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3D58227E" name="hostC-1" comment="" ro="False">
-          <Interface id="id3D582282" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <Interface id="id3D582282" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
             <IPv4 id="id3D582283" name="hostC-1:eth0" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
             <InterfaceOptions/>
           </Interface>
@@ -343,15 +343,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3CD87A53" name="n192.168.1.11" comment="" ro="False">
-          <Interface id="id3CD87A53-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A53-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A53-i-1-addr" name="address" comment="" ro="False" address="192.168.1.11" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -361,15 +361,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3CD87A5E" name="n192.168.1.12" comment="" ro="False">
-          <Interface id="id3CD87A5E-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A5E-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A5E-i-1-addr" name="address" comment="" ro="False" address="192.168.1.12" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -379,15 +379,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3CD87A6D" name="n192.168.1.13" comment="" ro="False">
-          <Interface id="id3CD87A6D-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A6D-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A6D-i-1-addr" name="address" comment="" ro="False" address="192.168.1.13" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -397,15 +397,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3CD87A7C" name="n192.168.1.14" comment="" ro="False">
-          <Interface id="id3CD87A7C-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A7C-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A7C-i-1-addr" name="address" comment="" ro="False" address="192.168.1.14" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -415,15 +415,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3CD87A8B" name="n192.168.1.15" comment="" ro="False">
-          <Interface id="id3CD87A8B-i" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
+          <Interface id="id3CD87A8B-i" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface-1" comment="" ro="False">
             <IPv4 id="id3CD87A8B-i-1-addr" name="address" comment="" ro="False" address="192.168.1.15" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -433,15 +433,15 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3B19C5EB" name="outside-host" comment="some host outside our network" ro="False">
-          <Interface id="id3B19C5EB-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3B19C5EB-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3B19C5EB-i-ipv4" name="address" comment="" ro="False" address="200.200.200.200" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -450,7 +450,7 @@
           </HostOptions>
         </Host>
         <Host id="host-secondary1-com" name="secondary1.com" comment="" ro="False">
-          <Interface id="host-secondary1-com-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="host-secondary1-com-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-secondary1-com-i-ipv4" name="address" comment="" ro="False" address="211.11.11.11" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -464,7 +464,7 @@
           </HostOptions>
         </Host>
         <Host id="host-secondary2-com" name="secondary2.com" comment="" ro="False">
-          <Interface id="host-secondary2-com-i" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="host-secondary2-com-i" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="host-secondary2-com-i-ipv4" name="address" comment="" ro="False" address="211.22.22.22" netmask="255.255.255.255"/>
             <InterfaceOptions/>
           </Interface>
@@ -478,7 +478,7 @@
           </HostOptions>
         </Host>
         <Host id="id3BF23930" name="z-host" comment="" ro="False">
-          <Interface id="id3BF23931" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
+          <Interface id="id3BF23931" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="unknown" comment="" ro="False">
             <IPv4 id="id3BF23931-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
             <physAddress id="id3BF23931-pa" address="00:a0:24:53:06:8c" name="unknown-pa" comment="" ro="False"/>
             <InterfaceOptions/>
@@ -489,14 +489,14 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"/>
-            <Option name="snmp_description"/>
-            <Option name="snmp_location"/>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
         <Host id="id3D850651" name="zero address" comment="" ro="False">
-          <Interface id="id3D850655" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
+          <Interface id="id3D850655" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="interface1" comment="" ro="False">
             <IPv4 id="id3D850656" name="zero address" comment="" ro="False" address="0.0.0.0" netmask="255.0.0.0"/>
             <InterfaceOptions/>
           </Interface>
@@ -601,32 +601,32 @@
       </ServiceGroup>
       <ServiceGroup id="stdid13_1" name="Custom_Services" comment="" ro="False">
         <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"/>
-          <CustomServiceCommand platform="fwsm"/>
-          <CustomServiceCommand platform="iosacl"/>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfilter"/>
-          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables">-m ip_conntrack_talk -m ip_nat_talk</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id3F162C44" name="establ" comment="" ro="False" protocol="tcp" address_family="ipv4">
-          <CustomServiceCommand platform="fwsm"/>
-          <CustomServiceCommand platform="iosacl"/>
-          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
-          <CustomServiceCommand platform="iptables"/>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="freebsd" lastCompiled="1249844841" lastInstalled="0" lastModified="1257365640" platform="ipfw" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="freebsd" lastCompiled="1249844841" lastInstalled="0" lastModified="1263586941" platform="ipfw" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -735,11 +735,10 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-        <RuleSetOptions/>
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="pol-firewall2" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id3B09D29D" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id3B09D29D" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -755,7 +754,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="pol-firewall2-0" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="Automatically generated rule blocking short fragments">
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-0" disabled="False" log="True" position="1" action="Deny" direction="Inbound" comment="Automatically generated rule blocking short fragments">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -774,7 +774,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="pol-firewall2-1" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="Automatically generated anti-spoofing rule">
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-1" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="Automatically generated anti-spoofing rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="fw-firewall2"/>
@@ -794,7 +795,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B92DFC5" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B92DFC5" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="комментарий по-русски">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -808,7 +810,8 @@
               <ObjectRef ref="if-FW-firewall2-eth0"/>
             </Itf>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3C4E4C38" disabled="False" log="True" position="4" action="Deny" direction="Inbound" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3C4E4C38" disabled="False" log="True" position="4" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -824,7 +827,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B58E39D" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B58E39D" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -842,13 +846,14 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
+              <Option name="action_on_reject"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"/>
-              <Option name="log_prefix"/>
+              <Option name="log_limit_suffix"></Option>
+              <Option name="log_prefix"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id8706X26107" disabled="False" group="" log="True" position="6" action="Reject" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id8706X26107" disabled="False" group="" log="True" position="6" action="Reject" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -865,12 +870,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
+              <Option name="action_on_reject"></Option>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">True</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id8686X26107" disabled="False" group="" log="True" position="7" action="Reject" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id8686X26107" disabled="False" group="" log="True" position="7" action="Reject" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -887,12 +893,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
+              <Option name="action_on_reject"></Option>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">True</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B6659FC" disabled="False" log="True" position="8" action="Reject" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B6659FC" disabled="False" log="True" position="8" action="Reject" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -912,12 +919,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
+              <Option name="action_on_reject"></Option>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">True</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3CE74D81" disabled="False" log="False" position="9" action="Reject" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3CE74D81" disabled="False" log="False" position="9" action="Reject" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -936,7 +944,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3BF1B45E" disabled="True" log="False" position="10" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3BF1B45E" disabled="True" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E1"/>
             </Src>
@@ -953,12 +962,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3BF1B44E" disabled="True" log="False" position="11" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3BF1B44E" disabled="True" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3BF1B3E7"/>
             </Src>
@@ -975,12 +985,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="pol-firewall2-3" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-3" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="host-secondary1-com"/>
               <ObjectRef ref="host-secondary2-com"/>
@@ -1000,12 +1011,13 @@
               <IntervalRef ref="id3C63479E"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="pol-firewall2-2" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-2" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1022,12 +1034,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3D98E652" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3D98E652" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1045,12 +1058,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3CD8770E" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3CD8770E" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1068,12 +1082,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3CD87B1E" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3CD87B1E" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1091,12 +1106,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="pol-firewall2-4" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-4" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1114,12 +1130,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id41D514D2" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id41D514D2" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1140,12 +1157,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B58E180" disabled="False" log="True" position="19" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B58E180" disabled="False" log="True" position="19" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="fw-firewall2"/>
             </Src>
@@ -1162,7 +1180,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="pol-firewall2-5" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="Automatically generated 'masquerading' rule">
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-5" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="Automatically generated 'masquerading' rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="fw-firewall2"/>
@@ -1180,12 +1199,13 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
+          </PolicyRule>
+          <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1202,22 +1222,24 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"/>
-              <Option name="log_prefix"/>
+              <Option name="log_limit_suffix"></Option>
+              <Option name="log_prefix"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="fw-firewall2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="fw-firewall2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="if-FW-firewall2-eth1" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="if-FW-firewall2-eth1" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth1-ipv4" name="address" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="if-FW-firewall2-eth0" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="if-FW-firewall2-eth0" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="if-FW-firewall2-eth0-ipv4" name="firewall" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -1230,37 +1252,37 @@
           <Option name="accept_established">False</Option>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP port unreachable</Option>
-          <Option name="activationCmd"/>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">True</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="cmdline">-v</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">False</Option>
           <Option name="debug">True</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
-          <Option name="epilog_script"/>
-          <Option name="firewall_dir"/>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_ip_forward"/>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
-          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_ip_forward"></Option>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
+          <Option name="freebsd_path_ipf"></Option>
           <Option name="freebsd_path_ipfw">/usr/sbin/ipfw</Option>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">True</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"/>
-          <Option name="inst_script"/>
-          <Option name="install_script"/>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -1280,7 +1302,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"/>
+          <Option name="log_prefix"></Option>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -1293,17 +1315,17 @@
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="openbsd_ip_redirect">0</Option>
           <Option name="openbsd_ip_sourceroute">0</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
-          <Option name="prolog_script"/>
-          <Option name="scpArgs"/>
-          <Option name="script_env_path"/>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_env_path"></Option>
           <Option name="script_name_on_firewall">ipfw.fw</Option>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
-          <Option name="sshArgs"/>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
       </Firewall>
@@ -1561,11 +1583,10 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-        <RuleSetOptions/>
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id3AF5AA0C" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id3C5987DC" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id3C5987DC" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B4572B5"/>
             </Src>
@@ -1581,7 +1602,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3CD34BEF" disabled="False" log="False" position="1" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3CD34BEF" disabled="False" log="False" position="1" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B4572AF"/>
             </Src>
@@ -1600,7 +1622,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3AF5AAB4" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
+          </PolicyRule>
+          <PolicyRule id="id3AF5AAB4" disabled="False" log="True" position="2" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3AF5AA0A"/>
@@ -1617,7 +1640,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3AF5AAAB" disabled="False" log="True" position="3" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
+          </PolicyRule>
+          <PolicyRule id="id3AF5AAAB" disabled="False" log="True" position="3" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -1633,7 +1657,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3CDDF2FA" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3CDDF2FA" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1650,7 +1675,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3CCA26E4" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3CCA26E4" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1669,7 +1695,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B9AB902" disabled="True" log="True" position="6" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B9AB902" disabled="True" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1688,7 +1715,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3AFC0F90" disabled="False" log="True" position="7" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
+          </PolicyRule>
+          <PolicyRule id="id3AFC0F90" disabled="False" log="True" position="7" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1705,7 +1733,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3B021E10" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="testing negation in the policy rule">
+          </PolicyRule>
+          <PolicyRule id="id3B021E10" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="testing negation in the policy rule">
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -1723,13 +1752,14 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
+              <Option name="action_on_reject"></Option>
               <Option name="limit_suffix">/minute</Option>
               <Option name="limit_value">10</Option>
-              <Option name="log_prefix"/>
+              <Option name="log_prefix"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B0B4A13" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B0B4A13" disabled="False" log="True" position="9" action="Deny" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -1749,7 +1779,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B5535B7" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B5535B7" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="id3B022266"/>
               <ObjectRef ref="id3AF5AA0A"/>
@@ -1769,7 +1800,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3FB82A69" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3FB82A69" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="id3B665641"/>
               <ObjectRef ref="id3B665643"/>
@@ -1787,7 +1819,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3B11F63D" disabled="False" log="True" position="12" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B11F63D" disabled="False" log="True" position="12" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -1808,7 +1841,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3CDDF0AA" disabled="False" log="False" position="13" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3CDDF0AA" disabled="False" log="False" position="13" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1827,7 +1861,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B021E6F" disabled="True" log="True" position="14" action="Deny" direction="Both" comment="testing negation in service field">
+          </PolicyRule>
+          <PolicyRule id="id3B021E6F" disabled="True" log="True" position="14" action="Deny" direction="Both" comment="testing negation in service field">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1848,7 +1883,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3CCA2CF4" disabled="True" log="True" position="15" action="Accept" direction="Both" comment="testing negation in service field">
+          </PolicyRule>
+          <PolicyRule id="id3CCA2CF4" disabled="True" log="True" position="15" action="Accept" direction="Both" comment="testing negation in service field">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1867,7 +1903,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3B45739A" disabled="False" log="True" position="16" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B45739A" disabled="False" log="True" position="16" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B4572B5"/>
             </Src>
@@ -1886,7 +1923,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3AF5AAC8" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="'masquerading' rule">
+          </PolicyRule>
+          <PolicyRule id="id3AF5AAC8" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="'masquerading' rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -1903,7 +1941,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3AF5AAE3" disabled="False" log="True" position="18" action="Deny" direction="Both" comment="'catch all' rule">
+          </PolicyRule>
+          <PolicyRule id="id3AF5AAE3" disabled="False" log="True" position="18" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1922,27 +1961,29 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id3AF5AA0A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3AF5AA0A-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id3AF5AA96" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3AF5AA96" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5AA96-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AF5AA99" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3AF5AA99" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3AF5AA99-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0B4BC8" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0B4BC8" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0B4BC8-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0B4D35" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id3B0B4D35" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3B0B4D35-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B11F434" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+        <Interface id="id3B11F434" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3B11F434-ipv4" name="address" comment="" ro="False" address="22.22.23.23" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -1957,29 +1998,29 @@
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_ip_forward"/>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
-          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_ip_forward"></Option>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
+          <Option name="freebsd_path_ipf"></Option>
           <Option name="freebsd_path_ipfw">/Library/Application Support/PeerGuardian/ipfwFast</Option>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"/>
-          <Option name="inst_script"/>
-          <Option name="install_script"/>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
@@ -1996,7 +2037,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"/>
+          <Option name="log_prefix"></Option>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -2006,10 +2047,10 @@
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"/>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -2036,7 +2077,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3AFB66D6" disabled="False" position="1" action="Translate" comment="">
@@ -2060,7 +2101,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3DE9CA86" disabled="False" position="2" action="Translate" comment="">
@@ -2298,7 +2339,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3BD6757E" disabled="True" position="13" action="Translate" comment="">
@@ -2449,11 +2490,10 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-        <RuleSetOptions/>
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id3AFB66E4" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id41D4F848" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="">
+          <PolicyRule id="id41D4F848" disabled="False" log="False" position="0" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2470,7 +2510,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id463FF6C410755" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="">
+          </PolicyRule>
+          <PolicyRule id="id463FF6C410755" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2489,7 +2530,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id4640031510755" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="">
+          </PolicyRule>
+          <PolicyRule id="id4640031510755" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2508,7 +2550,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3AFB6708" disabled="False" log="True" position="3" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
+          </PolicyRule>
+          <PolicyRule id="id3AFB6708" disabled="False" log="True" position="3" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3AFB66C6"/>
@@ -2523,13 +2566,14 @@
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3AFB6710" disabled="False" log="True" position="4" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
+          </PolicyRule>
+          <PolicyRule id="id3AFB6710" disabled="False" log="True" position="4" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3AFB66C6"/>
@@ -2544,13 +2588,14 @@
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="limit_suffix"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3AFB66E5" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="block fragments">
+          </PolicyRule>
+          <PolicyRule id="id3AFB66E5" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="block fragments">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2567,10 +2612,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B0C6FD2" disabled="False" log="True" position="6" action="Reject" direction="Both" comment="sends TCP RST and makes custom record in the log">
+          </PolicyRule>
+          <PolicyRule id="id3B0C6FD2" disabled="False" log="True" position="6" action="Reject" direction="Both" comment="sends TCP RST and makes custom record in the log">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2590,12 +2636,13 @@
               <Option name="action_on_reject">TCP RST</Option>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">False</Option>
-              <Option name="limit_suffix"/>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">IDENT</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3D333A66" disabled="False" log="True" position="7" action="Reject" direction="Both" comment="sends TCP RST and makes custom record in the log">
+          </PolicyRule>
+          <PolicyRule id="id3D333A66" disabled="False" log="True" position="7" action="Reject" direction="Both" comment="sends TCP RST and makes custom record in the log">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2612,15 +2659,16 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
+              <Option name="action_on_reject"></Option>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">False</Option>
-              <Option name="limit_suffix"/>
+              <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">IDENT</Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3D8FF63F" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3D8FF63F" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B4572AF"/>
               <ObjectRef ref="id3D8FF5EC"/>
@@ -2638,7 +2686,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3D8FF660" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3D8FF660" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B19C5EB"/>
             </Src>
@@ -2656,7 +2705,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3AFB66EF" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="'masquerading' rule">
+          </PolicyRule>
+          <PolicyRule id="id3AFB66EF" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="'masquerading' rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -2673,9 +2723,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3C447B8D" disabled="False" log="True" position="11" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
+          </PolicyRule>
+          <PolicyRule id="id3C447B8D" disabled="False" log="True" position="11" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2692,7 +2743,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3C447BCB" disabled="False" log="True" position="12" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3C447BCB" disabled="False" log="True" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2709,7 +2761,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3AFB66F9" disabled="False" log="True" position="13" action="Deny" direction="Both" comment="'catch all' rule">
+          </PolicyRule>
+          <PolicyRule id="id3AFB66F9" disabled="False" log="True" position="13" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2726,30 +2779,32 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id3AFB66C6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3AFB66C6-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id3AFB6703" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3AFB6703" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AFB6703-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AFB6706" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3AFB6706" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3AFB6706-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AFB68D2" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+        <Interface id="id3AFB68D2" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3AFB68D2-ipv4" name="address" comment="" ro="False" address="22.22.23.23" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0221F1" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0221F1" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0221F1-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3CD2449F" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id3CD2449F" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3CD2449F-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -2764,26 +2819,26 @@
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
-          <Option name="id"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="id"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"/>
-          <Option name="inst_script"/>
-          <Option name="install_script"/>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">True</Option>
           <Option name="ipf_nat_h323_proxy">True</Option>
@@ -2819,10 +2874,10 @@
           <Option name="pf_return_icmp_as_dest">True</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">True</Option>
-          <Option name="script_env_path"/>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
           <Option name="use_ip_tool">True</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -2849,7 +2904,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D758531" disabled="False" position="1" action="Translate" comment="">
@@ -2872,7 +2927,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D75869D" disabled="False" position="2" action="Translate" comment="">
@@ -2895,7 +2950,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D7586D1" disabled="False" position="3" action="Translate" comment="">
@@ -2918,7 +2973,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3B0C6390" disabled="True" position="4" action="Translate" comment="negation in NAT is not supported&#10;in ipf yet">
@@ -2941,7 +2996,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3B202AFF" disabled="False" position="5" action="Translate" comment="">
@@ -3031,11 +3086,10 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-        <RuleSetOptions/>
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id3B0C639E" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id3B0C63E3" disabled="False" log="True" position="13" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
+          <PolicyRule id="id3B0C63E3" disabled="False" log="True" position="13" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B0C6380"/>
@@ -3052,7 +3106,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B0C63EB" disabled="False" log="True" position="14" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
+          </PolicyRule>
+          <PolicyRule id="id3B0C63EB" disabled="False" log="True" position="14" action="Deny" direction="Outbound" comment="Anti-spoofing rule">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B0C6380"/>
@@ -3069,7 +3124,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B54C977" disabled="False" log="True" position="15" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B54C977" disabled="False" log="True" position="15" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3085,7 +3141,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B54F071" disabled="False" log="True" position="16" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B54F071" disabled="False" log="True" position="16" action="Deny" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="id3B022266"/>
             </Src>
@@ -3101,7 +3158,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B0C639F" disabled="False" log="True" position="4" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
+          </PolicyRule>
+          <PolicyRule id="id3B0C639F" disabled="False" log="True" position="4" action="Accept" direction="Both" comment="hostF has the same IP address as firewal.">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3118,9 +3176,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B0C63A9" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="testing negation in the policy rule">
+          </PolicyRule>
+          <PolicyRule id="id3B0C63A9" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="testing negation in the policy rule">
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -3138,10 +3197,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B0C63B4" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3B0C63B4" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="host-hostA"/>
               <ObjectRef ref="host-hostB"/>
@@ -3159,10 +3219,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B0C63BF" disabled="True" log="True" position="7" action="Deny" direction="Both" comment="testing negation in service field">
+          </PolicyRule>
+          <PolicyRule id="id3B0C63BF" disabled="True" log="True" position="7" action="Deny" direction="Both" comment="testing negation in service field">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3181,10 +3242,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3B0C63CB" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="'masquerading' rule">
+          </PolicyRule>
+          <PolicyRule id="id3B0C63CB" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="'masquerading' rule">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -3201,9 +3263,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3D85069A" disabled="True" log="True" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3D85069A" disabled="True" log="True" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3221,7 +3284,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3B0C63D5" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="'catch all' rule">
+          </PolicyRule>
+          <PolicyRule id="id3B0C63D5" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3238,30 +3302,32 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"/>
+              <Option name="id"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id3B0C6380-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3B0C6380-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id3B0C63DF" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3B0C63DF" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3B0C63DF-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0C63E1" dyn="True" label="" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3B0C63E1" dedicated_failover="False" dyn="True" label="" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3B0C63E1-ipv4" name="firewall4:eth1" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0C63F3" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3B0C63F3" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3B0C63F3-ipv4" name="firewall4:eth2" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3B0C63F5" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id3B0C63F5" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3B0C63F5-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3CD88A77" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+        <Interface id="id3CD88A77" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3CD88A77-ipv4" name="firewall4:eth3" comment="" ro="False" address="222.222.222.222" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -3276,8 +3342,8 @@
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
@@ -3286,16 +3352,16 @@
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_path_ipf">/usr/sbin/ipf</Option>
           <Option name="freebsd_path_ipnat">/usr/sbin/ipnat</Option>
-          <Option name="freebsd_path_sysctl"/>
-          <Option name="id"/>
+          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="id"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"/>
-          <Option name="inst_script"/>
-          <Option name="install_script"/>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
@@ -3312,7 +3378,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"/>
+          <Option name="log_prefix"></Option>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -3322,19 +3388,19 @@
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"/>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3C69BD4F" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="ipfw" name="firewall7" comment="testing rules with broadcasts" ro="False">
-        <NAT id="id3C69BD50" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        <NAT id="id3C69BD50" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id3C69BD51" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id3C69BDE1" disabled="False" log="True" position="17" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id3C69BDE1" disabled="False" log="True" position="17" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3353,7 +3419,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3CF5B373" disabled="False" log="True" position="18" action="Deny" direction="Inbound" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3CF5B373" disabled="False" log="True" position="18" action="Deny" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3372,7 +3439,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3C69BF13" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3C69BF13" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3389,27 +3457,29 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id3C69BD4F-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3C69BD4F-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id3C69BD5C" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3C69BD5C" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3C69BD5C-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C69BD5E" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3C69BD5E" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3C69BD5E-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C69BD68" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+        <Interface id="id3C69BD68" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
           <IPv4 id="id3C69BD68-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C69BD6A" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id3C69BD6A" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3C69BD6A-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3C69BD6C" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+        <Interface id="id3C69BD6C" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
           <IPv4 id="id3C69BD6C-ipv4" name="address" comment="" ro="False" address="22.22.23.23" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -3424,25 +3494,25 @@
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"/>
-          <Option name="inst_script"/>
-          <Option name="install_script"/>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
@@ -3459,7 +3529,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"/>
+          <Option name="log_prefix"></Option>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -3469,20 +3539,20 @@
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"/>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3AF5A2BA" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="ipfw" name="host" comment="firewall protects host it is running on" ro="False">
-        <NAT id="id3AF5A2BD" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        <NAT id="id3AF5A2BD" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id3AF5A2BC" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id3BD8ECD0" disabled="False" log="True" position="19" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3BD8ECD0" disabled="False" log="True" position="19" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
             </Src>
@@ -3496,7 +3566,8 @@
               <ObjectRef ref="id3AF5A2CB"/>
             </Itf>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3AFB70C7" disabled="False" log="False" position="20" action="Accept" direction="Inbound" comment="allow everything on loopback">
+          </PolicyRule>
+          <PolicyRule id="id3AFB70C7" disabled="False" log="False" position="20" action="Accept" direction="Inbound" comment="allow everything on loopback">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3510,7 +3581,8 @@
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3AFB70CF" disabled="False" log="False" position="21" action="Accept" direction="Outbound" comment="allow everything on loopback">
+          </PolicyRule>
+          <PolicyRule id="id3AFB70CF" disabled="False" log="False" position="21" action="Accept" direction="Outbound" comment="allow everything on loopback">
             <Src neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
             </Src>
@@ -3524,7 +3596,8 @@
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3BD8ECC6" disabled="False" log="True" position="22" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3BD8ECC6" disabled="False" log="True" position="22" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
             </Src>
@@ -3538,7 +3611,8 @@
               <ObjectRef ref="id3AFB7090"/>
             </Itf>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3AF5A74B" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="block fragments">
+          </PolicyRule>
+          <PolicyRule id="id3AF5A74B" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="block fragments">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3557,7 +3631,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3AF5A73A" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3AF5A73A" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3579,7 +3654,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3AF5A757" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="allow all outgoing connections">
+          </PolicyRule>
+          <PolicyRule id="id3AF5A757" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="allow all outgoing connections">
             <Src neg="False">
               <ObjectRef ref="id3AF5A2BA"/>
             </Src>
@@ -3596,7 +3672,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3AF5A762" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="'catch all' rule">
+          </PolicyRule>
+          <PolicyRule id="id3AF5A762" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="'catch all' rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3615,15 +3692,17 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id3AF5A2BA-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3AF5A2BA-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id3AF5A2CB" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3AF5A2CB" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3AF5A2CB-ipv4" name="address" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3AFB7090" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id3AFB7090" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id3AFB7090-ipv4" name="address" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -3638,24 +3717,24 @@
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"/>
-          <Option name="inst_script"/>
-          <Option name="install_script"/>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
@@ -3670,9 +3749,9 @@
           <Option name="log_all_dropped">False</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">debug</Option>
-          <Option name="log_limit_suffix"/>
+          <Option name="log_limit_suffix"></Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"/>
+          <Option name="log_prefix"></Option>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">False</Option>
@@ -3681,10 +3760,10 @@
           <Option name="no_optimisation">False</Option>
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
-          <Option name="script_env_path"/>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -3880,11 +3959,10 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-        <RuleSetOptions/>
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id3D582239" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id3D5822AA" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3D5822AA" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3901,7 +3979,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3D5822B5" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3D5822B5" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3918,7 +3997,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3D582294" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3D582294" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3935,7 +4015,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3D58228A" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3D58228A" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3952,7 +4033,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3D5822A0" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3D5822A0" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -3971,15 +4053,17 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id3D582236-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3D582236-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id3D58223F" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id3D58223F" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id3D582241" name="firewall8:eth0" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3D582242" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id3D582242" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id3D582244" name="firewall8:eth1:0" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
           <IPv4 id="id3D582245" name="firewall8:eth1:1" comment="" ro="False" address="33.33.33.34" netmask="255.255.255.0"/>
           <InterfaceOptions/>
@@ -3992,20 +4076,20 @@
         <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
@@ -4013,9 +4097,9 @@
           <Option name="ipf_return_icmp_as_dest">False</Option>
           <Option name="manage_virtual_addr">False</Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3DF3D0AD" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="1230496425" platform="ipfw" name="firewall9" comment="" ro="False">
@@ -4209,11 +4293,10 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-        <RuleSetOptions/>
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id3DF3D12D" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id3DF3DFB0" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="">
+          <PolicyRule id="id3DF3DFB0" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="">
             <Src neg="True">
               <ObjectRef ref="id3B665643"/>
             </Src>
@@ -4232,7 +4315,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3DF3E09E" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3DF3E09E" disabled="False" log="False" position="1" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id3B665643"/>
             </Src>
@@ -4250,7 +4334,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3DF3D16E" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3DF3D16E" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="">
             <Src neg="True">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3DF3D0AD"/>
@@ -4268,7 +4353,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3E5F2E4C" disabled="False" log="False" position="3" action="Accounting" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3E5F2E4C" disabled="False" log="False" position="3" action="Accounting" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4287,7 +4373,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3E5F2E42" disabled="False" log="True" position="4" action="Accounting" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3E5F2E42" disabled="False" log="True" position="4" action="Accounting" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4306,7 +4393,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3DF3D12E" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3DF3D12E" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4323,7 +4411,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3DF3D563" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3DF3D563" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -4340,7 +4429,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3F162CE1" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3F162CE1" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4357,10 +4447,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
+              <Option name="action_on_reject"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3DF3D156" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3DF3D156" disabled="False" log="True" position="8" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4379,15 +4470,17 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id3DF3D0AD-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3DF3D0AD-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id3DF3D160" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="firewall9:eth0" comment="" ro="False">
+        <Interface id="id3DF3D160" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="firewall9:eth0" comment="" ro="False">
           <IPv4 id="id3DF3D161" name="firewall9:eth0" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3DF3D163" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="firewall9:eth1" comment="" ro="False">
+        <Interface id="id3DF3D163" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="firewall9:eth1" comment="" ro="False">
           <IPv4 id="id3DF3D164" name="firewall9:eth1:0" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -4399,20 +4492,20 @@
         <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -4422,17 +4515,17 @@
           <Option name="ipf_return_icmp_as_dest">False</Option>
           <Option name="manage_virtual_addr">False</Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3E51AF8E" host_OS="macosx" lastCompiled="0" lastInstalled="0" lastModified="0" platform="ipfw" version="" name="mac" comment="" ro="False">
-        <NAT id="id3E51AF92" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+        <NAT id="id3E51AF92" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id3E51AF91" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id3E51AFA1" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id3E51AFA1" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4449,7 +4542,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id41D4F998" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id41D4F998" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4466,7 +4560,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3E51B0B0" disabled="False" log="True" position="2" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3E51B0B0" disabled="False" log="True" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4486,7 +4581,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id3E51B025" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3E51B025" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4506,7 +4602,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3E51BD2E" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3E51BD2E" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id3E51AF8E"/>
             </Src>
@@ -4526,7 +4623,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id3E51B010" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id3E51B010" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4545,15 +4643,17 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id3E51AF8E-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3E51AF8E-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id3E51AF99" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+        <Interface id="id3E51AF99" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
           <IPv4 id="id3E51AF9B" name="mac:lo0(ip)" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3E51AF9C" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+        <Interface id="id3E51AF9C" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
           <IPv4 id="id3E51AF9E" name="mac:en0(ip)" comment="" ro="False" address="10.3.14.30" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -4565,20 +4665,20 @@
         <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">True</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="debug">True</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -4590,13 +4690,13 @@
           <Option name="macosx_ip_forward">1</Option>
           <Option name="macosx_ip_redirect">0</Option>
           <Option name="macosx_ip_sourceroute">0</Option>
-          <Option name="macosx_path_ipfw"/>
-          <Option name="macosx_path_sysctl"/>
+          <Option name="macosx_path_ipfw"></Option>
+          <Option name="macosx_path_sysctl"></Option>
           <Option name="manage_virtual_addr">False</Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id43867C1018346" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="ipfw" version="" name="firewall33" comment="testing DNSName object" ro="False">
@@ -4687,11 +4787,10 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-        <RuleSetOptions/>
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id43867C1618346" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id43867C2418346" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id43867C2418346" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8C18346"/>
             </Src>
@@ -4708,7 +4807,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id43869E9018346" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43869E9018346" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8D18346"/>
             </Src>
@@ -4725,7 +4825,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id43869E9E18346" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43869E9E18346" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8E18346"/>
             </Src>
@@ -4742,7 +4843,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id43869EAA18346" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43869EAA18346" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8F18346"/>
             </Src>
@@ -4759,7 +4861,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id4386E38318346" disabled="False" log="False" position="4" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id4386E38318346" disabled="False" log="False" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4778,7 +4881,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id4386E37718346" disabled="False" log="False" position="5" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id4386E37718346" disabled="False" log="False" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4797,7 +4901,8 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id43867C3018346" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43867C3018346" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4814,7 +4919,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id4386C10D18346" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id4386C10D18346" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4831,7 +4937,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id438728A918346" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id438728A918346" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4849,7 +4956,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id438728BA18346" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id438728BA18346" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4867,7 +4975,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id438728CD18346" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id438728CD18346" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4885,7 +4994,8 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
-          </PolicyRule><PolicyRule id="id43867C3C18346" disabled="False" log="True" position="11" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43867C3C18346" disabled="False" log="True" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -4904,18 +5014,20 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id43867C5718346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id43867C5718346" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id43867C5818346" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
+        <Interface id="id43867C5818346" dedicated_failover="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id43867C5918346" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+        <Interface id="id43867C5918346" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
           <IPv4 id="id43867C5B18346" name="firewall33:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id43867C5C18346" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+        <Interface id="id43867C5C18346" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
           <IPv4 id="id43867C5E18346" name="firewall33:eth1:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
@@ -4928,50 +5040,50 @@
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="activationCmd"/>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="epilog_script"/>
-          <Option name="firewall_dir"/>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
-          <Option name="inst_cmdline"/>
-          <Option name="inst_script"/>
-          <Option name="install_script"/>
+          <Option name="inst_cmdline"></Option>
+          <Option name="inst_script"></Option>
+          <Option name="install_script"></Option>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"/>
-          <Option name="linux24_accept_source_route"/>
-          <Option name="linux24_icmp_echo_ignore_all"/>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
-          <Option name="linux24_ip_dynaddr"/>
-          <Option name="linux24_ip_forward"/>
-          <Option name="linux24_log_martians"/>
-          <Option name="linux24_path_ip"/>
-          <Option name="linux24_path_iptables"/>
-          <Option name="linux24_path_logger"/>
-          <Option name="linux24_path_lsmod"/>
-          <Option name="linux24_path_modprobe"/>
-          <Option name="linux24_rp_filter"/>
-          <Option name="linux24_tcp_ecn"/>
-          <Option name="linux24_tcp_fack"/>
+          <Option name="linux24_accept_redirects"></Option>
+          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"></Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward"></Option>
+          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter"></Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
           <Option name="linux24_tcp_fin_timeout">30</Option>
           <Option name="linux24_tcp_keepalive_interval">1800</Option>
-          <Option name="linux24_tcp_sack"/>
-          <Option name="linux24_tcp_syncookies"/>
-          <Option name="linux24_tcp_timestamps"/>
-          <Option name="linux24_tcp_window_scaling"/>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
           <Option name="load_modules">False</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -4985,20 +5097,20 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="platform">iptables</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"/>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
-          <Option name="sshArgs"/>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -5200,11 +5312,10 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-        <RuleSetOptions/>
+          <RuleSetOptions/>
         </NAT>
-        
         <Policy id="id43F7AAEA23738" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-        <PolicyRule id="id43F7AAEB23738" disabled="False" log="False" position="0" action="Pipe" direction="Both" comment="port 8668 is natd">
+          <PolicyRule id="id43F7AAEB23738" disabled="False" log="False" position="0" action="Pipe" direction="Both" comment="port 8668 is natd">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -5221,31 +5332,32 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="classify_str"/>
-              <Option name="custom_str"/>
-              <Option name="ipf_route_opt_addr"/>
-              <Option name="ipf_route_opt_if"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
               <Option name="ipf_route_option">Route through</Option>
               <Option name="ipfw_classify_method">2</Option>
               <Option name="ipfw_pipe_port_num">8668</Option>
               <Option name="ipfw_pipe_queue_num">0</Option>
               <Option name="ipt_continue">False</Option>
-              <Option name="ipt_gw"/>
-              <Option name="ipt_iif"/>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
               <Option name="ipt_mark_connections">False</Option>
               <Option name="ipt_mark_prerouting">False</Option>
-              <Option name="ipt_oif"/>
+              <Option name="ipt_oif"></Option>
               <Option name="ipt_tee">False</Option>
               <Option name="pf_fastroute">False</Option>
-              <Option name="pf_route_opt_addr"/>
-              <Option name="pf_route_opt_if"/>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
               <Option name="pf_route_option">Route through</Option>
-              <Option name="rule_name_accounting"/>
+              <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
-              <Option name="tagvalue"/>
+              <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id45275D7A5394" disabled="False" log="False" position="1" action="Custom" direction="Both" comment="rule doing divert to natd (8668) should go before check-state&#10;">
+          </PolicyRule>
+          <PolicyRule id="id45275D7A5394" disabled="False" log="False" position="1" action="Custom" direction="Both" comment="rule doing divert to natd (8668) should go before check-state&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -5262,30 +5374,31 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="classify_str"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str"></Option>
               <Option name="custom_str">check-state</Option>
-              <Option name="ipf_route_opt_addr"/>
-              <Option name="ipf_route_opt_if"/>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
               <Option name="ipf_route_option">Route through</Option>
               <Option name="ipfw_classify_method">2</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
               <Option name="ipfw_pipe_queue_num">0</Option>
               <Option name="ipt_continue">False</Option>
-              <Option name="ipt_gw"/>
-              <Option name="ipt_iif"/>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
               <Option name="ipt_mark_connections">False</Option>
               <Option name="ipt_mark_prerouting">False</Option>
-              <Option name="ipt_oif"/>
+              <Option name="ipt_oif"></Option>
               <Option name="ipt_tee">False</Option>
               <Option name="pf_fastroute">False</Option>
-              <Option name="pf_route_opt_addr"/>
-              <Option name="pf_route_opt_if"/>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
               <Option name="pf_route_option">Route through</Option>
-              <Option name="rule_name_accounting"/>
+              <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id452299478881" disabled="False" log="False" position="2" action="Pipe" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id452299478881" disabled="False" log="False" position="2" action="Pipe" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -5302,17 +5415,18 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="classify_str"/>
-              <Option name="custom_str"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
               <Option name="ipfw_classify_method">2</Option>
               <Option name="ipfw_pipe_port_num">1234</Option>
               <Option name="ipfw_pipe_queue_num">0</Option>
-              <Option name="rule_name_accounting"/>
+              <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
-              <Option name="tagvalue"/>
+              <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id43F7AC9D23738" disabled="False" log="False" position="3" action="Classify" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43F7AC9D23738" disabled="False" log="False" position="3" action="Classify" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -5329,18 +5443,19 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="classify_str"/>
-              <Option name="custom_str"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
               <Option name="ipfw_classify_method">2</Option>
               <Option name="ipfw_pipe_method">1</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
               <Option name="ipfw_pipe_queue_num">2</Option>
-              <Option name="rule_name_accounting"/>
+              <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
-              <Option name="tagvalue"/>
+              <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id43F7ACAE23738" disabled="False" log="False" position="4" action="Classify" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43F7ACAE23738" disabled="False" log="False" position="4" action="Classify" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -5357,19 +5472,20 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="classify_str"/>
-              <Option name="custom_str"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
               <Option name="ipfw_classify_method">1</Option>
               <Option name="ipfw_classify_port_num">1</Option>
               <Option name="ipfw_pipe_method">2</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
               <Option name="ipfw_pipe_queue_num">1</Option>
-              <Option name="rule_name_accounting"/>
+              <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
-              <Option name="tagvalue"/>
+              <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id43F7C4D723738" disabled="False" log="True" position="5" action="Custom" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43F7C4D723738" disabled="False" log="True" position="5" action="Custom" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -5386,16 +5502,17 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"/>
-              <Option name="classify_str"/>
+              <Option name="action_on_reject"></Option>
+              <Option name="classify_str"></Option>
               <Option name="custom_str">prob .80</Option>
               <Option name="ipfw_pipe_method">2</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
-              <Option name="rule_name_accounting"/>
+              <Option name="rule_name_accounting"></Option>
               <Option name="stateless">True</Option>
-              <Option name="tagvalue"/>
+              <Option name="tagvalue"></Option>
             </PolicyRuleOptions>
-          </PolicyRule><PolicyRule id="id43F7AB1B23738" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          </PolicyRule>
+          <PolicyRule id="id43F7AB1B23738" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -5414,15 +5531,17 @@
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
-          </PolicyRule><RuleSetOptions/></Policy>
-        <Routing id="id43F7ABA623738" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True"><RuleSetOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id43F7ABA623738" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
         </Routing>
-        
-        <Interface id="id43F7ABA723738" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="rl0" comment="" ro="False">
+        <Interface id="id43F7ABA723738" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="rl0" comment="" ro="False">
           <IPv4 id="id43F7ABA923738" name="firewall34:rl0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id43F7ABAA23738" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="rl1" comment="" ro="False">
+        <Interface id="id43F7ABAA23738" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="rl1" comment="" ro="False">
           <IPv4 id="id43F7ABAD23738" name="firewall34:rl1:ip1" comment="" ro="False" address="33.33.33.33" netmask="255.255.255.0"/>
           <IPv4 id="id43F7ABAE23738" name="firewall34:rl1:ip2" comment="" ro="False" address="33.33.33.34" netmask="255.255.255.0"/>
           <InterfaceOptions/>
@@ -5434,42 +5553,42 @@
         </Management>
         <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
-          <Option name="activationCmd"/>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">False</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">True</Option>
-          <Option name="cmdline"/>
-          <Option name="compiler"/>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"/>
-          <Option name="ipf_log_level"/>
+          <Option name="ipf_log_facility"></Option>
+          <Option name="ipf_log_level"></Option>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
           <Option name="ipf_nat_rcmd_proxy">False</Option>
           <Option name="ipf_return_icmp_as_dest">False</Option>
           <Option name="manage_virtual_addr">False</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="prolog_script"/>
-          <Option name="snmp_contact"/>
-          <Option name="snmp_description"/>
-          <Option name="snmp_location"/>
-          <Option name="sshArgs"/>
+          <Option name="prolog_script"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
@@ -5502,10 +5621,10 @@
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <ServiceGroup id="stdid06" name="IP" comment="" ro="False">
-        <IPService id="ip-SRR" fragm="False" lsrr="True" protocol_num="0" rr="False" short_fragm="False" ssrr="True" ts="False" name="SRR" comment="All sorts of Source Routing Packets" ro="False"/>
-        <IPService id="ip-RR" fragm="False" lsrr="False" protocol_num="0" rr="True" short_fragm="False" ssrr="False" ts="False" name="RR" comment="Route recording packets" ro="False"/>
         <IPService id="ip-IPSEC" fragm="False" lsrr="False" protocol_num="50" rr="False" short_fragm="False" ssrr="False" ts="False" name="ESP" comment="IPSEC Encapsulating Security Payload Protocol" ro="False"/>
         <IPService id="ip-IP_Fragments" fragm="False" lsrr="False" protocol_num="0" rr="False" short_fragm="True" ssrr="False" ts="False" name="ip_fragments" comment="'Short' fragments" ro="False"/>
+        <IPService id="ip-RR" fragm="False" lsrr="False" protocol_num="0" rr="True" short_fragm="False" ssrr="False" ts="False" name="RR" comment="Route recording packets" ro="False"/>
+        <IPService id="ip-SRR" fragm="False" lsrr="True" protocol_num="0" rr="False" short_fragm="False" ssrr="True" ts="False" name="SRR" comment="All sorts of Source Routing Packets" ro="False"/>
       </ServiceGroup>
       <ServiceGroup id="stdid09" name="TCP" comment="" ro="False">
         <TCPService id="tcp-Auth" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="auth" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="113" dst_range_end="113"/>
@@ -5575,9 +5694,9 @@
         <ICMPService id="icmp-ping_reply" code="0" type="0" name="ping reply" comment="" ro="False"/>
       </ServiceGroup>
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
-        <CustomServiceCommand platform="Undefined"/>
+        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"/>
+        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
       </CustomService>

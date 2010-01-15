@@ -892,7 +892,7 @@
       <ServiceGroup id="stdid05_1_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1263417413" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="pix_os" inactive="False" lastCompiled="1163922727" lastInstalled="0" lastModified="1263587335" platform="pix" version="6.2" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1214,7 +1214,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3D6A8E85" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="">
+          <PolicyRule id="id3D6A8E85" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="комментарий по-русски">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

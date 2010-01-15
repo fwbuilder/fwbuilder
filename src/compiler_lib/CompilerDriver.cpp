@@ -651,7 +651,7 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
                             imported_policies.begin(), imported_policies.end());
 }
 
-string CompilerDriver::run(const std::string&, const std::string&, const std::string&)
+QString CompilerDriver::run(const std::string&, const std::string&, const std::string&)
 {
     return "";
 }
