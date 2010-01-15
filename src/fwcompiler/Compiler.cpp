@@ -854,7 +854,7 @@ bool Compiler::recursiveGroupsInRE::processNext()
     Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
-    if (re->isAny())
+    if (re == NULL || re->isAny())
     {
         tmp_queue.push_back(rule);
         return true;
