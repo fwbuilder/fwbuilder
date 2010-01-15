@@ -2942,7 +2942,7 @@
       </ServiceGroup>
     </ServiceGroup>
     <ObjectGroup id="stdid12_1" name="Firewalls" comment="" ro="False">
-      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1261179871" lastInstalled="1142003872" lastModified="1263579154" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
+      <Firewall id="fw-firewall2" host_OS="linux24" inactive="False" lastCompiled="1263587792" lastInstalled="1142003872" lastModified="1263579154" platform="iptables" version="" name="firewall" comment="this is simple firewall with two interfaces. Test regular policy rules, including IP_fragments rule" ro="False">
         <NAT id="nat-firewall2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="nat-firewall2-0" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -9689,7 +9689,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3B19BEE6" host_OS="linux24" lastCompiled="1247364158" lastInstalled="1142003872" lastModified="1262968608" platform="iptables" name="firewall5" comment="testing firewall_is_part_of_any_and_networks&#10;also testing SNAT and DNAT rules when external interface&#10;has dynamic address&#10;&#10;dynamic interface ppp0 has an address object attached to it&#10;(interface used to be static and had an address, then got&#10;converted to dynamic but address object is still there). Compiler&#10;should ignore this address object and issue a warning.&#10;" ro="False">
+      <Firewall id="id3B19BEE6" host_OS="linux24" inactive="False" lastCompiled="1247364158" lastInstalled="1142003872" lastModified="1263587776" platform="iptables" version="" name="firewall5" comment="testing firewall_is_part_of_any_and_networks. Also testing SNAT and DNAT rules when external interface has dynamic address.&#10;&#10;dynamic interface ppp0 has an address object attached to it (interface used to be static and had an address, then got converted to dynamic but address object is still there). Compiler should ignore this address object and issue a warning.&#10;&#10;All &quot;configure interfaces&quot; options are off, testing shell functions for this case." ro="False">
         <NAT id="id3B19BEE7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3CFD9EE2" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">

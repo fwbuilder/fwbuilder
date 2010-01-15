@@ -308,22 +308,21 @@ string OSConfigurator_linux24::printShellFunctions()
 /* check if package iproute2 is installed, but do this only if
  * we really need /usr/sbin/ip 
  */
+    Configlet configlet(fw, "linux24", "check_utilities");
+    configlet.removeComments();
+
     if (options->getBool("verify_interfaces") || 
         options->getBool("manage_virtual_addr") ||
         options->getBool("configure_interfaces") )
     {
-        Configlet configlet(fw, "linux24", "check_utilities");
-        configlet.removeComments();
-
         configlet.setVariable("need_vconfig", 
                               options->getBool("configure_vlan_interfaces"));
         configlet.setVariable("need_brctl", 
                               options->getBool("configure_bridge_interfaces"));
         configlet.setVariable("need_ifenslave", 
                               options->getBool("configure_bonding_interfaces"));
-        
-        str << configlet.expand().toStdString();
     }
+    str << configlet.expand().toStdString();
 
     /*
      * Generate commands to reset all tables and chains and set

@@ -1,5 +1,17 @@
 2010-01-15  vadim  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::printShellFunctions):
+	fixes #1084 "if all user turns off all interface management and
+	configuration checkboxes, the check_tools shell function is not
+	added to the script but still called". Shell function
+	"check_tools" verifies that system tools iptables script needs to
+	operate properly are installed on the firewall. These are: ip,
+	modprobe and optionally vconfig, brctl, ifenslave. The bug made
+	compiler for iptables to add the call to the function but function
+	definition was missing if user unchecked all "configure
+	interfaces" checkboxes in the Script tab of firewall object
+	settings dialog.
+
 	* CompilerDriver_ipt_run.cpp (CompilerDriver_ipt::run): Refs #869
 	making sure non-english comments appear correctly in the single
 	rule compile output and generated configuration files and scripts.
