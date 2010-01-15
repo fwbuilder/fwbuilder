@@ -4075,9 +4075,9 @@ void PolicyCompiler_ipt::compile()
 
 /* behavior of processors ExpandMultiple... has been changed in
  * virtual method _expandInterface  */
-        add( new ExpandMultipleAddressesInSRC(
+        add( new ExpandMultipleAddressesInSrc(
                  "expand objects with multiple addresses in SRC"));
-        add( new ExpandMultipleAddressesInDST(
+        add( new ExpandMultipleAddressesInDst(
                  "expand objects with multiple addresses in DST"));
         add( new dropRuleWithEmptyRE(
                  "drop rules with empty rule elements"));

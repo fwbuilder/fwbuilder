@@ -1023,9 +1023,9 @@ void PolicyCompiler_pf::compile()
             add(new swapMultiAddressObjectsInDst(
                      "MultiAddress -> MultiAddressRunTime in Dst"));
 
-            add(new ExpandMultipleAddressesInSRC(
+            add(new ExpandMultipleAddressesInSrc(
                      "expand objects with multiple addresses in SRC"));
-            add(new ExpandMultipleAddressesInDST(
+            add(new ExpandMultipleAddressesInDst(
                      "expand objects with multiple addresses in DST"));
             add(new dropRuleWithEmptyRE(
                      "drop rules with empty rule elements"));

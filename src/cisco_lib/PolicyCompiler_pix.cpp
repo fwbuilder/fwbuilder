@@ -656,8 +656,8 @@ void PolicyCompiler_pix::compile()
             add( new eliminateDuplicatesInSRC ("eliminate duplicates in SRC" ));
             add( new eliminateDuplicatesInDST ("eliminate duplicates in DST" ));
             add( new eliminateDuplicatesInSRV ("eliminate duplicates in SRV" ));
-            add( new ExpandMultipleAddressesInSRC("expand objects with multiple addresses in SRC" ));
-            add( new ExpandMultipleAddressesInDST("expand objects with multiple addresses in DST" ));
+            add( new ExpandMultipleAddressesInSrc("expand objects with multiple addresses in SRC" ));
+            add( new ExpandMultipleAddressesInDst("expand objects with multiple addresses in DST" ));
             add( new ConvertToAtomic ("convert to atomic rules" ));
             add( new DetectShadowing ("Detect shadowing" ));
             add( new simplePrintProgress ( ));
@@ -722,7 +722,7 @@ void PolicyCompiler_pix::compile()
         add( new replaceFWinDSTInterfacePolicy(
                  "replace fw with its interface in DST in interface policy rules"));
 
-        add( new ExpandMultipleAddressesInSRC(
+        add( new ExpandMultipleAddressesInSrc(
                  "expand objects with multiple addresses in SRC" ));
         add( new MACFiltering("check for MAC address filtering" ));
         add( new splitByNetworkZonesForSrc(
@@ -730,7 +730,7 @@ void PolicyCompiler_pix::compile()
         add( new replaceFWinDSTPolicy(
                  "replace fw with its interface in DST in global policy rules"));
 
-        add( new ExpandMultipleAddressesInDST(
+        add( new ExpandMultipleAddressesInDst(
                  "expand objects with multiple addresses in DST" ));
         add( new MACFiltering("check for MAC address filtering" ));
         add( new splitByNetworkZonesForDst(

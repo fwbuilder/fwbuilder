@@ -208,9 +208,9 @@ void PolicyCompiler_iosacl::compile()
             add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
             add( new eliminateDuplicatesInDST("eliminate duplicates in DST"));
             add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
-            add( new ExpandMultipleAddressesInSRC(
+            add( new ExpandMultipleAddressesInSrc(
                      "expand objects with multiple addresses in SRC" ) );
-            add( new ExpandMultipleAddressesInDST(
+            add( new ExpandMultipleAddressesInDst(
                      "expand objects with multiple addresses in DST" ) );
             add( new dropRuleWithEmptyRE(
                      "drop rules with empty rule elements"));
@@ -254,13 +254,13 @@ void PolicyCompiler_iosacl::compile()
 
         add( new splitServices ("split rules with different protocols" ) );
 
-        add( new ExpandMultipleAddressesInSRC(
+        add( new ExpandMultipleAddressesInSrc(
                  "expand objects with multiple addresses in SRC" ) );
         add( new MACFiltering ("check for MAC address filtering" ) );
 //        add( new splitByNetworkZonesForSrc ("split rule if objects in Src belong to different network zones " ) );
 //        add( new replaceFWinDSTPolicy ("replace fw with its interface in DST in global policy rules") );
 
-        add( new ExpandMultipleAddressesInDST(
+        add( new ExpandMultipleAddressesInDst(
                  "expand objects with multiple addresses in DST" ) );
         add( new MACFiltering(
                  "check for MAC address filtering" ) );

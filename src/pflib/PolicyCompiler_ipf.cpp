@@ -452,9 +452,9 @@ void PolicyCompiler_ipf::compile()
             add( new swapMultiAddressObjectsInDst(
                      " swap MultiAddress -> MultiAddressRunTime in Dst") );
 
-            add( new ExpandMultipleAddressesInSRC(
+            add( new ExpandMultipleAddressesInSrc(
                      "expand objects with multiple addresses in SRC" ) );
-            add( new ExpandMultipleAddressesInDST(
+            add( new ExpandMultipleAddressesInDst(
                      "expand objects with multiple addresses in DST" ) );
             add( new ConvertToAtomic("convert to atomic rules" ) );
             add( new DetectShadowing("Detect shadowing" ) );
