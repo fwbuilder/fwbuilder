@@ -170,20 +170,20 @@ namespace fwcompiler {
         /**
          *  this inspector replaces references to hosts and firewalls
          *  in dst with references to their interfaces
-         *
-         * TODO: move to class Compiler because this might be useful
-         * for both PolicyCompiler and NATCompiler
          */
-        DECLARE_POLICY_RULE_PROCESSOR(ExpandMultipleAddressesInDST);
+        class ExpandMultipleAddressesInSrc : public Compiler::expandMultipleAddressesInRE
+        {
+            public:
+            ExpandMultipleAddressesInSrc(const std::string &n) :
+                expandMultipleAddressesInRE(n,libfwbuilder::RuleElementSrc::TYPENAME) {}
+        };
 
-        /**
-         *  this inspector replaces references to hosts and firewalls
-         *  in src with references to their interfaces
-         *
-         * TODO: move to class Compiler because this might be useful
-         * for both PolicyCompiler and NATCompiler
-         */
-        DECLARE_POLICY_RULE_PROCESSOR(ExpandMultipleAddressesInSRC);
+        class ExpandMultipleAddressesInDst : public Compiler::expandMultipleAddressesInRE
+        {
+            public:
+            ExpandMultipleAddressesInDst(const std::string &n) :
+                expandMultipleAddressesInRE(n,libfwbuilder::RuleElementDst::TYPENAME) {}
+        };
 
 	/**
 	 *  this inspector replaces references to hosts and firewalls

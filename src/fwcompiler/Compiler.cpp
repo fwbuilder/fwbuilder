@@ -908,7 +908,7 @@ bool Compiler::emptyGroupsInRE::processNext()
     Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
-    if (re->isAny())
+    if (re == NULL || re->isAny())
     {
         tmp_queue.push_back(rule);
         return true;
@@ -992,7 +992,12 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
     Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
 
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
-
+    if (re == NULL || re->isAny())
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+    
     list<MultiAddress*> cl;
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
@@ -1043,10 +1048,26 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
     return true;
 }
 
+bool Compiler::expandMultipleAddressesInRE::processNext()
+{
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
+    if (re) compiler->_expandAddr(rule, re);
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+
 bool Compiler::replaceFailoverInterfaceInRE::processNext()
 {
     Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
     RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
+
+    if (re == NULL || re->isAny())
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
 
     // list of pointers to cluster interfaces used in the RE
     list<Interface*> cl;

@@ -453,6 +453,19 @@ protected:
         };
 
         /**
+         *  this inspector replaces references to hosts and firewalls
+         *  in rule element with references to their interfaces
+         */
+        class expandMultipleAddressesInRE : public BasicRuleProcessor
+        {
+            std::string re_type;
+            public:
+            expandMultipleAddressesInRE(const std::string &name,
+                                        const std::string &t) : BasicRuleProcessor(name) { re_type=t; }
+            virtual bool processNext();
+        };
+
+        /**
          * Replace cluster interface object with corresponding real
          * interface
          */

@@ -458,25 +458,6 @@ bool  PolicyCompiler::ExpandGroups::processNext()
     return true;
 }
 
-
-bool  PolicyCompiler::ExpandMultipleAddressesInSRC::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    RuleElementSrc *src=rule->getSrc();    assert(src);
-    compiler->_expandAddr(rule,src);
-    tmp_queue.push_back(rule);
-    return true;
-}
-
-bool  PolicyCompiler::ExpandMultipleAddressesInDST::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    RuleElementDst *dst=rule->getDst();    assert(dst);
-    compiler->_expandAddr(rule,dst);
-    tmp_queue.push_back(rule);
-    return true;
-}
-
 bool  PolicyCompiler::ExpandMultipleAddresses::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
