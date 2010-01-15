@@ -26814,7 +26814,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id44EC18128791" host_OS="linux24" inactive="False" lastCompiled="1247364146" lastInstalled="0" lastModified="1243319947" platform="iptables" version="" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" ro="False">
+      <Firewall id="id44EC18128791" host_OS="linux24" inactive="False" lastCompiled="1247364146" lastInstalled="0" lastModified="1263593206" platform="iptables" version="" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" ro="False">
         <NAT id="id44EC18168791" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -26892,6 +26892,25 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             <PolicyRuleOptions>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id212774X97815" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="testing for bug #1086&#10;when two run-time objects are used in the rule, compiler adds blank command that blocks (permits) any to any&#10;">
+            <Src neg="False">
+              <ObjectRef ref="id44EC18128791"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id44F7056328576"/>
+              <ObjectRef ref="id4389EE9118346"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>

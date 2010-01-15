@@ -1,5 +1,13 @@
 2010-01-15  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (processMultiAddressObjectsInRE::processNext):
+	fixes #1086: incorrect processing of run time address tables.
+	SourceForge bug 2932680. Rules with two run-time AddressTable
+	objects in the same rule element (source or destination) were
+	converted to the shell script that read addresses from the address
+	table files, plus wrong iptables command that matched any to any.
+	This change removes this extra command.
+
 	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::printShellFunctions):
 	fixes #1084 "if all user turns off all interface management and
 	configuration checkboxes, the check_tools shell function is not

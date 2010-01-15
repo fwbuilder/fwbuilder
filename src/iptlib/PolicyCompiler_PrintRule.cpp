@@ -1392,8 +1392,9 @@ bool  PolicyCompiler_ipt::PrintRule::processNext()
         compiler->output << _createChain(rule->getStr("ipt_chain"));
         compiler->output << _createChain(rule->getStr("ipt_target"));
         compiler->output 
-            << dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator)->
-            printRunTimeWrappers(rule, PolicyRuleToString(rule), ipt_comp->ipv6);
+            << dynamic_cast<OSConfigurator_linux24*>(
+                compiler->osconfigurator)->printRunTimeWrappers(
+                    rule, PolicyRuleToString(rule), ipt_comp->ipv6);
     }
     return true;
 }

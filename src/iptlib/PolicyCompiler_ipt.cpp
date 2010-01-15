@@ -3825,7 +3825,7 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
     OSConfigurator_linux24 *osconf = 
         dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator);
 
-    RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
+    RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
 
     if (re->size()==1) 
     {
@@ -3845,9 +3845,9 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
                 // this is DNSName converted to its run-time counterpart,
                 // we do not need to touch it at all
             }
-            tmp_queue.push_back(rule);
-            return true;
         }
+        tmp_queue.push_back(rule);
+        return true;
     }
 
     list<MultiAddressRunTime*> cl;
@@ -3860,29 +3860,36 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
             cl.push_back(atrt);
     }
 
-    if (!cl.empty())
+    if (cl.empty())
     {
-        RuleElement *nre;
-        RuleElement *ore=RuleElement::cast( rule->getFirstByType(re_type) );
-        PolicyRule *r;
-        for (list<MultiAddressRunTime*>::iterator i=cl.begin(); i!=cl.end(); i++) 
-        {
-            MultiAddressRunTime *atrt = *i;
-            r= compiler->dbcopy->createPolicyRule();
-            compiler->temp_ruleset->add(r);
-            r->duplicate(rule);
-            nre=RuleElement::cast( r->getFirstByType(re_type) );
-            nre->clearChildren();
-            nre->addRef( atrt );
-            r->setStr("address_table_file",atrt->getSourceName());
-            osconf->registerMultiAddressObject(atrt);
-            tmp_queue.push_back(r);
-
-            ore->removeRef( *i );
-        }
+        tmp_queue.push_back(rule);
+        return true;
     }
 
-    tmp_queue.push_back(rule);
+    RuleElement *nre;
+    RuleElement *ore = re;
+    PolicyRule *r;
+    for (list<MultiAddressRunTime*>::iterator i=cl.begin(); i!=cl.end(); i++) 
+    {
+        MultiAddressRunTime *atrt = *i;
+        r= compiler->dbcopy->createPolicyRule();
+        compiler->temp_ruleset->add(r);
+        r->duplicate(rule);
+        nre=RuleElement::cast( r->getFirstByType(re_type) );
+        nre->clearChildren();
+        nre->addRef( atrt );
+        r->setStr("address_table_file",atrt->getSourceName());
+        osconf->registerMultiAddressObject(atrt);
+        tmp_queue.push_back(r);
+
+        ore->removeRef( *i );
+    }
+
+    // if rule element contained only run-time address tables, it should
+    // be empty by now. There is no need to continue with this rule then.
+    if ( ! re->isAny())
+        tmp_queue.push_back(rule);
+
     return true;
 }
 
