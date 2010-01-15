@@ -1,5 +1,11 @@
 2010-01-14  vadim  <vadim@vk.crocodile.org>
 
+	* FirewallInstaller.cpp: fixed #1083: "installer uses incorrect
+	path when GUI runs on windows" (Sourceforge bug
+	#2932446). Built-in installer used incorrect path on the firewall
+	to store copy of the .fwb data file. This happened only when
+	the GUI ran on Windows.
+
 	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): Added
 	support for pf state tracking options "no-sync" and "pflow". Set
 	version to "4.5" or "4.6" in the firewall object to be able to use
