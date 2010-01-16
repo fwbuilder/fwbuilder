@@ -183,8 +183,12 @@ void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
     {
         // in test mode we use dummy address but still throw exception.
         // Compiler should print error message but continue.
+        exmess << "File not found for Address Table: "
+               << getName()
+               << " (" << getStr("filename") << ")";
         if (test_mode)
         {
+            exmess << " Using dummy address in test mode";
             if (ipv6)
             {
                 NetworkIPv6 *net = getRoot()->createNetworkIPv6();
@@ -203,12 +207,9 @@ void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
                 addRef(new_addr);
                 cntr++;
             }
+            new_addr->setBool(".rule_error", true);
+            new_addr->setStr(".error_msg", exmess.str());
         }
-        exmess << "File not found for Address Table: "
-               << getName()
-               << " (" << getStr("filename") << ")";
-        if (test_mode)
-            exmess << " Using dummy address in test mode";
         throw FWException(exmess.str());
     }
 }

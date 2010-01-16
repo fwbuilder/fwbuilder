@@ -136,20 +136,6 @@ void DNSName::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
     {
         // in test mode we use dummy address but still throw exception.
         // Compiler should print error message but continue.
-        if (test_mode)
-        {
-            Address *a = NULL;
-            if (ipv6)
-            {
-                a = getRoot()->createIPv6();
-                a->setAddress(InetAddr(af_type, "2001:db8::1"));
-            } else
-            {
-                a = getRoot()->createIPv4();
-                a->setAddress("192.0.2.1");
-            }
-            addRef(a);
-        }
 
         ostringstream err;
         string af_type_name = (ipv6)?string("AF_INET6"):string("AF_INET");
@@ -162,8 +148,25 @@ void DNSName::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
             << "(" << af_type_name << ")"
             << ": "
             << ex.toString();
+
         if (test_mode)
+        {
             err << " Using dummy address in test mode";
+            Address *a = NULL;
+            if (ipv6)
+            {
+                a = getRoot()->createIPv6();
+                a->setAddress(InetAddr(af_type, "2001:db8::1"));
+            } else
+            {
+                a = getRoot()->createIPv4();
+                a->setAddress("192.0.2.1");
+            }
+            addRef(a);
+            a->setBool(".rule_error", true);
+            a->setStr(".error_msg", err.str());
+        }
+
         throw(FWException(err.str()));
     }
 }

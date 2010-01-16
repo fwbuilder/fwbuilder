@@ -1,3 +1,19 @@
+2010-01-15  vadim  <vadim@vk.crocodile.org>
+
+	* AddressTable::loadFromSource , DNSName::loadFromSource : When
+	address table file needed to resolve AddressTable object can not
+	be found, the object uses dummy test address but also sets an
+	attribute ".error_msg" in this object to indicate that there was
+	an error and the object is not real.
+
+	* Compiler.cpp (checkForObjectsWithErrors::processNext): Rule
+	processor Compiler::checkForObjectsWithErrors was added to check
+	for the ".error_msg" attributes and translate them into error
+	messages that can be associated with rules. This way, Preprocessor
+	can convert MultiAddress objects without having to scan all rules
+	which makes it faster and we still can associate errors that
+	happen during this process with rules.
+
 2010-01-09  vadim  <vadim@vk.crocodile.org>
 
 	* DNSName.cpp (DNSName::loadFromSource): method loadFromSource()

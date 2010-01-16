@@ -62,13 +62,7 @@ void Preprocessor::convertObject(FWObject *obj)
     MultiAddress *adt = MultiAddress::cast(obj);
     if (adt!=NULL && adt->isCompileTime())
     {
-        try
-        {
-            adt->loadFromSource(ipv6, inTestMode());
-        } catch (FWException &ex)
-        {
-            abort(ex.toString());
-        }
+        adt->loadFromSource(ipv6, inTestMode());
     }
 }
 
@@ -115,9 +109,10 @@ void Preprocessor::compile()
     // Note: fw belongs to the original object tree rather than dbcopy
     infinite_recursion_breaker++;
     set<FWObject*> resset;
+    FWObject *rule_copy = NULL;
     if (single_rule_mode)
     {
-        FWObject *rule_copy = dbcopy->findInIndex(single_rule_compile_rule->getId());
+        rule_copy = dbcopy->findInIndex(single_rule_compile_rule->getId());
         findMultiAddressObjectsUsedInRules(rule_copy, &resset);
     } else
     {
@@ -126,7 +121,13 @@ void Preprocessor::compile()
     }
     for (set<FWObject*>::iterator it=resset.begin(); it!=resset.end(); ++it)
     {
-        convertObject(*it);
+        try
+        {
+            convertObject(*it);
+        } catch (FWException &ex)
+        {
+            abort(ex.toString());
+        }
     }
 /* resolving MultiAddress objects */
 //    convertObjectsRecursively(dbcopy);

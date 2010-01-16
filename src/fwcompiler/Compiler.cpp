@@ -1058,6 +1058,35 @@ bool Compiler::expandMultipleAddressesInRE::processNext()
 }
 
 
+bool Compiler::checkForObjectsWithErrors::processNext()
+{
+    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    
+    for (FWObject::iterator it1=rule->begin(); it1!=rule->end(); it1++)
+    {
+        RuleElement *re = RuleElement::cast(*it1);
+        if (re == NULL || re->isAny()) continue;
+        for (FWObject::iterator it2=re->begin(); it2!=re->end(); it2++)
+        {
+            FWObject *obj = FWReference::getObject(*it2);
+            if (obj->getBool(".rule_error"))
+            {
+                // it is ok to call abort this late in rule
+                // processing.  If the error was fatal, the code that
+                // encounter it should have called abort() then. If it
+                // continued, then we are in test mode and this call to
+                // abort will continue too. In the worst case, we end up
+                // with duplicate error messages in the test mode.
+                compiler->abort(rule, obj->getStr(".error_msg"));
+            }
+        }
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+
 bool Compiler::replaceFailoverInterfaceInRE::processNext()
 {
     Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;

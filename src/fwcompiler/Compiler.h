@@ -466,6 +466,24 @@ protected:
         };
 
         /**
+         * if MultiAddress object failed to convert itself to a group
+         * of addresses and compiler runs in a test mode, we use dummy
+         * test addresses instead. The error is detected by
+         * preprocessor and at the moment not associated with any rule
+         * (because preprocessor works with MultiAddress objects and
+         * does not check which rule they are used in to improve
+         * performance).  This processor adds error message to the
+         * rule using MultiAddress obejct like this.
+         */
+        class checkForObjectsWithErrors : public BasicRuleProcessor
+        {
+            public:
+            checkForObjectsWithErrors(const std::string &name)
+                : BasicRuleProcessor(name) {}
+            virtual bool processNext();
+        };
+
+        /**
          * Replace cluster interface object with corresponding real
          * interface
          */
