@@ -725,11 +725,12 @@ FWObject* ObjectManipulator::newInterfaceAddress(QUndoCommand* macro)
         ) return NULL;
         QString iname = getStandardName(currentObj, IPv4::TYPENAME, "ip");
         iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
-        return createObject(currentObj, IPv4::TYPENAME, iname);
+        return createObject(currentObj, IPv4::TYPENAME, iname, NULL, macro);
     }
     // if current object is not interface, create address in the standard folder
     return createObject(IPv4::TYPENAME,
-                        FWBTree().getTranslatableObjectTypeName(IPv4::TYPENAME), NULL, macro);
+                        FWBTree().getTranslatableObjectTypeName(IPv4::TYPENAME),
+                        NULL, macro);
 }
 
 FWObject* ObjectManipulator::newInterfaceAddressIPv6(QUndoCommand* macro)
@@ -749,7 +750,8 @@ FWObject* ObjectManipulator::newInterfaceAddressIPv6(QUndoCommand* macro)
     }
     // if current object is not interface, create address in the standard folder
     return createObject(IPv6::TYPENAME,
-                        FWBTree().getTranslatableObjectTypeName(IPv6::TYPENAME), NULL, macro);
+                        FWBTree().getTranslatableObjectTypeName(IPv6::TYPENAME),
+                        NULL, macro);
 }
 
 FWObject* ObjectManipulator::newPhysicalAddress(QUndoCommand* macro)
@@ -765,7 +767,8 @@ FWObject* ObjectManipulator::newPhysicalAddress(QUndoCommand* macro)
             QString iname=QString("%1:%2:mac")
                 .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
                 .arg(QString::fromUtf8(currentObj->getName().c_str()));
-            return createObject(currentObj, physAddress::TYPENAME, iname, NULL, macro);
+            return createObject(currentObj, physAddress::TYPENAME, iname,
+                                NULL, macro);
         }
     }
     return NULL;

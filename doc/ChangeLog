@@ -1,5 +1,8 @@
 2010-01-16  vadim  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator_create_new.cpp (ObjectManipulator::newInterfaceAddress):
+	fixes #1090: extra undo command added to the stack on "New address"
+
 	* FWWindow.cpp (FWWindow::event): If user opens two data files
 	with the same names but located in different directories, titles
 	of the subwindows, the list in the main Windows menu and entries
