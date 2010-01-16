@@ -701,7 +701,7 @@ void ProjectPanel::compileThis()
     if (f)
     {
         fw.insert(f);
-        mainW->compile(fw, true);
+        mainW->compile(fw);
     }
 }
 
@@ -713,7 +713,7 @@ void ProjectPanel::installThis()
     if (f)
     {
         fw.insert(f);
-        mainW->install(fw, true);
+        mainW->install(fw);
     }
 }
 

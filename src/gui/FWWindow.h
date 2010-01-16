@@ -192,9 +192,9 @@ public slots:
     virtual void helpAbout();
     virtual void debug();
      
-    virtual void compile(std::set<libfwbuilder::Firewall * > vf, bool showList = false);
+    virtual void compile(std::set<libfwbuilder::Firewall * > vf);
     virtual void compile();
-    virtual void install(std::set<libfwbuilder::Firewall * > vf, bool showList = false);
+    virtual void install(std::set<libfwbuilder::Firewall * > vf);
     virtual void install();
     virtual void transferfw(std::set<libfwbuilder::Firewall * > vf);
     virtual void transferfw();

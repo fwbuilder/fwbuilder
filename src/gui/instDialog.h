@@ -135,7 +135,7 @@ class instDialog : public QDialog, public FakeWizard
     bool customScriptFlag;
     bool showSelectedFlag;
     bool finished;
-    bool fromCompileButton;
+    bool onlySelected;
 
     QTextBrowser *currentLog;
     QTextCharFormat normal_format;
@@ -179,7 +179,7 @@ class instDialog : public QDialog, public FakeWizard
  
  public:
    
-    instDialog(QWidget *p, bool install, bool showList, std::set<libfwbuilder::Firewall*> fws);
+    instDialog(QWidget *p, bool install, bool onlySelected, std::set<libfwbuilder::Firewall*> fws);
     virtual ~instDialog();
     
     void summary();

@@ -84,14 +84,14 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-instDialog::instDialog(QWidget *p, bool install, bool showList, set<Firewall*> fws) : QDialog(p)
+instDialog::instDialog(QWidget *p, bool install, bool showOnlySelected, set<Firewall*> fws) : QDialog(p)
 {
     init(p);
 
     reqFirewalls = fws;
-    fromCompileButton = showList;
+    onlySelected = showOnlySelected;
 
-    if (!showList)
+    if (!onlySelected)
         findFirewalls();
     else
     {
@@ -134,10 +134,6 @@ instDialog::instDialog(QWidget *p, bool install, bool showList, set<Firewall*> f
         m_dialog->selectTable->hideColumn(INSTALL_CHECKBOX_COLUMN);
     }
     showPage(0);
-    
-    if (!showList)
-        if (fws.size() == 1)
-            showPage(1);
 
     m_dialog->detailMCframe->show();
 }
