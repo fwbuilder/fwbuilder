@@ -2645,7 +2645,25 @@ void RuleSetView::compileCurrentRule()
 
 void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)
 {
-    compileRuleAction->setEnabled(getSelectedRows().size()==1);
+    RuleSetModel* md = ((RuleSetModel*)model());
+    QModelIndexList selectedIndexes = getSelectedRows();
+
+    bool compileRuleActionEnabled = false;
+
+    if (selectedIndexes.size()==1)
+    {
+        QModelIndex index = selectedIndexes.at(0);
+        if (index.isValid())
+        {
+            RuleNode* node = md->nodeFromIndex(index);
+            if (node!=0 && node->type == RuleNode::Rule && node->rule != 0)
+            {
+                compileRuleActionEnabled = !node->rule->isDisabled();
+            }
+        }
+    }
+
+    compileRuleAction->setEnabled(compileRuleActionEnabled);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
