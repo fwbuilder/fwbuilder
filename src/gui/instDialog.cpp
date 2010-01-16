@@ -89,6 +89,7 @@ instDialog::instDialog(QWidget *p, bool install, bool showList, set<Firewall*> f
     init(p);
 
     reqFirewalls = fws;
+    fromCompileButton = showList;
 
     findFirewalls();
     if (firewalls.size()==0)

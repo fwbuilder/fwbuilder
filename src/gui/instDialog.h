@@ -135,6 +135,7 @@ class instDialog : public QDialog, public FakeWizard
     bool customScriptFlag;
     bool showSelectedFlag;
     bool finished;
+    bool fromCompileButton;
 
     QTextBrowser *currentLog;
     QTextCharFormat normal_format;
