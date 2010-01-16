@@ -455,7 +455,6 @@ contains( HAVE_ANTLR_RUNTIME, 1 ) {
         $$ANTLR_LIBS
     DEFINES += $$ANTLR_DEFINES
 }
-LIBS += $$LIBS_FWCOMPILER
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
 LIBS += $$FWTRANSFER_LIB
@@ -498,12 +497,16 @@ win32:PRE_TARGETDEPS = ../common/release/common.lib \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a
 macx:LIBS += -framework Carbon
+
+LIBS += $$LIBS_FWCOMPILER
+
 RESOURCES += MainRes.qrc
-TRANSLATIONS = fwbuilder_ru.ts \
-    fwbuilder_ja.ts
+
+TRANSLATIONS = fwbuilder_ru.ts fwbuilder_ja.ts
+
 ja.path = $$PKGLOCALEDIR
 ja.files = fwbuilder_ja.qm
 ru.path = $$PKGLOCALEDIR
 ru.files = fwbuilder_ru.qm
-INSTALLS += ja \
-    ru
+
+INSTALLS += ja ru

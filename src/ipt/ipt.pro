@@ -12,8 +12,6 @@ HEADERS	 = ../../config.h
 
 win32: CONFIG += console
 
-LIBS += $$LIBS_FWCOMPILER
-
 INCLUDEPATH += ../common ../iptlib ../compiler_lib/
 DEPENDPATH   = ../common ../iptlib ../compiler_lib
 
@@ -22,6 +20,8 @@ win32:LIBS  += ../common/release/common.lib ../iptlib/release/iptlib.lib ../comp
 
 win32:PRE_TARGETDEPS  = ../common/release/common.lib ../iptlib/release/iptlib.lib ../compiler_lib/release/compilerdriver.lib
 !win32:PRE_TARGETDEPS = ../common/libcommon.a ../iptlib/libiptlib.a ../compiler_lib/libcompilerdriver.a
+
+LIBS += $$LIBS_FWCOMPILER
 
 TARGET = fwb_ipt
 
