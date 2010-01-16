@@ -54,19 +54,19 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     for ( ; adriter != adriter.end(); ++adriter )
     {
         Address *addr = Address::cast(*adriter);
-        int row = addNewAddress();
+        int row = addNewAddress(addr->getAddressPtr()->toString().c_str(),
+                                addr->getNetmaskPtr()->toString().c_str(),
+                                addr->getAddressPtr()->isV4());
         fwaddrs[row] = addr;
-        rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
-        rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
     }
     FWObjectTypedChildIterator adriter2 = iface->findByType(IPv6::TYPENAME);
     for ( ; adriter2 != adriter2.end(); ++adriter2 )
     {
         Address *addr = Address::cast(*adriter2);
-        int row = addNewAddress();
+        int row = addNewAddress(addr->getAddressPtr()->toString().c_str(),
+                                addr->getNetmaskPtr()->toString().c_str(),
+                                addr->getAddressPtr()->isV4());
         fwaddrs[row] = addr;
-        rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
-        rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
     }
 }
 
@@ -83,42 +83,6 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, ClusterInterfaceDa
     this->m_ui->name->setText(data.name);
     this->m_ui->label->setText(data.label);
     this->m_ui->comment->setText(data.comment);
-
-    /*
-    set<AddressInfo> addrs;
-    for ( int i =0; i < data.interfaces.count(); i++ )
-    {
-        interfacep *intr = data.interfaces.at(i).second;
-        FWObjectTypedChildIterator adriter = intr->findByType(IPv4::TYPENAME);
-        for ( ; adriter != adriter.end(); ++adriter )
-        {
-            Address *addr = Address::cast(*adriter);
-            AddressInfo newdata;
-            newdata.address = addr->getAddressPtr()->toString().c_str();
-            newdata.netmask = addr->getNetmaskPtr()->toString().c_str();
-            newdata.ipv4 = true;
-            addrs.insert(newdata);
-        }
-        FWObjectTypedChildIterator adriter2 = intr->findByType(IPv6::TYPENAME);
-        for ( ; adriter2 != adriter2.end(); ++adriter2 )
-        {
-            Address *addr = Address::cast(*adriter2);
-            AddressInfo newdata;
-            newdata.address = addr->getAddressPtr()->toString().c_str();
-            newdata.netmask = addr->getNetmaskPtr()->toString().c_str();
-            newdata.ipv4 = false;
-            addrs.insert(newdata);
-        }
-    }
-    foreach(AddressInfo addr, addrs)
-    {
-        int row = addNewAddress();
-        fwaddrs[row] = NULL;
-        rows[row].first->setText(addr.address);
-        rows[row].second->setText(addr.netmask);
-        types[row]->setCurrentIndex(addr.ipv4==true?0:1);
-    }
-    */
 
     QString host_os = data.os;
     list<QStringPair> types;
@@ -156,10 +120,9 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
     {
         foreach( InetAddrMask* addr, data->addr_mask )
         {
-            int row = addNewAddress();
-            types[row]->setCurrentIndex(addr->getAddressPtr()->isV6());
-            rows[row].first->setText(addr->getAddressPtr()->toString().c_str());
-            rows[row].second->setText(addr->getNetmaskPtr()->toString().c_str());
+            int row = addNewAddress(addr->getAddressPtr()->toString().c_str(),
+                                    addr->getNetmaskPtr()->toString().c_str(),
+                                    !addr->getAddressPtr()->isV6());
         }
     }
 }
@@ -224,12 +187,13 @@ int InterfaceEditorWidget::addNewAddress()
 }
 
 
-void InterfaceEditorWidget::addNewAddress(QString address, QString netmask, bool ipv4)
+int InterfaceEditorWidget::addNewAddress(QString address, QString netmask, bool ipv4)
 {
     int row = addNewAddress();
     types[row]->setCurrentIndex(!ipv4);
     rows[row].first->setText(address);
     rows[row].second->setText(netmask);
+    return row;
 }
 
 void InterfaceEditorWidget::changeEvent(QEvent *e)
@@ -470,7 +434,6 @@ void InterfaceEditorWidget::protocolChanged(QString name)
     }
 
 }
-
 
 void InterfaceEditorWidget::setExplanation(const QString& text)
 {

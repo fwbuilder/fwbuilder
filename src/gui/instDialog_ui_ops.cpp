@@ -102,7 +102,8 @@ void instDialog::disableStopButton()
 bool instDialog::checkIfNeedToCompile(Firewall *fw)
 {
     return (fw->needsCompile() && reqFirewalls.empty() && !fw->getInactive()) ||
-           (!fromCompileButton && !reqFirewalls.empty() && reqFirewalls.find(fw)!=reqFirewalls.end());
+           (!fromCompileButton && !reqFirewalls.empty() && reqFirewalls.find(fw)!=reqFirewalls.end() ||
+           (fromCompileButton && fw->needsCompile() && !fw->getInactive()) );
 }
 
 bool instDialog::checkIfNeedToInstall(Firewall *fw)

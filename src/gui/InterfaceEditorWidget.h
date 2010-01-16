@@ -94,7 +94,7 @@ private:
 
 public slots:
     int addNewAddress();
-    void addNewAddress(QString address, QString netmask, bool ipv4);
+    int addNewAddress(QString address, QString netmask, bool ipv4 = true);
     void deleteAddress();
     void nameEdited(QString);
     void typeChanged(int);

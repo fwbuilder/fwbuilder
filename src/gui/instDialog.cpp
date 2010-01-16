@@ -91,7 +91,24 @@ instDialog::instDialog(QWidget *p, bool install, bool showList, set<Firewall*> f
     reqFirewalls = fws;
     fromCompileButton = showList;
 
-    findFirewalls();
+    if (!showList)
+        findFirewalls();
+    else
+    {
+        firewalls.clear();
+        clusters.clear();
+        foreach(Firewall* fw, fws)
+        {
+            if (Cluster::isA(fw))
+                clusters.push_back(Cluster::cast(fw));
+            else
+                firewalls.push_back(fw);
+        }
+        firewalls.sort(FWObjectNameCmpPredicate());
+        clusters.sort(FWObjectNameCmpPredicate());
+        m_dialog->saveMCLogButton->setEnabled(true);
+    }
+
     if (firewalls.size()==0)
     {
         setTitle( pageCount()-1, tr("There are no firewalls to process.") );
@@ -117,7 +134,7 @@ instDialog::instDialog(QWidget *p, bool install, bool showList, set<Firewall*> f
         m_dialog->selectTable->hideColumn(INSTALL_CHECKBOX_COLUMN);
     }
     showPage(0);
-
+    
     if (!showList)
         if (fws.size() == 1)
             showPage(1);
