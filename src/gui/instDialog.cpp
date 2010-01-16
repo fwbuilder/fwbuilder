@@ -84,11 +84,47 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-instDialog::instDialog(QWidget* p,
-                       BatchOperation op,
-                       set<Firewall*> reqFirewalls_) : QDialog(p)
+instDialog::instDialog(QWidget *p, bool install, set<Firewall*> fws) : QDialog(p)
 {
+    init(p);
 
+    reqFirewalls = fws;
+
+    findFirewalls();
+    if (firewalls.size()==0)
+    {
+        setTitle( pageCount()-1, tr("There are no firewalls to process.") );
+        for (int i=0;i<pageCount()-1;i++)
+        {
+            setAppropriate(i,false);
+        }
+        showPage(pageCount()-1);
+        return;
+    }
+    if (firewalls.size()==1) m_dialog->batchInstall->setEnabled(false);
+
+    creatingTable = false;
+
+    m_dialog->selectTable->setFocus();
+
+
+    m_dialog->selectInfoLabel->setText(tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls to compile.</font></b></p>"));
+    if (!install)
+    {
+        m_dialog->batchInstFlagFrame->hide();
+        setAppropriate(2,false);
+        m_dialog->selectTable->hideColumn(INSTALL_CHECKBOX_COLUMN);
+    }
+    showPage(0);
+
+    if (fws.size() == 1)
+        showPage(1);
+
+    m_dialog->detailMCframe->show();
+}
+
+void instDialog::init(QWidget* p)
+{
     connect(this, SIGNAL(activateRule(ProjectPanel*, QString, QString, int)),
             p, SLOT(activateRule(ProjectPanel*, QString, QString, int)));
 
@@ -174,61 +210,6 @@ instDialog::instDialog(QWidget* p,
         setFinishEnabled(page, false);
 
     lastPage=-1;
-    reqFirewalls = reqFirewalls_;
-
-    findFirewalls();
-    if (firewalls.size()==0)
-    {
-        setTitle( pageCount()-1, tr("There are no firewalls to process.") );
-        for (int i=0;i<pageCount()-1;i++)
-        {
-            setAppropriate(i,false);
-        }
-        showPage(pageCount()-1);
-        return;
-    }
-    if (firewalls.size()==1) m_dialog->batchInstall->setEnabled(false);
-    // setup wizard appropriate pages
-    operation = op;
-
-    creatingTable = false;
-
-    m_dialog->selectTable->setFocus();
-
-    showPage(0);
-
-    if (reqFirewalls_.size() == 1)
-        showPage(1);
-
-    switch(op)
-    {
-    case BATCH_COMPILE:
-    { // only compilation's requested
-        m_dialog->selectInfoLabel->setText(
-            tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls to compile.</font></b></p>"));
-        m_dialog->batchInstFlagFrame->hide();
-        setAppropriate(2,false);
-        m_dialog->selectTable->hideColumn(INSTALL_CHECKBOX_COLUMN);
-        break;
-    }
-
-    case BATCH_INSTALL:
-    { // full cycle's requested
-        break;
-    }
-
-    default :
-    {
-        setTitle( pageCount()-1, tr("Unknown operation.") );
-        for (int i=0;i<pageCount()-1;i++)
-        {
-            setAppropriate(i,false);
-        }
-        showPage(pageCount()-1);
-    }
-    }
-
-    m_dialog->detailMCframe->show();
 }
 
 instDialog::~instDialog()

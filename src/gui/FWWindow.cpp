@@ -757,7 +757,7 @@ void FWWindow::compile()
 {
     std::set<Firewall*> emp;
 
-    instd = new instDialog(this, BATCH_COMPILE, emp);
+    instd = new instDialog(this, false, emp);
     instd->show();
 
 //    id->exec();
@@ -770,7 +770,7 @@ void FWWindow::compile(set<Firewall*> vf)
         qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
 
 
-    instDialog *id = new instDialog(this, BATCH_COMPILE, vf);
+    instDialog *id = new instDialog(this, false, vf);
     instd = id;
     instd->show();
 
@@ -780,7 +780,7 @@ void FWWindow::compile(set<Firewall*> vf)
 
 void FWWindow::install(set<Firewall*> vf)
 {
-    instDialog *id = new instDialog(this, BATCH_INSTALL, vf);
+    instDialog *id = new instDialog(this, true, vf);
 
     instd = id;
     instd->show();
@@ -792,7 +792,7 @@ void FWWindow::install(set<Firewall*> vf)
 void FWWindow::install()
 {
     std::set<Firewall*> emp;
-    instd = new instDialog(this, BATCH_INSTALL, emp);
+    instd = new instDialog(this, true, emp);
     instd->show();
 
 //    id->exec();
