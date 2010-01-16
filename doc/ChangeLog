@@ -1,5 +1,15 @@
 2010-01-15  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::compile): Using rule
+	processor Compiler::checkForObjectsWithErrors to find objects with
+	errors and generate proper calls to abort(). This exposes errors
+	that happened when Preprocessor failed to resolve compile-time
+	AddressTable and DNSName objects. If compiler runs in test mode,
+	preprocessor did not abort but used dummy substitution addresses
+	and continued. Call to checkForObjectsWithErrors generates proper
+	error messages tied to rules. Using this rule processor in all
+	compilers. Fixes #1087
+
 	* PolicyCompiler_ipt.cpp (processMultiAddressObjectsInRE::processNext):
 	fixes #1086: incorrect processing of run time address tables.
 	SourceForge bug 2932680. Rules with two run-time AddressTable

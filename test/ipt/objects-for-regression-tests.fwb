@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1263422953" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1263600829" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <IPv4 id="id41D295E2" name="firewall30:ppp.200*:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
@@ -1763,6 +1763,7 @@
         <AddressTable id="id4389EE9118346" filename="block-hosts.tbl" run_time="True" name="block these" comment="this is run-time table" ro="False"/>
         <AddressTable id="id44F7056328576" filename="addr-table-1.tbl" run_time="True" name="atbl.1" comment="the name contains character that is special to shell" ro="False"/>
         <AddressTable id="id459673BE7794" filename="emtpy-table.tbl" run_time="False" name="empty table" comment="" ro="False"/>
+        <AddressTable id="id50108X1683" filename="this_table_does_not_exist.tbl" run_time="False" name="missing table" comment="" ro="False"/>
       </ObjectGroup>
       <ObjectGroup id="stdid01_1_og_dnsn_1" name="DNS Names" comment="" ro="False">
         <DNSName id="id43869E8C18346" dnsrec="www.cnn.com" dnsrectype="A" run_time="False" name="cnn (ct)" comment="" ro="False"/>
@@ -1776,6 +1777,7 @@
         <DNSName id="id44749X4903" dnsrec="6bone.net" dnsrectype="A" run_time="True" name="6bone.net (rt)" comment="there are both A and AAAA records for this name&#10;" ro="False"/>
         <DNSName id="id44910X6795" dnsrec="ny6ix.net" dnsrectype="A" run_time="False" name="ny6ix.net (ct)" comment="" ro="False"/>
         <DNSName id="id44911X6795" dnsrec="ny6ix.net" dnsrectype="A" run_time="True" name="ny6ix.net (rt)" comment="" ro="False"/>
+        <DNSName id="id50136X10982" dnsrec="does_not_resolve.local" dnsrectype="A" run_time="False" name="does not resolve" comment="" ro="False"/>
       </ObjectGroup>
       <ObjectGroup id="stdid16_1" name="Addresses" comment="" ro="False">
         <IPv4 id="id417B3641" name="net_address" comment="" ro="False" address="192.168.1.0" netmask="255.255.255.255"/>
@@ -26814,7 +26816,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id44EC18128791" host_OS="linux24" inactive="False" lastCompiled="1247364146" lastInstalled="0" lastModified="1263593206" platform="iptables" version="" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" ro="False">
+      <Firewall id="id44EC18128791" host_OS="linux24" inactive="False" lastCompiled="1247364146" lastInstalled="0" lastModified="1263600863" platform="iptables" version="" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" ro="False">
         <NAT id="id44EC18168791" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -26911,6 +26913,46 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id50115X1683" disabled="False" group="" log="True" position="5" action="Deny" direction="Both" comment="there should be warning saying the table could not be found">
+            <Src neg="False">
+              <ObjectRef ref="id44EC18128791"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id50108X1683"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id50145X10982" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id44EC18128791"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id50136X10982"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>

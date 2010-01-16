@@ -659,6 +659,10 @@ void PolicyCompiler_pix::compile()
             add( new ExpandMultipleAddressesInSrc("expand objects with multiple addresses in SRC" ));
             add( new ExpandMultipleAddressesInDst("expand objects with multiple addresses in DST" ));
             add( new ConvertToAtomic ("convert to atomic rules" ));
+
+            add( new checkForObjectsWithErrors(
+                     "check if we have objects with errors in rule elements"));
+
             add( new DetectShadowing ("Detect shadowing" ));
             add( new simplePrintProgress ( ));
 
@@ -791,6 +795,10 @@ void PolicyCompiler_pix::compile()
                  "remove redundant addresses from Src"));
         add( new removeRedundantAddressesFromDst(
                  "remove redundant addresses from Dst"));
+
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
 // add( new AvoidObjectGroup("avoid object groups for certain cases"));
         add( new CreateObjectGroupsForSrc("create object groups for Src"));
         add( new CreateObjectGroupsForDst("create object groups for Dst"));

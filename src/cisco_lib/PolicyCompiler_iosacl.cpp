@@ -215,6 +215,10 @@ void PolicyCompiler_iosacl::compile()
             add( new dropRuleWithEmptyRE(
                      "drop rules with empty rule elements"));
             add( new ConvertToAtomic("convert to atomic rules"       ) );
+
+            add( new checkForObjectsWithErrors(
+                     "check if we have objects with errors in rule elements"));
+
             add( new DetectShadowing("Detect shadowing"              ) );
             add( new simplePrintProgress() );
 
@@ -311,6 +315,9 @@ void PolicyCompiler_iosacl::compile()
         add( new simplePrintProgress());
 
         add( new createNewCompilerPass ("Creating ACLs ..."));
+
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
 
 //        add( new ClearACLs("Clear ACLs"));
 

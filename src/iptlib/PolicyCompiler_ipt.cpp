@@ -4102,6 +4102,9 @@ void PolicyCompiler_ipt::compile()
         add( new SkipActionContinueWithNoLogging(
                  "drop rules with action Continue") );
             
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
         if (my_table=="mangle" &&
             !fw->getOptionsObject()->getBool("classify_mark_terminating")
         )
@@ -4373,7 +4376,8 @@ void PolicyCompiler_ipt::compile()
     add( new convertInterfaceIdToStr("prepare interface assignments") );
     add( new optimize3("optimization 3") );
     add( new optimizeForMinusIOPlus("optimize for '-i +' / '-o +'") );
-
+    add( new checkForObjectsWithErrors(
+             "check if we have objects with errors in rule elements"));
     add( new countChainUsage("Count chain usage"));
 
     add( createPrintRuleProcessor() );

@@ -1212,6 +1212,9 @@ void NATCompiler_pf::compile()
         add( new AssignInterface( "assign rules to interfaces" ) );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
 
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
         add( new createTables("create tables"));
 //        add( new PrintTables(       "print tables"     ) );
 

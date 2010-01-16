@@ -220,6 +220,8 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
             if (policy_count)
             {
                 std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
+                if (inTestMode()) prep->setTestMode();
+                if (inEmbeddedMode()) prep->setEmbeddedMode();
                 prep->compile();
             }
 

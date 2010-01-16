@@ -247,6 +247,9 @@ void RoutingCompiler_ipt::compile()
         add(new eliminateDuplicateRules(
                 "Eliminate duplicate rules over the whole table"));
         
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
         add(new PrintRule("generate ip code"));
         add(new simplePrintProgress());
 

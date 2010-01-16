@@ -578,6 +578,10 @@ void NATCompiler_ipf::compile()
         add( new AssignInterface( "assign rules to interfaces" ) );
         add( new RedirectRules( "replace objects in TDst for 'Redirect' rules" ) );
         add( new convertInterfaceIdToStr(    "prepare interface assignments"         ) );
+
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
         add( new PrintRule("generate ipfilter code") );
         add( new simplePrintProgress() );
 

@@ -1579,6 +1579,9 @@ void NATCompiler_pix::compile()
         add( new SuppressDuplicateNONATStatics(
                  "suppress duplicate NONAT statics" ));
 
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
         add( new PrintClearCommands( "Clear ACLs" ));
 
         add( new PrintRule ("generate PIX code" ));

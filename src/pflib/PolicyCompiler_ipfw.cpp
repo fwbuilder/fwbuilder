@@ -571,6 +571,10 @@ void PolicyCompiler_ipfw::compile()
                      "expand objects with multiple addresses in DST"));
             add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
             add( new ConvertToAtomic("convert to atomic rules"));
+
+            add( new checkForObjectsWithErrors(
+                     "check if we have objects with errors in rule elements"));
+
             add( new DetectShadowing("Detect shadowing"));
             add( new simplePrintProgress());
 
@@ -647,6 +651,10 @@ void PolicyCompiler_ipfw::compile()
 
 	add( new calculateNum("calculate rule numbers "));
         add( new convertInterfaceIdToStr("prepare interface assignments"));
+
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
         add( new PrintRule("generate ipf code"));
         add( new simplePrintProgress());
 

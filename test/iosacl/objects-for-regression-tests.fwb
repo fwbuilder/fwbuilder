@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1257560726" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1263599937" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <Interface id="id19433X65694" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
       <IPv4 id="id19434X65694" name="firewall-ipv6-1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
@@ -27,7 +27,11 @@
         <IPv4 id="id4204X90642" name="internal gw" comment="" ro="False" address="10.3.14.254" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="id4511636623682" name="DNS Names" comment="" ro="False"/>
-      <ObjectGroup id="id4511636723682" name="Address Tables" comment="" ro="False"/>
+      <ObjectGroup id="id4511636723682" name="Address Tables" comment="" ro="False">
+        <AddressTable id="id6250X9455" filename="addr-table-1.tbl" run_time="False" name="addr-table-1" comment="" ro="False"/>
+        <AddressTable id="id6263X9455" filename="block-hosts.tbl" run_time="False" name="block-hosts" comment="" ro="False"/>
+        <AddressTable id="id75678X9455" filename="file_does_not_exist.tbl" run_time="False" name="missing table" comment="" ro="False"/>
+      </ObjectGroup>
       <ObjectGroup id="id4511636823682" name="Groups" comment="" ro="False">
         <ObjectGroup id="id46412C4226611" name="networks behind router" comment="" ro="False">
           <ObjectRef ref="id46412C4126611"/>
@@ -4347,6 +4351,209 @@
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id6270X9455" host_OS="ios" inactive="False" lastCompiled="1261963349" lastInstalled="0" lastModified="1263599966" platform="iosacl" version="12.1" name="testios3" comment="" ro="False">
+        <NAT id="id6531X9455" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id6288X9455" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id6698X9455" disabled="False" log="True" position="0" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6250X9455"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id6278X9455"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id6652X9455" disabled="False" log="True" position="1" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6263X9455"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id6278X9455"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id6289X9455" disabled="False" log="True" position="2" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6250X9455"/>
+              <ObjectRef ref="id6263X9455"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id6278X9455"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id77882X9455" disabled="False" group="" log="True" position="3" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id75678X9455"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id6278X9455"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id6518X9455" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id6533X9455" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id6278X9455" dedicated_failover="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <IPv4 id="id6281X9455" name="testios3:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id6283X9455" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+          <IPv4 id="id6286X9455" name="testios3:ethernet1:ip" comment="" ro="False" address="10.10.10.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="10.10.10.1">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="add_check_state_rule">true</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">False</Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="filesystem">/etc</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ios_ip_address">True</Option>
+          <Option name="ios_set_host_name">True</Option>
+          <Option name="iosacl_acl_basic">False</Option>
+          <Option name="iosacl_acl_no_clear">False</Option>
+          <Option name="iosacl_acl_substitution">True</Option>
+          <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
+          <Option name="iosacl_add_clear_statements">true</Option>
+          <Option name="iosacl_assume_fw_part_of_any">true</Option>
+          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_generate_logging_commands">False</Option>
+          <Option name="iosacl_include_comments">True</Option>
+          <Option name="iosacl_logging_buffered">False</Option>
+          <Option name="iosacl_logging_buffered_level">3</Option>
+          <Option name="iosacl_logging_console">False</Option>
+          <Option name="iosacl_logging_console_level">3</Option>
+          <Option name="iosacl_logging_timestamp">False</Option>
+          <Option name="iosacl_logging_trap_level">3</Option>
+          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_regroup_commands">False</Option>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_use_acl_remarks">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="mgmt_addr">10.10.10.0/24</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prompt1">$ </Option>
+          <Option name="prompt2"> # </Option>
+          <Option name="scpArgs"></Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>

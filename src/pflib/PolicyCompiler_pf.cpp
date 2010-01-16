@@ -1030,6 +1030,10 @@ void PolicyCompiler_pf::compile()
             add(new dropRuleWithEmptyRE(
                      "drop rules with empty rule elements"));
             add(new ConvertToAtomic("convert to atomic rules"));
+
+            add( new checkForObjectsWithErrors(
+                     "check if we have objects with errors in rule elements"));
+
             add(new DetectShadowing("Detect shadowing"));
             add(new simplePrintProgress());
 
@@ -1127,6 +1131,9 @@ void PolicyCompiler_pf::compile()
 	add(new setQuickFlag("set 'quick' flag"));
         add(new checkForZeroAddr("check for zero addresses"));
         add(new convertInterfaceIdToStr("prepare interface assignments"));
+
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
 
         add(new createTables("create tables"));
 //        add(new PrintTables("print tables"));

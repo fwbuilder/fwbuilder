@@ -410,7 +410,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             // that we do not return all_errors because all compilers
             // include errors and warnings with generated code for each
             // rule. CompilerDriver errors, however, need to be added on
-            // top.
+            // top. 
             return
                 QString::fromUtf8(
                     (getErrors("") + 

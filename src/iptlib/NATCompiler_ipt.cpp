@@ -2580,6 +2580,9 @@ void NATCompiler_ipt::compile()
                  "set target if dynamic interface in TSrc" ) );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
 
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
         add( new countChainUsage("Count chain usage"));
 
         if (fwopt->getBool("use_iptables_restore"))

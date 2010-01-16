@@ -521,6 +521,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         */
 
         std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
+        if (inTestMode()) prep->setTestMode();
+        if (inEmbeddedMode()) prep->setEmbeddedMode();
         prep->compile();
 
         std::auto_ptr<OSConfigurator> oscnf(new OSConfigurator_pix_os(objdb , fw, false));

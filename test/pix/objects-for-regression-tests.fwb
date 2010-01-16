@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1257560955" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1263600448" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -9,6 +9,7 @@
         <AddressTable id="id4389EE9018346" filename="addr-table-1.tbl" run_time="False" name="addr-table-1" comment="" ro="False"/>
         <AddressTable id="id4385C1081434" filename="/home/vadim/Projects/fwb2.1/fwb2/fwbuilder2/test/ipt/addr-table-1.tbl" run_time="False" name="addrtbl 1" comment="" ro="False"/>
         <AddressTable id="id4389EE9118346" filename="block-hosts.tbl" run_time="False" name="block these" comment="this is run-time table" ro="False"/>
+        <AddressTable id="id16958X10208" filename="file_does_not_exist.tbl" run_time="False" name="missing table" comment="" ro="False"/>
       </ObjectGroup>
       <ObjectGroup id="stdid01_1_og_dnsn_1" name="DNS Names" comment="" ro="False">
         <DNSName id="id43869E8E18346" dnsrec="buildmaster" dnsrectype="A" run_time="False" name="buildmaster (ct)" comment="an example of a local host" ro="False"/>
@@ -9951,7 +9952,7 @@ no sysopt nodnsalias outbound
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4389EDAE18346" host_OS="pix_os" inactive="False" lastCompiled="1147840988" lastInstalled="1142003872" lastModified="1147841460" platform="pix" version="6.3" name="firewall34" comment="testing AddressTable object" ro="False">
+      <Firewall id="id4389EDAE18346" host_OS="pix_os" inactive="False" lastCompiled="1147840988" lastInstalled="1142003872" lastModified="1263600473" platform="pix" version="6.3" name="firewall34" comment="testing AddressTable object" ro="False">
         <NAT id="id4389EE4818346" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4389EEB018346" disabled="True" position="0" action="Translate" comment="">
             <OSrc neg="True">
@@ -9998,7 +9999,7 @@ no sysopt nodnsalias outbound
           <RuleSetOptions/>
         </NAT>
         <Policy id="id4389EDB418346" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id4389EDB518346" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id16988X10208" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -10016,7 +10017,25 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4390C25825682" disabled="False" log="True" position="1" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4389EDB518346" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id16958X10208"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id4390C25825682" disabled="False" log="True" position="2" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -10036,7 +10055,7 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4389EDC118346" disabled="False" log="False" position="2" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4389EDC118346" disabled="False" log="False" position="3" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -10057,7 +10076,7 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43920D5025682" disabled="False" log="False" position="3" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id43920D5025682" disabled="False" log="False" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4389EE8418346"/>
             </Src>
@@ -10078,7 +10097,7 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4388CFF8674" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4388CFF8674" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4389EE9118346"/>
             </Src>
@@ -10098,7 +10117,7 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4388C36F674" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4388C36F674" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4389EE9118346"/>
               <ObjectRef ref="id4388C37D674"/>
@@ -10119,7 +10138,7 @@ no sysopt nodnsalias outbound
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4388F5A9674" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id4388F5A9674" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="True">
               <ObjectRef ref="id4389EE9118346"/>
               <ObjectRef ref="id4388C37D674"/>
@@ -10138,7 +10157,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4392312525682" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id4392312525682" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4389EE8418346"/>
             </Src>
@@ -10157,7 +10176,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4389EEA118346" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id4389EEA118346" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -10175,7 +10194,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4389EDCD18346" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id4389EDCD18346" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -10193,7 +10212,7 @@ no sysopt nodnsalias outbound
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4389EE3C18346" disabled="False" log="True" position="10" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4389EE3C18346" disabled="False" log="True" position="11" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

@@ -457,6 +457,10 @@ void PolicyCompiler_ipf::compile()
             add( new ExpandMultipleAddressesInDst(
                      "expand objects with multiple addresses in DST" ) );
             add( new ConvertToAtomic("convert to atomic rules" ) );
+
+            add( new checkForObjectsWithErrors(
+                     "check if we have objects with errors in rule elements"));
+
             add( new DetectShadowing("Detect shadowing" ) );
             add( new simplePrintProgress() );
 
@@ -551,6 +555,10 @@ void PolicyCompiler_ipf::compile()
 	add( new calculateSkip("calculate argument for skip") );
         add( new checkForKeepState("check for 'keep state'") );
         add( new convertInterfaceIdToStr("prepare interface assignments") );
+
+        add( new checkForObjectsWithErrors(
+                 "check if we have objects with errors in rule elements"));
+
         add( new PrintRule("generate ipf code") );
         add( new simplePrintProgress() );
 

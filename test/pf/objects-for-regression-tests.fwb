@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1263499279" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1263599226" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <Library id="id40E233F3" color="#FFFFFF" name="West Coast" comment="" ro="False">
@@ -1096,6 +1096,7 @@
         <AddressTable id="id4389EE9018346" filename="addr-table-1.tbl" run_time="False" name="addr-table-1" comment="" ro="False"/>
         <AddressTable id="id4389EE9118346" filename="block-hosts.tbl" run_time="True" name="block these" comment="this is run-time table" ro="False"/>
         <AddressTable id="id452762A75348" filename="" run_time="True" name="spammers" comment="empty file name; should generate code like this:&#10;&#10;table &lt;spammers&gt; persist&#10;&#10;without &quot;file 'blah'&quot;&#10;&#10;" ro="False"/>
+        <AddressTable id="id20634X8713" filename="file_does_not_exist.tbl" run_time="False" name="missing table" comment="" ro="False"/>
       </ObjectGroup>
       <ObjectGroup id="stdid16_1" name="Addresses" comment="" ro="False">
         <IPv4 id="id4388C37D674" name="sapmhost1" comment="" ro="False" address="61.150.47.112" netmask="255.255.255.255"/>
@@ -9008,12 +9009,12 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id44EC18128791" host_OS="freebsd" inactive="False" lastCompiled="1157930818" lastInstalled="0" lastModified="1193632413" platform="pf" version="" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" ro="False">
+      <Firewall id="id44EC18128791" host_OS="freebsd" inactive="False" lastCompiled="1263599379" lastInstalled="0" lastModified="1263599377" platform="pf" version="" name="firewall41" comment="testing rule shadowing with run-time objects, rules with such objects should be ignored&#10;&#10;" ro="False">
         <NAT id="id44EC18168791" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
         <Policy id="id44EC18158791" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id44EC181E8791" disabled="False" log="True" position="0" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id44EC181E8791" disabled="False" log="True" position="0" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id44EC18128791"/>
             </Src>
@@ -9031,7 +9032,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id44F7056428576" disabled="False" log="True" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id44F7056428576" disabled="False" log="True" position="1" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id44EC18128791"/>
             </Src>
@@ -9049,7 +9050,44 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id44F707E428576" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id20664X8713" disabled="False" group="" log="True" position="2" action="Accept" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id44EC18128791"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4389EE9118346"/>
+              <ObjectRef ref="id452762A75348"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id20710X8713" disabled="False" group="" log="True" position="3" action="Accept" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id44EC18128791"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id20634X8713"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id44F707E428576" disabled="False" log="True" position="4" action="Accept" direction="Outbound" comment="">
             <Src neg="False">
               <ObjectRef ref="id44EC18128791"/>
             </Src>
@@ -9087,14 +9125,28 @@
         </Management>
         <FirewallOptions>
           <Option name="accept_established">true</Option>
-          <Option name="accept_new_tcp_with_no_syn">true</Option>
-          <Option name="check_shading">true</Option>
-          <Option name="configure_interfaces">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="cmdline">-xt</Option>
+          <Option name="compiler"></Option>
+          <Option name="conf_file_name_on_firewall"></Option>
+          <Option name="configure_carp_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_pfsync_interfaces">False</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
+          <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">true</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">true</Option>
           <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -9103,14 +9155,71 @@
           <Option name="log_prefix">RULE %N -- %A </Option>
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
-          <Option name="manage_virtual_addr">true</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">False</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
           <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
           <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">False</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
           <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">0</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_state_policy"></Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
           <Option name="pf_timeout_frag">30</Option>
           <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
           <Option name="pix_add_clear_statements">true</Option>
           <Option name="pix_assume_fw_part_of_any">true</Option>
           <Option name="pix_default_logint">300</Option>
@@ -9123,9 +9232,14 @@
           <Option name="pix_security_fragguard_supported">true</Option>
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
           <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
