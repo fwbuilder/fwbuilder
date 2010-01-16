@@ -178,7 +178,7 @@ class instDialog : public QDialog, public FakeWizard
  
  public:
    
-    instDialog(QWidget *p, bool install, std::set<libfwbuilder::Firewall*> fws);
+    instDialog(QWidget *p, bool install, bool showList, std::set<libfwbuilder::Firewall*> fws);
     virtual ~instDialog();
     
     void summary();

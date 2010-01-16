@@ -84,7 +84,7 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-instDialog::instDialog(QWidget *p, bool install, set<Firewall*> fws) : QDialog(p)
+instDialog::instDialog(QWidget *p, bool install, bool showList, set<Firewall*> fws) : QDialog(p)
 {
     init(p);
 
@@ -117,8 +117,9 @@ instDialog::instDialog(QWidget *p, bool install, set<Firewall*> fws) : QDialog(p
     }
     showPage(0);
 
-    if (fws.size() == 1)
-        showPage(1);
+    if (!showList)
+        if (fws.size() == 1)
+            showPage(1);
 
     m_dialog->detailMCframe->show();
 }

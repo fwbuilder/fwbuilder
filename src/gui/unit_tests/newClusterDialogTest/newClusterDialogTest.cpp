@@ -80,7 +80,7 @@ void newClusterDialogTest::test1()
 
     for (int i=0; i<dialog->getUi()->interfaceEditor->count(); i++)
         dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(i))->setProtocolIndex(0);
-    dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(0))->addNewAddress("123.45.67.89", "24", true);
+    qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, QString("eth0_widget"))->addNewAddress("123.45.67.89", "24", true);
 
     QList<EditedInterfaceData> addresses = dialog->getUi()->interfaceEditor->getNewData();
     foreach( EditedInterfaceData iface, addresses)

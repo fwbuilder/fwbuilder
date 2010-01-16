@@ -105,6 +105,7 @@ ClusterInterfaceWidget* ClusterInterfacesSelectorWidget::addNewInterface()
 void ClusterInterfacesSelectorWidget::addInterface(const QString& name)
 {
     ClusterInterfaceWidget* widget = addNewInterface();
+    widget->setObjectName(name+"_widget");
     if (!widget->setCurrentInterface(name))
     {
         this->removeTab(this->indexOf(widget));

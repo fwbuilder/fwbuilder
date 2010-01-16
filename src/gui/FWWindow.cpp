@@ -757,20 +757,20 @@ void FWWindow::compile()
 {
     std::set<Firewall*> emp;
 
-    instd = new instDialog(this, false, emp);
+    instd = new instDialog(this, false, true, emp);
     instd->show();
 
 //    id->exec();
 //    delete id;
 }
 
-void FWWindow::compile(set<Firewall*> vf)
+void FWWindow::compile(set<Firewall*> vf, bool showList)
 {
     if (fwbdebug)
         qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
 
 
-    instDialog *id = new instDialog(this, false, vf);
+    instDialog *id = new instDialog(this, false, showList, vf);
     instd = id;
     instd->show();
 
@@ -778,9 +778,9 @@ void FWWindow::compile(set<Firewall*> vf)
 //    delete id;
 }
 
-void FWWindow::install(set<Firewall*> vf)
+void FWWindow::install(set<Firewall*> vf, bool showList)
 {
-    instDialog *id = new instDialog(this, true, vf);
+    instDialog *id = new instDialog(this, true, showList, vf);
 
     instd = id;
     instd->show();
@@ -792,7 +792,7 @@ void FWWindow::install(set<Firewall*> vf)
 void FWWindow::install()
 {
     std::set<Firewall*> emp;
-    instd = new instDialog(this, true, emp);
+    instd = new instDialog(this, true, true, emp);
     instd->show();
 
 //    id->exec();
