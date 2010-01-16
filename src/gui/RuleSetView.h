@@ -192,6 +192,7 @@ public slots:
     void updateColumnSizeForIndex(QModelIndex);
 
     void compileCurrentRule();
+    void updateSelectionSensitiveActions(QItemSelection,QItemSelection);
 
 protected:
 

@@ -2420,6 +2420,9 @@ void RuleSetView::setModel(QAbstractItemModel *model)
              this, SLOT (updateAllColumnsSize()));
 
     QTreeView::setModel(model);
+
+    connect (selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+             this, SLOT(updateSelectionSensitiveActions(QItemSelection,QItemSelection)));
 }
 
 void RuleSetView::repaintSelection()
@@ -2638,6 +2641,11 @@ void RuleSetView::compileCurrentRule()
     //     return;
 
     mw->singleRuleCompile(node->rule);
+}
+
+void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)
+{
+    compileRuleAction->setEnabled(getSelectedRows().size()==1);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
