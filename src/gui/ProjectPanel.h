@@ -218,7 +218,7 @@ public:
                         const std::map<int,
                         libfwbuilder::FWObject *> &objByIds);
 
-    QString getPageTitle();
+    QString getPageTitle(bool file_path=false);
 
     void setActive();
     
@@ -322,7 +322,6 @@ public:
     
     void setSafeMode(bool f) { safeMode=f; }
     void setupAutoSave();
-    QString getCurrentFileName();
     RCS * getRCS();
     QString printHeader();
 

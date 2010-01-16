@@ -312,8 +312,7 @@ void FWWindow::prepareFileOpenRecentMenu()
         m_mainWindow->menuOpen_Recent->addAction(recentFileActs[i]);
     }
     openRecentSeparatorAct = m_mainWindow->menuOpen_Recent->addSeparator();
-    m_mainWindow->menuOpen_Recent->addAction(
-        m_mainWindow->actionClearRecentFiles);
+    m_mainWindow->menuOpen_Recent->addAction(m_mainWindow->actionClearRecentFiles);
     updateRecentFileActions();
 }
 
@@ -348,6 +347,7 @@ void FWWindow::updateRecentFileActions()
         recentFileActs[i]->setData(files[i]);
         recentFileActs[i]->setVisible(true);
     }
+
     for (int j = numRecentFiles; j < MAXRECENTFILES; ++j)
         recentFileActs[j]->setVisible(false);
 
@@ -374,7 +374,18 @@ void FWWindow::openRecentFile()
 {
     QAction *action = qobject_cast<QAction *>(sender());
     if (action)
-        loadFile(action->data().toString(), false);
+    {
+        QString file_path = action->data().toString();
+        if (fwbdebug) qDebug() << "Open recently opened file " << file_path;
+        QMdiSubWindow* sw = alreadyOpened(file_path);
+        if (sw != NULL)
+        {
+            // activate window with this file
+            m_mainWindow->m_space->setActiveSubWindow(sw);
+            return;
+        }
+        loadFile(file_path, false);
+    }
 }
 
 void FWWindow::registerAutoOpenDocFile(const QString &filename,
@@ -578,26 +589,59 @@ void FWWindow::fileOpen()
     if (fwbdebug) qDebug("Choosing directory for file open 3: %s",
                          dir.toStdString().c_str());
 
-    QString fileName = QFileDialog::getOpenFileName(
+    QString file_name = QFileDialog::getOpenFileName(
         this,
         tr("Open File"),
         dir,
         "FWB files (*.fwb *.fwl *.xml);;All Files (*)");
 
-    if (fileName.isEmpty())
+    if (file_name.isEmpty())
     {
         m_mainWindow->m_space->setActiveSubWindow(last_active_window);
         return ;
     }
 
-    if (loadFile(fileName, false))
+    QFileInfo fi(file_name);
+    QString file_path = fi.canonicalFilePath();
+    QMdiSubWindow* sw = alreadyOpened(file_path);
+    if (sw != NULL)
     {
-        updateOpenRecentMenu(fileName);
+        // activate window with this file
+        m_mainWindow->m_space->setActiveSubWindow(sw);
+        return;
+    }
+
+    if (loadFile(file_path, false))
+    {
+        updateOpenRecentMenu(file_name);
         // reset actions, including Save() which should now
         // be inactive
         prepareFileMenu();
     } else
         m_mainWindow->m_space->setActiveSubWindow(last_active_window);
+}
+
+QMdiSubWindow* FWWindow::alreadyOpened(const QString &file_name)
+{
+    QFileInfo fi(file_name);
+    QString file_path = fi.canonicalFilePath();
+    QMap<QString, QMdiSubWindow*> opened_files;
+    QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
+    for (int i = 0 ; i < subWindowList.size(); i++)
+    {
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
+        if (pp!=NULL)
+        {
+            opened_files[pp->getFileName()] = subWindowList[i];
+            if (fwbdebug) qDebug() << "Opened file  " << pp->getFileName();
+        }
+    }
+
+    if (opened_files.contains(file_path))
+    {
+        return opened_files[file_path];
+    }
+    return NULL;
 }
 
 bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
@@ -991,6 +1035,25 @@ void FWWindow::prepareWindowsMenu()
             connect(act, SIGNAL(triggered()), this, SLOT(selectActiveSubWindow()));
         }
     }
+}
+
+/*
+ * returns list of file names (full canonical path) of the data files
+ * currently opened in the program
+ */
+QStringList FWWindow::getListOfOpenedFiles()
+{
+    QStringList res;
+    QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
+    for (int i = 0 ; i < subWindowList.size(); i++)
+    {
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
+        if (pp!=NULL)
+        {
+            res.push_back(pp->getFileName()); // full path
+        }
+    }
+    return res;
 }
 
 void FWWindow::activatePreviousSubWindow()

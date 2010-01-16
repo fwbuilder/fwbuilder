@@ -256,7 +256,9 @@ public slots:
     void save();
     bool checkin(bool unlock);
     int  findFirewallInList(libfwbuilder::FWObject *f);
-
+    QStringList getListOfOpenedFiles();
+    QMdiSubWindow* alreadyOpened(const QString &file_path);
+    
     bool editingLibrary();
 
     QString chooseNewFileName(const QString &fname, const QString &title);

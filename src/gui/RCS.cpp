@@ -42,6 +42,7 @@
 #include <qapplication.h>
 #include <qeventloop.h>
 #include <qtextcodec.h>
+#include <QtDebug>
 
 #include <stdlib.h>
 
@@ -272,8 +273,8 @@ RCS::RCS(const QString &file)
         co_file_name      = CO_FILE_NAME       ;
 #endif
     }
-
-    filename      = file;
+    QFileInfo fi(file);
+    filename      = fi.canonicalFilePath();
     checked_out   = false;
     locked        = false;
     inrcs         = false;
@@ -425,8 +426,10 @@ void RCS::readFromStderr()
 
 void RCS::setFileName(const QString &fn)
 {
-    filename=fn;
-    if (fwbdebug)  qDebug("RCS::setFileName fn = %s",fn.toAscii().constData());
+    QFileInfo fi(fn);
+    filename = fi.canonicalFilePath();
+    if (fwbdebug)
+        qDebug() << "RCS::setFileName fn =" << fn << "filename =" << filename;
 }
 
 /*********************************************************************

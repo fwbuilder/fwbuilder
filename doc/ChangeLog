@@ -1,3 +1,12 @@
+2010-01-16  vadim  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::fileOpen, FWWindow::alreadyOpened): The
+	GUI should not let the user open the same data file twice. If user
+	tries to do this, even using different (e.g. relative) path, the
+	program will instead activate project window that already holds
+	this file. Still can not open the same data file in two
+	subwindows. See #396
+
 2010-01-15  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::compile): Using rule

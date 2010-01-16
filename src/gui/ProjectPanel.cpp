@@ -165,12 +165,18 @@ ProjectPanel::~ProjectPanel()
     delete m_panel;
 }
 
-QString ProjectPanel::getPageTitle()
+QString ProjectPanel::getPageTitle(bool file_path)
 {
     QString default_caption = tr("Untitled");
     if (rcs)
     {
-        QString caption = rcs->getFileName().section("/",-1,-1);
+        QString caption;
+        if (file_path) caption = rcs->getFileName(); // full path
+        else
+        {
+            QFileInfo fi(rcs->getFileName());
+            caption = fi.fileName();
+        }
         if (rcs->isInRCS()) caption= caption + ", rev " + rcs->getSelectedRev();
         if (rcs->isRO()) caption = caption + " " + tr("(read-only)");
         if (caption.isEmpty()) return default_caption;
@@ -179,7 +185,7 @@ QString ProjectPanel::getPageTitle()
     else return default_caption;
 }
 
-RuleElement* ProjectPanel::getRE(Rule* r, int col )
+RuleElement* ProjectPanel::getRE(Rule* r, int col)
 {
     string ret;
     switch (col)
@@ -681,13 +687,6 @@ void ProjectPanel::createRCS(const QString &filename)
     systemFile = true;
 }
 
-
-QString ProjectPanel::getCurrentFileName()
-{
-    if (rcs!=NULL)  return rcs->getFileName();
-    return "";
-}
-
 RCS * ProjectPanel::getRCS()
 {
     return rcs;
@@ -817,13 +816,8 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
 
 QString ProjectPanel::getFileName()
 {
-    if (rcs!=NULL)
-    {
-        QString FileName = rcs->getFileName();
-        return FileName;
-    }
-    else
-        return "";
+    if (rcs!=NULL) return rcs->getFileName();
+    else  return "";
 }
 
 void ProjectPanel::splitterMoved(int , int)

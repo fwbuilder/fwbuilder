@@ -378,7 +378,7 @@ void FWWindow::setupAutoSave()
 
 QString FWWindow::getCurrentFileName()
 {
-    if (activeProject()) return activeProject()->getCurrentFileName();
+    if (activeProject()) return activeProject()->getFileName();
     return "";
 }
 
