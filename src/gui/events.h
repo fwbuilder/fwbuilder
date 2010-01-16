@@ -64,7 +64,8 @@ enum EVENT_CODES {
     OPEN_OPT_OBJECT_IN_EDITOR_EVENT ,
     CLOSE_OBJECT_EVENT ,
     OBJECT_NAME_CHANGED_EVENT,
-    OPEN_LIBRARY_FOR_OBJECT_EVENT
+    OPEN_LIBRARY_FOR_OBJECT_EVENT,
+    UPDATE_SUBWINDOW_TITLES_EVENT
 };
 
 
@@ -344,6 +345,18 @@ public:
     {}
 };
 
+/*
+ * This event is processed by FWWindow class and updates titles of all
+ * ProjectPanel windows.
+ */
+class updateSubWindowTitlesEvent : public fwbUpdateEvent {
+public:
+    updateSubWindowTitlesEvent() :
+    fwbUpdateEvent("", -1,
+                   QEvent::Type(QEvent::User + UPDATE_SUBWINDOW_TITLES_EVENT),
+                   "updateSubWindowTitlesEvent")
+    {}
+};
 
 
 

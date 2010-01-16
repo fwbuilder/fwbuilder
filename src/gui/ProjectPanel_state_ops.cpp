@@ -49,14 +49,13 @@ using namespace std;
 
 void ProjectPanel::saveState()
 {
-    QString FileName ;
-    if (rcs!=NULL) FileName = rcs->getFileName();
-    if (fwbdebug) qDebug("ProjectPanel::saveState %p title=%s "
-                         "FileName=%s ready=%d",
-                         this,
-                         getPageTitle().toAscii().constData(),
-                         FileName.toAscii().data(),
-                         ready);
+    QString file_name ;
+    if (rcs!=NULL) file_name = rcs->getFileName();
+    if (fwbdebug)
+        qDebug( ) << "ProjectPanel::saveState " << this 
+                  << "title " << mdiWindow->windowTitle()
+                  << "file_name=" << file_name
+                  << "ready=" << ready;
 
     if (!ready) return;
 
@@ -64,10 +63,10 @@ void ProjectPanel::saveState()
 
     if (!mdiWindow->isMaximized())
     {
-        st->setInt("Window/" + FileName + "/x", mdiWindow->x());
-        st->setInt("Window/" + FileName + "/y", mdiWindow->y());
-        st->setInt("Window/" + FileName + "/width", mdiWindow->width ());
-        st->setInt("Window/" + FileName + "/height", mdiWindow->height ());
+        st->setInt("Window/" + file_name + "/x", mdiWindow->x());
+        st->setInt("Window/" + file_name + "/y", mdiWindow->y());
+        st->setInt("Window/" + file_name + "/width", mdiWindow->width ());
+        st->setInt("Window/" + file_name + "/height", mdiWindow->height ());
     }
 
     saveMainSplitter();

@@ -401,7 +401,9 @@ void ProjectPanel::fileAddToRCS()
     // be inactive
     mw->prepareFileMenu();
 
-    setWindowTitle(getPageTitle());
+    //setWindowTitle(getPageTitle());
+    QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
+
 }
 
 void ProjectPanel::fileImport()
@@ -957,7 +959,8 @@ void ProjectPanel::loadStandardObjects()
 
         createRCS("");
 
-        setWindowTitle(getPageTitle());
+        //setWindowTitle(getPageTitle());
+        QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
 
         loadObjects();
         setupAutoSave();
@@ -1204,7 +1207,8 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         rcs->setFileName(fn);
         db()->setFileName(fn.toLocal8Bit().constData());
 
-        setWindowTitle(getPageTitle());
+        //setWindowTitle(getPageTitle());
+        //QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
 
         mainW->disableActions(m_panel->ruleSets->count()!=0);
 

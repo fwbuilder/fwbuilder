@@ -472,7 +472,8 @@ void ProjectPanel::setFileName(const QString &fname)
     rcs->setFileName(fname);
     db()->setFileName(fname.toLatin1().constData());
 
-    setWindowTitle(getPageTitle());
+    //setWindowTitle(getPageTitle());
+    QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
 }
 
 //wrapers for some ObjectManipulator functions
@@ -782,23 +783,25 @@ void ProjectPanel::redrawRuleSets()
 
 void ProjectPanel::showEvent(QShowEvent *ev)
 {
-    if (fwbdebug) qDebug("ProjectPanel::showEvent %p title=%s",
-                         this, getPageTitle().toAscii().constData());
+    if (fwbdebug) qDebug() << "ProjectPanel::showEvent " << this
+                           << "title " << mdiWindow->windowTitle();
+
     m_panel->treeDockWidget->raise();
     QWidget::showEvent(ev);
 }
 
 void ProjectPanel::hideEvent(QHideEvent *ev)
 {
-    if (fwbdebug) qDebug("ProjectPanel::hideEvent %p title=%s",
-                         this, getPageTitle().toAscii().constData());
+    if (fwbdebug) qDebug() << "ProjectPanel::hideEvent " << this
+                           << "title " << mdiWindow->windowTitle();
+
     QWidget::hideEvent(ev);
 }
 
 void ProjectPanel::closeEvent(QCloseEvent * ev)
 {
-    if (fwbdebug)
-        qDebug() << "ProjectPanel::closeEvent title=" << getPageTitle();
+    if (fwbdebug) qDebug() << "ProjectPanel::closeEvent " << this
+                           << "title " << mdiWindow->windowTitle();
 
     if (!saveIfModified() || !checkin(true))
     {

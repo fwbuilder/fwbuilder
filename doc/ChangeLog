@@ -1,5 +1,10 @@
 2010-01-16  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::event): If user opens two data files
+	with the same names but located in different directories, titles
+	of the subwindows, the list in the main Windows menu and entries
+	in the recently opened files list will display full path. See #936
+
 	* FWWindow.cpp (FWWindow::fileOpen, FWWindow::alreadyOpened): The
 	GUI should not let the user open the same data file twice. If user
 	tries to do this, even using different (e.g. relative) path, the

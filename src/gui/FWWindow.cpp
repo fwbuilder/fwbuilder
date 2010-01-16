@@ -156,6 +156,7 @@
 #include <QDockWidget>
 #include <QUndoGroup>
 #include <QUndoStack>
+#include <QMap>
 
 
 using namespace libfwbuilder;
@@ -385,6 +386,7 @@ void FWWindow::openRecentFile()
             return;
         }
         loadFile(file_path, false);
+        QCoreApplication::postEvent(this, new updateSubWindowTitlesEvent());
     }
 }
 
@@ -617,29 +619,24 @@ void FWWindow::fileOpen()
         // reset actions, including Save() which should now
         // be inactive
         prepareFileMenu();
+        QCoreApplication::postEvent(this, new updateSubWindowTitlesEvent());
     } else
         m_mainWindow->m_space->setActiveSubWindow(last_active_window);
+
 }
 
 QMdiSubWindow* FWWindow::alreadyOpened(const QString &file_name)
 {
     QFileInfo fi(file_name);
     QString file_path = fi.canonicalFilePath();
-    QMap<QString, QMdiSubWindow*> opened_files;
-    QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
-    for (int i = 0 ; i < subWindowList.size(); i++)
+    foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
     {
-        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
+        ProjectPanel * pp = dynamic_cast<ProjectPanel *>(sw->widget());
         if (pp!=NULL)
         {
-            opened_files[pp->getFileName()] = subWindowList[i];
             if (fwbdebug) qDebug() << "Opened file  " << pp->getFileName();
+            if (pp->getFileName() == file_path) return sw;
         }
-    }
-
-    if (opened_files.contains(file_path))
-    {
-        return opened_files[file_path];
     }
     return NULL;
 }
@@ -1025,7 +1022,7 @@ void FWWindow::prepareWindowsMenu()
 
             //if (pp->isClosing()) continue ;
 
-            QString text = pp->getPageTitle();
+            QString text = subWindowList[i]->windowTitle();
             windowsTitles.push_back(text);
 
             QAction * act = m_mainWindow->menuWindow->addAction(text);
@@ -1183,7 +1180,7 @@ bool FWWindow::event(QEvent *event)
                      << "event:"
                      << ev->getEventName()
                      << "object:"
-                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "");
+                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "<NULL>");
 
         switch (event->type() - QEvent::User)
         {
@@ -1212,12 +1209,64 @@ bool FWWindow::event(QEvent *event)
                 ev->accept();
                 return true;
             }
+
+            case UPDATE_SUBWINDOW_TITLES_EVENT:
+            {
+                QMap<QString, int> short_name_counters;
+                QMap<QMdiSubWindow*, QString> short_titles;
+                QMap<QMdiSubWindow*, QString> long_titles;
+
+                foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
+                {
+                    ProjectPanel * pp = dynamic_cast<ProjectPanel *>(sw->widget());
+                    if (pp!=NULL)
+                    {
+                        // string returned by getPageTitle() may also
+                        // include RCS revision number. Compare only
+                        // file name, without the path and rev number
+                        // to make sure we show long paths for two
+                        // subwindows where file names are identical,
+                        // regardless of the RCS revision number.
+                        QString file_name = pp->getFileName(); // full path
+                        QFileInfo fi(file_name);
+                        QString short_name = fi.fileName();
+                        int c = short_name_counters[short_name];
+                        short_name_counters[short_name] = c + 1;
+
+                        short_titles[sw] = pp->getPageTitle(false);
+                        long_titles[sw] = pp->getPageTitle(true);
+
+                        if (fwbdebug)
+                            qDebug() << "Subwindow " << sw
+                                     << "file_name " << file_name
+                                     << "short_name " << short_name
+                                     << "short_name_counter " << c
+                                     << "short_title " << short_titles[sw]
+                                     << "long_title " << long_titles[sw];
+
+                    }
+                }
+
+                foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
+                {
+                    QString short_name = short_titles[sw];
+                    if (short_name_counters[short_name] > 1)
+                        sw->setWindowTitle(long_titles[sw]);
+                    else
+                        sw->setWindowTitle(short_titles[sw]);
+                }
+                ev->accept();
+                return true;
+            }
         }
 
         // dispatch event to all projectpanel windows
-        QList<QMdiSubWindow*> subWindowList = m_mainWindow->m_space->subWindowList();
-        for (int i = 0 ; i < subWindowList.size(); i++)
-            QCoreApplication::sendEvent(subWindowList[i]->widget(), event);
+        foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
+            QCoreApplication::sendEvent(sw->widget(), event);
+
+        // QList<QMdiSubWindow*> subWindowList = m_mainWindow->m_space->subWindowList();
+        // for (int i = 0 ; i < subWindowList.size(); i++)
+        //     QCoreApplication::sendEvent(subWindowList[i]->widget(), event);
 
         event->accept();
         return true;
