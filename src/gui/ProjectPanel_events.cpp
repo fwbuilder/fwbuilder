@@ -161,6 +161,8 @@ bool ProjectPanel::event(QEvent *event)
                     return true;
                 }
 
+                if (rsv) rsv->updateObject(obj);
+
                 if (Library::cast(obj))
                 {
                     m_panel->om->updateLibName(obj);
@@ -170,8 +172,8 @@ bool ProjectPanel::event(QEvent *event)
                 QCoreApplication::postEvent(
                     this, new updateObjectInTreeEvent(data_file, obj_id));
 
-                QCoreApplication::postEvent(
-                    this, new reloadRulesetEvent(data_file));
+                // QCoreApplication::postEvent(
+                //     this, new reloadRulesetEvent(data_file));
 
                 ev->accept();
                 return true;
