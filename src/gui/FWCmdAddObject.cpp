@@ -97,6 +97,9 @@ void FWCmdAddObject::undo()
     QCoreApplication::postEvent(
         mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
 
+    // see comment in redo()
+    QCoreApplication::sendPostedEvents(mw,  0);
+
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(filename, grp->getId()));
 
@@ -150,8 +153,14 @@ void FWCmdAddObject::redo()
 
     grp->add(member);
 
-    if (fwbdebug) qDebug() << "FWCmdAddObject::redo() member->ref_counter=" 
-                           << member->getRefCounter();
+    if (fwbdebug)
+        qDebug() << "FWCmdAddObject::redo()"
+                 << member->getName().c_str() << "-->"
+                 << grp->getName().c_str()
+                 << "member->ref_counter=" 
+                 << member->getRefCounter()
+                 << "reload=" << require_complete_tree_reload
+                 << "editor=" << mw->isEditorVisible();
 
     QString filename = QString::fromUtf8(grp->getRoot()->getFileName().c_str());
 
@@ -174,6 +183,18 @@ void FWCmdAddObject::redo()
             mw, new updateObjectAndSubtreeImmediatelyEvent(filename, grp->getId()));
     }
 
+    // when user clicks in the undo stack window, the program executes
+    // all undo/redo commands up to the line they clicked on. This
+    // means bunch of redo() commands can execute at once. All events
+    // they posted, however, will be processed after that. If these
+    // redo() commands added or removed objects in the tree, the tree
+    // widget in ObjectManipulator gets updated after that has
+    // happened and gets out of sync with object
+    // tree. sendPostedEvents() should send events posted up to this
+    // point to the receiver immediately, which in this case should
+    // update widgets to keep them in sync.
+    QCoreApplication::sendPostedEvents(mw,  0);
+
     QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, grp->getId()));
 
     // post openObjectInEditorEvent first so that editor panel opens
@@ -182,6 +203,7 @@ void FWCmdAddObject::redo()
     // changes when editor opens
     if (mw->isEditorVisible())
         QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, member->getId()));
+
     QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, member->getId()));
 }
 

@@ -1,5 +1,10 @@
 2010-01-16  vadim  <vadim@vk.crocodile.org>
 
+	* FWCmdAddObject.cpp (FWCmdAddObject::redo): fixes #1088
+	"duplicate objects on redo". Click on the last line in undo stack
+	view created duplicate objects in the tree if some undo/redo
+	commands created new objects.
+
 	* ObjectManipulator_create_new.cpp (ObjectManipulator::newInterfaceAddress):
 	fixes #1090: extra undo command added to the stack on "New address"
 
