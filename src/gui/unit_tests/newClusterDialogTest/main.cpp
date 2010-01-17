@@ -23,8 +23,12 @@ int main( int argc, char** argv)
     st = new FWBSettings();
     st->init();
     init(argv);
-    respath = std::string(PREFIX) + "/share/libfwbuilder";
-    std::string full_res_path = std::string(PREFIX) + "/resources/resources.xml";
+
+    //respath = std::string(PREFIX) + "/share/libfwbuilder";
+    //std::string full_res_path = std::string(PREFIX) + "/resources/resources.xml";
+
+    string full_res_path = respath + FS_SEPARATOR + "resources.xml";
+
     try
     {
         new Resources(full_res_path);

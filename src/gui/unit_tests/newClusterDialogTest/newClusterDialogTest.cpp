@@ -42,7 +42,7 @@ void newClusterDialogTest::test1()
     //init();
     FWObjectDatabase *db = new FWObjectDatabase();
     XMLTools::UpgradePredicate p;
-    db->load("test_data.fwb", &p, string(PREFIX) + "/share/libfwbuilder");
+    db->load("test_data.fwb", &p, librespath);
     newClusterDialog_ext *dialog = new newClusterDialog_ext(db);
     vector<FWObject*> fws;
     QStringList fwnames;
@@ -158,7 +158,7 @@ void newClusterDialogTest::test2()
     foreach(FWObject *obj, db->getByTypeDeep(Library::TYPENAME))
     {
         qDebug() << obj->getName().c_str();
-        if (obj->getName() == "User") lib = Library::cast(obj);
+        if (obj->getName() == "new_cluster_test") lib = Library::cast(obj);
     }
     QVERIFY(lib != NULL);
 
