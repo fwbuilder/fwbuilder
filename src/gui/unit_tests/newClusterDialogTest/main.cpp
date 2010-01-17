@@ -9,6 +9,8 @@ FWBSettings *st = NULL;
 char** args;
 QApplication *app = NULL;
 
+using namespace libfwbuilder;
+
 int main( int argc, char** argv)
 {
     app = new QApplication(argc, argv, 0);
@@ -22,7 +24,7 @@ int main( int argc, char** argv)
     try
     {
         new Resources(full_res_path);
-    } catch (FWException e)
+    } catch (FWException &e)
     {
         cerr << "Can not read resource file from " << full_res_path << endl;
     }
