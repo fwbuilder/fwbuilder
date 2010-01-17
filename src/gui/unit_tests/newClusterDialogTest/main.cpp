@@ -19,7 +19,13 @@ int main( int argc, char** argv)
     init(argv);
     respath = std::string(PREFIX) + "/share/libfwbuilder";
     std::string full_res_path = std::string(PREFIX) + "/resources/resources.xml";
-    new Resources(full_res_path);
+    try
+    {
+        new Resources(full_res_path);
+    } catch (FWException e)
+    {
+        cerr << "Can not read resource file from " << full_res_path << endl;
+    }
     newClusterDialogTest tst;
     QTest::qExec(&tst);
 }
