@@ -99,6 +99,7 @@ class instDialog : public QDialog, public FakeWizard
     FirewallInstaller *installer;
     ProjectPanel *project;
     instBatchOptionsDialog *batch_inst_opt_dlg;
+    bool compile_only;
 
     // proc is used to launch external oprocess, such as compiler or
     // user-defined installer script

@@ -90,6 +90,7 @@ instDialog::instDialog(QWidget *p, bool install, bool showOnlySelected, set<Fire
 
     reqFirewalls = fws;
     onlySelected = showOnlySelected;
+    compile_only = ! install;
 
     if (!onlySelected)
         findFirewalls();
@@ -125,9 +126,9 @@ instDialog::instDialog(QWidget *p, bool install, bool showOnlySelected, set<Fire
 
     m_dialog->selectTable->setFocus();
 
-
     m_dialog->selectInfoLabel->setText(tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls to compile.</font></b></p>"));
-    if (!install)
+
+    if (compile_only)
     {
         m_dialog->batchInstFlagFrame->hide();
         setAppropriate(2,false);
@@ -260,15 +261,16 @@ void instDialog::mainLoopCompile()
         // here.
         state = COMPILE_DONE;
         fillInstallOpList();
-        if (install_fw_list.size() > 0)
+
+        if (compile_only)
+        {
+            finished = true;
+            setFinishEnabled(currentPage(), true);
+        } else
         {
             page_1_op = INST_DLG_INSTALL;
             setNextEnabled(1, true);
             setFinishEnabled(currentPage(), false);
-        } else
-        {
-            finished = true;
-            setFinishEnabled(currentPage(), true);
         }
     }
 }
