@@ -1,3 +1,9 @@
+2010-01-17  vadim  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase_15.xslt: incremented DTD version to 16,
+	migration script changes value attribute "host_OS" of Firewall
+	element from "linksys" to "sveasoft".
+
 2010-01-15  vadim  <vadim@vk.crocodile.org>
 
 	* AddressTable::loadFromSource , DNSName::loadFromSource : When
