@@ -4,6 +4,10 @@
 #include <QDialog>
 
 #include "ui_newclusterdialog_q.h"
+#include "FWWindow.h"
+#include "fwbuilder/Policy.h"
+#include "ObjectTreeView.h"
+#include "ProjectPanel.h"
 
 using namespace libfwbuilder;
 using namespace std;
@@ -35,7 +39,7 @@ public:
 
 void newClusterDialogTest::test1()
 {
-    init();
+    //init();
     FWObjectDatabase *db = new FWObjectDatabase();
     XMLTools::UpgradePredicate p;
     db->load("test_data.fwb", &p, string(PREFIX) + "/share/libfwbuilder");
@@ -78,9 +82,11 @@ void newClusterDialogTest::test1()
     dialog->getUi()->nextButton->click();
     QVERIFY(dialog->currentPage()==2);
 
-    for (int i=0; i<dialog->getUi()->interfaceEditor->count(); i++)
-        dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(i))->setProtocolIndex(0);
-    qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, "eth0_widget")->addNewAddress("123.45.67.89", "24", true);
+    for (int i=1; i<dialog->getUi()->interfaceEditor->count(); i++)
+        dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(i))->setProtocolIndex(2);
+
+    InterfaceEditorWidget* eth0 = qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, "eth0_widget");
+    eth0->addNewAddress("123.45.67.89", "24", true);
 
     QList<EditedInterfaceData> addresses = dialog->getUi()->interfaceEditor->getNewData();
     foreach( EditedInterfaceData iface, addresses)
@@ -90,6 +96,7 @@ void newClusterDialogTest::test1()
             QVERIFY(iface.addresses.values().count() == 1);
             QVERIFY(iface.addresses.values().first().address == "123.45.67.89");
             QVERIFY(iface.addresses.values().first().netmask == "24");
+            break;
         }
     }
 
@@ -111,11 +118,16 @@ void newClusterDialogTest::test1()
         }
     }
 
-
-    dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(1))->setProtocolIndex(0);
-    dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(1))->addNewAddress("98.76.54.32", "24", true);
-
-
+    dialog->getUi()->interfaceEditor->setCurrentIndex(1);
+    InterfaceEditorWidget* eth1 = qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, "eth1_widget");
+    eth1->setProtocolIndex(0);
+    QTableWidget *addrs = eth1->findChild<QTableWidget*>("addresses");
+    QVERIFY(addrs != NULL);
+    QPushButton *addaddr = eth1->findChild<QPushButton*>("addAddress");
+    QVERIFY(addaddr != NULL);
+    addaddr->click();
+    addrs->item(0,0)->setText("98.76.54.32");
+    addrs->item(0,1)->setText("24");
     dialog->getUi()->nextButton->click();
     QVERIFY(dialog->currentPage()==3);
 
@@ -134,13 +146,23 @@ void newClusterDialogTest::test1()
 }
 
 void newClusterDialogTest::test2()
-{/*
-    init();
-    FWObjectDatabase *db = new FWObjectDatabase();
-    XMLTools::UpgradePredicate p;
-    db->load("test_data.fwb", &p, string(PREFIX) + "/share/libfwbuilder");
+{
 
-    newClusterDialog_ext *dialog = new newClusterDialog_ext(db);
+    mw = new FWWindow();
+
+    mw->loadFile("test_data.fwb", false);
+
+    FWObjectDatabase *db = mw->db();
+    Library *lib = NULL;
+
+    foreach(FWObject *obj, db->getByTypeDeep(Library::TYPENAME))
+    {
+        qDebug() << obj->getName().c_str();
+        if (obj->getName() == "User") lib = Library::cast(obj);
+    }
+    QVERIFY(lib != NULL);
+
+    newClusterDialog_ext *dialog = new newClusterDialog_ext(FWBTree().getStandardSlotForObject(lib, Cluster::TYPENAME));
     vector<FWObject*> fws;
     QStringList fwnames;
     foreach(FWObject *obj, db->getByTypeDeep(Firewall::TYPENAME))
@@ -178,14 +200,13 @@ void newClusterDialogTest::test2()
     dialog->getUi()->nextButton->click();
     QVERIFY(dialog->currentPage()==3);
 
-    /*
+
     QList<QRadioButton*> btns= dialog->getUi()->page_4->findChildren<QRadioButton*>();
     foreach(QRadioButton *btn, btns)
     {
         if (btn->objectName() == "linux-1")
             QTest::mouseClick(btn, Qt::LeftButton);
     }
-
 
     dialog->getUi()->nextButton->click();
     QVERIFY(dialog->currentPage()==4);
@@ -197,5 +218,8 @@ void newClusterDialogTest::test2()
     Cluster *newc = dialog->getNewCluster();
 
     QVERIFY(newc != NULL);
-    QVERIFY(Cluster::isA(newc));*/
+    QVERIFY(Cluster::isA(newc));
+
+    qDebug() << mw->getCurrentLib()->findObjectByName(Firewall::TYPENAME, "linux-1-bak")->getName().c_str();
+
 }

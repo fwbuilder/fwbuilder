@@ -1,6 +1,7 @@
 #include "newClusterDialogTest.h"
 #include "FWWindow.h"
 #include "FWBSettings.h"
+#include "common/commoninit.h"
 
 int fwbdebug = 0;
 FWWindow *mw = NULL;
@@ -14,7 +15,11 @@ int main( int argc, char** argv)
     app->setOrganizationName(QLatin1String("NetCitadel"));
     app->setApplicationName(QLatin1String("Firewall Builder"));
     st = new FWBSettings();
-    new Resources("../../../res/resources.xml");
+    st->init();
+    init(argv);
+    respath = std::string(PREFIX) + "/share/libfwbuilder";
+    std::string full_res_path = std::string(PREFIX) + "/resources/resources.xml";
+    new Resources(full_res_path);
     newClusterDialogTest tst;
     QTest::qExec(&tst);
 }

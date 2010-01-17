@@ -189,6 +189,7 @@ void InterfacesTabWidget::addTab(QWidget* widget, const QString& title)
     if ( dynamic_cast<InterfaceEditorWidget*>(widget) != NULL ||
          (noTabs && dynamic_cast<QLabel*>(widget) != NULL))
     {
+        widget->setObjectName(title+"_widget");
         if (!noTabs)
         dynamic_cast<InterfaceEditorWidget*>(widget)->setExplanation(explanation);
         QTabWidget::addTab(widget, title);
