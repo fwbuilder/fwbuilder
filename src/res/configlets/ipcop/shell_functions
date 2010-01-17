@@ -27,49 +27,6 @@ getInterfaceVarName() {
     echo $1 | sed 's/\./_/'
 }
 
-getaddr() {
-    dev=$1
-    name=$2
-##
-## originally this command looked like this:
-## $IP -4 addr ls $dev to $addr | grep inet | grep -E "$dev$"`
-##
-##  i.e. it looked for a line that ends with "$dev":
-##  inet 10.3.14.40/24 brd 10.3.14.255 scope global eth0  
-##    as opposed to
-##  inet 192.168.1.100/24 brd 192.168.1.255 scope global eth0:1
-##
-##  It turns out, some busybox-based systems have grep compiled w/o
-##  support for regular expressions. Using "grep -v :" seems to be an
-##  easy way to filter out secondary addresses without using regex
-##
-    L=`$IP -4 addr show dev $dev | grep inet | grep -v :`
-    test -z "$L" && { 
-        eval "$name=''"
-        return
-    }
-    OIFS=$IFS
-    IFS=" /"
-    set $L
-    eval "$name=$2"
-    IFS=$OIFS
-}
-
-getaddr6() {
-    dev=$1
-    name=$2
-    L=`$IP -6 addr show dev $dev | grep inet6 | grep -v :`
-    test -z "$L" && { 
-        eval "$name=''"
-        return
-    }
-    OIFS=$IFS
-    IFS=" /"
-    set $L
-    eval "$name=$2"
-    IFS=$OIFS
-}
-
 # function getinterfaces is used to process wildcard interfaces
 getinterfaces() {
     NAME=$1
