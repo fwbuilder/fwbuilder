@@ -169,6 +169,7 @@ public:
     QString findUniqueNameForGroup(const QString &groupName);
     void restoreRules(QList<libfwbuilder::Rule*> rules, bool topLevel = true);
     void restoreRule(libfwbuilder::Rule* rule);
+    void objectChanged(libfwbuilder::FWObject* object);
 
 protected:
     libfwbuilder::RuleElement *getRuleElementByRole(libfwbuilder::Rule* r, std::string roleName) const;
@@ -199,7 +200,7 @@ private:
     void removeToList(QList<RuleNode*> &list, const QModelIndex &group, int first, int last);
     void insertFromList(const QList<RuleNode*> &list, const QModelIndex &parent, int position);
 
-
+    QModelIndexList findObject (libfwbuilder::FWObject* object);
 
 };
 

@@ -2666,6 +2666,12 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
     compileRuleAction->setEnabled(compileRuleActionEnabled);
 }
 
+void RuleSetView::updateObject(FWObject* object)
+{
+    RuleSetModel* md = ((RuleSetModel*)model());
+    md->objectChanged(object);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PolicyView
 //////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -190,6 +190,7 @@ public slots:
 
     void updateAllColumnsSize();
     void updateColumnSizeForIndex(QModelIndex);
+    void updateObject(libfwbuilder::FWObject* object);
 
     void compileCurrentRule();
     void updateSelectionSensitiveActions(QItemSelection,QItemSelection);

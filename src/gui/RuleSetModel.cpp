@@ -1197,6 +1197,67 @@ int RuleSetModel::getRulePosition(QModelIndex index)
     return (rule == 0)?0:rule->getPosition();
 }
 
+void RuleSetModel::objectChanged(FWObject* object)
+{
+    QModelIndexList relatedIndexes = findObject(object);
+
+    foreach(QModelIndex index, relatedIndexes)
+    {
+        emit dataChanged(index, index);
+    }
+}
+
+QModelIndexList RuleSetModel::findObject (FWObject* object)
+{
+    qDebug() << "uleSetModel::findObject (FWObject* object)";
+    QModelIndexList list;
+
+    RuleSetModelIterator it = begin();
+    RuleSetModelIterator end = this->end();
+
+    while (it != end) {
+        QModelIndex index = it.index();
+        RuleNode* node = nodeFromIndex(index);
+
+        if (node->type == RuleNode::Group)
+        {
+//            qDebug() << "Group: " << node->name;
+            ++it;
+            continue;
+        }
+
+        Rule* rule = node->rule;
+//        qDebug() << "Rule " << rule->getPosition();
+
+        // iterate through columns
+        foreach(ColDesc colDesc, header)
+        {
+            if (colDesc.type == ColDesc::Object || colDesc.type == ColDesc::Time)
+            {
+                // try to find the object
+                RuleElement* re = getRuleElementByRole(rule, colDesc.origin.toStdString());
+                if (re->isAny()) continue;
+
+                for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
+                {
+                    FWObject *obj= *i;
+                    if (FWReference::cast(obj)!=NULL)
+                        obj=FWReference::cast(obj)->getPointer();
+                    if (obj==NULL)
+                        continue ;
+                    if (object == obj)
+                    {
+                        list.append(this->index(rule, re));
+                        break;
+                    }
+                }
+            }
+        }
+        ++it;
+    }
+
+    return list;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PolicyModel
@@ -1315,8 +1376,6 @@ bool PolicyModel::checkRuleType(libfwbuilder::Rule *rule)
 {
     return rule->getTypeName() == PolicyRule::TYPENAME;
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // NatModel
