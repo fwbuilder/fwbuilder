@@ -274,7 +274,8 @@ RCS::RCS(const QString &file)
 #endif
     }
     QFileInfo fi(file);
-    filename      = fi.canonicalFilePath();
+    if (fi.exists()) filename = fi.canonicalFilePath();
+    else filename = file;
     checked_out   = false;
     locked        = false;
     inrcs         = false;
@@ -427,7 +428,8 @@ void RCS::readFromStderr()
 void RCS::setFileName(const QString &fn)
 {
     QFileInfo fi(fn);
-    filename = fi.canonicalFilePath();
+    if (fi.exists()) filename = fi.canonicalFilePath();
+    else filename = fn;
     if (fwbdebug)
         qDebug() << "RCS::setFileName fn =" << fn << "filename =" << filename;
 }
