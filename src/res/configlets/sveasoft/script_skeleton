@@ -32,21 +32,21 @@
 
 ## we do not load modules on Sveasoft
 load_modules() {
-    /bin/true
+    :
 }
 
 verify_interfaces() {
-    /bin/true
+    :
     {{$verify_interfaces}}
 }
 
 prolog_commands() {
-    /bin/true
+    :
     {{$prolog_script}}
 }
 
 epilog_commands() {
-    /bin/true
+    :
     {{$epilog_script}}
 }
 
@@ -56,7 +56,7 @@ run_epilog_and_exit() {
 }
 
 configure_interfaces() {
-    /bin/true
+    :
     {{$configure_interfaces}}
 }
 
@@ -65,25 +65,19 @@ script_body() {
 }
 
 ip_forward() {
-    /bin/true
+    :
     {{$ip_forward_commands}}
 }
 
 reset_all() {
-    /bin/true
+    :
     {{$reset_all}}
 }
 
 {{$stop_action}}
 
-# For backwards compatibility missing argument is equivalent to 'start'
-test -z "$1" && {
-    $0 start
-    exit $?
-}
-
 case "$1" in
-    start)
+    "")
         log "Activating firewall script generated {{$timestamp}} by {{$user}}"
         check_tools
         {{if prolog_top}}prolog_commands{{endif}}
@@ -96,24 +90,29 @@ case "$1" in
         script_body
         ip_forward
         epilog_commands
+        RETVAL=$?
         ;;
 
     stop)
         stop_action
+        RETVAL=$?
         ;;
     
     reload)
         $0 stop
         $0 start
+        RETVAL=$?
         ;;
     
     interfaces)
         configure_interfaces
+        RETVAL=$?
         ;;
     
     test_interfaces)
         FWBDEBUG="echo"
         configure_interfaces
+        RETVAL=$?
         ;;
     
     *)
@@ -122,3 +121,4 @@ case "$1" in
     
 esac
 
+exit $RETVAL

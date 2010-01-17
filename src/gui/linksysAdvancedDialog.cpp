@@ -85,11 +85,11 @@ linksysAdvancedDialog::linksysAdvancedDialog(QWidget *parent,FWObject *o)
 
 /* set default prompts */
     if (fwopt->getStr("prompt1").empty())
-        Resources::os_res["linksys"]->Resources::setDefaultOption(fwopt,
+        Resources::os_res["sveasoft"]->Resources::setDefaultOption(fwopt,
                            "/FWBuilderResources/Target/options/default/prompt1");
 
     if (fwopt->getStr("prompt2").empty())
-        Resources::os_res["linksys"]->Resources::setDefaultOption(fwopt,
+        Resources::os_res["sveasoft"]->Resources::setDefaultOption(fwopt,
                            "/FWBuilderResources/Target/options/default/prompt2");
 
     data.registerOption( m_dialog->linksys_prompt1,
@@ -160,8 +160,8 @@ void linksysAdvancedDialog::setDefaultPrompts()
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=NULL);
     m_dialog->linksys_prompt1->setText(
-        Resources::getTargetOptionStr("linksys","default/prompt1").c_str() );
+        Resources::getTargetOptionStr("sveasoft","default/prompt1").c_str() );
     m_dialog->linksys_prompt2->setText(
-        Resources::getTargetOptionStr("linksys","default/prompt2").c_str() );
+        Resources::getTargetOptionStr("sveasoft","default/prompt2").c_str() );
 }
 

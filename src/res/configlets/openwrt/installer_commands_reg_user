@@ -23,7 +23,7 @@
 ##  {{$rbtimeout}} -- rollback timeout
 ##
 ##
-##  We only use root to authenticate to linksys/sveasoft firewall
+##  We only use root to authenticate to OpenWRT firewall
 
 {{if run}}
 {{endif}}

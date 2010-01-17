@@ -1,10 +1,10 @@
 <?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
 <FWBuilderResources>
-    <Target name="linksys">
-      <description>Linksys/Sveasoft</description>
+    <Target name="sveasoft">
+      <description>Sveasoft</description>
       <status>active</status>
-      <family>linux24</family>
-      <dialog>linksys</dialog>
+      <family>sveasoft</family>
+      <dialog>sveasoft</dialog>
 
       <options>
         <user_can_change_install_dir>false</user_can_change_install_dir>
