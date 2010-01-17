@@ -108,9 +108,8 @@ bool instDialog::checkIfNeedToCompile(Firewall *fw)
 
 bool instDialog::checkIfNeedToInstall(Firewall *fw)
 {
-    return (operation==BATCH_INSTALL) &&
-        ((fw->needsInstall() && reqFirewalls.empty() && !fw->getInactive()) ||
-         (!reqFirewalls.empty() && reqFirewalls.find(fw)!=reqFirewalls.end()));
+    return ((fw->needsInstall() && reqFirewalls.empty() && !fw->getInactive()) ||
+            (!reqFirewalls.empty() && reqFirewalls.find(fw)!=reqFirewalls.end()));
 }
 
 QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
@@ -202,21 +201,18 @@ void instDialog::setFlags(QTreeWidgetItem* item)
     if (Firewall::isA(fw))
     {
         bool checked = false;
-        if (operation==BATCH_INSTALL)
+        checked = checkIfNeedToInstall(fw);
+        if (cluster)
         {
-            checked = checkIfNeedToInstall(fw);
-            if (cluster)
+            // override if checkIfNeedToCompile() is true for the
+            // parent cluster.
+            if (checkIfNeedToCompile(cluster))
             {
-                // override if checkIfNeedToCompile() is true for the
-                // parent cluster.
-                if (checkIfNeedToCompile(cluster))
-                {
-                    checked = true;
-                }
+                checked = true;
             }
-            item->setCheckState(INSTALL_CHECKBOX_COLUMN,
-                                checked?Qt::Checked:Qt::Unchecked);
         }
+        item->setCheckState(INSTALL_CHECKBOX_COLUMN,
+                            checked?Qt::Checked:Qt::Unchecked);
 
         // If this platform requires installation only on
         // the master, disable and uncheck checkbox for the standby.
@@ -743,16 +739,14 @@ void instDialog::readFromStdout()
 void instDialog::selectAllFirewalls()
 {
     if (fwbdebug) qDebug("instDialog::selectAllFirewalls");
-    if (operation==BATCH_INSTALL)
-        setSelectStateAll(INSTALL_CHECKBOX_COLUMN, Qt::Checked);
+    setSelectStateAll(INSTALL_CHECKBOX_COLUMN, Qt::Checked);
     setSelectStateAll(COMPILE_CHECKBOX_COLUMN, Qt::Checked);
     tableItemChanged(NULL, 0);
 }
 
 void instDialog::deselectAllFirewalls()
 {
-    if (operation==BATCH_INSTALL)
-        setSelectStateAll(INSTALL_CHECKBOX_COLUMN, Qt::Unchecked);
+    setSelectStateAll(INSTALL_CHECKBOX_COLUMN, Qt::Unchecked);
     setSelectStateAll(COMPILE_CHECKBOX_COLUMN, Qt::Unchecked);
     tableItemChanged(NULL, 0);
 }
