@@ -3,6 +3,8 @@
 #include "FWBSettings.h"
 #include "common/commoninit.h"
 
+#include <iostream>
+
 int fwbdebug = 0;
 FWWindow *mw = NULL;
 FWBSettings *st = NULL;
@@ -10,6 +12,8 @@ char** args;
 QApplication *app = NULL;
 
 using namespace libfwbuilder;
+using namespace std;
+
 
 int main( int argc, char** argv)
 {
