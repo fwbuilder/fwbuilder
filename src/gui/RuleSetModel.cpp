@@ -1234,7 +1234,6 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
         foreach(ColDesc colDesc, header)
         {
             column++;
-            qDebug() << colDesc.name << " -- " << column;
 
             if (colDesc.type == ColDesc::Object || colDesc.type == ColDesc::Time)
             {
@@ -1267,14 +1266,14 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
                         if (pr->getBranch() == object)
                         {
                             list.append(this->index(rule, column));
-                            qDebug() << "Branch column:" << column;
+//                            qDebug() << "Branch column:" << column;
                         }
                     } else if (pr->getAction() == PolicyRule::Tag)
                     {
                         if (pr->getTagObject() == object)
                         {
                             list.append(this->index(rule, column));
-                            qDebug() << "Tag column:" << column;
+//                            qDebug() << "Tag column:" << column;
                         }
                     }
                 }
