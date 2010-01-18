@@ -138,7 +138,7 @@ if test "$TP" != "usr" ; then
   includedir="-I${prefix}/include/"
 fi
 
-includedir="${includedir} -I${prefix}/include/fwb-3"
+includedir="${includedir} -I${prefix}/include/fwb-4"
 
 
 the_libs="$the_libs ${LIBFWBUILDER_LIBDIR}  ${LIBS} ${PTHREAD_LIBS} ${XSLT_LIBS} ${XML_LIBS} ${LIBSNMP_LIBS} ${LIB_RESOLV}"
