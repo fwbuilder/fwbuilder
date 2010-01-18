@@ -204,7 +204,7 @@ AC_DEFINE_UNQUOTED(CO_FILE_NAME,       ["$CO_FILE_NAME"], [co_file_name])
 AC_PATH_PROG(LIBFWBUILDER_CONFIG, libfwbuilder-config-${FWB_MAJOR_VERSION},  ,[$EXTENDED_PATH])
 
 if test x$LIBFWBUILDER_CONFIG = x ; then
-   AC_MSG_ERROR([*** libfwbuilder not installed, or libfwbuilder-config-2 is not in path])
+   AC_MSG_ERROR([*** libfwbuilder not installed, or libfwbuilder-config-${FWB_MAJOR_VERSION} is not in path])
 else
   LIBFWBUILDER_CFLAGS_FWBUILDER="`$LIBFWBUILDER_CONFIG --cflags fwbuilder`"
   LIBFWBUILDER_CFLAGS_FWCOMPILER="`$LIBFWBUILDER_CONFIG --cflags fwcompiler`"
