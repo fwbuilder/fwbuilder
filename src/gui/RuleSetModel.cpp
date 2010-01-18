@@ -1209,7 +1209,7 @@ void RuleSetModel::objectChanged(FWObject* object)
 
 QModelIndexList RuleSetModel::findObject (FWObject* object)
 {
-    qDebug() << "uleSetModel::findObject (FWObject* object)";
+//    qDebug() << "RuleSetModel::findObject (FWObject* object)";
     QModelIndexList list;
 
     RuleSetModelIterator it = begin();
@@ -1230,8 +1230,11 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
 //        qDebug() << "Rule " << rule->getPosition();
 
         // iterate through columns
+        int column = 0;
         foreach(ColDesc colDesc, header)
         {
+            column++;
+
             if (colDesc.type == ColDesc::Object || colDesc.type == ColDesc::Time)
             {
                 // try to find the object
@@ -1251,7 +1254,30 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
                         break;
                     }
                 }
+            } else if (colDesc.type == ColDesc::Action)
+            {
+                PolicyRule * pr = PolicyRule::cast(rule);
+
+                if (pr != 0)
+                {
+                    if (pr->getAction() == PolicyRule::Branch)
+                    {
+                        if (pr->getBranch() == object)
+                        {
+                            list.append(this->index(rule, column));
+//                            qDebug() << "Branch column:" << column;
+                        }
+                    } else if (pr->getAction() == PolicyRule::Tag)
+                    {
+                        if (pr->getTagObject() == object)
+                        {
+                            list.append(this->index(rule, column));
+//                            qDebug() << "Tag column:" << column;
+                        }
+                    }
+                }
             }
+
         }
         ++it;
     }
