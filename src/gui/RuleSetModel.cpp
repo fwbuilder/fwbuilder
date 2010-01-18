@@ -1209,7 +1209,7 @@ void RuleSetModel::objectChanged(FWObject* object)
 
 QModelIndexList RuleSetModel::findObject (FWObject* object)
 {
-    qDebug() << "uleSetModel::findObject (FWObject* object)";
+//    qDebug() << "RuleSetModel::findObject (FWObject* object)";
     QModelIndexList list;
 
     RuleSetModelIterator it = begin();
@@ -1221,13 +1221,13 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
 
         if (node->type == RuleNode::Group)
         {
-            qDebug() << "Group: " << node->name;
+//            qDebug() << "Group: " << node->name;
             ++it;
             continue;
         }
 
         Rule* rule = node->rule;
-        qDebug() << "Rule " << rule->getPosition();
+//        qDebug() << "Rule " << rule->getPosition();
 
         // iterate through columns
         int column = 0;
@@ -1260,7 +1260,6 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
 
                 if (pr != 0)
                 {
-
                     if (pr->getAction() == PolicyRule::Branch)
                     {
                         if (pr->getBranch() == object)
