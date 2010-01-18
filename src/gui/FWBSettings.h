@@ -36,6 +36,8 @@
 
 #include <set>
 
+#define SETTINGS_PATH_PREFIX  "/4.0"
+
 class QWidget;
 
 /*

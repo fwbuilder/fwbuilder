@@ -53,7 +53,6 @@ extern int             fwbdebug;
 extern QString         build_num;
 extern QString         user_name;
 
-#define SETTINGS_PATH_PREFIX  "/3.1"
 
 #ifdef NDEBUG
 #  undef NDEBUG
