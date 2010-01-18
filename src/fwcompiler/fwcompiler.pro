@@ -25,7 +25,7 @@ HEADERS  = 	BaseCompiler.h \
 			RoutingCompiler.h
 
 headers.files = $$HEADERS
-headers.path  = "$$prefix/include/fwb-3/fwcompiler"
+headers.path  = "$$prefix/include/fwb-4/fwcompiler"
 
 unix {
         LIBS += -L../fwbuilder -lfwbuilder

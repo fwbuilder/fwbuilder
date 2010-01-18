@@ -474,13 +474,13 @@ fi
 AC_SUBST(EXEC_PREFIX)
 
 AC_CONFIG_FILES([qmake.inc
-          src/confscript/libfwbuilder-config-3
+          src/confscript/libfwbuilder-config-4
 	  etc/fwbuilder.dtd ])
 AC_OUTPUT
 
 dnl qmake just copies the file; we need to make it executable before that
 dnl 
-chmod a+x src/confscript/libfwbuilder-config-3
+chmod a+x src/confscript/libfwbuilder-config-4
 
 # QMAKE=$QMAKE CCACHE=$CCACHE ./runqmake.sh
 QMAKE=$QMAKE ./runqmake.sh

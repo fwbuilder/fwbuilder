@@ -148,7 +148,7 @@ HEADERS  = 	inet_net.h \
 			XMLTools.h
 
 headers.files = $$HEADERS
-headers.path  = "$$prefix/include/fwb-3/fwbuilder"
+headers.path  = "$$prefix/include/fwb-4/fwbuilder"
 
 TARGET    = fwbuilder
 # target.path = "$$prefix/lib"

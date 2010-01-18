@@ -1,3 +1,8 @@
+2010-01-18  vadim  <vadim@vk.crocodile.org>
+
+	* ../VERSION (LIBFWBUILDER_REVISION): Set version to 4.0.0 in
+	preparation for public beta
+
 2010-01-17  vadim  <vadim@vk.crocodile.org>
 
 	* FWObjectDatabase_15.xslt: incremented DTD version to 16,

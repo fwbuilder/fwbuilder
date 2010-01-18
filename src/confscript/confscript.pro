@@ -16,7 +16,7 @@ QMAKE_LIB = @echo
 
 TARGET = confscript
 
-script.files = libfwbuilder-config-3
+script.files = libfwbuilder-config-4
 script.path = "$$prefix/bin"
 
 INSTALLS -= target
