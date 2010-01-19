@@ -197,10 +197,13 @@ bool PolicyCompiler_pix::checkVersionAndDynamicInterface::findDynamicInterface(
 	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
         Interface *iface=Interface::cast(obj);
         if (iface!=NULL && iface->isDyn() && (vers=="6.1" || vers=="6.2"))
+        {
             compiler->abort(
                 rule, 
                 "Dynamic interface can be used in the policy rule only "
                 "in v6.3 or later.");
+            return false;
+        }
     }
 
     return true;
@@ -208,11 +211,9 @@ bool PolicyCompiler_pix::checkVersionAndDynamicInterface::findDynamicInterface(
 
 bool PolicyCompiler_pix::checkVersionAndDynamicInterface::processNext()
 {
-    PolicyRule     *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
-    tmp_queue.push_back(rule);
-
-    Service    *s=compiler->getFirstSrv(rule);
+    Service *s = compiler->getFirstSrv(rule);
 
 /* if service is ssh, telnet or icmp then we can use dynamic interface
  * even in earlier versions */
@@ -220,13 +221,22 @@ bool PolicyCompiler_pix::checkVersionAndDynamicInterface::processNext()
     if (TCPService::isA(s))
     {
         if ( s->getInt("dst_range_start")==22 && 
-             s->getInt("dst_range_end")==22) return true;
+             s->getInt("dst_range_end")==22)
+        {
+            tmp_queue.push_back(rule);
+            return true;
+        }
         if ( s->getInt("dst_range_start")==23 && 
-             s->getInt("dst_range_end")==23) return true;
+             s->getInt("dst_range_end")==23)
+        {
+            tmp_queue.push_back(rule);
+            return true;
+        }
     }
 
-    findDynamicInterface(rule,rule->getSrc());
-    findDynamicInterface(rule,rule->getDst());
+    if (findDynamicInterface(rule,rule->getSrc()) && 
+        findDynamicInterface(rule,rule->getDst()))
+        tmp_queue.push_back(rule);
 
     return true;
 }
@@ -247,20 +257,24 @@ bool PolicyCompiler_pix::SpecialServices::processNext()
 	if (s->getBool("rr")        ||
 	    s->getBool("ssrr")      ||
 	    s->getBool("ts") )
+        {
 	    compiler->abort(
-                
                     rule, 
                     "PIX does not support checking for IP options in ACLs.");
+            return true;
+        }
     }
     if (TCPService::cast(s)!=NULL) {
 	if (s->getBool("ack_flag")  ||
 	    s->getBool("fin_flag")  ||
 	    s->getBool("rst_flag")  ||
 	    s->getBool("syn_flag") )
+        {
 	    compiler->abort(
-                
                     rule, 
                     "PIX does not support checking for TCP options in ACLs.");
+            return true;
+        }
     }
 
     tmp_queue.push_back(rule);

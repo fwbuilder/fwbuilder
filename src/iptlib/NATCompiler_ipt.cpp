@@ -491,8 +491,6 @@ bool NATCompiler_ipt::VerifyRules::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
-    tmp_queue.push_back(rule);
-
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
     RuleElementODst  *odst=rule->getODst();  assert(odst);
     RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
@@ -502,35 +500,53 @@ bool NATCompiler_ipt::VerifyRules::processNext()
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
     if (tsrc->getNeg())
+    {
 	compiler->abort(
             rule, 
             "Can not use negation in translated source ");
+        return true;
+    }
 
     if (tdst->getNeg())
+    {
 	compiler->abort(
             rule,
             "Can not use negation in translated destination.");
+        return true;
+    }
 
     if (tsrv->getNeg())
+    {
 	compiler->abort(
             rule,
             "Can not use negation in translated service.");
+        return true;
+    }
 
     if (tsrv->size()!=1) 
+    {
 	compiler->abort(
             rule, 
             "Translated service should be 'Original' or should contain single object.");
+        return true;
+    }
 
     if ( Group::cast( compiler->getFirstTSrv(rule) )!=NULL)
+    {
 	compiler->abort(
             rule, 
             "Can not use group in translated service.");
+        return true;
+    }
 
 
     if (rule->getRuleType()==NATRule::LB)
+    {
         compiler->abort(
             rule, 
             "Load balancing rules are not supported.");
+        return true;
+    }
 
     // Note that in -xt mode and in single rule compile compiler->abort
     // does not really abort processing
@@ -538,16 +554,22 @@ bool NATCompiler_ipt::VerifyRules::processNext()
     {
         RuleSet *branch = rule->getBranch();
         if (branch == NULL)
+        {
             compiler->abort(
                 rule, 
                 "Action 'Branch' needs NAT rule set to point to");
-        else
+            return true;
+        } else
         {
             if (!NAT::isA(branch))
+            {
                 compiler->abort(
                     rule, 
                     "Action 'Branch' must point to a NAT rule set "
                     "(points to " + branch->getTypeName() + ")");
+                return true;
+            }
+
         }
     }
 
@@ -555,13 +577,22 @@ bool NATCompiler_ipt::VerifyRules::processNext()
     {
         FWObject *o1 = FWReference::getObject(tsrc->front());
         if ( ! tsrc->isAny() && Network::cast(o1)!=NULL)
+        {
             compiler->abort(
                 rule, 
                 "Can not use network object in translated source.");
+            return true;
+        }
+
         if (Interface::isA(o1) && Interface::cast(o1)->isUnnumbered())
-            compiler->abort(rule,
-                            "Can not use unnumbered interface in "
-                            "Translated Source of a Source translation rule.");
+        {
+            compiler->abort(
+                rule,
+                "Can not use unnumbered interface in "
+                "Translated Source of a Source translation rule.");
+            return true;
+        }
+
     }
 
     if (rule->getRuleType()==NATRule::SNetnat && !tsrc->isAny() ) 
@@ -570,9 +601,13 @@ bool NATCompiler_ipt::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength() != a2->getNetmaskPtr()->getLength() )
+        {
             compiler->abort(
                 rule, 
                 "Original and translated source should both be networks of the same size.");
+            return true;
+        }
+
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
@@ -581,10 +616,16 @@ bool NATCompiler_ipt::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength() != a2->getNetmaskPtr()->getLength() )
+        {
             compiler->abort(
                 rule, 
                 "Original and translated destination should both be networks of the same size .");
+            return true;
+        }
+
     }
+
+    tmp_queue.push_back(rule);
 
     return true;
 }
@@ -598,8 +639,6 @@ bool NATCompiler_ipt::VerifyRules2::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
-    tmp_queue.push_back(rule);
-
     if (rule->getRuleType()!= NATRule::Return)
     {
         RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
@@ -609,15 +648,24 @@ bool NATCompiler_ipt::VerifyRules2::processNext()
         Service *s2=compiler->getFirstTSrv(rule);
 
         if (osrv->isAny() && ! tsrv->isAny())
+        {
             compiler->abort(
                 rule, 
                 "Can not use service object in Translated Service if Original Service is 'Any'.");
-        
+            return true;
+        }
+
         if (!tsrv->isAny() && s1->getProtocolNumber()!=s2->getProtocolNumber())
+        {
             compiler->abort(
                 rule, 
                 "Translated Service should be either 'Original' or should contain object of the same type as Original Service.");
+            return true;
+        }
+
     }
+
+    tmp_queue.push_back(rule);
     return true;
 }
 
@@ -1172,8 +1220,8 @@ bool NATCompiler_ipt::ExpandAddressRanges::processNext()
 
 
 
-void NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfaces(RuleElement *re,
-                                                                                     Rule        *rule)
+void NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfaces(
+    RuleElement *re, Rule *rule)
 {
     if (re->isAny()) return;
 
@@ -1898,8 +1946,7 @@ bool NATCompiler_ipt::splitNATBranchRule::processNext()
         }
         else 
         {
-            compiler->abort(rule,
-                            "NAT branching rule misses branch rule set.");
+            compiler->abort(rule, "NAT branching rule misses branch rule set.");
             // in case we are in the test mode and abort() does not
             // really abort. Both the chain and the target are bogus
             // and are needed only to make the compiler continue and
@@ -2253,21 +2300,21 @@ bool NATCompiler_ipt::verifyRuleWithMAC::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
-    tmp_queue.push_back(rule);
+    RuleElementOSrc *rel = rule->getOSrc();
+    if (rel->isAny())
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
 
-    string chain=rule->getStr("ipt_chain");
+    string chain = rule->getStr("ipt_chain");
 
-    if (chain!="PREROUTING" &&
-        chain!="FORWARD" &&
-        chain!="INPUT" )
+    if (chain!="PREROUTING" && chain!="FORWARD" && chain!="INPUT" )
     {
 /* scan all objects in OSrc, look for physAddress or combinedAddress
  * with pa present.  Objects like that are not allowed in chain POSTROUTING.
  * Issue warning and remove physAddress from the list.
  */
-        RuleElementOSrc *rel= rule->getOSrc();
-        if (rel->isAny()) return true;
-
         list<FWObject*> cl;
         FWObject       *pa=NULL;
         for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
@@ -2309,6 +2356,7 @@ bool NATCompiler_ipt::verifyRuleWithMAC::processNext()
                         "SNAT rule can not match MAC address, however after removing object %s from OSrc it becomes 'Any'",
                         pa->getName().c_str());
                 compiler->abort(rule,  errmsg );
+                return true;
             }
             else
             {
@@ -2320,6 +2368,7 @@ bool NATCompiler_ipt::verifyRuleWithMAC::processNext()
         }
     }
 
+    tmp_queue.push_back(rule);
     return true;
 }
 

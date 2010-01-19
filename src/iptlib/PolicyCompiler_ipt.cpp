@@ -2473,9 +2473,12 @@ bool PolicyCompiler_ipt::checkSrcAndDst1::processNext()
     if (!compiler->isFirewallOrCluster(src) &&
         compiler->isFirewallOrCluster(dst) &&
 	rule->getDirection()==PolicyRule::Outbound )
+    {
 	compiler->abort(
             rule, 
             "direction can not be outbound when destination is firewall");
+        return true;
+    }
 
     tmp_queue.push_back(rule);
     return true;
@@ -2491,9 +2494,12 @@ bool PolicyCompiler_ipt::checkSrcAndDst2::processNext()
     if (compiler->isFirewallOrCluster(src) &&
         !compiler->isFirewallOrCluster(dst) &&
 	rule->getDirection()==PolicyRule::Inbound )
+    {
 	compiler->abort(
             rule, 
             "direction can not be inbound when source is firewall");
+        return true;
+    }
 
     tmp_queue.push_back(rule);
     return true;
@@ -2703,10 +2709,10 @@ bool PolicyCompiler_ipt::specialCaseWithUnnumberedInterface::processNext()
     return true;
 }
 
-void PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfaces(RuleElement *re,
-                                                                                        Rule        *rule)
+bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterfaces(
+    RuleElement *re, Rule *rule)
 {
-    if (re->isAny()) return;
+    if (re->isAny()) return true;
     list<FWObject*> cl;
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
@@ -2725,8 +2731,10 @@ void PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInt
                     ifs->getParent()->getName().c_str());
 
             compiler->abort(rule, errstr);
+            return false;
         }
     }
+    return true;
 }
 
 
@@ -2734,10 +2742,10 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    findDynamicInterfaces( rule->getSrc() , rule );
-    findDynamicInterfaces( rule->getDst() , rule );
+    if (findDynamicInterfaces( rule->getSrc() , rule ) &&
+        findDynamicInterfaces( rule->getDst() , rule ))
+        tmp_queue.push_back(rule);
 
-    tmp_queue.push_back(rule);
     return true;
 }
 
@@ -3106,15 +3114,21 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
 
       Address *src = compiler->getFirstSrc(rule);
       if (src==NULL)
+      {
           compiler->abort(
               rule, 
               "finalizeChain: Empty Source rule element in rule");
+          return true;
+      }
 
       Address *dst   =compiler->getFirstDst(rule);
       if (dst==NULL)
+      {
           compiler->abort(
               rule, 
               "finalizeChain: Empty Destination rule element in rule");
+          return true;
+      }
 
       bool b,m;
 /* 
@@ -3244,20 +3258,26 @@ bool PolicyCompiler_ipt::removeFW::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    tmp_queue.push_back(rule);
-
     if (compiler->osconfigurator->getNumOfVirtualAddressesForNat()==0 &&
         ! rule->getBool("upstream_rule_neg") )
     {
         RuleElementSrc *srcrel = rule->getSrc();
         Address        *src    = compiler->getFirstSrc(rule);
-        if (src==NULL) compiler->abort(
+        if (src==NULL)
+        {
+            compiler->abort(
             rule, "removeFW: Empty Source rule element in rule");
+            return true;
+        }
 
         RuleElementDst *dstrel = rule->getDst();
         Address        *dst    = compiler->getFirstDst(rule);
-        if (dst==NULL) compiler->abort(
+        if (dst==NULL)
+        {
+            compiler->abort(
             rule, "removeFW: Empty Destination rule element in rule");
+            return true;
+        }
 
         string chain = rule->getStr("ipt_chain");
 
@@ -3275,14 +3295,14 @@ bool PolicyCompiler_ipt::removeFW::processNext()
             srcrel->reset();
         }
     }
+
+    tmp_queue.push_back(rule);
     return true;
 }
 
 bool PolicyCompiler_ipt::checkMACinOUTPUTChain::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    tmp_queue.push_back(rule);
 
     if ( rule->getStr("ipt_chain")=="OUTPUT" )
     {
@@ -3291,19 +3311,23 @@ bool PolicyCompiler_ipt::checkMACinOUTPUTChain::processNext()
         assert(src);
 
         if (physAddress::isA(src))
+        {
             compiler->abort(
                 rule, "Can not match MAC address of the firewall");
+            return true;
+        }
 
         if (combinedAddress::isA(src))
         {
             compiler->warning(
-                
                     rule, 
                     "Can not match MAC address of the firewall "
                     "(chain OUTPUT) ");
             combinedAddress::cast(src)->setPhysAddress("");
         }
     }
+
+    tmp_queue.push_back(rule);
 
     return true;
 }

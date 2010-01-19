@@ -1,6 +1,10 @@
 2010-01-19  vadim  <vadim@vk.crocodile.org>
 
-	* ../src/cisco_lib/Helper.cpp (triplet::hash): fixes #1104:
+	* ../src/cisco_lib/NATCompiler_pix.cpp (VerifyRules::processNext):
+	fixes #1104: policy compiler for PIX crashed when it enountered
+	NAT rule trying to trsnslate both source and destination addresses.
+
+	* ../src/cisco_lib/Helper.cpp (triplet::hash): fixes #1105:
 	compiler for PIX crashed when interface with dynamic address
 	was used in ODst of a NAT rule.
 

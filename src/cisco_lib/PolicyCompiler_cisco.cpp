@@ -603,6 +603,7 @@ bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
                 str << "Address " << addr
                     << " does not match address or network zone of any interface." ;
                 compiler->abort(rule, str.str());
+                return true;
             }
         }
     }
@@ -758,10 +759,12 @@ bool PolicyCompiler_cisco::processMultiAddressObjectsInRE::processNext()
         if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
         MultiAddress *atrt = MultiAddress::cast(o);
         if (atrt!=NULL && atrt->isRunTime())
+        {
             compiler->abort(
-                
                     rule, 
                     "Run-time AddressTable and DNSName objects are not supported.");
+            return true;
+        }
     }
 
     tmp_queue.push_back(rule);

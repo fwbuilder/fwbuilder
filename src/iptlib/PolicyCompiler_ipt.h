@@ -555,7 +555,7 @@ protected:
         friend class checkForDynamicInterfacesOfOtherObjects;
         class checkForDynamicInterfacesOfOtherObjects : public PolicyRuleProcessor
         {
-            void findDynamicInterfaces(libfwbuilder::RuleElement *re,
+            bool findDynamicInterfaces(libfwbuilder::RuleElement *re,
                                        libfwbuilder::Rule        *rule);
             public:
             checkForDynamicInterfacesOfOtherObjects(const std::string &name) : PolicyRuleProcessor(name) {}

@@ -213,8 +213,8 @@ bool PolicyCompiler_cisco::pickACL::processNext()
                                                  rule->getInterfaceId()));
     if(rule_iface==NULL)
     {
-        compiler->abort(
-            rule, "Missing interface assignment");
+        compiler->abort(rule, "Missing interface assignment");
+        return true;
     }
 
     /*
@@ -240,11 +240,13 @@ bool PolicyCompiler_cisco::pickACL::processNext()
     }
 
     if (rule->getDirection() == PolicyRule::Outbound && !generate_out_acl)
+    {
         compiler->abort(
-            
                 rule, 
                 "Rule with direction 'Outbound' requires outbound ACL "
                 "but option 'Generate outbound access lists' is OFF.");
+        return true;
+    }
 
     /* The choice of the ACL name depends on whether this is a named
      * acl or not. If not, should use unique numbers. Also need to
