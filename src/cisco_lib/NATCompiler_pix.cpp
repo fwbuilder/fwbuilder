@@ -243,7 +243,13 @@ bool NATCompiler_pix::VerifyRules::processNext()
     NATRule *rule=getNext(); if (rule==NULL) return false;
     string vers=compiler->fw->getStr("version");
 
-    tmp_queue.push_back(rule);
+    if (rule->getRuleType()==NATRule::SDNAT) 
+    {
+        compiler->abort(
+            rule, 
+            "Rules that translate both source and destination are not supported.");
+        return true;
+    }
 
     bool  version_lt_63= ( compiler->fw->getStr("platform")=="pix" &&
                            libfwbuilder::XMLTools::version_compare(compiler->fw->getStr("version"),"6.3")<0);  // fwsm is always above 6.3 - its OS is based on 6.3
@@ -258,16 +264,20 @@ bool NATCompiler_pix::VerifyRules::processNext()
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
     if (rule->getRuleType()==NATRule::LB)
+    {
         compiler->abort(
             rule, 
             "Load balancing rules are not supported.");
+        return true;
+    }
 
     if (rule->getRuleType()==NATRule::NONAT && (!osrv->isAny() || !tsrv->isAny()))
+    {
         compiler->abort(
-            
                 rule, 
                 "'no nat' rules should have no services");
-
+        return true;
+    }
 
     if (osrc->getNeg() ||
         odst->getNeg() ||
@@ -275,10 +285,12 @@ bool NATCompiler_pix::VerifyRules::processNext()
         tsrc->getNeg() ||
         tdst->getNeg() ||
         tsrv->getNeg())
+    {
         compiler->abort(
-            
                 rule, 
                 "Negation is not supported in NAT rules.");
+        return true;
+    }
 
     if (rule->getRuleType()==NATRule::SNAT) 
     {
@@ -288,7 +300,6 @@ bool NATCompiler_pix::VerifyRules::processNext()
         if ( ! odst->isAny() && version_lt_63)  // can do on fwsm
         {
             compiler->warning(
-                
                     rule, 
                     "Original destination is ignored in 'nat' NAT rules "
                     "when compiling for PIX v6.2 and earlier.");
@@ -300,36 +311,43 @@ bool NATCompiler_pix::VerifyRules::processNext()
     if (rule->getRuleType()==NATRule::DNAT) 
     {
         if ( odst->size()!=1 && version_lt_63)
+        {
             compiler->abort(
-                
                     rule, 
                     "There should be no more than one object in original destination");
+            return true;
+        }
 
         if ( ! osrc->isAny() && version_lt_63)
             compiler->warning(
-                
                     rule, 
                     "Original source is ignored in 'static' NAT rules "
                     "when compiling for PIX v6.2 and earlier.");
     }
 
     if (osrv->size()!=1 && !tsrv->isAny())
+    {
         compiler->abort(
-            
                 rule, 
                 "Can not translate multiple services into one service in one rule. ");
+        return true;
+    }
 
     if (tsrv->size()!=1)
+    {
         compiler->abort(
-            
-                rule, 
+            rule, 
                 "Translated service should be 'Original' or should contain single object.");
+        return true;
+    }
 
     if ( Group::cast( compiler->getFirstTSrv(rule) )!=NULL)
+    {
         compiler->abort(
-            
                 rule, 
                 "Can not use group in translated service.");
+        return true;
+    }
 
     if (rule->getRuleType()==NATRule::SNetnat && !tsrc->isAny() ) 
     {
@@ -337,10 +355,12 @@ bool NATCompiler_pix::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
+        {
             compiler->abort(
-                
                     rule, 
                     "Original and translated source should both be networks of the same size");
+            return true;
+        }
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
@@ -349,14 +369,18 @@ bool NATCompiler_pix::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
+        {
             compiler->abort(
-                
                     rule, 
                     "Original and translated destination should both be networks of the same size.");
+            return true;
+        }
     }
 
     if (rule->getRuleType()==NATRule::SNetnat) rule->setRuleType(NATRule::SNAT);
     if (rule->getRuleType()==NATRule::DNetnat) rule->setRuleType(NATRule::DNAT);
+
+    tmp_queue.push_back(rule);
 
     return true;
 }
@@ -366,7 +390,6 @@ bool NATCompiler_pix::AssignInterface::processNext()
 {
     Helper helper(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
-    tmp_queue.push_back(rule);
 
     Address  *a1=NULL;
     Address  *a2=NULL;
@@ -390,19 +413,24 @@ bool NATCompiler_pix::AssignInterface::processNext()
     rule->setInt("nat_iface_trn",  helper.findInterfaceByNetzone(a2));
 
     if ( rule->getInt("nat_iface_orig")==-1 ) 
+    {
 	compiler->abort(
-            
-                rule, 
+            rule, 
                 "Object '" + a1->getName() + 
                 "' does not belong to any known network zone.");
+        return true;
+    }
 
     if ( rule->getInt("nat_iface_trn")==-1 ) 
+    {
 	compiler->abort(
-            
-                rule, 
+            rule, 
                 "Object '" + a2->getName() + 
                 "' does not belong to any known network zone.");
+        return true;
+    }
 
+    tmp_queue.push_back(rule);
     return true;
 }
 
@@ -416,7 +444,6 @@ bool NATCompiler_pix::verifyInterfaces::processNext()
 bool NATCompiler_pix::verifyRuleElements::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
-    tmp_queue.push_back(rule);
 
     Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst=compiler->getFirstODst(rule);  assert(odst);
@@ -432,20 +459,24 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
     if (rule->getRuleType()==NATRule::SNAT)
     {
 	if ((! osrv->isAny() || ! tsrv->isAny()) && version_lt_63)
+        {
 	    compiler->abort(
-                
                     rule, 
                     "only PIX v6.3 and later recognizes services in global NAT.");
+            return true;
+        }
     }
 
     if (rule->getRuleType()==NATRule::DNAT)
     {
 	if (AddressRange::cast(odst) || AddressRange::cast(tdst)) 
+        {
 	    compiler->abort(
-                
                     rule, 
                     "Address ranges are not supported in original destination or "
                     "translated destination ");
+            return true;
+        }
 
 	if (Network::isA(odst) && Network::isA(tdst))
         {
@@ -455,26 +486,32 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
                 InetAddr(InetAddr::getAllOnes()) : (*(tdst->getNetmaskPtr()));
 
             if ( !(n1==n2) )
+            {
                 compiler->abort(
-                    
                         rule, 
                         "Original and translated destination must be of the same "
                         "size");
+                return true;
+            }
         }
 
 
 	if (osrv->getTypeName()!=tsrv->getTypeName()) 
+        {
 	    compiler->abort(
-                
                     rule, 
                     "Original and translated services must be of "
                     "the same type.");
+            return true;
+        }
 
 	if (ICMPService::isA(osrv))
+        {
 	    compiler->abort(
-                
                     rule, 
                     "ICMP services are not supported in static NAT. ");
+            return true;
+        }
 
 	if (TCPService::isA(osrv) || UDPService::isA(osrv))
         {
@@ -482,11 +519,13 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 	    int dre=TCPUDPService::cast(osrv)->getDstRangeEnd();
 
 	    if (drs!=dre)
+            {
 		compiler->abort(
-                    
                         rule, 
                         "TCP or UDP service with a port range is not "
                         "supported in NAT.");
+                return true;
+            }
 	}
 	if (TCPService::isA(tsrv) || UDPService::isA(tsrv))
         {
@@ -494,14 +533,17 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 	    int dre=TCPUDPService::cast(tsrv)->getDstRangeEnd();
 
 	    if (drs!=dre)
+            {
 		compiler->abort(
-                    
                         rule, 
                         "TCP or UDP service with a port range is not "
                         "supported in NAT.");
+                return true;
+            }
 	}
     }
 
+    tmp_queue.push_back(rule);
     return true;
 }
 
@@ -687,6 +729,7 @@ void NATCompiler_pix::UseFirewallInterfaces::scanInterfaces(RuleElement *rel)
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
     Address *obj=Address::cast(o);
     if(obj==NULL)
+    {
         compiler->abort(rel->getParent(), 
                         "Broken rule element "+
                         rel->getTypeName()+
@@ -695,6 +738,9 @@ void NATCompiler_pix::UseFirewallInterfaces::scanInterfaces(RuleElement *rel)
                         " ( found object with type "+
                         string((o!=NULL)?o->getTypeName():"<NULL>") +
                         ")");
+        return;
+    }
+
     const InetAddr *obj_addr = obj->getAddressPtr();
     if (obj_addr==NULL) return;
 
@@ -836,12 +882,13 @@ bool NATCompiler_pix::createNATCmd::processNext()
 
         if (natcmd->outside && compiler->fw->getStr("platform")=="pix" &&
             libfwbuilder::XMLTools::version_compare(compiler->fw->getStr("version"),"6.2")<0 )
+        {
             compiler->abort(
-                
                     rule, 
                     "Bi-Directional NAT of source addresses is only "
                     "supported in  PIX 6.2 and newer.");
-
+            return true;
+        }
 /* 
  * map is sorted container, this means that objects are going to be arranged
  * in nat_commands in the order of the key.
@@ -1158,10 +1205,12 @@ bool NATCompiler_pix::processMultiAddressObjectsInRE::processNext()
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
         MultiAddress *atrt = MultiAddress::cast(o);
         if (atrt!=NULL && atrt->isRunTime())
+        {
             compiler->abort(
-                
                     rule, 
                     "Run-time AddressTable and DNSName objects are not supported.");
+            return true;
+        }
     }
 
     tmp_queue.push_back(rule);
