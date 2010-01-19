@@ -258,10 +258,17 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
 string triplet::hash()
 {
     ostringstream ostr;
-    ostr <<  src->getAddressPtr()->toString()
-         << "."
-         << dst->getAddressPtr()->toString() 
-         <<"."
-         << srv->getId();
+    string dst_str;
+    string src_str;
+
+    Interface *intf = Interface::cast(src);
+    if (intf && intf->isDyn()) src_str = intf->getId();
+    else src_str = src->getAddressPtr()->toString();
+
+    intf = Interface::cast(dst);
+    if (intf && intf->isDyn()) dst_str = intf->getId();
+    else dst_str = dst->getAddressPtr()->toString();
+
+    ostr << src_str << "." << dst_str <<"." << srv->getId();
     return ostr.str();
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1263600448" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1263600448" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -115,9 +115,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -184,9 +184,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -202,9 +202,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -219,9 +219,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -237,9 +237,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -255,9 +255,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -273,9 +273,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -291,9 +291,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -323,9 +323,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -341,9 +341,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -359,9 +359,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -377,9 +377,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -395,9 +395,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -413,9 +413,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -431,9 +431,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -445,9 +445,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -479,9 +479,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">True</Option>
           </HostOptions>
         </Host>
@@ -496,9 +496,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -513,9 +513,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -544,9 +544,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -608,9 +608,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -626,9 +626,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -643,9 +643,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -660,9 +660,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -723,9 +723,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -742,9 +742,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -885,8 +885,8 @@
       <ServiceGroup id="stdid08_1" name="UDP" comment="" ro="False"/>
       <ServiceGroup id="stdid13_1" name="Custom_Services" comment="" ro="False">
         <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipfilter"/>
           <CustomServiceCommand platform="iptables">-m ip_conntrack_talk -m ip_nat_talk</CustomServiceCommand>
         </CustomService>
       </ServiceGroup>
@@ -1322,10 +1322,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1364,10 +1364,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CE59C76" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="">
@@ -1388,10 +1388,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1434,10 +1434,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3E155E82" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
@@ -1513,10 +1513,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CD8770E" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
@@ -1537,10 +1537,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-4" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
@@ -1561,10 +1561,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id431BE7A0" disabled="False" log="False" position="19" action="Accept" direction="Both" comment="objects hostA and hostB are&#10;redundant and should be removed by&#10; removeRedundantAddressesFromDst">
@@ -1587,10 +1587,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id431BD5EF" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="">
@@ -1628,10 +1628,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CE591F6" disabled="True" log="False" position="22" action="Accept" direction="Both" comment="">
@@ -1651,10 +1651,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B58E180" disabled="False" log="True" position="23" action="Accept" direction="Both" comment="">
@@ -1693,10 +1693,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="25" action="Deny" direction="Both" comment="">
@@ -1716,11 +1716,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1798,12 +1798,12 @@
           <Option name="accept_established">False</Option>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="cmdline">-v</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -1812,8 +1812,8 @@
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
-          <Option name="filesystem"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="filesystem"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ftp_fixup">0 21 0 strict 0</Option>
@@ -1830,9 +1830,9 @@
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">0 389 389 nil 0</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
@@ -1845,7 +1845,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -1859,7 +1859,7 @@
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="openbsd_ip_redirect">0</Option>
           <Option name="openbsd_ip_sourceroute">0</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="pix_acl_basic">False</Option>
           <Option name="pix_acl_no_clear">False</Option>
@@ -1883,7 +1883,7 @@
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">False</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_generate_out_acl">False</Option>
@@ -1905,9 +1905,9 @@
           <Option name="pix_nodnsalias_outbound">True</Option>
           <Option name="pix_ntp1">192.168.1.20</Option>
           <Option name="pix_ntp1_pref">True</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_optimize_default_nat">True</Option>
           <Option name="pix_prolog_script">	
@@ -1976,8 +1976,8 @@
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">0 514 0 nil 0</Option>
           <Option name="rtsp_fixup">0 554 0 nil 0</Option>
-          <Option name="scpArgs"></Option>
-          <Option name="script_env_path"></Option>
+          <Option name="scpArgs"/>
+          <Option name="script_env_path"/>
           <Option name="short_script">False</Option>
           <Option name="sip_fixup">0 5060 5060 nil 0</Option>
           <Option name="sip_hh">0</Option>
@@ -1989,11 +1989,11 @@
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">0 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">0 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">0 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
@@ -2331,10 +2331,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_suffix">/minute</Option>
               <Option name="limit_value">10</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2529,17 +2529,17 @@
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -2551,7 +2551,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -2576,7 +2576,7 @@
           <Option name="pix_disable_snmp_agent">True</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">False</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_h323_abs">True</Option>
           <Option name="pix_h323_hh">0</Option>
@@ -2587,14 +2587,14 @@
           <Option name="pix_ip_address">False</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
-          <Option name="pix_ntp1"></Option>
+          <Option name="pix_ntp1"/>
           <Option name="pix_ntp1_pref">True</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_optimize_default_nat">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">False</Option>
           <Option name="pix_rpc_abs">True</Option>
@@ -2617,12 +2617,12 @@
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_snmp_poll_traps_1">1</Option>
           <Option name="pix_snmp_poll_traps_2">1</Option>
-          <Option name="pix_snmp_server1"></Option>
-          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_snmp_server1"/>
+          <Option name="pix_snmp_server2"/>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
-          <Option name="pix_syslog_level"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
+          <Option name="pix_syslog_level"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_tcpmss">False</Option>
           <Option name="pix_tcpmss_value">0</Option>
@@ -2649,10 +2649,10 @@
           <Option name="pix_xlate_ss">0</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -3102,10 +3102,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0F9DB" disabled="False" log="True" position="9" action="Accept" direction="Both" comment="">
@@ -3126,10 +3126,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3172,10 +3172,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB10695" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="">
@@ -3232,10 +3232,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA07" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
@@ -3256,10 +3256,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA12" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
@@ -3280,10 +3280,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA1D" disabled="True" log="False" position="17" action="Accept" direction="Both" comment="rules 8 and 9 can be&#10;used to test shading">
@@ -3303,10 +3303,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA27" disabled="True" log="False" position="18" action="Accept" direction="Both" comment="">
@@ -3326,10 +3326,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA31" disabled="False" log="False" position="19" action="Accept" direction="Both" comment="">
@@ -3387,10 +3387,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3DB0FA51" disabled="False" log="True" position="22" action="Deny" direction="Both" comment="">
@@ -3410,11 +3410,11 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3447,13 +3447,13 @@
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="cmdline">-v</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ftp_fixup">0 21 21 strict 0</Option>
@@ -3466,9 +3466,9 @@
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">0 389 389 nil 0</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -3480,7 +3480,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -3508,7 +3508,7 @@
           <Option name="pix_connection_timewait">True</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_h323_abs">True</Option>
           <Option name="pix_h323_hh">0</Option>
@@ -3521,8 +3521,8 @@
           <Option name="pix_nodnsalias_inbound">True</Option>
           <Option name="pix_nodnsalias_outbound">True</Option>
           <Option name="pix_ntp1">192.168.1.20</Option>
-          <Option name="pix_ntp2"></Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp2"/>
+          <Option name="pix_ntp3"/>
           <Option name="pix_optimize_default_nat">False</Option>
           <Option name="pix_prolog_script">	
 </Option>
@@ -3587,7 +3587,7 @@
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">0 514 514 nil 0</Option>
           <Option name="rtsp_fixup">0 554 554 nil 0</Option>
-          <Option name="script_env_path"></Option>
+          <Option name="script_env_path"/>
           <Option name="sip_fixup">0 5060 5060 nil 0</Option>
           <Option name="sip_hh">0</Option>
           <Option name="sip_media_hh">0</Option>
@@ -3597,9 +3597,9 @@
           <Option name="sip_ss">0</Option>
           <Option name="skinny_fixup">0 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">0 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">0 1521 1521 nil 0</Option>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
@@ -3868,11 +3868,11 @@
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
         <FirewallOptions>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">True</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -3897,7 +3897,7 @@
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="pix_add_clear_statements">False</Option>
           <Option name="pix_assume_fw_part_of_any">False</Option>
@@ -3915,7 +3915,7 @@
           <Option name="pix_emb_limit">0</Option>
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_h323_abs">True</Option>
@@ -3965,8 +3965,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -4001,9 +4001,9 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
@@ -4189,8 +4189,8 @@ no sysopt nodnsalias outbound
         </Management>
         <FirewallOptions>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">0</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -4229,7 +4229,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emblem_log_format">True</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">False</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_h323_abs">True</Option>
@@ -4240,18 +4240,18 @@ no sysopt nodnsalias outbound
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">True</Option>
           <Option name="pix_logging_buffered">False</Option>
-          <Option name="pix_logging_buffered_level"></Option>
+          <Option name="pix_logging_buffered_level"/>
           <Option name="pix_logging_console">False</Option>
-          <Option name="pix_logging_console_level"></Option>
+          <Option name="pix_logging_console_level"/>
           <Option name="pix_logging_timestamp">False</Option>
-          <Option name="pix_logging_trap_level"></Option>
+          <Option name="pix_logging_trap_level"/>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
           <Option name="pix_ntp1">10.3.14.30</Option>
-          <Option name="pix_ntp2"></Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp2"/>
+          <Option name="pix_ntp3"/>
           <Option name="pix_optimize_default_nat">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">False</Option>
           <Option name="pix_resetinbound">False</Option>
@@ -4278,7 +4278,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_snmp_poll_traps_1">1</Option>
           <Option name="pix_snmp_poll_traps_2">1</Option>
           <Option name="pix_snmp_server1">10.3.14.40</Option>
-          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_snmp_server2"/>
           <Option name="pix_ssh_timeout">5</Option>
           <Option name="pix_syslog_device_id_opt">string</Option>
           <Option name="pix_syslog_device_id_val">real_firewall</Option>
@@ -4321,10 +4321,10 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
+          <Option name="snmp_contact"/>
           <Option name="snmp_description">Cisco PIX Firewall Version 6.2(2)
 </Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
           <Option name="uauth_abs">True</Option>
@@ -4574,8 +4574,8 @@ no sysopt nodnsalias outbound
         </Management>
         <FirewallOptions>
           <Option name="check_shading">True</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -4601,7 +4601,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_conn_ss">0</Option>
           <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_h323_abs">True</Option>
@@ -4612,11 +4612,11 @@ no sysopt nodnsalias outbound
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
           <Option name="pix_logging_buffered">False</Option>
-          <Option name="pix_logging_buffered_level"></Option>
+          <Option name="pix_logging_buffered_level"/>
           <Option name="pix_logging_console">False</Option>
-          <Option name="pix_logging_console_level"></Option>
+          <Option name="pix_logging_console_level"/>
           <Option name="pix_logging_timestamp">False</Option>
-          <Option name="pix_logging_trap_level"></Option>
+          <Option name="pix_logging_trap_level"/>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
           <Option name="pix_optimize_default_nat">True</Option>
@@ -4650,8 +4650,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -4679,9 +4679,9 @@ no sysopt nodnsalias outbound
           <Option name="sip_media_ss">0</Option>
           <Option name="sip_mm">30</Option>
           <Option name="sip_ss">0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="uauth_abs">True</Option>
@@ -4823,8 +4823,8 @@ no sysopt nodnsalias outbound
         </Management>
         <FirewallOptions>
           <Option name="check_shading">True</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -4850,7 +4850,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_conn_ss">0</Option>
           <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_h323_abs">True</Option>
@@ -4861,15 +4861,15 @@ no sysopt nodnsalias outbound
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
           <Option name="pix_logging_buffered">False</Option>
-          <Option name="pix_logging_buffered_level"></Option>
+          <Option name="pix_logging_buffered_level"/>
           <Option name="pix_logging_console">False</Option>
-          <Option name="pix_logging_console_level"></Option>
+          <Option name="pix_logging_console_level"/>
           <Option name="pix_logging_timestamp">False</Option>
-          <Option name="pix_logging_trap_level"></Option>
+          <Option name="pix_logging_trap_level"/>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
           <Option name="pix_optimize_default_nat">True</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">False</Option>
           <Option name="pix_resetinbound">False</Option>
@@ -4892,8 +4892,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -4921,9 +4921,9 @@ no sysopt nodnsalias outbound
           <Option name="sip_media_ss">0</Option>
           <Option name="sip_mm">30</Option>
           <Option name="sip_ss">0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="uauth_abs">True</Option>
@@ -5003,7 +5003,7 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D1BF5EB" disabled="False" position="3" action="Translate" comment="">
@@ -5090,7 +5090,7 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D1BF934" disabled="False" position="7" action="Translate" comment="">
@@ -5113,7 +5113,7 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3AFB66D6" disabled="False" position="8" action="Translate" comment="">
@@ -5136,7 +5136,7 @@ no sysopt nodnsalias outbound
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D1BFB42" disabled="False" position="9" action="Translate" comment="">
@@ -5577,8 +5577,8 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
               <Option name="stateless">True</Option>
@@ -5599,8 +5599,8 @@ no sysopt nodnsalias outbound
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
               <Option name="stateless">True</Option>
@@ -5731,17 +5731,17 @@ no sysopt nodnsalias outbound
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="cmdline">-v</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="id"></Option>
+          <Option name="id"/>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects">0</Option>
@@ -5780,7 +5780,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_conn_mm">0</Option>
           <Option name="pix_conn_ss">0</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_h323_abs">True</Option>
           <Option name="pix_h323_hh">0</Option>
           <Option name="pix_h323_inact">False</Option>
@@ -5788,7 +5788,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_h323_ss">0</Option>
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">True</Option>
           <Option name="pix_rpc_abs">True</Option>
@@ -5826,10 +5826,10 @@ no sysopt nodnsalias outbound
           <Option name="pix_xlate_ss">0</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">True</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="use_ip_tool">True</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -6138,24 +6138,24 @@ no sysopt nodnsalias outbound
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="h323_hh">0</Option>
           <Option name="h323_mm">5</Option>
           <Option name="h323_ss">0</Option>
-          <Option name="id"></Option>
+          <Option name="id"/>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects">0</Option>
@@ -6195,7 +6195,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_conn_ss">0</Option>
           <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_h323_abs">True</Option>
           <Option name="pix_h323_hh">0</Option>
@@ -6206,7 +6206,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_ip_address">False</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_resetinbound">False</Option>
           <Option name="pix_resetoutside">False</Option>
           <Option name="pix_rpc_abs">True</Option>
@@ -6226,9 +6226,9 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
-          <Option name="pix_syslog_level"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
+          <Option name="pix_syslog_level"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_udp_abs">True</Option>
@@ -6251,16 +6251,16 @@ no sysopt nodnsalias outbound
           <Option name="rpc_hh">0</Option>
           <Option name="rpc_mm">10</Option>
           <Option name="rpc_ss">0</Option>
-          <Option name="script_env_path"></Option>
+          <Option name="script_env_path"/>
           <Option name="sip_hh">0</Option>
           <Option name="sip_media_hh">0</Option>
           <Option name="sip_media_mm">0</Option>
           <Option name="sip_media_ss">0</Option>
           <Option name="sip_mm">30</Option>
           <Option name="sip_ss">0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="uauth_abs">True</Option>
@@ -6363,7 +6363,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D79A1C2" disabled="False" log="True" position="1" action="Accept" direction="Both" comment="">
@@ -6384,7 +6384,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D79A1E4" disabled="False" log="True" position="2" action="Accept" direction="Both" comment="">
@@ -6405,7 +6405,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B0C63CB" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="'masquerading' rule">
@@ -6425,7 +6425,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B0C63D5" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="'catch all' rule">
@@ -6445,7 +6445,7 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -6480,24 +6480,24 @@ no sysopt nodnsalias outbound
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="h323_hh">0</Option>
           <Option name="h323_mm">5</Option>
           <Option name="h323_ss">0</Option>
-          <Option name="id"></Option>
+          <Option name="id"/>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -6509,7 +6509,7 @@ no sysopt nodnsalias outbound
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -6525,36 +6525,36 @@ no sysopt nodnsalias outbound
           <Option name="pix_check_rule_shading">False</Option>
           <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_replace_natted_objects">True</Option>
           <Option name="pix_resetinbound">False</Option>
           <Option name="pix_resetoutside">False</Option>
           <Option name="pix_set_host_name">False</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
-          <Option name="pix_syslog_level"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
+          <Option name="pix_syslog_level"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">False</Option>
           <Option name="rpc_hh">0</Option>
           <Option name="rpc_mm">10</Option>
           <Option name="rpc_ss">0</Option>
-          <Option name="script_env_path"></Option>
+          <Option name="script_env_path"/>
           <Option name="sip_hh">0</Option>
           <Option name="sip_media_hh">0</Option>
           <Option name="sip_media_mm">0</Option>
           <Option name="sip_media_ss">0</Option>
           <Option name="sip_mm">30</Option>
           <Option name="sip_ss">0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="uauth_abs">True</Option>
@@ -6724,23 +6724,23 @@ no sysopt nodnsalias outbound
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="h323_hh">0</Option>
           <Option name="h323_mm">5</Option>
           <Option name="h323_ss">0</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -6752,7 +6752,7 @@ no sysopt nodnsalias outbound
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -6768,7 +6768,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_check_rule_shading">False</Option>
           <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
@@ -6780,7 +6780,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_logging_trap_level">4</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">True</Option>
           <Option name="pix_resetinbound">False</Option>
@@ -6796,16 +6796,16 @@ no sysopt nodnsalias outbound
           <Option name="rpc_hh">0</Option>
           <Option name="rpc_mm">10</Option>
           <Option name="rpc_ss">0</Option>
-          <Option name="script_env_path"></Option>
+          <Option name="script_env_path"/>
           <Option name="sip_hh">0</Option>
           <Option name="sip_media_hh">0</Option>
           <Option name="sip_media_mm">0</Option>
           <Option name="sip_media_ss">0</Option>
           <Option name="sip_mm">30</Option>
           <Option name="sip_ss">0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="uauth_abs">True</Option>
@@ -6967,23 +6967,23 @@ no sysopt nodnsalias outbound
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="h323_hh">0</Option>
           <Option name="h323_mm">5</Option>
           <Option name="h323_ss">0</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -6995,7 +6995,7 @@ no sysopt nodnsalias outbound
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -7010,10 +7010,10 @@ no sysopt nodnsalias outbound
           <Option name="pix_check_overlapping_statics">True</Option>
           <Option name="pix_check_rule_shading">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">True</Option>
           <Option name="pix_set_host_name">False</Option>
@@ -7022,13 +7022,13 @@ no sysopt nodnsalias outbound
           <Option name="rpc_hh">0</Option>
           <Option name="rpc_mm">10</Option>
           <Option name="rpc_ss">0</Option>
-          <Option name="script_env_path"></Option>
+          <Option name="script_env_path"/>
           <Option name="sip_hh">0</Option>
           <Option name="sip_mm">30</Option>
           <Option name="sip_ss">0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="uauth_abs">True</Option>
@@ -7279,8 +7279,8 @@ no sysopt nodnsalias outbound
         </Management>
         <FirewallOptions>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -7321,7 +7321,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emb_limit">0</Option>
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_h323_abs">True</Option>
@@ -7332,11 +7332,11 @@ no sysopt nodnsalias outbound
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
           <Option name="pix_logging_buffered">False</Option>
-          <Option name="pix_logging_buffered_level"></Option>
+          <Option name="pix_logging_buffered_level"/>
           <Option name="pix_logging_console">False</Option>
-          <Option name="pix_logging_console_level"></Option>
+          <Option name="pix_logging_console_level"/>
           <Option name="pix_logging_timestamp">False</Option>
-          <Option name="pix_logging_trap_level"></Option>
+          <Option name="pix_logging_trap_level"/>
           <Option name="pix_max_conns">0</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
@@ -7371,8 +7371,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -7407,9 +7407,9 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
@@ -7456,8 +7456,8 @@ no sysopt nodnsalias outbound
         </Management>
         <FirewallOptions>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">0</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -7493,7 +7493,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_conn_ss">0</Option>
           <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">False</Option>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_h323_abs">True</Option>
@@ -7504,11 +7504,11 @@ no sysopt nodnsalias outbound
           <Option name="pix_include_comments">True</Option>
           <Option name="pix_ip_address">False</Option>
           <Option name="pix_logging_buffered">False</Option>
-          <Option name="pix_logging_buffered_level"></Option>
+          <Option name="pix_logging_buffered_level"/>
           <Option name="pix_logging_console">False</Option>
-          <Option name="pix_logging_console_level"></Option>
+          <Option name="pix_logging_console_level"/>
           <Option name="pix_logging_timestamp">False</Option>
-          <Option name="pix_logging_trap_level"></Option>
+          <Option name="pix_logging_trap_level"/>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
           <Option name="pix_optimize_default_nat">False</Option>
@@ -7542,8 +7542,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -7577,9 +7577,9 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">0 0 0 nil 0</Option>
           <Option name="skinny_fixup">0 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">0 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">0 1521 1521 nil 0</Option>
           <Option name="tftp_fixup">0 69 0 nil 0</Option>
           <Option name="uauth_abs">True</Option>
@@ -7764,17 +7764,17 @@ no sysopt nodnsalias outbound
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -7784,9 +7784,9 @@ no sysopt nodnsalias outbound
           <Option name="log_all_dropped">False</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">debug</Option>
-          <Option name="log_limit_suffix"></Option>
+          <Option name="log_limit_suffix"/>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">False</Option>
@@ -7795,10 +7795,10 @@ no sysopt nodnsalias outbound
           <Option name="no_optimisation">False</Option>
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -7963,11 +7963,11 @@ no sysopt nodnsalias outbound
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
         <FirewallOptions>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">0</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -7989,13 +7989,13 @@ no sysopt nodnsalias outbound
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pix_acl_basic">True</Option>
           <Option name="pix_acl_no_clear">False</Option>
           <Option name="pix_acl_substitution">False</Option>
-          <Option name="pix_acl_temp_addr"></Option>
+          <Option name="pix_acl_temp_addr"/>
           <Option name="pix_add_clear_statements">False</Option>
           <Option name="pix_assume_fw_part_of_any">False</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -8014,7 +8014,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emblem_log_format">True</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">False</Option>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_h323_abs">True</Option>
@@ -8034,10 +8034,10 @@ no sysopt nodnsalias outbound
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
           <Option name="pix_ntp1">10.3.14.30</Option>
-          <Option name="pix_ntp2"></Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp2"/>
+          <Option name="pix_ntp3"/>
           <Option name="pix_optimize_default_nat">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">True</Option>
           <Option name="pix_resetinbound">False</Option>
@@ -8064,7 +8064,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_snmp_poll_traps_1">1</Option>
           <Option name="pix_snmp_poll_traps_2">1</Option>
           <Option name="pix_snmp_server1">10.3.14.40</Option>
-          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_snmp_server2"/>
           <Option name="pix_ssh_timeout">5</Option>
           <Option name="pix_syslog_device_id_opt">string</Option>
           <Option name="pix_syslog_device_id_val">real_firewall</Option>
@@ -8108,12 +8108,12 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
+          <Option name="snmp_contact"/>
           <Option name="snmp_description">Cisco PIX Firewall Version 6.2(2)
 </Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
           <Option name="uauth_abs">True</Option>
           <Option name="uauth_hh">0</Option>
@@ -8877,10 +8877,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -8919,10 +8919,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A041B9567" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="">
@@ -8943,10 +8943,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -8989,10 +8989,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04429567" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
@@ -9068,10 +9068,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04749567" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
@@ -9092,10 +9092,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04819567" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
@@ -9116,10 +9116,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A048E9567" disabled="False" log="False" position="19" action="Accept" direction="Both" comment="objects hostA and hostB are&#10;redundant and should be removed by&#10; removeRedundantAddressesFromDst">
@@ -9141,10 +9141,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A049C9567" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="">
@@ -9182,10 +9182,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04B49567" disabled="True" log="False" position="22" action="Accept" direction="Both" comment="">
@@ -9205,10 +9205,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04C09567" disabled="False" log="True" position="23" action="Accept" direction="Both" comment="">
@@ -9247,10 +9247,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id444A04D99567" disabled="False" log="True" position="25" action="Deny" direction="Both" comment="">
@@ -9270,11 +9270,11 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -9304,12 +9304,12 @@ no sysopt nodnsalias outbound
           <Option name="accept_established">False</Option>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="cmdline">-v</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -9318,7 +9318,7 @@ no sysopt nodnsalias outbound
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ftp_fixup">0 21 0 strict 0</Option>
@@ -9335,9 +9335,9 @@ no sysopt nodnsalias outbound
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">0 389 389 nil 0</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -9349,12 +9349,12 @@ no sysopt nodnsalias outbound
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
@@ -9363,7 +9363,7 @@ no sysopt nodnsalias outbound
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="openbsd_ip_redirect">0</Option>
           <Option name="openbsd_ip_sourceroute">0</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="pix_acl_basic">False</Option>
           <Option name="pix_acl_no_clear">False</Option>
@@ -9387,7 +9387,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">False</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_h323_abs">True</Option>
@@ -9408,9 +9408,9 @@ no sysopt nodnsalias outbound
           <Option name="pix_nodnsalias_outbound">True</Option>
           <Option name="pix_ntp1">192.168.1.20</Option>
           <Option name="pix_ntp1_pref">True</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_optimize_default_nat">True</Option>
           <Option name="pix_prolog_script">	
@@ -9478,7 +9478,7 @@ no sysopt nodnsalias outbound
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">0 514 0 nil 0</Option>
           <Option name="rtsp_fixup">0 554 0 nil 0</Option>
-          <Option name="script_env_path"></Option>
+          <Option name="script_env_path"/>
           <Option name="sip_fixup">0 5060 5060 nil 0</Option>
           <Option name="sip_hh">0</Option>
           <Option name="sip_media_hh">0</Option>
@@ -9489,11 +9489,11 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">0 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">0 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">0 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
@@ -9871,50 +9871,50 @@ no sysopt nodnsalias outbound
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="epilog_script"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="epilog_script"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
-          <Option name="linux24_ip_forward"></Option>
-          <Option name="linux24_log_martians"></Option>
-          <Option name="linux24_path_ip"></Option>
-          <Option name="linux24_path_iptables"></Option>
-          <Option name="linux24_path_logger"></Option>
-          <Option name="linux24_path_lsmod"></Option>
-          <Option name="linux24_path_modprobe"></Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
+          <Option name="linux24_ip_forward"/>
+          <Option name="linux24_log_martians"/>
+          <Option name="linux24_path_ip"/>
+          <Option name="linux24_path_iptables"/>
+          <Option name="linux24_path_logger"/>
+          <Option name="linux24_path_lsmod"/>
+          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">30</Option>
           <Option name="linux24_tcp_keepalive_interval">1800</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">False</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -9928,20 +9928,20 @@ no sysopt nodnsalias outbound
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="platform">iptables</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
-          <Option name="sshArgs"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -10253,50 +10253,50 @@ no sysopt nodnsalias outbound
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="epilog_script"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="epilog_script"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
-          <Option name="linux24_ip_forward"></Option>
-          <Option name="linux24_log_martians"></Option>
-          <Option name="linux24_path_ip"></Option>
-          <Option name="linux24_path_iptables"></Option>
-          <Option name="linux24_path_logger"></Option>
-          <Option name="linux24_path_lsmod"></Option>
-          <Option name="linux24_path_modprobe"></Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
+          <Option name="linux24_ip_forward"/>
+          <Option name="linux24_log_martians"/>
+          <Option name="linux24_path_ip"/>
+          <Option name="linux24_path_iptables"/>
+          <Option name="linux24_path_logger"/>
+          <Option name="linux24_path_lsmod"/>
+          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">30</Option>
           <Option name="linux24_tcp_keepalive_interval">1800</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">False</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -10310,20 +10310,20 @@ no sysopt nodnsalias outbound
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="platform">iptables</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
-          <Option name="sshArgs"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -10823,10 +10823,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10902,10 +10902,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id45142FE328543" disabled="False" log="True" position="12" action="Accept" direction="Both" comment="">
@@ -10926,10 +10926,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -10972,10 +10972,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514300A28543" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
@@ -11051,10 +11051,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514303C28543" disabled="False" log="False" position="19" action="Accept" direction="Both" comment="">
@@ -11075,10 +11075,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514304928543" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="">
@@ -11099,10 +11099,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514305628543" disabled="False" log="False" position="21" action="Accept" direction="Both" comment="objects hostA and hostB are&#10;redundant and should be removed by&#10; removeRedundantAddressesFromDst">
@@ -11124,10 +11124,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514306428543" disabled="False" log="False" position="22" action="Accept" direction="Both" comment="">
@@ -11165,10 +11165,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514307C28543" disabled="True" log="False" position="24" action="Accept" direction="Both" comment="">
@@ -11188,10 +11188,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4514308828543" disabled="False" log="True" position="25" action="Accept" direction="Both" comment="">
@@ -11248,10 +11248,10 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16752X44786" disabled="False" group="" log="True" position="28" action="Deny" direction="Both" comment="">
@@ -11292,11 +11292,11 @@ no sysopt nodnsalias outbound
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -11326,12 +11326,12 @@ no sysopt nodnsalias outbound
           <Option name="accept_established">False</Option>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="cmdline">-v</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -11340,7 +11340,7 @@ no sysopt nodnsalias outbound
           <Option name="dns_fixup">2 65535 0 nil 0</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="espike_fixup">2 0 0 nil 0</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ftp_fixup">0 21 0 strict 0</Option>
@@ -11357,9 +11357,9 @@ no sysopt nodnsalias outbound
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">0 389 389 nil 0</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">0</Option>
@@ -11371,12 +11371,12 @@ no sysopt nodnsalias outbound
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
@@ -11385,7 +11385,7 @@ no sysopt nodnsalias outbound
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="openbsd_ip_redirect">0</Option>
           <Option name="openbsd_ip_sourceroute">0</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="pix_acl_basic">False</Option>
           <Option name="pix_acl_no_clear">False</Option>
@@ -11409,7 +11409,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
           <Option name="pix_enable_snmp_traps">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">False</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_generate_out_acl">False</Option>
@@ -11431,9 +11431,9 @@ no sysopt nodnsalias outbound
           <Option name="pix_nodnsalias_outbound">True</Option>
           <Option name="pix_ntp1">192.168.1.20</Option>
           <Option name="pix_ntp1_pref">True</Option>
-          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2"/>
           <Option name="pix_ntp2_pref">False</Option>
-          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3"/>
           <Option name="pix_ntp3_pref">False</Option>
           <Option name="pix_optimize_default_nat">True</Option>
           <Option name="pix_prolog_script">	
@@ -11466,8 +11466,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_snmp_server1">192.168.1.20</Option>
           <Option name="pix_snmp_server2">192.168.1.22</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_device_id_opt"></Option>
-          <Option name="pix_syslog_device_id_val"></Option>
+          <Option name="pix_syslog_device_id_opt"/>
+          <Option name="pix_syslog_device_id_val"/>
           <Option name="pix_syslog_facility">16</Option>
           <Option name="pix_syslog_host">192.168.1.30</Option>
           <Option name="pix_syslog_level">error</Option>
@@ -11504,7 +11504,7 @@ no sysopt nodnsalias outbound
           <Option name="rpc_ss">0</Option>
           <Option name="rsh_fixup">0 514 0 nil 0</Option>
           <Option name="rtsp_fixup">0 554 0 nil 0</Option>
-          <Option name="script_env_path"></Option>
+          <Option name="script_env_path"/>
           <Option name="sip_fixup">0 5060 5060 nil 0</Option>
           <Option name="sip_hh">0</Option>
           <Option name="sip_media_hh">0</Option>
@@ -11515,11 +11515,11 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">0 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">0 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">0 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
@@ -11842,11 +11842,11 @@ no sysopt nodnsalias outbound
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
         <FirewallOptions>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -11871,13 +11871,13 @@ no sysopt nodnsalias outbound
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pix_acl_basic">False</Option>
           <Option name="pix_acl_no_clear">True</Option>
           <Option name="pix_acl_substitution">False</Option>
-          <Option name="pix_acl_temp_addr"></Option>
+          <Option name="pix_acl_temp_addr"/>
           <Option name="pix_add_clear_statements">False</Option>
           <Option name="pix_assume_fw_part_of_any">False</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -11894,7 +11894,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emb_limit">0</Option>
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_generate_out_acl">False</Option>
@@ -11945,8 +11945,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -11982,11 +11982,11 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
@@ -12580,11 +12580,11 @@ no sysopt nodnsalias outbound
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
         <FirewallOptions>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -12609,13 +12609,13 @@ no sysopt nodnsalias outbound
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pix_acl_basic">False</Option>
           <Option name="pix_acl_no_clear">True</Option>
           <Option name="pix_acl_substitution">False</Option>
-          <Option name="pix_acl_temp_addr"></Option>
+          <Option name="pix_acl_temp_addr"/>
           <Option name="pix_add_clear_statements">False</Option>
           <Option name="pix_assume_fw_part_of_any">False</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -12632,7 +12632,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emb_limit">0</Option>
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_generate_out_acl">False</Option>
@@ -12683,8 +12683,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -12720,11 +12720,11 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
@@ -13318,11 +13318,11 @@ no sysopt nodnsalias outbound
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
         <FirewallOptions>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -13347,13 +13347,13 @@ no sysopt nodnsalias outbound
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pix_acl_basic">False</Option>
           <Option name="pix_acl_no_clear">True</Option>
           <Option name="pix_acl_substitution">False</Option>
-          <Option name="pix_acl_temp_addr"></Option>
+          <Option name="pix_acl_temp_addr"/>
           <Option name="pix_add_clear_statements">False</Option>
           <Option name="pix_assume_fw_part_of_any">False</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -13370,7 +13370,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emb_limit">0</Option>
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_generate_out_acl">True</Option>
@@ -13421,10 +13421,10 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_device_id_opt"></Option>
-          <Option name="pix_syslog_device_id_val"></Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_device_id_opt"/>
+          <Option name="pix_syslog_device_id_val"/>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -13460,11 +13460,11 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
@@ -14058,11 +14058,11 @@ no sysopt nodnsalias outbound
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
         <FirewallOptions>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="conn_hh">1</Option>
           <Option name="conn_mm">0</Option>
           <Option name="conn_ss">0</Option>
@@ -14087,13 +14087,13 @@ no sysopt nodnsalias outbound
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ils_fixup">2 389 389 nil 0</Option>
           <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pix_acl_basic">False</Option>
           <Option name="pix_acl_no_clear">True</Option>
           <Option name="pix_acl_substitution">False</Option>
-          <Option name="pix_acl_temp_addr"></Option>
+          <Option name="pix_acl_temp_addr"/>
           <Option name="pix_add_clear_statements">False</Option>
           <Option name="pix_assume_fw_part_of_any">False</Option>
           <Option name="pix_check_duplicate_nat">False</Option>
@@ -14110,7 +14110,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emb_limit">0</Option>
           <Option name="pix_emblem_log_format">False</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">True</Option>
           <Option name="pix_generate_out_acl">False</Option>
@@ -14161,8 +14161,8 @@ no sysopt nodnsalias outbound
           <Option name="pix_sip_mm">30</Option>
           <Option name="pix_sip_ss">0</Option>
           <Option name="pix_ssh_timeout">5</Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">5</Option>
           <Option name="pix_uauth_abs">True</Option>
@@ -14198,11 +14198,11 @@ no sysopt nodnsalias outbound
           <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
           <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ssh_timeout">5</Option>
           <Option name="telnet_timeout">5</Option>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
@@ -14428,7 +14428,7 @@ no sysopt nodnsalias outbound
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
           <Option name="admUser">vadim</Option>
-          <Option name="altAddress"></Option>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="conn_hh">0</Option>
@@ -14471,7 +14471,7 @@ no sysopt nodnsalias outbound
           <Option name="mgmt_addr">10.3.14.42</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -14493,7 +14493,7 @@ no sysopt nodnsalias outbound
           <Option name="pix_emb_limit">0</Option>
           <Option name="pix_emblem_log_format">True</Option>
           <Option name="pix_emulate_out_acl">True</Option>
-          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_epilog_script"/>
           <Option name="pix_floodguard">True</Option>
           <Option name="pix_fragguard">False</Option>
           <Option name="pix_generate_out_acl">False</Option>
@@ -14501,14 +14501,14 @@ no sysopt nodnsalias outbound
           <Option name="pix_logging_buffered">True</Option>
           <Option name="pix_logging_buffered_level">6</Option>
           <Option name="pix_logging_console">False</Option>
-          <Option name="pix_logging_console_level"></Option>
+          <Option name="pix_logging_console_level"/>
           <Option name="pix_logging_timestamp">True</Option>
-          <Option name="pix_logging_trap_level"></Option>
+          <Option name="pix_logging_trap_level"/>
           <Option name="pix_max_conns">0</Option>
           <Option name="pix_nodnsalias_inbound">False</Option>
           <Option name="pix_nodnsalias_outbound">False</Option>
           <Option name="pix_optimize_default_nat">False</Option>
-          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_prolog_script"/>
           <Option name="pix_regroup_commands">False</Option>
           <Option name="pix_replace_natted_objects">True</Option>
           <Option name="pix_resetinbound">False</Option>
@@ -14520,9 +14520,9 @@ no sysopt nodnsalias outbound
           <Option name="pix_ssh_timeout">0</Option>
           <Option name="pix_syslog_device_id_opt">hostname</Option>
           <Option name="pix_syslog_device_id_supported">false</Option>
-          <Option name="pix_syslog_device_id_val"></Option>
-          <Option name="pix_syslog_facility"></Option>
-          <Option name="pix_syslog_host"></Option>
+          <Option name="pix_syslog_device_id_val"/>
+          <Option name="pix_syslog_facility"/>
+          <Option name="pix_syslog_host"/>
           <Option name="pix_syslog_queue_size">0</Option>
           <Option name="pix_telnet_timeout">0</Option>
           <Option name="pix_use_acl_remarks">True</Option>
@@ -14547,7 +14547,7 @@ no sysopt nodnsalias outbound
           <Option name="smtp_fixup">2 25 25 nil 0</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="tftp_fixup">2 69 0 nil 0</Option>
           <Option name="uauth_abs">False</Option>
           <Option name="uauth_hh">0</Option>
@@ -14677,9 +14677,9 @@ no sysopt nodnsalias outbound
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>

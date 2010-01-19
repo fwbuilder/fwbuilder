@@ -1,3 +1,9 @@
+2010-01-19  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/cisco_lib/Helper.cpp (triplet::hash): fixes #1104:
+	compiler for PIX crashed when interface with dynamic address
+	was used in ODst of a NAT rule.
+
 2010-01-17  vadim  <vadim@vk.crocodile.org>
 
 	* instDialog_ui_ops.cpp (instDialog::checkIfNeedToInstall):
