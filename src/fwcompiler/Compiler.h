@@ -562,8 +562,9 @@ protected:
          * right for them (e.g. create combined address objects to
          * fuse information from IPv4 and physAddress together).
          */
-        virtual void _expandInterface(libfwbuilder::Interface *iface,
-                                     std::list<libfwbuilder::FWObject*> &ol);
+        virtual void _expand_interface(libfwbuilder::Rule *rule,
+                                       libfwbuilder::Interface *iface,
+                                       std::list<libfwbuilder::FWObject*> &ol);
 
 	/**
 	 * internal: like _expandAddr, but expands address range

@@ -1,3 +1,10 @@
+2010-01-19  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::_expand_interface): method
+	_expand_interface (renamed, used to be _expandInterface) takes
+	pointer to the rule as first argument. This makes it possible
+	to generate error and warning messages associated with rules.
+
 2010-01-18  vadim  <vadim@vk.crocodile.org>
 
 	* ../VERSION (LIBFWBUILDER_REVISION): Set version to 4.0.0 in

@@ -385,10 +385,10 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
                 if (i2itf->isLoopback())
                 {
                     if (RuleElement::cast(s) || on_loopback)
-                        _expandInterface(i2itf, ol);
+                        _expand_interface(rule, i2itf, ol);
                 } else
 // this is not a loopback interface                
-                    _expandInterface(i2itf, ol);
+                    _expand_interface(rule, i2itf, ol);
 
                 continue;
             }
@@ -397,7 +397,8 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
     }
 }
 
-void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
+void Compiler::_expand_interface(Rule *rule,
+                                 Interface *iface, std::list<FWObject*> &ol)
 {
 /*
  * if this is unnumbered interface or a bridge port, then do not use it
@@ -440,7 +441,7 @@ void Compiler::_expandInterface(Interface *iface, std::list<FWObject*> &ol)
         if (subint)
         {
             if (subint->isBridgePort()) continue;
-            _expandInterface(subint, ol);
+            _expand_interface(rule, subint, ol);
             continue;
         }
 
@@ -1223,7 +1224,7 @@ bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)
         FWObject *o = FWReference::getObject(*i);
         if (o==NULL)
         {
-            Rule *rule = Rule::cast(re->getParent());
+            //Rule *rule = Rule::cast(re->getParent());
             FWReference *refo = FWReference::cast(*i);
             string errmsg =
                 string("catchUnnumberedIfaceInRE: Can't find object ") +
