@@ -803,6 +803,7 @@ void PolicyCompiler_pix::compile()
 
         if (outbound_acl_supported )
         {
+            // Call these after splitIfSrcMatchesFw and splitIfDstMatchesFw
             add( new setInterfaceAndDirectionBySrc(
                      "Set interface and direction for rules with interface 'all' using SRC; v7"));
             add( new setInterfaceAndDirectionByDst(

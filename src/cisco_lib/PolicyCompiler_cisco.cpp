@@ -507,7 +507,10 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
             RuleElementDst *ndst=r->getDst();
             ndst->clearChildren();
             ndst->setAnyElement();
-//            ndst->addRef( compiler->fw );
+
+            // Was commented out in r50
+            ndst->addRef( compiler->fw );
+
             RuleElementSrv *nsrv=r->getSrv();
             nsrv->clearChildren();
             nsrv->add( cl.front() );

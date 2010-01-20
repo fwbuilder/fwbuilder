@@ -60,13 +60,19 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
+
+/*
+ * Call this rule processor after splitIfSrcMatchesFw and
+ * splitIfDstMatchesFw to make sure that if firewall or its interface
+ * or address is in src or dst, it is the only object there.
+ */
 bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     Helper helper(compiler);
 
-    //RuleElementItf *itfre = rule->getItf();
     RuleElementSrc *srcre = rule->getSrc();
+    RuleElementDst *dstre = rule->getDst();
 
     list<int> intf_id_list;
 
@@ -95,9 +101,12 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
             new_rule->setBool("interface_and_direction_set_from_src",true);
             tmp_queue.push_back(new_rule);
         }
-        // preserve original rule as well to let
-        // setInterfaceAndDirectionByDst work on it.
-        tmp_queue.push_back(rule);
+        // If dst does not match firewall, preserve original rule as
+        // well to let setInterfaceAndDirectionByDst work on it.
+        FWObject *d = dstre->front();
+        if (FWReference::cast(d)!=NULL) d = FWReference::cast(d)->getPointer();
+        if (!compiler->complexMatch(Address::cast(d), compiler->fw))
+            tmp_queue.push_back(rule);
         return true;
     }
     tmp_queue.push_back(rule);
@@ -115,8 +124,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
         return true;
     }
 
-    //RuleElementItf *itfre=rule->getItf(); 
-    RuleElementDst *dstre=rule->getDst();
+    RuleElementDst *dstre = rule->getDst();
 
     list<int> intf_id_list;
 

@@ -228,7 +228,9 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
                 string("findInterfaceByNetzoneOrAll failed to retrieve first "
                        "object from the rule element; is argument not of "
                        "the type RuleElementSrc or RuleElementDst ?"));
+            return intf_id_list;
         }
+
         try
         {
             intf_id_list.push_back( findInterfaceByNetzone( a ) );

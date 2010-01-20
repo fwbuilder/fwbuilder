@@ -282,7 +282,7 @@
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id2366X75741" host_OS="pix_os" inactive="False" lastCompiled="1261535722" lastInstalled="0" lastModified="1264013073" platform="pix" name="cluster1" comment="" ro="False">
+      <Cluster id="id2366X75741" host_OS="pix_os" inactive="False" lastCompiled="1261535722" lastInstalled="0" lastModified="1264016648" platform="pix" name="cluster1" comment="" ro="False">
         <NAT id="id2370X75741" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4606X78273" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -345,7 +345,27 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id55439X897" disabled="False" group="" log="True" position="2" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id17725X59293" disabled="False" group="" log="False" position="2" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id2385X39486"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id2366X75741"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id55439X897" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id2735X69605"/>
             </Src>
@@ -363,7 +383,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2862X78273" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id2862X78273" disabled="False" log="True" position="4" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id2366X75741"/>
             </Src>
@@ -381,7 +401,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2845X78273" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+          <PolicyRule id="id2845X78273" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -399,7 +419,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2828X78273" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id2828X78273" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id2385X39486"/>
             </Src>
@@ -417,7 +437,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id2811X78273" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id2811X78273" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
