@@ -400,23 +400,18 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                 all_errors.push_back(routing_compiler->getErrors("").c_str());
         }
 
-        if (single_rule_compile_on)
-        {
-            // in single rule compile mode just return the result Note
-            // that we do not return all_errors because all compilers
-            // include errors and warnings with generated code for each
-            // rule. CompilerDriver errors, however, need to be added on
-            // top. 
-            return
-                QString::fromUtf8(
-                    (getErrors("") + 
-                     generated_script +
-                     routing_compiler->getCompiledScript()).c_str());
-        }
-
         if (haveErrorsAndWarnings())
         {
             all_errors.push_front(getErrors("").c_str());
+        }
+
+        if (single_rule_compile_on)
+        {
+            return formSingleRuleCompileOutput(
+                QString::fromUtf8(
+                    (getErrors("") + 
+                     generated_script +
+                     routing_compiler->getCompiledScript()).c_str()));
         }
 
 

@@ -254,16 +254,13 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
                         if (!single_rule_compile_on)
                             c_str << "# ================ Rule set "
                                   << branch_name << endl;
-                        if (c.haveErrorsAndWarnings())
-                        {
-                            all_errors.push_back(c.getErrors("").c_str());
-                            // c_str << "# Policy compiler errors and warnings:"
-                            //       << endl;
-                            // c_str << c.getErrors("# ");
-                        }
                         c_str << c.getCompiledScript();
                         c_str << endl;
                         empty_output = false;
+                    }
+                    if (c.haveErrorsAndWarnings())
+                    {
+                        all_errors.push_back(c.getErrors("").c_str());
                     }
                 }
             }
@@ -293,7 +290,8 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
 
         if (single_rule_compile_on)
         {
-            return QString::fromUtf8(generated_script.c_str());
+            return formSingleRuleCompileOutput(
+                QString::fromUtf8(generated_script.c_str()));
         }
 
         PolicyCompiler_ipfw c(objdb, fw, false, oscnf.get());

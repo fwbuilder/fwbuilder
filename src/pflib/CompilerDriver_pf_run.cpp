@@ -385,7 +385,6 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                     {
                         // store errors and warnings so they will appear on top
                         // of .fw file in addition to the .conf file
-                        all_errors.push_back(n.getErrors("").c_str());
                         if (!single_rule_compile_on)
                         {
                             *(generated_scripts[ruleset_name])
@@ -397,6 +396,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                     *(generated_scripts[ruleset_name]) << n.getCompiledScript();
                     *(generated_scripts[ruleset_name]) << endl;
                 }
+
+                all_errors.push_back(n.getErrors("").c_str());
 
                 conf_files[ruleset_name] = getConfFileName(
                     ruleset_name,
@@ -476,7 +477,6 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 {
                     if (c.haveErrorsAndWarnings())
                     {
-                        all_errors.push_back(c.getErrors("").c_str());
                         if (!single_rule_compile_on)
                         {
                             *(generated_scripts[ruleset_name])
@@ -488,6 +488,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                     *(generated_scripts[ruleset_name]) << c.getCompiledScript();
                     *(generated_scripts[ruleset_name]) << endl;
                 }
+
+                all_errors.push_back(c.getErrors("").c_str());
 
                 conf_files[ruleset_name] = getConfFileName(
                     ruleset_name,
@@ -527,7 +529,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             table_factories.clear();
             generated_scripts.clear();
 
-            return buffer;
+            return formSingleRuleCompileOutput(buffer);
         }
 
 /*

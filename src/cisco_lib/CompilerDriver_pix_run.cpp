@@ -627,7 +627,9 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
         if (single_rule_compile_on)
         {
-            return QString::fromUtf8((policy_script + nat_script + routing_script).c_str());
+            return formSingleRuleCompileOutput(
+                QString::fromUtf8(
+                    (policy_script + nat_script + routing_script).c_str()));
         }
 
         QFileInfo finfo(ofname);

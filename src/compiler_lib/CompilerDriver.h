@@ -212,6 +212,17 @@ public:
         virtual bool prepare(const QStringList &args);
         virtual void compile();
         virtual QMap<QString,QString> compileSingleRule(const std::string &rule_id);
+
+        /*
+         * if compilers produced empty string for the generated code,
+         * this method checks if there were any errors and returns
+         * them. If compilers generated output, errors should be
+         * included in it because warning and error messages are
+         * usually attached to rules. Errors are taken from the
+         * all_errors member variable.
+         */
+        QString formSingleRuleCompileOutput(const QString &generated_code);
+        
     };
 
 };

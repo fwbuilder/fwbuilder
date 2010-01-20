@@ -1125,3 +1125,21 @@ bool CompilerDriver::isReachable(const Address* const client,
     return false;
 }
 
+QString CompilerDriver::formSingleRuleCompileOutput(const QString &generated_code)
+{
+    // in single rule compile mode just return the
+    // result. Note that we do not return all_errors because
+    // all compilers include errors and warnings with
+    // generated code for each rule. Two exceptions: 1)
+    // CompilerDriver errors need to be added on top, 2) if no
+    // output has been produced by the compiler, we have to
+    // show all_errors to the user because there could be an
+    // error message explaining this. Combined output of all
+    // compilers we assemble here may consist of a bunch of
+    // empty lines separated by LF. Need to account for that.
+    QString res = generated_code;
+    QString res2 = res.split("\n", QString::SkipEmptyParts).join("").replace(" ", "");
+    if (res2.isEmpty()) res = all_errors.join("\n");
+    return res;
+}
+

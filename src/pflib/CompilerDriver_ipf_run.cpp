@@ -312,9 +312,8 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                 ostr << n.getCompiledScript();
             }
 
-            return
-                //all_errors.join("\n").toStdString() + 
-                QString::fromUtf8(ostr.str().c_str());
+            return formSingleRuleCompileOutput(
+                QString::fromUtf8(ostr.str().c_str()));
         }
 
 
@@ -340,12 +339,9 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                 if (c.haveErrorsAndWarnings())
                 {
                     all_errors.push_back(c.getErrors("").c_str());
-                    if (!single_rule_compile_on)
-                    {
-                        ipf_str << "# Policy compiler errors and warnings:"
-                                << endl;
-                        ipf_str << QString::fromUtf8(c.getErrors("# ").c_str());
-                    }
+                    ipf_str << "# Policy compiler errors and warnings:"
+                            << endl;
+                    ipf_str << QString::fromUtf8(c.getErrors("# ").c_str());
                 }
                 ipf_str << QString::fromUtf8(c.getCompiledScript().c_str());
                 ipf_file.close();
@@ -391,12 +387,9 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                 if (n.haveErrorsAndWarnings())
                 {
                     all_errors.push_back(n.getErrors("").c_str());
-                    if (!single_rule_compile_on)
-                    {
-                        nat_str << "# NAT compiler errors and warnings:"
-                                << endl;
-                        nat_str << QString::fromUtf8(n.getErrors("# ").c_str());
-                    }
+                    nat_str << "# NAT compiler errors and warnings:"
+                            << endl;
+                    nat_str << QString::fromUtf8(n.getErrors("# ").c_str());
                 }
                 nat_str << QString::fromUtf8(n.getCompiledScript().c_str());
                 nat_file.close();

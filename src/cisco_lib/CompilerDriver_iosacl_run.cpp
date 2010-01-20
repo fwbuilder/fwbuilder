@@ -316,7 +316,8 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
 
         if (single_rule_compile_on)
         {
-            return QString::fromUtf8((policy_script + routing_script).c_str());
+            return formSingleRuleCompileOutput(
+                QString::fromUtf8((policy_script + routing_script).c_str()));
         }
 
         QString script_buffer = assembleFwScript(
