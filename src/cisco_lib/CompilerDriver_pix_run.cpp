@@ -123,6 +123,7 @@ QString CompilerDriver_pix::assembleFwScript(Cluster *cluster,
     FWOptions* options = fw->getOptionsObject();
     options->setStr("prolog_script", options->getStr("pix_prolog_script"));
     options->setStr("epilog_script", options->getStr("pix_epilog_script"));
+    options->setStr("prolog_place", "");
 
     string vers = fw->getStr("version");
     string platform = fw->getStr("platform");
