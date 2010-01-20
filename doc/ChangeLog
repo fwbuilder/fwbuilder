@@ -8,6 +8,9 @@
 	NAT rule for PIX firewall, compiler generated configuration that
 	used subnet instead of just the address of the inetrface.
 
+	* (createNATCmd::processNext): fixes #1114: "fwb_pix crash when fw
+	with dynamic interface is used in TDst".
+
 	* ../src/iptlib/NATCompiler_ipt.cpp (VerifyRules2::processNext):
 	fixes #1109: "rules that do not pass verifyRules() checks may
 	cause compiler crash in test mode or gui crash in single rule

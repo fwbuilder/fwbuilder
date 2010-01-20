@@ -2026,7 +2026,7 @@
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AF5AA0A" host_OS="pix_os" lastCompiled="1145688299" lastInstalled="0" lastModified="0" platform="pix" version="6.1" name="firewall1" comment="this object is used to test all kinds of negation in policy rules" ro="False">
+      <Firewall id="id3AF5AA0A" host_OS="pix_os" inactive="False" lastCompiled="1145688299" lastInstalled="0" lastModified="1263969139" platform="pix" version="6.3" name="firewall1" comment="this object is used to test all kinds of negation in policy rules" ro="False">
         <NAT id="id3AF5AA0D" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3C98491C" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2070,7 +2070,74 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B1328FB" disabled="False" position="2" action="Translate" comment="">
+          <NATRule id="id579976X27842" disabled="False" group="" position="2" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3B0B4BC8"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id572656X27842" disabled="False" group="" position="3" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AF5AA99"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id580015X27842" disabled="False" group="" position="4" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+              <ObjectRef ref="id3B022266"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3AF5AA99"/>
+              <ObjectRef ref="id3B0B4BC8"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id3B1328FB" disabled="False" position="5" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -2522,15 +2589,15 @@
           <RuleSetOptions/>
         </Routing>
         <Interface id="id3AF5AA96" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="net-Internal_net" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
-          <IPv4 id="id3AF5AA96-ipv4" name="address" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <IPv4 id="id3AF5AA96-ipv4" name="firewall1:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Interface id="id3AF5AA99" dedicated_failover="False" dyn="True" label="outside" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
-          <IPv4 id="id3AF5AA99-ipv4" name="address" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
+          <IPv4 id="id3AF5AA99-ipv4" name="firewall1:eth1:ip" comment="" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
           <InterfaceOptions/>
         </Interface>
         <Interface id="id3B0B4BC8" dedicated_failover="False" dyn="False" label="dmz" network_zone="id3B022266" security_level="50" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
-          <IPv4 id="id3B0B4BC8-ipv4" name="address" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <IPv4 id="id3B0B4BC8-ipv4" name="firewall1:eth2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Management address="192.168.1.1">

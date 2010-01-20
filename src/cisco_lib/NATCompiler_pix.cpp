@@ -53,6 +53,12 @@ using namespace std;
 
 string NATCompiler_pix::myPlatformName() { return "pix"; }
 
+string _print_addr(const InetAddr* addr)
+{
+    if (addr) return addr->toString();
+    return "NULL";
+}
+
 NATCompiler_pix::NATCompiler_pix(FWObjectDatabase *_db,
                                  Firewall *fw,
                                  bool ipv6_policy,
@@ -130,11 +136,11 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
             os << " rule=" << natcmd->rule_label;
             os << " nat_acl_name=" << natcmd->nat_acl_name;
             os << " (" << nat_acl_names[natcmd->nat_acl_name] << ")";
-            os << " o_src=" <<  natcmd->o_src->getAddressPtr()->toString();
-            os << " o_dst=" <<  natcmd->o_dst->getAddressPtr()->toString();
+            os << " o_src=" <<  _print_addr(natcmd->o_src->getAddressPtr());
+            os << " o_dst=" <<  _print_addr(natcmd->o_dst->getAddressPtr());
             os << " o_srv=" <<  natcmd->o_srv->getName();
             os << " o_iface=" <<  natcmd->o_iface->getLabel();
-            os << " t_addr=" <<  natcmd->t_addr->getAddressPtr()->toString();
+            os << " t_addr=" <<  _print_addr(natcmd->t_addr->getAddressPtr());
             os << " t_iface=" <<  natcmd->t_iface->getLabel();
             os << " ignore_global=" << string((natcmd->ignore_global)?"1":"0");
             os << " ignore_nat=" << string((natcmd->ignore_nat)?"1":"0");
@@ -152,15 +158,15 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
         StaticCmd *scmd=static_commands[ rule->getInt("sc_cmd") ];
         if (scmd!=NULL)
         {
-            string iaddr_str = (scmd->iaddr->getAddressPtr())?scmd->iaddr->getAddressPtr()->toString():"NULL";
-            string oaddr_str = (scmd->oaddr->getAddressPtr())?scmd->oaddr->getAddressPtr()->toString():"NULL";
+            string iaddr_str = _print_addr(scmd->iaddr->getAddressPtr());
+            string oaddr_str = _print_addr(scmd->oaddr->getAddressPtr());
 
             os << " StaticCmd:";
             os << " acl=" << scmd->acl_name;
             os << " (" << nat_acl_names[scmd->acl_name] << ")";
             os << " iaddr=" << iaddr_str;
             os << " oaddr=" << oaddr_str;
-            os << " osrc=" << scmd->osrc->getAddressPtr()->toString();
+            os << " osrc=" << _print_addr(scmd->osrc->getAddressPtr());
             os << " osrv=" << scmd->osrv->getName();
             os << " tsrv=" << scmd->tsrv->getName();
         }
@@ -835,7 +841,6 @@ bool NATCompiler_pix::createNATCmd::processNext()
 //    Helper helper(compiler);
     NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
-    tmp_queue.push_back(rule);
 
     if (rule->getRuleType()==NATRule::SNAT) 
     {
@@ -881,7 +886,8 @@ bool NATCompiler_pix::createNATCmd::processNext()
 /*
  * "nat ... outside" is only supported in PIX 6.2
  */
-        natcmd->outside= ( natcmd->o_iface->getSecurityLevel()<natcmd->t_iface->getSecurityLevel());
+        natcmd->outside =
+            ( natcmd->o_iface->getSecurityLevel() < natcmd->t_iface->getSecurityLevel());
 
         if (natcmd->outside && compiler->fw->getStr("platform")=="pix" &&
             libfwbuilder::XMLTools::version_compare(compiler->fw->getStr("version"),"6.2")<0 )
@@ -901,6 +907,7 @@ bool NATCompiler_pix::createNATCmd::processNext()
         nat_id_counter++;
     }
 
+    tmp_queue.push_back(rule);
     return true;
 }
 
