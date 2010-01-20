@@ -1,5 +1,11 @@
 2010-01-19  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/pflib/TableFactory.cpp (TableFactory::createTablesForRE):
+	fixes #1111: "NAT compiler for PF does not recognize dynamic
+	interface of the firewall in rule element". Compiler issued an
+	error that it can not generate code using dynamic interface that
+	does not belong to the firewall because its address is unknown.
+
 	* ../src/cisco_lib/NATCompiler_pix.cpp (VerifyRules::processNext):
 	fixes #1104: policy compiler for PIX crashed when it enountered
 	NAT rule trying to trsnslate both source and destination addresses.
