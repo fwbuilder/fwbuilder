@@ -23,6 +23,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			NATCompiler_pix_writers.cpp     \
 			OSConfigurator_pix_os.cpp       \
 			OSConfigurator_pix_os_fixups.cpp       \
+			BaseObjectGroup.cpp              \
 			PIXObjectGroup.cpp              \
 			PolicyCompiler_pix.cpp          \
 			PolicyCompiler_pix_writers.cpp  \
@@ -35,15 +36,16 @@ HEADERS	 = ../../config.h \
 			Helper.h \
 			PolicyCompiler_cisco.h \
 			RoutingCompiler_cisco.h \
-			CompilerDriver_iosacl.h            \
-			OSConfigurator_ios.h               \
-			PolicyCompiler_iosacl.h            \
+			CompilerDriver_iosacl.h         \
+			OSConfigurator_ios.h            \
+			PolicyCompiler_iosacl.h         \
 			CompilerDriver_pix.h            \
 			NATCompiler_pix.h               \
 			OSConfigurator_pix_os.h         \
+			BaseObjectGroup.h               \
 			PIXObjectGroup.h                \
 			PolicyCompiler_pix.h            \
-			RoutingCompiler_pix.h            \
+			RoutingCompiler_pix.h           \
 
 macx:LIBS  += $$LIBS_FWCOMPILER
 

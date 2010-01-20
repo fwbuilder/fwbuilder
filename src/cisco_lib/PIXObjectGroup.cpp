@@ -27,92 +27,126 @@
 
 #include "PIXObjectGroup.h"
 
+#include "fwbuilder/Address.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
+
 #include <iostream>
 #include <sstream>
 
+using namespace libfwbuilder;
 using namespace std;
-
-map<string,int>  PIXGroup::nc;
-
-const char *PIXGroup::TYPENAME={"PIXGroup"};
-
-string PIXGroup::registerGroupName(const std::string &prefix)
-{
-    ostringstream  str;
-    str << prefix;
-
-    switch (getPIXGroupType())
-    {
-    case UNKNOWN:      str << ".unknown"; break;
-    case NETWORK:      str << ".net";     break;
-    case PROTO:        str << ".proto";   break;
-    case ICMP_TYPE:    str << ".icmp";    break;
-    case TCP_SERVICE:  str << ".tcp";     break;
-    case UDP_SERVICE:  str << ".udp";     break;
-    }
-
-    int n=nc[str.str()];
-    nc[str.str()]=n+1;
-    str << "." << n;
-    return str.str();
-}
-
-void PIXGroup::setName(const std::string &prefix)
-{
-    FWObject::setName( registerGroupName(prefix) );
-}
-
-bool PIXGroup::isServiceGroup()
-{
-    switch (getPIXGroupType())
-    {
-    case PROTO:        return true;
-    case ICMP_TYPE:    return true;
-    case TCP_SERVICE:  return true;
-    case UDP_SERVICE:  return true;
-    default:           return false;
-    }
-    return false;
-}
-
-bool PIXGroup::isObjectGroup()
-{
-    switch (getPIXGroupType())
-    {
-    case UNKNOWN:      return true;
-    case NETWORK:      return true;
-    default:           return false;
-    }
-    return false;
-}
-
-string PIXGroup::getSrvTypeName()
-{
-    switch (getPIXGroupType())
-    {
-    case ICMP_TYPE:    return "icmp";
-    case TCP_SERVICE:  return "tcp";
-    case UDP_SERVICE:  return "udp";
-    default:           break;
-    }
-    return "";
-}
-
-#if 0
-void PIXServiceGroup::setName(const std::string &prefix)
-{
-    FWObject::setName( registerGroupName(prefix) );
-}
 
 const char *PIXObjectGroup::TYPENAME={"PIXObjectGroup"};
 
-PIXObjectGroup::PIXObjectGroup(pix_group_type _gt) :
-    ObjectGroup(), PIXGroup(_gt) {}
+string PIXObjectGroup::toString()  throw(FWException)
+{
+    ostringstream ostr;
 
+    if (this->size()==0) return "";
 
-const char *PIXServiceGroup::TYPENAME={"PIXServiceGroup"};
+    switch (this->getObjectGroupType()) 
+    {
+    case NETWORK:     
+        ostr << "object-group network "
+             << this->getName() << endl;
+        break;
+    case PROTO:       
+        ostr << "object-group protocol "
+             << this->getName() << endl;
+        break;
+    case ICMP_TYPE:   
+        ostr << "object-group icmp-type "
+             << this->getName() << endl;
+        break;
+    case TCP_SERVICE: 
+        ostr << "object-group service "
+             << this->getName() << " tcp" << endl;
+        break;
+    case UDP_SERVICE: 
+        ostr << "object-group service "
+             << this->getName() << " udp" << endl;
+        break;
+    default:
+        throw FWException("Unknown object group type");
+    }
 
-PIXServiceGroup::PIXServiceGroup(pix_group_type _gt) :
-    ServiceGroup(), PIXGroup(_gt) {}
+    for (FWObject::iterator i1=this->begin(); i1!=this->end(); ++i1)
+    {
+        FWObject *o   = *i1;
+        FWObject *obj = o;
+        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
 
-#endif
+        switch (this->getObjectGroupType()) 
+        {
+        case NETWORK:
+        {
+            Address *a = Address::cast(obj);
+            assert(a!=NULL);
+            const InetAddr *addr = a->getAddressPtr();
+            ostr << " network-object ";
+            if (Network::cast(obj)!=NULL)
+            {
+                const InetAddr *mask = a->getNetmaskPtr();
+                ostr << addr->toString() << " ";
+                ostr << mask->toString() << " ";
+            } else {
+                ostr << " host ";
+                ostr << addr->toString() << " ";
+            }
+            ostr << endl;
+            break;
+        }
+        case PROTO:
+        {
+            ostr << " protocol-object ";
+            Service *s=Service::cast(obj);
+            assert(s!=NULL);
+            ostr << s->getProtocolName();
+            ostr << endl;
+            break;
+        }
+        case ICMP_TYPE:
+        {
+            ostr << " icmp-object ";
+            ICMPService *s=ICMPService::cast(obj);
+            assert(s!=NULL);
+            if ( s->getInt("type")== -1)
+                ostr << "any";
+            else
+                ostr << s->getInt("type");
+            ostr << endl;
+            break;
+        }
+        case TCP_SERVICE:
+        case UDP_SERVICE:
+        {
+            ostr << " port-object ";
+            Service *s=Service::cast(obj);
+            assert(s!=NULL);
+
+            int rs=TCPUDPService::cast(s)->getDstRangeStart();
+            int re=TCPUDPService::cast(s)->getDstRangeEnd();
+
+            if (rs<0) rs=0;
+            if (re<0) re=0;
+
+            if (rs>0 || re>0) {
+                if (rs==re)  ostr << "eq " << rs;
+                else         ostr << "range " << rs << " " << re;
+            }
+            else ostr << "range 0 65535";
+            ostr << endl;
+            break;
+        }
+        default:
+            throw FWException("Unknown object group type");
+        }
+    }
+    ostr << " exit" << endl << endl;
+    return ostr.str();
+}
+

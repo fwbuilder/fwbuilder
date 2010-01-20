@@ -579,7 +579,7 @@ bool PolicyCompiler_pix::AvoidObjectGroup::processNext()
     return true;
 }
 
-PIXGroup* PolicyCompiler_pix::CreateObjectGroups::findObjectGroup(RuleElement *re)
+PIXObjectGroup* PolicyCompiler_pix::CreateObjectGroups::findObjectGroup(RuleElement *re)
 {
     PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
 
@@ -596,7 +596,7 @@ PIXGroup* PolicyCompiler_pix::CreateObjectGroups::findObjectGroup(RuleElement *r
     for (FWObject::iterator i=pix_comp->object_groups->begin();
          i!=pix_comp->object_groups->end(); ++i)
     {
-        PIXGroup *og=dynamic_cast<PIXGroup*>(*i);
+        PIXObjectGroup *og=dynamic_cast<PIXObjectGroup*>(*i);
         assert(og!=NULL);
 
         if (og->size()==0 || (og->size()!=re->size()) ) continue;
@@ -633,18 +633,18 @@ bool PolicyCompiler_pix::CreateObjectGroups::processNext()
         return true;
     }
 
-    PIXGroup *obj_group = findObjectGroup(re);
+    PIXObjectGroup *obj_group = findObjectGroup(re);
     if (obj_group==NULL)
     {
-        obj_group= new PIXGroup();
+        obj_group= new PIXObjectGroup();
         FWObject *o = re->front();
         FWObject *obj = FWReference::getObject(o);
 
-        if (Address::cast(obj)!=NULL)     obj_group->setPIXGroupType(NETWORK);
-        if (IPService::cast(obj)!=NULL)   obj_group->setPIXGroupType(PROTO);
-        if (ICMPService::cast(obj)!=NULL) obj_group->setPIXGroupType(ICMP_TYPE);
-        if (TCPService::cast(obj)!=NULL)  obj_group->setPIXGroupType(TCP_SERVICE);
-        if (UDPService::cast(obj)!=NULL)  obj_group->setPIXGroupType(UDP_SERVICE);
+        if (Address::cast(obj)!=NULL)     obj_group->setObjectGroupType(NETWORK);
+        if (IPService::cast(obj)!=NULL)   obj_group->setObjectGroupType(PROTO);
+        if (ICMPService::cast(obj)!=NULL) obj_group->setObjectGroupType(ICMP_TYPE);
+        if (TCPService::cast(obj)!=NULL)  obj_group->setObjectGroupType(TCP_SERVICE);
+        if (UDPService::cast(obj)!=NULL)  obj_group->setObjectGroupType(UDP_SERVICE);
 
         obj_group->setName(
             rule_iface->getLabel()+"."+rule->getUniqueId()+"."+name_suffix);

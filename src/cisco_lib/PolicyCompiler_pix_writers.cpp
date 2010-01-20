@@ -118,112 +118,20 @@ bool PolicyCompiler_pix::PrintObjectGroupsAndClearCommands::processNext()
     for (FWObject::iterator i=pix_comp->object_groups->begin();
          i!=pix_comp->object_groups->end(); ++i)
     {
-        PIXGroup *og=dynamic_cast<PIXGroup*>(*i);
+        PIXObjectGroup *og=dynamic_cast<PIXObjectGroup*>(*i);
         assert(og!=NULL);
 
         if (og->size()==0) continue;
 
         pix_comp->output << endl;
 
-        switch (og->getPIXGroupType()) 
+        try
         {
-        case NETWORK:     
-            pix_comp->output << "object-group network "
-                             << og->getName() << endl;
-            break;
-        case PROTO:       
-            pix_comp->output << "object-group protocol "
-                             << og->getName() << endl;
-            break;
-        case ICMP_TYPE:   
-            pix_comp->output << "object-group icmp-type "
-                             << og->getName() << endl;
-            break;
-        case TCP_SERVICE: 
-            pix_comp->output << "object-group service "
-                             << og->getName() << " tcp" << endl;
-            break;
-        case UDP_SERVICE: 
-            pix_comp->output << "object-group service "
-                             << og->getName() << " udp" << endl;
-            break;
-        default:
-            compiler->abort("Unknown object group type");
-        }
-
-        for (FWObject::iterator i1=og->begin(); i1!=og->end(); ++i1)
+            pix_comp->output << og->toString();
+        } catch (FWException &ex)
         {
-            FWObject *o   = *i1;
-            FWObject *obj = o;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-
-            switch (og->getPIXGroupType()) 
-            {
-            case NETWORK:
-            {
-                Address *a=Address::cast(obj);
-                assert(a!=NULL);
-                const InetAddr *addr = a->getAddressPtr();
-                pix_comp->output << " network-object ";
-                if (Network::cast(obj)!=NULL)
-                {
-                    const InetAddr *mask = a->getNetmaskPtr();
-                    pix_comp->output << addr->toString() << " ";
-                    pix_comp->output << mask->toString() << " ";
-                } else {
-                    pix_comp->output << " host ";
-                    pix_comp->output << addr->toString() << " ";
-                }
-                pix_comp->output << endl;
-                break;
-            }
-            case PROTO:
-            {
-                pix_comp->output << " protocol-object ";
-                Service *s=Service::cast(obj);
-                assert(s!=NULL);
-                pix_comp->output << s->getProtocolName();
-                pix_comp->output << endl;
-                break;
-            }
-            case ICMP_TYPE:
-            {
-                pix_comp->output << " icmp-object ";
-                ICMPService *s=ICMPService::cast(obj);
-                assert(s!=NULL);
-                if ( s->getInt("type")== -1)
-                    pix_comp->output << "any";
-                else
-                    pix_comp->output << s->getInt("type");
-                pix_comp->output << endl;
-                break;
-            }
-            case TCP_SERVICE:
-            case UDP_SERVICE:
-            {
-                pix_comp->output << " port-object ";
-                Service *s=Service::cast(obj);
-                assert(s!=NULL);
-
-                int rs=TCPUDPService::cast(s)->getDstRangeStart();
-                int re=TCPUDPService::cast(s)->getDstRangeEnd();
-
-                if (rs<0) rs=0;
-                if (re<0) re=0;
-
-                if (rs>0 || re>0) {
-                    if (rs==re)  compiler->output << "eq " << rs;
-                    else         compiler->output << "range " << rs << " " << re;
-                }
-                else compiler->output << "range 0 65535";
-                pix_comp->output << endl;
-                break;
-            }
-            default:
-                compiler->abort("Unknown object group type");
-            }
+            compiler->abort(ex.toString());
         }
-        pix_comp->output << " exit" << endl << endl;
     }
 
     return true;
@@ -433,8 +341,8 @@ string PolicyCompiler_pix::PrintRule::_printICMPCommand(PolicyRule *rule)
     Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
     assert(rule_iface);
 
-    if ( PIXGroup::cast(srv)!=NULL && 
-         PIXGroup::cast(srv)->getPIXGroupType()==ICMP_TYPE)
+    if ( PIXObjectGroup::cast(srv)!=NULL && 
+         PIXObjectGroup::cast(srv)->getObjectGroupType()==ICMP_TYPE)
     {
         for (FWObject::iterator i1=srv->begin(); i1!=srv->end(); ++i1)
         {
@@ -494,7 +402,7 @@ string    PolicyCompiler_pix::PrintRule::_printSSHTelnetCommand(PolicyRule *rule
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 //        Address *a;
 
-        if (dynamic_cast<PIXGroup*>(o)!=NULL)
+        if (dynamic_cast<PIXObjectGroup*>(o)!=NULL)
         {
             for (FWObject::iterator j=o->begin(); j!=o->end(); ++j)
             {
@@ -553,42 +461,13 @@ bool PolicyCompiler_pix::PrintRule::processNext()
 {
     PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-//    FWOptions  *ruleopt =rule->getOptionsObject();
-    bool write_comments= compiler->fw->getOptionsObject()->getBool("pix_include_comments");
+    //bool write_comments= compiler->fw->getOptionsObject()->getBool("pix_include_comments");
 
     tmp_queue.push_back(rule);
 
     ostringstream  comment;
     
     compiler->output << compiler->printComment(rule, current_rule_label1, "!");
-
-#if 0
-    string rl=rule->getLabel();
-    if (write_comments && !compiler->inSingleRuleCompileMode())
-    {
-        if (rl!=current_rule_label1)
-        {
-            comment << "! " << endl;
-            comment << "! Rule  " << rl << endl;
-
-            string    comm=rule->getComment();
-            string::size_type c1,c2;
-            c1=0;
-            while ( (c2=comm.find('\n',c1))!=string::npos ) {
-                comment << "! " << comm.substr(c1,c2-c1) << endl;
-                c1=c2+1;
-            }
-            comment << "! " << comm.substr(c1) << endl;
-            comment << "! " << endl;
-
-            current_rule_label1 = rl;
-            compiler->output << comment.str();
-        }
-    }
-
-    string err = rule->getStr(".error_msg");
-    if (!err.empty()) compiler->output << "! " << err << endl;
-#endif
 
     if (rule->getBool("icmp_cmd"))
     {
@@ -671,9 +550,9 @@ bool PolicyCompiler_pix::PrintRule::processNext()
      * object-group in protocol part of ACL.
      */
 
-    PIXGroup *pgsrv = PIXGroup::cast(srvobj);
-    PIXGroup *pgsrc = PIXGroup::cast(srcobj);
-    PIXGroup *pgdst = PIXGroup::cast(dstobj);
+    PIXObjectGroup *pgsrv = PIXObjectGroup::cast(srvobj);
+    PIXObjectGroup *pgsrc = PIXObjectGroup::cast(srcobj);
+    PIXObjectGroup *pgdst = PIXObjectGroup::cast(dstobj);
 
     if ( pgsrv!=NULL && pgsrv->isServiceGroup())
         aclstr << pgsrv->getSrvTypeName();

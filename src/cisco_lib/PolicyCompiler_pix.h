@@ -208,7 +208,7 @@ namespace fwcompiler {
         {
             std::string                re_type;
             std::string                name_suffix;
-            PIXGroup* findObjectGroup(libfwbuilder::RuleElement *re);
+            PIXObjectGroup* findObjectGroup(libfwbuilder::RuleElement *re);
             public:
             CreateObjectGroups(const std::string &name,
                                const std::string &_ns,
