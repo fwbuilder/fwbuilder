@@ -282,7 +282,7 @@
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id2366X75741" host_OS="pix_os" inactive="False" lastCompiled="1261535722" lastInstalled="0" lastModified="1258413993" platform="pix" name="cluster1" comment="" ro="False">
+      <Cluster id="id2366X75741" host_OS="pix_os" inactive="False" lastCompiled="1261535722" lastInstalled="0" lastModified="1263972639" platform="pix" name="cluster1" comment="" ro="False">
         <NAT id="id2370X75741" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4606X78273" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -295,7 +295,7 @@
               <ServiceRef ref="sysid1"/>
             </OSrv>
             <TSrc neg="False">
-              <ObjectRef ref="id2374X75741"/>
+              <ObjectRef ref="id2379X75741"/>
             </TSrc>
             <TDst neg="False">
               <ObjectRef ref="sysid0"/>
@@ -445,7 +445,7 @@
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2377X75741" type="none" name="cluster1:e1:members" comment="">
+          <FailoverClusterGroup id="id2377X75741" master_iface="id2843X69605" type="none" name="cluster1:e1:members" comment="">
             <ObjectRef ref="id2843X69605"/>
             <ObjectRef ref="id2936X39486"/>
             <ClusterGroupOptions>

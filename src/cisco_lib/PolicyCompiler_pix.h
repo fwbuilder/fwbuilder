@@ -69,6 +69,16 @@ namespace fwcompiler {
             virtual bool processNext();
         };
 
+        /**
+         * internal: checks if interface is a child of a cluster and calls
+         * Compiler::_expand_interface() with a pointer to the master member
+         * interface. If @iface is not cluster interface, just calls
+         * Compiler::_expand_interface()
+         */
+        virtual void _expand_interface(libfwbuilder::Rule *rule,
+                                       libfwbuilder::Interface *iface,
+                                       std::list<libfwbuilder::FWObject*> &ol);
+
         /*
          *************************************************************************
          *

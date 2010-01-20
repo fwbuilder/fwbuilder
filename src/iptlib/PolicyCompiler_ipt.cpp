@@ -287,8 +287,9 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
     return str.str();
 }
 
-void PolicyCompiler_ipt::_expandInterface(Interface *iface,
-                                          std::list<FWObject*> &ol)
+void PolicyCompiler_ipt::_expand_interface(Rule *rule,
+                                           Interface *iface,
+                                           std::list<FWObject*> &ol)
 {
     std::list<FWObject*>    ol1;
 
@@ -296,7 +297,7 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
     std::list<FWObject*>    lother;
     physAddress            *pa=NULL;
 
-    Compiler::_expandInterface(iface,ol1);
+    Compiler::_expand_interface(rule, iface,ol1);
     for (std::list<FWObject*>::iterator j=ol1.begin(); j!=ol1.end(); j++)
     {
         if ((*j)->getTypeName() == IPv4::TYPENAME)
@@ -323,7 +324,7 @@ void PolicyCompiler_ipt::_expandInterface(Interface *iface,
 
 /* At this point we have physAddress object and have to deal with it
  *
- * Compiler::_expandInterface picks all IPv4 objects and physAddress
+ * Compiler::_expand_interface picks all IPv4 objects and physAddress
  * object under Interface; it can also add interface object(s) to
  * the list.
  *
@@ -2751,7 +2752,7 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::processNext()
 
 /*
  * remember, behavior of this processor has been changed in virtual
- * method _expandInterface
+ * method _expand_interface
  */
 bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinSrc::processNext()
 {
@@ -4105,7 +4106,7 @@ void PolicyCompiler_ipt::compile()
                  " swap MultiAddress -> MultiAddressRunTime in Dst"));
 
 /* behavior of processors ExpandMultiple... has been changed in
- * virtual method _expandInterface  */
+ * virtual method _expand_interface  */
         add( new ExpandMultipleAddressesInSrc(
                  "expand objects with multiple addresses in SRC"));
         add( new ExpandMultipleAddressesInDst(

@@ -101,6 +101,16 @@ namespace fwcompiler {
 
         std::string debugPrintRule(libfwbuilder::Rule *r);
 
+        /**
+         * internal: checks if interface is a child of a cluster and calls
+         * Compiler::_expand_interface() with a pointer to the master member
+         * interface. If @iface is not cluster interface, just calls
+         * Compiler::_expand_interface()
+         */
+        virtual void _expand_interface(libfwbuilder::Rule *rule,
+                                       libfwbuilder::Interface *iface,
+                                       std::list<libfwbuilder::FWObject*> &ol);
+
 /* this is a dictionary of all nat acl names and associated boolean
  * flag that indicates that corresponding 'clear' command has been
  * issued. We use this to keep track of all names that are created to

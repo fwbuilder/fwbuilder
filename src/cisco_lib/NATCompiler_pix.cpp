@@ -40,12 +40,17 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 
 #include <algorithm>
 #include <functional>
 #include <iostream>
 #include <cstring>
 #include <assert.h>
+
+#include <QString>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -65,6 +70,43 @@ NATCompiler_pix::NATCompiler_pix(FWObjectDatabase *_db,
                                  OSConfigurator *_oscnf) : 
     NATCompiler(_db, fw, ipv6_policy, _oscnf) , helper(this)
 { 
+}
+
+void NATCompiler_pix::_expand_interface(Rule *rule,
+                                        Interface *iface,
+                                        std::list<FWObject*> &ol)
+{
+    FWObject *parent = iface->getParentHost();
+    if (Cluster::cast(parent) == NULL)
+    {
+        Compiler::_expand_interface(rule, iface, ol);
+        return;
+    }
+
+    FWObject *failover_group = iface->getFirstByType(FailoverClusterGroup::TYPENAME);
+    if (failover_group)
+    {
+        for (FWObjectTypedChildIterator it =
+                 failover_group->findByType(FWObjectReference::TYPENAME);
+             it != it.end(); ++it)
+        {
+            Interface *member_iface =
+                Interface::cast(FWObjectReference::getObject(*it));
+            assert(member_iface);
+            if (member_iface->isChildOf(fw))
+            {
+                Compiler::_expand_interface(rule, member_iface, ol);
+                return;
+            }
+        }
+        QString err("Failover group of cluster interface '%1' (%2) "
+                    "does not include interface for the member '%3'");
+        abort(rule,
+              err.
+              arg(iface->getName().c_str()).
+              arg(iface->getLabel().c_str()).
+              arg(fw->getName().c_str()).toStdString());
+    }
 }
 
 string NATCompiler_pix::getNATACLname(Rule *rule,int nat_id)
@@ -665,8 +707,6 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
     Helper helper(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
-    tmp_queue.push_back(rule);
-
     list<FWObject*> cl;
     RuleElementTSrc *rel;
     Address     *obj=NULL;
@@ -674,7 +714,11 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
     switch (rule->getRuleType()) {
 
     case NATRule::Masq:
-    case NATRule::Redirect: return true;
+    case NATRule::Redirect:
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
 
     case NATRule::SNAT:
     {
@@ -691,6 +735,12 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
         }
 
 	rel=rule->getTSrc();      assert(rel);
+        if (rel->size() == 0)
+        {
+            compiler->abort(rule, "Empty TSrc");
+            return true;
+        }
+
 	obj=compiler->getFirstTSrc(rule);  assert(obj!=NULL);
 
 	if (obj->getId()==compiler->getFwId() ) 
@@ -729,6 +779,8 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
     break;
     default: ;    // TODO: should actually be always_assert
     }
+
+    tmp_queue.push_back(rule);
     return true;
 }
 

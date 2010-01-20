@@ -43,6 +43,8 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 
 #include <iostream>
 #if __GNUC__ > 3 || \
@@ -57,6 +59,9 @@
 #include <functional>
 
 #include <assert.h>
+
+#include <QString>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -185,6 +190,44 @@ int PolicyCompiler_pix::prolog()
 
     return PolicyCompiler::prolog();
 }
+
+void PolicyCompiler_pix::_expand_interface(Rule *rule,
+                                           Interface *iface,
+                                           std::list<FWObject*> &ol)
+{
+    FWObject *parent = iface->getParentHost();
+    if (Cluster::cast(parent) == NULL)
+    {
+        Compiler::_expand_interface(rule, iface, ol);
+        return;
+    }
+
+    FWObject *failover_group = iface->getFirstByType(FailoverClusterGroup::TYPENAME);
+    if (failover_group)
+    {
+        for (FWObjectTypedChildIterator it =
+                 failover_group->findByType(FWObjectReference::TYPENAME);
+             it != it.end(); ++it)
+        {
+            Interface *member_iface =
+                Interface::cast(FWObjectReference::getObject(*it));
+            assert(member_iface);
+            if (member_iface->isChildOf(fw))
+            {
+                Compiler::_expand_interface(rule, member_iface, ol);
+                return;
+            }
+        }
+        QString err("Failover group of cluster interface '%1' (%2) "
+                    "does not include interface for the member '%3'");
+        abort(rule,
+              err.
+              arg(iface->getName().c_str()).
+              arg(iface->getLabel().c_str()).
+              arg(fw->getName().c_str()).toStdString());
+    }
+}
+
 
 bool PolicyCompiler_pix::checkVersionAndDynamicInterface::findDynamicInterface(
     PolicyRule *rule, RuleElement *rel)

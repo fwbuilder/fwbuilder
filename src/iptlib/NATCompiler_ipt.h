@@ -84,8 +84,9 @@ namespace fwcompiler {
          * the class combinedAddress here from each pair of physAddress
          * and IPV4
          */
-        virtual void _expandInterface(libfwbuilder::Interface *iface,
-                                     std::list<libfwbuilder::FWObject*> &ol);
+        virtual void _expand_interface(libfwbuilder::Rule *rule,
+                                       libfwbuilder::Interface *iface,
+                                       std::list<libfwbuilder::FWObject*> &ol);
 
 
 

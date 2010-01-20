@@ -210,12 +210,13 @@ int NATCompiler_ipt::prolog()
 }
 
 
-void NATCompiler_ipt::_expandInterface(Interface *iface,
-                                       std::list<FWObject*> &ol)
+void NATCompiler_ipt::_expand_interface(Rule *rule,
+                                        Interface *iface,
+                                        std::list<FWObject*> &ol)
 {
     std::list<FWObject*> nol;
 
-    Compiler::_expandInterface(iface,ol);
+    Compiler::_expand_interface(rule, iface, ol);
 
     physAddress *pa=iface->getPhysicalAddress();
 /*
