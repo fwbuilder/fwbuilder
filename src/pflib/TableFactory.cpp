@@ -153,7 +153,7 @@ void TableFactory::createTablesForRE(RuleElement *re,Rule *rule)
         {
             FWObject *o= *i;
             if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-            tblgrp->add( o );
+            tblgrp->addRef( o );
         }
     }
     re->clearChildren();
