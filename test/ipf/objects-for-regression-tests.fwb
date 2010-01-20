@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="15" lastModified="1257363322" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1257363322" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
   </Library>
@@ -133,9 +133,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -151,9 +151,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -168,9 +168,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -186,9 +186,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -243,9 +243,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">True</Option>
           </HostOptions>
         </Host>
@@ -320,9 +320,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -338,9 +338,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -356,9 +356,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -374,9 +374,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -392,9 +392,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -410,9 +410,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -428,9 +428,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">False</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -484,9 +484,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -599,9 +599,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
@@ -703,8 +703,8 @@
       </ServiceGroup>
       <ServiceGroup id="stdid13_1" name="Custom" comment="" ro="False">
         <CustomService id="id3B64FE22" name="talk" comment="Talk support" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipfilter"/>
           <CustomServiceCommand platform="iptables">-m ip_conntrack_talk -m ip_nat_talk</CustomServiceCommand>
         </CustomService>
       </ServiceGroup>
@@ -950,10 +950,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -977,7 +977,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">True</Option>
               <Option name="stateless">True</Option>
@@ -1020,10 +1020,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3BF1B44E" disabled="True" log="False" position="10" action="Accept" direction="Both" comment="">
@@ -1043,10 +1043,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-3" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
@@ -1069,10 +1069,10 @@
               <IntervalRef ref="id3C63479E"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-2" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="">
@@ -1092,10 +1092,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-4" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
@@ -1116,10 +1116,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CD8770E" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
@@ -1140,10 +1140,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D98E652" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
@@ -1164,10 +1164,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3CD87B1E" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
@@ -1188,10 +1188,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B58E180" disabled="False" log="True" position="17" action="Accept" direction="Both" comment="">
@@ -1272,10 +1272,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="pol-firewall2-7" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="Automatically generated 'catch all' rule">
@@ -1295,15 +1295,15 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_log_facility">daemon</Option>
               <Option name="ipf_return_icmp_as_dest">False</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_level">alert</Option>
-              <Option name="log_limit_suffix"></Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_limit_suffix"/>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1333,30 +1333,30 @@
           <Option name="accept_established">False</Option>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP port unreachable</Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="cmdline">-v</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="dynAddr">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
-          <Option name="epilog_script"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="epilog_script"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="ipf_conf_file_name_on_firewall">ipf.conf</Option>
           <Option name="ipf_log_body">False</Option>
           <Option name="ipf_log_facility">local0</Option>
@@ -1384,7 +1384,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -1399,17 +1399,17 @@
           <Option name="openbsd_ip_redirect">0</Option>
           <Option name="openbsd_ip_sourceroute">0</Option>
           <Option name="optimize">True</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
-          <Option name="script_env_path"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
+          <Option name="script_env_path"/>
           <Option name="script_name_on_firewall">ipf.fw</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
-          <Option name="sshArgs"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
+          <Option name="sshArgs"/>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
       </Firewall>
@@ -1858,10 +1858,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="limit_suffix">/minute</Option>
               <Option name="limit_value">10</Option>
-              <Option name="log_prefix"></Option>
+              <Option name="log_prefix"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2083,34 +2083,34 @@
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="dynAddr">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
-          <Option name="epilog_script"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="epilog_script"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="ipf_conf_file_name_on_firewall">/etc/fw/ipf.conf</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ekshell_proxy">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
@@ -2134,29 +2134,29 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="nat_conf_file_name_on_firewall">/etc/fw/nat.conf</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="optimize">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="proxy_arp">False</Option>
-          <Option name="scpArgs"></Option>
-          <Option name="script_env_path"></Option>
+          <Option name="scpArgs"/>
+          <Option name="script_env_path"/>
           <Option name="script_name_on_firewall">/etc/ipf.fw</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
-          <Option name="sshArgs"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
+          <Option name="sshArgs"/>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -2183,7 +2183,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3AFB66D6" disabled="False" position="1" action="Translate" comment="">
@@ -2207,7 +2207,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3DE9CA86" disabled="False" position="2" action="Translate" comment="">
@@ -2466,7 +2466,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3BD6757E" disabled="True" position="14" action="Translate" comment="">
@@ -2698,8 +2698,8 @@
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
               <Option name="stateless">True</Option>
@@ -2720,8 +2720,8 @@
               <ObjectRef ref="id3AFB6706"/>
             </Itf>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">Iface: %I RULE %N -- %A **</Option>
               <Option name="stateless">True</Option>
@@ -2744,7 +2744,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2768,7 +2768,7 @@
               <Option name="action_on_reject">TCP RST</Option>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">False</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">IDENT</Option>
               <Option name="stateless">True</Option>
@@ -2791,10 +2791,10 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="ipf_keep_frags">False</Option>
               <Option name="ipf_return_icmp_as_dest">False</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="log_prefix">IDENT</Option>
               <Option name="stateless">True</Option>
@@ -2855,7 +2855,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3C447B8D" disabled="False" log="True" position="8" action="Accept" direction="Both" comment="host-fw2 has the same address as &#10;        one of the firewall's interfaces">
@@ -2911,7 +2911,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -2951,26 +2951,26 @@
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
-          <Option name="id"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
+          <Option name="id"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">True</Option>
           <Option name="ipf_nat_h323_proxy">True</Option>
@@ -3006,10 +3006,10 @@
           <Option name="pf_return_icmp_as_dest">True</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">True</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="use_ip_tool">True</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -3036,7 +3036,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D758531" disabled="False" position="1" action="Translate" comment="">
@@ -3059,7 +3059,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D75869D" disabled="False" position="2" action="Translate" comment="">
@@ -3082,7 +3082,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3D7586D1" disabled="False" position="3" action="Translate" comment="">
@@ -3105,7 +3105,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3B0C6390" disabled="True" position="4" action="Translate" comment="negation in NAT is not supported&#10;in ipf yet">
@@ -3128,7 +3128,7 @@
               <ServiceRef ref="sysid1"/>
             </TSrv>
             <NATRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </NATRuleOptions>
           </NATRule>
           <NATRule id="id3B202AFF" disabled="False" position="5" action="Translate" comment="">
@@ -3350,7 +3350,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3B0C63A9" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="testing negation in the policy rule">
@@ -3371,7 +3371,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3393,7 +3393,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3416,7 +3416,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3437,7 +3437,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id3D85069A" disabled="True" log="True" position="9" action="Accept" direction="Both" comment="">
@@ -3476,7 +3476,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="id"></Option>
+              <Option name="id"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -3514,34 +3514,34 @@
           <Option name="accept_established">False</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="dynAddr">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
-          <Option name="epilog_script"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="epilog_script"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_path_ipf">/usr/sbin/ipf</Option>
           <Option name="freebsd_path_ipnat">/usr/sbin/ipnat</Option>
-          <Option name="freebsd_path_sysctl"></Option>
-          <Option name="id"></Option>
+          <Option name="freebsd_path_sysctl"/>
+          <Option name="id"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">True</Option>
           <Option name="ipf_nat_h323_proxy">True</Option>
@@ -3562,26 +3562,26 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
           <Option name="optimize">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
-          <Option name="sshArgs"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
+          <Option name="sshArgs"/>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
       </Firewall>
@@ -3684,24 +3684,24 @@
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
           <Option name="eliminate_duplicates">True</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
@@ -3718,7 +3718,7 @@
           <Option name="log_level">debug</Option>
           <Option name="log_limit_suffix">/second</Option>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
@@ -3728,10 +3728,10 @@
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -3906,23 +3906,23 @@
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="in_out_code">True</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
@@ -3937,9 +3937,9 @@
           <Option name="log_all_dropped">False</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">debug</Option>
-          <Option name="log_limit_suffix"></Option>
+          <Option name="log_limit_suffix"/>
           <Option name="log_limit_value">0</Option>
-          <Option name="log_prefix"></Option>
+          <Option name="log_prefix"/>
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">False</Option>
@@ -3948,10 +3948,10 @@
           <Option name="no_optimisation">False</Option>
           <Option name="pass_all_out">False</Option>
           <Option name="platform">iptables</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
           <Option name="use_ip_tool">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
         </FirewallOptions>
@@ -4271,20 +4271,20 @@
         <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_raudio_proxy">False</Option>
@@ -4292,9 +4292,9 @@
           <Option name="ipf_return_icmp_as_dest">False</Option>
           <Option name="manage_virtual_addr">False</Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3DF3D0AD" host_OS="freebsd" lastCompiled="1157929213" lastInstalled="0" lastModified="0" platform="ipf" name="firewall9" comment="" ro="False">
@@ -4691,20 +4691,20 @@
         <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -4714,9 +4714,9 @@
           <Option name="ipf_return_icmp_as_dest">False</Option>
           <Option name="manage_virtual_addr">False</Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3FCA516A" host_OS="freebsd" inactive="False" lastCompiled="1157929196" lastInstalled="0" lastModified="1156049389" platform="ipf" version="" name="firewall10" comment="" ro="False">
@@ -4951,21 +4951,21 @@
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">False</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -4976,9 +4976,9 @@
           <Option name="manage_virtual_addr">False</Option>
           <Option name="optimize">True</Option>
           <Option name="pass_all_out">True</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id3FF5DC0E" host_OS="freebsd" lastCompiled="1172425374" lastInstalled="0" lastModified="0" platform="ipf" name="firewall11" comment="" ro="False">
@@ -5092,21 +5092,21 @@
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -5119,9 +5119,9 @@
           <Option name="manage_virtual_addr">True</Option>
           <Option name="optimize">False</Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id424A636E" host_OS="freebsd" lastCompiled="1157929209" lastInstalled="0" lastModified="0" platform="ipf" version="" name="firewall5" comment="Dynamic interface ppp0" ro="False">
@@ -5457,27 +5457,27 @@
         <FirewallOptions>
           <Option name="accept_new_tcp_with_no_syn">False</Option>
           <Option name="action_on_reject">ICMP host prohibited</Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="dynAddr">True</Option>
           <Option name="eliminate_duplicates">True</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -5486,15 +5486,15 @@
           <Option name="ipf_nat_rcmd_proxy">False</Option>
           <Option name="ipf_return_icmp_as_dest">False</Option>
           <Option name="manage_virtual_addr">False</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="optimize">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pass_all_out">False</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="prolog_script"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
         </FirewallOptions>
       </Firewall>
       <Firewall id="id43867C1018346" host_OS="freebsd" lastCompiled="1157929202" lastInstalled="0" lastModified="0" platform="ipf" version="" name="firewall33" comment="testing DNSName object" ro="False">
@@ -5838,50 +5838,50 @@
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="epilog_script"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="epilog_script"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
-          <Option name="linux24_ip_forward"></Option>
-          <Option name="linux24_log_martians"></Option>
-          <Option name="linux24_path_ip"></Option>
-          <Option name="linux24_path_iptables"></Option>
-          <Option name="linux24_path_logger"></Option>
-          <Option name="linux24_path_lsmod"></Option>
-          <Option name="linux24_path_modprobe"></Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
+          <Option name="linux24_ip_forward"/>
+          <Option name="linux24_log_martians"/>
+          <Option name="linux24_path_ip"/>
+          <Option name="linux24_path_iptables"/>
+          <Option name="linux24_path_logger"/>
+          <Option name="linux24_path_lsmod"/>
+          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">30</Option>
           <Option name="linux24_tcp_keepalive_interval">1800</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">False</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -5895,20 +5895,20 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="platform">iptables</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
-          <Option name="sshArgs"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -6186,50 +6186,50 @@
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="dyn_addr">False</Option>
-          <Option name="epilog_script"></Option>
-          <Option name="firewall_dir"></Option>
+          <Option name="epilog_script"/>
+          <Option name="firewall_dir"/>
           <Option name="firewall_is_part_of_any">True</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="ignore_empty_groups">False</Option>
-          <Option name="inst_cmdline"></Option>
-          <Option name="inst_script"></Option>
-          <Option name="install_script"></Option>
+          <Option name="inst_cmdline"/>
+          <Option name="inst_script"/>
+          <Option name="install_script"/>
           <Option name="limit_suffix">/day</Option>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
-          <Option name="linux24_ip_forward"></Option>
-          <Option name="linux24_log_martians"></Option>
-          <Option name="linux24_path_ip"></Option>
-          <Option name="linux24_path_iptables"></Option>
-          <Option name="linux24_path_logger"></Option>
-          <Option name="linux24_path_lsmod"></Option>
-          <Option name="linux24_path_modprobe"></Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
+          <Option name="linux24_ip_forward"/>
+          <Option name="linux24_log_martians"/>
+          <Option name="linux24_path_ip"/>
+          <Option name="linux24_path_iptables"/>
+          <Option name="linux24_path_logger"/>
+          <Option name="linux24_path_lsmod"/>
+          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">30</Option>
           <Option name="linux24_tcp_keepalive_interval">1800</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
-          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
+          <Option name="linux24_tcp_window_scaling"/>
           <Option name="load_modules">False</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
@@ -6243,20 +6243,20 @@
           <Option name="log_tcp_opt">False</Option>
           <Option name="log_tcp_seq">False</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="no_iochains_for_any">False</Option>
           <Option name="no_optimisation">False</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="platform">iptables</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
+          <Option name="prolog_script"/>
           <Option name="proxy_arp">False</Option>
-          <Option name="script_env_path"></Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
-          <Option name="sshArgs"></Option>
+          <Option name="script_env_path"/>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -6499,15 +6499,15 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="classify_str"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="classify_str"/>
               <Option name="custom_str">auth</Option>
               <Option name="ipfw_classify_method">2</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
               <Option name="ipfw_pipe_queue_num">0</Option>
-              <Option name="rule_name_accounting"></Option>
+              <Option name="rule_name_accounting"/>
               <Option name="stateless">True</Option>
-              <Option name="tagvalue"></Option>
+              <Option name="tagvalue"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id43F7D90631168" disabled="False" log="False" position="1" action="Custom" direction="Inbound" comment="">
@@ -6527,15 +6527,15 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
-              <Option name="classify_str"></Option>
+              <Option name="action_on_reject"/>
+              <Option name="classify_str"/>
               <Option name="custom_str">auth</Option>
               <Option name="ipfw_classify_method">2</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
               <Option name="ipfw_pipe_queue_num">0</Option>
-              <Option name="rule_name_accounting"></Option>
+              <Option name="rule_name_accounting"/>
               <Option name="stateless">True</Option>
-              <Option name="tagvalue"></Option>
+              <Option name="tagvalue"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id43F7D91731168" disabled="False" log="False" position="2" action="Accept" direction="Inbound" comment="">
@@ -6601,20 +6601,20 @@
         <FirewallOptions>
           <Option name="action_on_reject">ICMP host prohibited</Option>
           <Option name="check_shading">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="debug">False</Option>
           <Option name="eliminate_duplicates">True</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_path_ipf"></Option>
-          <Option name="freebsd_path_ipnat"></Option>
-          <Option name="freebsd_path_sysctl"></Option>
+          <Option name="freebsd_path_ipf"/>
+          <Option name="freebsd_path_ipnat"/>
+          <Option name="freebsd_path_sysctl"/>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="ipf_log_body">False</Option>
-          <Option name="ipf_log_facility"></Option>
-          <Option name="ipf_log_level"></Option>
+          <Option name="ipf_log_facility"/>
+          <Option name="ipf_log_level"/>
           <Option name="ipf_log_or_block">False</Option>
           <Option name="ipf_nat_ftp_proxy">False</Option>
           <Option name="ipf_nat_h323_proxy">False</Option>
@@ -6624,9 +6624,9 @@
           <Option name="ipf_return_icmp_as_dest">False</Option>
           <Option name="manage_virtual_addr">False</Option>
           <Option name="pass_all_out">False</Option>
-          <Option name="snmp_contact"></Option>
-          <Option name="snmp_description"></Option>
-          <Option name="snmp_location"></Option>
+          <Option name="snmp_contact"/>
+          <Option name="snmp_description"/>
+          <Option name="snmp_location"/>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>

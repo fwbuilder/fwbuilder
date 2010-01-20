@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="2.0.3" lastModified="1095039616" id="root">
-  <Library color="#d2ffd0" id="id413EEA4C" name="User">
-    <ObjectGroup id="id413EEA4D" name="Objects">
-      <ObjectGroup id="id413EEA4E" name="Addresses"/>
-      <ObjectGroup id="id413EEA4F" name="Groups"/>
-      <ObjectGroup id="id413EEA50" name="Hosts">
-        <Host comment="" id="id413EEA6D" name="Inside Host 1">
-          <Interface dyn="False" id="id413EEA6F" label="" name="eth0" security_level="0" unnum="False">
-            <IPv4 address="10.0.1.1" comment="" id="id413EEA71" name="Inside Host 1:eth0:ip" netmask="255.255.255.0"/>
-            <InterfacePolicy id="id413EEA70"/>
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" id="root">
+  <Library id="id413EEA4C" color="#d2ffd0" name="User" comment="" ro="False">
+    <ObjectGroup id="id413EEA4D_clusters" name="Clusters" comment="" ro="False"/>
+    <ObjectGroup id="id413EEA4D" name="Objects" comment="" ro="False">
+      <ObjectGroup id="id413EEA4D_og_ats_1" name="Address Tables" comment="" ro="False"/>
+      <ObjectGroup id="id413EEA4D_og_dnsn_1" name="DNS Names" comment="" ro="False"/>
+      <ObjectGroup id="id413EEA4E" name="Addresses" comment="" ro="False"/>
+      <ObjectGroup id="id413EEA4F" name="Groups" comment="" ro="False"/>
+      <ObjectGroup id="id413EEA50" name="Hosts" comment="" ro="False">
+        <Host id="id413EEA6D" name="Inside Host 1" comment="" ro="False">
+          <Interface id="id413EEA6F" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id413EEA71" name="Inside Host 1:eth0:ip" comment="" ro="False" address="10.0.1.1" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -20,10 +22,9 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host comment="" id="id413EEA7C" name="Inside Host 2">
-          <Interface dyn="False" id="id413EEA7F" label="" name="eth0" security_level="0" unnum="False">
-            <IPv4 address="10.0.1.2" comment="" id="id413EEA81" name="Inside Host 2:eth0:ip" netmask="255.255.255.0"/>
-            <InterfacePolicy id="id413EEA80"/>
+        <Host id="id413EEA7C" name="Inside Host 2" comment="" ro="False">
+          <Interface id="id413EEA7F" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id413EEA81" name="Inside Host 2:eth0:ip" comment="" ro="False" address="10.0.1.2" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -34,10 +35,9 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host comment="" id="id413EEA8C" name="Inside Host 3">
-          <Interface dyn="False" id="id413EEA8F" label="" name="eth0" security_level="0" unnum="False">
-            <IPv4 address="10.0.1.3" comment="" id="id413EEA91" name="Inside Host 3:eth0:ip" netmask="255.255.255.0"/>
-            <InterfacePolicy id="id413EEA90"/>
+        <Host id="id413EEA8C" name="Inside Host 3" comment="" ro="False">
+          <Interface id="id413EEA8F" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id413EEA91" name="Inside Host 3:eth0:ip" comment="" ro="False" address="10.0.1.3" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -48,10 +48,9 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host comment="" id="id413EEA94" name="Inside Host 4">
-          <Interface dyn="False" id="id413EEA97" label="" name="eth0" security_level="0" unnum="False">
-            <IPv4 address="10.0.1.4" comment="" id="id413EEA99" name="Inside Host 4:eth0:ip" netmask="255.255.255.0"/>
-            <InterfacePolicy id="id413EEA98"/>
+        <Host id="id413EEA94" name="Inside Host 4" comment="" ro="False">
+          <Interface id="id413EEA97" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id413EEA99" name="Inside Host 4:eth0:ip" comment="" ro="False" address="10.0.1.4" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -62,10 +61,9 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host comment="" id="id413EEAA4" name="Outside Host 1">
-          <Interface dyn="False" id="id413EEAA7" label="" name="eth0" security_level="0" unnum="False">
-            <IPv4 address="10.0.0.1" comment="" id="id413EEAA9" name="Outside Host 1:eth0:ip" netmask="255.255.255.0"/>
-            <InterfacePolicy id="id413EEAA8"/>
+        <Host id="id413EEAA4" name="Outside Host 1" comment="" ro="False">
+          <Interface id="id413EEAA7" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id413EEAA9" name="Outside Host 1:eth0:ip" comment="" ro="False" address="10.0.0.1" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -76,10 +74,9 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host comment="" id="id413EEAB4" name="Outside Host 3">
-          <Interface dyn="False" id="id413EEAB7" label="" name="eth0" security_level="0" unnum="False">
-            <IPv4 address="10.0.0.3" comment="" id="id413EEAB9" name="Outside Host 3:eth0:ip" netmask="255.255.255.0"/>
-            <InterfacePolicy id="id413EEAB8"/>
+        <Host id="id413EEAB4" name="Outside Host 3" comment="" ro="False">
+          <Interface id="id413EEAB7" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id413EEAB9" name="Outside Host 3:eth0:ip" comment="" ro="False" address="10.0.0.3" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -90,10 +87,9 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host comment="" id="id413EEABC" name="Outside Host 4">
-          <Interface dyn="False" id="id413EEABF" label="" name="eth0" security_level="0" unnum="False">
-            <IPv4 address="10.0.0.4" comment="" id="id413EEAC1" name="Outside Host 4:eth0:ip" netmask="255.255.255.0"/>
-            <InterfacePolicy id="id413EEAC0"/>
+        <Host id="id413EEABC" name="Outside Host 4" comment="" ro="False">
+          <Interface id="id413EEABF" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id413EEAC1" name="Outside Host 4:eth0:ip" comment="" ro="False" address="10.0.0.4" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -104,10 +100,9 @@
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
         </Host>
-        <Host comment="" id="id413EEAC4" name="Outside Host 2">
-          <Interface dyn="False" id="id413EEAC7" label="" name="eth0" security_level="0" unnum="False">
-            <IPv4 address="10.0.0.2" comment="" id="id413EEAC9" name="Outside Host 2:eth0:ip" netmask="255.255.255.0"/>
-            <InterfacePolicy id="id413EEAC8"/>
+        <Host id="id413EEAC4" name="Outside Host 2" comment="" ro="False">
+          <Interface id="id413EEAC7" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id413EEAC9" name="Outside Host 2:eth0:ip" comment="" ro="False" address="10.0.0.2" netmask="255.255.255.0"/>
           </Interface>
           <Management address="0.0.0.0">
             <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -119,43 +114,30 @@
           </HostOptions>
         </Host>
       </ObjectGroup>
-      <ObjectGroup id="id413EEA51" name="Networks">
-        <Network comment="" id="id413EEACC" name="Test Network 1" address="10.0.3.0" netmask="255.255.255.0"/>
-        <Network comment="DMZ net - using NAT" id="id4145F2F8" name="dmz_net" address="192.168.2.0" netmask="255.255.255.0"/>
-        <Network comment="" id="id4145F2F7" name="Internal_net" address="192.168.1.0" netmask="255.255.255.0"/>
+      <ObjectGroup id="id413EEA51" name="Networks" comment="" ro="False">
+        <Network id="id413EEACC" name="Test Network 1" comment="" ro="False" address="10.0.3.0" netmask="255.255.255.0"/>
+        <Network id="id4145F2F8" name="dmz_net" comment="DMZ net - using NAT" ro="False" address="192.168.2.0" netmask="255.255.255.0"/>
+        <Network id="id4145F2F7" name="Internal_net" comment="" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
       </ObjectGroup>
-      <ObjectGroup id="id413EEA52" name="Address Ranges"/>
+      <ObjectGroup id="id413EEA52" name="Address Ranges" comment="" ro="False"/>
     </ObjectGroup>
-    <ServiceGroup id="id413EEA53" name="Services">
-      <ServiceGroup id="id413EEA54" name="Groups"/>
-      <ServiceGroup id="id413EEA55" name="ICMP"/>
-      <ServiceGroup id="id413EEA56" name="IP"/>
-      <ServiceGroup id="id413EEA57" name="TCP"/>
-      <ServiceGroup id="id413EEA58" name="UDP"/>
-      <ServiceGroup id="id413EEA59" name="Custom"/>
+    <ServiceGroup id="id413EEA53" name="Services" comment="" ro="False">
+      <ServiceGroup id="id413EEA53_userservices" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id413EEA53_og_tag_1" name="TagServices" comment="" ro="False"/>
+      <ServiceGroup id="id413EEA54" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id413EEA55" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id413EEA56" name="IP" comment="" ro="False"/>
+      <ServiceGroup id="id413EEA57" name="TCP" comment="" ro="False"/>
+      <ServiceGroup id="id413EEA58" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id413EEA59" name="Custom" comment="" ro="False"/>
     </ServiceGroup>
-    <ObjectGroup id="id413EEA5A" name="Firewalls">
-      <Firewall comment="" host_OS="linux24" id="id413EEA5C" name="optitest" platform="iptables" version="1.2.9">
-        <NAT id="id413EEA60"/>
-        <Policy id="id413EEA5F">
-          <PolicyRule action="Accept" comment="Test 0 : Don't Optimize 1 src" disabled="False" id="id413EEF55" log="False" position="0">
-            <Src neg="False">
-              <ObjectRef ref="id413EEA6D"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="color">#7694C0</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 1 : Don't Optimize 1 dst" disabled="False" id="id413EEF0A" log="False" position="1">
+    <ObjectGroup id="id413EEA5A" name="Firewalls" comment="" ro="False">
+      <Firewall id="id413EEA5C" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" version="1.2.9" name="optitest" comment="" ro="False">
+        <NAT id="id413EEA60" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id413EEA5F" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id4145343B" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="Test 1 : Don't Optimize 1 dst">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -165,6 +147,9 @@
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -172,7 +157,7 @@
               <Option name="color">#7694C0</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 2 : Don't Optimize 1 service" disabled="False" id="id413EEEFF" log="False" position="2">
+          <PolicyRule id="id41453449" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="Test 2 : Don't Optimize 1 service">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -182,6 +167,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -189,7 +177,7 @@
               <Option name="color">#7694C0</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 3 : Don't Optimize 1 src &amp; 1 dst" disabled="False" id="id413EEF80" log="False" position="3">
+          <PolicyRule id="id41453457" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="Test 3 : Don't Optimize 1 src &amp; 1 dst">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
             </Src>
@@ -199,6 +187,9 @@
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -206,7 +197,7 @@
               <Option name="color">#7694C0</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 4 : Don't Optimize 1 src &amp; 1 service" disabled="False" id="id413EEFE0" log="False" position="4">
+          <PolicyRule id="id41453465" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="Test 4 : Don't Optimize 1 src &amp; 1 service">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
             </Src>
@@ -216,6 +207,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -223,7 +217,7 @@
               <Option name="color">#7694C0</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 5 : Don't Optimize 1 dst &amp; 1 service" disabled="False" id="id413EEFB4" log="False" position="5">
+          <PolicyRule id="id41453473" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="Test 5 : Don't Optimize 1 dst &amp; 1 service">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -233,6 +227,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -240,7 +237,7 @@
               <Option name="color">#7694C0</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 6 : Don't Optimize 1 src, 1 dst &amp; 1 service" disabled="False" id="id413EF013" log="False" position="6">
+          <PolicyRule id="id41453481" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="Test 6 : Don't Optimize 1 src, 1 dst &amp; 1 service">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
             </Src>
@@ -250,6 +247,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -257,7 +257,7 @@
               <Option name="color">#7694C0</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 7 : Optimize : src, dst, svc\nTime should appear on the src rules in the FORWARD table\n+Logging\n" disabled="False" id="id413FD6F5" log="True" position="7">
+          <PolicyRule id="id4145348F" disabled="False" log="True" position="6" action="Accept" direction="Both" comment="Test 7 : Optimize : src, dst, svc&#10;Time should appear on the src rules in the FORWARD table&#10;+Logging&#10;">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
               <ObjectRef ref="id413EEA7C"/>
@@ -270,6 +270,9 @@
               <ServiceRef ref="tcp-FTP"/>
               <ServiceRef ref="id4127EA73"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="id413EEACD"/>
             </When>
@@ -277,7 +280,7 @@
               <Option name="color">#C0BA44</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 7 : Optimize on service - dsts -&gt; user chain" disabled="False" id="id413EF03D" log="False" position="8">
+          <PolicyRule id="id414534A0" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="Test 7 : Optimize on service - dsts -&gt; user chain">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -289,6 +292,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -296,7 +302,7 @@
               <Option name="color">#8BC065</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 8 : Optimize on service - srcs -&gt; user chain" disabled="False" id="id413EF062" log="False" position="9">
+          <PolicyRule id="id414534B0" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="Test 8 : Optimize on service - srcs -&gt; user chain">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
               <ObjectRef ref="id413EEA7C"/>
@@ -308,6 +314,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -315,7 +324,7 @@
               <Option name="color">#8BC065</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Reject" comment="Test 9 : Optimize on service - srcs -&gt; user chain\n            Dst to stay on rule in FORWARD table\n\n+ options TCP RST Reject Test" disabled="False" id="id413EF08B" log="False" position="10">
+          <PolicyRule id="id414534C0" disabled="False" log="False" position="9" action="Reject" direction="Both" comment="Test 9 : Optimize on service - srcs -&gt; user chain&#10;            Dst to stay on rule in FORWARD table&#10;&#10;+ options TCP RST Reject Test">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
               <ObjectRef ref="id413EEA7C"/>
@@ -327,6 +336,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -339,11 +351,11 @@
               <Option name="limit_value">0</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
-              <Option name="stateless">False</Option>
+              <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 10 : Optimize on src &amp; dst, services -&gt; user chain\n+ Logging " disabled="False" id="id413F033B" log="True" position="11">
+          <PolicyRule id="id414534D0" disabled="False" log="True" position="10" action="Accept" direction="Both" comment="Test 10 : Optimize on src &amp; dst, services -&gt; user chain&#10;+ Logging ">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
             </Src>
@@ -355,6 +367,9 @@
               <ServiceRef ref="id4127EA73"/>
               <ServiceRef ref="id3C20EEB5"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -362,7 +377,7 @@
               <Option name="color">#8BC065</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 11 : Special case - with multiport we shouldn't\noptimize here as all services are TCP and we have &lt;15\nof them\n\nNOT OPTIMUM - We've split before multiport which re-merges multiple services of the same type\nSOLUTION ?" disabled="False" id="id413F0486" log="False" position="12">
+          <PolicyRule id="id414534E0" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="Test 11 : Special case - with multiport we shouldn't&#10;optimize here as all services are TCP and we have &lt;15&#10;of them&#10;&#10;NOT OPTIMUM - We've split before multiport which re-merges multiple services of the same type&#10;SOLUTION ?">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
             </Src>
@@ -373,6 +388,9 @@
               <ServiceRef ref="tcp-FTP"/>
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -380,7 +398,7 @@
               <Option name="color">#C86E6E</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 12 : Optimize : src, dst, svc\n+ options limit test\n+ logging" disabled="False" id="id413EEACF" log="True" position="13">
+          <PolicyRule id="id414534EF" disabled="False" log="True" position="12" action="Accept" direction="Both" comment="Test 12 : Optimize : src, dst, svc&#10;+ options limit test&#10;+ logging">
             <Src neg="False">
               <ObjectRef ref="id413EEA7C"/>
             </Src>
@@ -395,6 +413,9 @@
               <ServiceRef ref="id4127EA73"/>
               <ServiceRef ref="id3CB12797"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -411,7 +432,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 13 : Optimize : src, dst, svc\nTime should appear on the src rules in the FORWARD table\n+Logging\n\nNOT OPTIMUM : Time appears in Logging\nSOLUTION : Patch logging not to include time?" disabled="False" id="id413EEDC5" log="True" position="14">
+          <PolicyRule id="id41453502" disabled="False" log="True" position="13" action="Accept" direction="Both" comment="Test 13 : Optimize : src, dst, svc&#10;Time should appear on the src rules in the FORWARD table&#10;+Logging&#10;&#10;NOT OPTIMUM : Time appears in Logging&#10;SOLUTION : Patch logging not to include time?">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
               <ObjectRef ref="id413EEA7C"/>
@@ -427,6 +448,9 @@
               <ServiceRef ref="id4127EA73"/>
               <ServiceRef ref="id3CB12797"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="id413EEACD"/>
             </When>
@@ -434,7 +458,7 @@
               <Option name="color">#C0BA44</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Accept" comment="Test 14 : Optimize : src, dst, svc\nTime should appear on the service rules\nsince we there are two of them and we don't optimize\nfor time (yet!)\n+ Logging\n\nNOT OPTIMUM : Time appears in Logging\nSOLUTION : Patch logging not to include time?" disabled="False" id="id413EEE2D" log="False" position="15">
+          <PolicyRule id="id41453516" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="Test 14 : Optimize : src, dst, svc&#10;Time should appear on the service rules&#10;since we there are two of them and we don't optimize&#10;for time (yet!)&#10;+ Logging&#10;&#10;NOT OPTIMUM : Time appears in Logging&#10;SOLUTION : Patch logging not to include time?">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
               <ObjectRef ref="id413EEA7C"/>
@@ -450,6 +474,9 @@
               <ServiceRef ref="id4127EA73"/>
               <ServiceRef ref="id3CB12797"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="id413EEACD"/>
               <IntervalRef ref="id413EEACE"/>
@@ -458,7 +485,7 @@
               <Option name="color">#C0BA44</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Reject" comment="Test 15 : Don't optimize if we have limit options" disabled="False" id="id413F065C" log="False" position="16">
+          <PolicyRule id="id4145352B" disabled="False" log="False" position="15" action="Reject" direction="Both" comment="Test 15 : Don't optimize if we have limit options">
             <Src neg="False">
               <ObjectRef ref="id413EEA6D"/>
             </Src>
@@ -468,6 +495,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -480,11 +510,11 @@
               <Option name="limit_value">8</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
-              <Option name="stateless">False</Option>
+              <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Deny" comment="Test 16 : Check INPUT/OUPUT with FW part of rule" disabled="False" id="id413F0C67" log="True" position="17">
+          <PolicyRule id="id41453539" disabled="False" log="True" position="16" action="Deny" direction="Both" comment="Test 16 : Check INPUT/OUPUT with FW part of rule">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -495,6 +525,215 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-FTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id4145342D" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="Test 0 : Don't Optimize 1 src">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id413EEA61"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEF55" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="Test 0 : Don't Optimize 1 src">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEF0A" disabled="False" log="False" position="19" action="Accept" direction="Both" comment="Test 1 : Don't Optimize 1 dst">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEEFF" disabled="False" log="False" position="20" action="Accept" direction="Both" comment="Test 2 : Don't Optimize 1 service">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEF80" disabled="False" log="False" position="21" action="Accept" direction="Both" comment="Test 3 : Don't Optimize 1 src &amp; 1 dst">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEFE0" disabled="False" log="False" position="22" action="Accept" direction="Both" comment="Test 4 : Don't Optimize 1 src &amp; 1 service">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEFB4" disabled="False" log="False" position="23" action="Accept" direction="Both" comment="Test 5 : Don't Optimize 1 dst &amp; 1 service">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EF013" disabled="False" log="False" position="24" action="Accept" direction="Both" comment="Test 6 : Don't Optimize 1 src, 1 dst &amp; 1 service">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413FD6F5" disabled="False" log="True" position="25" action="Accept" direction="Both" comment="Test 7 : Optimize : src, dst, svc&#10;Time should appear on the src rules in the FORWARD table&#10;+Logging&#10;">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+              <ObjectRef ref="id413EEA7C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+              <ObjectRef ref="id413EEAC4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+              <ServiceRef ref="id4127EA73"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="id413EEACD"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EF03D" disabled="False" log="False" position="26" action="Accept" direction="Both" comment="Test 7 : Optimize on service - dsts -&gt; user chain">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+              <ObjectRef ref="id413EEAC4"/>
+              <ObjectRef ref="id413EEAB4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -502,383 +741,253 @@
               <Option name="color">#8BC065</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <PolicyRule id="id413EF062" disabled="False" log="False" position="27" action="Accept" direction="Both" comment="Test 8 : Optimize on service - srcs -&gt; user chain">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+              <ObjectRef ref="id413EEA7C"/>
+              <ObjectRef ref="id413EEA8C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EF08B" disabled="False" log="False" position="28" action="Reject" direction="Both" comment="Test 9 : Optimize on service - srcs -&gt; user chain&#10;            Dst to stay on rule in FORWARD table&#10;&#10;+ options TCP RST Reject Test">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+              <ObjectRef ref="id413EEA7C"/>
+              <ObjectRef ref="id413EEA8C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="color">#8BC065</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413F033B" disabled="False" log="True" position="29" action="Accept" direction="Both" comment="Test 10 : Optimize on src &amp; dst, services -&gt; user chain&#10;+ Logging ">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="id4127EA73"/>
+              <ServiceRef ref="id3C20EEB5"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413F0486" disabled="False" log="False" position="30" action="Accept" direction="Both" comment="Test 11 : Special case - with multiport we shouldn't&#10;optimize here as all services are TCP and we have &lt;15&#10;of them&#10;&#10;NOT OPTIMUM - We've split before multiport which re-merges multiple services of the same type&#10;SOLUTION ?">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEACF" disabled="False" log="True" position="31" action="Accept" direction="Both" comment="Test 12 : Optimize : src, dst, svc&#10;+ options limit test&#10;+ logging">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA7C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+              <ObjectRef ref="id413EEAC4"/>
+              <ObjectRef ref="id413EEAB4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+              <ServiceRef ref="id3C20EEB5"/>
+              <ServiceRef ref="id4127EA73"/>
+              <ServiceRef ref="id3CB12797"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="color">#8BC065</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="limit_burst">4</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">8</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEDC5" disabled="False" log="True" position="32" action="Accept" direction="Both" comment="Test 13 : Optimize : src, dst, svc&#10;Time should appear on the src rules in the FORWARD table&#10;+Logging&#10;&#10;NOT OPTIMUM : Time appears in Logging&#10;SOLUTION : Patch logging not to include time?">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+              <ObjectRef ref="id413EEA7C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+              <ObjectRef ref="id413EEAC4"/>
+              <ObjectRef ref="id413EEAB4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+              <ServiceRef ref="id3C20EEB5"/>
+              <ServiceRef ref="id4127EA73"/>
+              <ServiceRef ref="id3CB12797"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="id413EEACD"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413EEE2D" disabled="False" log="False" position="33" action="Accept" direction="Both" comment="Test 14 : Optimize : src, dst, svc&#10;Time should appear on the service rules&#10;since we there are two of them and we don't optimize&#10;for time (yet!)&#10;+ Logging&#10;&#10;NOT OPTIMUM : Time appears in Logging&#10;SOLUTION : Patch logging not to include time?">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+              <ObjectRef ref="id413EEA7C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAA4"/>
+              <ObjectRef ref="id413EEAC4"/>
+              <ObjectRef ref="id413EEAB4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+              <ServiceRef ref="id3C20EEB5"/>
+              <ServiceRef ref="id4127EA73"/>
+              <ServiceRef ref="id3CB12797"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="id413EEACD"/>
+              <IntervalRef ref="id413EEACE"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413F065C" disabled="False" log="False" position="34" action="Reject" direction="Both" comment="Test 15 : Don't optimize if we have limit options">
+            <Src neg="False">
+              <ObjectRef ref="id413EEA6D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEAC4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-HTTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject">TCP RST</Option>
+              <Option name="color">#7694C0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="limit_burst">4</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">8</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id413F0C67" disabled="False" log="True" position="35" action="Deny" direction="Both" comment="Test 16 : Check INPUT/OUPUT with FW part of rule">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id413EEA5C"/>
+              <ObjectRef ref="id413EEAA4"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-FTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Interface dyn="False" id="id413EEA61" label="Outside" name="eth0" security_level="0" unnum="False">
-          <IPv4 address="10.0.0.254" comment="" id="id413EEA63" name="optitest:eth0:ip" netmask="255.255.255.0"/>
-          <InterfacePolicy id="id413EEA62">
-            <PolicyRule action="Accept" comment="Test 1 : Don't Optimize 1 dst" direction="Both" disabled="False" id="id4145343B" log="False" position="0">
-              <Src neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="sysid1"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#7694C0</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 2 : Don't Optimize 1 service" direction="Both" disabled="False" id="id41453449" log="False" position="1">
-              <Src neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#7694C0</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 3 : Don't Optimize 1 src &amp; 1 dst" direction="Both" disabled="False" id="id41453457" log="False" position="2">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="sysid1"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#7694C0</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 4 : Don't Optimize 1 src &amp; 1 service" direction="Both" disabled="False" id="id41453465" log="False" position="3">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#7694C0</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 5 : Don't Optimize 1 dst &amp; 1 service" direction="Both" disabled="False" id="id41453473" log="False" position="4">
-              <Src neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#7694C0</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 6 : Don't Optimize 1 src, 1 dst &amp; 1 service" direction="Both" disabled="False" id="id41453481" log="False" position="5">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#7694C0</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 7 : Optimize : src, dst, svc\nTime should appear on the src rules in the FORWARD table\n+Logging\n" direction="Both" disabled="False" id="id4145348F" log="True" position="6">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-                <ObjectRef ref="id413EEA7C"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-                <ObjectRef ref="id413EEAC4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-FTP"/>
-                <ServiceRef ref="id4127EA73"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="id413EEACD"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#C0BA44</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 7 : Optimize on service - dsts -&gt; user chain" direction="Both" disabled="False" id="id414534A0" log="False" position="7">
-              <Src neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-                <ObjectRef ref="id413EEAC4"/>
-                <ObjectRef ref="id413EEAB4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#8BC065</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 8 : Optimize on service - srcs -&gt; user chain" direction="Both" disabled="False" id="id414534B0" log="False" position="8">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-                <ObjectRef ref="id413EEA7C"/>
-                <ObjectRef ref="id413EEA8C"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#8BC065</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Reject" comment="Test 9 : Optimize on service - srcs -&gt; user chain\n            Dst to stay on rule in FORWARD table\n\n+ options TCP RST Reject Test" direction="Both" disabled="False" id="id414534C0" log="False" position="9">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-                <ObjectRef ref="id413EEA7C"/>
-                <ObjectRef ref="id413EEA8C"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="action_on_reject">TCP RST</Option>
-                <Option name="color">#8BC065</Option>
-                <Option name="firewall_is_part_of_any_and_networks">False</Option>
-                <Option name="limit_burst">0</Option>
-                <Option name="limit_suffix"></Option>
-                <Option name="limit_value">0</Option>
-                <Option name="log_level"></Option>
-                <Option name="log_prefix"></Option>
-                <Option name="stateless">False</Option>
-                <Option name="ulog_nlgroup">1</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 10 : Optimize on src &amp; dst, services -&gt; user chain\n+ Logging " direction="Both" disabled="False" id="id414534D0" log="True" position="10">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-                <ServiceRef ref="id4127EA73"/>
-                <ServiceRef ref="id3C20EEB5"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#8BC065</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 11 : Special case - with multiport we shouldn't\noptimize here as all services are TCP and we have &lt;15\nof them\n\nNOT OPTIMUM - We've split before multiport which re-merges multiple services of the same type\nSOLUTION ?" direction="Both" disabled="False" id="id414534E0" log="False" position="11">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-FTP"/>
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#C86E6E</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 12 : Optimize : src, dst, svc\n+ options limit test\n+ logging" direction="Both" disabled="False" id="id414534EF" log="True" position="12">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA7C"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-                <ObjectRef ref="id413EEAC4"/>
-                <ObjectRef ref="id413EEAB4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-FTP"/>
-                <ServiceRef ref="id3C20EEB5"/>
-                <ServiceRef ref="id4127EA73"/>
-                <ServiceRef ref="id3CB12797"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="action_on_reject"></Option>
-                <Option name="color">#8BC065</Option>
-                <Option name="firewall_is_part_of_any_and_networks">False</Option>
-                <Option name="limit_burst">4</Option>
-                <Option name="limit_suffix"></Option>
-                <Option name="limit_value">8</Option>
-                <Option name="log_level"></Option>
-                <Option name="log_prefix"></Option>
-                <Option name="stateless">False</Option>
-                <Option name="ulog_nlgroup">1</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 13 : Optimize : src, dst, svc\nTime should appear on the src rules in the FORWARD table\n+Logging\n\nNOT OPTIMUM : Time appears in Logging\nSOLUTION : Patch logging not to include time?" direction="Both" disabled="False" id="id41453502" log="True" position="13">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-                <ObjectRef ref="id413EEA7C"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-                <ObjectRef ref="id413EEAC4"/>
-                <ObjectRef ref="id413EEAB4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-FTP"/>
-                <ServiceRef ref="id3C20EEB5"/>
-                <ServiceRef ref="id4127EA73"/>
-                <ServiceRef ref="id3CB12797"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="id413EEACD"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#C0BA44</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 14 : Optimize : src, dst, svc\nTime should appear on the service rules\nsince we there are two of them and we don't optimize\nfor time (yet!)\n+ Logging\n\nNOT OPTIMUM : Time appears in Logging\nSOLUTION : Patch logging not to include time?" direction="Both" disabled="False" id="id41453516" log="False" position="14">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-                <ObjectRef ref="id413EEA7C"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAA4"/>
-                <ObjectRef ref="id413EEAC4"/>
-                <ObjectRef ref="id413EEAB4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-FTP"/>
-                <ServiceRef ref="id3C20EEB5"/>
-                <ServiceRef ref="id4127EA73"/>
-                <ServiceRef ref="id3CB12797"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="id413EEACD"/>
-                <IntervalRef ref="id413EEACE"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#C0BA44</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Reject" comment="Test 15 : Don't optimize if we have limit options" direction="Both" disabled="False" id="id4145352B" log="False" position="15">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEAC4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-HTTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="action_on_reject">TCP RST</Option>
-                <Option name="color">#7694C0</Option>
-                <Option name="firewall_is_part_of_any_and_networks">False</Option>
-                <Option name="limit_burst">4</Option>
-                <Option name="limit_suffix"></Option>
-                <Option name="limit_value">8</Option>
-                <Option name="log_level"></Option>
-                <Option name="log_prefix"></Option>
-                <Option name="stateless">False</Option>
-                <Option name="ulog_nlgroup">1</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Deny" comment="Test 16 : Check INPUT/OUPUT with FW part of rule" direction="Both" disabled="False" id="id41453539" log="True" position="16">
-              <Src neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="id413EEA5C"/>
-                <ObjectRef ref="id413EEAA4"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="tcp-FTP"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#8BC065</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-            <PolicyRule action="Accept" comment="Test 0 : Don't Optimize 1 src" direction="Both" disabled="False" id="id4145342D" log="False" position="17">
-              <Src neg="False">
-                <ObjectRef ref="id413EEA6D"/>
-              </Src>
-              <Dst neg="False">
-                <ObjectRef ref="sysid0"/>
-              </Dst>
-              <Srv neg="False">
-                <ServiceRef ref="sysid1"/>
-              </Srv>
-              <When neg="False">
-                <IntervalRef ref="sysid2"/>
-              </When>
-              <PolicyRuleOptions>
-                <Option name="color">#7694C0</Option>
-              </PolicyRuleOptions>
-            </PolicyRule>
-          </InterfacePolicy>
+        <Routing id="id413EEA5C-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id413EEA61" dedicated_failover="False" dyn="False" label="Outside" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id413EEA63" name="optitest:eth0:ip" comment="" ro="False" address="10.0.0.254" netmask="255.255.255.0"/>
         </Interface>
-        <Interface comment="" dyn="False" id="id413EEA64" label="Inside" mgmt="True" name="eth1" security_level="100" unnum="False">
-          <IPv4 address="10.0.1.254" comment="" id="id413EEA66" name="optitest:eth1:ip" netmask="255.255.255.0"/>
-          <InterfacePolicy id="id413EEA65"/>
+        <Interface id="id413EEA64" dedicated_failover="False" dyn="False" label="Inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id413EEA66" name="optitest:eth1:ip" comment="" ro="False" address="10.0.1.254" netmask="255.255.255.0"/>
         </Interface>
-        <Interface dyn="False" id="id413EEA67" label="DMZ" name="eth2" security_level="100" unnum="False">
-          <IPv4 address="10.0.2.254" comment="" id="id413EEA69" name="optitest:eth2:ip" netmask="255.255.255.0"/>
-          <InterfacePolicy id="id413EEA68"/>
+        <Interface id="id413EEA67" dedicated_failover="False" dyn="False" label="DMZ" security_level="100" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+          <IPv4 id="id413EEA69" name="optitest:eth2:ip" comment="" ro="False" address="10.0.2.254" netmask="255.255.255.0"/>
         </Interface>
         <Management address="10.0.1.254">
           <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
@@ -972,10 +1081,12 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall comment="testing rules with  action-on-reject &quot;TCP reset&quot;\n" host_OS="linux24" id="id4145F25F" name="firewall99" platform="iptables" version="">
-        <NAT id="id4145F2E2"/>
-        <Policy id="id4145F264">
-          <PolicyRule action="Reject" disabled="False" id="id4145F2B5" log="False" position="0">
+      <Firewall id="id4145F25F" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" version="" name="firewall99" comment="testing rules with  action-on-reject &quot;TCP reset&quot;&#10;" ro="False">
+        <NAT id="id4145F2E2" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id4145F264" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id4145F2B5" disabled="False" log="False" position="0" action="Reject" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4145F2F7"/>
             </Src>
@@ -985,6 +1096,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -996,11 +1110,11 @@
               <Option name="limit_value">0</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
-              <Option name="stateless">False</Option>
+              <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Reject" comment="" disabled="False" id="id4145F2BF" log="False" position="1">
+          <PolicyRule id="id4145F2BF" disabled="False" log="False" position="1" action="Reject" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4145F2F7"/>
               <ObjectRef ref="id4145F2F8"/>
@@ -1011,6 +1125,9 @@
             <Srv neg="False">
               <ServiceRef ref="tcp-HTTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -1022,11 +1139,11 @@
               <Option name="limit_value">0</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
-              <Option name="stateless">False</Option>
+              <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Reject" comment="" disabled="False" id="id4145F2CA" log="False" position="2">
+          <PolicyRule id="id4145F2CA" disabled="False" log="False" position="2" action="Reject" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4145F2F7"/>
               <ObjectRef ref="id4145F2F8"/>
@@ -1038,6 +1155,9 @@
               <ServiceRef ref="tcp-HTTP"/>
               <ServiceRef ref="icmp-Unreachables"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -1049,11 +1169,11 @@
               <Option name="limit_value">0</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
-              <Option name="stateless">False</Option>
+              <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule action="Reject" comment="" disabled="False" id="id4145F2D6" log="False" position="3">
+          <PolicyRule id="id4145F2D6" disabled="False" log="False" position="3" action="Reject" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id4145F2F7"/>
               <ObjectRef ref="id4145F2F8"/>
@@ -1065,6 +1185,9 @@
               <ServiceRef ref="icmp-Unreachables"/>
               <ServiceRef ref="tcp-FTP"/>
             </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
@@ -1076,22 +1199,23 @@
               <Option name="limit_value">0</Option>
               <Option name="log_level"></Option>
               <Option name="log_prefix"></Option>
-              <Option name="stateless">False</Option>
+              <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <RuleSetOptions/>
         </Policy>
-        <Interface comment="" dyn="False" id="id4145F2E3" label="" mgmt="True" name="eth0" security_level="100" unnum="False">
-          <IPv4 address="192.168.1.1" id="id4145F2E7" name="firewall99:eth0:ip" netmask="255.255.255.0"/>
-          <InterfacePolicy id="id4145F2E6"/>
+        <Routing id="id4145F25F-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id4145F2E3" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id4145F2E7" name="firewall99:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
         </Interface>
-        <Interface dyn="False" id="id4145F2E8" name="eth1" security_level="0" unnum="False">
-          <IPv4 address="22.22.22.22" id="id4145F2EC" name="firewall99:eth1:ip" netmask="255.255.255.0"/>
-          <InterfacePolicy id="id4145F2EB"/>
+        <Interface id="id4145F2E8" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id4145F2EC" name="firewall99:eth1:ip" comment="" ro="False" address="22.22.22.22" netmask="255.255.255.0"/>
         </Interface>
-        <Interface dyn="False" id="id4145F2ED" name="lo" security_level="100" unnum="False">
-          <IPv4 address="127.0.0.1" id="id4145F2F1" name="firewall99:lo:ip" netmask="255.0.0.0"/>
-          <InterfacePolicy id="id4145F2F0"/>
+        <Interface id="id4145F2ED" dedicated_failover="False" dyn="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id4145F2F1" name="firewall99:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
         </Interface>
         <Management address="192.168.1.1">
           <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
@@ -1156,51 +1280,57 @@
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
-    <IntervalGroup id="id413EEA5B" name="Time">
-      <Interval comment="" from_day="28" from_hour="0" from_minute="0" from_month="2" from_weekday="-1" from_year="2935093" id="id413EEACD" name="Mornings Only" to_day="28" to_hour="11" to_minute="59" to_month="2" to_weekday="-1" to_year="2935093"/>
-      <Interval comment="" from_day="28" from_hour="12" from_minute="0" from_month="2" from_weekday="-1" from_year="2935093" id="id413EEACE" name="Afternoons Only" to_day="28" to_hour="23" to_minute="59" to_month="2" to_weekday="-1" to_year="2935093"/>
+    <IntervalGroup id="id413EEA5B" name="Time" comment="" ro="False">
+      <Interval id="id413EEACD" days_of_week="0,1,2,3,4,5,6" from_day="28" from_hour="0" from_minute="0" from_month="2" from_weekday="-1" from_year="2935093" to_day="28" to_hour="11" to_minute="59" to_month="2" to_weekday="-1" to_year="2935093" name="Mornings Only" comment="" ro="False"/>
+      <Interval id="id413EEACE" days_of_week="0,1,2,3,4,5,6" from_day="28" from_hour="12" from_minute="0" from_month="2" from_weekday="-1" from_year="2935093" to_day="28" to_hour="23" to_minute="59" to_month="2" to_weekday="-1" to_year="2935093" name="Afternoons Only" comment="" ro="False"/>
     </IntervalGroup>
   </Library>
-  <Library id="sysid99" name="Deleted Objects" ro="False">
-    <ObjectRef ref="sysid0"/>
-    <Library color="#FFFFFF" comment="" id="id4145F24F" name="tmp" ro="False">
-      <ObjectGroup id="id4145F250" name="Objects">
-        <ObjectGroup id="id4145F251" name="Addresses"/>
-        <ObjectGroup id="id4145F252" name="Groups"/>
-        <ObjectGroup id="id4145F253" name="Hosts"/>
-        <ObjectGroup id="id4145F254" name="Networks"/>
-        <ObjectGroup id="id4145F255" name="Address Ranges"/>
+  <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
+    <Library id="id4145F24F" color="#FFFFFF" name="tmp" comment="" ro="False">
+      <ObjectGroup id="id4145F250_clusters" name="Clusters" comment="" ro="False"/>
+      <ObjectGroup id="id4145F250" name="Objects" comment="" ro="False">
+        <ObjectGroup id="id4145F250_og_ats_1" name="Address Tables" comment="" ro="False"/>
+        <ObjectGroup id="id4145F250_og_dnsn_1" name="DNS Names" comment="" ro="False"/>
+        <ObjectGroup id="id4145F251" name="Addresses" comment="" ro="False"/>
+        <ObjectGroup id="id4145F252" name="Groups" comment="" ro="False"/>
+        <ObjectGroup id="id4145F253" name="Hosts" comment="" ro="False"/>
+        <ObjectGroup id="id4145F254" name="Networks" comment="" ro="False"/>
+        <ObjectGroup id="id4145F255" name="Address Ranges" comment="" ro="False"/>
       </ObjectGroup>
-      <ServiceGroup id="id4145F256" name="Services">
-        <ServiceGroup id="id4145F257" name="Groups"/>
-        <ServiceGroup id="id4145F258" name="ICMP"/>
-        <ServiceGroup id="id4145F259" name="IP"/>
-        <ServiceGroup id="id4145F25A" name="TCP"/>
-        <ServiceGroup id="id4145F25B" name="UDP"/>
-        <ServiceGroup id="id4145F25C" name="Custom"/>
+      <ServiceGroup id="id4145F256" name="Services" comment="" ro="False">
+        <ServiceGroup id="id4145F256_userservices" name="Users" comment="" ro="False"/>
+        <ServiceGroup id="id4145F256_og_tag_1" name="TagServices" comment="" ro="False"/>
+        <ServiceGroup id="id4145F257" name="Groups" comment="" ro="False"/>
+        <ServiceGroup id="id4145F258" name="ICMP" comment="" ro="False"/>
+        <ServiceGroup id="id4145F259" name="IP" comment="" ro="False"/>
+        <ServiceGroup id="id4145F25A" name="TCP" comment="" ro="False"/>
+        <ServiceGroup id="id4145F25B" name="UDP" comment="" ro="False"/>
+        <ServiceGroup id="id4145F25C" name="Custom" comment="" ro="False"/>
       </ServiceGroup>
-      <ObjectGroup id="id4145F25D" name="Firewalls"/>
-      <IntervalGroup id="id4145F25E" name="Time"/>
+      <ObjectGroup id="id4145F25D" name="Firewalls" comment="" ro="False"/>
+      <IntervalGroup id="id4145F25E" name="Time" comment="" ro="False"/>
     </Library>
   </Library>
-  <Library color="#d4f8ff" comment="Standard objects" id="syslib000" name="Standard" ro="True">
-    <AnyNetwork comment="Any Network" id="sysid0" name="Any" address="0.0.0.0" netmask="0.0.0.0"/>
-    <AnyIPService comment="Any IP Service" id="sysid1" name="Any" protocol_num="0"/>
-    <AnyInterval comment="Any Interval" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" id="sysid2" name="Any" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1"/>
-    <ServiceGroup id="stdid05" name="Services">
-      <ServiceGroup id="stdid09" name="TCP">
-        <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="80" dst_range_start="80" fin_flag="False" fin_flag_mask="False" id="tcp-HTTP" name="http" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
-        <TCPService ack_flag="False" ack_flag_mask="False" comment="" dst_range_end="21" dst_range_start="21" fin_flag="False" fin_flag_mask="False" id="tcp-FTP" name="ftp" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" src_range_end="0" src_range_start="0" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False"/>
+  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
+    <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
+    <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
+    <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
+    <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
+      <ServiceGroup id="stdid05_userservices" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="stdid05_og_tag_1" name="TagServices" comment="" ro="False"/>
+      <ServiceGroup id="stdid09" name="TCP" comment="" ro="False">
+        <TCPService id="tcp-HTTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="http" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="80" dst_range_end="80"/>
+        <TCPService id="tcp-FTP" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ftp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="21" dst_range_end="21"/>
       </ServiceGroup>
-      <ServiceGroup id="stdid08" name="UDP">
-        <UDPService comment="" dst_range_end="873" dst_range_start="873" id="id4127EA73" name="rsync" src_range_end="0" src_range_start="0"/>
+      <ServiceGroup id="stdid08" name="UDP" comment="" ro="False">
+        <UDPService id="id4127EA73" name="rsync" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="873" dst_range_end="873"/>
       </ServiceGroup>
-      <ServiceGroup id="stdid07" name="ICMP">
-        <ICMPService code="-1" comment="" id="id3C20EEB5" name="any ICMP" type="-1"/>
-        <ICMPService code="-1" comment="" id="icmp-Unreachables" name="all ICMP unreachables" type="3"/>
+      <ServiceGroup id="stdid07" name="ICMP" comment="" ro="False">
+        <ICMPService id="id3C20EEB5" code="-1" type="-1" name="any ICMP" comment="" ro="False"/>
+        <ICMPService id="icmp-Unreachables" code="-1" type="3" name="all ICMP unreachables" comment="" ro="False"/>
       </ServiceGroup>
-      <ServiceGroup id="stdid06" name="IP">
-        <IPService comment="IPSEC Authentication Header Protocol" fragm="False" id="id3CB12797" lsrr="False" name="AH" protocol_num="51" rr="False" short_fragm="False" ssrr="False" ts="False"/>
+      <ServiceGroup id="stdid06" name="IP" comment="" ro="False">
+        <IPService id="id3CB12797" fragm="False" lsrr="False" protocol_num="51" rr="False" short_fragm="False" ssrr="False" ts="False" name="AH" comment="IPSEC Authentication Header Protocol" ro="False"/>
       </ServiceGroup>
     </ServiceGroup>
   </Library>

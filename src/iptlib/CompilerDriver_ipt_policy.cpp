@@ -150,12 +150,6 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         if (mangle_compiler->getCompiledScriptLength() > 0)
         {
             ostringstream tmp;
-            if (mangle_compiler->haveErrorsAndWarnings())
-            {
-                all_errors.push_back(mangle_compiler->getErrors("").c_str());
-//                tmp << "# Policy compiler errors and warnings:" << "\n";
-//                tmp << mangle_compiler->getErrors("# ");
-            }
 
             tmp << mangle_compiler->getCompiledScript();
 
@@ -168,6 +162,11 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
                 }
                 mangle_table_stream << tmp.str();
             }
+        }
+
+        if (mangle_compiler->haveErrorsAndWarnings())
+        {
+            all_errors.push_back(mangle_compiler->getErrors("").c_str());
         }
 
         if (m_str_pos!=mangle_table_stream.tellp())
@@ -201,12 +200,6 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         {
             ostringstream tmp;
 
-            if (policy_compiler->haveErrorsAndWarnings())
-            {
-                all_errors.push_back(policy_compiler->getErrors("").c_str());
-//                tmp << "# Policy compiler errors and warnings:" << "\n";
-//                tmp << policy_compiler->getErrors("# ");
-            }
             tmp << policy_compiler->getCompiledScript();
 
             if (tmp.tellp() > 0)
@@ -219,6 +212,11 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
                 }
                 filter_table_stream << tmp.str();
             }
+        }
+
+        if (policy_compiler->haveErrorsAndWarnings())
+        {
+            all_errors.push_back(policy_compiler->getErrors("").c_str());
         }
     }
 

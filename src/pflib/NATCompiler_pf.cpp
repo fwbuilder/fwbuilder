@@ -368,7 +368,6 @@ bool NATCompiler_pf::splitSDNATRule::processNext()
 bool NATCompiler_pf::VerifyRules::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
-    tmp_queue.push_back(rule);
 
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
     RuleElementODst  *odst=rule->getODst();  assert(odst);
@@ -378,23 +377,21 @@ bool NATCompiler_pf::VerifyRules::processNext()
     RuleElementTDst  *tdst=rule->getTDst();  assert(tdst);
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
-//    if (rule->getRuleType()==NATRule::LB)
-//        compiler->abort("Load balancing rules are not supported. Rule "+rule->getLabel());
-
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
+    {
 	compiler->abort(
-            
-                rule, 
-                "There should be no more than one object in original destination");
-
-//    if (rule->getRuleType()==NATRule::SNAT && tsrc->size()!=1)
-//	compiler->abort("There should be no more than one object in translated source in the rule "+rule->getLabel());
+            rule, 
+            "There should be no more than one object in original destination");
+        return true;
+    }
 
     if (osrv->getNeg())
+    {
         compiler->abort(
-            
-                rule, 
-                "Negation in original service is not supported.");
+            rule, 
+            "Negation in original service is not supported.");
+        return true;
+    }
 
     /* bug #1276083: "Destination NAT rules". this restriction is not
      * true at least as of OpenBSD 3.5
@@ -404,43 +401,55 @@ bool NATCompiler_pf::VerifyRules::processNext()
     */
 
     if (rule->getRuleType()==NATRule::DNAT && osrv->isAny() && !tsrv->isAny())
+    {
 	compiler->abort(
-            
-                rule, 
-                "Can not translate 'any' into a specific service.");
+            rule, 
+            "Can not translate 'any' into a specific service.");
+        return true;
+    }
 
     if (tsrc->getNeg())
+    {
         compiler->abort(
-            
-                rule, 
-                "Can not use negation in translated source.");
-            
+            rule, 
+            "Can not use negation in translated source.");
+        return true;
+    }
+
     if (tdst->getNeg())
+    {
         compiler->abort(
-            
-                rule, 
-                "Can not use negation in translated destination.");
+            rule, 
+            "Can not use negation in translated destination.");
+        return true;
+    }
 
     if (tsrv->getNeg())
+    {
         compiler->abort(
-            
-                rule, 
-                "Can not use negation in translated service.");
+            rule, 
+            "Can not use negation in translated service.");
+        return true;
+    }
 
     if (tsrv->size()!=1) 
+    {
 	compiler->abort(
-            
-                rule, 
-                "Translated service should be 'Original' or should contain single object.");
+            rule, 
+            "Translated service should be 'Original' or should contain single object.");
+        return true;
+    }
 
     FWObject *o=tsrv->front();
     if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
     if ( Group::cast(o)!=NULL)
+    {
 	compiler->abort(
-            
-                rule, 
-                "Can not use group in translated service.");
+            rule, 
+            "Can not use group in translated service.");
+        return true;
+    }
 
 #if 0
     if (rule->getRuleType()==NATRule::SNAT ) 
@@ -454,35 +463,52 @@ bool NATCompiler_pf::VerifyRules::processNext()
     if (rule->getRuleType()==NATRule::SNAT ) 
     {
         if (tsrc->isAny())
+        {
             compiler->abort(rule, 
                             "Source translation rule needs an address in "
                             "Translated Source.");
+            return true;
+        }
+
         FWObject *o = FWReference::getObject(tsrc->front());
         if (Interface::isA(o) && Interface::cast(o)->isUnnumbered())
+        {
             compiler->abort(rule,
                             "Can not use unnumbered interface in "
                             "Translated Source of a Source translation rule.");
+            return true;
+        }
+
     }
 
     if (rule->getRuleType()==NATRule::DNAT || rule->getRuleType()==NATRule::Redirect ) 
     {
         if (tdst->isAny())
-            compiler->abort(rule, 
-                            "Destination translation rule needs an address in "
-                            "Translated Destination.");
+        {
+            compiler->abort(
+                rule, 
+                "Destination translation rule needs an address in "
+                "Translated Destination.");
+            return true;
+        }
 
         if ( tdst->size()!=1)
+        {
             compiler->abort(
-                
-                    rule, 
-                    "There should be no more than one object in translated destination");
+                rule, 
+                "There should be no more than one object in translated destination");
+            return true;
+        }
 
         Address* o1=compiler->getFirstTDst(rule);
         if ( Network::cast(o1)!=NULL || AddressRange::cast(o1)!=NULL )
+        {
             compiler->abort(
-                
-                    rule, 
-                    "Can not use network or address range object in translated destination.");
+                rule, 
+                "Can not use network or address range object in translated destination.");
+            return true;
+        }
+
     }
 
 
@@ -492,10 +518,13 @@ bool NATCompiler_pf::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
+        {
             compiler->abort(
-                
-                    rule, 
-                    "Original and translated source should both be networks of the same size.");
+                rule, 
+                "Original and translated source should both be networks of the same size.");
+            return true;
+        }
+
     }
 
     if (rule->getRuleType()==NATRule::DNetnat && !tsrc->isAny() ) 
@@ -504,29 +533,39 @@ bool NATCompiler_pf::VerifyRules::processNext()
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
         if ( a1==NULL || a2==NULL ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
+        {
             compiler->abort(
-                
-                    rule, 
-                    "Original and translated destination should both be networks of the same size.");
+                rule, 
+                "Original and translated destination should both be networks of the same size.");
+            return true;
+        }
+
     }
 
     if (rule->getRuleType()==NATRule::NATBranch ) 
     {
         RuleSet *branch = rule->getBranch();
         if (branch == NULL)
+        {
             compiler->abort(
                 rule, 
                 "Action 'Branch' needs NAT rule set to point to");
-        else
+            return true;
+        } else
         {
             if (!NAT::isA(branch))
+            {
                 compiler->abort(
                     rule, 
                     "Action 'Branch' must point to a NAT rule set "
                     "(points to " + branch->getTypeName() + ")");
+                return true;
+            }
+
         }
     }
 
+    tmp_queue.push_back(rule);
     return true;
 }
 

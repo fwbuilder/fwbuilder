@@ -1,5 +1,15 @@
 2010-01-19  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/iptlib/NATCompiler_ipt.cpp (VerifyRules2::processNext):
+	fixes #1109: "rules that do not pass verifyRules() checks may
+	cause compiler crash in test mode or gui crash in single rule
+	compile mode"
+
+	* CompilerDriver.cpp (CompilerDriver::formSingleRuleCompileOutput):
+	fixes #1110: "when compiler detects fatal error and drops the rule
+	that caused it, the error does not appear in the single rule
+	compile output".
+
 	* ../src/pflib/TableFactory.cpp (TableFactory::createTablesForRE):
 	fixes #1111: "NAT compiler for PF does not recognize dynamic
 	interface of the firewall in rule element". Compiler issued an

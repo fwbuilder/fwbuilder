@@ -106,11 +106,6 @@ bool CompilerDriver_ipt::processNatRuleSet(
                              << " rule set "
                              << branch_name << "\n";
 
-        if (nat_compiler->haveErrorsAndWarnings())
-        {
-            all_errors.push_back(nat_compiler->getErrors("").c_str());
-        }
-
         if (nat->isTop())
         {
             if (flush_and_set_default_policy)
@@ -125,6 +120,12 @@ bool CompilerDriver_ipt::processNatRuleSet(
 
         branch_ruleset_to_chain_mapping[branch_name] = nat_compiler->getUsedChains();
     }
+
+    if (nat_compiler->haveErrorsAndWarnings())
+    {
+        all_errors.push_back(nat_compiler->getErrors("").c_str());
+    }
+
     return empty_output;
 }
 
