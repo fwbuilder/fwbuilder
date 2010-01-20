@@ -1278,6 +1278,7 @@ Interface* Compiler::getFirstItf(PolicyRule *rule)
 Address* Compiler::getFirstOSrc(NATRule *rule)
 {
     RuleElementOSrc *osrc = rule->getOSrc();
+    assert(osrc!=NULL);
     FWObject *o = FWReference::getObject(osrc->front());
     return Address::cast(o);
 }
@@ -1285,6 +1286,7 @@ Address* Compiler::getFirstOSrc(NATRule *rule)
 Address* Compiler::getFirstODst(NATRule *rule)
 {
     RuleElementODst *odst = rule->getODst();
+    assert(odst!=NULL);
     FWObject *o = FWReference::getObject(odst->front());
     return Address::cast(o);
 }
@@ -1292,6 +1294,7 @@ Address* Compiler::getFirstODst(NATRule *rule)
 Service* Compiler::getFirstOSrv(NATRule *rule)
 {
     RuleElementOSrv *osrv = rule->getOSrv();
+    assert(osrv!=NULL);
     FWObject *o = FWReference::getObject(osrv->front());
     return Service::cast(o);
 }
@@ -1299,6 +1302,7 @@ Service* Compiler::getFirstOSrv(NATRule *rule)
 Address* Compiler::getFirstTSrc(NATRule *rule)
 {
     RuleElementTSrc *tsrc = rule->getTSrc();
+    assert(tsrc!=NULL);
     FWObject *o = FWReference::getObject(tsrc->front());
     return Address::cast(o);
 }
@@ -1306,6 +1310,7 @@ Address* Compiler::getFirstTSrc(NATRule *rule)
 Address* Compiler::getFirstTDst(NATRule *rule)
 {
     RuleElementTDst *tdst = rule->getTDst();
+    assert(tdst!=NULL);
     FWObject *o = FWReference::getObject(tdst->front());
     return Address::cast(o);
 }
@@ -1313,6 +1318,7 @@ Address* Compiler::getFirstTDst(NATRule *rule)
 Service* Compiler::getFirstTSrv(NATRule *rule)
 {
     RuleElementTSrv *tsrv = rule->getTSrv();
+    assert(tsrv!=NULL);
     FWObject *o = FWReference::getObject(tsrv->front());
     return Service::cast(o);
 }
