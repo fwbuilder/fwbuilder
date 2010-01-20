@@ -1,5 +1,11 @@
 2010-01-20  vadim  <vadim@vk.crocodile.org>
 
+	* clusterMembersDialog.cpp (clusterMembersDialog::getSelectedMembers):
+	fixes #1117 "failover group member editor loses interfaces". If
+	failover group included vlan interfaces of the member firewalls,
+	the dialog that appears when user clicks on "manage members"
+	button would not show members at all.
+
 	* NATCompiler_pix.cpp (NATCompiler_pix::_expand_interface): fixes
 	#1115: "fwb_pix crash compiling cluster NAT rule set with
 	interface in TSrc". A cluster interface was used in the TSrc rule
