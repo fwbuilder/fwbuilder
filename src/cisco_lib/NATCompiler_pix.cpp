@@ -152,11 +152,14 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
         StaticCmd *scmd=static_commands[ rule->getInt("sc_cmd") ];
         if (scmd!=NULL)
         {
+            string iaddr_str = (scmd->iaddr->getAddressPtr())?scmd->iaddr->getAddressPtr()->toString():"NULL";
+            string oaddr_str = (scmd->oaddr->getAddressPtr())?scmd->oaddr->getAddressPtr()->toString():"NULL";
+
             os << " StaticCmd:";
             os << " acl=" << scmd->acl_name;
             os << " (" << nat_acl_names[scmd->acl_name] << ")";
-            os << " iaddr=" << scmd->iaddr->getAddressPtr()->toString();
-            os << " oaddr=" << scmd->oaddr->getAddressPtr()->toString();
+            os << " iaddr=" << iaddr_str;
+            os << " oaddr=" << oaddr_str;
             os << " osrc=" << scmd->osrc->getAddressPtr()->toString();
             os << " osrv=" << scmd->osrv->getName();
             os << " tsrv=" << scmd->tsrv->getName();
@@ -1598,15 +1601,14 @@ void NATCompiler_pix::compile()
         add( new processMultiAddressObjectsInODst(
                  "process MultiAddress objects in ODst"));
 
+        add( new classifyNATRule("determine NAT rule types"));
+        add( new VerifyRules("verify rules" ));
+
         add( new ExpandMultipleAddresses("expand multiple addresses"));
         add( new MACFiltering( "check for MAC address filtering"));
         add( new ExpandAddressRanges("expand address range objects"));
         add( new checkForUnnumbered("check for unnumbered interfaces"));
 
-//        add( new ConvertToAtomic("convert to atomic rules"));
-        add( new classifyNATRule("determine NAT rule types"));
-//        add( new fillTranslatedSrv("fill translated service element"));
-        add( new VerifyRules("verify rules" ));
         add( new ReplaceFirewallObjectsODst("replace fw object in ODst" ));
         add( new ReplaceFirewallObjectsTSrc("replace fw object in TSrc" ));
         add( new UseFirewallInterfaces(

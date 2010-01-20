@@ -1,5 +1,13 @@
 2010-01-19  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/cisco_lib/NATCompiler_pix.cpp (NATCompiler_pix::compile):
+	fixes #1108: fwb_pix: incorrect access list is generated for
+	"static". When a firewall or host object with an interface that
+	was configured with netmask that was not
+	255.255.255.255 (i.e. configured correctly) was used in TDst of a
+	NAT rule for PIX firewall, compiler generated configuration that
+	used subnet instead of just the address of the inetrface.
+
 	* ../src/iptlib/NATCompiler_ipt.cpp (VerifyRules2::processNext):
 	fixes #1109: "rules that do not pass verifyRules() checks may
 	cause compiler crash in test mode or gui crash in single rule
