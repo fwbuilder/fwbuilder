@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1258406412" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1264019328" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <Interface id="id3213X42281" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp2" comment="" ro="False">
       <InterfaceOptions>
@@ -693,6 +693,230 @@
         <StateSyncClusterGroup id="id2983X26048" master_iface="id2461X26048" type="pix_state_sync" name="State Sync Group" comment="">
           <ObjectRef ref="id2461X26048"/>
           <ObjectRef ref="id2490X26048"/>
+          <ClusterGroupOptions>
+            <Option name="pix_failover_key">super_secret</Option>
+          </ClusterGroupOptions>
+        </StateSyncClusterGroup>
+      </Cluster>
+      <Cluster id="id56535X61097" host_OS="pix_os" inactive="False" lastCompiled="1261535722" lastInstalled="0" lastModified="1264019437" platform="pix" name="cluster1-1" comment="the same as cluster1, but some failover groups are unconfigured or broken in some way" ro="False">
+        <NAT id="id56688X61097" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id56689X61097" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id2385X39486"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id56556X61097"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id56589X61097" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id56590X61097" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+            <Src neg="False">
+              <ObjectRef ref="id56535X61097"/>
+              <ObjectRef ref="id2385X39486"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id56556X61097"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id56603X61097" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+            <Src neg="False">
+              <ObjectRef ref="id2385X39486"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id56535X61097"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id56615X61097" disabled="False" group="" log="False" position="2" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id2385X39486"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id56535X61097"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id56627X61097" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+            <Src neg="False">
+              <ObjectRef ref="id2735X69605"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id2385X39486"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-DNS"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id56639X61097" disabled="False" log="True" position="4" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+            <Src neg="False">
+              <ObjectRef ref="id56535X61097"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id2385X39486"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-DNS"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id56651X61097" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id56535X61097"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id56663X61097" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id2385X39486"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id56675X61097" disabled="False" log="True" position="7" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id56704X61097" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id56545X61097" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id3042X68642" security_level="100" unnum="False" unprotected="False" name="Ethernet1" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="iface_mtu">1500</Option>
+            <Option name="type">vrrp</Option>
+          </InterfaceOptions>
+          <FailoverClusterGroup id="id56552X61097" type="none" name="cluster1:e1:members" comment="">
+            <ClusterGroupOptions>
+              <Option name="vrrp_secret">not so secret</Option>
+              <Option name="vrrp_vrid">100</Option>
+            </ClusterGroupOptions>
+          </FailoverClusterGroup>
+        </Interface>
+        <Interface id="id56556X61097" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0.101" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="iface_mtu">1500</Option>
+            <Option name="type">vrrp</Option>
+          </InterfaceOptions>
+          <FailoverClusterGroup id="id56563X61097" type="none" name="cluster1:e0.101:members" comment="">
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <Interface id="id56567X61097" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet2" comment="" ro="False">
+          <InterfaceOptions/>
+          <FailoverClusterGroup id="id56574X61097" master_iface="id2331X71781" type="pix_failover" name="Failover group" comment="">
+            <ObjectRef ref="id2331X71781"/>
+            <ObjectRef ref="id2946X39486"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <Interface id="id56578X61097" dedicated_failover="False" dyn="False" label="" mgmt="False" network_zone="sysid0" security_level="20" unnum="False" unprotected="False" name="Ethernet0.102" comment="" ro="False">
+          <InterfaceOptions/>
+          <FailoverClusterGroup id="id56585X61097" master_iface="id3817X97641" type="none" name="cluster1:e0.102:members" comment="">
+            <ObjectRef ref="id3817X97641"/>
+            <ObjectRef ref="id3315X97641"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <FirewallOptions/>
+        <StateSyncClusterGroup id="id56707X61097" master_iface="id2331X71781" type="pix_state_sync" name="State Sync Group" comment="">
+          <ObjectRef ref="id2331X71781"/>
+          <ObjectRef ref="id2946X39486"/>
           <ClusterGroupOptions>
             <Option name="pix_failover_key">super_secret</Option>
           </ClusterGroupOptions>

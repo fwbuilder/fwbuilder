@@ -673,8 +673,9 @@ void CompilerDriver::validateClusterGroups(Cluster *cluster)
         string state_sync_type = (*it)->getStr("type");
         if (!isSupported(&state_sync_protocols, state_sync_type))
         {
-            QString err("State sync group type %1 is not supported");
-            throw FWException(err.arg(state_sync_type.c_str()).toStdString());
+            QString err("State sync group type '%1' is not supported");
+            abort(cluster, NULL, NULL, err.arg(state_sync_type.c_str()).toStdString());
+            throw FatalErrorInSingleRuleCompileMode();
         }
     }
 
@@ -686,11 +687,23 @@ void CompilerDriver::validateClusterGroups(Cluster *cluster)
     list<FWObject*> failover_groups = cluster->getByTypeDeep(FailoverClusterGroup::TYPENAME);
     for (list<FWObject*>::iterator it = failover_groups.begin(); it != failover_groups.end(); ++it)
     {
-        string failover_type = (*it)->getStr("type");
+        FWObject *failover_group = *it;
+        FWObject *parent = failover_group->getParent();
+        string failover_type = failover_group->getStr("type");
         if (!isSupported(&failover_protocols, failover_type))
         {
-            QString err("Failover group type %1 is not supported");
-            throw FWException(err.arg(failover_type.c_str()).toStdString());
+            QString err("Failover group type '%1' is not supported");
+            abort(cluster, NULL, NULL, err.arg(failover_type.c_str()).toStdString());
+            throw FatalErrorInSingleRuleCompileMode();
+        }
+
+        list<FWObject*> l2 = failover_group->getByTypeDeep(FWObjectReference::TYPENAME);
+        if (l2.size() == 0)
+        {
+            QString err("Failover group of cluster interface '%1' is empty");
+            abort(cluster, NULL, NULL,
+                  err.arg(parent->getName().c_str()).toStdString());
+            throw FatalErrorInSingleRuleCompileMode();
         }
     }
 }

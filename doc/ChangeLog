@@ -1,5 +1,10 @@
 2010-01-20  vadim  <vadim@vk.crocodile.org>
 
+	* CompilerDriver.cpp (CompilerDriver::validateClusterGroups):
+	fixes #1119 "add test for the integrity of failover cluster
+	groups".  Compilers require all failover group objects to be
+	configured with interfaces of member firewalls.
+
 	* PolicyCompiler_cisco_acls.cpp (setInterfaceAndDirectionBySrc::processNext):
 	fixes #1120 "redundant commands generated for ssh
 	access". Compiler for PIX generated two "ssh address netmask

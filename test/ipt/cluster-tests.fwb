@@ -1195,7 +1195,7 @@
           <ClusterGroupOptions/>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id3433X13311" host_OS="linux24" inactive="False" lastCompiled="1251482764" lastInstalled="0" lastModified="1263355432" platform="iptables" name="heartbeat_cluster_1" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;" ro="False">
+      <Cluster id="id3433X13311" host_OS="linux24" inactive="False" lastCompiled="1264020601" lastInstalled="0" lastModified="1263355432" platform="iptables" name="heartbeat_cluster_1" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;" ro="False">
         <NAT id="id3587X13311" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3588X13311" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1624,7 +1624,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id3937X13563" host_OS="linux24" lastCompiled="1248541096" lastInstalled="0" lastModified="1251419063" platform="iptables" name="vrrp_cluster_2" comment="" ro="False">
+      <Cluster id="id3937X13563" host_OS="linux24" lastCompiled="1264020603" lastInstalled="0" lastModified="1251419063" platform="iptables" name="vrrp_cluster_2" comment="" ro="False">
         <NAT id="id3941X13563" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id5083X25627" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2286,7 +2286,7 @@
       <ServiceGroup id="id1513X69605" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id1514X69605" name="Firewalls" comment="" ro="False">
-      <Firewall id="id2735X69605" host_OS="linux24" inactive="False" lastCompiled="1251482764" lastInstalled="0" lastModified="1251419063" platform="iptables" version="" name="linux-1" comment="  " ro="False">
+      <Firewall id="id2735X69605" host_OS="linux24" inactive="False" lastCompiled="1264020603" lastInstalled="0" lastModified="1251419063" platform="iptables" version="" name="linux-1" comment="  " ro="False">
         <NAT id="id2827X69605" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2454,7 +2454,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3009X69605" host_OS="linux24" inactive="False" lastCompiled="1251482764" lastInstalled="0" lastModified="1251418923" platform="iptables" version="" name="linux-2" comment="" ro="False">
+      <Firewall id="id3009X69605" host_OS="linux24" inactive="False" lastCompiled="1264020603" lastInstalled="0" lastModified="1251418923" platform="iptables" version="" name="linux-2" comment="" ro="False">
         <NAT id="id3101X69605" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2999,7 +2999,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3783X36775" host_OS="linux24" inactive="False" lastCompiled="1251482998" lastInstalled="0" lastModified="1251482982" platform="iptables" version="" name="linux-bonding-1" comment="VLAN and bonding interface configuration" ro="False">
+      <Firewall id="id3783X36775" host_OS="linux24" inactive="False" lastCompiled="1264020604" lastInstalled="0" lastModified="1251482982" platform="iptables" version="" name="linux-bonding-1" comment="VLAN and bonding interface configuration" ro="False">
         <NAT id="id3817X36775" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
