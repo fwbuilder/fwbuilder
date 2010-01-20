@@ -1,5 +1,11 @@
 2010-01-20  vadim  <vadim@vk.crocodile.org>
 
+	* Helper.cpp (Helper::findInterfaceByNetzone): fixes #1118
+	"fwb_pix uses wrong interface compiling the second cluster
+	member".  NAT compiler for PIX failed to find interface with
+	correct network zone if interface was a child of another
+	interface, e.g. vlan subinterface.
+
 	* clusterMembersDialog.cpp (clusterMembersDialog::getSelectedMembers):
 	fixes #1117 "failover group member editor loses interfaces". If
 	failover group included vlan interfaces of the member firewalls,

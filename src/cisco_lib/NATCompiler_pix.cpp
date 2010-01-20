@@ -440,22 +440,27 @@ bool NATCompiler_pix::VerifyRules::processNext()
 bool NATCompiler_pix::AssignInterface::processNext()
 {
     Helper helper(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==NULL) return false;
 
-    Address  *a1=NULL;
-    Address  *a2=NULL;
+    Address  *a1 = NULL;
+    Address  *a2 = NULL;
 
-    if (rule->getRuleType()==NATRule::SNAT) {
-	a1=compiler->getFirstOSrc(rule);
-	a2=compiler->getFirstTSrc(rule);
+    if (rule->getRuleType()==NATRule::SNAT)
+    {
+	a1 = compiler->getFirstOSrc(rule);
+	a2 = compiler->getFirstTSrc(rule);
     }
-    if (rule->getRuleType()==NATRule::DNAT) {
-	a1=compiler->getFirstODst(rule);
-	a2=compiler->getFirstTDst(rule);
+
+    if (rule->getRuleType()==NATRule::DNAT)
+    {
+	a1 = compiler->getFirstODst(rule);
+	a2 = compiler->getFirstTDst(rule);
     }
-    if (rule->getRuleType()==NATRule::NONAT) {
-	a1=compiler->getFirstOSrc(rule);
-	a2=compiler->getFirstODst(rule);
+
+    if (rule->getRuleType()==NATRule::NONAT)
+    {
+	a1 = compiler->getFirstOSrc(rule);
+	a2 = compiler->getFirstODst(rule);
     }
 
     assert(a1!=NULL && a2!=NULL);
@@ -463,16 +468,16 @@ bool NATCompiler_pix::AssignInterface::processNext()
     rule->setInt("nat_iface_orig", helper.findInterfaceByNetzone(a1));
     rule->setInt("nat_iface_trn",  helper.findInterfaceByNetzone(a2));
 
-    if ( rule->getInt("nat_iface_orig")==-1 ) 
+    if ( rule->getInt("nat_iface_orig")==-1 )
     {
 	compiler->abort(
             rule, 
-                "Object '" + a1->getName() + 
-                "' does not belong to any known network zone.");
+            "Object '" + a1->getName() + 
+            "' does not belong to any known network zone.");
         return true;
     }
 
-    if ( rule->getInt("nat_iface_trn")==-1 ) 
+    if ( rule->getInt("nat_iface_trn")==-1 )
     {
 	compiler->abort(
             rule, 

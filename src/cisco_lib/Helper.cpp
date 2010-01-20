@@ -117,19 +117,23 @@ int  Helper::findInterfaceByNetzone(Address *obj)
 
 int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
 {
-    Firewall *fw=compiler->fw;
+    Firewall *fw = compiler->fw;
     map<int,FWObject*> zones;
-    FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
-    for ( ; i!=i.end(); ++i)
+    list<FWObject*> l2 = fw->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
+        Interface *iface = Interface::cast(*i);
+        if (iface->isDedicatedFailover()) continue;
+        if (iface->isUnprotected()) continue;
+
         // NOTE: "network_zone" is globally unique string ID
         int netzone_id =
-            FWObjectDatabase::getIntId((*i)->getStr("network_zone"));
+            FWObjectDatabase::getIntId(iface->getStr("network_zone"));
 
 #if 0
         FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
         cerr << "netzone_id=" << netzone_id
-             << "  " << (*i)->getStr("network_zone")
+             << "  " << iface->getStr("network_zone")
              << "  " << netzone->getName()
              << endl;
 #endif
@@ -148,11 +152,11 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
                 if (addr==NULL)
                 {
                     if ((*j)->getId()==FWObjectDatabase::ANY_ADDRESS_ID)
-                        return (*i)->getId(); // id of the interface
+                        return iface->getId(); // id of the interface
                 } else
                 {
                     if (Address::cast(*j)->belongs(*addr))
-                        zones[(*i)->getId()] = netzone;
+                        zones[iface->getId()] = netzone;
                 }
             }
         }
