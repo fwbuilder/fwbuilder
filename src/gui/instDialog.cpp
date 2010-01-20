@@ -84,7 +84,10 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-instDialog::instDialog(QWidget *p, bool install, bool showOnlySelected, set<Firewall*> fws) : QDialog(p)
+instDialog::instDialog(QWidget *p,
+                       bool install,
+                       bool showOnlySelected,
+                       set<Firewall*> fws) : QDialog(p)
 {
     init(p);
 
@@ -110,17 +113,23 @@ instDialog::instDialog(QWidget *p, bool install, bool showOnlySelected, set<Fire
         m_dialog->saveMCLogButton->setEnabled(true);
     }
 
-    if (firewalls.size()==0)
+    if (fwbdebug)
+        qDebug() << "instDialog::instDialog"
+                 << "firewalls.size()=" << firewalls.size()
+                 << "clusters.size()=" << clusters.size();
+
+    if (firewalls.size()==0 && clusters.size()==0)
     {
         setTitle( pageCount()-1, tr("There are no firewalls to process.") );
         for (int i=0;i<pageCount()-1;i++)
         {
-            setAppropriate(i,false);
+            setAppropriate(i, false);
         }
         showPage(pageCount()-1);
         return;
     }
-    if (firewalls.size()==1) m_dialog->batchInstall->setEnabled(false);
+
+    if ((firewalls.size() + clusters.size()) == 1) m_dialog->batchInstall->setEnabled(false);
 
     creatingTable = false;
 
@@ -131,7 +140,7 @@ instDialog::instDialog(QWidget *p, bool install, bool showOnlySelected, set<Fire
     if (compile_only)
     {
         m_dialog->batchInstFlagFrame->hide();
-        setAppropriate(2,false);
+        setAppropriate(2, false);
         m_dialog->selectTable->hideColumn(INSTALL_CHECKBOX_COLUMN);
     }
     showPage(0);
@@ -339,6 +348,7 @@ void instDialog::showPage(const int page)
     {
     case 0: // select firewalls for compiling and installing
     {
+        m_dialog->selectTable->setFocus();
         if (lastPage<0) fillCompileSelectList();
         setNextEnabled(0, tableHasCheckedItems());
         break;

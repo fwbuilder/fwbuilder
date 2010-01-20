@@ -198,7 +198,7 @@ void instDialog::setFlags(QTreeWidgetItem* item)
     }
 
     // Real firewalls get checkbox for install
-    if (Firewall::isA(fw))
+    if (Firewall::isA(fw) && ! compile_only)
     {
         bool checked = false;
         checked = checkIfNeedToInstall(fw);
