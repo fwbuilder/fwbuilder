@@ -66,6 +66,8 @@ PolicyCompiler_cisco::PolicyCompiler_cisco(FWObjectDatabase *_db,
                                            OSConfigurator *_oscnf) :
     PolicyCompiler(_db, fw, ipv6_policy, _oscnf) , helper(this)
 {
+    object_groups = new Group();
+    dbcopy->add( object_groups );
 }
 
 int PolicyCompiler_cisco::prolog()

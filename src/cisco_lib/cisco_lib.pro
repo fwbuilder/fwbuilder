@@ -6,7 +6,8 @@ TEMPLATE = lib
 #
 SOURCES	 =  PolicyCompiler_cisco.cpp \
 			PolicyCompiler_cisco_acls.cpp \
-			RoutingCompiler_cisco.cpp \
+			PolicyCompiler_cisco_object_groups.cpp \
+			RoutingCompiler_cisco.cpp         \
 			RoutingCompiler_cisco_writers.cpp \
 			ACL.cpp \
 			Helper.cpp \
@@ -25,6 +26,8 @@ SOURCES	 =  PolicyCompiler_cisco.cpp \
 			OSConfigurator_pix_os_fixups.cpp       \
 			BaseObjectGroup.cpp              \
 			PIXObjectGroup.cpp              \
+			IOSObjectGroup.cpp              \
+			ObjectGroupFactory.cpp          \
 			PolicyCompiler_pix.cpp          \
 			PolicyCompiler_pix_writers.cpp  \
 			PolicyCompiler_pix_v6_acls.cpp	\
@@ -44,6 +47,8 @@ HEADERS	 = ../../config.h \
 			OSConfigurator_pix_os.h         \
 			BaseObjectGroup.h               \
 			PIXObjectGroup.h                \
+			IOSObjectGroup.h                \
+			ObjectGroupFactory.h            \
 			PolicyCompiler_pix.h            \
 			RoutingCompiler_pix.h           \
 

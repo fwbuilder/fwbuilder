@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1263599937" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1264043748" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <Interface id="id19433X65694" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
       <IPv4 id="id19434X65694" name="firewall-ipv6-1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
@@ -140,34 +140,34 @@
       <ServiceGroup id="id4511637123682" name="UDP" comment="" ro="False"/>
       <ServiceGroup id="id4511637223682" name="Custom" comment="" ro="False">
         <CustomService id="id4226X64279" name="dscp af11" comment="" ro="False" protocol="tcp" address_family="ipv4">
-          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl">dscp af11</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfw"/>
-          <CustomServiceCommand platform="iptables"/>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id8888X64279" name="esp dscp af12" comment="" ro="False" protocol="50" address_family="ipv4">
-          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl">dscp af12</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfw"/>
-          <CustomServiceCommand platform="iptables"/>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
         <CustomService id="id26068X65694" name="esp dscp af11 ipv6" comment="" ro="False" protocol="50" address_family="ipv6">
-          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl">dscp af11</CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"/>
-          <CustomServiceCommand platform="ipfw"/>
-          <CustomServiceCommand platform="iptables"/>
-          <CustomServiceCommand platform="pf"/>
-          <CustomServiceCommand platform="pix"/>
-          <CustomServiceCommand platform="unknown"/>
+          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
+          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="iptables"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"></CustomServiceCommand>
+          <CustomServiceCommand platform="pix"></CustomServiceCommand>
+          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="id4511637323682" name="TagServices" comment="" ro="False"/>
@@ -665,10 +665,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="filesystem">/etc</Option>
@@ -697,8 +697,8 @@
           <Option name="iosacl_logging_trap_level">3</Option>
           <Option name="iosacl_prolog_script">! This is prolog</Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
@@ -713,7 +713,7 @@
           <Option name="mgmt_addr">1.1.1.100</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -734,9 +734,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -1123,10 +1123,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -1139,21 +1139,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"/>
+          <Option name="iosacl_logging_buffered_level"></Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"/>
+          <Option name="iosacl_logging_console_level"></Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"/>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -1163,10 +1163,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1188,7 +1188,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -1638,8 +1638,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -1657,7 +1657,7 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -1666,10 +1666,10 @@
           <Option name="iosacl_logging_console_level">3</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">3</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
@@ -1684,7 +1684,7 @@
           <Option name="mgmt_addr">10.10.10.0/24</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1705,9 +1705,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -2030,8 +2030,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -2043,10 +2043,10 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">True</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">True</Option>
@@ -2055,10 +2055,10 @@
           <Option name="iosacl_logging_console_level">5</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">2</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">True</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
@@ -2073,7 +2073,7 @@
           <Option name="mgmt_addr">10.3.14.40</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -2094,9 +2094,9 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -2453,34 +2453,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"/>
-          <Option name="activationCmd"/>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipfw"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipfw"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -2489,7 +2489,7 @@
           <Option name="iosacl_acl_temp_addr">fe80::21d:9ff:aaaa:bbbb</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -2498,13 +2498,13 @@
           <Option name="iosacl_logging_console_level">0</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">0</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
-          <Option name="ipt_mangle_only_rulesets"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -2519,18 +2519,18 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"/>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"/>
-          <Option name="openbsd_ip_sourceroute"/>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"/>
-          <Option name="openbsd_path_sysctl"/>
-          <Option name="output_file"/>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -2549,7 +2549,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"/>
+          <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -2601,12 +2601,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -2968,34 +2968,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"/>
-          <Option name="activationCmd"/>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipfw"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipfw"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -3004,7 +3004,7 @@
           <Option name="iosacl_acl_temp_addr">1.1.1.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -3013,13 +3013,13 @@
           <Option name="iosacl_logging_console_level">2</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">2</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
-          <Option name="ipt_mangle_only_rulesets"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -3038,14 +3038,14 @@
           <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"/>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"/>
-          <Option name="openbsd_ip_sourceroute"/>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"/>
-          <Option name="openbsd_path_sysctl"/>
-          <Option name="output_file"/>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -3064,7 +3064,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"/>
+          <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -3116,12 +3116,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -3510,34 +3510,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"/>
-          <Option name="activationCmd"/>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipfw"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipfw"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -3546,7 +3546,7 @@
           <Option name="iosacl_acl_temp_addr">10.1.1.0</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -3555,13 +3555,13 @@
           <Option name="iosacl_logging_console_level">2</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">2</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
-          <Option name="ipt_mangle_only_rulesets"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -3580,14 +3580,14 @@
           <Option name="mgmt_ssh">True</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"/>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"/>
-          <Option name="openbsd_ip_sourceroute"/>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"/>
-          <Option name="openbsd_path_sysctl"/>
-          <Option name="output_file"/>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -3606,7 +3606,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"/>
+          <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -3658,12 +3658,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -3804,34 +3804,34 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"/>
-          <Option name="activationCmd"/>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="cmdline">-xt</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">True</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="enable_ipv6">True</Option>
-          <Option name="epilog_script"/>
+          <Option name="epilog_script"></Option>
           <Option name="fallback_log">False</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
-          <Option name="freebsd_ip_redirect"/>
-          <Option name="freebsd_ip_sourceroute"/>
+          <Option name="freebsd_ip_redirect"></Option>
+          <Option name="freebsd_ip_sourceroute"></Option>
           <Option name="freebsd_ipv6_forward">1</Option>
-          <Option name="freebsd_path_ipf"/>
-          <Option name="freebsd_path_ipfw"/>
-          <Option name="freebsd_path_ipnat"/>
-          <Option name="freebsd_path_sysctl"/>
+          <Option name="freebsd_path_ipf"></Option>
+          <Option name="freebsd_path_ipfw"></Option>
+          <Option name="freebsd_path_ipnat"></Option>
+          <Option name="freebsd_path_sysctl"></Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="in_out_code">True</Option>
           <Option name="iosacl_acl_basic">False</Option>
@@ -3840,7 +3840,7 @@
           <Option name="iosacl_acl_temp_addr">fe80::21d:9ff:aaaa:bbbb/64</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -3849,13 +3849,13 @@
           <Option name="iosacl_logging_console_level">1</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">1</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
-          <Option name="ipt_mangle_only_rulesets"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="ipt_mangle_only_rulesets"></Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"/>
+          <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -3870,18 +3870,18 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modulate_state">False</Option>
           <Option name="no_ipv6_default_policy">False</Option>
-          <Option name="openbsd_ip_directed_broadcast"/>
+          <Option name="openbsd_ip_directed_broadcast"></Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="openbsd_ip_redirect"/>
-          <Option name="openbsd_ip_sourceroute"/>
+          <Option name="openbsd_ip_redirect"></Option>
+          <Option name="openbsd_ip_sourceroute"></Option>
           <Option name="openbsd_ipv6_forward">1</Option>
-          <Option name="openbsd_path_pfctl"/>
-          <Option name="openbsd_path_sysctl"/>
-          <Option name="output_file"/>
+          <Option name="openbsd_path_pfctl"></Option>
+          <Option name="openbsd_path_sysctl"></Option>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">False</Option>
           <Option name="pf_adaptive_end">0</Option>
           <Option name="pf_adaptive_start">0</Option>
@@ -3900,7 +3900,7 @@
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_limit_table_entries">0</Option>
           <Option name="pf_limit_tables">0</Option>
-          <Option name="pf_optimization"/>
+          <Option name="pf_optimization"></Option>
           <Option name="pf_other_first">0</Option>
           <Option name="pf_other_multiple">0</Option>
           <Option name="pf_other_single">0</Option>
@@ -3952,12 +3952,12 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">fw_file</Option>
-          <Option name="prolog_script"/>
+          <Option name="prolog_script"></Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -4284,10 +4284,10 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
-          <Option name="compiler"/>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -4300,21 +4300,21 @@
           <Option name="iosacl_acl_basic">True</Option>
           <Option name="iosacl_acl_no_clear">False</Option>
           <Option name="iosacl_acl_substitution">False</Option>
-          <Option name="iosacl_acl_temp_addr"/>
+          <Option name="iosacl_acl_temp_addr"></Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
-          <Option name="iosacl_logging_buffered_level"/>
+          <Option name="iosacl_logging_buffered_level"></Option>
           <Option name="iosacl_logging_console">False</Option>
-          <Option name="iosacl_logging_console_level"/>
+          <Option name="iosacl_logging_console_level"></Option>
           <Option name="iosacl_logging_timestamp">False</Option>
-          <Option name="iosacl_logging_trap_level"/>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_logging_trap_level"></Option>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">true</Option>
@@ -4324,10 +4324,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
-          <Option name="mgmt_addr"/>
+          <Option name="mgmt_addr"></Option>
           <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -4349,7 +4349,7 @@
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
@@ -4482,8 +4482,8 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="add_check_state_rule">true</Option>
-          <Option name="admUser"/>
-          <Option name="altAddress"/>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="check_shading">False</Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
@@ -4501,7 +4501,7 @@
           <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
           <Option name="iosacl_add_clear_statements">true</Option>
           <Option name="iosacl_assume_fw_part_of_any">true</Option>
-          <Option name="iosacl_epilog_script"/>
+          <Option name="iosacl_epilog_script"></Option>
           <Option name="iosacl_generate_logging_commands">False</Option>
           <Option name="iosacl_include_comments">True</Option>
           <Option name="iosacl_logging_buffered">False</Option>
@@ -4510,10 +4510,10 @@
           <Option name="iosacl_logging_console_level">3</Option>
           <Option name="iosacl_logging_timestamp">False</Option>
           <Option name="iosacl_logging_trap_level">3</Option>
-          <Option name="iosacl_prolog_script"/>
+          <Option name="iosacl_prolog_script"></Option>
           <Option name="iosacl_regroup_commands">False</Option>
-          <Option name="iosacl_syslog_facility"/>
-          <Option name="iosacl_syslog_host"/>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
           <Option name="iosacl_use_acl_remarks">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_value">0</Option>
@@ -4528,7 +4528,7 @@
           <Option name="mgmt_addr">10.10.10.0/24</Option>
           <Option name="mgmt_ssh">True</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"/>
+          <Option name="output_file"></Option>
           <Option name="pass_all_out">false</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -4549,9 +4549,213 @@
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
-          <Option name="scpArgs"/>
+          <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"/>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="use_scp">False</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id47161X84238" host_OS="ios" inactive="False" lastCompiled="1261963349" lastInstalled="0" lastModified="1264043766" platform="iosacl" version="12.4" name="testios4" comment="using object-groups&#10;" ro="False">
+        <NAT id="id47242X84238" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id47179X84238" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id47180X84238" disabled="False" log="True" position="0" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6250X9455"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id47169X84238"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id47192X84238" disabled="False" log="True" position="1" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6263X9455"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id47169X84238"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id47204X84238" disabled="False" log="True" position="2" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id6250X9455"/>
+              <ObjectRef ref="id6263X9455"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id47169X84238"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id47217X84238" disabled="False" group="" log="True" position="3" action="Deny" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id75678X9455"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id47169X84238"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id47229X84238" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id47244X84238" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id47169X84238" dedicated_failover="False" dyn="False" label="" security_level="50" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <IPv4 id="id47172X84238" name="testios4:ethernet0:ip" comment="" ro="False" address="1.1.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id47174X84238" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+          <IPv4 id="id47177X84238" name="testios4:ethernet1:ip" comment="" ro="False" address="10.10.10.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="10.10.10.1">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="add_check_state_rule">true</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">False</Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="filesystem">/etc</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ios_ip_address">True</Option>
+          <Option name="ios_set_host_name">True</Option>
+          <Option name="iosacl_acl_basic">False</Option>
+          <Option name="iosacl_acl_no_clear">False</Option>
+          <Option name="iosacl_acl_substitution">True</Option>
+          <Option name="iosacl_acl_temp_addr">10.10.10.0/24</Option>
+          <Option name="iosacl_add_clear_statements">true</Option>
+          <Option name="iosacl_assume_fw_part_of_any">true</Option>
+          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_generate_logging_commands">False</Option>
+          <Option name="iosacl_include_comments">True</Option>
+          <Option name="iosacl_logging_buffered">False</Option>
+          <Option name="iosacl_logging_buffered_level">4</Option>
+          <Option name="iosacl_logging_console">False</Option>
+          <Option name="iosacl_logging_console_level">4</Option>
+          <Option name="iosacl_logging_timestamp">False</Option>
+          <Option name="iosacl_logging_trap_level">4</Option>
+          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_regroup_commands">False</Option>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_use_acl_remarks">False</Option>
+          <Option name="iosacl_use_object_groups">True</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="mgmt_addr">10.10.10.0/24</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prompt1">$ </Option>
+          <Option name="prompt2"> # </Option>
+          <Option name="scpArgs"></Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="use_scp">False</Option>
           <Option name="verify_interfaces">true</Option>
@@ -4595,16 +4799,16 @@
         <IPService id="ip-IP_Fragments" fragm="False" lsrr="False" protocol_num="0" rr="False" short_fragm="True" ssrr="False" ts="False" name="ip_fragments" comment="'Short' fragments" ro="False"/>
       </ServiceGroup>
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
-        <CustomServiceCommand platform="Undefined"/>
+        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"/>
+        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
-        <CustomServiceCommand platform="Undefined"/>
+        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"/>
+        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
       </CustomService>

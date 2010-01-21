@@ -31,36 +31,43 @@
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/FWException.h"
 
-typedef enum { UNKNOWN, 
-               NETWORK, 
-               PROTO, 
-               ICMP_TYPE, 
-               TCP_SERVICE, 
-               UDP_SERVICE } pix_group_type;
-
 class BaseObjectGroup : public libfwbuilder::Group {
-    private:
-    pix_group_type gt;
+public:
+
+    typedef enum { UNKNOWN, 
+                   NETWORK, 
+                   PROTO, 
+                   ICMP_TYPE, 
+                   TCP_SERVICE, 
+                   UDP_SERVICE } object_group_type;
+
+private:
+    object_group_type gt;
     static std::map<std::string,int>  nc;
 
-    protected:
+protected:
     std::string registerGroupName(const std::string &prefix);
     
-    public:
-    BaseObjectGroup(pix_group_type _gt=UNKNOWN) : libfwbuilder::Group() { gt=_gt; }
+public:
+    BaseObjectGroup(object_group_type _gt=UNKNOWN) : libfwbuilder::Group() { gt=_gt; }
     virtual ~BaseObjectGroup() {};
     DECLARE_FWOBJECT_SUBTYPE(BaseObjectGroup);
 
     virtual bool  validateChild(FWObject*) { return true; }
 
-    void setObjectGroupType(pix_group_type _gt) { gt=_gt; }
-    pix_group_type getObjectGroupType() { return gt; }
+    void setObjectGroupType(object_group_type _gt) { gt=_gt; }
+    object_group_type getObjectGroupType() { return gt; }
+
+    void setObjectGroupTypeFromFWObject(libfwbuilder::FWObject *obj);
+
     virtual void setName(const std::string &prefix);
 
     bool isServiceGroup();
     bool isObjectGroup();
     std::string getSrvTypeName();
     
+    virtual std::string getObjectGroupClass();
+    virtual std::string getObjectGroupHeader();
     virtual std::string toString() throw(libfwbuilder::FWException);
 };
 

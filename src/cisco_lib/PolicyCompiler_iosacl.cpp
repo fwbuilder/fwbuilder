@@ -149,7 +149,7 @@ bool PolicyCompiler_iosacl::checkForDynamicInterface::processNext()
 
 bool PolicyCompiler_iosacl::SpecialServices::processNext()
 {
-    PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
+    //PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     Service    *s=compiler->getFirstSrv(rule);
 
@@ -178,6 +178,10 @@ void PolicyCompiler_iosacl::compile()
     string banner = " Compiling ruleset " + getSourceRuleSet()->getName();
     if (ipv6) banner += ", IPv6";
     info(banner);
+
+    string version = fw->getStr("version");
+    bool supports_object_groups = XMLTools::version_compare(version, "12.4")>=0 &&
+        fw->getOptionsObject()->getBool("iosacl_use_object_groups");
 
     try 
     {
@@ -280,7 +284,9 @@ void PolicyCompiler_iosacl::compile()
 
         add( new checkForUnnumbered("check for unnumbered interfaces"));
 
-        add( new addressRanges ("process address ranges" ) );
+        if ( ! supports_object_groups)
+            add( new addressRanges("process address ranges"));
+
         add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 
         add( new setInterfaceAndDirectionBySrc(
@@ -310,23 +316,29 @@ void PolicyCompiler_iosacl::compile()
         add( new removeRedundantAddressesFromDst(
                  "remove redundant addresses from Dst") );
 
-        add( new ConvertToAtomic ("convert to atomic rules" ) );
-
-        add( new simplePrintProgress());
-
-        add( new createNewCompilerPass ("Creating ACLs ..."));
-
         add( new checkForObjectsWithErrors(
                  "check if we have objects with errors in rule elements"));
 
-//        add( new ClearACLs("Clear ACLs"));
+        if (supports_object_groups)
+        {
+            add( new CreateObjectGroupsForSrc("create object groups for Src"));
+            add( new CreateObjectGroupsForDst("create object groups for Dst"));
+            add( new CreateObjectGroupsForSrv("create object groups for Srv"));
+        } else
+        {
+            add( new ConvertToAtomic ("convert to atomic rules" ) );
+        }
+
+        add( new simplePrintProgress());
+        add( new createNewCompilerPass("Creating object groups and ACLs"));
+
+        add( new printClearCommands("clear commands for object-groups and ACLs"));
+        add( new printObjectGroups("generate code for object groups"));
 
         // This processor prints each ACL separately in one block.
         // It adds comments inside to denote original rules.
         //
         add( new PrintCompleteACLs("Print ACLs"));
-
-//        add( new PrintRule("generate code for ACLs"));
         add( new simplePrintProgress());
 
         runRuleProcessors();

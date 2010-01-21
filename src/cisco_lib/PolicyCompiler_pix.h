@@ -27,7 +27,6 @@
 #define __POLICYCOMPILER_PIX_HH
 
 #include <fwbuilder/libfwbuilder-config.h>
-#include "PIXObjectGroup.h"
 
 #include "fwcompiler/PolicyCompiler.h"
 #include "fwbuilder/RuleElement.h"
@@ -200,47 +199,6 @@ namespace fwcompiler {
         DECLARE_POLICY_RULE_PROCESSOR( splitIfTelnetSSHICMPtoFw );
 
 	/**
-	 * this processor creates PIX-specific object groups
-         * (PIX CLI command "object-group") for rules with
-         * more than one object in src or dst or srv
-	 */
-        class CreateObjectGroups : public PolicyRuleProcessor
-        {
-            std::string                re_type;
-            std::string                name_suffix;
-            PIXObjectGroup* findObjectGroup(libfwbuilder::RuleElement *re);
-            public:
-            CreateObjectGroups(const std::string &name,
-                               const std::string &_ns,
-                               const std::string &_type) :
-                PolicyRuleProcessor(name) {re_type=_type; name_suffix=_ns; }
-            virtual bool processNext();
-        };
-        friend class PolicyCompiler_pix::CreateObjectGroups;
-
-        class CreateObjectGroupsForSrc : public CreateObjectGroups
-        {
-            public:
-            CreateObjectGroupsForSrc(const std::string &n):
-                CreateObjectGroups(n,"src",libfwbuilder::RuleElementSrc::TYPENAME) {}
-        };
-
-        class CreateObjectGroupsForDst : public CreateObjectGroups
-        {
-            public:
-            CreateObjectGroupsForDst(const std::string &n):
-                CreateObjectGroups(n,"dst",libfwbuilder::RuleElementDst::TYPENAME) {}
-        };
-
-        class CreateObjectGroupsForSrv : public CreateObjectGroups
-        {
-            public:
-            CreateObjectGroupsForSrv(const std::string &n):
-                CreateObjectGroups(n,"srv",libfwbuilder::RuleElementSrv::TYPENAME) {}
-        };
-
-
-	/**
 	 * this processor accumulates all rules fed to it by previous
 	 * * processors, then prints PIX commands to clear
 	 * access-lists, object groups, icmp, ssh, telnet and prints
@@ -252,13 +210,13 @@ namespace fwcompiler {
          * they need to be generated when all access lists have been
          * created but before they are printed.
 	 */
-        class PrintObjectGroupsAndClearCommands : public PolicyRuleProcessor
+        class printClearCommands : public PolicyRuleProcessor
         {
             public:
-            PrintObjectGroupsAndClearCommands(const std::string &n) : PolicyRuleProcessor(n) {}
+            printClearCommands(const std::string &n) : PolicyRuleProcessor(n) {}
             virtual bool processNext();
         };
-        friend class PolicyCompiler_pix::PrintObjectGroupsAndClearCommands;
+        friend class PolicyCompiler_pix::printClearCommands;
 
         class AvoidObjectGroup :  public PolicyRuleProcessor
         {
@@ -306,9 +264,6 @@ namespace fwcompiler {
 
 	bool                               resetinbound;
 	bool                               fragguard;
-
-// storage for object groups created to be used with PIX command object-group
-        libfwbuilder::Group          *object_groups;
 
         NATCompiler_pix              *natcmp;
 

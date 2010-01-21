@@ -27,6 +27,13 @@
 
 #include "BaseObjectGroup.h"
 
+#include "fwbuilder/Address.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
+
 #include <iostream>
 #include <sstream>
 
@@ -56,6 +63,15 @@ string BaseObjectGroup::registerGroupName(const std::string &prefix)
     nc[str.str()]=n+1;
     str << "." << n;
     return str.str();
+}
+
+void BaseObjectGroup::setObjectGroupTypeFromFWObject(FWObject *obj)
+{
+    if (Address::cast(obj)!=NULL)     setObjectGroupType(NETWORK);
+    if (IPService::cast(obj)!=NULL)   setObjectGroupType(PROTO);
+    if (ICMPService::cast(obj)!=NULL) setObjectGroupType(ICMP_TYPE);
+    if (TCPService::cast(obj)!=NULL)  setObjectGroupType(TCP_SERVICE);
+    if (UDPService::cast(obj)!=NULL)  setObjectGroupType(UDP_SERVICE);
 }
 
 void BaseObjectGroup::setName(const std::string &prefix)
@@ -99,7 +115,25 @@ string BaseObjectGroup::getSrvTypeName()
     return "";
 }
 
+string BaseObjectGroup::getObjectGroupClass()
+{
+    switch (getObjectGroupType())
+    {
+    case PROTO:
+    case ICMP_TYPE:
+    case TCP_SERVICE:
+    case UDP_SERVICE:  return "service";
+    default:           return "network";
+    }
+    return "";
+}
+
 string BaseObjectGroup::toString()  throw(FWException)
+{
+    return "";
+}
+
+string BaseObjectGroup::getObjectGroupHeader()
 {
     return "";
 }

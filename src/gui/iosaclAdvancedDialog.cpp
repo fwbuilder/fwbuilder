@@ -244,6 +244,9 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->iosacl_acl_basic, fwoptions,
                          "iosacl_acl_basic" );
 
+    data.registerOption( m_dialog->iosacl_use_object_groups, fwoptions,
+                         "iosacl_use_object_groups" );
+
 /*
     data.registerOption( m_dialog->iosacl_acl_alwaysNew, fwoptions,
                          "iosacl_acl_always_new" );

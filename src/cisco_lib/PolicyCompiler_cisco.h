@@ -33,6 +33,7 @@
 
 #include "Helper.h"
 #include "ACL.h"
+#include "BaseObjectGroup.h"
 
 namespace libfwbuilder {
     class IPService;
@@ -421,11 +422,69 @@ protected:
         };
 
 
+	/**
+	 * this processor creates PIX-specific object groups
+         * (PIX CLI command "object-group") for rules with
+         * more than one object in src or dst or srv
+	 */
+        class CreateObjectGroups : public PolicyRuleProcessor
+        {
+            std::string re_type;
+            std::string name_suffix;
+            BaseObjectGroup* findObjectGroup(libfwbuilder::RuleElement *re);
+            public:
+            CreateObjectGroups(const std::string &name,
+                               const std::string &_ns,
+                               const std::string &_type) :
+                PolicyRuleProcessor(name) {re_type=_type; name_suffix=_ns; }
+            virtual bool processNext();
+        };
+        friend class PolicyCompiler_cisco::CreateObjectGroups;
+
+        class CreateObjectGroupsForSrc : public CreateObjectGroups
+        {
+            public:
+            CreateObjectGroupsForSrc(const std::string &n):
+                CreateObjectGroups(n,"src",libfwbuilder::RuleElementSrc::TYPENAME) {}
+        };
+
+        class CreateObjectGroupsForDst : public CreateObjectGroups
+        {
+            public:
+            CreateObjectGroupsForDst(const std::string &n):
+                CreateObjectGroups(n,"dst",libfwbuilder::RuleElementDst::TYPENAME) {}
+        };
+
+        class CreateObjectGroupsForSrv : public CreateObjectGroups
+        {
+            public:
+            CreateObjectGroupsForSrv(const std::string &n):
+                CreateObjectGroups(n,"srv",libfwbuilder::RuleElementSrv::TYPENAME) {}
+        };
+
+	/**
+	 * this processor accumulates all rules fed to it by previous
+	 * processors, then prints all object groups and feeds all
+	 * rules to the next processor. Usually this processor is in
+	 * chain right before PrintRules.
+         *
+	 */
+        class printObjectGroups : public PolicyRuleProcessor
+        {
+            public:
+            printObjectGroups(const std::string &n) : PolicyRuleProcessor(n) {}
+            virtual bool processNext();
+        };
+        friend class PolicyCompiler_cisco::printObjectGroups;
+
+
         
 protected:
 
-        Helper                             helper;
-	std::map<std::string,ciscoACL*>      acls;
+        Helper helper;
+	std::map<std::string,ciscoACL*> acls;
+// storage for object groups created to be used with PIX command object-group
+        libfwbuilder::Group *object_groups;
 
 	virtual std::string myPlatformName();
 

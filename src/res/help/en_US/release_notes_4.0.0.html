@@ -918,6 +918,17 @@ rule sets of this object rather than in the actual firewalls.
   does not make any changes to the router configuration.
 </p>
 
+<p>
+  Added support for the <b>object-group</b> statement in generated IOS
+  configuration. This helps reduce size of the geenrated access lists
+  when the router should match long lists of IP addresses or
+  ports. Both "network" and "service" object-groups are supported.
+  This feature is controlled by a checkbox in the "Advanced" settings
+  dialog of the firewall object; it requires IOS v12.4(20)T or later
+  and is off by default. Check if your version of IOS supports
+  "object-group" command before using!
+</p>
+
 <a name="pix"></a>
 <h2>Changes in support for for Cisco ASA (PIX)</h2>
 

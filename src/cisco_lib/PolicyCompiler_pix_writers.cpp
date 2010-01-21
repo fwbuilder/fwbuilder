@@ -64,7 +64,7 @@ using namespace fwcompiler;
 using namespace std;
 
 
-bool PolicyCompiler_pix::PrintObjectGroupsAndClearCommands::processNext()
+bool PolicyCompiler_pix::printClearCommands::processNext()
 {
     PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
     string vers = compiler->fw->getStr("version");
@@ -112,25 +112,6 @@ bool PolicyCompiler_pix::PrintObjectGroupsAndClearCommands::processNext()
         {
             compiler->output << clearICMPcmd    << endl;
             compiler->output << clearTelnetcmd  << endl;
-        }
-    }
-
-    for (FWObject::iterator i=pix_comp->object_groups->begin();
-         i!=pix_comp->object_groups->end(); ++i)
-    {
-        PIXObjectGroup *og=dynamic_cast<PIXObjectGroup*>(*i);
-        assert(og!=NULL);
-
-        if (og->size()==0) continue;
-
-        pix_comp->output << endl;
-
-        try
-        {
-            pix_comp->output << og->toString();
-        } catch (FWException &ex)
-        {
-            compiler->abort(ex.toString());
         }
     }
 
@@ -342,7 +323,7 @@ string PolicyCompiler_pix::PrintRule::_printICMPCommand(PolicyRule *rule)
     assert(rule_iface);
 
     if ( PIXObjectGroup::cast(srv)!=NULL && 
-         PIXObjectGroup::cast(srv)->getObjectGroupType()==ICMP_TYPE)
+         PIXObjectGroup::cast(srv)->getObjectGroupType()==BaseObjectGroup::ICMP_TYPE)
     {
         for (FWObject::iterator i1=srv->begin(); i1!=srv->end(); ++i1)
         {

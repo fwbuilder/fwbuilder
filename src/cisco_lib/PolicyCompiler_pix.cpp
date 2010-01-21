@@ -90,9 +90,6 @@ int PolicyCompiler_pix::prolog()
     if (platform!="pix" && platform!="fwsm") 
 	abort("Unsupported platform " + platform );
 
-    object_groups=new Group();
-    dbcopy->add( object_groups );
-
     if (!inSingleRuleCompileMode())
     {
         output << "!################"  << endl;
@@ -579,96 +576,6 @@ bool PolicyCompiler_pix::AvoidObjectGroup::processNext()
     return true;
 }
 
-PIXObjectGroup* PolicyCompiler_pix::CreateObjectGroups::findObjectGroup(RuleElement *re)
-{
-    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
-
-    list<FWObject*> relement;
-
-    for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
-    {
-        FWObject *o   = *i1;
-        FWObject *obj = FWReference::getObject(o);
-        relement.push_back(obj);
-    }
-
-
-    for (FWObject::iterator i=pix_comp->object_groups->begin();
-         i!=pix_comp->object_groups->end(); ++i)
-    {
-        PIXObjectGroup *og=dynamic_cast<PIXObjectGroup*>(*i);
-        assert(og!=NULL);
-
-        if (og->size()==0 || (og->size()!=re->size()) ) continue;
-
-        bool match=true;
-        for (FWObject::iterator i1=og->begin(); i1!=og->end(); ++i1) 
-        {
-            FWObject *o   = *i1;
-            FWObject *obj = o;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-
-            if ( find(relement.begin(), relement.end(), obj)==relement.end() )
-            {
-                match=false;
-                break;
-            }
-        }
-        if (match) return og;
-    }
-    return NULL;
-}
-
-bool PolicyCompiler_pix::CreateObjectGroups::processNext()
-{
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-    PolicyCompiler_pix *pix_comp = dynamic_cast<PolicyCompiler_pix*>(compiler);
-    Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
-    assert(rule_iface);
-
-    RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
-    if (re->size()==1)  // no need to create object-group since there is single object in the rule element
-    {
-        tmp_queue.push_back(rule);
-        return true;
-    }
-
-    PIXObjectGroup *obj_group = findObjectGroup(re);
-    if (obj_group==NULL)
-    {
-        obj_group= new PIXObjectGroup();
-        FWObject *o = re->front();
-        FWObject *obj = FWReference::getObject(o);
-
-        if (Address::cast(obj)!=NULL)     obj_group->setObjectGroupType(NETWORK);
-        if (IPService::cast(obj)!=NULL)   obj_group->setObjectGroupType(PROTO);
-        if (ICMPService::cast(obj)!=NULL) obj_group->setObjectGroupType(ICMP_TYPE);
-        if (TCPService::cast(obj)!=NULL)  obj_group->setObjectGroupType(TCP_SERVICE);
-        if (UDPService::cast(obj)!=NULL)  obj_group->setObjectGroupType(UDP_SERVICE);
-
-        obj_group->setName(
-            rule_iface->getLabel()+"."+rule->getUniqueId()+"."+name_suffix);
-
-        pix_comp->object_groups->add(obj_group);
-
-        for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
-        {
-            FWObject *o   = *i1;
-            FWObject *obj = o;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-            obj_group->addRef( obj );
-        }
-    }
-    re->clearChildren(false);   // do not want to destroy children objects
-
-    re->addRef(obj_group);
-
-    assert(re->size()==1);
-
-    tmp_queue.push_back(rule);
-    return true;
-}
-
 void PolicyCompiler_pix::compile()
 {
     string banner = " Compiling ruleset " + getSourceRuleSet()->getName();
@@ -866,8 +773,8 @@ void PolicyCompiler_pix::compile()
 
         add( new createNewCompilerPass("Creating object groups and ACLs ..."));
 
-        add( new PrintObjectGroupsAndClearCommands(
-                 "Clear ACLs and generate code for object groups"));
+        add( new printClearCommands("Clear ACLs and object groups"));
+        add( new printObjectGroups("generate code for object groups"));
         add( new PrintRule("generate code for ACLs"));
         add( new simplePrintProgress());
 

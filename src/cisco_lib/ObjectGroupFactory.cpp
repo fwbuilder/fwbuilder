@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2002 NetCitadel, LLC
+                 Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
@@ -23,23 +23,27 @@
 
 */
 
-#ifndef __PIXOBJECTGROUP_HH
-#define __PIXOBJECTGROUP_HH
 
-#include "BaseObjectGroup.h"
+#include "ObjectGroupFactory.h"
+
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/FWObjectDatabase.h"
+
+#include "PIXObjectGroup.h"
+#include "IOSObjectGroup.h"
+
+#include <string>
+
+using namespace libfwbuilder;
+using namespace std;
 
 
-class PIXObjectGroup : public BaseObjectGroup {
-    
-    public:
-    PIXObjectGroup(object_group_type _gt=UNKNOWN) : BaseObjectGroup(_gt) { }
-    virtual ~PIXObjectGroup() {};
-    DECLARE_FWOBJECT_SUBTYPE(PIXObjectGroup);
+BaseObjectGroup* ObjectGroupFactory::createObjectGroup(
+    Firewall *fw, BaseObjectGroup::object_group_type _gt)
+{
+    string platform = fw->getStr("platform");
+    if (platform == "pix" || platform == "fwsm") return new PIXObjectGroup(_gt);
+    if (platform == "iosacl") return new IOSObjectGroup(_gt);
+    return NULL;
+}
 
-    virtual std::string getObjectGroupClass();
-    virtual std::string getObjectGroupHeader();
-    virtual std::string toString() throw(libfwbuilder::FWException);
-    
-};
-
-#endif

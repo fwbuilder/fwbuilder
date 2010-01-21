@@ -177,6 +177,13 @@ namespace fwcompiler {
         };
         friend class PolicyCompiler_iosacl::ClearACLs;
 
+        /**
+         * printClearCommands prints "clear" commands for object-groups
+         * and ACLs
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(printClearCommands);
+        friend class PolicyCompiler_iosacl::printClearCommands;
+
 	/**
 	 *  this processor prints single policy rule, assuming all
 	 *  groups have been expanded, so source, destination and
@@ -243,11 +250,8 @@ namespace fwcompiler {
         friend class PolicyCompiler_iosacl::PrintCompleteACLs;;
 
 
-	bool                               resetinbound;
-	bool                               fragguard;
-
-// storage for object groups created to be used with IOSACL command object-group
-        libfwbuilder::Group          *object_groups;
+	bool resetinbound;
+	bool fragguard;
 
 	protected:
 

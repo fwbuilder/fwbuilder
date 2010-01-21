@@ -24,6 +24,7 @@
 */
 
 #include "PolicyCompiler_iosacl.h"
+#include "IOSObjectGroup.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressRange.h"
@@ -46,13 +47,6 @@
 #include "fwbuilder/XMLTools.h"
 
 #include <iostream>
-#if __GNUC__ > 3 || \
-    (__GNUC__ == 3 && (__GNUC_MINOR__ > 2 || (__GNUC_MINOR__ == 2 ) ) ) || \
-    _MSC_VER
-#  include <streambuf>
-#else
-#  include <streambuf.h>
-#endif
 #include <iomanip>
 #include <fstream>
 #include <sstream>
@@ -117,6 +111,54 @@ bool PolicyCompiler_iosacl::ClearACLs::processNext()
     return true;
 }
 
+bool PolicyCompiler_iosacl::printClearCommands::processNext()
+{
+    PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
+
+    string vers = compiler->fw->getStr("version");
+    string platform = compiler->fw->getStr("platform");
+
+    string xml_element = "clear_ip_acl";
+    if (iosacl_comp->ipv6) xml_element = "clear_ipv6_acl";
+
+    string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
+        string("/FWBuilderResources/Target/options/")+
+        "version_"+vers+"/iosacl_commands/" + xml_element);
+
+    assert( !clearACLCmd.empty());
+
+    slurp();
+    if (tmp_queue.size()==0) return false;
+
+    if (!compiler->inSingleRuleCompileMode())
+    {
+        // No need to output "clear" commands in single rule compile mode
+        if ( compiler->fw->getOptionsObject()->getBool("iosacl_acl_basic") ||
+             compiler->fw->getOptionsObject()->getBool("iosacl_acl_substitution"))
+        {
+            for (map<string,ciscoACL*>::iterator i=iosacl_comp->acls.begin();
+                 i!=iosacl_comp->acls.end(); ++i) 
+            {
+                ciscoACL *acl=(*i).second;
+                compiler->output << clearACLCmd << " " << acl->workName() << endl;
+            }
+            compiler->output << endl;
+
+            for (FWObject::iterator i=iosacl_comp->object_groups->begin();
+                 i!=iosacl_comp->object_groups->end(); ++i)
+            {
+                BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
+                assert(og!=NULL);
+                compiler->output << "no "  << og->getObjectGroupHeader();
+            }
+        }
+
+    }
+    compiler->output << endl;
+
+    return true;
+}
+
 void PolicyCompiler_iosacl::PrintCompleteACLs::printRulesForACL::operator()(
     Rule* rule)
 {
@@ -139,32 +181,9 @@ void PolicyCompiler_iosacl::PrintCompleteACLs::printRulesForACL::operator()(
 bool PolicyCompiler_iosacl::PrintCompleteACLs::processNext()
 {
     PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
-    string vers = compiler->fw->getStr("version");
-    string platform = compiler->fw->getStr("platform");
-
-    string xml_element = "clear_ip_acl";
-    if (iosacl_comp->ipv6) xml_element = "clear_ipv6_acl";
-
-    string clearACLCmd = Resources::platform_res[platform]->getResourceStr(
-        string("/FWBuilderResources/Target/options/")+
-        "version_"+vers+"/iosacl_commands/" + xml_element);
-
-    assert( !clearACLCmd.empty());
 
     slurp();
     if (tmp_queue.size()==0) return false;
-
-    if ( compiler->fw->getOptionsObject()->getBool("iosacl_acl_basic") ||
-         compiler->fw->getOptionsObject()->getBool("iosacl_acl_substitution"))
-    {
-        for (map<string,ciscoACL*>::iterator i=iosacl_comp->acls.begin();
-             i!=iosacl_comp->acls.end(); ++i) 
-        {
-            ciscoACL *acl=(*i).second;
-            compiler->output << clearACLCmd << " " << acl->workName() << endl;
-        }
-        compiler->output << endl;
-    }
 
     string addr_family_prefix = "ip";
     if (iosacl_comp->ipv6) addr_family_prefix = "ipv6";
@@ -194,8 +213,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     PolicyCompiler_iosacl *iosacl_comp = 
         dynamic_cast<PolicyCompiler_iosacl*>(compiler);
     //FWOptions  *ruleopt =rule->getOptionsObject();
-    bool write_comments =
-        compiler->fw->getOptionsObject()->getBool("iosacl_include_comments");
+    //bool write_comments = compiler->fw->getOptionsObject()->getBool("iosacl_include_comments");
 
     ostringstream  ruleout;
     ostringstream  aclstr;
@@ -218,9 +236,9 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     assert(dst->size()==1);
     assert(srv->size()==1);
 
-    FWObject *srcobj=src->front();
-    FWObject *dstobj=dst->front();
-    FWObject *srvobj=srv->front();
+    FWObject *srcobj = src->front();
+    FWObject *dstobj = dst->front();
+    FWObject *srvobj = srv->front();
 
     assert(srcobj);
     assert(dstobj);
@@ -254,16 +272,78 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
 
     aclstr << _printAction(rule);
 
-    aclstr << _printProtocol(Service::cast(srvobj));
-    aclstr << _printAddr( compiler->getFirstSrc(rule) );
-    aclstr << _printSrcService( compiler->getFirstSrv(rule) );
-    aclstr << _printAddr( compiler->getFirstDst(rule) );
-    aclstr << _printDstService( compiler->getFirstSrv(rule) );
+    IOSObjectGroup *pgsrc = IOSObjectGroup::cast(srcobj);
+    IOSObjectGroup *pgdst = IOSObjectGroup::cast(dstobj);
+    IOSObjectGroup *pgsrv = IOSObjectGroup::cast(srvobj);
+
+    /*
+     * Possible configurations:
+     *
+     * permit object-group service_group object-group src_grp object-group dst_grp
+     * permit object-group service_group SRC_SPEC DST_SPEC
+     * permit <proto> SRC_SPEC <src_ports> DST_SPEC <dst_ports>
+     *
+     * Where SRC_SPEC and DST_SPEC are
+     * obejct-group network_group
+     * or traidtional <address> <wildcard_bits>
+     *
+     */
+
+    if ( pgsrv!=NULL && pgsrv->isServiceGroup())
+    {
+        aclstr << "object-group " << pgsrv->getName();
+        aclstr << " ";
+
+        if ( pgsrc!=NULL && pgsrc->isObjectGroup())
+        {
+            aclstr << "object-group " << pgsrc->getName();
+            aclstr << " ";
+        } else
+        {
+            aclstr << _printAddr( compiler->getFirstSrc(rule) );
+        }
+
+        if ( pgdst!=NULL && pgdst->isObjectGroup())
+        {
+            aclstr << "object-group " << pgdst->getName();
+            aclstr << " ";
+        } else
+        {
+            aclstr << _printAddr( compiler->getFirstDst(rule) );
+        }
+    } else
+    {
+        // Service is not object group
+        aclstr << _printProtocol(Service::cast(srvobj));
+        aclstr << " ";
+
+        if ( pgsrc!=NULL && pgsrc->isObjectGroup())
+        {
+            aclstr << "object-group " << pgsrc->getName();
+            aclstr << " ";
+        } else
+        {
+            aclstr << _printAddr( compiler->getFirstSrc(rule) );
+        }
+
+        aclstr << _printSrcService( compiler->getFirstSrv(rule) );
+
+        if ( pgdst!=NULL && pgdst->isObjectGroup())
+        {
+            aclstr << "object-group " << pgdst->getName();
+            aclstr << " ";
+        } else
+        {
+            aclstr << _printAddr( compiler->getFirstDst(rule) );
+        }
+
+        aclstr << _printDstService( compiler->getFirstSrv(rule) );
+    }
+
     aclstr << _printLog( rule );
+
     // "fragments" should be the last option in the access-list command
     aclstr << _printIPServiceOptions(rule);
-
-//    aclstr << endl;
 
     if (compiler->fw->getOptionsObject()->getBool("iosacl_use_acl_remarks"))
     {

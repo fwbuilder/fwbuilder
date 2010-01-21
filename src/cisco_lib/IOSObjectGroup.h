@@ -23,18 +23,18 @@
 
 */
 
-#ifndef __PIXOBJECTGROUP_HH
-#define __PIXOBJECTGROUP_HH
+#ifndef __IOSOBJECTGROUP_HH
+#define __IOSOBJECTGROUP_HH
 
 #include "BaseObjectGroup.h"
 
 
-class PIXObjectGroup : public BaseObjectGroup {
+class IOSObjectGroup : public BaseObjectGroup {
     
     public:
-    PIXObjectGroup(object_group_type _gt=UNKNOWN) : BaseObjectGroup(_gt) { }
-    virtual ~PIXObjectGroup() {};
-    DECLARE_FWOBJECT_SUBTYPE(PIXObjectGroup);
+    IOSObjectGroup(object_group_type _gt=UNKNOWN) : BaseObjectGroup(_gt) { }
+    virtual ~IOSObjectGroup() {};
+    DECLARE_FWOBJECT_SUBTYPE(IOSObjectGroup);
 
     virtual std::string getObjectGroupClass();
     virtual std::string getObjectGroupHeader();
