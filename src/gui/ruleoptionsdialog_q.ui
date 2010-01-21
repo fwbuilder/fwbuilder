@@ -40,7 +40,7 @@
       <number>0</number>
      </property>
      <property name="currentIndex" >
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="ipt" >
       <layout class="QGridLayout" >
@@ -62,7 +62,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex" >
-          <number>0</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="tab1" >
           <attribute name="title" >
@@ -457,75 +457,28 @@
           <attribute name="title" >
            <string>connlimit</string>
           </attribute>
-          <layout class="QGridLayout" >
-           <property name="margin" >
-            <number>12</number>
-           </property>
-           <property name="spacing" >
-            <number>12</number>
-           </property>
-           <item row="2" column="2" colspan="2" >
-            <widget class="QLabel" name="textLabel5_2" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+          <layout class="QGridLayout" name="gridLayout_9" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="textLabel3_4" >
              <property name="text" >
-              <string>bit</string>
+              <string>Module connlimit</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
              </property>
             </widget>
            </item>
-           <item row="2" column="4" colspan="2" >
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="1" >
-            <widget class="QSpinBox" name="ipt_connlimit_masklen" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximum" >
-              <number>10000</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" >
-            <widget class="QLabel" name="textLabel3_3" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+           <item row="1" column="0" colspan="4" >
+            <widget class="QLabel" name="ipt_connlimit_above_label" >
              <property name="text" >
-              <string>per network with netmask of </string>
+              <string>Match if the number of existing connections is above this (translates into option --connlimit-above)</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
              </property>
             </widget>
            </item>
-           <item row="1" column="3" colspan="2" >
+           <item row="1" column="4" >
             <widget class="QSpinBox" name="ipt_connlimit" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -554,25 +507,86 @@
              </property>
             </spacer>
            </item>
-           <item row="1" column="0" colspan="3" >
-            <widget class="QLabel" name="textLabel2_6" >
+           <item row="1" column="6" >
+            <widget class="QCheckBox" name="ipt_connlimit_above_not" >
              <property name="text" >
-              <string>Number of allowed connections per client host</string>
+              <string>Negate</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="7" >
+            <spacer name="horizontalSpacer_3" >
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>168</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="textLabel3_3" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>per network with netmask of </string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
              </property>
             </widget>
            </item>
-           <item row="0" column="0" >
-            <widget class="QLabel" name="textLabel3_4" >
+           <item row="2" column="1" >
+            <widget class="QSpinBox" name="ipt_connlimit_masklen" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximum" >
+              <number>10000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" >
+            <widget class="QLabel" name="textLabel5_2" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text" >
-              <string>Module connlimit</string>
+              <string>bit</string>
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
              </property>
             </widget>
+           </item>
+           <item row="2" column="3" colspan="6" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item row="3" column="2" >
             <spacer>
@@ -2827,8 +2841,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ipt_connlimit_above_not</sender>
+   <signal>clicked()</signal>
+   <receiver>RuleOptionsDialog_q</receiver>
+   <slot>connlimitAboveLabelChange()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>868</x>
+     <y>105</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>566</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>changed()</slot>
+  <slot>connlimitAboveLabelChange()</slot>
  </slots>
 </ui>

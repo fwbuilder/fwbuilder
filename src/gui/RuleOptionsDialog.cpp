@@ -142,6 +142,8 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->ipt_burst, ropt,  "limit_burst");
 
         data.registerOption(m_dialog->ipt_connlimit, ropt,  "connlimit_value");
+        data.registerOption(m_dialog->ipt_connlimit_above_not, ropt,
+                            "connlimit_above_not");
         data.registerOption(m_dialog->ipt_connlimit_masklen, ropt,
                             "connlimit_masklen");
 
@@ -345,5 +347,18 @@ void RuleOptionsDialog::cancelChanges()
 {
     //apply->setEnabled(false);
     close();
+}
+
+void RuleOptionsDialog::connlimitAboveLabelChange()
+{
+    if (m_dialog->ipt_connlimit_above_not->isChecked())
+        m_dialog->ipt_connlimit_above_label->setText(
+            "Match if the number of existing connections is below this "
+            "(translates into option ! --connlimit-above)");
+    else
+        m_dialog->ipt_connlimit_above_label->setText(
+            "Match if the number of existing connections is above this "
+            "(translates into option --connlimit-above)");
+
 }
 

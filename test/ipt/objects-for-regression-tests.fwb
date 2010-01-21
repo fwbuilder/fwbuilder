@@ -19484,7 +19484,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id41D2945B" host_OS="linux24" lastCompiled="1247364023" lastInstalled="1142003872" lastModified="0" platform="iptables" version="" name="firewall29" comment="two dynamic interfaces in the same policy or NAT rule. Interfaces have a dot in their names&#10;" ro="False">
+      <Firewall id="id41D2945B" host_OS="linux24" lastCompiled="1247364023" lastInstalled="1142003872" lastModified="1264045729" platform="iptables" version="" name="firewall29" comment="two dynamic interfaces in the same policy or NAT rule. Interfaces have a dot in their names&#10;" ro="False">
         <NAT id="id41D29482" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id41D29483" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -19568,7 +19568,93 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id41D29478" disabled="False" log="True" position="3" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id50714X84264" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="should be --connlimit-above 10&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id41D2945B"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">10</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id380567X84915" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="should be ! --connlimit-above 10&#10;">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id41D2945B"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">True</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">10</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id41D29478" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

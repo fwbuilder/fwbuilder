@@ -273,7 +273,10 @@ string PolicyCompiler_ipt::PrintRule::_printModules(PolicyRule *rule)
 
     if (ruleopt!=NULL && (lim=ruleopt->getInt("connlimit_value"))>0)
     {
-        ostr << " -m connlimit --connlimit-above " << lim;
+        if (ruleopt->getBool("connlimit_above_not"))
+            ostr << " -m connlimit \\! --connlimit-above " << lim;
+        else
+            ostr << " -m connlimit --connlimit-above " << lim;
 
         int ml=ruleopt->getInt("connlimit_masklen");
         if (ml>0) ostr << " --connlimit-mask " << ml;
