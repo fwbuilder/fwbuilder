@@ -979,36 +979,41 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
             
             if (ropt->getInt("limit_value")>0)
             {
-                res+=QObject::tr("<b>Limit Value   :</b> ");
-                res+=QString(ropt->getStr("limit_value").c_str())+"<br>\n";
+                res += QObject::tr("<b>Limit value   :</b> ");
+                if (ropt->getBool("limit_value_not")) res += " ! ";
+                res += QString(ropt->getStr("limit_value").c_str())+" ";
+           
+                if (!ropt->getStr("limit_suffix").empty())
+                {
+                    res+=getScreenName(ropt->getStr("limit_suffix").c_str(),
+                                       getLimitSuffixes(platform.c_str()))+"<br>\n";
+                }
             }
-            
-            if (!ropt->getStr("limit_suffix").empty())
-            {
-                res+=QObject::tr("<b>Limit suffix  :</b> ");
-                res+=getScreenName(ropt->getStr("limit_suffix").c_str(),
-                        getLimitSuffixes(platform.c_str()))+"<br>\n";
-            }
-            
+
             if (ropt->getInt("limit_burst")>0)
             {
                 res+=QObject::tr("<b>Limit burst   :</b> ");
                 res+=QString(ropt->getStr("limit_burst").c_str())+"<br>\n";
             }
+
+            if (ropt->getInt("connlimit_value")>0)
+            {
+                res+=QObject::tr("<b>connlimit value   :</b> ");
+                if (ropt->getBool("connlimit_above_not")) res += " ! ";
+                res+=QString(ropt->getStr("connlimit_value").c_str())+"<br>\n";
+            }
             
-            res+="<ul>";
             if (ropt->getBool("firewall_is_part_of_any_and_networks"))
             {
-                res+=QObject::tr("<li><b>Part of Any</b></li>");
+                res+=QObject::tr("<b>Part of Any</b>");
                 res+="<br>\n";
             }
 
             if (ropt->getBool("stateless"))
             {
-                res+=QObject::tr("<li><b>Stateless</b></li> ");
+                res+=QObject::tr("<b>Stateless</b>");
                 res+="<br>\n";
             }
-            res+="</ul>";
             
         }else if (platform=="ipf") 
         {

@@ -209,6 +209,7 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
 	    res= ( opt->getStr("log_prefix").empty() &&
                    opt->getStr("log_level").empty()      &&
 		   opt->getInt("limit_value")<=0         &&
+		   ! opt->getBool("limit_value_not")     &&
 		   opt->getInt("limit_burst")<=0         &&
 		   opt->getInt("connlimit_value")<=0     &&
 		   ! opt->getBool("connlimit_above_not") &&

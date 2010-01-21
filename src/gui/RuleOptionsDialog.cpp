@@ -136,9 +136,11 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->ipt_logLevel, ropt,
                              "log_level", logLevels);
         data.registerOption(m_dialog->ipt_nlgroup, ropt,  "ulog_nlgroup");
+
         data.registerOption(m_dialog->ipt_limit, ropt,  "limit_value");
         data.registerOption(m_dialog->ipt_limitSuffix, ropt,
                              "limit_suffix", limitSuffixes);
+        data.registerOption(m_dialog->ipt_limit_not, ropt,  "limit_value_not");
         data.registerOption(m_dialog->ipt_burst, ropt,  "limit_burst");
 
         data.registerOption(m_dialog->ipt_connlimit, ropt,  "connlimit_value");
@@ -292,6 +294,9 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     m_dialog->pf_max_src_states->setEnabled(
         m_dialog->pf_source_tracking->isChecked());
 
+    connlimitAboveLabelChange();
+    limitLabelChange();
+
     //apply->setEnabled(false);
     init=false;
 }
@@ -359,6 +364,20 @@ void RuleOptionsDialog::connlimitAboveLabelChange()
         m_dialog->ipt_connlimit_above_label->setText(
             "Match if the number of existing connections is above this "
             "(translates into option --connlimit-above)");
+
+    changed();
+}
+
+void RuleOptionsDialog::limitLabelChange()
+{
+    if (m_dialog->ipt_limit_not->isChecked())
+        m_dialog->ipt_limit_label->setText(
+            "Maximum average matching rate (negated) "
+            "(translates into option ! --limit rate)");
+    else
+        m_dialog->ipt_limit_label->setText(
+            "Maximum average matching rate "
+            "(translates into option --limit rate)");
 
     changed();
 }

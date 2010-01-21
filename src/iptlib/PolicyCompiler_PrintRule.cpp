@@ -261,7 +261,10 @@ string PolicyCompiler_ipt::PrintRule::_printModules(PolicyRule *rule)
     } else {
         if (ruleopt!=NULL && (lim=ruleopt->getInt("limit_value"))>0)
         {
-            ostr << " -m limit --limit " << lim;
+            if (ruleopt->getBool("limit_value_not"))
+                ostr << " -m limit \\! --limit " << lim;
+            else
+                ostr << " -m limit --limit " << lim;
 
             string ls=ruleopt->getStr("limit_suffix");
             if (!ls.empty()) ostr << ls;
