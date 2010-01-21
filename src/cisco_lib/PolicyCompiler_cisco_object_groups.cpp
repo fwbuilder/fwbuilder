@@ -42,6 +42,8 @@
 #include "fwbuilder/AddressTable.h"
 
 #include <iostream>
+#include <algorithm>
+
 #include <assert.h>
 
 #include <QString>
