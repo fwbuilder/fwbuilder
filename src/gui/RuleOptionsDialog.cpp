@@ -118,10 +118,10 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     m_dialog->pix_logLevel->clear();
     m_dialog->pix_logLevel->addItems(getScreenNames(logLevels));
 
-    QStringList  logFacilities=getLogFacilities( obj->getStr("platform").c_str() );
+    QStringList logFacilities=getLogFacilities( obj->getStr("platform").c_str());
     m_dialog->ipf_logFacility->clear();
     m_dialog->ipf_logFacility->addItems(getScreenNames(logFacilities));
-    QStringList limitSuffixes=getLimitSuffixes( obj->getStr("platform").c_str() );
+    QStringList limitSuffixes=getLimitSuffixes( obj->getStr("platform").c_str());
     m_dialog->ipt_limitSuffix->clear();
     m_dialog->ipt_limitSuffix->addItems(getScreenNames(limitSuffixes));
 
@@ -360,5 +360,6 @@ void RuleOptionsDialog::connlimitAboveLabelChange()
             "Match if the number of existing connections is above this "
             "(translates into option --connlimit-above)");
 
+    changed();
 }
 

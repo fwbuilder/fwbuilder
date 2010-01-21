@@ -211,6 +211,7 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
 		   opt->getInt("limit_value")<=0         &&
 		   opt->getInt("limit_burst")<=0         &&
 		   opt->getInt("connlimit_value")<=0     &&
+		   ! opt->getBool("connlimit_above_not") &&
 		   opt->getInt("connlimit_masklen")<=0   &&
 
 		   opt->getStr("hashlimit_name").empty() &&
