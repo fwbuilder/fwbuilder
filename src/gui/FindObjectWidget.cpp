@@ -430,11 +430,18 @@ bool FindObjectWidget::validateReplaceObject()
         return false;
     }
 
-    bool obj_1_address = Address::cast(findObj)!=NULL || MultiAddress::cast(findObj)!=NULL;
-    bool obj_2_address = Address::cast(replObj)!=NULL || MultiAddress::cast(replObj)!=NULL;
+    bool obj_1_address = 
+        Address::cast(findObj)!=NULL ||
+        MultiAddress::cast(findObj)!=NULL ||
+        ObjectGroup::cast(findObj)!=NULL;
 
-    bool obj_1_service = Service::cast(findObj)!=NULL;
-    bool obj_2_service = Service::cast(replObj)!=NULL;
+    bool obj_2_address =
+        Address::cast(replObj)!=NULL ||
+        MultiAddress::cast(replObj)!=NULL ||
+        ObjectGroup::cast(replObj)!=NULL;
+
+    bool obj_1_service = Service::cast(findObj)!=NULL || ServiceGroup::cast(findObj);
+    bool obj_2_service = Service::cast(replObj)!=NULL || ServiceGroup::cast(replObj);
 
     if ((obj_1_address && obj_2_address) || (obj_1_service && obj_2_service))
         return true;
