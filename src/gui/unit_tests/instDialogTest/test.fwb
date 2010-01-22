@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1263673480" id="root">
+  <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
+  <Library id="id14933X3268" color="#d2ffd0" name="User" comment="" ro="False">
+    <ObjectGroup id="id14934X3268" name="Objects" comment="" ro="False">
+      <ObjectGroup id="id14935X3268" name="Addresses" comment="" ro="False"/>
+      <ObjectGroup id="id14936X3268" name="DNS Names" comment="" ro="False"/>
+      <ObjectGroup id="id14937X3268" name="Address Tables" comment="" ro="False"/>
+      <ObjectGroup id="id14938X3268" name="Groups" comment="" ro="False"/>
+      <ObjectGroup id="id14939X3268" name="Hosts" comment="" ro="False"/>
+      <ObjectGroup id="id14940X3268" name="Networks" comment="" ro="False"/>
+      <ObjectGroup id="id14941X3268" name="Address Ranges" comment="" ro="False"/>
+    </ObjectGroup>
+    <ServiceGroup id="id14942X3268" name="Services" comment="" ro="False">
+      <ServiceGroup id="id14943X3268" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id14944X3268" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id14945X3268" name="IP" comment="" ro="False"/>
+      <ServiceGroup id="id14946X3268" name="TCP" comment="" ro="False"/>
+      <ServiceGroup id="id14947X3268" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id14948X3268" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id14949X3268" name="Custom" comment="" ro="False"/>
+      <ServiceGroup id="id14950X3268" name="TagServices" comment="" ro="False"/>
+    </ServiceGroup>
+    <ObjectGroup id="id14951X3268" name="Firewalls" comment="" ro="False">
+      <Firewall id="id16544X3268" host_OS="linux24" inactive="False" lastCompiled="1263673489" lastInstalled="0" lastModified="1263673477" platform="iptables" version="" name="test1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+        <NAT id="id16565X3268" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id16567X3268" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id16552X3268"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id16601X3268" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id16603X3268" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+            <Src neg="False">
+              <ObjectRef ref="id16544X3268"/>
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id16552X3268"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id16632X3268" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id16557X3268"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id16660X3268" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id16544X3268"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id16688X3268" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+            <Src neg="False">
+              <ObjectRef ref="id16544X3268"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id3F530CC8"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id16716X3268" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id16544X3268"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id16744X3268" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id16772X3268" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id16801X3268" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id16552X3268" dedicated_failover="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id16554X3268" dedicated_failover="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id16555X3268" name="test1:eth1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id16557X3268" dedicated_failover="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id16558X3268" name="test1:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="check_shading">true</Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id2198X35122" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1263673484" platform="iptables" version="" name="test2" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+        <NAT id="id2306X35122" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id2307X35122" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id2206X35122"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id2219X35122" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id2220X35122" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti spoofing rule">
+            <Src neg="False">
+              <ObjectRef ref="id2198X35122"/>
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id2206X35122"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id2233X35122" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id2214X35122"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id2245X35122" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id2198X35122"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id2257X35122" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+            <Src neg="False">
+              <ObjectRef ref="id2198X35122"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id3F530CC8"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id2269X35122" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id2198X35122"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id2281X35122" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <PolicyRule id="id2293X35122" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions/>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id2322X35122" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id2206X35122" dedicated_failover="False" dyn="True" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id2209X35122" dedicated_failover="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id2212X35122" name="test2:eth1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id2214X35122" dedicated_failover="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id2217X35122" name="test2:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="check_shading">true</Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
+    </ObjectGroup>
+    <ObjectGroup id="id14952X3268" name="Clusters" comment="" ro="False"/>
+    <IntervalGroup id="id14953X3268" name="Time" comment="" ro="False"/>
+  </Library>
+  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
+    <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
+      <ObjectGroup id="stdid03" name="Networks" comment="" ro="False">
+        <Network id="id3DC75CE7-1" name="net-192.168.1.0" comment="192.168.1.0/24 - Address often used for home and small office networks.&#10;" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
+      </ObjectGroup>
+    </ObjectGroup>
+    <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
+    <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
+    <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
+    <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
+      <ServiceGroup id="stdid09" name="TCP" comment="" ro="False">
+        <TCPService id="tcp-SSH" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="ssh" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="22" dst_range_end="22"/>
+        <TCPService id="tcp-DNS" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
+      </ServiceGroup>
+      <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
+        <ServiceGroup id="id3F530CC8" name="DNS" comment="" ro="False">
+          <ServiceRef ref="udp-DNS"/>
+          <ServiceRef ref="tcp-DNS"/>
+        </ServiceGroup>
+      </ServiceGroup>
+      <ServiceGroup id="stdid08" name="UDP" comment="" ro="False">
+        <UDPService id="udp-DNS" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
+      </ServiceGroup>
+    </ServiceGroup>
+  </Library>
+</FWObjectDatabase>
