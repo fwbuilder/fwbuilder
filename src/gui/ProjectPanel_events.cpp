@@ -115,7 +115,10 @@ bool ProjectPanel::event(QEvent *event)
                 // This event does not trigger any updates in the UI,
                 // this purely data structure update event. However,
                 // we post updateObjectInTreeEvent even here to
-                // trigger UI updates.
+                // trigger UI updates and update "File" menu to enable
+                // Ctrl-S shortcut if something has changed.
+
+                mw->prepareFileMenu();
 
                 FWObject *p = obj;
                 while (p && Firewall::cast(p)==NULL) p = p->getParent();
