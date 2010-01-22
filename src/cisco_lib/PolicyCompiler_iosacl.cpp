@@ -181,7 +181,7 @@ void PolicyCompiler_iosacl::compile()
 
     string version = fw->getStr("version");
     bool supports_object_groups = XMLTools::version_compare(version, "12.4")>=0 &&
-        fw->getOptionsObject()->getBool("iosacl_use_object_groups");
+        fw->getOptionsObject()->getBool("iosacl_use_object_groups") && ! ipv6;
 
     try 
     {

@@ -25,6 +25,10 @@
         <IPv4 id="id19241X65694" name="net_address" comment="" ro="False" address="192.168.1.0" netmask="255.255.255.255"/>
         <IPv4 id="id19243X65694" name="sapmhost1" comment="" ro="False" address="61.150.47.112" netmask="255.255.255.255"/>
         <IPv4 id="id4204X90642" name="internal gw" comment="" ro="False" address="10.3.14.254" netmask="0.0.0.0"/>
+        <IPv4 id="id18762X37673" name="test-addr-1" comment="" ro="False" address="192.0.2.1" netmask="0.0.0.0"/>
+        <IPv4 id="id18764X37673" name="test-addr-2" comment="" ro="False" address="192.0.2.2" netmask="0.0.0.0"/>
+        <IPv4 id="id18766X37673" name="test-addr-3" comment="" ro="False" address="192.0.2.3" netmask="0.0.0.0"/>
+        <IPv4 id="id18828X37673" name="h-10.3.14.40" comment="Imported from &quot;c3620&quot; 10.3.14.40/255.255.255.255" ro="False" address="10.3.14.40" netmask="255.255.255.255"/>
       </ObjectGroup>
       <ObjectGroup id="id4511636623682" name="DNS Names" comment="" ro="False"/>
       <ObjectGroup id="id4511636723682" name="Address Tables" comment="" ro="False">
@@ -53,6 +57,14 @@
           <ObjectRef ref="id19243X65694"/>
           <ObjectRef ref="id19151X65694"/>
           <ObjectRef ref="id19179X65694"/>
+        </ObjectGroup>
+        <ObjectGroup id="id18757X37673" name="netzone inside" comment="" ro="False">
+          <ObjectRef ref="id18758X37673"/>
+        </ObjectGroup>
+        <ObjectGroup id="id18761X37673" name="many addresses" comment="" ro="False">
+          <ObjectRef ref="id18762X37673"/>
+          <ObjectRef ref="id18764X37673"/>
+          <ObjectRef ref="id18766X37673"/>
         </ObjectGroup>
       </ObjectGroup>
       <ObjectGroup id="id4511636923682" name="Hosts" comment="" ro="False">
@@ -85,6 +97,7 @@
         <Network id="id46435A0F16989" name="net-10.3.14" comment="" ro="False" address="10.3.14.0" netmask="255.255.255.0"/>
         <NetworkIPv6 id="id19068X65694" name="net-fe80" comment="" ro="False" address="fe80::" netmask="64"/>
         <NetworkIPv6 id="id19209X65694" name="DIGITAL-CA-DEC" comment="" ro="False" address="3ffe:1200:2000::" netmask="36"/>
+        <Network id="id18758X37673" name="inside-net" comment="" ro="False" address="10.3.14.0" netmask="255.255.255.0"/>
       </ObjectGroup>
       <ObjectGroup id="id4511636B23682" name="Address Ranges" comment="" ro="False"/>
     </ObjectGroup>
@@ -4761,6 +4774,344 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
+      <Firewall id="id18694X37673" host_OS="ios" inactive="False" lastCompiled="1264189522" lastInstalled="1261626476" lastModified="1264192759" platform="iosacl" version="12.4" name="dynamips1-og" comment="IOS 12.4 with object-groups&#10;" ro="False">
+        <NAT id="id19078X37673" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id18710X37673" name="Policy" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="True" top_rule_set="True">
+          <PolicyRule id="id18712X37673" disabled="False" log="False" position="0" action="Accept" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id18694X37673"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id18702X37673"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id29216X37699" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="object-groups can not be used for ipv6">
+            <Src neg="False">
+              <ObjectRef ref="id19240X65694"/>
+              <ObjectRef ref="id19240X65694"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id18694X37673"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-SNMP"/>
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="id3D703C85"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id18702X37673"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18740X37673" disabled="False" group="" log="False" position="2" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id18757X37673"/>
+              <ObjectRef ref="id18761X37673"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-SNMP"/>
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="id3D703C85"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id18702X37673"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18781X37673" disabled="False" group="" log="True" position="3" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id18757X37673"/>
+              <ObjectRef ref="id18761X37673"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-SNMP"/>
+              <ServiceRef ref="icmp-ping_request"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id18702X37673"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18811X37673" disabled="False" group="" log="True" position="4" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id18828X37673"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="id3D703C85"/>
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id18702X37673"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18842X37673" disabled="False" group="" log="True" position="5" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id18758X37673"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="id3D703C85"/>
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id18702X37673"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18872X37673" disabled="False" group="" log="True" position="6" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id18757X37673"/>
+              <ObjectRef ref="id18761X37673"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="id3D703C85"/>
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18903X37673" disabled="False" group="" log="True" position="7" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id18761X37673"/>
+              <ObjectRef ref="id18757X37673"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="id3D703C85"/>
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18934X37673" disabled="False" group="" log="True" position="8" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id18828X37673"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="id3D703C85"/>
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18964X37673" disabled="False" group="" log="False" position="9" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id18761X37673"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-SNMP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id18702X37673"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id18992X37673" disabled="False" group="" log="False" position="10" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id18761X37673"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="udp-SNMP"/>
+              <ServiceRef ref="id3D703C85"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id18702X37673"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id19021X37673" disabled="False" group="" log="True" position="11" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id18758X37673"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id19049X37673" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id18694X37673"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id19081X37673" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id18702X37673" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="FastEthernet0/0" comment="" ro="False">
+          <IPv4 id="id18703X37673" name="dynamips1-og:FastEthernet0/0:ip" comment="" ro="False" address="10.3.14.114" netmask="255.255.255.0"/>
+          <IPv6 id="id26640X37699" name="dynamips1-og:FastEthernet0/0:ip6" comment="" ro="False" address="fe80::21d:9ff:fe8b:8e94" netmask="64"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="admUser">vadim</Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">False</Option>
+          <Option name="filesystem"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="iosacl_acl_basic">True</Option>
+          <Option name="iosacl_acl_no_clear">False</Option>
+          <Option name="iosacl_acl_substitution">False</Option>
+          <Option name="iosacl_acl_temp_addr"></Option>
+          <Option name="iosacl_add_clear_statements">true</Option>
+          <Option name="iosacl_assume_fw_part_of_any">true</Option>
+          <Option name="iosacl_epilog_script"></Option>
+          <Option name="iosacl_generate_logging_commands">False</Option>
+          <Option name="iosacl_include_comments">True</Option>
+          <Option name="iosacl_logging_buffered">False</Option>
+          <Option name="iosacl_logging_buffered_level">4</Option>
+          <Option name="iosacl_logging_console">False</Option>
+          <Option name="iosacl_logging_console_level">4</Option>
+          <Option name="iosacl_logging_timestamp">False</Option>
+          <Option name="iosacl_logging_trap_level">4</Option>
+          <Option name="iosacl_prolog_script"></Option>
+          <Option name="iosacl_regroup_commands">False</Option>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_use_acl_remarks">False</Option>
+          <Option name="iosacl_use_object_groups">True</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="mgmt_addr">10.3.14.0/24</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="output_file"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="use_scp">True</Option>
+        </FirewallOptions>
+      </Firewall>
     </ObjectGroup>
     <IntervalGroup id="id4511637523682" name="Time" comment="" ro="False"/>
   </Library>
@@ -4782,6 +5133,7 @@
         <UDPService id="id3CB129D2" name="IKE" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="500" dst_range_end="500"/>
         <UDPService id="udp-DNS" name="domain" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="53" dst_range_end="53"/>
         <UDPService id="udp-SNMP" name="snmp" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="161" dst_range_end="161"/>
+        <UDPService id="id3D703C85" name="UDP high ports" comment="" ro="False" src_range_start="0" src_range_end="0" dst_range_start="1024" dst_range_end="65535"/>
       </ServiceGroup>
       <ServiceGroup id="stdid07" name="ICMP" comment="" ro="False">
         <ICMPService id="icmp-ping_reply" code="0" type="0" name="ping reply" comment="" ro="False"/>

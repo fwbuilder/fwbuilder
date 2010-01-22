@@ -1,5 +1,10 @@
 2010-01-22  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::compile):
+	fixes #1134: object-group clause can only be used with ipv4
+	access lists in IOS per
+	http://www.cisco.com/en/US/docs/ios/sec_data_plane/configuration/guide/sec_object_group_acl.html#wp1058359
+
 	* IOSObjectGroup.cpp (IOSObjectGroup::toString): fixes #1107:
 	support for "object-group" clause in IOS access lists. Fixed
 	syntax for the subnet clause inside "object-group network".
