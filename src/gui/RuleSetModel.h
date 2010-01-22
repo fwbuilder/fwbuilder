@@ -180,6 +180,8 @@ protected:
     QString getPositionAsString(RuleNode *node) const;
     ActionDesc getRuleActionDesc(libfwbuilder::Rule* r) const;
 
+    void copyRuleWithoutId(libfwbuilder::Rule* fromRule, libfwbuilder::Rule* toRule);
+
 private:
     libfwbuilder::RuleSet *ruleset;
     RuleNode *root;

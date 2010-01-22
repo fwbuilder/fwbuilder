@@ -1285,6 +1285,16 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
     return list;
 }
 
+void RuleSetModel::copyRuleWithoutId(Rule* fromRule, Rule* toRule)
+{
+    if (fromRule!=NULL && toRule!=NULL)
+    {
+        int oldPos = toRule->getPosition();
+        toRule->duplicate(fromRule);
+        toRule->setPosition(oldPos);
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PolicyModel
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1390,12 +1400,8 @@ void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
         ruleopt->setBool("stateless",
                          getStatelessFlagForAction(newrule_as_policy_rule));
     }
-    if (old_rule!=NULL)
-    {
-        int oldPos = new_rule->getPosition();
-        new_rule->duplicate(old_rule);
-        new_rule->setPosition(oldPos);
-    }
+
+    copyRuleWithoutId(old_rule, new_rule);
 }
 
 bool PolicyModel::checkRuleType(libfwbuilder::Rule *rule)
@@ -1485,7 +1491,7 @@ void NatModel::initRule(Rule *new_rule, Rule *old_rule)
     if (natRule)
         natRule->setAction(NATRule::Translate);
 
-    if (old_rule!=NULL)  new_rule->duplicate(old_rule);
+    copyRuleWithoutId(old_rule, new_rule);
 }
 
 bool NatModel::checkRuleType(libfwbuilder::Rule *rule)
@@ -1568,7 +1574,7 @@ QStringList RoutingModel::getRuleOptions(Rule* r) const
 void RoutingModel::initRule(Rule *new_rule, Rule *old_rule)
 {
     //if (fwbdebug) qDebug() << "RoutingModel::initRule";
-    if (old_rule!=NULL)  new_rule->duplicate(old_rule);
+    copyRuleWithoutId(old_rule, new_rule);
 }
 
 bool RoutingModel::checkRuleType(libfwbuilder::Rule *rule)
