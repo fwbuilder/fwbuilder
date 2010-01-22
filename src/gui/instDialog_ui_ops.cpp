@@ -148,6 +148,10 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
 
     item->setData(2, Qt::UserRole, QVariant(num_members));
 
+    item->setCheckState(COMPILE_CHECKBOX_COLUMN, checkIfNeedToCompile(fw)?Qt::Checked:Qt::Unchecked);
+    if (!compile_only)
+        item->setCheckState(INSTALL_CHECKBOX_COLUMN, checkIfNeedToInstall(fw)?Qt::Checked:Qt::Unchecked);
+
     return item;
 }
 
