@@ -356,7 +356,10 @@ void ObjectEditor::load()
 
 void ObjectEditor::changed()
 {
-    if (fwbdebug) qDebug() << "ObjectEditor::changed()";
+    QWidget *s = dynamic_cast<QWidget*>(sender());
+    if (fwbdebug)
+        qDebug() << "ObjectEditor::changed()  from " << s;
+
     if (!validate())
     {
         // change is not good, reload data into the editor to clear and reset it.

@@ -99,7 +99,8 @@ void FWCmdChange::redo()
 
 void FWCmdChange::notify()
 {
-//    qDebug() << "FWCmdChange::notify()";
+    if (fwbdebug) qDebug() << "FWCmdChange::notify()";
+
     FWObject* obj = getObject();
     QString filename = QString::fromUtf8(obj->getRoot()->getFileName().c_str());
 
@@ -126,11 +127,8 @@ void FWCmdChange::notify()
             mw, new openObjectInEditorEvent(filename, obj->getId()));
     }
 
-    // QCoreApplication::postEvent(
-    //     mw, new showObjectInTreeEvent(filename, obj->getId()));
-
-    QCoreApplication::postEvent(mw, new dataModifiedEvent(filename,
-                                                          obj->getId()));
+    QCoreApplication::postEvent(
+        mw, new dataModifiedEvent(filename, obj->getId()));
 }
 
 /********************************************************

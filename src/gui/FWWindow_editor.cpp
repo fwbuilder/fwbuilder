@@ -44,6 +44,7 @@
 #include <QTimer>
 #include <QMdiSubWindow>
 #include <QPixmap>
+#include <QLineEdit>
 
 
 using namespace libfwbuilder;
@@ -94,13 +95,43 @@ void FWWindow::closeEditor()
 
 void FWWindow::openEditor(FWObject *obj)
 {
+    attachEditorToProjectPanel(activeProject());
+
+    /*
+     * See #1060 when user finished editing one of the input fields
+     * (QLineEdit) in the object editor and hit Tab, focus moved to
+     * the next field but its contents did not get highlighted as
+     * usual, but instead cusror was positioned after the last
+     * character. This happened because FWCmdChange::notify() reloaded
+     * contents of the editor. We can't avoid doing this because we
+     * have to update the editor when user cycles through undo/redo
+     * operations. It is hard to detect when redo() is called for the
+     * first time when user just finished editing something (and even
+     * if that was possible, what if they execute undo or redo some
+     * time later while looking at the same object in the
+     * editor). Will detect situation when editor is reloaded with the
+     * same object and restore focus on the same input field. If this
+     * field is QLineEdit, will also select contents to emulate
+     * correct behavior when user moves between input fields using
+     * Tab.
+     */
+    QWidget *current_focus_widget = QApplication::focusWidget();
+    bool reopen = 
+        (getOpenedEditor() == obj &&
+         current_focus_widget &&
+         m_mainWindow->editorDockWidget->isAncestorOf(current_focus_widget));
+    QLineEdit *line_edit = dynamic_cast<QLineEdit*>(current_focus_widget);
+    bool restore_line_edit_selection = line_edit != NULL && line_edit->hasSelectedText();
+
     if (fwbdebug)
+    {
         qDebug() << "FWWindow::openEditor "
                  << " obj: "
                  << " " << obj->getName().c_str()
-                 << " " << obj->getTypeName().c_str();
-
-    attachEditorToProjectPanel(activeProject());
+                 << " " << obj->getTypeName().c_str()
+                 << " reopening in the editor: " << reopen
+                 << " current_focus_widget=" << current_focus_widget;
+    }
 
     QString title_txt;
     QPixmap title_icon;
@@ -116,6 +147,21 @@ void FWWindow::openEditor(FWObject *obj)
     m_mainWindow->editorDockWidget->show(); // editor
     oe->open(obj);
     m_mainWindow->objectEditorStack->resize(old_size);
+
+    if (reopen)
+    {
+        if (fwbdebug)
+        {
+            qDebug() << "FWWindow::openEditor "
+                     << "New widget about to get focus:"
+                     << current_focus_widget;
+        }
+        if (current_focus_widget)
+        {
+            current_focus_widget->setFocus(Qt::TabFocusReason);
+            if (restore_line_edit_selection) line_edit->selectAll();
+        }
+    }
 }
 
 void FWWindow::openOptEditor(FWObject *obj, ObjectEditor::OptType t)

@@ -27,8 +27,11 @@
 #ifndef  __BASEOBJECTDIALOG_H_
 #define  __BASEOBJECTDIALOG_H_
 
+#include "global.h"
 #include "fwbuilder/FWObject.h"
 #include <QWidget>
+#include <QtDebug>
+
 
 class ProjectPanel;
 
@@ -45,6 +48,10 @@ public slots:
 
     virtual void changed()
     {
+        QWidget *s = dynamic_cast<QWidget*>(sender());
+        if (fwbdebug)
+            qDebug() << "BaseObjectDialog::changed()  from " << s;
+
         if (!init)
         {
             emit changed_sign();
