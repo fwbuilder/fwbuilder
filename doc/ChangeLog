@@ -1,3 +1,9 @@
+2010-01-22  vadim  <vadim@vk.crocodile.org>
+
+	* IOSObjectGroup.cpp (IOSObjectGroup::toString): fixes #1107:
+	support for "object-group" clause in IOS access lists. Fixed
+	syntax for the subnet clause inside "object-group network".
+
 2010-01-21  vadim  <vadim@vk.crocodile.org>
 
 	* RuleOptionsDialog.cpp (RuleOptionsDialog::limitLabelChange):
