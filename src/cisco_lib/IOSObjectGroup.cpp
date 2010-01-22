@@ -76,7 +76,8 @@ string IOSObjectGroup::toString()  throw(FWException)
                 if (Network::cast(obj)!=NULL)
                 {
                     const InetAddr *mask = a->getNetmaskPtr();
-                    ostr << addr->toString() << "/" << mask->getLength();
+                    // Note: the syntax is "A.B.C.D /NN" (there must be space before /)
+                    ostr << addr->toString() << " /" << mask->getLength();
                 } else {
                     ostr << "host " << addr->toString();
                 }
