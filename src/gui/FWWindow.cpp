@@ -498,7 +498,7 @@ void FWWindow::startupLoad()
  * of the day. Switch to normal sequence near the end of beta (show
  * release notes once and then show tip of the day)
  */
-#define ONLY_RELEASE_NOTES 1
+#define SHOW_RELEASE_NOTES_ONCE 1
 
 #if SHOW_RELEASE_NOTES_ONCE
     if (!st->getBool(release_notes_flag))
@@ -519,15 +519,6 @@ void FWWindow::startupLoad()
 
 #if ONLY_RELEASE_NOTES
     showReleaseNotes();
-#endif
-
-#if RELEASE_NOTES_AND_TIP
-    showReleaseNotes();
-    if (! st->getBool("UI/NoStartTip"))
-    {
-        StartTipDialog *stdlg = new StartTipDialog();
-        stdlg->run();
-    }
 #endif
 
     prepareFileMenu();

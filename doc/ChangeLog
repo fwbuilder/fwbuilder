@@ -1,5 +1,11 @@
 2010-01-23  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/gui/FWWindow.cpp (FWWindow::startupLoad): fixes #147:
+	show Release Notes only once when user starts the program for the
+	first time. When user upgrades to a new version, Release Notes for
+	it will be shown once again. Show tip of the day on all subsequent
+	runs, unless user disables it.
+
 	* instDialog_ui_ops.cpp (instDialog::setFlags): fixes #1136:
 	"install" checkbox appears next to the cluster object in
 	instDialog and "compile" checkoxes appear next to cluster
