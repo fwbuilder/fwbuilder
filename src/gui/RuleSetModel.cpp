@@ -318,6 +318,13 @@ Rule * RuleSetModel::findRuleForPosition(int position) const
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
     {
         Rule *r = Rule::cast( *i );
+
+        if (r == 0)
+        {
+            qDebug() << "!!! null";
+            continue;
+        }
+
         if (r->getPosition() == position)
         {
             return r;
@@ -573,13 +580,32 @@ Rule* RuleSetModel::insertRule(Rule *rule, QModelIndex &index, bool isAfter)
     return newrule;
 }
 
+void dumpRuleSet(RuleSet* ruleset) {
+    qDebug() << "------------------------";
+    for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++)
+    {
+        Rule *r = Rule::cast( *i );
+
+        if (r == 0)
+        {
+            qDebug() << "!!! null";
+            continue;
+        }else{
+            qDebug() << r->getPosition();
+        }
+    }
+}
+
 void RuleSetModel::insertRule(Rule *rule) {
     Rule * targetRule = ruleset->getRuleByNum(rule->getPosition());
 
 
     if (targetRule==NULL)
     {
+        qDebug() << "insertRule -- ADD";
+        dumpRuleSet(ruleset);
         ruleset->add(rule);
+        dumpRuleSet(ruleset);
         if (isEmpty())
         {
             QModelIndex index;
@@ -598,6 +624,7 @@ void RuleSetModel::insertRule(Rule *rule) {
     }
     ruleset->renumberRules();
 }
+
 
 void RuleSetModel::restoreRule(Rule* rule)
 {
@@ -655,7 +682,10 @@ void RuleSetModel::restoreRules(QList<Rule*> rules, bool topLevel)
 
 void RuleSetModel::removeRow(int row,const QModelIndex &parent)
 {
+    qDebug() << "removeRow";
+    dumpRuleSet(ruleset);
     removeRows(row,1,parent);
+    dumpRuleSet(ruleset);
 }
 
 bool RuleSetModel::removeRows(int row, int count, const QModelIndex &parent)
