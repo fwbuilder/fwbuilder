@@ -125,6 +125,7 @@ public:
     libfwbuilder::Rule* insertNewRule(QModelIndex &index, bool isAfter = false);
 
     libfwbuilder::Rule* insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter = false);
+    void insertRule(libfwbuilder::Rule *rule);
 
     virtual void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = NULL) = 0;
 

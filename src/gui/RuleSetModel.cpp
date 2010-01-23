@@ -383,7 +383,7 @@ QModelIndex RuleSetModel::index(int row, int column, QString groupName) const
     return (parent.isValid()) ? index(row, column, parent) : QModelIndex();
 }
 
-QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, libfwbuilder::RuleElement *re) const
+QModelIndex RuleSetModel::index(Rule *rule, libfwbuilder::RuleElement *re) const
 {
     // if (fwbdebug)
     //     qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col)";
@@ -391,7 +391,7 @@ QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, libfwbuilder::RuleElem
     return index(rule, col);
 }
 
-QModelIndex RuleSetModel::index(libfwbuilder::Rule *rule, int col) const
+QModelIndex RuleSetModel::index(Rule *rule, int col) const
 {
     // if (fwbdebug)
     //     qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
@@ -571,6 +571,32 @@ Rule* RuleSetModel::insertRule(Rule *rule, QModelIndex &index, bool isAfter)
         insertRuleToModel(newrule, index);
     }
     return newrule;
+}
+
+void RuleSetModel::insertRule(Rule *rule) {
+    Rule * targetRule = ruleset->getRuleByNum(rule->getPosition());
+
+
+    if (targetRule==NULL)
+    {
+        ruleset->add(rule);
+        if (isEmpty())
+        {
+            QModelIndex index;
+            insertRuleToModel(rule, index);
+        } else {
+            RuleSetModelIterator it = end();
+            --it;
+            QModelIndex index = it.index();
+            insertRuleToModel(rule, index, true);
+        }
+    } else
+    {
+        QModelIndex index = this->index(targetRule);
+        ruleset->insert_before(targetRule,rule);
+        insertRuleToModel(rule, index, false);
+    }
+    ruleset->renumberRules();
 }
 
 void RuleSetModel::restoreRule(Rule* rule)

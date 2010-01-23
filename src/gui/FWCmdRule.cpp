@@ -97,8 +97,6 @@ FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset,
     this->isAfter = isAfter;
     this->ruleToInsert = ruleToInsert;
     this->insertedRule = 0;
-    this->insertedId = -1000;
-
 
     setText(QObject::tr("insert rule"));
 }
@@ -106,33 +104,34 @@ FWCmdRuleInsert::FWCmdRuleInsert(ProjectPanel *project, RuleSet* ruleset,
 FWCmdRuleInsert::~FWCmdRuleInsert()
 {
     if (ruleToInsert) delete ruleToInsert;
+    if (insertedRule && insertedRule->getRefCounter() == 1)
+    {
+        delete insertedRule;
+    }
 }
 
 void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
 {
-    if (ruleToInsert == 0)
-    {
-        if (position == 0 && !isAfter)
+    if (insertedRule == 0) {
+        if (ruleToInsert == 0)
         {
-            insertedRule = md->insertNewRule();
+            if (position == 0 && !isAfter)
+            {
+                insertedRule = md->insertNewRule();
+            } else
+            {
+                QModelIndex index = md->indexForPosition(position);
+                insertedRule = md->insertNewRule(index, isAfter);
+            }
         } else
         {
-            QModelIndex index = md->indexForPosition(position);
-            insertedRule = md->insertNewRule(index, isAfter);
+            QModelIndex index;
+            if (position) index = md->indexForPosition(position);
+            insertedRule = md->insertRule(ruleToInsert, index, isAfter);
         }
-    } else
-    {
-        QModelIndex index;
-        if (position) index = md->indexForPosition(position);
-        insertedRule = md->insertRule(ruleToInsert, index, isAfter);
-    }
-
-    if (insertedId < 0)
-    {
-        insertedId = insertedRule->getId();
-    } else
-    {
-        insertedRule->setId(insertedId);
+        insertedRule->ref();
+    } else {
+        md->insertRule(insertedRule);
     }
 
     getRuleSetView()->selectRE(insertedRule,0);
@@ -144,8 +143,6 @@ void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
     getRuleSetView()->scrollTo(index,  QAbstractItemView::PositionAtCenter);
     getRuleSetView()->unselect();
     md->removeRow(index.row(), index.parent());
-    // do we need delete insertedRule?
-    insertedRule = 0;
 }
 
 /********************************************************
