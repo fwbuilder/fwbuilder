@@ -1,3 +1,15 @@
+2010-01-23  vadim  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::setFlags): fixes #1136:
+	"install" checkbox appears next to the cluster object in
+	instDialog and "compile" checkoxes appear next to cluster
+	member firewalls.
+
+2010-01-23  yalovoy
+
+	* FWCmdRule.cpp (FWCmdRuleInsert::redoOnModel): refs #1127:
+	GUI crash when clicking in undo panel.
+
 2010-01-22  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl.cpp (PolicyCompiler_iosacl::compile):
