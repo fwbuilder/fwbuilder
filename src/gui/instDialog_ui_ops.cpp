@@ -148,9 +148,9 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
 
     item->setData(2, Qt::UserRole, QVariant(num_members));
 
-    item->setCheckState(COMPILE_CHECKBOX_COLUMN, checkIfNeedToCompile(fw)?Qt::Checked:Qt::Unchecked);
-    if (!compile_only)
-        item->setCheckState(INSTALL_CHECKBOX_COLUMN, checkIfNeedToInstall(fw)?Qt::Checked:Qt::Unchecked);
+    // item->setCheckState(COMPILE_CHECKBOX_COLUMN, checkIfNeedToCompile(fw)?Qt::Checked:Qt::Unchecked);
+    // if (!compile_only)
+    //     item->setCheckState(INSTALL_CHECKBOX_COLUMN, checkIfNeedToInstall(fw)?Qt::Checked:Qt::Unchecked);
 
     return item;
 }
@@ -202,37 +202,41 @@ void instDialog::setFlags(QTreeWidgetItem* item)
     }
 
     // Real firewalls get checkbox for install
-    if (Firewall::isA(fw) && ! compile_only)
+    if (Firewall::isA(fw))
     {
         bool checked = false;
-        checked = checkIfNeedToInstall(fw);
-        if (cluster)
-        {
-            // override if checkIfNeedToCompile() is true for the
-            // parent cluster.
-            if (checkIfNeedToCompile(cluster))
-            {
-                checked = true;
-            }
-        }
-        item->setCheckState(INSTALL_CHECKBOX_COLUMN,
-                            checked?Qt::Checked:Qt::Unchecked);
 
-        // If this platform requires installation only on
-        // the master, disable and uncheck checkbox for the standby.
-        if (install_only_on_primary_member && master_interface != NULL)
+        if (!compile_only)
         {
-            QString txt = item->text(0);
-            if (master_interface->isChildOf(fw))
+            checked = checkIfNeedToInstall(fw);
+            if (cluster)
             {
-                // Master
-                item->setText(0, QString("%1 (master)").arg(txt));
-            } else
+                // override if checkIfNeedToCompile() is true for the
+                // parent cluster.
+                if (checkIfNeedToCompile(cluster))
+                {
+                    checked = true;
+                }
+            }
+            item->setCheckState(INSTALL_CHECKBOX_COLUMN,
+                                checked?Qt::Checked:Qt::Unchecked);
+
+            // If this platform requires installation only on
+            // the master, disable and uncheck checkbox for the standby.
+            if (install_only_on_primary_member && master_interface != NULL)
             {
-                // Standby
-                item->setText(0, QString("%1 (standby)").arg(txt));
-                item->setCheckState(INSTALL_CHECKBOX_COLUMN, Qt::Unchecked);
-                item->setFlags(0);
+                QString txt = item->text(0);
+                if (master_interface->isChildOf(fw))
+                {
+                    // Master
+                    item->setText(0, QString("%1 (master)").arg(txt));
+                } else
+                {
+                    // Standby
+                    item->setText(0, QString("%1 (standby)").arg(txt));
+                    item->setCheckState(INSTALL_CHECKBOX_COLUMN, Qt::Unchecked);
+                    item->setFlags(0);
+                }
             }
         }
 
@@ -802,6 +806,8 @@ void instDialog::fillCompileOpList()
 
 void instDialog::fillCompileUIList()
 {
+    if (fwbdebug) qDebug("instDialog::fillCompileUIList");
+
     m_dialog->fwWorkList->clear();
     opListMapping.clear();
 
@@ -849,6 +855,7 @@ void instDialog::fillInstallOpList()
 void instDialog::fillInstallUIList()
 {
     if (fwbdebug) qDebug("instDialog::fillInstallUIList");
+
     m_dialog->fwWorkList->clear();
     opListMapping.clear();
 
