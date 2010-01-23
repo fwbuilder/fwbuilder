@@ -345,7 +345,8 @@ HEADERS += instDialogTest.h \
 
 CONFIG -= release
 CONFIG += debug
-OBJECTS_DIR = .
+OBJECTS_DIR = ../../.obj
+MOC_DIR = ../../.moc
 QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
 QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
