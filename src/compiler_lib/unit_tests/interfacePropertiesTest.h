@@ -49,9 +49,11 @@ class interfacePropertiesTest: public CppUnit::TestCase
     libfwbuilder::FWObjectDatabase *db;
 public:
   //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
+  interfaceProperties* getIntProps(const QString &os);
 
   void validateInterface();
   void isEligibleForCluster();
+  void isValidVlanInterfaceName();
   void setUp();
 
   static CppUnit::Test *suite()
@@ -61,8 +63,11 @@ public:
                                  "validateInterface",
                                  &interfacePropertiesTest::validateInterface ) );
     suiteOfTests->addTest( new CppUnit::TestCaller<interfacePropertiesTest>(
-                                 "validateInterface",
+                                 "isEligibleForCluster",
                                  &interfacePropertiesTest::isEligibleForCluster ) );
+    suiteOfTests->addTest( new CppUnit::TestCaller<interfacePropertiesTest>(
+                                 "isValidVlanInterfaceName",
+                                 &interfacePropertiesTest::isValidVlanInterfaceName ) );
     return suiteOfTests;
   }
 

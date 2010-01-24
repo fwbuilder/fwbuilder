@@ -33,6 +33,20 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace CppUnit;
 
+interfaceProperties* interfacePropertiesTest::getIntProps(const QString &os)
+{
+    Resources* os_res = Resources::os_res[os.toStdString()];
+    string os_family = os.toStdString();
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+    return interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
+}
+
+void interfacePropertiesTest::setUp()
+{
+    db = new FWObjectDatabase();
+}
+
 void interfacePropertiesTest::validateInterface()
 {
     string host_OS = "linux24";
@@ -208,8 +222,60 @@ void interfacePropertiesTest::isEligibleForCluster()
 
 }
 
-void interfacePropertiesTest::setUp()
+void interfacePropertiesTest::isValidVlanInterfaceName()
 {
-    db = new FWObjectDatabase();
-}
+    QString err, parent = "eth0";
+    interfaceProperties * int_prop = getIntProps("linux24");
+/*
+sub              parent  result
+vlan101 	 eth0	 true
+eth0.101	 eth0	 true
+foo 	         eth0	 false
+foo101	         eth0	 false
+eth0.bar	 eth0	 false
+eth0.99999	 eth0	 false
+eth1.101	 eth0	 false
+*/
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.101", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo", parent, err) == false);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo101", parent, err) == false);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.bar", parent, err) == false);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.99999", parent, err) == false);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth1.101", parent, err) == false);
 
+    parent = "en0";
+    int_prop = getIntProps("openbsd");
+/*
+vlan101	 en0	 true
+en0.101	 en0	 false
+foo	 en0	 false
+foo101	 en0	 false
+*/
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.101", parent, err) == false);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo", parent, err) == false);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo101", parent, err) == false);
+
+/*
+FastEthernet0/1.101	 FastEthernet0/1	 true
+vlan101                  FastEthernet0/1	 false
+Ethernet0/0.101          FastEthernet0/1	 false
+Ethernet0/0.99999	 Ethernet0/0             false
+*/
+    int_prop = getIntProps("ios");
+    parent = "FastEthernet0/1";
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("FastEthernet0/1.101", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
+    parent = "Ethernet0/0";
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.99999", parent, err) == false);
+
+    int_prop = getIntProps("pix_os");
+    parent = "FastEthernet0/1";
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("FastEthernet0/1.101", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
+    parent = "Ethernet0/0";
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.99999", parent, err) == false);
+}
