@@ -103,13 +103,8 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
     connect (this, SIGNAL (expanded(QModelIndex)),
              this, SLOT (updateAllColumnsSize()));
 
-    compileRuleAction = new QAction(tr("Compile rule"), this);
-    compileRuleAction->setShortcut(QKeySequence(Qt::Key_X));
+    initActions();
 
-    connect (compileRuleAction, SIGNAL(triggered()),
-              this, SLOT(compileCurrentRule()));
-
-    addAction(compileRuleAction );
     popup_menu = new QMenu(this);
 }
 
@@ -118,6 +113,8 @@ RuleSetView::~RuleSetView()
     if (fwbdebug) qDebug("RuleSetView::~RuleSetView");
     delete fwosm;
     delete compileRuleAction;
+    delete moveRuleUpAction;
+    delete moveRuleDownAction;
 }
 
 void RuleSetView::init()
@@ -148,6 +145,33 @@ void RuleSetView::configureGroups()
     {
         setFirstColumnSpanned(index.row(), parent, true);
     }
+}
+
+void RuleSetView::initActions()
+{
+    // Compile rule
+    compileRuleAction = createAction(tr("Compile rule"), SLOT(compileCurrentRule()), QKeySequence(Qt::Key_X));
+    addAction(compileRuleAction );
+
+    // Move rule up
+    moveRuleUpAction = createAction(tr("Move Rule up"), SLOT( moveRuleUp()), QKeySequence(Qt::CTRL + Qt::Key_PageUp));
+    addAction(moveRuleUpAction );
+
+    // Move rule down
+    moveRuleDownAction = createAction(tr("Move Rule down"), SLOT( moveRuleDown()), QKeySequence(Qt::CTRL + Qt::Key_PageDown));
+    addAction(moveRuleDownAction );
+
+}
+
+
+QAction* RuleSetView::createAction(QString label, const char* member, const QKeySequence &shortcut)
+{
+    QAction* action = new QAction(label, this);
+    action->setShortcut(shortcut);
+
+    connect (action, SIGNAL(triggered()), this, member);
+
+    return action;
 }
 
 RuleSetView* RuleSetView::getRuleSetViewByType(ProjectPanel *project,

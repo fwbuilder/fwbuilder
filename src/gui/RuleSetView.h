@@ -76,6 +76,7 @@ public:
                                              QWidget *parent);
 
     virtual void init();
+    virtual void initActions();
 
     void selectRE(QModelIndex index);
     /**
@@ -220,6 +221,8 @@ protected:
                               libfwbuilder::FWObject *obj, bool quiet=false);
     bool validateForInsertionToInterfaceRE(libfwbuilder::RuleElementItf *re,
                                            libfwbuilder::FWObject *obj);
+
+    QAction* createAction(QString label, const char* member, const QKeySequence &shortcut = 0);
     
 private:
 
@@ -227,6 +230,9 @@ private:
     //but not when he just clicks selected record
     bool startingDrag;
     QAction *compileRuleAction;
+    QAction *moveRuleUpAction;
+    QAction *moveRuleDownAction;
+
     QMenu *popup_menu;
 
     libfwbuilder::FWObject *getObject(const QPoint &pos, const QModelIndex &index);
