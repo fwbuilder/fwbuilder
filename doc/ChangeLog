@@ -1,3 +1,20 @@
+2010-01-24  yalovoy <yalovoy@gmail.com>
+	* #1127 GUI crash when clicking in undo panel
+	1) new firewall (set name, Next, Next, Finish)
+	2) add interface
+	3) open Policy rule set view
+	4) insert rule
+	5) drag interface to the "Interface" rule element of the rule
+	6) click on <empty> in the undo panel
+	6) click on the last entry in the undo panel
+	Affected files: RuleSetModel.cpp
+	* #1132 Keyboard shortcuts for moving rules with "move up", "move down"
+	Affected files: src/gui/RuleSetView.cpp, src/gui/RuleSetView.h
+	* #1131 after rule moves with "move up" or "move down", it loses selection
+	Affected files: src/gui/RuleSetView.cpp, src/gui/RuleSetView.h, src/gui/FWCmdRule.cpp
+	* #1142 GUI crash on moving rule into a group with russian name
+	Affected files: src/gui/RuleSetModel.cpp
+
 2010-01-23  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/gui/FWWindow.cpp (FWWindow::startupLoad): fixes #147:
@@ -11,10 +28,13 @@
 	instDialog and "compile" checkoxes appear next to cluster
 	member firewalls.
 
-2010-01-23  yalovoy
+2010-01-23  yalovoy <yalovoy@gmail.com>
 
 	* FWCmdRule.cpp (FWCmdRuleInsert::redoOnModel): refs #1127:
 	GUI crash when clicking in undo panel.
+	* FWCmdRule.h
+	* RuleSetModel.cpp
+	* RuleSetModel.h
 
 2010-01-22  vadim  <vadim@vk.crocodile.org>
 
