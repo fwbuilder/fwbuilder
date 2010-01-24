@@ -400,10 +400,11 @@ QModelIndex RuleSetModel::index(Rule *rule, libfwbuilder::RuleElement *re) const
 QModelIndex RuleSetModel::index(Rule *rule, int col) const
 {
     // if (fwbdebug)
-    //     qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
+//         qDebug() << "RuleSetModel::index(libfwbuilder::Rule *rule, int col) " << col;
     if (col < 0 || rule == 0) return QModelIndex();
     QModelIndex parent;
     QString groupName = QString::fromUtf8(rule->getRuleGroupName().c_str());
+
     if (!groupName.isEmpty())
     {
         QList<RuleNode *> topLevel = root->children;
@@ -1022,7 +1023,7 @@ void RuleSetModel::moveToGroup(RuleNode *targetGroup, int first, int last, bool 
         RuleNode *node = root->children.at(first);
         rules << node;
         root->children.removeAt(first);
-        node->rule->setRuleGroupName(targetGroup->name.toStdString());
+        node->rule->setRuleGroupName(targetGroup->name.toUtf8().data());
     }
     emit endRemoveRows();
 
