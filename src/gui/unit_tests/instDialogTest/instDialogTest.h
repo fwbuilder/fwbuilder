@@ -18,12 +18,15 @@ class instDialogTest : public QObject
 {
     Q_OBJECT
     void openPolicy(QString fw);
+    void verifyDialog(instDialog *dlg, int items = -1);
 private slots:
     void initTestCase();
     void page1_1();
     void page1_2();
     void page1_3();
     void page1_4();
+    void page1_5();
+    void page1_8();
 
 };
 
