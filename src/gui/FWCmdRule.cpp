@@ -267,7 +267,7 @@ FWCmdRuleColor::FWCmdRuleColor(ProjectPanel *project, RuleSet* ruleset, QList<Ru
 
 void FWCmdRuleColor::redoOnModel(RuleSetModel *md)
 {
-    QList<QModelIndex> indexes;
+    QModelIndexList indexes;
 
     foreach(int ruleId, oldColors.keys())
     {
@@ -283,7 +283,7 @@ void FWCmdRuleColor::redoOnModel(RuleSetModel *md)
 
 void FWCmdRuleColor::undoOnModel(RuleSetModel *md)
 {
-    QList<QModelIndex> indexes;
+    QModelIndexList indexes;
 
     foreach(int ruleId, oldColors.keys())
     {
@@ -319,10 +319,13 @@ void FWCmdRuleMove::undoOnModel(RuleSetModel *md)
 
 void FWCmdRuleMove::move(RuleSetModel *md, bool direction)
 {
-    QModelIndex index = md->index(Rule::cast(getObject(firstId)), 0);
+    Rule* firstRule = Rule::cast(getObject(firstId));
+    Rule* lastRule = Rule::cast(getObject(lastId));
+
+    QModelIndex index = md->index(firstRule, 0);
     QModelIndex parent = index.parent();
     int first = index.row();
-    index = md->index(Rule::cast(getObject(lastId)), 0);
+    index = md->index(lastRule, 0);
     int last = index.row();
 
     if (direction)
@@ -335,6 +338,10 @@ void FWCmdRuleMove::move(RuleSetModel *md, bool direction)
         // down
         md->moveRuleDown(parent , first, last);
     }
+    
+    project->getCurrentRuleSetView()->setSelectedRows(
+            md->index(firstRule, 0),
+            md->index(lastRule, 0));
 }
 
 /********************************************************

@@ -196,6 +196,8 @@ public slots:
     void compileCurrentRule();
     void updateSelectionSensitiveActions(QItemSelection,QItemSelection);
 
+    void setSelectedRows(const QModelIndex firstIndex, const QModelIndex lastIndex);
+
 protected:
 
     FWObjectSelectionModel *fwosm;
@@ -251,6 +253,7 @@ private:
     void setEnabledRow(bool flag);
 
     QModelIndexList getSelectedRows() const;
+
     bool isOnlyTopLevelRules(const QModelIndexList &list) const;
     bool isOneLevelRules(const QModelIndexList &list);
 

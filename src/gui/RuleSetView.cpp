@@ -914,6 +914,18 @@ QModelIndexList RuleSetView::getSelectedRows() const
     return res;
 }
 
+void RuleSetView::setSelectedRows(const QModelIndex firstIndex, const QModelIndex lastIndex)
+{
+    RuleSetModel* md = ((RuleSetModel*)model());
+    fwosm->reset();
+    selectionModel()->clear();
+    selectionModel()->select(QItemSelection(firstIndex, lastIndex), QItemSelectionModel::Rows | QItemSelectionModel::Select);
+//    selectionModel()->selection().select(firstIndex, lastIndex);
+
+//    selectionModel()->select(newIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
+
+}
+
 void RuleSetView::removeRule()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
