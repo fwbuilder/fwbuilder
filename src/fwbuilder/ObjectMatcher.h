@@ -56,18 +56,25 @@ namespace libfwbuilder
         bool recognize_broadcasts;
         bool recognize_multicasts;
         bool ipv6;
+        bool match_subnets;
         
         bool checkComplexMatchForSingleAddress(const InetAddr *addr1,
                                                FWObject *obj2);
         bool checkComplexMatchForSingleAddress(Address *obj1, FWObject *obj2);
         
 public:
-        ObjectMatcher(bool _broadcasts, bool _multicasts, bool _ipv6)
+        ObjectMatcher()
         {
-            recognize_broadcasts = _broadcasts;
-            recognize_multicasts = _multicasts;
-            ipv6 = _ipv6;
+            recognize_broadcasts = false;
+            recognize_multicasts = false;
+            ipv6 = false;
+            match_subnets = false;
         }
+
+        void setMatchSubnets(bool f) { match_subnets = f; }
+        void setRecognizeBroadcasts(bool f) { recognize_broadcasts = f; }
+        void setRecognizeMulticasts(bool f) { recognize_multicasts = f; }
+        void setIPV6(bool f) { ipv6 = f; }
 
         /**
          * This method returns true if one of the following conditions is met:

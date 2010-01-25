@@ -1,3 +1,9 @@
+2010-01-25  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/fwbuilder/ObjectMatcher.h (libfwbuilder): setting all
+	flags through setter methods instead of passing parameters to
+	constructor. Added flag "match_subnets"
+
 2010-01-19  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (Compiler::_expand_interface): method

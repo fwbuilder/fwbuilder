@@ -56,8 +56,11 @@ bool Compiler::complexMatch(Address *obj1, Address *obj2,
                             bool recognize_broadcasts,
                             bool recognize_multicasts)
 {
-    return ObjectMatcher(recognize_broadcasts, recognize_multicasts,
-                         ipv6).complexMatch(obj1, obj2);
+    ObjectMatcher om;
+    om.setRecognizeBroadcasts(recognize_broadcasts);
+    om.setRecognizeMulticasts(recognize_multicasts);
+    om.setIPV6(ipv6);
+    return om.complexMatch(obj1, obj2);
 }
 
 /**
