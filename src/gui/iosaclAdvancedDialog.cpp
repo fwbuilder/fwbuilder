@@ -81,36 +81,6 @@ iosaclAdvancedDialog::iosaclAdvancedDialog(QWidget *parent,FWObject *o)
 
     Firewall  *fw=Firewall::cast(obj);
     FWOptions *fwopt=fw->getOptionsObject();
-    string compiler=fwopt->getStr("compiler");
-    if (compiler=="")
-    {
-        compiler=Resources::platform_res[fw->getStr("platform")]->getCompiler();
-    }
-/*
- * On Unix compilers are installed in the standard place and are
- * accessible via PATH. On Windows and Mac they get installed in
- * unpredictable directories and need to be found
- *
- * first, check if user specified an absolute path for the compiler,
- * then check  if compiler is registsred in preferences, and if not,
- * look for it in appRootDir and if it is not there, rely on PATH
- */
-#if defined(Q_OS_WIN32) ||  defined(Q_OS_MACX)
-
-    if ( ! QFile::exists( compiler.c_str() ) )
-    {
-        string ts = string("Compilers/")+compiler;
-        QString cmppath = st->getStr( ts.c_str() );
-        if (!cmppath.isEmpty()) compiler = cmppath.toLatin1().constData();
-        else
-        {
-            /* try to find compiler in appRootDir. */
-            string ts =  getPathToBinary(compiler);
-            if ( QFile::exists( ts.c_str() ) )
-                compiler = ts;
-        }
-    }
-#endif
 
     string vers="version_"+obj->getStr("version");
     string platform = obj->getStr("platform");   // should be 'iosacl'
