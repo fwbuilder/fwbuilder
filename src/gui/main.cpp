@@ -110,13 +110,6 @@ int main( int argc, char *argv[] )
 
     ssh_wrapper(argc, argv);
 
-    if (fwbdebug)
-    {
-        qDebug("Command line:  argc=%d", argc);
-        for (int i=0; i<argc; ++i)
-            qDebug(argv[i]);
-    }
-
     // can not use "-p" for command line printing because
     // Mac OS X supplies switch "-psnXXXXX" when program is
     // started via Finder.
@@ -156,19 +149,19 @@ int main( int argc, char *argv[] )
     if ( (argc-1)==optind)
         filename = strdup( argv[optind++] );
 
-    if (fwbdebug) qDebug("Initializing ...");
-
-    if (fwbdebug) qDebug("Creating app ...");
     //QApplication::setDesktopSettingsAware(desktopaware);
+
+    Q_INIT_RESOURCE(MainRes);
+
     app = new QApplication( argc, argv );
     app->setOrganizationName(QLatin1String("NetCitadel"));
     app->setApplicationName(QLatin1String("Firewall Builder"));
 
+    if (fwbdebug) qDebug("Initializing ...");
+
 /* need to initialize in order to be able to use FWBSettings */
     init(argv);
     init_platforms();
-
-    Q_INIT_RESOURCE(MainRes);
 
     if (fwbdebug) qDebug("Reading settings ...");
     st = new FWBSettings();
@@ -184,6 +177,13 @@ int main( int argc, char *argv[] )
     if (fwbdebug)
     {
         qDebug("reading resources from '%s' ...", full_res_path.c_str());
+    }
+
+    QFileInfo fi(full_res_path.c_str());
+    if (!fi.exists())
+    {
+        qDebug() << QString("Resource file %1 does not exist").arg(fi.filePath());
+        exit(1);
     }
 
     //respath = RES_DIR;
