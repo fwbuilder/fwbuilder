@@ -74,12 +74,6 @@ bool FWWindow::saveIfModified()
     return false;
 }
 
-QString FWWindow::getDestDir(const QString &fname)
-{
-   if (activeProject()) return activeProject()->getDestDir(fname);
-   return "";
-}
-
 QString FWWindow::chooseNewFileName(const QString &fname, const QString &title)
 {  
     if (activeProject()) return activeProject()->chooseNewFileName(fname,title);

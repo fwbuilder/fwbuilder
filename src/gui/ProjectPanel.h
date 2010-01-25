@@ -210,7 +210,18 @@ public:
     void editPaste();
     
     bool saveIfModified();
-    QString getDestDir(const QString &fname);
+
+    // semi-intelligent way to guess most appropriate
+    // destination directory for various file save or file open
+    // operations. If working directory is configured in
+    // preferences, then getDestDir returns that. If it is not
+    // configured and file name is given on the command line,
+    // directory where that file is located is returned. If
+    // parameter filename is empty, then current directory
+    // is returned (however on windows and mac userDataDir is returned)
+
+    QString getDestDir(const QString &filename);
+    
     QString chooseNewFileName(const QString &fname, const QString &title);
     void setFileName(const QString &fname);
     void restoreDepends(libfwbuilder::FWObject *obj_old,

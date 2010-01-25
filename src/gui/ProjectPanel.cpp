@@ -444,24 +444,19 @@ QString ProjectPanel::getDestDir(const QString &fname)
     {
         if (fname.isEmpty())
         {
-/* need some reasonable default working directory.
- * on Unix will use current dir.
- * on Windows will use user's document dir.
- */
-#if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
             destdir = userDataDir.c_str();
-#else
-            destdir = "";
-#endif
         } else
         {
-            if (QFileInfo(fname).isDir()) destdir=fname;
+            QFileInfo fi(fname);
+            if (fi.isDir()) destdir = fname;
             else
-                destdir = fname.left( fname.lastIndexOf('/',-1) );
+            {
+                destdir = fi.canonicalPath();
+            }
         }
     } else
     {
-        destdir=st->getWDir();
+        destdir = st->getWDir();
     }
     return destdir;
 }

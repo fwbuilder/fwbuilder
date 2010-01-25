@@ -291,17 +291,6 @@ public slots:
     void setSafeMode(bool f);
     void setStartupFileName(const QString &fn);
 
-    // semi-intelligent way to guess most appropriate
-    // destination directory for various file save or file open
-    // operations. If working directory is configured in
-    // preferences, then getDestDir returns that. If it is not
-    // configured and file name is given on the command line,
-    // directory where that file is located is returned. If
-    // parameter filename is empty, then current directory
-    // is returned (however on windows and mac userDataDir is returned)
-
-    QString getDestDir(const QString &filename);
-    
     libfwbuilder::FWObject*  getCurrentLib();
 
     libfwbuilder::FWObject* createObject(const QString &objType,
