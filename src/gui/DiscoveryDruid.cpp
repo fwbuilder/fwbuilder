@@ -51,6 +51,7 @@
 #include <qhostinfo.h>
 #include <qgroupbox.h>
 #include <qmessagebox.h> 
+#include <QtDebug>
 
 #include "DiscoveryDruid.h"
 #include "ProjectPanel.h"
@@ -821,9 +822,9 @@ void DiscoveryDruid::startDNSScan()
 InetAddr DiscoveryDruid::getSeedHostAddress()
 {
     if (fwbdebug)
-        qDebug(
+        qDebug() << 
             QString("DiscoveryDruid::getSeedHostAddress(): Seed host name %1").
-            arg(m_dialog->seedhostname->text()).toLatin1().constData());
+            arg(m_dialog->seedhostname->text());
 
     libfwbuilder::InetAddr   seed_host_addr;
     if (!m_dialog->seedhostname->text().isEmpty())
@@ -832,9 +833,9 @@ InetAddr DiscoveryDruid::getSeedHostAddress()
         {
             QString a = getAddrByName( m_dialog->seedhostname->text(), AF_INET);
             if (fwbdebug)
-                qDebug(
+                qDebug() <<
                     QString("DiscoveryDruid::getSeedHostAddress() address: %1").
-                       arg(a).toLatin1().constData());
+                    arg(a);
 
             return InetAddr( a.toLatin1().constData() );
         } catch(const FWException &ex) 
@@ -1316,14 +1317,16 @@ void DiscoveryDruid::loadDataFromImporter()
         Firewall *fw = imp->finalize();
         ProjectPanel *pp = mw->activeProject();
         QString filename = pp->getFileName();
-        pp->m_panel->om->reload();
-        pp->m_panel->om->autoRenameChildren(fw, "");
+        //pp->m_panel->om->reload();
+        //pp->m_panel->om->autoRenameChildren(fw, "");
+
         QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
         if (mw->isEditorVisible())
             QCoreApplication::postEvent(
                 mw, new openObjectInEditorEvent(filename, fw->getId()));
         QCoreApplication::postEvent(
             mw, new showObjectInTreeEvent(filename, fw->getId()));
+
         // Open first created Policy ruleset object
         FWObject *first_policy = fw->getFirstByType(Policy::TYPENAME);
         if (first_policy)
@@ -1443,8 +1446,7 @@ void DiscoveryDruid::loadDataFromCrawler()
     set<InetAddrMask*> discovered_networks = q->getNetworks();
 
     if (fwbdebug)
-        qDebug(QString("got %1 networks").arg(
-                   discovered_networks.size()).toAscii().constData());
+        qDebug() << QString("got %1 networks").arg(discovered_networks.size());
 
     for (m=discovered_networks.begin(); m!=discovered_networks.end(); ++m)
     {
@@ -1452,8 +1454,7 @@ void DiscoveryDruid::loadDataFromCrawler()
         InetAddrMask *net = *m;
 
         if (fwbdebug)
-            qDebug(QString("network %1").arg(
-                       net->toString().c_str()).toAscii().constData());
+            qDebug() << QString("network %1").arg(net->toString().c_str());
 
         // if address in *m is ipv6, recreate it as Inet6AddrMask and 
         // use type NetworkIPv6
@@ -1477,7 +1478,7 @@ void DiscoveryDruid::loadDataFromCrawler()
     map<InetAddr, CrawlerFind>  t = q->getAllIPs();
 
     if (fwbdebug)
-        qDebug(QString("got %1 addresses").arg(t.size()).toAscii().constData());
+        qDebug() << QString("got %1 addresses").arg(t.size());
 
     m_dialog->discoveryprogress->setMaximum( t.size() );
     m_dialog->discoveryprogress->setValue(0);
@@ -1524,11 +1525,6 @@ void DiscoveryDruid::loadDataFromCrawler()
         }
     }
 #endif
-/*
-    (arg==0) ? 
-    _("Network scan completed, click 'Next' to continue") : 
-    _("There has been an error running the network scan. You can continue but data gathered by the scanner may be incomplete") 
-*/
 }
 
 
@@ -2295,9 +2291,9 @@ void DiscoveryDruid::createRealObjects()
                         {
                             InterfaceData *intf = &(i->second);
                             QString str("Discovered interface %1: %2");
-                            qDebug(
-                                str.arg(intf->name.c_str()).arg(intf->mac_addr.c_str()).toAscii().constData()
-                            );
+                            qDebug() <<
+                                str.arg(intf->name.c_str()).arg(intf->mac_addr.c_str());
+
                         }
                     }
 
@@ -2392,6 +2388,12 @@ void DiscoveryDruid::createRealObjects()
         qApp->processEvents();
     }
     m_dialog->lastprogress->setValue(Objects.size());
+
+    ProjectPanel *pp = mw->activeProject();
+    QString filename = pp->getFileName();
+
+    QCoreApplication::postEvent(mw, new reloadObjectTreeEvent(filename));
+
 }
 
 void DiscoveryDruid::importPlatformChanged(int cp)

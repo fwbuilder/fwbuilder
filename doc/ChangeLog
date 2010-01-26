@@ -1,3 +1,9 @@
+2010-01-26  vadim  <vadim@vk.crocodile.org>
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::createRealObjects): fixes #1144
+	after snmp discovery object attributes are not shown properly
+	in the tree
+
 2010-01-25  vadim  <vadim@vk.crocodile.org>
 
 	* ProjectPanel_file_ops.cpp (ProjectPanel::chooseNewFileName):
