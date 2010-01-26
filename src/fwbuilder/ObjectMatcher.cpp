@@ -29,6 +29,7 @@
 #include "fwbuilder/ObjectMatcher.h"
 
 #include "fwbuilder/InetAddr.h"
+#include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Firewall.h"
@@ -79,6 +80,61 @@ bool ObjectMatcher::complexMatch(Address *obj1, Address *obj2)
     return obj1->dispatchComplexMatch(this, obj2);
 }
 
+/**
+ * Compare single InetAddr to an address defined by Address
+ * object. The right hand side Address object should be a "primary"
+ * address object (i.e. IPv4, IPv6, Network, NetworkIPv6, AddressRange
+ * but not Interface or Host). This method takes into account the
+ * hierarcy of which rhs_obj is part. That is, it treats IPv4 which is
+ * a child of interface differently from IPv4 which is a standalone
+ * object. This method uses flag match_subnets to decide whether it
+ * should consider only ip address of rhs_obj or a subnet defined by
+ * its address and netmask.
+ */
+bool ObjectMatcher::matchRHS(const InetAddr *inet_addr_obj, Address *rhs_obj)
+{
+    const InetAddr *addr = rhs_obj->getAddressPtr();
+    const InetAddr *netm = rhs_obj->getNetmaskPtr();
+
+    if (match_subnets)
+    {
+        return false;
+
+    } else
+    {
+        return matchInetAddrRHS(inet_addr_obj, addr, netm);
+    }
+}
+
+bool ObjectMatcher::matchInetAddrRHS(const InetAddr *inet_addr_obj,
+                                     const InetAddr *rhs_obj_addr,
+                                     const InetAddr *rhs_obj_netm)
+{
+    if ( (*rhs_obj_addr) == *(inet_addr_obj) ) return true;
+
+    InetAddrMask n(*rhs_obj_addr, *rhs_obj_netm);
+/*
+ * bug #1040773: need to match network address as well as
+ * broadcast. Packets sent to the network address (192.168.1.0 for net
+ * 192.168.1.0/24) go in the broadcast frame and behave just like IP
+ * broadcast packets (sent to 192.168.1.1255 for the same net)
+ *
+ */
+    if (recognize_broadcasts && (
+            *(n.getNetworkAddressPtr())==*(inet_addr_obj) ||
+            *(n.getBroadcastAddressPtr())==*(inet_addr_obj)
+        )) return true;
+
+    return false;
+}
+
+bool ObjectMatcher::matchSubnetRHS(const InetAddr *addr1,
+                                   const InetAddr *rhs_obj_addr,
+                                   const InetAddr *rhs_obj_netm)
+{
+    return false;
+}
+
 bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
                                                       FWObject *obj2)
 {
@@ -92,25 +148,7 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
     for (list<FWObject*>::iterator it = all_addresses.begin();
          it != all_addresses.end(); ++it)
     {
-        Address *addr_obj = Address::cast(*it);
-        if ( *(addr_obj->getAddressPtr())==*(obj1_addr) ) return true;
-        const InetAddr *addr = addr_obj->getAddressPtr();
-        const InetAddr *netm = addr_obj->getNetmaskPtr();
-        if (addr)
-        {
-            InetAddrMask n(*addr, *netm);
-/*
- * bug #1040773: need to match network address as well as
- * broadcast. Packets sent to the network address (192.168.1.0 for net
- * 192.168.1.0/24) go in the broadcast frame and behave just like IP
- * broadcast packets (sent to 192.168.1.1255 for the same net)
- *
- */
-            if (recognize_broadcasts && (
-                    *(n.getNetworkAddressPtr())==*(obj1_addr) ||
-                    *(n.getBroadcastAddressPtr())==*(obj1_addr)
-                )) return true;
-        }
+        if (matchRHS(obj1_addr, Address::cast(*it))) return true;
     }
     return false;
 }

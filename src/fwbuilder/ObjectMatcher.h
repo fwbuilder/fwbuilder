@@ -34,6 +34,7 @@
 
 namespace libfwbuilder {
     class InetAddr;
+    class InetAddrMask;
     class FWObject;
     class Address;
     class IPv4;
@@ -61,7 +62,15 @@ namespace libfwbuilder
         bool checkComplexMatchForSingleAddress(const InetAddr *addr1,
                                                FWObject *obj2);
         bool checkComplexMatchForSingleAddress(Address *obj1, FWObject *obj2);
-        
+
+        bool matchRHS(const InetAddr *addr1, Address *obj2);
+        bool matchInetAddrRHS(const InetAddr *addr1,
+                              const InetAddr *rhs_obj_addr,
+                              const InetAddr *rhs_obj_netm);
+        bool matchSubnetRHS(const InetAddr *addr1,
+                            const InetAddr *rhs_obj_addr,
+                            const InetAddr *rhs_obj_netm);
+
 public:
         ObjectMatcher()
         {
