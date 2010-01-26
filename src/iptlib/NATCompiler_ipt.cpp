@@ -50,6 +50,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/DNSName.h"
+#include "fwbuilder/ObjectMatcher.h"
 
 #include "config.h"
 
@@ -829,13 +830,16 @@ bool NATCompiler_ipt::addVirtualAddress::processNext()
         else
             a=compiler->getFirstODst(rule);
 
+        // TODO: should always issue the warning that adding virtual
+        // addresses for NAT is not supported with address ranges,
+        // regardless of the result of complexMatch()
+
         if ( ! a->isAny() && ! compiler->complexMatch(a,compiler->fw) && 
              options->getBool("manage_virtual_addr") )
         {
             if (AddressRange::cast(a)!=NULL)
             {
                 compiler->warning(
-                    
                         rule, 
                         string("Adding of virtual address for address range is not implemented (object ") +
                         a->getName() + ")" );
@@ -2177,10 +2181,11 @@ bool NATCompiler_ipt::AssignInterface::processNext()
 //    Address  *a=NULL;
 //    FWObject *ref;
 
+    list<FWObject*> all_interfaces = compiler->fw->getByTypeDeep(Interface::TYPENAME);
+
     if (regular_interfaces.size()==0)
     {
-        list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
-        for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
+        for (list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i) 
         {
             Interface *iface=Interface::cast(*i);
             assert(iface);
@@ -2227,12 +2232,12 @@ bool NATCompiler_ipt::AssignInterface::processNext()
     case NATRule::SNAT:
     case NATRule::Masq:
     {
-        Address* a = compiler->getFirstTSrc(rule);
-        Interface *iface = Interface::cast(a);
+        Address* tsrc = compiler->getFirstTSrc(rule);
+        Interface *iface = Interface::cast(tsrc);
 
-        if (IPv4::isA(a) || IPv6::isA(a))
+        if (IPv4::isA(tsrc) || IPv6::isA(tsrc))
         {
-            iface = Interface::cast(a->getParent());
+            iface = Interface::cast(tsrc->getParent());
         }
 
         if (iface)
@@ -2276,7 +2281,66 @@ bool NATCompiler_ipt::AssignInterface::processNext()
  * has no interfaces at all.  I wonder if I really have to do this,
  * but I do it anyway.
  */
-        int n=0;
+        ObjectMatcher om_exact;
+        om_exact.setRecognizeBroadcasts(true);
+        om_exact.setRecognizeMulticasts(true);
+        om_exact.setIPV6(ipt_comp->ipv6);
+        om_exact.setMatchSubnets(true);
+        om_exact.setAddressRangeMatchMode(ObjectMatcher::EXACT);
+
+        ObjectMatcher om_partial;
+        om_partial.setRecognizeBroadcasts(true);
+        om_partial.setRecognizeMulticasts(true);
+        om_partial.setIPV6(ipt_comp->ipv6);
+        om_partial.setMatchSubnets(true);
+        om_partial.setAddressRangeMatchMode(ObjectMatcher::PARTIAL);
+
+        bool found_interface = false;
+        foreach(FWObject* i, all_interfaces)
+        {
+            Interface *iface = Interface::cast(i);
+            assert(iface);
+
+            if (iface->isLoopback() ||
+                iface->isUnnumbered() ||
+                iface->isBridgePort()
+            ) continue;
+
+            if (om_partial.complexMatch(tsrc, iface))
+            {
+                found_interface = true;
+                NATRule *r = compiler->dbcopy->createNATRule();
+                r->duplicate(rule);
+                compiler->temp_ruleset->add(r);
+                r->setInterfaceId(iface->getId());
+                tmp_queue.push_back(r);
+
+                if (AddressRange::isA(tsrc) && !om_exact.complexMatch(tsrc, iface))
+                {
+                    // We have only partial match of this address range and subnet
+                    // defined by the interface
+                    QString err(
+                        "Object '%1' used in TSrc of the NAT rule defines "
+                        "address range that only partially matches subnet "
+                        "defined by the configuration of interface '%2'");
+                    compiler->warning(
+                        r,
+                        err
+                        .arg(tsrc->getName().c_str())
+                        .arg(iface->getName().c_str()).toStdString());
+                }
+            }
+
+    // TODO: add check for non-aligned boundaries of the range
+    // defined by TSrc. Example: interface is configured as
+    // 33.33.33.33//255.255.255.248 (subnet 33.33.33.32 .. 47)
+    // but address range used in TSrc is 33.33.33.20 .. 35.
+    // Both define 15 addresses but boundaries are different.
+
+        }
+        if (found_interface) return true;
+
+        int n = 0;
         foreach(QString intf_name, regular_interfaces)
         {
             NATRule *r = compiler->dbcopy->createNATRule();

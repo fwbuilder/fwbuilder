@@ -720,6 +720,23 @@ rule sets of this object rather than in the actual firewalls.
   connlimit --connlimit-above" clauses for iptables.
 </p>
 
+<p>
+  Compiler for iptables finds interface that matches AddressRange
+  object used in Translated Source of a NAT rule and uses it for the
+  "-o intf" clause. Addresses of interface can match the range
+  excactly or partially. Exact match is when range boundaries match
+  the beginning and the end of the subnet defined by the interface
+  address and netmask. Partial match is when one of the range
+  boundaries belongs to the subnet but another one does not. In this
+  case compiler uses interface but issues a warning. If interface has
+  multiple ip addresses, all of them are taken into consideration and
+  interface is used if at least one matches. If address range in TSrc
+  is wide and matches subnets of several interfaces, compiler splits
+  the rule and uses all of them but does not replace the range with
+  narrower one and still issues a warning.
+</p>
+
+
 <a name="ipcop"></a>
 <h2>Support for IPCOP</h2>
 
