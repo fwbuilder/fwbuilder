@@ -459,15 +459,29 @@ then
         ccache -s
 fi
 
-AC_PATH_PROG(HAVE_DISTCC, distcc, , )
-if test -n "$HAVE_DISTCC"; then
-   M_J=$(distcc -j 2>/dev/null)
-   if test -n "$M_J"; then
-      DISTCC=$HAVE_DISTCC
-      AC_SUBST(DISTCC)
-      PARALLEL_MAKE_COUNT=$M_J
-      AC_SUBST(PARALLEL_MAKE_COUNT)
-   fi
+AC_ARG_WITH(distcc,[  --with-distcc=N        Use distcc with N parallel make count])
+
+if test -n "$with_distcc"; then
+  AC_PATH_PROG(HAVE_DISTCC, distcc, , )
+  if test -n "$HAVE_DISTCC"; then
+    DISTCC=$HAVE_DISTCC
+    AC_SUBST(DISTCC)
+    PARALLEL_MAKE_COUNT=$with_distcc
+    AC_SUBST(PARALLEL_MAKE_COUNT)
+  fi
+
+else
+
+  AC_PATH_PROG(HAVE_DISTCC, distcc, , )
+  if test -n "$HAVE_DISTCC"; then
+     M_J=$(distcc -j 2>/dev/null)
+     if test -n "$M_J"; then
+        DISTCC=$HAVE_DISTCC
+        AC_SUBST(DISTCC)
+        PARALLEL_MAKE_COUNT=$M_J
+        AC_SUBST(PARALLEL_MAKE_COUNT)
+     fi
+  fi
 fi
 
 dnl AC_CONFIG_FILES([ Main.make ])
