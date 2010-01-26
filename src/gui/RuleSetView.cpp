@@ -921,11 +921,10 @@ void RuleSetView::setSelectedRows(const QModelIndex firstIndex, const QModelInde
     RuleSetModel* md = ((RuleSetModel*)model());
     fwosm->reset();
     selectionModel()->clear();
+    setCurrentIndex(firstIndex);
     selectionModel()->select(QItemSelection(firstIndex, lastIndex), QItemSelectionModel::Rows | QItemSelectionModel::Select);
-//    selectionModel()->selection().select(firstIndex, lastIndex);
 
-//    selectionModel()->select(newIndex, QItemSelectionModel::Rows | QItemSelectionModel::Select);
-
+    fwosm->setSelected(0, firstIndex);
 }
 
 void RuleSetView::removeRule()
