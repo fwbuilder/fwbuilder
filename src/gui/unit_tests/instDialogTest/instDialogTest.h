@@ -26,6 +26,8 @@ private slots:
     void page1_3();
     void page1_4();
     void page1_5();
+    void page1_6();
+    void page1_7();
     void page1_8();
 
 };

@@ -6,6 +6,8 @@
 #include <QApplication>
 #include <QCoreApplication>
 
+#include "FWObjectClipboard.h"
+
 using namespace std;
 using namespace QTest;
 using namespace libfwbuilder;
@@ -15,6 +17,7 @@ void instDialogTest::initTestCase()
     mw = new FWWindow();
     mw->show();
     mw->loadFile("test.fwb", false);
+    FWObjectClipboard *clip = new FWObjectClipboard();
 }
 
 void instDialogTest::openPolicy(QString fwname)
@@ -126,10 +129,10 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 {
     for (int h=10; h<tree->height(); h+=1)
     {
-        for (int w=50; w<tree->width(); w+=1)
+        for (int w=75; w<tree->width(); w+=1)
         {
             if(tree->itemAt(w,h) == item)
-                return QPoint(w, h+tree->header()->height()+10);
+                return QPoint(w, h);
         }
     }
     return QPoint(-1,-1);
@@ -141,46 +144,59 @@ void instDialogTest::page1_5()
     tree->expandAll();
     ObjectTreeViewItem *test1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
     ObjectTreeViewItem *test2 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
-    tree->clearSelection();
-    test1->setSelected(true);
-    test2->setSelected(true);
-    QTest::qWait(1000);
+    tree->scrollToItem(test1);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
-    QTest::mouseMove(tree, findItemPos(test1, tree));
-    QTest::qWait(1000);
-    om->contextMenuRequested(QPoint(findItemPos(test1, tree)));
-    /*QTest::qWait(1000);
-    QTest::mouseMove(tree, findItemPos(test2, tree));
-    QTest::qWait(100);
-    QTest::mouseClick(tree, Qt::LeftButton, Qt::ControlModifier, findItemPos(test2, tree)); // does not work*/
-    QTest::qWait(5000);
-/*
-    QTest::mouseClick(tree, Qt::RightButton);//, Qt::NoModifier, findItemPos(test1, tree));
-
-
-    QTest::qWait(100);
-
-    QMenu *ctx = NULL;
+    om->compile();
+    instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<QMenu*>(w) != NULL)
-        {
-            if (w->objectName() == "objTreeContextMenu")
-            {
-                ctx = dynamic_cast<QMenu*>(w);
-            }
-        }
-    QVERIFY(ctx != NULL);
-    foreach (QAction *act, ctx->findChildren<QAction*>(".*"))
-    {
-        //QAction *act = dynamic_cast<QAction*>(itm);
-        qDebug() << act->objectName();
-        act->dumpObjectInfo();
-        if (act->text() == "Compile")
-        {
-            act->activate(QAction::Trigger);
-        }
-    }
-*/
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+    verifyDialog(dlg, 1);
+    QTest::qWait(1000);
+    dlg->findChild<QPushButton*>("cancelButton")->click();
+    QTest::qWait(1000);
+}
+
+void instDialogTest::page1_6()
+{
+    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    tree->expandAll();
+    ObjectTreeViewItem *test1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    ObjectTreeViewItem *test2 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    tree->scrollToItem(test1);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    om->compile();
+    instDialog *dlg = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+    verifyDialog(dlg, 1);
+    QTest::qWait(1000);
+    dlg->findChild<QPushButton*>("cancelButton")->click();
+    QTest::qWait(1000);
+}
+
+void instDialogTest::page1_7()
+{
+    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    tree->expandAll();
+    ObjectTreeViewItem *test1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    ObjectTreeViewItem *test2 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    tree->scrollToItem(test1);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Select);
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    om->compile();
+    instDialog *dlg = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+    verifyDialog(dlg, 2);
+    QTest::qWait(1000);
+    dlg->findChild<QPushButton*>("cancelButton")->click();
+    QTest::qWait(1000);
 }
 
 void instDialogTest::page1_8()
