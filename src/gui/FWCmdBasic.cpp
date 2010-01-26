@@ -30,7 +30,6 @@ using namespace libfwbuilder;
 
 FWCmdBasic::FWCmdBasic(ProjectPanel *project, QUndoCommand* macro):QUndoCommand(macro)
 {
-
     this->project = project;
 }
 
@@ -46,21 +45,19 @@ FWObject* FWCmdBasic::getObject(int id)
 
 bool FWCmdBasic::mergeWith(const QUndoCommand *other)
 {
-    qDebug() << "FWCmdBasic::mergeWith(const QUndoCommand *other)";
+    qDebug() << "FWCmdBasic::mergeWith(const QUndoCommand *other) other=" << other;
     qDebug() << "cmd:" << other->text();
 
-    const FWCmdTerm* term = dynamic_cast<const FWCmdTerm*> (other);
-
+    const FWCmdTerm* term = dynamic_cast<const FWCmdTerm*>(other);
     return term != 0;
 }
 
 bool FWCmdMacro::mergeWith(const QUndoCommand *other)
 {
-    qDebug() << "FWCmdMacro::mergeWith(const QUndoCommand *other)";
+    qDebug() << "FWCmdMacro::mergeWith(const QUndoCommand *other) other=" << other;
     qDebug() << "cmd:" << other->text();
 
     const FWCmdTerm* term = dynamic_cast<const FWCmdTerm*> (other);
-
     return term != 0;
 }
 

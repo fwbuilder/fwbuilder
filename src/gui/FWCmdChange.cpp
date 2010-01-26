@@ -110,7 +110,15 @@ void FWCmdChange::notify()
         // automatic renaming of child objects. This should only be
         // done once, even if we have the same data file opened in
         // several project panels.
-        QCoreApplication::postEvent(
+        //
+        // Use sendEvent to make sure event is processed right now and
+        // is not postponed. This is important when this command is
+        // executed as part of a group undo/redo (when user clicks in
+        // the undo panel).  If this command is posted to event queue,
+        // it is executed after bunch of objects are deleted and may
+        // need to operate on one of them.
+        //
+        QCoreApplication::sendEvent(
             mw->activeProject(), new objectNameChangedEvent(
                 filename, obj->getId(),
                 QString::fromUtf8(oldState->getName().c_str()),

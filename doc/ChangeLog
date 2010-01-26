@@ -1,5 +1,11 @@
 2010-01-26  vadim  <vadim@vk.crocodile.org>
 
+	* FWCmdChange.cpp (FWCmdChange::notify): fixes #1139
+	GUI crash on click in undo panel view. Sequence that caused crash:
+	1) new firewall next next finish
+	2) rename firewall couple of times
+	3) click to top of undo stack and it crashes
+
 	* DiscoveryDruid.cpp (DiscoveryDruid::createRealObjects): fixes #1144
 	after snmp discovery object attributes are not shown properly
 	in the tree
