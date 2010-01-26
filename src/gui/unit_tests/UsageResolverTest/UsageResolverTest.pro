@@ -17,9 +17,23 @@ TEMPLATE = app
 SOURCES += main.cpp \
     UsageResolverTest.cpp \
     ../../UsageResolver.cpp \
-    ../../FWBTree.cpp
+    ../../FWBTree.cpp \
+    ../../../compiler_lib/interfaceProperties.cpp \
+    ../../../compiler_lib/interfacePropertiesObjectFactory.cpp \
+    ../../../compiler_lib/Configlet.cpp \
+    ../../../compiler_lib/linux24Interfaces.cpp \
+    ../../../compiler_lib/bsdInterfaces.cpp \
+    ../../../compiler_lib/iosInterfaces.cpp \
+    ../../../compiler_lib/pixInterfaces.cpp
 
-HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../FWBTree.h
+HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../FWBTree.h \
+   ../../../compiler_lib/interfaceProperties.h \
+   ../../../compiler_lib/interfacePropertiesObjectFactory.h \
+   ../../../compiler_lib/Configlet.h \
+   ../../../compiler_lib/linux24Interfaces.h \
+   ../../../compiler_lib/bsdInterfaces.h \
+   ../../../compiler_lib/iosInterfaces.h \
+   ../../../compiler_lib/pixInterfaces.h
 
 CONFIG -= release
 CONFIG += debug
@@ -28,7 +42,7 @@ QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
 QMAKE_CLEAN = *.gc??
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov # -lcppunit
+LIBS += -lgcov -lcppunit
 
 run.commands = ./${TARGET} && gcov -o . ../../UsageResolver.cpp >/dev/null 2>/dev/null
 run.depends = all

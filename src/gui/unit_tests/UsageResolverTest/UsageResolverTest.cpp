@@ -184,7 +184,17 @@ void UsageResolverTest::humanizeSearchResults()
     set<FWObject*>::iterator iter = res.begin();
     while (iter!=res.end())
     {
-        string name = (*iter++)->getName();
-        CPPUNIT_ASSERT ( name == "Group 1" || name == "Addresses" || (*iter)->getTypeName() == "ObjectGroup" );
+        string name = (*iter)->getName();
+        string type = (*iter)->getTypeName();
+        if (type == "ObjectRef")
+        {
+            FWObjectReference *o = FWObjectReference::cast(*iter);
+            CPPUNIT_ASSERT(o->getPointer()->getName() == "Address 1");
+        }
+        else
+        {
+           CPPUNIT_ASSERT ( name == "Group 1" || name == "Addresses");
+        }
+        iter++;
     }
 }
