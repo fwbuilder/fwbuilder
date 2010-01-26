@@ -344,8 +344,6 @@ HEADERS += instDialogTest.h \
 
 CONFIG -= release
 CONFIG += debug
-OBJECTS_DIR = ../../.obj
-MOC_DIR = ../../.moc
 QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 LIBS += -lgcov

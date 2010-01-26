@@ -50,9 +50,9 @@ public:
     static CppUnit::Test *suite()
     {
       CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "ImporterTest" );
-      suiteOfTests->addTest( new CppUnit::TestCaller<ImporterTest>(
+/*      suiteOfTests->addTest( new CppUnit::TestCaller<ImporterTest>(
                                    "IOSImporterTest",
-                                   &ImporterTest::IOSImporterTest ) );
+                                   &ImporterTest::IOSImporterTest ) );*/
       suiteOfTests->addTest( new CppUnit::TestCaller<ImporterTest>(
                                    "IPTImporterTest",
                                    &ImporterTest::IPTImporterTest ) );

@@ -1,15 +1,15 @@
 include(../../../../qmake.inc)
-QT += gui \
-    network
+QT += gui network
 TEMPLATE = app
 LANGUAGE = C++
 QMAKE_CXX = g++
-HEADERS += ImporterTest.h \
-    ../../IPTImporter.h
-SOURCES += main.cpp \
-    ImporterTest.cpp
+CONFIG += console
 
-HEADERS +=  ../../config.h \
+INCLUDEPATH += ../../.. ../.. ../../.ui ../../../compiler_lib/
+
+HEADERS += ImporterTest.h \
+    	../../IPTImporter.h \
+        ../../config.h \
         ../../utils_no_qt.h \
         ../../FWBTree.h \
         ../../Importer.h \
@@ -18,10 +18,18 @@ HEADERS +=  ../../config.h \
         ../../../parsers/IPTCfgLexer.hpp \
         ../../../parsers/IPTCfgParser.hpp \
         ../../../parsers/IOSCfgLexer.hpp \
-        ../../../parsers/IOSCfgParser.hpp
+        ../../../parsers/IOSCfgParser.hpp \
+        ../../../compiler_lib/interfaceProperties.h \
+        ../../../compiler_lib/interfacePropertiesObjectFactory.h \
+        ../../../compiler_lib/linux24Interfaces.h \
+        ../../../compiler_lib/bsdInterfaces.h \
+        ../../../compiler_lib/iosInterfaces.h \
+        ../../../compiler_lib/pixInterfaces.h
 
-SOURCES += ../../utils_no_qt.cpp \
-        ../../FWBTree.cpp \
+SOURCES += main.cpp \
+        ImporterTest.cpp \
+    	../../utils_no_qt.cpp \
+    	../../FWBTree.cpp \
         ../../Importer.cpp \
         ../../IOSImporter.cpp \
         ../../IOSImporterRun.cpp \
@@ -30,9 +38,14 @@ SOURCES += ../../utils_no_qt.cpp \
         ../../../parsers/IPTCfgLexer.cpp \
         ../../../parsers/IPTCfgParser.cpp \
         ../../../parsers/IOSCfgLexer.cpp \
-        ../../../parsers/IOSCfgParser.cpp
+        ../../../parsers/IOSCfgParser.cpp \
+        ../../../compiler_lib/interfaceProperties.cpp \
+        ../../../compiler_lib/interfacePropertiesObjectFactory.cpp \
+        ../../../compiler_lib/linux24Interfaces.cpp \
+        ../../../compiler_lib/bsdInterfaces.cpp \
+        ../../../compiler_lib/iosInterfaces.cpp \
+        ../../../compiler_lib/pixInterfaces.cpp
 
-INCLUDEPATH += ../../.. ../.. ../../.ui
 
 TARGET = ImporterTest
 CONFIG -= release
@@ -41,8 +54,7 @@ OBJECTS_DIR = .
 QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
 QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov# -l antlr
-#LIBS += -L../../../antlr
+LIBS += -lgcov -lcppunit
 DEPENDPATH = ../../../common
 
 !win32:LIBS += ../../../common/libcommon.a
@@ -61,7 +73,7 @@ DEFINES		 += $$ANTLR_DEFINES
 run.commands = echo "Running tests..." && \
     ./${TARGET} && echo "Running gcov..." && \
     gcov ${SOURCES} >/dev/null 2>/dev/null && \
-    echo "OK" || { echo "FAILED"; exit 1 }
+    echo "OK" || { echo "FAILED"; exit 1; }
 
 run.depends = all
 QMAKE_EXTRA_TARGETS += run

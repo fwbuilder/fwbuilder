@@ -74,7 +74,6 @@ void ImporterTest::setUp()
     path << ".." << ".." << ".." << "res" << "resources.xml";
     new Resources(path.join(FS_SEPARATOR).toStdString());
     new FWBTree();
-
     /* create database */
     db = new FWObjectDatabase();
 
@@ -85,8 +84,11 @@ void ImporterTest::setUp()
     path.pop_back();
     path << "objects_init.xml";
     sysfname = path.join(FS_SEPARATOR).toStdString();
-    librespath = string(PREFIX) + "/share/libfwbuilder";
+    librespath = string(PREFIX) + "/share/libfwbuilder-" + VERSION;
+
+    qDebug() << librespath.c_str();
     db->load( sysfname, &upgrade_predicate, librespath);
+    qDebug() << "st";
     db->setFileName("");
     lib = Library::cast(db->create(Library::TYPENAME));
     lib->setName("User");

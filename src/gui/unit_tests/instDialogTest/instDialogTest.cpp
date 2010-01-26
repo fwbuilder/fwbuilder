@@ -126,10 +126,10 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 {
     for (int h=10; h<tree->height(); h+=1)
     {
-        for (int w=10; w<tree->width(); w+=1)
+        for (int w=50; w<tree->width(); w+=1)
         {
             if(tree->itemAt(w,h) == item)
-                return QPoint(w, h+tree->header()->height()+5);
+                return QPoint(w, h+tree->header()->height()+10);
         }
     }
     return QPoint(-1,-1);
@@ -141,11 +141,19 @@ void instDialogTest::page1_5()
     tree->expandAll();
     ObjectTreeViewItem *test1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
     ObjectTreeViewItem *test2 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    tree->clearSelection();
+    test1->setSelected(true);
+    test2->setSelected(true);
+    QTest::qWait(1000);
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
     QTest::mouseMove(tree, findItemPos(test1, tree));
-    QTest::mouseClick(tree, Qt::LeftButton, Qt::NoModifier, findItemPos(test1, tree)); // does not work
+    QTest::qWait(1000);
+    om->contextMenuRequested(QPoint(findItemPos(test1, tree)));
+    /*QTest::qWait(1000);
     QTest::mouseMove(tree, findItemPos(test2, tree));
-    QTest::mouseClick(tree, Qt::LeftButton, Qt::ControlModifier, findItemPos(test2, tree)); // does not work
-
+    QTest::qWait(100);
+    QTest::mouseClick(tree, Qt::LeftButton, Qt::ControlModifier, findItemPos(test2, tree)); // does not work*/
+    QTest::qWait(5000);
 /*
     QTest::mouseClick(tree, Qt::RightButton);//, Qt::NoModifier, findItemPos(test1, tree));
 

@@ -12,12 +12,15 @@ class FWBTreeTest : public CppUnit::TestCase
 {
 public:
     void isSystem();
+    void validateForInsertion();
 
     static CppUnit::Test *suite()
     {
       CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "FWBTree" );
       suiteOfTests->addTest( new CppUnit::TestCaller<FWBTreeTest>( "isSystem",
                                    &FWBTreeTest::isSystem ) );
+      suiteOfTests->addTest( new CppUnit::TestCaller<FWBTreeTest>( "validateForInsertion",
+                                   &FWBTreeTest::validateForInsertion ) );
       return suiteOfTests;
     }
 };
