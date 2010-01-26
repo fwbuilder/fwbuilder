@@ -11,7 +11,9 @@ LANGUAGE = C++
 
 unix {
     prefix = @prefix@
-    QMAKE_CXX = @CCACHE@ @DISTCC@ g++
+
+    QMAKE_CXX = @CCACHE@ @DISTCC@ $$QMAKE_CXX
+
     INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@ @PTHREAD_CFLAGS_Q@
     LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ \
         @LIB_RESOLV@ @LIBS@
