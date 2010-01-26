@@ -686,6 +686,11 @@ bool NATCompiler_ipt::PrintRule::processNext()
 
     switch (rule->getRuleType())
     {
+    case NATRule::Masq:  
+        if (ropt->getBool("ipt_snat_random"))
+            cmdout << " --random";
+        break;
+
     case NATRule::SNAT:  
 	if (rule->getStr("ipt_target")=="SNAT")
         {
