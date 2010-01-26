@@ -1,5 +1,15 @@
 2010-01-25  vadim  <vadim@vk.crocodile.org>
 
+	* ProjectPanel_file_ops.cpp (ProjectPanel::chooseNewFileName):
+	fixes #1157 Qt dialog does not detect conflict of filenames
+	properly for linux. When user tried to create new file using
+	File/New or save existing one using using File/SaveAs and entered
+	a name without extension when prompted to enter the file name, the
+	program would overwrite existing file with the same name and
+	suffix ".fwb" without warning. This happened on Linux but did not
+	happen on Mac OS X where dialog automatically added the suffix to
+	the file name.
+
 	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::insertCarpRule):
 	fixes #1152 CARP and pfsync rules should match "in" and "out".
 	Automatically added rules for CARP and pfsync for the PF firewall

@@ -113,13 +113,10 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
                                         const QString &title)
 {
     QString destdir = getDestDir(fname);
-    
-    // Note that QFileDialog::getSaveFileName asks for confirmation
-    // if the file already exists.
-    //QString fn = QFileDialog::getSaveFileName( this, title, destdir,
-    //   tr( "FWB Files (*.fwb);;All Files (*)" ) );
 
-    //if (fn.isEmpty()) return fn; // user pressed Cancel
+    // when file open dialog is created using static function
+    // QFileDialog::getSaveFileName, its behavior is different on
+    // Linux and Mac (did not check on windows)
 
     // Native dialog usd by Qt on Mac automatically adds .fwb suffix
     // to the file name user enters if it does not have any suffix. It
