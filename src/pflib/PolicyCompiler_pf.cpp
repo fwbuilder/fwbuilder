@@ -1185,7 +1185,7 @@ void PolicyCompiler_pf::insertCarpRule()
                 {
                     PolicyRule *rule = 
                         addMgmtRule(NULL, NULL, carp_service, phys_iface,
-                                    PolicyRule::Outbound, PolicyRule::Accept, "CARP");
+                                    PolicyRule::Both, PolicyRule::Accept, "CARP");
                     FWOptions *ruleopt = rule->getOptionsObject();
                     assert(ruleopt!=NULL);
                     ruleopt->setBool("firewall_is_part_of_any_and_networks", false);
@@ -1222,7 +1222,7 @@ void PolicyCompiler_pf::insertPfsyncRule()
             if (state_sync_group && state_sync_group->getStr("type") == "pfsync")
             {
                 PolicyRule *rule = addMgmtRule(NULL, NULL, pfsync_service, iface,
-                                               PolicyRule::Outbound,
+                                               PolicyRule::Both,
                                                PolicyRule::Accept, "pfsync");
                 FWOptions *ruleopt = rule->getOptionsObject();
                 assert(ruleopt!=NULL);

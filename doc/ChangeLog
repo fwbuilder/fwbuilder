@@ -1,5 +1,10 @@
 2010-01-25  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::insertCarpRule):
+	fixes #1152 CARP and pfsync rules should match "in" and "out".
+	Automatically added rules for CARP and pfsync for the PF firewall
+	should match in both directions, rather than just "out".
+
 	* NATCompiler_ipt.cpp (AssignInterface::processNext): fixes #1150
 	"fwb_ipt should check AddressRange in TSrc against addresses of
 	interfaces". Compiler for iptables finds interface that matches
