@@ -1,3 +1,7 @@
+2010-01-26  yalovoy <yalovoy@gmail.com>
+	* RuleSetView.cpp: fixes #1145 
+	show keyboard shortcuts for "move rule up/down" in the rule context menu
+
 2010-01-26  vadim  <vadim@vk.crocodile.org>
 
 	* FWCmdChange.cpp (FWCmdChange::notify): fixes #1139
