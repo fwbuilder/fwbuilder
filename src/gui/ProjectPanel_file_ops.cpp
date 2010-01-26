@@ -113,13 +113,40 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
                                         const QString &title)
 {
     QString destdir = getDestDir(fname);
-
+    
     // Note that QFileDialog::getSaveFileName asks for confirmation
     // if the file already exists.
-    QString fn = QFileDialog::getSaveFileName( this, title, destdir,
-       tr( "FWB Files (*.fwb);;All Files (*)" ) );
+    //QString fn = QFileDialog::getSaveFileName( this, title, destdir,
+    //   tr( "FWB Files (*.fwb);;All Files (*)" ) );
 
-    if (fn.isEmpty()) return fn; // user pressed Cancel
+    //if (fn.isEmpty()) return fn; // user pressed Cancel
+
+    // Native dialog usd by Qt on Mac automatically adds .fwb suffix
+    // to the file name user enters if it does not have any suffix. It
+    // checks for the conflicts with exitsing files _after_ the suffix
+    // has been added. On Linux dialog created by the static function
+    // QFileDialog::getSaveFileName does not add suffix and checks for
+    // conflicts using the name without one. Since I used to add
+    // suffix here but did not check for the conflict again after
+    // that, it was possible for the user to enter name with no suffix
+    // and that way overwrite old file without warning. Will avoid
+    // static fucntion and instead build dialog manually and use
+    // setDefaultSuffix() to enforce suffix.
+
+    QFileDialog fd(this);
+    fd.setFileMode(QFileDialog::AnyFile);
+    fd.setDefaultSuffix("fwb");
+    fd.setFilter(tr( "FWB Files (*.fwb);;All Files (*)" ) );
+    fd.setWindowTitle(title);
+    fd.setDirectory(destdir);
+    fd.setAcceptMode(QFileDialog::AcceptSave);
+
+    QString fn;
+    if (fd.exec())
+    {
+        QStringList fileNames = fd.selectedFiles();
+        fn = fileNames.front();
+    }
 
     QFileInfo finfo(fn);
     if (finfo.suffix().isEmpty()) fn += ".fwb";
