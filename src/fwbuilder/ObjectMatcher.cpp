@@ -185,7 +185,17 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
     for (list<FWObject*>::iterator it = all_addresses.begin();
          it != all_addresses.end(); ++it)
     {
-        if (matchRHS(obj1_addr, Address::cast(*it)) == 0) return true;
+        Address *rhs_addr = Address::cast(*it);
+        const InetAddr *addr = rhs_addr->getAddressPtr();
+
+        if (match_subnets)
+        {
+            const InetAddr *netm = rhs_addr->getNetmaskPtr();
+            if (matchSubnetRHS(obj1_addr, addr, netm) == 0) return true;
+        } else
+        {
+            if (matchRHS(obj1_addr, rhs_addr) == 0) return true;
+    }
     }
     return false;
 }

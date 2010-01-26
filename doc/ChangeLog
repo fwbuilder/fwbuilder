@@ -1,5 +1,9 @@
 2010-01-25  vadim  <vadim@vk.crocodile.org>
 
+	* ObjectMatcher.cpp (ObjectMatcher::checkComplexMatchForSingleAddress):
+	if flag match_subnets is true, check if given address is inside
+	the subnect defined by the address/netmask of obj2.
+
 	* ObjectMatcher.cpp (ObjectMatcher::checkComplexMatch): if flag
 	match_subnets is true, treat AddressRange objects in a special
 	way: check range boundaries against subnet defined by the
