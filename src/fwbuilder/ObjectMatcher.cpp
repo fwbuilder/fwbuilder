@@ -21,6 +21,22 @@
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
+  ====================================================================
+
+  Algorithms implemented in this module are used to decide if an
+  object <obj> that defines one or several addresses matches firewall,
+  its interface or any of its addresses in the sense that packets with
+  address equal to that of <obj> would be accepted by the firewall
+  machine. Two match modes are defined: EXACT and PARTIAL. The
+  difference makes sense when object <obj> is an AddressRange because
+  the range may match subnet of an interface exactly or overlap with
+  it only partially.
+
+  This class is used in policy compilers to determine chain (for
+  iptables) or find interface that matches addresses used in policy or
+  nat rules.
+
 */
 
 #include <assert.h>
@@ -91,28 +107,20 @@ bool ObjectMatcher::complexMatch(Address *obj1, Address *obj2)
  * should consider only ip address of rhs_obj or a subnet defined by
  * its address and netmask.
  */
-bool ObjectMatcher::matchRHS(const InetAddr *inet_addr_obj, Address *rhs_obj)
+int ObjectMatcher::matchRHS(const InetAddr *inet_addr_obj, Address *rhs_obj)
 {
     const InetAddr *addr = rhs_obj->getAddressPtr();
     const InetAddr *netm = rhs_obj->getNetmaskPtr();
 
     if (match_subnets)
     {
-        return false;
-
+        return matchSubnetRHS(inet_addr_obj, addr, netm);
     } else
     {
-        return matchInetAddrRHS(inet_addr_obj, addr, netm);
-    }
-}
+        if (matchInetAddrRHS(inet_addr_obj, addr) == 0) return 0;
 
-bool ObjectMatcher::matchInetAddrRHS(const InetAddr *inet_addr_obj,
-                                     const InetAddr *rhs_obj_addr,
-                                     const InetAddr *rhs_obj_netm)
-{
-    if ( (*rhs_obj_addr) == *(inet_addr_obj) ) return true;
-
-    InetAddrMask n(*rhs_obj_addr, *rhs_obj_netm);
+        if (recognize_broadcasts)
+        {
 /*
  * bug #1040773: need to match network address as well as
  * broadcast. Packets sent to the network address (192.168.1.0 for net
@@ -120,19 +128,48 @@ bool ObjectMatcher::matchInetAddrRHS(const InetAddr *inet_addr_obj,
  * broadcast packets (sent to 192.168.1.1255 for the same net)
  *
  */
-    if (recognize_broadcasts && (
-            *(n.getNetworkAddressPtr())==*(inet_addr_obj) ||
-            *(n.getBroadcastAddressPtr())==*(inet_addr_obj)
-        )) return true;
-
-    return false;
+            InetAddrMask n(*addr, *netm);
+            int f1 = matchInetAddrRHS(inet_addr_obj, n.getNetworkAddressPtr());
+            int f2 = matchInetAddrRHS(inet_addr_obj, n.getBroadcastAddressPtr());
+            if (f1 == 0 || f2 == 0) return 0;
+            if (f2 > 0) return 1;
+        }
+        return -1;
+    }
 }
 
-bool ObjectMatcher::matchSubnetRHS(const InetAddr *addr1,
-                                   const InetAddr *rhs_obj_addr,
-                                   const InetAddr *rhs_obj_netm)
+/**
+ * Match inet one address against another
+ * Returns:
+ *  0 if first address is equal to the secnd
+ * -1 if first address is less than the secnd
+ *  1 if first address is greater than the secnd
+ */
+int ObjectMatcher::matchInetAddrRHS(const InetAddr *inet_addr_obj,
+                                    const InetAddr *rhs_obj_addr)
 {
-    return false;
+    if ((*inet_addr_obj) == (*rhs_obj_addr)) return 0;
+    if ((*inet_addr_obj) < (*rhs_obj_addr)) return -1;
+    return 1;
+}
+
+/**
+ * Match inet address against subnet defined by addr/mask pair.
+ * Returns:
+ *  0 if inet address belongs to the subnet,
+ * -1 if inet address is less than the beginning of the subnet
+ *  1 if inet address is greater than the end of the subnet
+ */
+int ObjectMatcher::matchSubnetRHS(const InetAddr *inet_addr_obj,
+                                  const InetAddr *rhs_obj_addr,
+                                  const InetAddr *rhs_obj_netm)
+{
+    InetAddrMask n(*rhs_obj_addr, *rhs_obj_netm);
+    int f1 = matchInetAddrRHS(inet_addr_obj, n.getNetworkAddressPtr());
+    int f2 = matchInetAddrRHS(inet_addr_obj, n.getBroadcastAddressPtr());
+    if (f1 >= 0 && f2 <= 0) return 0;
+    if (f1 < 0) return -1;
+    if (f2 > 0) return 1;
 }
 
 bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
@@ -148,7 +185,7 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
     for (list<FWObject*>::iterator it = all_addresses.begin();
          it != all_addresses.end(); ++it)
     {
-        if (matchRHS(obj1_addr, Address::cast(*it))) return true;
+        if (matchRHS(obj1_addr, Address::cast(*it)) == 0) return true;
     }
     return false;
 }
@@ -274,13 +311,49 @@ bool ObjectMatcher::checkComplexMatch(AddressRange *obj1, FWObject *obj2)
     for (list<FWObject*>::iterator it = all_addresses.begin();
          it != all_addresses.end(); ++it)
     {
-        const InetAddr *addr = Address::cast(*it)->getAddressPtr();
-        if (addr)
+        Address *rhs_addr = Address::cast(*it);
+        const InetAddr *addr = rhs_addr->getAddressPtr();
+
+        if (match_subnets)
         {
-            if (range_start == *addr || *addr == range_end) return true;
-            if (range_start < *addr && *addr < range_end) return true;
+            const InetAddr *netm = rhs_addr->getNetmaskPtr();
+            int f_b = matchSubnetRHS(&range_start, addr, netm);
+            int f_e = matchSubnetRHS(&range_end, addr, netm);
+#if 0
+            cerr << "Address Range " << range_start.toString() 
+                 << ":" << range_end.toString()
+                 << " rhs_addr " << rhs_addr->getName()
+                 << " f_b=" << f_b
+                 << " f_e=" << f_e
+                 << " match_mode=" << address_range_match_mode
+                 << endl;
+#endif
+            if (address_range_match_mode == EXACT)
+            {
+                if (f_b == 0  && f_e == 0) return true;
+            }
+            // PARTIAL match only makes sense when match_subnets is true
+            if (address_range_match_mode == PARTIAL)
+            {
+                if (f_b == 0 || f_e == 0) return true; // one end of the range is inside subnet
+                if (f_b == -1 && f_e == 1) return true; // range is wider than subnet, subnet fits inside the range completely
+            }
+        } else
+        {
+            // If we do not need to match subnets, we just look if address
+            // @addr is inside the range
+            int f_b = matchInetAddrRHS(&range_start, addr);
+            int f_e = matchInetAddrRHS(&range_end, addr);
+            if (f_b <= 0  && f_e >= 0) return true;
         }
     }
+    return false;
+
+    bool f_b = checkComplexMatchForSingleAddress(&range_start, obj2);
+    bool f_e = checkComplexMatchForSingleAddress(&range_end, obj2);
+
+    if (address_range_match_mode == EXACT && f_b && f_e) return true;
+    if (address_range_match_mode == PARTIAL && (f_b || f_e)) return true;
     return false;
 }
 

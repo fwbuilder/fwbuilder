@@ -1,8 +1,15 @@
 2010-01-25  vadim  <vadim@vk.crocodile.org>
 
-	* ../src/fwbuilder/ObjectMatcher.h (libfwbuilder): setting all
-	flags through setter methods instead of passing parameters to
-	constructor. Added flag "match_subnets"
+	* ObjectMatcher.cpp (ObjectMatcher::checkComplexMatch): if flag
+	match_subnets is true, treat AddressRange objects in a special
+	way: check range boundaries against subnet defined by the
+	address/netmask of obj2. Exact match is when range boundaries
+	exactly match beginning and the end of the subnet. Partial match
+	is when either boundary (or both) is inside of the subnet.
+
+	* ObjectMatcher.h (libfwbuilder): setting all flags through setter
+	methods instead of passing parameters to constructor. Added flag
+	"match_subnets"
 
 2010-01-19  vadim  <vadim@vk.crocodile.org>
 

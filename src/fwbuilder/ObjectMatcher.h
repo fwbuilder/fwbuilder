@@ -54,22 +54,26 @@ namespace libfwbuilder
 
     class ObjectMatcher {
 
+public:
+        typedef enum {EXACT, PARTIAL} address_range_match;
+
+private:
         bool recognize_broadcasts;
         bool recognize_multicasts;
         bool ipv6;
         bool match_subnets;
-        
+        address_range_match address_range_match_mode;
+
         bool checkComplexMatchForSingleAddress(const InetAddr *addr1,
                                                FWObject *obj2);
         bool checkComplexMatchForSingleAddress(Address *obj1, FWObject *obj2);
 
-        bool matchRHS(const InetAddr *addr1, Address *obj2);
-        bool matchInetAddrRHS(const InetAddr *addr1,
-                              const InetAddr *rhs_obj_addr,
-                              const InetAddr *rhs_obj_netm);
-        bool matchSubnetRHS(const InetAddr *addr1,
-                            const InetAddr *rhs_obj_addr,
-                            const InetAddr *rhs_obj_netm);
+        int matchRHS(const InetAddr *addr1, Address *obj2);
+        int matchInetAddrRHS(const InetAddr *addr1,
+                             const InetAddr *rhs_obj_addr);
+        int matchSubnetRHS(const InetAddr *addr1,
+                           const InetAddr *rhs_obj_addr,
+                           const InetAddr *rhs_obj_netm);
 
 public:
         ObjectMatcher()
@@ -78,9 +82,11 @@ public:
             recognize_multicasts = false;
             ipv6 = false;
             match_subnets = false;
+            address_range_match_mode = PARTIAL;
         }
 
         void setMatchSubnets(bool f) { match_subnets = f; }
+        void setAddressRangeMatchMode(address_range_match f) { address_range_match_mode = f; }
         void setRecognizeBroadcasts(bool f) { recognize_broadcasts = f; }
         void setRecognizeMulticasts(bool f) { recognize_multicasts = f; }
         void setIPV6(bool f) { ipv6 = f; }
