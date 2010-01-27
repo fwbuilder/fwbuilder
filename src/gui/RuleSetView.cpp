@@ -341,6 +341,8 @@ void RuleSetView::showContextMenu(const QPoint& pos)
         }
         else
         {
+            compileRuleAction->setEnabled(!node->rule->isDisabled());
+
             if (column < 1)
             {
                 addRowMenuItemsToContextMenu(popup_menu, node);

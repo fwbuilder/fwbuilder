@@ -1,5 +1,8 @@
 2010-01-26  vadim  <vadim@vk.crocodile.org>
 
+	* RuleSetView.cpp (RuleSetView::showContextMenu): fixes #1155
+	context menu is not updated on rule enable/disable
+
 	* NATCompiler_PrintRule.cpp (PrintRule::processNext): fixes #1147
 	--persistent option for DNAT and SNAT. This adds support for the
 	"--persistent" option in NAT rules. Version should be set to 1.4.3
