@@ -90,6 +90,7 @@ using namespace libfwbuilder;
 void ObjectManipulator::buildNewObjectMenu()
 {
     popup_menu = new QMenu(this);
+    popup_menu->setObjectName("objectTreeContextMenu");
 
     QMenu* newObjectPopup = new QMenu( this );
 

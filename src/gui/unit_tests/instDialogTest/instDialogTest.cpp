@@ -138,6 +138,45 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
     return QPoint(-1,-1);
 }
 
+void instDialogTest::closeContextMenu()
+{
+    QMenu *menu;
+    foreach(QWidget *w, QApplication::allWidgets())
+    {
+        if (w->objectName() == "objectTreeContextMenu")
+        {
+            menu = dynamic_cast<QMenu*>(w);
+            break;
+        }
+    }
+    menu->hide();
+}
+
+void instDialogTest::openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item, ObjectTreeView *tree, const QString &actionText)
+{
+    QTimer::singleShot(100, this, SLOT(closeContextMenu()));
+    om->contextMenuRequested(findItemPos(item, tree));
+    QMenu *menu;
+    foreach(QWidget *w, QApplication::allWidgets())
+    {
+        if (w->objectName() == "objectTreeContextMenu")
+        {
+            menu = dynamic_cast<QMenu*>(w);
+            break;
+        }
+    }
+    foreach (QObject *act, menu->children())
+    {
+        QAction *action = dynamic_cast<QAction*>(act);
+        if (action == NULL) continue;
+        if (action->text() == actionText)
+        {
+            action->activate(QAction::Trigger);
+            break;
+        }
+    }
+}
+
 void instDialogTest::page1_5()
 {
     ObjectTreeView *tree = mw->getCurrentObjectTree();
@@ -146,8 +185,9 @@ void instDialogTest::page1_5()
     ObjectTreeViewItem *test2 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
     tree->scrollToItem(test1);
     tree->selectionModel()->select(tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test1);
     ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
-    om->compile();
+    openContextMenu(om, test1, tree, "Compile");
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
         if (dynamic_cast<instDialog*>(w) != NULL)
@@ -164,10 +204,11 @@ void instDialogTest::page1_6()
     tree->expandAll();
     ObjectTreeViewItem *test1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
     ObjectTreeViewItem *test2 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
-    tree->scrollToItem(test1);
+    tree->scrollToItem(test2);
     tree->selectionModel()->select(tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test2);
     ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
-    om->compile();
+    openContextMenu(om, test2, tree, "Compile");
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
         if (dynamic_cast<instDialog*>(w) != NULL)
@@ -185,10 +226,11 @@ void instDialogTest::page1_7()
     ObjectTreeViewItem *test1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
     ObjectTreeViewItem *test2 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
     tree->scrollToItem(test1);
-    tree->selectionModel()->select(tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
-    tree->selectionModel()->select(tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Select);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test1);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
     ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
-    om->compile();
+    openContextMenu(om, test2, tree, "Compile");
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
         if (dynamic_cast<instDialog*>(w) != NULL)
@@ -219,7 +261,13 @@ void instDialogTest::page1_8()
         if ((*it)->text(0) == "cluster1") QVERIFY((*it)->checkState(1) == Qt::Checked);
         if ((*it)->text(0) == "cluster1") QVERIFY((*it)->checkState(2) == Qt::Unchecked);
         if ((*it)->text(0) == "test1") QVERIFY((*it)->checkState(1) == Qt::Unchecked);
+        if ((*it)->text(0) == "test1") QVERIFY((*it)->checkState(2) == Qt::Checked);
         if ((*it)->text(0) == "test2") QVERIFY((*it)->checkState(1) == Qt::Checked);
+        if ((*it)->text(0) == "test2") QVERIFY((*it)->checkState(2) == Qt::Checked);
+        if ((*it)->text(0) == "test3") QVERIFY((*it)->checkState(2) == Qt::Checked);
+        if ((*it)->text(0) == "test4") QVERIFY((*it)->checkState(2) == Qt::Checked);
+        if ((*it)->text(0) == "test3") QVERIFY((*it)->checkState(1) == Qt::Unchecked);
+        if ((*it)->text(0) == "test4") QVERIFY((*it)->checkState(1) == Qt::Unchecked);
         it++;
     }
     QTest::qWait(1000);

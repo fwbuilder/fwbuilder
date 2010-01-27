@@ -19,6 +19,8 @@ class instDialogTest : public QObject
     Q_OBJECT
     void openPolicy(QString fw);
     void verifyDialog(instDialog *dlg, int items = -1);
+    void openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item, ObjectTreeView *tree, const QString &actionText);
+
 private slots:
     void initTestCase();
     void page1_1();
@@ -29,6 +31,9 @@ private slots:
     void page1_6();
     void page1_7();
     void page1_8();
+
+public slots:
+    void closeContextMenu();
 
 };
 
