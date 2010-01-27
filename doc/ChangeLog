@@ -1,5 +1,10 @@
 2010-01-26  vadim  <vadim@vk.crocodile.org>
 
+	* NATCompiler_PrintRule.cpp (PrintRule::processNext): fixes #1147
+	--persistent option for DNAT and SNAT. This adds support for the
+	"--persistent" option in NAT rules. Version should be set to 1.4.3
+	or later in the firewall object.
+
 	* NATCompiler_PrintRule.cpp (PrintRule::processNext): fixes #1146
 	support for NAT MASQUERADE source port randomization. This adds
 	support for the "--random" option for SNAT, DNAT and MASQUERADE

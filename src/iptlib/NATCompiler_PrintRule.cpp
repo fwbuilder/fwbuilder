@@ -687,8 +687,7 @@ bool NATCompiler_ipt::PrintRule::processNext()
     switch (rule->getRuleType())
     {
     case NATRule::Masq:  
-        if (ropt->getBool("ipt_nat_random"))
-            cmdout << " --random";
+        if (ropt->getBool("ipt_nat_random")) cmdout << " --random";
         break;
 
     case NATRule::SNAT:  
@@ -701,8 +700,9 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	    string ports = _printSNATPorts(tsrv);
 	    if (!ports.empty()) cmdout << ":" << ports;
 
-            if (ropt->getBool("ipt_nat_random"))
-                cmdout << " --random";
+            if (ropt->getBool("ipt_nat_random")) cmdout << " --random";
+            if (XMLTools::version_compare(version, "1.4.3")>=0)
+                if (ropt->getBool("ipt_nat_persistent")) cmdout << " --persistent";
 	}
 	break;
 /*
@@ -721,8 +721,9 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	    string ports = _printDNATPorts(tsrv);
 	    if (!ports.empty()) cmdout << ":" << ports;
 
-            if (ropt->getBool("ipt_nat_random"))
-                cmdout << " --random";
+            if (ropt->getBool("ipt_nat_random")) cmdout << " --random";
+            if (XMLTools::version_compare(version, "1.4.3")>=0)
+                if (ropt->getBool("ipt_nat_persistent")) cmdout << " --persistent";
 	}
 	break;
 

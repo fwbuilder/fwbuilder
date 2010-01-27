@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>726</width>
-    <height>333</height>
+    <width>942</width>
+    <height>345</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,10 +81,7 @@
      </widget>
      <widget class="QWidget" name="iptNATRuleOptions">
       <layout class="QGridLayout" name="gridLayout_2">
-       <property name="spacing">
-        <number>12</number>
-       </property>
-       <item row="0" column="0">
+       <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label">
          <property name="text">
           <string>Normally, if object used to define translated source address is an interface marked as &quot;dynamic&quot;,  fwbuilder generates NAT rule with target MASQUERADE. However masquerading has problems with policy routing. This option makes fwbuilder use SNAT target instead.</string>
@@ -94,7 +91,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="1" column="0" colspan="2">
         <widget class="QCheckBox" name="ipt_use_snat_instead_of_masq">
          <property name="text">
           <string>Use SNAT target instead of MASQUERADING for NAT rules with dynamic interfaces</string>
@@ -102,13 +99,36 @@
         </widget>
        </item>
        <item row="2" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0" colspan="2">
         <widget class="QCheckBox" name="ipt_nat_random">
          <property name="text">
-          <string>Randomize port mapping</string>
+          <string>Randomize port mapping (translates to --random)</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0" colspan="2">
+        <widget class="QCheckBox" name="ipt_nat_persistent">
+         <property name="text">
+          <string>Give a client the same source-/destination-address for each connection (translates to --persistent, requires iptables 1.4.3 or later).</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -394,6 +414,22 @@
     <hint type="destinationlabel">
      <x>362</x>
      <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ipt_nat_persistent</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>NATRuleOptionsDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>474</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>470</x>
+     <y>172</y>
     </hint>
    </hints>
   </connection>
