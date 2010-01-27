@@ -102,9 +102,9 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QCheckBox" name="ipt_snat_random">
+        <widget class="QCheckBox" name="ipt_nat_random">
          <property name="text">
-          <string>Randomize source port mapping in SNAT and MASQUERADE rules</string>
+          <string>Randomize port mapping</string>
          </property>
         </widget>
        </item>
@@ -382,7 +382,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>ipt_snat_random</sender>
+   <sender>ipt_nat_random</sender>
    <signal>toggled(bool)</signal>
    <receiver>NATRuleOptionsDialog_q</receiver>
    <slot>changed()</slot>

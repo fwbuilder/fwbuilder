@@ -687,7 +687,7 @@ bool NATCompiler_ipt::PrintRule::processNext()
     switch (rule->getRuleType())
     {
     case NATRule::Masq:  
-        if (ropt->getBool("ipt_snat_random"))
+        if (ropt->getBool("ipt_nat_random"))
             cmdout << " --random";
         break;
 
@@ -701,9 +701,8 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	    string ports = _printSNATPorts(tsrv);
 	    if (!ports.empty()) cmdout << ":" << ports;
 
-            if (ropt->getBool("ipt_snat_random"))
+            if (ropt->getBool("ipt_nat_random"))
                 cmdout << " --random";
-
 	}
 	break;
 /*
@@ -721,6 +720,9 @@ bool NATCompiler_ipt::PrintRule::processNext()
             if (!tdst->isAny()) cmdout << _printAddr(tdst, false, true);
 	    string ports = _printDNATPorts(tsrv);
 	    if (!ports.empty()) cmdout << ":" << ports;
+
+            if (ropt->getBool("ipt_nat_random"))
+                cmdout << " --random";
 	}
 	break;
 

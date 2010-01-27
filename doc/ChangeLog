@@ -1,5 +1,14 @@
+2010-01-26  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_PrintRule.cpp (PrintRule::processNext): fixes #1146
+	support for NAT MASQUERADE source port randomization. This adds
+	support for the "--random" option for SNAT, DNAT and MASQUERADE
+	targets in iptables NAT rules. User needs to turn on the checkbox
+	that adds this option in NAT rules again
+
 2010-01-26  yalovoy <yalovoy@gmail.com>
-	* RuleSetView.cpp: fixes #1145 
+
+	* RuleSetView.cpp: fixes #1145
 	show keyboard shortcuts for "move rule up/down" in the rule context menu
 
 2010-01-26  vadim  <vadim@vk.crocodile.org>
