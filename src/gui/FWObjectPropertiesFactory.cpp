@@ -1171,15 +1171,23 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
 
         if (fwbdebug)
             qDebug(QString("getNATRuleOptions: platform: %2").arg(platform.c_str()).toAscii().constData());
+
+        if (platform=="iptables")
+        {
+            if (ropt->getBool("ipt_use_snat_instead_of_masq"))
+                res += QObject::tr("use SNAT instead of MASQ<br>");
+            if (ropt->getBool("ipt_nat_random"))      res += QObject::tr("random<br>");
+            if (ropt->getBool("ipt_nat_persistent"))  res += QObject::tr("persistent<br>");
+        }
             
         if (platform=="pf")
         {
-            if (ropt->getBool("pf_bitmask"))      res+=QObject::tr("bitmask");
-            if (ropt->getBool("pf_random"))       res+=QObject::tr("random");
-            if (ropt->getBool("pf_source_hash"))  res+=QObject::tr("source-hash");
-            if (ropt->getBool("pf_round_robin"))  res+=QObject::tr("round-robin");
+            if (ropt->getBool("pf_bitmask"))      res+=QObject::tr("bitmask<br>");
+            if (ropt->getBool("pf_random"))       res+=QObject::tr("random<br>");
+            if (ropt->getBool("pf_source_hash"))  res+=QObject::tr("source-hash<br>");
+            if (ropt->getBool("pf_round_robin"))  res+=QObject::tr("round-robin<br>");
             if (!res.isEmpty()) res += ",";
-            if (ropt->getBool("pf_static_port"))  res+=QObject::tr("static-port");
+            if (ropt->getBool("pf_static_port"))  res+=QObject::tr("static-port<br>");
         }
     }
     
