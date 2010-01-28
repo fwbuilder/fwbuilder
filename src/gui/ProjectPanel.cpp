@@ -405,6 +405,10 @@ void ProjectPanel::unselectRules()
 
 void ProjectPanel::editCopy()
 {
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::editCopy()  isManipulatorSelected()="
+                 << isManipulatorSelected();
+
     if (isManipulatorSelected()) copyObj();
     else
         if (m_panel->ruleSets->count()!=0)
@@ -413,6 +417,10 @@ void ProjectPanel::editCopy()
 
 void ProjectPanel::editCut()
 {
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::editCut()  isManipulatorSelected()="
+                 << isManipulatorSelected();
+
     if (isManipulatorSelected()) cutObj();
     else
         if (m_panel->ruleSets->count()!=0)
@@ -421,6 +429,10 @@ void ProjectPanel::editCut()
 
 void ProjectPanel::editDelete()
 {
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::editDelete()  isManipulatorSelected()="
+                 << isManipulatorSelected();
+
     if (isManipulatorSelected()) deleteObj();
     //else
     //    if (ruleSets->count()!=0)
@@ -429,6 +441,10 @@ void ProjectPanel::editDelete()
 
 void ProjectPanel::editPaste()
 {
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::editPaste()  isManipulatorSelected()="
+                 << isManipulatorSelected();
+
     if (isManipulatorSelected()) pasteObj();
     else
         if (m_panel->ruleSets->count()!=0)
@@ -552,7 +568,7 @@ void ProjectPanel::copyObj()
 
 bool ProjectPanel::isManipulatorSelected()
 {
-    return m_panel->om->isSelected();
+    m_panel->om->getCurrentObjectTree()->hasFocus();
 }
 
 void ProjectPanel::cutObj()

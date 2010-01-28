@@ -352,11 +352,6 @@ public:
      void unselect();
 
      /**
-      * returns true if anything is selected in the tree
-      */
-     bool isSelected();
-
-     /**
       * controls whether "Deleted Objects" library is shown
       */
      void showDeletedObjects(bool f);

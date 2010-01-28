@@ -1345,11 +1345,6 @@ void ObjectManipulator::unselect()
     active=false;
 }
 
-bool ObjectManipulator::isSelected()
-{
-    return active;
-}
-
 list<Cluster*> ObjectManipulator::findClustersUsingFirewall(FWObject *fw)
 {
     list<Cluster*> res;

@@ -1954,9 +1954,14 @@ void RuleSetView::pasteObject()
         if (Rule::cast(co)!=NULL)  pasteRuleAbove();
         else
         {
+            // object in the clipboard is not a rule
             QModelIndex index = currentIndex();
             if (index.isValid())
+            {
+                RuleNode *node = md->nodeFromIndex(index);
+                if (node->type != RuleNode::Rule) return;
                 copyAndInsertObject(index, co);
+            }
         }
     }
 }
@@ -2147,6 +2152,8 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
  */ 
 void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
 {
+    if (!validateForInsertion(index, object)) return;
+
     RuleSetModel* md = ((RuleSetModel*)model());
     bool need_to_reload_tree = false;
     if (md->getRuleSet()->getRoot()!=object->getRoot())

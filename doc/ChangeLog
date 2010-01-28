@@ -1,3 +1,18 @@
+2010-01-28  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/gui/ProjectPanel.cpp (ProjectPanel::isManipulatorSelected):
+	fixes #1130 "Ctrl-C , Ctrl-V shortcuts do not work for selected
+	objects in rule elements". Global keyboard shortcuts Ctrl-C,
+	Ctrl-V, Ctrl-X should work on objects in rule elements when
+	keyboard focus belongs to the rule set view or on objects in the
+	tree when focus is on the tree. This also fixes #1138 "ctrl+x and
+	edit->cut problems in both Policy and NAT". These keyboard
+	shortcuts operate only on objects in the tree and rule elements
+	but not on rules.  Visual difference between the state when whole
+	rule is selected and the state when an object is selected in one
+	of the rule elements is insufficient so making Ctrl-X cut whole
+	rule may appear unextected for the user.
+
 2010-01-26  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSetView.cpp (RuleSetView::showContextMenu): fixes #1155
