@@ -79,7 +79,7 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
     this->project = project;
     fwosm = new FWObjectSelectionModel();
     setContextMenuPolicy(Qt::CustomContextMenu);
-    setSelectionMode(QAbstractItemView::ContiguousSelection);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
 
     setDragEnabled(true);
