@@ -568,7 +568,7 @@ void ProjectPanel::copyObj()
 
 bool ProjectPanel::isManipulatorSelected()
 {
-    m_panel->om->getCurrentObjectTree()->hasFocus();
+    return m_panel->om->getCurrentObjectTree()->hasFocus();
 }
 
 void ProjectPanel::cutObj()

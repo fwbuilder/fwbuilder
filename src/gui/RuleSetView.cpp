@@ -2098,6 +2098,8 @@ bool RuleSetView::validateForInsertion(QModelIndex index, FWObject *obj)
 
 bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quiet)
 {
+    if (RuleSet::cast(obj)!=NULL) return false;
+
     if (! re->validateChild(obj) )
     {
         if (!quiet)
