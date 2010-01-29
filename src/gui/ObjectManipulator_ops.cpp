@@ -54,6 +54,8 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
 
 #include <memory>
 
@@ -90,31 +92,34 @@ void ObjectManipulator::autoRenameChildren(FWObject *obj,
     assert(itm!=NULL);
     
     if ((QString::fromUtf8(obj->getName().c_str())!=oldName) &&
-        (Host::isA(obj) || Firewall::isA(obj) || Interface::isA(obj)))
+        (Host::isA(obj) || Cluster::cast(obj)!=NULL || Interface::isA(obj)))
     {
         autorename(obj);
     }
-
-    // QCoreApplication::postEvent(
-    //     mw, new updateObjectEverywhereEvent(m_project->getFileName(), obj->getId()));
 }
 
 void ObjectManipulator::autorename(FWObject *obj)
 {
-    if (Host::isA(obj) || Firewall::isA(obj) || Cluster::isA(obj))
+    if (Host::isA(obj) || Firewall::cast(obj)!=NULL || Cluster::isA(obj))
     {
         list<FWObject*> il = obj->getByType(Interface::TYPENAME);
         for (list<FWObject*>::iterator i=il.begin(); i!=il.end(); ++i)
             autorename(*i);
+        list<FWObject*> obj_list = obj->getByType(StateSyncClusterGroup::TYPENAME);
+        for (list<FWObject*>::iterator i=il.begin(); i!=il.end(); ++i)
+            autorename(obj_list, StateSyncClusterGroup::TYPENAME, "members");
     }
  
     if (Interface::isA(obj))
     {
         list<FWObject*> subinterfaces = obj->getByType(Interface::TYPENAME);
-        if (obj->getByType(IPv4::TYPENAME).size() ||
-            obj->getByType(IPv6::TYPENAME).size() ||
-            obj->getByType(physAddress::TYPENAME).size() ||
-            subinterfaces.size())
+        list<FWObject*> ipv4_list = obj->getByType(IPv4::TYPENAME);
+        list<FWObject*> ipv6_list = obj->getByType(IPv6::TYPENAME);
+        list<FWObject*> pa_list = obj->getByType(physAddress::TYPENAME);
+        list<FWObject*> failover_list = obj->getByType(FailoverClusterGroup::TYPENAME);
+
+        if (ipv4_list.size() || ipv6_list.size() || pa_list.size() ||
+            failover_list.size() || subinterfaces.size())
         {
             list<FWObject*> vlans;
             for (list<FWObject*>::iterator j=subinterfaces.begin();
@@ -131,12 +136,10 @@ void ObjectManipulator::autorename(FWObject *obj)
                  j!=subinterfaces.end(); ++j)
                 autorename(*j);
 
-            list<FWObject*> obj_list = obj->getByType(IPv4::TYPENAME);
-            autorename(obj_list, IPv4::TYPENAME, "ip");
-            obj_list = obj->getByType(IPv6::TYPENAME);
-            autorename(obj_list, IPv6::TYPENAME, "ip6");
-            obj_list = obj->getByType(physAddress::TYPENAME);
-            autorename(obj_list, physAddress::TYPENAME, "mac");
+            autorename(ipv4_list, IPv4::TYPENAME, "ip");
+            autorename(ipv6_list, IPv6::TYPENAME, "ip6");
+            autorename(pa_list, physAddress::TYPENAME, "mac");
+            autorename(failover_list, FailoverClusterGroup::TYPENAME, "members");
         }
     }
 }

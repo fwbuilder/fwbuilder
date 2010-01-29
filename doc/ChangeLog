@@ -1,5 +1,10 @@
 2010-01-29  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/gui/ObjectManipulator_ops.cpp (ObjectManipulator::autorename):
+	cluster failover group objects are now included in the algorithm
+	that automatically renames addresses of interfaces when user
+	renames firewall or cluster object. Fixes #1170
+
 	* ../src/gui/ObjectManipulator_slots.cpp (ObjectManipulator::copyObj):
 	show a not on the status bar whenever user copies an object to
 	clipboard. fixes #1167
