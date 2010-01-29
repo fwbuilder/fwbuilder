@@ -278,13 +278,7 @@ void ProjectPanel::autoSave()
 
 void ProjectPanel::fileSave()
 {
-    QStatusBar *sb = mainW->statusBar();
-    sb->showMessage( tr("Saving data to file...") );
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
     save();
-    // Keep status bar message little longer so user can read it. See #272
-    QTimer::singleShot( 1000, sb, SLOT(clearMessage()));
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 }
 
 void ProjectPanel::fileSaveAs()
@@ -946,8 +940,6 @@ void ProjectPanel::loadStandardObjects()
 {
     if (fwbdebug) qDebug("ProjectPanel::load(): start");
 
-    QStatusBar *sb = mainW->statusBar();
-
     editingStandardLib = false;
     editingTemplateLib = false;
 
@@ -962,8 +954,7 @@ void ProjectPanel::loadStandardObjects()
         objdb = new FWObjectDatabase();
         objdb->setReadOnly( false );
 
-        sb->showMessage( tr("Loading system objects...") );
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
+        mw->showStatusBarMessage(tr("Loading system objects..."));
 
 // always load system objects
         if (fwbdebug)
@@ -1001,14 +992,10 @@ void ProjectPanel::loadStandardObjects()
             tr("&Continue"), QString::null,QString::null,
             0, 1 );
     }
-
-    sb->clearMessage();
 }
 
 bool ProjectPanel::loadFromRCS(RCS *_rcs)
 {
-    QStatusBar *sb = mainW->statusBar();
-
     resetFD();
 
     editingStandardLib = false;
@@ -1032,24 +1019,19 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         objdb->setReadOnly( false );
 
 // always loading system objects
-        sb->showMessage( tr("Loading system objects...") );
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        mw->showStatusBarMessage(tr("Loading system objects...") );
 
         objdb->load( sysfname, &upgrade_predicate, librespath);
         objdb->setFileName("");
 
 // objects from a data file are in database ndb
 
-        sb->showMessage( tr("Reading and parsing data file...") );
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        mw->showStatusBarMessage(tr("Reading and parsing data file..."));
 
         FWObjectDatabase *ndb = new FWObjectDatabase();
         ndb->load(rcs->getFileName().toLocal8Bit().constData(),
                   &upgrade_predicate,librespath);
         time_t   oldtimestamp = ndb->getTimeLastModified();
-
-        sb->clearMessage();
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
 /* loadingLib is true if user wants to open a library or master library file */
         bool loadingLib         = editingLibrary();
@@ -1079,10 +1061,8 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
             }
         }
 
-        sb->showMessage( tr("Merging with system objects...") );
-        QCoreApplication::processEvents(
-            QEventLoop::ExcludeUserInputEvents, 100);
-
+        mw->showStatusBarMessage(tr("Merging with system objects...") );
+        
         MergeConflictRes mcr(mainW);
         objdb->merge(ndb, &mcr);
 
@@ -1091,9 +1071,6 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         objdb->setFileName(rcs->getFileName().toLocal8Bit().constData());
         objdb->resetTimeLastModified(oldtimestamp);
         objdb->setDirty(false);
-
-        sb->clearMessage();
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 
         if (fwbdebug)
         {
@@ -1146,7 +1123,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
             }
             QString newFileName = ofinfo.dir().absolutePath()
                 + "/" + ofinfo.completeBaseName() + ".fwb";
-
+            
             bool needToRename = true;
 
             /* need these dances with symlinks to fix bug #1008956:
@@ -1241,7 +1218,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
             qDebug("ProjectPanel::load(): load complete dirty=%d "
                    "last_modified=%s",
                    db()->isDirty(), ctime(&last_modified));
-
+        
     } catch(FWException &ex)
     {
         QString trans = ex.getProperties()["failed_transformation"].c_str();
@@ -1293,18 +1270,14 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
 // clear dirty flag for all objects, recursively
     if (!forceSave)  db()->setDirty(false);
 
-    sb->showMessage( tr("Building object tree...") );
+    mw->showStatusBarMessage(tr("Building object tree..."));
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     loadObjects();
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
-    sb->showMessage( tr("Indexing...") );
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+    mw->showStatusBarMessage(tr("Indexing...") );
     db()->reIndex();
-
-    sb->clearMessage();
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
 
     setupAutoSave();
 
@@ -1397,6 +1370,10 @@ void ProjectPanel::save()
             else
             {
 /* editingLibfile is true if user edits a library or master library file */
+
+                mw->showStatusBarMessage(
+                    tr("Saving data to file %1").arg(rcs->getFileName()));
+
                 bool editingLibfile = editingLibrary();
 
                 if (st->getDontSaveStdLib())  // this is now default

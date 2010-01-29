@@ -1920,7 +1920,11 @@ void RuleSetView::copySelectedObject()
     if ( fwosm->selectedObject!=NULL)
     {
         FWObjectClipboard::obj_clipboard->clear();
-        FWObjectClipboard::obj_clipboard->add( fwosm->selectedObject, project );
+        FWObject *obj =  fwosm->selectedObject;
+        FWObjectClipboard::obj_clipboard->add(obj, project );
+        mw->showStatusBarMessage(
+            tr("Copy object '%1' to clipboard'").arg(
+                QString::fromUtf8(obj->getName().c_str())));
     }
 }
 

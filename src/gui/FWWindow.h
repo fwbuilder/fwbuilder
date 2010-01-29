@@ -325,6 +325,11 @@ public slots:
                                       QString firewallName,
                                       QString outputFileName);
 
+    /**
+     * show text string on status bar for 1 sec
+     */
+    void showStatusBarMessage(const QString &txt);
+
     //wrapers for some Object Editor functions
     bool isEditorVisible();
     

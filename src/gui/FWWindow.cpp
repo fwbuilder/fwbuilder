@@ -1454,3 +1454,12 @@ void FWWindow::undoViewVisibilityChanged(bool visible)
    if(mw->isVisible())
        st->setShowUndoPanel(visible);
 }
+
+void FWWindow::showStatusBarMessage(const QString &txt)
+{
+    statusBar()->showMessage(txt);
+    // Keep status bar message little longer so user can read it. See #272
+    QTimer::singleShot( 1000, statusBar(), SLOT(clearMessage()));
+    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+}
+

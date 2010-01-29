@@ -101,9 +101,7 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
     }
 
     QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
-    QStatusBar *sb = mw->statusBar();
-    sb->showMessage( tr("Compiling rule...") );
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    mw->showStatusBarMessage(tr("Compiling rule...") );
 
     FWObject *p = obj;
     // use Firewall::cast to match both Firewall and Cluster
@@ -198,7 +196,6 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
         m_widget->compiler_output_panel->append("\n");
     }
     QApplication::restoreOverrideCursor();
-    sb->clearMessage();
 
     delete dr;
 }

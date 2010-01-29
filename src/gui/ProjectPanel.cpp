@@ -899,8 +899,7 @@ void ProjectPanel::updateLastModifiedTimestampForAllFirewalls()
 
     if (lastModifiedTimestampChangePool.size() == 0) return;
 
-    QStatusBar *sb = mw->statusBar();
-    sb->showMessage( tr("Searching for firewalls affected by the change...") );
+    mw->showStatusBarMessage(tr("Searching for firewalls affected by the change..."));
 
     //QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 
@@ -962,8 +961,6 @@ void ProjectPanel::updateLastModifiedTimestampForAllFirewalls()
     }
 
     QApplication::restoreOverrideCursor();
-    sb->clearMessage();
-//    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,100);
 }
 
 void ProjectPanel::toggleViewTree(bool f)
@@ -1076,3 +1073,4 @@ void ProjectPanel::splitterPositionChanged(int,int)
 {
     saveMainSplitter();
 }
+

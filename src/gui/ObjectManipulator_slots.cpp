@@ -138,6 +138,9 @@ void ObjectManipulator::copyObj()
             Interface *intf = Interface::cast(obj);
             if (intf) intf->getOptionsObject();
             FWObjectClipboard::obj_clipboard->add(obj, m_project);
+            mw->showStatusBarMessage(
+                tr("Copy object '%1' to clipboard'").arg(
+                    QString::fromUtf8(obj->getName().c_str())));
         }
     }
 }

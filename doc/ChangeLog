@@ -1,3 +1,9 @@
+2010-01-29  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/gui/ObjectManipulator_slots.cpp (ObjectManipulator::copyObj):
+	show a not on the status bar whenever user copies an object to
+	clipboard. fixes #1167
+
 2010-01-28  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/gui/ProjectPanel.cpp (ProjectPanel::isManipulatorSelected):

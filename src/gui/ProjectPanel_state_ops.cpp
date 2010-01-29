@@ -150,7 +150,7 @@ void ProjectPanel::saveMainSplitter()
         {
             QString out1 = " save Window/" + FileName + "/MainWindowSplitter";
             out1+= " " + arg;
-            qDebug(out1.toAscii().constData());
+            qDebug() << out1;
         }
     }
 }
@@ -177,8 +177,8 @@ void ProjectPanel::loadMainSplitter()
         w2 = mdiWindow->width() - w1;
 
     if (fwbdebug)
-        qDebug(QString("%1: %2x%3").arg(h_splitter_setting).
-               arg(w1).arg(w2).toAscii().constData());
+        qDebug() << h_splitter_setting << ":"
+                 << w1 << "x" << w2;
 
     setMainSplitterPosition(w1, w2);
 }

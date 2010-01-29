@@ -158,7 +158,7 @@ void FWWindow::filePrint()
             if (fromPage==0) fromPage=1;
             if (toPage==0) toPage=9999;
 
-            statusBar()->showMessage( "Printing..." );
+            showStatusBarMessage(tr("Printing..." ));
 
             PrintingProgressDialog *ppd = 
                 new PrintingProgressDialog(this, printer, 0, false);
@@ -199,18 +199,18 @@ void FWWindow::filePrint()
 
             if (printer->printerState() == QPrinter::Aborted)
             {
-                statusBar()->showMessage( tr("Printing aborted"), 2000 );
+                showStatusBarMessage(tr("Printing aborted"));
                 QMessageBox::information(
                     this,"Firewall Builder",
                     tr("Printing aborted"),
                     tr("&Continue"), QString::null,QString::null,
                     0, 1 );
             } else
-                statusBar()->showMessage( tr("Printing completed"), 2000 );
+                showStatusBarMessage(tr("Printing completed"));
 
         } else
         {
-            statusBar()->showMessage( tr("Printing <ed"), 2000 );
+            showStatusBarMessage(tr("Printing cancelled"));
         }
 
         st->setPrinterOptions(printer,pageWidth,pageHeight);
