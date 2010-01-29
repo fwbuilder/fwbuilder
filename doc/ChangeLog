@@ -1,5 +1,14 @@
 2010-01-29  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/res/configlets/linux24/installer_commands_reg_user: try
+	to cancel reboot only if one is pending. This avoids a warning
+	saying "cant find pid of running shutdown" every time user
+	installs updated iptables script on Linux firewall. Fixes #1169
+	Fwbuilder can schedule reboot in a few minutes if user installs
+	updated policy in "test mode" and requests reboot as a brute-force
+	rollback to safeguard against locking themselves out of the
+	firewall in case of error in the policy.
+
 	* ../src/gui/ObjectManipulator_ops.cpp (ObjectManipulator::autorename):
 	cluster failover group objects are now included in the algorithm
 	that automatically renames addresses of interfaces when user

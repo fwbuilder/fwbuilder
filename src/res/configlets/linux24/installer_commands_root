@@ -20,14 +20,15 @@
 {{if run}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
-sh {{$fwdir}}/{{$fwscript}} && ( which pkill > /dev/null && pkill shutdown; echo 'Policy activated' )
+sh {{$fwdir}}/{{$fwscript}} && ( test -f /var/run/shutdown.pid && shutdown -c; echo 'Policy activated' )
 {{endif}}
 
 {{if test}}
 
+## sudo -b runs process in the background. Useful, even if this is executed as root
 {{if with_rollback}}
 echo '{{$fwbprompt}}';
-echo '/sbin/shutdown -r +{{$rbtimeout}}'|batch;
+sudo -S -b /sbin/shutdown -r +{{$rbtimeout}}
 chmod +x {{$fwdir}}/tmp/{{$fwscript}};
 sh {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
 {{endif}}

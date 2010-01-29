@@ -20,7 +20,7 @@
 {{if run}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
-sudo -S {{$fwdir}}/{{$fwscript}} && ( sudo -S shutdown -c; echo 'Policy activated' )
+sudo -S {{$fwdir}}/{{$fwscript}} && ( test -f /var/run/shutdown.pid && sudo -S shutdown -c; echo 'Policy activated' )
 {{endif}}
 
 
