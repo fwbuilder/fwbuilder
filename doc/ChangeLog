@@ -1,5 +1,8 @@
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/gui/instDialog_ui_ops.cpp (instDialog::setFlags): fixes #1176
+	GUI crash while compiling cluster object with no StateSyncGroup.
+
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertFailoverRule):
 	fixes #1174 "OUTPUT rule is not generated for
 	heartbeat". Automatically generated rules for cluster members using

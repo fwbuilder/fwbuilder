@@ -186,16 +186,22 @@ void instDialog::setFlags(QTreeWidgetItem* item)
         {
             FWObject *state_sync_group =
                 cluster->getFirstByType(StateSyncClusterGroup::TYPENAME);
-            string master_id = state_sync_group->getStr("master_iface");
-            for (FWObjectTypedChildIterator grp_it =
-                     state_sync_group->findByType(FWObjectReference::TYPENAME);
-                 grp_it != grp_it.end(); ++grp_it)
+            // use state sync group to find which member firewall is
+            // master.  This is only needed for platforms that install
+            // only on master (PIX at this time)
+            if (state_sync_group)
             {
-                FWObject *iface = FWObjectReference::getObject(*grp_it);
-                if (FWObjectDatabase::getStringId(iface->getId()) == master_id)
+                string master_id = state_sync_group->getStr("master_iface");
+                for (FWObjectTypedChildIterator grp_it =
+                         state_sync_group->findByType(FWObjectReference::TYPENAME);
+                     grp_it != grp_it.end(); ++grp_it)
                 {
-                    master_interface = iface;
-                    break;
+                    FWObject *iface = FWObjectReference::getObject(*grp_it);
+                    if (FWObjectDatabase::getStringId(iface->getId()) == master_id)
+                    {
+                        master_interface = iface;
+                        break;
+                    }
                 }
             }
         }
