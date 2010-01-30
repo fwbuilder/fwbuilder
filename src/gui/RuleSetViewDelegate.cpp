@@ -64,6 +64,11 @@ RuleSetViewDelegate::RuleSetViewDelegate(QObject *parent, FWObjectSelectionModel
 void RuleSetViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paint";
+
+    QStyleOptionViewItem newOpt = option;
+    QFont font = st->getRulesFont();
+    newOpt.font = font;
+
     RuleNode * node;
     if (index.isValid())
     {
@@ -71,22 +76,23 @@ void RuleSetViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     }
     else
     {
-        QItemDelegate::paint(painter, option, index);
+        QItemDelegate::paint(painter, newOpt, index);
         return;
     }
 
     painter->save();
+    painter->setFont(font);
     if (node->type == RuleNode::Group)
     {
-        paintGroup(painter, option, index, node);
+        paintGroup(painter, newOpt, index, node);
     }
     else if (index.column() == 0)
     {
-        paintRowHeader(painter, option, index, node);
+        paintRowHeader(painter, newOpt, index, node);
     }
     else
     {
-        paintRule(painter, option, index, node);
+        paintRule(painter, newOpt, index, node);
     }
     painter->restore();
 }
@@ -363,6 +369,10 @@ QPixmap RuleSetViewDelegate::getPixmap(QString name, PixmapAttr pmattr) const
 
 QSize RuleSetViewDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
+    QStyleOptionViewItem newOpt = option;
+    QFont font = st->getRulesFont();
+    newOpt.font = font;
+
     QSize res;
     RuleNode * node;
     if (index.isValid())
@@ -371,19 +381,22 @@ QSize RuleSetViewDelegate::sizeHint(const QStyleOptionViewItem & option, const Q
     }
     else
     {
-        return QItemDelegate::sizeHint(option, index);
+        return QItemDelegate::sizeHint(newOpt, index);
     }
 
     if (node->type == RuleNode::Rule)
     {
-        if (node->sizes[index.column()].isValid()) return node->sizes[index.column()];
-        res = calculateCellSizeForRule(option, index, node) + QSize(1,1);
+        if (node->sizes[index.column()].isValid())
+        {
+            return node->sizes[index.column()];
+        }
+        res = calculateCellSizeForRule(newOpt, index, node) + QSize(1,1);
         node->sizes[index.column()] = res;
         return res;
     }
 
     //Fix for older Qt versions where width of spanned column is taken into accoun
-    res = QItemDelegate::sizeHint(option, index);
+    res = QItemDelegate::sizeHint(newOpt, index);
     res.setWidth(20);
     return res;
 }

@@ -1,3 +1,13 @@
+2010-01-30  yalovoy <yalovoy@gmail.com>
+	* fixes #1159 GUI crash on redo() :
+	FWCmdChange.cpp
+	FWCmdChange.h
+	
+	* fixes #1121 changing "rules font" in global preferences has no effect
+	PrefsDialog.cpp
+	RuleSetModel.cpp
+	RuleSetViewDelegate.cpp
+
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/res/os/linux24.xml: fixes #1180 "heartbeat failover

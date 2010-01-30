@@ -37,6 +37,7 @@
 #include "FWWindow.h"
 #include "ProjectPanel.h"
 #include "HttpGet.h"
+#include "RuleSetView.h"
 
 #include "fwbuilder/Resources.h"
 
@@ -363,7 +364,9 @@ void PrefsDialog::changeFont(QFont &font)
     bool ok;
     QFont f = QFontDialog::getFont(&ok, font, this);
     if (ok)
+    {
         font = f;
+    }
 }
 
 void PrefsDialog::findWDir()
@@ -491,6 +494,13 @@ void PrefsDialog::accept()
     {
         QDir d;
         d.mkdir( wd );
+    }
+
+    if (pp)
+    {
+        RuleSetView* rsv = pp->getCurrentRuleSetView();
+        if (rsv)
+            rsv->updateAll();
     }
 
     mw->setupAutoSave();
