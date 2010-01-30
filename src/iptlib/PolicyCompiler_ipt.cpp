@@ -4696,30 +4696,19 @@ void PolicyCompiler_ipt::insertConntrackRule()
     }
 
     /* Add automatic rules for CONNTRACK */
-    PolicyRule *rule = addMgmtRule(NULL,
-                                   conntrack_dst,
-                                   conntrack_srv,
-                                   conntrack_iface,
-                                   PolicyRule::Inbound,
-                                   PolicyRule::Accept, "CONNTRACK");
-    FWOptions *ruleopt = rule->getOptionsObject();
-    assert(ruleopt!=NULL);
-    ruleopt->setInt("firewall_is_part_of_any_and_networks", 1);
+    addMgmtRule(NULL,
+                conntrack_dst,
+                conntrack_srv,
+                conntrack_iface,
+                PolicyRule::Inbound,
+                PolicyRule::Accept, "CONNTRACK");
 
-    rule = addMgmtRule(fw,
-                       conntrack_dst,
-                       conntrack_srv,
-                       conntrack_iface,
-                       PolicyRule::Outbound,
-                       PolicyRule::Accept, "CONNTRACK");
-    ruleopt = rule->getOptionsObject();
-    assert(ruleopt!=NULL);
-    ruleopt->setInt("firewall_is_part_of_any_and_networks", 1);
-
-
-
-    //addMgmtRule(NULL, conntrack_dst, NULL, conntrack_iface,
-    //            PolicyRule::Outbound, PolicyRule::Accept, "CONNTRACK");
+    addMgmtRule(fw,
+                conntrack_dst,
+                conntrack_srv,
+                conntrack_iface,
+                PolicyRule::Outbound,
+                PolicyRule::Accept, "CONNTRACK");
 }
 
 void PolicyCompiler_ipt::insertFailoverRule()
@@ -4779,9 +4768,9 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 vrrp_srv->setProtocolNumber(112);
                 dbcopy->add(vrrp_srv);
 
-                rule = addMgmtRule(NULL, vrrp_dst, vrrp_srv, iface,
-                                   PolicyRule::Both, PolicyRule::Accept,
-                                   "VRRP");
+                addMgmtRule(NULL, vrrp_dst, vrrp_srv, iface,
+                            PolicyRule::Both, PolicyRule::Accept,
+                            "VRRP");
             }
 
             if (failover_group->getStr("type") == "heartbeat")
@@ -4846,24 +4835,31 @@ void PolicyCompiler_ipt::insertFailoverRule()
                             Interface::cast(FWObjectReference::getObject(*it));
                         assert(other_iface);
                         if (other_iface->getId() == fw_iface->getId()) continue;
-                        rule = addMgmtRule(other_iface,
-                                           fw_iface,
-                                           heartbeat_srv,
-                                           fw_iface,
-                                           PolicyRule::Inbound,
-                                           PolicyRule::Accept,
-                                           "heartbeat");
+                        addMgmtRule(other_iface,
+                                    fw_iface,
+                                    heartbeat_srv,
+                                    fw_iface,
+                                    PolicyRule::Inbound,
+                                    PolicyRule::Accept,
+                                    "heartbeat");
+                        addMgmtRule(fw_iface,
+                                    other_iface,
+                                    heartbeat_srv,
+                                    fw_iface,
+                                    PolicyRule::Outbound,
+                                    PolicyRule::Accept,
+                                    "heartbeat");
                     }
                 } else
                 {
-                    rule = addMgmtRule(NULL, heartbeat_dst, heartbeat_srv,
-                                       fw_iface,
-                                       PolicyRule::Inbound, PolicyRule::Accept,
-                                       "heartbeat");
-                    rule = addMgmtRule(fw, heartbeat_dst, heartbeat_srv,
-                                       fw_iface,
-                                       PolicyRule::Outbound, PolicyRule::Accept,
-                                       "heartbeat");
+                    addMgmtRule(NULL, heartbeat_dst, heartbeat_srv,
+                                fw_iface,
+                                PolicyRule::Inbound, PolicyRule::Accept,
+                                "heartbeat");
+                    addMgmtRule(fw, heartbeat_dst, heartbeat_srv,
+                                fw_iface,
+                                PolicyRule::Outbound, PolicyRule::Accept,
+                                "heartbeat");
                 }
             }
 
@@ -4895,12 +4891,12 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 openais_srv->setComment("OPENAIS UDP port");
                 dbcopy->add(openais_srv);
 
-                rule = addMgmtRule(NULL, openais_dst, openais_srv, iface,
-                                   PolicyRule::Inbound, PolicyRule::Accept,
-                                   "openais");
-                rule = addMgmtRule(fw, openais_dst, openais_srv, iface,
-                                   PolicyRule::Outbound, PolicyRule::Accept,
-                                   "openais");
+                addMgmtRule(NULL, openais_dst, openais_srv, iface,
+                            PolicyRule::Inbound, PolicyRule::Accept,
+                            "openais");
+                addMgmtRule(fw, openais_dst, openais_srv, iface,
+                            PolicyRule::Outbound, PolicyRule::Accept,
+                            "openais");
             }
 
             if (rule)
@@ -4937,8 +4933,8 @@ PolicyRule* PolicyCompiler_ipt::addMgmtRule(Address* src,
     {
         ruleopt->setBool("stateless", "true");
     }
+    ruleopt->setBool("firewall_is_part_of_any_and_networks", true);
 
-//    ruleopt->setBool("firewall_is_part_of_any_and_networks", true);
     return rule;
 }
 
