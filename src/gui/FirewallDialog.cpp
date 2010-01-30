@@ -234,6 +234,9 @@ void FirewallDialog::validate(bool *res)
 
 void FirewallDialog::applyChanges()
 {
+    if (fwbdebug)
+        qDebug() << "FirewallDialog::applyChanges()";
+
     bool autorename_chidren = false;
     QString dialog_txt = tr(
         "The name of the object '%1' has changed. The program can also "
@@ -250,10 +253,30 @@ void FirewallDialog::applyChanges()
         .arg(QString::fromUtf8(obj->getName().c_str()));
 
     if (obj->getName() != m_dialog->obj_name->text().toUtf8().constData())
+    {
+        /*
+         * when we open this warning dialog, FirewallDialog class
+         * loses focus and obj_name lineEdit widget sends signal
+         * "editingfinished" again.  To the user this looks like the
+         * warning dialog popped up twice (in fact two copies of the
+         * same warning dialog appear at the same time, one exactly on
+         * top of another). To avoid this, block signals for the
+         * duration while we show the dialog. Note that documentation
+         * does not mention that QObject::blockSignals() affects not
+         * only the widget but all its children, but it seems to work
+         * that way. Tested with Qt 4.6.1. See #1171
+         */
+        blockSignals(true);
         autorename_chidren = (QMessageBox::warning(
                                   this,"Firewall Builder", dialog_txt,
                                   tr("&Yes"), tr("&No"), QString::null,
                                   0, 1 )==0 );
+        blockSignals(false);
+    }
+
+    if (fwbdebug)
+        qDebug() << "Sending FWCmdChange  autorename_chidren="
+                 << autorename_chidren;
 
     std::auto_ptr<FWCmdChange> cmd(
         new FWCmdChange(m_project, obj, "", autorename_chidren));

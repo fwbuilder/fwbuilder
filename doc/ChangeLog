@@ -1,3 +1,13 @@
+2010-01-30  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/gui/FirewallDialog.cpp (FirewallDialog::applyChanges):
+	fixes #1171: the warning dialog asking if ip address objects
+	should be renamed automatically appears twice. when user renames
+	cluster, firewall, host or interface object, the GUI asks if they
+	want to rename ip address objects as well to make them adhere to
+	some naming convention. The warning dialog appeared twice on Mac
+	and Windows with Qt 4.6
+
 2010-01-29  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/res/configlets/linux24/installer_commands_reg_user: try

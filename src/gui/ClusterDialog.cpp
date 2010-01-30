@@ -214,10 +214,15 @@ void ClusterDialog::applyChanges()
         .arg(QString::fromUtf8(obj->getName().c_str()));
 
     if (obj->getName() != m_dialog->obj_name->text().toUtf8().constData())
+    {
+        /* see comment about this in FirewallDialog */
+        blockSignals(true);
         autorename_chidren = (QMessageBox::warning(
                                   this,"Firewall Builder", dialog_txt,
                                   tr("&Yes"), tr("&No"), QString::null,
                                   0, 1 )==0 );
+        blockSignals(false);
+    }
 
     std::auto_ptr<FWCmdChange> cmd(
         new FWCmdChange(m_project, obj, "", autorename_chidren));

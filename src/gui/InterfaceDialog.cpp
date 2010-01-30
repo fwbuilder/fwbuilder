@@ -429,10 +429,13 @@ void InterfaceDialog::applyChanges()
             .arg(QString::fromUtf8(obj->getName().c_str()))
             .arg(QString::fromUtf8(obj->getName().c_str()));
 
+        /* see comment about this in FirewallDialog */
+        blockSignals(true);
         autorename_children = (QMessageBox::warning(
                                    this, "Firewall Builder", dialog_txt,
                                    tr("&Yes"), tr("&No"), QString::null,
                                    0, 1 )==0 );
+        blockSignals(false);
     }
 
     std::auto_ptr<FWCmdChange> cmd(
