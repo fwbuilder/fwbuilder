@@ -52,6 +52,7 @@ FWCmdChange::FWCmdChange(ProjectPanel *project,
 {
     setObject(obj);
     rename_children = _rename_children;
+    first_time = true;
 
     FWObjectDatabase* db = obj->getRoot();
 
@@ -118,12 +119,16 @@ void FWCmdChange::notify()
         // it is executed after bunch of objects are deleted and may
         // need to operate on one of them.
         //
-        QCoreApplication::sendEvent(
-            mw->activeProject(), new objectNameChangedEvent(
-                filename, obj->getId(),
-                QString::fromUtf8(oldState->getName().c_str()),
-                QString::fromUtf8(newState->getName().c_str()),
-                rename_children));
+        if (first_time)
+        {
+            QCoreApplication::sendEvent(
+                mw->activeProject(), new objectNameChangedEvent(
+                    filename, obj->getId(),
+                    QString::fromUtf8(oldState->getName().c_str()),
+                    QString::fromUtf8(newState->getName().c_str()),
+                    rename_children));
+            first_time = false;
+        }
     }
 
     QCoreApplication::postEvent(

@@ -38,6 +38,7 @@ class FWCmdChange : public FWCmdBasic
     libfwbuilder::FWObject *oldState;
     libfwbuilder::FWObject *newState;
     bool rename_children;
+    bool first_time;
 
 protected:
     virtual void notify();
