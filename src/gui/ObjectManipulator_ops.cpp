@@ -92,7 +92,7 @@ void ObjectManipulator::autoRenameChildren(FWObject *obj,
     assert(itm!=NULL);
     
     if ((QString::fromUtf8(obj->getName().c_str())!=oldName) &&
-        (Host::isA(obj) || Cluster::cast(obj)!=NULL || Interface::isA(obj)))
+        (Host::isA(obj) || Firewall::cast(obj)!=NULL || Interface::isA(obj)))
     {
         autorename(obj);
     }
@@ -100,6 +100,9 @@ void ObjectManipulator::autoRenameChildren(FWObject *obj,
 
 void ObjectManipulator::autorename(FWObject *obj)
 {
+    if (fwbdebug)
+        qDebug() << "ObjectManipulator::autorename  obj=" << obj->getName().c_str();
+
     if (Host::isA(obj) || Firewall::cast(obj)!=NULL || Cluster::isA(obj))
     {
         list<FWObject*> il = obj->getByType(Interface::TYPENAME);
