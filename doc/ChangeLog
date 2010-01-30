@@ -53,6 +53,8 @@
 
 	* RuleSetView.cpp: fixes #1145
 	show keyboard shortcuts for "move rule up/down" in the rule context menu
+	* RuleSetView.cpp: fixes #1158 
+	ctrl page up/down breaks arrowing in the ruleset
 
 2010-01-26  vadim  <vadim@vk.crocodile.org>
 
