@@ -48,7 +48,7 @@
 
         <heartbeat>
           <needs_master>False</needs_master>
-          <no_ip_ok>True</no_ip_ok>
+          <no_ip_ok>False</no_ip_ok>
           <default_address>224.0.10.100</default_address>
           <default_port>694</default_port>
           <manage_addresses>False</manage_addresses>

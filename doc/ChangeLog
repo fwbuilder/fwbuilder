@@ -1,5 +1,10 @@
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/res/os/linux24.xml: fixes #1180 "heartbeat failover
+	protocol uses virtual ip address". New cluster wizard did not
+	allow the user to add ip address to cluster interface configured
+	with heartbeat failover protocol.
+
 	* ../src/gui/instDialog_ui_ops.cpp (instDialog::setFlags): fixes #1176
 	GUI crash while compiling cluster object with no StateSyncGroup.
 

@@ -164,12 +164,11 @@ void newClusterDialog::showPage(const int page, bool blank)
 
         this->m_dialog->interfaceEditor->setExplanation(
             tr("Depending on the failover protocol, cluster interface "
-               "may or may not need an IP address. <b>VRRP</b> and "
-               "<b>CARP</b> interfaces should have their own unique "
-               "IP addresses different from the member firewall interfaces. "
-               "Other failover protocols such as "
-               "<b>heartbeat</b> or <b>OpenAIS</b> do not create new "
-               "interface and therefore do not require additional IP address. "
+               "may or may not need an IP address. <b>VRRP</b>, "
+               "<b>CARP</b>, <b>heartbeat</b> interfaces should have their "
+               "own unique IP addresses different from the member firewall "
+               "interfaces. Other failover protocols such as the one used in "
+               "<b>Cisco ASA (PIX) firewall</b> do not require additional IP address."
                "<br>"
                "<br>"
                "List of available failover protocols depends on the firewall "
