@@ -95,6 +95,8 @@ public:
      */
     void selectRE(libfwbuilder::RuleElement *re, libfwbuilder::FWObject *obj);
 
+    void selectObject(int position, int column, int number);
+
     void repaintSelection();
     void updateAll();
     void updateCurrentCell();
@@ -117,6 +119,8 @@ public:
 
     void setModel(QAbstractItemModel *model);
     void addToGroup(bool isAbove);
+
+
 
 public slots:
 

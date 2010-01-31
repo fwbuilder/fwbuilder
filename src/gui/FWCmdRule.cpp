@@ -585,6 +585,15 @@ void FWCmdRuleChangeOptions::notify()
  * FWCmdRuleChangeRe
  ********************************************************/
 
+FWCmdRuleChangeRe::FWCmdRuleChangeRe(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
+                  libfwbuilder::FWObject *obj, int position, int column, int number, QString text, QUndoCommand* macro):
+        FWCmdRuleChange(project, ruleset, obj, text, macro)
+{
+    this->column = column;
+    this->number = number;
+    this->position = position;
+}
+
 Rule* FWCmdRuleChangeRe::getRule()
 {
     return Rule::cast(getObject()->getParent());
@@ -593,8 +602,7 @@ Rule* FWCmdRuleChangeRe::getRule()
 void FWCmdRuleChangeRe::notify()
 {
     FWCmdRuleChange::notify();
-
-    project->getCurrentRuleSetView()->unselect();
+    project->getCurrentRuleSetView()->selectObject(position, column, number);
     mw->findObjectWidget->reset();
 }
 
@@ -604,7 +612,7 @@ void FWCmdRuleChangeRe::notify()
 
 FWCmdRuleNegateRE::FWCmdRuleNegateRE(ProjectPanel *project,
                                      RuleSet* ruleset, RuleElement* ruleElement):
-    FWCmdRuleChangeRe(project, ruleset, ruleElement, QObject::tr("Negate"))
+    FWCmdRuleChangeRe(project, ruleset, ruleElement, 0, 0, 0, QObject::tr("Negate"))
 {
 }
 

@@ -1642,6 +1642,23 @@ int RuleSetView::getObjectNumber(FWObject *object, const QModelIndex &index)
     return n;
 }
 
+void RuleSetView::selectObject(int position, int column, int number)
+{
+    RuleSetModel* md = ((RuleSetModel*)model());
+
+    QModelIndex index = md->indexForPosition(position);
+
+    if (index.isValid())
+    {
+        index = md->index(index.row(), column, index.parent());
+        FWObject* obj = getObject(number, index);
+        selectObject(obj, index);
+    } else
+    {
+        unselect();
+    }
+}
+
 void RuleSetView::selectObject(FWObject *object, const QModelIndex &index)
 {
     fwosm->setSelected(object, index);
@@ -2051,11 +2068,17 @@ void RuleSetView::dropEvent(QDropEvent *ev)
 
 void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text, QUndoCommand* macro)
 {
+
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
     if (re==NULL || re->isAny()) return;
 
+    int position = Rule::cast(re->getParent())->getPosition();
+    int column = index.column();
+    int number = getObjectNumber(obj, index);
+
     FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(
-        project, ((RuleSetModel*)model())->getRuleSet(), re, text, macro);
+        project, ((RuleSetModel*)model())->getRuleSet(), re, position, column, number,
+        text, macro);
     RuleElement *newRe = RuleElement::cast(cmd->getNewState());
     newRe->removeRef(obj);
     if (newRe->isAny()) newRe->setNeg(false);
@@ -2067,8 +2090,14 @@ bool RuleSetView::insertObject(QModelIndex index, FWObject *obj, QString text, Q
 {
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
     assert (re!=NULL);
+
+    int position = Rule::cast(re->getParent())->getPosition();
+    int column = index.column();
+    int number = getObjectNumber(obj, index);
+
     FWCmdRuleChangeRe* cmd = new FWCmdRuleChangeRe(
-        project, ((RuleSetModel*)model())->getRuleSet(), re, text, macro);
+        project, ((RuleSetModel*)model())->getRuleSet(), re, position, column, number,
+        text, macro);
     RuleElement *newRe = RuleElement::cast(cmd->getNewState());
     newRe->addRef(obj);
     if (macro == 0)

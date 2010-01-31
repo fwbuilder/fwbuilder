@@ -304,13 +304,15 @@ public:
 
 class FWCmdRuleChangeRe : public FWCmdRuleChange
 {
+    int position;
+    int column;
+    int number;
 protected:
     virtual libfwbuilder::Rule* getRule();
 
 public:
     FWCmdRuleChangeRe(ProjectPanel *project, libfwbuilder::RuleSet* ruleset,
-                      libfwbuilder::FWObject *obj, QString text=QString(), QUndoCommand* macro = 0):
-            FWCmdRuleChange(project, ruleset, obj, text, macro) {}
+                      libfwbuilder::FWObject *obj, int position, int column, int number, QString text=QString(), QUndoCommand* macro = 0);
 
     virtual void notify();
 
