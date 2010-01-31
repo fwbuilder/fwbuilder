@@ -1,5 +1,9 @@
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (checkInterfaceAgainstAddressFamily::processNext):
+	fixes #1172 "fwb_ipt does not generate rule for cluster interface
+	with no ip address".
+
 	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::processFirewallOptions):
 	fixes #1177 "problems with commands for conntrack_max, hashsize
 	and other advanced conntrack parameters". Needed to add a line

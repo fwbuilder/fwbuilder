@@ -42,6 +42,7 @@
           <string>openais,OpenAIS</string>
           <string>none,None</string>
         </failover>
+
         <state_sync>
           <string>conntrack,conntrack</string>
         </state_sync>
@@ -71,6 +72,13 @@
           <manage_addresses>False</manage_addresses>
           <dialog>conntrack</dialog>
         </conntrack>
+
+        <none>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <manage_addresses>False</manage_addresses>
+          <dialog></dialog>
+        </none>
 
         <!-- no parameters for VRRP on regular Linux system since we do not
              generate configuration (command line) for vrrpd at this time  -->

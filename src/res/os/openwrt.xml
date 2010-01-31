@@ -80,6 +80,14 @@
           <manage_addresses>True</manage_addresses>
           <dialog></dialog>
         </vrrp>
+
+        <none>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <manage_addresses>False</manage_addresses>
+          <dialog></dialog>
+        </none>
+
       </protocols>
 
       <interfaces>
