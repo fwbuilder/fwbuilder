@@ -4576,6 +4576,8 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
         if ( i5!=itfrel->end() ) ++i5;
     }
 
+    str << " pos=" << rule->getPosition();
+
     str << " c=" << printChains(rule);
 
     str << " t=" << rule->getStr("ipt_target")
