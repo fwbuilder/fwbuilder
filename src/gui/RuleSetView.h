@@ -226,6 +226,9 @@ protected:
 
     QAction* createAction(QString label, const char* member, const QKeySequence &shortcut = 0);
     
+    virtual void focusInEvent ( QFocusEvent * event );
+    virtual void focusOutEvent ( QFocusEvent * event );
+
 private:
 
     //this bool var is needed for starting drag when user moves the mouse

@@ -174,6 +174,18 @@ QAction* RuleSetView::createAction(QString label, const char* member, const QKey
     return action;
 }
 
+ void RuleSetView::focusInEvent ( QFocusEvent * event )
+{
+    qDebug() << "* focusInEvent";
+    QTreeView::focusInEvent(event);
+}
+
+ void RuleSetView::focusOutEvent ( QFocusEvent * event )
+{
+    qDebug() << "* focusOutEvent";
+    QTreeView::focusOutEvent(event);
+}
+
 RuleSetView* RuleSetView::getRuleSetViewByType(ProjectPanel *project,
                                                RuleSet *ruleset,
                                                QWidget *parent)
