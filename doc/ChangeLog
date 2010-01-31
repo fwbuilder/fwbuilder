@@ -1,5 +1,16 @@
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
+	* change in libfwbuilder. fixes #1173 "rule ID labels do not match
+	rule numbers when disabled rules exist in rule set". Do not remove
+	disabled rules in PolicyCompiler::prolog() because some compilers
+	might use RuleSet::insertRuleAtTop() and other similar methods
+	from prolog() or addPredefinedPolicyRules() and these methods
+	renumber rules. As the result, labels stop matching rule positions
+	when this is done because labels are configured in prolog() method
+	of the base class. See fwbuilder ticket 1173. Instead of dropping
+	disabled rules in prolog(), will keep them and drop them in rule
+	processor Begin which is always the first in all compilers.
+
 	* PolicyCompiler_ipt.cpp (checkInterfaceAgainstAddressFamily::processNext):
 	fixes #1172 "fwb_ipt does not generate rule for cluster interface
 	with no ip address".
