@@ -225,9 +225,7 @@ protected:
                                            libfwbuilder::FWObject *obj);
 
     QAction* createAction(QString label, const char* member, const QKeySequence &shortcut = 0);
-    
-    virtual void focusInEvent ( QFocusEvent * event );
-    virtual void focusOutEvent ( QFocusEvent * event );
+
 
 private:
 

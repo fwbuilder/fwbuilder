@@ -1,3 +1,7 @@
+2010-01-31  yalovoy <yalovoy@gmail.com>
+	* RuleSetModel.cpp: fixes #1182 rule number column is invisible when very 
+	first rule is created in a rule set 
+
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
 	* change in libfwbuilder. fixes #1173 "rule ID labels do not match

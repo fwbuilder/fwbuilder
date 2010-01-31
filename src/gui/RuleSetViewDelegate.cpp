@@ -69,9 +69,6 @@ void RuleSetViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     QFont font = st->getRulesFont();
     newOpt.font = font;
 
-    qDebug() << "option.currentColorGroup: " << option.palette.currentColorGroup() ;
-    qDebug() << "newOpt.currentColorGroup: " << option.palette.currentColorGroup() ;
-
     RuleNode * node;
     if (index.isValid())
     {

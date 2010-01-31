@@ -533,6 +533,10 @@ void RuleSetModel::insertRuleToModel(Rule *rule, QModelIndex &index, bool isAfte
         newNode->parent = root;
         emit endInsertRows();
     }
+
+    QModelIndex newIndex = this->index(rule);
+
+    rowChanged(newIndex);
 }
 
 Rule* RuleSetModel::insertNewRule()
