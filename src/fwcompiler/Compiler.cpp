@@ -617,8 +617,9 @@ bool Compiler::Begin::processNext()
         for (FWObject::iterator i=compiler->combined_ruleset->begin();
              i!=compiler->combined_ruleset->end(); ++i)
         {
-            Rule *rule=Rule::cast(*i);
-            Rule  *r= Rule::cast(compiler->dbcopy->create(rule->getTypeName()));
+            Rule *rule = Rule::cast(*i);
+            if (rule->isDisabled()) continue;
+            Rule  *r = Rule::cast(compiler->dbcopy->create(rule->getTypeName()));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);
             tmp_queue.push_back( r );

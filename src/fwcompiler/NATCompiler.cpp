@@ -95,7 +95,18 @@ int NATCompiler::prolog()
 
 	Rule *r= Rule::cast(*i);
         if (r == NULL) continue; // skip RuleSetOptions object
-	if (r->isDisabled()) continue;
+
+        /*
+         * do not remove disabled rules just yet because some
+         * compilers might use RuleSet::insertRuleAtTop() and other
+         * similar methods from prolog() or
+         * addPredefinedPolicyRules()() and these methods renumber
+         * rules (labels stop matching rule positions when this is
+         * done because labels are configured in prolog() method of
+         * the base class. See fwbuilder ticket 1173)
+         */
+	//if (r->isDisabled()) continue;
+
 	r->setInterfaceId(-1);
 	r->setLabel( createRuleLabel(label_prefix, "NAT", r->getPosition()) );
 	r->setAbsRuleNumber(global_num); global_num++;

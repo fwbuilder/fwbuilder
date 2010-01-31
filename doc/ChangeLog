@@ -1,3 +1,15 @@
+2010-01-30  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (PolicyCompiler::prolog): do not remove
+	disabled rules in prolog() because some compilers might use
+	RuleSet::insertRuleAtTop() and other similar methods from prolog()
+	or addPredefinedPolicyRules() and these methods renumber rules. As
+	the result, labels stop matching rule positions when this is done
+	because labels are configured in prolog() method of the base
+	class. See fwbuilder ticket 1173. Instead of dropping disabled
+	rules in prolog(), will keep them  and drop them in rule processor
+	Begin which is always the first in all compilers.
+
 2010-01-25  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectMatcher.cpp (ObjectMatcher::checkComplexMatchForSingleAddress):
