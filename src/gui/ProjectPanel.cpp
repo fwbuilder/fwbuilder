@@ -799,6 +799,9 @@ void ProjectPanel::showEvent(QShowEvent *ev)
 
     m_panel->treeDockWidget->raise();
     QWidget::showEvent(ev);
+
+    // we get this event when subsindow is maximized or restored
+    loadState();
 }
 
 void ProjectPanel::hideEvent(QHideEvent *ev)

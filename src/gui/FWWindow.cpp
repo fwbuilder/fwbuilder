@@ -406,15 +406,29 @@ ProjectPanel *FWWindow::newProjectPanel()
 
 void FWWindow::showSub(ProjectPanel *pp)
 {
+    QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
+        QMdiArea::StackingOrder);
+    bool windows_maximized =
+        (subwindows.size()>0) ? subwindows[0]->isMaximized() : st->getInt("Window/maximized");
+
+    if (fwbdebug)
+        qDebug() << "FWWindow::showSub"
+                 << "subwindows=" << subwindows
+                 << "current window maximized: "
+                 << int((subwindows.size()>0) ? subwindows[0]->isMaximized() : 0)
+                 << "settings: " << st->getInt("Window/maximized");
+
     QMdiSubWindow *sub = new QMdiSubWindow;
     pp->mdiWindow = sub;
     sub->setWidget(pp);
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_mainWindow->m_space->addSubWindow(sub);
 
-    if (st->getInt("Window/maximized"))
+    if (windows_maximized)
         pp->setWindowState(Qt::WindowMaximized);
-
+    else
+        pp->setWindowState(Qt::WindowNoState);
+    
     sub->show();
     /*
      * for reasons I do not understand, QMdiArea does not send signal
@@ -678,13 +692,16 @@ void FWWindow::fileClose()
 
 void FWWindow::fileExit()
 {
+    bool window_maximized_state = false;
     if (activeProject())
     {
         QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
         for (int i = 0 ; i < subWindowList.size(); i++)
         {
+            window_maximized_state = subWindowList[i]->isMaximized();
+
             ProjectPanel * project =
-                dynamic_cast<ProjectPanel*>(subWindowList[i]->widget ());
+                dynamic_cast<ProjectPanel*>(subWindowList[i]->widget());
             if (project!=NULL)
             {
                 if (!project->saveIfModified()) return;  // abort operation
@@ -693,6 +710,8 @@ void FWWindow::fileExit()
             }
         }
     }
+
+    st->setInt("Window/maximized", window_maximized_state);
 
     QCoreApplication::exit(0);
 }

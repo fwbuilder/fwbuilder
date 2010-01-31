@@ -1,5 +1,10 @@
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::showSub): fixes #1181 "save state of
+	subwindow on maximize/restore". The GUI would revert to the
+	non-maximized subwindows display if user de-maximized subwindow,
+	then maximized it again and tried to open new data file.
+
 	* ProjectPanel_file_ops.cpp (ProjectPanel::fileNew): fixes #1178
 	window title stays "[Untitled]" after File/new
 

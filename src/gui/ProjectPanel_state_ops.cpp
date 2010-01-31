@@ -59,15 +59,10 @@ void ProjectPanel::saveState()
 
     if (!ready) return;
 
-    st->setInt("Window/maximized", mdiWindow->isMaximized());
-
-    if (!mdiWindow->isMaximized())
-    {
-        st->setInt("Window/" + file_name + "/x", mdiWindow->x());
-        st->setInt("Window/" + file_name + "/y", mdiWindow->y());
-        st->setInt("Window/" + file_name + "/width", mdiWindow->width ());
-        st->setInt("Window/" + file_name + "/height", mdiWindow->height ());
-    }
+    st->setInt("Window/" + file_name + "/x", mdiWindow->x());
+    st->setInt("Window/" + file_name + "/y", mdiWindow->y());
+    st->setInt("Window/" + file_name + "/width", mdiWindow->width ());
+    st->setInt("Window/" + file_name + "/height", mdiWindow->height ());
 
     saveMainSplitter();
 
@@ -95,8 +90,7 @@ void ProjectPanel::loadState(bool)
 
     if (!ready) return;
 
-    int maximized_status = st->getInt("Window/maximized");
-    if (!maximized_status && mdiWindow)
+    if (!isMaximized() && mdiWindow)
     {
         if (fwbdebug) qDebug("ProjectPanel::loadState  show normal");
         setWindowState(0);
