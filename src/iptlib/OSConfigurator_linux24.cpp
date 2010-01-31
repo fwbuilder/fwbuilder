@@ -181,7 +181,7 @@ void OSConfigurator_linux24::processFirewallOptions()
         &conntrack_vars, "conntrack_tcp_be_liberal");
 
     output << kernel_vars.expand().toStdString();
-    //output << endl;
+    output << endl;
     output << conntrack_vars.expand().toStdString();
 }
 

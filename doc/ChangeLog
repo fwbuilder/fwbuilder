@@ -1,5 +1,11 @@
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
+	* OSConfigurator_linux24.cpp (OSConfigurator_linux24::processFirewallOptions):
+	fixes #1177 "problems with commands for conntrack_max, hashsize
+	and other advanced conntrack parameters". Needed to add a line
+	break between shell commands that set up kernel variables and
+	those that set up conntrack kernel variables.
+
 	* FWWindow.cpp (FWWindow::showSub): fixes #1181 "save state of
 	subwindow on maximize/restore". The GUI would revert to the
 	non-maximized subwindows display if user de-maximized subwindow,
