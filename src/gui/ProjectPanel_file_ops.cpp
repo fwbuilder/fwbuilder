@@ -180,6 +180,8 @@ bool ProjectPanel::fileNew()
         setFileName(nfn);
         save();
         setupAutoSave();
+
+        QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
     }
 
     if (fwbdebug)

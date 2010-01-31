@@ -1,8 +1,14 @@
+2010-01-30  vadim  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_file_ops.cpp (ProjectPanel::fileNew): fixes #1178
+	window title stays "[Untitled]" after File/new
+
 2010-01-30  yalovoy <yalovoy@gmail.com>
+
 	* fixes #1159 GUI crash on redo() :
 	FWCmdChange.cpp
 	FWCmdChange.h
-	
+
 	* fixes #1121 changing "rules font" in global preferences has no effect
 	PrefsDialog.cpp
 	RuleSetModel.cpp
