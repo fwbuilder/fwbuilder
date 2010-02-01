@@ -1,3 +1,16 @@
+2010-02-01  vadim  <vadim@vk.crocodile.org>
+
+	* InterfaceEditorWidget.cpp (InterfaceEditorWidget::deleteAddress):
+	fixes #1191 "broken behavior in InterfaceEditorWidget". When user
+	added and then deleted bunch of ip addresses to an interface in
+	the new firewall or new cluster wizard, addresses below the
+	deleted row were ignored.
+
+	* InterfaceEditorWidget.cpp (InterfaceEditorWidget::deleteAddress):
+	fixes #1189 "GUI crash in newFirewall dialog upon completion".
+	GUI crashed in the new firewall wizard if user deleted an address
+	of an interface that had 3 or more addresses.
+
 2010-01-31  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler_ipt.cpp (ReplaceFirewallObjectsTSrc::processNext):

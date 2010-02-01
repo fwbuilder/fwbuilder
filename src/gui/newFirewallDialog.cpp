@@ -552,7 +552,9 @@ void newFirewallDialog::showPage(const int page)
 void newFirewallDialog::fillInterfaceSLList()
 {
     m_dialog->iface_sl_list->clear();
-    foreach(EditedInterfaceData iface, this->m_dialog->interfaceEditor1->getData().values() + this->m_dialog->interfaceEditor1->getNewData())
+    foreach(EditedInterfaceData iface,
+            this->m_dialog->interfaceEditor1->getData().values() +
+            this->m_dialog->interfaceEditor1->getNewData())
     {
         InterfaceData idata;
 

@@ -149,9 +149,17 @@ void InterfaceEditorWidget::deleteAddress()
     int row = items.first->row();
     this->m_ui->addresses->removeRow(row);
     delete types[row];
-    types.remove(row);
-    rows.remove(row);
-    fwaddrs.remove(row);
+    // shift elements up in these maps
+    int idx = row;
+    for (; idx < (rows.size() - 1); idx++)
+    {
+        types[row] = types[row+1];
+        rows[row] = rows[row+1];
+        fwaddrs[row] = fwaddrs[row+1];
+    }
+    types.remove(idx);
+    rows.remove(idx);
+    fwaddrs.remove(idx);
 }
 
 InterfaceEditorWidget::~InterfaceEditorWidget()
@@ -239,6 +247,7 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
         for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
         {
             AddressInfo info;
+            if (rows[i].first == NULL) continue; // deleted row
             info.address = rows[i].first->text();
             info.netmask = rows[i].second->text();
             info.ipv4 = types[i]->currentIndex() == 0;
@@ -312,9 +321,13 @@ bool InterfaceEditorWidget::isValid()
 
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
+        if (types[i] == NULL) continue; // deleted row
         QString address = this->m_ui->addresses->item(i, 0)->text();
         QString netmask = this->m_ui->addresses->item(i, 1)->text();
-        if ( !validateAddress(address, netmask, this->m_ui->type->currentIndex() == 0, types[i]->currentIndex() == 1) )
+        if ( !validateAddress(
+                 address, netmask,
+                 this->m_ui->type->currentIndex() == 0,
+                 types[i]->currentIndex() == 1) )
             return false;
     }
     return true;
