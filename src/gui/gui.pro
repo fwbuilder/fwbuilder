@@ -502,7 +502,7 @@ LIBS += $$LIBS_FWCOMPILER
 
 RESOURCES += MainRes.qrc
 
-TRANSLATIONS = fwbuilder_ru.ts fwbuilder_ja.ts
+TRANSLATIONS = fwbuilder_ru.ts fwbuilder_ja.ts fwbuilder_en.ts
 
 ja.path = $$PKGLOCALEDIR
 ja.files = fwbuilder_ja.qm

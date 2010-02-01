@@ -385,12 +385,12 @@ object properties dialog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ClusterDialog.cpp" line="219"/>
+        <location filename="ClusterDialog.cpp" line="222"/>
         <source>&amp;Yes</source>
         <translation type="unfinished">はい(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="ClusterDialog.cpp" line="219"/>
+        <location filename="ClusterDialog.cpp" line="222"/>
         <source>&amp;No</source>
         <translation type="unfinished">いいえ(&amp;N)</translation>
     </message>
@@ -2090,7 +2090,7 @@ Please enter the domain name below:</source>
 <context>
     <name>FWWindow</name>
     <message>
-        <location filename="FWWindow.cpp" line="1354"/>
+        <location filename="FWWindow.cpp" line="1373"/>
         <source>A new version of Firewall Builder is available at http://www.fwbuilder.org</source>
         <translation>ファイアウォールビルダーの新しいバージョンを利用できます http://www.fwbuilder.org</translation>
     </message>
@@ -2138,7 +2138,7 @@ Please enter the domain name below:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWWindow.cpp" line="587"/>
+        <location filename="FWWindow.cpp" line="601"/>
         <source>Open File</source>
         <translation type="unfinished">ファイルを開く</translation>
     </message>
@@ -2415,41 +2415,41 @@ Please enter the domain name below:</source>
 <context>
     <name>FirewallDialog</name>
     <message>
-        <location filename="FirewallDialog.cpp" line="368"/>
         <location filename="FirewallDialog.cpp" line="391"/>
+        <location filename="FirewallDialog.cpp" line="414"/>
         <source>FWBuilder API error: %1</source>
         <translation>FWBuilder API エラー: %1</translation>
     </message>
     <message>
-        <location filename="FirewallDialog.cpp" line="320"/>
-        <location filename="FirewallDialog.cpp" line="330"/>
-        <location filename="FirewallDialog.cpp" line="369"/>
+        <location filename="FirewallDialog.cpp" line="343"/>
+        <location filename="FirewallDialog.cpp" line="353"/>
         <location filename="FirewallDialog.cpp" line="392"/>
+        <location filename="FirewallDialog.cpp" line="415"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="FirewallDialog.cpp" line="238"/>
+        <location filename="FirewallDialog.cpp" line="241"/>
         <source>The name of the object &apos;%1&apos; has changed. The program can also rename IP address objects that belong to this object, using standard naming scheme &apos;host_name:interface_name:ip&apos;. This makes it easier to distinguish what host or a firewall given IP address object belongs to when it is used in the policy or NAT rule. The program also renames MAC address objects using scheme &apos;host_name:interface_name:mac&apos;. Do you want to rename child IP and MAC address objects now? (If you click &apos;No&apos;, names of all address objects that belong to %2 will stay the same.)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FirewallDialog.cpp" line="255"/>
+        <location filename="FirewallDialog.cpp" line="272"/>
         <source>&amp;Yes</source>
         <translation type="unfinished">はい(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="FirewallDialog.cpp" line="255"/>
+        <location filename="FirewallDialog.cpp" line="272"/>
         <source>&amp;No</source>
         <translation type="unfinished">いいえ(&amp;N)</translation>
     </message>
     <message>
-        <location filename="FirewallDialog.cpp" line="319"/>
+        <location filename="FirewallDialog.cpp" line="342"/>
         <source>Platform setting can not be empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FirewallDialog.cpp" line="329"/>
+        <location filename="FirewallDialog.cpp" line="352"/>
         <source>Host OS setting can not be empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2722,12 +2722,12 @@ Please enter the domain name below:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HostDialog.cpp" line="143"/>
+        <location filename="HostDialog.cpp" line="146"/>
         <source>&amp;Yes</source>
         <translation type="unfinished">はい(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="HostDialog.cpp" line="143"/>
+        <location filename="HostDialog.cpp" line="146"/>
         <source>&amp;No</source>
         <translation type="unfinished">いいえ(&amp;N)</translation>
     </message>
@@ -3070,7 +3070,7 @@ Please enter the domain name below:</source>
     <message>
         <location filename="InterfaceDialog.cpp" line="381"/>
         <location filename="InterfaceDialog.cpp" line="398"/>
-        <location filename="InterfaceDialog.cpp" line="526"/>
+        <location filename="InterfaceDialog.cpp" line="529"/>
         <source>&amp;Continue</source>
         <translation type="unfinished">続ける(&amp;C)</translation>
     </message>
@@ -3080,17 +3080,17 @@ Please enter the domain name below:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InterfaceDialog.cpp" line="434"/>
+        <location filename="InterfaceDialog.cpp" line="436"/>
         <source>&amp;Yes</source>
         <translation type="unfinished">はい(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="InterfaceDialog.cpp" line="434"/>
+        <location filename="InterfaceDialog.cpp" line="436"/>
         <source>&amp;No</source>
         <translation type="unfinished">いいえ(&amp;N)</translation>
     </message>
     <message>
-        <location filename="InterfaceDialog.cpp" line="525"/>
+        <location filename="InterfaceDialog.cpp" line="528"/>
         <source>FWBuilder API error: %1</source>
         <translation type="unfinished">FWBuilder API エラー: %1</translation>
     </message>
@@ -3214,33 +3214,33 @@ If network zone for this interface consists of only one subnet, you can simply c
     </message>
     <message>
         <location filename="InterfaceEditorWidget.ui" line="164"/>
-        <location filename="InterfaceEditorWidget.cpp" line="176"/>
+        <location filename="InterfaceEditorWidget.cpp" line="184"/>
         <source>Remove</source>
         <translation type="unfinished">削除</translation>
     </message>
     <message>
-        <location filename="InterfaceEditorWidget.cpp" line="290"/>
+        <location filename="InterfaceEditorWidget.cpp" line="299"/>
         <source>Failover protocol %1 does not require IP address for interface %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InterfaceEditorWidget.cpp" line="305"/>
+        <location filename="InterfaceEditorWidget.cpp" line="314"/>
         <source>Failover protocol %1 requires an IP address for interface %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InterfaceEditorWidget.cpp" line="332"/>
+        <location filename="InterfaceEditorWidget.cpp" line="345"/>
         <source>Empty addrres or netmask field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InterfaceEditorWidget.cpp" line="346"/>
+        <location filename="InterfaceEditorWidget.cpp" line="359"/>
         <source>Invalid address &apos;%1/%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InterfaceEditorWidget.cpp" line="360"/>
-        <location filename="InterfaceEditorWidget.cpp" line="376"/>
+        <location filename="InterfaceEditorWidget.cpp" line="373"/>
+        <location filename="InterfaceEditorWidget.cpp" line="389"/>
         <source>Invalid netmask &apos;%1/%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4122,32 +4122,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="PrefsDialog.cpp" line="373"/>
+        <location filename="PrefsDialog.cpp" line="376"/>
         <source>Find working directory</source>
         <translation>作業ディレクトリの検索</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="382"/>
+        <location filename="PrefsDialog.cpp" line="385"/>
         <source>Find Secure Shell utility</source>
         <translation>セキュアシェルユーティリティの検索</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="391"/>
+        <location filename="PrefsDialog.cpp" line="394"/>
         <source>Find SCP utility</source>
         <translation>SCP ユーティリティの検索</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="536"/>
+        <location filename="PrefsDialog.cpp" line="546"/>
         <source>Your version of Firewall Builder is up to date.</source>
         <translation>ファイアウォールビルダーのバージョンは最新です。</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="530"/>
+        <location filename="PrefsDialog.cpp" line="540"/>
         <source>A new version of Firewall Builder is available at http://www.fwbuilder.org</source>
         <translation>ファイアウォールビルダーの新しいバージョンを利用できます http://www.fwbuilder.org</translation>
     </message>
     <message>
-        <location filename="PrefsDialog.cpp" line="542"/>
+        <location filename="PrefsDialog.cpp" line="552"/>
         <source>Error checking for software updates:
 %1</source>
         <translation>ソフトウェアの更新の確認中にエラー:
@@ -4210,7 +4210,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ProjectPanel_file_ops.cpp" line="94"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="352"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="354"/>
         <source>&amp;Cancel</source>
         <translation>取り消し(&amp;C)</translation>
     </message>
@@ -4221,7 +4221,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ProjectPanel_file_ops.cpp" line="169"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1172"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1174"/>
         <source>Choose name and location for the new file</source>
         <translation>新規ファイルの名前とフォルダーを選択する</translation>
     </message>
@@ -4234,127 +4234,127 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">ファイルにデータを保存しています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="303"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="305"/>
         <source>Choose name and location for the file</source>
         <translation>ファイルの名前とフォルダーを選択する</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="351"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="353"/>
         <source>&amp;Discard changes</source>
         <translation>変更を破棄する(&amp;D)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="404"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="406"/>
         <source>File %1 has been added to RCS.</source>
         <translation>ファイル %1 を RCS に追加しました。</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="405"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="414"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="502"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="521"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="581"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="593"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="930"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="992"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1168"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1184"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1201"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1244"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1260"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1345"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1457"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="407"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="416"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="504"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="523"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="583"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="595"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="932"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="994"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1170"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1186"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1203"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1246"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1262"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1347"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1459"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="413"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="415"/>
         <source>Error adding file to RCS:
 %1</source>
         <translation>RCS へのファイルの追加エラー:
 %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="433"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="435"/>
         <source>Choose a file to import</source>
         <translation>インポートするファイルを選んでください</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="459"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="461"/>
         <source>This operation inspects two data files (either .fwb or .fwl) and finds conflicting objects. Conflicting objects have the same internal ID but different attributes. Two data files can not be merged, or one imported into another, if they contain such objects. This operation also helps identify changes made to objects in two copies of the same data file.&lt;br&gt;&lt;br&gt;This operation does not find objects present in one file but not in the other, such objects present no problem for merge or import operations.&lt;br&gt;&lt;br&gt;This operation works with two external files, neither of which needs to be opened in the program. Currently opened data file is not affected by this operation and objects in the tree do not change.&lt;br&gt;&lt;br&gt;Do you want to proceed ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="468"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="470"/>
         <source>Choose the first file</source>
         <translation>1 つ目のファイルを選んでください</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="476"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="478"/>
         <source>Choose the second file</source>
         <translation>2 つ目のファイルを選んでください</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="500"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="519"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="502"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="521"/>
         <source>Error loading file %1:
 %2</source>
         <translation>ファイル %1 の読み込み中のエラー:
 %2</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="543"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="545"/>
         <source>Total number of conflicting objects: %1.
 Do you want to generate report?</source>
         <translation>衝突オブジェクトの総数: %1
 報告を生成しますか?</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="553"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="555"/>
         <source>Choose name and location for the report file</source>
         <translation>報告ファイルの場所と名前を選んでください</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="555"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="557"/>
         <source>TXT Files (*.txt);;All Files (*)</source>
         <translation>テキストファイル (*.txt);;すべてのファイル (*)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="580"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="582"/>
         <source>Can not open report file for writing. File &apos;%1&apos;</source>
         <translation>報告ファイルを書き込むために開けません。ファイル「%1」</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="591"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="593"/>
         <source>Unexpected error comparing files %1 and %2:
 %3</source>
         <translation>%1 と %2 のファイル比較で予期せぬエラー:
 %3</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="622"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="624"/>
         <source>Please select a library you want to export.</source>
         <translation>エクスポートしたいライブラリーを選択してください。</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="645"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="647"/>
         <source>The file %1 already exists.
 Do you want to overwrite it ?</source>
         <translation>ファイル %1 は既に存在します。
 上書きしますか?</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="647"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="649"/>
         <source>&amp;Yes</source>
         <translation>はい(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="647"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="649"/>
         <source>&amp;No</source>
         <translation>いいえ(&amp;N)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="776"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="778"/>
         <source>A library that you are trying to export contains references
 to objects in the other libraries and can not be exported.
 The following objects need to be moved outside of it or
@@ -4362,38 +4362,38 @@ objects that they refer to moved in it:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="923"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1252"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="925"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1254"/>
         <source>(Long error message was truncated)</source>
         <translation>(長いエラーメッセージを切り詰めました)</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="927"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="929"/>
         <source>The program encountered error trying to load file %1.
 The file has not been loaded. Error:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="957"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1022"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="959"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1024"/>
         <source>Loading system objects...</source>
         <translation>システムオブジェクトを読み込んでいます...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="991"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="993"/>
         <source>Error loading file:
 %1</source>
         <translation>ファイルの読み込み中のエラー:
 %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1029"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1031"/>
         <source>Reading and parsing data file...</source>
         <translation>データファイルの読み込みと解析をしています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1064"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1066"/>
         <source>Merging with system objects...</source>
         <translation>システムオブジェクトと結合しています...</translation>
     </message>
@@ -4408,7 +4408,7 @@ Choose a different name for the new file.</source>
 新しいファイルのための違う名前を選んでください。</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1182"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1184"/>
         <source>Load operation cancelled and data file revertedto original version.</source>
         <translation>読み込み操作を取り消し、データファイルをオリジナルバージョンに戻しました。</translation>
     </message>
@@ -4419,71 +4419,71 @@ has been renamed &apos;%2&apos;</source>
 データファイル「%1」の名前を「%2」に変える必要があります</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1229"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1231"/>
         <source>Exception: %1</source>
         <translation>例外: %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1233"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1235"/>
         <source>Failed transformation : %1</source>
         <translation>変換に失敗しました : %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1238"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1240"/>
         <source>XML element : %1</source>
         <translation>XML 要素 : %1</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1242"/>
-        <location filename="ProjectPanel_file_ops.cpp" line="1257"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1244"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1259"/>
         <source>The program encountered error trying to load data file.
 The file has not been loaded. Error:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1273"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1275"/>
         <source>Building object tree...</source>
         <translation>オブジェクトツリーを構築しています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1279"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1281"/>
         <source>Indexing...</source>
         <translation>インデックスを作成しています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1310"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1312"/>
         <source>Checking file %1 in RCS</source>
         <translation>RCS にファイル %1 をチェックインしています</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1343"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1345"/>
         <source>Error checking in file %1:
 %2</source>
         <translation>ファイル %1 の検査中のエラー:%2</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1375"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1377"/>
         <source>Saving data to file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1450"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1452"/>
         <source>File is read-only</source>
         <translation>ファイルは読み込み専用です</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1455"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1457"/>
         <source>Error saving file %1: %2</source>
         <translation>ファイル %1 の保存中のエラー: %2</translation>
     </message>
     <message>
-        <location filename="ProjectPanel.cpp" line="902"/>
+        <location filename="ProjectPanel.cpp" line="905"/>
         <source>Searching for firewalls affected by the change...</source>
         <translation type="unfinished">変更に影響したファイアウォールを検索しています...</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1163"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1165"/>
         <source>Firewall Builder uses file extension &apos;.fwb&apos; and
 needs to rename old data file &apos;%1&apos; to &apos;%2&apos;,
 but file &apos;%3&apos; already exists.
@@ -4491,13 +4491,13 @@ Choose a different name for the new file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="1198"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="1200"/>
         <source>Firewall Builder uses file extension &apos;.fwb&apos;. Your datafile &apos;%1&apos; 
 has been renamed &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="346"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="348"/>
         <source>This operation discards all changes that have been saved into the file so far, closes it and replaces it with a clean copy of its head revision from RCS.
 All changes will be lost if you do this.
 </source>
@@ -5246,27 +5246,27 @@ because of incompatible type.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="741"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="743"/>
         <source>Library %1: Firewall &apos;%2&apos; (global policy rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="751"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="753"/>
         <source>Library %1: Firewall &apos;%2&apos; (NAT rule #%3) uses object &apos;%4&apos; from library &apos;%5&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="761"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="763"/>
         <source>Library %1: Group &apos;%2&apos; uses object &apos;%3&apos; from library &apos;%4&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="818"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="820"/>
         <source>File is read-only</source>
         <translation>ファイルは読み込み専用です</translation>
     </message>
     <message>
-        <location filename="ProjectPanel_file_ops.cpp" line="822"/>
+        <location filename="ProjectPanel_file_ops.cpp" line="824"/>
         <source>Error saving file %1: %2</source>
         <translation>ファイル %1 の保存中にエラー: %2</translation>
     </message>
@@ -5396,49 +5396,49 @@ Exit status %3</source>
         <translation type="obsolete">* ファイル %1 からせって意を読み込んでいます</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="408"/>
+        <location filename="instDialog_ui_ops.cpp" line="414"/>
         <source>* Running as user : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="409"/>
+        <location filename="instDialog_ui_ops.cpp" line="415"/>
         <source>* Firewall name : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="411"/>
+        <location filename="instDialog_ui_ops.cpp" line="417"/>
         <source>* Installer uses user name : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="412"/>
+        <location filename="instDialog_ui_ops.cpp" line="418"/>
         <source>* Management address : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="413"/>
+        <location filename="instDialog_ui_ops.cpp" line="419"/>
         <source>* Platform : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="415"/>
+        <location filename="instDialog_ui_ops.cpp" line="421"/>
         <source>* Host OS : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="1164"/>
+        <location filename="instDialog_ui_ops.cpp" line="1170"/>
         <source>Only one interface of the firewall &apos;%1&apos; must be marked as management interface.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="1175"/>
+        <location filename="instDialog_ui_ops.cpp" line="1181"/>
         <source>One of the interfaces of the firewall &apos;%1&apos; must be marked as management interface.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="1187"/>
+        <location filename="instDialog_ui_ops.cpp" line="1193"/>
         <source>Management interface does not have IP address, can not communicate with the firewall.
 </source>
         <translation type="unfinished"></translation>
@@ -6068,7 +6068,7 @@ Please repair the tree using command &apos;fwbedit checktree -f file.fwb&apos;.<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="407"/>
+        <location filename="instDialog_ui_ops.cpp" line="413"/>
         <source>Summary:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6093,7 +6093,7 @@ Please repair the tree using command &apos;fwbedit checktree -f file.fwb&apos;.<
         <translation type="obsolete">* ホスト OS: %1</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="417"/>
+        <location filename="instDialog_ui_ops.cpp" line="423"/>
         <source>* Loading configuration from file %1</source>
         <translation type="unfinished">* ファイル %1 から設定を読み込んでいます</translation>
     </message>
@@ -6102,12 +6102,12 @@ Please repair the tree using command &apos;fwbedit checktree -f file.fwb&apos;.<
         <translation type="obsolete">* インクリメンタルインストール</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="421"/>
+        <location filename="instDialog_ui_ops.cpp" line="427"/>
         <source>* Configuration diff will be saved in file %1</source>
         <translation type="unfinished">* 設定の差分をファイル %1 に保存するでしょう</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="425"/>
+        <location filename="instDialog_ui_ops.cpp" line="431"/>
         <source>* Commands will not be executed on the firewall</source>
         <translation type="unfinished">* コマンドはファイアウォール上で実行されないでしょう</translation>
     </message>
@@ -6150,17 +6150,17 @@ Please repair the tree using command &apos;fwbedit checktree -f file.fwb&apos;.<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWCmdChange.cpp" line="73"/>
+        <location filename="FWCmdChange.cpp" line="74"/>
         <source>Edit </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWCmdChange.cpp" line="147"/>
+        <location filename="FWCmdChange.cpp" line="152"/>
         <source>Rename object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWCmdChange.cpp" line="181"/>
+        <location filename="FWCmdChange.cpp" line="186"/>
         <source>Edit rule options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6235,7 +6235,7 @@ Please repair the tree using command &apos;fwbedit checktree -f file.fwb&apos;.<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FWCmdRule.cpp" line="607"/>
+        <location filename="FWCmdRule.cpp" line="615"/>
         <source>Negate</source>
         <translation type="unfinished">否定</translation>
     </message>
@@ -6322,14 +6322,14 @@ part of the tree or data file was opened read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator_ops.cpp" line="305"/>
-        <location filename="ObjectManipulator_ops.cpp" line="339"/>
-        <location filename="ObjectManipulator_ops.cpp" line="375"/>
+        <location filename="ObjectManipulator_ops.cpp" line="308"/>
+        <location filename="ObjectManipulator_ops.cpp" line="342"/>
+        <location filename="ObjectManipulator_ops.cpp" line="378"/>
         <source>Paste object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ObjectManipulator_ops.cpp" line="652"/>
+        <location filename="ObjectManipulator_ops.cpp" line="655"/>
         <source>Create new group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7234,37 +7234,37 @@ access access lists generated for it.</source>
         <translation>否定</translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1687"/>
+        <location filename="RuleSetView.cpp" line="1704"/>
         <source>Change direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1714"/>
+        <location filename="RuleSetView.cpp" line="1731"/>
         <source>Change action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1865"/>
+        <location filename="RuleSetView.cpp" line="1882"/>
         <source>Change logging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1914"/>
+        <location filename="RuleSetView.cpp" line="1931"/>
         <source>delete </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1926"/>
+        <location filename="RuleSetView.cpp" line="1943"/>
         <source>Copy object &apos;%1&apos; to clipboard&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="1943"/>
+        <location filename="RuleSetView.cpp" line="1960"/>
         <source>cut </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetView.cpp" line="2029"/>
+        <location filename="RuleSetView.cpp" line="2046"/>
         <source>Move object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7395,22 +7395,22 @@ access access lists generated for it.</source>
 <context>
     <name>RuleSetViewDelegate</name>
     <message>
-        <location filename="RuleSetViewDelegate.cpp" line="523"/>
+        <location filename="RuleSetViewDelegate.cpp" line="536"/>
         <source>Any</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetViewDelegate.cpp" line="528"/>
+        <location filename="RuleSetViewDelegate.cpp" line="541"/>
         <source>Original</source>
         <translation type="unfinished">オリジナル</translation>
     </message>
     <message>
-        <location filename="RuleSetViewDelegate.cpp" line="529"/>
+        <location filename="RuleSetViewDelegate.cpp" line="542"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="RuleSetViewDelegate.cpp" line="532"/>
+        <location filename="RuleSetViewDelegate.cpp" line="545"/>
         <source>All</source>
         <translation type="unfinished">すべて</translation>
     </message>
@@ -8829,9 +8829,9 @@ installed on your machine using Preferences dialog</source>
     <message>
         <location filename="instDialog.cpp" line="506"/>
         <location filename="instDialog_compile.cpp" line="165"/>
-        <location filename="instDialog_ui_ops.cpp" line="1169"/>
-        <location filename="instDialog_ui_ops.cpp" line="1180"/>
-        <location filename="instDialog_ui_ops.cpp" line="1191"/>
+        <location filename="instDialog_ui_ops.cpp" line="1175"/>
+        <location filename="instDialog_ui_ops.cpp" line="1186"/>
+        <location filename="instDialog_ui_ops.cpp" line="1197"/>
         <source>&amp;Continue</source>
         <translation>続ける(&amp;C)</translation>
     </message>
@@ -8882,17 +8882,17 @@ Can&apos;t compile firewall policy.</source>
         <translation>失敗</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="347"/>
+        <location filename="instDialog_ui_ops.cpp" line="353"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="354"/>
+        <location filename="instDialog_ui_ops.cpp" line="360"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="361"/>
+        <location filename="instDialog_ui_ops.cpp" line="367"/>
         <source>Cancelled</source>
         <translation>取り消しました</translation>
     </message>
@@ -8905,7 +8905,7 @@ Can&apos;t compile firewall policy.</source>
         <translation type="obsolete">詳細を隠す</translation>
     </message>
     <message>
-        <location filename="instDialog_ui_ops.cpp" line="507"/>
+        <location filename="instDialog_ui_ops.cpp" line="513"/>
         <source>Running command &apos;%1&apos;
 </source>
         <translation>コマンド &apos;%1&apos; を実行しています
@@ -11715,36 +11715,37 @@ that can be handled simultaneously by netfilter in kernel memory.</source>
     </message>
     <message>
         <location filename="newClusterDialog.cpp" line="166"/>
-        <source>Depending on the failover protocol, cluster interface may or may not need an IP address. &lt;b&gt;VRRP&lt;/b&gt; and &lt;b&gt;CARP&lt;/b&gt; interfaces should have their own unique IP addresses different from the member firewall interfaces. Other failover protocols such as &lt;b&gt;heartbeat&lt;/b&gt; or &lt;b&gt;OpenAIS&lt;/b&gt; do not create new interface and therefore do not require additional IP address. &lt;br&gt;&lt;br&gt;List of available failover protocols depends on the firewall platform.</source>
+        <source>Depending on the failover protocol, cluster interface may or may not need an IP address. &lt;b&gt;VRRP&lt;/b&gt;, &lt;b&gt;CARP&lt;/b&gt;, &lt;b&gt;heartbeat&lt;/b&gt; interfaces should have their own unique IP addresses different from the member firewall interfaces. Other failover protocols such as the one used in &lt;b&gt;Cisco ASA (PIX) firewall&lt;/b&gt; do not require additional IP address.&lt;br&gt;&lt;br&gt;List of available failover protocols depends on the firewall platform.</source>
+        <oldsource>Depending on the failover protocol, cluster interface may or may not need an IP address. &lt;b&gt;VRRP&lt;/b&gt; and &lt;b&gt;CARP&lt;/b&gt; interfaces should have their own unique IP addresses different from the member firewall interfaces. Other failover protocols such as &lt;b&gt;heartbeat&lt;/b&gt; or &lt;b&gt;OpenAIS&lt;/b&gt; do not create new interface and therefore do not require additional IP address. &lt;br&gt;&lt;br&gt;List of available failover protocols depends on the firewall platform.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newClusterDialog.cpp" line="250"/>
+        <location filename="newClusterDialog.cpp" line="249"/>
         <source>regular </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newClusterDialog.cpp" line="251"/>
+        <location filename="newClusterDialog.cpp" line="250"/>
         <source>dynamic </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newClusterDialog.cpp" line="252"/>
+        <location filename="newClusterDialog.cpp" line="251"/>
         <source>unnumbered </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newClusterDialog.cpp" line="257"/>
+        <location filename="newClusterDialog.cpp" line="256"/>
         <source> with address: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newClusterDialog.cpp" line="259"/>
+        <location filename="newClusterDialog.cpp" line="258"/>
         <source> with addresses: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newClusterDialog.cpp" line="323"/>
+        <location filename="newClusterDialog.cpp" line="322"/>
         <source>You should select at least one firewall to create a cluster</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11926,17 +11927,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="684"/>
+        <location filename="newFirewallDialog.cpp" line="686"/>
         <source>Interface: %1 (%2)</source>
         <translation>インターフェース: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="692"/>
+        <location filename="newFirewallDialog.cpp" line="694"/>
         <source>Dynamic address</source>
         <translation>ダイナミックアドレス</translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="694"/>
+        <location filename="newFirewallDialog.cpp" line="696"/>
         <source>Unnumbered interface</source>
         <translation>アンナンバードインターフェース</translation>
     </message>
@@ -11981,9 +11982,9 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newFirewallDialog.cpp" line="720"/>
-        <location filename="newFirewallDialog.cpp" line="734"/>
-        <location filename="newFirewallDialog.cpp" line="749"/>
+        <location filename="newFirewallDialog.cpp" line="722"/>
+        <location filename="newFirewallDialog.cpp" line="736"/>
+        <location filename="newFirewallDialog.cpp" line="751"/>
         <source>Invalid address &apos;%1/%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
