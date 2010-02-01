@@ -1273,7 +1273,6 @@ void ObjectManipulator::libChanged(int ln)
 void ObjectManipulator::updateCreateObjectMenu(FWObject* lib)
 {
     bool f =
-        lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
         lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
         lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
         lib->isReadOnly();

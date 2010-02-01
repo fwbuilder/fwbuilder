@@ -1,5 +1,9 @@
 2010-02-01  vadim  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator.cpp (ObjectManipulator::updateCreateObjectMenu):
+	fixes #1195 the GUI should enable "new object" button and menu
+	item when objects_init.xml library is opened
+
 	* platforms.cpp (isDefaultPolicyRuleOptions): fixes #1193 default
 	setting for "Assume fw is part of any" per-rule option is "follow
 	global"
