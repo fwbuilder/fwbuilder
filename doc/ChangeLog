@@ -1,5 +1,9 @@
 2010-02-01  vadim  <vadim@vk.crocodile.org>
 
+	* platforms.cpp (isDefaultPolicyRuleOptions): fixes #1193 default
+	setting for "Assume fw is part of any" per-rule option is "follow
+	global"
+
 	* ../src/res/os/linux24.xml: fixes #1192 "iptables script should
 	skip virtual addresses configured on cluster interfaces while
 	updating addresses of interfaces". The problem only affected

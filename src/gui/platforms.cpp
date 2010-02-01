@@ -225,7 +225,7 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
 
                    opt->getInt("ulog_nlgroup")<=1        &&
                    opt->getStr("limit_suffix").empty()   &&
-                   ! opt->getBool("firewall_is_part_of_any_and_networks"));
+                   opt->getStr("firewall_is_part_of_any_and_networks") == "");
 	}
 
 	if (platform=="pix" || platform=="fwsm")
