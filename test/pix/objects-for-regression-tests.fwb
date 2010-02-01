@@ -2026,7 +2026,7 @@
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AF5AA0A" host_OS="pix_os" inactive="False" lastCompiled="1145688299" lastInstalled="0" lastModified="1263969139" platform="pix" version="6.3" name="firewall1" comment="this object is used to test all kinds of negation in policy rules" ro="False">
+      <Firewall id="id3AF5AA0A" host_OS="pix_os" inactive="False" lastCompiled="1145688299" lastInstalled="0" lastModified="1265002799" platform="pix" version="6.1" name="firewall1" comment="this object is used to test all kinds of negation in policy rules" ro="False">
         <NAT id="id3AF5AA0D" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3C98491C" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2070,7 +2070,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id579976X27842" disabled="False" group="" position="2" action="Translate" comment="">
+          <NATRule id="id579976X27842" disabled="True" group="" position="2" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -2092,7 +2092,7 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id572656X27842" disabled="False" group="" position="3" action="Translate" comment="">
+          <NATRule id="id572656X27842" disabled="True" group="" position="3" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="net-Internal_net"/>
               <ObjectRef ref="id3B022266"/>
@@ -5020,7 +5020,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="pix_os" inactive="False" lastCompiled="1203134921" lastInstalled="0" lastModified="1263966708" platform="pix" version="6.3" name="firewall2" comment="lots of different combinations of objects in the NAT rules&#10;" ro="False">
+      <Firewall id="id3AFB66C6" host_OS="pix_os" inactive="False" lastCompiled="1265004822" lastInstalled="0" lastModified="1265004815" platform="pix" version="6.3" name="firewall2" comment="lots of different combinations of objects in the NAT rules&#10;" ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3D1BFA5B" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -5346,7 +5346,31 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D1BFFA4" disabled="False" position="15" action="Translate" comment="">
+          <NATRule id="id247124X73662" disabled="True" group="" position="15" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id3B022266"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id3D1BFABC"/>
+              <ObjectRef ref="id3AFADBF9"/>
+              <ObjectRef ref="id3AFB66C6"/>
+              <ObjectRef ref="id23297X67574"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id3D1BFFA4" disabled="False" position="16" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5367,7 +5391,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D1C0835" disabled="False" position="16" action="Translate" comment="">
+          <NATRule id="id3D1C0835" disabled="False" position="17" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5388,7 +5412,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id16986X27842" disabled="False" group="" position="17" action="Translate" comment="">
+          <NATRule id="id16986X27842" disabled="False" group="" position="18" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5409,7 +5433,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id414351C7" disabled="False" position="18" action="Translate" comment="">
+          <NATRule id="id414351C7" disabled="False" position="19" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5430,7 +5454,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id414351D7" disabled="False" position="19" action="Translate" comment="">
+          <NATRule id="id414351D7" disabled="False" position="20" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5451,7 +5475,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFB69BD" disabled="False" position="20" action="Translate" comment="">
+          <NATRule id="id3AFB69BD" disabled="False" position="21" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5472,7 +5496,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D1BFFCE" disabled="False" position="21" action="Translate" comment="">
+          <NATRule id="id3D1BFFCE" disabled="False" position="22" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5493,7 +5517,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D1BFFE2" disabled="True" position="22" action="Translate" comment="">
+          <NATRule id="id3D1BFFE2" disabled="True" position="23" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5514,7 +5538,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D1BFFF6" disabled="False" position="23" action="Translate" comment="">
+          <NATRule id="id3D1BFFF6" disabled="False" position="24" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="id3B022266"/>
             </OSrc>
@@ -5535,7 +5559,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3BEEF6D2" disabled="False" position="24" action="Translate" comment="">
+          <NATRule id="id3BEEF6D2" disabled="False" position="25" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5556,7 +5580,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3AFB69F7" disabled="True" position="25" action="Translate" comment="">
+          <NATRule id="id3AFB69F7" disabled="True" position="26" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5577,7 +5601,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3B7313C4" disabled="False" position="26" action="Translate" comment="">
+          <NATRule id="id3B7313C4" disabled="False" position="27" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5598,7 +5622,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id47B6CF3421818" disabled="False" position="27" action="Translate" comment="">
+          <NATRule id="id47B6CF3421818" disabled="False" position="28" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5619,7 +5643,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id47B6CF4921818" disabled="False" position="28" action="Translate" comment="">
+          <NATRule id="id47B6CF4921818" disabled="False" position="29" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>
@@ -5640,7 +5664,7 @@ no sysopt nodnsalias outbound
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
-          <NATRule id="id3D1C0B6A" disabled="True" position="29" action="Translate" comment="">
+          <NATRule id="id3D1C0B6A" disabled="True" position="30" action="Translate" comment="">
             <OSrc neg="False">
               <ObjectRef ref="sysid0"/>
             </OSrc>

@@ -40,6 +40,7 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Cluster.h"
 
 #include <iostream>
 #if __GNUC__ > 3 || \
@@ -71,15 +72,26 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     Helper helper(compiler);
 
-    RuleElementSrc *srcre = rule->getSrc();
-    RuleElementDst *dstre = rule->getDst();
-
     list<int> intf_id_list;
 
     if (rule->getInterfaceId() == -1)
     {
-        if (rule->getDirection()==PolicyRule::Both)
+        bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+        Cluster *cluster = NULL;
+        if (cluster_member)
+            cluster = Cluster::cast(
+                compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+
+        RuleElementSrc *srcre = rule->getSrc();
+        RuleElementDst *dstre = rule->getDst();
+        Address *srcobj = compiler->getFirstSrc(rule);
+
+        if (rule->getDirection()==PolicyRule::Both &&
+            ! compiler->complexMatch(srcobj, compiler->fw) &&
+            ! compiler->complexMatch(srcobj, cluster))
+        {
             intf_id_list = helper.findInterfaceByNetzoneOrAll( srcre );
+        }
 
         if (rule->getDirection()==PolicyRule::Inbound)
             intf_id_list = helper.getAllInterfaceIDs();
@@ -109,6 +121,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
             tmp_queue.push_back(rule);
         return true;
     }
+
     tmp_queue.push_back(rule);
     return true;
 }
@@ -124,14 +137,25 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
         return true;
     }
 
-    RuleElementDst *dstre = rule->getDst();
-
     list<int> intf_id_list;
 
     if (rule->getInterfaceId() == -1)
     {
-        if (rule->getDirection()==PolicyRule::Both)
+        bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+        Cluster *cluster = NULL;
+        if (cluster_member)
+            cluster = Cluster::cast(
+                compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+
+        RuleElementDst *dstre = rule->getDst();
+        Address *dstobj = compiler->getFirstDst(rule);
+
+        if (rule->getDirection()==PolicyRule::Both &&
+            ! compiler->complexMatch(dstobj, compiler->fw) &&
+            ! compiler->complexMatch(dstobj, cluster))
+        {
             intf_id_list = helper.findInterfaceByNetzoneOrAll( dstre );
+        }
 
         if (rule->getDirection()==PolicyRule::Outbound)
             intf_id_list = helper.getAllInterfaceIDs();

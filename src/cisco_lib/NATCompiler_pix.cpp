@@ -36,6 +36,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 #include "fwbuilder/InetAddr.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Resources.h"
@@ -72,6 +73,88 @@ NATCompiler_pix::NATCompiler_pix(FWObjectDatabase *_db,
 { 
 }
 
+
+/*
+ * Do not expand interfaces in ODst and TSrc
+ *
+ */
+void NATCompiler_pix::_expand_addr_recursive_pix(Rule *rule,
+                                                 FWObject *re,
+                                                 FWObject *s,
+                                                 list<FWObject*> &ol)
+{
+    Interface *rule_iface = Interface::cast(dbcopy->findInIndex(rule->getInterfaceId()));
+    bool odst_or_tsrc = (re->getTypeName() == RuleElementODst::TYPENAME ||
+                         re->getTypeName() == RuleElementTSrc::TYPENAME);
+
+    list<FWObject*> addrlist;
+
+    for (FWObject::iterator i1=s->begin(); i1!=s->end(); ++i1) 
+    {
+        FWObject *o = FWReference::getObject(*i1);
+	assert(o);
+
+        Address *addr = Address::cast(o);
+
+        // this condition includes Host, Firewall and Interface
+        if (addr && !addr->hasInetAddress())
+        {
+            addrlist.push_back(o);
+            continue;
+        }
+
+        // IPv4, IPv6, Network, NetworkIPv6
+        if (addr && addr->hasInetAddress() && MatchesAddressFamily(o))
+        {            
+            addrlist.push_back(o);
+            continue;
+        }
+
+        if (o->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
+            MultiAddress::cast(o)!=NULL ||
+            Interface::cast(o) ||
+            physAddress::cast(o))
+        {
+            addrlist.push_back(o);
+            continue;
+        }
+    }
+ 
+    if (addrlist.empty())
+    {
+        if (RuleElement::cast(s)==NULL) ol.push_back(s);
+    }
+    else
+    {
+        for (list<FWObject*>::iterator i2=addrlist.begin();
+             i2!=addrlist.end(); ++i2)
+        {
+            Interface *i2itf = Interface::cast(*i2);
+            if (i2itf)
+            {
+                // if this is ODst or TSrc, just use interface 
+                if (odst_or_tsrc)
+                {
+                    ol.push_back(i2itf);
+                    continue;
+                }
+
+                _expand_interface(rule, i2itf, ol);
+                continue;
+            }
+            _expand_addr_recursive_pix(rule, re, *i2, ol);
+        }
+    }
+}
+
+
+void NATCompiler_pix::_expand_addr_recursive(Rule *rule, FWObject *re,
+                                             list<FWObject*> &ol)
+{
+    _expand_addr_recursive_pix(rule, re, re, ol);
+}
+
+
 void NATCompiler_pix::_expand_interface(Rule *rule,
                                         Interface *iface,
                                         std::list<FWObject*> &ol)
@@ -83,22 +166,18 @@ void NATCompiler_pix::_expand_interface(Rule *rule,
         return;
     }
 
-    FWObject *failover_group = iface->getFirstByType(FailoverClusterGroup::TYPENAME);
+    FailoverClusterGroup *failover_group = FailoverClusterGroup::cast(
+        iface->getFirstByType(FailoverClusterGroup::TYPENAME));
     if (failover_group)
     {
-        for (FWObjectTypedChildIterator it =
-                 failover_group->findByType(FWObjectReference::TYPENAME);
-             it != it.end(); ++it)
+        Interface *member_iface =
+            failover_group->getInterfaceForMemberFirewall(fw);
+        if (member_iface)
         {
-            Interface *member_iface =
-                Interface::cast(FWObjectReference::getObject(*it));
-            assert(member_iface);
-            if (member_iface->isChildOf(fw))
-            {
-                Compiler::_expand_interface(rule, member_iface, ol);
-                return;
-            }
+            Compiler::_expand_interface(rule, member_iface, ol);
+            return;
         }
+        
         QString err("Failover group of cluster interface '%1' (%2) "
                     "does not include interface for the member '%3'");
         abort(rule,
@@ -899,6 +978,12 @@ bool NATCompiler_pix::createNATCmd::processNext()
     NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
+    bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+    Cluster *cluster = NULL;
+    if (cluster_member)
+        cluster = Cluster::cast(
+            compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+
     if (rule->getRuleType()==NATRule::SNAT) 
     {
 	Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
@@ -923,21 +1008,22 @@ bool NATCompiler_pix::createNATCmd::processNext()
         natcmd->nat_acl_name = pix_comp->getNATACLname(rule,"");
         pix_comp->registerACL(natcmd->nat_acl_name);
 
-        if (Interface::cast(tsrc)!=NULL || natcmd->t_iface->isDyn()) 
+        if (Interface::cast(tsrc)!=NULL || natcmd->t_iface->isDyn())
         {
-            natcmd->type=INTERFACE;
-        } else {
+            natcmd->type = INTERFACE;
+        } else
+        {
             if (Network::cast(tsrc)) 
             {
-                natcmd->type=NETWORK_ADDRESS;
+                natcmd->type = NETWORK_ADDRESS;
             } else {
-                if (AddressRange::cast(tsrc))       natcmd->type=ADDRESS_RANGE;
-                else                                natcmd->type=SINGLE_ADDRESS;
+                if (AddressRange::cast(tsrc)) natcmd->type = ADDRESS_RANGE;
+                else                          natcmd->type = SINGLE_ADDRESS;
             }
         }
 
         natcmd->ignore_nat = natcmd->ignore_nat_and_print_acl =
-            natcmd->ignore_global=false;
+            natcmd->ignore_global = false;
         natcmd->use_nat_0_0 = rule->getBool("use_nat_0_0");
         
 /*
@@ -1061,6 +1147,7 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
 /* since map nat_commands is sorted by the key, we only have to scan it
  * until we hit natcmd 
  */
+
                 if (natcmd==nc) break;
 
                 const InetAddr *a1 = natcmd->t_addr->getAddressPtr();
@@ -1081,11 +1168,11 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
             for (map<int,NATCmd*>::iterator i1=pix_comp->nat_commands.begin();
                  i1!=pix_comp->nat_commands.end(); ++i1) 
             {
-                NATCmd *nc=(*i1).second;
+                NATCmd *nc = (*i1).second;
 /* since map nat_commands is sorted by the key, we only have to scan it
  * until we hit natcmd 
  */
-                if (natcmd==nc) break;
+                if (natcmd == nc) break;
                 if (nc->ignore_nat) continue;
 
 /* using operator==(const Address &o1,const Address &o2) here */
@@ -1104,14 +1191,14 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
  * nat rule; in this case we need to find this other rule and also
  * reassign it to the global pool of the rule #2.
  */
-                    natcmd->ignore_nat=true;
+                    natcmd->ignore_nat = true;
                     map<int,NATCmd*>::iterator i2;
                     for (i2 = pix_comp->nat_commands.begin();
                          i2 != pix_comp->nat_commands.end(); ++i2) 
                     {
                         NATCmd *nc2 = i2->second;
                         if (natcmd->nat_id == nc2->nat_id)
-                            nc2->nat_id=nc->nat_id;
+                            nc2->nat_id = nc->nat_id;
                     }
                     natcmd->nat_id = nc->nat_id;
                 }
@@ -1136,7 +1223,7 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
                     if (nc->ignore_nat) continue;
                     if (nc->use_nat_0_0) continue;
 
-                    if ( natcmd->nat_id==nc->nat_id &&
+                    if ( natcmd->nat_id == nc->nat_id &&
                          natcmd->t_addr == nc->t_addr &&
                          natcmd->o_iface->getId() == nc->o_iface->getId() )
                     {
@@ -1147,7 +1234,7 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
  * these nat commands. We merge ACLs by assigning them the same name.
  */
                         natcmd->nat_acl_name = nc->nat_acl_name;
-                        nc->ignore_nat_and_print_acl=true;
+                        nc->ignore_nat_and_print_acl = true;
                     }
                 }
             }
@@ -1668,15 +1755,23 @@ void NATCompiler_pix::compile()
         add( new classifyNATRule("determine NAT rule types"));
         add( new VerifyRules("verify rules" ));
 
+        // ReplaceFirewallObjectsODst, ReplaceFirewallObjectsODst and
+        // UseFirewallInterfaces assume there is one object in ODst,
+        // TSrc and TDst rule elements. This should have been assured
+        // by inspector VerifyRules
+        add( new ReplaceFirewallObjectsODst("replace fw object in ODst" ));
+        add( new ReplaceFirewallObjectsTSrc("replace fw object in TSrc" ));
+        add( new UseFirewallInterfaces(
+                 "replace host objects with firewall's interfaces if the have the same address"));
+
+        // ExpandMultipleAddresses acts on different rule elements
+        // depending on the rule type.
+        // Also using overloaded virtual function  _expand_interface
         add( new ExpandMultipleAddresses("expand multiple addresses"));
         add( new MACFiltering( "check for MAC address filtering"));
         add( new ExpandAddressRanges("expand address range objects"));
         add( new checkForUnnumbered("check for unnumbered interfaces"));
 
-        add( new ReplaceFirewallObjectsODst("replace fw object in ODst" ));
-        add( new ReplaceFirewallObjectsTSrc("replace fw object in TSrc" ));
-        add( new UseFirewallInterfaces(
-                 "replace host objects with firewall's interfaces if the have the same address"));
         add( new ConvertToAtomic("convert to atomic rules" ));
         add( new AssignInterface("assign rules to interfaces" ));
         add( new verifyInterfaces("verify interfaces assignment" ));

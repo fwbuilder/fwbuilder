@@ -137,6 +137,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
              << "  " << netzone->getName()
              << endl;
 #endif
+
         if (netzone_id != -1)
         {
             FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
@@ -156,7 +157,9 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
                 } else
                 {
                     if (Address::cast(*j)->belongs(*addr))
+                    {
                         zones[iface->getId()] = netzone;
+                    }
                 }
             }
         }
@@ -167,7 +170,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
  * pick the one with smallest dimension
  */    
     int  res_id = -1;
-    unsigned long res_dim=LONG_MAX;
+    unsigned long res_dim = LONG_MAX;
     for (map<int,FWObject*>::iterator i=zones.begin(); i!=zones.end(); ++i) 
     {
         int iface_id = (*i).first;
@@ -176,8 +179,8 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
 
         if (dim<=res_dim) 
         {
-            res_id=iface_id;
-            res_dim=dim;
+            res_id = iface_id;
+            res_dim = dim;
         }
     }
 
@@ -190,6 +193,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
     if (res_id == -1)
         throw(string("Can not find interface with network zone that includes "
                      "address ") + string((addr)?addr->toString():"NULL"));
+
     return res_id;
 }
 

@@ -47,13 +47,6 @@
 #include "fwbuilder/FailoverClusterGroup.h"
 
 #include <iostream>
-#if __GNUC__ > 3 || \
-    (__GNUC__ == 3 && (__GNUC_MINOR__ > 2 || (__GNUC_MINOR__ == 2 ) ) ) || \
-     _MSC_VER
-#  include <streambuf>
-#else
-#  include <streambuf.h>
-#endif
 #include <iomanip>
 #include <algorithm>
 #include <functional>
@@ -257,7 +250,12 @@ bool PolicyCompiler_pix::checkVersionAndDynamicInterface::processNext()
 
 /* if service is ssh, telnet or icmp then we can use dynamic interface
  * even in earlier versions */
-    if (ICMPService::isA(s)) return true;
+    if (ICMPService::isA(s))
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
     if (TCPService::isA(s))
     {
         if ( s->getInt("dst_range_start")==22 && 

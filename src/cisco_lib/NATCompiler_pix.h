@@ -101,6 +101,16 @@ namespace fwcompiler {
 
         std::string debugPrintRule(libfwbuilder::Rule *r);
 
+        void _expand_addr_recursive_pix(libfwbuilder::Rule *rule,
+                                        libfwbuilder::FWObject *re,
+                                        libfwbuilder::FWObject *s,
+                                        std::list<libfwbuilder::FWObject*> &ol);
+
+        
+        virtual void _expand_addr_recursive(libfwbuilder::Rule *rule,
+                                    libfwbuilder::FWObject *s,
+                                    std::list<libfwbuilder::FWObject*> &ol);
+
         /**
          * internal: checks if interface is a child of a cluster and calls
          * Compiler::_expand_interface() with a pointer to the master member

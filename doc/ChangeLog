@@ -1,5 +1,16 @@
 2010-01-31  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_cisco_acls.cpp (setInterfaceAndDirectionBySrc::processNext):
+	fixes #1187: "regression in compiler for PIX". Rules that have
+	cluster or firewall object in src or dst that expands to a bunch
+	of addresses that match network zones of different interfaces
+	should still be assigned to the interface dictated by the
+	combination of both src and dst. There is no need to add them to
+	the ACL of inetrface 1 in direction "outbound" if destination
+	belongs to the network zone of inetrface 2. Rule like that should
+	only be assigned to interface 2, direction outbound. However
+	this does not apply to anti-spoofing rules.
+
 	* NATCompiler_ipt.cpp (AssignInterface::processNext): fixes #1184
 	"compiler/GUI crash compiling cluster NAT rule when cluster and
 	members have dynamic interface". It should be possible to have
