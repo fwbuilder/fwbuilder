@@ -77,7 +77,7 @@
         <vrrp>
           <needs_master>True</needs_master>
           <no_ip_ok>False</no_ip_ok>
-          <manage_addresses>True</manage_addresses>
+          <manage_addresses>False</manage_addresses>
           <dialog></dialog>
         </vrrp>
 
