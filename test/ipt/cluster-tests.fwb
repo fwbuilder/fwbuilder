@@ -662,7 +662,7 @@
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id2366X75741" host_OS="secuwall" inactive="True" lastCompiled="1248670597" lastInstalled="0" lastModified="1251419063" platform="iptables" name="cluster1" comment="" ro="False">
+      <Cluster id="id2366X75741" host_OS="secuwall" inactive="True" lastCompiled="1248670597" lastInstalled="0" lastModified="1264977121" platform="iptables" name="cluster1" comment="" ro="False">
         <NAT id="id2370X75741" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4606X78273" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -841,9 +841,10 @@
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2382X75741" master_iface="id2844X69605" type="vrrp" name="cluster1:vrrp1:members" comment="">
-            <ObjectRef ref="id2844X69605"/>
-            <ObjectRef ref="id3118X69605"/>
+          <FailoverClusterGroup id="id2382X75741" master_iface="id4033X2906" type="vrrp" name="cluster1:vrrp1:members" comment="">
+            <ObjectRef ref="id4033X2906"/>
+            <ObjectRef ref="id4058X2906"/>
+            <ClusterGroupOptions/>
           </FailoverClusterGroup>
         </Interface>
         <Interface id="id3213X42281" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="vrrp2" comment="" ro="False">

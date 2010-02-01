@@ -91,10 +91,11 @@ string PolicyCompiler_cisco::createRuleLabel(const string &txt,
 string PolicyCompiler_cisco::debugPrintRule(Rule *r)
 {
     ostringstream str;
-    PolicyRule *rule=PolicyRule::cast(r);
+    PolicyRule *rule = PolicyRule::cast(r);
     FWObject *rule_iface = dbcopy->findInIndex(rule->getInterfaceId());
     string iname = (rule_iface!=NULL)?rule_iface->getName():"";
-    string dir= rule->getDirectionAsString();
+
+    string dir = rule->getDirectionAsString();
 
     str << PolicyCompiler::debugPrintRule(rule) <<
         " " << dir << " " << iname << " " << rule->getStr("acl") <<

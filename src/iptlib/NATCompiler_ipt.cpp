@@ -56,6 +56,7 @@
 
 #include <QString>
 #include <QRegExp>
+#include <QtDebug>
 
 #include <algorithm>
 #include <functional>
@@ -161,7 +162,13 @@ string NATCompiler_ipt::getNewTmpChainName(NATRule *rule)
 string NATCompiler_ipt::debugPrintRule(Rule *r)
 {
     NATRule *rule = NATRule::cast(r);
-    string   iface_name = rule->getInterfaceStr();
+    string iface_name = rule->getInterfaceStr();
+    if (iface_name.empty())
+    {
+        int iface_id = rule->getInterfaceId();
+        FWObject *iface = dbcopy->findInIndex(iface_id);
+        if (iface) iface_name = iface->getName();
+    }
 
     return NATCompiler::debugPrintRule(rule)+
         " " + FWObjectDatabase::getStringId(rule->getInterfaceId()) +
@@ -821,6 +828,12 @@ bool NATCompiler_ipt::addVirtualAddress::processNext()
 
     tmp_queue.push_back(rule);
 
+    bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+    Cluster *cluster = NULL;
+    if (cluster_member)
+        cluster = Cluster::cast(
+            compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+
     Address *a=NULL;
 
     if (rule->getRuleType()==NATRule::SNAT || rule->getRuleType()==NATRule::DNAT) 
@@ -834,8 +847,10 @@ bool NATCompiler_ipt::addVirtualAddress::processNext()
         // addresses for NAT is not supported with address ranges,
         // regardless of the result of complexMatch()
 
-        if ( ! a->isAny() && ! compiler->complexMatch(a,compiler->fw) && 
-             options->getBool("manage_virtual_addr") )
+        if ( ! a->isAny() &&
+             ! compiler->complexMatch(a, compiler->fw) &&
+             ! compiler->complexMatch(a, cluster) && 
+             options->getBool("manage_virtual_addr"))
         {
             if (AddressRange::cast(a)!=NULL)
             {
@@ -1230,6 +1245,11 @@ void NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterf
 {
     if (re->isAny()) return;
 
+    bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+    FWObject *cluster = NULL;
+    if (cluster_member)
+        cluster = compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id"));
+
     list<FWObject*> cl;
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
@@ -1238,17 +1258,22 @@ void NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInterf
         if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
         Interface  *ifs   =Interface::cast( obj );
 
-        if (ifs!=NULL && ifs->isDyn() && ! ifs->isChildOf(compiler->fw))        
+        if (ifs!=NULL && ifs->isDyn() &&
+            ! ifs->isChildOf(compiler->fw) &&
+            ! ifs->isChildOf(cluster))
         {
 #if 0
+            cerr << endl;
             cerr << "NATCompiler_ipt::checkForDynamicInterfacesOfOtherObjects" << endl;
-            cerr << "ifs: " << endl;
-            ifs->dump(true,true);
-            cerr << endl;
-            cerr << "fw: " << endl;
-            compiler->fw->dump(true,true);
-            cerr << endl;
+            cerr << " ifs=" << ifs << " " << ifs->getName().c_str()
+                 << " parent=" << ifs->getParent()
+                 << " " << ifs->getParent()->getName().c_str()
+                 << " dyn=" << ifs->isDyn()
+                 << endl;
+            cerr << "compiler->fw=" << compiler->fw
+                 << " " << compiler->fw->getName().c_str() << endl;
 #endif
+
             char errstr[2048];
             sprintf(errstr, "Can not build rule using dynamic interface '%s' "
                     "of the object '%s' because its address in unknown.",
@@ -2242,29 +2267,37 @@ bool NATCompiler_ipt::AssignInterface::processNext()
 
         if (iface)
         {
-            if (Cluster::isA(iface->getParentHost()) &&
-                iface->isFailoverInterface())
+            if (Cluster::isA(iface->getParentHost()))
             {
-                FWObject *failover_group =
-                    iface->getFirstByType(FailoverClusterGroup::TYPENAME);
 
-                if (failover_group)
+                if (iface->isFailoverInterface())
                 {
-                    for (FWObjectTypedChildIterator it =
-                             failover_group->findByType(FWObjectReference::TYPENAME);
-                         it != it.end(); ++it)
+                    FailoverClusterGroup *failover_group =
+                        FailoverClusterGroup::cast(
+                            iface->getFirstByType(FailoverClusterGroup::TYPENAME));
+
+                    Interface *fw_iface =
+                        failover_group->getInterfaceForMemberFirewall(compiler->fw);
+
+                    if (fw_iface)
                     {
-                        Interface *fw_iface = Interface::cast(FWObjectReference::getObject(*it));
-                        assert(fw_iface);
-                        if (fw_iface->isChildOf(compiler->fw))
-                        {
-                            iface = fw_iface;
-                            rule->setInterfaceId(iface->getId());
-                            tmp_queue.push_back(rule);
-                            return true;
-                        }
+                        // this is a bit tricky: we assign rule to the
+                        // member firewall's inteface but TSrc remains
+                        // cluster interface or its address.
+                        iface = fw_iface;
+                        rule->setInterfaceId(iface->getId());
+                        tmp_queue.push_back(rule);
+                        return true;
                     }
+                } else
+                {
+                    // parent is the cluster but there is no failover
+                    // group.  This must be a copy of the member interface.
+                    rule->setInterfaceId(iface->getId());
+                    tmp_queue.push_back(rule);
+                    return true;
                 }
+
             } else
             {
                 if (iface->isChildOf(compiler->fw))
@@ -2275,6 +2308,14 @@ bool NATCompiler_ipt::AssignInterface::processNext()
                 }
             }
         }
+
+#if 0
+        FWObject *p = iface->getParent();
+        qDebug() << "Checkpoint #1"
+                 << " iface=" << iface << " " << iface->getName().c_str()
+                 << " parent=" << p << " " << p->getName().c_str()
+                 << " " << p->getTypeName().c_str();
+#endif
 
 /* if we appear here, then TSrc is not an interface or address of an
  * interface. This processor will simply pass a rule along if firewall

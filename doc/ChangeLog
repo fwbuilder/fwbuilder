@@ -1,24 +1,38 @@
+2010-01-31  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_ipt.cpp (AssignInterface::processNext): fixes #1184
+	"compiler/GUI crash compiling cluster NAT rule when cluster and
+	members have dynamic interface". It should be possible to have
+	cluster interface that is mapped to dynamic interfaces of the
+	member firewalls and then use this interface or whole cluster
+	object in rules. Compiler should expand cluster object and replace
+	it with its interfaces and corresponding interfaces of the member
+	firewall and then correctly handle dynamic ones.
+
 2010-01-31  yalovoy <yalovoy@gmail.com>
-	* RuleSetModel.cpp: fixes #1182 rule number column is invisible when very 
-	first rule is created in a rule set
 
-	* fixes #1164 focus moves in RuleSetView after paste
-	If i am in a rule and place the selection to service field of say rule 1 
-	and ctrl c and then arrow down the selection to service element in rule 2 
-	and ctrl v the focus then moves back to the rule number element of rule 2 
-	after the paste instead of staying on the service element. likewise if i 
-	am on an element and do ctrl x it brings the focus back to the rule number element.
+	* RuleSetModel.cpp: fixes #1182 rule number column is invisible
+	when very first rule is created in a rule set
 
-	my first expectation was that the focus would remain on the service element of 
-	the rule and not brought back to the rule number element. i guess this has 
-	something to do with refresh of the gui and you are not keeping track of which 
-	element the selection was on for the last operation. 
+	* fixes #1164 focus moves in RuleSetView after paste If i am in a
+	rule and place the selection to service field of say rule 1 and
+	ctrl c and then arrow down the selection to service element in
+	rule 2 and ctrl v the focus then moves back to the rule number
+	element of rule 2 after the paste instead of staying on the
+	service element. likewise if i am on an element and do ctrl x it
+	brings the focus back to the rule number element.
+
+	my first expectation was that the focus would remain on the
+	service element of the rule and not brought back to the rule
+	number element. i guess this has something to do with refresh of
+	the gui and you are not keeping track of which element the
+	selection was on for the last operation.
 
 	Affected files:
 	FWCmdRule.cpp
 	FWCmdRule.h
 	RuleSetView.cpp
-	RuleSetView.h 
+	RuleSetView.h
 
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 

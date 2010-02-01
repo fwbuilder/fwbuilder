@@ -4049,44 +4049,37 @@ bool PolicyCompiler_ipt::checkInterfaceAgainstAddressFamily::processNext()
          * for ticket #1172 : this is cluster interface that has no
          * address, check properties of the corresponding member
          */
-        FWObject *failover_group =
-            rule_iface->getFirstByType(FailoverClusterGroup::TYPENAME);
+        FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+            rule_iface->getFirstByType(FailoverClusterGroup::TYPENAME));
+        Interface *other_iface = fg->getInterfaceForMemberFirewall(compiler->fw);
 
-        for (FWObjectTypedChildIterator it =
-                 failover_group->findByType(FWObjectReference::TYPENAME);
-             it != it.end(); ++it)
+        if (other_iface == NULL)
         {
-            Interface *other_iface =
-                Interface::cast(FWObjectReference::getObject(*it));
-            assert(other_iface);
-
-            if (other_iface->isChildOf(compiler->fw))
-            {
-                if (other_iface->getByType(addr_type).size() != 0)
-                {
-                    tmp_queue.push_back(rule);
-                    return true;
-                } else
-                {
-                    // member interface also has no addresses
-                    return true;
-                }
-            }
+            // if we get here, this cluster interface does not have
+            // any corresponding interface of the firewall we are
+            // compiling right now. What is the right thing to do in
+            // this case? I suppose we can't check if this interface
+            // matches address family. Dropping the rule.
+            QString err("Cluster interface '%1' does not map onto any "
+                        "interface of the firewall '%2' but is used "
+                        "in the 'Interface' rule element. "
+                        "The rule will be dropped because it can "
+                        "not be associated with this interface.");
+            compiler->warning(rule,
+                              err.arg(rule_iface->getName().c_str())
+                              .arg(compiler->fw->getName().c_str()).toStdString());
+            return true;
         }
-        // if we get here, this cluster interface does not have
-        // any corresponding interface of the firewall we are
-        // compiling right now. What is the right thing to do in
-        // this case? I suppose we can't check if this interface
-        // matches address family. Dropping the rule.
-        QString err("Cluster interface '%1' does not map onto any "
-                    "interface of the firewall '%2' but is used "
-                    "in the 'Interface' rule element. "
-                    "The rule will be dropped because it can "
-                    "not be associated with this interface.");
-        compiler->warning(rule,
-                          err.arg(rule_iface->getName().c_str())
-                          .arg(compiler->fw->getName().c_str()).toStdString());
-        return true;
+
+        if (other_iface->getByType(addr_type).size() != 0)
+        {
+            tmp_queue.push_back(rule);
+            return true;
+        } else
+        {
+            // member interface also has no addresses
+            return true;
+        }
     }
 
     // interface has no addresses and is not cluster failover interface
