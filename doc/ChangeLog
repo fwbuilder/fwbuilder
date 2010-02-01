@@ -1,5 +1,11 @@
 2010-02-01  vadim  <vadim@vk.crocodile.org>
 
+	* objects_init.xml: fixes #1194 "Add standard address objects for
+	various multicast groups". Added address objects for standard
+	multicast groups OSPF, RIP, EIGRP, DHCP server / relay agent, PIM,
+	RSVP-ENCAPSULATION, VRRP, IGMP, OSPFIGP-TE, HSRP, mDNS, Link-local
+	Multicast Name Resolution, Teredo.
+
 	* ObjectManipulator.cpp (ObjectManipulator::updateCreateObjectMenu):
 	fixes #1195 the GUI should enable "new object" button and menu
 	item when objects_init.xml library is opened

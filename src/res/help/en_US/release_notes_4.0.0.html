@@ -27,6 +27,7 @@
 <p>
   <ul>
     <li><a href="#gui">Changes in the GUI</a></li>
+    <li><a href="#standard_obj">Changes in the Standard Objects library</a></li>
     <li><a href="#compilers">Common changes in all policy compilers</a></li>
     <li><a href="#cluster">Support for High Availability configurations</a></li>
     <li><a href="#pix_cluster">Cluster configuration for PIX</a></li>
@@ -286,6 +287,26 @@
   is now available as an attribute of IPService object.
 </p>
 
+
+
+<a name="standard_obj"></a>
+<h2>Changes in the Standard Objects library</h2>
+
+<p>
+  Standard objects library now comes with new IPv6 Network
+  objects. These objects represent IPv6 networks that should not be
+  routed on the Internet. Included: RFC3849 "Documentation Network"
+  2001:db8::; RFC4291 "Link local" fe80::/10; RFC4773 "Experimental
+  Network" 2001:0000::/29 to 2001:01F8::/29. Also added a group "ipv6
+  private" that includes all these networks.
+</p>
+
+<p>
+  Added address objects for standard multicast groups: OSPF, RIP,
+  EIGRP, DHCP server / relay agent, PIM, RSVP-ENCAPSULATION, VRRP,
+  IGMP, OSPFIGP-TE, HSRP, mDNS, Link-local Multicast Name Resolution,
+  Teredo.
+</p>
 
 
 

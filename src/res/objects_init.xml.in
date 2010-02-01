@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1260911621" id="root">
-  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1265059184" id="root">
+  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="False">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
     <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
-      <ObjectGroup id="stdid16" name="Addresses" comment="" ro="False"/>
+      <ObjectGroup id="stdid16" name="Addresses" comment="" ro="False">
+        <IPv4 id="id2117X88798" name="OSPF (all routers)" comment="RFC2328" ro="False" address="224.0.0.5" netmask="0.0.0.0"/>
+        <IPv4 id="id2128X88798" name="OSPF (designated routers)" comment="RFC2328" ro="False" address="224.0.0.6" netmask="0.0.0.0"/>
+        <IPv4 id="id2430X88798" name="RIP" comment="RFC1723" ro="False" address="224.0.0.9" netmask="0.0.0.0"/>
+        <IPv4 id="id2439X88798" name="EIGRP" comment="" ro="False" address="224.0.0.10" netmask="0.0.0.0"/>
+        <IPv4 id="id2446X88798" name="DHCP server, relay agent" comment="RFC 1884" ro="False" address="224.0.0.12" netmask="0.0.0.0"/>
+        <IPv4 id="id2455X88798" name="PIM" comment="" ro="False" address="224.0.0.13" netmask="0.0.0.0"/>
+        <IPv4 id="id2462X88798" name="RSVP" comment="" ro="False" address="224.0.0.14" netmask="0.0.0.0"/>
+        <IPv4 id="id2469X88798" name="VRRP" comment="RFC3768" ro="False" address="224.0.0.18" netmask="0.0.0.0"/>
+        <IPv4 id="id2777X88798" name="IGMP" comment="" ro="False" address="224.0.0.22" netmask="0.0.0.0"/>
+        <IPv4 id="id2784X88798" name="OSPFIGP-TE" comment="RFC4973" ro="False" address="224.0.0.24" netmask="0.0.0.0"/>
+        <IPv4 id="id3094X88798" name="HSRP" comment="" ro="False" address="224.0.0.102" netmask="0.0.0.0"/>
+        <IPv4 id="id3403X88798" name="mDNS" comment="" ro="False" address="224.0.0.251" netmask="0.0.0.0"/>
+        <IPv4 id="id3410X88798" name="LLMNR" comment="Link-Local Multicast Name Resolution, RFC4795" ro="False" address="224.0.0.252" netmask="0.0.0.0"/>
+        <IPv4 id="id3411X88798" name="Teredo" comment="" ro="False" address="224.0.0.253" netmask="0.0.0.0"/>
+      </ObjectGroup>
       <ObjectGroup id="stdid17" name="DNS Names" comment="" ro="False"/>
       <ObjectGroup id="stdid18" name="Address Tables" comment="" ro="False"/>
       <ObjectGroup id="stdid04" name="Groups" comment="" ro="False">
