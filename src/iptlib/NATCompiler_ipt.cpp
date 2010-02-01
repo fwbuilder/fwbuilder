@@ -973,6 +973,12 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsODst::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
+    bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+    Cluster *cluster = NULL;
+    if (cluster_member)
+        cluster = Cluster::cast(
+            compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+
     tmp_queue.push_back(rule);
 
     list<FWObject*> cl;
@@ -988,14 +994,19 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsODst::processNext()
 	rel=rule->getODst();               assert(rel);
 	obj=compiler->getFirstODst(rule);  assert(obj!=NULL);
 
-	if (obj->getId()==compiler->getFwId() ) 
+	if (obj->getId()==compiler->fw->getId() ||
+            (cluster && obj->getId()==cluster->getId()))
 	{
 
 	    list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
 	    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
             {
 		Interface *interface_=Interface::cast(*i);
-		if (! interface_->isLoopback() ) cl.push_back(interface_);
+		if (interface_->isLoopback()) continue;
+                if (cluster &&
+                    ! interface_->getOptionsObject()->getBool("cluster_interface"))
+                    continue;
+                cl.push_back(interface_);
 	    }
 	    if ( ! cl.empty() )
             {
@@ -1032,6 +1043,12 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
+    bool cluster_member = compiler->fw->getOptionsObject()->getBool("cluster_member");
+    Cluster *cluster = NULL;
+    if (cluster_member)
+        cluster = Cluster::cast(
+            compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
+
     tmp_queue.push_back(rule);
 
     list<FWObject*> cl;
@@ -1047,7 +1064,8 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
 	rel=rule->getTSrc();               assert(rel);
 	obj=compiler->getFirstTSrc(rule);  assert(obj!=NULL);
 
-	if (obj->getId()==compiler->getFwId() ) 
+	if (obj->getId()==compiler->fw->getId() ||
+            (cluster && obj->getId()==cluster->getId()))
 	{
             RuleElementODst *odstrel = rule->getODst();
             Address *odst = compiler->getFirstODst(rule);
@@ -1062,9 +1080,13 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
                 rel->addRef(odst_iface);
             else
             {
-                // else use all interfaces except loopback and unnumbered ones
-                // also skip interface connected to ODst if single object
-                // negation was detected in ODst
+                /*
+                 * else use all interfaces except loopback and
+                 * unnumbered ones.  Skip interface connected to ODst
+                 * if single object negation was detected in ODst. For
+                 * cluster members use only copy of cluster interfaces
+                 * (ticket #1185)
+                 */
                 list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
                 for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
                 {
@@ -1074,7 +1096,9 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
                         iface->isBridgePort() ) continue;
                     if (odstrel->getBool("single_object_negation") && odst_iface &&
                         odst_iface->getId()==iface->getId()) continue;
-
+                    if (cluster &&
+                        ! iface->getOptionsObject()->getBool("cluster_interface"))
+                        continue;
                     rel->addRef( *i );
                 }
 
