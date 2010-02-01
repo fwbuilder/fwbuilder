@@ -7,6 +7,9 @@
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
     <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
       <ObjectGroup id="stdid16" name="Addresses" comment="" ro="False">
+        <IPv4 id="id2001X88798" name="all-hosts" comment="" ro="False" address="224.0.0.1" netmask="0.0.0.0"/>
+        <IPv4 id="id2002X88798" name="all-routers" comment="" ro="False" address="224.0.0.2" netmask="0.0.0.0"/>
+        <IPv4 id="id2003X88798" name="all DVMRP" comment="" ro="False" address="224.0.0.4" netmask="0.0.0.0"/>
         <IPv4 id="id2117X88798" name="OSPF (all routers)" comment="RFC2328" ro="False" address="224.0.0.5" netmask="0.0.0.0"/>
         <IPv4 id="id2128X88798" name="OSPF (designated routers)" comment="RFC2328" ro="False" address="224.0.0.6" netmask="0.0.0.0"/>
         <IPv4 id="id2430X88798" name="RIP" comment="RFC1723" ro="False" address="224.0.0.9" netmask="0.0.0.0"/>
