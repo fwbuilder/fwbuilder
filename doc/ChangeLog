@@ -1,5 +1,13 @@
 2010-02-01  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/res/configlets/linux24/update_addresses: fixes #1196
+	"shell function update_addresses_of_interface() does not ignore
+	virtual addresses of cluster inetrfaces". When generated iptables
+	script updates ip addresses of interfaces, it should ignore
+	addresses managed by vrrpd, heartbeat or other failover daemons.
+	The script did not ignore them and instead removed them from
+	interfaces.
+
 	* objects_init.xml: fixes #1194 "Add standard address objects for
 	various multicast groups". Added address objects for standard
 	multicast groups OSPF, RIP, EIGRP, DHCP server / relay agent, PIM,

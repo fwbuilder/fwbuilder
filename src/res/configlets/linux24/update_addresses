@@ -38,7 +38,7 @@ list_addresses_by_scope() {
     scope=$2
     ignore_list=$3
     $IP addr ls dev $interface | \
-      awk -v IGNORED="\"$ignore_list\"" -v SCOPE="$scope" \
+      awk -v IGNORED="$ignore_list" -v SCOPE="$scope" \
         'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
