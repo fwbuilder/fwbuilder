@@ -1,3 +1,9 @@
+2010-01-31  vadim  <vadim@vk.crocodile.org>
+
+	* ClusterGroup.cpp (ClusterGroup::getInterfaceForMemberFirewall):
+	added a method for the often used pattern. See fwbuilder:ticket:1184
+	for the reference of other changes in fwbuilder that prompted this.
+
 2010-01-30  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::prolog): do not remove

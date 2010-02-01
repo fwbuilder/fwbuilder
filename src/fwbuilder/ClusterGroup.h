@@ -58,6 +58,13 @@ public:
          */
         virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
 
+        /**
+         * If @this is cluster interface and it is correctly
+         * configured with member interfaces, this method returns
+         * pointer to interface that belongs to the given member
+         * firewall. Otherwise it returns NULL.
+         */
+        Interface* getInterfaceForMemberFirewall(Firewall *fw);
     };
 }
 

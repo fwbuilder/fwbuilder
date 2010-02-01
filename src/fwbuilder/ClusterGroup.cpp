@@ -18,6 +18,7 @@
 
 #include <fwbuilder/ClusterGroup.h>
 #include <fwbuilder/Interface.h>
+#include <fwbuilder/Firewall.h>
 #include <fwbuilder/FWObjectDatabase.h>
 #include <fwbuilder/FWOptions.h>
 
@@ -156,6 +157,18 @@ FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
 
     shallowDuplicate(obj);
     return *this;
+}
+
+Interface* ClusterGroup::getInterfaceForMemberFirewall(Firewall *fw)
+{
+    for (FWObjectTypedChildIterator it = findByType(FWObjectReference::TYPENAME);
+         it != it.end(); ++it)
+    {
+        Interface *other_iface = Interface::cast(FWObjectReference::getObject(*it));
+        assert(other_iface);
+        if (other_iface->isChildOf(fw)) return other_iface;
+    }
+    return NULL;
 }
 
 
