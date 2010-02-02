@@ -902,36 +902,6 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
 
                 if (iface->isChildOf(fw))
                 {
-                     // Check that VRRP interface and fw interface are
-                     // in same subnet.  Exception: if interface is
-                     // dynamic and does not have an ip address in
-                     // fwbuilder configuration, assume it is ok.
-                    
-                    if (iface->isRegular())
-                    {
-                        const Address *iface_addr = iface->getAddressObject();
-                        // even regular interface may have no address
-                        // if user forgot to add one, so check if
-                        // iface_addr == NULL Also check if cluster
-                        // interface has ip address, it does not
-                        // always need one.
-
-                        if (iface_addr && cluster_interface->getAddressObject() &&
-                            !isReachable(cluster_interface->getAddressObject(),
-                                         iface_addr->getAddressPtr())
-                        )
-                        {
-                            QString err("Interfaces %1:%2 and %3:%4 are not on "
-                                        "the same subnet");
-                            warning(fw, NULL, NULL,
-                                    err
-                                    .arg(cluster->getName().c_str())
-                                    .arg(cluster_interface->getName().c_str())
-                                    .arg(fw->getName().c_str())
-                                    .arg(iface->getName().c_str()).toStdString());
-                        }
-                    }
-
                     assert(fw->getOptionsObject() != NULL);
 
                     iface->getOptionsObject()->setStr(
@@ -946,7 +916,6 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
                     cluster_interface->setSecurityLevel(iface->getSecurityLevel());
 
                     copyFailoverInterface(cluster, fw, failover_group, iface);
-
                 }
             }
         } else
@@ -1149,20 +1118,6 @@ int CompilerDriver::checkCluster(Cluster* cluster)
     }
 
     return 0;
-}
-
-bool CompilerDriver::isReachable(const Address* const client,
-                                 const InetAddr* const server)
-{
-    const InetAddr *addr = client->getAddressPtr();
-    const InetAddr *netm = client->getNetmaskPtr();
-    if (addr)
-    {
-        InetAddrMask fw_net(*addr, *netm);
-        if (fw_net.belongs(*server))
-            return true;
-    }
-    return false;
 }
 
 QString CompilerDriver::formSingleRuleCompileOutput(const QString &generated_code)

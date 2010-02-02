@@ -113,7 +113,6 @@ protected:
         void mergeRuleSets(libfwbuilder::Cluster *cluster,
                            libfwbuilder::Firewall *fw, const std::string &type);
     
-        // checks if address @addr belongs to the subnet defined by @subnet
         static bool isReachable(const libfwbuilder::Address* const subnet,
                                 const libfwbuilder::InetAddr* const addr);
 

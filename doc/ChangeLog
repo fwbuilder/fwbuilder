@@ -1,5 +1,14 @@
 2010-02-01  vadim  <vadim@vk.crocodile.org>
 
+	* CompilerDriver.cpp (CompilerDriver::populateClusterElements):
+	see #1198. The check of subnets defined by the member and cluster
+	interfaces has been removed. The check originally implemented by
+	Secuwall developers looked only at the first address of the
+	interface and ignored others. It also did not allow for the
+	cluster interface netmask /32, which is the case with vrrpd. All
+	in all, the value here does not seem to be worth the effort of
+	implementing checks for all combinations.
+
 	* ../src/res/configlets/linux24/update_addresses: fixes #1196
 	"shell function update_addresses_of_interface() does not ignore
 	virtual addresses of cluster inetrfaces". When generated iptables
