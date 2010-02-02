@@ -317,16 +317,6 @@ void ProjectPanel::fileSaveAs()
     }
 }
 
-void ProjectPanel::fileExit()
-{
-    if (saveIfModified() && checkin(true))
-    {
-        saveState();
-        if (rcs) delete rcs;
-        qApp->quit();
-    }
-}
-
 void ProjectPanel::fileCommit()
 {
     save();
@@ -1312,8 +1302,12 @@ bool ProjectPanel::checkin(bool unlock)
                 tr("Checking file %1 in RCS").arg(rcs->getFileName()) +
                 QString("</b>")
             );
+
             if ( fsd_dialog->exec()== QDialog::Rejected )
             {
+                if (fwbdebug)
+                    qDebug() << "RCSFileSaveDialog_q  user hit Cancel";
+
                 delete fsd_dialog;
                 return false;
             }

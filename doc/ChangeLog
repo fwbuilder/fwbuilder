@@ -1,5 +1,8 @@
 2010-02-01  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::fileExit): fixes #1197 "clicking Cancel
+	in RCS log dialog cancels log but the program still exits".
+
 	* CompilerDriver.cpp (CompilerDriver::populateClusterElements):
 	see #1198. The check of subnets defined by the member and cluster
 	interfaces has been removed. The check originally implemented by

@@ -692,6 +692,8 @@ void FWWindow::fileClose()
 
 void FWWindow::fileExit()
 {
+    if (fwbdebug) qDebug() << "FWWindow::fileExit()";
+
     bool window_maximized_state = false;
     if (activeProject())
     {
@@ -704,7 +706,9 @@ void FWWindow::fileExit()
                 dynamic_cast<ProjectPanel*>(subWindowList[i]->widget());
             if (project!=NULL)
             {
-                if (!project->saveIfModified()) return;  // abort operation
+                if (!project->saveIfModified() ||
+                    !project->checkin(true))  return; // aborted
+                //if (!project->saveIfModified()) return;  // abort operation
                 project->saveState();
                 project->fileClose();
             }
@@ -713,7 +717,7 @@ void FWWindow::fileExit()
 
     st->setInt("Window/maximized", window_maximized_state);
 
-    QCoreApplication::exit(0);
+    qApp->quit();
 }
 
 void FWWindow::toolsDiscoveryDruid()

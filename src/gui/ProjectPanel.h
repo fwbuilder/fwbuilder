@@ -265,7 +265,6 @@ public:
     virtual void fileClose();
     virtual void fileSave();
     virtual void fileSaveAs();
-    virtual void fileExit();
     virtual void fileCommit();
     virtual void fileDiscard();
     virtual void fileAddToRCS();
