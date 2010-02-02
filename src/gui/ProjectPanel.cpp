@@ -379,7 +379,7 @@ void ProjectPanel::selectRules()
 //    `unselect();
     RuleSetView* rv = dynamic_cast<RuleSetView*>(
         m_panel->ruleSets->currentWidget());
-    rv->setFocus();
+    if (rv) rv->setFocus();
 }
 
 void ProjectPanel::unselectRules()
@@ -411,8 +411,14 @@ void ProjectPanel::editCopy()
 
     if (isManipulatorSelected()) copyObj();
     else
+    {
         if (m_panel->ruleSets->count()!=0)
-            dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->copySelectedObject();
+        {
+            RuleSetView *rsv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+            if (rsv)
+                rsv->copySelectedObject();
+        }
+    }
 }
 
 void ProjectPanel::editCut()
@@ -423,8 +429,14 @@ void ProjectPanel::editCut()
 
     if (isManipulatorSelected()) cutObj();
     else
+    {
         if (m_panel->ruleSets->count()!=0)
-            dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->cutSelectedObject();
+        {
+            RuleSetView *rsv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+            if (rsv)
+                rsv->cutSelectedObject();
+        }
+    }
 }
 
 void ProjectPanel::editDelete()
@@ -434,9 +446,6 @@ void ProjectPanel::editDelete()
                  << isManipulatorSelected();
 
     if (isManipulatorSelected()) deleteObj();
-    //else
-    //    if (ruleSets->count()!=0)
-    //        dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget())->deleteSelectedObject();
 }
 
 void ProjectPanel::editPaste()
@@ -447,9 +456,14 @@ void ProjectPanel::editPaste()
 
     if (isManipulatorSelected()) pasteObj();
     else
+    {
         if (m_panel->ruleSets->count()!=0)
-            dynamic_cast<RuleSetView*>(
-                m_panel->ruleSets->currentWidget())->pasteObject();
+        {
+            RuleSetView *rsv = dynamic_cast<RuleSetView*>(m_panel->ruleSets->currentWidget());
+            if (rsv)
+                rsv->pasteObject();
+        }
+    }
 }
 
 QString ProjectPanel::getDestDir(const QString &fname)
