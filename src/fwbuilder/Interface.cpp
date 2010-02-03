@@ -361,7 +361,34 @@ bool Interface::isSlave() const
 bool Interface::isLoopback() const
 {
     const Address *iaddr = getAddressObject();
-    return (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr());
+    if (iaddr)
+    {
+        return (iaddr && *(iaddr->getAddressPtr()) == InetAddr::getLoopbackAddr());
+    }
+    /* just a little flexibility in case this is a cluster interface: it
+     * should be considered loopback if corresponding member
+     * interfaces are loopbacks themselves even if it has no address
+     */
+    if (isFailoverInterface())
+    {
+        FailoverClusterGroup *failover_group =
+            FailoverClusterGroup::cast(
+                getFirstByType(FailoverClusterGroup::TYPENAME));
+        if (failover_group)
+        {
+            bool all_loopbacks = true;
+            for (FWObjectTypedChildIterator it =
+                     failover_group->findByType(FWObjectReference::TYPENAME);
+                 it != it.end(); ++it)
+            {
+                Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
+                assert(iface);
+                if (!iface->isLoopback()) { all_loopbacks = false; break; }
+            }
+            return all_loopbacks;
+        }
+    }
+    return false;
 }
 
 FWObject* Interface::getParentHost() const
