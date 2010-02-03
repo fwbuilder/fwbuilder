@@ -45,6 +45,8 @@ class MultiAddress : public ObjectGroup
 
     DECLARE_FWOBJECT_SUBTYPE(MultiAddress);
 
+    DECLARE_DISPATCH_METHODS(MultiAddress);
+    
     MultiAddress();
     MultiAddress(const FWObjectDatabase *root,bool prepopulate);
     virtual ~MultiAddress();
@@ -86,6 +88,8 @@ public:
 
     DECLARE_FWOBJECT_SUBTYPE(MultiAddressRunTime);
 
+    DECLARE_DISPATCH_METHODS(MultiAddressRunTime);
+    
     MultiAddressRunTime();
     MultiAddressRunTime(MultiAddress *maddr);
 

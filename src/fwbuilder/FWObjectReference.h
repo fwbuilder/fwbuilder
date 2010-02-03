@@ -44,6 +44,8 @@ class FWObjectReference : public FWReference
 
     DECLARE_FWOBJECT_SUBTYPE(FWObjectReference);
 
+    DECLARE_DISPATCH_METHODS(FWObjectReference);
+    
     FWObjectReference();
     FWObjectReference(const FWObjectDatabase *root,bool prepopulate);
 

@@ -42,6 +42,8 @@ class UDPService : public TCPUDPService
     virtual ~UDPService();
     
     DECLARE_FWOBJECT_SUBTYPE(UDPService);
+
+    DECLARE_DISPATCH_METHODS(UDPService);
     
     virtual std::string getProtocolName();
     virtual int    getProtocolNumber();

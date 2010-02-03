@@ -67,6 +67,8 @@ class Rule : public Group
 
     DECLARE_FWOBJECT_SUBTYPE(Rule);
 
+    DECLARE_DISPATCH_METHODS(Rule);
+    
     void setPosition(int n);
     int  getPosition() const;
 
@@ -200,6 +202,9 @@ public:
     virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(PolicyRule);
+
+    DECLARE_DISPATCH_METHODS(PolicyRule);
+    
     virtual FWOptions* getOptionsObject();
 
     virtual RuleSet* getBranch();
@@ -325,6 +330,9 @@ public:
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(NATRule);
+
+    DECLARE_DISPATCH_METHODS(NATRule);
+    
     virtual FWOptions* getOptionsObject();
 
     virtual RuleSet* getBranch();
@@ -377,6 +385,9 @@ class RoutingRule : public Rule
     virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
 
     DECLARE_FWOBJECT_SUBTYPE(RoutingRule);
+
+    DECLARE_DISPATCH_METHODS(RoutingRule);
+    
     virtual FWOptions* getOptionsObject();
     virtual RuleSet* getBranch();
     virtual bool isEmpty() const;

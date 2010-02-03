@@ -58,6 +58,8 @@ class TCPUDPService : public Service
 
     
     DECLARE_FWOBJECT_SUBTYPE(TCPUDPService);
+
+    DECLARE_DISPATCH_METHODS(TCPUDPService);
     
     virtual std::string getProtocolName();
     virtual int    getProtocolNumber();

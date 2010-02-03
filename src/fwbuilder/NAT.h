@@ -44,6 +44,8 @@ class NAT : public RuleSet
     
     DECLARE_FWOBJECT_SUBTYPE(NAT);
 
+    DECLARE_DISPATCH_METHODS(NAT);
+    
 /* the following methods provide proper typization */
     NATRule* getRuleByNum(int n) { return NATRule::cast(RuleSet::getRuleByNum(n)); }
     NATRule* insertRuleAtTop() { return NATRule::cast(RuleSet::insertRuleAtTop()); }

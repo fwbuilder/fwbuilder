@@ -39,6 +39,7 @@ class FWOptions : public FWObject
     FWOptions();
     FWOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(FWOptions);
+    DECLARE_DISPATCH_METHODS(FWOptions);
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
@@ -50,6 +51,7 @@ class HostOptions : public FWOptions
     HostOptions();
     HostOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(HostOptions);
+    DECLARE_DISPATCH_METHODS(HostOptions);
 };
 
 class FirewallOptions : public FWOptions 
@@ -58,6 +60,7 @@ class FirewallOptions : public FWOptions
     FirewallOptions();
     FirewallOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(FirewallOptions);
+    DECLARE_DISPATCH_METHODS(FirewallOptions);
 };
 
 class InterfaceOptions : public FWOptions
@@ -66,6 +69,7 @@ class InterfaceOptions : public FWOptions
     InterfaceOptions();
     InterfaceOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(InterfaceOptions);
+    DECLARE_DISPATCH_METHODS(InterfaceOptions);
 };
 
 class RuleSetOptions : public FWOptions 
@@ -75,6 +79,7 @@ class RuleSetOptions : public FWOptions
     RuleSetOptions();
     RuleSetOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(RuleSetOptions);
+    DECLARE_DISPATCH_METHODS(RuleSetOptions);
 };
 
 class PolicyRuleOptions : public FWOptions 
@@ -84,6 +89,7 @@ class PolicyRuleOptions : public FWOptions
     PolicyRuleOptions();
     PolicyRuleOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(PolicyRuleOptions);
+    DECLARE_DISPATCH_METHODS(PolicyRuleOptions);
 };
 
 class NATRuleOptions : public FWOptions 
@@ -93,6 +99,7 @@ class NATRuleOptions : public FWOptions
     NATRuleOptions();
     NATRuleOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(NATRuleOptions);
+    DECLARE_DISPATCH_METHODS(NATRuleOptions);
 };
 
 class RoutingRuleOptions : public FWOptions 
@@ -102,6 +109,7 @@ class RoutingRuleOptions : public FWOptions
     RoutingRuleOptions();
     RoutingRuleOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(RoutingRuleOptions);
+    DECLARE_DISPATCH_METHODS(RoutingRuleOptions);
 };
 
 class ClusterGroupOptions : public FWOptions
@@ -110,6 +118,7 @@ class ClusterGroupOptions : public FWOptions
     ClusterGroupOptions();
     ClusterGroupOptions(const FWObjectDatabase *root,bool prepopulate);
     DECLARE_FWOBJECT_SUBTYPE(ClusterGroupOptions);
+    DECLARE_DISPATCH_METHODS(ClusterGroupOptions);
 };
 
 }

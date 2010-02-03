@@ -42,6 +42,8 @@ class physAddress : public Address
 
     DECLARE_FWOBJECT_SUBTYPE(physAddress);
 
+    DECLARE_DISPATCH_METHODS(physAddress);
+    
     physAddress() {}
     physAddress(const FWObjectDatabase *root,bool prepopulate);
 

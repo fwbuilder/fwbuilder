@@ -46,6 +46,8 @@ public:
 
     DECLARE_FWOBJECT_SUBTYPE(ICMP6Service);
 
+    DECLARE_DISPATCH_METHODS(ICMP6Service);
+    
     virtual std::string getProtocolName();
     virtual int getProtocolNumber();
 

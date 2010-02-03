@@ -60,6 +60,8 @@ class FWObjectFindPredicate;
    static name* cast(FWObject *o) { return dynamic_cast<name*>(o); } \
    static const name* constcast(const FWObject *o) { return dynamic_cast<const name*>(o); }
 
+#define DECLARE_DISPATCH_METHODS(classname) \
+    virtual void* dispatch(Dispatch* _d, void* _a1) {return _d->dispatch(this, _a); }
 
 
 /**
@@ -152,6 +154,8 @@ protected:
 public:
 
     DECLARE_FWOBJECT_SUBTYPE(FWObject);
+
+    DECLARE_DISPATCH_METHODS(FWObject);
 
     class tree_iterator {
         friend class libfwbuilder::FWObject;

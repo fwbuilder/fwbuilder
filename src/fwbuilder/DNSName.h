@@ -41,6 +41,8 @@ class DNSName : public MultiAddress
 
     DECLARE_FWOBJECT_SUBTYPE(DNSName);
 
+    DECLARE_DISPATCH_METHODS(DNSName);
+    
     DNSName();
     DNSName(const FWObjectDatabase *root,bool prepopulate);
 

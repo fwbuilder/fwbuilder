@@ -54,6 +54,8 @@ class RuleSet : public FWObject
     
     DECLARE_FWOBJECT_SUBTYPE(RuleSet);
 
+    DECLARE_DISPATCH_METHODS(RuleSet);
+    
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 

@@ -57,6 +57,8 @@ class Host : public Address
 
     DECLARE_FWOBJECT_SUBTYPE(Host);
 
+    DECLARE_DISPATCH_METHODS(Host);
+    
     /*
      * verify whether given object type is approppriate as a child
      */

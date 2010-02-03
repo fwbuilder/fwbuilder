@@ -53,6 +53,8 @@ public:
     
     DECLARE_FWOBJECT_SUBTYPE(IPv6);
 
+    DECLARE_DISPATCH_METHODS(IPv6);
+    
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
         throw(FWException);

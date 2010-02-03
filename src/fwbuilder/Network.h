@@ -53,6 +53,8 @@ public:
     
     DECLARE_FWOBJECT_SUBTYPE(Network);
 
+    DECLARE_DISPATCH_METHODS(Network);
+    
     virtual bool hasInetAddress() const { return true; }
 
     /**

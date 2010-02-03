@@ -51,6 +51,8 @@ protected:
 public:
     
     DECLARE_FWOBJECT_SUBTYPE(FWReference);
+
+    DECLARE_DISPATCH_METHODS(FWReference);
     
     virtual ~FWReference();
     

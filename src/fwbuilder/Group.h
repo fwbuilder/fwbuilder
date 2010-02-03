@@ -50,6 +50,8 @@ class Group : virtual public FWObject
 
     DECLARE_FWOBJECT_SUBTYPE(Group);
 
+    DECLARE_DISPATCH_METHODS(Group);
+    
     bool hasMember(FWObject *o);
 
     /*

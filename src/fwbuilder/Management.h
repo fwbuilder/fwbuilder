@@ -40,8 +40,11 @@ namespace libfwbuilder
 
         PolicyInstallScript();
 	PolicyInstallScript(const FWObjectDatabase *root,bool prepopulate);
+
         DECLARE_FWOBJECT_SUBTYPE(PolicyInstallScript);
 
+        DECLARE_DISPATCH_METHODS(PolicyInstallScript);
+        
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
         virtual FWObject& shallowDuplicate(
@@ -72,8 +75,11 @@ namespace libfwbuilder
 
         SNMPManagement();
 	SNMPManagement(const FWObjectDatabase *root,bool prepopulate);
+
         DECLARE_FWOBJECT_SUBTYPE(SNMPManagement);
 
+        DECLARE_DISPATCH_METHODS(SNMPManagement);
+        
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
         virtual FWObject& shallowDuplicate(
@@ -105,7 +111,11 @@ namespace libfwbuilder
         FWBDManagement();
 	FWBDManagement(const FWObjectDatabase *root,bool prepopulate);
         virtual ~FWBDManagement();
+
         DECLARE_FWOBJECT_SUBTYPE(FWBDManagement);
+
+        DECLARE_DISPATCH_METHODS(FWBDManagement);
+        
         virtual FWObject& shallowDuplicate(
             const FWObject *obj, bool preserve_id = true) throw(FWException);
         virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
@@ -137,8 +147,11 @@ namespace libfwbuilder
 
         Management();
 	Management(const FWObjectDatabase *root,bool prepopulate);
+
         DECLARE_FWOBJECT_SUBTYPE(Management);
 
+        DECLARE_DISPATCH_METHODS(Management);
+        
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
         virtual FWObject& shallowDuplicate(

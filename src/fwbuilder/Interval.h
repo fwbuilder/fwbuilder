@@ -60,6 +60,8 @@ public:
 
     DECLARE_FWOBJECT_SUBTYPE(Interval);
 
+    DECLARE_DISPATCH_METHODS(Interval);
+    
     virtual FWReference* createRef();
 
     bool isAny();

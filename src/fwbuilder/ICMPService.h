@@ -49,6 +49,8 @@ public:
 
     DECLARE_FWOBJECT_SUBTYPE(ICMPService);
 
+    DECLARE_DISPATCH_METHODS(ICMPService);
+    
     virtual std::string getProtocolName();
     virtual int    getProtocolNumber();
 

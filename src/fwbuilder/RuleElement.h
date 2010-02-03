@@ -58,8 +58,11 @@ protected:
 public:
     RuleElement();
     RuleElement(const FWObjectDatabase *root,bool prepopulate);
+
     DECLARE_FWOBJECT_SUBTYPE(RuleElement);
 
+    DECLARE_DISPATCH_METHODS(RuleElement);
+    
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
@@ -94,6 +97,7 @@ public:
 class RuleElementSrc : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementSrc);
+    DECLARE_DISPATCH_METHODS(RuleElementSrc);
     RuleElementSrc();
     RuleElementSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -105,6 +109,7 @@ class RuleElementSrc : public ObjectGroup, public RuleElement {
 class RuleElementDst : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementDst);
+    DECLARE_DISPATCH_METHODS(RuleElementDst);
     RuleElementDst();
     RuleElementDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -116,6 +121,7 @@ class RuleElementDst : public ObjectGroup, public RuleElement {
 class RuleElementSrv : public ServiceGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementSrv);
+    DECLARE_DISPATCH_METHODS(RuleElementSrv);
     RuleElementSrv();
     RuleElementSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -127,6 +133,7 @@ class RuleElementSrv : public ServiceGroup, public RuleElement {
 class RuleElementItf : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementItf);
+    DECLARE_DISPATCH_METHODS(RuleElementItf);
     RuleElementItf();
     RuleElementItf(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -139,6 +146,7 @@ class RuleElementItf : public ObjectGroup, public RuleElement {
 class RuleElementInterval : public IntervalGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementInterval);
+    DECLARE_DISPATCH_METHODS(RuleElementInterval);
     RuleElementInterval();
     RuleElementInterval(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -150,6 +158,7 @@ class RuleElementInterval : public IntervalGroup, public RuleElement {
 class RuleElementOSrc : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementOSrc);
+    DECLARE_DISPATCH_METHODS(RuleElementOSrc);
     RuleElementOSrc();
     RuleElementOSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -161,6 +170,7 @@ class RuleElementOSrc : public ObjectGroup, public RuleElement {
 class RuleElementODst : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementODst);
+    DECLARE_DISPATCH_METHODS(RuleElementODst);
     RuleElementODst();
     RuleElementODst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -172,6 +182,7 @@ class RuleElementODst : public ObjectGroup, public RuleElement {
 class RuleElementOSrv : public ServiceGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementOSrv);
+    DECLARE_DISPATCH_METHODS(RuleElementOSrv);
     RuleElementOSrv();
     RuleElementOSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -183,6 +194,7 @@ class RuleElementOSrv : public ServiceGroup, public RuleElement {
 class RuleElementTSrc : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTSrc);
+    DECLARE_DISPATCH_METHODS(RuleElementTSrc);
     RuleElementTSrc();
     RuleElementTSrc(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -194,6 +206,7 @@ class RuleElementTSrc : public ObjectGroup, public RuleElement {
 class RuleElementTDst : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTDst);
+    DECLARE_DISPATCH_METHODS(RuleElementTDst);
     RuleElementTDst();
     RuleElementTDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -205,6 +218,7 @@ class RuleElementTDst : public ObjectGroup, public RuleElement {
 class RuleElementTSrv : public ServiceGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementTSrv);
+    DECLARE_DISPATCH_METHODS(RuleElementTSrv);
     RuleElementTSrv();
     RuleElementTSrv(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -216,6 +230,7 @@ class RuleElementTSrv : public ServiceGroup, public RuleElement {
 class RuleElementRDst : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRDst);
+    DECLARE_DISPATCH_METHODS(RuleElementRDst);
     RuleElementRDst();
     RuleElementRDst(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -227,6 +242,7 @@ class RuleElementRDst : public ObjectGroup, public RuleElement {
 class RuleElementRGtw : public ObjectGroup, public RuleElement {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRGtw);
+    DECLARE_DISPATCH_METHODS(RuleElementRGtw);
     RuleElementRGtw();
     RuleElementRGtw(const FWObjectDatabase *root,bool prepopulate);
     virtual int getAnyElementId();
@@ -240,6 +256,7 @@ class RuleElementRGtw : public ObjectGroup, public RuleElement {
 class RuleElementRItf : public RuleElementItf {
     public:
     DECLARE_FWOBJECT_SUBTYPE(RuleElementRItf);
+    DECLARE_DISPATCH_METHODS(RuleElementRItf);
     RuleElementRItf();
     RuleElementRItf(const FWObjectDatabase *root,bool prepopulate);
     virtual bool validateChild(FWObject *o);

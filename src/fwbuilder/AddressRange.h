@@ -77,6 +77,8 @@ class AddressRange : public Address
     { return om->checkComplexMatch(this, obj); }
     
     DECLARE_FWOBJECT_SUBTYPE(AddressRange);
+
+    DECLARE_DISPATCH_METHODS(AddressRange);
     
 };
 

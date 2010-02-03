@@ -87,6 +87,8 @@ public:
 
         DECLARE_FWOBJECT_SUBTYPE(Interface);
 
+        DECLARE_DISPATCH_METHODS(Interface);
+        
         /**
          *  helper-function, needed when dealing with sub-interfaces: function
          *  returns the parent host (or firewall) of an interface.
