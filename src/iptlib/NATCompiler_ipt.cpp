@@ -1068,17 +1068,29 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
             (cluster && obj->getId()==cluster->getId()))
 	{
             RuleElementODst *odstrel = rule->getODst();
+            Address *osrc = compiler->getFirstOSrc(rule);
             Address *odst = compiler->getFirstODst(rule);
 
             rel->clearChildren();
 
-            Interface *odst_iface =
-                compiler->findInterfaceFor(odst, compiler->fw);
+            Interface *odst_iface = NULL;
+            if (cluster)
+                odst_iface = compiler->findInterfaceFor(odst, cluster);
+            else
+                odst_iface = compiler->findInterfaceFor(odst, compiler->fw);
+
+            Interface *osrc_iface = NULL;
+            if (cluster)
+                osrc_iface = compiler->findInterfaceFor(osrc, compiler->fw);
+            else
+                osrc_iface = compiler->findInterfaceFor(osrc, compiler->fw);
+
 
             if (!odst->isAny() && odst_iface!=NULL &&
                 !odstrel->getBool("single_object_negation"))
+            {
                 rel->addRef(odst_iface);
-            else
+            } else
             {
                 /*
                  * else use all interfaces except loopback and
@@ -1087,18 +1099,28 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
                  * cluster members use only copy of cluster interfaces
                  * (ticket #1185)
                  */
-                list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
+
+
+                list<FWObject*> l2 = compiler->fw->getByTypeDeep(Interface::TYPENAME);
                 for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
                 {
                     Interface *iface = Interface::cast(*i);
                     if (iface->isLoopback() ||
                         iface->isUnnumbered() ||
                         iface->isBridgePort() ) continue;
+
+                    // Note: comparing osrc_iface and odst_iface by name
+                    // because these objects are children of cluster
                     if (odstrel->getBool("single_object_negation") && odst_iface &&
-                        odst_iface->getId()==iface->getId()) continue;
+                        odst_iface->getName()==iface->getName()) continue;
+
+                    if (osrc_iface && osrc_iface->getName() == iface->getName())
+                        continue;
+
                     if (cluster &&
                         ! iface->getOptionsObject()->getBool("cluster_interface"))
                         continue;
+
                     rel->addRef( *i );
                 }
 

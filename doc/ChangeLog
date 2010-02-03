@@ -1,3 +1,12 @@
+2010-02-02  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_ipt.cpp (ReplaceFirewallObjectsTSrc::processNext):
+	fixes #1200 "SNAT with cluster object in TSrc uses all
+	interfaces".  When a network or host address used in OSrc of a NAT
+	rule matches one of the interfaces of the firewall or a cluster,
+	there is not need to use this interface for the "-o" clause in
+	SNAT rule.
+
 2010-02-02  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::closeEvent): fixes #1207 'status
