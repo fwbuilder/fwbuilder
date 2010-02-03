@@ -424,6 +424,9 @@ void FWWindow::showSub(ProjectPanel *pp)
     sub->setAttribute(Qt::WA_DeleteOnClose);
     m_mainWindow->m_space->addSubWindow(sub);
 
+    if (fwbdebug)
+        qDebug() << "Show subwindow maximized: " << windows_maximized;
+
     if (windows_maximized)
         pp->setWindowState(Qt::WindowMaximized);
     else
@@ -1090,7 +1093,8 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
         qDebug() << "FWWindow::subWindowActivated subwindow="
                  << subwindow
                  << " "
-                 << subwindow->windowTitle();
+                 << subwindow->windowTitle()
+                 << "isMaximized()=" << subwindow->isMaximized();
 
     if (previous_subwindow == subwindow) return;
 
@@ -1159,7 +1163,7 @@ void FWWindow::closeEvent(QCloseEvent* ev)
     if (fwbdebug) qDebug("FWWindow::closeEvent");
 
     if (activeProject())
-        st->setInt("Window/maximized", activeProject()->isMaximized());
+        st->setInt("Window/maximized", activeProject()->mdiWindow->isMaximized());
 
     QList<QMdiSubWindow *> subWindowList = m_mainWindow->m_space->subWindowList();
     for (int i = 0 ; i < subWindowList.size();i++)

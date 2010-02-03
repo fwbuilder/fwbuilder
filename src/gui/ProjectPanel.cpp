@@ -1055,7 +1055,8 @@ void ProjectPanel::visibilityChangedForTreePanel(bool f)
         qDebug() << "ProjectPanel::visibilityChangedForTreePanel  f="
                  << f
                  << "isVisible()=" << m_panel->treeDockWidget->isVisible()
-                 << "isWindow()=" << m_panel->treeDockWidget->isWindow();
+                 << "isWindow()=" << m_panel->treeDockWidget->isWindow()
+                 << "mdiWindow->isMaximized()=" << mdiWindow->isMaximized();
 
     if (m_panel->treeDockWidget->isVisible() &&
         ! m_panel->treeDockWidget->isWindow())  // visible and not floating

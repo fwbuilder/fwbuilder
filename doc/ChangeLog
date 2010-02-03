@@ -1,3 +1,8 @@
+2010-02-02  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::closeEvent): fixes #1207 'status
+	"maximized" of internal subwindows is not saved correctly'
+
 2010-02-01  vadim  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::fileExit): fixes #1197 "clicking Cancel

@@ -83,14 +83,14 @@ void ProjectPanel::loadState(bool)
     if (fwbdebug)
     {
         qDebug("ProjectPanel::loadState filename=%s isMaximized=%d",
-               filename.toAscii().data(), isMaximized());
+               filename.toAscii().data(), mdiWindow->isMaximized());
         qDebug("mdiWindow=%p", mdiWindow);
         qDebug("ready=%d", ready);
     }
 
     if (!ready) return;
 
-    if (!isMaximized() && mdiWindow)
+    if (!mdiWindow->isMaximized() && mdiWindow)
     {
         if (fwbdebug) qDebug("ProjectPanel::loadState  show normal");
         setWindowState(0);
