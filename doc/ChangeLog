@@ -1,5 +1,12 @@
 2010-02-02  vadim  <vadim@vk.crocodile.org>
 
+	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectPropertiesDetailed):
+	fixes #1201 "add parent to the object properties tooltip".
+	Include parent name in the tooltip that is shown for interface
+	objects.  This helps identify interfaces in rules, especially
+	subinterfaces and interfaces with common names in complex
+	configurations with many firewall objects.
+
 	* NATCompiler_ipt.cpp (ReplaceFirewallObjectsTSrc::processNext):
 	fixes #1200 "SNAT with cluster object in TSrc uses all
 	interfaces".  When a network or host address used in OSrc of a NAT

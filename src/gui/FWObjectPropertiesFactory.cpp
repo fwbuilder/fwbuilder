@@ -661,8 +661,19 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += "</table>";
         } else if (Interface::isA(obj))
         {
+            FWObject *parent_host = obj;
+            QStringList short_path;
+            //short_path.push_front(QString::fromUtf8(obj->getName().c_str()));
+            do
+            {
+                parent_host = parent_host->getParent();
+                short_path.push_front(QString::fromUtf8(parent_host->getName().c_str()));
+            }
+            while (parent_host && Host::cast(parent_host) == NULL);
+
+            str += QString("<b>Parent: </b>%1<br>\n").arg(short_path.join("/"));
+
             Interface *intf = Interface::cast(obj);
-            //str += QObject::tr("<b>Path:</b> ")+ path +"<br>\n";
             str += "<b>Label: </b>";
             str += QString::fromUtf8(intf->getLabel().c_str());
             str += "<br>";
