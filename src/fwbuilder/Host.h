@@ -92,9 +92,6 @@ class Host : public Address
 
     virtual bool isPrimaryObject() const { return true; }
 
-    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
-    { return om->checkComplexMatch(this, obj); }
-
     protected:
     
     Management *mgmt;

@@ -35,21 +35,92 @@
 namespace libfwbuilder {
     class InetAddr;
     class InetAddrMask;
-    class FWObject;
+
     class Address;
+    class AddressRange;
+    class AddressTable;
+    class Cluster;
+    class ClusterGroup;
+    class ClusterGroupOptions;
+    class CustomService;
+    class DNSName;
+    class FWBDManagement;
+    class FWIntervalReference;
+    class FWObject;
+    class FWObjectDatabase;
+    class FWObjectReference;
+    class FWOptions;
+    class FWReference;
+    class FWServiceReference;
+    class FailoverClusterGroup;
+    class Firewall;
+    class FirewallOptions;
+    class Group;
+    class Host;
+    class HostOptions;
+    class ICMP6Service;
+    class ICMPService;
+    class IPService;
     class IPv4;
     class IPv6;
+    class Interface;
+    class InterfaceOptions;
+    class Interval;
+    class IntervalGroup;
+    class Library;
+    class Management;
+    class MultiAddress;
+    class MultiAddressRunTime;
+    class NAT;
+    class NATRule;
+    class NATRuleOptions;
     class Network;
     class NetworkIPv6;
-    class AddressRange;
-    class Host;
+    class ObjectGroup;
+    class Policy;
+    class PolicyInstallScript;
+    class PolicyRule;
+    class PolicyRuleOptions;
+    class Routing;
+    class RoutingRule;
+    class RoutingRuleOptions;
+    class Rule;
+    class RuleElement;
+    class RuleElementDst;
+    class RuleElementInterval;
+    class RuleElementItf;
+    class RuleElementODst;
+    class RuleElementOSrc;
+    class RuleElementOSrv;
+    class RuleElementRDst;
+    class RuleElementRGtw;
+    class RuleElementRItf;
+    class RuleElementSrc;
+    class RuleElementSrv;
+    class RuleElementTDst;
+    class RuleElementTSrc;
+    class RuleElementTSrv;
+    class RuleSet;
+    class RuleSetOptions;
+    class SNMPManagement;
+    class Service;
+    class ServiceGroup;
+    class StateSyncClusterGroup;
+    class TCPService;
+    class TCPUDPService;
+    class TagService;
+    class UDPService;
+    class UserService;
     class physAddress;
-    class Firewall;
-    class Interface;
 };
 
 #define __DECLARE_DISPATCH_METHODS(classname) \
-    virtual void* dispatch(classname*, void*) { return NULL; }
+    virtual void* dispatch(classname*, void*) { return NULL; } \
+    virtual void* dispatch(classname*, const void*) { return NULL; } \
+    virtual void* dispatch(const classname*, void*) { return NULL; } \
+    virtual void* dispatch(const classname*, const void*) { return NULL; } \
+    virtual const void* const_dispatch(const classname*, void*) { return NULL; } \
+    virtual const void* const_dispatch(const classname*, const void*) { return NULL; }
 
 namespace libfwbuilder
 {
@@ -135,7 +206,6 @@ public:
         __DECLARE_DISPATCH_METHODS(UDPService);
         __DECLARE_DISPATCH_METHODS(UserService);
         __DECLARE_DISPATCH_METHODS(physAddress);
-        __DECLARE_DISPATCH_METHODS(physAddress.h);
         
     };
 };

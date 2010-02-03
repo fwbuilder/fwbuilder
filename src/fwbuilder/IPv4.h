@@ -72,8 +72,6 @@ public:
 
     virtual bool isPrimaryObject() const;
 
-    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
-    { return om->checkComplexMatch(this, obj); }
 };
 
 }
