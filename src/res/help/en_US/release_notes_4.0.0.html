@@ -532,12 +532,23 @@ rule sets of this object rather than in the actual firewalls.
       interfaces of the member firewalls. You can create Failover
       Group object using context menu item "Add Failover Group", the
       menu appears when you right mouse click on the cluster interface
-      object. Here is how it should look like:
+      object. Here is an example of correct interface mapping between
+      cluster and member firewalls:
     </li>
 
     <p>
-      <img src="cluster_interfaces.png"/>
+      <img src="pix-failover-groups-mapping.png"/>
     </p>
+
+    <p>
+      The Failover Group object "cluster1:e0.101:members" is
+      configured with interfaces "Ethernet0.101" of both members:
+    </p>
+
+    <p>
+      <img src="pix-failover-group-1.png"/>
+    </p>
+
 
     <li>Interface that is configured for the failover on the member
       firewall should be marked as "Dedicated Failover". Use checkbox
@@ -579,9 +590,20 @@ rule sets of this object rather than in the actual firewalls.
       Here is an example of the state synchronization and failover using
       the same interface Ethernet2:
       <p>
-        <img src="state_sync_configuration.png"/>
+        <img src="pix-statesync-group-mapping.png"/>
       </p>
+
+      <p>
+        The State Synchronization Group object "State Sync Group" is
+        configured with interfaces "Ethernet2" of both members:
+      </p>
+
+      <p>
+        <img src="pix-statesync-group-1.png"/>
+      </p>
+      
     </li>
+
 
     <li>Dedicated failover interfaces of the member firewalls must
       have IP addresses and these addresses must be different but
