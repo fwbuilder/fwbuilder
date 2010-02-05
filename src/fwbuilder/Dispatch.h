@@ -121,22 +121,22 @@ namespace libfwbuilder {
  */
 #define __DECLARE_DISPATCH_METHODS(classname) \
  virtual void* dispatch(classname*, void*) \
- { assert("Call to unimplemented virtual void* Dispatch::dispatch(classname*, void*)"==NULL); \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch("#classname"*, void*)"==NULL); \
  return NULL; } \
  virtual void* dispatch(classname*, const void*) \
- { assert("Call to unimplemented virtual void* Dispatch::dispatch(classname*, const void*)"==NULL); \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch("#classname"*, const void*)"==NULL); \
  return NULL; } \
  virtual void* dispatch(const classname*, void*) \
- { assert("Call to unimplemented virtual void* Dispatch::dispatch(const classname*, void*)"==NULL); \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch(const "#classname"*, void*)"==NULL); \
  return NULL; } \
  virtual void* dispatch(const classname*, const void*) \
- { assert("Call to unimplemented virtual void* Dispatch::dispatch(const classname*, const void*)"==NULL); \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch(const "#classname"*, const void*)"==NULL); \
  return NULL; } \
  virtual const void* const_dispatch(const classname*, void*) \
- { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const classname*, void*)"==NULL); \
+ { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const "#classname"*, void*)"==NULL); \
  return NULL; } \
  virtual const void* const_dispatch(const classname*, const void*) \
- { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const classname*, const void*)"==NULL); \
+ { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const "#classname"*, const void*)"==NULL); \
  return NULL; }\
 
 namespace libfwbuilder
