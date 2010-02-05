@@ -114,13 +114,30 @@ namespace libfwbuilder {
     class physAddress;
 };
 
+/*
+ * Keeping return NULL; after assert() to make sure the function
+ * returns something even if compiled with  -DNDEBUG that disables assert()
+ * and to make gcc happy at compile time.
+ */
 #define __DECLARE_DISPATCH_METHODS(classname) \
-    virtual void* dispatch(classname*, void*) { return NULL; } \
-    virtual void* dispatch(classname*, const void*) { return NULL; } \
-    virtual void* dispatch(const classname*, void*) { return NULL; } \
-    virtual void* dispatch(const classname*, const void*) { return NULL; } \
-    virtual const void* const_dispatch(const classname*, void*) { return NULL; } \
-    virtual const void* const_dispatch(const classname*, const void*) { return NULL; }
+ virtual void* dispatch(classname*, void*) \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch(classname*, void*)"==NULL); \
+ return NULL; } \
+ virtual void* dispatch(classname*, const void*) \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch(classname*, const void*)"==NULL); \
+ return NULL; } \
+ virtual void* dispatch(const classname*, void*) \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch(const classname*, void*)"==NULL); \
+ return NULL; } \
+ virtual void* dispatch(const classname*, const void*) \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch(const classname*, const void*)"==NULL); \
+ return NULL; } \
+ virtual const void* const_dispatch(const classname*, void*) \
+ { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const classname*, void*)"==NULL); \
+ return NULL; } \
+ virtual const void* const_dispatch(const classname*, const void*) \
+ { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const classname*, const void*)"==NULL); \
+ return NULL; }\
 
 namespace libfwbuilder
 {

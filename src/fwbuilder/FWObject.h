@@ -63,12 +63,18 @@ class FWObjectFindPredicate;
    static const name* constcast(const FWObject *o) { return dynamic_cast<const name*>(o); }
 
 #define DECLARE_DISPATCH_METHODS(classname) \
-    virtual void* dispatch(Dispatch* _d, void* _a1) {return _d->dispatch(this, _a1); } \
-    virtual void* dispatch(Dispatch* _d, const void* _a1) {return _d->dispatch(this, _a1); } \
-    virtual void* dispatch(Dispatch* _d, void* _a1) const {return _d->dispatch(this, _a1); } \
-    virtual void* dispatch(Dispatch* _d, const void* _a1) const {return _d->dispatch(this, _a1); } \
-    virtual const void* const_dispatch(Dispatch* _d, void* _a1) const {return _d->const_dispatch(this, _a1); } \
-    virtual const void* const_dispatch(Dispatch* _d, const void* _a1) const {return _d->const_dispatch(this, _a1); }
+    virtual void* dispatch(Dispatch* _d, void* _a1) \
+        {return _d->dispatch(this, _a1); } \
+    virtual void* dispatch(Dispatch* _d, const void* _a1) \
+        {return _d->dispatch(this, _a1); } \
+    virtual void* dispatch(Dispatch* _d, void* _a1) const \
+        {return _d->dispatch(this, _a1); } \
+    virtual void* dispatch(Dispatch* _d, const void* _a1) const \
+        {return _d->dispatch(this, _a1); } \
+    virtual const void* const_dispatch(Dispatch* _d, void* _a1) const \
+        {return _d->const_dispatch(this, _a1); } \
+    virtual const void* const_dispatch(Dispatch* _d, const void* _a1) const \
+        {return _d->const_dispatch(this, _a1); }
 
 
 /**
