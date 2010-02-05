@@ -95,8 +95,11 @@ public:
         virtual void* dispatch(IPv4*, void*);
         virtual void* dispatch(IPv6*, void*);
         virtual void* dispatch(Host*, void*);
+        virtual void* dispatch(Firewall*, void*);
+        virtual void* dispatch(Cluster*, void*);
         virtual void* dispatch(AddressRange*, void*);
         virtual void* dispatch(physAddress*, void*);
+        virtual void* dispatch(MultiAddressRunTime*, void*);
 
     };
 };

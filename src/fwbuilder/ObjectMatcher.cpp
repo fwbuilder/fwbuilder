@@ -378,3 +378,43 @@ void* ObjectMatcher::dispatch(AddressRange *obj1, void *_obj2)
     return NULL;
 }
 
+void* ObjectMatcher::dispatch(MultiAddressRunTime*, void*)
+{
+    return NULL;  // never matches in this implementation
+}
+
+void* ObjectMatcher::dispatch(Firewall *obj1, void *_obj2)
+{
+    FWObject *obj2 = (FWObject*)(_obj2);
+    if (obj1->getId() == obj2->getId()) return obj1;
+/*
+ *  match only if all interfaces of obj1 match obj2
+ */
+    bool res = true;
+    list<FWObject*> l = obj1->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator it = l.begin(); it!=l.end(); ++it)
+        res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);
+    return res ? obj1 : NULL;
+}
+
+void* ObjectMatcher::dispatch(Cluster *obj1, void *_obj2)
+{
+    FWObject *obj2 = (FWObject*)(_obj2);
+    if (obj1->getId() == obj2->getId()) return obj1;
+    list<Firewall*> members;
+    obj1->getMembersList(members);
+    list<Firewall*>::iterator it;
+    for (it=members.begin(); it!=members.end(); ++it)
+    {
+        if (dispatch(*it, obj2) != NULL) return obj1;
+    }
+/*
+ *  match only if all interfaces of obj1 match obj2
+ */
+    bool res = true;
+    list<FWObject*> l = obj1->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator it = l.begin(); it!=l.end(); ++it)
+        res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);
+    return res ? obj1 : NULL;
+}
+
