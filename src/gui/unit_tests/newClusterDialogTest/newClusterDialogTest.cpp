@@ -9,6 +9,10 @@
 #include "ObjectTreeView.h"
 #include "ProjectPanel.h"
 
+#include "ObjectTreeView.h"
+#include "ObjectTreeViewItem.h"
+#include "FWObjectClipboard.h"
+
 using namespace libfwbuilder;
 using namespace std;
 
@@ -86,6 +90,7 @@ void newClusterDialogTest::test1()
         dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(i))->setProtocolIndex(2);
 
     InterfaceEditorWidget* eth0 = qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, "eth0_widget");
+    eth0->setProtocolIndex(0);
     eth0->addNewAddress("123.45.67.89", "24", true);
 
     QList<EditedInterfaceData> addresses = dialog->getUi()->interfaceEditor->getNewData();
@@ -93,6 +98,7 @@ void newClusterDialogTest::test1()
     {
         if (iface.name == "eth0")
         {
+            qDebug() << iface.addresses.values().count();
             QVERIFY(iface.addresses.values().count() == 1);
             QVERIFY(iface.addresses.values().first().address == "123.45.67.89");
             QVERIFY(iface.addresses.values().first().netmask == "24");
@@ -143,6 +149,11 @@ void newClusterDialogTest::test1()
 
     QVERIFY(newc != NULL);
     QVERIFY(Cluster::isA(newc));
+
+    dialog->findChild<QPushButton*>("cancelButton")->click();
+    dialog->accept();
+    dialog->close();
+    dialog->deleteLater();
 }
 
 void newClusterDialogTest::test2()
@@ -220,6 +231,150 @@ void newClusterDialogTest::test2()
     QVERIFY(newc != NULL);
     QVERIFY(Cluster::isA(newc));
 
-    qDebug() << mw->getCurrentLib()->findObjectByName(Firewall::TYPENAME, "linux-1-bak")->getName().c_str();
+    Firewall *bak = Firewall::cast(mw->getCurrentLib()->findObjectByName(Firewall::TYPENAME, "linux-1-bak"));
+    QVERIFY(bak != NULL);
+    QVERIFY(bak->getInactive() == true);
+
+    Firewall *linux1 = Firewall::cast(mw->getCurrentLib()->findObjectByName(Firewall::TYPENAME, "linux-1"));
+    QVERIFY(linux1 != NULL);
+    QVERIFY(linux1->getPolicy()->getChildrenCount() == 1); // there should be only RuleSetOptions object
+
+
+    dialog->findChild<QPushButton*>("cancelButton")->click();
+    dialog->accept();
+    dialog->close();
+    dialog->deleteLater();
+}
+
+QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
+{
+    for (int h=10; h<tree->height(); h+=1)
+    {
+        for (int w=75; w<tree->width(); w+=1)
+        {
+            if((tree->itemAt(w,h)) == item)
+                return QPoint(w, h);
+        }
+    }
+    return QPoint(-1,-1);
+}
+
+void newClusterDialogTest::closeContextMenu()
+{
+    foreach(QWidget *w, QApplication::allWidgets())
+    {
+        if (w->objectName() == "objectTreeContextMenu")
+        {
+            qDebug() << w;
+            w->hide();
+        }
+    }
+}
+
+void newClusterDialogTest::openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item, ObjectTreeView *tree, const QString &actionText)
+{
+    QTimer::singleShot(1000, this, SLOT(closeContextMenu()));
+    om->contextMenuRequested(findItemPos(item, tree));
+    QMenu *menu;
+    foreach(QWidget *w, QApplication::allWidgets())
+    {
+        if (w->objectName() == "objectTreeContextMenu")
+        {
+            menu = dynamic_cast<QMenu*>(w);
+            break;
+        }
+    }
+    foreach (QObject *act, menu->children())
+    {
+        QAction *action = dynamic_cast<QAction*>(act);
+        if (action == NULL) continue;
+        if (action->text() == actionText)
+        {
+            QTimer::singleShot(100, this, SLOT(test3_part2()));
+            action->trigger();
+            break;
+        }
+    }
+}
+
+void newClusterDialogTest::test3()
+{
+    new FWObjectClipboard();
+
+    mw->loadFile("test_data.fwb", false);
+
+    FWObjectDatabase *db = mw->db();
+    Library *lib = NULL;
+
+    foreach(FWObject *obj, db->getByTypeDeep(Library::TYPENAME))
+    {
+        qDebug() << obj->getName().c_str();
+        if (obj->getName() == "new_cluster_test") lib = Library::cast(obj);
+    }
+    QVERIFY(lib != NULL);
+
+    mw->show();
+
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
+    om->openLib(lib);
+    QVERIFY ( om->getCurrentLib() == lib);
+
+    ObjectTreeView *tree = mw->getCurrentObjectTree();
+
+    ObjectTreeViewItem *linux1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("linux-1", Qt::MatchContains | Qt::MatchRecursive, 0).first());
+    ObjectTreeViewItem *linux2 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("linux-2", Qt::MatchContains | Qt::MatchRecursive, 0).first());
+
+    tree->selectionModel()->select(tree->indexAt(findItemPos(linux1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(linux1);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(linux2, tree)), QItemSelectionModel::Select);
+    openContextMenu(om, linux2, tree, "New cluster from selected firewalls");
+}
+
+void newClusterDialogTest::test3_part2()
+{
+    QTest::qWait(100);
+    newClusterDialog *dialog = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<newClusterDialog*>(w) != NULL)
+            dialog = dynamic_cast<newClusterDialog*>(w);
+    QVERIFY(dialog != NULL);
+
+    QPushButton *nextButton = dialog->findChild<QPushButton*>("nextButton");
+    QPushButton *finishButton = dialog->findChild<QPushButton*>("finishButton");
+    InterfacesTabWidget *interfaceEditor = dialog->findChild<InterfacesTabWidget*>("interfaceEditor");
+    QLineEdit *obj_name = dialog->findChild<QLineEdit*>("obj_name");
+    QVERIFY(nextButton != NULL);
+    QVERIFY(finishButton != NULL);
+    QVERIFY(interfaceEditor != NULL);
+    QVERIFY(obj_name != NULL);
+    QTest::keyClicks(obj_name, "New Cluster");
+    QVERIFY(nextButton->isEnabled());
+
+    nextButton->click();
+    QVERIFY(dialog->currentPage()==1);
+
+    QTest::qWait(1000);
+    nextButton->click();
+    QVERIFY(dialog->currentPage()==2);
+
+    dynamic_cast<InterfaceEditorWidget*>(interfaceEditor->widget(0))->setProtocolIndex(3);
+    dynamic_cast<InterfaceEditorWidget*>(interfaceEditor->widget(1))->setProtocolIndex(3);
+    dynamic_cast<InterfaceEditorWidget*>(interfaceEditor->widget(2))->setProtocolIndex(3);
+    dynamic_cast<InterfaceEditorWidget*>(interfaceEditor->widget(3))->setProtocolIndex(3);
+
+    nextButton->click();
+    QVERIFY(dialog->currentPage()==3);
+
+    nextButton->click();
+    QVERIFY(dialog->currentPage()==4);
+
+
+    QVERIFY(finishButton->isEnabled());
+    finishButton->click();
+
+    Cluster *newc = dialog->getNewCluster();
+
+    QVERIFY(newc != NULL);
+    QVERIFY(Cluster::isA(newc));
 
 }

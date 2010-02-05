@@ -346,7 +346,7 @@ HEADERS += newClusterDialogTest.h \
 CONFIG -= release
 CONFIG += debug
 OBJECTS_DIR = .
-QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
+QMAKE_CXXFLAGS += -g -O0 $$CPPUNIT_CFLAGS
 QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 LIBS += -lgcov
@@ -372,8 +372,8 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib
 
 
 run.commands = echo "Running tests..." \
-    && ./${TARGET} && echo "Running gcov..." && \
-    gcov ${SOURCES} >/dev/null 2>/dev/null && \
+    rm *.gc??;\
+    ./${TARGET} && \
     echo "OK" || echo "FAILED"
 run.depends = all
 QMAKE_EXTRA_TARGETS += run
