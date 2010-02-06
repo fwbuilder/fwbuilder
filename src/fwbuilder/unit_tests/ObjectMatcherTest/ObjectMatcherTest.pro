@@ -12,3 +12,6 @@ SOURCES += main.cpp \
 HEADERS += ObjectMatcherTest.h
 INCLUDEPATH += ../../..
 LIBS += -lcppunit -lfwbuilder
+run.commands = echo "Running tests..." && ./${TARGET}
+run.depends = all
+QMAKE_EXTRA_TARGETS += run

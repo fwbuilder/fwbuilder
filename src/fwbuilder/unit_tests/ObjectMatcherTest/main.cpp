@@ -6,7 +6,7 @@
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
-  $Id: main.cpp 2039 2009-12-05 20:16:44Z a2k $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
