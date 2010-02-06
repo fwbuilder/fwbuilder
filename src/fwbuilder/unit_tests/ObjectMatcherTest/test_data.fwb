@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1264573255" id="root">
+  <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
+    <IPv4 id="id9040X76354" name="pc:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+  </Library>
+  <Library id="id1514X76354" color="#d2ffd0" name="User" comment="" ro="False">
+    <ObjectGroup id="id1515X76354" name="Objects" comment="" ro="False">
+      <ObjectGroup id="id1516X76354" name="Addresses" comment="" ro="False">
+        <IPv4 id="id3632X76354" name="addr-192.168.1.1" comment="" ro="False" address="255.255.255.255" netmask="0.0.0.0"/>
+        <IPv4 id="id3767X76354" name="addr-192.168.1.255" comment="" ro="False" address="192.168.1.255" netmask="0.0.0.0"/>
+        <IPv4 id="id3839X76354" name="addr-192.168.1.0" comment="" ro="False" address="192.168.1.0" netmask="0.0.0.0"/>
+        <IPv6 id="id7310X76354" name="addr-ipv6-1" comment="" ro="False" address="fe80::213:72ff:fe3a:2042" netmask="128"/>
+        <IPv6 id="id7495X76354" name="addr-ipv6-2" comment="" ro="False" address="fe80::213:72ff:fe3a:ffff" netmask="128"/>
+      </ObjectGroup>
+      <ObjectGroup id="id1517X76354" name="DNS Names" comment="" ro="False"/>
+      <ObjectGroup id="id1518X76354" name="Address Tables" comment="" ro="False"/>
+      <ObjectGroup id="id1519X76354" name="Groups" comment="" ro="False"/>
+      <ObjectGroup id="id1520X76354" name="Hosts" comment="" ro="False">
+        <Host id="id5596X76354" name="host1" comment="This host is used in examples and template objects" ro="False">
+          <Interface id="id5598X76354" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id5599X76354" name="ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+            <InterfaceOptions/>
+          </Interface>
+          <Management address="192.168.1.10">
+            <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+            <FWBDManagement enabled="False" identity="" port="-1"/>
+            <PolicyInstallScript arguments="" command="" enabled="False"/>
+          </Management>
+          <HostOptions>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
+            <Option name="use_mac_addr">false</Option>
+            <Option name="use_mac_addr_filter">False</Option>
+          </HostOptions>
+        </Host>
+        <Host id="id7031X76354" name="host2" comment="This host is used in examples and template objects" ro="False">
+          <Interface id="id7033X76354" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <IPv4 id="id7034X76354" name="ip" comment="" ro="False" address="192.168.1.10" netmask="255.255.255.0"/>
+            <InterfaceOptions/>
+          </Interface>
+          <Management address="192.168.1.10">
+            <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+            <FWBDManagement enabled="False" identity="" port="-1"/>
+            <PolicyInstallScript arguments="" command="" enabled="False"/>
+          </Management>
+          <HostOptions>
+            <Option name="snmp_contact"></Option>
+            <Option name="snmp_description"></Option>
+            <Option name="snmp_location"></Option>
+            <Option name="use_mac_addr">false</Option>
+            <Option name="use_mac_addr_filter">False</Option>
+          </HostOptions>
+        </Host>
+        <Host id="id9037X76354" name="host3" comment="This object represents a PC with a single network interface" ro="False">
+          <Interface id="id9039X76354" dedicated_failover="False" dyn="True" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+            <InterfaceOptions/>
+          </Interface>
+          <Interface id="id9152X76354" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+            <IPv4 id="id9158X76354" name="host3:eth1:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+            <IPv4 id="id9167X76354" name="host3:eth1:ip-1" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">ethernet</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Management address="0.0.0.0">
+            <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+            <FWBDManagement enabled="False" identity="" port="-1"/>
+            <PolicyInstallScript arguments="" command="" enabled="False"/>
+          </Management>
+          <HostOptions>
+            <Option name="use_mac_addr_filter">False</Option>
+          </HostOptions>
+        </Host>
+      </ObjectGroup>
+      <ObjectGroup id="id1521X76354" name="Networks" comment="" ro="False">
+        <Network id="id3698X76354" name="net-192.168.1.0" comment="" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
+        <Network id="id7589X76354" name="net-192.168.1.1" comment="special case of network object with /32 netmask" ro="False" address="192.168.1.1" netmask="255.255.255.255"/>
+      </ObjectGroup>
+      <ObjectGroup id="id1522X76354" name="Address Ranges" comment="" ro="False">
+        <AddressRange id="id3908X76354" name="range1" comment="" ro="False" start_address="192.168.1.10" end_address="192.168.1.20"/>
+        <AddressRange id="id4102X76354" name="range2" comment="" ro="False" start_address="192.168.2.1" end_address="192.168.2.3"/>
+        <AddressRange id="id4173X76354" name="range3" comment="" ro="False" start_address="192.168.2.27" end_address="192.168.2.50"/>
+      </ObjectGroup>
+    </ObjectGroup>
+    <ServiceGroup id="id1523X76354" name="Services" comment="" ro="False">
+      <ServiceGroup id="id1524X76354" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id1525X76354" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id1526X76354" name="IP" comment="" ro="False"/>
+      <ServiceGroup id="id1527X76354" name="TCP" comment="" ro="False"/>
+      <ServiceGroup id="id1528X76354" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id1529X76354" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id1530X76354" name="Custom" comment="" ro="False"/>
+      <ServiceGroup id="id1531X76354" name="TagServices" comment="" ro="False"/>
+    </ServiceGroup>
+    <ObjectGroup id="id1532X76354" name="Firewalls" comment="" ro="False">
+      <Firewall id="id3103X76354" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="1264572930" platform="iptables" version="" name="fw1" comment="This firewall has three interfaces. Eth0 faces outside and has a static routable address; eth1 faces inside; eth2 is connected to DMZ subnet.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, DMZ is 192.168.2.0/255.255.255.0. Since DMZ used private IP address, it needs NAT. There is a mail relay host located on DMZ (object 'server on dmz'). Policy rules permit SMTP connections to it from the Internet and allow this server to connect to a host on internal network 'internal server'. All other access from DMZ to internal net is denied. To provide access to the mail relay its private address is mapped to firewall's outside interface address by NAT rule #1." ro="False">
+        <NAT id="id3128X76354" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id3231X76354" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id3573X76354" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id3111X76354" dedicated_failover="False" dyn="False" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id3112X76354" name="fw1:eth0:ipv4" comment="This is a test address, change it to your real one" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id3114X76354" dedicated_failover="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id3115X76354" name="fw1:eth1:ipv4" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id3117X76354" dedicated_failover="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id3118X76354" name="fw1:lo:ipv4" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id3120X76354" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+          <IPv4 id="id3121X76354" name="fw1:eth2:ipv4" comment="Network:   192.168.2.24/29      11000000.10101000.00000010.00011 000&#10;HostMin:   192.168.2.25         11000000.10101000.00000010.00011 001&#10;HostMax:   192.168.2.30         11000000.10101000.00000010.00011 110&#10;Broadcast: 192.168.2.31         11000000.10101000.00000010.00011 111&#10;" ro="False" address="192.168.2.24" netmask="255.255.255.248"/>
+          <IPv6 id="id7214X76354" name="fw1:eth2:ipv6" comment="" ro="False" address="fe80::213:72ff:fe3a:2042" netmask="64"/>
+          <physAddress id="id7122X76354" address="00:13:72:3a:20:42" name="fw1:eth2:mac" comment="" ro="False"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="check_shading">true</Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
+    </ObjectGroup>
+    <ObjectGroup id="id1533X76354" name="Clusters" comment="" ro="False"/>
+    <IntervalGroup id="id1534X76354" name="Time" comment="" ro="False"/>
+  </Library>
+</FWObjectDatabase>
