@@ -69,7 +69,7 @@ void ObjectMatcherTest::matchTest()
     om.setAddressRangeMatchMode(ObjectMatcher::EXACT);
 
     CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(o("eth0")), o("fw1")));
-//    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(o("eth1")), o("fw1"))); // fails
+    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(o("eth1")), o("fw1")));
     CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(o("eth0")), o("eth0")));
 
     CPPUNIT_ASSERT(om.checkComplexMatch(IPv6::cast(o("fw1:eth2:ipv6")), o("fw1")));
@@ -78,35 +78,35 @@ void ObjectMatcherTest::matchTest()
     CPPUNIT_ASSERT(om.checkComplexMatch(Host::cast(o("host1")), o("fw1")));
     CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(dbsearch(o("host1"), "eth0")), o("fw1")));
 
-//    CPPUNIT_ASSERT(om.checkComplexMatch(Host::cast(o("host2")), o("fw1")) == false);
-//    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(dbsearch(o("host2"), "eth0")), o("fw1")) == false);
-//    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(dbsearch(o("host3"), "eth0")), o("fw1")) == false);
-//    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(dbsearch(o("host3"), "eth1")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(Host::cast(o("host2")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(dbsearch(o("host2"), "eth0")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(dbsearch(o("host3"), "eth0")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(dbsearch(o("host3"), "eth1")), o("fw1")) == false);
 
     CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.1")), o("fw1")));
     CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.1")), o("eth1")));
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.1")), o("eth0")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.1")), o("eth0")) == false);
 
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv6::cast(o("addr-ipv6-1")), o("fw1")));
+    CPPUNIT_ASSERT(om.checkComplexMatch(IPv6::cast(o("addr-ipv6-1")), o("fw1")));
     CPPUNIT_ASSERT(om.checkComplexMatch(IPv6::cast(o("addr-ipv6-2")), o("fw1")) == false);
 
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("net-192.168.1.0")), o("fw1")) == false);
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("net-192.168.1.0")), o("eth1")) == false);
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("net-192.168.1.0")), o("eth0")) == false);
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("net-192.168.1.1")), o("fw1"))); //segfault
+    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("net-192.168.1.0")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("net-192.168.1.0")), o("eth1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("net-192.168.1.0")), o("eth0")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("net-192.168.1.1")), o("fw1")));
 
     CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.255")), o("fw1")));
     CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.0")), o("fw1")));
 
     CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range1")), o("fw1")));
-//    CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range2")), o("fw1")) == false);
-//    CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range3")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range2")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range3")), o("fw1")) == false);
 
     om.setRecognizeBroadcasts(false);
     om.setAddressRangeMatchMode(ObjectMatcher::PARTIAL);
 
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.255")), o("fw1")) == false);
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.0")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.255")), o("fw1")) == false);
+    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.0")), o("fw1")) == false);
     CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range3")), o("fw1")));
 
 }
