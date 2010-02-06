@@ -1,13 +1,17 @@
 DOLLAR = $
 
 run.commands = echo "Running tests..." && \
+               display=:123; \
+               Xvfb $${DOLLAR}$${DOLLAR}display & \
+               pid=$${DOLLAR}$${DOLLAR}!; \
                for directory in `find . -maxdepth 1 -type d -regex \'\./[A-Za-z0-9\-\_]*\'`; \
                do \
                     home=`pwd`; \
                     cd $${DOLLAR}$${DOLLAR}directory; \
                     qmake -spec $${DOLLAR}$${DOLLAR}QMAKESPEC; \
-                    make run || exit 1; \
+                    DISPLAY=$${DOLLAR}$${DOLLAR}display make run || exit 1; \
                     cd $${DOLLAR}$${DOLLAR}home; \
-                done
+              done; \
+              kill $${DOLLAR}$${DOLLAR}pid;
 			
 QMAKE_EXTRA_TARGETS += run
