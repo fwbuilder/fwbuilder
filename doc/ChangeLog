@@ -1,6 +1,14 @@
 2010-02-06  vadim  <vadim@vk.crocodile.org>
 
 	* src/pflib/PolicyCompiler_pf_writers.cpp (PrintRule::processNext):
+	fixes #1210 "syntax error in PF rule - "modulate state" is
+	required".  Per bug reported in the mailing list (and according to
+	the pf.conf manual), pf.conf requires "keep state", "modulate
+	state" or "synproxy"if any of the stateful tracking options are
+	used in the rule. These include "max", "no-sync", "pflow",
+	"sloppy", "source-track" and others.
+
+	* src/pflib/PolicyCompiler_pf_writers.cpp (PrintRule::processNext):
 	fixes #1209 "incorrect syntax in PF rules when only "Activate
 	source tracking" option is on". Compiler sometimes generated empty
 	"( )" in the end of the pf.conf line when there were no state

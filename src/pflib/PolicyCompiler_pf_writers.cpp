@@ -998,20 +998,31 @@ bool PolicyCompiler_pf::PrintRule::processNext()
             }
         }
 
-        // in PF "modulate state", "synproxy state", "keep state" are mutually
-        // exclusive
-        // "keep state" can be used with any protocol, while "modulate state"
-        // and "synproxy state" can only be used with tcp.
+        /*
+         * in PF "modulate state", "synproxy state", "keep state" are
+         * mutually exclusive "keep state" can be used with any
+         * protocol, while "modulate state" and "synproxy state" can
+         * only be used with tcp.
+         */
 
+        bool have_state_option = false;
+
+        /*
+         * First, set explicit state tracking parameter, then add
+         * stateful tracking options. 
+         */
 	if (compiler->getCachedFwOpt()->getBool("pf_synproxy") && tcpsrv!=NULL)
+        {
 	    compiler->output << "synproxy state ";
-        else
+            have_state_option = true;
+        } else
         {
             if ((ruleopt->getBool("pf_modulate_state") || 
                  compiler->getCachedFwOpt()->getBool("pf_modulate_state")) &&
                 tcpsrv!=NULL) 
             {
                 compiler->output << "modulate state ";
+                have_state_option = true;
             } else
             {
                 /*
@@ -1035,43 +1046,63 @@ bool PolicyCompiler_pf::PrintRule::processNext()
                  * explicitly" to cope with this.
                  */
                 if (XMLTools::version_compare(version, "4.0") < 0 ||
-              //if ( version != "4.x" ||
                      compiler->getCachedFwOpt()->getBool("pf_keep_state"))
+                {
                     compiler->output << "keep state ";
+                    have_state_option = true;
+                }
             }
         }
 
+        /*
+         * Stateful tracking options. According to the pf.conf manual,
+         * one of keep state, modulate state, or synproxy state must
+         * be specified explicitly to apply these options to a rule.
+         * Using flags need_state_option and have_state_option for that.
+         */
+
         QStringList options;
+        bool need_state_option = false;
 
         if (ruleopt->getInt("pf_rule_max_state")>0)
         {
             options.push_back(QString("max %1").arg(ruleopt->getInt("pf_rule_max_state")));
+            need_state_option = true;
         }
 
         if (ruleopt->getBool("pf_sloppy_tracker"))
         {
             options.push_back("sloppy");
+            need_state_option = true;
         }
 
         if (ruleopt->getBool("pf_no_sync"))
         {
             options.push_back("no-sync");
+            need_state_option = true;
         }
 
         if (ruleopt->getBool("pf_pflow"))
         {
             options.push_back("pflow");
+            need_state_option = true;
         }
 
         if (ruleopt->getBool("pf_source_tracking"))
         {
             if (ruleopt->getInt("pf_max_src_nodes") > 0)
+            {
                 options.push_back(QString("max-src-nodes %1").arg(
                                       ruleopt->getInt("pf_max_src_nodes")));
+                need_state_option = true;
+            }
 
             if (ruleopt->getInt("pf_max_src_states")>0)
+            {
                 options.push_back(QString("max-src-states %1").arg(
                                       ruleopt->getInt("pf_max_src_states")));
+                need_state_option = true;
+            }
         }
 
         bool check_overload_opts = false;
@@ -1080,6 +1111,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
             options.push_back(QString("max-src-conn %1").arg(
                                   ruleopt->getInt("pf_max_src_conn")));
             check_overload_opts = true;
+            need_state_option = true;
         }
 
         if (ruleopt->getInt("pf_max_src_conn_rate_num")>0 && 
@@ -1089,6 +1121,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
                               .arg(ruleopt->getInt("pf_max_src_conn_rate_num"))
                               .arg(ruleopt->getInt("pf_max_src_conn_rate_seconds")));
             check_overload_opts = true;
+            need_state_option = true;
         }
 
         if (check_overload_opts)
@@ -1104,6 +1137,11 @@ bool PolicyCompiler_pf::PrintRule::processNext()
                 overload_opts.push_back("global");
             if (overload_opts.size() > 0)
                 options.push_back(overload_opts.join(" "));
+        }
+
+        if (need_state_option && !have_state_option)
+        {
+            compiler->output << "keep state ";
         }
 
         // looks like pf.conf syntax requires '(' ')' even if there is
