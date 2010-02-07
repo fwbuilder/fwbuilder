@@ -38,8 +38,10 @@ using namespace std;
 
 Help* Help::help_window = NULL;
 
-Help::Help(QWidget *parent, const QString &title) : QMainWindow(parent)
+Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
+    QMainWindow(parent)
 {
+    load_links_in_browser = _load_links_in_browser;
     m_dialog = new Ui::HelpView_q;
     m_dialog->setupUi(this);
     setWindowTitle("Firewall Builder Help");

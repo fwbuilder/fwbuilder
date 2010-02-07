@@ -162,6 +162,7 @@ public slots:
     virtual void helpContentsAction();
     virtual void helpIndex();
     virtual void help();
+    virtual void showWelcome();
     virtual void showReleaseNotes();
 
     virtual void fileNew();

@@ -505,23 +505,12 @@ void FWWindow::startupLoad()
         updateOpenRecentMenu(file);
     }
 
-//    m_mainWindow->m_space->setActiveSubWindow(
-//        m_mainWindow->m_space->currentSubWindow());
+    QString welcome_flag = QString("UI/%1/WelcomeShown").arg(VERSION);
 
-    QString release_notes_flag = QString("UI/%1/ReleaseNotesShown").arg(VERSION);
-
-/*
- * During beta testing we always show release notes and dont show tip
- * of the day. Switch to normal sequence near the end of beta (show
- * release notes once and then show tip of the day)
- */
-#define SHOW_RELEASE_NOTES_ONCE 1
-
-#if SHOW_RELEASE_NOTES_ONCE
-    if (!st->getBool(release_notes_flag))
+    if (!st->getBool(welcome_flag))
     {
-        showReleaseNotes();
-        st->setBool(release_notes_flag, true);
+        showWelcome();
+        st->setBool(welcome_flag, true);
     } else
     {
         // show tip of the day only if we did not show release notes.
@@ -532,11 +521,6 @@ void FWWindow::startupLoad()
             stdlg->run();
         }
     }
-#endif
-
-#if ONLY_RELEASE_NOTES
-    showReleaseNotes();
-#endif
 
     prepareFileMenu();
 }
@@ -1410,6 +1394,24 @@ void FWWindow::help()
     h->show();
 }
 
+void FWWindow::showWelcome()
+{
+    Help *h = Help::getHelpWindow(this);
+    h->setName("Welcome to Firewall Builder");
+    if (h->findHelpFile("welcome.html").isEmpty())
+    {
+        // the file does not exist
+        h->hide();
+    } else
+    {
+        // I do not know why, but url "file://file_name" does not seem to work.
+        // But "file:file_name" works.
+        h->setSource(QUrl("file:welcome.html"));
+        h->raise();
+        h->show();
+    }
+}
+
 void FWWindow::showReleaseNotes()
 {
     QString file_name = QString("release_notes_%1.html").arg(VERSION);
@@ -1417,7 +1419,7 @@ void FWWindow::showReleaseNotes()
     // exists.
     QString contents;
     Help *h = Help::getHelpWindow(this);
-    h->setName("Important Information About This Release");
+    h->setName("Firewall Builder Release Notes");
     if (h->findHelpFile(file_name).isEmpty())
     {
         // the file does not exist

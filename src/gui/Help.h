@@ -43,11 +43,12 @@ class Help : public QMainWindow
     QStringList paths;
     QByteArray window_geometry;
     Qt::WindowFlags flags;
+    bool load_links_in_browser;
 
 public:
     Ui::HelpView_q *m_dialog;
     
-    Help(QWidget *parent, const QString &title);
+    Help(QWidget *parent, const QString &title, bool load_links_in_browser=true);
     virtual ~Help() {};
 
     void setSource(const QUrl &url) { m_dialog->textview->setSource(url); }

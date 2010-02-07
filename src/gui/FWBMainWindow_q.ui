@@ -774,9 +774,10 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="helpAboutAction"/>
-    <addaction name="debugAction"/>
+    <addaction name="welcome_action"/>
     <addaction name="helpAction"/>
     <addaction name="release_Notes_Action"/>
+    <addaction name="debugAction"/>
    </widget>
    <widget class="QMenu" name="RulesMenu">
     <property name="title">
@@ -1449,6 +1450,11 @@
    </property>
    <property name="text">
     <string>Undo Stack</string>
+   </property>
+  </action>
+  <action name="welcome_action">
+   <property name="text">
+    <string>Welcome</string>
    </property>
   </action>
  </widget>
@@ -2462,6 +2468,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>welcome_action</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>showWelcome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>571</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
@@ -2472,5 +2494,6 @@
   <slot>toggleViewSearch()</slot>
   <slot>editorPanelTabChanged(int)</slot>
   <slot>toggleViewUndo()</slot>
+  <slot>showWelcome()</slot>
  </slots>
 </ui>

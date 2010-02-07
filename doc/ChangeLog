@@ -1,5 +1,11 @@
 2010-02-06  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::showWelcome): fixes #1213 Welcome screen.
+	When user starts the program for the very first time, it shows
+	a "Welcome" screen that lists summary of features of fwbuilder and
+	provides a link to the Getting Started Guide on the web site. Link
+	to the local copy of Release Notes is also provided.
+
 	* InterfaceEditorWidget.cpp (InterfaceEditorWidget::isValid): "new
 	cluster" visard should permit the user to create cluster
 	interfaces without IP addresses for any failover protocol. Disable
