@@ -4697,6 +4697,7 @@ void PolicyCompiler_ipt::insertConntrackRule()
     string default_port =
         os_res->getResourceStr("/FWBuilderResources/Target/protocols/conntrack/default_port");
 
+    bool ucast = state_sync_group->getOptionsObject()->getBool("conntrack_unicast");
     string addr = state_sync_group->getOptionsObject()->getStr("conntrack_address");
     if (addr.empty()) addr = default_address;
 
@@ -4743,19 +4744,60 @@ void PolicyCompiler_ipt::insertConntrackRule()
     }
 
     /* Add automatic rules for CONNTRACK */
-    addMgmtRule(NULL,
-                conntrack_dst,
-                conntrack_srv,
-                conntrack_iface,
-                PolicyRule::Inbound,
-                PolicyRule::Accept, "CONNTRACK");
+    if (ucast)
+    {
+        Interface *fw_iface = NULL;
+        list<Interface*> other_interfaces;
+        for (FWObjectTypedChildIterator it =
+                 state_sync_group->findByType(FWObjectReference::TYPENAME);
+             it != it.end(); ++it)
+        {
+            Interface *iface =
+                Interface::cast(FWObjectReference::getObject(*it));
+            assert(iface);
+            if (iface->isChildOf(fw))
+            {
+                fw_iface = iface;
+            } else
+            {
+                other_interfaces.push_back(iface);
+            }
+        }
+        foreach(Interface *other_iface, other_interfaces)
+        {
+            addMgmtRule(other_iface,
+                        fw,
+                        conntrack_srv,
+                        fw_iface,
+                        PolicyRule::Inbound,
+                        PolicyRule::Accept,
+                        "CONNTRACK");
+            addMgmtRule(fw,
+                        other_iface,
+                        conntrack_srv,
+                        fw_iface,
+                        PolicyRule::Outbound,
+                        PolicyRule::Accept,
+                        "CONNTRACK");
+        }
+    } else
+    {
+        addMgmtRule(NULL,
+                    conntrack_dst,
+                    conntrack_srv,
+                    conntrack_iface,
+                    PolicyRule::Inbound,
+                    PolicyRule::Accept,
+                    "CONNTRACK");
 
-    addMgmtRule(fw,
-                conntrack_dst,
-                conntrack_srv,
-                conntrack_iface,
-                PolicyRule::Outbound,
-                PolicyRule::Accept, "CONNTRACK");
+        addMgmtRule(fw,
+                    conntrack_dst,
+                    conntrack_srv,
+                    conntrack_iface,
+                    PolicyRule::Outbound,
+                    PolicyRule::Accept,
+                    "CONNTRACK");
+    }
 }
 
 void PolicyCompiler_ipt::insertFailoverRule()
@@ -4883,13 +4925,13 @@ void PolicyCompiler_ipt::insertFailoverRule()
                         assert(other_iface);
                         if (other_iface->getId() == fw_iface->getId()) continue;
                         addMgmtRule(other_iface,
-                                    fw_iface,
+                                    fw,
                                     heartbeat_srv,
                                     fw_iface,
                                     PolicyRule::Inbound,
                                     PolicyRule::Accept,
                                     "heartbeat");
-                        addMgmtRule(fw_iface,
+                        addMgmtRule(fw,
                                     other_iface,
                                     heartbeat_srv,
                                     fw_iface,
@@ -4899,13 +4941,19 @@ void PolicyCompiler_ipt::insertFailoverRule()
                     }
                 } else
                 {
-                    addMgmtRule(NULL, heartbeat_dst, heartbeat_srv,
+                    addMgmtRule(NULL,
+                                heartbeat_dst,
+                                heartbeat_srv,
                                 fw_iface,
-                                PolicyRule::Inbound, PolicyRule::Accept,
+                                PolicyRule::Inbound,
+                                PolicyRule::Accept,
                                 "heartbeat");
-                    addMgmtRule(fw, heartbeat_dst, heartbeat_srv,
+                    addMgmtRule(fw,
+                                heartbeat_dst,
+                                heartbeat_srv,
                                 fw_iface,
-                                PolicyRule::Outbound, PolicyRule::Accept,
+                                PolicyRule::Outbound,
+                                PolicyRule::Accept,
                                 "heartbeat");
                 }
             }

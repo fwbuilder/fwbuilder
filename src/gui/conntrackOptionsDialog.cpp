@@ -70,6 +70,9 @@ conntrackOptionsDialog::conntrackOptionsDialog(QWidget *parent, FWObject *o)
     string port = gropt->getStr("conntrack_port");
     if (port.empty()) gropt->setStr("conntrack_port", default_port);
 
+    data.registerOption(m_dialog->use_unicast,
+                        gropt,
+                        "conntrack_unicast");
     data.registerOption(m_dialog->conntrack_address,
                         gropt,
                         "conntrack_address");
@@ -78,6 +81,8 @@ conntrackOptionsDialog::conntrackOptionsDialog(QWidget *parent, FWObject *o)
                         gropt,
                         "conntrack_port");
     data.loadAll();
+
+    toggleUseUnicast();
 }
 
 conntrackOptionsDialog::~conntrackOptionsDialog()
@@ -128,5 +133,12 @@ bool conntrackOptionsDialog::validate()
     }
 
     return true;
+}
+
+void conntrackOptionsDialog::toggleUseUnicast()
+{
+    bool onoff = m_dialog->use_unicast->isChecked();
+    m_dialog->conntrack_address->setEnabled( ! onoff );
+    m_dialog->conntrack_address_label->setEnabled( ! onoff );
 }
 

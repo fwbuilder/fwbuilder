@@ -1,5 +1,10 @@
 2010-02-06  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertConntrackRule):
+	fixes #1175 "There is no option for unicast on conntrac
+	sync-group (like heartbeat)". User can now choose between multicast
+	and unicast for conntrackd communication.
+
 	* FWWindow.cpp (FWWindow::showWelcome): fixes #1213 Welcome screen.
 	When user starts the program for the very first time, it shows
 	a "Welcome" screen that lists summary of features of fwbuilder and

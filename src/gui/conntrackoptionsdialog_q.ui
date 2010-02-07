@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>conntrackOptionsDialog_q</class>
- <widget class="QDialog" name="conntrackOptionsDialog_q" >
-  <property name="geometry" >
+ <widget class="QDialog" name="conntrackOptionsDialog_q">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,21 +10,21 @@
     <height>276</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>conntrack protocol settings</string>
   </property>
-  <layout class="QGridLayout" >
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
+  <layout class="QGridLayout">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout">
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeType" >
+       <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>151</width>
          <height>27</height>
@@ -32,83 +33,90 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonOk" >
-       <property name="text" >
+      <widget class="QPushButton" name="buttonOk">
+       <property name="text">
         <string>&amp;OK</string>
        </property>
-       <property name="shortcut" >
+       <property name="shortcut">
         <string/>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>true</bool>
        </property>
-       <property name="default" >
+       <property name="default">
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonCancel" >
-       <property name="text" >
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
         <string>&amp;Cancel</string>
        </property>
-       <property name="shortcut" >
+       <property name="shortcut">
         <string/>
        </property>
-       <property name="autoDefault" >
+       <property name="autoDefault">
         <bool>true</bool>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget" >
-     <property name="tabShape" >
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
-     <property name="currentIndex" >
+     <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab" >
-      <attribute name="title" >
-       <string>conntrack Parameters</string>
-      </attribute>
-      <attribute name="icon" >
-       <iconset resource="MainRes.qrc" >
+     <widget class="QWidget" name="tab">
+      <attribute name="icon">
+       <iconset>
         <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" >
-       <item row="0" column="0" >
-        <widget class="QLabel" name="label" >
-         <property name="text" >
+      <attribute name="title">
+       <string>conntrack Parameters</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0" colspan="3">
+        <widget class="QCheckBox" name="use_unicast">
+         <property name="text">
+          <string>Use unicast address for conntrackd</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="conntrack_address_label">
+         <property name="text">
           <string>Address:</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1" colspan="2" >
-        <widget class="QLineEdit" name="conntrack_address" />
+       <item row="1" column="1" colspan="2">
+        <widget class="QLineEdit" name="conntrack_address"/>
        </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
           <string>Port number (udp):</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1" >
-        <widget class="QSpinBox" name="conntrack_port" >
-         <property name="maximum" >
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="conntrack_port">
+         <property name="maximum">
           <number>65535</number>
          </property>
         </widget>
        </item>
-       <item row="1" column="2" >
-        <spacer name="horizontalSpacer" >
-         <property name="orientation" >
+       <item row="2" column="2">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>117</width>
            <height>20</height>
@@ -116,12 +124,12 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0" colspan="3" >
+       <item row="3" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -135,14 +143,14 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>buttonOk</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>tabWidget</tabstop>
  </tabstops>
  <resources>
-  <include location="MainRes.qrc" />
+  <include location="MainRes.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -151,11 +159,11 @@
    <receiver>conntrackOptionsDialog_q</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>316</x>
      <y>472</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
@@ -167,15 +175,34 @@
    <receiver>conntrackOptionsDialog_q</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>397</x>
      <y>472</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>use_unicast</sender>
+   <signal>clicked()</signal>
+   <receiver>conntrackOptionsDialog_q</receiver>
+   <slot>toggleUseUnicast()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>50</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>toggleUseUnicast()</slot>
+ </slots>
 </ui>
