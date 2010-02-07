@@ -1,5 +1,11 @@
 2010-02-06  vadim  <vadim@vk.crocodile.org>
 
+	* src/pflib/PolicyCompiler_pf_writers.cpp (PrintRule::processNext):
+	fixes #1209 "incorrect syntax in PF rules when only "Activate
+	source tracking" option is on". Compiler sometimes generated empty
+	"( )" in the end of the pf.conf line when there were no state
+	tracking options
+
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertConntrackRule):
 	fixes #1175 "There is no option for unicast on conntrac
 	sync-group (like heartbeat)". User can now choose between multicast

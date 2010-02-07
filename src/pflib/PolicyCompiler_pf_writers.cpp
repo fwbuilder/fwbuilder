@@ -47,13 +47,6 @@
 #include "fwbuilder/XMLTools.h"
 
 #include <iostream>
-#if __GNUC__ > 3 || \
-    (__GNUC__ == 3 && (__GNUC_MINOR__ > 2 || (__GNUC_MINOR__ == 2 ) ) ) || \
-    _MSC_VER
-#  include <streambuf>
-#else
-#  include <streambuf.h>
-#endif
 #include <iomanip>
 #include <fstream>
 #include <sstream>
@@ -1048,109 +1041,87 @@ bool PolicyCompiler_pf::PrintRule::processNext()
             }
         }
 
-        int nopt=0;
-        if (ruleopt->getInt("pf_rule_max_state")>0)        nopt++;
-        if (ruleopt->getBool("pf_source_tracking"))        nopt+=2;
-        if (ruleopt->getInt("pf_max_src_conn")>0)          nopt++;
-        if (ruleopt->getStr("pf_max_src_conn_overload_table")!="") nopt++;
-        if (ruleopt->getInt("pf_max_src_conn_rate_num")>0) nopt++;
-        if (ruleopt->getBool("pf_sloppy_tracker"))         nopt++;
-        if (ruleopt->getBool("pf_no_sync"))                nopt++;
-        if (ruleopt->getBool("pf_pflow"))                  nopt++;
+        QStringList options;
 
-        bool not_the_first = false;
-        if (nopt)
+        if (ruleopt->getInt("pf_rule_max_state")>0)
         {
-            if (nopt>1) compiler->output << " ( ";
-
-            if (ruleopt->getInt("pf_rule_max_state")>0)
-            {
-                compiler->output << " max "
-                                 << ruleopt->getInt("pf_rule_max_state");
-                not_the_first = true;
-            }
-
-            if (ruleopt->getBool("pf_sloppy_tracker"))
-            {
-                if (not_the_first) compiler->output << ",";
-                compiler->output << " sloppy ";
-                not_the_first = true;
-            }
-
-            if (ruleopt->getBool("pf_no_sync"))
-            {
-                if (not_the_first) compiler->output << ",";
-                compiler->output << " no-sync ";
-                not_the_first = true;
-            }
-
-            if (ruleopt->getBool("pf_pflow"))
-            {
-                if (not_the_first) compiler->output << ",";
-                compiler->output << " pflow ";
-                not_the_first = true;
-            }
-
-            if (ruleopt->getBool("pf_source_tracking"))
-            {
-                if (not_the_first) compiler->output << ",";
-
-                if (ruleopt->getInt("pf_max_src_nodes") > 0)
-                    compiler->output << " max-src-nodes "
-                                     << ruleopt->getInt("pf_max_src_nodes");
-
-                if (ruleopt->getInt("pf_max_src_states")>0)
-                    compiler->output << ", max-src-states "
-                                     << ruleopt->getInt("pf_max_src_states");
-
-                not_the_first = true;
-            }
-
-            bool check_overload_opts = false;
-            if (ruleopt->getInt("pf_max_src_conn")>0)
-            {
-                if (not_the_first) compiler->output << ",";
-
-                compiler->output << " max-src-conn "
-                                 << ruleopt->getInt("pf_max_src_conn");
-                not_the_first = true;
-                check_overload_opts = true;
-            }
-
-            if (ruleopt->getInt("pf_max_src_conn_rate_num")>0 && 
-                ruleopt->getInt("pf_max_src_conn_rate_seconds")>0)
-            {
-                if (not_the_first) compiler->output << ",";
-
-                compiler->output << " max-src-conn-rate "
-                                 << ruleopt->getInt("pf_max_src_conn_rate_num")
-                                 << "/"
-                                 << ruleopt->getInt(
-                                     "pf_max_src_conn_rate_seconds");
-                check_overload_opts = true;
-            }
-
-            if (check_overload_opts)
-            {
-                if (ruleopt->getStr("pf_max_src_conn_overload_table")!="")
-                    compiler->output << ", overload <"
-                                     << ruleopt->getStr(
-                                         "pf_max_src_conn_overload_table")
-                                     << ">";
-                if (ruleopt->getBool("pf_max_src_conn_flush"))
-                    compiler->output << " flush";
-                if (ruleopt->getBool("pf_max_src_conn_global"))
-                    compiler->output << " global";
-            }
-            if (nopt>1) compiler->output << " ) ";
+            options.push_back(QString("max %1").arg(ruleopt->getInt("pf_rule_max_state")));
         }
+
+        if (ruleopt->getBool("pf_sloppy_tracker"))
+        {
+            options.push_back("sloppy");
+        }
+
+        if (ruleopt->getBool("pf_no_sync"))
+        {
+            options.push_back("no-sync");
+        }
+
+        if (ruleopt->getBool("pf_pflow"))
+        {
+            options.push_back("pflow");
+        }
+
+        if (ruleopt->getBool("pf_source_tracking"))
+        {
+            if (ruleopt->getInt("pf_max_src_nodes") > 0)
+                options.push_back(QString("max-src-nodes %1").arg(
+                                      ruleopt->getInt("pf_max_src_nodes")));
+
+            if (ruleopt->getInt("pf_max_src_states")>0)
+                options.push_back(QString("max-src-states %1").arg(
+                                      ruleopt->getInt("pf_max_src_states")));
+        }
+
+        bool check_overload_opts = false;
+        if (ruleopt->getInt("pf_max_src_conn")>0)
+        {
+            options.push_back(QString("max-src-conn %1").arg(
+                                  ruleopt->getInt("pf_max_src_conn")));
+            check_overload_opts = true;
+        }
+
+        if (ruleopt->getInt("pf_max_src_conn_rate_num")>0 && 
+            ruleopt->getInt("pf_max_src_conn_rate_seconds")>0)
+        {
+            options.push_back(QString("max-src-conn-rate %1/%2")
+                              .arg(ruleopt->getInt("pf_max_src_conn_rate_num"))
+                              .arg(ruleopt->getInt("pf_max_src_conn_rate_seconds")));
+            check_overload_opts = true;
+        }
+
+        if (check_overload_opts)
+        {
+            QStringList overload_opts;
+            if (ruleopt->getStr("pf_max_src_conn_overload_table")!="")
+                overload_opts.push_back(
+                    QString("overload <%1>").arg(
+                        ruleopt->getStr("pf_max_src_conn_overload_table").c_str()));
+            if (ruleopt->getBool("pf_max_src_conn_flush"))
+                overload_opts.push_back("flush");
+            if (ruleopt->getBool("pf_max_src_conn_global"))
+                overload_opts.push_back("global");
+            if (overload_opts.size() > 0)
+                options.push_back(overload_opts.join(" "));
+        }
+
+        // looks like pf.conf syntax requires '(' ')' even if there is
+        // only one option
+        if (options.size() > 0) compiler->output << "( ";
+
+        compiler->output << options.join(", ").toStdString();
+
+        if (options.size() > 0) compiler->output << " )";
+
     } else
     {
         // stateless rule
         if (XMLTools::version_compare(version, "4.0")>=0)
-      //if ( version == "4.x")
+        {
             // v4.x, stateless rule
             compiler->output << "no state ";
+        }
     }
 
     if (rule->getBool("allow_opts")) compiler->output << "allow-opts  ";
