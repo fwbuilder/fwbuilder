@@ -11,7 +11,7 @@ SOURCES += main.cpp \
     AddressTableTest.cpp
 HEADERS += AddressTableTest.h
 INCLUDEPATH += ../../..
-LIBS += -lcppunit -lfwbuilder
+LIBS += -L ../.. -lcppunit -lfwbuilder
 run.commands = echo "Running tests..." && ./${TARGET}
 run.depends = all
 QMAKE_EXTRA_TARGETS += run

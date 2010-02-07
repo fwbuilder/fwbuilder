@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2009 NetCitadel, LLC
+                 Copyright (C) 2010 NetCitadel, LLC
 
   Author:  Roman Bovsunivkiy     a2k0001@gmail.com
 
