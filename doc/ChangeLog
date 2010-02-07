@@ -1,5 +1,10 @@
 2010-02-07  vadim  <vadim@vk.crocodile.org>
 
+	* src/gui/ClusterGroupDialog.cpp (ClusterGroupDialog::applyChanges):
+	fixes #1215 "Edit protocol parameters" button gets disabled for no
+	reason. This button would get disabled after certain manipulations
+	in the cluster group object dialog even when no changes were made.
+
 	* FWCmdChange.cpp (FWCmdChangeOptionsObject::notify): fixes #1212
 	Cluster object was not marked for recompile when user edited
 	conntrack group parameters

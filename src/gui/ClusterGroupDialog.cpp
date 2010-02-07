@@ -290,14 +290,6 @@ void ClusterGroupDialog::applyChanges()
 
     saveGroupType(new_state);
 
-    QString dlgname = DialogFactory::getClusterGroupOptionsDialogName(
-        ClusterGroup::cast(new_state)->getOptionsObject());
-
-    if (fwbdebug)
-        qDebug() << "ClusterGroupDialog::applyChanges dlgname=" << dlgname;
-
-    m_dialog->editParameters->setEnabled(!dlgname.isEmpty());
-
     if (!cmd->getOldState()->cmp(new_state, true))
     {
         if (obj->isReadOnly()) return;
