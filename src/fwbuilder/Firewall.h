@@ -59,6 +59,8 @@ public:
     
     
     DECLARE_FWOBJECT_SUBTYPE(Firewall);
+
+    DECLARE_DISPATCH_METHODS(Firewall);
     
     /**
      * verify whether given object type is approppriate as a child

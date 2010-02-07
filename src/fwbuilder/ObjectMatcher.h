@@ -31,28 +31,13 @@
 #include <list>
 
 #include <fwbuilder/libfwbuilder-config.h>
-
-namespace libfwbuilder {
-    class InetAddr;
-    class InetAddrMask;
-    class FWObject;
-    class Address;
-    class IPv4;
-    class IPv6;
-    class Network;
-    class NetworkIPv6;
-    class AddressRange;
-    class Host;
-    class physAddress;
-    class Firewall;
-    class Interface;
-};
+#include <fwbuilder/Dispatch.h>
 
 
 namespace libfwbuilder
 {
 
-    class ObjectMatcher {
+    class ObjectMatcher : public Dispatch {
 
 public:
         typedef enum {EXACT, PARTIAL} address_range_match;
@@ -76,7 +61,7 @@ private:
                            const InetAddr *rhs_obj_netm);
 
 public:
-        ObjectMatcher()
+        ObjectMatcher() : Dispatch()
         {
             recognize_broadcasts = false;
             recognize_multicasts = false;
@@ -102,23 +87,20 @@ public:
          * 5. address of obj1 is a broadcast (255.255.255.255)
          */
         bool complexMatch(Address *obj1, Address *obj2);
-        
-        bool checkComplexMatch(Interface *obj1, FWObject *obj2);
 
-        bool checkComplexMatch(Network *obj1, FWObject *obj2);
 
-        bool checkComplexMatch(NetworkIPv6 *obj1, FWObject *obj2);
+        virtual void* dispatch(Interface*, void*);
+        virtual void* dispatch(Network*, void*);
+        virtual void* dispatch(NetworkIPv6*, void*);
+        virtual void* dispatch(IPv4*, void*);
+        virtual void* dispatch(IPv6*, void*);
+        virtual void* dispatch(Host*, void*);
+        virtual void* dispatch(Firewall*, void*);
+        virtual void* dispatch(Cluster*, void*);
+        virtual void* dispatch(AddressRange*, void*);
+        virtual void* dispatch(physAddress*, void*);
+        virtual void* dispatch(MultiAddressRunTime*, void*);
 
-        bool checkComplexMatch(IPv4 *obj1, FWObject *obj2);
-
-        bool checkComplexMatch(IPv6 *obj1, FWObject *obj2);
-        
-        bool checkComplexMatch(Host *obj1, FWObject *obj2);
-        
-        bool checkComplexMatch(AddressRange *obj1, FWObject *obj2);
-        
-        bool checkComplexMatch(physAddress *obj1, FWObject *obj2);
-    
     };
 };
 

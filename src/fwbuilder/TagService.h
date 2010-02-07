@@ -53,6 +53,8 @@ class TagService : public Service
 
     DECLARE_FWOBJECT_SUBTYPE(TagService);
 
+    DECLARE_DISPATCH_METHODS(TagService);
+    
     TagService();
     TagService(const FWObjectDatabase *root,bool prepopulate);
     ~TagService();

@@ -69,7 +69,7 @@ void ObjectMatcherTest::matchTest()
     om.setRecognizeBroadcasts(true);
     om.setRecognizeMulticasts(true);
     om.setIPV6(false);
-    om.setMatchSubnets(true);
+    om.setMatchSubnets(false);
     om.setAddressRangeMatchMode(ObjectMatcher::EXACT);
 
     Firewall *fw1 = Firewall::cast(dbsearch(db, "fw1"));
@@ -105,6 +105,9 @@ void ObjectMatcherTest::matchTest()
     Interface *host2_eth0 = Interface::cast(dbsearch(host2, "eth0"));
     CPPUNIT_ASSERT(host2_eth0 != NULL);
 
+    IPv4 *host2_eth0_ip = IPv4::cast(dbsearch(host2_eth0, "ip"));
+    CPPUNIT_ASSERT(host2_eth0_ip != NULL);
+
     Interface *host3_eth0 = Interface::cast(dbsearch(host3, "eth0"));
     CPPUNIT_ASSERT(host3_eth0 != NULL);
 
@@ -112,52 +115,107 @@ void ObjectMatcherTest::matchTest()
     CPPUNIT_ASSERT(host3_eth1 != NULL);
 
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(fw1, fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(fw1_eth0, fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(fw1_eth1, fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(fw1_eth0, fw1_eth0));
+    CPPUNIT_ASSERT(om.dispatch(fw1, fw1));
+    CPPUNIT_ASSERT(om.dispatch(fw1_eth0, fw1));
+    CPPUNIT_ASSERT(om.dispatch(fw1_eth1, fw1));
+    CPPUNIT_ASSERT(om.dispatch(fw1_eth0, fw1_eth0));
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(fw1_eth2_ipv6, fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(fw1_eth2_mac, fw1));
+    CPPUNIT_ASSERT(om.dispatch(fw1_eth2_ipv6, fw1));
+    CPPUNIT_ASSERT(om.dispatch(fw1_eth2_mac, fw1));
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(host1, fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(Interface::cast(dbsearch(host1, "eth0")), fw1));
+    CPPUNIT_ASSERT(om.dispatch(host1_eth0, fw1));
+    CPPUNIT_ASSERT(om.dispatch(host1, fw1));
 
-//    CPPUNIT_ASSERT(om.checkComplexMatch(host2, fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(host2_eth0_ip, fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(host2_eth0, fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(host2, fw1) == false);
 
-//    CPPUNIT_ASSERT(om.checkComplexMatch(host2_eth0, fw1) == false);
+    om.setMatchSubnets(true);
+    CPPUNIT_ASSERT(om.dispatch(host2_eth0_ip, fw1));
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(host3_eth0, fw1) == false);
-    CPPUNIT_ASSERT(om.checkComplexMatch(host3_eth1, fw1) == false);
+    om.setMatchSubnets(false);
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.1")), fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.1")), fw1_eth1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.1")), fw1_eth0) == false);
+    CPPUNIT_ASSERT(om.dispatch(host3_eth0, fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(host3_eth1, fw1) == false);
 
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv6::cast(o("addr-ipv6-1")), fw1));
+    CPPUNIT_ASSERT(om.dispatch(IPv4::cast(o("addr-192.168.1.1")), fw1));
+    CPPUNIT_ASSERT(om.dispatch(IPv4::cast(o("addr-192.168.1.1")), fw1_eth1));
+    CPPUNIT_ASSERT(om.dispatch(IPv4::cast(o("addr-192.168.1.1")), fw1_eth0) == false);
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(IPv6::cast(o("addr-ipv6-2")), fw1) == false);
+    om.setIPV6(true);
+    CPPUNIT_ASSERT(om.dispatch(IPv6::cast(o("addr-ipv6-1")), fw1));
+    CPPUNIT_ASSERT(om.dispatch(IPv6::cast(o("addr-ipv6-2")), fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(IPv4::cast(o("addr-192.168.1.1")), fw1) == false);
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(Network::cast(o("net-192.168.1.0")), fw1) == false);
-    CPPUNIT_ASSERT(om.checkComplexMatch(Network::cast(o("net-192.168.1.0")), fw1_eth1) == false);
-    CPPUNIT_ASSERT(om.checkComplexMatch(Network::cast(o("net-192.168.1.0")), fw1_eth0) == false);
-    CPPUNIT_ASSERT(om.checkComplexMatch(Network::cast(o("net-192.168.1.1")), fw1));
+    om.setIPV6(false);
+    CPPUNIT_ASSERT(om.dispatch(IPv6::cast(o("addr-ipv6-1")), fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(IPv6::cast(o("addr-ipv6-2")), fw1) == false);
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.255")), fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.0")), fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(Network::cast(o("all multicasts")), fw1));
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range1")), fw1));
-    CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range2")), fw1) == false);
-    CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range3")), fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(Network::cast(o("net-192.168.1.0")), fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(Network::cast(o("net-192.168.1.0")), fw1_eth1) == false);
+    CPPUNIT_ASSERT(om.dispatch(Network::cast(o("net-192.168.1.0")), fw1_eth0) == false);
+    CPPUNIT_ASSERT(om.dispatch(Network::cast(o("net-192.168.1.1")), fw1));
+
+    CPPUNIT_ASSERT(om.dispatch(IPv4::cast(o("addr-192.168.1.255")), fw1));
+    CPPUNIT_ASSERT(om.dispatch(IPv4::cast(o("addr-192.168.1.0")), fw1));
+    CPPUNIT_ASSERT(om.dispatch(Network::cast(o("all multicasts")), fw1));
 
     om.setRecognizeBroadcasts(false);
+    CPPUNIT_ASSERT(om.dispatch(IPv4::cast(o("addr-192.168.1.255")), fw1) == false);
+    CPPUNIT_ASSERT(om.dispatch(IPv4::cast(o("addr-192.168.1.0")), fw1) == false);
+
+    // ================================================================
+    // AddressRange tests
+    // here match_subnets == false  address_range_match_mode = EXACT
+
+    // range1 192.168.1.10 - 192.168.1.20
+    // does not match fw1 exactly, but matches when match_subnets == true
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range1")), fw1) == false);
+
+    // range2 192.168.2.1-192.168.2.3 does not match fw1:eth2 at all
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range2")), fw1) == false);
+
+    // range3 192.168.2.27-192.168.2.50 partially overlaps with fw1:eth2 subnet
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range3")), fw1) == false);
+
+    // range4 192.168.2.27-192.168.2.30 is completely inside fw1:eth2 subnet
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range4")), fw1) == false);
+
+    // ================================================================
     om.setAddressRangeMatchMode(ObjectMatcher::PARTIAL);
+    // here match_subnets == false  address_range_match_mode = PARTIAL
+    // when match_subnets == false, ObjectMatcher compares address of interface with
+    // the range and ignores netmask of the interface. Address has to be inside the range
+    // to match
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.255")), fw1));
+    // range3 192.168.2.27-192.168.2.50 partially overlaps with fw1:eth2 subnet
+    // but address of interface 192.168.2.24 is outside the range
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range3")), fw1) == false);
 
-//    CPPUNIT_ASSERT(om.checkComplexMatch(IPv4::cast(o("addr-192.168.1.0")), fw1) == false);
+    // range4 192.168.2.27-192.168.2.30 is completely inside fw1:eth2 subnet
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range4")), fw1) == false);
 
-    CPPUNIT_ASSERT(om.checkComplexMatch(AddressRange::cast(o("range3")), fw1));
+    // fw1:eth2:ip 192.168.2.24 falls inside range5
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range5")), fw1));
+
+    // ================================================================
+    om.setMatchSubnets(true); // ranges will be compared to subnets defined by interface addr/mask
+    // here match_subnets == true  address_range_match_mode = PARTIAL
+
+    CPPUNIT_ASSERT(om.dispatch(host2_eth0_ip, fw1));
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range1")), fw1));
+
+    // range2 192.168.2.1-192.168.2.3 does not match fw1:eth2 at all
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range2")), fw1) == false);
+
+    // range3 192.168.2.27-192.168.2.50 partially overlaps with fw1:eth2 subnet
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range3")), fw1));
+
+    // range4 192.168.2.27-192.168.2.30 is completely inside fw1:eth2 subnet
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range4")), fw1));
+
+    // range5 192.168.2.21-192.168.2.27 partially overlaps with fw1:eth2 subnet
+    CPPUNIT_ASSERT(om.dispatch(AddressRange::cast(o("range5")), fw1));
 
 }

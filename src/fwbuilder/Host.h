@@ -57,6 +57,8 @@ class Host : public Address
 
     DECLARE_FWOBJECT_SUBTYPE(Host);
 
+    DECLARE_DISPATCH_METHODS(Host);
+    
     /*
      * verify whether given object type is approppriate as a child
      */
@@ -89,9 +91,6 @@ class Host : public Address
     virtual int countInetAddresses(bool skip_loopback) const;
 
     virtual bool isPrimaryObject() const { return true; }
-
-    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
-    { return om->checkComplexMatch(this, obj); }
 
     protected:
     

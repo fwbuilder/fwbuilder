@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1265579621" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1265584375" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <IPv4 id="id9040X76354" name="pc:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
   </Library>
@@ -83,6 +83,8 @@
         <AddressRange id="id3908X76354" name="range1" comment="" ro="False" start_address="192.168.1.10" end_address="192.168.1.20"/>
         <AddressRange id="id4102X76354" name="range2" comment="" ro="False" start_address="192.168.2.1" end_address="192.168.2.3"/>
         <AddressRange id="id4173X76354" name="range3" comment="" ro="False" start_address="192.168.2.27" end_address="192.168.2.50"/>
+        <AddressRange id="id2325X3758" name="range4" comment="" ro="False" start_address="192.168.2.27" end_address="192.168.2.30"/>
+        <AddressRange id="id2437X3758" name="range5" comment="" ro="False" start_address="192.168.2.21" end_address="192.168.2.27"/>
       </ObjectGroup>
     </ObjectGroup>
     <ServiceGroup id="id1523X76354" name="Services" comment="" ro="False">

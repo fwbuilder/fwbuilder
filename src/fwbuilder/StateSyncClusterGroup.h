@@ -41,6 +41,8 @@ namespace libfwbuilder
 
         DECLARE_FWOBJECT_SUBTYPE(StateSyncClusterGroup);
 
+        DECLARE_DISPATCH_METHODS(StateSyncClusterGroup);
+        
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     };

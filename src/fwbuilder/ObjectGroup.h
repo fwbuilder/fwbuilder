@@ -43,6 +43,8 @@ class ObjectGroup : public Group
 
     DECLARE_FWOBJECT_SUBTYPE(ObjectGroup);
 
+    DECLARE_DISPATCH_METHODS(ObjectGroup);
+    
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
     /*

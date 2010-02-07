@@ -1,5 +1,13 @@
 2010-02-02  vadim  <vadim@vk.crocodile.org>
 
+	* fwbuilder/ObjectMatcher.h (libfwbuilder): reimplemented ObjectMatcher
+	class using generic base class Dispatch
+
+	* fwbuilder/Dispatch.h (__DECLARE_DISPATCH_METHODS): generic class
+	that implements double dispatch pattern. Helps avoid long chains
+	of if-then-else statements that compare object type names.
+	Refs fwbuilder:ticket:1186
+
 	* Interface.cpp (Interface::isLoopback): method isLoopback() will
 	return true for cluster interface that has no ip address of its
 	own but is mapped to loopback interfaces of cluster members.

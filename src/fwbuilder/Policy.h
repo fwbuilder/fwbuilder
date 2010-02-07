@@ -43,6 +43,8 @@ class Policy : public RuleSet
     
     DECLARE_FWOBJECT_SUBTYPE(Policy);
 
+    DECLARE_DISPATCH_METHODS(Policy);
+    
 /* the following methods provide proper typization */
     PolicyRule* getRuleByNum(int n) {
         return PolicyRule::cast(RuleSet::getRuleByNum(n));

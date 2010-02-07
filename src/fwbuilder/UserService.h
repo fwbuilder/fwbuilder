@@ -57,6 +57,8 @@ class UserService : public Service
     
     DECLARE_FWOBJECT_SUBTYPE(UserService);
 
+    DECLARE_DISPATCH_METHODS(UserService);
+    
     virtual std::string getProtocolName();
     virtual int    getProtocolNumber();
    

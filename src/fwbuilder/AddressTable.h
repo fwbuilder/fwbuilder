@@ -41,6 +41,8 @@ class AddressTable : public MultiAddress
 
     DECLARE_FWOBJECT_SUBTYPE(AddressTable);
 
+    DECLARE_DISPATCH_METHODS(AddressTable);
+    
     AddressTable();
     AddressTable(const FWObjectDatabase *root,bool prepopulate);
 

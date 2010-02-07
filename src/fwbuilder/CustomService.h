@@ -72,6 +72,8 @@ class CustomService : public Service
     
     DECLARE_FWOBJECT_SUBTYPE(CustomService);
 
+    DECLARE_DISPATCH_METHODS(CustomService);
+    
     virtual std::string getProtocolName();
     virtual int getProtocolNumber();
 

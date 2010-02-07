@@ -57,6 +57,8 @@ public:
 
     DECLARE_FWOBJECT_SUBTYPE(TCPService);
 
+    DECLARE_DISPATCH_METHODS(TCPService);
+    
     virtual std::string getProtocolName();
     virtual int    getProtocolNumber();
 

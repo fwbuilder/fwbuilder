@@ -41,6 +41,8 @@ public:
 
         DECLARE_FWOBJECT_SUBTYPE(ClusterGroup);
 
+        DECLARE_DISPATCH_METHODS(ClusterGroup);
+        
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 

@@ -80,6 +80,7 @@ HEADERS  = 	inet_net.h \
 			InetAddr.h \
 			InetAddrMask.h \
 			Inet6AddrMask.h \
+			Dispatch.h \
 			IPRoute.h \
 			Address.h \
 			AddressRange.h \

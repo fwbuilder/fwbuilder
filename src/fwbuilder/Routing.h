@@ -45,6 +45,8 @@ class Routing : public RuleSet
     
     DECLARE_FWOBJECT_SUBTYPE(Routing);
 
+    DECLARE_DISPATCH_METHODS(Routing);
+    
 /* the following methods provide proper typization */
     RoutingRule* getRuleByNum(int n) { return RoutingRule::cast(RuleSet::getRuleByNum(n)); }
     RoutingRule* insertRuleAtTop() { return RoutingRule::cast(RuleSet::insertRuleAtTop()); }

@@ -53,6 +53,8 @@ public:
     
     DECLARE_FWOBJECT_SUBTYPE(IPv4);
 
+    DECLARE_DISPATCH_METHODS(IPv4);
+    
     virtual bool hasInetAddress() const { return true; }
 
     /**
@@ -70,8 +72,6 @@ public:
 
     virtual bool isPrimaryObject() const;
 
-    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
-    { return om->checkComplexMatch(this, obj); }
 };
 
 }

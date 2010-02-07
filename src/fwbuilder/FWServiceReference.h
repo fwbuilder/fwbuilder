@@ -44,6 +44,8 @@ public:
 
         DECLARE_FWOBJECT_SUBTYPE(FWServiceReference);
 
+        DECLARE_DISPATCH_METHODS(FWServiceReference);
+        
         FWServiceReference();
         FWServiceReference(const FWObjectDatabase *root, bool prepopulate);
 

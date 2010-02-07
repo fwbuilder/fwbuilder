@@ -180,6 +180,8 @@ public:
 
         DECLARE_FWOBJECT_SUBTYPE(FWObjectDatabase);
 
+        DECLARE_DISPATCH_METHODS(FWObjectDatabase);
+        
         enum {ROOT_ID = 0,
               ANY_ADDRESS_ID = 1,
               ANY_SERVICE_ID = 2,

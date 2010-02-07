@@ -43,6 +43,8 @@ class ServiceGroup : public Group
 
     DECLARE_FWOBJECT_SUBTYPE(ServiceGroup);
 
+    DECLARE_DISPATCH_METHODS(ServiceGroup);
+    
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 
     /*

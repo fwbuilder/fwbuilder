@@ -43,6 +43,8 @@
 #include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/ObjectMatcher.h>
+#include <fwbuilder/Dispatch.h>
+
 
 namespace libfwbuilder
 {
@@ -60,6 +62,19 @@ class FWObjectFindPredicate;
    static name* cast(FWObject *o) { return dynamic_cast<name*>(o); } \
    static const name* constcast(const FWObject *o) { return dynamic_cast<const name*>(o); }
 
+#define DECLARE_DISPATCH_METHODS(classname) \
+    virtual void* dispatch(Dispatch* _d, void* _a1) \
+        {return _d->dispatch(this, _a1); } \
+    virtual void* dispatch(Dispatch* _d, const void* _a1) \
+        {return _d->dispatch(this, _a1); } \
+    virtual void* dispatch(Dispatch* _d, void* _a1) const \
+        {return _d->dispatch(this, _a1); } \
+    virtual void* dispatch(Dispatch* _d, const void* _a1) const \
+        {return _d->dispatch(this, _a1); } \
+    virtual const void* const_dispatch(Dispatch* _d, void* _a1) const \
+        {return _d->const_dispatch(this, _a1); } \
+    virtual const void* const_dispatch(Dispatch* _d, const void* _a1) const \
+        {return _d->const_dispatch(this, _a1); }
 
 
 /**
@@ -152,6 +167,8 @@ protected:
 public:
 
     DECLARE_FWOBJECT_SUBTYPE(FWObject);
+
+    DECLARE_DISPATCH_METHODS(FWObject);
 
     class tree_iterator {
         friend class libfwbuilder::FWObject;
@@ -486,18 +503,6 @@ public:
      * interface, rulesets, rule elements and rules.
      */
     virtual bool isPrimaryObject() const;
-
-    /**
-     * virtual dispatch method for the double dispatch
-     * pattern. Compiler::complexMatch() calls this virt. method,
-     * which in turn calls Compiler::checkComplexMatch where first
-     * argument has specific type. Only classes for which we implement
-     * special algorithm in corresponding checkComplexMatch() have
-     * virtual dispatchComplexMatch reimplemented. For other classes
-     * this base method is called (which always returns false).
-     */
-    virtual bool dispatchComplexMatch(ObjectMatcher*, FWObject*)
-    { return false; }
 
     // Attributes iterator
     std::map<std::string, std::string>::const_iterator dataBegin()

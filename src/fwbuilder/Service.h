@@ -48,6 +48,8 @@ class Service : public FWObject
 
     DECLARE_FWOBJECT_SUBTYPE(Service);
 
+    DECLARE_DISPATCH_METHODS(Service);
+    
     Service() {}
     Service(const FWObjectDatabase *root,bool prepopulate);
 

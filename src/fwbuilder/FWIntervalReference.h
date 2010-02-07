@@ -44,6 +44,8 @@ class FWIntervalReference : public FWReference
 
     DECLARE_FWOBJECT_SUBTYPE(FWIntervalReference);
 
+    DECLARE_DISPATCH_METHODS(FWIntervalReference);
+    
     FWIntervalReference();
     FWIntervalReference(const FWObjectDatabase *root,bool prepopulate);
 

@@ -53,6 +53,8 @@ public:
     
     DECLARE_FWOBJECT_SUBTYPE(IPv6);
 
+    DECLARE_DISPATCH_METHODS(IPv6);
+    
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
         throw(FWException);
@@ -74,8 +76,6 @@ public:
 
     virtual bool isPrimaryObject() const;
 
-    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
-    { return om->checkComplexMatch(this, obj); }
 };
 
 }

@@ -52,6 +52,8 @@ public:
 
     DECLARE_FWOBJECT_SUBTYPE(Address);
 
+    DECLARE_DISPATCH_METHODS(Address);
+    
     Address();
     Address(const FWObjectDatabase *root,bool prepopulate);
     Address(const Address&);

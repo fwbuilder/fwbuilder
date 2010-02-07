@@ -42,6 +42,8 @@ class physAddress : public Address
 
     DECLARE_FWOBJECT_SUBTYPE(physAddress);
 
+    DECLARE_DISPATCH_METHODS(physAddress);
+    
     physAddress() {}
     physAddress(const FWObjectDatabase *root,bool prepopulate);
 
@@ -57,8 +59,6 @@ class physAddress : public Address
 
     virtual bool isPrimaryObject() const { return false; }
 
-    virtual bool dispatchComplexMatch(ObjectMatcher *om, FWObject *obj)
-    { return om->checkComplexMatch(this, obj); }
 };
 
 }

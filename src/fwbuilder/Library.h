@@ -48,6 +48,8 @@ class Library : public Group
 
     DECLARE_FWOBJECT_SUBTYPE(Library);
 
+    DECLARE_DISPATCH_METHODS(Library);
+    
     virtual void fromXML (xmlNodePtr xml_parent_node) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
 

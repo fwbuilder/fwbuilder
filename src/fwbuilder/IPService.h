@@ -52,6 +52,8 @@ class IPService : public Service
 
     DECLARE_FWOBJECT_SUBTYPE(IPService);
 
+    DECLARE_DISPATCH_METHODS(IPService);
+    
     virtual std::string getProtocolName();
     virtual int getProtocolNumber();
 
