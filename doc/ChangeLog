@@ -1,3 +1,9 @@
+2010-02-07  vadim  <vadim@vk.crocodile.org>
+
+	* FWCmdChange.cpp (FWCmdChangeOptionsObject::notify): fixes #1212
+	Cluster object was not marked for recompile when user edited
+	conntrack group parameters
+
 2010-02-06  vadim  <vadim@vk.crocodile.org>
 
 	* src/pflib/PolicyCompiler_pf_writers.cpp (PrintRule::processNext):

@@ -180,10 +180,13 @@ void FWCmdChangeName::notify()
 
 /********************************************************
  * FWCmdChangeOptionsObject
+ *
+ * This command is used to change failover or state protocol parameters
+ * (CARP, conntrack, heartbeat, vrrp, pfsync, openais)
  ********************************************************/
 
 FWCmdChangeOptionsObject::FWCmdChangeOptionsObject(ProjectPanel *project, FWObject *obj) :
-    FWCmdChange(project, obj, QObject::tr("Edit rule options"))
+    FWCmdChange(project, obj, QObject::tr("Edit protocol parameters"))
 {}
 
 void FWCmdChangeOptionsObject::notify()
@@ -198,6 +201,7 @@ void FWCmdChangeOptionsObject::notify()
     QCoreApplication::postEvent(
         mw, new showObjectInTreeEvent(filename, obj->getParent()->getId()));
     QCoreApplication::postEvent(mw, new reloadRulesetEvent(filename));
+    QCoreApplication::postEvent(mw, new dataModifiedEvent(filename, obj->getId()));
 }
 
 
