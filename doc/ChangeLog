@@ -1,3 +1,19 @@
+2010-02-06  vadim  <vadim@vk.crocodile.org>
+
+	* InterfaceEditorWidget.cpp (InterfaceEditorWidget::isValid): "new
+	cluster" visard should permit the user to create cluster
+	interfaces without IP addresses for any failover protocol. Disable
+	widgets used to add virtual ip addresses only for protocol "None".
+	All other protocols permit adding addresses regardless of the OS
+	resource file attribute "no_ip_ok".
+
+	* linux24.xml, openwrt.xml: fixed #1172 It is ok for a cluster
+	interface with failover protocol heartbeat to have no ip address.
+	There are legitimate configurations where admin might want to run
+	heartbeat over an inetrface which itself has no virtual ip
+	address, for example to confine heartbeat packets to a dedicated
+	link.
+
 2010-02-02  vadim  <vadim@vk.crocodile.org>
 
 	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectPropertiesDetailed):

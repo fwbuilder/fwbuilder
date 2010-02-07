@@ -437,7 +437,8 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 {
                     string failover_type = failover_group->getStr("type");
                     no_addr_ok = Resources::os_res[host_os]->getResourceBool(
-                    "/FWBuilderResources/Target/protocols/" + failover_type + "/no_ip_ok");
+                    "/FWBuilderResources/Target/protocols/" + failover_type +
+                    "/no_ip_ok");
                 }
             }
 

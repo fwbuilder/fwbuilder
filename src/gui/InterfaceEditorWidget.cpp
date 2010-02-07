@@ -238,10 +238,10 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
 
     res.mac = this->m_ui->mac->text();
     bool noAddrs = false;
-    if (clusterMode)
-        noAddrs = Resources::os_res[os.toStdString()]->getResourceBool(
-                    "/FWBuilderResources/Target/protocols/"
-                    + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok");
+    // if (clusterMode)
+    //     noAddrs = Resources::os_res[os.toStdString()]->getResourceBool(
+    //                 "/FWBuilderResources/Target/protocols/"
+    //                 + this->m_ui->protocol->currentText().toLower().toStdString() + "/no_ip_ok");
     if (this->m_ui->protocol->currentText() == "None") noAddrs = true;
     if (!noAddrs)
         for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
@@ -283,6 +283,15 @@ void InterfaceEditorWidget::typeChanged(int type)
 
 bool InterfaceEditorWidget::isValid()
 {
+#if 0
+    // do not do this check in the wizard because there are too many
+    // combinations: most protocols can work with and without an
+    // address on the cluster interfaces and only one (VRRP) requires
+    // it. Unfortunately attribute in the OS resource file only tells
+    // when it is ok to have no address, but does not tell when it must
+    // be there. And we do this check in the compiler anyway.  Tcikets
+    // #1180, #1172
+    
     bool no_addr_ok = true;
     if (clusterMode)
     {
@@ -303,7 +312,6 @@ bool InterfaceEditorWidget::isValid()
         return false;
     }
 
-
     if (!no_addr_ok && this->m_ui->addresses->rowCount() == 0)
     {
         if ( (this->m_ui->type->currentIndex() == 0) &&
@@ -318,6 +326,8 @@ bool InterfaceEditorWidget::isValid()
             return false;
         }
     }
+
+#endif
 
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
@@ -435,12 +445,11 @@ void InterfaceEditorWidget::protocolChanged(QString name)
 {
     if (clusterMode)
     {
-        bool noaddr = Resources::os_res[os.toStdString()]->getResourceBool(
-                        "/FWBuilderResources/Target/protocols/"
-                        + name.toLower().toStdString() + "/no_ip_ok") || name == "None";
+        bool noaddr = (name == "None");
         if (noaddr)
             while ( this->m_ui->addresses->rowCount() )
                 this->m_ui->addresses->removeRow(0);
+
         this->m_ui->addresses->setEnabled(!noaddr);
         this->m_ui->addAddress->setEnabled(!noaddr);
         st->setNewClusterFailoverProtocol(name);
