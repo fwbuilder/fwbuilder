@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1264573255" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1265579621" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <IPv4 id="id9040X76354" name="pc:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
   </Library>
   <Library id="id1514X76354" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1515X76354" name="Objects" comment="" ro="False">
       <ObjectGroup id="id1516X76354" name="Addresses" comment="" ro="False">
-        <IPv4 id="id3632X76354" name="addr-192.168.1.1" comment="" ro="False" address="255.255.255.255" netmask="0.0.0.0"/>
+        <IPv4 id="id3632X76354" name="addr-192.168.1.1" comment="" ro="False" address="192.168.1.1" netmask="0.0.0.0"/>
         <IPv4 id="id3767X76354" name="addr-192.168.1.255" comment="" ro="False" address="192.168.1.255" netmask="0.0.0.0"/>
         <IPv4 id="id3839X76354" name="addr-192.168.1.0" comment="" ro="False" address="192.168.1.0" netmask="0.0.0.0"/>
         <IPv6 id="id7310X76354" name="addr-ipv6-1" comment="" ro="False" address="fe80::213:72ff:fe3a:2042" netmask="128"/>
@@ -77,6 +77,7 @@
       <ObjectGroup id="id1521X76354" name="Networks" comment="" ro="False">
         <Network id="id3698X76354" name="net-192.168.1.0" comment="" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
         <Network id="id7589X76354" name="net-192.168.1.1" comment="special case of network object with /32 netmask" ro="False" address="192.168.1.1" netmask="255.255.255.255"/>
+        <Network id="id2222X3758" name="all multicasts" comment="224.0.0.0/4 - This block, formerly known as the Class D address&#10;space, is allocated for use in IPv4 multicast address assignments.&#10;The IANA guidelines for assignments from this space are described in&#10;[RFC3171].&#10;" ro="False" address="224.0.0.0" netmask="240.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="id1522X76354" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3908X76354" name="range1" comment="" ro="False" start_address="192.168.1.10" end_address="192.168.1.20"/>
