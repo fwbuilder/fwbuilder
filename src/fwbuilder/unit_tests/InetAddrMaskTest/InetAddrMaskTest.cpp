@@ -34,9 +34,11 @@ void InetAddrMaskTest::runTest()
     string sa;
 
     InetAddrMask *a1 = new InetAddrMask();
+    CPPUNIT_ASSERT(a1->toString() == "0.0.0.0/0.0.0.0");
     sa = a1->getAddressPtr()->toString();
     CPPUNIT_ASSERT(sa=="0.0.0.0");
-    CPPUNIT_ASSERT(a1->dimension() == (1<<31)-1); // i don't know why this value
+    // 0.0.0.0/0.0.0.0 has maximum dimension (represents all possible addresses)
+    CPPUNIT_ASSERT(a1->dimension() == (1<<31)-1);
 
     InetAddrMask *a2 = new InetAddrMask(InetAddr("1.1.1.1"), InetAddr("255.255.255.0"));
     sa = a2->getAddressPtr()->toString();
