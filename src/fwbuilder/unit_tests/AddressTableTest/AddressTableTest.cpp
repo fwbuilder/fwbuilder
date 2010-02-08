@@ -120,28 +120,20 @@ void AddressTableTest::runTest()
 
      }
 
-     try
-     {
          o->loadFromSource(false, true);
-         list<FWObject*>::const_iterator t=o->begin();
-         Network *net;
-         FWReference *ref;
+     list<FWObject*>::const_iterator t=o->begin();
+     Network *net;
+     FWReference *ref;
 
-         for ( ; t!=o->end(); ++t )
-         {
-             ref=FWReference::cast(*t);
-             CPPUNIT_ASSERT(ref!=NULL);
-             net=Network::cast(ref->getPointer());
-             CPPUNIT_ASSERT(net!=NULL);
-             addrres.insert(net->getAddressPtr()->toString() + "/" + net->getNetmaskPtr()->toString());
-         }
-
-         CPPUNIT_ASSERT(addrset==addrres);
-
-     }catch(FWException &ex)
+     for ( ; t!=o->end(); ++t )
      {
-         cerr << ex.toString() << endl;
-         cout << "Test failed." << endl;
+         ref=FWReference::cast(*t);
+         CPPUNIT_ASSERT(ref!=NULL);
+         net=Network::cast(ref->getPointer());
+         CPPUNIT_ASSERT(net!=NULL);
+         addrres.insert(net->getAddressPtr()->toString() + "/" + net->getNetmaskPtr()->toString());
      }
+
+     CPPUNIT_ASSERT(addrset==addrres);
 
 }
