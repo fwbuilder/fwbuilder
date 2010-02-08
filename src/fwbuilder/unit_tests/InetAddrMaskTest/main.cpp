@@ -25,17 +25,23 @@
 
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
-#include "DNSTest.h"
+#include "InetAddrMaskTest.h"
+#include "fwbuilder/FWObjectDatabase.h"
 #include <string>
-#include "FWObjectDatabase.h"
 
+using namespace libfwbuilder;
+//std::string respath;
 int fwbdebug = 0;
+//QString user_name;
 std::string platform;
 
 int main( int, char** argv)
 {
+    //init(argv);
+    init();
+
     CppUnit::TextUi::TestRunner runner;
-    runner.addTest( DNSTest::suite() );
+    runner.addTest( InetAddrMaskTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
                                                          std::cerr ) );
 
