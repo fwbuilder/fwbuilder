@@ -61,87 +61,63 @@ bool DNSTest::testDNSNameObject(FWObjectDatabase *objdb, FWObject *root,
     dnsnameobj->setStr("dnsrec", dnsrec);
     dnsnameobj->setRunTime(false);
 
-    try
+    for (FWObject::iterator j=dnsnameobj->begin();
+         j!=dnsnameobj->end(); ++j)
     {
-        dnsnameobj->loadFromSource(false, true);
+        Address* addr = Address::cast(FWReference::cast(*j)->getPointer());
+        const InetAddr* inet_addr = addr->getAddressPtr();
 
-        for (FWObject::iterator j=dnsnameobj->begin();
-             j!=dnsnameobj->end(); ++j)
+        list<std::string>::const_iterator res;
+
+        res = std::find(expected_results.begin(),
+                        expected_results.end(),
+                        inet_addr->toString());
+
+        if ( res != expected_results.end())
         {
-            Address* addr = Address::cast(FWReference::cast(*j)->getPointer());
-            const InetAddr* inet_addr = addr->getAddressPtr();
-
-            list<std::string>::const_iterator res;
-
-            res = std::find(expected_results.begin(),
-                            expected_results.end(),
-                            inet_addr->toString());
-
-            if ( res != expected_results.end())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
-    }catch(FWException &ex)
-    {
-        cerr << ex.toString() << endl;
+        else
+        {
+            return false;
+        }
     }
     return true;
 }
 
 void DNSTest::runTest()
 {
-    try
-    {
-        libfwbuilder::init();
+    libfwbuilder::init();
 
-        objdb = new FWObjectDatabase();
+    objdb = new FWObjectDatabase();
 
-        FWObject *nlib = objdb->create(Library::TYPENAME);
-        objdb->add(nlib);
-        nlib->setName( "Library" );
+    FWObject *nlib = objdb->create(Library::TYPENAME);
+    objdb->add(nlib);
+    nlib->setName( "Library" );
 
-        FWObject *o1 = objdb->create(ObjectGroup::TYPENAME);
-        o1->setName("Objects");
-        nlib->add(o1);
+    FWObject *o1 = objdb->create(ObjectGroup::TYPENAME);
+    o1->setName("Objects");
+    nlib->add(o1);
 
-        FWObject *root = objdb->create(ObjectGroup::TYPENAME);
-        root->setName("DNS Names");
-        o1->add(root);
+    FWObject *root = objdb->create(ObjectGroup::TYPENAME);
+    root->setName("DNS Names");
+    o1->add(root);
 
-        InetAddr addr;
+    InetAddr addr;
+    char* test1[] = {"localhost", "127.0.0.1", NULL};
+    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test1[0], &(test1[1])));
 
-        char* test1[] = {"localhost", "127.0.0.1", NULL};
-        CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test1[0], &(test1[1])));
+    char* test2[] = {"www.fwbuilder.org","70.85.175.170", NULL};
+    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test2[0], &(test2[1])));
 
-        char* test2[] = {"www.fwbuilder.org","70.85.175.170", NULL};
-        CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test2[0], &(test2[1])));
+    char* test3[] = {"www.microsoft.com",
+                     "65.55.21.250",
+                     "207.46.232.182",
+                     "207.46.197.32",
+                     "207.46.19.254",
+                     "207.46.192.254",
+                     "207.46.193.254",
+                     NULL};
 
-        char* test3[] = {"www.microsoft.com",
-                         "65.55.21.250",
-                         "207.46.232.182",
-                         "207.46.197.32",
-                         "207.46.19.254",
-                         "207.46.192.254",
-                         "207.46.193.254",
-                         NULL};
-        CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test3[0], &(test3[1])));
-
-    } catch(FWException &ex)  {
-    cerr << ex.toString() << endl;
-        exit(1);
-    } catch (std::string s) {
-    cerr << s;
-        exit(1);
-    } catch (std::exception ex) {
-    cerr << ex.what();
-        exit(1);
-    } catch (...) {
-    cerr << "Unsupported exception";
-        exit(1);
-    }
+    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test3[0], &(test3[1])));
 }
