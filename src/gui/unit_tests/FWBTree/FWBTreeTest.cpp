@@ -10,6 +10,7 @@
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/Cluster.h"
+#include "fwbuilder/Network.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
@@ -24,6 +25,8 @@
 
 using namespace libfwbuilder;
 using namespace std;
+
+extern const char* standardFolders[];
 
 void FWBTreeTest::isSystem()
 {
@@ -47,9 +50,32 @@ void FWBTreeTest::isSystem()
     CPPUNIT_ASSERT(fwbtree.isSystem(&fw) == false);
 }
 
+bool FWBTreeTest::isStandardFolder(string path)
+{
+    for (const char **cptr=standardFolders; *cptr!=NULL; cptr++)
+        if (path == *cptr) return true;
+    return false;
+}
+
+QSet<FWObject*> FWBTreeTest::getStandardFolders(FWObject *root)
+{
+    QSet<FWObject*> res;
+    for (FWObject::iterator i = root->begin(); i != root->end(); i++)
+    {
+        if (isStandardFolder((*i)->getPath(true))) res.insert(*i);
+        res += getStandardFolders(*i);
+    }
+    return res;
+}
 
 void FWBTreeTest::validateForInsertion()
 {
+
+    FWObjectDatabase db;
+    FWBTree().createNewLibrary(&db);
+    QSet<FWObject*> stdFolders = getStandardFolders(&db);
+
+
     QString err;
 
     FWBTree tree;
@@ -98,6 +124,29 @@ void FWBTreeTest::validateForInsertion()
     IntervalGroup igrp;
     CPPUNIT_ASSERT(tree.validateForInsertion(&igrp, &interval, err) == true);
 
+    foreach (FWObject* folder, stdFolders)
+    {
+        if (folder->getName() == "Hosts")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &host, err) == true);
+        Firewall fw;
+        if (folder->getName() == "Firewalls")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &fw, err) == true);
+        if (folder->getName() == "Addresses")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &ipv4, err) == true);
+        if (folder->getName() == "Addresses")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &ipv6, err) == true);
+        if (folder->getName() == "TCP")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new TCPService(), err) == true);
+        if (folder->getName() == "UDP")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new UDPService(), err) == true);
+        if (folder->getName() == "ICMP")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new ICMPService(), err) == true);
+        if (folder->getName() == "Address ranges")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new AddressRange(), err) == true);
+        if (folder->getName() == "Networks")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new Network(), err) == true);
+    }
+
     CPPUNIT_ASSERT(tree.validateForInsertion(&host, &ipv4, err) == false);
     CPPUNIT_ASSERT(tree.validateForInsertion(&firewall, &ipv4, err) == false);
     CPPUNIT_ASSERT(tree.validateForInsertion(&cluster, &ipv4, err) == false);
@@ -106,4 +155,28 @@ void FWBTreeTest::validateForInsertion()
     CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &interval, err) == false);
     CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &interval, err) == false);
 
+    foreach (FWObject* folder, stdFolders)
+    {
+        if (folder->getName() == "Addresses")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &host, err) == false);
+        Firewall fw;
+        if (folder->getName() == "Addresses")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &fw, err) == false);
+        if (folder->getName() == "Hosts")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &ipv4, err) == false);
+        if (folder->getName() == "Firewalls")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &ipv6, err) == false);
+        if (folder->getName() == "Networks")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new TCPService(), err) == false);
+        if (folder->getName() == "TCP")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new UDPService(), err) == false);
+        if (folder->getName() == "Address ranges")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new ICMPService(), err) == false);
+        if (folder->getName() == "ICMP")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new AddressRange(), err) == false);
+        if (folder->getName() == "UDP")
+            CPPUNIT_ASSERT(tree.validateForInsertion(folder, new Network(), err) == false);
+    }
+
 }
+

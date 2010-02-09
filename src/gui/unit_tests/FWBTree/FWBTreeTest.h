@@ -10,6 +10,8 @@
 
 class FWBTreeTest : public CppUnit::TestCase
 {
+    bool isStandardFolder(std::string path);
+    QSet<libfwbuilder::FWObject*> getStandardFolders(libfwbuilder::FWObject *root);
 public:
     void isSystem();
     void validateForInsertion();
