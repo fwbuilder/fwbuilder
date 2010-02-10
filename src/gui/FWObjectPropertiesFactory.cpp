@@ -667,9 +667,10 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             do
             {
                 parent_host = parent_host->getParent();
+                if (parent_host == NULL) break;
                 short_path.push_front(QString::fromUtf8(parent_host->getName().c_str()));
             }
-            while (parent_host && Host::cast(parent_host) == NULL);
+            while (Host::cast(parent_host) == NULL);
 
             str += QString("<b>Parent: </b>%1<br>\n").arg(short_path.join("/"));
 
