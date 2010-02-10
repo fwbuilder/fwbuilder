@@ -66,6 +66,7 @@
 #include <QtDebug>
 #include <QTime>
 #include <QUndoStack>
+#include <QApplication>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -375,12 +376,17 @@ void InterfaceDialog::validate(bool *res)
 
     if (obj_name.indexOf(' ') != -1 || obj_name.indexOf('-') != -1)
     {
-        QMessageBox::critical(
-            this,"Firewall Builder",
-            tr("Interface name can not contain white space and '-'"),
-            tr("&Continue"), QString::null,QString::null,
-            0, 1 );
         *res = false;
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                tr("Interface name can not contain white space and '-'"),
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
+            blockSignals(false);
+        }
         return;
     }
 
@@ -391,12 +397,33 @@ void InterfaceDialog::validate(bool *res)
     QString err;
     if ( ! int_prop->validateInterface(obj->getParent(), obj_name, err))
     {
+        /*
+         * Here is the annoying part: if user entered interface name
+         * that does not pass checks in interfaceProperties, this
+         * dialog will pop warning dialog to tell them this every time
+         * the dialog loses focus even if they did not change
+         * anything. This happens when they click on any other part of
+         * the GUI or even switch to another application. For example
+         * this happens when user adds subinterface to an interface
+         * with intention to make the subint a vlan. The new interface
+         * object is created with default name, when they change the
+         * name to, say, eth0 (and the parent is eth0), this causes
+         * the error message to appear when they switch the focus. If
+         * they switch to another application while cursor was in the
+         * object name field, the pop-up appears as well.
+         */
         *res = false;
-        QMessageBox::critical(
-            this,"Firewall Builder",
-            err,
-            tr("&Continue"), QString::null,QString::null,
-            0, 1 );
+        // show warning dialog only if app has focus
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(
+                this,"Firewall Builder",
+                err,
+                tr("&Continue"), QString::null,QString::null,
+                0, 1 );
+            blockSignals(false);
+        }
     }
 
     delete int_prop;

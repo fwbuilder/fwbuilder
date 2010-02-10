@@ -50,6 +50,7 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <QUndoStack>
+#include <QApplication>
 
 
 using namespace std;
@@ -125,11 +126,16 @@ void NetworkDialogIPv6::validate(bool *res)
     } catch (FWException &ex)
     {
         *res = false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IPv6 address '%1'").arg(
-                                  m_dialog->address->text()),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(this, "Firewall Builder",
+                                  tr("Illegal IPv6 address '%1'").arg(
+                                      m_dialog->address->text()),
+                                  tr("&Continue"), 0, 0,
+                                  0 );
+            blockSignals(false);
+        }
     }
     
     bool ok = false;
@@ -142,11 +148,16 @@ void NetworkDialogIPv6::validate(bool *res)
     else
     {
         *res = false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal netmask '%1'").arg(
-                                  m_dialog->netmask->text() ),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(this, "Firewall Builder",
+                                  tr("Illegal netmask '%1'").arg(
+                                      m_dialog->netmask->text() ),
+                                  tr("&Continue"), 0, 0,
+                                  0 );
+            blockSignals(false);
+        }
     }
 }
 

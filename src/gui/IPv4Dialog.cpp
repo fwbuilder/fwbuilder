@@ -43,6 +43,7 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <QtDebug>
+#include <QApplication>
 
 #include <iostream>
 
@@ -145,12 +146,17 @@ void IPv4Dialog::validate(bool *result)
         InetAddr( m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
-        *result=false;
-        QMessageBox::critical(
-            this, "Firewall Builder",
-            tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
-            tr("&Continue"), 0, 0,
-            0 );
+        *result = false;
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
+                tr("&Continue"), 0, 0,
+                0 );
+            blockSignals(false);
+        }
     }
 
     if (showNetmask)
@@ -161,11 +167,16 @@ void IPv4Dialog::validate(bool *result)
         } catch (FWException &ex)
         {
             *result = false;
-            QMessageBox::critical(
-                this, "Firewall Builder",
-                tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()),
-                tr("&Continue"), 0, 0,
-                0 );
+            if (QApplication::focusWidget() != NULL)
+            {
+                blockSignals(true);
+                QMessageBox::critical(
+                    this, "Firewall Builder",
+                    tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()),
+                    tr("&Continue"), 0, 0,
+                    0 );
+                blockSignals(false);
+            }
         }
     }
 }

@@ -51,6 +51,7 @@
 #include <qapplication.h>
 #include <qcursor.h>
 #include <QUndoStack>
+#include <QApplication>
 
 #include <iostream>
 
@@ -154,11 +155,16 @@ void IPv6Dialog::validate(bool *res)
         InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData() );
     } catch (FWException &ex)
     {
-        *res=false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        *res = false;
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(this, "Firewall Builder",
+                                  tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
+                                  tr("&Continue"), 0, 0,
+                                  0 );
+            blockSignals(false);
+        }
     }
 
     if ( showNetmask )
@@ -170,11 +176,16 @@ void IPv6Dialog::validate(bool *res)
             if (!ok) throw FWException("");
         } catch (FWException &ex)
         {
-            *res=false;
-            QMessageBox::critical(this, "Firewall Builder",
-                                  tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()),
-                                  tr("&Continue"), 0, 0,
-                                  0 );
+            *res = false;
+            if (QApplication::focusWidget() != NULL)
+            {
+                blockSignals(true);
+                QMessageBox::critical(this, "Firewall Builder",
+                                      tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()),
+                                      tr("&Continue"), 0, 0,
+                                      0 );
+                blockSignals(false);
+            }
         }
     }
 }

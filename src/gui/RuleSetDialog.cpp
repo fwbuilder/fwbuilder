@@ -52,7 +52,7 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <QUndoStack>
-
+#include <QApplication>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -179,13 +179,17 @@ void RuleSetDialog::validate(bool *res)
     if (!rx.exactMatch(m_dialog->obj_name->text()))
     {
         *res = false ;
-        QMessageBox::critical(
-            this,
-            "Firewall Builder",
-            tr("Rule set name '%1' is invalid. Only '[a-z][A-Z][0-9]_-+=@%^' characters are allowed.").arg( m_dialog->obj_name->text() ),
-            tr("&Continue"), 0, 0,
-            0 );
-
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(
+                this,
+                "Firewall Builder",
+                tr("Rule set name '%1' is invalid. Only '[a-z][A-Z][0-9]_-+=@%^' characters are allowed.").arg( m_dialog->obj_name->text() ),
+                tr("&Continue"), 0, 0,
+                0 );
+            blockSignals(false);
+        }
         return ;
     }
 }

@@ -1,5 +1,11 @@
 2010-02-10  vadim  <vadim@vk.crocodile.org>
 
+	* InterfaceDialog.cpp (InterfaceDialog::validate): fixes #1221
+	warning dialogs for the incorrect interface name would not go
+	away.  If user entered incorrect name of the
+	subinterace (e.g. name that is not a valid VLAN subinterface name)
+	the GUI would pop up warning dialog infinitely.
+
 	* ../src/gui/ProjectPanel_events.cpp (ProjectPanel::event): this
 	change attempts to fix a bug that causes main menu item Edit /
 	Paste (keyboard shortcut Ctrl-V) to stop working. The bug is hard

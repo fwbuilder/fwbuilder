@@ -50,6 +50,7 @@
 #include <qpushbutton.h>
 #include <QUndoStack>
 #include <QtDebug>
+#include <QApplication>
 
 
 using namespace std;
@@ -129,11 +130,16 @@ void NetworkDialog::validate(bool *result)
     } catch (FWException &ex)
     {
         *result = false;
-        QMessageBox::critical(
-            this, "Firewall Builder",
-            tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
-            tr("&Continue"), 0, 0,
-            0 );
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
+                tr("&Continue"), 0, 0,
+                0 );
+            blockSignals(false);
+        }
         return;
     }
 
@@ -171,12 +177,17 @@ void NetworkDialog::validate(bool *result)
             // permit netmask 0.0.0.0 if the address is also 0.0.0.0
             if (addr.isAny()) return;
             {
-                // Do not allow netmask of 0 bits See #251
-                QMessageBox::critical(
-                    this, "Firewall Builder",
-                    tr("Network object should not have netmask '0.0.0.0'"),
-                    tr("&Continue"), 0, 0,
-                    0 );
+                if (QApplication::focusWidget() != NULL)
+                {
+                    blockSignals(true);
+                    // Do not allow netmask of 0 bits See #251
+                    QMessageBox::critical(
+                        this, "Firewall Builder",
+                        tr("Network object should not have netmask '0.0.0.0'"),
+                        tr("&Continue"), 0, 0,
+                        0 );
+                    blockSignals(false);
+                }
                 return;
             }
         }
@@ -184,12 +195,17 @@ void NetworkDialog::validate(bool *result)
     } catch (FWException &ex)
     {
 
-        *result=false;
-        QMessageBox::critical(
-            this, "Firewall Builder",
-            tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
-            tr("&Continue"), 0, 0,
-            0 );
+        *result = false;
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(
+                this, "Firewall Builder",
+                tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
+                tr("&Continue"), 0, 0,
+                0 );
+            blockSignals(false);
+        }
     }
 }
 

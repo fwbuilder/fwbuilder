@@ -43,7 +43,7 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-
+#include <QApplication>
 #include <QUndoStack>
 
 #include <memory>
@@ -113,22 +113,33 @@ void AddressRangeDialog::validate(bool *res)
         InetAddr(m_dialog->rangeStart->text().toLatin1().constData());
     } catch (FWException &ex)
     {
-        *res=false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IP address '%1'").arg(m_dialog->rangeStart->text()),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        *res = false;
+        // show warning dialog only if app has focus
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(this, "Firewall Builder",
+                                  tr("Illegal IP address '%1'").arg(m_dialog->rangeStart->text()),
+                                  tr("&Continue"), 0, 0,
+                                  0 );
+            blockSignals(false);
+        }
     }
     try
     {
         InetAddr(m_dialog->rangeEnd->text().toLatin1().constData());
     } catch (FWException &ex)
     {
-        *res=false;
-        QMessageBox::critical(this, "Firewall Builder",
-                              tr("Illegal IP address '%1'").arg(m_dialog->rangeEnd->text()),
-                              tr("&Continue"), 0, 0,
-                              0 );
+        *res = false;
+        if (QApplication::focusWidget() != NULL)
+        {
+            blockSignals(true);
+            QMessageBox::critical(this, "Firewall Builder",
+                                  tr("Illegal IP address '%1'").arg(m_dialog->rangeEnd->text()),
+                                  tr("&Continue"), 0, 0,
+                                  0 );
+            blockSignals(false);
+        }
     }
 }
 

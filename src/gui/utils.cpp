@@ -37,11 +37,11 @@
 #include <qnamespace.h>
 #include <QHostInfo>
 #include <qhostaddress.h>
-#include <qapplication.h>
 #include <qpixmapcache.h>
 //Added by qt3to4:
 #include <QList>
 #include <QPixmap>
+#include <QApplication>
 
 #include "FWBSettings.h"
 
@@ -234,12 +234,33 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
 
         if (QString(o1->getName().c_str()) == newname)
         {
-            QMessageBox::warning(
-                parent, "Firewall Builder",
-                QObject::tr("Object with name '%1' already exists, "
-                            "please choose different name.").
-                arg(o1->getName().c_str()),
-                QObject::tr("&Continue"), NULL, NULL, 0, 2 );
+            /*
+             * when we open this warning dialog, the dialog class
+             * loses focus and obj_name lineEdit widget sends signal
+             * "editingfinished" again.  To the user this looks like the
+             * warning dialog popped up twice (in fact two copies of the
+             * same warning dialog appear at the same time, one exactly on
+             * top of another). To avoid this, block signals for the
+             * duration while we show the dialog. Note that documentation
+             * does not mention that QObject::blockSignals() affects not
+             * only the widget but all its children, but it seems to work
+             * that way. Tested with Qt 4.6.1. See #1171
+             */
+
+            // show warning dialog only if app has focus
+            if (QApplication::focusWidget() != NULL)
+            {
+                parent->blockSignals(true);
+            
+                QMessageBox::warning(
+                    parent, "Firewall Builder",
+                    QObject::tr("Object with name '%1' already exists, "
+                                "please choose different name.").
+                    arg(o1->getName().c_str()),
+                    QObject::tr("&Continue"), NULL, NULL, 0, 2 );
+                
+                parent->blockSignals(false);
+            }
             return false;
         }
     }
