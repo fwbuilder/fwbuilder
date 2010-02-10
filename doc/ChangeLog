@@ -1,3 +1,9 @@
+2010-02-10  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (specialCaseWithFWInDstAndOutbound::processNext):
+	fixes #1220 "bridging fw rule using all multicast object in
+	destination does not produce any iptables rules".
+
 2010-02-07  vadim  <vadim@vk.crocodile.org>
 
 	* src/gui/ClusterGroupDialog.cpp (ClusterGroupDialog::applyChanges):

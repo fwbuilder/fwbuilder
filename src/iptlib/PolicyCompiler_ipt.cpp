@@ -2568,7 +2568,9 @@ bool PolicyCompiler_ipt::specialCaseWithFWInDstAndOutbound::processNext()
         // non-empty interface is legit
         FWOptions *fwopt = compiler->getCachedFwOpt();
         const InetAddr *dst_addr = dst->getAddressPtr();
-        if (dst_addr && dst_addr->isBroadcast() && fwopt->getBool("bridging_fw"))
+        if (dst_addr &&
+            (dst_addr->isBroadcast() || dst_addr->isMulticast()) &&
+            fwopt->getBool("bridging_fw"))
         {
             tmp_queue.push_back(rule);
             return true;
