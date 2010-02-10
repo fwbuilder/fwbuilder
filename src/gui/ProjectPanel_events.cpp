@@ -119,6 +119,7 @@ bool ProjectPanel::event(QEvent *event)
                 // Ctrl-S shortcut if something has changed.
 
                 mw->prepareFileMenu();
+                mw->prepareEditMenu();
 
                 FWObject *p = obj;
                 while (p && Firewall::cast(p)==NULL) p = p->getParent();
