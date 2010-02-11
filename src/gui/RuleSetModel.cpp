@@ -492,6 +492,11 @@ QModelIndex RuleSetModel::parent(const QModelIndex &child) const
 
 RuleElement * RuleSetModel::getRuleElementByRole(Rule* r, string roleName) const
 {
+    if (fwbdebug)
+        qDebug() << "RuleSetModel::getRuleElementByRole"
+                 << "rule: " << r
+                 << "roleName: " << roleName.c_str();
+
     return RuleElement::cast( r->getFirstByType(roleName) );
 }
 
@@ -1255,7 +1260,8 @@ QModelIndexList RuleSetModel::findObject (FWObject* object)
     RuleSetModelIterator it = begin();
     RuleSetModelIterator end = this->end();
 
-    while (it != end) {
+    while (it != end)
+    {
         QModelIndex index = it.index();
         RuleNode* node = nodeFromIndex(index);
 
