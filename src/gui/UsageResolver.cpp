@@ -32,6 +32,7 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Rule.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Management.h"
 
@@ -59,7 +60,7 @@ void UsageResolver::findWhereUsedRecursively(
     FWObject *obj, FWObject *top, set<FWObject*> &resset, FWObjectDatabase* db)
 {
     if (fwbdebug)
-        qDebug() << "ObjectManipulator::findWhereUsedRecursively obj="
+        qDebug() << "UsageResolver::findWhereUsedRecursively obj="
                  << obj->getName().c_str()
                  << "(" << obj->getTypeName().c_str() << ")";
 
@@ -91,8 +92,8 @@ void UsageResolver::findWhereUsedRecursively(
         }
 
         if (fwbdebug)
-            qDebug() << "ObjectManipulator::findWhereUsedRecursively"
-                     << "paerent_obj=" << parent_obj->getName().c_str()
+            qDebug() << "UsageResolver::findWhereUsedRecursively"
+                     << "parent_obj=" << parent_obj->getName().c_str()
                      << "(" << parent_obj->getTypeName().c_str() << ")";
 
         // add new results to a separate set to avoid modifying the resset_tmp
@@ -102,10 +103,11 @@ void UsageResolver::findWhereUsedRecursively(
     }
 }
 
-list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatabase *db)
+list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
+                                                      FWObjectDatabase *db)
 {
     if (fwbdebug)
-        qDebug("ObjectManipulator::findFirewallsForObject");
+        qDebug("UsageResolver::findFirewallsForObject");
 
     list<Firewall *> fws;
 
@@ -120,10 +122,18 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o, FWObjectDatab
 
     //FindWhereUsedWidget::humanizeSearchResults(resset);
 
+    if (fwbdebug)
+        qDebug() << "UsageResolver::findFirewallsForObject"
+                 << "resset.size()=" << resset.size();
+
     set<FWObject *>::iterator i = resset.begin();
     for ( ;i!=resset.end(); ++i)
     {
         FWObject *obj = *i;
+
+        // We only want cluster (to pick up member changes) and rule elements
+        if (Cluster::isA(obj)) fws.push_back(Firewall::cast(obj));
+
         FWReference  *ref = FWReference::cast(*i);
         if (ref && RuleElement::cast(ref->getParent()) != NULL)
             obj = ref->getParent();

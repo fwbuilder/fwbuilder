@@ -1,5 +1,8 @@
 2010-02-10  vadim  <vadim@vk.crocodile.org>
 
+	* UsageResolver.cpp (list): fixes #1222 modification of host or fw
+	settings of a member firewall does not trigger cluster recompile
+
 	* InterfaceDialog.cpp (InterfaceDialog::validate): fixes #1221
 	warning dialogs for the incorrect interface name would not go
 	away.  If user entered incorrect name of the
