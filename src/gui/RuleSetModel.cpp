@@ -147,6 +147,7 @@ bool RuleSetModelIterator::operator!= ( RuleSetModelIterator& it )
 
 QModelIndex RuleSetModelIterator::index()
 {
+//    qDebug() << "RuleSetModelIterator::index() row:" << row;
     return model->index(row, 0,parent);
 }
 
@@ -1182,15 +1183,7 @@ RuleSetModelIterator RuleSetModel::end()
     if (root->children.isEmpty()) return it;
     it.model = this;
     RuleNode *node = root->children.last();
-    if (node->type == RuleNode::Group)
-    {
-        QModelIndex parent = createIndex(root->children.size() - 1, 0, node);
-        it.parent = parent;
-        it.row = node->children.size();
-    } else
-    {
-        it.row = root->children.size();
-    }
+    it.row = root->children.size();
 
     return it;
 }
@@ -1255,6 +1248,7 @@ void RuleSetModel::objectChanged(FWObject* object)
 QModelIndexList RuleSetModel::findObject (FWObject* object)
 {
 //    qDebug() << "RuleSetModel::findObject (FWObject* object)";
+//    qDebug() << "object:" << ((object)?QString::fromUtf8(object->getName().c_str()):"null");
     QModelIndexList list;
 
     RuleSetModelIterator it = begin();
