@@ -1,3 +1,11 @@
+2010-02-10  yalovoy <yalovoy@gmail.com>
+	* src/gui/RuleSetModel.cpp: fixes #1223: GUI crash while adding a host to a group
+	 To reproduce:
+	 - open test-fw1 / Policy by double clicking Policy object
+	 - expand Objects/Groups and Objects/Hosts tree branches
+	 - open group LDA-Servers by double clicking it
+	 - drag host ldap-server1 to the group dialog
+
 2010-02-10  vadim  <vadim@vk.crocodile.org>
 
 	* UsageResolver.cpp (list): fixes #1222 modification of host or fw
