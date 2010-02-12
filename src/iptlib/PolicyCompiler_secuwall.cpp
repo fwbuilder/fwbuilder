@@ -59,10 +59,10 @@ int PolicyCompiler_secuwall::prolog() {
 
     /* Set mgmt_addr according to secuwall_mgmt_mgmtaddr */
     /* so SSH rule gets set no matter what */
-    FWOptions* options = fw->getOptionsObject();
+    FWOptions* options = getCachedFwOpt();
 
     string mgmt_addr = options->getStr("secuwall_mgmt_mgmtaddr");
-    if(options != NULL && !mgmt_addr.empty()) {
+    if (options != NULL && !mgmt_addr.empty()) {
         options->setBool("mgmt_ssh", true);
         options->setStr("mgmt_addr", mgmt_addr);
     }
