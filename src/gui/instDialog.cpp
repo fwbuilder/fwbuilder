@@ -62,6 +62,7 @@
 #include <qtextstream.h>
 #include <QDateTime>
 #include <QtDebug>
+#include <QTime>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -583,12 +584,37 @@ bool instDialog::executeCommand(const QString &path, QStringList &args)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
     enableStopButton();
+    QTime start_time;
+    start_time.start();
     proc.start(path, args);
     if ( !proc.waitForStarted() )
     {
+        QProcess::ProcessError err = proc.error();
         opError(cnf.fwobj);
         addToLog( tr("Error: Failed to start program") );
         addToLog(path);
+        addToLog( tr("Last error:") );
+        switch (err)
+        {
+        case QProcess::FailedToStart:
+            addToLog( tr("The process failed to start") );
+            break;
+        case QProcess::Crashed:
+            addToLog( tr("The process crashed some time after starting successfully.") );
+            break;
+        case QProcess::Timedout:
+            addToLog( tr("The last waitFor...() function timed out. Elapsed time: %1 ms").arg(start_time.elapsed()) );
+            break;
+        case QProcess::WriteError:
+            addToLog( tr("An error occurred when attempting to write to the process.") );
+            break;
+        case QProcess::ReadError:
+            addToLog( tr("An error occurred when attempting to read from the process. ") );
+            break;
+        default:
+            addToLog( tr("An unknown error occurred.") );
+            break;
+        }
         //blockInstallForFirewall(cnf.fwobj);
         return false;
     }
