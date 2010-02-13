@@ -778,6 +778,7 @@
     <addaction name="helpAction"/>
     <addaction name="release_Notes_Action"/>
     <addaction name="debugAction"/>
+    <addaction name="actionTutorial"/>
    </widget>
    <widget class="QMenu" name="RulesMenu">
     <property name="title">
@@ -1455,6 +1456,11 @@
   <action name="welcome_action">
    <property name="text">
     <string>Welcome</string>
+   </property>
+  </action>
+  <action name="actionTutorial">
+   <property name="text">
+    <string>Tutorial</string>
    </property>
   </action>
  </widget>
@@ -2484,6 +2490,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionTutorial</sender>
+   <signal>triggered()</signal>
+   <receiver>FWBMainWindow_q</receiver>
+   <slot>showTutorial()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>571</x>
+     <y>422</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>clearRecentFilesMenu()</slot>
@@ -2495,5 +2517,6 @@
   <slot>editorPanelTabChanged(int)</slot>
   <slot>toggleViewUndo()</slot>
   <slot>showWelcome()</slot>
+  <slot>showTutorial()</slot>
  </slots>
 </ui>

@@ -1,0 +1,10 @@
+moveMouse om newButton
+wait 1000
+clickWidget om newButton
+wait 1000
+hoverMenuItem newObjectPopup New\_Firewall
+wait 1000
+clickMenuItem newObjectPopup New\_Firewall
+wait 1000
+typeWidget obj_name guardian
+wait 10000

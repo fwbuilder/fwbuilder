@@ -2,7 +2,7 @@
 # $Id$
 TEMPLATE = app
 LANGUAGE = C++
-QT += network
+QT += network testlib
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)
@@ -172,7 +172,10 @@ HEADERS += ../../config.h \
     ClusterInterfacesSelectorWidget.h \
     ClusterInterfaceWidget.h \
     FWCmdRule.h \
-    UsageResolver.h
+    UsageResolver.h \
+    TutorialAnimator.h \
+    TutorialDialog.h \
+    TutorialHelper.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -185,7 +188,7 @@ SOURCES += ProjectPanel.cpp \
     TextEditWidget.cpp \
     ObjectEditorDockWidget.cpp \
     main.cpp \
-	ssh_wrappers.cpp \
+    ssh_wrappers.cpp \
     utils.cpp \
     utils_no_qt.cpp \
     Importer.cpp \
@@ -343,7 +346,10 @@ SOURCES += ProjectPanel.cpp \
     ClusterInterfacesSelectorWidget.cpp \
     ClusterInterfaceWidget.cpp \
     FWCmdRule.cpp \
-    UsageResolver.cpp
+    UsageResolver.cpp \
+    TutorialAnimator.cpp \
+    TutorialDialog.cpp \
+    TutorialHelper.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \
@@ -417,7 +423,7 @@ FORMS = FWBMainWindow_q.ui \
     tagservicedialog_q.ui \
     actionsdialog_q.ui \
     simpletextview_q.ui \
-	helpview_q.ui \
+    helpview_q.ui \
     discoverydruid_q.ui \
     filterdialog_q.ui \
     natruleoptionsdialog_q.ui \
@@ -443,7 +449,8 @@ FORMS = FWBMainWindow_q.ui \
     pixosifaceoptsdialog_q.ui \
     InterfaceEditorWidget.ui \
     InterfacesTabWidget.ui \
-    ClusterInterfaceWidget.ui
+    ClusterInterfaceWidget.ui \
+    TutorialDialog.ui
 
 # fwtransfer stuff.
 HEADERS += transferDialog.h
@@ -467,46 +474,41 @@ contains( HAVE_QTDBUS, 1 ):unix {
 
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
 INCLUDEPATH += ../common \
-	../iptlib \
+    ../iptlib \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib/
 DEPENDPATH = ../common \
-	../iptlib \
+    ../iptlib \
     ../pflib \
     ../cisco_lib/ \
     ../compiler_lib
 win32:LIBS += ../common/release/common.lib \
-	../iptlib/release/iptlib.lib \
+    ../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
     ../compiler_lib/release/compilerdriver.lib
 !win32:LIBS += ../common/libcommon.a \
-	../iptlib/libiptlib.a \
+    ../iptlib/libiptlib.a \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a
 win32:PRE_TARGETDEPS = ../common/release/common.lib \
-	../iptlib/release/iptlib.lib \
+    ../iptlib/release/iptlib.lib \
     ../pflib/release/fwbpf.lib \
     ../cisco_lib/release/fwbcisco.lib \
     ../compiler_lib/release/compilerdriver.lib
 !win32:PRE_TARGETDEPS = ../common/libcommon.a \
-	../iptlib/libiptlib.a \
+    ../iptlib/libiptlib.a \
     ../pflib/libfwbpf.a \
     ../cisco_lib/libfwbcisco.a \
     ../compiler_lib/libcompilerdriver.a
 macx:LIBS += -framework Carbon
-
 LIBS += $$LIBS_FWCOMPILER
-
 RESOURCES += MainRes.qrc
-
 TRANSLATIONS = fwbuilder_ru.ts fwbuilder_ja.ts fwbuilder_en.ts
-
 ja.path = $$PKGLOCALEDIR
 ja.files = fwbuilder_ja.qm
 ru.path = $$PKGLOCALEDIR
 ru.files = fwbuilder_ru.qm
-
 INSTALLS += ja ru

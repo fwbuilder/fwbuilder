@@ -56,6 +56,7 @@
 #include "CompilerOutputPanel.h"
 #include "longTextDialog.h"
 #include "Help.h"
+#include "TutorialDialog.h"
 
 #include "FWBAboutDialog.h"
 #include "debugDialog.h"
@@ -1410,6 +1411,12 @@ void FWWindow::showWelcome()
         h->raise();
         h->show();
     }
+}
+
+void FWWindow::showTutorial()
+{
+    TutorialDialog *dialog = new TutorialDialog(this);
+    dialog->show();
 }
 
 void FWWindow::showReleaseNotes()

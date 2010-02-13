@@ -163,6 +163,7 @@ public slots:
     virtual void helpIndex();
     virtual void help();
     virtual void showWelcome();
+    virtual void showTutorial();
     virtual void showReleaseNotes();
 
     virtual void fileNew();

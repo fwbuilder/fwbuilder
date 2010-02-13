@@ -94,6 +94,8 @@ void ObjectManipulator::buildNewObjectMenu()
 
     QMenu* newObjectPopup = new QMenu( this );
 
+    newObjectPopup->setObjectName("newObjectPopup");
+
     addNewObjectMenuItem(newObjectPopup, Library::TYPENAME, tr( "New &Library"));
 
     newObjectPopup->addSeparator();
