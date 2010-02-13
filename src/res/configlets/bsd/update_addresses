@@ -1,0 +1,119 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+############ add or remove ip addresses of interfaces #######################
+
+## address (argument 1) is in the form of address/netmask, where
+## netmask should be hex represenatation matching netmask in the
+## output of ifconfig for ipv4 address. For ipv6 addresses netmask
+## part should be given as prefix length.
+missing_address() {
+    address=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+
+    if echo "$addr" | grep -q ':'
+    then
+        inet="inet6"
+        addr=$(echo "$addr" | sed 's!/! prefixlen !')
+    else
+        inet="inet"
+        addr=$(echo "$addr" | sed 's!/! netmask !')
+    fi
+
+    parameter=""
+    test "$cmd" = "add" && {
+      echo "# Adding ip address: $interface $addr"
+      parameter="alias"
+    }
+    test "$cmd" = "del" && {
+      echo "# Removing ip address: $interface $addr"
+      parameter="delete"
+    }
+
+    $FWBDEBUG $IFCONFIG $interface $inet $addr $parameter
+    $FWBDEBUG $IFCONFIG $interface up
+}
+
+##
+## The list of current addresses is taken using "ifconfig $interface"
+## command.  Second argument defines address scrope; it should be in
+## the form of the matching regex such as "scope global" or "scope
+## .*".  Unfortunately ifconfig prints "scopeid" for link and host
+## scopes but does not print any "scopeid" parameter for the global
+## scope (tested on OpenBSD 4.2). This means I have to invert the
+## regex match logic and skip addresses with given scope (this is
+## different from how this function works for addresses on Linux).  If
+## any non-empty scope string is given as second argument, this
+## function will skip addresses with this scope. If this argument is
+## an empty string, this function returns all addresses.
+##
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+
+    scope_regex="1"
+    if test -n "$scope"; then scope_regex=" \$0 !~ \"$scope\" "; fi
+
+    $IFCONFIG $interface | sed "s/%$interface//" | \
+      awk -v IGNORED="$ignore_list" \
+        "BEGIN {  
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/inet |inet6 / && $scope_regex && !(\$2 in ignored_dict)) {printf \"%s/%s\n\",\$2,\$4;}" | \
+        while read addr; do
+          echo "${addr}@$interface"
+        done | sort
+   
+}
+
+## arg 1 is like "pcn1 1.1.1.1/24 2.2.2.2/24 fe80::20c:29ff:fef6:bea0/64"
+## arg 2 is "3.3.3.3/24 4.4.4.4/24"  - list of addresses we should ignore
+## Using arg2 to provide list of addresses managed by heartbeat, so that
+## incremental update does not delete them.
+##
+## Only "scope global" addreses are managed because fwbuilder script
+## should not try to delete addresses configured for tunnels and IPv6
+## link scope addresses (fe80::) ("scope link" or "scope host" addresses)
+##
+## Addresses we should ignore are dropped from the list.
+##
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1 
+    interface=$1 
+    shift
+
+    FWB_ADDRS=$(
+      for addr in $*; do
+        echo "${addr}@$interface"
+      done | sort
+    )
+
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+
+    $IFCONFIG $interface >/dev/null 2>&1 && {
+      CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface '' "$ignore_list")
+      CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scopeid .*' "$ignore_list")
+    } || {
+      echo "# Interface $interface does not exist"
+      # Stop the script if we are not in test mode
+      test -z "$FWBDEBUG" && exit 1
+    }
+
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+

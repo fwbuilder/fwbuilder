@@ -59,45 +59,73 @@ string OSConfigurator_bsd::printKernelVarsCommands()
     return "";
 }
 
+string OSConfigurator_bsd::updateAddressesOfInterfaceCall(
+    Interface *iface, list<pair<InetAddr,InetAddr> > all_addresses)
+{
+    QStringList arg1;
+    arg1.push_back(iface->getName().c_str());
+
+    for (list<pair<InetAddr,InetAddr> >::iterator j = all_addresses.begin();
+         j != all_addresses.end(); ++j)
+    {
+        InetAddr ipaddr = j->first;
+        InetAddr ipnetm = j->second;
+
+        if (ipaddr.isV6())
+            arg1.push_back(QString("%1/%2").arg(ipaddr.toString().c_str())
+                           .arg(ipnetm.getLength()));
+        else
+        {
+/*
+  on OpenBSD ifconfig prints netmask of ipv4 addresses in hex
+
+  # ifconfig em0                             
+  em0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+  lladdr 00:0c:29:83:4d:2f
+  media: Ethernet autoselect (1000baseT full-duplex,master)
+  status: active
+  inet 10.1.1.50 netmask 0xffffff00 broadcast 10.1.1.255
+  inet6 fe80::20c:29ff:fe83:4d2f%em0 prefixlen 64 scopeid 0x2
+*/
+            int nbits = ipnetm.getLength();
+            uint32_t netm = 0;
+            while (nbits)
+            {
+                netm = netm >> 1;
+                netm |= 1<<31;
+                nbits--;
+            }
+
+            arg1.push_back(QString("%1/0x%2")
+                           .arg(ipaddr.toString().c_str())
+                           .arg(netm, -8, 16));
+        }
+    }
+
+    return string("update_addresses_of_interface ") +
+        "\"" +
+        arg1.join(" ").toStdString() +
+        "\"" +
+        " \"\"";
+}
+
+
 void OSConfigurator_bsd::addVirtualAddressForNAT(const Network*)
 {
 }
 
+/**
+ * This method is called from  NATCompiler_pf::addVirtualAddress::processNext()
+ */
 void OSConfigurator_bsd::addVirtualAddressForNAT(const Address *addr)
 {
-    if (virtual_addresses.empty() || 
-	find(virtual_addresses.begin(),
-             virtual_addresses.end(),
-             *(addr->getAddressPtr())) == virtual_addresses.end())
+    FWObject *iaddr = findAddressFor(addr, fw );
+    if (iaddr!=NULL)
     {
-        FWObject *iaddr = findAddressFor(addr, fw );
-        if (iaddr!=NULL)
-        {
-            Address *iaddr_addr = Address::cast(iaddr);
-            assert(iaddr_addr!=NULL);
-            const InetAddr *ipaddr = iaddr_addr->getAddressPtr();
-            const InetAddr *ipnetm = iaddr_addr->getNetmaskPtr();
-
-            Interface *iface = Interface::cast(iaddr->getParent());
-            assert(iface!=NULL);
-
-            if (ipaddr->isV6())
-            {
-                output << "add_addr6 " << addr->getAddressPtr()->toString() << " "
-                       << ipnetm->getLength() <<  " "
-                       << iface->getName() << endl;
-            } else
-            {
-                output << "add_addr " << addr->getAddressPtr()->toString() << " "
-                       << ipnetm->toString() <<  " "
-                       << iface->getName() << endl;
-            }
-        
-            virtual_addresses.push_back(*(addr->getAddressPtr()));
-        } else
-            warning("Can not add virtual address " +
-                    addr->getAddressPtr()->toString() );
-    }
+        virtual_addresses.insert(addr);
+    } else
+        warning("Can not add virtual address " +
+                addr->getAddressPtr()->toString() );
 }
 
 int OSConfigurator_bsd::prolog()
@@ -107,6 +135,8 @@ int OSConfigurator_bsd::prolog()
 
 string OSConfigurator_bsd::printFunctions()
 {
+    ostringstream ostr;
+
     FWOptions* options=fw->getOptionsObject();
 
     Configlet functions(fw, "bsd", "shell_functions");
@@ -144,7 +174,16 @@ string OSConfigurator_bsd::printFunctions()
     } else
         functions.setVariable("get_dyn_addr_commands", "");
 
-    return functions.expand().toStdString();
+    ostr << functions.expand().toStdString();
+
+    if ( options->getBool("configure_interfaces") ) 
+    {
+        Configlet update_addresses(fw, "bsd", "update_addresses");
+        update_addresses.removeComments();
+        ostr << update_addresses.expand().toStdString();
+    }
+
+    return ostr.str();
 }
 
 string OSConfigurator_bsd::configureInterfaces()
@@ -169,30 +208,39 @@ string OSConfigurator_bsd::configureInterfaces()
             list<FWObject*> all_ipv6 = iface->getByType(IPv6::TYPENAME);
             all_addr.insert(all_addr.begin(), all_ipv6.begin(), all_ipv6.end());
 
+            const InetAddr *netmask = iface->getNetmaskPtr();
+
+            list<pair<InetAddr,InetAddr> > all_addresses;
+
             for (list<FWObject*>::iterator j = all_addr.begin();
-                 j != all_addr.end(); ++j) 
+                 j != all_addr.end(); ++j)
             {
                 Address *iaddr = Address::cast(*j);
-
                 const InetAddr *ipaddr = iaddr->getAddressPtr();
                 const InetAddr *ipnetm = iaddr->getNetmaskPtr();
-
-                if (ipaddr->isV6())
-                {
-                    ostr << "add_addr6 "
-                         << ipaddr->toString() << " "
-                         << ipnetm->getLength() <<  " "
-                         << iface->getName() << endl;
-                } else
-                {
-                    ostr << "add_addr "
-                         << ipaddr->toString() << " "
-                         << ipnetm->toString() <<  " "
-                         << iface->getName() << endl;
-                }
-
-                virtual_addresses.push_back(*ipaddr);
+                all_addresses.push_back(
+                    pair<InetAddr,InetAddr>(*ipaddr, *ipnetm));
             }
+
+            set<const Address*>::iterator it;
+            for (it=virtual_addresses.begin(); it!=virtual_addresses.end(); ++it)
+            {
+                const Address *addr = *it;
+                FWObject *iaddr = findAddressFor(addr, fw );
+                if (iaddr!=NULL)
+                {
+                    Interface *iface_2 = Interface::cast(iaddr->getParent());
+                    if (iface_2 == iface)
+                    {
+                        all_addresses.push_back(
+                            pair<InetAddr,InetAddr>(
+                                *(addr->getAddressPtr()), *netmask));
+                    }
+                }
+            }
+
+            ostr << updateAddressesOfInterfaceCall(iface, all_addresses) << endl;
+
         }
         ostr << endl;
     }

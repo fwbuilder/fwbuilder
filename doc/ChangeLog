@@ -1,3 +1,14 @@
+2010-02-12  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::updateAddressesOfInterfaceCall):
+	New feature: incremental IP address management for OpenBSD and
+	FreeBSD. Generated script adds and removes ipv4 and ipv6 addresses
+	of interfaces as needed. When user adds an address in the
+	fwbuilder object, the script adds it. Second run of the same script
+	does nothing. If user removes an address in fwbuilder, generated
+	script removes it from the interfaces to bring actual configuration
+	of the machine in sync with fwbuilder objects.
+
 2010-02-10  yalovoy <yalovoy@gmail.com>
 	* src/gui/RuleSetModel.cpp: fixes #1223: GUI crash while adding a host to a group
 	 To reproduce:

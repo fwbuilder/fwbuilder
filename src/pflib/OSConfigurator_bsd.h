@@ -30,6 +30,8 @@
 
 #include "fwcompiler/OSConfigurator.h"
 
+#include <set>
+
 #include <QString>
 
 
@@ -41,11 +43,15 @@ namespace fwcompiler {
     class OSConfigurator_bsd : public OSConfigurator {
 
 protected:
-	std::vector<libfwbuilder::InetAddr> virtual_addresses;
+	std::set<const libfwbuilder::Address*> virtual_addresses;
 
         void setKernelVariable(libfwbuilder::Firewall *fw,
                                const std::string &var_name,
                                Configlet *configlet);
+        std::string updateAddressesOfInterfaceCall(
+            libfwbuilder::Interface *iface,
+            std::list<std::pair<libfwbuilder::InetAddr,libfwbuilder::InetAddr> > all_addresses);
+
 public:
 
 	virtual ~OSConfigurator_bsd() {};

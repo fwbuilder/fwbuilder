@@ -16,26 +16,18 @@ log() {
     test -x "$LOGGER" && $LOGGER -p info "$1"
 }
 
-add_addr() {
-  addr=$1
-  nm=$2
-  dev=$3
-  ( ifconfig $dev | egrep -q "inet +${addr} " ) || 
-    { 
-      echo "$dev: $addr/$nm"
-      ifconfig $dev inet $addr netmask $nm alias
-    } 
-}
-
-add_addr6() {
-  addr=$1
-  nm=$2
-  dev=$3
-  ( ifconfig $dev | egrep -q "inet6 +${addr} " ) || 
-    { 
-      echo "$dev: $addr/$nm"
-      ifconfig $dev inet6 $addr prefixlen $nm alias
-    } 
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
 }
 
 {{if dyn_addr}}
