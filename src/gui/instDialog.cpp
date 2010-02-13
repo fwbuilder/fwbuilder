@@ -78,6 +78,7 @@
 #endif
 
 #include <errno.h>
+#include <stdlib.h>
 #include <iostream>
 
 using namespace std;
@@ -598,6 +599,7 @@ bool instDialog::executeCommand(const QString &path, QStringList &args)
         {
         case QProcess::FailedToStart:
             addToLog( tr("The process failed to start") );
+            addToLog(QString("PATH: %1").arg(getenv("PATH")));
             break;
         case QProcess::Crashed:
             addToLog( tr("The process crashed some time after starting successfully.") );
@@ -615,6 +617,20 @@ bool instDialog::executeCommand(const QString &path, QStringList &args)
             addToLog( tr("An unknown error occurred.") );
             break;
         }
+        addToLog( tr("Current state of QProcess:") );
+        switch (proc.state())
+        {
+        case QProcess::NotRunning:
+            addToLog(tr("The process is not running."));
+            break;
+        case QProcess::Starting:
+            addToLog(tr("The process is starting, but the program has not yet been invoked."));
+            break;
+        case QProcess::Running:
+            addToLog(tr("The process is running and is ready for reading and writing."));
+            break;
+        }
+
         //blockInstallForFirewall(cnf.fwobj);
         return false;
     }
