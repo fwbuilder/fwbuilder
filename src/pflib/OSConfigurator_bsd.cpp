@@ -45,6 +45,8 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <memory>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
