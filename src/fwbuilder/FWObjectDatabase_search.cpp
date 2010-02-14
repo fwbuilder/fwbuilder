@@ -33,6 +33,7 @@
 #include <fwbuilder/Library.h>
 #include <fwbuilder/Host.h>
 #include <fwbuilder/Firewall.h>
+#include <fwbuilder/Cluster.h>
 #include <fwbuilder/Group.h>
 #include <fwbuilder/Interface.h>
 #include <fwbuilder/FWReference.h>
@@ -179,7 +180,7 @@ bool FWObjectDatabase::_findWhereObjectIsUsed(FWObject *o,
 // set flags to break indefinite recursion in case we encounter circular groups
     p->setInt(".search_id", search_id);
     p->setBool(".searchResult", false);
- 
+
     PolicyRule *rule = PolicyRule::cast(p);
     if (rule)
     {
@@ -205,6 +206,15 @@ bool FWObjectDatabase::_findWhereObjectIsUsed(FWObject *o,
             break;
         }
         default: ;
+        }
+    }
+
+    if (Firewall::isA(o) && Cluster::isA(p))
+    {
+        if (Cluster::cast(p)->hasMember(Firewall::cast(o)))
+        {
+            resset.insert(p);
+            res = true;
         }
     }
    

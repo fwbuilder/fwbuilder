@@ -125,49 +125,6 @@ ClusterGroup* Cluster::getStateSyncGroupObject()
     return group;
 }
 
-/*
- * List members should contain each member firewall only once, but the
- * same member firewall can be present in several failover groups and
- * possibly in state synchronization group. Using set<int> to make the
- * list unique.
- */
-void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
-{
-    set<int> members_ids;
-    list<FWObject*> all_groups = getByTypeDeep(StateSyncClusterGroup::TYPENAME);
-    list<FWObject*> all_failover = getByTypeDeep(FailoverClusterGroup::TYPENAME);
-
-    all_groups.merge(all_failover);
-
-    for (list<FWObject*>::iterator it = all_groups.begin();
-         it != all_groups.end(); ++it)
-    {
-        for (list<FWObject*>::iterator j = (*it)->begin();
-             j != (*it)->end(); ++j)
-        {
-            FWObject *member = FWReference::getObject(*j);
-            if (ClusterGroupOptions::isA(member)) continue;
-            Firewall *fw = NULL;
-            // as of 05/04 members of StateSyncClusterGroup are interfaces. See
-            // tickets #10 and #11
-            if (Interface::cast(member))
-                fw = Firewall::cast(Interface::cast(member)->getParentHost());
-            else
-                fw = Firewall::cast(member);
-            members_ids.insert(fw->getId());
-        }
-    }
-
-
-
-    for (set<int>::iterator it = members_ids.begin();
-         it != members_ids.end(); ++it)
-    {
-        Firewall *fw = Firewall::cast(getRoot()->findInIndex(*it));
-        if (fw) members.push_back(fw);
-    }
-}
-
 bool Cluster::validateChild(FWObject *o)
 {
     string otype = o->getTypeName();
@@ -269,5 +226,74 @@ bool Cluster::validateMember(Firewall *fw)
     // Any other checks we should do ?
 
     return true;
+}
+
+/*
+ * List members should contain each member firewall only once, but the
+ * same member firewall can be present in several failover groups and
+ * possibly in state synchronization group. Using set<int> to make the
+ * list unique.
+ */
+void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
+{
+    set<int> members_ids;
+    list<FWObject*> all_groups = getByTypeDeep(StateSyncClusterGroup::TYPENAME);
+    list<FWObject*> all_failover = getByTypeDeep(FailoverClusterGroup::TYPENAME);
+
+    all_groups.merge(all_failover);
+
+    for (list<FWObject*>::iterator it = all_groups.begin();
+         it != all_groups.end(); ++it)
+    {
+        for (list<FWObject*>::iterator j = (*it)->begin();
+             j != (*it)->end(); ++j)
+        {
+            FWObject *member = FWReference::getObject(*j);
+            if (ClusterGroupOptions::isA(member)) continue;
+            Firewall *fw = NULL;
+            // as of 05/04 members of StateSyncClusterGroup are interfaces. See
+            // tickets #10 and #11
+            if (Interface::cast(member))
+                fw = Firewall::cast(Interface::cast(member)->getParentHost());
+            else
+                fw = Firewall::cast(member);
+            members_ids.insert(fw->getId());
+        }
+    }
+
+    for (set<int>::iterator it = members_ids.begin();
+         it != members_ids.end(); ++it)
+    {
+        Firewall *fw = Firewall::cast(getRoot()->findInIndex(*it));
+        if (fw) members.push_back(fw);
+    }
+}
+
+bool Cluster::hasMember(Firewall *fw)
+{
+    list<FWObject*> all_groups = getByTypeDeep(StateSyncClusterGroup::TYPENAME);
+    list<FWObject*> all_failover = getByTypeDeep(FailoverClusterGroup::TYPENAME);
+
+    all_groups.merge(all_failover);
+
+    for (list<FWObject*>::iterator it = all_groups.begin();
+         it != all_groups.end(); ++it)
+    {
+        for (list<FWObject*>::iterator j = (*it)->begin();
+             j != (*it)->end(); ++j)
+        {
+            FWObject *member = FWReference::getObject(*j);
+            if (ClusterGroupOptions::isA(member)) continue;
+            Firewall *member_fw = NULL;
+            // as of 05/04/2009 members of StateSyncClusterGroup are
+            // interfaces. See tickets #10 and #11
+            if (Interface::cast(member))
+                member_fw = Firewall::cast(Interface::cast(member)->getParentHost());
+            else
+                member_fw = Firewall::cast(member);
+            if (fw == member_fw) return true;
+        }
+    }
+    return false;
 }
 

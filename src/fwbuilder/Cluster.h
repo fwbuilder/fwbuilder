@@ -82,6 +82,11 @@ namespace libfwbuilder
          * members is the same and possibly other criteria.
          */
         virtual bool validateMember(libfwbuilder::Firewall*);
+
+        /**
+         * check if @fw is a member of this cluster.
+         */
+        bool hasMember(libfwbuilder::Firewall *fw);
         
         time_t getLastModified();
         time_t getLastInstalled();
