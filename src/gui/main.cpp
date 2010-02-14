@@ -252,6 +252,8 @@ int main( int argc, char *argv[] )
 
     st->save();
     delete st;
+
+    XMLTools::close();
 }
 
 
