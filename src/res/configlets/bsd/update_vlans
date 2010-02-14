@@ -1,0 +1,80 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/bsd/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+############ VLAN ##############################################
+
+missing_vlan() {
+    vlan=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $vlan
+    subint=$1
+    parent=$2
+    IFS=$oldIFS
+
+    vlan_id=$(echo $subint | sed 's/vlan//')
+    test "$cmd" = "add" && {
+        echo "# Adding VLAN interface $subint (parent: $parent)"
+        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id vlandev $parent
+        $FWBDEBUG $IFCONFIG $subint up
+    }
+    test "$cmd" = "rem" && {
+        echo "# Removing VLAN interface $subint (parent: $parent)"
+        $FWBDEBUG $IFCONFIG $subint vlan $vlan_id -vlandev
+        $FWBDEBUG $IFCONFIG $subint destroy
+    }
+}
+
+parse_fwb_vlans() {
+    set $1 
+    vlan_parent_interface=$1 
+    shift
+
+    FWB_VLANS=$(
+      for subint in $*; do
+        echo "${subint}@$vlan_parent_interface"
+      done | sort
+    )
+    echo $FWB_VLANS
+}
+
+parse_current_vlans() {
+    vlan_parent_interface=$1
+    $IFCONFIG -A | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
+    while read x vlan_id parent
+    do
+       echo "vlan$vlan_id@$parent"
+    done | sort
+}
+
+##
+## Call format:
+##
+##  update_vlans_of_interface "pcn0 vlan101 vlan104"
+##
+##
+update_vlans_of_interface() {
+    args="$1"
+    set $1 
+    vlan_parent_interface=$1 
+
+    FWB_VLANS=$(parse_fwb_vlans "$args")
+    CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
+
+    $IFCONFIG $vlan_parent_interface up
+    diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
+    diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
+}
+

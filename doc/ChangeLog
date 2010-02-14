@@ -1,3 +1,12 @@
+2010-02-13  vadim  <vadim@vk.crocodile.org>
+
+	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
+	New feature: incremental VLAN interface management for OpenBSD and
+	FreeBSD. When user adds or removes VLAN subinterface in fwbuilder
+	GUI, geenrated script executes appropriate ifconfig commands to
+	add or remove corresponding vlan pseudo-interface on the firewall
+	machine.
+
 2010-02-12  vadim  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::updateAddressesOfInterfaceCall):

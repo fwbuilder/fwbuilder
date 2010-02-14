@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1263953850" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1266116188" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <ICMP6Service id="idE0C27650" code="0" type="1" name="ipv6 dest unreachable" comment="No route to destination" ro="False"/>
     <Library id="id40E233F3" color="#FFFFFF" name="West Coast" comment="" ro="False">
@@ -18373,6 +18373,157 @@
           <Option name="use_ip_tool">True</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="use_tables">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id21423X46405" host_OS="openbsd" lastCompiled="1266117733" lastInstalled="0" lastModified="1266117729" platform="pf" name="openbsd-test-1" comment="" ro="False">
+        <NAT id="id21427X46405" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id21425X46405" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id49288X46405" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id21429X46405" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id21431X46405" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="pcn0" comment="" ro="False">
+          <IPv4 id="id21432X46405" name="openbsd-test-1:pcn0:ip" comment="" ro="False" address="10.3.14.50" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id21433X46405" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="em0" comment="" ro="False">
+          <IPv4 id="id21434X46405" name="openbsd-test-1:em0:ip" comment="" ro="False" address="10.1.1.50" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+          <Interface id="id30689X46405" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan101" comment="" ro="False">
+            <IPv4 id="id39977X46405" name="openbsd-test-1:em0:vlan101:ip" comment="" ro="False" address="10.100.101.1" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">101</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id30707X46405" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan103" comment="" ro="False">
+            <IPv4 id="id39990X46405" name="openbsd-test-1:em0:vlan103:ip-1" comment="" ro="False" address="10.100.103.1" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">103</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">True</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="conf_file_name_on_firewall"></Option>
+          <Option name="configure_carp_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_pfsync_interfaces">False</Option>
+          <Option name="configure_vlan_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr">10.3.14.30</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">False</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">False</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">0</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_state_policy"></Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
+          <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>

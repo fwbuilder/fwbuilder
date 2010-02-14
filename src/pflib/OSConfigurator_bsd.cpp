@@ -183,6 +183,13 @@ string OSConfigurator_bsd::printFunctions()
         ostr << update_addresses.expand().toStdString();
     }
 
+    if ( options->getBool("configure_vlan_interfaces") ) 
+    {
+        Configlet update_vlans(fw, "bsd", "update_vlans");
+        update_vlans.removeComments();
+        ostr << update_vlans.expand().toStdString();
+    }
+
     return ostr.str();
 }
 
@@ -191,12 +198,50 @@ string OSConfigurator_bsd::configureInterfaces()
     ostringstream ostr;
     FWOptions* options = fw->getOptionsObject();
 
+    // Update vlans first because we may need to update ip addresses
+    // on vlan interfaces later
+    if ( options->getBool("configure_vlan_interfaces") ) 
+    {
+        // http://blog.scottlowe.org/2007/08/31/vlan-interfaces-with-openbsd-41/
+        // ifconfig <VLAN interface name> vlan <VLAN ID> vlandev <physical network device>
+        FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
+        for ( ; i!=i.end(); ++i ) 
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+
+            ostringstream vlan_output;
+            vlan_output << "update_vlans_of_interface "
+                        << "\"" << iface->getName() << " ";
+
+            bool have_vlan_interfaces = false;
+            FWObjectTypedChildIterator si=iface->findByType(Interface::TYPENAME);
+            for ( ; si!=si.end(); ++si ) 
+            {
+                Interface *subinterface = Interface::cast(*si);
+                assert(subinterface);
+
+                if (subinterface->getOptionsObject()->getStr("type") == "8021q")
+                {
+                    have_vlan_interfaces = true;
+                    vlan_output << subinterface->getName() << " ";
+                }
+            }
+            vlan_output << "\"";
+            if (have_vlan_interfaces)
+            {
+                ostr << vlan_output.str() << endl;
+            }
+        }
+    }
+
     if ( options->getBool("configure_interfaces") ) 
     {
         ostr << endl;
 
-        FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
-        for ( ; i!=i.end(); ++i ) 
+        list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+        for (list<FWObject*>::iterator i=all_interfaces.begin();
+             i != all_interfaces.end(); ++i )
         {
             Interface *iface = Interface::cast(*i);
             assert(iface);
@@ -425,46 +470,6 @@ string OSConfigurator_bsd::configureInterfaces()
         }
     }
 
-    if ( options->getBool("configure_vlan_interfaces") ) 
-    {
-        bool have_vlan_interfaces = false;
-        ostringstream vlan_output;
-
-        // http://blog.scottlowe.org/2007/08/31/vlan-interfaces-with-openbsd-41/
-        // ifconfig <VLAN interface name> vlan <VLAN ID> vlandev <physical network device>
-        FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
-        for ( ; i!=i.end(); ++i ) 
-        {
-            Interface *iface = Interface::cast(*i);
-            assert(iface);
-
-            FWObjectTypedChildIterator si=iface->findByType(Interface::TYPENAME);
-            for ( ; si!=si.end(); ++si ) 
-            {
-                Interface *subinterface = Interface::cast(*si);
-                assert(subinterface);
-
-                if (subinterface->getOptionsObject()->getStr("type") == "8021q")
-                {
-                    have_vlan_interfaces = true;
-
-                    vlan_output << "ifconfig " << subinterface->getName()
-                                << " create"
-                                << endl;
-
-                    vlan_output << "ifconfig " << subinterface->getName()
-                                << " vlan " 
-                                << subinterface->getOptionsObject()->getInt("vlan_id")
-                                << " vlandev " << iface->getName()
-                                << endl;
-                }
-            }
-        }
-        if (have_vlan_interfaces)
-        {
-            ostr << vlan_output.str() << endl;
-        }
-    }
     return ostr.str();
 }
 
