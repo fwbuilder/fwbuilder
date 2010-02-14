@@ -2289,14 +2289,16 @@ void RuleSetView::saveCurrentRowColumn(SelectionMemento &memento)
     QModelIndex index = fwosm->index;
     if (index.isValid())
     {
-        memento.column = index.column();
         RuleNode* node = md->nodeFromIndex(index);
-        memento.rule_id = node->rule->getId();
-    } else
-    {
-        memento.column = -1;
-        memento.rule_id = -1;
+        if (node && node->rule)
+        {
+            memento.column = index.column();
+            memento.rule_id = node->rule->getId();
+            return;
+        }
     }
+    memento.column = -1;
+    memento.rule_id = -1;
 }
 
 void RuleSetView::restoreCurrentRowColumn(SelectionMemento &memento)
