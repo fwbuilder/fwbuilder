@@ -1,6 +1,15 @@
 2010-02-13  vadim  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
+	New feature: incremental management of pfsync0 interface on
+	OpenBSD. The script checks if interface exists and if not, it runs
+	"ifconfig pfsync0 create" command to create it. If interface
+	exists, the script only runs ifconfig to configure its parameters
+	but does not try to create it again. If State Synchronization
+	group object is deleted in fwbuilder GUI, interface pfsync0 will
+	be deleted on the firewall by the script.
+
+	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
 	generated script compares vlan and carp interfaces of the firewall
 	with objects created in fwbuilder GUI and deletes any such
 	interfaces it finds if they are not defined in fwbuilder. This is

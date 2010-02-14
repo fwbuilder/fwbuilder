@@ -200,6 +200,13 @@ string OSConfigurator_bsd::printFunctions()
         ostr << update_carp.expand().toStdString();
     }
 
+    if ( options->getBool("configure_pfsync_interfaces") ) 
+    {
+        Configlet update_pfsync(fw, "bsd", "update_pfsync");
+        update_pfsync.removeComments();
+        ostr << update_pfsync.expand().toStdString();
+    }
+
     return ostr.str();
 }
 
@@ -220,6 +227,7 @@ string OSConfigurator_bsd::configureInterfaces()
     if ( options->getBool("configure_vlan_interfaces") ) 
     {
         QStringList vlan_interfaces;
+        ostringstream vlan_output;
         // http://blog.scottlowe.org/2007/08/31/vlan-interfaces-with-openbsd-41/
         // ifconfig <VLAN interface name> vlan <VLAN ID> vlandev <physical network device>
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
@@ -228,7 +236,6 @@ string OSConfigurator_bsd::configureInterfaces()
             Interface *iface = Interface::cast(*i);
             assert(iface);
 
-            ostringstream vlan_output;
             vlan_output << "update_vlans_of_interface "
                         << "\"" << iface->getName() << " ";
 
@@ -244,16 +251,16 @@ string OSConfigurator_bsd::configureInterfaces()
                     vlan_output << subinterface->getName() << " ";
                 }
             }
-            vlan_output << "\"";
+            vlan_output << "\"" << endl;
+        }
 
-            ostr << "sync_vlan_interfaces "
-                 << vlan_interfaces.join(" ").toStdString()
-                 << endl;
+        ostr << "sync_vlan_interfaces "
+             << vlan_interfaces.join(" ").toStdString()
+             << endl;
 
-            if (vlan_interfaces.size() > 0)
-            {
-                ostr << vlan_output.str() << endl;
-            }
+        if (vlan_interfaces.size() > 0)
+        {
+            ostr << vlan_output.str() << endl;
         }
     }
 
@@ -439,8 +446,10 @@ string OSConfigurator_bsd::configureInterfaces()
 
             have_pfsync_interfaces = true;
 
-            pfsync_output << "ifconfig pfsync0 ";
-            pfsync_output << "syncdev " << iface->getName() << " ";
+            Configlet configlet(fw, "bsd", "pfsync_interface");
+            configlet.removeComments();
+            configlet.collapseEmptyStrings(true);
+            configlet.setVariable("syncdev", iface->getName().c_str());
 
             if (state_sync_group->getOptionsObject()->getBool("syncpeer"))
             {
@@ -457,12 +466,19 @@ string OSConfigurator_bsd::configureInterfaces()
                     IPv4 *ipv4 = IPv4::cast(cluster_iface->getFirstByType(IPv4::TYPENAME));
                     const InetAddr *addr = ipv4->getAddressPtr();
 
-                    pfsync_output << "syncpeer " << addr->toString();
+                    configlet.setVariable("have_syncpeer", 1);
+                    configlet.setVariable("syncpeer", addr->toString().c_str());
                 }
             }
-            pfsync_output << endl;
-            pfsync_output << "ifconfig pfsync0 up" << endl;
+            pfsync_output << configlet.expand().toStdString() << endl;
+
+            break;
         }
+
+        ostr << "sync_pfsync_interfaces ";
+        if (have_pfsync_interfaces) ostr << "pfsync0" << endl;
+        else ostr << endl;
+
         if (have_pfsync_interfaces)
         {
             ostr << pfsync_output.str() << endl;
