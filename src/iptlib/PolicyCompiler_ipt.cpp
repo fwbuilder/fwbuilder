@@ -298,6 +298,21 @@ void PolicyCompiler_ipt::_expand_interface(Rule *rule,
     physAddress            *pa=NULL;
 
     Compiler::_expand_interface(rule, iface,ol1);
+
+    if (iface->isFailoverInterface())
+    {
+        // See #1234  Cluster failover interface expands to its own addresses,
+        // plus addresses of the corresponding member interface
+
+        FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+            iface->getFirstByType(FailoverClusterGroup::TYPENAME));
+
+        Interface* member_intf = fg->getInterfaceForMemberFirewall(fw);
+        if (member_intf)
+            Compiler::_expand_interface(rule, member_intf, ol1);
+
+    }
+
     for (std::list<FWObject*>::iterator j=ol1.begin(); j!=ol1.end(); j++)
     {
         if ((*j)->getTypeName() == IPv4::TYPENAME)

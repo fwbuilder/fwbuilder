@@ -1,5 +1,15 @@
 2010-02-14  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::_expand_interface):
+	fixes #1234 When failover group object is used in the rule, rule
+	gets placed in FORWARD chain. Working implementation follows these
+	rules: 1) if cluster interface obejct is used in the rule, it is
+	expanded to the set of addresses including cluster virtual IP
+	address and all addresses of the corresponding member firewall
+	interface; 2) Failover Group is treated as any regular object
+	group. Expanding Failover group to the address of its
+	parent (cluster interface) would work but seems counter-intuitive
+
 	* PolicyCompiler_ipt.cpp (decideOnChainIfDstFW::processNext):
 	fixes #1231 rules are placed FORWARD chain if firewall object is
 	"bridging firewall". This bugfix concerns specific rule

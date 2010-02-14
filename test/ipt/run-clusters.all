@@ -1,0 +1,12 @@
+#!/bin/sh
+
+
+XMLFILE="cluster-tests.fwb"
+fwbedit list -f $XMLFILE -o /User/Clusters -c -F%name% | \
+    sort | while read fwobj
+do
+  echo "echo"
+  echo "echo \"============================ $fwobj\""
+  echo "fwb_ipt -v -f $XMLFILE -xt -xc $fwobj"
+done
+
