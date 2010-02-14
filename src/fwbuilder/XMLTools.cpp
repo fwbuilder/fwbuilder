@@ -213,9 +213,15 @@ void XMLTools::initXMLTools()
 {
 //    xml_parser_mutex     = PTHREAD_MUTEX_INITIALIZER;
 //    xslt_processor_mutex = PTHREAD_MUTEX_INITIALIZER;
+    xmlInitParser();
     defaultLoader = xmlGetExternalEntityLoader();
     current_template_dir=cxx_strdup("");
     xmlSetExternalEntityLoader(fwbExternalEntityLoader);
+}
+
+void XMLTools::close()
+{
+    xmlCleanupParser();
 }
 
 string XMLTools::readFile(const std::string &rfile) throw(FWException)
@@ -351,7 +357,7 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
         if(!(*upgrade)(upgrade_msg))
         {
             xmlFreeDoc(newdoc);
-            xmlCleanupParser();
+            //xmlCleanupParser();
             throw FWException("Load operation cancelled for file: '"+data_file);
         }
      
@@ -368,7 +374,7 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
         if(rename(data_file.c_str(), backup_file.c_str()))
         {
             xmlFreeDoc(doc);
-            xmlCleanupParser();
+            //xmlCleanupParser();
             throw FWException("Error making backup copy of file: '" + 
                               data_file + "' as '" + backup_file + "'");
         }
@@ -392,7 +398,7 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
     } 
     assert(doc!=NULL);
     xmlFreeDoc(doc);
-    xmlCleanupParser();
+    //xmlCleanupParser();
 
     // Now we know the version is OK,
     // let us load for real, checking DTD.
@@ -566,7 +572,7 @@ void XMLTools::transformFileToFile(const string &src_file,
     xmlFreeDoc(doc);
 
     xsltCleanupGlobals();
-    xmlCleanupParser();
+    //xmlCleanupParser();
 }
 
 void XMLTools::transformDocumentToFile(xmlDocPtr doc, 
@@ -644,7 +650,7 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
         xsltSaveResultToFilename(dst_file.c_str(), res, ss, 0 /* compression */ );
 
     xmlFreeDoc(res);
-    xmlCleanupParser();
+    //xmlCleanupParser();
     xsltFreeStylesheet(ss);
 }
 
@@ -721,7 +727,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
     if (!root || !root->name || type_name!=FROMXMLCAST(root->name))
     {
         xmlFreeDoc(doc);
-        xmlCleanupParser();
+        //xmlCleanupParser();
         throw FWException("XML file '"+file_name+ "' has invalid structure.");
     }
 
@@ -778,7 +784,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         if (access(fname.c_str() , R_OK )!=0) 
         {
             xmlFreeDoc(doc);
-            xmlCleanupParser();
+            //xmlCleanupParser();
             throw FWException(
                 string("File '" + file_name +
                        "' conversion error: no converter found for version: ") +
@@ -792,18 +798,18 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         {
             ex.getProperties()["failed_transformation"]=fname;
             xmlFreeDoc(doc);
-            xmlCleanupParser();
+            //xmlCleanupParser();
             throw;
         }
         xmlFreeDoc(doc);
-        xmlCleanupParser();
+        //xmlCleanupParser();
         doc = res;
         
         root = xmlDocGetRootElement(doc);
         if (!root || !root->name || type_name!=FROMXMLCAST(root->name))
         {
             xmlFreeDoc(doc);
-            xmlCleanupParser();
+            //xmlCleanupParser();
             throw FWException("File '" + file_name +
                               "' conversion Error: conversion produced file with invalid structure.");
         }
@@ -812,7 +818,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         if (v==NULL)
         {
             xmlFreeDoc(doc);
-            xmlCleanupParser();
+            //xmlCleanupParser();
             throw FWException("File '" + file_name +
                               "' conversion error: converted to unknown version.");
         } 
@@ -823,7 +829,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         if (version_compare(vers, oldversion) <= 0)
         {
             xmlFreeDoc(doc);
-            xmlCleanupParser();
+            //xmlCleanupParser();
             throw FWException("File '" + file_name +
                               "' conversion error: conversion did not advance version number!.");
         }

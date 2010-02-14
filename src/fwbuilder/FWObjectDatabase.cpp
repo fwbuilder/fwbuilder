@@ -257,7 +257,7 @@ void FWObjectDatabase::load(const string &f,
                                       FWObjectDatabase::TYPENAME)!=SAME)
     {
 	xmlFreeDoc(doc);
-        xmlCleanupParser();
+        //xmlCleanupParser();
         throw FWException("Data file has invalid structure: "+f);
     }
     
@@ -265,7 +265,6 @@ void FWObjectDatabase::load(const string &f,
     {
         init = true;
 
-//        clearChildren();
         destroyChildren();
         clearIndex();
 
@@ -302,7 +301,7 @@ void FWObjectDatabase::saveFile(const string &filename) throw(FWException)
                        FWObjectDatabase::DTD_FILE_NAME);
 
     xmlFreeDoc(doc);
-    xmlCleanupParser();
+    //xmlCleanupParser();
 
     setDirty(false);
     init = false;
@@ -331,7 +330,7 @@ void FWObjectDatabase::saveToBuffer(xmlChar **buffer, int *size)
                            FWObjectDatabase::TYPENAME,
                            FWObjectDatabase::DTD_FILE_NAME);
     xmlFreeDoc(doc);  
-    xmlCleanupParser();
+    //xmlCleanupParser();
 //    setDirty(false);
 
     init = false;

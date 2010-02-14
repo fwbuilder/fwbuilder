@@ -81,6 +81,7 @@ class XMLTools
     static xmlNodePtr getXmlChildNode (xmlNodePtr r,const char   *child_name );
 
     static void initXMLTools();
+    static void close();
 
     class UpgradePredicate
     {
