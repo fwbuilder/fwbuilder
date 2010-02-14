@@ -118,6 +118,8 @@ class FWWindow : public QMainWindow {
     void showSub(ProjectPanel *projectW);
     void attachEditorToProjectPanel(ProjectPanel *pp);
 
+    QList<QAction*> ruleStaticActions;
+
 public:
     QVector <QString> windowsTitles;
     QVector <QMdiSubWindow*> windowsPainters;
@@ -225,6 +227,8 @@ public slots:
     virtual void prepareToolsMenu();
     virtual void prepareWindowsMenu();
     virtual void prepareFileOpenRecentMenu();
+    virtual void prepareRulesMenu();
+    virtual void cleanRulesMenu();
 
     virtual void toolsDiscoveryDruid();
 
@@ -239,6 +243,8 @@ public slots:
     void activateRule(ProjectPanel*, QString, QString, int);
 
     void undoViewVisibilityChanged(bool);
+
+
     
  public:
     Ui::FWBMainWindow_q *m_mainWindow;

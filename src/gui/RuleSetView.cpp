@@ -115,6 +115,7 @@ RuleSetView::~RuleSetView()
     delete compileRuleAction;
     delete moveRuleUpAction;
     delete moveRuleDownAction;
+    delete removeFromGroupAction;
 }
 
 void RuleSetView::init()
@@ -160,6 +161,11 @@ void RuleSetView::initActions()
     // Move rule down
     moveRuleDownAction = createAction(tr("Move Rule down"), SLOT( moveRuleDown()), QKeySequence(Qt::CTRL + Qt::Key_PageDown));
     addAction(moveRuleDownAction );
+
+    // Remove rules from group
+    removeFromGroupAction = createAction(tr("Remove from the group"), SLOT( removeFromGroup()));
+    removeFromGroupAction->setEnabled(false);
+    removeFromGroupAction->setVisible(false);
 
 }
 
@@ -708,13 +714,9 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
     QModelIndexList selectedIndexes = getSelectedRows();
     int selectionSize = selectedIndexes.size();
 
-    if (node->isInGroup())
-    {
-        // only outermost rules in group could removed from this group
-        if (node->isOutermost())
-            menu->addAction( tr("Remove from the group"), this, SLOT( removeFromGroup() ));
-    }
-    else if (selectedIndexes.size() > 0 && isOnlyTopLevelRules(selectedIndexes))
+    menu->addAction(removeFromGroupAction);
+
+    if (selectedIndexes.size() > 0 && isOnlyTopLevelRules(selectedIndexes))
     {
         menu->addAction( tr("New group"), this, SLOT( newGroup() ));
 
@@ -2728,12 +2730,15 @@ void RuleSetView::compileCurrentRule()
 
 void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)
 {
+    qDebug() << "RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)";
     RuleSetModel* md = ((RuleSetModel*)model());
     QModelIndexList selectedIndexes = getSelectedRows();
 
     bool compileRuleActionEnabled = false;
 
-    if (selectedIndexes.size()==1)
+    int selectionSize = selectedIndexes.size();
+
+    if (selectionSize==1)
     {
         QModelIndex index = selectedIndexes.at(0);
         if (index.isValid())
@@ -2747,6 +2752,31 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
     }
 
     compileRuleAction->setEnabled(compileRuleActionEnabled);
+
+    if (selectionSize == 0)
+    {
+        removeFromGroupAction->setVisible(false);
+        removeFromGroupAction->setEnabled(false);
+    } else
+    {
+        bool inGroup = true;
+        bool outermost = false;
+
+        foreach(QModelIndex index, selectedIndexes)
+        {
+            if (index.isValid())
+            {
+                RuleNode* node = md->nodeFromIndex(index);
+                if (node!=0 && node->type == RuleNode::Rule && node->rule != 0)
+                {
+                    inGroup = inGroup && node->isInGroup();
+                    outermost = outermost || node->isOutermost();
+                }
+            }
+        }
+        removeFromGroupAction->setVisible(inGroup);
+        removeFromGroupAction->setEnabled(outermost);
+    }
 }
 
 void RuleSetView::updateObject(FWObject* object)

@@ -121,6 +121,9 @@ public:
     void addToGroup(bool isAbove);
 
 
+    //Public rule related actions:
+    QAction *removeFromGroupAction;
+
 
 public slots:
 

@@ -283,8 +283,17 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     connect( m_mainWindow->menuWindow, SIGNAL (aboutToShow() ),
             this,  SLOT( prepareWindowsMenu()  ));
 
+    connect( m_mainWindow->RulesMenu, SIGNAL (aboutToShow()),
+             this, SLOT(prepareRulesMenu()));
+
+    connect( m_mainWindow->RulesMenu, SIGNAL (aboutToHide()),
+             this, SLOT(cleanRulesMenu()));
+
     connect( m_mainWindow->m_space, SIGNAL(subWindowActivated(QMdiSubWindow*)),
              this, SLOT(subWindowActivated(QMdiSubWindow*)));
+
+    ruleStaticActions = m_mainWindow->RulesMenu->actions();
+    m_mainWindow->RulesMenu->actions().clear();
 
     disableActions(false);
 
@@ -1490,6 +1499,29 @@ void FWWindow::undoViewVisibilityChanged(bool visible)
    if(mw->isVisible())
        st->setShowUndoPanel(visible);
 }
+
+void FWWindow::prepareRulesMenu ()
+{
+    qDebug("FWWindow::ruleMenuAboutToShow ()");
+    if (activeProject())
+    {
+        RuleSetView* rsv = activeProject()->getCurrentRuleSetView();
+
+        if(rsv)
+        {
+            m_mainWindow->RulesMenu->addAction(rsv->removeFromGroupAction);
+        }
+        m_mainWindow->RulesMenu->addSeparator();
+        m_mainWindow->RulesMenu->addActions(ruleStaticActions);
+    }
+}
+
+void FWWindow::cleanRulesMenu ()
+{
+    qDebug("FWWindow::cleanRulesMenu ()");
+    m_mainWindow->RulesMenu->actions().clear();
+}
+
 
 void FWWindow::showStatusBarMessage(const QString &txt)
 {
