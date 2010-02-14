@@ -1,6 +1,13 @@
 2010-02-13  vadim  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
+	New feature: generated script adds and removes CARP interfaces
+	incrementally. This means it is not going to run ifconfig command
+	to create carp interface if it is already there and will run
+	"ifconfig carp1 destroy" command if interface carp1 has been
+	removed in fwbuilder GUI to delete it on the firewall.
+
+	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
 	New feature: incremental VLAN interface management for OpenBSD and
 	FreeBSD. When user adds or removes VLAN subinterface in fwbuilder
 	GUI, geenrated script executes appropriate ifconfig commands to

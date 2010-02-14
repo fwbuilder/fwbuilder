@@ -1200,10 +1200,11 @@
         <Option name="vlan_id">100</Option>
       </InterfaceOptions>
     </Interface>
+    <IPv4 id="id16633X39764" name="pf_cluster_1:carp0:ip-1" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id3631X95766" host_OS="openbsd" inactive="False" lastCompiled="1248551815" lastInstalled="0" lastModified="1264267318" platform="pf" name="pf_cluster_1" comment=" " ro="False">
+      <Cluster id="id3631X95766" host_OS="openbsd" inactive="False" lastCompiled="1248551815" lastInstalled="0" lastModified="1266123526" platform="pf" name="pf_cluster_1" comment=" " ro="False">
         <NAT id="id3640X95766" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3162X39764" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1461,7 +1462,6 @@
         </Routing>
         <Interface id="id3642X95766" dedicated_failover="False" dyn="False" label="pf_clsuter_1 carp0" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp0" comment="" ro="False">
           <IPv4 id="id3647X95766" name="pf_cluster_1:carp0:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
-          <IPv4 id="id16633X39764" name="pf_cluster_1:carp0:ip-1" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">carp</Option>

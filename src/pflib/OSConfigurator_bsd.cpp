@@ -36,6 +36,9 @@
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/StateSyncClusterGroup.h"
 
+#include "interfaceProperties.h"
+#include "interfacePropertiesObjectFactory.h"
+
 #include <QTextStream>
 #include <QString>
 
@@ -190,7 +193,21 @@ string OSConfigurator_bsd::printFunctions()
         ostr << update_vlans.expand().toStdString();
     }
 
+    if ( options->getBool("configure_carp_interfaces") ) 
+    {
+        Configlet update_carp(fw, "bsd", "update_carp");
+        update_carp.removeComments();
+        ostr << update_carp.expand().toStdString();
+    }
+
     return ostr.str();
+}
+
+
+bool compare_names(FWObject *a, FWObject *b)
+{
+    if (a->getName() < b->getName()) return true;
+    return false;
 }
 
 string OSConfigurator_bsd::configureInterfaces()
@@ -235,61 +252,6 @@ string OSConfigurator_bsd::configureInterfaces()
         }
     }
 
-    if ( options->getBool("configure_interfaces") ) 
-    {
-        ostr << endl;
-
-        list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
-        for (list<FWObject*>::iterator i=all_interfaces.begin();
-             i != all_interfaces.end(); ++i )
-        {
-            Interface *iface = Interface::cast(*i);
-            assert(iface);
-
-            if (!iface->isRegular()) continue;
-            if (iface->isFailoverInterface()) continue;
-
-            list<FWObject*> all_addr = iface->getByType(IPv4::TYPENAME);
-            list<FWObject*> all_ipv6 = iface->getByType(IPv6::TYPENAME);
-            all_addr.insert(all_addr.begin(), all_ipv6.begin(), all_ipv6.end());
-
-            const InetAddr *netmask = iface->getNetmaskPtr();
-
-            list<pair<InetAddr,InetAddr> > all_addresses;
-
-            for (list<FWObject*>::iterator j = all_addr.begin();
-                 j != all_addr.end(); ++j)
-            {
-                Address *iaddr = Address::cast(*j);
-                const InetAddr *ipaddr = iaddr->getAddressPtr();
-                const InetAddr *ipnetm = iaddr->getNetmaskPtr();
-                all_addresses.push_back(
-                    pair<InetAddr,InetAddr>(*ipaddr, *ipnetm));
-            }
-
-            set<const Address*>::iterator it;
-            for (it=virtual_addresses.begin(); it!=virtual_addresses.end(); ++it)
-            {
-                const Address *addr = *it;
-                FWObject *iaddr = findAddressFor(addr, fw );
-                if (iaddr!=NULL)
-                {
-                    Interface *iface_2 = Interface::cast(iaddr->getParent());
-                    if (iface_2 == iface)
-                    {
-                        all_addresses.push_back(
-                            pair<InetAddr,InetAddr>(
-                                *(addr->getAddressPtr()), *netmask));
-                    }
-                }
-            }
-
-            ostr << updateAddressesOfInterfaceCall(iface, all_addresses) << endl;
-
-        }
-        ostr << endl;
-    }
-
     if ( options->getBool("configure_carp_interfaces") ) 
     {
 /*
@@ -298,19 +260,9 @@ string OSConfigurator_bsd::configureInterfaces()
  * the firewall here, we get both its normal interfaces and a copy of
  * cluster interfaces. 
  *
- * Need to generate commands
- *
- *    ifconfig carpN create
- *
- *    ifconfig carpN vhid vhid [pass password] [carpdev carpdev]   \
- *       [advbase advbase] [advskew advskew] [state state] ipaddress   \
- *       netmask mask 
- *
- * for pfsync and CARP see http://www.kernel-panic.it/openbsd/carp/
- * "Redundant firewalls with OpenBSD, CARP and pfsync"
  */
         ostringstream carp_output;
-        bool have_carp_interfaces = false;
+        QStringList carp_interfaces;
 
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
         for ( ; i!=i.end(); ++i ) 
@@ -331,6 +283,8 @@ string OSConfigurator_bsd::configureInterfaces()
                 iface->getFirstByType(FailoverClusterGroup::TYPENAME);
             if (failover_group && failover_group->getStr("type") == "carp")
             {
+                carp_interfaces.push_back(iface->getName().c_str());
+
                 FWOptions *failover_opts =
                     FailoverClusterGroup::cast(failover_group)->getOptionsObject();
                 string carp_password = failover_opts->getStr("carp_password");
@@ -342,25 +296,7 @@ string OSConfigurator_bsd::configureInterfaces()
 
                 if (master_advskew < 0) master_advskew = 0;
                 if (default_advskew < 0) default_advskew = 0;
-
                 if (master_advskew == default_advskew) default_advskew++;
-
-                have_carp_interfaces = true;
-
-
-                carp_output << "ifconfig " << iface->getName() << " create" << endl;
-
-                carp_output << "ifconfig " << iface->getName()
-                            << " vhid " << vhid
-                            << " pass " << carp_password
-                            << " ";
-                if (!base_interface.empty())
-                    carp_output << " carpdev " << base_interface;
-
-                // the default for advbase is 1, skip it if use_advskew < 1
-                // (can be -1 if not defined at all)
-                if (advbase > 1)
-                    carp_output << " advbase " << advbase;
 
                 int use_advskew;
                 if (master)
@@ -368,44 +304,101 @@ string OSConfigurator_bsd::configureInterfaces()
                 else
                     use_advskew = default_advskew;
 
-                // the default for advskew is 0, skip it if use_advskew == 0
-                if (use_advskew > 0)
-                    carp_output << " advskew " << use_advskew;
+                Configlet configlet(fw, "bsd", "carp_interface");
+                configlet.removeComments();
+                configlet.collapseEmptyStrings(true);
+                configlet.setVariable("carp_interface", iface->getName().c_str());
+                configlet.setVariable("have_advbase", advbase > 1);
+                configlet.setVariable("advbase", advbase);
+                configlet.setVariable("have_advskew", use_advskew > 0);
+                configlet.setVariable("advskew", use_advskew);
+                configlet.setVariable("have_base_inetrface", !base_interface.empty());
+                configlet.setVariable("base_inetrface", base_interface.c_str());
+                configlet.setVariable("carp_password", carp_password.c_str());
+                configlet.setVariable("vhid", vhid.c_str());
 
-                carp_output << endl;
+                carp_output << configlet.expand().toStdString() << endl;
+            }
+        }
 
+        if (carp_interfaces.size() > 0)
+        {
+            ostr << "sync_carp_interfaces "
+                 << carp_interfaces.join(" ").toStdString()
+                 << endl;
+            ostr << carp_output.str() << endl;
+        }
+    }
+
+
+    if ( options->getBool("configure_interfaces") ) 
+    {
+        ostr << endl;
+
+        std::auto_ptr<interfaceProperties> int_prop(
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                fw->getStr("host_OS")));
+
+        list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+        all_interfaces.sort(compare_names);
+        for (list<FWObject*>::iterator i=all_interfaces.begin();
+             i != all_interfaces.end(); ++i )
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+
+            if (!iface->isRegular()) continue;
+            //if (iface->isFailoverInterface()) continue;
+
+            QStringList update_addresses;
+            QStringList ignore_addresses;
+            if (int_prop->manageIpAddresses(iface, update_addresses, ignore_addresses))
+            {
+                // unfortunately addresses in update_addresses are in
+                // the form of address/masklen but OpenBSD ifconfig
+                // uses hex netmask representation and so should we.
+                // Will ignore update_addresses and ignore_addresses and
+                // build our own list here. Returned value of manageIpAddresses()
+                // is useful though.
                 list<FWObject*> all_addr = iface->getByType(IPv4::TYPENAME);
                 list<FWObject*> all_ipv6 = iface->getByType(IPv6::TYPENAME);
                 all_addr.insert(all_addr.begin(), all_ipv6.begin(), all_ipv6.end());
 
+                const InetAddr *netmask = iface->getNetmaskPtr();
+
+                list<pair<InetAddr,InetAddr> > all_addresses;
+
                 for (list<FWObject*>::iterator j = all_addr.begin();
-                     j != all_addr.end(); ++j) 
+                     j != all_addr.end(); ++j)
                 {
-                    Address *address = Address::cast(*j);
-                    const InetAddr *addr = address->getAddressPtr();
-                    const InetAddr *mask = address->getNetmaskPtr();
-
-                    carp_output << "ifconfig " << iface->getName();
-                    if (addr->isV6())
-                        carp_output << " inet6";
-                    else
-                        carp_output << " inet";
-
-                    carp_output << " " << addr->toString();
-
-                    carp_output << " prefixlen " << mask->getLength();
-
-                    carp_output << endl;
+                    Address *iaddr = Address::cast(*j);
+                    const InetAddr *ipaddr = iaddr->getAddressPtr();
+                    const InetAddr *ipnetm = iaddr->getNetmaskPtr();
+                    all_addresses.push_back(
+                        pair<InetAddr,InetAddr>(*ipaddr, *ipnetm));
                 }
 
+                set<const Address*>::iterator it;
+                for (it=virtual_addresses.begin(); it!=virtual_addresses.end(); ++it)
+                {
+                    const Address *addr = *it;
+                    FWObject *iaddr = findAddressFor(addr, fw );
+                    if (iaddr!=NULL)
+                    {
+                        Interface *iface_2 = Interface::cast(iaddr->getParent());
+                        if (iface_2 == iface)
+                        {
+                            all_addresses.push_back(
+                                pair<InetAddr,InetAddr>(
+                                    *(addr->getAddressPtr()), *netmask));
+                        }
+                    }
+                }
+
+                ostr << updateAddressesOfInterfaceCall(iface, all_addresses) << endl;
             }
         }
-
-        if (have_carp_interfaces)
-        {
-            ostr << "$SYSCTL -w net.inet.carp.allow=1" << endl;
-            ostr << carp_output.str() << endl;
-        }
+        ostr << endl;
     }
 
 

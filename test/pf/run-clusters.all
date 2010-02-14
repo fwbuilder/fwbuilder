@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#XMLFILE="objects-for-regression-tests.fwb"
+#fwbedit list -f $XMLFILE -o /User/Firewalls -c -F%name% | \
+#    sort | while read fwobj
+#do
+#  echo "echo"
+#  echo "echo \"============================ $fwobj\""
+#  echo "fwb_pf -v -f $XMLFILE -xt $fwobj"
+#done
+
+XMLFILE="cluster-tests.fwb"
+fwbedit list -f $XMLFILE -o /User/Clusters -c -F%name% | \
+    sort | while read fwobj
+do
+  echo "echo"
+  echo "echo \"============================ $fwobj\""
+  echo "fwb_pf -v -f $XMLFILE -xt -xc $fwobj"
+done
+
