@@ -2853,14 +2853,24 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
     if ( compiler->getCachedFwOpt()->getBool("bridging_fw") &&
          compiler->complexMatch(src,compiler->fw,false,false) )
     {
-	PolicyRule *r;
+        /* Correction for bug #1231 : as of fwbuilder v4.0 (and
+         * really, probably as of 3.0), bridge ports must be created
+         * in the GUI for the compiler to process policy of the
+         * bridging firewall correctly.  Will split the rule if it is
+         * not associated with any particular interface or associated
+         * with an interface which is a bridge port.
+         */
 
-	r= compiler->dbcopy->createPolicyRule();
-	compiler->temp_ruleset->add(r);
-	r->duplicate(rule);
-        ipt_comp->setChain(r,"FORWARD");
-
-	tmp_queue.push_back(r);
+        RuleElementItf *itfre = rule->getItf();
+        Interface *rule_iface = compiler->getFirstItf(rule);
+        if (rule_iface == NULL || rule_iface->isBridgePort())
+        {
+            PolicyRule *r = compiler->dbcopy->createPolicyRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            ipt_comp->setChain(r,"FORWARD");
+            tmp_queue.push_back(r);
+        }
     }
 
     bool b,m;
@@ -2903,6 +2913,9 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
     return true;
 }
 
+/*
+ * Call this processor before InterfacePolicyRulesWithOptimization
+ */
 bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
@@ -2936,19 +2949,28 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
  *
  * Bug #934949: "duplicate rules". Split the rule only if firewall is
  * in src or dst. Otherwise compiler produces duplicates.
- *
  */
     if ( compiler->getCachedFwOpt()->getBool("bridging_fw") &&
          compiler->complexMatch(dst,compiler->fw,false,false) )
     {
-	PolicyRule *r;
+        /* Correction for bug #1231 : as of fwbuilder v4.0 (and
+         * really, probably as of 3.0), bridge ports must be created
+         * in the GUI for the compiler to process policy of the
+         * bridging firewall correctly.  Will split the rule if it is
+         * not associated with any particular interface or associated
+         * with an interface which is a bridge port.
+         */
 
-	r= compiler->dbcopy->createPolicyRule();
-	compiler->temp_ruleset->add(r);
-	r->duplicate(rule);
-        ipt_comp->setChain(r,"FORWARD");
-
-	tmp_queue.push_back(r);
+        RuleElementItf *itfre = rule->getItf();
+        Interface *rule_iface = compiler->getFirstItf(rule);
+        if (rule_iface == NULL || rule_iface->isBridgePort())
+        {
+            PolicyRule *r = compiler->dbcopy->createPolicyRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            ipt_comp->setChain(r,"FORWARD");
+            tmp_queue.push_back(r);
+        }
     }
 
     bool b,m;
