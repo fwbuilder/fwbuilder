@@ -219,6 +219,7 @@ string OSConfigurator_bsd::configureInterfaces()
     // on vlan interfaces later
     if ( options->getBool("configure_vlan_interfaces") ) 
     {
+        QStringList vlan_interfaces;
         // http://blog.scottlowe.org/2007/08/31/vlan-interfaces-with-openbsd-41/
         // ifconfig <VLAN interface name> vlan <VLAN ID> vlandev <physical network device>
         FWObjectTypedChildIterator i=fw->findByType(Interface::TYPENAME);
@@ -231,7 +232,6 @@ string OSConfigurator_bsd::configureInterfaces()
             vlan_output << "update_vlans_of_interface "
                         << "\"" << iface->getName() << " ";
 
-            bool have_vlan_interfaces = false;
             FWObjectTypedChildIterator si=iface->findByType(Interface::TYPENAME);
             for ( ; si!=si.end(); ++si ) 
             {
@@ -240,12 +240,17 @@ string OSConfigurator_bsd::configureInterfaces()
 
                 if (subinterface->getOptionsObject()->getStr("type") == "8021q")
                 {
-                    have_vlan_interfaces = true;
+                    vlan_interfaces.push_back(subinterface->getName().c_str());
                     vlan_output << subinterface->getName() << " ";
                 }
             }
             vlan_output << "\"";
-            if (have_vlan_interfaces)
+
+            ostr << "sync_vlan_interfaces "
+                 << vlan_interfaces.join(" ").toStdString()
+                 << endl;
+
+            if (vlan_interfaces.size() > 0)
             {
                 ostr << vlan_output.str() << endl;
             }
@@ -321,11 +326,12 @@ string OSConfigurator_bsd::configureInterfaces()
             }
         }
 
+        ostr << "sync_carp_interfaces "
+             << carp_interfaces.join(" ").toStdString()
+             << endl;
+
         if (carp_interfaces.size() > 0)
         {
-            ostr << "sync_carp_interfaces "
-                 << carp_interfaces.join(" ").toStdString()
-                 << endl;
             ostr << carp_output.str() << endl;
         }
     }

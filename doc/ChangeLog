@@ -1,6 +1,14 @@
 2010-02-13  vadim  <vadim@vk.crocodile.org>
 
 	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
+	generated script compares vlan and carp interfaces of the firewall
+	with objects created in fwbuilder GUI and deletes any such
+	interfaces it finds if they are not defined in fwbuilder. This is
+	done even when there are no vlan or carp interfaces in fwbuilder
+	configuration. This code is added only when checkboxes "Configure
+	VLAN interfaces" and "Configure CARP interfaces" are checked.
+
+	* OSConfigurator_bsd.cpp (OSConfigurator_bsd::configureInterfaces):
 	New feature: generated script adds and removes CARP interfaces
 	incrementally. This means it is not going to run ifconfig command
 	to create carp interface if it is already there and will run

@@ -78,3 +78,22 @@ update_vlans_of_interface() {
     diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
 }
 
+sync_vlan_interfaces() {
+    $IFCONFIG -A | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ii=ignored_arr[a]":"; ignored_dict[ii]=1;}
+         }
+         ($1 ~ /^vlan[0-9]/ && !($1 in ignored_dict)) {print $1;}' | sed 's/://' |\
+         while read intf; do
+            echo "# Deleting vlan interface $intf"
+             $FWBDEBUG $IFCONFIG $intf destroy
+         done
+
+    for intf in $*; do
+        $IFCONFIG $intf >/dev/null 2>&1 || {
+            echo "# Creating vlan interface $intf"
+            $FWBDEBUG $IFCONFIG $intf create
+        }
+    done
+}
