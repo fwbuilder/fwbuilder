@@ -57,6 +57,9 @@
 #include <libxslt/xsltInternals.h>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
+
+#include <libxml/xmlmemory.h>
+
 #include <zlib.h>
 
 #include <iostream>
@@ -213,6 +216,7 @@ void XMLTools::initXMLTools()
 {
 //    xml_parser_mutex     = PTHREAD_MUTEX_INITIALIZER;
 //    xslt_processor_mutex = PTHREAD_MUTEX_INITIALIZER;
+    xmlInitMemory();
     xmlInitParser();
     defaultLoader = xmlGetExternalEntityLoader();
     current_template_dir=cxx_strdup("");

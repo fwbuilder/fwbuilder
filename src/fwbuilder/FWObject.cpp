@@ -142,7 +142,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
             me, 
             TOXMLCAST("id"),
             STRTOXMLCAST(s_id));
-        xmlAddID(NULL, parent->doc, STRTOXMLCAST(s_id), pr);
+        //xmlAddID(NULL, parent->doc, STRTOXMLCAST(s_id), pr);
     }
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
@@ -160,6 +160,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
         for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
             (*j)->toXML(me);
     }
+
     return me;
 }
 

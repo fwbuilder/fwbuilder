@@ -93,7 +93,7 @@ xmlNodePtr FWReference::toXML(xmlNodePtr parent) throw(FWException)
     xmlAttrPtr pr = xmlNewProp(me, 
                                TOXMLCAST("ref"),
                                STRTOXMLCAST(str_ref));
-    xmlAddRef(NULL, parent->doc, STRTOXMLCAST(str_ref), pr);
+    //xmlAddRef(NULL, parent->doc, STRTOXMLCAST(str_ref), pr);
 
     return me;
 }
