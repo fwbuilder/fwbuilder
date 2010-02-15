@@ -1372,7 +1372,17 @@ void ProjectPanel::save()
 
                 bool editingLibfile = editingLibrary();
 
-                if (st->getDontSaveStdLib())  // this is now default
+/* ****************************************************************
+ *
+ *      REMOVE THIS
+ *
+ * or may be not. The savings of not storing standard objects in each file
+ * are minimal but this code seems to be leaking too
+ *
+ ******************************************************************
+ */
+                //if (st->getDontSaveStdLib())  // this is now default
+                if (false)
                 {
                     list<FWObject*> userLibs;
                     list<FWObject*> ll = db()->getByType(Library::TYPENAME);
@@ -1411,6 +1421,7 @@ void ProjectPanel::save()
 
                     ndb->resetTimeLastModified( db()->getTimeLastModified() );
                     xmlSetCompressMode(st->getCompression() ? 9 : 0);
+
                     ndb->saveFile(
                         rcs->getFileName().toLocal8Bit().constData());
 
