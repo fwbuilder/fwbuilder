@@ -44,7 +44,7 @@
 
 // tarball base name and suffix (e.g. config.tar.gz)
 #define BASENAME "config"
-#define SUFFIX   "tar.gz"
+#define SUFFIX   "tar"
 
 using namespace std;
 using namespace fwtransfer;
@@ -56,6 +56,8 @@ int fwbdebug = 0;
 static string filename     = "";
 // workdir of firewall to export
 static string workdir      = "";
+// templates dir to use
+static string tmpldir      = "";
 // volumeid (e.g. /dev/sdc1) to use as transfer partition
 static string volumeid     = "";
 // object name of firewall to export (e.g. fw1)
@@ -104,7 +106,7 @@ void usage(const char *name)
     cout << ("Version : ") << VERSION << endl;
     cout << ("Usage   : ") << name <<
         " [-l] [-h] [-n] -v volumeid [-f filename.xml] [-d workdir] "
-        "firewall_object_name" << endl;
+        "[-a templatedir] firewall_object_name" << endl;
 }
 
 /**
@@ -184,14 +186,17 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    int   opt;
+    int opt;
 
-    while ((opt = getopt(argc, argv, "lhnv:f:d:")) != EOF)
+    while ((opt = getopt(argc, argv, "lhnv:f:d:a:")) != EOF)
     {
         switch (opt)
         {
         case 'd':
             workdir = string(optarg);
+            break;
+        case 'a':
+            tmpldir = string(optarg);
             break;
         case 'f':
             filename = string(optarg);
@@ -260,6 +265,16 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
+    // check templates directory (with -a flag only)
+    if (!tmpldir.empty())
+    {
+        if (stat(tmpldir.c_str(), &buffer))
+        {
+            cout << "Templates directory '" << tmpldir << "' not found" << endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+
     // try to mount volume
     TransferDeviceList devices;
     if (!init_usbdisks(devices))
@@ -314,26 +329,48 @@ int main(int argc, char **argv)
     {
         tarball = string(BASENAME) + "." + string(SUFFIX);
     }
-    cout << "Using tarball '" << tarball << "'" << endl;
 
     // tell tar to change into fwobjectname subdir and create tarball
     // force file ownership to root:root
-    string cmd = "tar cCzf " + fwobjectname + " " + tarball + " --owner=0 --group=0 .";
+    string cmd = "tar cCf " + fwobjectname + " " + tarball + " --owner=0 --group=0 .";
     if (system(cmd.c_str()) != 0)
     {
         cout << "Could not create tarball '" << tarball << "'" << endl;
         exit(EXIT_FAILURE);
     }
 
-    // copy archive to volume
-    string outpath = mountpoint + "/" + tarball;
-    if (!copy_file(tarball, outpath))
+    // append templates to tarball
+    if (!tmpldir.empty())
     {
-        cout << "Could not copy '" << tarball << "' to '"
+        cout << "Adding templates from '" << tmpldir << "'" << endl;
+        cmd = "tar rCf " + tmpldir + " " + tarball + " --owner=0 --group=0 .";
+        if (system(cmd.c_str()) != 0)
+        {
+            cout << "Could not append templates to tarball '" << tarball
+                 << "'" << endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // compress tarball
+    cmd = "gzip -f " + tarball;
+    if (system(cmd.c_str()) != 0)
+    {
+        cout << "Could not compress tarball '" << tarball << "'" << endl;
+        cout << "Missing gzip binary?" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    // copy compressed archive to volume
+    string compressed = tarball + ".gz";
+    string outpath = mountpoint + "/" + compressed;
+    if (!copy_file(compressed, outpath))
+    {
+        cout << "Could not copy '" << compressed << "' to '"
              << outpath << "'" << endl;
         exit(EXIT_FAILURE);
     }
 
-    cout << "Transfered '" << fwobjectname << "' config to " << outpath << endl;
+    cout << "Exported '" << fwobjectname << "' config to " << outpath << endl;
     exit(EXIT_SUCCESS);
 }

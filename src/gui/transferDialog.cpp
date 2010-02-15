@@ -267,6 +267,14 @@ bool transferDialog::prepareArgs(QStringList &args, libfwbuilder::Firewall *fw,
         args.push_back("-n");
     }
 
+    // append template directory content to transfer tarball
+    if (fwopt->getBool("secuwall_add_files"))
+    {
+        QString tmpldir = fwopt->getStr("secuwall_add_files_dir").c_str();
+        args.push_back("-a");
+        args.push_back(tmpldir);
+    }
+
     args.push_back(QString::fromUtf8(fw->getName().c_str()));
 
     return true;
