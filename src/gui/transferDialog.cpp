@@ -264,7 +264,7 @@ bool transferDialog::prepareArgs(QStringList &args, libfwbuilder::Firewall *fw,
     if (reqFirewalls.size() > 1)
     {
         log(QObject::tr("Appending fw object name to tarball"));
-        args.push_back("-a");
+        args.push_back("-n");
     }
 
     args.push_back(QString::fromUtf8(fw->getName().c_str()));

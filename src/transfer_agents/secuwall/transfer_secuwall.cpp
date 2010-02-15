@@ -62,7 +62,7 @@ static string volumeid     = "";
 static string fwobjectname = "";
 
 // append fwobjectname to transfer tarball
-static bool appendflag     = false;
+static bool appendname     = false;
 
 /**
  * init portable usb device list.
@@ -103,7 +103,7 @@ void usage(const char *name)
         "secunet wall host OS" << endl;
     cout << ("Version : ") << VERSION << endl;
     cout << ("Usage   : ") << name <<
-        " [-l] [-h] [-a] -v volumeid [-f filename.xml] [-d workdir] "
+        " [-l] [-h] [-n] -v volumeid [-f filename.xml] [-d workdir] "
         "firewall_object_name" << endl;
 }
 
@@ -186,7 +186,7 @@ int main(int argc, char **argv)
 
     int   opt;
 
-    while ((opt = getopt(argc, argv, "lhav:f:d:")) != EOF)
+    while ((opt = getopt(argc, argv, "lhnv:f:d:")) != EOF)
     {
         switch (opt)
         {
@@ -205,8 +205,8 @@ int main(int argc, char **argv)
         case 'h':
             usage(argv[0]);
             exit(EXIT_FAILURE);
-        case 'a':
-            appendflag = true;
+        case 'n':
+            appendname = true;
             break;
         default:
             usage(argv[0]);
@@ -304,9 +304,9 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    // construct tarball name depending on appendflag switch
+    // construct tarball name depending on appendname flag
     string tarball;
-    if (appendflag)
+    if (appendname)
     {
         tarball = string(BASENAME) + "-" + fwobjectname + "." + string(SUFFIX);
     }
