@@ -33,7 +33,7 @@ namespace libfwbuilder
 protected:
 
         virtual void replaceReferenceInternal(int oldfw_id, int newfw_id, int &counter);
-        
+
 public:
         ClusterGroup();
         ClusterGroup(const FWObjectDatabase *root, bool prepopulate);
@@ -42,7 +42,7 @@ public:
         DECLARE_FWOBJECT_SUBTYPE(ClusterGroup);
 
         DECLARE_DISPATCH_METHODS(ClusterGroup);
-        
+
         virtual void fromXML(xmlNodePtr parent) throw(FWException);
         virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
 

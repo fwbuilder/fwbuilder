@@ -144,7 +144,7 @@ FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
         all_refs.pop_front();
     }
 
-    for(list<FWObject*>::const_iterator m=obj->begin(); m!=obj->end(); ++m) 
+    for(list<FWObject*>::const_iterator m=obj->begin(); m!=obj->end(); ++m)
     {
         if (FWReference::cast(*m))
         {
@@ -170,6 +170,4 @@ Interface* ClusterGroup::getInterfaceForMemberFirewall(Firewall *fw)
     }
     return NULL;
 }
-
-
 

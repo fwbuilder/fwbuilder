@@ -43,7 +43,7 @@ namespace libfwbuilder
         DECLARE_FWOBJECT_SUBTYPE(Cluster);
 
         DECLARE_DISPATCH_METHODS(Cluster);
-        
+
         /**
          * verify whether given object type is approppriate as a child
          */
@@ -87,7 +87,7 @@ namespace libfwbuilder
          * check if @fw is a member of this cluster.
          */
         bool hasMember(libfwbuilder::Firewall *fw);
-        
+
         time_t getLastModified();
         time_t getLastInstalled();
         time_t getLastCompiled();
