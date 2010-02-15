@@ -65,11 +65,15 @@ namespace libfwbuilder
  * declarations of all memory handling functions are commented out. This is so
  * as of Dec2003, ver. 2.6.3, see in include/libxml/xmlmemory.h
  */
+/*
 #ifdef xmlFree
 #  define FREEXMLBUFF(x) (xmlFree((void*)(x)))
 #else
 #  define FREEXMLBUFF(x)   ;
 #endif
+*/
+
+#define FREEXMLBUFF(x) xmlFree((void*)(x))
 
 class XMLTools
 {

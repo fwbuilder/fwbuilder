@@ -33,6 +33,7 @@
 #include <cstring>
 #include <signal.h>
 
+
 #include <fwbuilder/libfwbuilder-config.h>
 
 #include <fwbuilder/FWObject.h>
@@ -161,6 +162,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) :
 FWObjectDatabase::~FWObjectDatabase()
 {
     init = true;
+    destroyChildren();
 }
 
 void FWObjectDatabase::init_id_dict()
@@ -269,6 +271,7 @@ void FWObjectDatabase::load(const string &f,
         clearIndex();
 
         fromXML(root);
+
         setDirty(false);
         setFileName(f);
     } catch (FWException &ex)
@@ -276,6 +279,9 @@ void FWObjectDatabase::load(const string &f,
         init = false;
         throw(ex);
     }
+
+    xmlFreeDoc(doc);
+
     init = false;
 }
 

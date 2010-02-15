@@ -61,20 +61,25 @@ void Management::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
-    if(!n)
+    if (!n)
+    {
         throw FWException(
             "Missing required address attribute in Management element");
+    }
     try
     {
         addr = InetAddr(n);
+        FREEXMLBUFF(n);
     } catch(FWException &ex)
     {
         // try ipv6
         try
         {
             addr = InetAddr(AF_INET6, n);
+            FREEXMLBUFF(n);
         } catch(FWException &ex)
         {
+            FREEXMLBUFF(n);
             throw FWException(
                 string("Invalid address attribute in Management element: ") +
                 ex.toString());
@@ -220,13 +225,25 @@ void PolicyInstallScript::fromXML(xmlNodePtr root) throw(FWException)
     const char *n;
     
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("command")));
-    if(n) command=n;
-    
+    if(n)
+    {
+        command=n;
+        FREEXMLBUFF(n);
+    }
+
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("arguments")));
-    if(n) arguments=n;
+    if(n)
+    {
+        arguments=n;
+        FREEXMLBUFF(n);
+    }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("enabled")));
-    if(n) enabled=(cxx_strcasecmp(n,"True")==0); else enabled = false;
+    if(n)
+    {
+        enabled=(cxx_strcasecmp(n,"True")==0);
+        FREEXMLBUFF(n);
+    } else enabled = false;
     
 }
 
@@ -322,13 +339,25 @@ void SNMPManagement::fromXML(xmlNodePtr root) throw(FWException)
     const char *n;
     
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("snmp_read_community")));
-    if(n) read_community=n;
-    
+    if(n)
+    {
+        read_community=n;
+        FREEXMLBUFF(n);
+    }
+
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("snmp_write_community")));
-    if(n) write_community=n;
+    if(n)
+    {
+        write_community=n;
+        FREEXMLBUFF(n);
+    }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("enabled")));
-    if(n) enabled=(cxx_strcasecmp(n,"True")==0); else enabled = false;
+    if(n)
+    {
+        enabled=(cxx_strcasecmp(n,"True")==0);
+        FREEXMLBUFF(n);
+    } else enabled = false;
     
 }
 
@@ -432,6 +461,7 @@ void FWBDManagement::fromXML(xmlNodePtr parent) throw(FWException)
     const char *n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("identity")));
     assert(n!=NULL);
     identity_id = n;
+    FREEXMLBUFF(n);
     
     n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("port")));
     assert(n!=NULL);

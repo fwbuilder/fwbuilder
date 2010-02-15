@@ -1,3 +1,8 @@
+2010-02-14  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* Management.cpp (SNMPManagement::fromXML): refs fwbuilder:ticket:1229
+	memory leak problems
+
 2010-02-02  vadim  <vadim@vk.crocodile.org>
 
 	* fwbuilder/ObjectMatcher.h (libfwbuilder): reimplemented ObjectMatcher
