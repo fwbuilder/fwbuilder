@@ -123,6 +123,9 @@ public:
 
     //Public rule related actions:
     QAction *removeFromGroupAction;
+    QAction *newGroupAction;
+    QAction *moveRuleUpAction;
+    QAction *moveRuleDownAction;
 
 
 public slots:
@@ -240,8 +243,7 @@ private:
     //but not when he just clicks selected record
     bool startingDrag;
     QAction *compileRuleAction;
-    QAction *moveRuleUpAction;
-    QAction *moveRuleDownAction;
+
 
     QMenu *popup_menu;
 

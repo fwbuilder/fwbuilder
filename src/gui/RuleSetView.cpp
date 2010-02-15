@@ -116,6 +116,7 @@ RuleSetView::~RuleSetView()
     delete moveRuleUpAction;
     delete moveRuleDownAction;
     delete removeFromGroupAction;
+    delete newGroupAction;
 }
 
 void RuleSetView::init()
@@ -153,6 +154,8 @@ void RuleSetView::initActions()
     // Compile rule
     compileRuleAction = createAction(tr("Compile rule"), SLOT(compileCurrentRule()), QKeySequence(Qt::Key_X));
     addAction(compileRuleAction );
+    compileRuleAction->setVisible(true);
+    compileRuleAction->setEnabled(true);
 
     // Move rule up
     moveRuleUpAction = createAction(tr("Move Rule up"), SLOT( moveRuleUp()), QKeySequence(Qt::CTRL + Qt::Key_PageUp));
@@ -164,8 +167,9 @@ void RuleSetView::initActions()
 
     // Remove rules from group
     removeFromGroupAction = createAction(tr("Remove from the group"), SLOT( removeFromGroup()));
-    removeFromGroupAction->setEnabled(false);
-    removeFromGroupAction->setVisible(false);
+
+    // New group
+    newGroupAction = createAction(tr("New group"), SLOT( newGroup()));
 
 }
 
@@ -176,6 +180,9 @@ QAction* RuleSetView::createAction(QString label, const char* member, const QKey
     action->setShortcut(shortcut);
 
     connect (action, SIGNAL(triggered()), this, member);
+
+    action->setEnabled(false);
+    action->setVisible(false);
 
     return action;
 }
@@ -715,10 +722,11 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
     int selectionSize = selectedIndexes.size();
 
     menu->addAction(removeFromGroupAction);
+    menu->addAction(newGroupAction);
 
     if (selectedIndexes.size() > 0 && isOnlyTopLevelRules(selectedIndexes))
     {
-        menu->addAction( tr("New group"), this, SLOT( newGroup() ));
+
 
         QString nn =
             md->nodeFromIndex(selectedIndexes.first())->nameOfPredecessorGroup();
@@ -2730,7 +2738,7 @@ void RuleSetView::compileCurrentRule()
 
 void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)
 {
-    qDebug() << "RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)";
+//    qDebug() << "RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)";
     RuleSetModel* md = ((RuleSetModel*)model());
     QModelIndexList selectedIndexes = getSelectedRows();
 
@@ -2757,10 +2765,21 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
     {
         removeFromGroupAction->setVisible(false);
         removeFromGroupAction->setEnabled(false);
+
+        newGroupAction->setVisible(false);
+        newGroupAction->setEnabled(false);
+
+        moveRuleUpAction->setVisible(false);
+        moveRuleUpAction->setEnabled(false);
+
+        moveRuleDownAction->setVisible(false);
+        moveRuleDownAction->setEnabled(false);
+
     } else
     {
         bool inGroup = true;
         bool outermost = false;
+        bool topLevelOnly = true;
 
         foreach(QModelIndex index, selectedIndexes)
         {
@@ -2769,13 +2788,35 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
                 RuleNode* node = md->nodeFromIndex(index);
                 if (node!=0 && node->type == RuleNode::Rule && node->rule != 0)
                 {
-                    inGroup = inGroup && node->isInGroup();
+                    bool isInGroup = node->isInGroup();
+                    inGroup = inGroup && isInGroup;
+                    topLevelOnly = topLevelOnly && !isInGroup;
                     outermost = outermost || node->isOutermost();
                 }
             }
         }
+
+        if (selectionSize > 1)
+        {
+            moveRuleUpAction->setText(tr("Move Rules up"));
+            moveRuleDownAction->setText(tr("Move Rules down"));
+        } else
+        {
+            moveRuleUpAction->setText(tr("Move Rule up"));
+            moveRuleDownAction->setText(tr("Move Rule down"));
+        }
+
         removeFromGroupAction->setVisible(inGroup);
         removeFromGroupAction->setEnabled(outermost);
+
+        newGroupAction->setVisible(topLevelOnly);
+        newGroupAction->setEnabled(topLevelOnly);
+
+        moveRuleUpAction->setVisible(true);
+        moveRuleUpAction->setEnabled(true);
+
+        moveRuleDownAction->setVisible(true);
+        moveRuleDownAction->setEnabled(true);
     }
 }
 

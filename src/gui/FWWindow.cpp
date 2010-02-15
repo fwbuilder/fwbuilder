@@ -1521,6 +1521,9 @@ void FWWindow::prepareRulesMenu ()
         if(rsv)
         {
             m_mainWindow->RulesMenu->addAction(rsv->removeFromGroupAction);
+            m_mainWindow->RulesMenu->addAction(rsv->newGroupAction);
+            m_mainWindow->RulesMenu->addAction(rsv->moveRuleUpAction);
+            m_mainWindow->RulesMenu->addAction(rsv->moveRuleDownAction);
         }
         m_mainWindow->RulesMenu->addSeparator();
         m_mainWindow->RulesMenu->addActions(ruleStaticActions);

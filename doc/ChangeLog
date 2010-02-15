@@ -1,3 +1,14 @@
+2010-02-15  yalovoy <yalovoy@gmail.com>
+
+	* refs #1202: Main menu "Rules" does not match rule context menu
+	Items in the main menu Rules should get disabled and enabled just 
+	like items in the context menu do.
+	Affected files:
+	FWWindow.cpp
+	RuleSetView.cpp
+	RuleSetView.h
+ 
+
 2010-02-14  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* ProjectPanel.cpp (ProjectPanel): refs #1229 memory leak problems.
