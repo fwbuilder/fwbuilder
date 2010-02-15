@@ -1,11 +1,11 @@
 .\"     Title: transfer_secuwall
-.\"    Author:
+.\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 06/23/2009
-.\"    Manual:
-.\"    Source:
+.\"      Date: 02/12/2010
+.\"    Manual: 
+.\"    Source: 
 .\"
-.TH "TRANSFER_SECUWALL" "1" "06/23/2009" "" ""
+.TH "TRANSFER_SECUWALL" "1" "02/12/2010" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,7 +13,7 @@
 .SH "NAME"
 transfer_secuwall \- secunet wall configuration export utility
 .SH "SYNOPSIS"
-\fBtransfer_secuwall\fR [\-l] [\-h] [\-a] \-v \fIvolumeid\fR [\-f \fIfilename\&.xml\fR] [\-d \fIworkdir\fR] \fIfirewall_object_name\fR
+\fBtransfer_secuwall\fR [\-l] [\-h] [\-n] \-v \fIvolumeid\fR [\-f \fIfilename\&.xml\fR] [\-d \fIworkdir\fR] [\-a \fItemplatedir\fR] \fIfirewall_object_name\fR
 .sp
 The switches \-a, \-f and \-d are optional\&. If they are not specified, the appropriate defaults are used\&.
 .sp
@@ -34,7 +34,7 @@ List all portable devices of the system\&.
 Display help text\&.
 .RE
 .PP
-\fB\-a\fR
+\fB\-n\fR
 .RS 4
 Append firewall object name to transfer tarball\&. The default is
 \fBfalse\fR\&.
@@ -61,6 +61,11 @@ values:
 \fB\-d\fR
 .RS 4
 Defines the working directory\&. If not specified, the current directory will be used\&.
+.RE
+.PP
+\fB\-a\fR
+.RS 4
+Append files from given template directory to transfer tarball\&.
 .RE
 .PP
 \fIfirewall_object_name\fR

@@ -9,7 +9,7 @@ transfer_secuwall - secunet wall configuration export utility
 
 SYNOPSIS
 --------
-*transfer_secuwall* [-l] [-h] [-a] -v 'volumeid' [-f 'filename.xml'] [-d 'workdir'] 'firewall_object_name'
+*transfer_secuwall* [-l] [-h] [-n] -v 'volumeid' [-f 'filename.xml'] [-d 'workdir'] [-a 'templatedir'] 'firewall_object_name'
 
 The switches -a, -f and -d are optional. If they are not specified, the
 appropriate defaults are used.
@@ -27,24 +27,27 @@ which are suitable for config transfer.
 OPTIONS
 -------
 *-l*::
-     List all portable devices of the system.
+    List all portable devices of the system.
 
 *-h*::
-     Display help text.
+    Display help text.
 
-*-a*::
-     Append firewall object name to transfer tarball. The default is *false*.
+*-n*::
+    Append firewall object name to transfer tarball. The default is *false*.
 
 *-v*::
-     Transfer partition. Specifies the destination partition for firewall configuration export (e.g. /dev/sdc1).
+    Transfer partition. Specifies the destination partition for firewall configuration export (e.g. /dev/sdc1).
 
 *-f*::
-     Firewall Builder XML file with object definition of firewall to export config.
-	 If not specified, the filename will be constructed from the 'workdir' and 'firewall_object_name' values:
-	 'workdir' \+ 'fwobjectname' \+ .fwb
+    Firewall Builder XML file with object definition of firewall to export config.
+    If not specified, the filename will be constructed from the 'workdir' and 'firewall_object_name' values:
+    'workdir' \+ 'fwobjectname' \+ .fwb
 
 *-d*::
-     Defines the working directory. If not specified, the current directory will be used.
+    Defines the working directory. If not specified, the current directory will be used.
+
+*-a*::
+    Append files from given template directory to transfer tarball.
 
 'firewall_object_name'::
      Firewall object name.
