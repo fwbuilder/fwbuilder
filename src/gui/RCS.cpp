@@ -273,6 +273,7 @@ RCS::RCS(const QString &file)
         co_file_name      = CO_FILE_NAME       ;
 #endif
     }
+
     QFileInfo fi(file);
     if (fi.exists()) filename = fi.canonicalFilePath();
     else filename = file;
@@ -395,6 +396,7 @@ RCS::RCS(const QString &file)
 
 RCS::~RCS()
 {
+    delete ciproc;
     delete proc;
 }
 

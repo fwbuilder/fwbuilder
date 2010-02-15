@@ -308,6 +308,17 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
 FWWindow::~FWWindow()
 {
+
+
+    QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
+        QMdiArea::StackingOrder);
+    foreach (QMdiSubWindow* sw, subwindows)
+    {
+        //ProjectPanel *pp = dynamic_cast<ProjectPanel*>(sw->widget());
+        sw->close();
+        delete sw;
+    }
+
     delete m_mainWindow;
 }
 

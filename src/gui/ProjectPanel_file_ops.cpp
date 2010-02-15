@@ -943,6 +943,8 @@ void ProjectPanel::loadStandardObjects()
     {
 // need to drop read-only flag on the database before I load new objects
 
+        if (objdb) delete objdb;
+
         objdb = new FWObjectDatabase();
         objdb->setReadOnly( false );
 
@@ -1004,6 +1006,10 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
     {
         /* load the data file */
         systemFile = false;
+
+        clearObjects();
+
+        if (objdb) delete objdb;
 
         objdb = new FWObjectDatabase();
 

@@ -1,3 +1,7 @@
+2010-02-14  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* ProjectPanel.cpp (ProjectPanel): refs #1229 memory leak problems.
+
 2010-02-14  yalovoy <yalovoy@gmail.com>
 	* fixes #1228: removing consecutive rules from a group in a ruleset
 	its currently only possible to remove either the single top rule 
