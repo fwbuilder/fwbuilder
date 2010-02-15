@@ -187,7 +187,8 @@ int main( int argc, char *argv[] )
     }
 
     //respath = RES_DIR;
-    new Resources(full_res_path);
+    Resources res(full_res_path);
+
     if (fwbdebug) qDebug("done");
 
     vector<std::string> platforms = Resources::getListOfPlatforms();
@@ -210,7 +211,7 @@ int main( int argc, char *argv[] )
 
     if (fwbdebug) qDebug("creating widgets ...");
 
-    new FWObjectDatabase();
+    //new FWObjectDatabase();
     new FWObjectClipboard();
 
     if (fwbdebug) qDebug("loading translation for the current locale ...");
@@ -252,6 +253,8 @@ int main( int argc, char *argv[] )
 
     st->save();
     delete st;
+
+    res.clear();
 
     XMLTools::close();
 }

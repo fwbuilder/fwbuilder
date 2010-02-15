@@ -210,6 +210,8 @@ void ProjectPanel::loadOpenedRuleSet()
     if (rcs==NULL) return;
     QString filename = rcs->getFileName();
 
+    if (m_panel->om->getCurrentLib() == NULL) return;
+
     int id = st->getVisibleRuleSetId(
         filename, m_panel->om->getCurrentLib()->getName().c_str());
 
