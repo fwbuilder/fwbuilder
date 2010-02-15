@@ -241,7 +241,7 @@ void secuwallAdvancedDialog::accept()
 
     if (!cmd->getOldState()->cmp(new_state, true))
         project->undoStack->push(cmd.release());
-    
+
     QDialog::accept();
 }
 
