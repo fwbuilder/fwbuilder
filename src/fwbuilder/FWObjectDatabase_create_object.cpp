@@ -294,13 +294,12 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
     string typen;
     int id = -1;
 
-    n=FROMXMLCAST(data->name);
-    if(!n)
-        return NULL;
+    n = FROMXMLCAST(data->name);
+    if (!n) return NULL;
     typen = n;
 
-    n=FROMXMLCAST(xmlGetProp(data,TOXMLCAST("id")));
-    if(n)
+    n = FROMXMLCAST(xmlGetProp(data, TOXMLCAST("id")));
+    if (n)
     {
         id = registerStringId(n);
         FREEXMLBUFF(n);

@@ -256,8 +256,10 @@ int InetAddr::getLength() const
 
 string InetAddr::toString() const
 {
-    if (address_family==AF_INET) return std::string(strdup(inet_ntoa(ipv4)));
-    else
+    if (address_family==AF_INET)
+    {
+        return std::string(inet_ntoa(ipv4));
+    } else
     {
         char ntop_buf[sizeof
                       "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];

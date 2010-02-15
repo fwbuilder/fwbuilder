@@ -69,7 +69,10 @@ public:
 
     Resources() throw(libfwbuilder::FWException);
     Resources(const std::string &resF) throw(libfwbuilder::FWException);
-
+    ~Resources();
+    
+    void clear();
+    
     void loadSystemResources() throw(libfwbuilder::FWException);
 
     xmlNodePtr getXmlNode(const std::string& path);

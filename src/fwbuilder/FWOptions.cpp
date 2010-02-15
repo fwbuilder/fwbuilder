@@ -68,9 +68,9 @@ void FWOptions::fromXML(xmlNodePtr root) throw(FWException)
             if (cont)
             {
                 setStr(n, cont );
-                FREEXMLBUFF(n);
                 FREEXMLBUFF(cont);
             }
+            FREEXMLBUFF(n);
         }
     }
 }

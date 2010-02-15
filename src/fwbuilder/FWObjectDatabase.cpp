@@ -33,6 +33,7 @@
 #include <cstring>
 #include <signal.h>
 
+#include <fwbuilder/memcheck.h>
 
 #include <fwbuilder/libfwbuilder-config.h>
 
@@ -246,9 +247,18 @@ void FWObjectDatabase::load(const string &f,
                             XMLTools::UpgradePredicate *upgrade,
                             const std::string &template_dir) throw(FWException)
 {
-    if(f=="") 
-        return;
-    
+    if(f=="") return;
+
+    if (RUNNING_ON_VALGRIND)
+    {
+        cerr << endl;
+        cerr << "########################################################################" << endl;
+        VALGRIND_DO_LEAK_CHECK;
+        cerr << "########################################################################" << endl;
+        cerr << "FWObjectDatabase::load  start" << endl;
+        cerr << endl;
+    }
+
     xmlDocPtr doc = XMLTools::loadFile(f, FWObjectDatabase::TYPENAME,
                                        FWObjectDatabase::DTD_FILE_NAME,
                                        upgrade, template_dir);
@@ -259,7 +269,6 @@ void FWObjectDatabase::load(const string &f,
                                       FWObjectDatabase::TYPENAME)!=SAME)
     {
 	xmlFreeDoc(doc);
-        //xmlCleanupParser();
         throw FWException("Data file has invalid structure: "+f);
     }
     
@@ -281,6 +290,16 @@ void FWObjectDatabase::load(const string &f,
     }
 
     xmlFreeDoc(doc);
+
+    if (RUNNING_ON_VALGRIND)
+    {
+        cerr << endl;
+        cerr << "FWObjectDatabase::load  end" << endl;
+        cerr << "########################################################################" << endl;
+        VALGRIND_DO_LEAK_CHECK;
+        cerr << "########################################################################" << endl;
+        cerr << endl;
+    }
 
     init = false;
 }
@@ -345,15 +364,15 @@ void FWObjectDatabase::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
     
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastModified")));
-    if(n!=NULL)
+    const char *n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("lastModified")));
+    if (n!=NULL)
     {        
-        int i=0;
+        int i = 0;
         istringstream str(n);
         str >> i;
-        //sscanf(n,"%d",&i);
-        lastModified=i;
+        lastModified = i;
         FREEXMLBUFF(n);
+        //xmlFree((void*)n);
     }
 }
 

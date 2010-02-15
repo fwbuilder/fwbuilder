@@ -71,16 +71,38 @@ Resources::Resources() throw(FWException)
 
 Resources::Resources(const string &_resF) throw(FWException)
 {
-    doc=NULL;
-    resfile=_resF;
+    doc = NULL;
+    resfile = _resF;
 
     if (global_res==NULL) 
     {
-        global_res=this;
+        global_res = this;
         loadRes(_resF);
         loadSystemResources();
     } else
         loadRes(_resF);
+}
+
+Resources::~Resources()
+{
+    if (doc) xmlFreeDoc(doc);
+}
+
+void Resources::clear()
+{
+    for (map<string,Resources*>::iterator it=platform_res.begin(); 
+         it!=platform_res.end(); ++it)
+    {
+        delete it->second;
+    }
+    platform_res.clear();
+
+    for (map<string,Resources*>::iterator it=os_res.begin(); 
+         it!=os_res.end(); ++it)
+    {
+        delete it->second;
+    }
+    os_res.clear();
 }
 
 string Resources::getXmlNodeContent(xmlNodePtr node)
@@ -116,9 +138,9 @@ void Resources::loadRes(const std::string &rfile ) throw(FWException)
 //    doc = xmlParseFile(rfile.c_str()); 
 //    doc = XMLTools::loadAndParseFile(rfile);
 
-    if(!doc)   throw FWException("Error parsing "+rfile);
+    if (!doc) throw FWException("Error parsing "+rfile);
 
-    root=xmlDocGetRootElement(doc);
+    root = xmlDocGetRootElement(doc);
    
     if(!root || !root->name || strcmp(FROMXMLCAST(root->name), "FWBuilderResources")!=0) 
     {
@@ -140,27 +162,27 @@ void Resources::loadSystemResources() throw(FWException)
     string::size_type n=resfile.find_last_of("/\\");
     string resDir = resfile.substr(0,n);
 
-	list<string> pllist = getDirList( resDir + FS_SEPARATOR +PLATFORM_RES_DIR_NAME,
-									"xml" );
+    list<string> pllist = getDirList( resDir + FS_SEPARATOR +PLATFORM_RES_DIR_NAME,
+                                      "xml" );
 
-	for (list<string>::iterator lsi1=pllist.begin(); lsi1!=pllist.end(); lsi1++)
-	{
-		string::size_type n=lsi1->find_last_of("/\\")+1;
-		string platform=lsi1->substr(n, lsi1->rfind(".xml")-n);
-	    Resources *tr=new Resources(*lsi1);	
+    for (list<string>::iterator lsi1=pllist.begin(); lsi1!=pllist.end(); lsi1++)
+    {
+        string::size_type n=lsi1->find_last_of("/\\")+1;
+        string platform=lsi1->substr(n, lsi1->rfind(".xml")-n);
+        Resources *tr=new Resources(*lsi1);	
         platform_res[platform]=tr;
-	}
+    }
 
 
-	list<string> oslist = getDirList( resDir + FS_SEPARATOR +OS_RES_DIR_NAME,
-									"xml" );
-	for (list<string>::iterator lsi2=oslist.begin(); lsi2!=oslist.end(); lsi2++)
-	{
-		string::size_type n=lsi2->find_last_of("/\\")+1;
-		string os=lsi2->substr(n, lsi2->rfind(".xml")-n);
-	    Resources *tr=new Resources(*lsi2);	
+    list<string> oslist = getDirList( resDir + FS_SEPARATOR +OS_RES_DIR_NAME,
+                                      "xml" );
+    for (list<string>::iterator lsi2=oslist.begin(); lsi2!=oslist.end(); lsi2++)
+    {
+        string::size_type n=lsi2->find_last_of("/\\")+1;
+        string os=lsi2->substr(n, lsi2->rfind(".xml")-n);
+        Resources *tr=new Resources(*lsi2);	
         os_res[os]=tr;
-	}
+    }
 
 #if 0
     cerr << "Loaded resources for the following modules :\n";

@@ -102,17 +102,17 @@ void CustomService::fromXML(xmlNodePtr root) throw(FWException)
 
     for (xmlNodePtr cur=root->xmlChildrenNode; cur; cur=cur->next)
     {
-        if(cur && !xmlIsBlankNode(cur))
+        if (cur && !xmlIsBlankNode(cur))
         {
-    	    n=FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("platform")));
-	        assert(n!=NULL);
-	        cont=FROMXMLCAST( xmlNodeGetContent(cur) );
-	        if (cont)
+    	    n = FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("platform")));
+            assert(n!=NULL);
+            cont = FROMXMLCAST( xmlNodeGetContent(cur) );
+            if (cont)
             {
-		        setCodeForPlatform(n, cont );
-                FREEXMLBUFF(n);
+                setCodeForPlatform(n, cont );
                 FREEXMLBUFF(cont);
             }
+            FREEXMLBUFF(n);
         }
     }
 }

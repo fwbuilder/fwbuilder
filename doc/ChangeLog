@@ -1,3 +1,8 @@
+2010-02-15  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* FWObjectDatabase.cpp (FWObjectDatabase::load): working on memory
+	leaks with the help of valgrind. Refs fwbuilder:ticket:1229
+
 2010-02-14  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* Management.cpp (SNMPManagement::fromXML): refs fwbuilder:ticket:1229
