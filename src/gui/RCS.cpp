@@ -925,7 +925,10 @@ QString RCS::rlog() throw(libfwbuilder::FWException)
     proc->waitForStarted();
 
     if (proc->state() != QProcess::Running)
+    {
+        proc->close();
         throw(FWException("Fatal error running rlog "));
+    }
 
     if (fwbdebug) qDebug("Running rlog");
 

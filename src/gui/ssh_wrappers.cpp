@@ -289,7 +289,7 @@ void ssh_wrapper( int argc, char *argv[] )
 {
     bool ssh_wrapper = false;
     bool scp_wrapper = false;
-    const char *arg[64];
+    const char *arg[128];
     int i, j;
 
     i=1;
@@ -303,7 +303,7 @@ void ssh_wrapper( int argc, char *argv[] )
             else
                 if (strncmp(argv[i], "-d", 2)==0) { fwbdebug++; continue; }
                 else
-                    arg[j] = strdup(argv[i]);
+                    arg[j] = strndup(argv[i], 127);
         j++;
     }
     arg[j] = NULL;

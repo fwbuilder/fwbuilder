@@ -95,6 +95,12 @@ StartTipDialog::StartTipDialog()
     first_run = st->getBool("UI/FirstRun");
 }
 
+StartTipDialog::~StartTipDialog()
+{
+    delete m_dialog;
+    delete http_getter;
+};
+
 /*
  * Returns file name for a random tip
  */

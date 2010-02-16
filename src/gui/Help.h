@@ -49,7 +49,7 @@ public:
     Ui::HelpView_q *m_dialog;
     
     Help(QWidget *parent, const QString &title, bool load_links_in_browser=true);
-    virtual ~Help() {};
+    virtual ~Help();
 
     void setSource(const QUrl &url) { m_dialog->textview->setSource(url); }
     QString findHelpFile(const QString &file_base_name);

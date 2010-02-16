@@ -66,6 +66,11 @@ Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
     flags = windowFlags() | Qt::Dialog;
 };
 
+Help::~Help()
+{
+    delete m_dialog;
+}
+
 Help* Help::getHelpWindow(QWidget*)
 {
     if (help_window == NULL)

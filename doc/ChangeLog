@@ -1,3 +1,8 @@
+2010-02-15  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* StartTipDialog.cpp (StartTipDialog): working on memory leaks
+	with the help of valgrind. Refs #1229
+
 2010-02-15  yalovoy <yalovoy@gmail.com>
 
 	* refs #1202: Main menu "Rules" does not match rule context menu

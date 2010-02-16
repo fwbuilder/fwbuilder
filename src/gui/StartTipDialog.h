@@ -40,7 +40,7 @@
 
 class StartTipDialog : public QDialog
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     HttpGet *http_getter;
     QStringList tips;
@@ -57,7 +57,7 @@ public:
 
     StartTipDialog();
     
-    virtual ~StartTipDialog() {};
+    virtual ~StartTipDialog();
 
     void run();
 
