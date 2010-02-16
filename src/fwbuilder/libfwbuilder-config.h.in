@@ -67,3 +67,6 @@
 #  define FS_SEPARATOR "\\"
 #endif
 
+#define FREEXMLBUFF(x) xmlFree((void*)(x))
+
+

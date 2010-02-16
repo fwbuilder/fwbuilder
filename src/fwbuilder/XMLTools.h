@@ -54,27 +54,6 @@ namespace libfwbuilder
 #define STRTOXMLCAST(x) ((xmlChar *)x.c_str())
 #define TOXMLCAST(x) ((xmlChar *)x)
 
-
-/**
- * this macro is used to free data chunks allocated by libxml2.
- * Funtion xmlGetProp and the likes return data in the blocks of memory
- * that they allocate internally using malloc. To prevent memory leaks
- * these blocks need to be freed. Memory must be freed using xmlFree function.
- *
- * The problem though is that in the win32 version of libxml that I use,
- * declarations of all memory handling functions are commented out. This is so
- * as of Dec2003, ver. 2.6.3, see in include/libxml/xmlmemory.h
- *
-#ifdef xmlFree
-#  define FREEXMLBUFF(x) (xmlFree((void*)(x)))
-#else
-#  define FREEXMLBUFF(x)   ;
-#endif
- */
-
-#define FREEXMLBUFF(x) xmlFree((void*)(x))
-
-
 class XMLTools
 {
     public:
