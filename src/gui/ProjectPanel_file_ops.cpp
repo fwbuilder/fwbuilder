@@ -943,8 +943,6 @@ void ProjectPanel::loadStandardObjects()
     {
 // need to drop read-only flag on the database before I load new objects
 
-        qDebug() << "ProjectPanel::loadStandardObjects()  objdb=" << objdb;
-
         if (objdb) delete objdb;
 
         objdb = new FWObjectDatabase();
@@ -1011,8 +1009,6 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
 
         clearObjects();
 
-        qDebug() << "ProjectPanel::loadFromRCS()  objdb=" << objdb;
-
         if (objdb) delete objdb;
 
         objdb = new FWObjectDatabase();
@@ -1029,8 +1025,6 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
 // objects from a data file are in database ndb
 
         mw->showStatusBarMessage(tr("Reading and parsing data file..."));
-
-        qDebug() << "ProjectPanel::loadFromRCS()  create ndb";
 
         FWObjectDatabase *ndb = new FWObjectDatabase();
         ndb->load(rcs->getFileName().toLocal8Bit().constData(),

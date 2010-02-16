@@ -1,3 +1,7 @@
+2010-02-15  vadim  <vadim@vk.crocodile.org>
+
+	* Added template for the OpenWRT firewall. Fixes #1237
+
 2010-02-15  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* working on memory leaks with the help of valgrind. Refs #1229
@@ -7,17 +11,17 @@
 	StartTipDialog.cpp
 	StartTipDialog.h
 	ssh_wrappers.cpp
-	
+
 2010-02-15  yalovoy <yalovoy@gmail.com>
 
 	* refs #1202: Main menu "Rules" does not match rule context menu
-	Items in the main menu Rules should get disabled and enabled just 
+	Items in the main menu Rules should get disabled and enabled just
 	like items in the context menu do.
 	Affected files:
 	FWWindow.cpp
 	RuleSetView.cpp
 	RuleSetView.h
- 
+
 
 2010-02-14  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
@@ -25,12 +29,12 @@
 
 2010-02-14  yalovoy <yalovoy@gmail.com>
 	* fixes #1228: removing consecutive rules from a group in a ruleset
-	its currently only possible to remove either the single top rule 
+	its currently only possible to remove either the single top rule
 	or single last rule from a group
-	it would be useful to be able to select say the first several rules 
-	or last several rules and remove them all at once or if you select 
-	all rules in the group it would then just remove the group. 
-	Affected files:	
+	it would be useful to be able to select say the first several rules
+	or last several rules and remove them all at once or if you select
+	all rules in the group it would then just remove the group.
+	Affected files:
 	FWWindow.cpp
 	FWWindow.h: #1228
 	RuleSetView.cpp: #1228
