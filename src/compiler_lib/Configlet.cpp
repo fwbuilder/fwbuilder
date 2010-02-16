@@ -177,10 +177,18 @@ QString Configlet::expand()
     } else
         all_code = code.join("\n");
 
+    char *configlet_test = getenv("CONFIGLET_DEBUG");
+
     int counter = 0;
     while (all_code.contains(var_re) && counter < 1000)
     {
         QString var = var_re.cap(1);
+
+        if (configlet_test)
+        {
+            qDebug() << QString("Configlet %1  var '%2'").arg(file_path).arg(var);
+        }
+
         if (vars.count(var) > 0)
         {
             all_code.replace(QString("{{$%1}}").arg(var), vars[var]);
@@ -188,6 +196,9 @@ QString Configlet::expand()
         {
             // template has a variable that has not been defined
             // remove '$' from the macro but leave it in place for debugging
+            qDebug() << QObject::tr("Found undefined variable '%1' in configlet %2")
+                .arg(var).arg(file_path);
+
             all_code.replace(QString("{{$%1}}").arg(var), QString("{{%1}}").arg(var));
 
         }
