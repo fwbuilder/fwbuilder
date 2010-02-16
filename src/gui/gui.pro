@@ -3,7 +3,7 @@
 TEMPLATE = app
 LANGUAGE = C++
 QT += network testlib
-linux:CONFIG += qtestlib
+unix:CONFIG += qtestlib
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)
