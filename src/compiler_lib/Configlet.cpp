@@ -177,7 +177,8 @@ QString Configlet::expand()
     } else
         all_code = code.join("\n");
 
-    while (all_code.contains(var_re))
+    int counter = 0;
+    while (all_code.contains(var_re) && counter < 1000)
     {
         QString var = var_re.cap(1);
         if (vars.count(var) > 0)
@@ -190,9 +191,21 @@ QString Configlet::expand()
             all_code.replace(QString("{{$%1}}").arg(var), QString("{{%1}}").arg(var));
 
         }
+        counter++;
     }
 
-    while (processIf(all_code, 0));
+    if (counter >= 1000)
+        qDebug() << QObject::tr("Configlet expansion stopped by "
+                                "infinite loop protector. "
+                                "Check configlet syntax. %1").arg(file_path);
+
+    counter = 0;
+    while (processIf(all_code, 0) && counter < 1000) counter++;
+
+    if (counter >= 1000)
+        qDebug() << QObject::tr("Configlet expansion stopped by "
+                                "infinite loop protector. "
+                                "Check configlet syntax. %1").arg(file_path);
 
     if (collapse_empty_strings)
     {

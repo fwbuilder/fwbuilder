@@ -1,3 +1,8 @@
+2010-02-16  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/compiler_lib/Configlet.cpp (Configlet::expand): added
+	basic protection against infinite loops in configlet expansion.
+
 2010-02-15  vadim  <vadim@vk.crocodile.org>
 
 	* Added template for the OpenWRT firewall. Fixes #1237
