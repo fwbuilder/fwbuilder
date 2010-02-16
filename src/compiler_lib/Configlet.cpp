@@ -177,18 +177,15 @@ QString Configlet::expand()
     } else
         all_code = code.join("\n");
 
-    char *configlet_test = getenv("CONFIGLET_DEBUG");
+    QString err = QObject::tr("Configlet expansion stopped by "
+                              "infinite loop protector. "
+                              "Check configlet syntax. %1").arg(file_path);
 
     int counter = 0;
     int pos = 0;
     while ((pos = var_re.indexIn(all_code, pos)) != -1 && counter < 1000)
     {
         QString var = var_re.cap(1);
-
-        if (configlet_test)
-        {
-            qDebug() << QString("Configlet %1  var '%2'").arg(file_path).arg(var);
-        }
 
         if (vars.count(var) > 0)
         {
@@ -197,27 +194,17 @@ QString Configlet::expand()
         {
             // template has a variable that has not been defined
             // remove '$' from the macro but leave it in place for debugging
-            qDebug() << QObject::tr("Found undefined variable '%1' in configlet %2")
-                .arg(var).arg(file_path);
-
             all_code.replace(QString("{{$%1}}").arg(var), QString("{{%1}}").arg(var));
-
         }
         counter++;
     }
 
-    if (counter >= 1000)
-        qDebug() << QObject::tr("Configlet expansion stopped by "
-                                "infinite loop protector. "
-                                "Check configlet syntax. %1").arg(file_path);
+    if (counter >= 1000) qDebug() << err;
 
     counter = 0;
     while (processIf(all_code, 0) && counter < 1000) counter++;
 
-    if (counter >= 1000)
-        qDebug() << QObject::tr("Configlet expansion stopped by "
-                                "infinite loop protector. "
-                                "Check configlet syntax. %1").arg(file_path);
+    if (counter >= 1000) qDebug() << err;
 
     if (collapse_empty_strings)
     {
