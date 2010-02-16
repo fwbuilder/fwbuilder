@@ -249,6 +249,7 @@ void FWObjectDatabase::load(const string &f,
 {
     if(f=="") return;
 
+#ifndef _WIN32
     if (RUNNING_ON_VALGRIND)
     {
         cerr << endl;
@@ -258,6 +259,7 @@ void FWObjectDatabase::load(const string &f,
         cerr << "FWObjectDatabase::load  start" << endl;
         cerr << endl;
     }
+#endif
 
     xmlDocPtr doc = XMLTools::loadFile(f, FWObjectDatabase::TYPENAME,
                                        FWObjectDatabase::DTD_FILE_NAME,
@@ -291,6 +293,7 @@ void FWObjectDatabase::load(const string &f,
 
     xmlFreeDoc(doc);
 
+#ifndef _WIN32
     if (RUNNING_ON_VALGRIND)
     {
         cerr << endl;
@@ -300,6 +303,7 @@ void FWObjectDatabase::load(const string &f,
         cerr << "########################################################################" << endl;
         cerr << endl;
     }
+#endif
 
     init = false;
 }
