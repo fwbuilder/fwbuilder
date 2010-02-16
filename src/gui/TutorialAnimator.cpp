@@ -139,7 +139,7 @@ void TutorialAnimator::moveMouse(QStringList input)
     // is first two arguments are ints, click mouse at this coordintates
     bool isInt1 = false, isInt2 = false;
     int x, y;
-    if (input.length() == 2)
+    if (input.size() == 2)
     {
         x = input.at(0).toInt(&isInt1, 10);
         y = input.at(1).toInt(&isInt2, 10);
