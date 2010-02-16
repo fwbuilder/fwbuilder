@@ -180,7 +180,8 @@ QString Configlet::expand()
     char *configlet_test = getenv("CONFIGLET_DEBUG");
 
     int counter = 0;
-    while (all_code.contains(var_re) && counter < 1000)
+    int pos = 0;
+    while ((pos = var_re.indexIn(all_code, pos)) != -1 && counter < 1000)
     {
         QString var = var_re.cap(1);
 
