@@ -116,33 +116,6 @@ string NATCompiler_pf::debugPrintRule(libfwbuilder::Rule *r)
         " (type="+rule->getRuleTypeAsString()+")";
 }
 
-bool NATCompiler_pf::assignInterfaceToNATRule(Rule *rule, Address *addr)
-{
-    if ( (Interface::isA(addr) || IPv4::isA(addr)) && addr->isChildOf(fw))
-    {
-        FWObject *p = addr;
-        while ( ! Interface::isA(p) ) p=p->getParent();
-        Interface *intf = Interface::cast(p);
-
-        // TODO: use  replaceFailoverInterfaceInRE to replace cluster interfaces
-        if (intf->getOptionsObject()->getBool("cluster_interface"))
-        {
-            string base_interface_id = intf->getOptionsObject()->getStr("base_interface_id");
-            if (!base_interface_id.empty())
-            {
-                FWObject *base_interface = dbcopy->findInIndex(
-                    FWObjectDatabase::getIntId(base_interface_id));
-                if (base_interface) intf = Interface::cast(base_interface);
-            }
-        }
-
-        rule->setInterfaceId(intf->getId());
-        rule->setInterfaceStr(intf->getName());
-        return true;
-    }
-    return false;
-}
-
 bool NATCompiler_pf::NATRuleType::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -691,30 +664,36 @@ bool NATCompiler_pf::splitForTSrc::processNext()
 }
 
 
+bool NATCompiler_pf::assignInterfaceToNATRule(Rule *rule, Address *addr)
+{
+    if (Interface::isA(addr) || IPv4::isA(addr))
+    {
+        FWObject *p = addr;
+        while ( p && ! Interface::isA(p) ) p = p->getParent();
+        Interface *intf = Interface::cast(p);
+
+        if (intf && intf->isFailoverInterface())
+        {
+            FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+                intf->getFirstByType(FailoverClusterGroup::TYPENAME));
+            if (fg)
+                intf = fg->getInterfaceForMemberFirewall(fw);
+        }
+
+        if (intf && intf->isChildOf(fw))
+        {
+            rule->setInterfaceId(intf->getId());
+            rule->setInterfaceStr(intf->getName());
+            return true;
+        }
+    }
+    return false;
+}
+
 bool NATCompiler_pf::AssignInterface::processNext()
 {
     NATCompiler_pf *pf_comp=dynamic_cast<NATCompiler_pf*>(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
-
-    if (regular_interfaces.empty())
-    {
-        int n=0;
-        list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
-        for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
-        {
-            Interface *iface=Interface::cast(*i);
-            assert(iface);
-
-            if (iface->isLoopback() ||
-                iface->isUnnumbered() ||
-                iface->isBridgePort()) continue;
-
-            if (n) regular_interfaces+=",";
-            regular_interfaces+= iface->getName();
-            n++;
-        }
-        if (n>1) regular_interfaces="{ "+regular_interfaces+" }";
-    }
 
     switch ( rule->getRuleType() )
     {

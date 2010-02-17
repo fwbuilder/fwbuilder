@@ -1,7 +1,11 @@
 2010-02-16  vadim  <vadim@vk.crocodile.org>
 
-	* ../src/compiler_lib/Configlet.cpp (Configlet::expand): added
-	basic protection against infinite loops in configlet expansion.
+	* NATCompiler_pf.cpp (NATCompiler_pf::assignInterfaceToNATRule):
+	fixes #1240 nat rule should get "on interface" when cluster
+	interface is used in TSrc.
+
+	* Configlet.cpp (Configlet::expand): added basic protection
+	against infinite loops in configlet expansion.
 
 2010-02-15  vadim  <vadim@vk.crocodile.org>
 
