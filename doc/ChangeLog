@@ -1,12 +1,18 @@
 2010-02-16  vadim  <vadim@vk.crocodile.org>
 
-	* fixes #1235 "cluster with dynamic interface can not be used in
+	* fixed #1243 "new cluster" operation creates failover groups that
+	recursively refer to the interfaces of the same cluster. This
+	happened when new cluster was created with a copy of rules from
+	one of the firewalls.
+	newClusterDialog_create.cpp
+
+	* fixed #1235 "cluster with dynamic interface can not be used in
 	rules". Fixes this and several other problems with policy and nat
 	rules that use cluster inetrfaces with dynamic addresses.
 	PolicyCompiler_ipt.cpp
 	NATCompiler_ipt.cpp
 
-	* fixes #1240 nat rule should get "on interface" when cluster
+	* fixed #1240 nat rule should get "on interface" when cluster
 	interface is used in TSrc.
 	NATCompiler_pf.cpp
 

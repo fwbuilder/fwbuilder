@@ -51,7 +51,8 @@ class newClusterDialog : public QDialog, public FakeWizard
     QRadioButton *noPolicy;
     QSpacerItem *spacer;
 
-    void copyRuleSets(const std::string &type, libfwbuilder::Firewall *src);
+    void copyRuleSets(const std::string &type, libfwbuilder::Firewall *src,
+                      std::map<int, int> &id_mapping);
     void deleteRuleSets(const std::string &type, libfwbuilder::Firewall *fw);
     void createNewCluster();
 

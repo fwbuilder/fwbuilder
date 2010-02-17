@@ -183,6 +183,7 @@ void newClusterDialog::createNewCluster()
             id_mapping[member_intf->getId()] = oi->getId();
 
             failover_grp->addRef(member_intf);
+
             if (member_fw == master)
             {
                 std::string masteriface_id =
@@ -230,11 +231,11 @@ void newClusterDialog::createNewCluster()
         mw->activeProject()->undoStack->push(cmd);
     }
 
-    copyRuleSets(Policy::TYPENAME, source);
-    copyRuleSets(NAT::TYPENAME, source);
-    copyRuleSets(Routing::TYPENAME, source);
+    copyRuleSets(Policy::TYPENAME, source, id_mapping);
+    copyRuleSets(NAT::TYPENAME, source, id_mapping);
+    copyRuleSets(Routing::TYPENAME, source, id_mapping);
 
-    ncl->getRoot()->fixReferences(ncl, id_mapping);
+    //ncl->getRoot()->fixReferences(ncl, id_mapping);
 
     foreach(fwpair member, member_firewalls)
     {
@@ -252,16 +253,18 @@ void newClusterDialog::deleteRuleSets(const string &type, Firewall *fw)
     fw->add(db->create(type));
 }
 
-void newClusterDialog::copyRuleSets(const string &type, Firewall *source)
+void newClusterDialog::copyRuleSets(const string &type, Firewall *source,
+                                    map<int, int> &id_mapping)
 {
     list<FWObject*> old_ones = ncl->getByType(type);
     foreach(FWObject *old, old_ones)
         ncl->remove(old);
-
+    FWObjectDatabase *db = ncl->getRoot();
     FWObjectTypedChildIterator it = source->findByType(type);
     for (; it != it.end(); ++it)
     {
-        ncl->addCopyOf(*it);
+        FWObject *new_ruleset = ncl->addCopyOf(*it);
+        db->fixReferences(new_ruleset, id_mapping);
     }
 }
 
