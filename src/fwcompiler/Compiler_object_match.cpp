@@ -118,7 +118,7 @@ FWObject* Compiler::findAddressFor(const Address *obj1, const Address *obj2)
 
         if (iface->getId() == obj1->getId() )      return iface;
 
-        if ( iface->isRegular() )
+        if ( iface->isRegular() && obj1->getAddressPtr())
         {
             if (obj1->getAddressPtr()->isV4())
             {

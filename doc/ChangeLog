@@ -1,3 +1,9 @@
+2010-02-16  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::correctForCluster): this method takes an
+	Address object and replaces it with interface of a member firewall
+	if it turns out to be cluster interface. refs fwbuilder:ticket:1235
+
 2010-02-15  vadim  <vadim@vk.crocodile.org>
 
 	* XMLTools.h (libfwbuilder): definition of XMLFREEBUFF moved to

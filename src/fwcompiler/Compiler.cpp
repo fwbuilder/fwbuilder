@@ -51,7 +51,7 @@
 #include "fwbuilder/IPv6.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/MultiAddress.h"
-
+#include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/FWException.h"
@@ -1369,5 +1369,18 @@ string Compiler::printComment(Rule *rule, string &prev_rule_label,
     string err = rule->getStr(".error_msg");
     if (!err.empty()) res << prefix << " " << err << endl;
     return res.str();
+}
+
+Address* Compiler::correctForCluster(Address *addr)
+{
+    Interface *intf = Interface::cast(addr);
+    if (intf && intf->isFailoverInterface())
+    {
+        FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+            intf->getFirstByType(FailoverClusterGroup::TYPENAME));
+        if (fg)
+            return fg->getInterfaceForMemberFirewall(fw);
+    }
+    return addr;
 }
 

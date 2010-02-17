@@ -594,6 +594,8 @@ protected:
                           bool recognize_broadcasts=true,
                           bool recognize_multicasts=true);
 
+        libfwbuilder::Address* correctForCluster(libfwbuilder::Address *adr);
+        
         /**
          * Compares given object with firewall or its parent cluster
          * (if any).  Compares only IDs of these objects. Relies on
