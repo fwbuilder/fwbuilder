@@ -161,7 +161,6 @@ ProjectPanel::ProjectPanel(QWidget *parent):
 
 ProjectPanel::~ProjectPanel()
 {
-    qDebug() << "ProjectPanel::~ProjectPanel()";
     if (rcs) delete rcs;
     if (objdb) delete objdb;
     delete m_panel;
