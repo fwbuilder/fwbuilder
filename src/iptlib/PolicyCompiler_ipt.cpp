@@ -2737,19 +2737,36 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInt
         FWObject *o   = *i1;
         FWObject *obj = o;
         if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
-        Interface  *ifs   =Interface::cast( obj );
+        Interface  *ifs = Interface::cast( obj );
 
-        if (ifs!=NULL && ifs->isDyn() && ! ifs->isChildOf(compiler->fw))        
+        if (ifs != NULL && ifs->isDyn())
         {
-            char errstr[2048];
-            sprintf(errstr,
-                    "Can not build rule using dynamic interface '%s' "
-                    "of the object '%s' because its address in unknown.",
-                    ifs->getName().c_str(), 
-                    ifs->getParent()->getName().c_str());
+            if ( ! ifs->isChildOf(compiler->fw))        
+            {
+                // If this is dynamic failover interface, look at
+                // corresponding member interface. If we can find one,
+                // it is ok. Otherwise it is probably failover
+                // interface of a cluster this firewall is not a
+                // member of.
+                if (ifs->isFailoverInterface())
+                {
+                    FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+                        ifs->getFirstByType(FailoverClusterGroup::TYPENAME));
+                    if (fg &&
+                        fg->getInterfaceForMemberFirewall(compiler->fw)!=NULL)
+                        continue;
+                }
 
-            compiler->abort(rule, errstr);
-            return false;
+                char errstr[2048];
+                sprintf(errstr,
+                        "Can not build rule using dynamic interface '%s' "
+                        "of the object '%s' because its address in unknown.",
+                        ifs->getName().c_str(), 
+                        ifs->getParent()->getName().c_str());
+
+                compiler->abort(rule, errstr);
+                return false;
+            }
         }
     }
     return true;
@@ -2851,7 +2868,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
         return true;
     }
 
-    Address *src = compiler->getFirstSrc(rule);
+    Address *src = compiler->correctForCluster(compiler->getFirstSrc(rule));
     assert(src);
 
 /* Bug 811860: "IPTables Compiler Firewall IP to Input Chain".
@@ -2943,7 +2960,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
         return true;
     }
 
-    Address *dst = compiler->getFirstDst(rule);
+    Address *dst = compiler->correctForCluster(compiler->getFirstDst(rule));
     assert(dst);
 
 /*
@@ -3152,61 +3169,53 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
     } else
     {
 
-      Address *src = compiler->getFirstSrc(rule);
-      if (src==NULL)
-      {
-          compiler->abort(
-              rule, 
-              "finalizeChain: Empty Source rule element in rule");
-          return true;
-      }
+        Address *src = compiler->correctForCluster(compiler->getFirstSrc(rule));
+        Address *dst = compiler->correctForCluster(compiler->getFirstDst(rule));
 
-      Address *dst   =compiler->getFirstDst(rule);
-      if (dst==NULL)
-      {
-          compiler->abort(
-              rule, 
-              "finalizeChain: Empty Destination rule element in rule");
-          return true;
-      }
-
-      bool b,m;
+        bool b,m;
 /* 
  * do not check for broadcasts and multicasts in bridging firewall because
  * they should go to FORWARD chain 
  */
-      b=m= !( compiler->getCachedFwOpt()->getBool("bridging_fw") );
+        b=m= !( compiler->getCachedFwOpt()->getBool("bridging_fw") );
 
-      switch ( rule->getDirection() ) 
-      {
-      case PolicyRule::Inbound:
+        switch ( rule->getDirection() ) 
+        {
+        case PolicyRule::Inbound:
 /* if direction is "Inbound", chain can never be OUTPUT, but could be FORWARD */
-          if (!dst->isAny() && ipt_comp->complexMatch(dst,ipt_comp->fw,b,m))
-              ipt_comp->setChain(rule,"INPUT");
+            if (dst && !dst->isAny() &&
+                ipt_comp->complexMatch(dst, ipt_comp->fw, b, m))
+            {
+                ipt_comp->setChain(rule,"INPUT");
+            }
+            break;
 
-          break;
-
-      case PolicyRule::Outbound:
+        case PolicyRule::Outbound:
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
-          if (!src->isAny() && ipt_comp->complexMatch(src,ipt_comp->fw,b,m))
-              ipt_comp->setChain(rule,"OUTPUT");
+            if (src && !src->isAny() &&
+                ipt_comp->complexMatch(src, ipt_comp->fw, b, m))
+            {
+                ipt_comp->setChain(rule,"OUTPUT");
+            }
+            break;
 
-          break;
-
-      default:
+        default:
 
 /* direction == Both */
-          if (!dst->isAny() && ipt_comp->complexMatch(dst,ipt_comp->fw,b,m)) 
-          {
-              ipt_comp->setChain(rule,"INPUT");
-              break;
-          }
-          if (!src->isAny() && ipt_comp->complexMatch(src,ipt_comp->fw,b,m)) 
-          {
-              ipt_comp->setChain(rule,"OUTPUT");
-              break;
-          }
-      }
+            if (dst && !dst->isAny() &&
+                ipt_comp->complexMatch(dst, ipt_comp->fw, b, m))
+            {
+                ipt_comp->setChain(rule,"INPUT");
+                break;
+            }
+
+            if (src && !src->isAny() &&
+                ipt_comp->complexMatch(src, ipt_comp->fw, b, m))
+            {
+                ipt_comp->setChain(rule,"OUTPUT");
+                break;
+            }
+        }
     }
 
 /*

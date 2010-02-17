@@ -663,7 +663,7 @@ protected:
 	 * been decided in decideOnChainIfFW
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(finalizeChain);
-
+        
 	/**
 	 * decides on "jump to" chain
 	 */

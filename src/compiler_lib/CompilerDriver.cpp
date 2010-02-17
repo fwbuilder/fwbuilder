@@ -884,9 +884,13 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
 
     // For VRRP references the hierarchy is as follows:
     // Cluster->Interface->FailoverClusterGroup->ObjectRef
-    
-    FWObjectTypedChildIterator cl_iface = cluster->findByType(Interface::TYPENAME);
-    for (; cl_iface != cl_iface.end(); ++cl_iface)
+
+    // get a list of pointers to all cluster interfaces. Can't use findByType()
+    // and iterator because we'll be adding interfaces in the middle of the loop
+    list<FWObject*> cluster_interfaces = cluster->getByType(Interface::TYPENAME);
+
+    list<FWObject*>::iterator cl_iface = cluster_interfaces.begin();
+    for (; cl_iface != cluster_interfaces.end(); ++cl_iface)
     {
         Interface *cluster_interface = Interface::cast(*cl_iface);
         FailoverClusterGroup *failover_group =
@@ -894,31 +898,25 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
                 cluster_interface->getFirstByType(FailoverClusterGroup::TYPENAME));
         if (failover_group)
         {
-            for (FWObjectTypedChildIterator it =
-                     failover_group->findByType(FWObjectReference::TYPENAME);
-                 it != it.end(); ++it)
-            {
-                Interface *iface = Interface::cast(FWObjectReference::getObject(*it));
-                assert(iface);
+            Interface *member_iface =
+                failover_group->getInterfaceForMemberFirewall(fw);
+            if (member_iface == NULL) continue;
 
-                if (iface->isChildOf(fw))
-                {
-                    assert(fw->getOptionsObject() != NULL);
+            assert(fw->getOptionsObject() != NULL);
 
-                    iface->getOptionsObject()->setStr(
-                        "failover_group_id",
-                        FWObjectDatabase::getStringId(failover_group->getId()));
+            member_iface->getOptionsObject()->setStr(
+                "failover_group_id",
+                FWObjectDatabase::getStringId(failover_group->getId()));
 
-                    // per #971: cluster interface should inherit attributes
-                    // of the member interfaces: regular / dynamic / unnimbered
-                    cluster_interface->setDyn(iface->isDyn());
-                    cluster_interface->setUnnumbered(iface->isUnnumbered());
-                    cluster_interface->setUnprotected(iface->isUnprotected());
-                    cluster_interface->setSecurityLevel(iface->getSecurityLevel());
+            // per #971: cluster interface should inherit attributes
+            // of the member interfaces: regular / dynamic / unnimbered
+            cluster_interface->setDyn(member_iface->isDyn());
+            cluster_interface->setUnnumbered(member_iface->isUnnumbered());
+            cluster_interface->setUnprotected(member_iface->isUnprotected());
+            cluster_interface->setSecurityLevel(member_iface->getSecurityLevel());
 
-                    copyFailoverInterface(cluster, fw, failover_group, iface);
-                }
-            }
+            copyFailoverInterface(cluster, fw, failover_group, member_iface);
+
         } else
         {
             // cluster interface without failover group

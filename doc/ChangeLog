@@ -1,8 +1,14 @@
 2010-02-16  vadim  <vadim@vk.crocodile.org>
 
-	* NATCompiler_pf.cpp (NATCompiler_pf::assignInterfaceToNATRule):
-	fixes #1240 nat rule should get "on interface" when cluster
+	* fixes #1235 "cluster with dynamic interface can not be used in
+	rules". Fixes this and several other problems with policy and nat
+	rules that use cluster inetrfaces with dynamic addresses.
+	PolicyCompiler_ipt.cpp
+	NATCompiler_ipt.cpp
+
+	* fixes #1240 nat rule should get "on interface" when cluster
 	interface is used in TSrc.
+	NATCompiler_pf.cpp
 
 	* Configlet.cpp (Configlet::expand): added basic protection
 	against infinite loops in configlet expansion.

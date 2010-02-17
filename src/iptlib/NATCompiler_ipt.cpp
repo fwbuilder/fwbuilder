@@ -204,7 +204,7 @@ int NATCompiler_ipt::prolog()
 
     if ( n>0 ) 
     {
-	list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
+	list<FWObject*> l2=fw->getByTypeDeep(Interface::TYPENAME);
 	for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
         {
 	    Interface *iface=dynamic_cast<Interface*>(*i);
@@ -885,8 +885,8 @@ bool NATCompiler_ipt::splitRuleIfRuleElementIsDynamicInterface::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
-    RuleElement    *re=RuleElement::cast(rule->getFirstByType(re_type));
-    int nre=re->size();
+    RuleElement *re =RuleElement::cast(rule->getFirstByType(re_type));
+    int nre = re->size();
 
     vector<FWObject*> cl;
 
@@ -911,7 +911,9 @@ bool NATCompiler_ipt::splitRuleIfRuleElementIsDynamicInterface::processNext()
 	    tmp_queue.push_back(new_rule);
         }
     }
-    if (!cl.empty()) {
+
+    if (!cl.empty())
+    {
         for (vector<FWObject*>::iterator i1=cl.begin(); i1!=cl.end(); ++i1)  
             re->remove( (*i1) );
     }
@@ -1144,28 +1146,6 @@ bool NATCompiler_ipt::ReplaceFirewallObjectsTSrc::processNext()
     return true;
 }
 
-bool NATCompiler_ipt::dynamicInterfaceInODst::processNext()
-{
-    NATRule *rule=getNext(); if (rule==NULL) return false;
-
-    tmp_queue.push_back(rule);
-
-    RuleElementODst  *odstrel=rule->getODst();  assert(odstrel);
-    Address          *odst   =compiler->getFirstODst(rule);
-    if ( ! odstrel->isAny() )
-    {
-        Interface        *iface  =Interface::cast(odst);
-        if (iface!=NULL && iface->isDyn())
-        {
-            ;
-//            iface->setBool("use_var_address",true);
-//            odstrel->clearChildren();
-//            odstrel->setAnyElement();
-        }
-    }
-    return true;
-}
-
 bool NATCompiler_ipt::splitMultiSrcAndDst::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -1237,6 +1217,28 @@ bool NATCompiler_ipt::splitMultiSrcAndDst::processNext()
     return true;
 }
 
+bool NATCompiler_ipt::dynamicInterfaceInODst::processNext()
+{
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+
+    tmp_queue.push_back(rule);
+
+    RuleElementODst  *odstrel=rule->getODst();  assert(odstrel);
+    Address          *odst = compiler->getFirstODst(rule);
+    if ( ! odstrel->isAny() )
+    {
+        Interface *iface = Interface::cast(odst);
+        if (iface!=NULL && iface->isDyn() && iface->isFailoverInterface())
+        {
+            Address *new_odst = compiler->correctForCluster(odst);
+            RuleElementODst *odst_re = rule->getODst();  assert(odst_re);
+            odst_re->removeRef(odst);
+            odst_re->addRef(new_odst);
+        }
+    }
+    return true;
+}
+
 bool NATCompiler_ipt::dynamicInterfaceInTSrc::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
@@ -1250,6 +1252,15 @@ bool NATCompiler_ipt::dynamicInterfaceInTSrc::processNext()
     if (rule->getRuleType()==NATRule::SNAT &&
         Interface::cast(tsrc)!=NULL && !Interface::cast(tsrc)->isRegular())
     {
+        Interface *iface = Interface::cast(tsrc);
+        if (iface->isFailoverInterface())
+        {
+            Address *new_tsrc = compiler->correctForCluster(tsrc);
+            RuleElementTSrc *tsrc_re = rule->getTSrc();  assert(tsrc);
+            tsrc_re->removeRef(tsrc);
+            tsrc_re->addRef(new_tsrc);
+        }
+
         if (use_snat)
         {
             // Emulate SNAT with dynamic interface
