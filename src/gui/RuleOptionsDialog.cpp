@@ -261,6 +261,12 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->ipfw_stateless, ropt,"stateless");
     }
 
+    if (platform=="iosacl")
+    {
+        data.registerOption(m_dialog->iosacl_add_mirror_rule,
+                            ropt, "iosacl_add_mirror_rule");
+    }
+
     if (platform=="pix" || platform=="fwsm")
     {
         string vers="version_"+p->getStr("version");

@@ -1128,6 +1128,16 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 res+="<br>\n";
             }
             res+="</ul>";
+
+        }else if (platform=="iosacl")
+        {
+            res+="<ul>";
+            if (ropt->getBool("iosacl_add_mirror_rule"))
+            {
+                res+=QObject::tr("<li><b>Add mirrored rule</b></li> ");
+                res+="<br>\n";
+            }
+            res+="</ul>";
             
         }else if (platform=="pix" || platform=="fwsm")
         {

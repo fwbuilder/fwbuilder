@@ -39,6 +39,7 @@
 #include "fwbuilder/Management.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/AddressTable.h"
+#include "fwbuilder/ObjectMirror.h"
 
 #include <iostream>
 #if __GNUC__ > 3 || \
@@ -138,11 +139,77 @@ bool PolicyCompiler_iosacl::checkForDynamicInterface::findDynamicInterface(
 
 bool PolicyCompiler_iosacl::checkForDynamicInterface::processNext()
 {
-    PolicyRule     *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
     findDynamicInterface(rule,rule->getSrc());
     findDynamicInterface(rule,rule->getDst());
 
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+/*
+ * Copy all references from rule element re1 to rule element re2.
+ */
+void PolicyCompiler_iosacl::mirrorRule::duplicateRuleElement(
+    RuleElement *re1, RuleElement *re2)
+{
+    re2->clearChildren();
+    for (list<FWObject*>::iterator i1=re1->begin(); i1!=re1->end(); ++i1) 
+    {
+        FWObject *obj = FWReference::getObject(*i1);
+        re2->addRef(obj);
+    }
+}
+
+bool PolicyCompiler_iosacl::mirrorRule::processNext()
+{
+    //PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    if (rule->getOptionsObject()->getBool("iosacl_add_mirror_rule"))
+    {
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
+        compiler->temp_ruleset->add(r);
+        r->duplicate(rule);
+
+        r->setAction(rule->getAction());
+
+        switch (rule->getDirection())
+        {
+        case PolicyRule::Inbound: r->setDirection(PolicyRule::Outbound); break;
+        case PolicyRule::Outbound: r->setDirection(PolicyRule::Inbound); break;
+        default: r->setDirection(PolicyRule::Both); break;
+        }
+
+	RuleElementSrc *osrc = rule->getSrc();
+	RuleElementDst *odst = rule->getDst();
+	RuleElementSrv *osrv = rule->getSrv();
+	RuleElementItf *oitf = rule->getItf();
+
+	RuleElementSrc *nsrc = r->getSrc();
+	RuleElementDst *ndst = r->getDst();
+	RuleElementSrv *nsrv = r->getSrv();
+	RuleElementItf *nitf = r->getItf();
+
+        duplicateRuleElement(osrc, ndst);
+        duplicateRuleElement(odst, nsrc);
+        duplicateRuleElement(oitf, nitf);
+
+        if (!osrv->isAny())
+        {
+            ObjectMirror mirror;
+            nsrv->clearChildren();
+            for (list<FWObject*>::iterator i1=osrv->begin(); i1!=osrv->end(); ++i1) 
+            {
+                Service *nobj = mirror.getMirroredService(
+                    Service::cast(FWReference::getObject(*i1)));
+                compiler->dbcopy->add(nobj, false);
+                nsrv->addRef(nobj);
+            }
+        }
+
+        tmp_queue.push_back(r);
+    }
     tmp_queue.push_back(rule);
     return true;
 }
@@ -218,6 +285,9 @@ void PolicyCompiler_iosacl::compile()
                      "expand objects with multiple addresses in DST" ) );
             add( new dropRuleWithEmptyRE(
                      "drop rules with empty rule elements"));
+
+            add( new mirrorRule("Add mirrored rules"));
+
             add( new ConvertToAtomic("convert to atomic rules"       ) );
 
             add( new checkForObjectsWithErrors(
@@ -286,6 +356,8 @@ void PolicyCompiler_iosacl::compile()
 
         if ( ! supports_object_groups)
             add( new addressRanges("process address ranges"));
+
+        add( new mirrorRule("Add mirrored rules"));
 
         add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
 

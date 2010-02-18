@@ -312,9 +312,8 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
         // all rules are stateless for IOS ACL
 	if (platform=="iosacl")
         {
-	    res = true; // ignore "stateless" option
-	}
-
+            res = !opt->getBool("iosacl_add_mirror_rule");
+        }
     }
     return res;
 }

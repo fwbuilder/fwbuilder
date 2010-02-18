@@ -988,6 +988,44 @@ rule sets of this object rather than in the actual firewalls.
   "object-group" command before using!
 </p>
 
+
+<p>
+  Policy rule option "Add mirrored rule" (controlled by a checkbox in
+  the rule options dialog) makes policy compiler for IOS ACL
+  automatically create a rule with mirrored source and destination
+  addresses and service fields. This can be used to match "reply"
+  packets using address and service parameters matched by this rule.
+  The action of the mirrored rule is the same as that of this
+  one. Firewall Builder recognizes the following services and creates
+  "mirrored" versions as follows:
+  <ul>
+    <li>
+      UDP service: mirrored service has source and destination port
+      ranges reversed
+    </li>
+    <li>
+      TCP service: mirrored service has source and destination port
+      ranges reversed and "established" flag inverted.  If
+      TCP service used in this rule does not have "established" flag,
+      the mirrored service gets it, and the other way around.  This is
+      designed to simplify creating ACL rules to permit "reply" TCP
+      packets
+    </li>
+    <li>
+      ICMP service: ICMP echo request is recognized, mirrored service
+      becomes ICMP echo reply. Other ICMP types are simply copied to
+      the mirrored service
+    </li>
+    <li>
+      ICMPv6 service: like with ICMP, ICMP echo request is recognized
+      and other ICMPv6 types are just copied
+    </li>
+    <li>
+      IP service: mirrored service is a copy
+    </li>
+  </ul>
+</p>
+
 <a name="pix"></a>
 <h2>Changes in support for for Cisco ASA (PIX)</h2>
 

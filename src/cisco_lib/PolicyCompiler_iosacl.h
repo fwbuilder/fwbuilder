@@ -160,6 +160,19 @@ namespace fwcompiler {
         friend class PolicyCompiler_iosacl::RejectAction;
 
 	/**
+	 * Implements "mirrored" rules
+	 */
+        class mirrorRule : public PolicyRuleProcessor
+        {
+            void duplicateRuleElement(libfwbuilder::RuleElement *re1,
+                                      libfwbuilder::RuleElement *re2);
+            public:
+            mirrorRule(const std::string &n) : PolicyRuleProcessor(n) {}
+            virtual bool processNext();
+        };
+        friend class PolicyCompiler_iosacl::mirrorRule;
+
+	/**
 	 * this processor accumulates all rules fed to it by previous
 	 * * processors, prints commands to clear access-lists, then
 	 * feeds all rules to the next processor. Usually this

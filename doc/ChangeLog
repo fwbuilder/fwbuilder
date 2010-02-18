@@ -1,5 +1,29 @@
 2010-02-17  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_iosacl.cpp (mirrorRule::processNext): fixes #1241
+	"add mirror rule" checkbox for IOSACL. New feature: policy rule
+	option "Add mirrored rule" (checkbox in the rule options dialog)
+	makes policy compiler for IOS ACL automatically create a rule with
+	mirrored source and destination addresses and service fields. This
+	can be used to match "reply" packets using address and service
+	parameters matched by this rule.  The action of the mirrored rule
+	is the same as that of this one. Firewall Builder recognizes the
+	following services and creates "mirrored" versions as follows:
+	    - UDP service: mirrored service has source and destination port
+	    ranges reversed
+	    - TCP service: mirrored service has source and destination
+	    port ranges reversed and "established" flag inverted.
+	    If TCP service used in this rule does not have "established"
+	    flag, the mirrored service gets it, and the other way around.
+	    This is designed to simplify creating ACL rules to permit
+	    "reply" TCP packets
+	    - ICMP service: ICMP echo request is recognized, mirrored service
+	    becomes ICMP echo reply. Other ICMP types are simply copied to the
+	    mirrored service
+	    - ICMPv6 service: like with ICMP, ICMP echo request is recognized
+	    and other ICMPv6 types are just copied
+	    - IP service: mirrored service is a copy
+
 	* ssh_wrappers.cpp (ssh_wrapper): fixed #1246 policy installer
 	fails on Linux. Policy installer failed with error "bash: -c: line
 	6: syntax error: unexpected end of file" while trying to activate
