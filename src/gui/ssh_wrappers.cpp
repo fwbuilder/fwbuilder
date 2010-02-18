@@ -303,7 +303,7 @@ void ssh_wrapper( int argc, char *argv[] )
             else
                 if (strncmp(argv[i], "-d", 2)==0) { fwbdebug++; continue; }
                 else
-                    arg[j] = strndup(argv[i], 127);
+                    arg[j] = strdup(argv[i]);
         j++;
     }
     arg[j] = NULL;
