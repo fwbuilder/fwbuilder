@@ -72,6 +72,7 @@ SOURCES  = 	InetAddr.cpp \
             TagService.cpp \
 			XMLTools.cpp \
 			ObjectMatcher.cpp \
+			ObjectMirror.cpp \
 			inet_net_ntop.c \
 			inet_net_pton.c
 
@@ -146,6 +147,7 @@ HEADERS  = 	inet_net.h \
 			UserService.h \
             TagService.h \
 			ObjectMatcher.h \
+			ObjectMirror.h \
 			XMLTools.h
 
 headers.files = $$HEADERS

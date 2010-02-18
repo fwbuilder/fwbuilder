@@ -1,3 +1,9 @@
+2010-02-17  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectMirror.cpp (ObjectMirror::getMirroredService): class
+	ObjectMirror (refs fwbuilder:ticket:1241 "add mirror rule"
+	checkbox for IOSACL)
+
 2010-02-16  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (Compiler::correctForCluster): this method takes an
