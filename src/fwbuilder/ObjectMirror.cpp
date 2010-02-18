@@ -60,6 +60,7 @@ void* ObjectMirror::dispatch(IPService* obj, void*)
 void* ObjectMirror::dispatch(ICMPService* obj, void*)
 {
     ICMPService *new_obj = obj->getRoot()->createICMPService();
+    new_obj->setName(obj->getName() + "-mirror");
     if (obj->getInt("type") == 8)
     {
         new_obj->setInt("type", 0);
@@ -75,6 +76,7 @@ void* ObjectMirror::dispatch(ICMPService* obj, void*)
 void* ObjectMirror::dispatch(ICMP6Service* obj, void*)
 {
     ICMP6Service *new_obj = obj->getRoot()->createICMP6Service();
+    new_obj->setName(obj->getName() + "-mirror");
     if (obj->getInt("type") == 128)
     {
         new_obj->setInt("type", 129);
@@ -90,6 +92,7 @@ void* ObjectMirror::dispatch(ICMP6Service* obj, void*)
 void* ObjectMirror::dispatch(TCPService* obj, void*)
 {
     TCPService *new_obj = obj->getRoot()->createTCPService();
+    new_obj->setName(obj->getName() + "-mirror");
     new_obj->setSrcRangeStart(obj->getDstRangeStart());
     new_obj->setSrcRangeEnd(obj->getDstRangeEnd());
     new_obj->setDstRangeStart(obj->getSrcRangeStart());
@@ -101,6 +104,7 @@ void* ObjectMirror::dispatch(TCPService* obj, void*)
 void* ObjectMirror::dispatch(UDPService* obj, void*)
 {
     UDPService *new_obj = obj->getRoot()->createUDPService();
+    new_obj->setName(obj->getName() + "-mirror");
     new_obj->setSrcRangeStart(obj->getDstRangeStart());
     new_obj->setSrcRangeEnd(obj->getDstRangeEnd());
     new_obj->setDstRangeStart(obj->getSrcRangeStart());
