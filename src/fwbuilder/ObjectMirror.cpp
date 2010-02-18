@@ -92,12 +92,16 @@ void* ObjectMirror::dispatch(ICMP6Service* obj, void*)
 void* ObjectMirror::dispatch(TCPService* obj, void*)
 {
     TCPService *new_obj = obj->getRoot()->createTCPService();
+    new_obj->duplicate(obj); // mostly to copy tcp flags
     new_obj->setName(obj->getName() + "-mirror");
     new_obj->setSrcRangeStart(obj->getDstRangeStart());
     new_obj->setSrcRangeEnd(obj->getDstRangeEnd());
     new_obj->setDstRangeStart(obj->getSrcRangeStart());
     new_obj->setDstRangeEnd(obj->getSrcRangeEnd());
-    new_obj->setEstablished( ! obj->getEstablished());
+    // if original tcp service does something with flags, we can't simply
+    // invert it by adding flag "established". Just leave as-is
+    if (!obj->inspectFlags())
+        new_obj->setEstablished( ! obj->getEstablished());
     return new_obj;
 }
 
