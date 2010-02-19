@@ -5955,7 +5955,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id115980X79820" host_OS="ios" inactive="False" lastCompiled="1261963349" lastInstalled="0" lastModified="1266468639" platform="iosacl" version="12.4" name="testios5-1" comment="mirrored rules,  using object-groups&#10;" ro="False">
+      <Firewall id="id115980X79820" host_OS="ios" inactive="False" lastCompiled="1261963349" lastInstalled="0" lastModified="1266554058" platform="iosacl" version="12.4" name="testios5-1" comment="mirrored rules,  using object-groups&#10;" ro="False">
         <NAT id="id116156X79820" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -6180,6 +6180,7 @@
               <ServiceRef ref="udp-ntp"/>
               <ServiceRef ref="tcp-HTTP"/>
               <ServiceRef ref="icmp-ping_request"/>
+              <ServiceRef ref="id3B4FED69"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="id115988X79820"/>
@@ -6204,7 +6205,8 @@
             <Srv neg="False">
               <ServiceRef ref="id83887X7744"/>
               <ServiceRef ref="id83889X7744"/>
-              <ServiceRef ref="id4641521729061"/>
+              <ServiceRef ref="tcp-HTTP"/>
+              <ServiceRef ref="id3B4FED69"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="id7107X77171"/>
@@ -6228,6 +6230,7 @@
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="id5470X38343"/>
+              <ServiceRef ref="id4641521729061"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="id7107X77171"/>

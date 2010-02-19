@@ -218,7 +218,7 @@ bool PolicyCompiler_iosacl::SpecialServices::processNext()
 {
     //PolicyCompiler_iosacl *iosacl_comp=dynamic_cast<PolicyCompiler_iosacl*>(compiler);
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    Service    *s=compiler->getFirstSrv(rule);
+    Service *s = compiler->getFirstSrv(rule);
 
     if (IPService::cast(s)!=NULL)
     {
@@ -239,6 +239,55 @@ bool PolicyCompiler_iosacl::SpecialServices::processNext()
     tmp_queue.push_back(rule);
     return true;
 }
+
+/*
+ * This rule processor is used to separate TCP service objects that
+ * match tcp flags when generated config uses object-group clause
+ */
+bool PolicyCompiler_iosacl::splitTCPServiceWithFlags::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    RuleElementSrv *srv = rule->getSrv();
+
+    if (srv->size() > 1)
+    {
+        std::list<FWObject*> cl;
+        for (list<FWObject*>::iterator i1=srv->begin(); i1!=srv->end(); ++i1) 
+        {
+            FWObject *o   = *i1;
+            FWObject *obj = NULL;
+            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+            Service *s=Service::cast(obj);
+            assert(s!=NULL);
+
+            TCPService *tcp_srv = TCPService::cast(s);
+            if (tcp_srv && (tcp_srv->inspectFlags() || tcp_srv->getEstablished()))
+                cl.push_back(s);
+        }
+
+        while (!cl.empty()) 
+        {
+            PolicyRule  *r = compiler->dbcopy->createPolicyRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+
+            RuleElementSrv *nsrv = r->getSrv();
+            nsrv->clearChildren();
+            nsrv->addRef( cl.front() );
+            tmp_queue.push_back(r);
+
+            srv->removeRef( cl.front() );
+            cl.pop_front();
+        }
+        if (srv->size()>0) tmp_queue.push_back(rule);
+
+    } else
+        tmp_queue.push_back(rule);
+
+    return true;
+}
+
+
 
 void PolicyCompiler_iosacl::compile()
 {
@@ -393,6 +442,14 @@ void PolicyCompiler_iosacl::compile()
 
         if (supports_object_groups)
         {
+            // "object-group service" does not seem to support
+            // matching of tcp flags and "established". Need to
+            // separate objects using these into separate rules to avoid
+            // object-group
+
+            add( new splitTCPServiceWithFlags(
+                     "separate TCP service with tcp flags"));
+
             add( new CreateObjectGroupsForSrc("create object groups for Src"));
             add( new CreateObjectGroupsForDst("create object groups for Dst"));
             add( new CreateObjectGroupsForSrv("create object groups for Srv"));

@@ -1,5 +1,10 @@
 2010-02-18  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_iosacl.cpp (splitTCPServiceWithFlags::processNext):
+	fixed #1247 incorrect use of tcp service with flags in
+	object-group.  "object-group service" does not seem to support tcp
+	flags and "established"
+
 	* ObjectTreeViewItem.cpp (ObjectTreeViewItem::data): 
 	fixed #1248 Filtering in the object-tree crashes the GUI,
 	SourceForge bug #2954501

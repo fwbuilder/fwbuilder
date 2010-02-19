@@ -197,6 +197,14 @@ namespace fwcompiler {
         DECLARE_POLICY_RULE_PROCESSOR(printClearCommands);
         friend class PolicyCompiler_iosacl::printClearCommands;
 
+        /**
+         * "object-group service" does not seem to support matching of
+         * tcp flags and "established". Need to separate objects using
+         * these into separate rules to avoid object-group
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(splitTCPServiceWithFlags);
+        friend class PolicyCompiler_iosacl::splitTCPServiceWithFlags;
+        
 	/**
 	 *  this processor prints single policy rule, assuming all
 	 *  groups have been expanded, so source, destination and
