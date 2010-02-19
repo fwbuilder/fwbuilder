@@ -493,11 +493,6 @@ QModelIndex RuleSetModel::parent(const QModelIndex &child) const
 
 RuleElement * RuleSetModel::getRuleElementByRole(Rule* r, string roleName) const
 {
-    if (fwbdebug)
-        qDebug() << "RuleSetModel::getRuleElementByRole"
-                 << "rule: " << r
-                 << "roleName: " << roleName.c_str();
-
     return RuleElement::cast( r->getFirstByType(roleName) );
 }
 

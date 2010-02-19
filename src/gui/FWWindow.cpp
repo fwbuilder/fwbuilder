@@ -256,8 +256,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     instDialogOnScreenTimer->start(1000);
 
 
-    connect( m_mainWindow->newObjectAction, SIGNAL( triggered() ),
-             this, SLOT(newObject() ) );
+    // connect( m_mainWindow->newObjectAction, SIGNAL( triggered() ),
+    //          this, SLOT(newObject() ) );
 
     connect( m_mainWindow->backAction, SIGNAL( triggered() ),
              this, SLOT(back() ) );

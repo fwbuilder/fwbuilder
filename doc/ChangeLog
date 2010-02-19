@@ -1,5 +1,8 @@
 2010-02-18  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::FWWindow): fixed #1252 The "New
+	Object"-Dialog is always opened up twice when pressing <CTRL>+<N>
+
 	* FindObjectWidget.cpp (FindObjectWidget::_findAll): fixed #1250
 	The Find-Dialog searches 'Deleted Objects'-library although it's
 	not enabled in the preferences. Sourceforge bug #2954501
