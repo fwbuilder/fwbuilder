@@ -1,3 +1,9 @@
+2010-02-15  yalovoy <yalovoy@gmail.com>
+	* ProjectPanel.cpp: fixes #1244 GUI crash on exit
+	Looks like it is sufficient to just open some data file, open rule set 
+	(I tried with Policy) and insert a rule in the middle. Then exist the 
+	program and it crashes.
+
 2010-02-18  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl.cpp (splitTCPServiceWithFlags::processNext):

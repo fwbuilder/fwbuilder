@@ -114,6 +114,7 @@ void ProjectPanel::initMain(FWWindow *main)
 
 void ProjectPanel::reset()
 {
+    undoStack->clear();
     delete rcs;
     rcs = NULL;
     firewalls.clear();
@@ -161,6 +162,7 @@ ProjectPanel::ProjectPanel(QWidget *parent):
 
 ProjectPanel::~ProjectPanel()
 {
+    undoStack->clear();
     if (rcs) delete rcs;
     if (objdb) delete objdb;
     delete m_panel;
