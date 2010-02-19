@@ -1,5 +1,10 @@
 2010-02-19  vadim  <vadim@vk.crocodile.org>
 
+	* ProjectPanel_state_ops.cpp (ProjectPanel::loadState): refs #1236
+	Crash on Mac. The GUI could be crashed by repetetivie scrolling of
+	the tree and other parts of the main window with mouse scroll
+	wheel on Mac
+
 	* FindObjectWidget.cpp (FindObjectWidget::_findAll): fixed #1256
 	search in the policy of firewalls does not work. This problem was
 	introduced whith a fix for #1250

@@ -95,7 +95,7 @@ void ProjectPanel::initMain(FWWindow *main)
     setMainSplitterPosition(DEFAULT_H_SPLITTER_POSITION,
                             total_width - DEFAULT_H_SPLITTER_POSITION);
 
-    enableAvtoSaveState=true ;
+    loading_state = false;
     oldState=-1;
 
     main->undoGroup->addStack(undoStack);

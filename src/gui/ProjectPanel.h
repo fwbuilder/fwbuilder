@@ -89,7 +89,7 @@ class ProjectPanel: public QWidget {
     int lastFirewallIdx;
     bool changingTabs;
     QString noFirewalls;
-    bool enableAvtoSaveState;
+    bool loading_state;
 
     // set of object IDs for objects that have been modified recently.
     // Method updateLastModifiedTimestampForAllFirewalls() uses this

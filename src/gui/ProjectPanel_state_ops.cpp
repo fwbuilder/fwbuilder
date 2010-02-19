@@ -80,12 +80,19 @@ void ProjectPanel::loadState(bool)
     if (rcs==NULL) return;
     QString filename = rcs->getFileName();
 
+    // This function can end up being called recursively because some
+    // of the operations it performs trigger various events such as
+    // "visibility changed" or "show".
+    if (loading_state) return;
+
+    loading_state = true;
+
     if (fwbdebug)
     {
-        qDebug("ProjectPanel::loadState filename=%s isMaximized=%d",
-               filename.toAscii().data(), mdiWindow->isMaximized());
-        qDebug("mdiWindow=%p", mdiWindow);
-        qDebug("ready=%d", ready);
+        qDebug() << QString("ProjectPanel::loadState filename=%1 isMaximized=%2")
+            .arg(filename).arg(mdiWindow->isMaximized());
+        qDebug() << "mdiWindow=" << mdiWindow;
+        qDebug() << QString("ready=%1").arg(ready);
     }
 
     if (!ready) return;
@@ -122,15 +129,16 @@ void ProjectPanel::loadState(bool)
 
     time_t last_modified = db()->getTimeLastModified();
     if (fwbdebug)
-        qDebug("ProjectPanel::loadState(): done: "
-               "dirty=%d last_modified=%s",
-               db()->isDirty(), ctime(&last_modified));
+        qDebug() << QString("ProjectPanel::loadState filename=%1 DONE dirty=%2 last_modified=%3")
+            .arg(filename).arg(db()->isDirty()).arg(ctime(&last_modified));
+
+    loading_state = false;
 }
 
 void ProjectPanel::saveMainSplitter()
 {
-    QString FileName ;
-    if (rcs!=NULL) FileName = rcs->getFileName();
+    QString fileName ;
+    if (rcs!=NULL) fileName = rcs->getFileName();
     // Save position of splitters regardless of the window state
     // Do not save if one of tree panel is floating
     if (!m_panel->treeDockWidget->isWindow())
@@ -138,11 +146,11 @@ void ProjectPanel::saveMainSplitter()
         QList<int> sl = m_panel->topSplitter->sizes();
         QString arg = QString("%1,%2").arg(sl[0]).arg(sl[1]);
         if (sl[0] || sl[1])
-            st->setStr("Window/" + FileName + "/MainWindowSplitter", arg );
+            st->setStr("Window/" + fileName + "/MainWindowSplitter", arg );
 
         if (fwbdebug)
         {
-            QString out1 = " save Window/" + FileName + "/MainWindowSplitter";
+            QString out1 = " save Window/" + fileName + "/MainWindowSplitter";
             out1+= " " + arg;
             qDebug() << out1;
         }
@@ -151,9 +159,14 @@ void ProjectPanel::saveMainSplitter()
 
 void ProjectPanel::loadMainSplitter()
 {
-    QString FileName ;
-    if (rcs!=NULL) FileName = rcs->getFileName();
-    QString h_splitter_setting = "Window/" + FileName + "/MainWindowSplitter";
+    QString fileName ;
+    if (rcs!=NULL) fileName = rcs->getFileName();
+
+    if (fwbdebug)
+        qDebug() << QString("ProjectPanel::loadMainSplitter() filename=%1")
+            .arg(fileName);
+
+    QString h_splitter_setting = "Window/" + fileName + "/MainWindowSplitter";
     QString val = st->getStr(h_splitter_setting);
 
     int w1 = 0;
