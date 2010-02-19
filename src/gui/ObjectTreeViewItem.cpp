@@ -27,6 +27,7 @@
 #include "global.h"
 
 #include "ObjectTreeViewItem.h"
+#include "ObjectTreeView.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
@@ -36,27 +37,36 @@
 
 #include <qfont.h>
 #include <qpainter.h>
+#include <QtDebug>
+
 
 using namespace std;
 using namespace libfwbuilder;
 
+
+ObjectTreeView* ObjectTreeViewItem::getTree()
+{
+    return dynamic_cast<ObjectTreeView*>(treeWidget());
+}
+
+
 QVariant ObjectTreeViewItem::data(int column, int role) const
 {
-    if (role == Qt::FontRole)
+    if (column == 0 && role == Qt::FontRole)
     {
         QFont usual = QTreeWidgetItem::data(column, role).value<QFont>();
 
-        FWObject * obj=getFWObject();
-        Firewall * o=NULL;
+        FWObject *obj = getFWObject();
+        Firewall *o = NULL;
 
-        if (obj!=NULL || getProperty("type")==Firewall::TYPENAME)
+        if (obj!=NULL && getProperty("type")==Firewall::TYPENAME)
         {
-            o=Firewall::cast( obj );
+            o = Firewall::cast( obj );
         }
 
         if (o!=NULL)
         {
-            bool mf= !o->getInactive() && (o->needsInstall()) ;
+            bool mf = !o->getInactive() && (o->needsInstall()) ;
             usual.setBold (mf);
             usual.setStrikeOut(o->getInactive());
             return QVariant(usual);
@@ -64,20 +74,18 @@ QVariant ObjectTreeViewItem::data(int column, int role) const
         else
             return QVariant(usual);
     }
-        return QTreeWidgetItem::data(column, role);
+    return QTreeWidgetItem::data(column, role);
 }
 
 bool ObjectTreeViewItem::operator<( const QTreeWidgetItem & other ) const
 {
-    int rank1 = -1 ;
+    int rank1 = -1;
     int rank2 = -1;
     const ObjectTreeViewItem * otvi =
         dynamic_cast<const ObjectTreeViewItem*>(& other);
 
-    if (otvi->objptr==NULL)
-        return true ;
-    if (objptr==NULL)
-        return true ;
+    if (otvi->objptr==NULL) return true ;
+    if (objptr==NULL) return true ;
 
     if (Interface::cast(otvi->objptr)!=NULL)
     {

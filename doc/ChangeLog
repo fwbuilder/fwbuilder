@@ -1,5 +1,9 @@
 2010-02-18  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
+	* ObjectTreeViewItem.cpp (ObjectTreeViewItem::data): 
+	fixed #1248 Filtering in the object-tree crashes the GUI,
+	SourceForge bug #2954501
+
 	* ObjectManipulator_tree_ops.cpp (ObjectManipulator::updateObjectInTree):
 	fixed #1249 GUI freezes when filters are applied. The GUI would
 	freeze for a few seconds every time user modified anything in rules

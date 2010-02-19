@@ -67,11 +67,6 @@
 using namespace std;
 using namespace libfwbuilder;
 
-ObjectTreeView* ObjectTreeViewItem::getTree()
-{
-    return dynamic_cast<ObjectTreeView*>(treeWidget());
-}
-
 /****************************************************************************
  *
  *    class ObjectTreeView
