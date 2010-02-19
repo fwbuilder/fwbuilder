@@ -3568,7 +3568,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id58476X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1266385023" platform="iptables" name="heartbeat_cluster_1_d" comment="" ro="False">
+      <Cluster id="id58476X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1266606636" platform="iptables" name="heartbeat_cluster_1_d" comment="" ro="False">
         <NAT id="id58844X27834" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id288869X75145" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -5118,7 +5118,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id57974X27834" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="1266384935" platform="iptables" version="" name="linux-1-d" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+      <Firewall id="id57974X27834" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="1266606630" platform="iptables" version="" name="linux-1-d" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id58864X27834" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
           <RuleSetOptions/>
         </NAT>
@@ -5158,7 +5158,7 @@
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
+          <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
@@ -5213,7 +5213,7 @@
           <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
           <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="script_name_on_firewall">firewall.sh</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
@@ -5225,7 +5225,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id58236X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1266381895" platform="iptables" version="" name="linux-2-d" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+      <Firewall id="id58236X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1266606636" platform="iptables" version="" name="linux-2-d" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id58870X27834" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
           <RuleSetOptions/>
         </NAT>
@@ -5265,7 +5265,7 @@
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
+          <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
@@ -5320,7 +5320,7 @@
           <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
           <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="script_name_on_firewall">firewall.sh</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
