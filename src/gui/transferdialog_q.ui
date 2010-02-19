@@ -276,9 +276,9 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="0" column="2" >
-       <widget class="QPushButton" name="cancelButton" >
+       <widget class="QPushButton" name="closeButton" >
         <property name="text" >
-         <string>Cancel</string>
+         <string>Close</string>
         </property>
        </widget>
       </item>
@@ -303,7 +303,7 @@ p, li { white-space: pre-wrap; }
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
   <tabstop>transferButton</tabstop>
-  <tabstop>cancelButton</tabstop>
+  <tabstop>closeButton</tabstop>
  </tabstops>
  <resources>
   <include location="MainRes.qrc" />
@@ -326,7 +326,7 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>cancelButton</sender>
+   <sender>closeButton</sender>
    <signal>clicked()</signal>
    <receiver>transferDialog_q</receiver>
    <slot>reject()</slot>

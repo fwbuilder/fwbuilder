@@ -359,9 +359,6 @@ void transferDialog::accept()
         {
             m_dialog->saveLogButton->setEnabled(true);
         }
-
-        // change cancelButton text to 'Quit'
-        m_dialog->cancelButton->setText("Quit");
     }
 }
 
