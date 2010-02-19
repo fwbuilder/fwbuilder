@@ -5525,7 +5525,7 @@
           <Option name="use_scp">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id7099X77171" host_OS="ios" inactive="False" lastCompiled="1266469257" lastInstalled="0" lastModified="1266469289" platform="iosacl" version="12.4" name="testios5" comment="mirrored rules, not using object-groups&#10;" ro="False">
+      <Firewall id="id7099X77171" host_OS="ios" inactive="False" lastCompiled="1266469257" lastInstalled="0" lastModified="1266470239" platform="iosacl" version="12.4" name="testios5" comment="mirrored rules, not using object-groups&#10;" ro="False">
         <NAT id="id7180X77171" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -5820,7 +5820,31 @@
               <ObjectRef ref="id4641456729061"/>
             </Dst>
             <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
+              <ServiceRef ref="id5611X44763"/>
+              <ServiceRef ref="id152020845"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id7107X77171"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="iosacl_add_mirror_rule">True</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id25166X82392" disabled="False" group="" log="False" position="13" action="Accept" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+              <ObjectRef ref="id46412C4026611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4641456629061"/>
+              <ObjectRef ref="id4641456729061"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id464147DA29061"/>
             </Srv>
             <Itf neg="False">
               <ObjectRef ref="id7107X77171"/>
