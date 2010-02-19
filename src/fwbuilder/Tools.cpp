@@ -256,4 +256,19 @@ void tokenize(const string& str, vector<string>& tokens, const string& delimiter
     }
 }
 
+string strip(const string& in, const string& identifier)
+{
+    string result;
+    vector<string> parts;
+
+    tokenize(in, parts, identifier);
+
+    for (vector<string>::iterator it = parts.begin(); it != parts.end(); ++it)
+    {
+        result += *it;
+    }
+
+    return result;
+}
+
 }

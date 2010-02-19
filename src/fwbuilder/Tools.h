@@ -104,6 +104,11 @@ namespace libfwbuilder
     void tokenize(const std::string& str,
                   std::vector<std::string>& tokens,
                   const std::string& delimiters = " ");
+
+    /**
+     *  Strip identifier from string 'in' and return as string.
+     */
+    std::string strip(const std::string& in, const std::string& identifier);
 }
 
 #endif
