@@ -199,6 +199,7 @@ void transferDialog::updateVolumeView()
         row++;
     }
     m_dialog->transferTable->setSortingEnabled(true);
+    m_dialog->transferTable->sortByColumn(0, Qt::AscendingOrder);
     m_dialog->transferTable->resizeColumnToContents(0);
 }
 
