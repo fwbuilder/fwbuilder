@@ -28,6 +28,7 @@ Q_OBJECT
     void clickMenuItem(QStringList input);
     void selectComboItem(QStringList input);
     void selectListItem(QStringList input);
+    void selectTab(QStringList input);
 
     QObject* findChild(QObject *parent, QString name);
     QWidget* findWidget(QString name);

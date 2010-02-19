@@ -21,6 +21,8 @@ public slots:
     void selectListItem(QWidget *box, QString name);
     void moveMouse(QPoint end);
     void moveMouse(QWidget *w, QPoint userpoint = QPoint(-1,-1));
+    void selectTab(QWidget *widget, QString name);
+    void selectTab(QWidget *widget, int id);
 
     QPoint findViewItem(QAbstractItemView *view, int id);
 };

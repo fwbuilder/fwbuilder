@@ -332,3 +332,20 @@ void TutorialAnimator::selectListItem(QStringList input)
         QMetaObject::invokeMethod(helper, "selectListItem", Qt::BlockingQueuedConnection,
                                   Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(QString, idstr));
 }
+
+void TutorialAnimator::selectTab(QStringList input)
+{
+    QString idstr = input.last();
+    bool isId;
+    int id = idstr.toInt(&isId, 10);
+    input.pop_back();
+    qDebug() << "view:" << this->getWidget(input);
+    QAbstractItemView *combo = dynamic_cast<QAbstractItemView*>(this->getWidget(input));
+    qDebug() << "selecting list item:" << combo;
+    if (isId)
+        QMetaObject::invokeMethod(helper, "selectTab", Qt::BlockingQueuedConnection,
+                                  Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(int, id));
+    else
+        QMetaObject::invokeMethod(helper, "selectTab", Qt::BlockingQueuedConnection,
+                                  Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(QString, idstr));
+}

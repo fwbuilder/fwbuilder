@@ -35,7 +35,12 @@ moveMouse w#newFirewallDialog nextButton
 clickWidget w#newFirewallDialog nextButton
 wait 1000
 
+
 // second dialog page finished
+
+wait 1000
+selectTab w#newFirewallDialog interfaceEditor2 1
+wait 1000
 
 moveMouse w#newFirewallDialog finishButton
 wait 1000

@@ -16,7 +16,7 @@ TutorialHelper::TutorialHelper()
 
 int vectorLength(QPoint a, QPoint b)
 {
-    return sqrt(pow(a.x() - b.x(),2) + pow(a.y() - b.y(),2));
+    return QLineF(a, b).length();
 }
 
 QPoint getDirections(QPoint from, QPoint to, int step)
@@ -131,4 +131,49 @@ void TutorialHelper::selectListItem(QWidget *widget, QString name)
             break;
     selectListItem(widget, id);
 }
+
+class PublicTabBar : public QTabWidget { public: using QTabWidget::tabBar; };
+
+QPoint findTab(QTabBar *bar, int id)
+{
+    int x = bar->width()/2;
+    int top, bottom, left, right;
+    for (top=0; top<bar->height(); top++)
+        if (bar->tabAt(QPoint(x, top)) == id)
+            break;
+    for (bottom = bar->height(); bottom != 0; bottom--)
+        if (bar->tabAt(QPoint(x, bottom)) == id)
+            break;
+    int y = bar->height()/2;
+    for (left = 0; left < bar->width(); left++)
+        if (bar->tabAt(QPoint(left, y)) == id)
+            break;
+    for (right = bar->width(); right!=0; right--)
+        if (bar->tabAt(QPoint(right, y)) == id)
+            break;
+    return QPoint((left+right)/2, (top+bottom)/2);
+}
+
+void TutorialHelper::selectTab(QWidget *widget, int id)
+{
+    PublicTabBar *tabs = dynamic_cast<PublicTabBar*>(widget);
+    QTabBar *bar = tabs->tabBar();
+
+    QPoint pos = findTab(bar, id);
+    moveMouse(bar, pos);
+    QTest::qWait(200);
+    QTest::mouseClick(bar, Qt::LeftButton, 0, pos);
+
+}
+
+void TutorialHelper::selectTab(QWidget *widget, QString name)
+{
+    QTabWidget * view = dynamic_cast<QTabWidget*>(widget);
+    int id = 0;
+    for (; id < view->count(); id++)
+        if (view->tabText(id) == name)
+            break;
+    selectTab(widget, id);
+}
+
 
