@@ -42,7 +42,7 @@ public:
 
     virtual std::string printPathForAllTools(const std::string &);
 
-    virtual std::list<std::string> getGeneratedFiles() const;
+    virtual std::map<std::string, std::string> getGeneratedFiles() const;
 
     /* TODO: Merge this mapping with gui interface types mapping */
     /* Value-Defintions of the different String values */
@@ -78,7 +78,7 @@ private:
 
     bool containsFirewallKey(std::string in) const;
 
-    std::list<std::string> generated_Files;
+    std::map<std::string, std::string> generated_Files;
 };
 };
 

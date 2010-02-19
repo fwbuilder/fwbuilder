@@ -644,8 +644,9 @@ void OSConfigurator_linux24::epilog()
 {
 }
 
-list<std::string> OSConfigurator_linux24::getGeneratedFiles() const
+
+map<string, string> OSConfigurator_linux24::getGeneratedFiles() const
 {
-    list<string> list;
-    return list;
+    map<string, string> files;
+    return files;
 }

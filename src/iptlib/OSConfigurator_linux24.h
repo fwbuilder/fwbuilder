@@ -108,7 +108,7 @@ public:
         virtual std::string printBondingInterfaceConfigurationCommands();
         virtual std::string printDynamicAddressesConfigurationCommands();
 
-        virtual std::list<std::string> getGeneratedFiles() const;
+        virtual std::map<std::string, std::string> getGeneratedFiles() const;
     };
 };
 

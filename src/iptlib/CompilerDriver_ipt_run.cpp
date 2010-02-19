@@ -655,15 +655,18 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
          * these on the firewall. See description of manifest format in
          * comments in src/gui/FirewallInstaller.cpp
          */
-        list<string> file_list = oscnf->getGeneratedFiles();
+        map<string, string> file_list = oscnf->getGeneratedFiles();
         if (!file_list.empty())
         {
             info(" Adding additional files to manifest");
-            list<string>::const_iterator c_iter = file_list.begin();
+            map<string, string>::const_iterator c_iter = file_list.begin();
             for (; c_iter != file_list.end(); ++c_iter)
             {
-                string name = *c_iter;
-                script << MANIFEST_MARKER << name << "\n";
+                string name = c_iter->first;
+                string dest = c_iter->second;
+                script << MANIFEST_MARKER << name;
+                if (!dest.empty()) script << " " << dest;
+                script << "\n";
             }
         }
 
