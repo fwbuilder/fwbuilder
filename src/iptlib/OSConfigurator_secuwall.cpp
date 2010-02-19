@@ -228,7 +228,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 
     /* NTP-Server IP address */
     stream << "NTP_IP=\"";
-    stream << options->getStr("secuwall_mgmt_ntpaddr").c_str();
+    stream << strip (options->getStr("secuwall_mgmt_ntpaddr"), ",").c_str();
     stream << "\"" << endl;
 
     /* /var partition */

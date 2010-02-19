@@ -127,41 +127,46 @@ void PolicyCompiler_secuwall::insertNtpRule()
 {
     FWOptions* options = fw->getOptionsObject();
 
-    /* Add NTP-Address to database */
-    Address *ntp_dst = NULL;
-    if (!options->getStr("secuwall_mgmt_ntpaddr").empty())
+   if (options->getStr("secuwall_mgmt_ntpaddr").empty())
+   {
+       /* No NTP server specified, nothing left to do */
+       return;
+   }
+
+    vector<string> addresses;
+    tokenize (options->getStr("secuwall_mgmt_ntpaddr"), addresses, ", ");
+
+    for (vector<string>::iterator it = addresses.begin(); it != addresses.end(); ++it)
     {
+        /* Add NTP-Address to database */
+        Address *ntp_dst = NULL;
         ntp_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
         ntp_dst->setName("NTP-Address");
-        ntp_dst->setAddress(InetAddr(options->getStr("secuwall_mgmt_ntpaddr")));
+        ntp_dst->setAddress(InetAddr(*it));
         ntp_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
         ntp_dst->setComment("NTP IP Address");
         dbcopy->add(ntp_dst);
-    } else
-    {
-        /* No NTP server specified, nothing left to do */
-        return;
+
+        /* Add NTP-Service to database (INPUT) */
+        UDPService* ntp_input = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
+        ntp_input->setSrcRangeStart(123);
+        ntp_input->setSrcRangeEnd(123);
+        ntp_input->setComment("NTP service (INPUT)");
+        dbcopy->add(ntp_input);
+
+        /* Add NTP-Service to database (OUTPUT) */
+        UDPService* ntp_output = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
+        ntp_output->setDstRangeStart(123);
+        ntp_output->setDstRangeEnd(123);
+        ntp_output->setComment("NTP service (OUTPUT)");
+        dbcopy->add(ntp_output);
+
+        /* Add secuwall-specific rules for NTP */
+        addMgmtRule(ntp_dst, NULL, ntp_input, NULL,
+                    PolicyRule::Inbound, PolicyRule::Accept, "NTP");
+        addMgmtRule(NULL, ntp_dst, ntp_output, NULL,
+                    PolicyRule::Outbound, PolicyRule::Accept, "NTP");
     }
-
-    /* Add NTP-Service to database (INPUT) */
-    UDPService* ntp_input = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-    ntp_input->setSrcRangeStart(123);
-    ntp_input->setSrcRangeEnd(123);
-    ntp_input->setComment("NTP service (INPUT)");
-    dbcopy->add(ntp_input);
-
-    /* Add NTP-Service to database (OUTPUT) */
-    UDPService* ntp_output = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-    ntp_output->setDstRangeStart(123);
-    ntp_output->setDstRangeEnd(123);
-    ntp_output->setComment("NTP service (OUTPUT)");
-    dbcopy->add(ntp_output);
-
-    /* Add secuwall-specific rules for NTP */
-    addMgmtRule(ntp_dst, NULL, ntp_input, NULL,
-                PolicyRule::Inbound, PolicyRule::Accept, "NTP");
-    addMgmtRule(NULL, ntp_dst, ntp_output, NULL,
-                PolicyRule::Outbound, PolicyRule::Accept, "NTP");
 }
 
 void PolicyCompiler_secuwall::insertNrpeRule()
