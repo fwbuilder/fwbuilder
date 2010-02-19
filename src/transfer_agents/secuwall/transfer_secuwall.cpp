@@ -371,7 +371,9 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
+#ifndef _WIN32
     sync();
+#endif
 
     cout << "Exported '" << fwobjectname << "' config to " << outpath << endl;
     exit(EXIT_SUCCESS);
