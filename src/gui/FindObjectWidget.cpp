@@ -306,18 +306,21 @@ void FindObjectWidget::_findAll()
             if (m_widget->srScope->currentIndex()>1) continue; // scope in (firewalls only , selected firewalls)
         }
 
+        FWObject *obj = o;
         if (FWReference::cast(o)!=NULL)
         {
             FWReference *r = FWReference::cast(o);
-            o = r->getPointer();
+            obj = r->getPointer();
         }
 
-        if (matchAttr(o) && matchID(o->getId()))
+        if (matchAttr(obj) && matchID(obj->getId()))
         {
             // If object we have found belongs to the deleted objects lib
             // but this library is hidden, don't show it.
-            if (o->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID &&
+            if (obj->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID &&
                 !st->getBool("UI/ShowDeletedObjects")) continue;
+            // Note that if o is a reference, we should add reference
+            // to found_objects
             found_objects.push_back(o);
         }
     }
