@@ -174,6 +174,7 @@ HEADERS += ../../config.h \
     ClusterInterfaceWidget.h \
     FWCmdRule.h \
     UsageResolver.h \
+	IconSetter.h \
     TutorialAnimator.h \
     TutorialDialog.h \
     TutorialHelper.h
@@ -347,6 +348,7 @@ SOURCES += ProjectPanel.cpp \
     ClusterInterfacesSelectorWidget.cpp \
     ClusterInterfaceWidget.cpp \
     FWCmdRule.cpp \
+	IconSetter.cpp \
     UsageResolver.cpp \
     TutorialAnimator.cpp \
     TutorialDialog.cpp \

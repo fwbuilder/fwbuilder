@@ -51,6 +51,7 @@
 #include "events.h"
 #include "FWCmdChange.h"
 #include "FWCmdAddObject.h"
+#include "IconSetter.h"
 
 #include <QTextEdit>
 #include <QTime>
@@ -302,7 +303,12 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
     QString old_itm_text = itm->text(0);
     itm->setText( 0, QString::fromUtf8(obj->getName().c_str()) );
     itm->setText( 1, getTreeLabel(obj) );
-    getCurrentObjectTree()->updateTreeIcons();
+
+    QPixmap pm_obj;
+    IconSetter::setObjectIcon(obj, &pm_obj, 0);
+    itm->setIcon(0, pm_obj );
+
+    //getCurrentObjectTree()->updateTreeIcons();
 
     if (itm->parent())
         refreshSubtree(itm->parent(), itm);

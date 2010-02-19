@@ -35,8 +35,9 @@
 #include "ObjectManipulator.h"
 #include "FWObjectDrag.h"
 #include "FWBSettings.h"
-
+#include "IconSetter.h"
 #include "FWObjectPropertiesFactory.h"
+
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
@@ -57,6 +58,7 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QDragEnterEvent>
+#include <QtDebug>
 
 #include <iostream>
 #include <algorithm>
@@ -283,43 +285,20 @@ void ObjectTreeView::focusOutEvent(QFocusEvent* ev)
 void ObjectTreeView::updateTreeIcons()
 {
     if (fwbdebug) qDebug("ObjectTreeView::updateTreeIcons ");
+
     QTreeWidgetItemIterator it(this);
-    QTreeWidgetItem *itm;
-    ObjectTreeViewItem *otvi;
-    FWObject *obj;
-    QString icn;
-
-    QPixmap pm_lock;
-    if ( ! QPixmapCache::find( ":/Icons/lock", pm_lock) )
-    {
-        pm_lock.load( ":/Icons/lock" );
-        QPixmapCache::insert( ":/Icons/lock", pm_lock);
-    }
-
     while ( *it )
     {
-        itm= *it;
-        otvi=dynamic_cast<ObjectTreeViewItem*>(itm);
-        obj=otvi->getFWObject();
-
-        if (FWBTree().isSystem(obj))
-        icn = ":/Icons/SystemGroup/icon-tree";
-        else
-            icn = (":/Icons/"+obj->getTypeName()+"/icon-tree").c_str();
+        QTreeWidgetItem *itm = *it;
+        ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(itm);
+        FWObject *obj = otvi->getFWObject();
 
         QPixmap pm_obj;
-        if ( ! QPixmapCache::find( icn, pm_obj) )
-        {
-            pm_obj.load( icn );
-            QPixmapCache::insert( icn, pm_obj);
-        }
-
-        if (obj->getRO())  itm->setIcon(0, pm_lock);
-        else               itm->setIcon(0, pm_obj );
+        IconSetter::setObjectIcon(obj, &pm_obj, 0);
+        itm->setIcon(0, pm_obj );
 
         ++it;
     }
-
     update();
 }
 
@@ -812,6 +791,9 @@ void ObjectTreeView::updateFilter()
 
 void ObjectTreeView::setFilter(QString text)
 {
+    if (fwbdebug)
+        qDebug() << "ObjectTreeView::setFilter " << text;
+
     if (filter.isEmpty() && text.isEmpty()) return;
     filter = text;
     QSet<QTreeWidgetItem *> items = this->findItems(text, Qt::MatchContains|Qt::MatchRecursive, 0).toSet();
