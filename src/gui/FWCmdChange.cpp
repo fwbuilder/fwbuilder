@@ -198,14 +198,14 @@ FWCmdLockObject::FWCmdLockObject(ProjectPanel *project, FWObject *obj,
 void FWCmdLockObject::undo()
 {
     FWObject* obj = getObject();
-    obj->setReadOnly(getOldState()->isReadOnly());
+    obj->setReadOnly(getOldState()->getRO());
     notify();
 }
 
 void FWCmdLockObject::redo()
 {
     FWObject* obj = getObject();
-    obj->setReadOnly(getNewState()->isReadOnly());
+    obj->setReadOnly(getNewState()->getRO());
     notify();
 }
 
