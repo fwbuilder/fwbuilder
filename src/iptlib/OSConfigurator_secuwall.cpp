@@ -718,22 +718,28 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, IPv4 * ip
             stream << options->getStr("vlan_id").c_str();
         }
         stream << "\"" << endl;
-        /* Fall-through */
-    case VRRP:
-    {
 
-        FWObject* parent = iface->getParent();
-        stream << "BASEDEV=\"";
-
-        if (parent != NULL && parent->getName().empty())
+        if (iface->getParent() == NULL || iface->getParent()->getName().empty())
         {
             /* No base device provided */
             abort("No base device specified for " + iface->getName());
         }
-        stream << parent->getName().c_str();
+
+        stream << "BASEDEV=\"";
+        stream << iface->getParent()->getName().c_str();
         stream << "\"" << endl;
-    }
-    break;
+        break;
+    case VRRP:
+        if (options->getStr("base_device").empty())
+        {
+            /* No base device provided */
+            abort("No base device specified for " + iface->getName());
+        }
+
+        stream << "BASEDEV=\"";
+        stream << options->getStr("base_device").c_str();
+        stream << "\"" << endl;
+        break;
     default:
         /* Don't define BASEDEV */
         break;
