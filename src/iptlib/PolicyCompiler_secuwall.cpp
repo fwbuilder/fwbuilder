@@ -217,50 +217,55 @@ void PolicyCompiler_secuwall::insertSnmpRule()
 {
     FWOptions* options = fw->getOptionsObject();
 
-    Address* snmp_dst = NULL;
-    if (!options->getStr("secuwall_mgmt_snmpaddr").empty())
+   if (options->getStr("secuwall_mgmt_snmpaddr").empty())
+   {
+       /* No SNMP server specified, nothing left to do */
+       return;
+   }
+
+    vector<string> addresses;
+    tokenize (options->getStr("secuwall_mgmt_snmpaddr"), addresses, ", ");
+
+    for (vector<string>::iterator it = addresses.begin(); it != addresses.end(); ++it)
     {
         /* Add SNMP-Address to database */
+        Address* snmp_dst = NULL;
         snmp_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
         snmp_dst->setName("SNMP-Address");
-        snmp_dst->setAddress(InetAddr(options->getStr("secuwall_mgmt_snmpaddr")));
+        snmp_dst->setAddress(InetAddr(*it));
         snmp_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
         snmp_dst->setComment("SNMP IP Address");
         dbcopy->add(snmp_dst);
-    } else
-    {
-        /* No SNMP server specified, nothing left to do */
-        return;
+
+        /* Add SNMP-Service to database (INPUT) */
+        UDPService* snmp_input = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
+        snmp_input->setDstRangeStart(161);
+        snmp_input->setDstRangeEnd(161);
+        snmp_input->setComment("SNMP service (INPUT)");
+        dbcopy->add(snmp_input);
+
+        /* Add SNMP-Service to database (OUTPUT) */
+        UDPService* snmp_output = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
+        snmp_output->setSrcRangeStart(161);
+        snmp_output->setSrcRangeEnd(161);
+        snmp_output->setComment("SNMP service (OUTPUT)");
+        dbcopy->add(snmp_output);
+
+        /* Add SNMP-Trap-Service to database (OUTPUT) */
+        UDPService* snmp_traps = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
+        snmp_traps->setDstRangeStart(162);
+        snmp_traps->setDstRangeEnd(162);
+        snmp_traps->setComment("SNMP-Trap service (OUTPUT)");
+        dbcopy->add(snmp_traps);
+
+        /* Add secuwall-specific rules for SNMP & SNMP-Traps */
+        addMgmtRule(snmp_dst, NULL, snmp_input, NULL,
+                    PolicyRule::Inbound, PolicyRule::Accept, "SNMP");
+        addMgmtRule(NULL, snmp_dst, snmp_output, NULL,
+                    PolicyRule::Outbound, PolicyRule::Accept, "SNMP");
+        addMgmtRule(NULL, snmp_dst, snmp_traps, NULL,
+                    PolicyRule::Outbound, PolicyRule::Accept, "SNMP");
     }
-
-    /* Add SNMP-Service to database (INPUT) */
-    UDPService* snmp_input = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-    snmp_input->setDstRangeStart(161);
-    snmp_input->setDstRangeEnd(161);
-    snmp_input->setComment("SNMP service (INPUT)");
-    dbcopy->add(snmp_input);
-
-    /* Add SNMP-Service to database (OUTPUT) */
-    UDPService* snmp_output = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-    snmp_output->setSrcRangeStart(161);
-    snmp_output->setSrcRangeEnd(161);
-    snmp_output->setComment("SNMP service (OUTPUT)");
-    dbcopy->add(snmp_output);
-
-    /* Add SNMP-Trap-Service to database (OUTPUT) */
-    UDPService* snmp_traps = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-    snmp_traps->setDstRangeStart(162);
-    snmp_traps->setDstRangeEnd(162);
-    snmp_traps->setComment("SNMP-Trap service (OUTPUT)");
-    dbcopy->add(snmp_traps);
-
-    /* Add secuwall-specific rules for SNMP & SNMP-Traps */
-    addMgmtRule(snmp_dst, NULL, snmp_input, NULL,
-                PolicyRule::Inbound, PolicyRule::Accept, "SNMP");
-    addMgmtRule(NULL, snmp_dst, snmp_output, NULL,
-                PolicyRule::Outbound, PolicyRule::Accept, "SNMP");
-    addMgmtRule(NULL, snmp_dst, snmp_traps, NULL,
-                PolicyRule::Outbound, PolicyRule::Accept, "SNMP");
 }
 
 /*

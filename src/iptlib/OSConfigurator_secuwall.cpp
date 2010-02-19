@@ -218,7 +218,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 
     /* SNMP-Server IP address */
     stream << "SNMP_IP=\"";
-    stream << options->getStr("secuwall_mgmt_snmpaddr").c_str();
+    stream << strip (options->getStr("secuwall_mgmt_snmpaddr"), ",").c_str();
     stream << "\"" << endl;
 
     /* SNMP Community string */
