@@ -1,3 +1,10 @@
+2010-02-18  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* Firewall.cpp (Firewall::duplicate): fixed #1254 ""locked" status
+	of the object is lost when data file is loaded". "Read-only" or
+	"locked" status of the firewall object was lost when data file was
+	loaded into the program. The bug affected only Firewall object.
+
 2010-02-17  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectMirror.cpp (ObjectMirror::getMirroredService): class

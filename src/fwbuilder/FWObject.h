@@ -204,7 +204,7 @@ public:
      * if any parent of this object is read-only in addition to
      * checking if this object is read-only itself.
      */
-    bool getRO() { return ro; }
+    bool getRO() const { return ro; }
     
     virtual void fromXML(xmlNodePtr xml_parent_node) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);

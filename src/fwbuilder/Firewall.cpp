@@ -321,7 +321,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
     map<int, int> id_mapping;
 
     checkReadOnly();
-    bool xro=obj->getBool("ro"); 
+    bool xro = obj->getRO();
 
     //shallowDuplicate(obj, preserve_id);
     FWObject::shallowDuplicate(obj, preserve_id);
