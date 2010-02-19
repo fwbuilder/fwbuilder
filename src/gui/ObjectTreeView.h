@@ -117,9 +117,6 @@ protected:
 
     bool isSelected(libfwbuilder::FWObject* obj);
     int  getNumSelected();
-    bool isLockable();
-    bool isUnlockable();
-    void setLockFlags();
 
     libfwbuilder::FWObject* getCurrentObject();
 

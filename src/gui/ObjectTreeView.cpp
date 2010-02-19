@@ -266,16 +266,6 @@ FWObject* ObjectTreeView::getCurrentObject()
     return otvi->getFWObject();
 }
 
-bool ObjectTreeView::isLockable()
-{
-    return Lockable;
-}
-
-bool ObjectTreeView::isUnlockable()
-{
-    return Unlockable;
-}
-
 void ObjectTreeView::focusInEvent(QFocusEvent* ev)
 {
     QTreeWidget::focusInEvent(ev);
@@ -736,54 +726,21 @@ void ObjectTreeView::itemSelectionChanged()
 
     QList<QTreeWidgetItem*> selected = selectedItems();
     QList<QTreeWidgetItem*>::Iterator it;
-//    QTreeWidgetItemIterator it(this);
-//    while ( *it )
     for (it=selected.begin(); it!=selected.end(); it++)
     {
-//        if ((*it)->isSelected())
-//        {
-            QTreeWidgetItem *itm = (*it);
-            ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(itm);
+        QTreeWidgetItem *itm = (*it);
+        ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem*>(itm);
 
-            selectedObjects.push_back(otvi->getFWObject());
+        selectedObjects.push_back(otvi->getFWObject());
 
-            if (fwbdebug) qDebug(
-                "ObjectTreeView::selectionChanged: selected otvi=%p object %s",
-                otvi, otvi->getFWObject()->getName().c_str());
-//        }
-//        ++it;
+        if (fwbdebug) qDebug(
+            "ObjectTreeView::selectionChanged: selected otvi=%p object %s",
+            otvi, otvi->getFWObject()->getName().c_str());
     }
-    setLockFlags();
 
     if (fwbdebug)
         qDebug("ObjectTreeView::itemSelectionChanged completed");
 /* now list  selectedObjects   holds all selected items */
-}
-
-void ObjectTreeView::setLockFlags()
-{
-    QTreeWidgetItemIterator it(this);
-    Lockable=false;
-    Unlockable=false;
-    while ( *it )
-    {
-        if ((*it)->isSelected())
-        {
-            QTreeWidgetItem *itm = *it;
-            ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(itm);
-
-            FWObject *lib = otvi->getFWObject()->getLibrary();
-            // these lbraries are locked anyway, do not let the user
-            // lock objects inside because they won't be able to unlock them.
-            if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
-                lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID)
-            {
-                if (otvi->getFWObject()->getRO())  Unlockable = true;
-                else                               Lockable = true;
-            }
-        }
-        ++it;
-    }
 }
 
 bool ObjectTreeView::isSelected(FWObject* obj)

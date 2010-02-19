@@ -949,9 +949,10 @@ void FWWindow::prepareObjectMenu()
         return;
     }
 
-    ObjectTreeView* otv = activeProject()->getCurrentObjectTree();
-    m_mainWindow->ObjectUnlockAction->setEnabled(otv->isUnlockable());
-    m_mainWindow->ObjectLockAction->setEnabled(otv->isLockable());
+    m_mainWindow->ObjectUnlockAction->setEnabled(
+        activeProject()->m_panel->om->isCurrentObjectUnlockable());
+    m_mainWindow->ObjectLockAction->setEnabled(
+        activeProject()->m_panel->om->isCurrentObjectLockable());
 }
 
 void FWWindow::prepareFileMenu()

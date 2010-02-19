@@ -427,8 +427,6 @@ void ObjectManipulator::lockObject()
                     m_project->undoStack->push(cmd.release());
             }
         }
-        // getCurrentObjectTree()->setLockFlags();
-
         // Arguably, locking an object should not change lastModified timestamp
         // because none of the attributes that affect generated policy change.
         //QCoreApplication::postEvent(
@@ -466,7 +464,6 @@ void ObjectManipulator::unlockObject()
                     m_project->undoStack->push(cmd.release());
             }
         }
-        //getCurrentObjectTree()->setLockFlags();
     } catch (FWException &ex)
     {
         qDebug() << ex.toString().c_str();

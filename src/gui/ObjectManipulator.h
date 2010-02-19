@@ -358,6 +358,15 @@ public:
 
 
      /**
+      * checks if currently selected object can be locked. Note that
+      * if its parent or any object all the way up to the library is
+      * read-only, then the state of the current object can not be
+      * changed which makes it not lockable.
+      */
+     bool isCurrentObjectLockable();
+     bool isCurrentObjectUnlockable();
+     
+     /**
       * get boolean flags that describe state of the menu items.
       * Can be used for both pop-up context menu and the main menu.
       */

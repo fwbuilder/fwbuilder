@@ -748,12 +748,11 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     }
 
     popup_menu->addSeparator();
-    QAction* lcID=popup_menu->addAction( tr("Lock"), this,
-                       SLOT( lockObject() ) );
-    QAction* unlcID=popup_menu->addAction( tr("Unlock"), this,
-                       SLOT( unlockObject() ) );
-    lcID->setEnabled(getCurrentObjectTree()->isLockable());
-    unlcID->setEnabled(getCurrentObjectTree()->isUnlockable());
+    QAction* lckID = popup_menu->addAction(tr("Lock"), this, SLOT(lockObject()));
+    QAction* unlckID = popup_menu->addAction(tr("Unlock"), this, SLOT(unlockObject()));
+
+    lckID->setEnabled(isCurrentObjectLockable());
+    unlckID->setEnabled(isCurrentObjectUnlockable());
 
     if (fwbdebug)
     {
@@ -768,12 +767,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     } else
         edtID->setEnabled(false);
 
-    bool dupMenuItem=true;
-    bool moveMenuItem=true;
-    bool copyMenuItem=true;
-    bool pasteMenuItem=true;
-    bool delMenuItem=true;
-    bool newMenuItem=true;
+    bool dupMenuItem = true;
+    bool moveMenuItem = true;
+    bool copyMenuItem = true;
+    bool pasteMenuItem = true;
+    bool delMenuItem = true;
+    bool newMenuItem = true;
     bool inDeletedObjects = false;
 
     getMenuState( (moveTargetsCounter>0),
@@ -932,6 +931,18 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
 
     }
     if (fwbdebug) qDebug("ObjectManipulator::getMenuState done");
+}
+
+bool ObjectManipulator::isCurrentObjectLockable()
+{
+    FWObject *currentObj = getSelectedObject();
+    return (currentObj && !currentObj->getParent()->isReadOnly() && !currentObj->getRO());
+}
+
+bool ObjectManipulator::isCurrentObjectUnlockable()
+{
+    FWObject *currentObj = getSelectedObject();
+    return (currentObj && !currentObj->getParent()->isReadOnly() && currentObj->getRO());
 }
 
 void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,
