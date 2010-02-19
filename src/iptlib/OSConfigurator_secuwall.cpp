@@ -870,8 +870,6 @@ int OSConfigurator_secuwall::generateSSHKeys()
     {
         cout << " Found existing RSA key: skipping key generation." << endl;
     }
-    generated_Files.push_back(filename);
-    generated_Files.push_back(filename + ".pub");
 
     /* Generate DSA Keys */
     filename =  fw->getName() + "/" + ssh_dir + "/ssh_host_dsa_key";
@@ -884,8 +882,6 @@ int OSConfigurator_secuwall::generateSSHKeys()
     {
         cout << " Found existing DSA key: skipping key generation." << endl;
     }
-    generated_Files.push_back(filename);
-    generated_Files.push_back(filename + ".pub");
 
     /* Add RSA pub key of fwadmin to the firewall's known hosts file */
     fwadmin_keyfilename = getenv("HOME");
@@ -904,7 +900,6 @@ int OSConfigurator_secuwall::generateSSHKeys()
             /* Write actual authorized_keys2 file */
             stringToFile(stream.string()->toStdString(),
                          fw->getName() + "/" + ssh_dir + "/authorized_keys2");
-            generated_Files.push_back(fw->getName() + "/" + ssh_dir + "/authorized_keys2");
 
             QFile::setPermissions (filename.c_str(), QFile::ReadOwner|QFile::ReadGroup);
         }
@@ -916,7 +911,6 @@ int OSConfigurator_secuwall::generateSSHKeys()
     else
     {
         cout << " Found existing key authorization file: skipping addition of management key." << endl;
-        generated_Files.push_back(fw->getName() + "/" + ssh_dir + "/authorized_keys2");
     }
 
     /* Add RSA host key of firewall to the fwadmin's known hosts file */
