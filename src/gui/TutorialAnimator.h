@@ -26,11 +26,14 @@ Q_OBJECT
     void wait(QStringList input);
     void hoverMenuItem(QStringList input);
     void clickMenuItem(QStringList input);
+    void selectComboItem(QStringList input);
+    void selectListItem(QStringList input);
 
     QObject* findChild(QObject *parent, QString name);
     QWidget* findWidget(QString name);
     QPoint findMenuItemPos(QMenu *menu, QString item);
     QObject* getWidget(QStringList input);
+    QWidget* topLevelWindow(QString);
 public:
     explicit TutorialAnimator(QObject *parent, QString commands);
     void run();

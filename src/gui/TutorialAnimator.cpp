@@ -7,6 +7,7 @@
 #include "FWWindow.h"
 #include <QApplication>
 #include <QDebug>
+#include <QComboBox>
 #include <QTest>
 #include <QTimer>
 
@@ -22,8 +23,8 @@ TutorialAnimator::TutorialAnimator(QObject *parent, QString commands) :
 
 //    widget = new QWidget(dynamic_cast<QWidget*>(this->parent()));
 //    widget->setFocus(Qt::ActiveWindowFocusReason);
-//    dynamic_cast<QWidget*>(parent)->grabKeyboard();
-//    dynamic_cast<QWidget*>(parent)->grabMouse();
+    //dynamic_cast<QWidget*>(parent)->grabKeyboard();
+    //dynamic_cast<QWidget*>(parent)->grabMouse();
     dynamic_cast<QWidget*>(parent)->hide();
     currentCommand = 0;
     this->commands = commands.split('\n');
@@ -62,28 +63,40 @@ void TutorialAnimator::animate(int command)
     QString baseCommand = input.first().trimmed();
     input.removeFirst();
     if (baseCommand == "moveMouse")
-        moveMouse(input);
+        moveMouse(input); // input: widget_tree OR x y
     if (baseCommand == "clickWidget")
-        clickWidget(input);
+        clickWidget(input); // input: widget_tree
     if (baseCommand == "typeWidget")
-        typeWidget(input);
+        typeWidget(input); // input: widget_tree text
     if (baseCommand == "hoverMenuItem")
-        hoverMenuItem(input);
+        hoverMenuItem(input); // input: menu_name item_name
     if (baseCommand == "clickMenuItem")
-        clickMenuItem(input);
+        clickMenuItem(input); // input: menu_name item_name
+    if (baseCommand == "selectComboItem")
+        selectComboItem(input); // input: widget_tree item_index
+    if (baseCommand == "selectListItem")
+        selectListItem(input); // input: widget_tree item_index
     if (baseCommand == "wait")
         wait(input);
 }
 
 QObject* TutorialAnimator::findChild(QObject *parent, QString name)
 {
+    bool lookingForClass = false;
+    if (name.startsWith("w#"))
+    {
+        name.remove(0, 2);
+        lookingForClass = true;
+        qDebug() << "looking for class" << name;
+    }
     QObjectList queue;
     queue.append(parent);
     while(queue.size())
     {
         QObject *obj = queue.first();
         queue.removeFirst();
-        if (obj->objectName() == name)
+        if ( ( (!lookingForClass) && (obj->objectName() == name) ) ||
+             ( (lookingForClass) && (obj->metaObject()->className() == name) ) )
         {
             return obj;
         }
@@ -97,9 +110,16 @@ QObject* TutorialAnimator::findChild(QObject *parent, QString name)
 
 QWidget* TutorialAnimator::findWidget(QString name)
 {
+    bool lookingForClass = false;
+    if (name.startsWith("w#"))
+    {
+        name.remove(0, 2);
+        lookingForClass = true;
+    }
     foreach(QWidget *w, app->allWidgets())
     {
-        if (w->objectName() == name)
+        if ( ( (!lookingForClass) && (w->objectName() == name) ) ||
+             ( (lookingForClass) && (w->metaObject()->className() == name) ) )
             return w;
     }
     return NULL;
@@ -110,8 +130,12 @@ QObject* TutorialAnimator::getWidget(QStringList input)
     QObject *obj = findChild(mw, input.first());
     if (obj == NULL)
     {
-        qDebug() << "could not find such object";
-        return NULL;
+        obj = findWidget(input.first());
+        if (obj == NULL)
+        {
+            qDebug() << "could not find such object";
+            return NULL;
+        }
     }
     input.removeFirst();
     if (!input.empty())
@@ -147,14 +171,14 @@ void TutorialAnimator::moveMouse(QStringList input)
     if (isInt1 && isInt2)
     {
         qDebug() << "moving mouse to (" << x << "," << y << ")";
-        QTest::mouseMove(mw, QPoint(x,y));
+        helper->moveMouse(QPoint(x,y));
     }
     // if not, they should be widget names
     // find widget with name of last argument who's parent is previous argument recursively
     else
     {
         QObject *obj = getWidget(input);
-        QTest::mouseMove(dynamic_cast<QWidget*>(obj));
+        helper->moveMouse(dynamic_cast<QWidget*>(obj));
     }
 }
 
@@ -187,6 +211,16 @@ QPoint TutorialAnimator::findMenuItemPos(QMenu *menu, QString item)
     return QPoint(x, (top+bottom)/2);
 }
 
+QWidget* TutorialAnimator::topLevelWindow(QString className)
+{
+    foreach (QWidget *w, app->topLevelWidgets())
+    {
+        if (w->metaObject()->className() == className)
+            return w;
+    }
+    return NULL;
+}
+
 void TutorialAnimator::hoverMenuItem(QStringList input)
 {
     QMenu *menu = dynamic_cast<QMenu*>(findWidget(input.first()));
@@ -196,7 +230,7 @@ void TutorialAnimator::hoverMenuItem(QStringList input)
         return;
     }
     QPoint pos = findMenuItemPos(menu, input.at(1));
-    QTest::mouseMove(menu, pos);
+    helper->moveMouse(dynamic_cast<QWidget*>(menu), pos);
 }
 
 void TutorialAnimator::clickMenuItem(QStringList input)
@@ -264,4 +298,37 @@ void TutorialAnimator::typeWidget(QStringList input)
     }
     QMetaObject::invokeMethod(helper, "typeWidget", Qt::QueuedConnection,
                               Q_ARG(QWidget*, w), Q_ARG(QString, text));
+    QTest::qWait(text.length()*50);
+}
+
+void TutorialAnimator::selectComboItem(QStringList input)
+{
+    QString idstr = input.last();
+    bool isId;
+    int id = idstr.toInt(&isId, 10);
+    input.pop_back();
+    QComboBox *combo = dynamic_cast<QComboBox*>(this->getWidget(input));
+    if (isId)
+        QMetaObject::invokeMethod(helper, "selectComboItem", Qt::BlockingQueuedConnection,
+                                  Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(int, id));
+    else
+        QMetaObject::invokeMethod(helper, "selectComboItem", Qt::BlockingQueuedConnection,
+                                  Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(QString, idstr));
+}
+
+void TutorialAnimator::selectListItem(QStringList input)
+{
+    QString idstr = input.last();
+    bool isId;
+    int id = idstr.toInt(&isId, 10);
+    input.pop_back();
+    qDebug() << "view:" << this->getWidget(input);
+    QAbstractItemView *combo = dynamic_cast<QAbstractItemView*>(this->getWidget(input));
+    qDebug() << "selecting list item:" << combo;
+    if (isId)
+        QMetaObject::invokeMethod(helper, "selectListItem", Qt::BlockingQueuedConnection,
+                                  Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(int, id));
+    else
+        QMetaObject::invokeMethod(helper, "selectListItem", Qt::BlockingQueuedConnection,
+                                  Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(QString, idstr));
 }
