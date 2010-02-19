@@ -22,6 +22,7 @@
 
 #include "PolicyCompiler_ipt.h"
 #include "fwbuilder/Rule.h"
+#include "fwbuilder/Tools.h"
 
 namespace libfwbuilder
 {

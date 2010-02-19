@@ -17,6 +17,7 @@
 #ifndef __OSNETWORKCONFIGURATOR_SECUWALL_H_
 #define __OSNETWORKCONFIGURATOR_SECUWALL_H_
 
+#include "fwbuilder/Tools.h"
 #include "OSConfigurator_linux24.h"
 #include <map>
 #include <QIODevice>

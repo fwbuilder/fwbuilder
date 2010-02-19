@@ -89,33 +89,38 @@ void PolicyCompiler_secuwall::insertSyslogRule()
  {
     FWOptions* options = fw->getOptionsObject();
 
-    /* Add Syslog-Address to database */
-    Address *log_dst = NULL;
-    if (!options->getStr("secuwall_mgmt_loggingaddr").empty())
+   if (options->getStr("secuwall_mgmt_loggingaddr").empty())
+   {
+       /* No syslog server specified, nothing left to do */
+       return;
+   }
+
+    vector<string> addresses;
+    tokenize (options->getStr("secuwall_mgmt_loggingaddr"), addresses, ", ");
+
+    for (vector<string>::iterator it = addresses.begin(); it != addresses.end(); ++it)
     {
+        /* Add Syslog-Address to database */
+        Address *log_dst = NULL;
         log_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
         log_dst->setName("Logging-Address");
-        log_dst->setAddress(InetAddr(options->getStr("secuwall_mgmt_loggingaddr")));
+        log_dst->setAddress(InetAddr(*it));
         log_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
         log_dst->setComment("Logging IP Address");
         dbcopy->add(log_dst);
-    } else
-    {
-        /* No syslog server specified, nothing left to do */
-        return;
+
+        /* TODO: Handle Syslog via TCP */
+        /* Add Syslog-Service to database for first address only */
+        UDPService* log_service = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
+        log_service->setDstRangeStart(514);
+        log_service->setDstRangeEnd(514);
+        log_service->setComment("Logging service");
+        dbcopy->add(log_service);
+
+        /* Add secuwall-specific rules for syslog */
+        addMgmtRule(NULL, log_dst, log_service, NULL,
+                    PolicyRule::Outbound, PolicyRule::Accept, "Syslog");
     }
-
-    /* TODO: Handle Syslog via TCP */
-    /* Add Syslog-Service to database */
-    UDPService* log_service = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-    log_service->setDstRangeStart(514);
-    log_service->setDstRangeEnd(514);
-    log_service->setComment("Logging service");
-    dbcopy->add(log_service);
-
-    /* Add secuwall-specific rules for syslog */
-    addMgmtRule(NULL, log_dst, log_service, NULL,
-                PolicyRule::Outbound, PolicyRule::Accept, "Syslog");
 }
 
 void PolicyCompiler_secuwall::insertNtpRule()

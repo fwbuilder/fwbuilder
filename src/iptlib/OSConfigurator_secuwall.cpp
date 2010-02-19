@@ -213,7 +213,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 
     /* Log-Server IP address */
     stream << "LOG_IP=\"";
-    stream << options->getStr("secuwall_mgmt_loggingaddr").c_str();
+    stream << strip (options->getStr("secuwall_mgmt_loggingaddr"), ",").c_str();
     stream << "\"" << endl;
 
     /* SNMP-Server IP address */
@@ -966,7 +966,7 @@ int OSConfigurator_secuwall::generateSSHKeys()
 }
 
 /* TODO: Put in utility library */
-bool OSConfigurator_secuwall::containsFirewallKey(std::string in) const
+bool OSConfigurator_secuwall::containsFirewallKey(string in) const
 {
     string match = "root@"+fw->getName();
     if (match == in)
