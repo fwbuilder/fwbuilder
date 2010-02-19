@@ -257,7 +257,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 
     /* Nagios-Server IP-Address */
     stream << "NRPE_IP=\"";
-    stream << s;
+    stream << strip (s.toStdString(), ",").c_str();
     stream << "\"" << endl;
 
     /* Activate VRRP */

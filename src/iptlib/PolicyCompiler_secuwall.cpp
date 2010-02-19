@@ -173,39 +173,44 @@ void PolicyCompiler_secuwall::insertNrpeRule()
 {
     FWOptions* options = fw->getOptionsObject();
 
-    /* Add NRPE-Address to database */
-    Address* nrpe_dst = NULL;
-    if (!options->getStr("secuwall_mgmt_nagiosaddr").empty())
+   if (options->getStr("secuwall_mgmt_nagiosaddr").empty())
+   {
+       /* No NRPE server specified, nothing left to do */
+       return;
+   }
+
+    vector<string> addresses;
+    tokenize (options->getStr("secuwall_mgmt_nagiosaddr"), addresses, ", ");
+
+    for (vector<string>::iterator it = addresses.begin(); it != addresses.end(); ++it)
     {
+        /* Add NRPE-Address to database */
+        Address* nrpe_dst = NULL;
         nrpe_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
         nrpe_dst->setName("NRPE-Address");
-        nrpe_dst->setAddress(InetAddr(options->getStr("secuwall_mgmt_nagiosaddr")));
+        nrpe_dst->setAddress(InetAddr(*it));
         nrpe_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
         nrpe_dst->setComment("NRPE IP Address");
         dbcopy->add(nrpe_dst);
-    } else
-    {
-        /* No NRPE server specified, nothing left to do */
-        return;
+
+        /* Add NRPE-Service for INPUT to database */
+        CustomService* nrpe_input = CustomService::cast(dbcopy->create(CustomService::TYPENAME));
+        nrpe_input->setComment("NRPE service (INPUT)");
+        nrpe_input->setCodeForPlatform("secuwall", "-p tcp --dport 5666 -m state --state NEW,ESTABLISHED");
+        dbcopy->add(nrpe_input);
+
+        /* Add NRPE-Service for OUTPUT to database */
+        CustomService* nrpe_output = CustomService::cast(dbcopy->create(CustomService::TYPENAME));
+        nrpe_output->setComment("NRPE service (OUTPUT)");
+        nrpe_output->setCodeForPlatform("secuwall", "-p tcp --sport 5666 -m state --state ESTABLISHED,RELATED");
+        dbcopy->add(nrpe_output);
+
+        /* Add secuwall-specific rules for NRPE */
+        addMgmtRule(nrpe_dst, NULL, nrpe_input, NULL,
+                    PolicyRule::Inbound, PolicyRule::Accept, "NRPE");
+        addMgmtRule(NULL, nrpe_dst, nrpe_output, NULL,
+                    PolicyRule::Outbound, PolicyRule::Accept, "NRPE");
     }
-
-    /* Add NRPE-Service for INPUT to database */
-    CustomService* nrpe_input = CustomService::cast(dbcopy->create(CustomService::TYPENAME));
-    nrpe_input->setComment("NRPE service (INPUT)");
-    nrpe_input->setCodeForPlatform("secuwall", "-p tcp --dport 5666 -m state --state NEW,ESTABLISHED");
-    dbcopy->add(nrpe_input);
-
-    /* Add NRPE-Service for OUTPUT to database */
-    CustomService* nrpe_output = CustomService::cast(dbcopy->create(CustomService::TYPENAME));
-    nrpe_output->setComment("NRPE service (OUTPUT)");
-    nrpe_output->setCodeForPlatform("secuwall", "-p tcp --sport 5666 -m state --state ESTABLISHED,RELATED");
-    dbcopy->add(nrpe_output);
-
-    /* Add secuwall-specific rules for NRPE */
-    addMgmtRule(nrpe_dst, NULL, nrpe_input, NULL,
-                PolicyRule::Inbound, PolicyRule::Accept, "NRPE");
-    addMgmtRule(NULL, nrpe_dst, nrpe_output, NULL,
-                PolicyRule::Outbound, PolicyRule::Accept, "NRPE");
 }
 
 void PolicyCompiler_secuwall::insertSnmpRule()
