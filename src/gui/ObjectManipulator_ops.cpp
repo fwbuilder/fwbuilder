@@ -419,9 +419,8 @@ void ObjectManipulator::lockObject()
             // lock objects inside because they won't be able to unlock them.
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
             {
-                std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(
-                                                    m_project, obj,
-                                                    QString("Lock object")));
+                std::auto_ptr<FWCmdLockObject> cmd(
+                    new FWCmdLockObject(m_project, obj, QObject::tr("Lock object")));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(true);
                 if (!cmd->getOldState()->cmp(new_state, true))
@@ -459,9 +458,8 @@ void ObjectManipulator::unlockObject()
             FWObject *lib = obj->getLibrary();
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
             {
-                std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(
-                                                    m_project, obj,
-                                                    QString("Unlock object")));
+                std::auto_ptr<FWCmdLockObject> cmd(
+                    new FWCmdLockObject(m_project, obj, QObject::tr("Unlock object")));
                 FWObject* new_state = cmd->getNewState();
                 new_state->setReadOnly(false);
                 if (!cmd->getOldState()->cmp(new_state, true))

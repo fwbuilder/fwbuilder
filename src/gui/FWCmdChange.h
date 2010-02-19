@@ -71,6 +71,22 @@ public:
 };
 
 /********************************************************
+ * FWCmdLockObject
+ *
+ * This command locks or unlocks object
+ ********************************************************/
+
+class FWCmdLockObject : public FWCmdChange
+{
+protected:
+public:
+    FWCmdLockObject(ProjectPanel *project, libfwbuilder::FWObject *obj,
+                    QString text=QString());
+    virtual void redo();
+    virtual void undo();
+};
+
+/********************************************************
  * FWCmdChangeOptionsObject
  ********************************************************/
 

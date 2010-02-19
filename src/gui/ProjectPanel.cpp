@@ -958,7 +958,11 @@ void ProjectPanel::updateLastModifiedTimestampForAllFirewalls()
     for (set<Firewall*>::iterator it=firewalls_to_update.begin();
          it!=firewalls_to_update.end(); ++it)
     {
-        Firewall * f = *it;
+        Firewall *f = *it;
+        // when user locks firewall object, this code tries to
+        // update last_modified timestamp in it because it
+        // depends on itself. Dont.
+        if (f->isReadOnly()) continue;
 
         f->updateLastModifiedTimestamp();
         QCoreApplication::postEvent(
@@ -971,6 +975,7 @@ void ProjectPanel::updateLastModifiedTimestampForAllFirewalls()
             for (it=clusters.begin(); it!=clusters.end(); ++it)
             {
                 Cluster *cl = *it;
+                if (cl->isReadOnly()) continue;
                 cl->updateLastModifiedTimestamp();
                 QCoreApplication::postEvent(
                     mw, new updateObjectInTreeEvent(getFileName(), cl->getId()));

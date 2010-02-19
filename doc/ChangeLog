@@ -1,3 +1,8 @@
+2010-02-18  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_events.cpp (ProjectPanel::event): fixed #1253
+	Locking an object in the tree causes GUI crash.
+
 2010-02-18  vadim  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::FWWindow): fixed #1252 The "New

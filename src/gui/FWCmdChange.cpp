@@ -179,6 +179,37 @@ void FWCmdChangeName::notify()
 }
 
 /********************************************************
+ * FWCmdLockObject
+ *
+ * locking object creates problems with virtual method
+ * FWObject::shallowDuplicate and the same virt method in derived
+ * classes because they make object read-only and then try to modify
+ * it. It is easier to have specialized command that just sets or
+ * clears read-only flag and does nothing else.
+ * 
+ ********************************************************/
+
+FWCmdLockObject::FWCmdLockObject(ProjectPanel *project, FWObject *obj,
+                                 QString name) :
+    FWCmdChange(project, obj, name)
+{
+}
+
+void FWCmdLockObject::undo()
+{
+    FWObject* obj = getObject();
+    obj->setReadOnly(getOldState()->isReadOnly());
+    notify();
+}
+
+void FWCmdLockObject::redo()
+{
+    FWObject* obj = getObject();
+    obj->setReadOnly(getNewState()->isReadOnly());
+    notify();
+}
+
+/********************************************************
  * FWCmdChangeOptionsObject
  *
  * This command is used to change failover or state protocol parameters
