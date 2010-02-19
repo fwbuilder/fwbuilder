@@ -1,7 +1,7 @@
 DOLLAR = $
 
 run.commands = echo "Running tests..." && \
-               display=:123; \
+               display=:1; \
                Xvfb $${DOLLAR}$${DOLLAR}display & \
                pid=$${DOLLAR}$${DOLLAR}!; \
                for directory in `find . -maxdepth 1 -type d -regex \'\./[A-Za-z0-9\-\_]*\'`; \
