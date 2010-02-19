@@ -24,6 +24,7 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/Cluster.h"
 
 #include "fwtransfer/TransferDevice.h"
 
@@ -41,7 +42,7 @@ using namespace fwtransfer;
 using namespace libfwbuilder;
 
 transferDialog::transferDialog(QWidget *parent, t_fwSet firewalls)
-    : QDialog(parent), reqFirewalls(firewalls), transferDevices(NULL)
+    : QDialog(parent), transferDevices(NULL)
 {
     // setup ui
     m_dialog = new Ui::transferDialog_q;
@@ -56,6 +57,34 @@ transferDialog::transferDialog(QWidget *parent, t_fwSet firewalls)
 
     // disable transfer button until a volume is selected
     m_dialog->transferButton->setEnabled(false);
+
+    // handle cluster selections
+    foreach(Firewall* fw, firewalls)
+    {
+        if (Cluster::isA(fw))
+        {
+            list<Firewall*> members;
+            Cluster::cast(fw)->getMembersList(members);
+            for (list<Firewall*>::iterator member=members.begin();
+                    member!=members.end(); ++member)
+            {
+                reqFirewalls.insert(*member);
+            }
+
+        } else
+        {
+            reqFirewalls.insert(fw);
+        }
+    }
+
+    if (reqFirewalls.empty())
+    {
+        QMessageBox::critical(this, "Firewall Config Transfer",
+                              tr("No firewalls selected for transfer"),
+                              tr("&Continue"), QString::null, QString::null,
+                              0, 1);
+        return;
+    }
 
     // init volume list
     transferDevices = new TransferDeviceList;
