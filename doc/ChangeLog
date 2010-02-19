@@ -2,7 +2,7 @@
 
 	* FindObjectWidget.cpp (FindObjectWidget::_findAll): fixed #1250
 	The Find-Dialog searches 'Deleted Objects'-library although it's
-	not enabled in the preferences.
+	not enabled in the preferences. Sourceforge bug #2954501
 
 	* IPv4Dialog.cpp (IPv4Dialog::DNSlookup): fixed #1251 DNS-Lookups
 	in Address-Objects don't work. Sourceforge bug #2954501
