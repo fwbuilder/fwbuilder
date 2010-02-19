@@ -40,6 +40,7 @@ SOURCES += main.cpp \
     ../../longTextDialog.cpp \
     ../../newGroupDialog.cpp \
     ../../filePropDialog.cpp \
+    ../../IconSetter.cpp \
     ../../DialogData.cpp \
     ../../SimpleTextEditor.cpp \
     ../../SimpleIntEditor.cpp \
@@ -180,7 +181,10 @@ SOURCES += main.cpp \
     ../../ClusterInterfacesSelectorWidget.cpp \
     ../../ClusterInterfaceWidget.cpp \
     ../../FWCmdRule.cpp \
-    ../../UsageResolver.cpp
+    ../../UsageResolver.cpp \
+    ../../TutorialDialog.cpp \
+    ../../TutorialAnimator.cpp \
+    ../../TutorialHelper.cpp
 
 HEADERS += instDialogTest.h \
     ../../../../config.h \
@@ -205,6 +209,7 @@ HEADERS += instDialogTest.h \
     ../../longTextDialog.h \
     ../../newGroupDialog.h \
     ../../filePropDialog.h \
+    ../../IconSetter.h \
     ../../DialogData.h \
     ../../SimpleTextEditor.h \
     ../../SimpleIntEditor.h \
@@ -340,7 +345,10 @@ HEADERS += instDialogTest.h \
     ../../ClusterInterfacesSelectorWidget.h \
     ../../ClusterInterfaceWidget.h \
     ../../FWCmdRule.h \
-    ../../UsageResolver.h
+    ../../UsageResolver.h \
+    ../../TutorialDialog.h \
+    ../../TutorialAnimator.h \
+    ../../TutorialHelper.h
 
 CONFIG -= release
 CONFIG += debug

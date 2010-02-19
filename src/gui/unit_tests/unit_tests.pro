@@ -9,7 +9,7 @@ run.commands = echo "Running tests..." && \
                     home=`pwd`; \
                     cd $${DOLLAR}$${DOLLAR}directory; \
                     qmake -spec $${DOLLAR}$${DOLLAR}QMAKESPEC; \
-                    DISPLAY=$${DOLLAR}$${DOLLAR}display make run || exit 1; \
+                    DISPLAY=$${DOLLAR}$${DOLLAR}display make run || { kill $${DOLLAR}$${DOLLAR}pid; exit 1; }; \
                     cd $${DOLLAR}$${DOLLAR}home; \
               done; \
               kill $${DOLLAR}$${DOLLAR}pid;
