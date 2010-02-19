@@ -1,3 +1,8 @@
+2010-02-18  vadim  <vadim@vk.crocodile.org>
+
+	* IPv4Dialog.cpp (IPv4Dialog::DNSlookup): fixed #1251 DNS-Lookups
+	in Address-Objects don't work. Sourceforge bug #2954501
+
 2010-02-17  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_iosacl.cpp (mirrorRule::processNext): fixes #1241
