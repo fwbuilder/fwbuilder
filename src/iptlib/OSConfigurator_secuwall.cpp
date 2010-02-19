@@ -34,6 +34,7 @@
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Tools.h"
 
 #include <errno.h>
 #include <ctype.h>
