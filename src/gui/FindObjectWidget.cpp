@@ -308,17 +308,17 @@ void FindObjectWidget::_findAll()
 
         if (FWReference::cast(o)!=NULL)
         {
-            FWReference *r=FWReference::cast(o);
-            if (matchAttr( r->getPointer()) && matchID(r->getPointer()->getId()))
-            {
-                found_objects.push_back(o);
-            }
-        } else
+            FWReference *r = FWReference::cast(o);
+            o = r->getPointer();
+        }
+
+        if (matchAttr(o) && matchID(o->getId()))
         {
-            if (matchAttr(o) && matchID(o->getId()))
-            {
-                found_objects.push_back(o);
-            }
+            // If object we have found belongs to the deleted objects lib
+            // but this library is hidden, don't show it.
+            if (o->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID &&
+                !st->getBool("UI/ShowDeletedObjects")) continue;
+            found_objects.push_back(o);
         }
     }
 }
