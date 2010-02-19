@@ -42,6 +42,7 @@
 #include <string>
 #include <map>
 #include <list>
+#include <vector>
 
 #ifndef _WIN32
 #  include <dirent.h>
@@ -96,7 +97,13 @@ namespace libfwbuilder
      * just a portable version of sleep
      */
     unsigned int cxx_sleep(unsigned int seconds);
-    
+
+    /**
+     *  Tokenize given string 'str' with delimiters into string vector.
+     */
+    void tokenize(const std::string& str,
+                  std::vector<std::string>& tokens,
+                  const std::string& delimiters = " ");
 }
 
 #endif
