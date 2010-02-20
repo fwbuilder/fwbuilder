@@ -31,22 +31,31 @@ TutorialAnimator::TutorialAnimator(QObject *parent, QString commands) :
 
     helper = new TutorialHelper();
     connect(this, SIGNAL(finished()), this, SLOT(scenarioFinished()));
-    this->start();
+    this->speed = 50;
 }
 
 void TutorialAnimator::scenarioFinished()
 {
+    //dynamic_cast<QWidget*>(this->parent())->releaseKeyboard();
+    //dynamic_cast<QWidget*>(this->parent())->releaseMouse();
+
+    dynamic_cast<QWidget*>(this->parent())->show();
+    /*
+    dynamic_cast<QWidget*>(this->parent())->grabMouse();
+    dynamic_cast<QWidget*>(this->parent())->grabKeyboard();
     dynamic_cast<QWidget*>(this->parent())->releaseKeyboard();
     dynamic_cast<QWidget*>(this->parent())->releaseMouse();
-    dynamic_cast<QWidget*>(this->parent())->show();
+    */
     dynamic_cast<QWidget*>(this->parent())->raise();
 }
 
 void TutorialAnimator::run()
 {
     for (int i=0; i<this->commands.count(); i++)
+    {
         animate(i);
-//    dynamic_cast<QWidget*>(this->parent())->show();
+        QTest::qWait(speed*20);
+    }
     //w->releaseKeyboard();
     //w->releaseMouse();
 }
@@ -76,6 +85,8 @@ void TutorialAnimator::animate(int command)
         selectComboItem(input); // input: widget_tree item_index
     if (baseCommand == "selectListItem")
         selectListItem(input); // input: widget_tree item_index
+    if (baseCommand == "selectTab")
+        selectTab(input); // input: widget_tree item_index
     if (baseCommand == "wait")
         wait(input);
 }
@@ -298,7 +309,7 @@ void TutorialAnimator::typeWidget(QStringList input)
     }
     QMetaObject::invokeMethod(helper, "typeWidget", Qt::QueuedConnection,
                               Q_ARG(QWidget*, w), Q_ARG(QString, text));
-    QTest::qWait(text.length()*50);
+    QTest::qWait(text.length()*speed);
 }
 
 void TutorialAnimator::selectComboItem(QStringList input)
@@ -340,12 +351,18 @@ void TutorialAnimator::selectTab(QStringList input)
     int id = idstr.toInt(&isId, 10);
     input.pop_back();
     qDebug() << "view:" << this->getWidget(input);
-    QAbstractItemView *combo = dynamic_cast<QAbstractItemView*>(this->getWidget(input));
-    qDebug() << "selecting list item:" << combo;
+    QTabWidget *combo = dynamic_cast<QTabWidget*>(this->getWidget(input));
+    qDebug() << "selecting tab in widget:" << combo;
     if (isId)
         QMetaObject::invokeMethod(helper, "selectTab", Qt::BlockingQueuedConnection,
                                   Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(int, id));
     else
         QMetaObject::invokeMethod(helper, "selectTab", Qt::BlockingQueuedConnection,
                                   Q_ARG(QWidget*, dynamic_cast<QWidget*>(combo)), Q_ARG(QString, idstr));
+}
+
+void TutorialAnimator::setSpeed(int speed)
+{
+    this->speed = speed;
+    this->helper->speed = speed;
 }

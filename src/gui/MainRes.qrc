@@ -300,5 +300,10 @@
         <file>Tutorial/images/new_button.png</file>
         <file>Tutorial/html/page1.html</file>
         <file>Tutorial/commands/page1.txt</file>
+        <file>Tutorial/controls.txt</file>
+        <file>Tutorial/html/page2.html</file>
+        <file>Tutorial/html/page3.html</file>
+        <file>Tutorial/commands/page2.txt</file>
+        <file>Tutorial/commands/page3.txt</file>
     </qresource>
 </RCC>

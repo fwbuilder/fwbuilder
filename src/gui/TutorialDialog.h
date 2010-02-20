@@ -26,6 +26,8 @@ private:
     Ui::TutorialDialog_q *ui;
     int currentPage;
     TutorialAnimator *animator;
+    QMap<int, bool> prevEnabled;
+    QMap<int, bool> requiresPrev;
 
 public slots:
     void previous();

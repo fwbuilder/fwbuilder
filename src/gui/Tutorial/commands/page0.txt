@@ -1,48 +1,4 @@
 moveMouse om newButton
-wait 1000
 clickWidget om newButton
-wait 1000
 hoverMenuItem newObjectPopup New\_Firewall
-wait 1000
 clickMenuItem newObjectPopup New\_Firewall
-wait 1000
-moveMouse w#newFirewallDialog obj_name
-clickMouse w#newFirewallDialog obj_name
-wait 100
-typeWidget w#newFirewallDialog obj_name guardian
-wait 1000
-hoverComboItem w#newFirewallDialog platform iptables
-wait 1000
-selectComboItem w#newFirewallDialog platform iptables
-wait 1000
-selectComboItem w#newFirewallDialog hostOS Linux\_2.4/2.6
-wait 1000
-moveMouse w#newFirewallDialog useTemplate
-clickWidget w#newFirewallDialog useTemplate
-wait 1000
-moveMouse w#newFirewallDialog templateUseStandart
-clickWidget w#newFirewallDialog templateUseStandart
-wait 1000
-moveMouse w#newFirewallDialog nextButton
-clickWidget w#newFirewallDialog nextButton
-wait 1000
-
-// first dialog page finished
-
-selectListItem w#newFirewallDialog templateList fw\_template\_3
-wait 1000
-moveMouse w#newFirewallDialog nextButton
-clickWidget w#newFirewallDialog nextButton
-wait 1000
-
-
-// second dialog page finished
-
-wait 1000
-selectTab w#newFirewallDialog interfaceEditor2 1
-wait 1000
-
-moveMouse w#newFirewallDialog finishButton
-wait 1000
-clickWidget w#newFirewallDialog finishButton
-wait 1000

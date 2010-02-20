@@ -8,44 +8,26 @@
 #include <QCursor>
 #include "global.h"
 #include "FWWindow.h"
-#include "math.h"
+#include "TutorialAnimator.h"
 
 TutorialHelper::TutorialHelper()
 {
-}
-
-int vectorLength(QPoint a, QPoint b)
-{
-    return QLineF(a, b).length();
-}
-
-QPoint getDirections(QPoint from, QPoint to, int step)
-{
-    int y = to.y() - from.y(), x = to.x() - from.x();
-    double direction = fabs(atan(((double)(y)/x)));
-    int vstep, hstep;
-    vstep = step*sin(direction);
-    hstep = step*cos(direction);
-    if (x<0) hstep = -abs(hstep);
-    if (y<0) vstep = -abs(vstep);
-
-    return QPoint(hstep, vstep);
+    speed = 50;
 }
 
 void TutorialHelper::moveMouse(QPoint end)
 {
-    qDebug() << end;
-    QPoint start = QCursor::pos();
-    int length = vectorLength(start, end);
-    int maxlen = vectorLength(QPoint(0,0), QPoint(QApplication::desktop()->width(), QApplication::desktop()->height()));
-    double time = 100*(((double)length)/maxlen);
-    int step = ((double)length)/time;
+    qreal distance = QLineF(QCursor::pos(), end).length();
+    qreal screenSize = QLineF(QPoint(0,0), QApplication::desktop()->geometry().bottomRight()).length();
+    qreal time = (speed*2) * distance / screenSize;
+    qreal step = distance / time;
 
-    int timestep = time / (length/step);
-    while (vectorLength(QCursor::pos(), end) > step)
+    int timestep = time / (distance/step);
+    while (QLineF(QCursor::pos(), end).length() > step)
     {
-        QPoint newpos = QCursor::pos() + getDirections(QCursor::pos(), end, step);
-        QCursor::setPos(newpos);
+        QLineF line(QCursor::pos(), end);
+        line.setLength(step);
+        QCursor::setPos(line.p2().toPoint());
         QTest::qWait(timestep);
     }
     QCursor::setPos(end);
@@ -63,12 +45,12 @@ void TutorialHelper::moveMouse(QWidget *w, QPoint userpoint)
 
 void TutorialHelper::clickWidget(QWidget *w)
 {
-    QTest::mouseClick(w, Qt::LeftButton, Qt::NoModifier, QPoint(), 0);
+    QTest::mouseClick(w, Qt::LeftButton, Qt::NoModifier, QPoint(), speed*4);
 }
 
 void TutorialHelper::clickMenuItem(QMenu *menu, QPoint pos)
 {
-    QTest::mouseClick(menu, Qt::LeftButton, Qt::NoModifier, pos);
+    QTest::mouseClick(menu, Qt::LeftButton, Qt::NoModifier, pos, speed);
 }
 
 void TutorialHelper::typeWidget(QWidget *w, QString text)
@@ -99,7 +81,7 @@ void TutorialHelper::selectComboItem(QWidget *widget, int id)
     moveMouse(combo);
     QTest::mouseClick(combo, Qt::LeftButton);
     QPoint itemPos = this->findViewItem(combo->view(), id);
-    QTest::qWait(200);
+    QTest::qWait(speed*4);
     moveMouse(combo->view(), itemPos);
     QTest::mouseClick(combo->view(), Qt::LeftButton, 0, itemPos);
 }
@@ -151,17 +133,16 @@ QPoint findTab(QTabBar *bar, int id)
     for (right = bar->width(); right!=0; right--)
         if (bar->tabAt(QPoint(right, y)) == id)
             break;
+    qDebug() << left << right << top << bottom;
     return QPoint((left+right)/2, (top+bottom)/2);
 }
 
 void TutorialHelper::selectTab(QWidget *widget, int id)
 {
-    PublicTabBar *tabs = dynamic_cast<PublicTabBar*>(widget);
-    QTabBar *bar = tabs->tabBar();
-
+    QTabBar *bar = dynamic_cast<QTabBar*>(dynamic_cast<TutorialAnimator*>(parent())->findChild(widget, "w#QTabBar"));
     QPoint pos = findTab(bar, id);
     moveMouse(bar, pos);
-    QTest::qWait(200);
+    QTest::qWait(speed*4);
     QTest::mouseClick(bar, Qt::LeftButton, 0, pos);
 
 }

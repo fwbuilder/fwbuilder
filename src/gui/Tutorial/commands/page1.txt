@@ -1,1 +1,11 @@
-typeWidget newFirewallDialog_q obj_name guardian
+moveMouse w#newFirewallDialog obj_name
+clickMouse w#newFirewallDialog obj_name
+typeWidget w#newFirewallDialog obj_name guardian
+selectComboItem w#newFirewallDialog platform iptables
+selectComboItem w#newFirewallDialog hostOS Linux\_2.4/2.6
+moveMouse w#newFirewallDialog useTemplate
+clickWidget w#newFirewallDialog useTemplate
+moveMouse w#newFirewallDialog templateUseStandart
+clickWidget w#newFirewallDialog templateUseStandart
+moveMouse w#newFirewallDialog nextButton
+clickWidget w#newFirewallDialog nextButton

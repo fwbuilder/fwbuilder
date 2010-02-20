@@ -10,6 +10,7 @@ class TutorialHelper : public QObject
     Q_OBJECT
     QWidget *widget;
 public:
+    int speed;
     TutorialHelper();
 public slots:
     void clickWidget(QWidget*);

@@ -13,6 +13,7 @@
 class TutorialAnimator : public QThread
 {
 Q_OBJECT
+    int speed;
     TutorialHelper *helper;
     QWidget *widget;
 
@@ -30,14 +31,17 @@ Q_OBJECT
     void selectListItem(QStringList input);
     void selectTab(QStringList input);
 
+
+public:
+    explicit TutorialAnimator(QObject *parent, QString commands);
+    void run();
+    void setSpeed(int speed);
+
     QObject* findChild(QObject *parent, QString name);
     QWidget* findWidget(QString name);
     QPoint findMenuItemPos(QMenu *menu, QString item);
     QObject* getWidget(QStringList input);
     QWidget* topLevelWindow(QString);
-public:
-    explicit TutorialAnimator(QObject *parent, QString commands);
-    void run();
 
 public slots:
     void scenarioFinished();
