@@ -19,7 +19,7 @@ TutorialDialog::TutorialDialog(QWidget *parent) :
     foreach(QString line, QString(f.readAll()).split("\n"))
     {
         QStringList parts = line.split(" ");
-        if (parts.length() < 3) continue;
+        if (parts.size() < 3) continue;
         bool ok;
         int page = parts.at(0).toInt(&ok, 10);
         prevEnabled[page] = parts.at(2) == "true";
