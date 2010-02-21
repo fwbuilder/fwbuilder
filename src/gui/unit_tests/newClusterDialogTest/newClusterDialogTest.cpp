@@ -57,7 +57,8 @@ void newClusterDialogTest::test1()
     }
 
     dialog->setFirewallList(fws);
-    dialog->open();
+    dialog->setModal(false);
+        dialog->show();
 
     QStringList dfws = dialog->getFirewallList();
     QVERIFY(dfws.count() == fws.size());
@@ -183,7 +184,8 @@ void newClusterDialogTest::test2()
     }
 
     dialog->setFirewallList(fws);
-    dialog->open();
+    dialog->setModal(false);
+        dialog->show();
 
     QStringList dfws = dialog->getFirewallList();
     QVERIFY(dfws.count() == fws.size());

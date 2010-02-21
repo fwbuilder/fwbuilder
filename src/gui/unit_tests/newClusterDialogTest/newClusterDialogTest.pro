@@ -181,7 +181,11 @@ SOURCES += main.cpp \
     ../../ClusterInterfacesSelectorWidget.cpp \
     ../../ClusterInterfaceWidget.cpp \
     ../../FWCmdRule.cpp \
-    ../../UsageResolver.cpp
+    ../../UsageResolver.cpp \
+    ../../IconSetter.cpp \
+    ../../TutorialDialog.cpp \
+    ../../TutorialAnimator.cpp \
+    ../../TutorialHelper.cpp
 
 HEADERS += newClusterDialogTest.h \
     ../../../../config.h \
@@ -341,7 +345,11 @@ HEADERS += newClusterDialogTest.h \
     ../../ClusterInterfacesSelectorWidget.h \
     ../../ClusterInterfaceWidget.h \
     ../../FWCmdRule.h \
-    ../../UsageResolver.h
+    ../../UsageResolver.h \
+    ../../IconSetter.h \
+    ../../TutorialDialog.h \
+    ../../TutorialAnimator.h \
+    ../../TutorialHelper.h
 
 CONFIG -= release
 CONFIG += debug
