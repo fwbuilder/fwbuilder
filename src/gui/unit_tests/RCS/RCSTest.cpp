@@ -90,7 +90,7 @@ void RCSTest::verifyRevisions()
                 break;
         }
         QStringList comment;
-        for (int i = 2; i< lines.length(); i++)
+        for (int i = 2; i< lines.size(); i++)
             comment.append(lines.at(i));
         Revision rev;
         rev.log = comment.join("");
