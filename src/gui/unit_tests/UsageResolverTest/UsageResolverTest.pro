@@ -12,7 +12,7 @@ TARGET = UsageResolverTest
 #CONFIG += console
 #CONFIG -= app_bundle
 TEMPLATE = app
-SOURCES += main.cpp \
+SOURCES += main_UsageResolverTest.cpp \
     UsageResolverTest.cpp \
     ../../UsageResolver.cpp \
     ../../FWBTree.cpp \

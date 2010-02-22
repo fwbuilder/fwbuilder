@@ -9,7 +9,7 @@ TARGET = newClusterDialogTest
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-SOURCES += main.cpp \
+SOURCES += main_newClusterDialogTest.cpp \
     newClusterDialogTest.cpp \
     ../../ProjectPanel.cpp \
     ../../ProjectPanel_events.cpp \
@@ -353,6 +353,7 @@ HEADERS += newClusterDialogTest.h \
 CONFIG -= release
 CONFIG += debug
 OBJECTS_DIR = ../../.obj
+MOC_DIR = ../../.moc
 QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 

@@ -20,7 +20,7 @@ HEADERS	+= RCSTest.h \
        ../../../compiler_lib/iosInterfaces.h \
        ../../../compiler_lib/pixInterfaces.h
 
-SOURCES	+=  main.cpp \
+SOURCES	+=  main_RCS.cpp \
         RCSTest.cpp \
         ../../RCS.cpp \
         ../../FWBTree.cpp\

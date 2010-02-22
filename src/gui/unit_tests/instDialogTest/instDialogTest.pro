@@ -9,7 +9,7 @@ TARGET = instDialogTest
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-SOURCES += main.cpp \
+SOURCES += main_instDialogTest.cpp \
     instDialogTest.cpp \
     ../../ProjectPanel.cpp \
     ../../ProjectPanel_events.cpp \
@@ -352,9 +352,9 @@ HEADERS += instDialogTest.h \
 
 CONFIG -= release
 CONFIG += debug
-QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov
+OBJECTS_DIR = ../../.obj
+MOC_DIR = ../../.moc
 
 INCLUDEPATH += ../../.ui
 INCLUDEPATH += ../../../compiler_lib

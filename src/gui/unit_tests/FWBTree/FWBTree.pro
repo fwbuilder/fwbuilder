@@ -13,7 +13,7 @@ TARGET = FWBTreeTest
 #CONFIG += console
 #CONFIG -= app_bundle
 TEMPLATE = app
-SOURCES += main.cpp \
+SOURCES += main_FWBTreeTest.cpp \
            FWBTreeTest.cpp \
            ../../FWBTree.cpp \
            ../../../compiler_lib/interfaceProperties.cpp \

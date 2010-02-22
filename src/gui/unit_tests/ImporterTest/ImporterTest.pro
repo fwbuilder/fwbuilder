@@ -25,7 +25,7 @@ HEADERS += ImporterTest.h \
         ../../../compiler_lib/iosInterfaces.h \
         ../../../compiler_lib/pixInterfaces.h
 
-SOURCES += main.cpp \
+SOURCES += main_ImporterTest.cpp \
         ImporterTest.cpp \
     	../../utils_no_qt.cpp \
     	../../FWBTree.cpp \
