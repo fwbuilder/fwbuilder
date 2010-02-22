@@ -9,7 +9,6 @@ TARGET = newClusterDialogTest
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-QMAKE_CXX = g++
 SOURCES += main.cpp \
     newClusterDialogTest.cpp \
     ../../ProjectPanel.cpp \
