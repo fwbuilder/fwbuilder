@@ -7,7 +7,7 @@ SUBDIRS = src doc
 
 DOLLAR = $
 
-build_tests.commands = ./unit_tests.sh make 
+build_tests.commands = ./unit_tests.sh make build
 build_tests.depends = all
 
 run_tests.commands = ./unit_tests.sh make run

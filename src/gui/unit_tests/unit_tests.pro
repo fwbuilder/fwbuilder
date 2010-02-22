@@ -1,25 +1,12 @@
 DOLLAR = $
 
-run.commands = echo "Running tests..." && \
-               display=:1; \
-               Xvfb $${DOLLAR}$${DOLLAR}display & \
-               pid=$${DOLLAR}$${DOLLAR}!; \
-               for directory in `find . -maxdepth 1 -type d -regex \'\./[A-Za-z0-9\-\_]*\'`; \
-               do \
-                    home=`pwd`; \
-                    cd $${DOLLAR}$${DOLLAR}directory; \
-                    qmake -spec $${DOLLAR}$${DOLLAR}QMAKESPEC; \
-                    DISPLAY=$${DOLLAR}$${DOLLAR}display make run || { kill $${DOLLAR}$${DOLLAR}pid; exit 1; }; \
-                    cd $${DOLLAR}$${DOLLAR}home; \
-              done; \
-              kill $${DOLLAR}$${DOLLAR}pid;
+build.commands = echo "Building tests..."; \
+               ./unit_tests.sh make
 
-clean.commands = for directory in `find . -maxdepth 1 -type d -regex \'\./[A-Za-z0-9\-\_]*\'`; \
-                 do \
-                     cd $${DOLLAR}$${DOLLAR}directory; \
-                     [ ! -e Makefile ] && qmake -spec $${DOLLAR}$${DOLLAR}QMAKESPEC; \
-                     make clean; \
-                     cd -; \
-                 done
-			
-QMAKE_EXTRA_TARGETS += run clean
+run.commands = echo "Running tests..."; \
+               ./unit_tests.sh make run
+
+clean.commands = echo "Cleaning tests..."; \
+                 ./unit_tests.sh make clean
+
+QMAKE_EXTRA_TARGETS += run clean build
