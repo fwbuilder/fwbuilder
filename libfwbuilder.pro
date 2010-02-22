@@ -16,4 +16,4 @@ run_tests.depends = all
 testclean.commands = ./unit_tests.sh make clean
 tests.depends = run_tests
 
-QMAKE_EXTRA_TARGETS += build_tests run_tests tests
+QMAKE_EXTRA_TARGETS += build_tests run_tests testclean tests
