@@ -352,11 +352,9 @@ HEADERS += newClusterDialogTest.h \
 
 CONFIG -= release
 CONFIG += debug
-OBJECTS_DIR = .
-QMAKE_CXXFLAGS += -g -O0 $$CPPUNIT_CFLAGS
-QMAKE_CLEAN = *.gc??
+OBJECTS_DIR = ../../.obj
+QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov
 
 INCLUDEPATH += ../../.ui
 INCLUDEPATH += ../../../compiler_lib

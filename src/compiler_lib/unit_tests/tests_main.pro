@@ -38,11 +38,9 @@ SOURCES += tests_main.cpp interfacePropertiesTest.cpp
 CONFIG -= release
 CONFIG += debug
 OBJECTS_DIR = .
-QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
-QMAKE_CLEAN = *.gc??
+QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov -lcppunit
 
 !win32:LIBS += ../../common/libcommon.a
 !win32:PRE_TARGETDEPS = ../../common/libcommon.a
@@ -54,8 +52,6 @@ win32:PRE_TARGETDEPS = ../../common/release/common.lib
 
 run.commands = echo "Running tests..." && \
     ./${TARGET} && \
-    echo "Running gcov..." && \
-    gcov ${SOURCES} >/dev/null 2>/dev/null && \
     echo "OK" || { echo "FAILED"; exit 1; }
 run.depends = all
 

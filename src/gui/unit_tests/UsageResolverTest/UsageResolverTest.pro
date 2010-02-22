@@ -5,8 +5,6 @@
 
 include(../../../../qmake.inc)
 
-QMAKE_CXX = g++
-
 QT += gui network
 
 INCLUDEPATH += ../../.ui ../../../compiler_lib/
@@ -37,12 +35,11 @@ HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../FWBTree.h \
 
 CONFIG -= release
 CONFIG += debug
-OBJECTS_DIR = .
-QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
-QMAKE_CLEAN = *.gc??
+OBJECTS_DIR = ../../.obj
+QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov -lcppunit
+LIBS += -lcppunit
 
 run.commands = ./${TARGET} && gcov -o . ../../UsageResolver.cpp >/dev/null 2>/dev/null
 run.depends = all

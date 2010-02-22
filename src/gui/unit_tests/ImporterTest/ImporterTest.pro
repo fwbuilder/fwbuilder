@@ -2,7 +2,6 @@ include(../../../../qmake.inc)
 QT += gui network
 TEMPLATE = app
 LANGUAGE = C++
-QMAKE_CXX = g++
 CONFIG += console
 
 INCLUDEPATH += ../../.. ../.. ../../.ui ../../../compiler_lib/
@@ -50,11 +49,10 @@ SOURCES += main.cpp \
 TARGET = ImporterTest
 CONFIG -= release
 CONFIG += debug
-OBJECTS_DIR = .
-QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 $$CPPUNIT_CFLAGS
+OBJECTS_DIR = ../../.obj
+QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov -lcppunit
 DEPENDPATH = ../../../common
 
 !win32:LIBS += ../../../common/libcommon.a
