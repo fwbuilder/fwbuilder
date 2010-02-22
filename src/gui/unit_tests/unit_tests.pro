@@ -13,5 +13,13 @@ run.commands = echo "Running tests..." && \
                     cd $${DOLLAR}$${DOLLAR}home; \
               done; \
               kill $${DOLLAR}$${DOLLAR}pid;
+
+clean.commands = for directory in `find . -maxdepth 1 -type d -regex \'\./[A-Za-z0-9\-\_]*\'`; \
+                 do \
+                     cd $${DOLLAR}$${DOLLAR}directory; \
+                     [ ! -e Makefile ] && qmake -spec $${DOLLAR}$${DOLLAR}QMAKESPEC; \
+                     make clean; \
+                     cd -; \
+                 done
 			
-QMAKE_EXTRA_TARGETS += run
+QMAKE_EXTRA_TARGETS += run clean
