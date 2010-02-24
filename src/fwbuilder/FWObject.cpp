@@ -138,11 +138,10 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
 
     if (id!=-1)
     {
-        xmlAttrPtr pr = xmlNewProp(
+        xmlNewProp(
             me, 
             TOXMLCAST("id"),
             STRTOXMLCAST(s_id));
-        //xmlAddID(NULL, parent->doc, STRTOXMLCAST(s_id), pr);
     }
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
@@ -981,7 +980,7 @@ void FWObject::clearChildren(bool recursive)
     setDirty(true);
 }
 
-int FWObject::getChildrenCount()
+int FWObject::getChildrenCount() const
 {
     return(size());
 }

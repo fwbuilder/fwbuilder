@@ -123,18 +123,11 @@ void RuleElement::removeRef(FWObject *obj)
     }
 }
 
-bool RuleElement::isAny()
+bool RuleElement::isAny() const
 {
     if (getChildrenCount()!=1) return(false);
-
-    FWObject *o;
-    list<FWObject*>::iterator m = begin();
-    if (  (o=(*m))!=NULL ) 
-    {
-        if ((FWReference::cast(o))->getPointerId() == getAnyElementId())
-            return(true);
-    }
-    return(false);
+    const FWObject *o = front();
+    return ((FWReference::constcast(o))->getPointerIdDirect() == getAnyElementId());
 }
 
 
@@ -177,7 +170,7 @@ void RuleElement::_initialize(const FWObjectDatabase *root)
         FWObject::addRef( any_obj );
 }
 
-int RuleElement::getAnyElementId()
+int RuleElement::getAnyElementId() const
 {
     return -1;
 }
@@ -191,7 +184,8 @@ RuleElementSrc::RuleElementSrc(const FWObjectDatabase *root,bool prepopulate) :
         _initialize(root);
 }
 
-int RuleElementSrc::getAnyElementId() {
+int RuleElementSrc::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
@@ -223,7 +217,8 @@ RuleElementDst::RuleElementDst(const FWObjectDatabase *root,bool prepopulate) :
         _initialize(root);
 }
 
-int RuleElementDst::getAnyElementId() {
+int RuleElementDst::getAnyElementId() const 
+{
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
@@ -256,7 +251,8 @@ RuleElementSrv::RuleElementSrv(const FWObjectDatabase *root,bool prepopulate) :
 }
 
 
-int RuleElementSrv::getAnyElementId() {
+int RuleElementSrv::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_SERVICE_ID;
 }
 
@@ -287,7 +283,7 @@ RuleElementItf::RuleElementItf(const FWObjectDatabase *root,bool prepopulate) :
         _initialize(root);
 }
 
-int RuleElementItf::getAnyElementId()
+int RuleElementItf::getAnyElementId() const
 {
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
@@ -371,7 +367,8 @@ RuleElementOSrc::RuleElementOSrc(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementOSrc::getAnyElementId() {
+int RuleElementOSrc::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
@@ -403,7 +400,8 @@ RuleElementODst::RuleElementODst(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementODst::getAnyElementId() {
+int RuleElementODst::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
@@ -435,7 +433,7 @@ RuleElementOSrv::RuleElementOSrv(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementOSrv::getAnyElementId()
+int RuleElementOSrv::getAnyElementId() const
 {
     return FWObjectDatabase::ANY_SERVICE_ID;
 }
@@ -470,7 +468,7 @@ RuleElementTSrc::RuleElementTSrc(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementTSrc::getAnyElementId()
+int RuleElementTSrc::getAnyElementId() const
 {
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
@@ -503,7 +501,8 @@ RuleElementTDst::RuleElementTDst(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementTDst::getAnyElementId() {
+int RuleElementTDst::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
@@ -535,7 +534,8 @@ RuleElementTSrv::RuleElementTSrv(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementTSrv::getAnyElementId() {
+int RuleElementTSrv::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_SERVICE_ID;
 }
 
@@ -581,7 +581,8 @@ RuleElementInterval::RuleElementInterval(const FWObjectDatabase *root,bool prepo
         _initialize(root);
 }
 
-int RuleElementInterval::getAnyElementId() {
+int RuleElementInterval::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_INTERVAL_ID;
 }
 
@@ -614,7 +615,8 @@ RuleElementRDst::RuleElementRDst(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementRDst::getAnyElementId() {
+int RuleElementRDst::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
@@ -645,7 +647,8 @@ RuleElementRGtw::RuleElementRGtw(const FWObjectDatabase *root,bool prepopulate) 
         _initialize(root);
 }
 
-int RuleElementRGtw::getAnyElementId() {
+int RuleElementRGtw::getAnyElementId() const
+{
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 

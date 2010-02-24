@@ -83,6 +83,15 @@ public:
      * of some object.
      */
     static FWObject* getObject(FWObject* obj);
+
+    /**
+     * Unlike getPointerId(), this method does not use cache when
+     * returns reference ID. This is faster and makes it possible to
+     * be const method but late initialization does not work when it
+     * is used.
+     */
+    int getPointerIdDirect() const { return int_ref; }
+
 };
 
 }

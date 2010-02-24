@@ -1,3 +1,13 @@
+2010-02-23  vadim  <vadim@vk.crocodile.org>
+
+	* RuleElement.cpp (RuleElement::isAny): made isAny() a const
+	method. Part of the great const-ification, see #2
+
+	* FWReference.h (libfwbuilder): added method getPinterIdDirect()
+	that just returns int_id. This is a const method, it does not
+	perform delayed initialization in case FWReference object only
+	has string id for the object it points to. See #2
+
 2010-02-18  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* Firewall.cpp (Firewall::duplicate): fixed #1254 ""locked" status

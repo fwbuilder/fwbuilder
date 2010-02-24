@@ -399,7 +399,7 @@ public:
 
     void clearChildren(bool recursive=true);
 
-    int getChildrenCount();
+    int getChildrenCount() const;
 
     virtual void dump(bool recursive,bool brief,int offset=0) const;
     virtual void dump(std::ostream &f,bool recursive,bool brief,int offset=0) const;
