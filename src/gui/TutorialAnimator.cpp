@@ -26,12 +26,18 @@ TutorialAnimator::TutorialAnimator(QObject *parent, QString commands) :
     //dynamic_cast<QWidget*>(parent)->grabKeyboard();
     //dynamic_cast<QWidget*>(parent)->grabMouse();
     dynamic_cast<QWidget*>(parent)->hide();
+    dynamic_cast<QWidget*>(parent)->setWindowModality(Qt::NonModal);
     currentCommand = 0;
     this->commands = commands.split('\n');
 
-    helper = new TutorialHelper();
+    helper = new TutorialHelper(this);
     connect(this, SIGNAL(finished()), this, SLOT(scenarioFinished()));
     this->speed = 50;
+}
+
+TutorialAnimator::~TutorialAnimator()
+{
+    delete helper;
 }
 
 void TutorialAnimator::scenarioFinished()
@@ -39,6 +45,7 @@ void TutorialAnimator::scenarioFinished()
     //dynamic_cast<QWidget*>(this->parent())->releaseKeyboard();
     //dynamic_cast<QWidget*>(this->parent())->releaseMouse();
 
+    dynamic_cast<QWidget*>(parent())->setWindowModality(Qt::ApplicationModal);
     dynamic_cast<QWidget*>(this->parent())->show();
     /*
     dynamic_cast<QWidget*>(this->parent())->grabMouse();
@@ -51,11 +58,15 @@ void TutorialAnimator::scenarioFinished()
 
 void TutorialAnimator::run()
 {
+    this->helper->blockMouse(true);
+    this->helper->blockInput(true);
     for (int i=0; i<this->commands.count(); i++)
     {
         animate(i);
         QTest::qWait(speed*20);
     }
+    this->helper->blockMouse(false);
+    this->helper->blockInput(false);
     //w->releaseKeyboard();
     //w->releaseMouse();
 }

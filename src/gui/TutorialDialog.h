@@ -16,6 +16,9 @@ public:
     ~TutorialDialog();
 
     QString getScenarioForPage(int page);
+    QString getUndoForPage(int page);
+    QString getResetForPage(int page);
+    void runScenario(QString scenario);
 
     void resizeEvent(QResizeEvent *);
 

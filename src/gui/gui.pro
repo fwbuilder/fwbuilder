@@ -174,10 +174,11 @@ HEADERS += ../../config.h \
     ClusterInterfaceWidget.h \
     FWCmdRule.h \
     UsageResolver.h \
-	IconSetter.h \
+    IconSetter.h \
     TutorialAnimator.h \
     TutorialDialog.h \
-    TutorialHelper.h
+    TutorialHelper.h \
+    MouseBlocker.h
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
     ProjectPanel_file_ops.cpp \
@@ -348,11 +349,12 @@ SOURCES += ProjectPanel.cpp \
     ClusterInterfacesSelectorWidget.cpp \
     ClusterInterfaceWidget.cpp \
     FWCmdRule.cpp \
-	IconSetter.cpp \
+    IconSetter.cpp \
     UsageResolver.cpp \
     TutorialAnimator.cpp \
     TutorialDialog.cpp \
-    TutorialHelper.cpp
+    TutorialHelper.cpp \
+    MouseBlocker.cpp
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
     customservicedialog_q.ui \

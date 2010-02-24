@@ -61,19 +61,43 @@ void TutorialDialog::next()
 
 void TutorialDialog::previous()
 {
+    runScenario(getUndoForPage(currentPage));
     currentPage--;
     showPage(currentPage);
 }
 
 void TutorialDialog::reset()
 {
+    runScenario(getResetForPage(currentPage));
     currentPage = 0;
     showPage(currentPage);
+}
+
+void TutorialDialog::runScenario(QString scenario)
+{
+    if (animator != NULL) animator->deleteLater();
+    animator = new TutorialAnimator(this, scenario);
+    animator->setSpeed(ui->speed->value());
+    animator->start();
 }
 
 QString TutorialDialog::getScenarioForPage(int page)
 {
     QFile src(QString(":/Tutorial/commands/page") + QString::number(page) + ".txt");
+    src.open(QFile::ReadOnly);
+    return QString(src.readAll());
+}
+
+QString TutorialDialog::getUndoForPage(int page)
+{
+    QFile src(QString(":/Tutorial/prev-commands/page") + QString::number(page) + ".txt");
+    src.open(QFile::ReadOnly);
+    return QString(src.readAll());
+}
+
+QString TutorialDialog::getResetForPage(int page)
+{
+    QFile src(QString(":/Tutorial/reset-commands/page") + QString::number(page) + ".txt");
     src.open(QFile::ReadOnly);
     return QString(src.readAll());
 }
@@ -96,14 +120,8 @@ void TutorialDialog::showPage(int page)
 void TutorialDialog::demonstrate()
 {
     ui->demonstrate->setEnabled(false);
-    if (animator != NULL) delete animator;
-    animator = new TutorialAnimator(this, getScenarioForPage(currentPage));
-    animator->setSpeed(ui->speed->value());
-    animator->start();
+    runScenario(getScenarioForPage(currentPage));
     ui->next->setEnabled(QFile::exists(QString(":/Tutorial/html/page") + QString::number(currentPage+1) + ".html"));
     if (QFile::exists(QString(":/Tutorial/html/page") + QString::number(currentPage+1) + ".html"))
-    {
         showPage(++currentPage);
-    }
-    //ui->message->setVisible(false);
 }

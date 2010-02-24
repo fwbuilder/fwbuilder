@@ -34,6 +34,7 @@ Q_OBJECT
 
 public:
     explicit TutorialAnimator(QObject *parent, QString commands);
+    ~TutorialAnimator();
     void run();
     void setSpeed(int speed);
 
