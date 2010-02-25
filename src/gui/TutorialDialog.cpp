@@ -9,25 +9,9 @@ TutorialDialog::TutorialDialog(QWidget *parent) :
     ui(new Ui::TutorialDialog_q)
 {
     ui->setupUi(this);
-    animator = NULL;
     currentPage = 0;
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
-    this->setWindowModality(Qt::ApplicationModal);
-
-    QFile f(QString(":/Tutorial/controls.txt"));
-    f.open(QFile::ReadOnly);
-    foreach(QString line, QString(f.readAll()).split("\n"))
-    {
-        QStringList parts = line.split(" ");
-        if (parts.size() < 3) continue;
-        bool ok;
-        int page = parts.at(0).toInt(&ok, 10);
-        prevEnabled[page] = parts.at(2) == "true";
-        requiresPrev[page] = parts.at(1) == "true";
-        qDebug() << requiresPrev;
-    }
-
-
+    //this->setWindowModality(Qt::ApplicationModal);
     showPage(currentPage);
 }
 
@@ -61,67 +45,25 @@ void TutorialDialog::next()
 
 void TutorialDialog::previous()
 {
-    runScenario(getUndoForPage(currentPage));
     currentPage--;
     showPage(currentPage);
 }
 
 void TutorialDialog::reset()
 {
-    runScenario(getResetForPage(currentPage));
     currentPage = 0;
     showPage(currentPage);
 }
 
-void TutorialDialog::runScenario(QString scenario)
-{
-    if (animator != NULL) animator->deleteLater();
-    animator = new TutorialAnimator(this, scenario);
-    animator->setSpeed(ui->speed->value());
-    animator->start();
-}
-
-QString TutorialDialog::getScenarioForPage(int page)
-{
-    QFile src(QString(":/Tutorial/commands/page") + QString::number(page) + ".txt");
-    src.open(QFile::ReadOnly);
-    return QString(src.readAll());
-}
-
-QString TutorialDialog::getUndoForPage(int page)
-{
-    QFile src(QString(":/Tutorial/prev-commands/page") + QString::number(page) + ".txt");
-    src.open(QFile::ReadOnly);
-    return QString(src.readAll());
-}
-
-QString TutorialDialog::getResetForPage(int page)
-{
-    QFile src(QString(":/Tutorial/reset-commands/page") + QString::number(page) + ".txt");
-    src.open(QFile::ReadOnly);
-    return QString(src.readAll());
-}
-
 void TutorialDialog::showPage(int page)
 {
-    ui->demonstrate->setEnabled(true);
     QString filename = QString(":/Tutorial/html/page") + QString::number(page) + ".html";
     QFile src(filename);
     src.open(QFile::ReadOnly);
     QString text = src.readAll();
     ui->content->setText(text);
-    qDebug() << "next should be enabled:" << page+1 << requiresPrev[page+1];
     bool nextPageExists = QFile::exists(QString(":/Tutorial/html/page") + QString::number(page+1) + ".html");
-    ui->next->setEnabled(nextPageExists && (!requiresPrev[page+1]));
-    ui->message->setVisible(nextPageExists && requiresPrev[page+1]);
-    ui->prev->setEnabled(prevEnabled[page]);
-}
-
-void TutorialDialog::demonstrate()
-{
-    ui->demonstrate->setEnabled(false);
-    runScenario(getScenarioForPage(currentPage));
-    ui->next->setEnabled(QFile::exists(QString(":/Tutorial/html/page") + QString::number(currentPage+1) + ".html"));
-    if (QFile::exists(QString(":/Tutorial/html/page") + QString::number(currentPage+1) + ".html"))
-        showPage(++currentPage);
+    bool prevPageExists = QFile::exists(QString(":/Tutorial/html/page") + QString::number(page-1) + ".html");
+    ui->next->setEnabled(nextPageExists);
+    ui->prev->setEnabled(prevPageExists);
 }

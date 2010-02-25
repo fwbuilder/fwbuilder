@@ -2,7 +2,6 @@
 #define TUTORIALDIALOG_H
 
 #include <QDialog>
-#include "TutorialAnimator.h"
 
 
 namespace Ui {
@@ -28,15 +27,11 @@ protected:
 private:
     Ui::TutorialDialog_q *ui;
     int currentPage;
-    TutorialAnimator *animator;
-    QMap<int, bool> prevEnabled;
-    QMap<int, bool> requiresPrev;
 
 public slots:
     void previous();
     void next();
     void reset();
-    void demonstrate();
     void showPage(int page);
 };
 

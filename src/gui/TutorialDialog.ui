@@ -31,7 +31,7 @@
         <x>0</x>
         <y>0</y>
         <width>136</width>
-        <height>494</height>
+        <height>562</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -62,72 +62,6 @@
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Speed:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSlider" name="speed">
-       <property name="maximumSize">
-        <size>
-         <width>150</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="minimum">
-        <number>30</number>
-       </property>
-       <property name="maximum">
-        <number>100</number>
-       </property>
-       <property name="value">
-        <number>50</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="invertedAppearance">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="demonstrate">
-       <property name="text">
-        <string>Demonstrate</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="message">
-     <property name="text">
-      <string>View demonstration to proceed to next step.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
     </widget>
    </item>
    <item>
@@ -205,6 +139,19 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
@@ -212,14 +159,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>next</sender>
+   <sender>reset</sender>
    <signal>clicked()</signal>
    <receiver>TutorialDialog_q</receiver>
-   <slot>next()</slot>
+   <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>421</x>
-     <y>514</y>
+     <x>340</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
      <x>241</x>
@@ -234,8 +181,8 @@
    <slot>previous()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>217</x>
-     <y>514</y>
+     <x>242</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
      <x>241</x>
@@ -244,14 +191,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>reset</sender>
+   <sender>next</sender>
    <signal>clicked()</signal>
    <receiver>TutorialDialog_q</receiver>
-   <slot>reset()</slot>
+   <slot>next()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>514</y>
+     <x>438</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
      <x>241</x>
@@ -260,18 +207,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>demonstrate</sender>
+   <sender>pushButton</sender>
    <signal>clicked()</signal>
    <receiver>TutorialDialog_q</receiver>
-   <slot>demonstrate()</slot>
+   <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>410</x>
-     <y>472</y>
+     <x>507</x>
+     <y>603</y>
     </hint>
     <hint type="destinationlabel">
-     <x>241</x>
-     <y>271</y>
+     <x>551</x>
+     <y>609</y>
     </hint>
    </hints>
   </connection>
@@ -280,6 +227,5 @@
   <slot>previous()</slot>
   <slot>next()</slot>
   <slot>reset()</slot>
-  <slot>demonstrate()</slot>
  </slots>
 </ui>

@@ -292,18 +292,13 @@
         <file>Images/fwbuilder3-128x128.png</file>
         <file>Images/fwbuilder3.png</file>
         <file>Tutorial/html/page0.html</file>
-        <file>Tutorial/commands/page0.txt</file>
         <file>Tutorial/images/0.png</file>
         <file>Tutorial/images/1.png</file>
         <file>Tutorial/images/2.png</file>
         <file>Tutorial/images/3.png</file>
         <file>Tutorial/images/new_button.png</file>
         <file>Tutorial/html/page1.html</file>
-        <file>Tutorial/commands/page1.txt</file>
-        <file>Tutorial/controls.txt</file>
         <file>Tutorial/html/page2.html</file>
         <file>Tutorial/html/page3.html</file>
-        <file>Tutorial/commands/page2.txt</file>
-        <file>Tutorial/commands/page3.txt</file>
     </qresource>
 </RCC>

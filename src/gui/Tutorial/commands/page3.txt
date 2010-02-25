@@ -1,5 +1,0 @@
-selectTab w#newFirewallDialog interfaceEditor2 1
-selectTab w#newFirewallDialog interfaceEditor2 2
-selectTab w#newFirewallDialog interfaceEditor2 0
-moveMouse w#newFirewallDialog finishButton
-clickWidget w#newFirewallDialog finishButton

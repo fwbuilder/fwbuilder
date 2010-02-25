@@ -1,4 +1,0 @@
-moveMouse om newButton
-clickWidget om newButton
-hoverMenuItem newObjectPopup New\_Firewall
-clickMenuItem newObjectPopup New\_Firewall

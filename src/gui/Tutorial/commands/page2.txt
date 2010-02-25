@@ -1,3 +1,0 @@
-selectListItem w#newFirewallDialog templateList fw\_template\_3
-moveMouse w#newFirewallDialog nextButton
-clickWidget w#newFirewallDialog nextButton
