@@ -1,3 +1,9 @@
+2010-02-25  vadim  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::getPrivateData): added facility for
+	storing arbitrary blocks of user data with FWObject objects, keyed
+	by a std::string key.
+
 2010-02-23  vadim  <vadim@vk.crocodile.org>
 
 	* RuleElement.cpp (RuleElement::isAny): made isAny() a const

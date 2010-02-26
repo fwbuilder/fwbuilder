@@ -231,6 +231,18 @@ FWObject::~FWObject()
     init = true;  // ignore read-only
     destroyChildren();
     data.clear();
+    private_data.clear();
+}
+
+void FWObject::setPrivateData(const string &key, void *data)
+{
+    private_data[key] = data;
+}
+
+void* FWObject::getPrivateData(const string &key) const
+{
+    map<string, void*>::const_iterator it = private_data.find(key);
+    return it->second;
 }
 
 FWObject* FWObject::getParent() const

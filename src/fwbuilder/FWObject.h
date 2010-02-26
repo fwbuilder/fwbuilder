@@ -127,6 +127,7 @@ protected:
     bool                dirty;
     
     std::map<std::string, std::string> data;
+    std::map<std::string, void*> private_data;
 
     void clearRefCounter() { ref_counter=0; }
 
@@ -298,6 +299,9 @@ public:
     void storeCreationTime() { creation_time = time(NULL); }
     time_t getCreationTime() { return creation_time; }
 
+    void setPrivateData(const std::string &key, void *data);
+    void* getPrivateData(const std::string &key) const;
+    
     /**
      * convenience method: returns the name of the library this object belongs to.
      * In fwbuilder2 library is an element directly under FWObjectDatabase; all
