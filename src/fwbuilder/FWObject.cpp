@@ -242,7 +242,10 @@ void FWObject::setPrivateData(const string &key, void *data)
 void* FWObject::getPrivateData(const string &key) const
 {
     map<string, void*>::const_iterator it = private_data.find(key);
-    return it->second;
+    if(it == private_data.end())
+        return NULL;
+    else
+        return it->second;
 }
 
 FWObject* FWObject::getParent() const
