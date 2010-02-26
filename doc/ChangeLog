@@ -1,3 +1,9 @@
+2010-02-25  Roman Bovsunivkiy     a2k0001@gmail.com
+
+	* TutorialDialog.cpp (TutorialDialog::TutorialDialog): in-program
+	tutorial "Getting Started". Activated using menu Help/Tutorial.
+	Refs #1217
+
 2010-02-19  vadim  <vadim@vk.crocodile.org>
 
 	* ProjectPanel_state_ops.cpp (ProjectPanel::loadState): refs #1236
