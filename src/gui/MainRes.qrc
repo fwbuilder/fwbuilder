@@ -1,5 +1,34 @@
 <RCC>
   <qresource prefix="/">
+    <file>Tutorial/html/page10.html</file>
+    <file>Tutorial/html/page11.html</file>
+    <file>Tutorial/html/page12.html</file>
+    <file>Tutorial/html/page13.html</file>
+    <file>Tutorial/html/page14.html</file>
+    <file>Tutorial/html/page15.html</file>
+    <file>Tutorial/html/page16.html</file>
+    <file>Tutorial/html/page17.html</file>
+    <file>Tutorial/html/page18.html</file>
+    <file>Tutorial/images/10.png</file>
+    <file>Tutorial/images/11.png</file>
+    <file>Tutorial/images/12.png</file>
+    <file>Tutorial/images/13.png</file>
+    <file>Tutorial/images/14.png</file>
+    <file>Tutorial/images/15.png</file>
+    <file>Tutorial/images/16.png</file>
+    <file>Tutorial/images/17.png</file>
+    <file>Tutorial/images/18.png</file>
+    <file>Tutorial/html/page5.html</file>
+    <file>Tutorial/html/page6.html</file>
+    <file>Tutorial/html/page7.html</file>
+    <file>Tutorial/html/page8.html</file>
+    <file>Tutorial/html/page9.html</file>
+    <file>Tutorial/images/5.png</file>
+    <file>Tutorial/images/6.png</file>
+    <file>Tutorial/images/7.png</file>
+    <file>Tutorial/images/8.png</file>
+    <file>Tutorial/images/9-1.png</file>
+    <file>Tutorial/images/9-2.png</file>
     <file>Tutorial/images/4.png</file>
     <file>Tutorial/html/page4.html</file>
     <file alias="Icons/Accept/icon">Icons/accept_25.png</file>
