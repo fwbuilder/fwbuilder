@@ -1,8 +1,9 @@
+#!/usr/bin/env python
+
 import os
 import sys
-from glob import glob
 import re
-#
+from glob import glob
 
 OBJRE = re.compile("^OBJECTS_DIR\s*=\s*(.*)\n", re.MULTILINE)
 MOCRE = re.compile("^MOC_DIR\s*=\s*(.*)\n", re.MULTILINE)
@@ -53,7 +54,7 @@ for directory in directories:
         basename = os.path.basename(file)
         noext = '.'.join(basename.split('.')[:-1])
         obj = os.path.join(objdir, noext+".o")
-        moc = os.path.join(mocdir, noext+".o")
+        moc = os.path.join(mocdir, "moc_"+basename)
         if os.path.exists(obj):
             print "deleting", obj
             os.remove(obj)
