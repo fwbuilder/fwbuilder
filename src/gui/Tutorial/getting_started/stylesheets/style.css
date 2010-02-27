@@ -4,4 +4,19 @@ p {
     font-size: 14pt;
 }
 
+.header td {
+    font-family: Arial, Helvetica, "Sans Serif", sans-serif;
+    font-size: 10pt;
+    color: #CCCCCC;
+    height: 70%;
+}
+
+.header th {
+    font-family: Arial, Helvetica, "Sans Serif", sans-serif;
+    font-size: 14pt;
+    color: black;
+    height: 70%;
+}
+
 img { margin-top: 10px; }
+
