@@ -36,9 +36,9 @@ namespace Ui {
 class TutorialDialog : public QDialog {
     Q_OBJECT
 public:
-    TutorialDialog(QWidget *parent = 0);
+    TutorialDialog(QString tutorial, QWidget *parent = 0);
     ~TutorialDialog();
-
+    QString tutorial;
     QString getScenarioForPage(int page);
     QString getUndoForPage(int page);
     QString getResetForPage(int page);

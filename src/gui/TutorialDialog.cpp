@@ -29,10 +29,19 @@
 #include <QDebug>
 #include <QFile>
 
-TutorialDialog::TutorialDialog(QWidget *parent) :
+TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TutorialDialog_q)
 {
+    this->tutorial = tutorial;
+    QString stylefile = QString(":/Tutorial/") + this->tutorial + "/stylesheets/style.css";
+    QFile f(stylefile);
+    if (f.exists())
+    {
+        f.open(QFile::ReadOnly);
+        QString stylesheet = f.readAll();
+        ui->content->setStyleSheet(stylesheet);
+    }
     ui->setupUi(this);
     currentPage = 0;
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
@@ -82,13 +91,14 @@ void TutorialDialog::reset()
 
 void TutorialDialog::showPage(int page)
 {
-    QString filename = QString(":/Tutorial/html/page") + QString::number(page) + ".html";
+    QString filename = QString(":/Tutorial/") + this->tutorial + "/html/page" + QString::number(page) + ".html";
+    qDebug() << filename;
     QFile src(filename);
     src.open(QFile::ReadOnly);
     QString text = src.readAll();
     ui->content->setText(text);
-    bool nextPageExists = QFile::exists(QString(":/Tutorial/html/page") + QString::number(page+1) + ".html");
-    bool prevPageExists = QFile::exists(QString(":/Tutorial/html/page") + QString::number(page-1) + ".html");
+    bool nextPageExists = QFile::exists(QString(":/Tutorial/") + this->tutorial + "/html/page" + QString::number(page+1) + ".html");
+    bool prevPageExists = QFile::exists(QString(":/Tutorial/") + this->tutorial + "/html/page" + QString::number(page-1) + ".html");
     ui->next->setEnabled(nextPageExists);
     ui->prev->setEnabled(prevPageExists);
 }

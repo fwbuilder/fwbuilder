@@ -773,12 +773,18 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <widget class="QMenu" name="menuTutorial">
+     <property name="title">
+      <string>Tutorial</string>
+     </property>
+     <addaction name="actionGetting_started"/>
+    </widget>
     <addaction name="helpAboutAction"/>
     <addaction name="welcome_action"/>
     <addaction name="helpAction"/>
     <addaction name="release_Notes_Action"/>
     <addaction name="debugAction"/>
-    <addaction name="actionTutorial"/>
+    <addaction name="menuTutorial"/>
    </widget>
    <widget class="QMenu" name="RulesMenu">
     <property name="title">
@@ -1458,9 +1464,9 @@
     <string>Welcome</string>
    </property>
   </action>
-  <action name="actionTutorial">
+  <action name="actionGetting_started">
    <property name="text">
-    <string>Tutorial</string>
+    <string>Getting started</string>
    </property>
   </action>
  </widget>
@@ -2491,7 +2497,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionTutorial</sender>
+   <sender>actionGetting_started</sender>
    <signal>triggered()</signal>
    <receiver>FWBMainWindow_q</receiver>
    <slot>showTutorial()</slot>

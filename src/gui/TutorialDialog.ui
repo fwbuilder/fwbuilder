@@ -30,7 +30,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>124</width>
+        <width>136</width>
         <height>562</height>
        </rect>
       </property>
@@ -49,18 +49,6 @@
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QLabel" name="content">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>0</height>
-          </size>
-         </property>
          <property name="text">
           <string>HTML will be here</string>
          </property>
@@ -68,6 +56,9 @@
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
          <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
           <bool>true</bool>
          </property>
         </widget>

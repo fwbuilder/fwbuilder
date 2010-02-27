@@ -1436,7 +1436,7 @@ void FWWindow::showWelcome()
 
 void FWWindow::showTutorial()
 {
-    TutorialDialog *dialog = new TutorialDialog(this);
+    TutorialDialog *dialog = new TutorialDialog(sender()->objectName().remove(0,6).toLower(), this);
     dialog->show();
 }
 
