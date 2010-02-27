@@ -331,5 +331,6 @@
         <file>Tutorial/getting_started/images/17.png</file>
         <file>Tutorial/getting_started/images/18.png</file>
         <file>Tutorial/getting_started/images/new_button.png</file>
+        <file>Tutorial/getting_started/stylesheets/style.css</file>
     </qresource>
 </RCC>

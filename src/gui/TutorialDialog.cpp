@@ -33,6 +33,7 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TutorialDialog_q)
 {
+    ui->setupUi(this);
     this->tutorial = tutorial;
     QString stylefile = QString(":/Tutorial/") + this->tutorial + "/stylesheets/style.css";
     QFile f(stylefile);
@@ -42,7 +43,6 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
         QString stylesheet = f.readAll();
         ui->content->setStyleSheet(stylesheet);
     }
-    ui->setupUi(this);
     currentPage = 0;
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     //this->setWindowModality(Qt::ApplicationModal);
