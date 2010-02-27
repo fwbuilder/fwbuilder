@@ -55,7 +55,7 @@ parse_current_vlans() {
     $IFCONFIG -A | grep 'vlan: ' | sed 's/priority:.*parent interface://' | \
     while read x vlan_id parent
     do
-       echo "vlan$vlan_id@$parent"
+       test "$parent" = "$vlan_parent_interface" && echo "vlan$vlan_id@$parent"
     done | sort
 }
 

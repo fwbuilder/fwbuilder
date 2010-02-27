@@ -1,3 +1,8 @@
+2010-02-26  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/res/configlets/bsd/update_vlans: fixes #1275 "script
+	always deletes, then adds vlans back on OpenBSD"
+
 2010-02-25  Roman Bovsunivkiy     a2k0001@gmail.com
 
 	* TutorialDialog.cpp (TutorialDialog::TutorialDialog): in-program
