@@ -23,11 +23,14 @@
 
 */
 
+#include "global.h"
+
 #include "TutorialDialog.h"
 #include "ui_TutorialDialog.h"
 
 #include <QDebug>
 #include <QFile>
+
 
 TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     QDialog(parent),
@@ -35,14 +38,18 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
 {
     ui->setupUi(this);
     this->tutorial = tutorial;
+    doc = new QTextDocument(this);
+
     QString stylefile = QString(":/Tutorial/") + this->tutorial + "/stylesheets/style.css";
     QFile f(stylefile);
     if (f.exists())
     {
         f.open(QFile::ReadOnly);
-        QString stylesheet = f.readAll();
-        ui->content->setStyleSheet(stylesheet);
+        css_stylesheet = f.readAll();
+        doc->setDefaultStyleSheet(css_stylesheet);
+        //ui->contents->setStyleSheet(stylesheet);
     }
+    ui->contents->setDocument(doc);
     currentPage = 0;
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     //this->setWindowModality(Qt::ApplicationModal);
@@ -51,7 +58,7 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
 
 void TutorialDialog::resizeEvent(QResizeEvent *)
 {
-//    ui->content->setMaximumWidth(ui->scrollArea->viewport()->width());
+//    ui->contents->setMaximumWidth(ui->scrollArea->viewport()->width());
 }
 
 TutorialDialog::~TutorialDialog()
@@ -92,11 +99,11 @@ void TutorialDialog::reset()
 void TutorialDialog::showPage(int page)
 {
     QString filename = QString(":/Tutorial/") + this->tutorial + "/html/page" + QString::number(page) + ".html";
-    qDebug() << filename;
+    if (fwbdebug) qDebug() << filename;
     QFile src(filename);
     src.open(QFile::ReadOnly);
     QString text = src.readAll();
-    ui->content->setText(text);
+    doc->setHtml(text);
     bool nextPageExists = QFile::exists(QString(":/Tutorial/") + this->tutorial + "/html/page" + QString::number(page+1) + ".html");
     bool prevPageExists = QFile::exists(QString(":/Tutorial/") + this->tutorial + "/html/page" + QString::number(page-1) + ".html");
     ui->next->setEnabled(nextPageExists);

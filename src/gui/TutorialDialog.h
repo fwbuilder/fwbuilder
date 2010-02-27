@@ -27,6 +27,7 @@
 #define TUTORIALDIALOG_H
 
 #include <QDialog>
+#include <QTextDocument>
 
 
 namespace Ui {
@@ -34,16 +35,19 @@ namespace Ui {
 }
 
 class TutorialDialog : public QDialog {
-    Q_OBJECT
+    Q_OBJECT;
 public:
     TutorialDialog(QString tutorial, QWidget *parent = 0);
     ~TutorialDialog();
     QString tutorial;
+    QString css_stylesheet;
+    QTextDocument *doc;
+
     QString getScenarioForPage(int page);
     QString getUndoForPage(int page);
     QString getResetForPage(int page);
-    void runScenario(QString scenario);
 
+    void runScenario(QString scenario);
     void resizeEvent(QResizeEvent *);
 
 protected:

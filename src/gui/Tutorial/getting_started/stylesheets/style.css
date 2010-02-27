@@ -1,3 +1,7 @@
+
 p {
-    margin: 20px;
-};
+    font-family: Arial, Helvetica, "Sans Serif", sans-serif;
+    font-size: 14pt;
+}
+
+img { margin-top: 10px; }

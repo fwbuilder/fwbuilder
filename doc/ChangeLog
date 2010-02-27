@@ -1,5 +1,9 @@
 2010-02-26  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/gui/TutorialDialog.cpp (TutorialDialog::showPage):
+	TutorialDialog supports multiple tutorials. Each tutorial
+	is presented in HTML with accompanying CSS stylesheet. fixes #1274
+
 	* ../src/res/configlets/bsd/update_vlans: fixes #1275 "script
 	always deletes, then adds vlans back on OpenBSD"
 
