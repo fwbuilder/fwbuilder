@@ -375,8 +375,10 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib
 
 run.commands = echo "Running tests..." \
     rm *.gc??;\
+    cp -f test_data.fwb test_data_work.fwb; \
     ./${TARGET} && \
-    echo "OK" || echo "FAILED"
+    echo "OK" || echo "FAILED"; \
+    rm test_data_work.fwb;
 run.depends = all
 QMAKE_EXTRA_TARGETS += run
 

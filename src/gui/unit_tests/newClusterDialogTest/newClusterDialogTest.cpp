@@ -46,7 +46,7 @@ void newClusterDialogTest::test1()
     //init();
     FWObjectDatabase *db = new FWObjectDatabase();
     XMLTools::UpgradePredicate p;
-    db->load("test_data.fwb", &p, librespath);
+    db->load("test_data_work.fwb", &p, librespath);
     newClusterDialog_ext *dialog = new newClusterDialog_ext(db);
     vector<FWObject*> fws;
     QStringList fwnames;
@@ -162,7 +162,7 @@ void newClusterDialogTest::test2()
 
     mw = new FWWindow();
 
-    mw->loadFile("test_data.fwb", false);
+    mw->loadFile("test_data_work.fwb", false);
 
     FWObjectDatabase *db = mw->db();
     Library *lib = NULL;
@@ -303,7 +303,7 @@ void newClusterDialogTest::test3()
 {
     new FWObjectClipboard();
 
-    mw->loadFile("test_data.fwb", false);
+    mw->loadFile("test_data_work.fwb", false);
 
     FWObjectDatabase *db = mw->db();
     Library *lib = NULL;
