@@ -182,9 +182,7 @@ SOURCES += main_instDialogTest.cpp \
     ../../ClusterInterfaceWidget.cpp \
     ../../FWCmdRule.cpp \
     ../../UsageResolver.cpp \
-    ../../TutorialDialog.cpp \
-    ../../TutorialAnimator.cpp \
-    ../../TutorialHelper.cpp
+    ../../TutorialDialog.cpp
 
 HEADERS += instDialogTest.h \
     ../../../../config.h \
@@ -346,9 +344,7 @@ HEADERS += instDialogTest.h \
     ../../ClusterInterfaceWidget.h \
     ../../FWCmdRule.h \
     ../../UsageResolver.h \
-    ../../TutorialDialog.h \
-    ../../TutorialAnimator.h \
-    ../../TutorialHelper.h
+    ../../TutorialDialog.h
 
 CONFIG -= release
 CONFIG += debug
