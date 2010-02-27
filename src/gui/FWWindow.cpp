@@ -1434,9 +1434,19 @@ void FWWindow::showWelcome()
     }
 }
 
+/**
+ * Tutorials are activated by actions attached to menu items under
+ * main menu Help.  Each action must have a name that consits of word
+ * "action" and the name of the tutorial, spearated by an
+ * underscore. For example: "action_getting_started". The name of the
+ * corresponding tutorial is "getting_started", which should match the
+ * name of subdirectory under src/gui/Tutorial. Names of tutorials
+ * (and directories under src/gui/Tutorial) are always all lower-case.
+ */
 void FWWindow::showTutorial()
 {
-    TutorialDialog *dialog = new TutorialDialog(sender()->objectName().remove(0,6).toLower(), this);
+    TutorialDialog *dialog = new TutorialDialog(
+        sender()->objectName().remove(0,7).toLower(), this);
     dialog->show();
 }
 

@@ -777,7 +777,7 @@
      <property name="title">
       <string>Tutorial</string>
      </property>
-     <addaction name="actionGetting_started"/>
+     <addaction name="action_getting_started"/>
     </widget>
     <addaction name="helpAboutAction"/>
     <addaction name="welcome_action"/>
@@ -1464,7 +1464,7 @@
     <string>Welcome</string>
    </property>
   </action>
-  <action name="actionGetting_started">
+  <action name="action_getting_started">
    <property name="text">
     <string>Getting started</string>
    </property>
@@ -2497,7 +2497,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionGetting_started</sender>
+   <sender>action_getting_started</sender>
    <signal>triggered()</signal>
    <receiver>FWBMainWindow_q</receiver>
    <slot>showTutorial()</slot>
