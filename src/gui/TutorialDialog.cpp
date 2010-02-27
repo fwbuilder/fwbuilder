@@ -37,6 +37,7 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     ui(new Ui::TutorialDialog_q)
 {
     ui->setupUi(this);
+    ui->contents->setOpenExternalLinks(true);
     this->tutorial = tutorial;
     doc = new QTextDocument(this);
 
