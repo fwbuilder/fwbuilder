@@ -1,3 +1,9 @@
+2010-02-27  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/gui/Tutorial/getting_started/html/page0.html: "Getting
+	Started" turorial is complete, it can be activated using main menu
+	item "Help/Tutorials/Getting Started".
+
 2010-02-27  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* unit_tests.sh (commands): Using Xvfb for GUI unit tests so they
