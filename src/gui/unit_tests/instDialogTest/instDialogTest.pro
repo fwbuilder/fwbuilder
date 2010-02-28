@@ -346,6 +346,7 @@ HEADERS += instDialogTest.h \
     ../../UsageResolver.h \
     ../../TutorialDialog.h
 
+RESOURCES += ../../MainRes.qrc
 CONFIG -= release
 CONFIG += debug
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
@@ -373,7 +374,9 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib
 
 
 run.commands = echo "Running tests..." \
-    && ./${TARGET}
+    cp -f test.fwb test_work.fwb; \    
+    ./${TARGET}; \
+    rm test_work.fwb
 run.depends = all
 QMAKE_EXTRA_TARGETS += run
 
