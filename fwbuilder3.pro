@@ -7,10 +7,10 @@ SUBDIRS = src doc
 
 DOLLAR = $
 
-build_tests.commands = ./unit_tests.sh make build
+build_tests.commands = ./unit_tests.sh make build_tests
 build_tests.depends = all
 
-run_tests.commands = ./unit_tests.sh make run
+run_tests.commands = ./unit_tests.sh make run_tests
 run_tests.depends = all
 
 testclean.commands = /usr/bin/env python testclean.py

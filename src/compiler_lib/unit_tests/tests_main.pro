@@ -50,11 +50,12 @@ win32:CONFIG += console
 win32:LIBS += ../../common/release/common.lib
 win32:PRE_TARGETDEPS = ../../common/release/common.lib
 
-run.commands = echo "Running tests..." && \
+run_tests.commands = echo "Running tests..." && \
     ./${TARGET} && \
     echo "OK" || { echo "FAILED"; exit 1; }
-run.depends = all
+run_tests.depends = run
+build_tests.depends = all
+clean_tests.depends = all
+QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
-build.depends = all
-QMAKE_EXTRA_TARGETS += run build
 

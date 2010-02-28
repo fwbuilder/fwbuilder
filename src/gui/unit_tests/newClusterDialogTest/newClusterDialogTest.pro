@@ -374,17 +374,16 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib
 
 
 
-run.commands = echo "Running tests..." \
+run_tests.commands = echo "Running tests..." \
     rm *.gc??;\
     cp -f test_data.fwb test_data_work.fwb; \
     ./${TARGET} && \
     echo "OK" || echo "FAILED"; \
     rm test_data_work.fwb;
-run.depends = all
-run_test.depends = run
-build_test.depends = all
-clean_test.depends = all
-QMAKE_EXTRA_TARGETS += run run_test build_test clean_test
+run_tests.depends = run
+build_tests.depends = all
+clean_tests.depends = all
+QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 
 contains( HAVE_ANTLR_RUNTIME, 1 ) {

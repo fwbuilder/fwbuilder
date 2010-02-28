@@ -42,12 +42,11 @@ QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 LIBS += -lgcov -lcppunit
 
-run.commands = echo "Running tests..." && ./${TARGET} && echo "OK" || echo "FAILED"
-run.depends = all
-run_test.depends = run
-build_test.depends = all
-clean_test.depends = all
-QMAKE_EXTRA_TARGETS += run run_test build_test clean_test
+run_tests.commands = echo "Running tests..." && ./${TARGET} && echo "OK" || echo "FAILED"
+run_tests.depends = run
+build_tests.depends = all
+clean_tests.depends = all
+QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 INCLUDEPATH += ../../../common \
         ../../../iptlib \

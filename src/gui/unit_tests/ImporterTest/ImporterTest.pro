@@ -68,13 +68,12 @@ LIBS		 += ../../../parsers/libfwbparser.a  $$ANTLR_LIBS
 DEFINES		 += $$ANTLR_DEFINES
 
 
-run.commands = echo "Running tests..." && \
+run_tests.commands = echo "Running tests..." && \
     ./${TARGET} && echo "Running gcov..." && \
     gcov ${SOURCES} >/dev/null 2>/dev/null && \
     echo "OK" || { echo "FAILED"; exit 1; }
 
-run.depends = all
-run_test.depends = run
-build_test.depends = all
-clean_test.depends = all
-QMAKE_EXTRA_TARGETS += run run_test build_test clean_test
+run_tests.depends = run
+build_tests.depends = all
+clean_tests.depends = all
+QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
