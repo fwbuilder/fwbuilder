@@ -16,7 +16,7 @@ void instDialogTest::initTestCase()
 {
     mw = new FWWindow();
     mw->show();
-    mw->loadFile("test.fwb", false);
+    mw->loadFile("test_work.fwb", false);
     FWObjectClipboard *clip = new FWObjectClipboard();
 }
 
