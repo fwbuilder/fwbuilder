@@ -346,6 +346,7 @@ HEADERS += newClusterDialogTest.h \
     ../../IconSetter.h \
     ../../TutorialDialog.h
 
+RESOURCES += ../../MainRes.qrc
 CONFIG -= release
 CONFIG += debug
 OBJECTS_DIR = ../../.obj
