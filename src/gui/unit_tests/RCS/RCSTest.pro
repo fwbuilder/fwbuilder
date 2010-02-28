@@ -44,8 +44,10 @@ LIBS += -lgcov -lcppunit
 
 run.commands = echo "Running tests..." && ./${TARGET} && echo "OK" || echo "FAILED"
 run.depends = all
-
-QMAKE_EXTRA_TARGETS += run
+run_test.depends = run
+build_test.depends = all
+clean_test.depends = all
+QMAKE_EXTRA_TARGETS += run run_test build_test clean_test
 
 INCLUDEPATH += ../../../common \
         ../../../iptlib \
