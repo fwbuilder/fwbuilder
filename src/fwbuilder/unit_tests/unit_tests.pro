@@ -1,5 +1,8 @@
 DOLLAR = $
 
+QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
+LIBS += $$CPPUNIT_LIBS
+
 build.commands = echo "Building tests..."; \
                ./unit_tests.sh make
 

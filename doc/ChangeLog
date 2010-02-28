@@ -1,3 +1,7 @@
+2010-02-27  vadim  <vadim@vk.crocodile.org>
+
+	* configure.in: find cppunit library for unit tests
+
 2010-02-25  vadim  <vadim@vk.crocodile.org>
 
 	* FWObject.cpp (FWObject::getPrivateData): added facility for

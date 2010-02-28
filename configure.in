@@ -317,7 +317,11 @@ AC_CHECK_LIB(z, gzopen, [ LIBS="-lz ${LIBS}"], [
 
 AC_LANG([C++])
 
-
+AM_PATH_CPPUNIT(1.12.0, [HAVE_CPPUNIT="1"])
+AC_DEFINE_UNQUOTED(HAVE_CPPUNIT, $HAVE_CPPUNIT)
+AC_SUBST(HAVE_CPPUNIT)
+AC_SUBST(CPPUNIT_CFLAGS)
+AC_SUBST(CPPUNIT_LIBS)
 
 dnl Check for bind specific headers and libraries
 dnl if they are present, use them, rather than ones
