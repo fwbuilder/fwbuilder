@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<body>
+<div class="header">
+  <table border="0">
+    <tr>
+      <th align="center" width="100%">Getting Started</th>
+      <td align="right">Page 32</td>
+  </tr>
+  </table>
+  <hr/>
+</div>
+
+<p>
+  Firewall Builder can also transfer generated script to the firewall
+  and activate it there. It uses ssh to do this (putty on Windows). To
+  use the installer, click on the "Install" toolbar button located
+  above the firewall policy panel or in the main toolbar. Firewall
+  Builder will compile the policy (if it is not compiled already) and
+  then open a dialog where you can configure the parameters of the
+  installer. Here you need to enter a password to authenticate to the
+  firewall. Section Section 8.7 of the Users Guide has detailed
+  instructions for setting up and using the installer.
+</p>
+
+<p>
+  Firewall Builder 4.0 can cache password you entered so you don't
+  have to enter it again and again if you need to reinstall firewall
+  policy several times. The password is never stored on disk in any
+  form, it is only cached in the memory of the running fwbuilder
+  process and discarded when you stop the program. You will need to
+  enter it again when you use the program again after that. However
+  this feature really helps speed up policy update if you need to do
+  it several times. To activate it you need to turn it on in the
+  "Installer" tab of the global preferences dialog (menu Edit /
+  Preferences) and then turn on checkbox "Remember passwords" in the
+  installer dialog. Passwords are stored in a dictionary indexed by
+  the firewall name and user name configured in the "Installer" tab of
+  the firewall object dialog. This means you can have different
+  passwords for different firewall objects.
+</p>
+
+<p>
+  <img src=":/Tutorial/getting_started/images/32.png">
+</p>
+</body>
+</html>

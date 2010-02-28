@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<body>
+<div class="header">
+  <table border="0">
+    <tr>
+      <th align="center" width="100%">Getting Started</th>
+      <td align="right">Page 27</td>
+  </tr>
+  </table>
+  <hr/>
+</div>
+
+<p>
+  Access policy rules belong to the object "Policy", which is a child
+  object of the firewall and can be found in the tree below it. As
+  with any other object in Firewall Builder, the Policy object has
+  some attributes that you can edit if you double-click on it in the
+  tree.
+</p>
+
+<p>
+  <ul>
+    <li>
+      Policy can be IPv4, IPv6, or combined IPv4 and IPv6. In the last
+      case you can use a mix of IPv4 and IPv6 address objects in the
+      same policy (in different rules), and Firewall Builder will
+      automatically figure out which one is which and sort them out.
+    </li>
+
+    <li>
+      Policy can translate into only the mangle table (used for
+      modifying packets) or a combination of the filter table (used
+      for allowing/blocking packets) and the mangle table. In the
+      latter case, the policy compiler decides which table to use
+      based on the rule action and service object. Some actions, such
+      as "Tag" (which translates into iptables target MARK), go into
+      mangle table.
+    </li>
+
+    <li>
+      The "Top rule set" is the one the compiler will use to populate
+      iptables built-in chains INPUT/OUTPUT/FORWARD. (If you have only
+      one rule set, then mark it as the top rule set.) If a policy is
+      not marked as "top rule set", generated rules will go into a
+      user-defined chain with the same name as the policy object.
+    </li>
+  </ul>
+</p>
+
+<p>
+  <img src=":/Tutorial/getting_started/images/27.png">
+</p>
+</body>
+</html>

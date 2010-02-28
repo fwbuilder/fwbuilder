@@ -310,6 +310,20 @@
         <file>Tutorial/getting_started/html/page16.html</file>
         <file>Tutorial/getting_started/html/page17.html</file>
         <file>Tutorial/getting_started/html/page18.html</file>
+        <file>Tutorial/getting_started/html/page19.html</file>
+        <file>Tutorial/getting_started/html/page20.html</file>
+        <file>Tutorial/getting_started/html/page21.html</file>
+        <file>Tutorial/getting_started/html/page22.html</file>
+        <file>Tutorial/getting_started/html/page23.html</file>
+        <file>Tutorial/getting_started/html/page24.html</file>
+        <file>Tutorial/getting_started/html/page25.html</file>
+        <file>Tutorial/getting_started/html/page26.html</file>
+        <file>Tutorial/getting_started/html/page27.html</file>
+        <file>Tutorial/getting_started/html/page28.html</file>
+        <file>Tutorial/getting_started/html/page29.html</file>
+        <file>Tutorial/getting_started/html/page30.html</file>
+        <file>Tutorial/getting_started/html/page31.html</file>
+        <file>Tutorial/getting_started/html/page32.html</file>
         <file>Tutorial/getting_started/images/0.png</file>
         <file>Tutorial/getting_started/images/1.png</file>
         <file>Tutorial/getting_started/images/2.png</file>
@@ -330,6 +344,19 @@
         <file>Tutorial/getting_started/images/16.png</file>
         <file>Tutorial/getting_started/images/17.png</file>
         <file>Tutorial/getting_started/images/18.png</file>
+        <file>Tutorial/getting_started/images/19.png</file>
+        <file>Tutorial/getting_started/images/20.png</file>
+        <file>Tutorial/getting_started/images/21.png</file>
+        <file>Tutorial/getting_started/images/22.png</file>
+        <file>Tutorial/getting_started/images/23.png</file>
+        <file>Tutorial/getting_started/images/24.png</file>
+        <file>Tutorial/getting_started/images/25.png</file>
+        <file>Tutorial/getting_started/images/26.png</file>
+        <file>Tutorial/getting_started/images/27.png</file>
+        <file>Tutorial/getting_started/images/28.png</file>
+        <file>Tutorial/getting_started/images/29.png</file>
+        <file>Tutorial/getting_started/images/30.png</file>
+        <file>Tutorial/getting_started/images/32.png</file>
         <file>Tutorial/getting_started/images/new_button.png</file>
         <file>Tutorial/getting_started/stylesheets/style.css</file>
     </qresource>

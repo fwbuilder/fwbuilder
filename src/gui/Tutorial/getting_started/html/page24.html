@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<body>
+<div class="header">
+  <table border="0">
+    <tr>
+      <th align="center" width="100%">Getting Started</th>
+      <td align="right">Page 24</td>
+  </tr>
+  </table>
+  <hr/>
+</div>
+
+<p>
+  Let's take a look at the policy of the template firewall shown
+  below.  These rules are intended to be an example, a starting point
+  to help you create your own policy. Most likely you will want to
+  modify the rules to suite your requirements. Explanations of the
+  rules given here are brief because the goal of Getting Started is
+  only to demonstrate how to use Firewall Builder.
+</p>
+
+<p>
+  <ul>
+    <li>
+      Rule 0: This is an anti-spoofing rule. It blocks incoming
+      packets on the external interface that have source addresses
+      that belong to the firewall or your internal or DMZ
+      networks. The rule is associated with outside interface and has
+      Direction set to "Inbound".
+    </li>
+
+    <li>
+      Rule 1: This rule permits any packets on the loopback
+      interface. This is necessary because many services on the
+      firewall machine communicate back to the same machine via
+      loopback.
+    </li>
+
+    <li>
+      Rule 2: Permit ssh access from internal network to the firewall
+      machine. Notice service object "ssh" in the column
+      Service. (This object can be found in the Standard objects
+      library in the Services/TCP folder.)
+    </li>
+  </ul>
+</p>
+
+<p>
+  <img src=":/Tutorial/getting_started/images/24.png">
+</p>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<body>
+<div class="header">
+  <table border="0">
+    <tr>
+      <th align="center" width="100%">Getting Started</th>
+      <td align="right">Page 28</td>
+  </tr>
+  </table>
+  <hr/>
+</div>
+
+<p>
+  Here are the pre-configured NAT rules:
+</p>
+
+<p>
+  <ul>
+    <li>
+      Rule 0: Tells the firewall that no address translation should be
+      done for packets traveling from network 192.168.2.0 to
+      192.168.1.0 (because Translated Source, Translated Destination
+      and Translated Service are left empty).
+    </li>
+
+    <li>
+      Rule 1: Packets coming into the firewall from internal and DMZ
+      networks are translated so that their source address will change
+      to that of the outside interface on the firewall.
+    </li>
+
+    <li>
+      Rule 2: Packets coming from the Internet to the interface
+      "outside" will be translated and forwarded to the internal
+      server on DMZ represented by the host object "server on dmz".
+    </li>
+  </ul>
+</p>
+
+<p>
+  <img src=":/Tutorial/getting_started/images/28.png">
+</p>
+</body>
+</html>
