@@ -1,3 +1,8 @@
+2010-02-27  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* unit_tests.sh (commands): Using Xvfb for GUI unit tests so they
+	can run as an automated task. This was broken by r2602
+
 2010-02-26  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/gui/TutorialDialog.cpp (TutorialDialog::showPage):
