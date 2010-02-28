@@ -14,4 +14,4 @@ do
     cd -
 done
 
-kill $PID
+kill $PID || exit 0
