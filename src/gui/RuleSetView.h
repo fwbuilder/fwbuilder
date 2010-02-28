@@ -127,6 +127,11 @@ public:
     QAction *moveRuleUpAction;
     QAction *moveRuleDownAction;
 
+    QAction *insertRuleAction;
+    QAction *addRuleAfterCurrentAction;
+    QAction *addToGroupAboveAction;
+    QAction *addToGroupBelowAction;
+
 
 public slots:
 

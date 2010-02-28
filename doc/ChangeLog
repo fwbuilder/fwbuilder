@@ -1,3 +1,14 @@
+2010-02-28  yalovoy <yalovoy@gmail.com>
+	* refs #1202: Main menu "Rules" does not match rule context menu
+	Items in the main menu Rules should get disabled and enabled just
+	like items in the context menu do.
+	Added action: insertRuleAction, addRuleAfterCurrentAction, 
+	addToGroupAboveAction, addToGroupBelowAction
+	Affected files:
+	FWWindow.cpp
+	RuleSetView.cpp
+	RuleSetView.h
+
 2010-02-27  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/gui/Tutorial/getting_started/html/page0.html: "Getting

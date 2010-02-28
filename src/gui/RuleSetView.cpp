@@ -117,6 +117,10 @@ RuleSetView::~RuleSetView()
     delete moveRuleDownAction;
     delete removeFromGroupAction;
     delete newGroupAction;
+    delete insertRuleAction;
+    delete addRuleAfterCurrentAction;
+    delete addToGroupAboveAction;
+    delete addToGroupBelowAction;
 }
 
 void RuleSetView::init()
@@ -171,6 +175,13 @@ void RuleSetView::initActions()
     // New group
     newGroupAction = createAction(tr("New group"), SLOT( newGroup()));
 
+    // Insert Rule
+    insertRuleAction = createAction( tr("Insert Rule"), SLOT( insertRule() ) );
+
+    addRuleAfterCurrentAction = createAction(tr("Add Rule Below"), SLOT( addRuleAfterCurrent() ));
+
+    addToGroupAboveAction = createAction("addToGroupAboveAction", SLOT( addToGroupAbove() ));
+    addToGroupBelowAction = createAction("addToGroupBelowAction", SLOT( addToGroupBelow() ));
 }
 
 
@@ -723,28 +734,8 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
 
     menu->addAction(removeFromGroupAction);
     menu->addAction(newGroupAction);
-
-    if (selectedIndexes.size() > 0 && isOnlyTopLevelRules(selectedIndexes))
-    {
-
-
-        QString nn =
-            md->nodeFromIndex(selectedIndexes.first())->nameOfPredecessorGroup();
-
-        if (!nn.isEmpty())
-        {
-            label = tr("Add to the group ") + nn;
-            menu->addAction( label, this, SLOT( addToGroupAbove() ));
-        }
-
-        nn = md->nodeFromIndex(selectedIndexes.last())->nameOfSuccessorGroup();
-
-        if (!nn.isEmpty())
-        {
-            label = tr("Add to the group ") + nn;
-            menu->addAction( label, this, SLOT( addToGroupBelow() ));
-        }
-    }
+    menu->addAction(addToGroupAboveAction);
+    menu->addAction(addToGroupBelowAction);
 
     menu->addSeparator();
 
@@ -752,8 +743,8 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
 
     menu->addSeparator();
 
-    menu->addAction( tr("Insert Rule"), this, SLOT( insertRule() ) );
-    menu->addAction( tr("Add Rule Below"), this, SLOT( addRuleAfterCurrent() ) );
+    menu->addAction( insertRuleAction );
+    menu->addAction( addRuleAfterCurrentAction );
 
     label = (selectionSize==1)?tr("Remove Rule"):tr("Remove Rules");
     menu->addAction( label, this, SLOT( removeRule()));
@@ -2775,6 +2766,18 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
         moveRuleDownAction->setVisible(false);
         moveRuleDownAction->setEnabled(false);
 
+        addToGroupAboveAction->setVisible(false);
+        addToGroupAboveAction->setEnabled(false);
+
+        addToGroupBelowAction->setVisible(false);
+        addToGroupBelowAction->setEnabled(false);
+
+        insertRuleAction->setVisible(false);
+        insertRuleAction->setEnabled(false);
+
+        addRuleAfterCurrentAction->setVisible(false);
+        addRuleAfterCurrentAction->setEnabled(false);
+
     } else
     {
         bool inGroup = true;
@@ -2800,10 +2803,52 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
         {
             moveRuleUpAction->setText(tr("Move Rules up"));
             moveRuleDownAction->setText(tr("Move Rules down"));
+
         } else
         {
             moveRuleUpAction->setText(tr("Move Rule up"));
             moveRuleDownAction->setText(tr("Move Rule down"));
+        }
+
+
+
+        if (topLevelOnly)
+        {
+            QString addToGroupLabel = tr("Add to the group ");
+            QString nn;
+
+            nn = md->nodeFromIndex(selectedIndexes.first())->nameOfPredecessorGroup();
+            if (!nn.isEmpty())
+            {
+                addToGroupAboveAction->setText(addToGroupLabel + nn);
+                addToGroupAboveAction->setVisible(true);
+                addToGroupAboveAction->setEnabled(true);
+            } else
+            {
+                addToGroupAboveAction->setVisible(false);
+                addToGroupAboveAction->setEnabled(false);
+            }
+
+            nn = md->nodeFromIndex(selectedIndexes.last())->nameOfSuccessorGroup();
+
+            if (!nn.isEmpty())
+            {
+                addToGroupBelowAction->setText(addToGroupLabel + nn);
+                addToGroupBelowAction->setVisible(true);
+                addToGroupBelowAction->setEnabled(true);
+            } else
+            {
+                addToGroupBelowAction->setVisible(false);
+                addToGroupBelowAction->setEnabled(false);
+            }
+
+        } else
+        {
+            addToGroupAboveAction->setVisible(false);
+            addToGroupAboveAction->setEnabled(false);
+
+            addToGroupBelowAction->setVisible(false);
+            addToGroupBelowAction->setEnabled(false);
         }
 
         removeFromGroupAction->setVisible(inGroup);
@@ -2817,6 +2862,12 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
 
         moveRuleDownAction->setVisible(true);
         moveRuleDownAction->setEnabled(true);
+
+        insertRuleAction->setVisible(true);
+        insertRuleAction->setEnabled(true);
+
+        addRuleAfterCurrentAction->setVisible(true);
+        addRuleAfterCurrentAction->setEnabled(true);
     }
 }
 

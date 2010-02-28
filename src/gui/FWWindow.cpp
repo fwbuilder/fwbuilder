@@ -1533,8 +1533,13 @@ void FWWindow::prepareRulesMenu ()
         {
             m_mainWindow->RulesMenu->addAction(rsv->removeFromGroupAction);
             m_mainWindow->RulesMenu->addAction(rsv->newGroupAction);
+            m_mainWindow->RulesMenu->addAction(rsv->addToGroupAboveAction);
+            m_mainWindow->RulesMenu->addAction(rsv->addToGroupBelowAction);
             m_mainWindow->RulesMenu->addAction(rsv->moveRuleUpAction);
             m_mainWindow->RulesMenu->addAction(rsv->moveRuleDownAction);
+            m_mainWindow->RulesMenu->addAction(rsv->insertRuleAction);
+            m_mainWindow->RulesMenu->addAction(rsv->addRuleAfterCurrentAction);
+
         }
         m_mainWindow->RulesMenu->addSeparator();
         m_mainWindow->RulesMenu->addActions(ruleStaticActions);
