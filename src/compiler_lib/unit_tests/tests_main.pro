@@ -55,7 +55,7 @@ run_tests.commands = echo "Running tests..." && \
     echo "OK" || { echo "FAILED"; exit 1; }
 run_tests.depends = run
 build_tests.depends = all
-clean_tests.depends = all
+clean_tests.depends = clean
 QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 
