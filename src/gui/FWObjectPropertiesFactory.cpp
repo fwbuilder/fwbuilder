@@ -33,6 +33,7 @@
 #include <qtextstream.h>
 #include <qdatetime.h>
 #include <qregexp.h>
+#include <QtDebug>
 
 #include "FWObjectPropertiesFactory.h"
 #include "platforms.h"
@@ -1192,7 +1193,7 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
         FWOptions *ropt = rule->getOptionsObject();
 
         if (fwbdebug)
-            qDebug(QString("getNATRuleOptions: platform: %2").arg(platform.c_str()).toAscii().constData());
+            qDebug() << "getNATRuleOptions: platform: " << platform.c_str();
 
         if (platform=="iptables")
         {

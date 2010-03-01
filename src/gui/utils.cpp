@@ -38,10 +38,11 @@
 #include <QHostInfo>
 #include <qhostaddress.h>
 #include <qpixmapcache.h>
-//Added by qt3to4:
+
 #include <QList>
 #include <QPixmap>
 #include <QApplication>
+#include <QtDebug>
 
 #include "FWBSettings.h"
 
@@ -332,8 +333,8 @@ QString getAddrByName(const QString &name, int af_type)
             return QString(results.front().toString().c_str());
     } catch (FWException &e)
     {
-        qDebug("utils::getAddrByName: Can not convert address to string");
-        qDebug(e.toString().c_str());
+        qDebug() << "utils::getAddrByName: Can not convert address to string";
+        qDebug() << e.toString().c_str();
     }
     return "";
 

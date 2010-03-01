@@ -46,6 +46,8 @@
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/RuleElement.h"
 
+#include <QtDebug>
+
 using namespace libfwbuilder;
 
 IOSImporter::IOSImporter(FWObject *lib,
@@ -278,8 +280,8 @@ std::pair<int,int> IOSImporter::convertPortSpec(const std::string &port_op,
     std::string portspec = strip(port_spec);
 
     if (fwbdebug)
-        qDebug(QString("Convert TCP/UDP port spec: port_op=%1 port_spec=%2").
-               arg(port_op.c_str()).arg(port_spec.c_str()).toAscii().constData());
+        qDebug() << QString("Convert TCP/UDP port spec: port_op=%1 port_spec=%2").
+            arg(port_op.c_str()).arg(port_spec.c_str());
 
     if (portop=="" && portspec=="") return std::pair<int,int>(0, 0);
 
@@ -400,9 +402,8 @@ Firewall* IOSImporter::finalize()
         {
             if (fwbdebug)
             {
-                qDebug("Setting interface and direction for all rules");
-                qDebug(QString("all_rulesets.size()=%1").
-                       arg(all_rulesets.size()).toAscii().constData());
+                qDebug() << "Setting interface and direction for all rules";
+                qDebug() << "all_rulesets.size()=" << all_rulesets.size();
             }
 
             std::map<const std::string,UnidirectionalRuleSet*>::iterator i;
@@ -412,12 +413,9 @@ Firewall* IOSImporter::finalize()
 
                 if (fwbdebug)
                 {
-                    qDebug(QString("  irs->name=%1").
-                           arg(irs->name.c_str()).toAscii().constData());
-                    qDebug(QString("  irs->intf_dir.size()=%1").
-                           arg(irs->intf_dir.size()).toAscii().constData());
-                    qDebug(QString("  irs->ruleset->size()=%1").
-                           arg(irs->ruleset->size()).toAscii().constData());
+                    qDebug() << "  irs->name=" << irs->name.c_str();
+                    qDebug() << "  irs->intf_dir.size()=" << irs->intf_dir.size();
+                    qDebug() << "  irs->ruleset->size()=" << irs->ruleset->size();
                 }
 
                 // optimization: If we have several interfaces for
@@ -501,14 +499,16 @@ Firewall* IOSImporter::finalize()
                         if (intf!=NULL)
                         {
                             if (fwbdebug)
-                                qDebug(QString("    interface=%1").
-                                       arg(intf->getName().c_str()).toAscii().constData());
-                            std::for_each(irs->ruleset->begin(),
-                                          irs->ruleset->end(),
-                                          merge_rule(irs->name,
-                                                     intf,
-                                                     direction,
-                                                     policy)
+                                qDebug() << "    interface=" 
+                                         << intf->getName().c_str();
+
+                            std::for_each(
+                                irs->ruleset->begin(),
+                                irs->ruleset->end(),
+                                merge_rule(irs->name,
+                                           intf,
+                                           direction,
+                                           policy)
                             );
                         }
                     }

@@ -42,6 +42,7 @@
 #include <qlayout.h>
 #include <qspinbox.h>
 #include <qframe.h>
+#include <QtDebug>
 
 #include <stdlib.h>
 
@@ -178,19 +179,20 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf) :
     if (fwbdebug)
     {
         QSize sz = sizeHint();
-        qDebug(QString("instOptionsDialog:  sizeHint: %1x%2").arg(sz.width()).arg(sz.height()).toAscii().constData());
+        qDebug() << QString("instOptionsDialog:  sizeHint: %1x%2")
+            .arg(sz.width()).arg(sz.height());
         sz = minimumSizeHint();
-        qDebug(QString("instOptionsDialog:  minimumSizeHint: %1x%2").
-                arg(sz.width()).arg(sz.height()).toAscii().constData());
+        qDebug() << QString("instOptionsDialog:  minimumSizeHint: %1x%2")
+            .arg(sz.width()).arg(sz.height());
 
         QRect bfr;
 
         bfr = m_dialog->titleFrame->geometry();
-        qDebug(QString("instOptionsDialog:  titleFrame: top=%1 bottom=%2").
-                arg(bfr.top()).arg(bfr.bottom()).toAscii().constData());
+        qDebug() << QString("instOptionsDialog:  titleFrame: top=%1 bottom=%2")
+            .arg(bfr.top()).arg(bfr.bottom());
         bfr = m_dialog->buttonsFrame->geometry();
-        qDebug(QString("instOptionsDialog:  buttonsFrame: top=%1 bottom=%2").
-                arg(bfr.top()).arg(bfr.bottom()).toAscii().constData());
+        qDebug() << QString("instOptionsDialog:  buttonsFrame: top=%1 bottom=%2")
+            .arg(bfr.top()).arg(bfr.bottom());
     }
 
     //resize( minimumSizeHint() );

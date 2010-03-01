@@ -40,6 +40,7 @@
 #include <qobject.h>
 #include <qregexp.h>
 #include <qsettings.h>
+#include <QtDebug>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -52,8 +53,8 @@ instConf::instConf()
 QString instConf::getCmdFromResource(const QString &resource_name)
 {
     if (fwbdebug)
-        qDebug(QString("instConf::getCmdFromResource testRun=%1  resource_name=%2").
-               arg(testRun).arg(resource_name).toAscii().constData());
+        qDebug() << QString("instConf::getCmdFromResource testRun=%1  resource_name=%2")
+            .arg(testRun).arg(resource_name);
 
     string optpath_root = "activation/reg_user/";
     string optpath;
@@ -67,7 +68,7 @@ QString instConf::getCmdFromResource(const QString &resource_name)
                                                 optpath).c_str();
     cmd = cmd.trimmed();
     if (fwbdebug)
-        qDebug(QString("instConf::getCmdFromResource  cmd=%1").arg(cmd).toAscii().constData());
+        qDebug() << "instConf::getCmdFromResource  cmd=" << cmd;
 
     return cmd;
 }

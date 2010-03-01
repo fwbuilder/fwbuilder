@@ -50,6 +50,7 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QFile>
+#include <QtDebug>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -59,8 +60,8 @@ bool instDialog::runCompiler(Firewall *fw)
 {
     if (fwbdebug)
     {
-        qDebug("instDialog::runCompile");
-        qDebug(("Firewall:"+fw->getName()).c_str());
+        qDebug() << "instDialog::runCompile";
+        qDebug() << "Firewall: " << fw->getName().c_str();
     }
     // store pointer to the firewall so we can use it in
     // slot compilerFinished

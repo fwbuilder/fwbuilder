@@ -34,6 +34,7 @@
 
 #include <QCheckBox>
 #include <QLocale>
+#include <QtDebug>
 
 #include <stdlib.h>
 
@@ -147,8 +148,8 @@ void StartTipDialog::downloadComplete(const QString &txt)
         {
             if (fwbdebug)
             {
-                qDebug("Error connecting to the url %s", STARTUP_TIP_URL);
-                qDebug(http_getter->getLastError().toAscii().constData());
+                qDebug() << "Error connecting to the url " <<  STARTUP_TIP_URL;
+                qDebug() << http_getter->getLastError();
             }
             showTip(getRandomTip(), false);
         }

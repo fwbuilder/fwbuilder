@@ -62,6 +62,7 @@
 #include <qtimer.h>
 #include <QDateTime>
 #include <QUndoStack>
+#include <QtDebug>
 
 #include <iostream>
 
@@ -178,8 +179,7 @@ void FirewallDialog::fillVersion()
     for (list<QStringPair>::iterator i1=vl.begin(); i1!=vl.end(); i1++,cp++)
     {
         if (fwbdebug)
-            qDebug(QString("Adding version %1").arg(
-                       i1->second).toAscii().constData());
+            qDebug() << "Adding version " << i1->second;
 
         m_dialog->version->addItem( i1->second );
         if ( v == i1->first ) m_dialog->version->setCurrentIndex( cp );

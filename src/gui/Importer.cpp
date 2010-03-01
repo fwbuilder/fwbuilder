@@ -57,6 +57,7 @@
 #include "FWBTree.h"
 
 #include <QString>
+#include <QtDebug>
 
 
 using namespace libfwbuilder;
@@ -862,7 +863,8 @@ FWObject* Importer::createGroupOfInterfaces(
     std::for_each(interfaces.begin(), interfaces.end(), join(&sig, "_"));
 
     if (fwbdebug)
-        qDebug(QString("Interface group with name '%1', sig '%2'").arg(name.c_str()).arg(sig.c_str()).toAscii().constData());
+        qDebug() << QString("Interface group with name '%1', sig '%2'")
+            .arg(name.c_str()).arg(sig.c_str());
 
     if (all_objects.count(sig)!=0) return all_objects[sig];
 

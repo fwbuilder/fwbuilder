@@ -45,6 +45,7 @@
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qmap.h>
+#include <QtDebug>
 
 #include <iostream>
 #include <sstream>
@@ -387,7 +388,8 @@ int CompareObjectsDialog::run(FWObject *o1,FWObject *o2)
             k = tstr.str().c_str();
         }
 
-        if (fwbdebug) qDebug(QString("proplist1:    k='%1'  v='%2'").arg(k).arg(v).toAscii().constData());
+        if (fwbdebug) qDebug() << QString("proplist1:    k='%1'  v='%2'")
+                          .arg(k).arg(v);
 
         propdict1[k] = v;
     }
@@ -407,7 +409,8 @@ int CompareObjectsDialog::run(FWObject *o1,FWObject *o2)
             k = tstr.str().c_str();
         }
 
-        if (fwbdebug) qDebug(QString("proplist2:    k='%1'  v='%2'").arg(k).arg(v).toAscii().constData());
+        if (fwbdebug) qDebug() << QString("proplist2:    k='%1'  v='%2'")
+                          .arg(k).arg(v);
 
         propdict2[k] = v;
     }
@@ -418,7 +421,7 @@ int CompareObjectsDialog::run(FWObject *o1,FWObject *o2)
     {
         QString attr = *i3;
 
-        if (fwbdebug) qDebug(QString("report_attributes:    attr=%1  ").arg(attr).toAscii().constData());
+        if (fwbdebug) qDebug() << "report_attributes:    attr=" << attr;
 
         if (!propdict1.contains(attr) || !propdict2.contains(attr)) continue;
 
@@ -437,7 +440,8 @@ int CompareObjectsDialog::run(FWObject *o1,FWObject *o2)
         QString key = mi1.key();
         QString val = mi1.value();
 
-        if (fwbdebug) qDebug(QString("propdict1:    key=%1  val=%2").arg(key).arg(val).toAscii().constData());
+        if (fwbdebug) qDebug() << QString("propdict1:    key=%1  val=%2")
+                          .arg(key).arg(val);
 
         if (val=="") continue;
 
@@ -459,7 +463,8 @@ int CompareObjectsDialog::run(FWObject *o1,FWObject *o2)
         QString key = mi2.key();
         QString val = mi2.value();
 
-        if (fwbdebug) qDebug(QString("propdict2:    key=%1  val=%2").arg(key).arg(val).toAscii().constData());
+        if (fwbdebug) qDebug() << QString("propdict2:    key=%1  val=%2")
+                          .arg(key).arg(val);
 
         if (val=="") continue;
 

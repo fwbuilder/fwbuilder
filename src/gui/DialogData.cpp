@@ -199,8 +199,11 @@ void DialogData::saveAll(FWObject *new_obj)
             QComboBox *cbx = dynamic_cast<QComboBox*>(i->w);
             QString s = cbx->currentText();
             if (fwbdebug)
-                qDebug(QString("DialogData::saveAll() QComboBox %1 (i->mapping.empty()=%2) s=%3")
-                       .arg(i->w->objectName()).arg(i->mapping.empty()).arg(s).toAscii().constData());
+                qDebug() << 
+                    QString("DialogData::saveAll() QComboBox %1 (i->mapping.empty()=%2) s=%3")
+                    .arg(i->w->objectName())
+                    .arg(i->mapping.empty())
+                    .arg(s);
 
             if ( !i->mapping.empty() && !s.isNull() )
             {
@@ -226,7 +229,7 @@ void DialogData::saveAll(FWObject *new_obj)
                 while (i1!=i->mapping.end())
                 {
                     if (fwbdebug)
-                        qDebug(QString("   (*i1)=%1").arg(*i1).toAscii().constData());
+                        qDebug() << "   (*i1)=" << *i1;
 
                     if (s== (*i1)) { s= *i2; break; }
                     i1++; i1++;

@@ -37,6 +37,7 @@
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qeventloop.h>
+#include <QtDebug>
 
 #include <iostream>
 
@@ -175,7 +176,7 @@ void SSHUnx::stateMachine()
             goto push_files;
         }
 
-        if (fwbdebug) qDebug(stdoutBuffer.toAscii().constData());
+        if (fwbdebug) qDebug() << stdoutBuffer;
 
         QString fingerprint;
         //int n1,n2;

@@ -1,3 +1,8 @@
+2010-02-28  vadim  <vadim@vk.crocodile.org>
+
+	* (many files) fixed warning " format not a string literal and no
+	format arguments". Fixes #1285
+
 2010-02-28  yalovoy <yalovoy@gmail.com>
 	* refs #1202: Main menu "Rules" does not match rule context menu
 	Items in the main menu Rules should get disabled and enabled just

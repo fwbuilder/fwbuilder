@@ -48,6 +48,7 @@
 #include <QStatusBar>
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include <QtDebug>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -307,9 +308,7 @@ void FWWindow::printFirewallFromFile(QString fileName,
     }
     else
     {   
-        QString errmes = "Error: can't find firewall ";
-        errmes += firewallName ;
-        qDebug (errmes.toAscii().constData());
+        qDebug() << "Error: can't find firewall " << firewallName;
     }
 }
 

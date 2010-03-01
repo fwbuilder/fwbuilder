@@ -121,7 +121,7 @@ SSHCisco::~SSHCisco()
 {
 }
 
-QString SSHCisco::cmd(QProcess *proc,const QString &cmd)
+QString SSHCisco::cmd(QProcess*, const QString &cmd)
 {
     if (fwbdebug) qDebug("Command '%s'", cmd.toAscii().constData());
     sendCommand(cmd);
@@ -151,7 +151,7 @@ bool SSHCisco::checkForErrors()
         if ( stdoutBuffer.lastIndexOf(*i,-1)!=-1 )
         {
             if (fwbdebug)
-                qDebug(QString("Got known error message: %1").arg(stdoutBuffer).toAscii().constData());
+                qDebug() << "Got known error message: " << stdoutBuffer;
 
             emit printStdout_sign( tr("\n*** Fatal error :") );
             emit printStdout_sign( stdoutBuffer+"\n" );

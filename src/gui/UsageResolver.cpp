@@ -27,7 +27,7 @@
 #include "UsageResolver.h"
 
 #include <QTime>
-#include <QDebug>
+#include <QtDebug>
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/RuleElement.h"
@@ -153,8 +153,8 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
     }
 
     if (fwbdebug)
-        qDebug(QString("Program spent %1 ms searching for firewalls.")
-               .arg(tt.elapsed()).toAscii().constData());
+        qDebug() << QString("Program spent %1 ms searching for firewalls.")
+            .arg(tt.elapsed());
 
     return fws;
 }

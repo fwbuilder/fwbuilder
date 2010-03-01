@@ -59,6 +59,8 @@
 #include "fwbuilder/FWServiceReference.h"
 #include "fwbuilder/CustomService.h"
 
+#include <QtDebug>
+
 using namespace libfwbuilder;
 
 IPTImporter::IPTImporter(FWObject *lib,
@@ -272,13 +274,15 @@ FWObject* IPTImporter::createTCPUDPService(str_tuple &src_range,
 {
     if (fwbdebug)
     {
-        qDebug(QString("Creating %1 service").arg(proto.c_str()).toAscii().constData());
-        qDebug(QString("src range: %1 - %2")
-               .arg(src_range.first.c_str())
-               .arg(src_range.second.c_str()).toAscii().constData());
-        qDebug(QString("dst range: %1 - %2")
-               .arg(dst_range.first.c_str())
-               .arg(dst_range.second.c_str()).toAscii().constData());
+        qDebug() << "Creating service " << proto.c_str();
+        qDebug() << "src range: "
+                 << src_range.first.c_str()
+                 << " - "
+                 << src_range.second.c_str();
+        qDebug() << "dst range: "
+                 << dst_range.first.c_str()
+                 << " - "
+                 << dst_range.second.c_str();
     }
 
 //     std::string name = proto + " "
@@ -351,7 +355,9 @@ FWObject* IPTImporter::createTCPUDPService(const std::string &proto)
         std::string name = proto + " group " + s.str();
 
         if (fwbdebug)
-            qDebug(QString("Group of %1 services with name '%2', sig '%3'").arg(proto.c_str()).arg(name.c_str()).arg(sig.c_str()).toAscii().constData());
+            qDebug() <<
+                QString("Group of %1 services with name '%2', sig '%3'")
+                .arg(proto.c_str()).arg(name.c_str()).arg(sig.c_str());
 
         ServiceGroup *sg = ServiceGroup::cast(createObject(ServiceGroup::TYPENAME, name));
         for (FWObject::iterator j=olist.begin(); j!=olist.end(); ++j)

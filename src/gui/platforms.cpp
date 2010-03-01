@@ -34,6 +34,7 @@
 #include <QObject>
 #include <QStringList>
 #include <QComboBox>
+#include <QtDebug>
 
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/Firewall.h"
@@ -858,7 +859,7 @@ void setPlatform(QComboBox *platform, const QString &pl)
     QString current_group = "";
     for (iter=platform_keys.begin(); iter!=platform_keys.end(); iter++)
     {
-        if (fwbdebug) qDebug(iter->toLatin1().constData());
+        if (fwbdebug) qDebug() << *iter;
 
         QString group = platform_mapping[*iter].first;
         QString platform_name = platform_mapping[*iter].second;

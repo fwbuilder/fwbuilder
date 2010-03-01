@@ -515,12 +515,10 @@ void ObjectTreeView::mousePressEvent( QMouseEvent *e )
 
     if (fwbdebug)
     {
-        qDebug(QString("ObjectTreeView::mousePressEvent :: currentItem=%1")
-               .arg((currentItem())?currentItem()->text(0):"nil").toAscii().constData()
-        );
-        qDebug(QString("ObjectTreeView::mousePressEvent :: lastSelected=%2")
-                .arg((lastSelected)?lastSelected->text(0):"nil").toAscii().constData()
-        );
+        qDebug() << "ObjectTreeView::mousePressEvent :: currentItem="
+                 << ((currentItem())?currentItem()->text(0):"nil");
+        qDebug() << "ObjectTreeView::mousePressEvent :: lastSelected="
+                 << ((lastSelected)?lastSelected->text(0):"nil");
     }
 
     lastSelected = currentItem();
@@ -679,7 +677,8 @@ void ObjectTreeView::resetSelection()
     if (lastSelected)
     {
         if (fwbdebug)
-            qDebug(QString("ObjectTreeView::resetSelection :: lastSelected=%1").arg(lastSelected->text(0)).toAscii().constData());
+            qDebug() << "ObjectTreeView::resetSelection :: lastSelected="
+                     << lastSelected->text(0);
 
         setCurrentItem(lastSelected);
         lastSelected->setSelected(true);

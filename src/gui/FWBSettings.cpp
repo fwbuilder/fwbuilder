@@ -161,7 +161,7 @@ void FWBSettings::init()
         QDir wdir(wd);
         if (!wdir.exists() && !wdir.mkdir(wd))
         {
-            QString err= QString(QObject::tr("Working directory %1 does not exist and could not be created.\nIgnoring this setting.")).arg(wd.toLatin1().constData());
+            QString err = QString(QObject::tr("Working directory %1 does not exist and could not be created.\nIgnoring this setting.")).arg(wd);;
 
             if (app != NULL)
             {
@@ -169,7 +169,7 @@ void FWBSettings::init()
                                        "&Continue", 0, 0, 0 );
             } else
             {
-                qDebug( err.toAscii().constData() );
+                qDebug() << err;
             }
             setWDir("");
         }
