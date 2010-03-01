@@ -816,7 +816,8 @@ Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(
         if (addr!=NULL && addr->front()!=NULL)
         {
             FWObject::iterator it;
-            for (it=addr->begin(); it!=addr->end() && !Interface::isA(*it); ++it);
+            it=addr->begin();
+            while (it!=addr->end() && !Interface::isA(*it)) ++it;
             if (it==addr->end()) return addr; // has no interfaces
         }
     }
