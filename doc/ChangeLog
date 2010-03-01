@@ -1,3 +1,12 @@
+2010-03-01  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTimeInterval):
+	fixed time format for the iptables parameters --datestart,
+	--datestop which is supposed to be ISO 8601 "T" notation but
+	apparently with no support for time zone designators.  Timezone
+	desginators are an error in iptables 1.4.1.1 and 1.4.5, did not
+	test newer versions.  Fixes #1286 SourceForge bug #2961532
+
 2010-02-28  vadim  <vadim@vk.crocodile.org>
 
 	* (many files) fixed warning " format not a string literal and no
@@ -7,7 +16,7 @@
 	* refs #1202: Main menu "Rules" does not match rule context menu
 	Items in the main menu Rules should get disabled and enabled just
 	like items in the context menu do.
-	Added action: insertRuleAction, addRuleAfterCurrentAction, 
+	Added action: insertRuleAction, addRuleAfterCurrentAction,
 	addToGroupAboveAction, addToGroupBelowAction
 	Affected files:
 	FWWindow.cpp
