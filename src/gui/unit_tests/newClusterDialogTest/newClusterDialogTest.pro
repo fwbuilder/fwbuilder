@@ -380,7 +380,7 @@ run_tests.commands = echo "Running tests..." \
     ./${TARGET} && \
     echo "OK" || echo "FAILED"; \
     rm test_data_work.fwb;
-run_tests.depends = run
+run_tests.depends = build_tests
 build_tests.depends = all
 clean_tests.depends = all
 QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests

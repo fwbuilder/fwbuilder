@@ -53,7 +53,7 @@ win32:PRE_TARGETDEPS = ../../common/release/common.lib
 run_tests.commands = echo "Running tests..." && \
     ./${TARGET} && \
     echo "OK" || { echo "FAILED"; exit 1; }
-run_tests.depends = run
+run_tests.depends = build_tests
 build_tests.depends = all
 clean_tests.depends = clean
 QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
