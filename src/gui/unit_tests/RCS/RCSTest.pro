@@ -40,7 +40,6 @@ OBJECTS_DIR = ../../.obj
 QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
 
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
-LIBS += -lgcov -lcppunit
 
 run_tests.commands = echo "Running tests..." && ./${TARGET} && echo "OK" || echo "FAILED"
 run_tests.depends = build_tests

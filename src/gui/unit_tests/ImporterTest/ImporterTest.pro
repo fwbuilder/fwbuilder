@@ -51,7 +51,6 @@ CONFIG -= release
 CONFIG += debug
 OBJECTS_DIR = ../../.obj
 QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
-QMAKE_CLEAN = *.gc??
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 DEPENDPATH = ../../../common
 
@@ -69,8 +68,7 @@ DEFINES		 += $$ANTLR_DEFINES
 
 
 run_tests.commands = echo "Running tests..." && \
-    ./${TARGET} && echo "Running gcov..." && \
-    gcov ${SOURCES} >/dev/null 2>/dev/null && \
+    ./${TARGET} && \
     echo "OK" || { echo "FAILED"; exit 1; }
 
 run_tests.depends = build_tests
