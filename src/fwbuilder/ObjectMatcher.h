@@ -70,6 +70,8 @@ public:
             address_range_match_mode = PARTIAL;
         }
 
+        virtual ~ObjectMatcher() {}
+
         void setMatchSubnets(bool f) { match_subnets = f; }
         void setAddressRangeMatchMode(address_range_match f) { address_range_match_mode = f; }
         void setRecognizeBroadcasts(bool f) { recognize_broadcasts = f; }

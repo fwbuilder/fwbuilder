@@ -1,3 +1,8 @@
+2010-02-28  vadim  <vadim@vk.crocodile.org>
+
+	* ../src/fwbuilder/ObjectMatcher.h (libfwbuilder): added virtual
+	destructor. Fixes fwbuilder:ticket:1259
+
 2010-02-27  vadim  <vadim@vk.crocodile.org>
 
 	* configure.in: find cppunit library for unit tests
