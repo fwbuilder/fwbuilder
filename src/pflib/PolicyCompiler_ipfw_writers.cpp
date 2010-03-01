@@ -474,8 +474,8 @@ void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElementSrv  *rel)
                 compiler->warning(rule, "ipfw can not match \"any IP option\" ");
             else
             {
-                char *option_names[] = {"lsrr", "ssrr", "rr", "ts", NULL};
-                for (char **cptr=option_names; *cptr; cptr++)
+                const char *option_names[] = {"lsrr", "ssrr", "rr", "ts", NULL};
+                for (const char* *cptr=option_names; *cptr; cptr++)
                     if  (ip_srv->getBool(*cptr)) options.push_back(*cptr);
             }
 
