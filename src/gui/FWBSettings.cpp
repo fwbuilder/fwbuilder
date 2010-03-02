@@ -602,15 +602,18 @@ void FWBSettings::getPrinterOptions(QPrinter *printer,
                                     int &pageWidth,
                                     int &pageHeight)
 {
-    printer->setPrinterName(
-        getStr("PrintSetup/printerName"));
+    QString name = getStr("PrintSetup/printerName");
+    if (!name.isEmpty())
+        printer->setPrinterName(
+            getStr("PrintSetup/printerName"));
 #ifndef _WIN32
     printer->setPrinterSelectionOption(
         getStr("PrintSetup/printerSelectionOption"));
 #endif
-    printer->setOutputFileName(
-        getStr("PrintSetup/outputFileName"));
-    printer->setOrientation(
+    QString fileName = getStr("PrintSetup/outputFileName");
+    if (!fileName.isEmpty())
+    printer->setOutputFileName(fileName);
+        printer->setOrientation(
         QPrinter::Orientation(getInt("PrintSetup/orientation")));
     printer->setPageSize(
         QPrinter::PageSize(getInt("PrintSetup/pageSize")));
