@@ -231,13 +231,6 @@ FWObject::~FWObject()
     init = true;  // ignore read-only
     destroyChildren();
     data.clear();
-
-    // All pointers stored in 'private_data' will be deallocated
-    for(std::map<std::string, void*>::const_iterator i=private_data.begin();
-        i!=private_data.end();i++)
-    {
-        delete (*i).second;
-    }
     private_data.clear();
     
 }
@@ -254,6 +247,11 @@ void* FWObject::getPrivateData(const string &key) const
         return NULL;
     else
         return it->second;
+}
+
+std::map<std::string, void*> &FWObject::getAllPrivateData()
+{
+    return private_data;
 }
 
 FWObject* FWObject::getParent() const

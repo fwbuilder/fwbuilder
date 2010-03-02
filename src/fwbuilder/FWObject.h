@@ -301,6 +301,8 @@ public:
 
     void setPrivateData(const std::string &key, void *data);
     void* getPrivateData(const std::string &key) const;
+    std::map<std::string, void*> &getAllPrivateData();
+
     
     /**
      * convenience method: returns the name of the library this object belongs to.
