@@ -231,7 +231,15 @@ FWObject::~FWObject()
     init = true;  // ignore read-only
     destroyChildren();
     data.clear();
+
+    // All pointers stored in 'private_data' will be deallocated
+    for(std::map<std::string, void*>::const_iterator i=private_data.begin();
+        i!=private_data.end();i++)
+    {
+        delete (*i).second;
+    }
     private_data.clear();
+    
 }
 
 void FWObject::setPrivateData(const string &key, void *data)
