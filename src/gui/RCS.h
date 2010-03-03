@@ -77,7 +77,7 @@ class RCS : public QObject {
 
     friend class RCSFilePreview;
 
-    Q_OBJECT
+    Q_OBJECT;
 
     /*
      * RCSEnvFix object should be initialized in constructor of RCS so
@@ -86,12 +86,12 @@ class RCS : public QObject {
      * Windows.
      */
     static RCSEnvFix     *rcsenvfix;
-
-    static QString        rcs_file_name     ;
-    static QString        rcsdiff_file_name ;
-    static QString        rlog_file_name    ;
-    static QString        ci_file_name      ;
-    static QString        co_file_name      ;
+    static QString        rcs_file_name;
+    static QString        rcsdiff_file_name;
+    static QString        rlog_file_name;
+    static QString        ci_file_name;
+    static QString        co_file_name;
+    static bool           rcs_available;
 
     QString               stdoutBuffer;
     QString               stderrBuffer;
@@ -122,6 +122,8 @@ class RCS : public QObject {
 
     RCS( const QString &filename );
     virtual ~RCS();
+
+    static void init();
 
     /**
      * returns head revision of the file

@@ -1,3 +1,10 @@
+2010-03-02  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* RCS.cpp (RCS::init): checking if RCS tools are installed on the
+	system once in the beginning. This helps avoid unnecessary
+	QProcess starts that make working with valgrind more difficult
+	because of subprocess starts/stops.
+
 2010-03-01  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTimeInterval):

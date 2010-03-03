@@ -60,6 +60,7 @@
 #include "ObjectEditor.h"
 #include "findDialog.h"
 #include "ProjectPanel.h"
+#include "RCS.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Tools.h"
@@ -162,6 +163,7 @@ int main( int argc, char *argv[] )
 /* need to initialize in order to be able to use FWBSettings */
     init(argv);
     init_platforms();
+    RCS::init();
 
     if (fwbdebug) qDebug("Reading settings ...");
     st = new FWBSettings();

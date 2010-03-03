@@ -69,13 +69,13 @@
 using namespace std;
 using namespace libfwbuilder;
 
-QString     RCS::rcs_file_name     = "";
-QString     RCS::rlog_file_name    = "";
+QString     RCS::rcs_file_name = "";
+QString     RCS::rlog_file_name = "";
 QString     RCS::rcsdiff_file_name = "";
-QString     RCS::ci_file_name      = "";
-QString     RCS::co_file_name      = "";
-
-RCSEnvFix*  RCS::rcsenvfix         = NULL;
+QString     RCS::ci_file_name = "";
+QString     RCS::co_file_name = "";
+RCSEnvFix*  RCS::rcsenvfix = NULL;
+bool        RCS::rcs_available = false;
 
 /***********************************************************************
  *
@@ -243,10 +243,9 @@ QStringList* RCSEnvFix::getEnv()
  * class RCS
  *
  ***********************************************************************/
-RCS::RCS(const QString &file)
-{
-    if (rcsenvfix==NULL) rcsenvfix = new RCSEnvFix();
 
+void RCS::init()
+{
     if (rcs_file_name=="")
     {
 #ifdef _WIN32
@@ -274,6 +273,34 @@ RCS::RCS(const QString &file)
 #endif
     }
 
+    // now check if rcs tools are available. To test, try to run rlog
+    // with no arguments
+
+    QStringList arglist;
+
+    QProcess rcs_proc;
+    rcs_proc.start( rlog_file_name, arglist );
+    rcs_proc.waitForStarted();
+
+    if (rcs_proc.state() != QProcess::Running)
+    {
+        rcs_proc.close();
+        // rlog (and probably other RCS tools) are unavailable
+        if (fwbdebug) qDebug() << "RCS tools unavailable";
+        rcs_available = false;
+        return;
+    }
+
+    rcs_proc.waitForFinished();
+    rcs_proc.close();
+
+    rcs_available = true;
+}
+
+RCS::RCS(const QString &file)
+{
+    if (rcsenvfix==NULL) rcsenvfix = new RCSEnvFix();
+
     QFileInfo fi(file);
     if (fi.exists()) filename = fi.canonicalFilePath();
     else filename = file;
@@ -291,6 +318,13 @@ RCS::RCS(const QString &file)
             this,  SLOT(readFromStdout() ) );
     connect(proc, SIGNAL(readyReadStandardError()),
             this,  SLOT(readFromStderr() ) );
+
+    if (!fi.exists())
+    {
+        inrcs = false;
+        tracking_file = true;
+        return;
+    }
 
     try
     {
@@ -442,7 +476,7 @@ void RCS::setFileName(const QString &fn)
 
 void RCS::abandon()
 {
-    if (!isInRCS()) return;
+    if (!isInRCS() || !rcs_available) return;
 
 /* check out head revision and unlock it */
     QStringList arglist;
@@ -493,9 +527,19 @@ void RCS::abandon()
  */
 void RCS::add() throw(libfwbuilder::FWException)
 {
-    int      i=filename.lastIndexOf("/");
-    QString  rcspath=filename.left(i);
-    QDir     rcsdir;
+    int i = filename.lastIndexOf("/");
+    QString rcspath = filename.left(i);
+    QDir rcsdir;
+
+    if (!rcs_available)
+    {
+        QString err = QObject::tr("RCS tools are unavailable");
+        if (fwbdebug) qDebug() << err;
+        throw(FWException(err.toStdString()));
+    }
+
+    if (fwbdebug) qDebug() << "RCS::add()  will run " << rcs_file_name;
+
     rcsdir.cd(rcspath);
 
     if (!rcsdir.exists("RCS")) rcsdir.mkdir("RCS");
@@ -541,13 +585,15 @@ void RCS::add() throw(libfwbuilder::FWException)
         }
     }
     QByteArray outp = proc->readAllStandardOutput();
-    QString msg=QObject::tr("Fatal error during initial RCS checkin of file %1 :\n %2\nExit status %3")
-    .arg(filename).arg(outp.data()).arg(proc->exitCode());
+    QString msg = QObject::tr("Fatal error during initial RCS checkin of file %1 :\n %2\nExit status %3")
+        .arg(filename).arg(outp.data()).arg(proc->exitCode());
     throw(FWException( msg.toLatin1().constData()  ));
 }
 
 bool RCS::isInRCS()
 {
+    if (!rcs_available) return false;
+
     if (tracking_file) return inrcs;
 
     QStringList arglist;
@@ -618,7 +664,7 @@ bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
 {
 /* first check if filename is already in RCS */
 
-    if (!isInRCS()) return false;
+    if (!rcs_available || !isInRCS()) return false;
 
     if (ro)
     {
@@ -807,7 +853,7 @@ bool RCS::ci( const QString &_lm,
               bool unlock) throw(libfwbuilder::FWException)
 {
 /* first check if filename is already in RCS */
-    if (!isInRCS()) return false;
+    if (!rcs_available || !isInRCS()) return false;
 
     QString logmsg = _lm;
 
@@ -907,6 +953,9 @@ bool RCS::ci( const QString &_lm,
  */
 QString RCS::rlog() throw(libfwbuilder::FWException)
 {
+    if (!rcs_available)
+        throw(FWException(QObject::tr("RCS tools are unavailable").toStdString()));
+
     QStringList arglist;
 
     arglist << QString("-z") + rcsenvfix->getTZOffset() << filename;
@@ -953,8 +1002,11 @@ QStringList RCS::rcsdiff(const QString&) throw(libfwbuilder::FWException)
     return temp.split("\n");
 }
 
-bool        RCS::isDiff(const QString &rev) throw(libfwbuilder::FWException)
+bool RCS::isDiff(const QString &rev) throw(libfwbuilder::FWException)
 {
+    if (!rcs_available)
+        throw(FWException(QObject::tr("RCS tools are unavailable").toStdString()));
+
     QStringList arglist;
 
     arglist << "-q";

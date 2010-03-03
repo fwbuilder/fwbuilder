@@ -72,6 +72,9 @@
 
 #include <libxml/tree.h>
 
+#include "memcheck.h"
+
+
 #define LONG_ERROR_CUTOFF 1024
 
 using namespace Ui;
@@ -943,7 +946,11 @@ void ProjectPanel::loadStandardObjects()
     {
 // need to drop read-only flag on the database before I load new objects
 
-        if (objdb) delete objdb;
+        if (objdb)
+        {
+            objdb->destroyChildren();
+            delete objdb;
+        }
 
         objdb = new FWObjectDatabase();
         objdb->setReadOnly( false );
@@ -960,6 +967,7 @@ void ProjectPanel::loadStandardObjects()
         if (fwbdebug) qDebug("ProjectPanel::load(): create User library");
 
         FWObject *userLib = FWBTree().createNewLibrary(objdb);
+
         userLib->setName("User");
         userLib->setStr("color","#d2ffd0");
 
@@ -1009,7 +1017,11 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
 
         clearObjects();
 
-        if (objdb) delete objdb;
+        if (objdb)
+        {
+            objdb->destroyChildren();
+            delete objdb;
+        }
 
         objdb = new FWObjectDatabase();
 
@@ -1064,6 +1076,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         MergeConflictRes mcr(mainW);
         objdb->merge(ndb, &mcr);
 
+        ndb->destroyChildren();
         delete ndb;
 
         objdb->setFileName(rcs->getFileName().toLocal8Bit().constData());
