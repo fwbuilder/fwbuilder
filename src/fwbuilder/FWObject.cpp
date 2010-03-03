@@ -59,6 +59,9 @@ const char *FWObject::TYPENAME={"UNDEF"};
 string FWObject::NOT_FOUND="";
 
 
+//#define FWB_DEBUG
+//#define TI_DEBUG
+
 void FWObject::fromXML(xmlNodePtr root) throw(FWException)
 {
     assert(root!=NULL);
@@ -946,17 +949,18 @@ bool FWObject::validateChild(FWObject *obj)
 void FWObject::destroyChildren()
 {
     FWObjectDatabase *dbr = getRoot();
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    while (size() > 0)
     {
-        FWObject *o = *m;
-        if (o && o->size())
+        FWObject *o = front();
+        if (o)
         {
-            o->destroyChildren();
+            if (o->size()) o->destroyChildren();
             if (dbr && !dbr->init) dbr->removeFromIndex( o->getId() );
             delete o;
         }
+        pop_front();
     }
-    clear();
+    //clear();
 }
 
 /*
@@ -982,23 +986,40 @@ void FWObject::destroyChildren()
  */
 void FWObject::clearChildren(bool recursive)
 {
+#ifdef FWB_DEBUG
+    cerr << "FWObject::clearChildren" << endl;
+#endif
+
     FWObjectDatabase *dbr = getRoot();
 
     checkReadOnly();
 
+    int referenced_children = 0;
+    int total_children = 0;
+
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
-        FWObject *o=*m;
+        FWObject *o = *m;
+
+        total_children++;
+
         if (recursive) o->clearChildren(recursive);
         o->unref();
         if(o->ref_counter==0) 
         {
             if (dbr) dbr->removeFromIndex( o->getId() );
             delete o;
-        }
+        } else
+            referenced_children++;
     }
     clear();
     setDirty(true);
+
+#ifdef FWB_DEBUG
+    cerr << "Deleted " << total_children - referenced_children 
+         << " child objects; still referenced " << referenced_children
+         << " child objects" << endl;
+#endif
 }
 
 int FWObject::getChildrenCount() const
@@ -1013,7 +1034,7 @@ int FWObject::getChildrenCount() const
 bool FWObject::isChildOf(FWObject *obj)
 {
     if (this==obj) return false;
-#if 0
+#ifdef FWB_DEBUG
     cerr << "FWObject::isChildOf" << endl;
     cerr << "this: " << endl;
     dump(true,true);

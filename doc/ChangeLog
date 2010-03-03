@@ -1,3 +1,8 @@
+2010-03-02  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::destroyChildren): fixed memory leak
+	where objects were not destroyed if they had no children.
+
 2010-02-28  vadim  <vadim@vk.crocodile.org>
 
 	* ../src/fwbuilder/ObjectMatcher.h (libfwbuilder): added virtual
