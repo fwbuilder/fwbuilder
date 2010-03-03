@@ -58,7 +58,7 @@ void FWWindow::filePrint()
 {
     if (!activeProject())
     {
-        if (fwbdebug) qDebug("There isn't any selected subwindow");
+        if (fwbdebug) qDebug() << "There isn't any selected subwindow";
         return;
     }
 
@@ -146,18 +146,24 @@ void FWWindow::filePrint()
         //printer->setResolution(resolution);
         printer->setFullPage(fullPage);
 
+        if (fwbdebug) qDebug() << "Running QPrintDialog";
+
         QPrintDialog pdialog(printer, this);
 
+        pdialog.setWindowTitle(tr("Print configuration of %1")
+                               .arg(firewall_to_print->getName().c_str()));
         pdialog.addEnabledOption(QAbstractPrintDialog::PrintPageRange);
         pdialog.setMinMax(1,9999);
         pdialog.setPrintRange(QAbstractPrintDialog::AllPages);
 
-        if (pdialog.exec())
+        if (pdialog.exec() == QDialog::Accepted)
         {
+            if (fwbdebug) qDebug() << "QPrintDialog finished";
+
             int fromPage = printer->fromPage();
             int toPage = printer->toPage();
-            if (fromPage==0) fromPage=1;
-            if (toPage==0) toPage=9999;
+            if (fromPage==0) fromPage = 1;
+            if (toPage==0) toPage = 9999;
 
             showStatusBarMessage(tr("Printing..." ));
 
@@ -177,7 +183,7 @@ void FWWindow::filePrint()
             pr.setFromTo(fromPage, toPage);
 
             if (fwbdebug)
-                qDebug("Printer resolution: %d dpi", printer->resolution());
+                qDebug() << "Printer resolution (dpi):" << printer->resolution();
 
             if ( !pr.begin())
             {
@@ -211,6 +217,7 @@ void FWWindow::filePrint()
 
         } else
         {
+            if (fwbdebug) qDebug() << "QPrintDialog cancelled";
             showStatusBarMessage(tr("Printing cancelled"));
         }
 
