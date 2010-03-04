@@ -1,3 +1,9 @@
+2010-03-03  vadim  <vadim@vk.crocodile.org>
+
+	* compiler_lib/CompilerDriver.cpp (CompilerDriver::commonChecks2):
+	fixed #1292  Added check for interfaces with valid address and
+	netmask 0.0.0.0
+
 2010-03-03  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* iptables.g (port_def_with_incomplete_range): fixed #1294

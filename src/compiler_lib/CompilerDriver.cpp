@@ -460,7 +460,9 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
             for (list<FWObject*>::iterator j = all_addr.begin();
                  j != all_addr.end(); ++j) 
             {
-                const InetAddr  *ip_addr = Address::cast(*j)->getAddressPtr();
+                const InetAddr *ip_addr = Address::cast(*j)->getAddressPtr();
+                const InetAddr *netmask = Address::cast(*j)->getNetmaskPtr();
+
                 if (ip_addr && ip_addr->isAny())
                 {
                     QString err("Interface %1 (id=%2) has IP address %3.");
@@ -469,6 +471,17 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                           .arg(FWObjectDatabase::getStringId(
                                    iface->getId()).c_str())
                           .arg(ip_addr->toString().c_str()).toStdString());
+                    throw FatalErrorInSingleRuleCompileMode();
+                }
+
+                if (ip_addr && netmask && netmask->isAny())
+                {
+                    QString err("Interface %1 (id=%2) has invalid netmask %3.");
+                    abort(fw, NULL, NULL,
+                          err.arg(iface->getName().c_str())
+                          .arg(FWObjectDatabase::getStringId(
+                                   iface->getId()).c_str())
+                          .arg(netmask->toString().c_str()).toStdString());
                     throw FatalErrorInSingleRuleCompileMode();
                 }
             }
