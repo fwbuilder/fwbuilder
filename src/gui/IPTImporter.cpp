@@ -61,6 +61,7 @@
 
 #include <QtDebug>
 
+using namespace std;
 using namespace libfwbuilder;
 
 IPTImporter::IPTImporter(FWObject *lib,
@@ -871,13 +872,27 @@ Firewall* IPTImporter::finalize()
 
     if (haveFirewallObject())
     {
-        FWObject *f = getFirewallObject();
-        f->setStr("host_OS", "linux24");
+        FWObject *fw = getFirewallObject();
+        fw->setStr("host_OS", "linux24");
 
-        FWOptions  *fwopt = Firewall::cast(f)->getOptionsObject();
+        FWOptions  *fwopt = Firewall::cast(fw)->getOptionsObject();
         assert(fwopt!=NULL);
 
         fwopt->setBool("firewall_is_part_of_any_and_networks", false);
+
+        list<FWObject*> l2 = fw->getByType(Policy::TYPENAME);
+        for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+        {
+            RuleSet *rs = RuleSet::cast(*i);
+            rs->renumberRules();
+        }
+
+        l2 = fw->getByType(NAT::TYPENAME);
+        for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+        {
+            RuleSet *rs = RuleSet::cast(*i);
+            rs->renumberRules();
+        }
 
         return getFirewallObject();
     }

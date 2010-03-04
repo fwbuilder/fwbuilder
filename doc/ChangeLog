@@ -1,5 +1,8 @@
 2010-03-03  vadim  <vadim@vk.crocodile.org>
 
+	* IPTImporter.cpp (IPTImporter::finalize): fixed #1288 "all rules
+	created by policy import have rule number 0"
+
 	* FWWindowPrint.cpp (FWWindow::filePrint): fixed #1295 "File/Print
 	does not work for clusters"
 

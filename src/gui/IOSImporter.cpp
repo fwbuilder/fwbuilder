@@ -48,6 +48,7 @@
 
 #include <QtDebug>
 
+using namespace std;
 using namespace libfwbuilder;
 
 IOSImporter::IOSImporter(FWObject *lib,
@@ -391,8 +392,8 @@ Firewall* IOSImporter::finalize()
 
     if (haveFirewallObject())
     {
-        FWObject *f = getFirewallObject();
-        f->setStr("host_OS", "ios");
+        FWObject *fw = getFirewallObject();
+        fw->setStr("host_OS", "ios");
 
         FWObject *policy =
             getFirewallObject()->getFirstByType(Policy::TYPENAME);
@@ -521,6 +522,13 @@ Firewall* IOSImporter::finalize()
                 getFirewallObject()->remove(irs->ruleset, false);
                 delete irs->ruleset;
             }
+        }
+
+        list<FWObject*> l2 = fw->getByType(Policy::TYPENAME);
+        for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
+        {
+            RuleSet *rs = RuleSet::cast(*i);
+            rs->renumberRules();
         }
 
         return getFirewallObject();
