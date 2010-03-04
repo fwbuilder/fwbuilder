@@ -252,7 +252,7 @@ void* FWObject::getPrivateData(const string &key) const
         return it->second;
 }
 
-std::map<std::string, void*> &FWObject::getAllPrivateData()
+map<string, void*> &FWObject::getAllPrivateData()
 {
     return private_data;
 }
@@ -438,6 +438,7 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
     comment = x->comment;
     ro = x->ro;
     data = x->data;
+    private_data = x->private_data;
 
     setReadOnly(false);
 
