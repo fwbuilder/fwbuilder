@@ -1,5 +1,8 @@
 2010-03-03  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindowPrint.cpp (FWWindow::filePrint): fixed #1295 "File/Print
+	does not work for clusters"
+
 	* Importer.cpp (Importer::createAddress): fixed #1287 "policy
 	importer (iptables) crashes when host name is used in iptables
 	rule in place of an address". Importer now creates DNSName object.

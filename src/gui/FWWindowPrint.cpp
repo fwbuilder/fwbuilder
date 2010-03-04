@@ -85,7 +85,7 @@ void FWWindow::filePrint()
     }
 
     // Need error dialog
-    if (!Firewall::isA(firewall_to_print)) return;
+    if (!Firewall::cast(firewall_to_print)) return;
 
 
     if (!st->getStr("PrintSetup/newPageForSection").isEmpty())
