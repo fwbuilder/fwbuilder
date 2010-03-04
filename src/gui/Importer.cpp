@@ -882,8 +882,6 @@ FWObject* Importer::createGroupOfInterfaces(
 FWObject* Importer::createAddress(const std::string &addr,
                                   const std::string &netmask)
 {
-    std::string comment = "Imported from " + getFirewallObject()->getName() +
-        " " + addr + "/" + netmask;
     std::string sig = std::string("addr-") + addr + "/" + netmask;
     if (all_objects.count(sig)!=0) return all_objects[sig];
 
@@ -897,6 +895,8 @@ FWObject* Importer::createAddress(const std::string &addr,
             Address *a = Address::cast(createObject(IPv4::TYPENAME, name));
             a->setAddress(obj_addr);
             a->setNetmask(InetAddr(InetAddr::getAllOnes()));
+            string comment = "Imported from " + getFirewallObject()->getName() +
+                " " + addr + "/" + netmask;
             a->setComment(comment);
             all_objects[sig] = a;
             *logger << "Address object: " << name << "\n";
@@ -910,6 +910,8 @@ FWObject* Importer::createAddress(const std::string &addr,
             DNSName *da = DNSName::cast(createObject(DNSName::TYPENAME, name));
             da->setSourceName(addr);
             da->setRunTime(true);
+            string comment = "Imported from " + getFirewallObject()->getName() +
+                " " + addr;
             da->setComment(comment);
             all_objects[sig] = da;
             *logger << "DNSName object: " << name << "\n";
@@ -960,6 +962,9 @@ FWObject* Importer::createAddress(const std::string &addr,
                 }
             }
         }
+
+        string comment = "Imported from " + getFirewallObject()->getName() +
+            " " + addr + "/" + netmask;
 
         net->setComment(comment);
         all_objects[sig] = net;
