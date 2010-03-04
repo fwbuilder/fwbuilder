@@ -24,6 +24,8 @@ TCP Service object: tcp 873-873
 TCP Service object: tcp 22-22
 Address object: h-192.0.34.166
 TCP Service object: tcp 137-139
+TCP Service object: tcp 0-1023
+TCP Service object: tcp 6000-65535
 UDP Service object: udp 0-0:137-137
 UDP Service object: udp 0-0:138-138
 TCP Service object: tcp 139-139

@@ -61,6 +61,10 @@
 -A user_chain -s 192.0.34.166 -p tcp -m tcp --dport 22 -m state --state NEW -j ACCEPT
 -A user_chain -s 192.168.19.0/24 -p tcp -m tcp --dport 137:139 -m state --state NEW -j ACCEPT
 
+
+-A user_chain -s 192.168.19.0/24 -p tcp -m tcp --dport :1023 -m state --state NEW -j ACCEPT
+-A user_chain -s 192.168.19.0/24 -p tcp -m tcp --dport 6000: -m state --state NEW -j ACCEPT
+
 -A user_chain -s 192.168.0.0/16 -p udp --dport 137 -m state --state NEW -j ACCEPT
 -A user_chain -s 192.168.0.0/16 -p udp --dport 138 -m state --state NEW -j ACCEPT
 -A user_chain -s 192.168.0.0/16 -p tcp -m tcp --dport 139 -m state --state NEW -j ACCEPT
