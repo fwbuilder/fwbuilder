@@ -237,16 +237,18 @@ FWObject* IPTImporter::createIPService()
 std::pair<int,int> IPTImporter::convertPortRange(str_tuple &range,
                                                  const char *proto)
 {
-    return std::pair<int,int>(convertPort(range.first,proto),
-                              convertPort(range.second,proto));
+    return std::pair<int,int>(convertPort(range.first, proto, 0),
+                              convertPort(range.second, proto, 65535));
 }
 
 int IPTImporter::convertPort(const std::string &port_spec,
-                             const char *proto)
+                             const char *proto,
+                             int default_port)
 {
     int port = 0;
     std::string ps = strip(port_spec);
-    if (ps=="") return 0;
+    if (ps == "") return 0;
+    if (ps == ":") return default_port;
 
     struct servent *se = getservbyname(ps.c_str(), proto);
     if (se!=NULL)

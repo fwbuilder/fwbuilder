@@ -767,8 +767,15 @@ port_def_no_range : (WORD|INT_CONST)
         }
     ;
 
-//****************************************************************
-// port definition that allows for port range
+/****************************************************************
+ * port definition that allows for port range. That parser should
+ * recognize constructs
+ *
+ * port1         ---> range_start = range_end = port1
+ * port1:port2   ---> range_start = port1  range_end = port2
+ * port1:        ---> range_start = port1  range_end = 65535
+ * :port2        ---> range_start = 0      range_end = port2
+ */ 
 port_def_with_range : 
         (WORD|INT_CONST)
         {
@@ -777,12 +784,21 @@ port_def_with_range :
             *dbg << " PORT=" << LT(0)->getText();
         }
         (
-            COLON (WORD|INT_CONST)
+            COLON (WORD|INT_CONST)?
             {
                 importer->tmp_port_range_end = LT(0)->getText();
                 *dbg << ":" << LT(0)->getText();
             }
         )?
+    ;
+
+port_def_with_incomplete_range :
+        COLON (WORD|INT_CONST)
+        {
+            importer->tmp_port_range_start = "0";
+            importer->tmp_port_range_end = LT(0)->getText();
+            *dbg << "PORT 0:" << LT(0)->getText();
+        }
     ;
 
 //****************************************************************
@@ -820,7 +836,7 @@ basic_tcp_udp_port_spec :
                 importer->srv_neg = true;
             }
         )?
-        port_def_with_range
+        (port_def_with_range | port_def_with_incomplete_range)
         {
             importer->pushTmpPortSpecToSrcPortList();
         }
@@ -832,7 +848,7 @@ basic_tcp_udp_port_spec :
                 importer->srv_neg = true;
             }
         )?
-        port_def_with_range
+        (port_def_with_range | port_def_with_incomplete_range)
         {
             importer->pushTmpPortSpecToDstPortList();
         }

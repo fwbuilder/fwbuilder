@@ -1,3 +1,11 @@
+2010-03-03  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* iptables.g (port_def_with_incomplete_range): fixed #1294
+	'importer for iptables does not parse "--dport NNNN:"'. Policy
+	importer for iptables should recognize the following variant of
+	the --dport and --sport port ranges: "port1", "port1:port2",
+	":port1" and "port2:"
+
 2010-03-03  vadim  <vadim@vk.crocodile.org>
 
 	* IPTImporter.cpp (IPTImporter::finalize): fixed #1288 "all rules

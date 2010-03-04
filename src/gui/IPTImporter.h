@@ -62,7 +62,7 @@ class IPTImporter : public Importer {
     virtual libfwbuilder::FWObject* createUDPService();
 
     std::pair<int,int> convertPortRange(str_tuple &range, const char *proto);
-    int convertPort(const std::string &port_spec, const char *proto);
+    int convertPort(const std::string &port_spec, const char *proto, int default_port);
 
     virtual void addSrv();
 

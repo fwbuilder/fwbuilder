@@ -8,7 +8,7 @@
 
 #line 10 "IPTCfgParser.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.6 (20070910): "iptables.g" -> "IPTCfgParser.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "iptables.g" -> "IPTCfgParser.hpp"$ */
 #include <antlr/TokenStream.hpp>
 #include <antlr/TokenBuffer.hpp>
 #include "IPTCfgParserTokenTypes.hpp"
@@ -109,6 +109,7 @@ public:
 	public: void limit_rate();
 	public: void port_def_no_range();
 	public: void port_def_with_range();
+	public: void port_def_with_incomplete_range();
 	public: void syn();
 	public: void tcp_flags();
 	public: void tcp_option();
