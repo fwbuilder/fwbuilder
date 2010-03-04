@@ -1,5 +1,9 @@
 2010-03-03  vadim  <vadim@vk.crocodile.org>
 
+	* Importer.cpp (Importer::createAddress): fixed #1287 "policy
+	importer (iptables) crashes when host name is used in iptables
+	rule in place of an address". Importer now creates DNSName object.
+
 	* fixed #1291 "deleted objects 'policy' problem". SF bug 2962628
 	If user ended up placing a 'policy' object in the 'Deleted
 	Objects' library, it could not be deleted or opened.

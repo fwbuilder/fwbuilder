@@ -40,6 +40,7 @@
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Address.h"
+#include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
@@ -888,15 +889,33 @@ FWObject* Importer::createAddress(const std::string &addr,
 
     if ( netmask == InetAddr::getAllOnes().toString() )
     {
-        Address *a;
-        std::string name = std::string("h-") + addr;
-        a = Address::cast(createObject(IPv4::TYPENAME, name));
-        a->setAddress(InetAddr(addr));
-        a->setNetmask(InetAddr(InetAddr::getAllOnes()));
-        a->setComment(comment);
-        all_objects[sig] = a;
-        *logger << "Address object: " << name << "\n";
-        return a;
+        string name;
+        try
+        {
+            InetAddr obj_addr(addr); // testing if string converts to an address
+            name = std::string("h-") + addr;
+            Address *a = Address::cast(createObject(IPv4::TYPENAME, name));
+            a->setAddress(obj_addr);
+            a->setNetmask(InetAddr(InetAddr::getAllOnes()));
+            a->setComment(comment);
+            all_objects[sig] = a;
+            *logger << "Address object: " << name << "\n";
+            return a;
+        } catch(FWException &ex)
+        {
+            // address text line can not be converted to ipv4 address.
+            // Since parsers do not understand ipv6 yet, assume this
+            // is a host address and create DNSName object
+            name = addr;
+            DNSName *da = DNSName::cast(createObject(DNSName::TYPENAME, name));
+            da->setSourceName(addr);
+            da->setRunTime(true);
+            da->setComment(comment);
+            all_objects[sig] = da;
+            *logger << "DNSName object: " << name << "\n";
+            return da;
+        }
+
     } else
     {
         Network *net;
