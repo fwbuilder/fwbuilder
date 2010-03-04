@@ -1,3 +1,9 @@
+2010-03-03  vadim  <vadim@vk.crocodile.org>
+
+	* Helper.cpp: fixes #1293 When compiler searches for an interface
+	that should match given address, it should skip unprotected
+	interfaces.
+
 2010-03-02  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* RCS.cpp (RCS::init): checking if RCS tools are installed on the

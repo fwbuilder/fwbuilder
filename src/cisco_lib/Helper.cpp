@@ -90,15 +90,27 @@ int  Helper::findInterfaceByAddress(Address *obj)
     return findInterfaceByAddress( obj->getAddressPtr() );
 }
 
+/*
+ * ticket #1293
+ * Weird corner case: user made a mistake setting netmask of an
+ * intrface to 0.0.0.0, which made this interface match any address.
+ * At the same time, this interface was marked as "unprotected".  So,
+ * if we get an interface from helper.findInterfaceByNetzoneOrAll()
+ * but this interface is unprotected, issue a warning and use all
+ * interfaces instead.
+ */
+
 int  Helper::findInterfaceByAddress(const InetAddr *addr)
 {
     if (addr==NULL) return -1;
 
     Firewall *fw=compiler->fw;
-    list<FWObject*> l2=fw->getByType(Interface::TYPENAME);
+    list<FWObject*> l2=fw->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
 	Interface *iface=Interface::cast(*i);
+        if (iface->isDedicatedFailover()) continue;
+        if (iface->isUnprotected()) continue;
         FWObjectTypedChildIterator j =
             iface->findByType((addr->isV4())?IPv4::TYPENAME:IPv6::TYPENAME);
         for (; j!=j.end(); ++j)
@@ -237,7 +249,8 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
 
         try
         {
-            intf_id_list.push_back( findInterfaceByNetzone( a ) );
+            int intf_id = findInterfaceByNetzone(a);
+            intf_id_list.push_back(intf_id);
         } catch(string err)
         {
             // could not find interface with netzone to match address 'a'

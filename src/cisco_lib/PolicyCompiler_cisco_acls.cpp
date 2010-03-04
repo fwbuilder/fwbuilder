@@ -100,8 +100,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
              i!=intf_id_list.end(); ++i)
         {
             int intf_id = *i;
-            Interface *ifs = Interface::cast(
-                rule->getRoot()->findInIndex(intf_id) );
+            Interface *ifs = Interface::cast(rule->getRoot()->findInIndex(intf_id));
             assert(ifs);
             if (ifs->isUnprotected()) continue;   // skip!
 
@@ -160,13 +159,11 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
         if (rule->getDirection()==PolicyRule::Outbound)
             intf_id_list = helper.getAllInterfaceIDs();
 
-
         for (list<int>::iterator i = intf_id_list.begin();
              i!=intf_id_list.end(); ++i)
         {
             int intf_id = *i;
-            Interface *ifs = Interface::cast(
-                rule->getRoot()->findInIndex(intf_id) );
+            Interface *ifs = Interface::cast(rule->getRoot()->findInIndex(intf_id));
             assert(ifs);
             if (ifs->isUnprotected()) continue;   // skip!
 
