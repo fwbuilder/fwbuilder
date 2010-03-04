@@ -152,9 +152,11 @@ void FWWindow::filePrint()
 
         pdialog.setWindowTitle(tr("Print configuration of %1")
                                .arg(firewall_to_print->getName().c_str()));
+#ifndef Q_OS_MACX
         pdialog.addEnabledOption(QAbstractPrintDialog::PrintPageRange);
         pdialog.setMinMax(1,9999);
         pdialog.setPrintRange(QAbstractPrintDialog::AllPages);
+#endif
 
         if (pdialog.exec() == QDialog::Accepted)
         {
