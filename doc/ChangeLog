@@ -1,3 +1,9 @@
+2010-03-04  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::getDeleteMenuState):
+	fixed #1301 "can not delete Policy object when it is in Deleted
+	Objects lib". SF bug 2962628
+
 2010-03-03  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* CompilerDriver_pix_run.cpp (CompilerDriver_pix::run): 

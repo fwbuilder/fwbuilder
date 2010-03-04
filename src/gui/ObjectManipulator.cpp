@@ -805,16 +805,12 @@ bool ObjectManipulator::getDeleteMenuState(FWObject *obj)
     // also can't delete "top" policy ruleset
     if (del_menu_item_state && RuleSet::cast(obj))
     {
-        //if (dynamic_cast<RuleSet*>(obj)->isTop()) del_menu_item_state = false;
-        //else
-        //{
-            FWObject *fw = obj->getParent();
-            // fw can be NULL if this ruleset is in the Deleted objects
-            // library
-            if (fw==NULL) return del_menu_item_state;
-            list<FWObject*> child_objects = fw->getByType(obj->getTypeName());
-            if (child_objects.size()==1) del_menu_item_state = false;
-        //}
+        Firewall *fw = Firewall::cast(obj->getParent());
+        // fw can be NULL if this ruleset is in the Deleted objects
+        // library
+        if (fw==NULL) return del_menu_item_state;
+        list<FWObject*> child_objects = fw->getByType(obj->getTypeName());
+        if (child_objects.size()==1) del_menu_item_state = false;
     }
     return del_menu_item_state;
 }
