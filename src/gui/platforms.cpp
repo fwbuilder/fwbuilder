@@ -694,6 +694,7 @@ QString getRuleAction(Rule *rule)
 
 QString getActionNameForPlatform(Firewall *fw, Rule *rule)
 {
+    if (fw==NULL) return "";
     PolicyRule *policy_rule = PolicyRule::cast(rule);
     NATRule *nat_rule = NATRule::cast(rule);
     string act;
@@ -704,6 +705,7 @@ QString getActionNameForPlatform(Firewall *fw, Rule *rule)
 
 QString getActionNameForPlatform(Firewall *fw, const std::string &action)
 {
+    if (fw==NULL) return "";
     string platform = fw->getStr("platform");
     string name;
     try  

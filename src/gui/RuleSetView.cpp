@@ -433,6 +433,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
         case ColDesc::Action:
             {
                 Firewall *f = md->getFirewall();
+                if (f == NULL) break;
                 string platform = f->getStr("platform");
                 QString action_name;
 
@@ -636,6 +637,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 if (NAT::cast(md->getRuleSet())!=NULL) cap_name="negation_in_nat";
 
                 Firewall *f = md->getFirewall();
+                if (f == NULL) break;
 
                 bool supports_neg=false;
                 try  {
@@ -2335,11 +2337,13 @@ void RuleSetView::saveCollapsedGroups()
             collapsed_groups.push_back(node->name);
         }
     }
-    st->setCollapsedRuleGroups(
-        filename,
-        md->getFirewall()->getName().c_str(),
-        md->getRuleSet()->getName().c_str(),
-        collapsed_groups);
+    Firewall *f = md->getFirewall();
+    if (f)
+        st->setCollapsedRuleGroups(
+            filename,
+            f->getName().c_str(),
+            md->getRuleSet()->getName().c_str(),
+            collapsed_groups);
 }
 
 void RuleSetView::restoreCollapsedGroups()
@@ -2351,11 +2355,13 @@ void RuleSetView::restoreCollapsedGroups()
     QString filename = project->getRCS()->getFileName();
     if (fwbdebug)
         qDebug("restoreCollapsedGroups begin: %d ms", t.restart());
-    st->getCollapsedRuleGroups(
-        filename,
-        md->getFirewall()->getName().c_str(),
-        md->getRuleSet()->getName().c_str(),
-        collapsed_groups);
+    Firewall *f = md->getFirewall();
+    if (f)
+        st->getCollapsedRuleGroups(
+            filename,
+            f->getName().c_str(),
+            md->getRuleSet()->getName().c_str(),
+            collapsed_groups);
     if (fwbdebug)
         qDebug("restoreCollapsedGroups getCollapsedRuleGroups: %d ms", t.restart());
     QList<QModelIndex> groups;

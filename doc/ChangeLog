@@ -1,5 +1,14 @@
 2010-03-03  vadim  <vadim@vk.crocodile.org>
 
+	* fixed #1291 "deleted objects 'policy' problem". SF bug 2962628
+	If user ended up placing a 'policy' object in the 'Deleted
+	Objects' library, it could not be deleted or opened.
+        RuleSetView.cpp
+        RuleSetModel.cpp
+        ActionsDialog.cpp
+        RuleSetDialog.cpp
+        platforms.cpp
+
 	* Helper.cpp: fixes #1293 When compiler searches for an interface
 	that should match given address, it should skip unprotected
 	interfaces.

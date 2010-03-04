@@ -99,65 +99,68 @@ void RuleSetDialog::loadFWObject(FWObject *o)
 
     FWObject *fw = o;
     while (fw && (!Firewall::isA(fw) && !Cluster::isA(fw))) fw = fw->getParent();
-    assert(fw!=NULL);
-    platform = fw->getStr("platform");
-    fwopt = Firewall::cast(fw)->getOptionsObject();
-    FWOptions *rulesetopt = s->getOptionsObject();
-
-    if (platform == "iptables")
+    // if rule set object is in DeletedObjects library, it does not have parent
+    // firewall
+    if (fw!=NULL)
     {
-        m_dialog->top_rule_set->setToolTip(
-            QApplication::translate("RuleSetDialog_q",
-                                    "On iptables \"top\" rule set goes into \n"
-                                    "the built-in chains INPUT, OUTPUT,\n"
-                                    "FORWARD; if this flag is unchecked,\n"
-                                    "rules go into user-defined chain \n"
-                                    "with the name the same as the name of \n"
-                                    "the rule set.",
-                                    0, QApplication::UnicodeUTF8));
+        platform = fw->getStr("platform");
+        fwopt = Firewall::cast(fw)->getOptionsObject();
+        FWOptions *rulesetopt = s->getOptionsObject();
 
-        if (Policy::isA(obj))
+        if (platform == "iptables")
         {
-            // if this attribute is absent, we consider it False, so for
-            // backwards compatibility the rule set is considered
-            // filter+mangle rather than mangle only.
-            m_dialog->iptables_only->show();
-            bool f = rulesetopt->getBool("mangle_only_rule_set");
-            m_dialog->ipt_filter_table->setChecked(!f);
-            m_dialog->ipt_mangle_table->setChecked(f);
+            m_dialog->top_rule_set->setToolTip(
+                QApplication::translate("RuleSetDialog_q",
+                                        "On iptables \"top\" rule set goes into \n"
+                                        "the built-in chains INPUT, OUTPUT,\n"
+                                        "FORWARD; if this flag is unchecked,\n"
+                                        "rules go into user-defined chain \n"
+                                        "with the name the same as the name of \n"
+                                        "the rule set.",
+                                        0, QApplication::UnicodeUTF8));
+
+            if (Policy::isA(obj))
+            {
+                // if this attribute is absent, we consider it False, so for
+                // backwards compatibility the rule set is considered
+                // filter+mangle rather than mangle only.
+                m_dialog->iptables_only->show();
+                bool f = rulesetopt->getBool("mangle_only_rule_set");
+                m_dialog->ipt_filter_table->setChecked(!f);
+                m_dialog->ipt_mangle_table->setChecked(f);
+            } else
+                m_dialog->iptables_only->hide();
+
         } else
+        {
             m_dialog->iptables_only->hide();
+        }
 
-    } else
-    {
-        m_dialog->iptables_only->hide();
+
+        if (platform == "pf")
+            m_dialog->top_rule_set->setToolTip(
+                QApplication::translate("RuleSetDialog_q",
+                                        "If this flag is unchecked, rules go \n"
+                                        "into anchor with the name the same as\n"
+                                        "the name of the rule set.",
+                                        0, QApplication::UnicodeUTF8));
+
+        if (platform == "iosacl" || platform == "pix" || platform=="fwsm")
+            m_dialog->top_rule_set->setToolTip(
+                QApplication::translate("RuleSetDialog_q",
+                                        "If this flag is unchecked, generated\n"
+                                        "access list will not be assigned to\n"
+                                        "interfaces with \"ip access-group\"\n"
+                                        "command. The name of the rule set will\n"
+                                        "be used as a prefix for names of\n"
+                                        "access access lists generated for it.",
+                                        0, QApplication::UnicodeUTF8));
+
+        if (platform == "ipf" || platform == "ipfw")
+            m_dialog->top_rule_set->hide();
+        else
+            m_dialog->top_rule_set->show();
     }
-
-
-    if (platform == "pf")
-        m_dialog->top_rule_set->setToolTip(
-            QApplication::translate("RuleSetDialog_q",
-                                    "If this flag is unchecked, rules go \n"
-                                    "into anchor with the name the same as\n"
-                                    "the name of the rule set.",
-                                    0, QApplication::UnicodeUTF8));
-
-    if (platform == "iosacl" || platform == "pix" || platform=="fwsm")
-        m_dialog->top_rule_set->setToolTip(
-            QApplication::translate("RuleSetDialog_q",
-                                    "If this flag is unchecked, generated\n"
-                                    "access list will not be assigned to\n"
-                                    "interfaces with \"ip access-group\"\n"
-                                    "command. The name of the rule set will\n"
-                                    "be used as a prefix for names of\n"
-                                    "access access lists generated for it.",
-                                    0, QApplication::UnicodeUTF8));
-
-    if (platform == "ipf" || platform == "ipfw")
-        m_dialog->top_rule_set->hide();
-    else
-        m_dialog->top_rule_set->show();
-
     init=false;
 }
 

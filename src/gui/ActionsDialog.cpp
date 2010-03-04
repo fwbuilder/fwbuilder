@@ -255,34 +255,35 @@ void ActionsDialog::setRule(Rule *r)
 
     FWObject *o = r;
     while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
-    assert(o!=NULL);
-
-    FWOptions *ropt = rule->getOptionsObject();
 
     Firewall *f = Firewall::cast(o);
     firewall = f;
 
-    platform=f->getStr("platform");
+    FWOptions *ropt = rule->getOptionsObject();
 
-    string act = getRuleAction(r).toStdString();
+    string act = getRuleAction(rule).toStdString();
 
-    help_name = string(platform + "_" + act).c_str();
+    if (firewall)
+    {
+        // firewall can be NULL if rule set is in Deleted Objects library
+        fillInterfaces(m_dialog->ipt_iif);
+        fillInterfaces(m_dialog->ipt_oif);
+        fillInterfaces(m_dialog->ipf_route_opt_if);
+        fillInterfaces(m_dialog->pf_route_opt_if);
 
-    QStringList actionsOnReject = getActionsOnReject( platform.c_str() );
-    m_dialog->rejectvalue->clear();
-    m_dialog->rejectvalue->addItems( getScreenNames( actionsOnReject ) );
-
-    fillInterfaces(m_dialog->ipt_iif);
-    fillInterfaces(m_dialog->ipt_oif);
-    fillInterfaces(m_dialog->ipf_route_opt_if);
-    fillInterfaces(m_dialog->pf_route_opt_if);
-
-    editor = DialogFactory::getActionDialogPageName(f, r);
+        platform = firewall->getStr("platform");
+        help_name = string(platform + "_" + act).c_str();
+        editor = DialogFactory::getActionDialogPageName(firewall, r);
+    }
 
     if (fwbdebug)
         qDebug() << "ActionsDialog::setRule"
                  << "Action: " << getRuleAction(rule)
                  << "editor: " << editor.c_str();
+
+    QStringList actionsOnReject = getActionsOnReject( platform.c_str() );
+    m_dialog->rejectvalue->clear();
+    m_dialog->rejectvalue->addItems( getScreenNames( actionsOnReject ) );
 
     branchNameInput = NULL;
 
@@ -364,7 +365,7 @@ void ActionsDialog::setRule(Rule *r)
     // REJECT action:
     data.registerOption(m_dialog->rejectvalue, ropt, "action_on_reject");
 
-    QWidget *w=m_dialog->NonePage;
+    QWidget *w = m_dialog->NonePage;
     if (editor=="Reject")
     {
         w=m_dialog->RejectPage;

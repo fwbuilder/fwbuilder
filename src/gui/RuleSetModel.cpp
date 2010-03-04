@@ -1207,8 +1207,16 @@ ActionDesc RuleSetModel::getRuleActionDesc(Rule* r) const
 {
     ActionDesc res;
     res.name = getRuleAction(r);
-    res.displayName = getActionNameForPlatform(getFirewall(), r);
-    res.tooltip = FWObjectPropertiesFactory::getRuleActionPropertiesRich(r);
+    Firewall *f = getFirewall();
+    if (f)
+    {
+        res.displayName = getActionNameForPlatform(f, r);
+        res.tooltip = FWObjectPropertiesFactory::getRuleActionPropertiesRich(r);
+    } else
+    {
+        res.displayName = res.name;
+        res.tooltip = "";
+    }
 
     QString par = FWObjectPropertiesFactory::getRuleActionProperties(r);
     if (!par.isEmpty()) {
