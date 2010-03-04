@@ -401,7 +401,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j)
             {
                 netzone_objects.insert( pair<string,FWObject*>(iface->getLabel(),*j));
-                nz->add(*j);
+                nz->addRef(*j);
             }
             iface->setStr("orig_netzone_id", netzone_id );
             iface->setStr("network_zone",

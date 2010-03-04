@@ -1,3 +1,14 @@
+2010-03-03  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_pix_run.cpp (CompilerDriver_pix::run): 
+	fixed #1296 "crash in fwb_pix". Compiler used to create copy of
+	each network zone object, expanded it recursively and added
+	network and address objects to the newly created group
+	directly (rather than via references). This created objects that
+	were referenced by two parents in the tree which caused crash in
+	FWObject::destroyChildren() because an attempt to free the same
+	block of memory twice.
+
 2010-03-03  vadim  <vadim@vk.crocodile.org>
 
 	* compiler_lib/CompilerDriver.cpp (CompilerDriver::commonChecks2):
