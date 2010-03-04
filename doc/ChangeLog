@@ -1,5 +1,9 @@
 2010-03-04  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_cisco_acls.cpp (setInterfaceAndDirectionBySrc::processNext):
+	recognize multicast when matching Network and NetworkIPv6
+	objects. Fixes #1298
+
 	* ObjectManipulator.cpp (ObjectManipulator::getDeleteMenuState):
 	fixed #1301 "can not delete Policy object when it is in Deleted
 	Objects lib". SF bug 2962628

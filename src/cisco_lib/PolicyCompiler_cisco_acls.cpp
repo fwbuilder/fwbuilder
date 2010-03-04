@@ -114,9 +114,16 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
         }
         // If dst does not match firewall, preserve original rule as
         // well to let setInterfaceAndDirectionByDst work on it.
+        //
+        // Note for #1298
+        //
+        // if address in dst is multicast, it can be forwarded and so
+        // we need to preserve the rule. But broadcasts are not
+        // forwarded so we should consider them as matching the fw.
+        //
         FWObject *d = dstre->front();
         if (FWReference::cast(d)!=NULL) d = FWReference::cast(d)->getPointer();
-        if (!compiler->complexMatch(Address::cast(d), compiler->fw))
+        if (!compiler->complexMatch(Address::cast(d), compiler->fw, true, false))
             tmp_queue.push_back(rule);
         return true;
     }
