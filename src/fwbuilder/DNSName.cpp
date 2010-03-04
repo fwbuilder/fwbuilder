@@ -126,10 +126,12 @@ void DNSName::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
         {
             //Address *a = Address::cast(
             //    getRoot()->create((ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
+            int af = AF_INET;
             Address *a = NULL;
-            if (ipv6) a = getRoot()->createIPv6();
+            if (ipv6) { a = getRoot()->createIPv6(); af = AF_INET6; }
             else a = getRoot()->createIPv4();
-            a->setAddress( *i );
+            a->setAddress(*i);
+            a->setNetmask(InetAddr::getAllOnes(af));
             addRef(a);
         }
     } catch (const FWException &ex)
@@ -152,15 +154,18 @@ void DNSName::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
         if (test_mode)
         {
             err << " Using dummy address in test mode";
+            int af = AF_INET;
             Address *a = NULL;
             if (ipv6)
             {
                 a = getRoot()->createIPv6();
                 a->setAddress(InetAddr(af_type, "2001:db8::1"));
+                af = AF_INET6;
             } else
             {
                 a = getRoot()->createIPv4();
                 a->setAddress("192.0.2.1");
+                a->setNetmask(InetAddr::getAllOnes(af));
             }
             addRef(a);
             a->setBool(".rule_error", true);
