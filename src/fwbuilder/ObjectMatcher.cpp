@@ -240,7 +240,8 @@ void* ObjectMatcher::dispatch(Network *obj1, void *_obj2)
     const InetAddr *inet_addr = obj1->getAddressPtr();
     if (inet_addr)
     {
-        if (inet_addr->isMulticast() && Firewall::isA(obj2)) return obj1;
+        if (recognize_multicasts && inet_addr->isMulticast() &&
+            Firewall::isA(obj2)) return obj1;
         /*
          * need to check for network object with mask 255.255.255.255
          * Such objects are created by the method that expands address
@@ -259,7 +260,8 @@ void* ObjectMatcher::dispatch(NetworkIPv6 *obj1, void *_obj2)
     const InetAddr *inet_addr = obj1->getAddressPtr();
     if (inet_addr)
     {
-        if (inet_addr->isMulticast() && Firewall::isA(obj2)) return obj1;
+        if (recognize_multicasts && inet_addr->isMulticast() &&
+            Firewall::isA(obj2)) return obj1;
         if (!obj1->getNetmaskPtr()->isHostMask()) return NULL;
     } else
         return NULL;

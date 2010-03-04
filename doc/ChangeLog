@@ -1,3 +1,8 @@
+2010-03-04  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectMatcher.cpp (ObjectMatcher::dispatch): recognize multicast
+	when matching Network and NetworkIPv6 objects. See fwbuilder:ticket:1298
+
 2010-03-03  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* FWObject.cpp (FWObject::findDuplicateLinksInTree): test/debugging
