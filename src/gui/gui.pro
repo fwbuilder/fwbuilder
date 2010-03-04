@@ -2,8 +2,7 @@
 # $Id$
 TEMPLATE = app
 LANGUAGE = C++
-QT += network testlib
-unix:CONFIG += qtestlib
+QT += network
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)
@@ -465,10 +464,8 @@ contains( HAVE_ANTLR_RUNTIME, 1 ) {
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
 LIBS += $$FWTRANSFER_LIB
 contains( HAVE_QTDBUS, 1 ):unix { 
-    !macx:QT += network \
-        dbus
-    macx:LIBS += -framework \
-        QtDBus
+    !macx:QT += network dbus
+    macx:LIBS += -framework QtDBus
 }
 
 # !macx:LIBS += -lQtDBus # workaround for QT += dbus not working with Qt < 4.4.0
