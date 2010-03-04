@@ -1,3 +1,9 @@
+2010-03-03  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
+
+	* FWObject.cpp (FWObject::findDuplicateLinksInTree): test/debugging
+	method that walks the tree looking for objects referenced by two
+	parents. Refs fwbuilder:ticket:1296
+
 2010-03-02  glitch.vk.crocodile.org  <vadim@vk.crocodile.org>
 
 	* FWObject.cpp (FWObject::destroyChildren): fixed memory leak

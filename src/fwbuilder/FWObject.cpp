@@ -965,6 +965,29 @@ void FWObject::destroyChildren()
 }
 
 /*
+ * Walks the tree, looking for objects that are referenced by two parents
+ */
+void FWObject::findDuplicateLinksInTree()
+{
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    {
+        FWObject *o = *m;
+        if (o->getParent() != this)
+        {
+            cerr << "Object '" << o->getName() << "' (" << o->getTypeName() << ") "
+                 << " has two parents in the tree: "
+                 << o->getParent()->getRoot() << "::"
+                 << o->getParent()->getPath(true)
+                 << " and "
+                 << getRoot() << "::"
+                 << getPath(true)
+                 << endl;
+        }
+        o->findDuplicateLinksInTree();
+    }
+}
+
+/*
  *  even if I run this method with flag recursive=true, it does not
  *  guarantee that there will be no objects lost in the memory. If
  *  some children of this are referenced from somewhere else, they

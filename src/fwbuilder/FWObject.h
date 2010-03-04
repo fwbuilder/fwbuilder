@@ -405,6 +405,11 @@ public:
 
     void clearChildren(bool recursive=true);
 
+    /**
+     * Walks the tree, looking for objects that are referenced by two parents
+     */
+    void findDuplicateLinksInTree();
+    
     int getChildrenCount() const;
 
     virtual void dump(bool recursive,bool brief,int offset=0) const;

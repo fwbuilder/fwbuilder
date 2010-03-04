@@ -163,6 +163,7 @@ FWObjectDatabase::FWObjectDatabase(FWObjectDatabase& d) :
 FWObjectDatabase::~FWObjectDatabase()
 {
     init = true;
+    //findDuplicateLinksInTree(); // debugging
     destroyChildren();
 }
 
