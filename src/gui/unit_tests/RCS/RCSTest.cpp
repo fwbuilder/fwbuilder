@@ -49,6 +49,7 @@ QString            rlog_unit_test_log_file = "rlog_unit_test.log";
 
 void RCSTest::verifyRevisions()
 {
+    RCS::init();
 
     RCS *rcs = new RCS(test_file);
 
