@@ -332,71 +332,77 @@ bool secuwallAdvancedDialog::validate()
     QString message;
 
     // widgets to verify
-    QLineEdit* widgets[5] =
+    struct _tocheck {
+        QLineEdit* widget;
+        bool (*chkfn)(const QString &);
+    } widgets[5] =
     {
-        m_dialog->secuwall_mgmt_mgmtaddr,
-        m_dialog->secuwall_mgmt_loggingaddr,
-        m_dialog->secuwall_mgmt_snmpaddr,
-        m_dialog->secuwall_mgmt_ntpaddr,
-        m_dialog->secuwall_mgmt_nagiosaddr
+      {
+          m_dialog->secuwall_mgmt_mgmtaddr,
+          &secuwallAdvancedDialog::validateNetworkOrAddress
+      },
+      {
+          m_dialog->secuwall_mgmt_loggingaddr,
+          &secuwallAdvancedDialog::validateAddress
+      },
+      {
+          m_dialog->secuwall_mgmt_snmpaddr,
+          &secuwallAdvancedDialog::validateNetworkOrAddress
+      },
+      {
+          m_dialog->secuwall_mgmt_ntpaddr,
+          &secuwallAdvancedDialog::validateAddress
+      },
+      {
+          m_dialog->secuwall_mgmt_nagiosaddr,
+          &secuwallAdvancedDialog::validateNetworkOrAddress
+      },
     };
 
-    int size = sizeof(widgets) / sizeof(QLineEdit*);
+    int size = sizeof(widgets) / sizeof(struct _tocheck);
+
     // reset widget colors first
     for (int i = 0; i < size; i++)
     {
-        if (widgets[i]->palette() != QApplication::palette())
+        if (widgets[i].widget->palette() != QApplication::palette())
         {
-            widgets[i]->setPalette(QApplication::palette());
+            widgets[i].widget->setPalette(QApplication::palette());
         }
     }
+
     // validate each widget one by one
     for (int i = 0; i < size && valid; i++)
     {
         // get text to verify
-        QString to_verify = widgets[i]->text();
+        QString to_verify = widgets[i].widget->text();
         // focus current widget
-        focus = widgets[i];
+        focus = widgets[i].widget;
         // if empty, continue
         if (to_verify.isEmpty())
         {
             continue;
         }
 
-        // check user input
-        if (to_verify.indexOf(",") == -1)
+        // check comma sep. list of addresses
+        QStringList addrlist = to_verify.split(",");
+        int pos = 1;
+        foreach(QString addr, addrlist)
         {
-            // simple address, no list
-            if (!validateAddress(to_verify))
+            if (addr.isEmpty())
             {
                 valid = false;
-                message = tr("Illegal address '%1'").arg(to_verify);
+                message = tr("Empty address found (position %1)").arg(pos);
                 break;
             }
-        }
-        else
-        {
-            // check comma sep. list of addresses
-            QStringList addrlist = to_verify.split(",");
-            int pos = 1;
-            foreach(QString addr, addrlist)
+            addr = addr.simplified();
+            if (!widgets[i].chkfn(addr))
             {
-                if (addr.isEmpty())
-                {
-                    valid = false;
-                    message = tr("Empty address found (position %1)").arg(pos);
-                    break;
-                }
-                addr = addr.simplified();
-                if (!validateAddress(addr))
-                {
-                    valid = false;
-                    message = tr("Illegal address '%1' (position %2)").
-                              arg(addr).arg(pos);
-                    break;
-                }
-                pos++;
+                valid = false;
+                message = tr("Illegal address '%1' (position %2)").
+                          arg(addr).arg(pos);
+                break;
             }
+            pos++;
         }
     }
 
@@ -418,47 +424,64 @@ bool secuwallAdvancedDialog::validate()
 
 bool secuwallAdvancedDialog::validateAddress(const QString &addr)
 {
+    if (addr.indexOf("/") != -1)
+    {
+        return false;
+    }
+
+    try
+    {
+        InetAddr(addr.toLatin1().constData());
+    } catch (FWException &ex)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool secuwallAdvancedDialog::validateNetwork(const QString &addr)
+{
     if (addr.indexOf("/") == -1)
     {
-        try
-        {
-            InetAddr( addr.toLatin1().constData() );
-        } catch (FWException &ex)
-        {
-            return false;
-        }
+        return false;
     }
-    else
-    {
-        // validate IP/netmask address pairs
-        QStringList addrpair = addr.split("/");
 
-        try
+    // validate IP/netmask address pairs
+    QStringList addrpair = addr.split("/");
+
+    try
+    {
+        InetAddr(addrpair.at(0).toLatin1().constData());
+    } catch (FWException &ex)
+    {
+        return false;
+    }
+
+    try
+    {
+        InetAddr(addrpair.at(1).toLatin1().constData());
+    } catch (FWException &ex)
+    {
+        // not in dotted notation?
+        bool ok = false;
+        int ilen = addrpair[1].toInt(&ok);
+        if (ok)
         {
-            InetAddr( addrpair[0].toLatin1().constData() );
-        } catch (FWException &ex)
+            if (ilen < 0 || ilen > 32)
+            {
+                return false;
+            }
+        }
+        else
         {
             return false;
-        }
-
-        try
-        {
-            InetAddr( addrpair[1].toLatin1().constData() );
-        } catch (FWException &ex)
-        {
-            // not in dotted notation?
-            bool ok = false;
-            int ilen = addrpair[1].toInt(&ok);
-            if (ok)
-            {
-                if (ilen < 0 || ilen > 32)
-                {
-                    return false;
-                }
-            } else
-                return false;
         }
     }
     return true;
+}
+
+bool secuwallAdvancedDialog::validateNetworkOrAddress(const QString &addr)
+{
+    return (validateNetwork(addr) || validateAddress(addr));
 }
 

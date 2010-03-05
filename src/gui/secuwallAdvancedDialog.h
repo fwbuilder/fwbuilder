@@ -43,16 +43,26 @@ private:
     bool validate();
 
     /**
-     * validate a given IP address / netmask
+     * validate a given IP address
      *
      * valid: 192.168.1.1
+     *
+     * @param addr address to verify
+     * @return true if valid, false if not
+     */
+    static bool validateAddress(const QString &addr);
+
+    /**
+     * validate a given IP address / netmask
+     *
      * valid: 192.168.1.1/32
      * valid: 192.168.1.1/255.255.255.0
      *
      * @param addr address to verify
      * @return true if valid, false if not
      */
-    bool validateAddress(const QString &addr);
+    static bool validateNetwork(const QString &addr);
+    static bool validateNetworkOrAddress(const QString &addr);
 
 protected slots:
     virtual void accept();
