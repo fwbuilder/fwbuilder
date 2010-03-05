@@ -29,8 +29,7 @@ namespace fwtransfer
     class TransferDeviceList;
 };
 
-typedef std::set<libfwbuilder::Firewall *> t_fwSet;
-typedef std::map<libfwbuilder::Firewall *, QTreeWidgetItem *> t_listMap;
+typedef std::map<libfwbuilder::Firewall*, QTreeWidgetItem*> t_listMap;
 
 /**
  * @class transferDialog
@@ -99,7 +98,7 @@ private:
     QString volume_name;
 
     /** firewalls to transfer */
-    t_fwSet reqFirewalls;
+    std::list<libfwbuilder::Firewall*> firewalls;
 
     /** Available transfer devices are stored here */
     fwtransfer::TransferDeviceList *transferDevices;
@@ -115,7 +114,7 @@ private:
 
 public:
     /** transferDialog ctor */
-    transferDialog(QWidget *parent, t_fwSet firewalls);
+    transferDialog(QWidget *parent, std::set<libfwbuilder::Firewall*> fws);
 
     /** transferDialog dtor */
     ~transferDialog();

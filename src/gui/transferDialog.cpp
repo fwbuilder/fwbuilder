@@ -19,6 +19,7 @@
 
 #include "transferDialog.h"
 #include "utils.h"
+#include "utils_no_qt.h"
 #include "global.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -41,7 +42,7 @@ using namespace std;
 using namespace fwtransfer;
 using namespace libfwbuilder;
 
-transferDialog::transferDialog(QWidget *parent, t_fwSet firewalls)
+transferDialog::transferDialog(QWidget *parent, set<libfwbuilder::Firewall*> fws)
     : QDialog(parent), transferDevices(NULL)
 {
     // setup ui
@@ -59,25 +60,21 @@ transferDialog::transferDialog(QWidget *parent, t_fwSet firewalls)
     m_dialog->transferButton->setEnabled(false);
 
     // handle cluster selections
-    foreach(Firewall* fw, firewalls)
+    foreach(Firewall* fw, fws)
     {
         if (Cluster::isA(fw))
         {
             list<Firewall*> members;
             Cluster::cast(fw)->getMembersList(members);
-            for (list<Firewall*>::iterator member=members.begin();
-                    member!=members.end(); ++member)
-            {
-                reqFirewalls.insert(*member);
-            }
+            firewalls.insert(firewalls.begin(), members.begin(), members.end());
 
         } else
         {
-            reqFirewalls.insert(fw);
+            firewalls.push_back(fw);
         }
     }
 
-    if (reqFirewalls.empty())
+    if (firewalls.empty())
     {
         QMessageBox::critical(this, "Firewall Config Transfer",
                               tr("No firewalls selected for transfer"),
@@ -85,6 +82,7 @@ transferDialog::transferDialog(QWidget *parent, t_fwSet firewalls)
                               0, 1);
         return;
     }
+    firewalls.sort(FWObjectNameCmpPredicate());
 
     // init volume list
     transferDevices = new TransferDeviceList;
@@ -126,8 +124,8 @@ void transferDialog::displayFirewalls()
     m_dialog->fwWorkList->clear();
 
     QTreeWidgetItem *titem;
-    t_fwSet::reverse_iterator i;
-    for (i = reqFirewalls.rbegin(); i != reqFirewalls.rend(); ++i)
+    list<Firewall*>::const_iterator i;
+    for (i = firewalls.begin(); i != firewalls.end(); ++i)
     {
         titem = new QTreeWidgetItem;
         titem->setText(0, (*i)->getName().c_str());
@@ -291,7 +289,7 @@ bool transferDialog::prepareArgs(QStringList &args, libfwbuilder::Firewall *fw,
 
     // append fw object name to tarball when writing multiple configs
     // to a volume
-    if (reqFirewalls.size() > 1)
+    if (firewalls.size() > 1)
     {
         log(QObject::tr("Appending fw object name to tarball"));
         args.push_back("-n");
@@ -369,8 +367,8 @@ void transferDialog::accept()
         log("<b>Using volume : <i>" + volume + "</i></b></br>");
 
         Firewall *fw;
-        t_fwSet::const_iterator i;
-        for (i = reqFirewalls.begin(); i != reqFirewalls.end(); ++i)
+        list<Firewall*>::const_iterator i;
+        for (i = firewalls.begin(); i != firewalls.end(); ++i)
         {
             fw = *i;
             QString fwname = fw->getName().c_str();
