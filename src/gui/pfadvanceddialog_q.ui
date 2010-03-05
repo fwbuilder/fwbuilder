@@ -35,7 +35,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -339,7 +339,7 @@ with this address:</string>
       <attribute name="title">
        <string>Scrub</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_5">
+      <layout class="QGridLayout" name="gridLayout_9">
        <property name="spacing">
         <number>20</number>
        </property>
@@ -379,7 +379,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" rowspan="4">
+       <item row="3" column="0" rowspan="2">
         <spacer>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -395,7 +395,7 @@ with this address:</string>
          </property>
         </spacer>
        </item>
-       <item row="3" column="1">
+       <item row="3" column="1" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QCheckBox" name="pf_scrub_use_minttl">
@@ -435,7 +435,7 @@ with this address:</string>
          </item>
         </layout>
        </item>
-       <item row="4" column="1">
+       <item row="4" column="1" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
           <widget class="QCheckBox" name="pf_scrub_use_maxmss">
@@ -478,7 +478,7 @@ with this address:</string>
          </item>
         </layout>
        </item>
-       <item row="5" column="1">
+       <item row="5" column="1" colspan="2">
         <widget class="Line" name="hseparator39">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -498,7 +498,7 @@ with this address:</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1">
+       <item row="7" column="1" colspan="2">
         <widget class="QGroupBox" name="buttonGroup20">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -509,11 +509,11 @@ with this address:</string>
          <property name="title">
           <string/>
          </property>
-         <layout class="QVBoxLayout">
-          <property name="margin">
-           <number>6</number>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <property name="verticalSpacing">
+           <number>-1</number>
           </property>
-          <item>
+          <item row="0" column="0">
            <widget class="QRadioButton" name="pf_scrub_reassemble">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -522,14 +522,14 @@ with this address:</string>
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>Buffers incoming packet fragments and reassembles them into a complete packet before passing them to the filter engine.</string>
+             <string>Buffers incoming packet fragments and reassembles them into a complete packet before passing them to the filter engine. In PF 4.5 and earlier.</string>
             </property>
             <property name="text">
              <string>Buffer and reassemble fragments (default)</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="1" column="0">
            <widget class="QRadioButton" name="pf_scrub_fragm_crop">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -538,14 +538,14 @@ with this address:</string>
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>Causes duplicate fragments to be dropped and any overlaps to be cropped.</string>
+             <string>Causes duplicate fragments to be dropped and any overlaps to be cropped.  In PF 4.5 and earlier.</string>
             </property>
             <property name="text">
              <string>Drop duplicate fragments, do not buffer and reassemble</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="2" column="0">
            <widget class="QRadioButton" name="pf_scrub_fragm_drop_ovl">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -554,17 +554,27 @@ with this address:</string>
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>Similar to 'Drop duplicate fragments' except that all duplicate or overlapping fragments will be dropped as well as any further corresponding fragments.</string>
+             <string>Similar to 'Drop duplicate fragments' except that all duplicate or overlapping fragments will be dropped as well as any further corresponding fragments.  In PF 4.5 and earlier.</string>
             </property>
             <property name="text">
              <string>Drop duplicate and subsequent fragments</string>
             </property>
            </widget>
           </item>
+          <item row="3" column="0">
+           <widget class="QRadioButton" name="pf_scrub_reassemble_tcp">
+            <property name="toolTip">
+             <string>Statefully normalises TCP connections.</string>
+            </property>
+            <property name="text">
+             <string>Reassemble TCP</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
-       <item row="8" column="1">
+       <item row="8" column="2">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -587,8 +597,17 @@ with this address:</string>
        <string>Limits</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
-        <number>6</number>
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>12</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
        </property>
        <property name="spacing">
         <number>20</number>
@@ -824,8 +843,17 @@ with this address:</string>
        <string>Timeouts</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
-        <number>6</number>
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>12</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
        </property>
        <property name="spacing">
         <number>20</number>
@@ -1803,8 +1831,17 @@ with this address:</string>
        <string>Prolog/Epilog</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
-        <number>6</number>
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>12</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
        </property>
        <property name="spacing">
         <number>20</number>
@@ -1978,8 +2015,17 @@ with this address:</string>
        <string>Logging</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
-        <number>6</number>
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>12</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
        </property>
        <property name="spacing">
         <number>20</number>

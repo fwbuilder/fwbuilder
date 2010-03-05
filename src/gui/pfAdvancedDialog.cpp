@@ -129,7 +129,8 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
     m_dialog->pf_state_policy->clear();
     m_dialog->pf_state_policy->addItems(getScreenNames(slm));
     data.registerOption( m_dialog->pf_state_policy, fwopt, "pf_state_policy", slm);
-    m_dialog->pf_state_policy->setEnabled(XMLTools::version_compare(version, "4.3") >= 0);
+    m_dialog->pf_state_policy->setEnabled(
+        XMLTools::version_compare(version, "4.3") >= 0);
 
     data.registerOption( m_dialog->pf_check_shadowing,fwopt, "check_shading");
     data.registerOption( m_dialog->pf_ignore_empty_groups,fwopt,
@@ -137,17 +138,22 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
 //    data.registerOption( pf_use_tables, fwopt, "use_tables");
     data.registerOption( m_dialog->pf_accept_new_tcp_with_no_syn,fwopt, "accept_new_tcp_with_no_syn");
     data.registerOption( m_dialog->pf_modulate_state,fwopt, "pf_modulate_state");
-    data.registerOption( m_dialog->pf_scrub_random_id,fwopt, "pf_scrub_random_id");
 
+    data.registerOption( m_dialog->pf_scrub_random_id,fwopt, "pf_scrub_random_id");
     data.registerOption( m_dialog->pf_do_scrub,fwopt, "pf_do_scrub");
 
 // radio buttons
+
+    // the following pf_scrub options are available in PF <= 4.5
     data.registerOption( m_dialog->pf_scrub_reassemble, fwopt,
                          "pf_scrub_reassemble");
     data.registerOption( m_dialog->pf_scrub_fragm_crop, fwopt,
                          "pf_scrub_fragm_crop");
     data.registerOption( m_dialog->pf_scrub_fragm_drop_ovl, fwopt,
                          "pf_scrub_fragm_drop_ovl");
+    // pf_scrub_reassemble_tcp is available in all versions
+    data.registerOption( m_dialog->pf_scrub_reassemble_tcp, fwopt,
+                         "pf_scrub_reassemble_tcp");
 
     data.registerOption( m_dialog->pf_scrub_use_minttl, fwopt,
                          "pf_scrub_use_minttl");
@@ -267,15 +273,25 @@ pfAdvancedDialog::~pfAdvancedDialog()
 
 void pfAdvancedDialog::doScrubToggled()
 {
-    bool f=m_dialog->pf_do_scrub->isChecked();
+    string version = obj->getStr("version");
 
-    m_dialog->pf_scrub_reassemble->setEnabled(f);
-    m_dialog->pf_scrub_fragm_crop->setEnabled(f);
-    m_dialog->pf_scrub_fragm_drop_ovl->setEnabled(f);
+    bool f_old_reassemble = m_dialog->pf_do_scrub->isChecked();
+    bool f_reassemble_tcp = f_old_reassemble;
+    if (XMLTools::version_compare(version, "4.6")>=0)
+        f_old_reassemble = false;
+
+    m_dialog->pf_scrub_reassemble->setEnabled(f_old_reassemble);
+    m_dialog->pf_scrub_fragm_crop->setEnabled(f_old_reassemble);
+    m_dialog->pf_scrub_fragm_drop_ovl->setEnabled(f_old_reassemble);
+    m_dialog->pf_scrub_reassemble_tcp->setEnabled(f_reassemble_tcp);
 
     if (!m_dialog->pf_scrub_reassemble->isChecked() &&
-         !m_dialog->pf_scrub_fragm_crop->isChecked() &&
-         !m_dialog->pf_scrub_fragm_drop_ovl->isChecked()) m_dialog->pf_scrub_reassemble->setChecked(true);
+        !m_dialog->pf_scrub_fragm_crop->isChecked() &&
+        !m_dialog->pf_scrub_fragm_drop_ovl->isChecked() &&
+        !m_dialog->pf_scrub_reassemble_tcp->isChecked())
+    {
+        m_dialog->pf_scrub_reassemble_tcp->setChecked(true);
+    }
 }
 
 void pfAdvancedDialog::ltToggled()

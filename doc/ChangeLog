@@ -1,5 +1,10 @@
 2010-03-04  vadim  <vadim@vk.crocodile.org>
 
+	* pfAdvancedDialog.cpp (pfAdvancedDialog::doScrubToggled):
+	fixed #1297 "change in scrub rules in PF 4.6". PF 4.6 stopped
+	support for several reassemble options except for "reassemble tcp"
+	and changed format for the "scrub" rules.
+
 	* PolicyCompiler_cisco_acls.cpp (setInterfaceAndDirectionBySrc::processNext):
 	recognize multicast when matching Network and NetworkIPv6
 	objects. Fixes #1298

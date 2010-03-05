@@ -42,6 +42,7 @@
 
 #include "CompilerDriver_pf.h"
 
+#include <QStringList>
 #include <QFileInfo>
 #include <QDir>
 #include <QtDebug>
@@ -285,45 +286,62 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
     if (prolog_place == "pf_file_after_set")
         printProlog(file, pre_hook);
 
-    string   scrub_options;
+    QStringList scrub_options;
 
     if (options->getBool("pf_do_scrub"))
     {
-        if (options->getBool("pf_scrub_reassemble"))     
-            scrub_options+="fragment reassemble ";
-        else
+        if (XMLTools::version_compare(fw->getStr("version"), "4.6")<0)
         {
+            if (options->getBool("pf_scrub_reassemble"))     
+                scrub_options << "fragment reassemble";
             if (options->getBool("pf_scrub_fragm_crop"))
-                scrub_options+="fragment crop ";
-            else
-            {
-                if (options->getBool("pf_scrub_fragm_drop_ovl"))
-                    scrub_options+="fragment drop-ovl ";
-            }
+                scrub_options << "fragment crop";
+            if (options->getBool("pf_scrub_fragm_drop_ovl"))
+                scrub_options << "fragment drop-ovl";
         }
+        if (options->getBool("pf_scrub_reassemble_tcp"))
+            scrub_options << "reassemble tcp";
     }
 
-    if (options->getBool("pf_scrub_no_df"))  scrub_options+="no-df ";
+    if (options->getBool("pf_scrub_no_df"))  scrub_options << "no-df ";
 
     if (!scrub_options.empty())
     {
         file << "#" << endl;
         file << "# Scrub rules" << endl;
         file << "#" << endl;
-        file << "scrub in all " << scrub_options << endl;
+
+        if (XMLTools::version_compare(fw->getStr("version"), "4.6")>=0)
+        {
+            file << "match in all scrub (" << scrub_options.join(" ").toStdString() << ")" << endl;
+        } else
+        {
+            file << "scrub in all " << scrub_options.join(" ").toStdString() << endl;
+        }
     }
 
-    scrub_options="";
+    scrub_options.clear();
+
     if (options->getBool("pf_scrub_random_id"))
-        scrub_options+="random-id ";
+        scrub_options << "random-id";
+
     if (options->getBool("pf_scrub_use_minttl"))
-        scrub_options+="min-ttl " + options->getStr("pf_scrub_minttl") + " ";
+        scrub_options << "min-ttl " << options->getStr("pf_scrub_minttl").c_str();
+
     if (options->getBool("pf_scrub_use_maxmss"))
-        scrub_options+="max-mss " + options->getStr("pf_scrub_maxmss") + " ";
+        scrub_options << "max-mss " << options->getStr("pf_scrub_maxmss").c_str();
+
     if (!scrub_options.empty())
     {
-        file << "scrub out all " << scrub_options << endl; 
+        if (XMLTools::version_compare(fw->getStr("version"), "4.6")>=0)
+        {
+            file << "match out all scrub (" << scrub_options.join(" ").toStdString() << ")" << endl;
+        } else
+        {
+            file << "scrub out all " << scrub_options.join(" ").toStdString() << endl;
+        }
     }
+
     file << endl;
 
     if (prolog_place == "pf_file_after_scrub")
