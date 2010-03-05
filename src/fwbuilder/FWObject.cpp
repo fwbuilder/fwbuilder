@@ -843,7 +843,8 @@ void FWObject::remove(FWObject *obj, bool delete_if_last)
 
         if (delete_if_last && obj->ref_counter==0)
         {
-            getRoot()->removeFromIndex(obj->getId());
+            FWObjectDatabase *db = getRoot();
+            if (db) db->removeFromIndex(obj->getId());
             delete obj;
         }
     }
