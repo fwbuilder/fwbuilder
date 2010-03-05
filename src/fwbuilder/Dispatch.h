@@ -147,6 +147,7 @@ namespace libfwbuilder
 
 public:
         Dispatch() {}
+        virtual ~Dispatch() {}
 
         __DECLARE_DISPATCH_METHODS(Address);
         __DECLARE_DISPATCH_METHODS(AddressRange);
