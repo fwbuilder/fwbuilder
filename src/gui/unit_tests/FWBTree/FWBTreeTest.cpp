@@ -177,5 +177,14 @@ void FWBTreeTest::validateForInsertion()
             CPPUNIT_ASSERT(tree.validateForInsertion(folder, &net, err) == false);
     }
 
+
+    // destructor ~FWObject calls FWObject::destroyChildren() which
+    // tries to delete all child objects. Since interface iface was
+    // not created using new, it can not be deleted. Remove it to
+    // avoid crash. Also need to ref() it so that FWObject::remove()
+    // does not try to delete it as well. All these hacks just because
+    // a2k@codeminders.com was too lazy to create objects as recommended.
+    iface.ref();
+    firewall.removeInterface(&iface);
 }
 
