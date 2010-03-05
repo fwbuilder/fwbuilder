@@ -74,10 +74,15 @@ void PolicyCompiler_secuwall::addPredefinedPolicyRules()
 {
     PolicyCompiler_ipt::addPredefinedPolicyRules();
 
-    insertSyslogRule();
-    insertNtpRule();
-    insertSnmpRule();
-    insertNrpeRule();
+    /* Add management rules if not disabled */
+    FWOptions* options = getCachedFwOpt();
+    if (!options->getBool("secuwall_mgmt_rules_disable"))
+    {
+        insertSyslogRule();
+        insertNtpRule();
+        insertSnmpRule();
+        insertNrpeRule();
+    }
 }
 
 void PolicyCompiler_secuwall::epilog()
