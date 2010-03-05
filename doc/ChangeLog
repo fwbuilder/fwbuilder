@@ -1,3 +1,8 @@
+2010-03-05  vadim  <vadim@vk.crocodile.org>
+
+	* fixed #1303 "Improve design of the global Preferences, tab
+	Objects"
+
 2010-03-04  vadim  <vadim@vk.crocodile.org>
 
 	* pfAdvancedDialog.cpp (pfAdvancedDialog::doScrubToggled):
