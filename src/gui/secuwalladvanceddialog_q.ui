@@ -141,7 +141,7 @@ Please use commas to separate a list of IP addresses.</string>
           <string/>
          </property>
          <property name="text" >
-          <string>Management address</string>
+          <string>Management access</string>
          </property>
          <property name="alignment" >
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -154,7 +154,7 @@ Please use commas to separate a list of IP addresses.</string>
        <item row="3" column="1" >
         <widget class="QLineEdit" name="secuwall_mgmt_mgmtaddr" >
          <property name="toolTip" >
-          <string>Enter the IP address of the secunet wall Management station</string>
+          <string>Enter the IP addresses or networks of the secunet wall management zone</string>
          </property>
         </widget>
        </item>
@@ -164,7 +164,7 @@ Please use commas to separate a list of IP addresses.</string>
           <enum>Qt::RightToLeft</enum>
          </property>
          <property name="text" >
-          <string>Syslog server</string>
+          <string>Syslog servers</string>
          </property>
          <property name="wordWrap" >
           <bool>true</bool>
@@ -174,14 +174,14 @@ Please use commas to separate a list of IP addresses.</string>
        <item row="4" column="1" >
         <widget class="QLineEdit" name="secuwall_mgmt_loggingaddr" >
          <property name="toolTip" >
-          <string>Enter IP address of the logging server</string>
+          <string>Enter IP addresses of logging servers</string>
          </property>
         </widget>
        </item>
        <item row="5" column="0" >
         <widget class="QLabel" name="label454" >
          <property name="text" >
-          <string>SNMP querier address</string>
+          <string>SNMP access</string>
          </property>
          <property name="alignment" >
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -194,7 +194,7 @@ Please use commas to separate a list of IP addresses.</string>
        <item row="5" column="1" >
         <widget class="QLineEdit" name="secuwall_mgmt_snmpaddr" >
          <property name="toolTip" >
-          <string>Enter IP address where SNMP requests to this firewall come from</string>
+          <string>Enter IP addresses or networks where SNMP requests to this firewall come from</string>
          </property>
         </widget>
        </item>
@@ -221,7 +221,7 @@ Please use commas to separate a list of IP addresses.</string>
        <item row="7" column="0" >
         <widget class="QLabel" name="label458" >
          <property name="text" >
-          <string>NTP server IP address</string>
+          <string>NTP servers</string>
          </property>
          <property name="alignment" >
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -234,7 +234,7 @@ Please use commas to separate a list of IP addresses.</string>
        <item row="7" column="1" >
         <widget class="QLineEdit" name="secuwall_mgmt_ntpaddr" >
          <property name="toolTip" >
-          <string>Enter IP address of a NTP server</string>
+          <string>Enter IP addresses of NTP servers</string>
          </property>
         </widget>
        </item>
@@ -260,14 +260,14 @@ Please use commas to separate a list of IP addresses.</string>
           <enum>Qt::RightToLeft</enum>
          </property>
          <property name="text" >
-          <string>Nagios service IP</string>
+          <string>Nagios access</string>
          </property>
         </widget>
        </item>
        <item row="8" column="1" >
         <widget class="QLineEdit" name="secuwall_mgmt_nagiosaddr" >
          <property name="toolTip" >
-          <string>Enter IP address of the Nagios station here</string>
+          <string>Enter IP addresses or networks for Nagios access</string>
          </property>
         </widget>
        </item>
@@ -342,8 +342,11 @@ Please use commas to separate a list of IP addresses.</string>
        </item>
        <item row="12" column="1" >
         <widget class="QCheckBox" name="secuwall_mgmt_rules_disable" >
+         <property name="toolTip" >
+          <string>Disable auto-generation of firewall rules for management services</string>
+         </property>
          <property name="text" >
-          <string>Don't create management firewall rules</string>
+          <string>Don't create firewall rules</string>
          </property>
         </widget>
        </item>
