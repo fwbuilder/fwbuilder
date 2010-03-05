@@ -27,7 +27,7 @@
         </interface>
 
         <activation>
-          <fwdir>/etc/sysconfig</fwdir>
+          <fwdir>/etc</fwdir>
           <fwdir_test>/tmp</fwdir_test>
         </activation>
 
