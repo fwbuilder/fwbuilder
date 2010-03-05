@@ -1,5 +1,11 @@
 2010-03-05  vadim  <vadim@vk.crocodile.org>
 
+	* instDialog_ui_ops.cpp (instDialog::fillCompileSelectList):
+	fixed #1305 "Compilation of cluster firewall". when user tries to
+	compile a firewall object that is also a cluster member, but did
+	not request compilation of the cluster, a warning should be
+	presented.
+
 	* fixed #1303 "Improve design of the global Preferences, tab
 	Objects"
 

@@ -131,13 +131,17 @@ instDialog::instDialog(QWidget *p,
         return;
     }
 
-    if ((firewalls.size() + clusters.size()) == 1) m_dialog->batchInstall->setEnabled(false);
+    if ((firewalls.size() + clusters.size()) == 1)
+        m_dialog->batchInstall->setEnabled(false);
 
     creatingTable = false;
 
+    m_dialog->warning_space->hide();
+
     m_dialog->selectTable->setFocus();
 
-    m_dialog->selectInfoLabel->setText(tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls to compile.</font></b></p>"));
+    m_dialog->selectInfoLabel->setText(
+        tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls to compile.</font></b></p>"));
 
     if (compile_only)
     {

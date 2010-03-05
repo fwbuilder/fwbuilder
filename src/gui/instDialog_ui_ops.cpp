@@ -71,6 +71,7 @@
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/XMLTools.h"
@@ -84,6 +85,8 @@
 
 #include <errno.h>
 #include <iostream>
+#include <algorithm>
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -484,6 +487,53 @@ void instDialog::fillCompileSelectList()
     {
         setFlags(*it);
         ++it;
+    }
+
+
+    /* ticket #1305
+     * check if any of the firewall objects are members of clusters but
+     * the clusters are not requested for compile
+     */
+
+    QString warn1(
+        tr("You are trying to compile policy for the firewall object that is "
+           "a member of a cluster, however you requested compilation of ony this "
+           "member firewall and not the cluster it belongs to. Assuming firewall "
+           "is standalone and not cluster member. Rules and parts of the script "
+           "specific for the cluster configuration will not be generated."));
+
+    QStringList warn2;
+
+    list<FWObject*> all_libs = project->db()->getByType(Library::TYPENAME);
+    foreach(FWObject *lib, all_libs)
+    {
+        if (lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID) continue;
+        list<FWObject*> all_clusters = lib->getByTypeDeep(Cluster::TYPENAME);
+        foreach(FWObject *_cl, all_clusters)
+        {
+            if (std::find(clusters.begin(), clusters.end(), _cl) == clusters.end())
+            {
+                Cluster *cluster = Cluster::cast(_cl);
+                assert(cluster);
+                foreach(FWObject *fw, firewalls)
+                {
+                    if (cluster->hasMember(Firewall::cast(fw)))
+                    {
+                        warn2 << 
+                            QString(tr("Firewall '%1' is member of cluster '%2'")
+                                    .arg(fw->getName().c_str())
+                                    .arg(cluster->getPath().c_str()));
+                    }
+                }
+            }
+        }
+    }
+
+    if (!warn2.empty())
+    {
+        m_dialog->warning_message_1->setText(warn1);
+        m_dialog->warning_message_2->setText(warn2.join("\n"));
+        m_dialog->warning_space->show();
     }
 
     creatingTable = false;
