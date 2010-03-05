@@ -116,6 +116,9 @@ secuwallAdvancedDialog::secuwallAdvancedDialog(QWidget *parent, FWObject *o)
     data.registerOption(m_dialog->secuwall_mgmt_confpart,
                         fwopt,
                         "secuwall_mgmt_confpart");
+    data.registerOption(m_dialog->secuwall_mgmt_rules_disable,
+                        fwopt,
+                        "secuwall_mgmt_rules_disable");
 
     // dns settings
     data.registerOption(m_dialog->secuwall_dns_srv1,

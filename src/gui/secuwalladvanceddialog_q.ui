@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>580</height>
+    <width>510</width>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -82,7 +82,7 @@
        <string>Management</string>
       </attribute>
       <attribute name="icon" >
-       <iconset resource="MainRes.qrc" >
+       <iconset>
         <normaloff>:/Icons/Custom-tree</normaloff>:/Icons/Custom-tree</iconset>
       </attribute>
       <attribute name="toolTip" >
@@ -339,6 +339,13 @@ Please use commas to separate a list of IP addresses.</string>
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="12" column="1" >
+        <widget class="QCheckBox" name="secuwall_mgmt_rules_disable" >
+         <property name="text" >
+          <string>Don't create management firewall rules</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -764,7 +771,7 @@ Please use commas to separate a list of IP addresses.</string>
        <string>Options</string>
       </attribute>
       <attribute name="icon" >
-       <iconset resource="MainRes.qrc" >
+       <iconset>
         <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
       </attribute>
       <layout class="QGridLayout" >
