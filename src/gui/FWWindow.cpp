@@ -57,6 +57,7 @@
 #include "longTextDialog.h"
 #include "Help.h"
 #include "TutorialDialog.h"
+#include "MDIEventFilter.h"
 
 #include "FWBAboutDialog.h"
 #include "debugDialog.h"
@@ -164,6 +165,7 @@
 using namespace libfwbuilder;
 using namespace std;
 using namespace Ui;
+
 
 FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
                        m_space(0),
@@ -305,6 +307,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     setSafeMode(false);
 
 //    findObject->setMinimumSize( QSize( 0, 0 ) );
+    m_mainWindow->m_space->findChild<QTabBar*>()->installEventFilter(new MDIEventFilter());
 }
 
 FWWindow::~FWWindow()
