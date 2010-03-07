@@ -291,6 +291,7 @@ private:
     bool canChange(RuleSetModel* md);
     void insertRule(QModelIndex index, bool isAfter = false);
     libfwbuilder::FWObject* createInsertTemplate(ProjectPanel* proj_p, int id);
+    void setActionState(QAction *action, bool state);
 
 };
 

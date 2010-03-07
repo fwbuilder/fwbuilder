@@ -2763,32 +2763,17 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
 
     if (selectionSize == 0)
     {
-        removeFromGroupAction->setVisible(false);
-        removeFromGroupAction->setEnabled(false);
 
-        newGroupAction->setVisible(false);
-        newGroupAction->setEnabled(false);
+        setActionState(removeFromGroupAction, false);
+        setActionState(newGroupAction, false);
+        setActionState(moveRuleUpAction, false);
+        setActionState(moveRuleDownAction, false);
+        setActionState(addToGroupAboveAction, false);
+        setActionState(addToGroupBelowAction, false);
+        setActionState(insertRuleAction, false);
+        setActionState(addRuleAfterCurrentAction, false);
+        setActionState(removeRuleAction, false);
 
-        moveRuleUpAction->setVisible(false);
-        moveRuleUpAction->setEnabled(false);
-
-        moveRuleDownAction->setVisible(false);
-        moveRuleDownAction->setEnabled(false);
-
-        addToGroupAboveAction->setVisible(false);
-        addToGroupAboveAction->setEnabled(false);
-
-        addToGroupBelowAction->setVisible(false);
-        addToGroupBelowAction->setEnabled(false);
-
-        insertRuleAction->setVisible(false);
-        insertRuleAction->setEnabled(false);
-
-        addRuleAfterCurrentAction->setVisible(false);
-        addRuleAfterCurrentAction->setEnabled(false);
-
-        removeRuleAction->setVisible(false);
-        removeRuleAction->setEnabled(false);
 
     } else
     {
@@ -2835,12 +2820,10 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
             if (!nn.isEmpty())
             {
                 addToGroupAboveAction->setText(addToGroupLabel + nn);
-                addToGroupAboveAction->setVisible(true);
-                addToGroupAboveAction->setEnabled(true);
+                setActionState(addToGroupAboveAction, true);
             } else
             {
-                addToGroupAboveAction->setVisible(false);
-                addToGroupAboveAction->setEnabled(false);
+                setActionState(addToGroupAboveAction, false);
             }
 
             nn = md->nodeFromIndex(selectedIndexes.last())->nameOfSuccessorGroup();
@@ -2848,43 +2831,27 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
             if (!nn.isEmpty())
             {
                 addToGroupBelowAction->setText(addToGroupLabel + nn);
-                addToGroupBelowAction->setVisible(true);
-                addToGroupBelowAction->setEnabled(true);
+                setActionState(addToGroupBelowAction, true);
             } else
             {
-                addToGroupBelowAction->setVisible(false);
-                addToGroupBelowAction->setEnabled(false);
+                setActionState(addToGroupBelowAction, false);
             }
 
         } else
         {
-            addToGroupAboveAction->setVisible(false);
-            addToGroupAboveAction->setEnabled(false);
 
-            addToGroupBelowAction->setVisible(false);
-            addToGroupBelowAction->setEnabled(false);
+            setActionState(addToGroupAboveAction, false);
+
+            setActionState(addToGroupBelowAction, false);
         }
 
-        removeFromGroupAction->setVisible(inGroup);
-        removeFromGroupAction->setEnabled(outermost);
-
-        newGroupAction->setVisible(topLevelOnly);
-        newGroupAction->setEnabled(topLevelOnly);
-
-        moveRuleUpAction->setVisible(true);
-        moveRuleUpAction->setEnabled(true);
-
-        moveRuleDownAction->setVisible(true);
-        moveRuleDownAction->setEnabled(true);
-
-        insertRuleAction->setVisible(true);
-        insertRuleAction->setEnabled(true);
-
-        addRuleAfterCurrentAction->setVisible(true);
-        addRuleAfterCurrentAction->setEnabled(true);
-
-        removeRuleAction->setVisible(true);
-        removeRuleAction->setEnabled(true);
+        setActionState(removeFromGroupAction, true);
+        setActionState(newGroupAction, true);
+        setActionState(moveRuleUpAction, true);
+        setActionState(moveRuleDownAction, true);
+        setActionState(insertRuleAction, true);
+        setActionState(addRuleAfterCurrentAction, true);
+        setActionState(removeRuleAction, true);
     }
 }
 
@@ -2894,6 +2861,11 @@ void RuleSetView::updateObject(FWObject* object)
     md->objectChanged(object);
 }
 
+void RuleSetView::setActionState(QAction *action, bool state)
+{
+    action->setEnabled(state);
+    action->setVisible(state);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PolicyView
