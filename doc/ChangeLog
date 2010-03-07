@@ -1,4 +1,19 @@
-2010-03-07  Roman Bovsunivkiy     a2k0001@gmail.com
+2010-02-28  yalovoy <yalovoy@gmail.com>
+	* refs #1202: Main menu "Rules" does not match rule context menu
+	Items in the main menu Rules should get disabled and enabled just
+	like items in the context menu do.
+	Added action: copyRuleAction; cutRuleAction; pasteRuleAboveAction;
+     	pasteRuleBelowAction; disableRuleAction; enableRuleAction;
+	setColorEmptyAction; setColorRedAction; setColorBlueAction; 
+	setColorOrangeAction; setColorPurpleAction; setColorGrayAction; 
+	setColorYellowAction; setColorGreenAction;
+	Affected files:
+	FWWindow.cpp
+	FWBMainWindow_q.ui
+	RuleSetView.cpp
+	RuleSetView.h
+
+2010-03-07  Roman Bovsunivkiy <a2k0001@gmail.com>
 
 	* ticket #1307 "cluster names in cyrillic appear garbled in
 	instDialog list"
