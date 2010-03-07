@@ -126,14 +126,18 @@ public:
     QAction *newGroupAction;
     QAction *moveRuleUpAction;
     QAction *moveRuleDownAction;
-
     QAction *insertRuleAction;
     QAction *addRuleAfterCurrentAction;
     QAction *addToGroupAboveAction;
     QAction *addToGroupBelowAction;
-
     QAction *removeRuleAction;
 
+    QAction *copyRuleAction;
+    QAction *cutRuleAction;
+    QAction *pasteRuleAboveAction;
+    QAction *pasteRuleBelowAction;
+    QAction *disableRuleAction;
+    QAction *enableRuleAction;
 
 public slots:
 

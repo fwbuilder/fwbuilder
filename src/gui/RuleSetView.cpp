@@ -122,6 +122,13 @@ RuleSetView::~RuleSetView()
     delete addToGroupAboveAction;
     delete addToGroupBelowAction;
     delete removeRuleAction;
+
+    delete copyRuleAction;
+    delete cutRuleAction;
+    delete pasteRuleAboveAction;
+    delete pasteRuleBelowAction;
+    delete disableRuleAction;
+    delete enableRuleAction;
 }
 
 void RuleSetView::init()
@@ -186,6 +193,17 @@ void RuleSetView::initActions()
 
     // Remove rule
     removeRuleAction = createAction(tr("Remove Rule"), SLOT( removeRule()));
+
+    // Clipboard operations
+    copyRuleAction = createAction(tr("Copy Rule"), SLOT( copyRule() ));
+    cutRuleAction = createAction(tr("Cut Rule"), SLOT( cutRule() ));
+    pasteRuleAboveAction = createAction(tr("Paste Rule Above"), SLOT( pasteRuleAbove() ));
+    pasteRuleBelowAction = createAction(tr("Paste Rule Below"), SLOT( pasteRuleBelow() ));
+
+    //Disable or Enable rules
+    disableRuleAction = createAction(tr("Enable Rule"), SLOT( disableRule() ));
+    enableRuleAction = createAction(tr("Disable Rule"), SLOT( enableRule() ));
+
 }
 
 
@@ -765,22 +783,15 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
 
     menu->addSeparator();
 
-    menu->addAction( tr("Copy Rule"), this, SLOT( copyRule() ) );
-    menu->addAction( tr("Cut Rule"), this, SLOT( cutRule() ) );
-    menu->addAction( tr("Paste Rule Above"), this, SLOT( pasteRuleAbove() ) );
-    menu->addAction( tr("Paste Rule Below"), this, SLOT( pasteRuleBelow() ) );
+    menu->addAction(copyRuleAction);
+    menu->addAction(cutRuleAction);
+    menu->addAction(pasteRuleAboveAction);
+    menu->addAction(pasteRuleBelowAction);
 
     menu->addSeparator();
 
-    Rule *r =  node->rule;
-    if (r->isDisabled())
-    {
-        label = (selectionSize==1)?tr("Enable Rule"):tr("Enable Rules");
-        menu->addAction( label, this, SLOT( enableRule() ) );
-    }else{
-        label = (selectionSize==1)?tr("Disable Rule"):tr("Disable Rules");
-        menu->addAction( label, this, SLOT( disableRule() ) );
-    }
+    menu->addAction(enableRuleAction);
+    menu->addAction(disableRuleAction);
 
 }
 
@@ -2773,13 +2784,20 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
         setActionState(insertRuleAction, false);
         setActionState(addRuleAfterCurrentAction, false);
         setActionState(removeRuleAction, false);
-
+        setActionState(disableRuleAction, false);
+        setActionState(enableRuleAction, false);
+        setActionState(copyRuleAction, false);
+        setActionState(cutRuleAction, false);
+        setActionState(pasteRuleAboveAction, false);
+        setActionState(pasteRuleBelowAction, false);
 
     } else
     {
         bool inGroup = true;
         bool outermost = false;
         bool topLevelOnly = true;
+        int disabled = 0;
+        int enabled = 0;
 
         foreach(QModelIndex index, selectedIndexes)
         {
@@ -2792,9 +2810,23 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
                     inGroup = inGroup && isInGroup;
                     topLevelOnly = topLevelOnly && !isInGroup;
                     outermost = outermost || node->isOutermost();
+
+                    Rule *r =  node->rule;
+
+                    if (r->isDisabled())
+                        disabled++;
+                    else
+                        enabled++;
+
                 }
             }
         }
+
+        setActionState(disableRuleAction, enabled > 0);
+        setActionState(enableRuleAction, disabled > 0);
+
+        enableRuleAction->setText((disabled==1)?tr("Enable Rule"):tr("Enable Rules"));
+        disableRuleAction->setText((enabled==1)?tr("Disable Rule"):tr("Disable Rules"));
 
         if (selectionSize > 1)
         {
@@ -2852,6 +2884,10 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
         setActionState(insertRuleAction, true);
         setActionState(addRuleAfterCurrentAction, true);
         setActionState(removeRuleAction, true);
+        setActionState(copyRuleAction, true);
+        setActionState(cutRuleAction, true);
+        setActionState(pasteRuleAboveAction, true);
+        setActionState(pasteRuleBelowAction, true);
     }
 }
 

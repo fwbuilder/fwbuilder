@@ -1575,6 +1575,13 @@ void FWWindow::prepareRulesMenu ()
             m_mainWindow->RulesMenu->addAction(rsv->insertRuleAction);
             m_mainWindow->RulesMenu->addAction(rsv->addRuleAfterCurrentAction);
             m_mainWindow->RulesMenu->addAction(rsv->removeRuleAction);
+
+            m_mainWindow->RulesMenu->addAction(rsv->copyRuleAction);
+            m_mainWindow->RulesMenu->addAction(rsv->cutRuleAction);
+            m_mainWindow->RulesMenu->addAction(rsv->pasteRuleAboveAction);
+            m_mainWindow->RulesMenu->addAction(rsv->pasteRuleBelowAction);
+            m_mainWindow->RulesMenu->addAction(rsv->disableRuleAction);
+            m_mainWindow->RulesMenu->addAction(rsv->enableRuleAction);
         }
         m_mainWindow->RulesMenu->addSeparator();
         m_mainWindow->RulesMenu->addActions(ruleStaticActions);
