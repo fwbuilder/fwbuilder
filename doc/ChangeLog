@@ -1,3 +1,15 @@
+2010-03-07  Roman Bovsunivkiy     a2k0001@gmail.com
+
+	* ticket #1307 "cluster names in cyrillic appear garbled in
+	instDialog list"
+
+	* ticket #1289 "turn off mouse wheel scrolling of tabs in the main
+	window MDI area"
+
+	* Ticket #1310 "New slots in startup dialog". Buttons in the startup
+	tip dialog connected to slots that open "Getting started" tutorial
+	and "Summary of features"
+
 2010-03-06  vadim  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::checkForUpgrade): code that checks if
