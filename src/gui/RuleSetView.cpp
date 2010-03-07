@@ -129,6 +129,15 @@ RuleSetView::~RuleSetView()
     delete pasteRuleBelowAction;
     delete disableRuleAction;
     delete enableRuleAction;
+
+    delete setColorEmptyAction;
+    delete setColorRedAction;
+    delete setColorBlueAction;
+    delete setColorOrangeAction;
+    delete setColorPurpleAction;
+    delete setColorGrayAction;
+    delete setColorYellowAction;
+    delete setColorGreenAction;
 }
 
 void RuleSetView::init()
@@ -203,6 +212,50 @@ void RuleSetView::initActions()
     //Disable or Enable rules
     disableRuleAction = createAction(tr("Enable Rule"), SLOT( disableRule() ));
     enableRuleAction = createAction(tr("Disable Rule"), SLOT( enableRule() ));
+
+    //Change color actions
+
+    QPixmap pcolor(16,16);
+
+    setColorEmptyAction = createAction(tr("No color"), SLOT( setColorEmpty() ));
+    pcolor.fill(QColor(255,255,255));
+    setColorEmptyAction->setIcon(QIcon(pcolor));
+    setColorEmptyAction->setVisible(true);
+
+    setColorRedAction = createAction(st->getLabelText(FWBSettings::RED), SLOT( setColorRed() ));
+    pcolor.fill(st->getLabelColor(FWBSettings::RED));
+    setColorRedAction->setIcon(QIcon(pcolor));
+    setColorRedAction->setVisible(true);
+
+    setColorBlueAction = createAction(st->getLabelText(FWBSettings::BLUE), SLOT( setColorBlue() ));
+    pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
+    setColorBlueAction->setIcon(QIcon(pcolor));
+    setColorBlueAction->setVisible(true);
+
+    setColorOrangeAction = createAction(st->getLabelText(FWBSettings::ORANGE), SLOT( setColorOrange() ));
+    pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
+    setColorOrangeAction->setIcon(QIcon(pcolor));
+    setColorOrangeAction->setVisible(true);
+
+    setColorPurpleAction = createAction(st->getLabelText(FWBSettings::PURPLE), SLOT( setColorPurple() ));
+    pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
+    setColorPurpleAction->setIcon(QIcon(pcolor));
+    setColorPurpleAction->setVisible(true);
+
+    setColorGrayAction = createAction(st->getLabelText(FWBSettings::GRAY), SLOT( setColorGray() ));
+    pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
+    setColorGrayAction->setIcon(QIcon(pcolor));
+    setColorGrayAction->setVisible(true);
+
+    setColorYellowAction = createAction(st->getLabelText(FWBSettings::YELLOW), SLOT( setColorYellow() ));
+    pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
+    setColorYellowAction->setIcon(QIcon(pcolor));
+    setColorYellowAction->setVisible(true);
+
+    setColorGreenAction = createAction(st->getLabelText(FWBSettings::GREEN), SLOT( setColorGreen() ));
+    pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
+    setColorGreenAction->setIcon(QIcon(pcolor));
+    setColorGreenAction->setVisible(true);
 
 }
 
@@ -707,45 +760,14 @@ void RuleSetView::addChangeColorSubmenu(QMenu *menu) const
 {
     QMenu *subcolor = menu->addMenu(tr("Change color") );
 
-    QPixmap pcolor(16,16);
-    pcolor.fill(QColor(255,255,255));
-    subcolor->addAction(QIcon(pcolor), tr("No color"),
-                         this, SLOT(setColorEmpty() ));
-
-    pcolor.fill(st->getLabelColor(FWBSettings::RED));
-    subcolor->addAction(QIcon(pcolor),
-                         st->getLabelText(FWBSettings::RED),
-                         this, SLOT(setColorRed() ));
-
-    pcolor.fill(st->getLabelColor(FWBSettings::ORANGE));
-    subcolor->addAction(QIcon(pcolor),
-                         st->getLabelText(FWBSettings::ORANGE),
-                         this, SLOT(setColorOrange() ));
-
-    pcolor.fill(st->getLabelColor(FWBSettings::YELLOW));
-    subcolor->addAction(QIcon(pcolor),
-                         st->getLabelText(FWBSettings::YELLOW),
-                         this, SLOT(setColorYellow() ));
-
-    pcolor.fill(st->getLabelColor(FWBSettings::GREEN));
-    subcolor->addAction(QIcon(pcolor),
-                         st->getLabelText(FWBSettings::GREEN),
-                         this, SLOT(setColorGreen() ));
-
-    pcolor.fill(st->getLabelColor(FWBSettings::BLUE));
-    subcolor->addAction(QIcon(pcolor),
-                         st->getLabelText(FWBSettings::BLUE),
-                         this, SLOT(setColorBlue() ));
-
-    pcolor.fill(st->getLabelColor(FWBSettings::PURPLE));
-    subcolor->addAction(QIcon(pcolor),
-                         st->getLabelText(FWBSettings::PURPLE),
-                         this, SLOT(setColorPurple() ));
-
-    pcolor.fill(st->getLabelColor(FWBSettings::GRAY));
-    subcolor->addAction(QIcon(pcolor),
-                         st->getLabelText(FWBSettings::GRAY),
-                         this, SLOT(setColorGray() ));
+    subcolor->addAction(setColorEmptyAction);
+    subcolor->addAction(setColorRedAction);
+    subcolor->addAction(setColorOrangeAction);
+    subcolor->addAction(setColorYellowAction);
+    subcolor->addAction(setColorGreenAction);
+    subcolor->addAction(setColorBlueAction);
+    subcolor->addAction(setColorPurpleAction);
+    subcolor->addAction(setColorGrayAction);
 
 }
 
@@ -2781,6 +2803,15 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
         setActionState(pasteRuleAboveAction, false);
         setActionState(pasteRuleBelowAction, false);
 
+        setColorEmptyAction->setEnabled(false);
+        setColorRedAction->setEnabled(false);
+        setColorBlueAction->setEnabled(false);
+        setColorOrangeAction->setEnabled(false);
+        setColorPurpleAction->setEnabled(false);
+        setColorGrayAction->setEnabled(false);
+        setColorYellowAction->setEnabled(false);
+        setColorGreenAction->setEnabled(false);
+
     } else
     {
         bool inGroup = true;
@@ -2878,6 +2909,15 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
         setActionState(cutRuleAction, true);
         setActionState(pasteRuleAboveAction, true);
         setActionState(pasteRuleBelowAction, true);
+
+        setColorEmptyAction->setEnabled(true);
+        setColorRedAction->setEnabled(true);
+        setColorBlueAction->setEnabled(true);
+        setColorOrangeAction->setEnabled(true);
+        setColorPurpleAction->setEnabled(true);
+        setColorGrayAction->setEnabled(true);
+        setColorYellowAction->setEnabled(true);
+        setColorGreenAction->setEnabled(true);
     }
 }
 

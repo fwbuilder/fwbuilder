@@ -254,6 +254,15 @@ private:
     QAction *disableRuleAction;
     QAction *enableRuleAction;
 
+    QAction *setColorEmptyAction;
+    QAction *setColorRedAction;
+    QAction *setColorBlueAction;
+    QAction *setColorOrangeAction;
+    QAction *setColorPurpleAction;
+    QAction *setColorGrayAction;
+    QAction *setColorYellowAction;
+    QAction *setColorGreenAction;
+
     QMenu *popup_menu;
 
     libfwbuilder::FWObject *getObject(const QPoint &pos, const QModelIndex &index);
