@@ -553,7 +553,7 @@ void FWWindow::startupLoad()
         // Two start-time pop-up dialogs == bad.
         if (! st->getBool("UI/NoStartTip"))
         {
-            StartTipDialog *stdlg = new StartTipDialog();
+            StartTipDialog *stdlg = new StartTipDialog(this);
             stdlg->run();
         }
     }
@@ -1471,10 +1471,14 @@ void FWWindow::showWelcome()
  * name of subdirectory under src/gui/Tutorial. Names of tutorials
  * (and directories under src/gui/Tutorial) are always all lower-case.
  */
-void FWWindow::showTutorial()
+void FWWindow::showTutorial(QString tutorial)
 {
-    TutorialDialog *dialog = new TutorialDialog(
-        sender()->objectName().remove(0,7).toLower(), this);
+    TutorialDialog *dialog;
+    if (tutorial.isEmpty())
+        dialog= new TutorialDialog(
+            sender()->objectName().remove(0,7).toLower(), this);
+    else
+        dialog = new TutorialDialog(tutorial, this);
     dialog->show();
 }
 

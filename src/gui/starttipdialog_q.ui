@@ -203,8 +203,8 @@ p, li { white-space: pre-wrap; }
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>626</x>
-     <y>369</y>
+     <x>514</x>
+     <y>390</y>
     </hint>
     <hint type="destinationlabel">
      <x>347</x>
@@ -219,8 +219,8 @@ p, li { white-space: pre-wrap; }
    <slot>nextTip()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>382</x>
-     <y>238</y>
+     <x>435</x>
+     <y>390</y>
     </hint>
     <hint type="destinationlabel">
      <x>259</x>
@@ -235,8 +235,8 @@ p, li { white-space: pre-wrap; }
    <slot>prevTip()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>275</x>
-     <y>238</y>
+     <x>337</x>
+     <y>390</y>
     </hint>
     <hint type="destinationlabel">
      <x>259</x>
@@ -244,9 +244,43 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>start_tutorial</sender>
+   <signal>clicked()</signal>
+   <receiver>StartTipDialog_q</receiver>
+   <slot>showGST()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>381</x>
+     <y>96</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>519</x>
+     <y>99</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>show_summary</sender>
+   <signal>clicked()</signal>
+   <receiver>StartTipDialog_q</receiver>
+   <slot>showSummary()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>520</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>nextTip()</slot>
   <slot>prevTip()</slot>
+  <slot>showGST()</slot>
+  <slot>showSummary()</slot>
  </slots>
 </ui>

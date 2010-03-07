@@ -30,6 +30,7 @@
 #include "StartTipDialog.h"
 #include "startup_tip_url.h"
 #include "FWBSettings.h"
+#include "FWWindow.h"
 #include "Help.h"
 
 #include <QCheckBox>
@@ -42,7 +43,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-StartTipDialog::StartTipDialog()
+StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setModal(false);
@@ -206,4 +207,14 @@ void StartTipDialog::prevTip()
     current_tip--;
     if (current_tip < 0) current_tip = 0;
     showTip(current_tip);
+}
+
+void StartTipDialog::showGST()
+{
+    dynamic_cast<FWWindow*>(parent())->showTutorial("getting_started");
+}
+
+void StartTipDialog::showSummary()
+{
+    dynamic_cast<FWWindow*>(parent())->showWelcome();
 }

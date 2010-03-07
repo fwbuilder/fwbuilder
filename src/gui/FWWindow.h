@@ -165,7 +165,7 @@ public slots:
     virtual void helpIndex();
     virtual void help();
     virtual void showWelcome();
-    virtual void showTutorial();
+    virtual void showTutorial(QString tutorial = QString());
     virtual void showReleaseNotes();
 
     virtual void fileNew();

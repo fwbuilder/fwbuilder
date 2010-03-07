@@ -55,7 +55,7 @@ class StartTipDialog : public QDialog
 public:
     Ui::StartTipDialog_q *m_dialog;
 
-    StartTipDialog();
+    StartTipDialog(QWidget *parent = NULL);
     
     virtual ~StartTipDialog();
 
@@ -65,6 +65,8 @@ public slots:
     void downloadComplete(const QString&);
     void nextTip();
     void prevTip();
+    void showGST();
+    void showSummary();
     virtual void close();
 };
 
