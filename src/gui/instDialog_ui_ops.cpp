@@ -120,7 +120,7 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
 {
     QTreeWidgetItem* item;
     QStringList sl;
-    sl.push_back(fw->getName().c_str());
+    sl.push_back(QString::fromUtf8(fw->getName().c_str()));
 
     if (parent)
         item = new QTreeWidgetItem(parent, sl);
