@@ -1567,7 +1567,7 @@ void FWWindow::prepareRulesMenu ()
             m_mainWindow->RulesMenu->addAction(rsv->moveRuleDownAction);
             m_mainWindow->RulesMenu->addAction(rsv->insertRuleAction);
             m_mainWindow->RulesMenu->addAction(rsv->addRuleAfterCurrentAction);
-
+            m_mainWindow->RulesMenu->addAction(rsv->removeRuleAction);
         }
         m_mainWindow->RulesMenu->addSeparator();
         m_mainWindow->RulesMenu->addActions(ruleStaticActions);

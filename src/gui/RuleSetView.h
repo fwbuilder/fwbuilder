@@ -132,6 +132,8 @@ public:
     QAction *addToGroupAboveAction;
     QAction *addToGroupBelowAction;
 
+    QAction *removeRuleAction;
+
 
 public slots:
 

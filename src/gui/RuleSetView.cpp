@@ -121,6 +121,7 @@ RuleSetView::~RuleSetView()
     delete addRuleAfterCurrentAction;
     delete addToGroupAboveAction;
     delete addToGroupBelowAction;
+    delete removeRuleAction;
 }
 
 void RuleSetView::init()
@@ -182,6 +183,9 @@ void RuleSetView::initActions()
 
     addToGroupAboveAction = createAction("addToGroupAboveAction", SLOT( addToGroupAbove() ));
     addToGroupBelowAction = createAction("addToGroupBelowAction", SLOT( addToGroupBelow() ));
+
+    // Remove rule
+    removeRuleAction = createAction(tr("Remove Rule"), SLOT( removeRule()));
 }
 
 
@@ -748,8 +752,7 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
     menu->addAction( insertRuleAction );
     menu->addAction( addRuleAfterCurrentAction );
 
-    label = (selectionSize==1)?tr("Remove Rule"):tr("Remove Rules");
-    menu->addAction( label, this, SLOT( removeRule()));
+    menu->addAction( removeRuleAction );
 
     menu->addSeparator();
 
@@ -2784,6 +2787,9 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
         addRuleAfterCurrentAction->setVisible(false);
         addRuleAfterCurrentAction->setEnabled(false);
 
+        removeRuleAction->setVisible(false);
+        removeRuleAction->setEnabled(false);
+
     } else
     {
         bool inGroup = true;
@@ -2809,11 +2815,13 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
         {
             moveRuleUpAction->setText(tr("Move Rules up"));
             moveRuleDownAction->setText(tr("Move Rules down"));
+            removeRuleAction->setText(tr("Remove Rules"));
 
         } else
         {
             moveRuleUpAction->setText(tr("Move Rule up"));
             moveRuleDownAction->setText(tr("Move Rule down"));
+            removeRuleAction->setText(tr("Remove Rule"));
         }
 
 
@@ -2874,6 +2882,9 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
 
         addRuleAfterCurrentAction->setVisible(true);
         addRuleAfterCurrentAction->setEnabled(true);
+
+        removeRuleAction->setVisible(true);
+        removeRuleAction->setEnabled(true);
     }
 }
 
@@ -2882,6 +2893,7 @@ void RuleSetView::updateObject(FWObject* object)
     RuleSetModel* md = ((RuleSetModel*)model());
     md->objectChanged(object);
 }
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PolicyView
