@@ -108,6 +108,7 @@
 #include <memory.h>
 #include <memory>
 #include <algorithm>
+#include <stdlib.h>
 
 #ifndef _WIN32
 #  include <unistd.h>     // for access(2)
@@ -115,49 +116,49 @@
 #  undef index
 #endif
 
-#include <qaction.h>
-#include <qlistwidget.h>
-#include <qmessagebox.h>
-#include <qapplication.h>
-#include <qfileinfo.h>
-#include <qfile.h>
-#include <qfiledialog.h>
-#include <qpixmap.h>
-#include <qpixmapcache.h>
-#include <qheaderview.h>
-#include <qtabwidget.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qtextedit.h>
-#include <qstringlist.h>
-#include <qmenu.h>
-#include <qtoolbutton.h>
-
-#include <qlayout.h>
-#include <qapplication.h>
-#include <qcursor.h>
-#include <qsplitter.h>
-#include <qtimer.h>
-#include <qstatusbar.h>
-#include <qlabel.h>
-#include <qradiobutton.h>
-#include <qprinter.h>
-#include <qstackedwidget.h>
-#include <qlistwidget.h>
-#include <qeventloop.h>
-#include <qtextstream.h>
 #include <QCloseEvent>
-#include <QShowEvent>
-#include <QList>
+#include <QDateTime>
+#include <QDockWidget>
 #include <QHideEvent>
+#include <QList>
+#include <QMap>
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include <QShowEvent>
 #include <QSignalMapper>
-#include <QUrl>
-#include <QDockWidget>
 #include <QUndoGroup>
 #include <QUndoStack>
-#include <QMap>
+#include <QUrl>
+#include <qaction.h>
+#include <qapplication.h>
+#include <qapplication.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
+#include <qcursor.h>
+#include <qeventloop.h>
+#include <qfile.h>
+#include <qfiledialog.h>
+#include <qfileinfo.h>
+#include <qheaderview.h>
+#include <qlabel.h>
+#include <qlayout.h>
+#include <qlistwidget.h>
+#include <qlistwidget.h>
+#include <qmenu.h>
+#include <qmessagebox.h>
+#include <qpixmap.h>
+#include <qpixmapcache.h>
+#include <qprinter.h>
+#include <qradiobutton.h>
+#include <qsplitter.h>
+#include <qstackedwidget.h>
+#include <qstatusbar.h>
+#include <qstringlist.h>
+#include <qtabwidget.h>
+#include <qtextedit.h>
+#include <qtextstream.h>
+#include <qtimer.h>
+#include <qtoolbutton.h>
 
 
 using namespace libfwbuilder;
@@ -508,9 +509,23 @@ void FWWindow::startupLoad()
 {
     if (st->getCheckUpdates())
     {
+        QString update_url = CHECK_UPDATE_URL;
+
+        // Use env variable FWBUILDER_CHECK_UPDATE_URL to override url to test
+        // e.g. export FWBUILDER_CHECK_UPDATE_URL="file://$(pwd)/update_%1"
+        //
+        char* update_check_override_url = getenv("FWBUILDER_CHECK_UPDATE_URL");
+        if (update_check_override_url != NULL)
+            update_url = QString(update_check_override_url);
+
         // start http query to get latest version from the web site
-        QString url = QString(CHECK_UPDATE_URL).arg(VERSION).arg(st->getAppGUID());
-        current_version_http_getter->get(QUrl(url));
+        QString url = QString(update_url).arg(VERSION).arg(st->getAppGUID());
+
+        if (!current_version_http_getter->get(QUrl(url)) && fwbdebug)
+        {
+            qDebug() << "HttpGet error: " << current_version_http_getter->getLastError();
+            qDebug() << "Url: " << url;
+        }
     }
 
     if (activeProject())
@@ -1366,6 +1381,11 @@ void FWWindow::updateTreeFont ()
 
 void FWWindow::checkForUpgrade(const QString& server_response)
 {
+    if (fwbdebug) qDebug() << "FWWindow::checkForUpgrade  server_response: "
+                           << server_response
+                           << " http_getter_status: " 
+                           << current_version_http_getter->getStatus();
+
     disconnect(current_version_http_getter, SIGNAL(done(const QString&)),
                this, SLOT(checkForUpgrade(const QString&)));
 
@@ -1380,13 +1400,21 @@ void FWWindow::checkForUpgrade(const QString& server_response)
          * connection goes via proxy, esp. with captive portals. We
          * should not interpret that as "new version is available"
          */
-        if (server_response.trimmed() == "update = 1")
+        uint now = QDateTime::currentDateTime().toTime_t();
+        uint last_update_available_warning_time =
+            st->getTimeOfLastUpdateAvailableWarning();
+        bool update_available = (server_response.trimmed() == "update = 1");
+
+        if (update_available &&
+            (now - last_update_available_warning_time > 24*3600))
         {
             QMessageBox::warning(
                 this,"Firewall Builder",
                 tr("A new version of Firewall Builder is available at"
                    " http://www.fwbuilder.org"));
+            st->setTimeOfLastUpdateAvailableWarning(now);
         }
+
     } else
     {
         if (fwbdebug)

@@ -102,6 +102,7 @@ const char* compilerOutputFont = SETTINGS_PATH_PREFIX "/UI/Fonts/CompilerOutputF
 const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 
 const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
+const char* updateAvailableWarningLastTime = SETTINGS_PATH_PREFIX "/UI/updateAvailableWarningLastTime";
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
 
 const char* newFirewallPlatform = SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
@@ -109,7 +110,6 @@ const char* newClusterFailoverProtocol = SETTINGS_PATH_PREFIX "/Objects/newClust
 const char* appGUID = SETTINGS_PATH_PREFIX "/ApplicationGUID";
 
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
-
 
 
 /**
@@ -217,7 +217,11 @@ void FWBSettings::init()
     if (!ok) setClipComment(true);
 
     ok = contains(checkUpdates);
-    if (!ok) setCheckUpdates(true);
+    if (!ok)
+    {
+        setCheckUpdates(true);
+        setTimeOfLastUpdateAvailableWarning(0);
+    }
 
     ok = contains(compression);
     if (!ok) setCompression(false);
@@ -760,6 +764,17 @@ void FWBSettings::setCheckUpdates(bool f)
 {
     setValue(checkUpdates, f);
 }
+
+uint FWBSettings::getTimeOfLastUpdateAvailableWarning()
+{
+    return value(updateAvailableWarningLastTime).toUInt();
+}
+
+void FWBSettings::setTimeOfLastUpdateAvailableWarning(uint v)
+{
+    setValue(updateAvailableWarningLastTime, v);
+}
+
 
 
 QString FWBSettings::getCheckUpdatesProxy()

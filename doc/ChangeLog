@@ -1,3 +1,9 @@
+2010-03-06  vadim  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::checkForUpgrade): code that checks if
+	upgrade is available shows warning dialog no more than once a day.
+	Also framework for unit testing of this function. See #1309
+
 2010-03-05  vadim  <vadim@vk.crocodile.org>
 
 	* instDialog_ui_ops.cpp (instDialog::fillCompileSelectList):

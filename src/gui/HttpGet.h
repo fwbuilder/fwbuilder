@@ -30,15 +30,16 @@
 #include <QHttp>
 #include <QString>
 #include <QByteArray>
+#include <QUrl>
 
-class QUrl;
 
 class HttpGet : public QObject
 {
-    Q_OBJECT
+    Q_OBJECT;
 
 private:
     QHttp http;
+    QUrl url;
     QBuffer strm;
     bool status;
     QString last_error;
@@ -59,7 +60,7 @@ signals:
 
 private slots:
     void httpDone(int id, bool error);
-
+    void fileDone();
 };
 
 #endif

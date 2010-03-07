@@ -46,8 +46,10 @@ HttpGet::HttpGet(QObject *parent) : QObject(parent), strm(&contents)
             this, SLOT(httpDone(int, bool)));
 }
 
-bool HttpGet::get(const QUrl &url)
+bool HttpGet::get(const QUrl &_url)
 {
+    url = _url;
+
     QTextStream err(&last_error,  QIODevice::WriteOnly);
 
     if (strm.isOpen())
@@ -63,18 +65,24 @@ bool HttpGet::get(const QUrl &url)
         return false;
     }
 
-    if (url.scheme() != "http")
+    if (url.scheme() != "http" && url.scheme() != "file")
     {
-        err << "Error: URL must start with 'http:'";
+        err << "Error: URL must start with 'http:' or 'file:'";
         status = false;
         return false;
     }
 
-    if (url.path().isEmpty())
+    if (url.scheme() == "http" && url.path().isEmpty())
     {
         err << "Error: URL has no path";
         status = false;
         return false;
+    }
+
+    if (url.scheme() == "file")
+    {
+        QTimer::singleShot(0, this, SLOT(fileDone()));
+        return true;
     }
 
     QString proxy = st->getCheckUpdatesProxy();
@@ -118,6 +126,29 @@ bool HttpGet::get(const QUrl &url)
     hdr.setValue("User-Agent", agent);
     request_id = http.request(hdr, NULL, &strm);
     return true;
+}
+
+void HttpGet::fileDone()
+{
+    QString file_path = url.path();
+    QFileInfo fi(file_path);
+    if (fi.exists() && fi.isReadable())
+    {
+        QFile data(file_path);
+        if (data.open(QFile::ReadOnly))
+        {
+            QTextStream strm(&data);
+            QString line = strm.readAll();
+            status = true;
+            emit done(line);
+            return;
+        }
+    }
+    status = false;
+    QTextStream err(&last_error,  QIODevice::WriteOnly);
+    err << "Error: can not read file '" << file_path
+        << "' (url=" << url.toString() << ")";
+    emit done("");
 }
 
 void HttpGet::httpDone(int id, bool error)

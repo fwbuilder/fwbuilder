@@ -190,6 +190,9 @@ class FWBSettings : public QSettings {
     bool getCheckUpdates();
     void setCheckUpdates(bool);
 
+    uint getTimeOfLastUpdateAvailableWarning();
+    void setTimeOfLastUpdateAvailableWarning(uint v);
+    
     QString getTargetStatus(const QString &platform, const QString &default_stat);
     void setTargetStatus(const QString &plaform, const QString &status);
 
