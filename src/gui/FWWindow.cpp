@@ -307,7 +307,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     setSafeMode(false);
 
 //    findObject->setMinimumSize( QSize( 0, 0 ) );
-    m_mainWindow->m_space->findChild<QTabBar*>()->installEventFilter(new MDIEventFilter());
+//    m_mainWindow->m_space->findChild<QTabBar*>()->installEventFilter(new MDIEventFilter());
 }
 
 FWWindow::~FWWindow()
