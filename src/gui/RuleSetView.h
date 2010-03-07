@@ -120,24 +120,7 @@ public:
     void setModel(QAbstractItemModel *model);
     void addToGroup(bool isAbove);
 
-
-    //Public rule related actions:
-    QAction *removeFromGroupAction;
-    QAction *newGroupAction;
-    QAction *moveRuleUpAction;
-    QAction *moveRuleDownAction;
-    QAction *insertRuleAction;
-    QAction *addRuleAfterCurrentAction;
-    QAction *addToGroupAboveAction;
-    QAction *addToGroupBelowAction;
-    QAction *removeRuleAction;
-
-    QAction *copyRuleAction;
-    QAction *cutRuleAction;
-    QAction *pasteRuleAboveAction;
-    QAction *pasteRuleBelowAction;
-    QAction *disableRuleAction;
-    QAction *enableRuleAction;
+    void addRowMenuItemsToMenu(QMenu *menu) const;
 
 public slots:
 
@@ -254,7 +237,22 @@ private:
     //but not when he just clicks selected record
     bool startingDrag;
     QAction *compileRuleAction;
+    QAction *removeFromGroupAction;
+    QAction *newGroupAction;
+    QAction *moveRuleUpAction;
+    QAction *moveRuleDownAction;
+    QAction *insertRuleAction;
+    QAction *addRuleAfterCurrentAction;
+    QAction *addToGroupAboveAction;
+    QAction *addToGroupBelowAction;
+    QAction *removeRuleAction;
 
+    QAction *copyRuleAction;
+    QAction *cutRuleAction;
+    QAction *pasteRuleAboveAction;
+    QAction *pasteRuleBelowAction;
+    QAction *disableRuleAction;
+    QAction *enableRuleAction;
 
     QMenu *popup_menu;
 
@@ -267,7 +265,7 @@ private:
 
     void addGenericMenuItemsToContextMenu(QMenu *menu) const;
     void addGroupMenuItemsToContextMenu(QMenu *menu) const;
-    void addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) const;
+
     void addChangeColorSubmenu(QMenu *menu) const;
     void addCommonRowItemsToContextMenu(QMenu *menu) const;
 

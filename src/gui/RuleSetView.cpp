@@ -391,7 +391,7 @@ void RuleSetView::showContextMenu(const QPoint& pos)
 
             if (column < 1)
             {
-                addRowMenuItemsToContextMenu(popup_menu, node);
+                addRowMenuItemsToMenu(popup_menu);
             }
             else
             {
@@ -749,12 +749,8 @@ void RuleSetView::addChangeColorSubmenu(QMenu *menu) const
 
 }
 
-void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) const
+void RuleSetView::addRowMenuItemsToMenu(QMenu *menu) const
 {
-    QString label;
-    RuleSetModel* md = ((RuleSetModel*)model());
-    QModelIndexList selectedIndexes = getSelectedRows();
-    int selectionSize = selectedIndexes.size();
 
     menu->addAction(removeFromGroupAction);
     menu->addAction(newGroupAction);
@@ -769,16 +765,11 @@ void RuleSetView::addRowMenuItemsToContextMenu(QMenu *menu, RuleNode* node) cons
 
     menu->addAction( insertRuleAction );
     menu->addAction( addRuleAfterCurrentAction );
-
     menu->addAction( removeRuleAction );
 
     menu->addSeparator();
 
-    label = (selectionSize==1)?tr("Move Rule up"):tr("Move Rules up");
-    moveRuleUpAction->setText(label);
     menu->addAction( moveRuleUpAction);
-    label = (selectionSize==1)?tr("Move Rule down"):tr("Move Rules down");
-    moveRuleDownAction->setText(label);
     menu->addAction( moveRuleDownAction);
 
     menu->addSeparator();
@@ -937,7 +928,6 @@ QModelIndexList RuleSetView::getSelectedRows() const
 
 void RuleSetView::setSelectedRows(const QModelIndex firstIndex, const QModelIndex lastIndex)
 {
-    RuleSetModel* md = ((RuleSetModel*)model());
     fwosm->reset();
     selectionModel()->clear();
     setCurrentIndex(firstIndex);

@@ -768,51 +768,18 @@ void FWWindow::importPolicy()
 
 void FWWindow::setActionsEnabled(bool en)
 {
-    m_mainWindow->insertRuleAction->setEnabled(en);
-    m_mainWindow->moveRuleAction->setEnabled(en );
-    m_mainWindow->moveRuleUpAction->setEnabled(en );
-    m_mainWindow->moveRuleDownAction->setEnabled(en );
-    m_mainWindow->addRuleAfterCurrentAction->setEnabled(en );
-    m_mainWindow->removeRuleAction->setEnabled(en );
-    m_mainWindow->copyRuleAction->setEnabled(en );
-    m_mainWindow->cutRuleAction->setEnabled(en );
-    m_mainWindow->pasteRuleAboveAction->setEnabled(en );
-    m_mainWindow->pasteRuleBelowAction->setEnabled(en );
-
     m_mainWindow->compileAction->setEnabled(en );
     m_mainWindow->installAction->setEnabled(en );
 }
 
 void FWWindow::setEnabledAfterRF()
 {
-    m_mainWindow->insertRuleAction->setEnabled( true );
-    m_mainWindow->moveRuleAction->setEnabled( true );
-    m_mainWindow->moveRuleUpAction->setEnabled( true );
-    m_mainWindow->moveRuleDownAction->setEnabled( true );
-    m_mainWindow->addRuleAfterCurrentAction->setEnabled( false );
-    m_mainWindow->removeRuleAction->setEnabled( false );
-    m_mainWindow->copyRuleAction->setEnabled( false );
-    m_mainWindow->cutRuleAction->setEnabled( false );
-    m_mainWindow->pasteRuleAboveAction->setEnabled( false );
-    m_mainWindow->pasteRuleBelowAction->setEnabled( false );
-
     m_mainWindow->compileAction->setEnabled( true );
     m_mainWindow->installAction->setEnabled( true );
 }
 
 void FWWindow::selectRules()
 {
-    m_mainWindow->insertRuleAction->setEnabled( true );
-    m_mainWindow ->moveRuleAction->setEnabled( true );
-    m_mainWindow ->moveRuleUpAction->setEnabled( true );
-    m_mainWindow ->moveRuleDownAction->setEnabled( true );
-    m_mainWindow ->addRuleAfterCurrentAction->setEnabled( true );
-    m_mainWindow ->removeRuleAction->setEnabled( true );
-    m_mainWindow ->copyRuleAction->setEnabled( true );
-    m_mainWindow ->cutRuleAction->setEnabled( true );
-    m_mainWindow ->pasteRuleAboveAction->setEnabled( true );
-    m_mainWindow ->pasteRuleBelowAction->setEnabled( true );
-
     m_mainWindow ->compileAction->setEnabled( true );
     m_mainWindow ->installAction->setEnabled( true );
 
@@ -821,17 +788,6 @@ void FWWindow::selectRules()
 
 void FWWindow::disableActions(bool havePolicies)
 {
-    m_mainWindow ->insertRuleAction->setEnabled( havePolicies ); // enabled if there are policies
-    m_mainWindow ->moveRuleAction->setEnabled( false );
-    m_mainWindow ->moveRuleUpAction->setEnabled( false );
-    m_mainWindow ->moveRuleDownAction->setEnabled( false );
-    m_mainWindow ->addRuleAfterCurrentAction->setEnabled( false );
-    m_mainWindow ->removeRuleAction->setEnabled( false );
-    m_mainWindow ->copyRuleAction->setEnabled( false );
-    m_mainWindow ->cutRuleAction->setEnabled( false );
-    m_mainWindow ->pasteRuleAboveAction->setEnabled( false );
-    m_mainWindow ->pasteRuleBelowAction->setEnabled( false );
-
     m_mainWindow ->compileAction->setEnabled( true );
     m_mainWindow ->installAction->setEnabled( true );
 }
@@ -1568,22 +1524,7 @@ void FWWindow::prepareRulesMenu ()
 
         if(rsv)
         {
-            m_mainWindow->RulesMenu->addAction(rsv->removeFromGroupAction);
-            m_mainWindow->RulesMenu->addAction(rsv->newGroupAction);
-            m_mainWindow->RulesMenu->addAction(rsv->addToGroupAboveAction);
-            m_mainWindow->RulesMenu->addAction(rsv->addToGroupBelowAction);
-            m_mainWindow->RulesMenu->addAction(rsv->moveRuleUpAction);
-            m_mainWindow->RulesMenu->addAction(rsv->moveRuleDownAction);
-            m_mainWindow->RulesMenu->addAction(rsv->insertRuleAction);
-            m_mainWindow->RulesMenu->addAction(rsv->addRuleAfterCurrentAction);
-            m_mainWindow->RulesMenu->addAction(rsv->removeRuleAction);
-
-            m_mainWindow->RulesMenu->addAction(rsv->copyRuleAction);
-            m_mainWindow->RulesMenu->addAction(rsv->cutRuleAction);
-            m_mainWindow->RulesMenu->addAction(rsv->pasteRuleAboveAction);
-            m_mainWindow->RulesMenu->addAction(rsv->pasteRuleBelowAction);
-            m_mainWindow->RulesMenu->addAction(rsv->disableRuleAction);
-            m_mainWindow->RulesMenu->addAction(rsv->enableRuleAction);
+            rsv->addRowMenuItemsToMenu(m_mainWindow->RulesMenu);
         }
         m_mainWindow->RulesMenu->addSeparator();
         m_mainWindow->RulesMenu->addActions(ruleStaticActions);
@@ -1594,6 +1535,7 @@ void FWWindow::cleanRulesMenu ()
 {
     qDebug("FWWindow::cleanRulesMenu ()");
     m_mainWindow->RulesMenu->actions().clear();
+    m_mainWindow->RulesMenu->clear();
 }
 
 
