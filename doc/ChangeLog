@@ -1,11 +1,18 @@
+2010-03-07  vadim  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::startupLoad): final (hopefully) design
+	of the welcome/startup window. Always showing startup tip dialog;
+	added buttons to show "Getting started" and "summary of features"
+	to the same dialog window. Fixes #1224
+
 2010-02-28  yalovoy <yalovoy@gmail.com>
 	* refs #1202: Main menu "Rules" does not match rule context menu
 	Items in the main menu Rules should get disabled and enabled just
 	like items in the context menu do.
 	Added action: copyRuleAction; cutRuleAction; pasteRuleAboveAction;
      	pasteRuleBelowAction; disableRuleAction; enableRuleAction;
-	setColorEmptyAction; setColorRedAction; setColorBlueAction; 
-	setColorOrangeAction; setColorPurpleAction; setColorGrayAction; 
+	setColorEmptyAction; setColorRedAction; setColorBlueAction;
+	setColorOrangeAction; setColorPurpleAction; setColorGrayAction;
 	setColorYellowAction; setColorGreenAction;
 	Affected files:
 	FWWindow.cpp

@@ -512,6 +512,12 @@ void FWWindow::updateWindowTitle()
 
 void FWWindow::startupLoad()
 {
+    if (! st->getBool("UI/NoStartTip"))
+    {
+        StartTipDialog *stdlg = new StartTipDialog(this);
+        stdlg->run();
+    }
+
     if (st->getCheckUpdates())
     {
         QString update_url = CHECK_UPDATE_URL;
@@ -544,23 +550,6 @@ void FWWindow::startupLoad()
     {
         loadFile(file, auto_load_from_rcs_head_revision);
         updateOpenRecentMenu(file);
-    }
-
-    QString welcome_flag = QString("UI/%1/WelcomeShown").arg(VERSION);
-
-    if (!st->getBool(welcome_flag))
-    {
-        showWelcome();
-        st->setBool(welcome_flag, true);
-    } else
-    {
-        // show tip of the day only if we did not show release notes.
-        // Two start-time pop-up dialogs == bad.
-        if (! st->getBool("UI/NoStartTip"))
-        {
-            StartTipDialog *stdlg = new StartTipDialog(this);
-            stdlg->run();
-        }
     }
 
     prepareFileMenu();
