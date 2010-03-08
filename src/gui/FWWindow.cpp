@@ -289,9 +289,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     connect( m_mainWindow->RulesMenu, SIGNAL (aboutToShow()),
              this, SLOT(prepareRulesMenu()));
 
-    connect( m_mainWindow->RulesMenu, SIGNAL (aboutToHide()),
-             this, SLOT(cleanRulesMenu()));
-
     connect( m_mainWindow->m_space, SIGNAL(subWindowActivated(QMdiSubWindow*)),
              this, SLOT(subWindowActivated(QMdiSubWindow*)));
 
@@ -1505,6 +1502,9 @@ void FWWindow::undoViewVisibilityChanged(bool visible)
 void FWWindow::prepareRulesMenu ()
 {
     qDebug("FWWindow::ruleMenuAboutToShow ()");
+
+    cleanRulesMenu();
+
     if (activeProject())
     {
         RuleSetView* rsv = activeProject()->getCurrentRuleSetView();
