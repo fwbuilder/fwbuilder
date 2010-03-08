@@ -6,6 +6,7 @@
 	Items in the main menu Rules should get disabled and enabled just
 	like items in the context menu do.
 	Affected files: RuleSetView.cpp, RuleSetView.h
+	* src/gui/FWWindow.cpp: fixes #1322 main menu items "Rules" are broken
 
 2010-03-07  vadim  <vadim@vk.crocodile.org>
 
