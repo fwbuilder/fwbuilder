@@ -2898,8 +2898,10 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
             setActionState(addToGroupBelowAction, false);
         }
 
-        setActionState(removeFromGroupAction, true);
-        setActionState(newGroupAction, true);
+        removeFromGroupAction->setVisible(inGroup);
+        removeFromGroupAction->setEnabled(outermost);
+
+        setActionState(newGroupAction, topLevelOnly);
         setActionState(moveRuleUpAction, true);
         setActionState(moveRuleDownAction, true);
         setActionState(insertRuleAction, true);

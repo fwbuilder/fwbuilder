@@ -1,3 +1,8 @@
+2010-03-07  yalovoy <yalovoy@gmail.com>
+	* RuleSetView.cpp: fixes #1315 menu item "Remove from group" is 
+	available for rules inside the group.
+	"Create new group" action is fixed too.
+
 2010-03-07  vadim  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::startupLoad): final (hopefully) design
