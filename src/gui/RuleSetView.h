@@ -198,7 +198,7 @@ public slots:
     void updateObject(libfwbuilder::FWObject* object);
 
     void compileCurrentRule();
-    void updateSelectionSensitiveActions(QItemSelection,QItemSelection);
+    void updateSelectionSensitiveActions();
 
     void setSelectedRows(const QModelIndex firstIndex, const QModelIndex lastIndex);
 

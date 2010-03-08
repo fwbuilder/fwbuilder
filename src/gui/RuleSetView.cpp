@@ -1205,6 +1205,8 @@ void RuleSetView::setEnabledRow(bool flag)
             project->undoStack->push(cmd);
         }
     }
+
+    updateSelectionSensitiveActions();
 }
 
 void RuleSetView::newGroup()
@@ -2538,7 +2540,7 @@ void RuleSetView::setModel(QAbstractItemModel *model)
     QTreeView::setModel(model);
 
     connect (selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-             this, SLOT(updateSelectionSensitiveActions(QItemSelection,QItemSelection)));
+             this, SLOT(updateSelectionSensitiveActions()));
 }
 
 void RuleSetView::repaintSelection()
@@ -2759,7 +2761,7 @@ void RuleSetView::compileCurrentRule()
     mw->singleRuleCompile(node->rule);
 }
 
-void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)
+void RuleSetView::updateSelectionSensitiveActions()
 {
 //    qDebug() << "RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemSelection deselected)";
     RuleSetModel* md = ((RuleSetModel*)model());
@@ -2898,9 +2900,7 @@ void RuleSetView::updateSelectionSensitiveActions(QItemSelection selected,QItemS
             setActionState(addToGroupBelowAction, false);
         }
 
-        removeFromGroupAction->setVisible(inGroup);
-        removeFromGroupAction->setEnabled(outermost);
-
+        setActionState(removeFromGroupAction, outermost);
         setActionState(newGroupAction, topLevelOnly);
         setActionState(moveRuleUpAction, true);
         setActionState(moveRuleDownAction, true);

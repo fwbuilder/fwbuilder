@@ -1,7 +1,11 @@
-2010-03-07  yalovoy <yalovoy@gmail.com>
+2010-03-08  yalovoy <yalovoy@gmail.com>
 	* RuleSetView.cpp: fixes #1315 menu item "Remove from group" is 
 	available for rules inside the group.
 	"Create new group" action is fixed too.
+	* fixes #1202: Main menu "Rules" does not match rule context menu
+	Items in the main menu Rules should get disabled and enabled just
+	like items in the context menu do.
+	Affected files: RuleSetView.cpp, RuleSetView.h
 
 2010-03-07  vadim  <vadim@vk.crocodile.org>
 
