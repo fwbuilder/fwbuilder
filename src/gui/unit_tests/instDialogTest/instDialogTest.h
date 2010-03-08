@@ -22,7 +22,7 @@ class instDialogTest : public QObject
     void openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item, ObjectTreeView *tree, const QString &actionText);
 
 private slots:
-    void initTestCase();
+    void initTestCase();/*
     void page1_1();
     void page1_2();
     void page1_3();
@@ -30,7 +30,10 @@ private slots:
     void page1_5();
     void page1_6();
     void page1_7();
-    void page1_8();
+    void page1_8();*/
+    void page1_9();
+    void page1_10();
+    void page1_11();
 
 public slots:
     void closeContextMenu();
