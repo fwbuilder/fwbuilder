@@ -105,7 +105,6 @@ void instDialogTest::openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *
     }
 }
 
-/*
 void instDialogTest::page1_1()
 {
     QAction *compile = mw->findChild<QAction*>("compileAction");
@@ -244,6 +243,100 @@ void instDialogTest::page1_7()
 
 void instDialogTest::page1_8()
 {
+    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    qDebug() << tree;
+    //tree->expandAll();
+    ObjectTreeViewItem *test3 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test3", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    //tree->scrollToItem(test3);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(test3, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test3);
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    openContextMenu(om, test3, tree, "Compile");
+    instDialog *dlg = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+    QVERIFY(dlg != NULL);
+
+    QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
+    QVERIFY(table != NULL);
+    QVERIFY(table->topLevelItemCount() == 1);
+    QVERIFY(table->topLevelItem(0)->text(0) == "test3");
+
+    QFrame *warning_space = dlg->findChild<QFrame*>("warning_space");
+    QLabel *warning_message_1 = dlg->findChild<QLabel*>("warning_message_1");
+    QLabel *warning_message_2 = dlg->findChild<QLabel*>("warning_message_2");
+
+    QVERIFY(warning_space->isVisible());
+    QVERIFY(warning_message_1->isVisible());
+    QVERIFY(warning_message_2->isVisible());
+
+    QTest::qWait(1000);
+    dlg->findChild<QPushButton*>("cancelButton")->click();
+    QTest::qWait(1000);
+}
+
+void instDialogTest::page1_9()
+{
+    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    //tree->expandAll();
+    ObjectTreeViewItem *cluster1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("cluster1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    //tree->scrollToItem(cluster1);
+    tree->selectionModel()->select(tree->indexAt(findItemPos(cluster1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(cluster1);
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    openContextMenu(om, cluster1, tree, "Compile");
+    instDialog *dlg = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+    QVERIFY(dlg != NULL);
+
+    QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
+    QVERIFY(table != NULL);
+    QVERIFY(table->topLevelItemCount() == 1);
+    QVERIFY(table->topLevelItem(0)->text(0) == "cluster1");
+    QVERIFY(table->topLevelItem(0)->childCount() == 2);
+    QVERIFY(table->topLevelItem(0)->child(0)->text(0) == "test3");
+    QVERIFY(table->topLevelItem(0)->child(1)->text(0) == "test4");
+
+    QFrame *warning_space = dlg->findChild<QFrame*>("warning_space");
+    QVERIFY(warning_space->isHidden());
+
+    QTest::qWait(1000);
+    dlg->findChild<QPushButton*>("cancelButton")->click();
+    QTest::qWait(1000);
+}
+
+void instDialogTest::page1_10()
+{
+    QAction *compile = mw->findChild<QAction*>("compileAction");
+    compile->activate(QAction::Trigger);
+    QTest::qWait(100);
+    instDialog *dlg = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+    QVERIFY(dlg != NULL);
+
+    QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
+    QVERIFY(table != NULL);
+    QVERIFY(table->topLevelItemCount() == 3);
+    QVERIFY(! table->findItems("cluster1", Qt::MatchExactly, 0).isEmpty());
+    QVERIFY(! table->findItems("test1", Qt::MatchExactly, 0).isEmpty());
+    QVERIFY(! table->findItems("test2", Qt::MatchExactly, 0).isEmpty());
+    QVERIFY(! table->findItems("test3", Qt::MatchExactly | Qt::MatchRecursive, 0).isEmpty());
+    QVERIFY(! table->findItems("test4", Qt::MatchExactly | Qt::MatchRecursive, 0).isEmpty());
+    QFrame *warning_space = dlg->findChild<QFrame*>("warning_space");
+    QVERIFY(warning_space->isHidden());
+    QTest::qWait(1000);
+    dlg->findChild<QPushButton*>("cancelButton")->click();
+    QTest::qWait(1000);
+
+}
+
+void instDialogTest::page1_11()
+{
     QAction *compile = mw->findChild<QAction*>("installAction");
     compile->activate(QAction::Trigger);
     QTest::qWait(100);
@@ -274,98 +367,4 @@ void instDialogTest::page1_8()
     QTest::qWait(1000);
     dlg->findChild<QPushButton*>("cancelButton")->click();
     QTest::qWait(1000);
-}
-*/
-
-void instDialogTest::page1_9()
-{
-    ObjectTreeView *tree = mw->getCurrentObjectTree();
-    tree->expandAll();
-    ObjectTreeViewItem *test3 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test3", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
-    tree->scrollToItem(test3);
-    tree->selectionModel()->select(tree->indexAt(findItemPos(test3, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
-    tree->setCurrentItem(test3);
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
-    openContextMenu(om, test3, tree, "Compile");
-    instDialog *dlg = NULL;
-    foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
-            dlg = dynamic_cast<instDialog*>(w);
-    QVERIFY(dlg != NULL);
-
-    QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
-    QVERIFY(table->topLevelItemCount() == 1);
-    QVERIFY(table->topLevelItem(0)->text(0) == "test3");
-
-    QFrame *warning_space = dlg->findChild<QFrame*>("warning_space");
-    QLabel *warning_message_1 = dlg->findChild<QLabel*>("warning_message_1");
-    QLabel *warning_message_2 = dlg->findChild<QLabel*>("warning_message_2");
-
-    QVERIFY(warning_space->isVisible());
-    QVERIFY(warning_message_1->isVisible());
-    QVERIFY(warning_message_2->isVisible());
-
-    QTest::qWait(1000);
-    dlg->findChild<QPushButton*>("cancelButton")->click();
-    QTest::qWait(1000);
-}
-
-void instDialogTest::page1_10()
-{
-    ObjectTreeView *tree = mw->getCurrentObjectTree();
-    tree->expandAll();
-    ObjectTreeViewItem *cluster1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("cluster1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
-    tree->scrollToItem(cluster1);
-    tree->selectionModel()->select(tree->indexAt(findItemPos(cluster1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
-    tree->setCurrentItem(cluster1);
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
-    openContextMenu(om, cluster1, tree, "Compile");
-    instDialog *dlg = NULL;
-    foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
-            dlg = dynamic_cast<instDialog*>(w);
-    QVERIFY(dlg != NULL);
-
-    QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
-    QVERIFY(table->topLevelItemCount() == 1);
-    QVERIFY(table->topLevelItem(0)->text(0) == "cluster1");
-    QVERIFY(table->topLevelItem(0)->childCount() == 2);
-    QVERIFY(table->topLevelItem(0)->child(0)->text(0) == "test3");
-    QVERIFY(table->topLevelItem(0)->child(1)->text(0) == "test4");
-
-    QFrame *warning_space = dlg->findChild<QFrame*>("warning_space");
-    QVERIFY(warning_space->isHidden());
-
-    QTest::qWait(1000);
-    dlg->findChild<QPushButton*>("cancelButton")->click();
-    QTest::qWait(1000);
-}
-
-void instDialogTest::page1_11()
-{
-    QAction *compile = mw->findChild<QAction*>("compileAction");
-    compile->activate(QAction::Trigger);
-    QTest::qWait(100);
-    instDialog *dlg = NULL;
-    foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
-            dlg = dynamic_cast<instDialog*>(w);
-    QVERIFY(dlg != NULL);
-
-    QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
-    QVERIFY(table->topLevelItemCount() == 3);
-    QVERIFY(! table->findItems("cluster1", Qt::MatchExactly, 0).isEmpty());
-    QVERIFY(! table->findItems("test1", Qt::MatchExactly, 0).isEmpty());
-    QVERIFY(! table->findItems("test2", Qt::MatchExactly, 0).isEmpty());
-    QVERIFY(! table->findItems("test3", Qt::MatchExactly | Qt::MatchRecursive, 0).isEmpty());
-    QVERIFY(! table->findItems("test4", Qt::MatchExactly | Qt::MatchRecursive, 0).isEmpty());
-    QFrame *warning_space = dlg->findChild<QFrame*>("warning_space");
-    QVERIFY(warning_space->isHidden());
-    QTest::qWait(1000);
-    dlg->findChild<QPushButton*>("cancelButton")->click();
-    QTest::qWait(1000);
-
 }
