@@ -1394,7 +1394,7 @@ void FWWindow::help()
     h->show();
 }
 
-void FWWindow::showWelcome()
+void FWWindow::showSummary()
 {
     Help *h = Help::getHelpWindow(this);
     h->setName("Welcome to Firewall Builder");

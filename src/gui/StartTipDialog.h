@@ -65,7 +65,7 @@ public slots:
     void downloadComplete(const QString&);
     void nextTip();
     void prevTip();
-    void showGST();
+    void showGettingStartedTutorial();
     void showSummary();
     virtual void close();
 };

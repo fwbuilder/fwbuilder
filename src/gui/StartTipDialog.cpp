@@ -209,12 +209,12 @@ void StartTipDialog::prevTip()
     showTip(current_tip);
 }
 
-void StartTipDialog::showGST()
+void StartTipDialog::showGettingStartedTutorial()
 {
     dynamic_cast<FWWindow*>(parent())->showTutorial("getting_started");
 }
 
 void StartTipDialog::showSummary()
 {
-    dynamic_cast<FWWindow*>(parent())->showWelcome();
+    dynamic_cast<FWWindow*>(parent())->showSummary();
 }

@@ -248,7 +248,7 @@ p, li { white-space: pre-wrap; }
    <sender>start_tutorial</sender>
    <signal>clicked()</signal>
    <receiver>StartTipDialog_q</receiver>
-   <slot>showGST()</slot>
+   <slot>showGettingStartedTutorial()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>381</x>
@@ -280,7 +280,7 @@ p, li { white-space: pre-wrap; }
  <slots>
   <slot>nextTip()</slot>
   <slot>prevTip()</slot>
-  <slot>showGST()</slot>
+  <slot>showGettingStartedTutorial()</slot>
   <slot>showSummary()</slot>
  </slots>
 </ui>
