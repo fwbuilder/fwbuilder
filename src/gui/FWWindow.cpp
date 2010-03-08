@@ -1398,15 +1398,13 @@ void FWWindow::showSummary()
 {
     Help *h = Help::getHelpWindow(this);
     h->setName("Welcome to Firewall Builder");
-    if (h->findHelpFile("welcome.html").isEmpty())
+    if (h->findHelpFile("summary.html").isEmpty())
     {
         // the file does not exist
         h->hide();
     } else
     {
-        // I do not know why, but url "file://file_name" does not seem to work.
-        // But "file:file_name" works.
-        h->setSource(QUrl("file:welcome.html"));
+        h->setSource(QUrl("file:summary.html"));
         h->raise();
         h->show();
     }
