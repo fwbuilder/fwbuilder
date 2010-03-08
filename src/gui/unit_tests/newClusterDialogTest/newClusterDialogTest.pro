@@ -182,7 +182,8 @@ SOURCES += main_newClusterDialogTest.cpp \
     ../../FWCmdRule.cpp \
     ../../UsageResolver.cpp \
     ../../IconSetter.cpp \
-    ../../TutorialDialog.cpp
+    ../../TutorialDialog.cpp \
+    ../../MDIEventFilter.cpp 
 
 HEADERS += newClusterDialogTest.h \
     ../../../../config.h \
@@ -344,7 +345,8 @@ HEADERS += newClusterDialogTest.h \
     ../../FWCmdRule.h \
     ../../UsageResolver.h \
     ../../IconSetter.h \
-    ../../TutorialDialog.h
+    ../../TutorialDialog.h \
+    ../../MDIEventFilter.h 
 
 RESOURCES += ../../MainRes.qrc
 CONFIG -= release
