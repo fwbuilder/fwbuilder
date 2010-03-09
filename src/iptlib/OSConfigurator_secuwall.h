@@ -74,7 +74,7 @@ private:
 
     int stringToFile(const std::string data,
                      const std::string filename,
-                     const QIODevice::OpenMode mode = QIODevice::ReadWrite) const;
+                     const QIODevice::OpenMode mode = QIODevice::ReadWrite|QIODevice::Truncate) const;
 
     bool containsFirewallKey(std::string in) const;
 
