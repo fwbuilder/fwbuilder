@@ -27,6 +27,7 @@
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/Network.h"
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -80,223 +81,50 @@ void PolicyCompiler_secuwall::verifyPlatform()
               " (family " + family + ")");
 }
 
-int PolicyCompiler_secuwall::prolog() {
-    int return_value = PolicyCompiler_ipt::prolog();
+std::string PolicyCompiler_secuwall::printAutomaticRules()
+{
+    string res = PolicyCompiler_ipt::printAutomaticRules();
 
-    /* Set mgmt_addr according to secuwall_mgmt_mgmtaddr */
-    /* so SSH rule gets set no matter what */
     FWOptions* options = getCachedFwOpt();
-
-    string mgmt_addr = options->getStr("secuwall_mgmt_mgmtaddr");
-    if (options != NULL && !mgmt_addr.empty()) {
-        options->setBool("mgmt_ssh", true);
-        options->setStr("mgmt_addr", mgmt_addr);
-    }
-
-    return return_value;
-}
-
-void PolicyCompiler_secuwall::addPredefinedPolicyRules()
-{
-    PolicyCompiler_ipt::addPredefinedPolicyRules();
-
-    /* Add management rules if not disabled */
-    FWOptions* options = getCachedFwOpt();
-    if (!options->getBool("secuwall_mgmt_rules_disable"))
+    if (options->getBool("secuwall_mgmt_rules_disable"))
     {
-        insertSyslogRule();
-        insertNtpRule();
-        insertSnmpRule();
-        insertNrpeRule();
+        return res;
     }
-}
 
-void PolicyCompiler_secuwall::epilog()
-{
-    PolicyCompiler_ipt::epilog();
-}
+    Configlet configlet(fw, "secuwall", "management_rules");
+    configlet.removeComments();
+    configlet.collapseEmptyStrings(false);
 
-void PolicyCompiler_secuwall::insertSyslogRule()
- {
-    FWOptions* options = fw->getOptionsObject();
+    PolicyCompiler_ipt::PrintRule *print_rule = createPrintRuleProcessor();
 
-   if (options->getStr("secuwall_mgmt_loggingaddr").empty())
-   {
-       /* No syslog server specified, nothing left to do */
-       return;
-   }
+    configlet.setVariable("begin_rule", print_rule->_startRuleLine().c_str());
+    configlet.setVariable("end_rule", print_rule->_endRuleLine().c_str());
 
-    vector<string> addresses;
-    tokenize (options->getStr("secuwall_mgmt_loggingaddr"), addresses, ", ");
+    // export these variables to the configlet
+    std::vector<std::string> vars;
+    vars.push_back("secuwall_mgmt_mgmtaddr");
+    vars.push_back("secuwall_mgmt_loggingaddr");
+    vars.push_back("secuwall_mgmt_ntpaddr");
+    vars.push_back("secuwall_mgmt_nagiosaddr");
+    vars.push_back("secuwall_mgmt_snmpaddr");
 
-    for (vector<string>::iterator it = addresses.begin(); it != addresses.end(); ++it)
+    for (vector<string>::iterator it = vars.begin(); it != vars.end(); ++it)
     {
-        /* Add Syslog-Address to database */
-        Address *log_dst = NULL;
-        log_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
-        log_dst->setName("Logging-Address");
-        log_dst->setAddress(InetAddr(*it));
-        log_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
-        log_dst->setComment("Logging IP Address");
-        dbcopy->add(log_dst);
-
-        /* TODO: Handle Syslog via TCP */
-        /* Add Syslog-Service to database for first address only */
-        UDPService* log_service = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-        log_service->setDstRangeStart(514);
-        log_service->setDstRangeEnd(514);
-        log_service->setComment("Logging service");
-        dbcopy->add(log_service);
-
-        /* Add secuwall-specific rules for syslog */
-        addMgmtRule(NULL, log_dst, log_service, NULL,
-                    PolicyRule::Outbound, PolicyRule::Accept, "Syslog");
+        std::vector<std::string> tmp;
+        tokenize(options->getStr(*it), tmp, ",");
+        if (!tmp.empty())
+        {
+            configlet.setVariable(it->c_str(), stringify(tmp, " ").c_str());
+            configlet.setVariable((string("has_")+*it).c_str(), true);
+        }
     }
-}
 
-void PolicyCompiler_secuwall::insertNtpRule()
-{
-    FWOptions* options = fw->getOptionsObject();
+    configlet.setVariable("secuwall_mgmt_ifaces", stringify(getMgmtInterfaces(), " ").c_str());
 
-   if (options->getStr("secuwall_mgmt_ntpaddr").empty())
-   {
-       /* No NTP server specified, nothing left to do */
-       return;
-   }
+    res += configlet.expand().toStdString();
 
-    vector<string> addresses;
-    tokenize (options->getStr("secuwall_mgmt_ntpaddr"), addresses, ", ");
-
-    for (vector<string>::iterator it = addresses.begin(); it != addresses.end(); ++it)
-    {
-        /* Add NTP-Address to database */
-        Address *ntp_dst = NULL;
-        ntp_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
-        ntp_dst->setName("NTP-Address");
-        ntp_dst->setAddress(InetAddr(*it));
-        ntp_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
-        ntp_dst->setComment("NTP IP Address");
-        dbcopy->add(ntp_dst);
-
-        /* Add NTP-Service to database (INPUT) */
-        UDPService* ntp_input = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-        ntp_input->setSrcRangeStart(123);
-        ntp_input->setSrcRangeEnd(123);
-        ntp_input->setComment("NTP service (INPUT)");
-        dbcopy->add(ntp_input);
-
-        /* Add NTP-Service to database (OUTPUT) */
-        UDPService* ntp_output = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-        ntp_output->setDstRangeStart(123);
-        ntp_output->setDstRangeEnd(123);
-        ntp_output->setComment("NTP service (OUTPUT)");
-        dbcopy->add(ntp_output);
-
-        /* Add secuwall-specific rules for NTP */
-        addMgmtRule(ntp_dst, NULL, ntp_input, NULL,
-                    PolicyRule::Inbound, PolicyRule::Accept, "NTP");
-        addMgmtRule(NULL, ntp_dst, ntp_output, NULL,
-                    PolicyRule::Outbound, PolicyRule::Accept, "NTP");
-    }
-}
-
-void PolicyCompiler_secuwall::insertNrpeRule()
-{
-    FWOptions* options = fw->getOptionsObject();
-
-   if (options->getStr("secuwall_mgmt_nagiosaddr").empty())
-   {
-       /* No NRPE server specified, nothing left to do */
-       return;
-   }
-
-    vector<string> addresses;
-    tokenize (options->getStr("secuwall_mgmt_nagiosaddr"), addresses, ", ");
-
-    for (vector<string>::iterator it = addresses.begin(); it != addresses.end(); ++it)
-    {
-        /* Add NRPE-Address to database */
-        Address* nrpe_dst = NULL;
-        nrpe_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
-        nrpe_dst->setName("NRPE-Address");
-        nrpe_dst->setAddress(InetAddr(*it));
-        nrpe_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
-        nrpe_dst->setComment("NRPE IP Address");
-        dbcopy->add(nrpe_dst);
-
-        /* Add NRPE-Service for INPUT to database */
-        CustomService* nrpe_input = CustomService::cast(dbcopy->create(CustomService::TYPENAME));
-        nrpe_input->setComment("NRPE service (INPUT)");
-        nrpe_input->setCodeForPlatform("secuwall", "-p tcp --dport 5666 -m state --state NEW,ESTABLISHED");
-        dbcopy->add(nrpe_input);
-
-        /* Add NRPE-Service for OUTPUT to database */
-        CustomService* nrpe_output = CustomService::cast(dbcopy->create(CustomService::TYPENAME));
-        nrpe_output->setComment("NRPE service (OUTPUT)");
-        nrpe_output->setCodeForPlatform("secuwall", "-p tcp --sport 5666 -m state --state ESTABLISHED,RELATED");
-        dbcopy->add(nrpe_output);
-
-        /* Add secuwall-specific rules for NRPE */
-        addMgmtRule(nrpe_dst, NULL, nrpe_input, NULL,
-                    PolicyRule::Inbound, PolicyRule::Accept, "NRPE");
-        addMgmtRule(NULL, nrpe_dst, nrpe_output, NULL,
-                    PolicyRule::Outbound, PolicyRule::Accept, "NRPE");
-    }
-}
-
-void PolicyCompiler_secuwall::insertSnmpRule()
-{
-    FWOptions* options = fw->getOptionsObject();
-
-   if (options->getStr("secuwall_mgmt_snmpaddr").empty())
-   {
-       /* No SNMP server specified, nothing left to do */
-       return;
-   }
-
-    vector<string> addresses;
-    tokenize (options->getStr("secuwall_mgmt_snmpaddr"), addresses, ", ");
-
-    for (vector<string>::iterator it = addresses.begin(); it != addresses.end(); ++it)
-    {
-        /* Add SNMP-Address to database */
-        Address* snmp_dst = NULL;
-        snmp_dst = Address::cast(dbcopy->create(IPv4::TYPENAME));
-        snmp_dst->setName("SNMP-Address");
-        snmp_dst->setAddress(InetAddr(*it));
-        snmp_dst->setNetmask(InetAddr(InetAddr::getAllOnes()));
-        snmp_dst->setComment("SNMP IP Address");
-        dbcopy->add(snmp_dst);
-
-        /* Add SNMP-Service to database (INPUT) */
-        UDPService* snmp_input = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-        snmp_input->setDstRangeStart(161);
-        snmp_input->setDstRangeEnd(161);
-        snmp_input->setComment("SNMP service (INPUT)");
-        dbcopy->add(snmp_input);
-
-        /* Add SNMP-Service to database (OUTPUT) */
-        UDPService* snmp_output = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-        snmp_output->setSrcRangeStart(161);
-        snmp_output->setSrcRangeEnd(161);
-        snmp_output->setComment("SNMP service (OUTPUT)");
-        dbcopy->add(snmp_output);
-
-        /* Add SNMP-Trap-Service to database (OUTPUT) */
-        UDPService* snmp_traps = UDPService::cast(dbcopy->create(UDPService::TYPENAME));
-        snmp_traps->setDstRangeStart(162);
-        snmp_traps->setDstRangeEnd(162);
-        snmp_traps->setComment("SNMP-Trap service (OUTPUT)");
-        dbcopy->add(snmp_traps);
-
-        /* Add secuwall-specific rules for SNMP & SNMP-Traps */
-        addMgmtRule(snmp_dst, NULL, snmp_input, NULL,
-                    PolicyRule::Inbound, PolicyRule::Accept, "SNMP");
-        addMgmtRule(NULL, snmp_dst, snmp_output, NULL,
-                    PolicyRule::Outbound, PolicyRule::Accept, "SNMP");
-        addMgmtRule(NULL, snmp_dst, snmp_traps, NULL,
-                    PolicyRule::Outbound, PolicyRule::Accept, "SNMP");
-    }
+    delete print_rule;
+    return res;
 }
 
 /*

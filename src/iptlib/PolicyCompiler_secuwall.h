@@ -55,18 +55,11 @@ public:
      * Add some predefined rules controlled by checkboxes in
      * firewall settings dialog
      */
-    virtual void addPredefinedPolicyRules();
-
+    virtual std::string printAutomaticRules();
     virtual void verifyPlatform();
-    virtual int  prolog();
-    virtual void epilog();
 
 private:
 
-    void insertSyslogRule();
-    void insertNtpRule();
-    void insertSnmpRule();
-    void insertNrpeRule();
     std::vector<std::string> getMgmtInterfaces();
     static bool isValidMgmtRuleInterface(libfwbuilder::Interface* intf);
     };
