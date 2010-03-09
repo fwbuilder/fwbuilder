@@ -496,11 +496,12 @@ void instDialog::fillCompileSelectList()
      */
 
     QString warn1(
-        tr("You are trying to compile policy for the firewall object that is "
-           "a member of a cluster, however you requested compilation of only this "
-           "member firewall and not the cluster it belongs to. Assuming firewall "
-           "is standalone and not cluster member. Rules and parts of the script "
-           "specific for the cluster configuration will not be generated."));
+        tr("<b>You are trying to compile policy for a firewall object that is "
+           "a member of a cluster, however you requested compilation of only "
+           "this member firewall and not the cluster it belongs to. Assuming "
+           "firewall is standalone and not cluster member. Rules and parts of "
+           "the script specific for the cluster configuration will not be "
+           "generated.</b>"));
 
     QStringList warn2;
 
