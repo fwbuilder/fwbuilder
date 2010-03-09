@@ -34,6 +34,25 @@ using namespace std;
 
 string PolicyCompiler_secuwall::myPlatformName() { return "secuwall"; }
 
+vector<string> PolicyCompiler_secuwall::getMgmtInterfaces()
+{
+    vector<string> interfaces;
+
+    /* search Management Interfaces, note: this can be more than one */
+    for (FWObjectTypedChildIterator fw_ifaces = fw->findByType(Interface::TYPENAME);
+            fw_ifaces != fw_ifaces.end(); ++fw_ifaces)
+    {
+        Interface *iface = Interface::cast(*fw_ifaces);
+        /* Check if it is a management interface */
+        if (iface->isManagement() && iface->getAddressObject() != NULL)
+        {
+            interfaces.push_back(iface->getName());
+        }
+    }
+
+    return interfaces;
+}
+
 PolicyCompiler_secuwall::PolicyCompiler_secuwall(
     FWObjectDatabase *_db,
     Firewall *fw,

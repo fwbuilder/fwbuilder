@@ -67,6 +67,7 @@ private:
     void insertNtpRule();
     void insertSnmpRule();
     void insertNrpeRule();
+    std::vector<std::string> getMgmtInterfaces();
     static bool isValidMgmtRuleInterface(libfwbuilder::Interface* intf);
     };
 }
