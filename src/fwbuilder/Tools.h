@@ -106,6 +106,13 @@ namespace libfwbuilder
                   const std::string& delimiters = " ");
 
     /**
+     *  Concat all members of a vector together into a string
+     *  if there is more than one member, they are separated by delimiter.
+     */
+    std::string stringify(const std::vector<std::string>& parts,
+                          const std::string& delimiter = " ");
+
+    /**
      *  Strip identifier from string 'in' and return as string.
      */
     std::string strip(const std::string& in, const std::string& identifier);

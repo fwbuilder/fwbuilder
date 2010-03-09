@@ -271,4 +271,23 @@ string strip(const string& in, const string& identifier)
     return result;
 }
 
+string stringify(const vector<string>& parts, const string& delimiter)
+{
+    string result;
+
+    vector<string>::const_iterator it = parts.begin();
+
+    while (it != parts.end())
+    {
+        result += *it++;
+
+        if (it != parts.end())
+        {
+            result += delimiter;
+        }
+    }
+
+    return result;
+}
+
 }
