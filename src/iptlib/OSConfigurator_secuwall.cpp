@@ -783,6 +783,20 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, IPv4 * ip
 
 int OSConfigurator_secuwall::generateInterfaces()
 {
+    /* clean up possibly stale interface files */
+    string nwdir = fw->getName() + "/" + networkscripts_dir;
+
+    QDir d(nwdir.c_str());
+    QStringList entries = d.entryList();
+
+    for (QStringList::ConstIterator entry=entries.begin(); entry!=entries.end(); ++entry)
+    {
+        if (*entry != "." && *entry != "..")
+        {
+            d.remove(*entry);
+        }
+    }
+
     /* Iterate over all top-level interfaces */
     FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
     for (; interfaces != interfaces.end(); ++interfaces)
