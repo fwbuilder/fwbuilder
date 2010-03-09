@@ -85,10 +85,9 @@ OSConfigurator_secuwall::OSConfigurator_secuwall(FWObjectDatabase *_db,
 /*
  * in addition to kernel parameters and other standard things
  * OSConfigurator_linux24 does, this class also creates configuration
- * directories, genrates ssh keys and generates files for
- * sysconfig-style configuration. This method is called from
- * CompilerDriver_ipt::run() and does not run in single rule compile
- * mode.
+ * directories, generates ssh keys and files for sysconfig-style
+ * configuration. This method is called from CompilerDriver_ipt::run()
+ * and does not run in single rule compile mode.
  */
 void OSConfigurator_secuwall::processFirewallOptions()
 {
@@ -120,6 +119,7 @@ bool OSConfigurator_secuwall::createDirStructure() const
 {
     QDir directory;
     list<QString> dir_names;
+
     dir_names.push_back (QString (fw->getName().c_str()));
 
     QString tmp_name = fw->getName().c_str();
@@ -162,38 +162,126 @@ int OSConfigurator_secuwall::generateManagementFile()
     FWOptions* options = fw->getOptionsObject();
     assert(options != NULL);
 
-    QString s, mgm_ip, mgm_iface, vrrp_secret, stream_string;
+    QString s, mgm_ip, vrrp_secret, stream_string, snmp_ip;
     bool vrrp_master = false;
+    vector <string> tmp_v, mgm_iface;
 
     /* Temporary storage for management file content */
     QTextStream stream (&stream_string);
 
-    /* Management IP address */
-    stream << "MGM_IP=\"";
-    s = mgm_ip = options->getStr("secuwall_mgmt_mgmtaddr").c_str();
-    if (s.isEmpty())
-    {
-        cout << " Warning: no Management IP address specified!" << endl;
-    }
-    stream << s << "\"" << endl;
-
-    /* Find management & VRRP interfaces */
-    FWObjectTypedChildIterator fw_ifaces = fw->findByType(Interface::TYPENAME);
-    for (; fw_ifaces != fw_ifaces.end(); ++fw_ifaces)
+    /* search Management Interfaces, note: this can be more than one */
+    for (FWObjectTypedChildIterator fw_ifaces = fw->findByType(Interface::TYPENAME);
+            fw_ifaces != fw_ifaces.end(); ++fw_ifaces)
     {
         Interface *iface = Interface::cast(*fw_ifaces);
         /* Check if it is a management interface */
-        if (iface->isManagement())
+        if (iface->isManagement() && iface->getAddressObject() != NULL)
         {
-            /* Found management interface */
-            const Address* ipAddr = iface->getAddressObject();
-            if (ipAddr != NULL && ipAddr->belongs(InetAddr(mgm_ip.toStdString().c_str())))
-            {
-                /* Found ip address which is in same subnet as mgm_ip */
-                mgm_iface = iface->getName().c_str();
-            }
+            mgm_iface.push_back(iface->getName());
         }
+    }
 
+    stream << "MGM_DEV=\"";
+    stream << stringify(mgm_iface, " ").c_str();
+    stream << s << "\"" << endl;
+
+    /* lookup Management IP address */
+    mgm_ip = options->getStr("secuwall_mgmt_mgmtaddr").c_str();
+
+    if (mgm_ip.isEmpty())
+    {
+        /* This is only a warning, if the system is not managed online */
+        cout << " Warning: no Management IP address specified!" << endl;
+    }
+    else
+    {
+        if (mgm_iface.empty())
+        {
+            abort("At least one management interface is needed for Online Management!");
+        }
+        else
+        {
+            stream << "MGM_IP=\"";
+            tmp_v.clear();
+            tokenize(mgm_ip.toStdString(), tmp_v, ",");
+            stream << stringify(tmp_v, " ").c_str();
+            stream << s << "\"" << endl;
+        }
+    }
+
+    /* Log-Server IP address */
+    stream << "LOG_IP=\"";
+    tmp_v.clear();
+    tokenize(options->getStr("secuwall_mgmt_loggingaddr"), tmp_v, ",");
+    stream << stringify(tmp_v, " ").c_str();
+    stream << "\"" << endl;
+
+    /* SNMP-Server IP address */
+    snmp_ip = options->getStr("secuwall_mgmt_snmpaddr").c_str();
+    if (!snmp_ip.isEmpty())
+    {
+        if (mgm_iface.empty())
+        {
+            abort("At least one management interface is needed for SNMP!");
+        }
+        else
+        {
+            stream << "SNMP_IP=\"";
+            tmp_v.clear();
+            tokenize(options->getStr("secuwall_mgmt_snmpaddr"), tmp_v, ",");
+            stream << stringify(tmp_v, " ").c_str();
+            stream << "\"" << endl;
+
+            /* SNMP Community string */
+            stream << "SNMP_COM=\"";
+            stream << options->getStr("secuwall_mgmt_rosnmp").c_str();
+            stream << "\"" << endl;
+        }
+    }
+
+    /* NTP-Server IP address */
+    stream << "NTP_IP=\"";
+    tmp_v.clear();
+    tokenize(options->getStr("secuwall_mgmt_ntpaddr"), tmp_v, ",");
+    stream << stringify(tmp_v, " ").c_str();
+    stream << "\"" << endl;
+
+    /* /var partition */
+    stream << "VARPART=\"";
+    stream << options->getStr("secuwall_mgmt_varpart").c_str();
+    stream << "\"" << endl;
+
+    /* Configuration partition */
+    stream << "CFGPART=\"";
+    stream << options->getStr("secuwall_mgmt_confpart").c_str();
+    stream << "\"" << endl;
+
+    /* Activate Nagios */
+    stream << "NRPE=";
+    s.clear();
+    s = options->getStr("secuwall_mgmt_nagiosaddr").c_str();
+    if (!s.isEmpty())
+    {
+        stream << "yes" << endl;
+
+        /* Nagios-Server IP-Address */
+        stream << "NRPE_IP=\"";
+        tmp_v.clear();
+        tokenize(s.toStdString(), tmp_v, ",");
+        stream << stringify(tmp_v, " ").c_str();
+        stream << "\"" << endl;
+    }
+    else
+    {
+        stream << "no" << endl;
+    }
+
+    /* VRRP interfaces */
+
+    for (FWObjectTypedChildIterator fw_ifaces = fw->findByType(Interface::TYPENAME);
+             fw_ifaces != fw_ifaces.end(); ++fw_ifaces)
+    {
+        Interface *iface = Interface::cast(*fw_ifaces);
         /* Check if it is a VRRP interface */
         FWObject *failover_group =
             iface->getFirstByType(FailoverClusterGroup::TYPENAME);
@@ -209,105 +297,42 @@ int OSConfigurator_secuwall::generateManagementFile()
         }
     }
 
-    stream << "MGM_DEV=\"";
-    stream << mgm_iface << "\"" << endl;
-
-    /* Log-Server IP address */
-    stream << "LOG_IP=\"";
-    stream << strip (options->getStr("secuwall_mgmt_loggingaddr"), ",").c_str();
-    stream << "\"" << endl;
-
-    /* SNMP-Server IP address */
-    stream << "SNMP_IP=\"";
-    stream << strip (options->getStr("secuwall_mgmt_snmpaddr"), ",").c_str();
-    stream << "\"" << endl;
-
-    /* SNMP Community string */
-    stream << "SNMP_COM=\"";
-    stream << options->getStr("secuwall_mgmt_rosnmp").c_str();
-    stream << "\"" << endl;
-
-    /* NTP-Server IP address */
-    stream << "NTP_IP=\"";
-    stream << strip (options->getStr("secuwall_mgmt_ntpaddr"), ",").c_str();
-    stream << "\"" << endl;
-
-    /* /var partition */
-    stream << "VARPART=\"";
-    stream << options->getStr("secuwall_mgmt_varpart").c_str();
-    stream << "\"" << endl;
-
-    /* Configuration partition */
-    stream << "CFGPART=\"";
-    stream << options->getStr("secuwall_mgmt_confpart").c_str();
-    stream << "\"" << endl;
-
-    s.clear();
-    /* Activate Nagios */
-    stream << "NRPE=";
-    s = options->getStr("secuwall_mgmt_nagiosaddr").c_str();
-    if (!s.isEmpty())
-    {
-        stream << "yes";
-    }
-    else
-    {
-        stream << "no";
-    }
-    stream << endl;
-
-    /* Nagios-Server IP-Address */
-    stream << "NRPE_IP=\"";
-    stream << strip (s.toStdString(), ",").c_str();
-    stream << "\"" << endl;
-
     /* Activate VRRP */
     stream << "VRRPD=";
     if (options->getBool("cluster_member"))
     {
-        stream << "yes";
+        stream << "yes" << endl;
+        /* VRRP secret */
+        stream << "VRRPSECRET=\"";
+        stream << vrrp_secret;
+        stream << "\"" << endl;
+
+        /* VRRP Master/Slave */
+        stream << "MASTER=";
+        stream << (vrrp_master ? "yes" : "no");
+        stream << endl;
     }
     else
     {
-        stream << "no";
+        stream << "no" << endl;
     }
-    stream << endl;
-
-    /* VRRP secret */
-    stream << "VRRPSECRET=\"";
-    stream << vrrp_secret;
-    stream << "\"" << endl;
-
-    /* VRRP Master/Slave */
-    stream << "VRRPMASTER=";
-    if (vrrp_master)
-    {
-        stream << "yes";
-    }
-    else
-    {
-        stream << "no";
-    }
-    stream << endl;
 
     /* conntrackd */
     s.clear();
     s = options->getStr("state_sync_interface").c_str();
     stream << "CONNTRACKD=";
-    if (s.isEmpty())
+    if (!s.isEmpty())
     {
-        stream << "no";
+        stream << "yes" << endl;
+        /* conntrack device */
+        stream << "CONN_DEV=\"";
+        stream << s;
+        stream << "\"" << endl;
     }
     else
     {
-        stream << "yes";
+        stream << "no" << endl;
     }
-    stream << endl;
-
-    /* conntrack device */
-    stream << "CONN_DEV=\"";
-    stream << s;
-    stream << "\"" << endl;
 
     /* Write actual management file */
     string filename = fw->getName() + "/" + mgmt_filename;
@@ -678,6 +703,12 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, IPv4 * ip
         /* Set ethernet as "sane" default  */
         s = "ethernet";
     }
+    if (s == "cluster_interface")
+    {
+        /* all our cluster interfaces are vrrp! */
+        s = "vrrp";
+    }
+
     stream << s;
     stream << "\"" << endl;
 
@@ -767,7 +798,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, IPv4 * ip
 
     cout << " wrote " << filename << " successfully" << endl << flush;
 
-    /* Iterate over all child interfaces and call function recursively. Skip if processing a secondary interface*/
+    /* Iterate over all child interfaces and call function recursively. Skip if processing a secondary interface */
     if (iface->getChildrenCount() > 0 && iface_number == 0)
     {
         FWObjectTypedChildIterator sub_ifaces = iface->findByType(Interface::TYPENAME);
