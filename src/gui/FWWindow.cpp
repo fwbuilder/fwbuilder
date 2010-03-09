@@ -509,12 +509,6 @@ void FWWindow::updateWindowTitle()
 
 void FWWindow::startupLoad()
 {
-    if (! st->getBool("UI/NoStartTip"))
-    {
-        StartTipDialog *stdlg = new StartTipDialog(this);
-        stdlg->run();
-    }
-
     if (st->getCheckUpdates())
     {
         QString update_url = CHECK_UPDATE_URL;
@@ -547,6 +541,12 @@ void FWWindow::startupLoad()
     {
         loadFile(file, auto_load_from_rcs_head_revision);
         updateOpenRecentMenu(file);
+    }
+
+    if (! st->getBool("UI/NoStartTip"))
+    {
+        StartTipDialog *stdlg = new StartTipDialog(this);
+        stdlg->run();
     }
 
     prepareFileMenu();
