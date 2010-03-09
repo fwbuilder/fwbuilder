@@ -5070,11 +5070,11 @@ PolicyRule* PolicyCompiler_ipt::addMgmtRule(Address* src,
     FWOptions *ruleopt = rule->getOptionsObject(); assert(ruleopt!=NULL);
     if (related)
     {
-        ruleopt->setBool("stateless", "false");
+        ruleopt->setBool("stateless", false);
         ruleopt->setBool("accept_established", true);
     } else
     {
-        ruleopt->setBool("stateless", "true");
+        ruleopt->setBool("stateless", true);
     }
     ruleopt->setBool("firewall_is_part_of_any_and_networks", true);
 
