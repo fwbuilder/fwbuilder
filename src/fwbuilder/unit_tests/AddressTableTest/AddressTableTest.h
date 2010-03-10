@@ -4,7 +4,7 @@
 
                  Copyright (C) 2009 NetCitadel, LLC
 
-  Author:  Roman Bovsunivkiy     a2k0001@gmail.com
+  Author:  Roman Bovsunivskiy     a2k0001@gmail.com
 
   $Id$
 
