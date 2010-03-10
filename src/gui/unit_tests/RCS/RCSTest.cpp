@@ -44,7 +44,7 @@ using namespace libfwbuilder;
 
 int                fwbdebug   = 0;
 
-QString            test_file = "zu.fwb";
+QString            test_file = "zu.fwb,v";
 QString            rlog_unit_test_log_file = "rlog_unit_test.log";
 
 void RCSTest::verifyRevisions()
