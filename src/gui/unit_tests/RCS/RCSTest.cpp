@@ -6,7 +6,7 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
-  $Id: unit_tests.cpp 312 2008-07-05 17:40:12Z vadim $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms

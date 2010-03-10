@@ -5,7 +5,7 @@
                  Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Vadim Kurland <vadim@fwbuilder.org>
-  Refactoring: Roman Bovsunivkiy     <a2k0001@gmail.com>
+  Refactoring: Roman Bovsunivskiy     <a2k0001@gmail.com>
 
   $Id$
 

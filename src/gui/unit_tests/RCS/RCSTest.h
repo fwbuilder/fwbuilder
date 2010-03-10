@@ -4,9 +4,9 @@
 
                  Copyright (C) 2009 NetCitadel, LLC
 
-  Author:  Roman Bovsunivkiy     a2k0001@gmail.com
+  Author:  Roman Bovsunivskiy     a2k0001@gmail.com
 
-  $Id: UsageResolverTest.h 2161 2009-12-16 11:41:47Z a2k $
+  $Id$
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
