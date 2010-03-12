@@ -96,11 +96,11 @@ and fw2:
 
  [cluster1] [OS: secunet wall, Platform: iptables]
    |
-   +---o vrrp0: outside (ext)
+   +---o eth0: outside (ext)
    |   +---o IP: 172.24.0.1/255.255.0.0
    |   +---o Failover group0 (vrrp)
    |
-   +---o vrrp1: inside (mgmt)
+   +---o eth1: inside (mgmt)
    |   +---o IP: 192.168.1.1/255.255.255.0
    |   +---o Failover group1 (vrrp)
    |
@@ -137,20 +137,21 @@ NAT, policy and routing rules are configured on the cluster meta-object. Rules
 are specified in the usual manner. Use the cluster object or it's interfaces as
 rule elements as you would for a regular firewall.
 
-NOTE: Rules defined on cluster member firewalls will be ignored on compilation,
-      only the rules defined on the cluster object are considered.
-
 
 Compilation/Installation/Export
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It's possible to compile, install and export firewalls which are part of a
-cluster the usual way by selecting a single firewall and the corresponding
-action (Compile/Install/Export).
+It's possible to compile and install firewalls which are part of a cluster by
+selecting the cluster meta-object and the corresponding action
+(Compile/Install).
 
 If you perform such an action on the cluster meta-object, all member firewalls
 will be selected automatically. Thus the cluster object provides a convenient
 way to perform actions on all cluster member firewalls.
+
+NOTE: If you compile/install a firewall which is part of a cluster by using the
+compile/install action of the firewall directly, the cluster parts will be
+omitted from the generated script.
 
 
 Cluster template
@@ -165,7 +166,8 @@ Example
 -------
 
 The scenario described in this README can be found as example Firewall Builder
-file here [3].
+file here [3]. For more examples on how to configure different cluster scenarios
+see the Firewall Builder Cookbook.
 
 
 Things to consider
@@ -175,9 +177,6 @@ Things to consider
   cluster.
 
 * Cluster member firewalls must have at least one physical interface attached.
-
-* Rules must be configured on the Cluster meta-object. Rules for cluster member
-  firewalls are ignored.
 
 * All IP addresses of interfaces added to a cluster group must be in the same
   subnet.
