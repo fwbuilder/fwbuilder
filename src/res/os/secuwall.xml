@@ -10,7 +10,7 @@
       <transfer_agent>transfer_secuwall</transfer_agent>
 
       <options>
-        <user_can_change_install_dir>true</user_can_change_install_dir>
+        <user_can_change_install_dir>False</user_can_change_install_dir>
         <default>
           <secuwall_add_files>False</secuwall_add_files>
           <secuwall_add_files_dir>/opt/secuwall/templates/default</secuwall_add_files_dir>
@@ -19,6 +19,10 @@
           <loopback_interface>lo</loopback_interface>
           <flush_and_set_default_policy>True</flush_and_set_default_policy>
           <modules_dir>/lib/modules/`uname -r`/kernel/net/</modules_dir>
+          <configure_interfaces>False</configure_interfaces>
+          <manage_virtual_addr>False</manage_virtual_addr>
+          <load_modules>False</load_modules>
+          <log_prefix>RULE=%N ACTION=%A </log_prefix>
         </default>
 
         <interface>
@@ -31,11 +35,8 @@
           <fwdir_test>/tmp</fwdir_test>
         </activation>
 
-<!-- set to True if you want to suppress comments in the generated script -->
         <suppress_comments>False</suppress_comments>
-<!-- set to True if you do not need the script to load kernel modules -->
-        <suppress_modules>False</suppress_modules>
-
+        <suppress_modules>True</suppress_modules>
       </options>
 
       <capabilities>
