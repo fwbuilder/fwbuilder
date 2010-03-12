@@ -416,7 +416,7 @@
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="id1495X26217" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X26217" name="Clusters" comment="" ro="False">
-      <Cluster id="id2835X30406" host_OS="secuwall" inactive="False" lastCompiled="1244034211" lastInstalled="0" lastModified="1268392836" platform="iptables" name="cluster1" comment="This cluster has two interfaces. vrrp0 faces outside; vrrp1 faces inside. Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. The firewall uses one of the machines on the external network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, external  network with 172.24.0.0/255.255.0.0. Outside vrrp0 cluster interface has address 172.24.0.1/255.255.0.0; inside vrrp1 interface has address 192.168.1.1/255.255.255.0. This cluster has two firewall members configured: fw1 and fw2." ro="False">
+      <Cluster id="id2835X30406" host_OS="secuwall" inactive="False" lastCompiled="1244034211" lastInstalled="0" lastModified="1268392957" platform="iptables" name="cluster1" comment="This cluster has two interfaces. vrrp0 faces outside; vrrp1 faces inside. Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. The firewall uses one of the machines on the external network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, external  network with 172.24.0.0/255.255.0.0. Outside vrrp0 cluster interface has address 172.24.0.1/255.255.0.0; inside vrrp1 interface has address 192.168.1.1/255.255.255.0. This cluster has two firewall members configured: fw1 and fw2." ro="False">
         <NAT id="id2839X30406" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -503,13 +503,13 @@
         <Routing id="id2840X30406" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id2843X30406" dedicated_failover="False" dyn="False" label="outside" security_level="0" unnum="False" unprotected="False" name="vrrp0" comment="" ro="False">
-          <IPv4 id="id2844X30406" name="cluster1:vrrp0:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.0.0"/>
+        <Interface id="id2843X30406" dedicated_failover="False" dyn="False" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id2844X30406" name="cluster1:eth0:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.0.0"/>
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2846X30406" master_iface="id1522X26217" type="vrrp" name="cluster1:vrrp0:members" comment="">
+          <FailoverClusterGroup id="id2846X30406" master_iface="id1522X26217" type="vrrp" name="cluster1:eth0:members" comment="">
             <ObjectRef ref="id1522X26217"/>
             <ObjectRef ref="id2830X30406"/>
             <ClusterGroupOptions>
@@ -518,13 +518,13 @@
             </ClusterGroupOptions>
           </FailoverClusterGroup>
         </Interface>
-        <Interface id="id2848X30406" dedicated_failover="False" dyn="False" label="inside" security_level="0" unnum="False" unprotected="False" name="vrrp1" comment="" ro="False">
-          <IPv4 id="id2849X30406" name="cluster1:vrrp1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Interface id="id2848X30406" dedicated_failover="False" dyn="False" label="inside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id2849X30406" name="cluster1:eth1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="iface_mtu">1500</Option>
             <Option name="type">vrrp</Option>
           </InterfaceOptions>
-          <FailoverClusterGroup id="id2851X30406" master_iface="id1524X26217" type="vrrp" name="cluster1:vrrp1:members" comment="">
+          <FailoverClusterGroup id="id2851X30406" master_iface="id1524X26217" type="vrrp" name="cluster1:eth1:members" comment="">
             <ObjectRef ref="id1524X26217"/>
             <ObjectRef ref="id2832X30406"/>
             <ClusterGroupOptions>
