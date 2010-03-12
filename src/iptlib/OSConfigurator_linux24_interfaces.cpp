@@ -80,7 +80,11 @@ string OSConfigurator_linux24::printVerifyInterfacesCommands()
     list<FWObject*>::iterator i;
     for (i=interfaces.begin(); i!=interfaces.end(); ++i )
     {
-        interfaces_to_check.push_back((*i)->getName().c_str());
+        QString iface_name = (*i)->getName().c_str();
+        if (interfaces_to_check.indexOf(iface_name) == -1)
+        {
+            interfaces_to_check.push_back((*i)->getName().c_str());
+        }
     }
 
     Configlet verify_interfaces(fw, "linux24", "verify_interfaces");
