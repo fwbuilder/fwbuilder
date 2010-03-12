@@ -96,7 +96,14 @@ void OSConfigurator_secuwall::processFirewallOptions()
     if (!createDirStructure())
         abort("Unable to create directory structure");
 
-    generateSSHKeys();
+    FWOptions* options = fw->getOptionsObject();
+    assert(options != NULL);
+
+    /* Do ssh key generation if not disabled. */
+    if (!options->getBool("secuwall_no_ssh_key_generation"))
+    {
+        generateSSHKeys();
+    }
     generateHostsFile();
     generateDNSFile();
     generateNsswitchFile();
