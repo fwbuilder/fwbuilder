@@ -1019,6 +1019,7 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
     if (f)  // window becomes detached
     {
         m_panel->treeDockWidget->setParent(mw);
+        m_panel->treeDockWidget->setWindowTitle("Object Tree");
         mw->addDockWidget(Qt::LeftDockWidgetArea, m_panel->treeDockWidget);
         m_panel->treeDockWidget->show();
         m_panel->treeDockWidget->blockSignals(false);
@@ -1030,6 +1031,7 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
 #else
 // Setting widget position here causes crash on Qt < 4.5.
         mw->removeDockWidget(m_panel->treeDockWidget);
+        m_panel->treeDockWidget->setWindowTitle("");
         m_panel->treeDockWidget->setParent(m_panel->treeDockWidgetParentFrame);
         m_panel->treeDockWidgetParentFrame->layout()->addWidget(m_panel->treeDockWidget);
         m_panel->treeDockWidget->show();
