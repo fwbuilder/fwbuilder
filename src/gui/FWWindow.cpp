@@ -543,6 +543,8 @@ void FWWindow::startupLoad()
         updateOpenRecentMenu(file);
     }
 
+    QCoreApplication::postEvent(this, new updateSubWindowTitlesEvent());
+
     if (! st->getBool("UI/NoStartTip"))
     {
         StartTipDialog *stdlg = new StartTipDialog(this);
