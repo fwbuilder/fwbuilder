@@ -1018,8 +1018,11 @@ void ProjectPanel::topLevelChangedForTreePanel(bool f)
 
     if (f)  // window becomes detached
     {
+        QString file_name = getFileName(); // full path
+        QFileInfo fi(file_name);
+        QString short_name = fi.fileName();
         m_panel->treeDockWidget->setParent(mw);
-        m_panel->treeDockWidget->setWindowTitle("Object Tree");
+        m_panel->treeDockWidget->setWindowTitle(short_name);
         mw->addDockWidget(Qt::LeftDockWidgetArea, m_panel->treeDockWidget);
         m_panel->treeDockWidget->show();
         m_panel->treeDockWidget->blockSignals(false);
