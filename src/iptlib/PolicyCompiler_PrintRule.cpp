@@ -1610,6 +1610,17 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
                           compiler->getCachedFwOpt()->getBool("accept_established") &&
                           ipt_comp->my_table=="filter");
 
+    list<FWObject*> ll = compiler->fw->getByTypeDeep(Interface::TYPENAME);
+    for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
+    {
+        Interface *intf = Interface::cast( *i );
+        if (intf->isManagement())
+        {
+            configlet.setVariable("management_interface", intf->getName().c_str());
+            break;
+        }
+    }
+
     _printBackupSSHAccessRules(&configlet);
 
     configlet.setVariable(
@@ -1711,7 +1722,8 @@ void PolicyCompiler_ipt::PrintRule::_printBackupSSHAccessRules(Configlet *conf)
             conf->setVariable("begin_rule", _startRuleLine().c_str());
             conf->setVariable("end_rule", _endRuleLine().c_str());
             conf->setVariable("mgmt_access", 1);
-            conf->setVariable("management_address", inet_addr->toString().c_str());
+            conf->setVariable("ssh_management_address",
+                              inet_addr->toString().c_str());
         }
     }
 }

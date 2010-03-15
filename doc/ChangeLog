@@ -1,5 +1,9 @@
 2010-03-15  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printOptionalGlobalRules):
+	fixes #1333 "Add variable management_interface for the
+	automatic_rules configlet"
+
 	* ObjectManipulator.cpp (ObjectManipulator::editSelectedObject):
 	change in the behavior of double click in the tree.  Open rule set
 	object in the editor if it is already opened in RuleSetView. If we

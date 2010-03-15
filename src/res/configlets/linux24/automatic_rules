@@ -15,6 +15,32 @@
 ## {{$end_rule}}.  Variable $begin_rule has value "$IPTABLES -A" if
 ## generated script is in the shell script format, or just empty
 ## string if it is in iptables-restore format
+##
+## Variables in this configlet:
+##
+## $begin_rule                "$IPTABLES -A" or empty string
+## $end_rule
+## $ssh_management_address    address of the management address used for backup ssh access
+## $management_interface      the name of the management interface
+## $cprange                   (ULOG --cprange)
+## $nlgroup                   (ULOG --ulog-nlgroup)
+## $qthreshold                (ULOG --ulog-qthreshold)
+## $invalid_match_log_prefix  (ULOG --ulog-prefix  or LOG --log-prefix)
+##
+## Conditional statements use the following variables:
+##
+## ipforw                     should generate rules in FORWARD chain
+## accept_established         should add rules to match --state ESTABLISHED,RELATED
+## mgmt_access                should add rules for management ssh access
+## drop_new_tcp_with_no_syn   should add rules to drop TCP sessions opened prior firewall restart
+## add_rules_for_ipv6_neighbor_discovery   should add rules to permit IPv6 Neighbor discovery
+## drop_invalid               should add rules to drop packets that match state INVALID
+## drop_invalid_and_log       drop and log packets that match state INVALID
+## not_use_ulog               use LOG for logging
+## use_ulog                   use ULOG for logging
+## use_nlgroup                for --ulog-nlgroup
+## use_cprange                for --ulog-cprange
+## use_qthreshold             for --ulog-qthreshold
 
 
 ## bug #1092141: "irritating FORWARD rule for established connections"
@@ -40,8 +66,8 @@
 
 {{if mgmt_access}}
 # backup ssh access
-{{$begin_rule}} INPUT  -p tcp -m tcp  -s {{$management_address}}  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT {{$end_rule}}
-{{$begin_rule}} OUTPUT  -p tcp -m tcp  -d {{$management_address}}  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p tcp -m tcp  -s {{$ssh_management_address}}  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT  -p tcp -m tcp  -d {{$ssh_management_address}}  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
 {{endif}}
 
 {{if drop_new_tcp_with_no_syn}}
