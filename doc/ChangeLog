@@ -6,6 +6,17 @@
 	just opened it in RuleSetView, check if the editor is visible and
 	if yes, open the object in the editor right away. Fixes #1331
 
+2010-03-13  vadim  <vadim@vk.crocodile.org>
+
+	* using file name for the floating tree panel title. See #1317
+
+	* fixes #1326 MDI subwindow title is left "Untitled" when GUI
+	starts with a file on the command line
+
+2010-03-13  Roman Bovsunivkiy <a2k0001@gmail.com>
+
+	* Object tree panel should have title when detached. Fixes #1317
+
 2010-03-08  yalovoy <yalovoy@gmail.com>
 	* RuleSetView.cpp: fixes #1315 menu item "Remove from group" is
 	available for rules inside the group.
