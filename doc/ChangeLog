@@ -2,7 +2,8 @@
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printOptionalGlobalRules):
 	fixes #1333 "Add variable management_interface for the
-	automatic_rules configlet"
+	automatic_rules configlet". Variable "management_address"
+	renamed "ssh_management_address" to avoid ambiguity.
 
 	* ObjectManipulator.cpp (ObjectManipulator::editSelectedObject):
 	change in the behavior of double click in the tree.  Open rule set
