@@ -1022,12 +1022,33 @@ void ObjectManipulator::editSelectedObject()
     FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
 
-    if (RuleSet::cast(obj)!=NULL && m_project->getCurrentRuleSet()!=obj)
-        QCoreApplication::postEvent(
-            m_project, new openRulesetEvent(m_project->getFileName(), obj->getId()));
+    if (RuleSet::cast(obj)!=NULL)
+    {
+        // Open rule set object in the editor if it is already opened
+        // in RuleSetView. If we just opened it in RuleSetView, check
+        // if the editor is visible and if yes, open the object in the
+        // editor right away. See #1331
 
-    QCoreApplication::postEvent(
-        mw, new openObjectInEditorEvent(m_project->getFileName(), obj->getId()));
+        if (m_project->getCurrentRuleSet() == obj)
+        {
+            QCoreApplication::postEvent(
+                mw, new openObjectInEditorEvent(
+                    m_project->getFileName(), obj->getId()));
+        } else
+        {
+            QCoreApplication::postEvent(
+                m_project, new openRulesetEvent(
+                    m_project->getFileName(), obj->getId()));
+            if (mw->isEditorVisible())
+                QCoreApplication::postEvent(
+                    mw, new openObjectInEditorEvent(
+                        m_project->getFileName(), obj->getId()));
+        }
+
+    } else
+        QCoreApplication::postEvent(
+            mw, new openObjectInEditorEvent(
+                m_project->getFileName(), obj->getId()));
 }
 
 void ObjectManipulator::openSelectedRuleSet()

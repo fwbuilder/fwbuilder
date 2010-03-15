@@ -1,5 +1,13 @@
+2010-03-15  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectManipulator.cpp (ObjectManipulator::editSelectedObject):
+	change in the behavior of double click in the tree.  Open rule set
+	object in the editor if it is already opened in RuleSetView. If we
+	just opened it in RuleSetView, check if the editor is visible and
+	if yes, open the object in the editor right away. Fixes #1331
+
 2010-03-08  yalovoy <yalovoy@gmail.com>
-	* RuleSetView.cpp: fixes #1315 menu item "Remove from group" is 
+	* RuleSetView.cpp: fixes #1315 menu item "Remove from group" is
 	available for rules inside the group.
 	"Create new group" action is fixed too.
 	* fixes #1202: Main menu "Rules" does not match rule context menu
