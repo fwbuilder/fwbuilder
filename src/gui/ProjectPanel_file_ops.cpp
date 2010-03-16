@@ -1118,7 +1118,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         /* if the file name has an old extension .xml, change it to .fwb and
          * warn the user
          */
-        QString   fn = rcs->getFileName();
+        QString fn = rcs->getFileName();
         QFileInfo ofinfo(fn);
 
         if ( ofinfo.suffix()=="xml")
@@ -1256,6 +1256,9 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
                 0, 1 );
         } else
         {
+            // this was not XML error, perhaps permissions or other
+            // filesystem problem
+
             QString error_txt = QString::fromUtf8(ex.toString().c_str());
             if (error_txt.length() > LONG_ERROR_CUTOFF) 
             {
