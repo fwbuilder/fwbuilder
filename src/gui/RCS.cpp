@@ -301,9 +301,14 @@ RCS::RCS(const QString &file)
 {
     if (rcsenvfix==NULL) rcsenvfix = new RCSEnvFix();
 
+    if (fwbdebug) qDebug() << "RCS::RCS(" << file << ")";
+
     QFileInfo fi(file);
     if (fi.exists()) filename = fi.canonicalFilePath();
     else filename = file;
+
+    if (fwbdebug) qDebug() << "filename=" << filename;
+
     checked_out   = false;
     locked        = false;
     inrcs         = false;
