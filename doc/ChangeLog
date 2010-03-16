@@ -1,3 +1,8 @@
+2010-03-16  vadim  <vadim@vk.crocodile.org>
+
+	* XMLTools.cpp (XMLTools::loadFile): passing error code returned
+	by access() for better diagnostics. See fwbuilder:ticket:1334
+
 2010-03-04  vadim  <vadim@vk.crocodile.org>
 
 	* ObjectMatcher.cpp (ObjectMatcher::dispatch): recognize multicast

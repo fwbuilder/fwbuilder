@@ -324,9 +324,25 @@ xmlDocPtr XMLTools::loadFile(const string &data_file ,
          << "    current_version: " << current_version
          << endl;
 #endif
-    
-    if (data_file!="-" && access(data_file.c_str() , R_OK )!=0)
-        throw FWException(string("Could not access data file: ")+data_file);
+    int access_err = 0;
+    if (data_file!="-" && (access_err=access(data_file.c_str() , R_OK ))!=0)
+    {
+        string access_err_str;
+        switch (access_err)
+        {
+        case EACCES: access_err_str = "EACCES"; break;
+        case EFAULT: access_err_str = "EFAULT"; break;
+        case EIO: access_err_str = "EIO"; break;
+        case ELOOP: access_err_str = "ELOOP"; break;
+        case ENAMETOOLONG: access_err_str = "ENAMETOOLONG"; break;
+        case ENOENT: access_err_str = "ENOENT"; break;
+        case ENOTDIR: access_err_str = "ENOTDIR"; break;
+        default: access_err_str = "Unknown"; break;
+        }
+        throw FWException(
+            string("Could not access data file '") + data_file + "'" +
+            " error code " + access_err_str);
+    }
 
     string buf = readFile(data_file);
 
