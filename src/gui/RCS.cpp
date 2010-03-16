@@ -303,8 +303,9 @@ RCS::RCS(const QString &file)
 
     if (fwbdebug) qDebug() << "RCS::RCS(" << file << ")";
 
+    // Using absoluteFilePath() rather than canonicalFilePath, see #1334
     QFileInfo fi(file);
-    if (fi.exists()) filename = fi.canonicalFilePath();
+    if (fi.exists()) filename = fi.absoluteFilePath();
     else filename = file;
 
     if (fwbdebug) qDebug() << "filename=" << filename;
@@ -469,7 +470,7 @@ void RCS::readFromStderr()
 void RCS::setFileName(const QString &fn)
 {
     QFileInfo fi(fn);
-    if (fi.exists()) filename = fi.canonicalFilePath();
+    if (fi.exists()) filename = fi.absoluteFilePath();
     else filename = fn;
     if (fwbdebug)
         qDebug() << "RCS::setFileName fn =" << fn << "filename =" << filename;

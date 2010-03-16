@@ -1,3 +1,13 @@
+2010-03-16    <vadim@vk.crocodile.org>
+
+	* RCS.cpp, FWWindow.cpp: Fixed #1334  Program failed to open data
+	file on Windows if it was stored on mounted network volume.
+	"File/Open" operation terminated with no error but did not load
+	the file. "File/Open Recent" ended with an error message that
+	quoted file path as somehting like this:
+	"Volume{3c50bdba-21b0-4ea5-b52f-aa5d9755f918}/test1.fwb"
+	which was obviously incorrect and the file could not be loaded.
+
 2010-03-15  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printOptionalGlobalRules):

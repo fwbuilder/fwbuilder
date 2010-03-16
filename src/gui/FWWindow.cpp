@@ -624,13 +624,29 @@ void FWWindow::fileOpen()
         return ;
     }
 
+    // Using absoluteFilePath(), see #1334
     QFileInfo fi(file_name);
-    QString file_path = fi.canonicalFilePath();
-    QMdiSubWindow* sw = alreadyOpened(file_path);
+    QString file_path = fi.absoluteFilePath();
+
+    if (fwbdebug) qDebug() << "FWWindow::fileOpen():"
+                           << "File name: " << file_name
+                           << "Absolute file path: " << file_path;
+
+    QMdiSubWindow* sw = alreadyOpened(file_name);
     if (sw != NULL)
     {
+        if (fwbdebug) qDebug() << "This file is already opened";
         // activate window with this file
         m_mainWindow->m_space->setActiveSubWindow(sw);
+        return;
+    }
+
+    QFileInfo file_path_info(file_path);
+    if (!file_path_info.exists() || !file_path_info.isReadable())
+    {
+        QMessageBox::warning(
+            this,"Firewall Builder",
+            tr("File '%1' does not exist or is not readable").arg(file_path));
         return;
     }
 
@@ -643,19 +659,23 @@ void FWWindow::fileOpen()
         QCoreApplication::postEvent(this, new updateSubWindowTitlesEvent());
     } else
         m_mainWindow->m_space->setActiveSubWindow(last_active_window);
-
 }
 
 QMdiSubWindow* FWWindow::alreadyOpened(const QString &file_name)
 {
     QFileInfo fi(file_name);
-    QString file_path = fi.canonicalFilePath();
+    QString file_path = fi.absoluteFilePath();
+
+    if (fwbdebug) qDebug() << "FWWindow::alreadyOpened():"
+                           << "File name: " << file_name
+                           << "Absolute file path: " << file_path;
+
     foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
     {
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(sw->widget());
         if (pp!=NULL)
         {
-            if (fwbdebug) qDebug() << "Opened file  " << pp->getFileName();
+            if (fwbdebug) qDebug() << "Opened file" << pp->getFileName();
             if (pp->getFileName() == file_path) return sw;
         }
     }
