@@ -333,7 +333,9 @@ xmlDocPtr XMLTools::loadFile(const string &data_file ,
         case EACCES: access_err_str = "EACCES"; break;
         case EFAULT: access_err_str = "EFAULT"; break;
         case EIO: access_err_str = "EIO"; break;
+#ifdef ELOOP
         case ELOOP: access_err_str = "ELOOP"; break;
+#endif
         case ENAMETOOLONG: access_err_str = "ENAMETOOLONG"; break;
         case ENOENT: access_err_str = "ENOENT"; break;
         case ENOTDIR: access_err_str = "ENOTDIR"; break;
