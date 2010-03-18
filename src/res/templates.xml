@@ -414,7 +414,7 @@
     </IntervalGroup>
   </Library>
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
-  <Library id="syslib100" color="#ffb4b4" name="Firewall Templates" comment="Template objects that can be used to generate typical firewall configurations" ro="True">
+  <Library id="syslib100" color="#ffb4b4" name="Firewall Templates" comment="Template objects that can be used to generate typical firewall configurations" ro="False">
     <ObjectGroup id="id4070BB9B" name="Objects" comment="" ro="False">
       <ObjectGroup id="id4070BB9B_og_ats_1" name="Address Tables" comment="" ro="False"/>
       <ObjectGroup id="id4070BB9B_og_dnsn_1" name="DNS Names" comment="" ro="False"/>
@@ -626,7 +626,7 @@
       </Cluster>
     </ObjectGroup>
     <ObjectGroup id="id4070BBA8" name="Firewalls" comment="" ro="False">
-      <Firewall id="id40708A6A" host_OS="unknown_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" version="" name="fw template 1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+      <Firewall id="id40708A6A" host_OS="unknown_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1268942625" platform="unknown" version="" name="fw template 1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id40708A6E" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4070BFF5" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -669,7 +669,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4094092C" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -707,7 +733,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941D2E" disabled="False" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
+          <PolicyRule id="id40941D2E" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
             <Src neg="False">
               <ObjectRef ref="id40708A6A"/>
             </Src>
@@ -741,7 +767,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4070BFDE" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -777,7 +829,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -804,10 +882,12 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
@@ -815,9 +895,10 @@
           <Option name="local_nat">false</Option>
           <Option name="log_level">info</Option>
           <Option name="log_prefix">RULE %N -- %A </Option>
-          <Option name="loopback_interface">lo0</Option>
+          <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -840,7 +921,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id40941E8C" host_OS="unknown_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" version="" name="fw template 2" comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." ro="False">
+      <Firewall id="id40941E8C" host_OS="unknown_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1268942652" platform="unknown" version="" name="fw template 2" comment="Similar to fw 1, but the firewall is used as DHCP and DNS server for internal network.&#10;This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall can send DNS queries to servers out on the Internet. Another rule permits DNS queries from internal network to the firewall. Special rules permit DHCP requests from internal network and replies sent by the firewall." ro="False">
         <NAT id="id40941E91" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id40941E92" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -883,7 +964,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id40941EE6" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -960,7 +1067,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id40941EAB" disabled="False" log="True" position="5" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
+          <PolicyRule id="id40941EAB" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
             <Src neg="False">
               <ObjectRef ref="id40941E8C"/>
             </Src>
@@ -994,7 +1101,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id40941EBF" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1030,7 +1163,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -1057,10 +1216,12 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
@@ -1068,9 +1229,10 @@
           <Option name="local_nat">false</Option>
           <Option name="log_level">info</Option>
           <Option name="log_prefix">RULE %N -- %A </Option>
-          <Option name="loopback_interface">lo0</Option>
+          <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1093,7 +1255,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id40986AFE" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="unknown" version="" name="fw template 3" comment="This firewall has three interfaces. Eth0 faces outside and has a static routable address; eth1 faces inside; eth2 is connected to DMZ subnet.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, DMZ is 192.168.2.0/255.255.255.0. Since DMZ used private IP address, it needs NAT. There is a mail relay host located on DMZ (object 'server on dmz'). Policy rules permit SMTP connections to it from the Internet and allow this server to connect to a host on internal network 'internal server'. All other access from DMZ to internal net is denied. To provide access to the mail relay its private address is mapped to firewall's outside interface address by NAT rule #1." ro="False">
+      <Firewall id="id40986AFE" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1268942667" platform="iptables" version="" name="fw template 3" comment="This firewall has three interfaces. Eth0 faces outside and has a static routable address; eth1 faces inside; eth2 is connected to DMZ subnet.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0, DMZ is 192.168.2.0/255.255.255.0. Since DMZ used private IP address, it needs NAT. There is a mail relay host located on DMZ (object 'server on dmz'). Policy rules permit SMTP connections to it from the Internet and allow this server to connect to a host on internal network 'internal server'. All other access from DMZ to internal net is denied. To provide access to the mail relay its private address is mapped to firewall's outside interface address by NAT rule #1." ro="False">
         <NAT id="id40986B03" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id40987169" disabled="False" position="0" action="Translate" comment="no need to translate&#10;between DMZ and &#10;internal net">
             <OSrc neg="False">
@@ -1270,7 +1432,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id40986E16" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="Mail relay on DMZ can accept&#10;connections from hosts on the&#10;Internet">
             <Src neg="False">
@@ -1343,7 +1531,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id40986B31" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="This permits access from internal net&#10;to the Internet and DMZ">
             <Src neg="False">
@@ -1379,7 +1593,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -1411,10 +1651,12 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
+          <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
@@ -1422,9 +1664,10 @@
           <Option name="local_nat">false</Option>
           <Option name="log_level">info</Option>
           <Option name="log_prefix">RULE %N -- %A </Option>
-          <Option name="loopback_interface">lo0</Option>
+          <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">true</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
@@ -1932,7 +2175,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4129355E" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="0" platform="iptables" version="" name="web server" comment="" ro="False">
+      <Firewall id="id4129355E" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1268942517" platform="iptables" version="" name="web server" comment="This template is intended for a simple server with one interface. &quot;Assume firewall is part of any&quot;&#10;option is off, IP forwarding is off." ro="False">
         <NAT id="id41293598" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -1942,7 +2185,7 @@
               <ObjectRef ref="id4129355E"/>
             </Src>
             <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
+              <ObjectRef ref="id4129355E"/>
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
@@ -1953,7 +2196,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id412935A9" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -1971,7 +2240,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id41293564" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2045,14 +2340,40 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4129358E" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
             <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
+              <ObjectRef ref="id4129355E"/>
             </Dst>
             <Srv neg="False">
               <ServiceRef ref="sysid1"/>
@@ -2063,7 +2384,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>
@@ -2087,24 +2434,70 @@
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
           <Option name="cmdline"></Option>
           <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
           <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
+          <Option name="epilog_script"></Option>
           <Option name="firewall_dir">/etc/fw</Option>
-          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">False</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix"></Option>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_accept_redirects"></Option>
+          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_conntrack_hashsize">0</Option>
+          <Option name="linux24_conntrack_max">0</Option>
+          <Option name="linux24_conntrack_tcp_be_liberal"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"></Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward">0</Option>
+          <Option name="linux24_ipv6_forward"></Option>
+          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_path_brctl"></Option>
+          <Option name="linux24_path_ifenslave"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_ip6tables"></Option>
+          <Option name="linux24_path_ip6tables_restore"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_iptables_restore"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_path_vconfig"></Option>
+          <Option name="linux24_rp_filter"></Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">0</Option>
+          <Option name="linux24_tcp_keepalive_interval">0</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
           <Option name="log_all">False</Option>
           <Option name="log_all_dropped">False</Option>
+          <Option name="log_invalid">False</Option>
           <Option name="log_ip_opt">False</Option>
           <Option name="log_level">info</Option>
           <Option name="log_prefix">RULE %N -- %A </Option>
@@ -2113,7 +2506,10 @@
           <Option name="loopback_interface">lo0</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
           <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
           <Option name="pix_add_clear_statements">true</Option>
           <Option name="pix_assume_fw_part_of_any">true</Option>
           <Option name="pix_default_logint">300</Option>
@@ -2126,11 +2522,17 @@
           <Option name="pix_security_fragguard_supported">true</Option>
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
           <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
@@ -2468,7 +2870,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4589X87253" host_OS="openwrt" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1266295473" platform="iptables" version="" name="OpenWRT template" comment="This firewall is based on Linksys appliance running Sveasoft firmware; it has two interfaces. Interface vlan1 faces outside and has a dynamic address; br0 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH or HTTP. The firewall uses name servers supplied by the ISP for DNS.  Special rule blocks DHCP requests on external interface without logging to reduce noise in the log.&#10;&#10;Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+      <Firewall id="id4589X87253" host_OS="openwrt" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1268942585" platform="iptables" version="" name="OpenWRT template" comment="This firewall is based on Linksys appliance running Sveasoft firmware; it has two interfaces. Interface vlan1 faces outside and has a dynamic address; br0 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH or HTTP. The firewall uses name servers supplied by the ISP for DNS.  Special rule blocks DHCP requests on external interface without logging to reduce noise in the log.&#10;&#10;Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id4738X87253" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4739X87253" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2511,7 +2913,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4624X87253" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2547,7 +2975,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4648X87253" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
             <Src neg="False">
@@ -2590,7 +3044,7 @@
             </When>
             <PolicyRuleOptions>
               <Option name="action_on_reject"></Option>
-              <Option name="firewall_is_part_of_any_and_networks">False</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
               <Option name="limit_burst">0</Option>
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
@@ -2634,7 +3088,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id4701X87253" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
@@ -2688,7 +3168,33 @@
             <When neg="False">
               <IntervalRef ref="sysid2"/>
             </When>
-            <PolicyRuleOptions/>
+            <PolicyRuleOptions>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">True</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
         </Policy>

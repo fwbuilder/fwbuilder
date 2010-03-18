@@ -1,3 +1,13 @@
+2010-03-18  vadim  <vadim@vk.crocodile.org>
+
+	* newFirewallDialog::createFirewallFromTemplate: fixes #1340
+	firewall object created from template does not inherit fw and host
+	os settings. See the ticket and comment in the code for caveats.
+
+	* templates.xml.in: set "stateless rule " option in template rules
+	where it makes sense; turned ip forwarding and "assume fw is part
+	of any" in the "web server" template object.
+
 2010-03-16    <vadim@vk.crocodile.org>
 
 	* RCS.cpp, FWWindow.cpp: Fixed #1334  Program failed to open data

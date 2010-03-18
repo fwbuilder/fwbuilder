@@ -87,9 +87,22 @@ void newFirewallDialog::createFirewallFromTemplate()
     nfw = Firewall::cast(no);
 
     no->setStr("platform", platform);
-    Resources::setDefaultTargetOptions(platform , nfw);
     no->setStr("host_OS", host_os);
-    Resources::setDefaultTargetOptions(host_os , nfw);
+    
+    /*
+     * If we set defaults for the platform and host OS, then we lose
+     * all settings that were done in the template. See ticket
+     * #1340. Not setting defaults fixes #1340 with a caveat: since
+     * the name of the same (sematically) option can be different for
+     * different firewall platforms, options set in the template
+     * generally are only rpeserved if the new firewall object uses
+     * the same platform as the template. In practical terms this
+     * basically means iptables. If user changes the platform, they
+     * need to revisit options and fix them manually
+     */
+
+    //Resources::setDefaultTargetOptions(platform , nfw);
+    //Resources::setDefaultTargetOptions(host_os , nfw);
 }
 
 void newFirewallDialog::changedAddressesInNewFirewall()
