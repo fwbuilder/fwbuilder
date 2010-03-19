@@ -122,6 +122,7 @@ int main(int argc, char **argv)
     init(argv);
 
     // register protocols we need
+    IPService::addNamedProtocol(51, "ah");
     IPService::addNamedProtocol(112, "vrrp");
 
     try

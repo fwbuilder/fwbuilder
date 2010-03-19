@@ -4867,7 +4867,7 @@ void PolicyCompiler_ipt::insertFailoverRule()
             "/FWBuilderResources/Target/protocols/openais/default_address");
 
     FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
-    for (; interfaces != interfaces.end(); ++interfaces) 
+    for (; interfaces != interfaces.end(); ++interfaces)
     {
         Interface *iface = Interface::cast(*interfaces);
 
@@ -4908,6 +4908,20 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 addMgmtRule(NULL, vrrp_dst, vrrp_srv, iface,
                             PolicyRule::Both, PolicyRule::Accept,
                             "VRRP");
+
+                /*
+                 * Add AH-Service to database.
+                 * According to RFC 2338 section 5.3.6.3, VRRP can use IPsec AH.
+                 */
+                IPService* ah_srv = IPService::cast(
+                    dbcopy->create(IPService::TYPENAME));
+                ah_srv->setComment("IPSEC-AH");
+                ah_srv->setProtocolNumber(51);
+                dbcopy->add(ah_srv);
+
+                addMgmtRule(NULL, vrrp_dst, ah_srv, iface,
+                            PolicyRule::Both, PolicyRule::Accept,
+                            "VRRP (with IPSEC-AH)");
             }
 
             if (failover_group->getStr("type") == "heartbeat")
