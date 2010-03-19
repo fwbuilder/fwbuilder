@@ -384,7 +384,11 @@ void SSHCisco::stateMachine()
     case PUSHING_CONFIG:
         if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)))  // config_prompt)) )
         {
-            if ( activation_commands.size()!=0 )
+            // see SF bug 2973136 , fwbuilder bug #1347
+            // looks like if user hits Cancel to cancel install at just right
+            // moment, the process can get killed when control is already
+            // inside this block. Adding test for proc != NULL to be sure.
+            if ( activation_commands.size() != 0 && proc != NULL)
             {
                 QString s;
 
@@ -417,7 +421,7 @@ void SSHCisco::stateMachine()
                 emit printStdout_sign( tr("End") + "\n" );
                 // kick it so we get some output from the router and
                 // continue the state machine
-                proc->write("\n"); 
+                if (proc) proc->write("\n"); 
             }
         }
         break;

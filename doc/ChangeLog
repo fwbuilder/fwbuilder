@@ -1,5 +1,12 @@
 2010-03-19  vadim  <vadim@vk.crocodile.org>
 
+	* SSHCisco.cpp (SSHCisco::stateMachine): fixed SF bug 2973136,
+	fwbuilder bug #1347: ssh 'cancel' rule install sigsegv. Installer
+	caused GUI crash if user hit "Cancel" at just the right
+	moment. Apparently this also depends on the firewall platform
+	(was discovered and reported for Cisco FWSM) and perhaps on how
+	fast it responds to the installer commands.
+
 	* platform/fwsm.xml: fixed SourceForge bug 2973121: Added support
 	for FWSM v4.x
 
