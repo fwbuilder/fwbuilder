@@ -79,7 +79,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -3495,7 +3495,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label599">
             <property name="text">
-             <string>Syslog host (name or IP address):</string>
+             <string>Syslog host (IP address):</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

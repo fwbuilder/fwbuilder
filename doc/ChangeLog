@@ -1,5 +1,8 @@
 2010-03-18  vadim  <vadim@vk.crocodile.org>
 
+	* fixed SourceForge bug #2972699 "fwsm/pix syslog name". The dialog
+	only accepts ip address for the syslog server.
+
 	* configlets/ipfw/script_skeleton: fixed #1335 "Empty functions in
 	ipfw script". Under some circumstances shell functions in the
 	generated ipfw script could have no body; /bin/sh does not like
