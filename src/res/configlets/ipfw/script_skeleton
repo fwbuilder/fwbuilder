@@ -24,18 +24,22 @@ cd {{$firewall_dir}} || exit 1
 {{$shell_functions}}
 
 verify_interfaces() {
+    :
     {{$verify_interfaces}}
 }
 
 set_kernel_vars() {
+    :
     {{$kernel_vars_commands}}
 }
 
 prolog_commands() {
+    echo "Running prolog script"
     {{$prolog_script}}
 }
 
 epilog_commands() {
+    echo "Running epilog script"
     {{$epilog_script}}
 }
 
@@ -45,6 +49,7 @@ run_epilog_and_exit() {
 }
 
 configure_interfaces() {
+    :
     {{$configure_interfaces}}
 }
 

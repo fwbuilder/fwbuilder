@@ -1,5 +1,10 @@
 2010-03-18  vadim  <vadim@vk.crocodile.org>
 
+	* configlets/ipfw/script_skeleton: fixed #1335 "Empty functions in
+	ipfw script". Under some circumstances shell functions in the
+	generated ipfw script could have no body; /bin/sh does not like
+	that.
+
 	* newFirewallDialog::createFirewallFromTemplate: fixes #1340
 	firewall object created from template does not inherit fw and host
 	os settings. See the ticket and comment in the code for caveats.
