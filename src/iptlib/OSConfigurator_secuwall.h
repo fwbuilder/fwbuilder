@@ -35,9 +35,6 @@ public:
 
     virtual std::string myPlatformName();
 
-    virtual int  prolog();
-    virtual void epilog();
-
     virtual void processFirewallOptions();
 
     virtual std::string printPathForAllTools(const std::string &);

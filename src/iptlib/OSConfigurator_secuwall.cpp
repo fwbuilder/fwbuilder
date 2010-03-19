@@ -134,16 +134,6 @@ void OSConfigurator_secuwall::processFirewallOptions()
     generateInterfaces();
 }
 
-int  OSConfigurator_secuwall::prolog()
-{
-    return OSConfigurator_linux24::prolog();
-}
-
-void OSConfigurator_secuwall::epilog()
-{
-    OSConfigurator_linux24::epilog();
-}
-
 bool OSConfigurator_secuwall::createDirStructure() const
 {
     QDir directory;
