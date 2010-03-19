@@ -107,6 +107,11 @@ std::string PolicyCompiler_secuwall::printAutomaticRules()
     vars.push_back("secuwall_mgmt_ntpaddr");
     vars.push_back("secuwall_mgmt_nagiosaddr");
     vars.push_back("secuwall_mgmt_snmpaddr");
+    vars.push_back("secuwall_dns_srv1");
+    vars.push_back("secuwall_dns_srv2");
+    vars.push_back("secuwall_dns_srv3");
+
+    vars.push_back("secuwall_mgmt_confpart");
 
     for (vector<string>::iterator it = vars.begin(); it != vars.end(); ++it)
     {
@@ -145,7 +150,8 @@ bool PolicyCompiler_secuwall::isValidMgmtRuleInterface(Interface *intf)
 
         /* TODO: Extract magic value! */
         string iface_type = if_opts->getStr("type");
-        if (intf->isManagement() && (iface_type.empty() || (iface_type == "ethernet")))
+        if (intf->isManagement() && (iface_type != "cluster_member") &&
+            (intf->getAddressObject() != NULL))
         {
             return true;
         }

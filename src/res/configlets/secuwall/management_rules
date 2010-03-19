@@ -4,41 +4,51 @@
 {{if has_secuwall_mgmt_mgmtaddr}}
 # SSH access from management stations/networks
 for mgmt in {{$secuwall_mgmt_mgmtaddr}} ; do
-  {{$begin_rule}} INPUT -p tcp -m tcp -s ${mgmt} --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT {{$end_rule}}
-  {{$begin_rule}} OUTPUT -p tcp -m tcp -d ${mgmt} --sport 22 -m state --state ESTABLISHED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} INPUT -p tcp -m tcp -s ${mgmt} --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} OUTPUT -p tcp -m tcp -d ${mgmt} --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
 done
 {{endif}}
 
 {{if has_secuwall_mgmt_loggingaddr}}
 # logging via SYSLOG to loghosts
 for loghost in {{$secuwall_mgmt_loggingaddr}} ; do
-  {{$begin_rule}} OUTPUT -p udp -m udp -d ${loghost} --dport 514 -m state --state NEW,ESTABLISHED -j ACCEPT {{$end_rule}}
-  {{$begin_rule}} OUTPUT -p tcp -m tcp -d ${loghost} --dport 514 -m state --state NEW,ESTABLISHED -j ACCEPT {{$end_rule}}
-  {{$begin_rule}} INPUT -p tcp -m tcp -s ${loghost} --sport 514 -m state --state ESTABLISHED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} OUTPUT -p udp -m udp -d ${loghost} --dport 514 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} OUTPUT -p tcp -m tcp -d ${loghost} --dport 514 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} INPUT -p tcp -m tcp -s ${loghost} --sport 514 -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
 done
 {{endif}}
 
 {{if has_secuwall_mgmt_ntpaddr}}
 # get current time via NTP
 for ntphost in {{$secuwall_mgmt_ntpaddr}} ; do
-  {{$begin_rule}} OUTPUT -p udp -m udp -d ${ntphost} --dport 123 -m state --state NEW,ESTABLISHED -j ACCEPT {{$end_rule}}
-  {{$begin_rule}} INPUT -p udp -m udp -s ${ntphost} --sport 123 -m state --state ESTABLISHED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} OUTPUT -p udp -m udp -d ${ntphost} --dport 123 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} INPUT -p udp -m udp -s ${ntphost} --sport 123 -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
 done
 {{endif}}
 
 {{if has_secuwall_mgmt_snmpaddr}}
 # let us peek via SNMP
 for snmp in {{$secuwall_mgmt_snmpaddr}} ; do
-  {{$begin_rule}} INPUT -p udp -m udp -s ${snmp} --dport 161 -m state --state NEW,ESTABLISHED -j ACCEPT {{$end_rule}}
-  {{$begin_rule}} OUTPUT -p udp -m udp -d ${snmp} --sport 161 -m state --state ESTABLISHED -j ACCEPT {{$end_rule}}
-  {{$begin_rule}} OUTPUT -p udp -m udp -d ${snmp} --dport 162 -m state --state NEW,ESTABLISHED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} INPUT -p udp -m udp -s ${snmp} --dport 161 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} OUTPUT -p udp -m udp -d ${snmp} --sport 161 -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} OUTPUT -p udp -m udp -d ${snmp} --dport 162 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
 done
 {{endif}}
 
 {{if has_secuwall_mgmt_nagiosaddr}}
-# access to the NRPE client
+# access to the NRPE client on the firewall
 for nagios in {{$secuwall_mgmt_nagiosaddr}} ; do
-  {{$begin_rule}} INPUT -p tcp -m tcp -s ${nagios} --dport 5666 -m state --state NEW,ESTABLISHED -j ACCEPT {{$end_rule}}
-  {{$begin_rule}} OUTPUT -p tcp -m tcp -d ${nagios} --sport 5666 -m state --state ESTABLISHED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} INPUT -p tcp -m tcp -s ${nagios} --dport 5666 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} OUTPUT -p tcp -m tcp -d ${nagios} --sport 5666 -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+done
+{{endif}}
+
+# client DNS for the firewall
+{{if has_secuwall_dns_srv1}}
+for dns in {{$secuwall_dns_srv1}} {{$secuwall_dns_srv2}} {{$secuwall_dns_srv3}} ; do
+  {{$begin_rule}} OUTPUT -p udp -m udp -d ${dns} --dport 53 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} INPUT -p udp -m udp -s ${dns} --sport 53 -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} OUTPUT -p tcp -m tcp -d ${dns} --dport 53 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+  {{$begin_rule}} INPUT -p tcp -m tcp -s ${dns} --sport 53 -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
 done
 {{endif}}
