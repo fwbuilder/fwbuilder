@@ -79,7 +79,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -187,7 +187,7 @@
           <item row="1" column="0">
            <widget class="QCheckBox" name="pix_replace_natted_objects">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -203,7 +203,7 @@
           <item row="2" column="0">
            <widget class="QCheckBox" name="pix_emulate_out_acl">
             <property name="toolTip">
-             <string>Normally PIX does not support ouotbound ACL, however policy compiler can emulate them if this option is turned on</string>
+             <string>Normally PIX does not support outbound ACL, however policy compiler can emulate them if this option is turned on</string>
             </property>
             <property name="text">
              <string>Emulate outbound ACLs</string>
