@@ -54,23 +54,6 @@ vector<string> PolicyCompiler_secuwall::getMgmtInterfaces()
     return interfaces;
 }
 
-PolicyCompiler_secuwall::PolicyCompiler_secuwall(
-    FWObjectDatabase *_db,
-    Firewall *fw,
-    bool ipv6_policy,
-    fwcompiler::OSConfigurator *_oscnf,
-    std::map<const std::string, bool> *m_n_commands_map) :
-    PolicyCompiler_ipt(_db, fw, ipv6_policy, _oscnf, m_n_commands_map)
-{
-    /* Set destination filename of firewall script to 'sysconfig/$FWNAME.fw' */
-    /* It must be done here since it's the only place where we have a pointer */
-    /* to the original fw object used by the compiler driver */
-    string remote_script_name = "sysconfig/" + fw->getName() + ".fw";
-    FWOptions *opts = fw->getOptionsObject();
-    if (opts != NULL)
-        opts->setStr("script_name_on_firewall", remote_script_name);
-}
-
 void PolicyCompiler_secuwall::verifyPlatform()
 {
     string family = Resources::platform_res[fw->getStr("platform")]->

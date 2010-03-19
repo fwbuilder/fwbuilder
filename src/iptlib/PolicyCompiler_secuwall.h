@@ -49,7 +49,8 @@ public:
                             libfwbuilder::Firewall *fw,
                             bool ipv6_policy,
                             fwcompiler::OSConfigurator *_oscnf,
-                            std::map<const std::string, bool> *m_n_commands_map);
+                            std::map<const std::string, bool> *m_n_commands_map) :
+        PolicyCompiler_ipt(_db, fw, ipv6_policy, _oscnf, m_n_commands_map) {};
 
     /**
      * Add some predefined rules controlled by checkboxes in
