@@ -354,7 +354,6 @@ int OSConfigurator_secuwall::generateManagementFile()
     /* Write actual management file */
     string filename = fw->getName() + "/" + mgmt_filename;
     stringToFile(stream.string()->toStdString(), filename);
-    generated_Files.insert(pair<string,string> (filename, mgmt_filename));
 
     cout << " wrote " << mgmt_filename << " successfully" << endl << flush;
 
@@ -462,7 +461,6 @@ int OSConfigurator_secuwall::generateNetworkFile()
     /* Write actual network file */
     string filename = fw->getName() + "/" + network_filename;
     stringToFile(stream.string()->toStdString(), filename);
-    generated_Files.insert(pair<string,string> (filename, network_filename));
 
     cout << " wrote " << network_filename << " successfully" << endl << flush;
 
@@ -490,7 +488,6 @@ int OSConfigurator_secuwall::generateHostsFile()
     /* Write actual hosts file */
     string filename = fw->getName() + "/" + hosts_filename;
     stringToFile(stream.string()->toStdString(), filename);
-    generated_Files.insert(pair<string,string> (filename, hosts_filename));
 
     cout << " wrote " << hosts_filename << " successfully" << endl << flush;
 
@@ -532,7 +529,6 @@ int OSConfigurator_secuwall::generateDNSFile()
     /* Write actual DNS file */
     string filename = fw->getName() + "/" + dns_filename;
     stringToFile(stream.string()->toStdString(), filename);
-    generated_Files.insert(pair<string,string> (filename, dns_filename));
 
     cout << " wrote " << dns_filename << " successfully" << endl << flush;
 
@@ -592,7 +588,6 @@ int OSConfigurator_secuwall::generateNsswitchFile()
     /* Write actual nsswitch file */
     string filename = fw->getName() + "/" + nsswitch_filename;
     stringToFile(stream.string()->toStdString(), filename);
-    generated_Files.insert(pair<string,string> (filename, nsswitch_filename));
 
     cout << " wrote " << nsswitch_filename << " successfully" << endl << flush;
 
@@ -836,7 +831,6 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
         filename += tmp.str();
     }
     stringToFile(stream.string()->toStdString(), filename);
-    generated_Files.insert(pair<string,string> (filename, iface_filename + name));
 
     cout << " wrote " << filename << " successfully" << endl << flush;
 
@@ -1053,5 +1047,6 @@ string OSConfigurator_secuwall::printPathForAllTools(const string &)
 
 map<string, string> OSConfigurator_secuwall::getGeneratedFiles() const
 {
-    return generated_Files;
+    map<string, string> files;
+    return files;
 }

@@ -79,7 +79,6 @@ private:
 
     bool containsFirewallKey(std::string in) const;
 
-    std::map<std::string, std::string> generated_Files;
     std::list<libfwbuilder::Interface *> m_ifaces;
 };
 };
