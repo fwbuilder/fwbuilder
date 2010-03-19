@@ -52,7 +52,7 @@ vrrpOptionsDialog::vrrpOptionsDialog(QWidget *parent, FWObject *o)
 
     FWOptions *gropt = FWOptions::cast(obj);
     assert(gropt != NULL);
-    
+
     data.registerOption(m_dialog->vrrp_secret,
                         gropt,
                         "vrrp_secret");
@@ -60,6 +60,11 @@ vrrpOptionsDialog::vrrpOptionsDialog(QWidget *parent, FWObject *o)
     data.registerOption(m_dialog->vrrp_vrid,
                         gropt,
                         "vrrp_vrid");
+
+    data.registerOption(m_dialog->vrrp_over_ipsec_ah,
+                        gropt,
+                        "vrrp_over_ipsec_ah");
+
     data.loadAll();
 }
 

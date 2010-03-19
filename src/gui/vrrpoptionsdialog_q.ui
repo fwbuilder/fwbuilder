@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>369</width>
-    <height>304</height>
+    <height>259</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -75,25 +75,16 @@
        <string>VRRP Parameters</string>
       </attribute>
       <attribute name="icon" >
-       <iconset resource="MainRes.qrc" >
+       <iconset>
         <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
       </attribute>
       <layout class="QGridLayout" name="gridLayout" >
-       <item row="0" column="1" colspan="2" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
+       <item row="0" column="0" colspan="3" >
+        <widget class="QCheckBox" name="vrrp_over_ipsec_ah" >
+         <property name="text" >
+          <string>Use IPsec AH protected VRRP</string>
          </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Minimum</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
+        </widget>
        </item>
        <item row="1" column="0" >
         <widget class="QLabel" name="vrrp_sec_label" >

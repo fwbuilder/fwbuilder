@@ -4898,30 +4898,44 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 vrrp_dst->setComment("VRRP Multicast Address");
                 dbcopy->add(vrrp_dst);
 
-                /* Add VRRP-Service to database */
-                IPService* vrrp_srv = IPService::cast(
-                    dbcopy->create(IPService::TYPENAME));
-                vrrp_srv->setComment("VRRP service");
-                vrrp_srv->setProtocolNumber(112);
-                dbcopy->add(vrrp_srv);
+                bool use_ipsec_ah = false;
 
-                addMgmtRule(NULL, vrrp_dst, vrrp_srv, iface,
+                FWOptions *failover_opts =
+                    FailoverClusterGroup::cast(failover_group)->getOptionsObject();
+                if (failover_opts)
+                {
+                    use_ipsec_ah = failover_opts->getBool("vrrp_over_ipsec_ah");
+                }
+
+                if (!use_ipsec_ah)
+                {
+                    /* Add VRRP-Service to database */
+                    IPService* vrrp_srv = IPService::cast(
+                            dbcopy->create(IPService::TYPENAME));
+                    vrrp_srv->setComment("VRRP service");
+                    vrrp_srv->setProtocolNumber(112);
+                    dbcopy->add(vrrp_srv);
+
+                    addMgmtRule(NULL, vrrp_dst, vrrp_srv, iface,
                             PolicyRule::Both, PolicyRule::Accept,
                             "VRRP");
+                } else
+                {
+                    /*
+                     * Add AH-Service to database.
+                     * According to RFC 2338 section 5.3.6.3, VRRP can use
+                     * IPsec AH.
+                     */
+                    IPService* ah_srv = IPService::cast(
+                            dbcopy->create(IPService::TYPENAME));
+                    ah_srv->setComment("IPSEC-AH");
+                    ah_srv->setProtocolNumber(51);
+                    dbcopy->add(ah_srv);
 
-                /*
-                 * Add AH-Service to database.
-                 * According to RFC 2338 section 5.3.6.3, VRRP can use IPsec AH.
-                 */
-                IPService* ah_srv = IPService::cast(
-                    dbcopy->create(IPService::TYPENAME));
-                ah_srv->setComment("IPSEC-AH");
-                ah_srv->setProtocolNumber(51);
-                dbcopy->add(ah_srv);
-
-                addMgmtRule(NULL, vrrp_dst, ah_srv, iface,
+                    addMgmtRule(NULL, vrrp_dst, ah_srv, iface,
                             PolicyRule::Both, PolicyRule::Accept,
                             "VRRP (with IPSEC-AH)");
+                }
             }
 
             if (failover_group->getStr("type") == "heartbeat")
