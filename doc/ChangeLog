@@ -1,5 +1,8 @@
 2010-03-19  vadim  <vadim@vk.crocodile.org>
 
+	* CompilerDriverFactory.cpp (CompilerDriverFactory::createCompilerDriver):
+	fixed SF bug 2973221 "single rule compile (x) results in sigsegv".
+
 	* SSHCisco.cpp (SSHCisco::stateMachine): fixed SF bug 2973136,
 	fwbuilder bug #1347: ssh 'cancel' rule install sigsegv. Installer
 	caused GUI crash if user hit "Cancel" at just the right

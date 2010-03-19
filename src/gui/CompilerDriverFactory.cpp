@@ -51,7 +51,8 @@ CompilerDriver* CompilerDriverFactory::createCompilerDriver(Firewall *fw)
     if (platform == "ipf") return new CompilerDriver_ipf(fw->getRoot());
     if (platform == "ipfw") return new CompilerDriver_ipfw(fw->getRoot());
     if (platform == "iosacl") return new CompilerDriver_iosacl(fw->getRoot());
-    if (platform == "pix") return new CompilerDriver_pix(fw->getRoot());
+    if (platform == "pix" || platform == "fwsm")
+        return new CompilerDriver_pix(fw->getRoot());
     return NULL;
 }
 
