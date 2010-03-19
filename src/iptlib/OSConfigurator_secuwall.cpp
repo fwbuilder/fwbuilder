@@ -78,8 +78,29 @@ OSConfigurator_secuwall::OSConfigurator_secuwall(FWObjectDatabase *_db,
     s_mapIfaceTypes["ethernet"] = ETHERNET;
     s_mapIfaceTypes["bridge"]   = BRIDGE;
     s_mapIfaceTypes["bonding"]  = BONDING;
-    s_mapIfaceTypes["vrrp"]     = VRRP;
+    s_mapIfaceTypes["vrrp"]     = CLUSTER;
     s_mapIfaceTypes["8021q"]    = VLAN;
+
+    s_mapIfaceStrings[ETHERNET] = "ethernet";
+    s_mapIfaceStrings[ALIAS]    = "alias";
+    s_mapIfaceStrings[BRIDGE]   = "bridge";
+    s_mapIfaceStrings[BONDING]  = "bonding";
+    s_mapIfaceStrings[CLUSTER]  = "vrrp";
+    s_mapIfaceStrings[VLAN]     = "8021q";
+
+    /* search all interfaces, this means here: IP endpoints in stack! */
+    list<FWObject *> fw_ifaces = fw->getByTypeDeep(Interface::TYPENAME);
+
+    for (list<FWObject *>::iterator it = fw_ifaces.begin(); it != fw_ifaces.end(); it++)
+    {
+        Interface *iface = Interface::cast(*it);
+        assert(NULL != iface);
+        /* Check if it is a management interface */
+        if (!iface->getName().empty() && (NULL != iface->getAddressObject()))
+        {
+            m_ifaces.push_back(iface);
+        }
+    }
 }
 
 /*
@@ -104,6 +125,7 @@ void OSConfigurator_secuwall::processFirewallOptions()
     {
         generateSSHKeys();
     }
+
     generateHostsFile();
     generateDNSFile();
     generateNsswitchFile();
@@ -177,20 +199,18 @@ int OSConfigurator_secuwall::generateManagementFile()
     QTextStream stream (&stream_string);
 
     /* search Management Interfaces, note: this can be more than one */
-    for (FWObjectTypedChildIterator fw_ifaces = fw->findByType(Interface::TYPENAME);
-            fw_ifaces != fw_ifaces.end(); ++fw_ifaces)
+    for (list<Interface *>::iterator it = m_ifaces.begin(); it != m_ifaces.end(); it++)
     {
-        Interface *iface = Interface::cast(*fw_ifaces);
         /* Check if it is a management interface */
-        if (iface->isManagement() && iface->getAddressObject() != NULL)
+        if ((*it)->isManagement())
         {
-            mgm_iface.push_back(iface->getName());
+            mgm_iface.push_back((*it)->getName());
         }
     }
 
     stream << "MGM_DEV=\"";
     stream << stringify(mgm_iface, " ").c_str();
-    stream << s << "\"" << endl;
+    stream << "\"" << endl;
 
     /* lookup Management IP address */
     mgm_ip = options->getStr("secuwall_mgmt_mgmtaddr").c_str();
@@ -589,20 +609,49 @@ int OSConfigurator_secuwall::generateNsswitchFile()
     return 0;
 }
 
-int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, IPv4 * ip_address, int iface_number)
+int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string name, IPv4 * ip_address, int iface_number)
 {
     FWOptions* options = NULL;
-
-    QString s, stream_string;
+    ifaceType itype = ifNotDefined;
+    QString s;
 
     /* Temporary storage for file content */
+    QString stream_string;
     QTextStream stream(&stream_string);
 
-    if (iface->getName().find("*")==string::npos)
+    assert(iface != NULL);
+
+    /* fallback for name of the interface */
+    if (name.empty())
+        name = iface->getName();
+
+    if (name.empty())
+        abort("cannot get name for interface");
+
+    /* determine the type of the interface */
+    if (iface->getName().find("*") == string::npos)
         options = iface->getOptionsObject();
 
+    if (iface_number > 0)
+    {
+        itype = ALIAS;
+    }
+    else if (options == NULL || options->getStr("type").empty())
+    {
+        itype = ETHERNET;
+    }
+    else
+    {
+        itype = s_mapIfaceTypes[options->getStr("type")];
+    }
+
+    /* shortcut: unconfigured ethernet devices just exist, they don't need a config file */
+    if ((itype == ETHERNET) && (ip_address == NULL) && (iface->getAddressObject() == NULL))
+        return 0;
+
     /* Interface name */
-    stream << "DEVICE=\"" << iface->getName().c_str();
+    stream << "DEVICE=\"";
+    stream << name.c_str();
     if (iface_number > 0)
         stream << ":" << iface_number;
     stream << "\"" << endl;
@@ -623,8 +672,6 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, IPv4 * ip
     const Address* ipAddr;
     if (ip_address != NULL)
         ipAddr = ip_address->getAddressObject();
-    else
-        ipAddr = iface->getAddressObject();
 
     if (ipAddr != NULL)
     {
@@ -704,96 +751,94 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, IPv4 * ip
 
     /* Interface type */
     stream << "TYPE=\"";
-    if (options == NULL || (s = options->getStr("type").c_str()).isEmpty())
-    {
-        /* TODO: Extract magic value */
-        /* Set ethernet as "sane" default  */
-        s = "ethernet";
-    }
-    if (s == "cluster_interface")
-    {
-        /* all our cluster interfaces are vrrp! */
-        s = "vrrp";
-    }
-
-    stream << s;
+    stream << s_mapIfaceStrings[itype].c_str();
     stream << "\"" << endl;
 
+    /* get all direct children of type interface */
+    list<FWObject *> basedevs = iface->getByType(Interface::TYPENAME);
+
     /* Type-specific parameter handling */
-    switch (s_mapIfaceTypes[s.toStdString()])
+    switch (itype)
     {
     case BRIDGE:
         /* Fall-through */
     case BONDING:
-        /* Base Device */
-        stream << "BASEDEV=\"";
         /* Iterate over all child interfaces */
-        if (iface->getChildrenCount() > 0)
+        if (basedevs.empty())
         {
-            list<FWObject*> l3 = iface->getByType(Interface::TYPENAME);
-            if (!l3.empty())
+            abort("No base device specified for " + name);
+        }
+        else
+        {
+            vector<string> devs;
+            for (list<FWObject *>::iterator it = basedevs.begin(); it != basedevs.end(); it++)
             {
-                /* Treat first element seperate to avoid unnecessary whitespaces */
-                list<FWObject*>::iterator i = l3.begin();
-                Interface *ifaceChild = Interface::cast(*i);
-                assert(ifaceChild != NULL);
-                stream << ifaceChild->getName().c_str();
-                i++;
-                /* Process remaining child interfaces */
-                for (; i != l3.end(); ++i)
+                Interface *iface = Interface::cast(*it);
+                assert(NULL != iface);
+                if (!(iface->getName().empty()))
                 {
-                    Interface *ifaceChild = Interface::cast(*i);
-                    assert(ifaceChild != NULL);
-                    stream << " " << ifaceChild->getName().c_str();
+                    devs.push_back(iface->getName());
+                    generateInterfaceFile(iface);
                 }
             }
+
+            /* Base Device */
+            stream << "BASEDEV=\"";
+            stream << stringify(devs," ").c_str();
+            stream << "\"" << endl;
         }
-        stream << "\"" << endl;
         break;
+
     case VLAN:
-        stream << "VLANID=\"";
-        if (options != NULL)
+        if (options == NULL || options->getStr("vlan_id").empty())
         {
-            stream << options->getStr("vlan_id").c_str();
+            abort("No VLAN id specified for " + name);
         }
+
+        stream << "VLANID=\"";
+        stream << options->getStr("vlan_id").c_str();
         stream << "\"" << endl;
 
         if (iface->getParent() == NULL || iface->getParent()->getName().empty())
         {
             /* No base device provided */
-            abort("No base device specified for " + iface->getName());
+            abort("No base device specified for " + name);
         }
 
         stream << "BASEDEV=\"";
         stream << iface->getParent()->getName().c_str();
         stream << "\"" << endl;
+
+        generateInterfaceFile(Interface::cast(iface->getParent()));
         break;
-    case VRRP:
+
+    case CLUSTER:
         if (options->getStr("base_device").empty())
         {
             /* No base device provided */
-            abort("No base device specified for " + iface->getName());
+            abort("No base device specified for " + name);
         }
 
         stream << "BASEDEV=\"";
         stream << options->getStr("base_device").c_str();
         stream << "\"" << endl;
         break;
+
+    case ALIAS:
+        /* Base Device for secondary interfaces*/
+        stream << "BASEDEV=\"";
+        stream << name.c_str();
+        stream << "\"" << endl;
+        break;
+
     default:
         /* Don't define BASEDEV */
         break;
     }
 
-    if (iface_number > 0)
-    {
-        /* Base Device for secondary interfaces*/
-        stream << "BASEDEV=\"";
-        stream << iface->getName().c_str();
-        stream << "\"" << endl;
-    }
 
     /* Write actual interface file */
-    string filename = fw->getName() + "/" + iface_filename + iface->getName();
+    string filename = fw->getName() + "/" + iface_filename + name;
     if (iface_number > 0)
     {
         stringstream tmp;
@@ -801,22 +846,19 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, IPv4 * ip
         filename += tmp.str();
     }
     stringToFile(stream.string()->toStdString(), filename);
-    generated_Files.insert(pair<string,string> (filename, iface_filename + iface->getName()));
+    generated_Files.insert(pair<string,string> (filename, iface_filename + name));
 
     cout << " wrote " << filename << " successfully" << endl << flush;
 
-    /* Iterate over all child interfaces and call function recursively. Skip if processing a secondary interface */
-    if (iface->getChildrenCount() > 0 && iface_number == 0)
-    {
-        FWObjectTypedChildIterator sub_ifaces = iface->findByType(Interface::TYPENAME);
-        for (; sub_ifaces != sub_ifaces.end(); ++sub_ifaces)
-        {
-            Interface *ifaceChild=Interface::cast(*sub_ifaces);
-            assert(ifaceChild != NULL);
-            generateInterfaceFile(ifaceChild);
-        }
-    }
     return 0;
+}
+
+template <class T>
+inline std::string toString (const T& t)
+{
+    std::stringstream ss;
+    ss << t;
+    return ss.str();
 }
 
 int OSConfigurator_secuwall::generateInterfaces()
@@ -835,41 +877,27 @@ int OSConfigurator_secuwall::generateInterfaces()
         }
     }
 
+    int vrrp_count = 0;
     /* Iterate over all top-level interfaces */
-    FWObjectTypedChildIterator interfaces = fw->findByType(Interface::TYPENAME);
-    for (; interfaces != interfaces.end(); ++interfaces)
+    for (list<Interface *>::iterator it = m_ifaces.begin(); it != m_ifaces.end(); it++)
     {
-        Interface *iface = Interface::cast(*interfaces);
-        assert(iface != NULL);
-        /* Determine if there are secondary interfaces (ethernet or bonding type with multiple IPs) */
-        if (iface->countInetAddresses(true) > 1)
+        string ifname = (*it)->getName();
+        FWOptions *options = (*it)->getOptionsObject();
+
+        /* rename handling for our vrrp "devices" */
+        if ((options != NULL) && options->getBool("cluster_interface"))
         {
-            FWOptions* options = NULL;
-            string iface_type;
-            if (iface->getName().find("*")==string::npos)
-                options = iface->getOptionsObject();
-
-            if (options == NULL || (iface_type = options->getStr("type")).empty())
-                iface_type = "ethernet";
-
-            if (s_mapIfaceTypes[iface_type] == ETHERNET ||
-                    s_mapIfaceTypes[iface_type] == BONDING)
-            {
-                int count = 0;
-                for (FWObjectTypedChildIterator j = iface->findByType(IPv4::TYPENAME); j != j.end(); ++j)
-                {
-                    IPv4 *address = IPv4::cast(*j);
-                    generateInterfaceFile (iface, address, count);
-                    count++;
-                }
-            }
-            else
-                abort(
-                    "Invalid config: Found interface of type " +
-                    iface_type + " with multiple addresses");
+            ifname = "vrrp" + ::toString(vrrp_count++);
         }
-        else
-            generateInterfaceFile(iface);
+
+        /* Iterate over all addresses */
+        FWObjectTypedChildIterator j = (*it)->findByType(IPv4::TYPENAME);
+        int count = 0;
+        for (; j != j.end(); ++j, ++count)
+        {
+            IPv4 *address = IPv4::cast(*j);
+            generateInterfaceFile (*it, ifname, address, count);
+        }
     }
 
     return 0;

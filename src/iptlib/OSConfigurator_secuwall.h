@@ -48,15 +48,18 @@ public:
     /* Value-Defintions of the different String values */
     enum ifaceType { ifNotDefined,
                      ETHERNET,
+                     ALIAS,
                      BRIDGE,
                      BONDING,
-                     VRRP,
+                     CLUSTER,
                      VLAN,
                      ifEnd
                    };
 
     /* Map to associate the strings with the enum values */
     std::map<std::string, ifaceType> s_mapIfaceTypes;
+    /* and vice versa for the config files */
+    std::map<ifaceType, std::string> s_mapIfaceStrings;
 
 private:
     bool createDirStructure() const;
@@ -67,6 +70,7 @@ private:
     int generateNsswitchFile();
     int generateInterfaces();
     int generateInterfaceFile(libfwbuilder::Interface * iface,
+                              std::string name = "",
                               libfwbuilder::IPv4 * ip_address = NULL,
                               int iface_number = 0);
 
@@ -79,6 +83,7 @@ private:
     bool containsFirewallKey(std::string in) const;
 
     std::map<std::string, std::string> generated_Files;
+    std::list<libfwbuilder::Interface *> m_ifaces;
 };
 };
 
