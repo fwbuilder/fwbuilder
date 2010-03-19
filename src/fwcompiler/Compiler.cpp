@@ -1107,14 +1107,17 @@ bool Compiler::replaceFailoverInterfaceInRE::processNext()
         Interface *intf = Interface::cast(FWReference::getObject(*i));
         if (intf==NULL) continue;
 
-        // Remember that even if this interface used to be cluster
-        // interface, here we have its copy which belongs to the
-        // firewall. This is done in
-        // Compiler::processFailoverGroup. Dont use interface name to
-        // distinguish cluster interface. Better method is to check
-        // for the variable "cluster_interface".
-        if (intf->getOptionsObject()->getBool("cluster_interface"))
-            cl.push_back(intf);
+        if (intf->isFailoverInterface()) cl.push_back(intf);
+        else
+        {
+            // this could be a copy of cluster interface which belongs
+            // to the firewall. This is done in
+            // Compiler::processFailoverGroup. Dont use interface name
+            // to distinguish cluster interface. Better method is to
+            // check for the variable "cluster_interface".
+            if (intf->getOptionsObject()->getBool("cluster_interface"))
+                cl.push_back(intf);
+        }
     }
 
     if (!cl.empty())
@@ -1122,15 +1125,26 @@ bool Compiler::replaceFailoverInterfaceInRE::processNext()
         for (list<Interface*>::iterator i=cl.begin(); i!=cl.end(); i++)
         {
             Interface *intf = *i;
-            string base_interface_id = intf->getOptionsObject()->getStr("base_interface_id");
-            if (!base_interface_id.empty())
+
+            FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+                intf->getFirstByType(FailoverClusterGroup::TYPENAME));
+            if (fg)
             {
-                FWObject *base_interface = compiler->dbcopy->findInIndex(
-                    FWObjectDatabase::getIntId(base_interface_id));
-                if (base_interface)
+                Interface *other_interface = fg->getInterfaceForMemberFirewall(compiler->fw);
+                re->removeRef(intf);
+                re->addRef(other_interface);
+            } else 
+            {
+                string base_interface_id = intf->getOptionsObject()->getStr("base_interface_id");
+                if (!base_interface_id.empty())
                 {
-                    re->removeRef(intf);
-                    re->addRef(base_interface);
+                    FWObject *base_interface = compiler->dbcopy->findInIndex(
+                        FWObjectDatabase::getIntId(base_interface_id));
+                    if (base_interface)
+                    {
+                        re->removeRef(intf);
+                        re->addRef(base_interface);
+                    }
                 }
             }
         }
