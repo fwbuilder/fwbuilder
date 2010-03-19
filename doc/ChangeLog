@@ -1,5 +1,8 @@
 2010-03-19  vadim  <vadim@vk.crocodile.org>
 
+	* platform/fwsm.xml: fixed SourceForge bug 2973121: Added support
+	for FWSM v4.x
+
 	* pixAdvancedDialog.cpp: fixed SourceForge bug 2973079 "pix typo"
 	(typo in a tooltip)
 
