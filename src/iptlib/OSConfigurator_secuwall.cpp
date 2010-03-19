@@ -916,7 +916,7 @@ int OSConfigurator_secuwall::generateSSHKeys()
     filename = fw->getName() + "/" + ssh_dir + "/ssh_host_rsa_key";
     if (!QFile::exists(filename.c_str()))
     {
-        cmd = "ssh-keygen -t rsa -f " + pwd.toStdString() + "/" + filename + " -C root@" + fw->getName() + " -P \"\" 2>&1";
+        cmd = "ssh-keygen -t rsa -b 2048 -f " + pwd.toStdString() + "/" + filename + " -C root@" + fw->getName() + " -P \"\" 2>&1";
         i = system(cmd.c_str());
     }
     else
