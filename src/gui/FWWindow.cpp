@@ -1458,7 +1458,7 @@ void FWWindow::updateGlobalToolbar()
     if (pp)
     {
         list<Firewall *> fws;
-        pp->findAllFirewalls(fws);
+	if (pp->db() != NULL) pp->findAllFirewalls(fws);
         setCompileAndInstallActionsEnabled(fws.size() != 0);
     } else
         setCompileAndInstallActionsEnabled(false);
