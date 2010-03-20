@@ -50,6 +50,9 @@
 #include "FWObjectClipboard.h"
 #include "TextEditWidget.h"
 #include "fwbuilder/AddressRange.h"
+#include "FWBTree.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -70,28 +73,22 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 void AddressRangeDialogTest::checkMessageBox()
 {
     QVERIFY(app->activeModalWidget()->metaObject()->className() == QMessageBox().metaObject()->className());
+    QVERIFY(dynamic_cast<QMessageBox*>(app->activeModalWidget())->text().contains("300.300.300.300") ||
+            dynamic_cast<QMessageBox*>(app->activeModalWidget())->text().contains("200.200.200.200") );
     dynamic_cast<QMessageBox*>(app->activeModalWidget())->reject();
 }
 
 void AddressRangeDialogTest::editSelectedObject()
 {
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
-    new FWObjectClipboard();
-    mw->loadFile("test.fwb", false);
+    mw->startupLoad();
     QTest::qWait(100);
     QToolButton* newButton = mw->findChild<QToolButton*>("newButton");
-    foreach(QAction *action, newButton->menu()->actions())
-    {
-        if (action->text() == "New Address Range")
-        {
-            action->trigger();
-            break;
-        }
-    }
+    mw->findChild<QAction*>(QString("newObject_") + AddressRange::TYPENAME)->trigger();
     QTest::qWait(100);
     QTreeWidgetItem *item = mw->getCurrentObjectTree()->findItems("Address Range", Qt::MatchRecursive | Qt::MatchExactly, 0).first();
-    //QTreeWidgetItem *item = mw->getCurrentObjectTree()->findItems("Address Range", Qt::MatchRecursive | Qt::MatchExactly, 0).first();
     mw->getCurrentObjectTree()->setCurrentItem(item, 0, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     ObjectManipulator *om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     om->editSelectedObject();
