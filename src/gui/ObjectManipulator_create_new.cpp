@@ -144,6 +144,7 @@ QAction* ObjectManipulator::addNewObjectMenuItem(QMenu *menu,
 
     act = menu->addAction(QIcon(icon_path + QString(type_name) + "/icon-tree"),
                           menu_item_text, this, SLOT( createNewObject() ));
+    act->setObjectName(QString("newObject_") + type_name);
     QMap<QString, QVariant> d;
     d["type_name"] = QVariant(QString(type_name));
     d["add_to_group"] = QVariant(add_to_group_id);
