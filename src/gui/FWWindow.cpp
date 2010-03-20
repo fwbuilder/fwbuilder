@@ -189,6 +189,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     psd = NULL;
 
     prepareFileOpenRecentMenu();
+    setCompileAndInstallActionsEnabled(false);
 
     // ProjectPanel *proj = newProjectPanel();
     // showSub(proj);
@@ -552,6 +553,8 @@ void FWWindow::startupLoad()
     }
 
     prepareFileMenu();
+    updateGlobalToolbar();
+    //prepareRulesMenu();
 }
 
 void FWWindow::helpAbout()
@@ -581,6 +584,8 @@ void FWWindow::fileNew()
         {
             showSub(proj.get());
             prepareFileMenu();
+            updateGlobalToolbar();
+            //prepareRulesMenu();
             proj.release();
         }
     }
@@ -656,6 +661,9 @@ void FWWindow::fileOpen()
         // reset actions, including Save() which should now
         // be inactive
         prepareFileMenu();
+        //prepareRulesMenu();
+        updateGlobalToolbar();
+
         QCoreApplication::postEvent(this, new updateSubWindowTitlesEvent());
     } else
         m_mainWindow->m_space->setActiveSubWindow(last_active_window);
@@ -719,11 +727,16 @@ void FWWindow::fileClose()
         if (!project->saveIfModified()) return;  // abort operation
         project->saveState();
         project->fileClose();
+
+        // reset actions, including Save() which should now
+        // be inactive
+        prepareFileMenu();
+        //prepareRulesMenu();
+        updateGlobalToolbar();
     }
 
     if (fwbdebug) qDebug("subWindowList().size()=%d",
                          m_mainWindow->m_space->subWindowList().size());
-
 }
 
 void FWWindow::fileExit()
@@ -772,91 +785,6 @@ void FWWindow::importPolicy()
         DiscoveryDruid druid(this, true);
         druid.exec();
     }
-}
-
-void FWWindow::setActionsEnabled(bool en)
-{
-    m_mainWindow->compileAction->setEnabled(en );
-    m_mainWindow->installAction->setEnabled(en );
-}
-
-void FWWindow::setEnabledAfterRF()
-{
-    m_mainWindow->compileAction->setEnabled( true );
-    m_mainWindow->installAction->setEnabled( true );
-}
-
-void FWWindow::selectRules()
-{
-    m_mainWindow ->compileAction->setEnabled( true );
-    m_mainWindow ->installAction->setEnabled( true );
-
-    if (activeProject()) activeProject()->selectRules();
-}
-
-void FWWindow::disableActions(bool havePolicies)
-{
-    m_mainWindow ->compileAction->setEnabled( true );
-    m_mainWindow ->installAction->setEnabled( true );
-}
-
-void FWWindow::compile()
-{
-    std::set<Firewall*> emp;
-
-    instd = new instDialog(this, false, false, emp);
-    instd->show();
-
-//    id->exec();
-//    delete id;
-}
-
-void FWWindow::compile(set<Firewall*> vf)
-{
-    if (fwbdebug)
-        qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
-
-
-    instDialog *id = new instDialog(this, false, true, vf);
-    instd = id;
-    instd->show();
-
-//    id->exec();
-//    delete id;
-}
-
-void FWWindow::install(set<Firewall*> vf)
-{
-    instDialog *id = new instDialog(this, true, true, vf);
-
-    instd = id;
-    instd->show();
-
-//    id->exec();
-//    delete id;
-}
-
-void FWWindow::install()
-{
-    std::set<Firewall*> emp;
-    instd = new instDialog(this, true, false, emp);
-    instd->show();
-
-//    id->exec();
-//    delete id;
-}
-
-void FWWindow::transferfw(set<Firewall*> vf)
-{
-    transferDialog *ed = new transferDialog(NULL, vf);
-    ed->show();
-}
-
-void FWWindow::transferfw()
-{
-    std::set<Firewall*> emp;
-    transferDialog *ed = new transferDialog(NULL, emp);
-    ed->show();
 }
 
 void FWWindow::showEvent(QShowEvent *ev)
@@ -1108,6 +1036,9 @@ void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
     if (pp)
     {
         prepareFileMenu();
+        //prepareRulesMenu();
+        updateGlobalToolbar();
+
         pp->setActive();
         if (isEditorVisible()) openEditor(pp->getSelectedObject());
     }
@@ -1521,13 +1452,31 @@ void FWWindow::undoViewVisibilityChanged(bool visible)
        st->setShowUndoPanel(visible);
 }
 
-void FWWindow::prepareRulesMenu ()
+void FWWindow::updateGlobalToolbar()
+{
+    ProjectPanel* pp = activeProject();
+    if (pp)
+    {
+        list<Firewall *> fws;
+        pp->findAllFirewalls(fws);
+        setCompileAndInstallActionsEnabled(fws.size() != 0);
+    } else
+        setCompileAndInstallActionsEnabled(false);
+}
+
+
+/*
+ * This method constructs main menu "Rules" and enables or disables items
+ * as appropriate.
+ */
+void FWWindow::prepareRulesMenu()
 {
     qDebug("FWWindow::ruleMenuAboutToShow ()");
 
     cleanRulesMenu();
 
-    if (activeProject())
+    ProjectPanel* pp = activeProject();
+    if (pp)
     {
         RuleSetView* rsv = activeProject()->getCurrentRuleSetView();
 
@@ -1537,6 +1486,10 @@ void FWWindow::prepareRulesMenu ()
         }
         m_mainWindow->RulesMenu->addSeparator();
         m_mainWindow->RulesMenu->addActions(ruleStaticActions);
+
+        list<Firewall *> fws;
+        pp->findAllFirewalls(fws);
+        setCompileAndInstallActionsEnabled(fws.size() != 0);
     }
 }
 
@@ -1554,5 +1507,93 @@ void FWWindow::showStatusBarMessage(const QString &txt)
     // Keep status bar message little longer so user can read it. See #272
     QTimer::singleShot( 1000, statusBar(), SLOT(clearMessage()));
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 100);
+}
+
+void FWWindow::setCompileAndInstallActionsEnabled(bool en)
+{
+    if (fwbdebug) qDebug() << "FWWindow::setCompileAndInstallActionsEnabled en="
+                           << en;
+    m_mainWindow->compileAction->setEnabled(en );
+    m_mainWindow->installAction->setEnabled(en );
+}
+
+void FWWindow::setEnabledAfterRF()
+{
+    if (fwbdebug) qDebug() << "FWWindow::setEnabledAfterRF()";
+    m_mainWindow->compileAction->setEnabled( true );
+    m_mainWindow->installAction->setEnabled( true );
+}
+
+void FWWindow::selectRules()
+{
+    if (fwbdebug) qDebug() << "FWWindow::selectRules()";
+
+    m_mainWindow ->compileAction->setEnabled( true );
+    m_mainWindow ->installAction->setEnabled( true );
+
+    if (activeProject()) activeProject()->selectRules();
+}
+
+void FWWindow::disableActions(bool havePolicies)
+{
+    if (fwbdebug) qDebug() << "FWWindow::disableActions()";
+
+    m_mainWindow ->compileAction->setEnabled(havePolicies);
+    m_mainWindow ->installAction->setEnabled(havePolicies);
+}
+
+void FWWindow::compile()
+{
+    if (activeProject())
+    {
+        std::set<Firewall*> emp;
+        instd = new instDialog(this, false, false, emp);
+        instd->show();
+    }
+}
+
+void FWWindow::install()
+{
+    if (activeProject())
+    {
+        std::set<Firewall*> emp;
+        instd = new instDialog(this, true, false, emp);
+        instd->show();
+    }
+}
+
+void FWWindow::compile(set<Firewall*> vf)
+{
+    if (fwbdebug)
+        qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
+    if (activeProject())
+    {
+        instDialog *id = new instDialog(this, false, true, vf);
+        instd = id;
+        instd->show();
+    }
+}
+
+void FWWindow::install(set<Firewall*> vf)
+{
+    if (activeProject())
+    {
+        instDialog *id = new instDialog(this, true, true, vf);
+        instd = id;
+        instd->show();
+    }
+}
+
+void FWWindow::transferfw(set<Firewall*> vf)
+{
+    transferDialog *ed = new transferDialog(NULL, vf);
+    ed->show();
+}
+
+void FWWindow::transferfw()
+{
+    std::set<Firewall*> emp;
+    transferDialog *ed = new transferDialog(NULL, emp);
+    ed->show();
 }
 

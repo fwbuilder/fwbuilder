@@ -191,10 +191,6 @@ bool ProjectPanel::fileNew()
         qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
                rcs, rcs->getFileName().toAscii().constData());
 
-    // reset actions, including Save() which should now
-    // be inactive
-    mw->prepareFileMenu();
-
     return (rcs!=NULL);
 }
 
@@ -264,9 +260,7 @@ void ProjectPanel::fileClose()
     if (!saveIfModified() || !checkin(true))  return;
     reset();
     mdiWindow->close();
-    // reset actions, including Save() which should now
-    // be inactive
-    mw->prepareFileMenu();
+    mw->setCompileAndInstallActionsEnabled(false);
     if (fwbdebug) qDebug("ProjectPanel::fileClose(): done");
 }
 
@@ -325,10 +319,6 @@ void ProjectPanel::fileCommit()
     save();
     if (!checkin(true))  return;
     rcs->co();
-
-    // reset actions, including Save() which should now
-    // be inactive
-    mw->prepareFileMenu();
 }
 
 /*
@@ -376,10 +366,6 @@ void ProjectPanel::fileDiscard()
          * open, which it isn't because we reset rcs to NULL
          */
         loadFile(fname, false);
-
-        // reset actions, including Save() which should now
-        // be inactive
-        mw->prepareFileMenu();
     }
 }
 
@@ -410,13 +396,7 @@ void ProjectPanel::fileAddToRCS()
             0, 1 );
     }
 
-    // reset actions, including Save() which should now
-    // be inactive
-    mw->prepareFileMenu();
-
-    //setWindowTitle(getPageTitle());
     QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
-
 }
 
 void ProjectPanel::fileImport()
@@ -434,13 +414,6 @@ void ProjectPanel::fileImport()
     FWObject *new_lib = loadLibrary( fname.toLocal8Bit().constData() );
 
     loadObjects();
-
-    // reset actions, including Save() which should now
-    // be inactive
-    mw->prepareFileMenu();
-
-    //QCoreApplication::postEvent(this, new openLibraryForObjectEvent(
-    //                                getFileName(), new_lib->getId()));
 
     m_panel->om->openLib(new_lib);
 }

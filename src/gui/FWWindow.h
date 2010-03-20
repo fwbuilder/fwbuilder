@@ -139,7 +139,8 @@ public:
     void updateTreeFont();
     void updateRecentFileActions();
     void updateOpenRecentMenu(const QString &fileName);
-
+    void updateGlobalToolbar();
+    
     void enableBackAction();
     
 public slots:
@@ -279,7 +280,7 @@ public slots:
      */
     void selectRules();
     void disableActions(bool havePolicies);
-    void setActionsEnabled(bool en);
+    void setCompileAndInstallActionsEnabled(bool en);
     void setEnabledAfterRF();
 
     QString getCurrentFileName();

@@ -1,5 +1,10 @@
 2010-03-19  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::updateGlobalToolbar): fixed SF bug 2973137
+	"'warning text goes here'". Main toolbar buttons "Compile" and "Install",
+	as well as menu items Rules/Compile and Rules/Install should be
+	disabled if currently opened data file has no firewalls to compile.
+
 	* CompilerDriverFactory.cpp (CompilerDriverFactory::createCompilerDriver):
 	fixed SF bug 2973221 "single rule compile (x) results in sigsegv".
 

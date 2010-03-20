@@ -97,6 +97,9 @@ instDialog::instDialog(QWidget *p,
     onlySelected = showOnlySelected;
     compile_only = ! install;
 
+    m_dialog->warning_space->hide();
+
+
     if (!onlySelected)
         findFirewalls();
     else
@@ -135,8 +138,6 @@ instDialog::instDialog(QWidget *p,
         m_dialog->batchInstall->setEnabled(false);
 
     creatingTable = false;
-
-    m_dialog->warning_space->hide();
 
     m_dialog->selectTable->setFocus();
 

@@ -92,17 +92,31 @@ void FWWindow::fileProp()
 
 void FWWindow::fileSave()
 {
-    if (activeProject()) activeProject()->fileSave();
+    if (activeProject())
+    {
+        activeProject()->fileSave();
+        prepareFileMenu();
+    }
 }
 
 void FWWindow::fileSaveAs()
 {
-    if (activeProject()) activeProject()->fileSaveAs();
+    if (activeProject())
+    {
+        activeProject()->fileSaveAs();
+        prepareFileMenu();
+    }
 }
 
 void FWWindow::fileCommit()
 {
-    if (activeProject()) activeProject()->fileCommit();
+    if (activeProject())
+    {
+        activeProject()->fileCommit();
+        // reset actions, including Save() which should now
+        // be inactive
+        prepareFileMenu();
+    }
 }
 
 /*
@@ -111,12 +125,22 @@ void FWWindow::fileCommit()
  */
 void FWWindow::fileDiscard()
 {
-    if (activeProject()) activeProject()->fileDiscard();
+    if (activeProject())
+    {
+        activeProject()->fileDiscard();
+        prepareFileMenu();
+        //prepareRulesMenu();
+        updateGlobalToolbar();
+    }
 }
 
 void FWWindow::fileAddToRCS()
 {
-    if (activeProject()) activeProject()->fileAddToRCS();
+    if (activeProject())
+    {
+        activeProject()->fileAddToRCS();
+        prepareFileMenu();
+    }
 }
 
 void FWWindow::load(QWidget*)
@@ -141,7 +165,13 @@ void FWWindow::loadLibrary(const string &libfpath)
 
 void FWWindow::fileImport()
 {
-    if (activeProject()) activeProject()->fileImport();
+    if (activeProject())
+    {
+        activeProject()->fileImport();
+        prepareFileMenu();
+        //prepareRulesMenu();
+        updateGlobalToolbar();
+    }
 }
 
 

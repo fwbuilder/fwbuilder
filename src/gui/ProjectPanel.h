@@ -169,7 +169,7 @@ public:
 
     ObjectTreeView* getCurrentObjectTree();
 
-    void findAllFirewalls (std::list<libfwbuilder::Firewall *> &fws);
+    void findAllFirewalls(std::list<libfwbuilder::Firewall *> &fws);
 
     void showDeletedObjects(bool f);
     void select();

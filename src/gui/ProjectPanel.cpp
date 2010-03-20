@@ -341,7 +341,8 @@ void ProjectPanel::reopenFirewall()
         rv->restoreCurrentRowColumn(memento);
 
         changingTabs = false;
-        mainW->setEnabledAfterRF();
+
+        mainW->updateGlobalToolbar();
 
         m_panel->ruleSets->setUpdatesEnabled(true);
         m_panel->ruleSets->show();

@@ -117,6 +117,7 @@ bool ProjectPanel::event(QEvent *event)
 
                 mw->prepareFileMenu();
                 mw->prepareEditMenu();
+                mw->updateGlobalToolbar();
 
                 FWObject *p = obj;
                 while (p && Firewall::cast(p)==NULL) p = p->getParent();
