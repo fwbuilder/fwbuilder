@@ -1,7 +1,7 @@
 include(../../../../qmake.inc)
 
 QT += testlib network gui
-TARGET = AddressRangeDialogTest
+TARGET = IPDialogTest
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
