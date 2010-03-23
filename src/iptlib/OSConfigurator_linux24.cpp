@@ -292,9 +292,9 @@ int  OSConfigurator_linux24::prolog()
  * Print shell functions used by the script. If argument (boolean) is true,
  * do not add comments.
  */
-string OSConfigurator_linux24::printShellFunctions()
+string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
 {
-    ostringstream str;
+    QStringList output;
     FWOptions* options = fw->getOptionsObject();
 
     // string host_os = fw->getStr("host_OS");
@@ -302,13 +302,14 @@ string OSConfigurator_linux24::printShellFunctions()
     //     getResourceStr("/FWBuilderResources/Target/family");
 
     Configlet shell_functions(fw, "linux24", "shell_functions");
-    str << shell_functions.expand().toStdString();
+    output.push_back(shell_functions.expand());
 
 /* check if package iproute2 is installed, but do this only if
  * we really need /usr/sbin/ip 
  */
     Configlet configlet(fw, "linux24", "check_utilities");
     configlet.removeComments();
+    configlet.collapseEmptyStrings(true);
 
     if (options->getBool("verify_interfaces") || 
         options->getBool("manage_virtual_addr") ||
@@ -321,41 +322,44 @@ string OSConfigurator_linux24::printShellFunctions()
         configlet.setVariable("need_ifenslave", 
                               options->getBool("configure_bonding_interfaces"));
     }
-    str << configlet.expand().toStdString();
+
+    configlet.setVariable("need_iptables_restore",
+                          options->getBool("use_iptables_restore"));
+
+    configlet.setVariable("need_ip6tables_restore",
+                          have_ipv6 && options->getBool("use_iptables_restore"));
+
+    output.push_back(configlet.expand());
 
     /*
      * Generate commands to reset all tables and chains and set
      * default policy
      */
     Configlet reset_iptables(fw, "linux24", "reset_iptables");
-    str << reset_iptables.expand().toStdString();
+    output.push_back(reset_iptables.expand());
 
     Configlet addr_conf(fw, "linux24", "update_addresses");
-    str << addr_conf.expand().toStdString();
-    str << "\n";
+    output.push_back(addr_conf.expand());
 
     if (options->getBool("configure_vlan_interfaces"))
     {
         Configlet conf(fw, "linux24", "update_vlans");
-        str << conf.expand().toStdString();
-        str << "\n";
+        output.push_back(conf.expand());
     }
 
     if (options->getBool("configure_bridge_interfaces"))
     {
         Configlet conf(fw, "linux24", "update_bridge");
-        str << conf.expand().toStdString();
-        str << "\n";
+        output.push_back(conf.expand());
     }
 
     if (options->getBool("configure_bonding_interfaces"))
     {
         Configlet conf(fw, "linux24", "update_bonding");
-        str << conf.expand().toStdString();
-        str << "\n";
+        output.push_back(conf.expand());
     }
 
-    return str.str();
+    return output.join("\n").toStdString();
 }
 
 string OSConfigurator_linux24::getPathForATool(const std::string &os_variant, OSData::tools tool_name)
@@ -391,7 +395,6 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
 
 string OSConfigurator_linux24::generateCodeForProtocolHandlers()
 {
-    ostringstream ostr;
     FWOptions* options = fw->getOptionsObject();
     bool nomod = Resources::os_res[fw->getStr("host_OS")]->
         Resources::getResourceBool("/FWBuilderResources/Target/options/suppress_modules");
@@ -409,9 +412,7 @@ string OSConfigurator_linux24::generateCodeForProtocolHandlers()
 /* there is no need to load modules on some platforms */
     load_modules.setVariable("load_modules", options->getBool("load_modules") && !nomod);
     load_modules.setVariable("modules_dir", modules_dir.c_str());
-    ostr << load_modules.expand().toStdString();
-
-    return ostr.str();
+    return load_modules.expand().toStdString();
 }
 
 QString OSConfigurator_linux24::addressTableWrapper(FWObject *rule,

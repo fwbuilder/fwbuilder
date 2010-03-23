@@ -1,3 +1,8 @@
+2010-03-23  vadim  <vadim@vk.crocodile.org>
+
+	* configlets/linux24/check_utilities: fixes #1348 "check_tools
+	should check IPTABLES and IPTABLES_RESTORE as well"
+
 2010-03-20  vadim  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::updateGlobalToolbar): additional check

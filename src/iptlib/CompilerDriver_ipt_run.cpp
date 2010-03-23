@@ -479,7 +479,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         script_skeleton.setVariable("tools",
                                     oscnf->printPathForAllTools(os_variant).c_str());
         script_skeleton.setVariable("shell_functions",
-                                    oscnf->printShellFunctions().c_str());
+                                    oscnf->printShellFunctions(have_ipv6).c_str());
         if (supports_prolog_epilog)
         {
             //script_skeleton.setVariable("prolog_epilog",

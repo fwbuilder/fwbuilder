@@ -94,7 +94,7 @@ public:
 
         virtual void registerMultiAddressObject(libfwbuilder::MultiAddressRunTime *at);
         virtual void printChecksForRunTimeMultiAddress();
-        virtual std::string printShellFunctions();
+        virtual std::string printShellFunctions(bool have_ipv6);
         virtual std::string printPathForAllTools(const std::string &os);
         virtual std::string printIPForwardingCommands();
         virtual std::string printRunTimeWrappers(libfwbuilder::FWObject *rule,
