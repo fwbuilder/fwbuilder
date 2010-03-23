@@ -33,9 +33,12 @@ class IPDialogTest : public QObject
 {
     Q_OBJECT
 private slots:
-    void testDialog();
+    void initTestCase();
+    void testIPv4Dialog();
+    void testIPv6Dialog();
 public slots:
     void checkMessageBox();
+    void checkNoMessageBox();
 };
 
 #endif // IPDIALOGTEST_H

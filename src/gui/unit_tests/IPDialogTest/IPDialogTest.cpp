@@ -58,10 +58,21 @@
 #include "IPDialogTest.h"
 #include "StartTipDialog.h"
 #include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/Interface.h"""
+#include "fwbuilder/Interface.h"
 
 using namespace std;
 using namespace libfwbuilder;
+
+void IPDialogTest::initTestCase()
+{
+    new FWObjectClipboard();
+    mw = new FWWindow();
+    mw->show();
+    mw->startupLoad();
+    StartTipDialog *d = mw->findChild<StartTipDialog*>();
+    d->close();
+    QTest::qWait(1000);
+}
 
 QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 {
@@ -85,6 +96,12 @@ void IPDialogTest::checkMessageBox()
             dynamic_cast<QMessageBox*>(app->activeModalWidget())->text().contains("145") );
 }
 
+void IPDialogTest::checkNoMessageBox()
+{
+    foreach(QWidget *w, app->topLevelWidgets())
+        QVERIFY(w->metaObject()->className() != QMessageBox().metaObject()->className());
+}
+
 void setLineEditText(QLineEdit *line, QString text)
 {
     line->clear();
@@ -92,75 +109,9 @@ void setLineEditText(QLineEdit *line, QString text)
     QTest::keyClick(line, Qt::Key_Enter);
 }
 
-void IPDialogTest::testDialog()
+void IPDialogTest::testIPv4Dialog()
 {
-    new FWObjectClipboard();
-    mw = new FWWindow();
-    mw->show();
-    mw->startupLoad();
-    StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    d->close();
-    QTest::qWait(1000);
-    QToolButton* newButton = mw->findChild<QToolButton*>("newButton");
-    mw->findChild<QAction*>(QString("newObject_") + IPv4::TYPENAME)->trigger();
-
-    QTest::qWait(100);
-    QTreeWidgetItem *item = mw->getCurrentObjectTree()->findItems("Address", Qt::MatchRecursive | Qt::MatchExactly, 0).first();
-
-    mw->getCurrentObjectTree()->setCurrentItem(item, 0, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     ObjectManipulator *om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
-    om->editSelectedObject();
-    QTest::qWait(100);
-    QLineEdit *name, *addr, *mask, *name6, *addr6, *mask6;
-    TextEditWidget *comment, *comment6;
-    foreach(QFrame* frame, mw->findChildren<QFrame*>("frame14"))
-    {
-        if (frame->parent()->parent()->objectName() == "w_IPv4Dialog")
-        {
-            name = frame->findChild<QLineEdit*>("obj_name");
-            addr = frame->findChild<QLineEdit*>("address");
-            mask = frame->findChild<QLineEdit*>("netmask");
-            comment = frame->parent()->findChild<TextEditWidget*>("comment");
-        }
-        else
-        {
-            name6 = frame->findChild<QLineEdit*>("obj_name");
-            addr6 = frame->findChild<QLineEdit*>("address");
-            mask6 = frame->findChild<QLineEdit*>("netmask");
-            comment6 = frame->parent()->findChild<TextEditWidget*>("comment");
-        }
-    }
-
-    // test1
-    qDebug() << "test1";
-    setLineEditText(name, "New Network");
-    QVERIFY (dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject()->getName() == "New Network");
-    QTest::qWait(100);
-
-    comment->clear();
-    QTest::mouseClick(comment, Qt::LeftButton);
-    QTest::keyClicks(comment, "Test comment");
-    QTest::mouseClick(comment, Qt::LeftButton);
-    QTest::keyClick(comment, Qt::Key_Tab);
-    QTest::qWait(100);
-    QVERIFY (dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject()->getComment() == "Test comment");
-    QTest::qWait(100);
-
-
-    //test2
-    qDebug() << "test2";
-    setLineEditText(addr, "192.0.2.1");
-    QVERIFY (libfwbuilder::IPv4::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())->getAddressPtr()->toString() == "192.0.2.1");
-
-    //test3
-    qDebug() << "test3";
-    QTimer::singleShot(300, this, SLOT(checkMessageBox()));
-    setLineEditText(addr, "300.300.300.300");
-    QTest::qWait(400);
-    QVERIFY (libfwbuilder::IPv4::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())->getAddressPtr()->toString() == "192.0.2.1");
-
-    //test4
-    qDebug() << "test4";
     Library *lib = NULL;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
@@ -170,79 +121,148 @@ void IPDialogTest::testDialog()
             break;
         }
     }
+
+    IPv4 *addrobj = IPv4::cast(om->createObject(FWBTree().getStandardSlotForObject(lib, IPv4::TYPENAME), IPv4::TYPENAME, "testAddress"));
+
+    QTest::qWait(100);
+    om->editObject(addrobj);
+    QLineEdit *name, *addr, *mask;
+    TextEditWidget *comment, *comment6;
+    QWidget *ipv4dialog = mw->findChild<QWidget*>("w_IPv4Dialog");
+    name = ipv4dialog->findChild<QLineEdit*>("obj_name");
+    addr = ipv4dialog->findChild<QLineEdit*>("address");
+    mask = ipv4dialog->findChild<QLineEdit*>("netmask");
+    comment = ipv4dialog->parent()->findChild<TextEditWidget*>("comment");
+
+    // test1
+    qDebug() << "test1";
+    QTimer::singleShot(200, this, SLOT(checkNoMessageBox()));
+    setLineEditText(name, "testNetwork");
+    QTest::qWait(300);
+    QVERIFY (addrobj->getName() == "testNetwork");
+    QTest::qWait(100);
+
+    comment->clear();
+    QTest::mouseClick(comment, Qt::LeftButton);
+    QTest::keyClicks(comment, "Test comment");
+    QTest::mouseClick(comment, Qt::LeftButton);
+    QTest::keyClick(comment, Qt::Key_Tab);
+    QTest::qWait(100);
+    QVERIFY (addrobj->getComment() == "Test comment");
+    QTest::qWait(100);
+
+
+    //test2
+    qDebug() << "test2";
+    QTimer::singleShot(200, this, SLOT(checkNoMessageBox()));
+    setLineEditText(addr, "192.0.2.1");
+    QTest::qWait(300);
+    QVERIFY (addrobj->getAddressPtr()->toString() == "192.0.2.1");
+
+    //test3
+    qDebug() << "test3";
+    QTimer::singleShot(300, this, SLOT(checkMessageBox()));
+    setLineEditText(addr, "300.300.300.300");
+    QTest::qWait(400);
+    QVERIFY (addrobj->getAddressPtr()->toString() == "192.0.2.1");
+
+    //test4
+    qDebug() << "test4";
     Firewall *fw = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(lib, Firewall::TYPENAME), Firewall::TYPENAME, "newFirewall"));
     Interface *intf = Interface::cast(om->createObject(fw, Interface::TYPENAME, "newInterface"));
     IPv4 *addr2obj = IPv4::cast(om->createObject(intf, IPv4::TYPENAME, "newAddress"));
     QTest::qWait(100);
 
-    QLineEdit* addr2 = mw->findChild<QWidget*>("w_IPv4Dialog")->findChild<QLineEdit*>("address");
-    QLineEdit* mask2 =  mw->findChild<QWidget*>("w_IPv4Dialog")->findChild<QLineEdit*>("netmask");
-
     QTest::qWait(500);
-    setLineEditText(addr2, "192.0.2.1");
+    QTimer::singleShot(200, this, SLOT(checkNoMessageBox()));
+    setLineEditText(addr, "192.0.2.1");
+    QTest::qWait(300);
     QVERIFY (addr2obj->getAddressPtr()->toString() == "192.0.2.1");
-    setLineEditText(mask2, "255.255.0.0");
+    QTimer::singleShot(200, this, SLOT(checkNoMessageBox()));
+    setLineEditText(mask, "255.255.0.0");
+    QTest::qWait(300);
     QVERIFY (addr2obj->getNetmaskPtr()->toString() == "255.255.0.0");
 
     QTimer::singleShot(300, this, SLOT(checkMessageBox()));
-    setLineEditText(addr2, "300.300.300.300");
+    setLineEditText(addr, "300.300.300.300");
     QTest::qWait(400);
     QVERIFY (addr2obj->getAddressPtr()->toString() == "192.0.2.1");
 
     QTest::qWait(100);
     QTimer::singleShot(300, this, SLOT(checkMessageBox()));
-    setLineEditText(mask2, "300.300.300.300");
+    setLineEditText(mask, "300.300.300.300");
     QTest::qWait(400);
     QVERIFY (addr2obj->getNetmaskPtr()->toString() == "255.255.0.0");
+}
+
+void IPDialogTest::testIPv6Dialog()
+{   
+    ObjectManipulator *om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
+    Library *lib = NULL;
+    foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
+    {
+        if (obj->getName() == "User")
+        {
+            lib = Library::cast(obj);
+            break;
+        }
+    }
+    QLineEdit *name, *addr, *mask;
+    TextEditWidget *comment;
+    QWidget *ipv6dialog = mw->findChild<QWidget*>("w_IPv6Dialog");
+
+    name = ipv6dialog->findChild<QLineEdit*>("obj_name");
+    addr = ipv6dialog->findChild<QLineEdit*>("address");
+    mask = ipv6dialog->findChild<QLineEdit*>("netmask");
+    comment = ipv6dialog->parent()->findChild<TextEditWidget*>("comment");
 
     //test5
     qDebug() << "test5";
-    mw->findChild<QAction*>(QString("newObject_") + IPv6::TYPENAME)->trigger();
-    QTest::qWait(100);
-    item = mw->getCurrentObjectTree()->findItems("Address IPv6", Qt::MatchRecursive | Qt::MatchExactly, 0).first();
-    QVERIFY(item != NULL);
-    setLineEditText(name6, "New Network 6");
-    QVERIFY (dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject()->getName() == "New Network 6");
+    IPv6 *addrobj = IPv6::cast(om->createObject(FWBTree().getStandardSlotForObject(lib, IPv6::TYPENAME), IPv6::TYPENAME, "testAddress6"));
+    om->editObject(addrobj);
+    setLineEditText(name, "testNetwork6");
+    QVERIFY (addrobj->getName() == "testNetwork6");
     QTest::qWait(300);
-    comment6->clear();
-    QTest::mouseClick(comment6, Qt::LeftButton);
-    QTest::keyClicks(comment6, "Test comment");
-    QTest::mouseClick(comment6, Qt::LeftButton);
-    QTest::keyClick(comment6, Qt::Key_Tab);
+    comment->clear();
+    QTest::mouseClick(comment, Qt::LeftButton);
+    QTest::keyClicks(comment, "Test comment");
+    QTest::mouseClick(comment, Qt::LeftButton);
+    QTest::keyClick(comment, Qt::Key_Tab);
     QTest::qWait(100);
-    QVERIFY (dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject()->getComment() == "Test comment");
+    QVERIFY (addrobj->getComment() == "Test comment");
     QTest::qWait(100);
-    setLineEditText(addr6, "2001:db8:1:1::1");
-    QTest::qWait(100);
-    QVERIFY (libfwbuilder::IPv6::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())->getAddressPtr()->toString() == "2001:db8:1:1::1");
-
+    QTimer::singleShot(200, this, SLOT(checkNoMessageBox()));
+    setLineEditText(addr, "2001:db8:1:1::1");
+    QTest::qWait(300);
+    QVERIFY (libfwbuilder::IPv6::cast(addrobj)->getAddressPtr()->toString() == "2001:db8:1:1::1");
 
     //test6
     qDebug() << "test6";
     QTimer::singleShot(300, this, SLOT(checkMessageBox()));
-    setLineEditText(addr6, "foo:345:1");
+    setLineEditText(addr, "foo:345:1");
     QTest::qWait(400);
-    QVERIFY (libfwbuilder::IPv6::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())->getAddressPtr()->toString() == "2001:db8:1:1::1");
+    QVERIFY (libfwbuilder::IPv6::cast(addrobj)->getAddressPtr()->toString() == "2001:db8:1:1::1");
 
     //test7
     qDebug() << "test7";
+    Interface *intf = Interface::cast(dynamic_cast<ObjectTreeViewItem*>(mw->getCurrentObjectTree()->findItems("newInterface", Qt::MatchExactly | Qt::MatchRecursive, 0).first())->getFWObject());
     IPv6 *addr62obj = IPv6::cast(om->createObject(intf, IPv6::TYPENAME, "newAddress2"));
     QTest::qWait(100);
-    addr2 = mw->findChild<QWidget*>("w_IPv6Dialog")->findChild<QLineEdit*>("address");
-    mask2 =  mw->findChild<QWidget*>("w_IPv6Dialog")->findChild<QLineEdit*>("netmask");
 
     QTest::qWait(500);
-    setLineEditText(addr2, "2001:db8:1:1::1");
+    setLineEditText(addr, "2001:db8:1:1::1");
     QVERIFY (addr62obj->getAddressPtr()->toString() == "2001:db8:1:1::1");
-    setLineEditText(mask2, "120");
+    QTimer::singleShot(200, this, SLOT(checkNoMessageBox()));
+    setLineEditText(mask, "120");
+    QTest::qWait(300);
     QVERIFY (addr62obj->getNetmaskPtr()->toString() == "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ff00");
 
     QTimer::singleShot(300, this, SLOT(checkMessageBox()));
-    setLineEditText(addr2, "foo:345:1");
+    setLineEditText(addr, "foo:345:1");
     QVERIFY (addr62obj->getAddressPtr()->toString() == "2001:db8:1:1::1");
     QTest::qWait(300);
     QTimer::singleShot(300, this, SLOT(checkMessageBox()));
-    setLineEditText(mask2, "145");
+    setLineEditText(mask, "145");
     QTest::qWait(400);
     QVERIFY (addr62obj->getNetmaskPtr()->toString() == "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ff00");
 
