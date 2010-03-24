@@ -1,3 +1,8 @@
+2010-03-24  Roman Bovsunivkiy <a2k0001@gmail.com>
+
+	* unit tests for IPv4Dialog, IPv6dialog, NetworkDialog, NetworkIPv6dialog
+	fixed #1329, #1327
+
 2010-03-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* using CppUnit::TestFixture in unit tests based on cppunit:
@@ -6,8 +11,6 @@
 	RCSTest.h
 	FWBTreeTest.h
 	interfacePropertiesTest.h
-
-2010-03-23  vadim  <vadim@vk.crocodile.org>
 
 	* configlets/linux24/check_utilities: fixes #1348 "check_tools
 	should check IPTABLES and IPTABLES_RESTORE as well"
