@@ -45,16 +45,6 @@ void InetAddrMaskTest::testIntToInetAddr()
     CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "255.255.255.0");
 }
 
-void InetAddrMaskTest::testIntToInetAddr6()
-{
-    InetAddr *sa1 = new InetAddr(AF_INET6, 0);
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "::");
-       
-    sa1 = new InetAddr(AF_INET6, 1);
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "8000::");
-       
-}        
-
 void InetAddrMaskTest::testStringToInetAddr()
 {
     const uint32_t *int_ptr;
@@ -83,20 +73,6 @@ void InetAddrMaskTest::testStringToInetAddr()
         
     sa1 = new InetAddr("1.0.0");
     CPPUNIT_ASSERT_MESSAGE("1.0.0 -> " + sa1->toString(), sa1->toString() == "1.0.0.0");
-        
-}
-
-void InetAddrMaskTest::testStringToInetAddr6()
-{
-    InetAddr *sa1 = new InetAddr(AF_INET6, "::");
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "::");
-
-    sa1 = new InetAddr(AF_INET6, "::1");
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "::1");
-        
-    sa1 = new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1");
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),
-                           sa1->toString() == "fe80::20c:29ff:fed2:cca1");
 }
 
 void InetAddrMaskTest::testStringToInetAddrExceptions()
@@ -110,20 +86,10 @@ void InetAddrMaskTest::testStringToInetAddrExceptions()
     CPPUNIT_ASSERT_THROW(new InetAddr("foo.bar"), FWException);
     CPPUNIT_ASSERT_THROW(new InetAddr("1.2.foo.bar"), FWException);
 
-    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET, "fe80::20c:29ff:fed2:cca1"), FWException);
-    CPPUNIT_ASSERT_THROW(new InetAddr("fe80::20c:29ff:fed2:cca1"), FWException);
-    CPPUNIT_ASSERT_NO_THROW(new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1/64"));
-    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1/200"), FWException);
-    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "fe80::foo:bar:fed2:cca1"), FWException);
-    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "1.2.3.4"), FWException);
-
     CPPUNIT_ASSERT_THROW(new InetAddr(40), FWException);
     CPPUNIT_ASSERT_NO_THROW(new InetAddr(24));
     CPPUNIT_ASSERT_THROW(new InetAddr((char*)(NULL)), FWException);
     CPPUNIT_ASSERT_NO_THROW(new InetAddr(0));
-
-    CPPUNIT_ASSERT_NO_THROW(new InetAddr(AF_INET6, 64));
-    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, 256), FWException);
 }
 
 void InetAddrMaskTest::testStringToInetAddrMask()

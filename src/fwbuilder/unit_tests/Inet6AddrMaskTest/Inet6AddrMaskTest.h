@@ -26,21 +26,27 @@
 #ifndef INET6ADDRMASKTEST_H
 #define INET6ADDRMASKTEST_H
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
-class Inet6AddrMaskTest : public CppUnit::TestCase
+class Inet6AddrMaskTest : public CppUnit::TestFixture
 {
 public:
-    void runTest();
+    void testStringToInetAddrExceptions();
+    void testIntToInetAddr6();
+    void testStringToInetAddr6();
+    void testStringToInetAddrMask();
+    void testInet6AddressOps();
 
-    static CppUnit::Test *suite()
-    {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "Inet6AddrMaskTest" );
-      suiteOfTests->addTest( new CppUnit::TestCaller<Inet6AddrMaskTest>( "runTest", &Inet6AddrMaskTest::runTest ) );
-      return suiteOfTests;
-    }
+    CPPUNIT_TEST_SUITE(Inet6AddrMaskTest);
+
+    CPPUNIT_TEST(testStringToInetAddrExceptions);
+    CPPUNIT_TEST(testIntToInetAddr6);
+    CPPUNIT_TEST(testStringToInetAddr6);
+    CPPUNIT_TEST(testStringToInetAddrMask);
+    CPPUNIT_TEST(testInet6AddressOps);
+    
+    CPPUNIT_TEST_SUITE_END();
+
 };
 
 #endif // INET6ADDRMASKTEST_H

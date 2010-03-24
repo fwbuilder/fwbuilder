@@ -35,11 +35,7 @@ public:
 
     
     void testIntToInetAddr();
-    void testIntToInetAddr6();
-
     void testStringToInetAddr();
-    void testStringToInetAddr6();
-
     void testStringToInetAddrExceptions();
     void testStringToInetAddrMask();
 
@@ -48,9 +44,7 @@ public:
 
     CPPUNIT_TEST(testStringToInetAddrExceptions);
     CPPUNIT_TEST(testIntToInetAddr);
-    CPPUNIT_TEST(testIntToInetAddr6);
     CPPUNIT_TEST(testStringToInetAddr);
-    CPPUNIT_TEST(testStringToInetAddr6);
     CPPUNIT_TEST(testStringToInetAddrMask);
 
     CPPUNIT_TEST_SUITE_END();

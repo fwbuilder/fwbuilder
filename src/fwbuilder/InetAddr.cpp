@@ -355,7 +355,7 @@ InetAddr InetAddr::opPlus(int increment) const
         struct in6_addr res;
         InetAddr::_copy_in6_addr(&res, &(ipv6) );
         ((uint32_t*)(&res))[3] =
-            htonl(ntohl( ((uint32_t*)(&(ipv6)))[3] + increment));
+            htonl(ntohl( ((uint32_t*)(&(ipv6)))[3]) + increment);
         return InetAddr(&res);
     }
 }
@@ -372,7 +372,7 @@ InetAddr InetAddr::opMinus(int decrement) const
         struct in6_addr res;
         InetAddr::_copy_in6_addr(&res, &(ipv6) );
         ((uint32_t*)(&res))[3] =
-            htonl(ntohl( ((uint32_t*)(&(ipv6)))[3] - decrement));
+            htonl(ntohl( ((uint32_t*)(&(ipv6)))[3]) - decrement);
         return InetAddr(&res);
     }
 }

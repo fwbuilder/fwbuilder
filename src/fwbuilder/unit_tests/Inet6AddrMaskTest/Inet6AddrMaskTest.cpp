@@ -29,35 +29,95 @@
 using namespace libfwbuilder;
 using namespace std;
 
-void Inet6AddrMaskTest::runTest()
-{
-    string sa;
 
+void Inet6AddrMaskTest::testIntToInetAddr6()
+{
     InetAddr x1(AF_INET6, 0);
     CPPUNIT_ASSERT(x1.toString()=="::" && x1.getLength()==128);
 
-    InetAddr x2(AF_INET6, 8);
-    CPPUNIT_ASSERT(x2.toString()=="ff00::" && x2.getLength()==8);
+    InetAddr x2(AF_INET6, 1);
+    CPPUNIT_ASSERT(x2.toString()=="8000::" && x2.getLength()==1);
 
-    InetAddr x3(AF_INET6, 16);
-    CPPUNIT_ASSERT(x3.toString()=="ffff::" && x3.getLength()==16);
+    InetAddr x3(AF_INET6, 8);
+    CPPUNIT_ASSERT(x3.toString()=="ff00::" && x3.getLength()==8);
 
-    InetAddr x4(AF_INET6, 64);
-    CPPUNIT_ASSERT(x4.toString()=="ffff:ffff:ffff:ffff::" && x4.getLength()==64);
+    InetAddr x4(AF_INET6, 16);
+    CPPUNIT_ASSERT(x4.toString()=="ffff::" && x4.getLength()==16);
 
-    InetAddr x5(AF_INET6, 128);
-    CPPUNIT_ASSERT(x5.toString()=="ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff" && x5.getLength()==128);
+    InetAddr x5(AF_INET6, 64);
+    CPPUNIT_ASSERT(x5.toString()=="ffff:ffff:ffff:ffff::" && x5.getLength()==64);
+
+    InetAddr x6(AF_INET6, 128);
+    CPPUNIT_ASSERT(x6.toString()=="ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff" && x6.getLength()==128);
+
+}        
+
+
+void Inet6AddrMaskTest::testStringToInetAddr6()
+{
+    InetAddr *sa1 = new InetAddr(AF_INET6, "::");
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "::");
+
+    sa1 = new InetAddr(AF_INET6, "::1");
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "::1");
+        
+    sa1 = new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1");
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),
+                           sa1->toString() == "fe80::20c:29ff:fed2:cca1");
 
     InetAddr x6(AF_INET6, "64");
-    CPPUNIT_ASSERT(x6.toString()=="ffff:ffff:ffff:ffff::" && x6.getLength()==64);
+    CPPUNIT_ASSERT_MESSAGE(x6.toString(),
+                           x6.toString()=="ffff:ffff:ffff:ffff::");
+    CPPUNIT_ASSERT(x6.getLength()==64);
+}
 
+void Inet6AddrMaskTest::testStringToInetAddrExceptions()
+{
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET, "fe80::20c:29ff:fed2:cca1"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr("fe80::20c:29ff:fed2:cca1"), FWException);
+    CPPUNIT_ASSERT_NO_THROW(new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1/64"));
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1/200"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "fe80::foo:bar:fed2:cca1"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "1.2.3.4"), FWException);
+
+    CPPUNIT_ASSERT_NO_THROW(new InetAddr(AF_INET6, 64));
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, 256), FWException);
+}
+
+/*
+ * Note that our current implementation of address operations for ipv6 is very
+ * limited
+ */
+void Inet6AddrMaskTest::testInet6AddressOps()
+{
     InetAddr x7(AF_INET6, "fe80::21d:9ff:fe8b:8e94");
     InetAddr y6(AF_INET6, 64);
-    InetAddr z = x7 & y6;
+    InetAddr z1 = x7 & y6;
 
-    CPPUNIT_ASSERT(z.toString()=="fe80::");
+    CPPUNIT_ASSERT(z1.toString()=="fe80::");
 
     CPPUNIT_ASSERT((~y6).toString()=="::ffff:ffff:ffff:ffff");
+
+    InetAddr z2 = z1 | ~y6;
+    CPPUNIT_ASSERT_MESSAGE(z2.toString(), z2.toString()=="fe80::ffff:ffff:ffff:ffff");
+
+    InetAddr z3 = x7 + 1;
+    CPPUNIT_ASSERT_MESSAGE(z3.toString(), z3.toString() == "fe80::21d:9ff:fe8b:8e95");
+
+    InetAddr z4 = z3 - 1;
+    CPPUNIT_ASSERT_MESSAGE(z4.toString(), z4.toString() == "fe80::21d:9ff:fe8b:8e94");
+
+    InetAddr x8(AF_INET6, "fe80::21d:9ff:fe8b:1111");
+    CPPUNIT_ASSERT(x7 > x8);
+
+    InetAddr x9(AF_INET6, "fe80::21d:9ff:fe8b:8e94");
+    CPPUNIT_ASSERT(x7 == x9);
+
+}
+
+void Inet6AddrMaskTest::testStringToInetAddrMask()
+{
+    string sa;
 
     Inet6AddrMask *a1 = new Inet6AddrMask();
     sa = a1->getAddressPtr()->toString();
