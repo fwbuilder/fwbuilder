@@ -5,6 +5,7 @@
                  Copyright (C) 2009 NetCitadel, LLC
 
   Author:  Roman Bovsunivskiy     a2k0001@gmail.com
+           Vadim Kurland          vadim@fwbuilder.org
 
   $Id$
 
@@ -26,21 +27,33 @@
 #ifndef ADDRESSTABLETEST_H
 #define ADDRESSTABLETEST_H
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
 
-class AddressTableTest : public CppUnit::TestCase
+#include "fwbuilder/FWObjectDatabase.h"
+
+#include <set>
+#include <string>
+
+#include <cppunit/extensions/HelperMacros.h>
+
+typedef std::set <std::string, std::less<std::string> > setStrings;
+
+class AddressTableTest : public CppUnit::TestFixture
 {
-public:
-    void runTest();
+    libfwbuilder::FWObjectDatabase *objdb;
+    libfwbuilder::FWObject *address_tables_group;
 
-    static CppUnit::Test *suite()
-    {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "AddressTableTest" );
-      suiteOfTests->addTest( new CppUnit::TestCaller<AddressTableTest>( "runTest", &AddressTableTest::runTest ) );
-      return suiteOfTests;
-    }
+    CPPUNIT_TEST_SUITE(AddressTableTest);
+    CPPUNIT_TEST(positiveTest);
+    CPPUNIT_TEST(negativeTest1);
+    CPPUNIT_TEST(negativeTest2);
+    CPPUNIT_TEST_SUITE_END();
+
+public:
+    void setUp();
+    void positiveTest();
+    void negativeTest1();
+    void negativeTest2();
+    
 };
 
 #endif // ADDRESSTABLETEST_H

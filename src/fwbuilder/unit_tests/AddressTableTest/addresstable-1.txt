@@ -1,4 +1,8 @@
-Test of Address Table
+#  This is a comment
+;; comment too
+# Test of Address Table
+#
+# 1.2.3.4   this address should be ignored because it is in the comment
 
 216.193.197.238 www.rebol.com
 

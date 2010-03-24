@@ -24,43 +24,12 @@
 */
 
 #include "AddressTableTest.h"
+
 #include "fwbuilder/libfwbuilder-config.h"
 
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
-
-#include <fstream>
-#include <iostream>
-#include <algorithm>
-#include <functional>
-#include <deque>
-#include <vector>
-#include <map>
-#include <set>
-
-#ifndef _WIN32
-#  include <unistd.h>
-#endif
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-
-#ifdef HAVE_GETOPT_H
-#  include <getopt.h>
-#else
-#  ifdef _WIN32
-#    include <getopt.h>
-#  else
-#    include <stdlib.h>
-#  endif
-#endif
 #include "fwbuilder/Resources.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
-#include "fwbuilder/XMLTools.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Group.h"
 
@@ -74,91 +43,97 @@
 using namespace std;
 using namespace libfwbuilder;
 
-typedef enum { NONE, TEST} command;
-typedef deque<string> operands;
-
-typedef set <string, less<string> > S;
 
 
-void AddressTableTest::runTest()
+
+
+void AddressTableTest::setUp()
 {
+    objdb = new FWObjectDatabase();
 
-    string objtype;
+    FWObject *nlib = objdb->create(Library::TYPENAME,true);
+    objdb->add(nlib);
+    nlib->setName( "Library" );
 
-    FWObjectDatabase       *objdb = NULL;
+    FWObject *o1 = objdb->create(ObjectGroup::TYPENAME,true);
+    o1->setName("Objects");
+    nlib->add(o1);
 
-    operands ops;
-    int res=1;
-
- #ifdef ENABLE_NLS
-     setlocale (LC_ALL, "");
-
-     bindtextdomain (PACKAGE, LOCALEDIR);
-     textdomain (PACKAGE);
- #else
- #  ifdef HAVE_SETLOCALE
-     setlocale (LC_ALL, "");
- #  endif
- #endif
-
-     objdb = new FWObjectDatabase();
-
-     FWObject *nlib = objdb->create(Library::TYPENAME,true);
-     objdb->add(nlib);
-     nlib->setName( "Library" );
-
-     FWObject *o1 = objdb->create(ObjectGroup::TYPENAME,true);
-     o1->setName("Objects");
-     nlib->add(o1);
-
-     FWObject *root = objdb->create(ObjectGroup::TYPENAME,true);
-     root->setName("Address Tables");
-     o1->add(root);
-
-     S addrset,addrres;
-     addrset.insert("216.193.197.238/255.255.255.255");
-     addrset.insert("207.46.20.60/255.255.255.0");
-     addrset.insert("207.46.198.3/255.255.255.255");
-     addrset.insert("207.46.198.60/255.255.255.255");
-     addrset.insert("207.46.199.30/255.255.255.255");
-     addrset.insert("207.46.225.60/255.255.255.252");
-     addrset.insert("207.46.19.60/255.255.255.255");
-     addrset.insert("192.168.105.57/255.255.255.255");
-     addrset.insert("192.168.105.69/255.255.255.255");
-     addrset.insert("192.168.105.68/255.255.255.255");
-     addrset.insert("192.168.100.0/255.255.255.0");
-     addrset.insert("192.168.11.0/255.255.255.0");
-
-     AddressTable *o;
-     FWObject* nobj;
-     objtype=AddressTable::TYPENAME;
-
-     nobj=objdb->create(objtype,true);
-     if (root != NULL)
-     {
-         root->add(nobj);
-
-         o=AddressTable::cast(nobj);
-
-         o->setName("TestADT");
-         o->setSourceName("addresstable.txt");
-
-     }
-
-         o->loadFromSource(false, true);
-     list<FWObject*>::const_iterator t=o->begin();
-     Network *net;
-     FWReference *ref;
-
-     for ( ; t!=o->end(); ++t )
-     {
-         ref=FWReference::cast(*t);
-         CPPUNIT_ASSERT(ref!=NULL);
-         net=Network::cast(ref->getPointer());
-         CPPUNIT_ASSERT(net!=NULL);
-         addrres.insert(net->getAddressPtr()->toString() + "/" + net->getNetmaskPtr()->toString());
-     }
-
-     CPPUNIT_ASSERT(addrset==addrres);
-
+    address_tables_group = objdb->create(ObjectGroup::TYPENAME,true);
+    address_tables_group->setName("Address Tables");
+    o1->add(address_tables_group);
 }
+
+void AddressTableTest::positiveTest()
+{
+    setStrings addrres;
+    setStrings addrset;
+
+    // This matches contents of the test file addresstable-1.txt
+    addrset.insert("216.193.197.238/255.255.255.255");
+    addrset.insert("207.46.20.60/255.255.255.0");
+    addrset.insert("207.46.198.3/255.255.255.255");
+    addrset.insert("207.46.198.60/255.255.255.255");
+    addrset.insert("207.46.199.30/255.255.255.255");
+    addrset.insert("207.46.225.60/255.255.255.252");
+    addrset.insert("207.46.19.60/255.255.255.255");
+    addrset.insert("192.168.105.57/255.255.255.255");
+    addrset.insert("192.168.105.69/255.255.255.255");
+    addrset.insert("192.168.105.68/255.255.255.255");
+    addrset.insert("192.168.100.0/255.255.255.0");
+    addrset.insert("192.168.11.0/255.255.255.0");
+
+    CPPUNIT_ASSERT(address_tables_group!=NULL);
+
+
+    AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
+    address_tables_group->add(nobj);
+    nobj->setName("TestADT");
+    nobj->setSourceName("addresstable-1.txt");
+    nobj->loadFromSource(false, true);
+
+    list<FWObject*>::const_iterator t = nobj->begin();
+    Network *net;
+    FWReference *ref;
+
+    for ( ; t != nobj->end(); ++t )
+    {
+        ref = FWReference::cast(*t);
+        CPPUNIT_ASSERT(ref!=NULL);
+        net = Network::cast(ref->getPointer());
+        CPPUNIT_ASSERT(net!=NULL);
+        addrres.insert(net->getAddressPtr()->toString() + "/" + net->getNetmaskPtr()->toString());
+    }
+
+    CPPUNIT_ASSERT(addrset==addrres);
+}
+
+
+void AddressTableTest::negativeTest1()
+{
+    setStrings addrres;
+
+    CPPUNIT_ASSERT(address_tables_group!=NULL);
+
+
+    AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
+    address_tables_group->add(nobj);
+    nobj->setName("TestADT2");
+    nobj->setSourceName("addresstable-2.txt");
+    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, true), FWException);
+}
+
+void AddressTableTest::negativeTest2()
+{
+    setStrings addrres;
+
+    CPPUNIT_ASSERT(address_tables_group!=NULL);
+
+
+    AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
+    address_tables_group->add(nobj);
+    nobj->setName("TestADT3");
+    nobj->setSourceName("addresstable-not-found.txt");
+    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, true), FWException);
+}
+
