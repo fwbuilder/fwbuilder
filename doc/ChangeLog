@@ -1,3 +1,11 @@
+2010-03-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* inet_net_pton.c (inet_cidr_pton_ipv4): fixed fwbuilder:ticket:1328
+	"IPv4 dialog takes incorrect ip addresses". Function inet_cidr_pton_ipv4
+	translated incomplete ipv4 addresses such as "1.0.0" incorrectly. The
+	last octet in the result had random value because of use of unitialized
+	memory.
+
 2010-03-18  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (replaceFailoverInterfaceInRE::processNext): fixes

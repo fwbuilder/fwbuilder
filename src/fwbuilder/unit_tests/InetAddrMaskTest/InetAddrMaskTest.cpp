@@ -29,7 +29,104 @@
 using namespace libfwbuilder;
 using namespace std;
 
-void InetAddrMaskTest::runTest()
+
+void InetAddrMaskTest::testIntToInetAddr()
+{
+    InetAddr *sa1 = new InetAddr(0);
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "0.0.0.0");
+        
+    sa1 = new InetAddr(AF_INET, 0);
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "0.0.0.0");
+        
+    sa1 = new InetAddr(1);
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "128.0.0.0");
+
+    sa1 = new InetAddr(24);
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "255.255.255.0");
+}
+
+void InetAddrMaskTest::testIntToInetAddr6()
+{
+    InetAddr *sa1 = new InetAddr(AF_INET6, 0);
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "::");
+       
+    sa1 = new InetAddr(AF_INET6, 1);
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "8000::");
+       
+}        
+
+void InetAddrMaskTest::testStringToInetAddr()
+{
+    const uint32_t *int_ptr;
+
+    InetAddr *sa1 = new InetAddr("0.0.0.1");
+    CPPUNIT_ASSERT_MESSAGE("0.0.0.1 -> " + sa1->toString(),  sa1->toString() == "0.0.0.1");
+        
+    sa1 = new InetAddr("0.0.0.0");
+    CPPUNIT_ASSERT_MESSAGE("0.0.0.0 -> " + sa1->toString(),  sa1->toString() == "0.0.0.0");
+        
+    sa1 = new InetAddr("1.2.3.4");
+    CPPUNIT_ASSERT_MESSAGE("1.2.3.4 -> " + sa1->toString(),  sa1->toString() == "1.2.3.4");
+
+    sa1 = new InetAddr("0.0.1");
+    CPPUNIT_ASSERT_MESSAGE("0.0.1 -> " + sa1->toString(), sa1->toString() == "0.0.1.0");
+
+    sa1 = new InetAddr("0.1");
+    CPPUNIT_ASSERT_MESSAGE("0.1 -> " + sa1->toString(), sa1->toString() == "0.1.0.0");
+        
+    // "1" ---> "128.0.0.0"   I am not sure this is correct
+    sa1 = new InetAddr("1");
+    CPPUNIT_ASSERT_MESSAGE("1 -> " + sa1->toString(), sa1->toString() == "128.0.0.0");
+
+    sa1 = new InetAddr("1.0");
+    CPPUNIT_ASSERT_MESSAGE("1.0 -> " + sa1->toString(), sa1->toString() == "1.0.0.0");
+        
+    sa1 = new InetAddr("1.0.0");
+    CPPUNIT_ASSERT_MESSAGE("1.0.0 -> " + sa1->toString(), sa1->toString() == "1.0.0.0");
+        
+}
+
+void InetAddrMaskTest::testStringToInetAddr6()
+{
+    InetAddr *sa1 = new InetAddr(AF_INET6, "::");
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "::");
+
+    sa1 = new InetAddr(AF_INET6, "::1");
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "::1");
+        
+    sa1 = new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1");
+    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),
+                           sa1->toString() == "fe80::20c:29ff:fed2:cca1");
+}
+
+void InetAddrMaskTest::testStringToInetAddrExceptions()
+{
+    CPPUNIT_ASSERT_NO_THROW(new InetAddr("1.2.3.4"));
+    CPPUNIT_ASSERT_NO_THROW(new InetAddr("1.2.3.4/24"));
+    CPPUNIT_ASSERT_THROW(new InetAddr("1.2.3.4/40"), FWException);
+
+    CPPUNIT_ASSERT_THROW(new InetAddr("300.300.300.300"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr("1.2.3.4.5"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr("foo.bar"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr("1.2.foo.bar"), FWException);
+
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET, "fe80::20c:29ff:fed2:cca1"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr("fe80::20c:29ff:fed2:cca1"), FWException);
+    CPPUNIT_ASSERT_NO_THROW(new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1/64"));
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1/200"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "fe80::foo:bar:fed2:cca1"), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, "1.2.3.4"), FWException);
+
+    CPPUNIT_ASSERT_THROW(new InetAddr(40), FWException);
+    CPPUNIT_ASSERT_NO_THROW(new InetAddr(24));
+    CPPUNIT_ASSERT_THROW(new InetAddr((char*)(NULL)), FWException);
+    CPPUNIT_ASSERT_NO_THROW(new InetAddr(0));
+
+    CPPUNIT_ASSERT_NO_THROW(new InetAddr(AF_INET6, 64));
+    CPPUNIT_ASSERT_THROW(new InetAddr(AF_INET6, 256), FWException);
+}
+
+void InetAddrMaskTest::testStringToInetAddrMask()
 {
     string sa;
 
@@ -47,6 +144,7 @@ void InetAddrMaskTest::runTest()
     CPPUNIT_ASSERT(sa=="255.255.255.0");
     CPPUNIT_ASSERT(a2->dimension()==256);
     CPPUNIT_ASSERT(a2->toString()=="1.1.1.0/255.255.255.0");
+
 
     InetAddrMask *a3 = new InetAddrMask(string("1.1.1.1"));
     sa = a3->getAddressPtr()->toString();
@@ -93,5 +191,12 @@ void InetAddrMaskTest::runTest()
     sa = a4->getNetmaskPtr()->toString();
     CPPUNIT_ASSERT(sa=="255.0.0.0");
     CPPUNIT_ASSERT(a4->dimension()==256*256*256);
+
+    InetAddrMask *a5 = new InetAddrMask(string("1.1.1.1/24"));
+    sa = a5->getAddressPtr()->toString();
+    CPPUNIT_ASSERT(sa=="1.1.1.1");
+    sa = a5->getNetmaskPtr()->toString();
+    CPPUNIT_ASSERT(sa=="255.255.255.0");
+    CPPUNIT_ASSERT(a5->dimension()==256);
 
 }

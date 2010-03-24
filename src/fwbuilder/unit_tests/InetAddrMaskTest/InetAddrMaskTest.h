@@ -26,21 +26,35 @@
 #ifndef INETADDRMASKTEST_H
 #define INETADDRMASKTEST_H
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
-class InetAddrMaskTest : public CppUnit::TestCase
+
+class InetAddrMaskTest : public CppUnit::TestFixture
 {
 public:
-    void runTest();
 
-    static CppUnit::Test *suite()
-    {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "InetAddrMaskTest" );
-      suiteOfTests->addTest( new CppUnit::TestCaller<InetAddrMaskTest>( "runTest", &InetAddrMaskTest::runTest ) );
-      return suiteOfTests;
-    }
+    
+    void testIntToInetAddr();
+    void testIntToInetAddr6();
+
+    void testStringToInetAddr();
+    void testStringToInetAddr6();
+
+    void testStringToInetAddrExceptions();
+    void testStringToInetAddrMask();
+
+
+    CPPUNIT_TEST_SUITE(InetAddrMaskTest);
+
+    CPPUNIT_TEST(testStringToInetAddrExceptions);
+    CPPUNIT_TEST(testIntToInetAddr);
+    CPPUNIT_TEST(testIntToInetAddr6);
+    CPPUNIT_TEST(testStringToInetAddr);
+    CPPUNIT_TEST(testStringToInetAddr6);
+    CPPUNIT_TEST(testStringToInetAddrMask);
+
+    CPPUNIT_TEST_SUITE_END();
+
 };
 
 #endif // INETADDRMASKTEST_H

@@ -132,6 +132,7 @@ inet_cidr_pton_ipv4(const char *src, u_char *dst, size_t size)
     else if (isdigit((unsigned char) ch))
     {
         /* Decimal: eat dotted digit string. */
+        size_t size_l = 4; // vk
         for (;;)
         {
             tmp = 0;
@@ -145,6 +146,8 @@ inet_cidr_pton_ipv4(const char *src, u_char *dst, size_t size)
                     goto enoent;
             } while ((ch = *src++) != '\0' &&
                      isdigit((unsigned char) ch));
+            if (size_l-- == 0)
+                goto emsgsize;
             if (size-- <= 0U)
                 goto emsgsize;
             *dst++ = (u_char) tmp;
@@ -156,6 +159,9 @@ inet_cidr_pton_ipv4(const char *src, u_char *dst, size_t size)
             if (!isdigit((unsigned char) ch))
                 goto enoent;
         }
+        /* Extend address to four octets. -- vk */
+        while (size_l-- > 0)
+            *dst++ = 0;
     }
     else
         goto enoent;
