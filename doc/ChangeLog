@@ -1,3 +1,12 @@
+2010-03-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* using CppUnit::TestFixture in unit tests based on cppunit:
+	ImporterTest.h
+	UsageResolverTest.h
+	RCSTest.h
+	FWBTreeTest.h
+	interfacePropertiesTest.h
+
 2010-03-23  vadim  <vadim@vk.crocodile.org>
 
 	* configlets/linux24/check_utilities: fixes #1348 "check_tools

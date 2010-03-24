@@ -7,7 +7,7 @@ include(../../../qmake.inc)
 QMAKE_CXX = g++
 
 TEMPLATE = app
-TARGET =
+TARGET = interfacePropertiesTest
 DEPENDPATH += .
 
 SOURCES	 =  ../CompilerDriver.cpp \

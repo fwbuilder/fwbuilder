@@ -94,11 +94,13 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 
 void ImporterTest::setUp()
 {
-    init();
-    QStringList path;
-    path << ".." << ".." << ".." << "res" << "resources.xml";
-    new Resources(path.join(FS_SEPARATOR).toStdString());
+    //init();
+
+    string full_res_path = respath + FS_SEPARATOR + "resources.xml";
+    new Resources(full_res_path);
+
     new FWBTree();
+
     /* create database */
     db = new FWObjectDatabase();
 
@@ -106,14 +108,18 @@ void ImporterTest::setUp()
     UpgradePredicate upgrade_predicate;
 
     db->setReadOnly( false );
-    path.pop_back();
-    path << "objects_init.xml";
-    sysfname = path.join(FS_SEPARATOR).toStdString();
-    librespath = string(PREFIX) + "/share/libfwbuilder-" + VERSION;
 
+    //path.pop_back();
+    //path << "objects_init.xml";
+    //sysfname = path.join(FS_SEPARATOR).toStdString();
+    //librespath = string(PREFIX) + "/share/libfwbuilder-" + VERSION;
+
+    qDebug() << sysfname.c_str();
     qDebug() << librespath.c_str();
+
     db->load( sysfname, &upgrade_predicate, librespath);
     qDebug() << "st";
+
     db->setFileName("");
     lib = Library::cast(db->create(Library::TYPENAME));
     lib->setName("User");
@@ -137,13 +143,13 @@ void ImporterTest::IOSImporterTest()
     Importer* imp = new IOSImporter(lib, instream, logger);
 
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
-    imp->run();
+    //imp->run();
 
     QString result;
     while (logger->ready())
         result.append(logger->getLine().c_str());
 
-    imp->finalize(); //will crash if uncomment this
+    imp->finalize();
 
     QFile rr("test_data/ios.result");
     rr.open(QFile::ReadOnly);
@@ -168,7 +174,7 @@ void ImporterTest::IPTImporterTest()
     Importer* imp = new IPTImporter(lib, instream, logger);
 
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
-    imp->run();
+    //imp->run();
 
 
     QString result;

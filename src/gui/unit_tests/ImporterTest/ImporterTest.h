@@ -32,11 +32,10 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Logger.h"
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
-class ImporterTest : public CppUnit::TestCase
+
+class ImporterTest : public CppUnit::TestFixture
 {
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::Library *lib;
@@ -47,17 +46,11 @@ public:
     void IOSImporterTest();
     void IPTImporterTest();
 
-    static CppUnit::Test *suite()
-    {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "ImporterTest" );
-/*      suiteOfTests->addTest( new CppUnit::TestCaller<ImporterTest>(
-                                   "IOSImporterTest",
-                                   &ImporterTest::IOSImporterTest ) );*/
-      suiteOfTests->addTest( new CppUnit::TestCaller<ImporterTest>(
-                                   "IPTImporterTest",
-                                   &ImporterTest::IPTImporterTest ) );
-      return suiteOfTests;
-    }
+    CPPUNIT_TEST_SUITE(ImporterTest);
+    CPPUNIT_TEST(IOSImporterTest);
+    CPPUNIT_TEST(IPTImporterTest);
+    CPPUNIT_TEST_SUITE_END();
+
 };
 
 #endif // IMPORTERTEST_H

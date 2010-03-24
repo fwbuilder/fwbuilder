@@ -36,17 +36,17 @@
 #include "../interfaceProperties.h"
 #include "../interfacePropertiesObjectFactory.h"
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
+
 #include <list>
 #include <string>
 
 
 
-class interfacePropertiesTest: public CppUnit::TestCase
+class interfacePropertiesTest: public CppUnit::TestFixture
 {
     libfwbuilder::FWObjectDatabase *db;
+
 public:
   //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
   interfaceProperties* getIntProps(const QString &os);
@@ -56,20 +56,11 @@ public:
   void isValidVlanInterfaceName();
   void setUp();
 
-  static CppUnit::Test *suite()
-  {
-    CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "interfaceProperties" );
-    suiteOfTests->addTest( new CppUnit::TestCaller<interfacePropertiesTest>(
-                                 "validateInterface",
-                                 &interfacePropertiesTest::validateInterface ) );
-    suiteOfTests->addTest( new CppUnit::TestCaller<interfacePropertiesTest>(
-                                 "isEligibleForCluster",
-                                 &interfacePropertiesTest::isEligibleForCluster ) );
-    suiteOfTests->addTest( new CppUnit::TestCaller<interfacePropertiesTest>(
-                                 "isValidVlanInterfaceName",
-                                 &interfacePropertiesTest::isValidVlanInterfaceName ) );
-    return suiteOfTests;
-  }
+    CPPUNIT_TEST_SUITE(interfacePropertiesTest);
+    CPPUNIT_TEST(validateInterface);
+    CPPUNIT_TEST(isEligibleForCluster);
+    CPPUNIT_TEST(isValidVlanInterfaceName);
+    CPPUNIT_TEST_SUITE_END();
 
 };
 

@@ -26,23 +26,17 @@
 #ifndef RCSTEST_H
 #define RCSTEST_H
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
-class RCSTest : public CppUnit::TestCase
+class RCSTest : public CppUnit::TestFixture
 {
 public:
     void verifyRevisions();
 
-    static CppUnit::Test *suite()
-    {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "RCSTest" );
-      suiteOfTests->addTest( new CppUnit::TestCaller<RCSTest>(
-                                   "verifyRevisions",
-                                   &RCSTest::verifyRevisions ) );
-      return suiteOfTests;
-    }
+    CPPUNIT_TEST_SUITE(RCSTest);
+    CPPUNIT_TEST(verifyRevisions);
+    CPPUNIT_TEST_SUITE_END();
+
 };
 
 #endif // RCSTEST_H

@@ -35,13 +35,13 @@
 #include "fwbuilder/Library.h"
 #include "FWBTree.h"
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
-class UsageResolverTest : public CppUnit::TestCase
+
+class UsageResolverTest : public CppUnit::TestFixture
 {
     void addToLib(libfwbuilder::FWObject* obj);
+
 public:
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::Library *lib;
@@ -55,20 +55,13 @@ public:
     void findFirewallsForObject();
     void humanizeSearchResults();
 
-    static CppUnit::Test *suite()
-    {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "UsageResolver" );
-      suiteOfTests->addTest( new CppUnit::TestCaller<UsageResolverTest>(
-                                   "findWhereObjectIsUsed",
-                                   &UsageResolverTest::findWhereObjectIsUsed ) );
-      suiteOfTests->addTest( new CppUnit::TestCaller<UsageResolverTest>(
-                                   "findFirewallsForObject",
-                                   &UsageResolverTest::findFirewallsForObject ) );
-      suiteOfTests->addTest( new CppUnit::TestCaller<UsageResolverTest>(
-                                   "humanizeSearchResults",
-                                   &UsageResolverTest::humanizeSearchResults ) );
-      return suiteOfTests;
-    }
+
+    CPPUNIT_TEST_SUITE(UsageResolverTest);
+    CPPUNIT_TEST(findWhereObjectIsUsed);
+    CPPUNIT_TEST(findFirewallsForObject);
+    CPPUNIT_TEST(humanizeSearchResults);
+    CPPUNIT_TEST_SUITE_END();
+    
 };
 
 #endif // FWOBJECTDATABASETEST_H
