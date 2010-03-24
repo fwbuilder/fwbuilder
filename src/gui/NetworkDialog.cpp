@@ -176,7 +176,9 @@ void NetworkDialog::validate(bool *result)
         {
             // permit netmask 0.0.0.0 if the address is also 0.0.0.0
             if (addr.isAny()) return;
+            else
             {
+                *result = false;
                 if (QApplication::focusWidget() != NULL)
                 {
                     blockSignals(true);
