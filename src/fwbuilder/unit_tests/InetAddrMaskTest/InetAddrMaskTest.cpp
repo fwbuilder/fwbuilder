@@ -47,8 +47,6 @@ void InetAddrMaskTest::testIntToInetAddr()
 
 void InetAddrMaskTest::testStringToInetAddr()
 {
-    const uint32_t *int_ptr;
-
     InetAddr *sa1 = new InetAddr("0.0.0.1");
     CPPUNIT_ASSERT_MESSAGE("0.0.0.1 -> " + sa1->toString(),  sa1->toString() == "0.0.0.1");
         
@@ -90,6 +88,39 @@ void InetAddrMaskTest::testStringToInetAddrExceptions()
     CPPUNIT_ASSERT_NO_THROW(new InetAddr(24));
     CPPUNIT_ASSERT_THROW(new InetAddr((char*)(NULL)), FWException);
     CPPUNIT_ASSERT_NO_THROW(new InetAddr(0));
+}
+
+void InetAddrMaskTest::testInetAddressOps()
+{
+    InetAddr x1("1.2.3.4");
+    InetAddr y1(24);
+    InetAddr z1 = x1 & y1;
+
+    CPPUNIT_ASSERT(z1.toString() == "1.2.3.0");
+    CPPUNIT_ASSERT( (~y1).toString() == "0.0.0.255");
+
+    InetAddr z2 = z1 | ~y1;
+    CPPUNIT_ASSERT(z2.toString() == "1.2.3.255");
+
+    InetAddr z3 = z1 | ~y1;
+    CPPUNIT_ASSERT(z3.toString() == "1.2.3.255");
+
+    InetAddr z4 = x1 + 1;
+    CPPUNIT_ASSERT(z4.toString() == "1.2.3.5");
+
+    InetAddr z5 = z4 - 1;
+    CPPUNIT_ASSERT(z5.toString() == "1.2.3.4");
+
+    CPPUNIT_ASSERT(z5 == x1);
+
+    InetAddr x2("255.255.255.255");
+    InetAddr z6 = x2 + 1;
+    CPPUNIT_ASSERT(z6.toString() == "0.0.0.0");
+
+    InetAddr x3("1.2.2.4");
+    CPPUNIT_ASSERT(x3 < x1);
+    CPPUNIT_ASSERT(x1 > x3);
+
 }
 
 void InetAddrMaskTest::testStringToInetAddrMask()

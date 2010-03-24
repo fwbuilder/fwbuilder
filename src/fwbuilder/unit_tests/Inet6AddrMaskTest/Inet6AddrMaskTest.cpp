@@ -109,6 +109,7 @@ void Inet6AddrMaskTest::testInet6AddressOps()
 
     InetAddr x8(AF_INET6, "fe80::21d:9ff:fe8b:1111");
     CPPUNIT_ASSERT(x7 > x8);
+    CPPUNIT_ASSERT(x8 < x7);
 
     InetAddr x9(AF_INET6, "fe80::21d:9ff:fe8b:8e94");
     CPPUNIT_ASSERT(x7 == x9);
