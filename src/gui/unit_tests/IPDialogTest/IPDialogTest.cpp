@@ -74,19 +74,6 @@ void IPDialogTest::initTestCase()
     QTest::qWait(1000);
 }
 
-QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
-{
-    for (int h=10; h<tree->height(); h+=1)
-    {
-        for (int w=75; w<tree->width(); w+=1)
-        {
-            if(tree->itemAt(w,h) == item)
-                return QPoint(w, h);
-        }
-    }
-    return QPoint(-1,-1);
-}
-
 void IPDialogTest::checkMessageBox()
 {
     QVERIFY(app->activeModalWidget()->metaObject()->className() == QMessageBox().metaObject()->className());
