@@ -1,3 +1,8 @@
+2010-03-25  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): fixed #1351
+	"synproxy rule option is broken"
+
 2010-03-24  Roman Bovsunivkiy <a2k0001@gmail.com>
 
 	* unit tests for IPv4Dialog, IPv6dialog, NetworkDialog, NetworkIPv6dialog

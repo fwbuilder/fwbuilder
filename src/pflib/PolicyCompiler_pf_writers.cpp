@@ -1011,7 +1011,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
          * First, set explicit state tracking parameter, then add
          * stateful tracking options. 
          */
-	if (compiler->getCachedFwOpt()->getBool("pf_synproxy") && tcpsrv!=NULL)
+	if (ruleopt->getBool("pf_synproxy") && tcpsrv!=NULL)
         {
 	    compiler->output << "synproxy state ";
             have_state_option = true;
