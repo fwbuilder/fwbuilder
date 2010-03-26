@@ -42,7 +42,7 @@ string Service::getProtocolName()
     throw FWException("base class Service does not return protocol name");
 }
 
-int    Service::getProtocolNumber()
+int Service::getProtocolNumber() const
 {
     throw FWException("base class Service does not return protocol number");
 }

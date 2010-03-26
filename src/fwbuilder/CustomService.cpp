@@ -44,7 +44,7 @@ CustomService::CustomService(const FWObjectDatabase *root,bool prepopulate) :
 CustomService::~CustomService() {}
 
 string CustomService::getProtocolName()   { return getProtocol(); }
-int    CustomService::getProtocolNumber() { return 65000; }
+int    CustomService::getProtocolNumber() const { return 65000; }
 
 
 FWObject& CustomService::shallowDuplicate(const FWObject *x,

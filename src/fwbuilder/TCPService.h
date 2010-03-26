@@ -60,7 +60,7 @@ public:
     DECLARE_DISPATCH_METHODS(TCPService);
     
     virtual std::string getProtocolName();
-    virtual int    getProtocolNumber();
+    virtual int getProtocolNumber() const;
 
 /**
  * this is a shortcut method, it returns true if TCPService object

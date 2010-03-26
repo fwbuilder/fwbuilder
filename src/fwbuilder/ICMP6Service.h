@@ -49,7 +49,7 @@ public:
     DECLARE_DISPATCH_METHODS(ICMP6Service);
     
     virtual std::string getProtocolName();
-    virtual int getProtocolNumber();
+    virtual int getProtocolNumber() const;
 
     virtual bool isV4Only() { return false; }
     virtual bool isV6Only() { return true; }

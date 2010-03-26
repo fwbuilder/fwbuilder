@@ -55,7 +55,7 @@ class Service : public FWObject
 
     virtual FWReference* createRef();
     virtual std::string getProtocolName();
-    virtual int    getProtocolNumber();
+    virtual int getProtocolNumber() const;
 
     bool isAny() const;
 

@@ -42,6 +42,6 @@ UDPService::UDPService(const FWObjectDatabase *root, bool prepopulate) :
 
 UDPService::~UDPService() {}
 
-string UDPService::getProtocolName()   {    return "udp"; }
-int    UDPService::getProtocolNumber() {    return 17;    }
+string UDPService::getProtocolName()         {    return "udp"; }
+int    UDPService::getProtocolNumber() const {    return 17;    }
 

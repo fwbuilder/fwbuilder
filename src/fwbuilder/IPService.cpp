@@ -89,7 +89,7 @@ string IPService::getProtocolName()
         return getStr("protocol_num");
 }
 
-int    IPService::getProtocolNumber()
+int IPService::getProtocolNumber() const
 {
     return getInt("protocol_num");
 }

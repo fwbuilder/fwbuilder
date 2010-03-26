@@ -57,8 +57,8 @@ TCPService::TCPService(const FWObjectDatabase *root, bool prepopulate) :
 
 TCPService::~TCPService() {}
 
-string TCPService::getProtocolName()   {    return "tcp";}
-int    TCPService::getProtocolNumber() {    return 6;    }
+string TCPService::getProtocolName()         {    return "tcp";}
+int    TCPService::getProtocolNumber() const {    return 6;    }
 
 void TCPService::init()
 {

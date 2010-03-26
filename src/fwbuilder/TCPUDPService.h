@@ -62,7 +62,7 @@ class TCPUDPService : public Service
     DECLARE_DISPATCH_METHODS(TCPUDPService);
     
     virtual std::string getProtocolName();
-    virtual int    getProtocolNumber();
+    virtual int getProtocolNumber() const;
 
     int getSrcRangeStart() const { return src_range_start; }
     int getSrcRangeEnd()   const { return src_range_end; }
