@@ -1,5 +1,9 @@
 2010-03-25  vadim  <vadim@vk.crocodile.org>
 
+	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectPropertiesBrief):
+	fixed #1356 "Show number of rules in the rule set object in the
+	second column of the tree"
+
 	* PolicyCompiler_pf_writers.cpp (PrintRule::processNext): fixed #1351
 	"synproxy rule option is broken"
 

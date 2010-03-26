@@ -260,6 +260,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
                 if (rs->isV4()) attrs.push_back("ipv4");
                 if (rs->isV6()) attrs.push_back("ipv6");
             }
+            attrs.push_back(QString("%1 rules").arg(rs->getRuleSetSize()));
             str << attrs.join(" ");
         } else if (Interval::isA(obj))
         {
