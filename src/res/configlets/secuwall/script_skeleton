@@ -1,0 +1,138 @@
+## -*- mode: shell-script; -*-
+##
+## Double '##' comments are removed when configlet is processed.
+## Single '#' comments stay.
+##
+## Some shells (not bash) do not like empty functions. Placing a comment
+## inside the function does not help. Using dummy ":" as a placeholder.
+##
+{{$top_comment}}
+
+{{$errors_and_warnings}}
+
+{{$shell_debug}}
+FWBDEBUG=""
+
+{{$path}}
+
+{{$constants}}
+
+{{$tools}}
+
+{{$shell_functions}}
+
+load_modules() {
+    :
+    echo "Modules are loaded only at startup!"
+}
+
+verify_interfaces() {
+    :
+    {{$verify_interfaces}}
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    {{$prolog_script}}
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    {{$epilog_script}}
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    for runstop in keepalived conntrackd network ; do
+        /etc/init.d/${runstop} stop
+    done
+
+    /sbin/ifclear all
+
+    for runstart in management network keepalived conntrackd ; do
+        /etc/init.d/${runstart} start
+    done
+}
+
+script_body() {
+    {{$script_body}}
+}
+
+ip_forward() {
+    :
+    {{$ip_forward_commands}}
+}
+
+reset_all() {
+    :
+    {{$reset_all}}
+}
+
+{{$stop_action}}
+
+{{$status_action}}
+
+# See how we were called.
+# For backwards compatibility missing argument is equivalent to 'start'
+
+test -z "$1" && {
+    $0 start
+    exit $?
+}
+
+case "$1" in
+    start)
+        log "Activating firewall script generated {{$timestamp}} by {{$user}}"
+        log "Database was {{$database}}"
+        check_tools
+        {{if prolog_top}} prolog_commands {{endif}}
+        load_modules {{$load_modules_with_nat}}
+        configure_interfaces
+        verify_interfaces
+        {{if prolog_after_interfaces}} prolog_commands {{endif}}
+        {{if not_using_iptables_restore}} reset_all {{endif}}
+        {{if prolog_after_flush}} prolog_commands {{endif}}
+        script_body
+        ip_forward
+        epilog_commands
+        RETVAL=$?
+        ;;
+
+    stop)
+        stop_action
+        RETVAL=$?
+        ;;
+
+    status)
+        status_action
+        RETVAL=$?
+        ;;
+
+    reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+        ;;
+
+    interfaces)
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+    test_interfaces)
+        FWBDEBUG="echo"
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+    *)
+        echo "Usage $0 {start|stop|status|reload|interfaces|test_interfaces}"
+        ;;
+
+esac
+
+exit $RETVAL
