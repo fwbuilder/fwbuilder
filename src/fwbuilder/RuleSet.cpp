@@ -238,7 +238,7 @@ bool RuleSet::moveRuleUp(int rule_n)
 
 bool RuleSet::moveRuleDown(int rule_n) 
 {
-    if (rule_n > (getRuleSetSize()-2) ) return(false);
+    if (rule_n > (getRuleSetSize() - 1) ) return(false);
 
     FWObject* o = getRuleByNum( rule_n );
     FWObject* next = getRuleByNum( rule_n+1 );
@@ -370,7 +370,7 @@ Rule* RuleSet::getRuleByNum(int n)
 
 int RuleSet::getRuleSetSize()
 {
-    return getChildrenCount();
+    return getChildrenCount() - 1;
 }
 
 
