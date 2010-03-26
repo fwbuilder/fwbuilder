@@ -21,8 +21,7 @@
 #include "DialogData.h"
 #include <QDialog>
 
-namespace libfwbuilder
-{
+namespace libfwbuilder {
     class FWObject;
 };
 
@@ -32,46 +31,25 @@ class secuwallAdvancedDialog : public QDialog
 
     libfwbuilder::FWObject *obj;
     DialogData data;
+protected:
     Ui::secuwallAdvancedDialog_q *m_dialog;
 
-public:
-    secuwallAdvancedDialog(QWidget *parent, libfwbuilder::FWObject *o);
+ public:
+    secuwallAdvancedDialog(QWidget *parent,libfwbuilder::FWObject *o);
     ~secuwallAdvancedDialog();
 
-private:
-    /** validate user input */
-    bool validate();
-
-    /**
-     * validate a given IP address
-     *
-     * valid: 192.168.1.1
-     *
-     * @param addr address to verify
-     * @return true if valid, false if not
-     */
-    static bool validateAddress(const QString &addr);
-
-    /**
-     * validate a given IP address / netmask
-     *
-     * valid: 192.168.1.1/32
-     * valid: 192.168.1.1/255.255.255.0
-     *
-     * @param addr address to verify
-     * @return true if valid, false if not
-     */
-    static bool validateNetwork(const QString &addr);
-    static bool validateNetworkOrAddress(const QString &addr);
-
 protected slots:
+
     virtual void accept();
     virtual void reject();
     virtual void help();
-    void additionalChanged(int state);
-    void buttonBrowseClicked();
-    void buttonOpenURLClicked();
+
+    virtual void editProlog();
+    virtual void editEpilog();
+
+
+public slots:
+    virtual void switchLOG_ULOG();
 };
 
 #endif // __SECUWALLADVANCEDDIALOG_H
-

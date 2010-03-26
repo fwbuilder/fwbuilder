@@ -107,6 +107,7 @@ HEADERS += ../../config.h \
     solarisAdvancedDialog.h \
     macosxAdvancedDialog.h \
     secuwallAdvancedDialog.h \
+    secuwallosAdvancedDialog.h \
     secuwallIfaceOptsDialog.h \
     vlanOnlyIfaceOptsDialog.h \
     linux24IfaceOptsDialog.h \
@@ -276,6 +277,7 @@ SOURCES += ProjectPanel.cpp \
     solarisAdvancedDialog.cpp \
     macosxAdvancedDialog.cpp \
     secuwallAdvancedDialog.cpp \
+    secuwallosAdvancedDialog.cpp \
     secuwallIfaceOptsDialog.cpp \
     vlanOnlyIfaceOptsDialog.cpp \
     linux24IfaceOptsDialog.cpp \
@@ -407,6 +409,7 @@ FORMS = FWBMainWindow_q.ui \
     openbsdadvanceddialog_q.ui \
     macosxadvanceddialog_q.ui \
     secuwalladvanceddialog_q.ui \
+    secuwallosadvanceddialog_q.ui \
     secuwallifaceoptsdialog_q.ui \
     clustermembersdialog_q.ui \
     openbsdifaceoptsdialog_q.ui \

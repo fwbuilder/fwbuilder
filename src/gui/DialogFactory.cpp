@@ -64,8 +64,8 @@
 #include "pixAdvancedDialog.h"
 #include "iosaclAdvancedDialog.h"
 #include "ipcopAdvancedDialog.h"
-
 #include "secuwallAdvancedDialog.h"
+
 #include "linux24IfaceOptsDialog.h"
 #include "secuwallIfaceOptsDialog.h"
 #include "vlanOnlyIfaceOptsDialog.h"
@@ -83,6 +83,7 @@
 #include "pixosAdvancedDialog.h"
 #include "iosAdvancedDialog.h"
 #include "ipcoposAdvancedDialog.h"
+#include "secuwallosAdvancedDialog.h"
 
 #include "RuleOptionsDialog.h"
 #include "RoutingRuleOptionsDialog.h"
@@ -230,6 +231,8 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
         "/FWBuilderResources/Target/dialog");
     if (platform == "iptables" && os_family == "ipcop")
         dlgname = "ipcop";
+    if (platform == "iptables" && os_family == "secuwall")
+        dlgname = "secuwall";
 
     if (dlgname=="iosacl")   return new iosaclAdvancedDialog(parent,o);
     if (dlgname=="ipcop")    return new ipcopAdvancedDialog(parent,o);
@@ -238,6 +241,7 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
     if (dlgname=="iptables") return new iptAdvancedDialog(parent,o);
     if (dlgname=="pf")       return new pfAdvancedDialog(parent,o);
     if (dlgname=="pix")      return new pixAdvancedDialog(parent,o);
+    if (dlgname=="secuwall") return new secuwallAdvancedDialog(parent,o);
 
     cerr << "Firewall settings dialog for " << dlgname
          << " is not implemented" << endl;
@@ -269,7 +273,7 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
     if (dlgname=="pix_os")    return new pixosAdvancedDialog(parent, o);
     if (dlgname=="ios")       return new iosAdvancedDialog(parent, o);
     if (dlgname=="ipcop")     return new ipcoposAdvancedDialog(parent, o);
-    if (dlgname=="secuwall")  return new secuwallAdvancedDialog(parent, o);
+    if (dlgname=="secuwall")  return new secuwallosAdvancedDialog(parent, o);
 
     cerr << "OS settings dialog for " << dlgname
          << " is not implemented" << endl;

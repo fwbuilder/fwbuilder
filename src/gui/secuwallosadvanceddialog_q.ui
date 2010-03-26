@@ -1,0 +1,1854 @@
+<ui version="4.0" >
+ <class>secuwallosAdvancedDialog_q</class>
+ <widget class="QDialog" name="secuwallosAdvancedDialog_q" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>510</width>
+    <height>568</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>secunet wall: advanced settings</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QPushButton" name="buttonHelp" >
+       <property name="text" >
+        <string>Help</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>151</width>
+         <height>27</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk" >
+       <property name="text" >
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut" >
+        <string/>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="tabShape" >
+      <enum>QTabWidget::Rounded</enum>
+     </property>
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab0" >
+      <attribute name="title" >
+       <string>Management</string>
+      </attribute>
+      <attribute name="icon" >
+       <iconset>
+        <normaloff>:/Icons/Custom-tree</normaloff>:/Icons/Custom-tree</iconset>
+      </attribute>
+      <attribute name="toolTip" >
+       <string>secunet wall Management settings</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" colspan="3" >
+        <widget class="QLabel" name="label456" >
+         <property name="text" >
+          <string>Specify secunet wall Management settings below. 
+Please use commas to separate a list of IP addresses.</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label453" >
+         <property name="toolTip" >
+          <string/>
+         </property>
+         <property name="text" >
+          <string>Management access</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QLineEdit" name="secuwall_mgmt_mgmtaddr" >
+         <property name="toolTip" >
+          <string>Enter the IP addresses or networks of the secunet wall management zone</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label" >
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>Syslog servers</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <widget class="QLineEdit" name="secuwall_mgmt_loggingaddr" >
+         <property name="toolTip" >
+          <string>Enter IP addresses of logging servers</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label454" >
+         <property name="text" >
+          <string>SNMP access</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QLineEdit" name="secuwall_mgmt_snmpaddr" >
+         <property name="toolTip" >
+          <string>Enter IP addresses or networks where SNMP requests to this firewall come from</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label455" >
+         <property name="text" >
+          <string>RO-SNMP string</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" >
+        <widget class="QLineEdit" name="secuwall_mgmt_rosnmp" >
+         <property name="toolTip" >
+          <string>Enter community string for read only SNMP access</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" >
+        <widget class="QLabel" name="label458" >
+         <property name="text" >
+          <string>NTP servers</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" >
+        <widget class="QLineEdit" name="secuwall_mgmt_ntpaddr" >
+         <property name="toolTip" >
+          <string>Enter IP addresses of NTP servers</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="8" column="0" >
+        <widget class="QLabel" name="label_6" >
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>Nagios access</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1" >
+        <widget class="QLineEdit" name="secuwall_mgmt_nagiosaddr" >
+         <property name="toolTip" >
+          <string>Enter IP addresses or networks for Nagios access</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0" >
+        <widget class="QLabel" name="label459" >
+         <property name="text" >
+          <string>Local /var partition</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1" >
+        <widget class="QLineEdit" name="secuwall_mgmt_varpart" >
+         <property name="toolTip" >
+          <string>Enter name for partition that will be mounted to /var</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0" >
+        <widget class="QLabel" name="label453_2" >
+         <property name="text" >
+          <string>Local config partition</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1" >
+        <widget class="QLineEdit" name="secuwall_mgmt_confpart" >
+         <property name="toolTip" >
+          <string>Enter name for local config partition</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>170</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="13" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="12" column="1" >
+        <widget class="QCheckBox" name="secuwall_mgmt_rules_disable" >
+         <property name="toolTip" >
+          <string>Disable auto-generation of firewall rules for management services</string>
+         </property>
+         <property name="text" >
+          <string>Don't create firewall rules</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab1" >
+      <attribute name="title" >
+       <string>DNS Client</string>
+      </attribute>
+      <attribute name="icon" >
+       <iconset resource="MainRes.qrc" >
+        <normaloff>:/Icons/DNSName/icon-tree</normaloff>:/Icons/DNSName/icon-tree</iconset>
+      </attribute>
+      <attribute name="toolTip" >
+       <string>secunet wall DNS settings</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="3" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" colspan="4" >
+        <widget class="QLabel" name="label456_2" >
+         <property name="text" >
+          <string>Specify secunet wall DNS client related settings below</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label_3" >
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>DNS servers</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QLineEdit" name="secuwall_dns_srv1" />
+       </item>
+       <item row="4" column="1" >
+        <widget class="QLineEdit" name="secuwall_dns_srv2" />
+       </item>
+       <item row="5" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>170</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QLineEdit" name="secuwall_dns_srv3" />
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label_5" >
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>Search domains</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" >
+        <widget class="QTextEdit" name="secuwall_dns_domains" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>16777215</width>
+           <height>120</height>
+          </size>
+         </property>
+         <property name="toolTip" >
+          <string>Enter DNS search domains here. One search domain per line</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2" colspan="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="7" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>Hosts file</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" >
+        <widget class="QTextEdit" name="secuwall_dns_hosts" >
+         <property name="toolTip" >
+          <string>Enter Hosts entries here. One IP-Address/Name pair per line. These entries will be written to /etc/hosts file on the firewall</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1" colspan="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="9" column="0" >
+        <widget class="QLabel" name="label_4" >
+         <property name="toolTip" >
+          <string>The resolution order defines how hostnames will be resolved on the firewall (nsswitch.conf). Default is "Hosts file first"</string>
+         </property>
+         <property name="layoutDirection" >
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text" >
+          <string>Resolution order</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1" colspan="2" >
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QComboBox" name="secuwall_dns_reso1" >
+           <property name="maximumSize" >
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="currentIndex" >
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text" >
+             <string/>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>Hosts</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DNS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS+</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DB</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="secuwall_dns_reso2" >
+           <property name="maximumSize" >
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="currentIndex" >
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text" >
+             <string/>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>Hosts</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DNS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS+</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DB</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="secuwall_dns_reso3" >
+           <property name="maximumSize" >
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="currentIndex" >
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text" >
+             <string/>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>Hosts</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DNS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS+</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DB</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="secuwall_dns_reso4" >
+           <property name="maximumSize" >
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="currentIndex" >
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text" >
+             <string/>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>Hosts</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DNS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS+</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DB</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="secuwall_dns_reso5" >
+           <property name="maximumSize" >
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="currentIndex" >
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text" >
+             <string/>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>Hosts</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DNS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>NIS+</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>DB</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="10" column="1" colspan="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>Options</string>
+      </attribute>
+      <attribute name="icon" >
+       <iconset>
+        <normaloff>:/Icons/Options</normaloff>:/Icons/Options</iconset>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="1" column="0" colspan="3" >
+        <widget class="QLabel" name="network_tab_txt2_3" >
+         <property name="text" >
+          <string>Specify secunet wall advanced iptables/routing options below</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label368_4" >
+         <property name="text" >
+          <string>IPv4 Packet forwarding</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QComboBox" name="linux24_ip_forward" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label368_3" >
+         <property name="text" >
+          <string>IPv6 Packet forwarding</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <widget class="QComboBox" name="linux24_ipv6_forward" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label369_2" >
+         <property name="text" >
+          <string>Kernel anti-spoofing protection</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QComboBox" name="linux24_rp_filter" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label370_2" >
+         <property name="text" >
+          <string>Ignore broadcast pings</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" >
+        <widget class="QComboBox" name="linux24_icmp_echo_ignore_broadcasts" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="7" column="0" >
+        <widget class="QLabel" name="label386_2" >
+         <property name="text" >
+          <string>Ignore all pings</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" >
+        <widget class="QComboBox" name="linux24_icmp_echo_ignore_all" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="7" column="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="8" column="0" >
+        <widget class="QLabel" name="label371_2" >
+         <property name="text" >
+          <string>Accept source route</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1" >
+        <widget class="QComboBox" name="linux24_accept_source_route" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="9" column="0" >
+        <widget class="QLabel" name="label373_2" >
+         <property name="text" >
+          <string>Accept ICMP redirects</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1" >
+        <widget class="QComboBox" name="linux24_accept_redirects" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="10" column="0" >
+        <widget class="QLabel" name="label374_2" >
+         <property name="text" >
+          <string>Ignore bogus ICMP errors</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1" >
+        <widget class="QComboBox" name="linux24_icmp_ignore_bogus_error_responses" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="11" column="0" >
+        <widget class="QLabel" name="label375_2" >
+         <property name="text" >
+          <string>Allow dynamic addresses</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1" >
+        <widget class="QComboBox" name="linux24_ip_dynaddr" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="12" column="0" >
+        <widget class="QLabel" name="label380_2" >
+         <property name="text" >
+          <string>Log martians</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1" >
+        <widget class="QComboBox" name="linux24_log_martians" >
+         <property name="whatsThis" >
+          <string comment="whats this comment" >whats this text</string>
+         </property>
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="14" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="13" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>250</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2" >
+      <attribute name="title" >
+       <string>TCP</string>
+      </attribute>
+      <attribute name="icon" >
+       <iconset resource="MainRes.qrc" >
+        <normaloff>:/Icons/TCPService/icon-tree</normaloff>:/Icons/TCPService/icon-tree</iconset>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" colspan="3" >
+        <widget class="QLabel" name="network_tab_txt2_2" >
+         <property name="text" >
+          <string>These parameters make sense for connections to or from the firewall host</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label376_2" >
+         <property name="text" >
+          <string>TCP FIN timeout (sec)</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QSpinBox" name="linux24_tcp_fin_timeout" >
+         <property name="minimum" >
+          <number>0</number>
+         </property>
+         <property name="maximum" >
+          <number>1000</number>
+         </property>
+         <property name="value" >
+          <number>30</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label377_2" >
+         <property name="text" >
+          <string>TCP keepalive time (sec)</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <widget class="QSpinBox" name="linux24_tcp_keepalive_interval" >
+         <property name="minimum" >
+          <number>0</number>
+         </property>
+         <property name="maximum" >
+          <number>10000</number>
+         </property>
+         <property name="value" >
+          <number>1800</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label378_2" >
+         <property name="text" >
+          <string>TCP window scaling</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QComboBox" name="linux24_tcp_window_scaling" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label379_2" >
+         <property name="text" >
+          <string>TCP sack</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" >
+        <widget class="QComboBox" name="linux24_tcp_sack" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="7" column="0" >
+        <widget class="QLabel" name="label384_2" >
+         <property name="text" >
+          <string>TCP fack</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" >
+        <widget class="QComboBox" name="linux24_tcp_fack" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="7" column="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="8" column="0" >
+        <widget class="QLabel" name="label383_2" >
+         <property name="text" >
+          <string>TCP ECN</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1" >
+        <widget class="QComboBox" name="linux24_tcp_ecn" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="9" column="0" >
+        <widget class="QLabel" name="label372_2" >
+         <property name="text" >
+          <string>TCP SYN cookies</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1" >
+        <widget class="QComboBox" name="linux24_tcp_syncookies" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="10" column="0" >
+        <widget class="QLabel" name="label385_2" >
+         <property name="text" >
+          <string>TCP timestamps</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1" >
+        <widget class="QComboBox" name="linux24_tcp_timestamps" >
+         <item>
+          <property name="text" >
+           <string>No change</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>On</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Off</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="12" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="11" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>250</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3" >
+      <attribute name="title" >
+       <string>Files</string>
+      </attribute>
+      <attribute name="icon" >
+       <iconset resource="MainRes.qrc" >
+        <normaloff>:/Icons/folder1.png</normaloff>:/Icons/folder1.png</iconset>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label_7" >
+         <property name="text" >
+          <string>Enable support for additional files here. Files in the selected templates directory will be added to the configuration of this Firewall.</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>16</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QFrame" name="frame" >
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Plain</enum>
+         </property>
+         <layout class="QGridLayout" >
+          <item row="0" column="0" colspan="4" >
+           <widget class="QCheckBox" name="additional_files_enabled" >
+            <property name="text" >
+             <string>Add additional files to firewall configuration</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="templdir_label" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string>Template directory</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="3" >
+           <widget class="QLineEdit" name="additional_files_dir" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>61</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1" >
+           <widget class="QPushButton" name="buttonBrowse" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="toolTip" >
+             <string>Select templates directory for this Firewall</string>
+            </property>
+            <property name="text" >
+             <string>Browse</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2" >
+           <widget class="QPushButton" name="buttonOpenURL" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="toolTip" >
+             <string>Open current path in file browser</string>
+            </property>
+            <property name="text" >
+             <string>Open</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>31</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>231</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>secuwall_mgmt_mgmtaddr</tabstop>
+  <tabstop>secuwall_mgmt_loggingaddr</tabstop>
+  <tabstop>secuwall_mgmt_snmpaddr</tabstop>
+  <tabstop>secuwall_mgmt_rosnmp</tabstop>
+  <tabstop>secuwall_mgmt_ntpaddr</tabstop>
+  <tabstop>secuwall_mgmt_nagiosaddr</tabstop>
+  <tabstop>secuwall_mgmt_varpart</tabstop>
+  <tabstop>secuwall_mgmt_confpart</tabstop>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>secuwall_dns_srv1</tabstop>
+  <tabstop>secuwall_dns_srv2</tabstop>
+  <tabstop>secuwall_dns_srv3</tabstop>
+  <tabstop>secuwall_dns_domains</tabstop>
+  <tabstop>secuwall_dns_hosts</tabstop>
+  <tabstop>secuwall_dns_reso1</tabstop>
+  <tabstop>secuwall_dns_reso2</tabstop>
+  <tabstop>secuwall_dns_reso3</tabstop>
+  <tabstop>secuwall_dns_reso4</tabstop>
+  <tabstop>secuwall_dns_reso5</tabstop>
+  <tabstop>linux24_ip_forward</tabstop>
+  <tabstop>linux24_ipv6_forward</tabstop>
+  <tabstop>linux24_rp_filter</tabstop>
+  <tabstop>linux24_icmp_echo_ignore_broadcasts</tabstop>
+  <tabstop>linux24_icmp_echo_ignore_all</tabstop>
+  <tabstop>linux24_accept_source_route</tabstop>
+  <tabstop>linux24_accept_redirects</tabstop>
+  <tabstop>linux24_icmp_ignore_bogus_error_responses</tabstop>
+  <tabstop>linux24_ip_dynaddr</tabstop>
+  <tabstop>linux24_log_martians</tabstop>
+  <tabstop>linux24_tcp_fin_timeout</tabstop>
+  <tabstop>linux24_tcp_keepalive_interval</tabstop>
+  <tabstop>linux24_tcp_window_scaling</tabstop>
+  <tabstop>linux24_tcp_sack</tabstop>
+  <tabstop>linux24_tcp_fack</tabstop>
+  <tabstop>linux24_tcp_ecn</tabstop>
+  <tabstop>linux24_tcp_syncookies</tabstop>
+  <tabstop>linux24_tcp_timestamps</tabstop>
+  <tabstop>additional_files_enabled</tabstop>
+  <tabstop>additional_files_dir</tabstop>
+  <tabstop>buttonBrowse</tabstop>
+  <tabstop>buttonOpenURL</tabstop>
+  <tabstop>buttonHelp</tabstop>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
+ <resources>
+  <include location="MainRes.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>secuwallosAdvancedDialog_q</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>secuwallosAdvancedDialog_q</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>397</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonHelp</sender>
+   <signal>clicked()</signal>
+   <receiver>secuwallosAdvancedDialog_q</receiver>
+   <slot>help()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>68</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>231</x>
+     <y>245</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>additional_files_enabled</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>secuwallosAdvancedDialog_q</receiver>
+   <slot>additionalChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>272</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>272</x>
+     <y>289</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBrowse</sender>
+   <signal>clicked()</signal>
+   <receiver>secuwallosAdvancedDialog_q</receiver>
+   <slot>buttonBrowseClicked()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>193</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>272</x>
+     <y>289</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOpenURL</sender>
+   <signal>clicked()</signal>
+   <receiver>secuwallosAdvancedDialog_q</receiver>
+   <slot>buttonOpenURLClicked()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>433</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>249</x>
+     <y>289</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
+
