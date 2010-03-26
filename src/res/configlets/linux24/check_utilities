@@ -15,7 +15,7 @@ find_program() {
   PGM=$1
 ## if shell can not find the program in any of the directories listed
 ## in PATH it returns exit code 127
-  $PGM >/dev/null 2>&1; test $? = 127 && {
+  $PGM </dev/null >/dev/null 2>&1; test $? = 127 && {
     echo "$PGM not found"
     exit 1
   }

@@ -1,3 +1,8 @@
+2010-03-26  vadim  <vadim@vk.crocodile.org>
+
+	* configlets/linux24/check_utilities: fixed #1359 "generated
+	script hangs testing for iptables-restore"
+
 2010-03-25  vadim  <vadim@vk.crocodile.org>
 
 	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectPropertiesBrief):
