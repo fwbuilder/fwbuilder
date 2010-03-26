@@ -598,6 +598,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         script_skeleton.setVariable("timestamp", timestr);
         script_skeleton.setVariable("tz", tzname[stm->tm_isdst]);
         script_skeleton.setVariable("user", user_name);
+        script_skeleton.setVariable("database", objdb->getFileName().c_str());
 
         /*
          * Call reset_all function to flush and reset iptables, but only
@@ -642,6 +643,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         top_comment.setVariable("timestamp", timestr);
         top_comment.setVariable("tz", tzname[stm->tm_isdst]);
         top_comment.setVariable("user", user_name);
+        top_comment.setVariable("database", objdb->getFileName().c_str());
 
         QFileInfo fw_file_info(fw_file_name);
         script_buffer = "";
