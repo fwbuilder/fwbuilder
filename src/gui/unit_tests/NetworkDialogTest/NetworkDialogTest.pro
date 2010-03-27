@@ -106,6 +106,7 @@ SOURCES += main_NetworkDialogTest.cpp \
     ../../solarisAdvancedDialog.cpp \
     ../../macosxAdvancedDialog.cpp \
     ../../secuwallAdvancedDialog.cpp \
+    ../../secuwallosAdvancedDialog.cpp \
     ../../secuwallIfaceOptsDialog.cpp \
     ../../vlanOnlyIfaceOptsDialog.cpp \
     ../../linux24IfaceOptsDialog.cpp \
@@ -275,6 +276,7 @@ HEADERS += NetworkDialogTest.h \
     ../../solarisAdvancedDialog.h \
     ../../macosxAdvancedDialog.h \
     ../../secuwallAdvancedDialog.h \
+    ../../secuwallosAdvancedDialog.h \
     ../../secuwallIfaceOptsDialog.h \
     ../../vlanOnlyIfaceOptsDialog.h \
     ../../linux24IfaceOptsDialog.h \
