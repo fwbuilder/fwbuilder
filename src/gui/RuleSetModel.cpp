@@ -250,7 +250,7 @@ QVariant RuleSetModel::getDecoration(const QModelIndex &index) const
     if (!node || node->type != RuleNode::Rule)
         return QVariant();
 
-    if (!node->rule->isDisabled()) return QVariant();
+    if (node->rule && !node->rule->isDisabled()) return QVariant();
 
     QVariant res;
     QString icn_file = ":/Icons/neg";

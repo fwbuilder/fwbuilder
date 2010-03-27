@@ -1,5 +1,9 @@
 2010-03-26  vadim  <vadim@vk.crocodile.org>
 
+	* RuleSetModel.cpp (RuleSetModel::getDecoration): fixed #1363
+	"GUI crash in newClusterDialog". GUI crashed after a new cluster
+	object has been created from two PF firewalls.
+
 	* configlets/linux24/check_utilities: fixed #1359 "generated
 	script hangs testing for iptables-restore"
 
