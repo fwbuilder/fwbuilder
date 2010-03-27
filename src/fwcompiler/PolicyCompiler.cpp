@@ -357,19 +357,11 @@ bool PolicyCompiler::replaceClusterInterfaceInItf::processNext()
     if (itfre==NULL)
         compiler->abort(rule, "Missing interface rule element");
 
-    cerr << "Rule " << rule->getLabel() << endl;
-    rule->dump(true, false);
-    cerr << "--------------------------------" << endl;
+    map<FWObject*, FWObject*> interface_replacement;
 
     for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
     {
         Interface *member_iface = NULL;
-
-        cerr << "PolicyCompiler::replaceClusterInterfaceInItf  "
-             << *i
-             << endl;
-        (*i)->dump(false, false);
-        cerr << "--------------------------------" << endl;
 
         // Only interface objects are allowed in the "Interface" rule element
         FWObject *o = FWReference::getObject(*i);
@@ -387,12 +379,16 @@ bool PolicyCompiler::replaceClusterInterfaceInItf::processNext()
         }
         if (member_iface)
         {
-            itfre->removeRef(rule_iface);
-            itfre->addRef(member_iface);
+            interface_replacement[rule_iface] = member_iface;
         }
     }
 
-    cerr << "++++++++++++++++++++++++++++++++" << endl;
+    map<FWObject*, FWObject*>::iterator r;
+    for (r = interface_replacement.begin(); r != interface_replacement.end(); ++r)
+    {
+        itfre->removeRef(r->first);
+        itfre->addRef(r->second);
+    }
 
     tmp_queue.push_back(rule);
     return true;
