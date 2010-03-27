@@ -147,6 +147,12 @@ namespace fwcompiler {
 
 
 	/**
+	 * replace cluster interface objects with inetrfaces of the member
+         * firewall in the Interface rule element
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(replaceClusterInterfaceInItf);
+
+	/**
 	 * processes rules with negation in Itf
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(ItfNegation);

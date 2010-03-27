@@ -51,6 +51,7 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Group.h"
 #include "fwbuilder/MultiAddress.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 
 #include <iostream>
 #include <iomanip>
@@ -344,37 +345,115 @@ bool PolicyCompiler::cmpRules(PolicyRule &r1, PolicyRule &r2)
     return ( (*src1 == *src2) && (*dst1 == *dst2) && (*srv1 == *srv2) );
 }
 
+/*
+ * Call this processor before ItfNegation (and in some compilers,
+ * singleItfNegation). 
+ */
+bool PolicyCompiler::replaceClusterInterfaceInItf::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    RuleElementItf *itfre = rule->getItf();
+    if (itfre==NULL)
+        compiler->abort(rule, "Missing interface rule element");
+
+    cerr << "Rule " << rule->getLabel() << endl;
+    rule->dump(true, false);
+    cerr << "--------------------------------" << endl;
+
+    for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
+    {
+        Interface *member_iface = NULL;
+
+        cerr << "PolicyCompiler::replaceClusterInterfaceInItf  "
+             << *i
+             << endl;
+        (*i)->dump(false, false);
+        cerr << "--------------------------------" << endl;
+
+        // Only interface objects are allowed in the "Interface" rule element
+        FWObject *o = FWReference::getObject(*i);
+        Interface *rule_iface = Interface::cast(o);
+        if (rule_iface == NULL) continue;
+        // If this interface belongs to a cluster (which can only happen
+        // if the rule set belongs to  a cluster), then replace it with
+        // corresponding interface of the member
+        if (rule_iface->isFailoverInterface())
+        {
+            FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+                rule_iface->getFirstByType(FailoverClusterGroup::TYPENAME));
+            if (fg)
+                member_iface = fg->getInterfaceForMemberFirewall(compiler->fw);
+        }
+        if (member_iface)
+        {
+            itfre->removeRef(rule_iface);
+            itfre->addRef(member_iface);
+        }
+    }
+
+    cerr << "++++++++++++++++++++++++++++++++" << endl;
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+/*
+ * Process negation in the "Interface" rule element. Scan objects in
+ * this RE, replace cluster interfaces with interfaces of the member,
+ * then replace them with a list of all other interfaces of the member.
+ *
+ * Note that normally compiler should call
+ * replaceClusterInterfaceInItf before calling this processor. This
+ * means that this processor should never see cluster interfaces in
+ * the RE. However I keep the code that deals with them in place to be
+ * able to use this processor without prior call to
+ * replaceClusterInterfaceInItf if necessary.
+ */
 bool PolicyCompiler::ItfNegation::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
 
-    // Use getByTypeDeep() to pick subinterfaces (vlans and such)
-    list<FWObject*> all_interfaces = compiler->fw->getByTypeDeep(Interface::TYPENAME);
-    list<FWObject*> work_interfaces;
-
-    // skip unprotected interfaces bug #2710034 "PF Compiler in 3.0.3
-    // Unprotected Interface Bug"
-    for (FWObject::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
-    {
-        Interface *intf = Interface::cast(*i);
-        if (intf && intf->isUnprotected()) continue;
-        work_interfaces.push_back(intf);
-    }
-
     RuleElementItf *itfre = rule->getItf();
     if (itfre==NULL)
-    {
-        compiler->abort(
-            rule, "Missing interface rule element");
-    }
+        compiler->abort(rule, "Missing interface rule element");
 
     if (itfre->getNeg())
     {
+        // Use getByTypeDeep() to pick subinterfaces (vlans and such)
+        list<FWObject*> all_interfaces = compiler->fw->getByTypeDeep(Interface::TYPENAME);
+        list<FWObject*> work_interfaces;
+
+        // skip unprotected interfaces bug #2710034 "PF Compiler in 3.0.3
+        // Unprotected Interface Bug"
+        for (FWObject::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+        {
+            Interface *intf = Interface::cast(*i);
+            if (intf == NULL) continue;
+            if (intf->isUnprotected()) continue;
+            if (intf->isLoopback()) continue;
+            if (intf->getOptionsObject()->getBool("cluster_interface")) continue;
+            work_interfaces.push_back(intf);
+        }
+
         for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
         {
-            FWObject *o = FWReference::getObject(*i);
-            work_interfaces.remove(o);
+            // Only interface objects are allowed in the "Interface" rule element
+            Interface *rule_iface = Interface::cast(FWReference::getObject(*i));
+            if (rule_iface == NULL) continue;
+            // If this interface belongs to a cluster (which can only happen
+            // if the rule set belongs to  a cluster), then replace it with
+            // corresponding interface of the member
+            if (rule_iface->isFailoverInterface())
+            {
+                FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+                    rule_iface->getFirstByType(FailoverClusterGroup::TYPENAME));
+                if (fg)
+                    rule_iface = fg->getInterfaceForMemberFirewall(compiler->fw);
+            }
+            if (rule_iface) work_interfaces.remove(rule_iface);
         }
+
         itfre->reset();
         itfre->setNeg(false);
         for (FWObject::iterator i=work_interfaces.begin(); i!=work_interfaces.end(); ++i)
