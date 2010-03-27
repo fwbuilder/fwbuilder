@@ -221,10 +221,12 @@ void newClusterDialog::showPage(const int page, bool blank)
             monospace->setFixedPitch(true);
             monospace->setStyleHint(QFont::SansSerif, QFont::PreferAntialias);
             QFontDatabase fontdb;
-            foreach (QString family, fontdb.families(QFontDatabase::Cyrillic))
+            foreach (QString family, fontdb.families(QFontDatabase::Latin))
             {
+                if (family.startsWith(".")) continue;
                 if (fontdb.isFixedPitch(family, "normal"))
                 {
+                    qDebug() << family;
                     monospace->setFamily(family);
                     break;
                 }
