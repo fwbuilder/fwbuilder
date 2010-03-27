@@ -219,8 +219,9 @@ void newClusterDialog::showPage(const int page, bool blank)
         if (!monospace->exactMatch())
         {
             monospace->setFixedPitch(true);
+            monospace->setStyleHint(QFont::SansSerif, QFont::PreferAntialias);
             QFontDatabase fontdb;
-            foreach (QString family, fontdb.families(QFontDatabase::Latin))
+            foreach (QString family, fontdb.families(QFontDatabase::Cyrillic))
             {
                 if (fontdb.isFixedPitch(family, "normal"))
                 {
