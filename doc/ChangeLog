@@ -1,5 +1,15 @@
 2010-03-27  vadim  <vadim@vk.crocodile.org>
 
+	* fixed #1360 "negation of cluster interfaces is broken". Rule
+	with one or several cluster interfaces in the "Interface" rule
+	element with negation should compile into a rule using all other
+	interfaces of the member firewall, or using single object negation
+	"!" if appropriate. This is also fixed in compiler for PF.
+	Files:
+	src/iptlib/PolicyCompiler_ipt.cpp
+	src/pflib/PolicyCompiler_pf.cpp
+	See also changes r591 , r592 in libfwbuilder
+
 	* platforms.cpp (isDefaultPolicyRuleOptions): fixed #1365 "missing
 	some flags for the "non-default" rule options for PF"
 
