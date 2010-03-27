@@ -4258,6 +4258,9 @@ void PolicyCompiler_ipt::compile()
     //add( new setChainForMangle("set chain for other rules in mangle"));
 
     add( new Logging1("check global logging override option"));
+
+    add( new replaceClusterInterfaceInItf(
+             "replace cluster interfaces with member interfaces in the Interface rule element"));
     add( new singleItfNegation("negation in Itf if it holds single object"));
     add( new ItfNegation("process negation in Itf"));
 

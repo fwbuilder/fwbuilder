@@ -1616,7 +1616,7 @@
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
-      <Cluster id="id3631X95766" host_OS="openbsd" inactive="False" lastCompiled="1248551815" lastInstalled="0" lastModified="1266373876" platform="pf" name="pf_cluster_1" comment=" " ro="False">
+      <Cluster id="id3631X95766" host_OS="openbsd" inactive="False" lastCompiled="1248551815" lastInstalled="0" lastModified="1269718315" platform="pf" name="pf_cluster_1" comment=" " ro="False">
         <NAT id="id3640X95766" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3162X39764" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -1910,7 +1910,27 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id5942X26920" disabled="False" log="True" position="5" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id39043X28773" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="True">
+              <ObjectRef ref="id3642X95766"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5942X26920" disabled="False" log="True" position="6" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
