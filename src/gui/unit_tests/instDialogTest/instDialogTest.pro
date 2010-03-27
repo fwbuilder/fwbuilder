@@ -110,6 +110,7 @@ SOURCES += main_instDialogTest.cpp \
     ../../solarisAdvancedDialog.cpp \
     ../../macosxAdvancedDialog.cpp \
     ../../secuwallAdvancedDialog.cpp \
+    ../../secuwallosAdvancedDialog.cpp \
     ../../secuwallIfaceOptsDialog.cpp \
     ../../vlanOnlyIfaceOptsDialog.cpp \
     ../../linux24IfaceOptsDialog.cpp \
@@ -279,6 +280,7 @@ HEADERS += instDialogTest.h \
     ../../solarisAdvancedDialog.h \
     ../../macosxAdvancedDialog.h \
     ../../secuwallAdvancedDialog.h \
+    ../../secuwallosAdvancedDialog.h \
     ../../secuwallIfaceOptsDialog.h \
     ../../vlanOnlyIfaceOptsDialog.h \
     ../../linux24IfaceOptsDialog.h \
