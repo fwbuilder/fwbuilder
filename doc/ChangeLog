@@ -1,3 +1,12 @@
+2010-03-27  vadim  <vadim@vk.crocodile.org>
+
+	* platforms.cpp (isDefaultPolicyRuleOptions): fixed #1365 "missing
+	some flags for the "non-default" rule options for PF"
+
+	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getPolicyRuleOptions):
+	fixed #1364 "add synproxy and other missing pf rule options to the
+	rule options tooltip"
+
 2010-03-26  vadim  <vadim@vk.crocodile.org>
 
 	* RuleSetModel.cpp (RuleSetModel::getDecoration): fixed #1363

@@ -1117,8 +1117,18 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 
                 res+=QObject::tr("<b>Max src states:</b> ");
                 res+=QString(ropt->getStr("pf_max_src_states").c_str())+"<br>\n";
-                
             }
+
+            if (ropt->getBool("pf_synproxy"))
+            {
+                res+=QObject::tr("<li><b>synproxy</b></li> ");
+            }
+
+            if (ropt->getBool("pf_modulate_state"))
+            {
+                res+=QObject::tr("<li><b>modulate_state</b></li> ");
+            }
+
             res+="</ul>";
             
         }else if (platform=="ipfw")

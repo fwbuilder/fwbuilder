@@ -252,7 +252,7 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
             bool ge_4_5 = XMLTools::version_compare(version, "4.5")>=0;
             if (ge_4_5)
             {
-                res = (!opt->getBool("pf_no_sync") && opt->getBool("pf_pflow"));
+                res = (!opt->getBool("pf_no_sync") && !opt->getBool("pf_pflow"));
             }
 
             if (ge_4_0)
@@ -265,7 +265,9 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
                       opt->getInt("pf_max_src_conn_rate_num")<=0       &&
                       opt->getInt("pf_max_src_conn_rate_seconds")<=0 &&
                       ! opt->getBool("pf_keep_state") &&
-                      ! opt->getBool("pf_sloppy_tracker")
+                      ! opt->getBool("pf_sloppy_tracker") &&
+                      ! opt->getBool("pf_synproxy")    &&
+                      ! opt->getBool("pf_modulate_state")
                 );
             }else
             {
@@ -277,7 +279,9 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
                       opt->getInt("pf_max_src_conn_rate_num")<=0       &&
                         opt->getInt("pf_max_src_conn_rate_seconds")<=0 &&
                       ! opt->getBool("pf_keep_state") &&
-                      ! opt->getBool("pf_sloppy_tracker")
+                      ! opt->getBool("pf_sloppy_tracker") &&
+                      ! opt->getBool("pf_synproxy")    &&
+                      ! opt->getBool("pf_modulate_state")
                 );
             }
 	}
