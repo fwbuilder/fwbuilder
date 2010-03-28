@@ -395,6 +395,7 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     }
 
     new_object_menu = new QMenu(this);
+    new_object_menu->setObjectName("GroupObjectDialog_newObjectMenu");
 
     int add_to_group_id = g->getId();
 

@@ -62,10 +62,11 @@ class GroupObjectDialog : public BaseObjectDialog
     void addIcon(libfwbuilder::FWObject *o);
     void addIcon(libfwbuilder::FWObject *o, bool ref);
 
-    void insertObject(libfwbuilder::FWObject *o);
-
     void setupPopupMenu(const QPoint&);
     void saveColumnWidths();
+
+ protected:
+    void insertObject(libfwbuilder::FWObject *o);
 
  public:
     GroupObjectDialog(QWidget *parent);
