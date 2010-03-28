@@ -21,12 +21,15 @@
 ##  {{$fwscript}}  -- script name on the firewall
 ##  {{$rbtimeout}} -- rollback timeout
 ##
+##  See #1368 for the explanation of the need for the "sleep2; echo" commands
 
 
 {{if run}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
 sudo -S {{$fwdir}}/{{$fwscript}} && sudo -S pkill shutdown; echo 'Policy activated'
+sleep 2
+echo 
 {{endif}}
 
 
@@ -37,12 +40,16 @@ echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/tmp/{{$fwscript}};
 sudo -S /sbin/shutdown -r +{{$rbtimeout}};
 sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
+sleep 2
+echo 
 {{endif}}
 
 {{if no_rollback}}
 echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/tmp/{{$fwscript}};
 sudo -S {{$fwdir}}/tmp/{{$fwscript}} && echo 'Policy activated'
+sleep 2
+echo 
 {{endif}}
 
 
