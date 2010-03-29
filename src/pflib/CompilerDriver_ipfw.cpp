@@ -43,6 +43,8 @@ CompilerDriver_ipfw::CompilerDriver_ipfw(FWObjectDatabase *db) :
 // create a copy of itself, including objdb
 CompilerDriver* CompilerDriver_ipfw::clone()
 {
-    return new CompilerDriver_ipfw(objdb);
+    CompilerDriver_ipfw* new_cd = new CompilerDriver_ipfw(objdb);
+    if (inEmbeddedMode()) new_cd->setEmbeddedMode();
+    return new_cd;
 }
 

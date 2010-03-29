@@ -62,7 +62,9 @@ CompilerDriver_pix::CompilerDriver_pix(FWObjectDatabase *db) :
 // create a copy of itself, including objdb
 CompilerDriver* CompilerDriver_pix::clone()
 {
-    return new CompilerDriver_pix(objdb);
+    CompilerDriver_pix* new_cd = new CompilerDriver_pix(objdb);
+    if (inEmbeddedMode()) new_cd->setEmbeddedMode();
+    return new_cd;
 }
 
 string CompilerDriver_pix::protocolInspectorCommands()

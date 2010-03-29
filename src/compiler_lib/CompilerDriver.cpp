@@ -108,7 +108,9 @@ CompilerDriver::~CompilerDriver()
 // create a copy of itself, including objdb
 CompilerDriver* CompilerDriver::clone()
 {
-    return new CompilerDriver(objdb);
+    CompilerDriver* new_cd = new CompilerDriver(objdb);
+    if (inEmbeddedMode()) new_cd->setEmbeddedMode();
+    return new_cd;
 }
 
 bool CompilerDriver::configure(const QStringList &args)

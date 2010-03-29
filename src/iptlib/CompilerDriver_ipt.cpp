@@ -57,7 +57,9 @@ CompilerDriver_ipt::CompilerDriver_ipt(FWObjectDatabase *db) :
 // create a copy of itself, including objdb
 CompilerDriver* CompilerDriver_ipt::clone()
 {
-    return new CompilerDriver_ipt(objdb);
+    CompilerDriver_ipt* new_cd = new CompilerDriver_ipt(objdb);
+    if (inEmbeddedMode()) new_cd->setEmbeddedMode();
+    return new_cd;
 }
 
 void CompilerDriver_ipt::assignRuleSetChain(RuleSet *ruleset)

@@ -61,7 +61,9 @@ CompilerDriver_ipf::CompilerDriver_ipf(FWObjectDatabase *db) :
 // create a copy of itself, including objdb
 CompilerDriver* CompilerDriver_ipf::clone()
 {
-    return new CompilerDriver_ipf(objdb);
+    CompilerDriver_ipf* new_cd = new CompilerDriver_ipf(objdb);
+    if (inEmbeddedMode()) new_cd->setEmbeddedMode();
+    return new_cd;
 }
 
 QString CompilerDriver_ipf::printActivationCommandWithSubstitution(Firewall *fw)

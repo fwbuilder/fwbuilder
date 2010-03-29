@@ -67,7 +67,9 @@ CompilerDriver_iosacl::CompilerDriver_iosacl(FWObjectDatabase *db) :
 // create a copy of itself, including objdb
 CompilerDriver* CompilerDriver_iosacl::clone()
 {
-    return new CompilerDriver_iosacl(objdb);
+    CompilerDriver_iosacl* new_cd = new CompilerDriver_iosacl(objdb);
+    if (inEmbeddedMode()) new_cd->setEmbeddedMode();
+    return new_cd;
 }
 
 void CompilerDriver_iosacl::printProlog(QTextStream &file, const string &prolog_code)

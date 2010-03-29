@@ -63,7 +63,9 @@ CompilerDriver_pf::CompilerDriver_pf(FWObjectDatabase *db) :
 // create a copy of itself, including objdb
 CompilerDriver* CompilerDriver_pf::clone()
 {
-    return new CompilerDriver_pf(objdb);
+    CompilerDriver_pf* new_cd = new CompilerDriver_pf(objdb);
+    if (inEmbeddedMode()) new_cd->setEmbeddedMode();
+    return new_cd;
 }
 
 string CompilerDriver_pf::getConfFileName(const string &ruleset_name,
