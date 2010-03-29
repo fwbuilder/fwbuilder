@@ -542,6 +542,24 @@ bool  PolicyCompiler::ExpandGroups::processNext()
     return true;
 }
 
+bool PolicyCompiler::expandGroupsInSrv::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementSrv *srv = rule->getSrv();
+    compiler->expandGroupsInRuleElement(srv);
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+bool PolicyCompiler::expandGroupsInItf::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElementItf *itf = rule->getItf();
+    compiler->expandGroupsInRuleElement(itf);
+    tmp_queue.push_back(rule);
+    return true;
+}
+
 bool  PolicyCompiler::ExpandMultipleAddresses::processNext()
 {
     PolicyRule *rule=getNext(); if (rule==NULL) return false;

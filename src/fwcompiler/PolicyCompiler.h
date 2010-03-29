@@ -173,6 +173,16 @@ namespace fwcompiler {
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(ExpandGroups);
 
+	/**
+	 * expand groups in Srv
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(expandGroupsInSrv);
+
+	/**
+	 * expand groups in Interface rule element
+	 */
+        DECLARE_POLICY_RULE_PROCESSOR(expandGroupsInItf);
+
         /**
          *  this inspector replaces references to hosts and firewalls
          *  in dst with references to their interfaces

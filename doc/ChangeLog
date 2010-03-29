@@ -1,5 +1,11 @@
 2010-03-29  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler.cpp (expandGroupsInItf::processNext): added rule
+	processor expandGroupsInItf and moved expandGroupsInSrv from
+	compiler for iptables. See fwbuilder:ticket:1374 "Rule with group
+	of interfaces in the "Interface" column is not compiled the same
+	as when the same interfaces are placed there without group"
+
 	* RuleElement.cpp (RuleElementItf::checkItfChildOfThisFw): fixed
 	fwbuilder:ticket:1372 group is not allowed in the "Interface"
 	column. Group of interfaces should be allowed in the "Interface"
