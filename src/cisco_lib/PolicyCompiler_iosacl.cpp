@@ -375,6 +375,10 @@ void PolicyCompiler_iosacl::compile()
         add( new processMultiAddressObjectsInDst(
                  "process MultiAddress objects in Dst") );
 
+        add( new expandGroupsInItf("expand groups in Interface" ));
+        add( new replaceClusterInterfaceInItf(
+                 "replace cluster interfaces with member interfaces in the Interface rule element"));
+
         add( new ItfNegation( "process negation in Itf" ) );
         add( new InterfacePolicyRules(
                  "process interface policy rules and store interface ids") );
