@@ -179,7 +179,8 @@ SOURCES += main_IPServiceDialogTest.cpp \
     ../../FWCmdRule.cpp \
     ../../UsageResolver.cpp \
     ../../TutorialDialog.cpp \
-    ../../MDIEventFilter.cpp
+    ../../MDIEventFilter.cpp \
+    ../../secuwallosAdvancedDialog.cpp
 
 HEADERS += IPServiceDialogTest.h \
     ../../../../config.h \
@@ -342,7 +343,8 @@ HEADERS += IPServiceDialogTest.h \
     ../../FWCmdRule.h \
     ../../UsageResolver.h \
     ../../TutorialDialog.h \
-    ../../MDIEventFilter.h
+    ../../MDIEventFilter.h \
+    ../../secuwallosAdvancedDialog.h
 
 
 RESOURCES += ../../MainRes.qrc
