@@ -1,5 +1,11 @@
 2010-03-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* generatedScriptTestsLinux.cpp (GeneratedScriptTest::CheckUtilitiesTest):
+	See #1370.  This is a place for the future compiler unit tests. In
+	the future we are going to migrate tests from test/ipt/ to this
+	directory, using cppunit framework and functions added to the
+	class Configlet per #1369
+
 	* Configlet.h (class Configlet): fixes #1369 "Framework for unit
 	testing of code generation via configlets"
 
