@@ -274,7 +274,11 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
     return QString::fromUtf8(res.toStdString().c_str());
 }
 
-
+/*
+ * More detailed list of properties, still one line, no fancy
+ * formatting and no HTML. This is used in object group list view and
+ * for printing.
+ */
 QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 {
     QString res;
@@ -356,21 +360,22 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         } else if (Network::isA(obj))
         {
             Network *n=Network::cast(obj);
-            str << n->getAddressPtr()->toString().c_str();
-            str << "/";
-            str << n->getNetmaskPtr()->toString().c_str();
+            str << QString("%1/%2")
+                .arg(n->getAddressPtr()->toString().c_str())
+                .arg(n->getNetmaskPtr()->toString().c_str());
 
         } else if (NetworkIPv6::isA(obj))
         {
             NetworkIPv6 *n=NetworkIPv6::cast(obj);
-            str << n->getAddressPtr()->toString().c_str();
-            str << "/";
-            str << QString("%1").arg(n->getNetmaskPtr()->getLength());
+            str << QString("%1/%2")
+                .arg(n->getAddressPtr()->toString().c_str())
+                .arg(n->getNetmaskPtr()->getLength());
 
         } else if (ClusterGroup::cast(obj)!=NULL)
         {
             ClusterGroup *g = ClusterGroup::cast(obj);
-            str << QObject::tr("type: ") << g->getStr("type").c_str() << "<br>";
+            str << QObject::tr("Type: ") << g->getStr("type").c_str() << " ";
+            QStringList members;
             FWObjectTypedChildIterator j = obj->findByType(FWObjectReference::TYPENAME);
             for ( ; j!=j.end(); ++j)
             {
@@ -378,16 +383,20 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
                 if (Interface::cast(obj))
                 {
                     FWObject *fw = obj->getParent();
-                    str << QObject::tr("Group member")
-                        << " " << fw->getName().c_str() 
-                        << ":" << obj->getName().c_str()
-                        << "<br>";
+                    members.push_back(
+                        QString("%1:%2")
+                        .arg(fw->getName().c_str()).arg(obj->getName().c_str()));
                 }
+            }
+            if (members.size() != 0)
+            {
+                members.push_front(QObject::tr("Members:"));
+                str << members.join(" ");
             }
         } else if (Group::cast(obj)!=NULL)   // just any group
         {
             Group *g=Group::cast(obj);
-            str << g->size() << " " << QObject::tr(" objects");
+            str << QObject::tr("%1 objects").arg(g->size());
 
         } else if (Firewall::cast(obj))
         {
@@ -395,21 +404,28 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         } else if (Interface::isA(obj))
         {
             Interface *intf = Interface::cast(obj);
-            str << "Label: "
-                << QString::fromUtf8(intf->getLabel().c_str()) << "<br>";
+            QString label = QString::fromUtf8(intf->getLabel().c_str());
+            if (label != "")
+                str << QObject::tr("Label: %1").arg(label) << " ";
+
+            QString intf_type = intf->getOptionsObject()->getStr("type").c_str();
+            if (intf_type != "" && intf_type.toLower() != "ethernet")
+                str << QObject::tr("Type: ") << intf_type << " ";
+
+            QStringList addr;
             FWObjectTypedChildIterator j = obj->findByType(IPv4::TYPENAME);
             for ( ; j!=j.end(); ++j)
             {
-                str << getObjectProperties(*j);
-                str << "<br>";
+                addr << getObjectProperties(*j);
             }
-            physAddress *paddr = intf->getPhysicalAddress();
-            if (paddr!=NULL) 
-                str << " MAC: " << paddr->getPhysAddress().c_str() << "<br>";
-            string intf_type = intf->getOptionsObject()->getStr("type");
-            if (!intf_type.empty())
-                str << " Interface Type: " << intf_type.c_str();
-
+            if (addr.size() != 0)
+            {
+                if (addr.size() > 1)
+                    addr.push_front(QObject::tr("Addresses:"));
+                else
+                    addr.push_front(QObject::tr("Address:"));
+                str << addr.join(" ");
+            }
         } else if (IPService::isA(obj))
         {
             str << QObject::tr("protocol: %1").arg(obj->getStr("protocol_num").c_str());
@@ -433,11 +449,11 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             str << dps << ":" << dpe;
         } else if (TagService::isA(obj)) 
         {
-            str << "Pattern: \"" << obj->getStr("tagcode").c_str() << "\"" ;
+            str << QObject::tr("Pattern: \"%1\"").arg(obj->getStr("tagcode").c_str());
         } else if (UserService::isA(obj)) 
         {
             const UserService* user_srv = UserService::constcast(obj);
-            str << "User id: \"" << user_srv->getUserId().c_str() << "\"" ;
+            str << QObject::tr("User id: \"%1\"").arg(user_srv->getUserId().c_str());
         } else if (Interval::isA(obj))
         {
 
@@ -467,7 +483,10 @@ QString FWObjectPropertiesFactory::stripHTML(const QString &str)
     return res;
 }
 
-
+/*
+ * Nicely formatted list of properties, HTML. This one is used for the
+ * tree tooltips.
+ */
 QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                                                                bool showPath,
                                                                bool tooltip,

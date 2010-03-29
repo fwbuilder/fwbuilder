@@ -1,3 +1,9 @@
+2010-03-29  vadim  <vadim@vk.crocodile.org>
+
+	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectProperties):
+	fixed #1371 "interface properties look ugly when interface is a
+	member of a group".
+
 2010-03-28  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* generatedScriptTestsLinux.cpp (GeneratedScriptTest::CheckUtilitiesTest):
