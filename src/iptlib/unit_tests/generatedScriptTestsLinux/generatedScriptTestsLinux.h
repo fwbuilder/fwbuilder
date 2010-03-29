@@ -52,11 +52,17 @@ public:
     void ManifestTest();
     void FwCommentTest();
     void CheckUtilitiesTest();
+    void verifyInterfacesTest();
+    void configureInterfacesTest();
+    void configureInterfacesClusterTest();
     
     CPPUNIT_TEST_SUITE(GeneratedScriptTest);
     CPPUNIT_TEST(ManifestTest);
     CPPUNIT_TEST(FwCommentTest);
     CPPUNIT_TEST(CheckUtilitiesTest);
+    CPPUNIT_TEST(verifyInterfacesTest);
+    CPPUNIT_TEST(configureInterfacesTest);
+    CPPUNIT_TEST(configureInterfacesClusterTest);
     CPPUNIT_TEST_SUITE_END();
 
 };

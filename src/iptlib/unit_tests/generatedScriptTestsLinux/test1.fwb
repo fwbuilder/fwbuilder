@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1269829901" id="root">
-  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="False">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1269885923" id="root">
+  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
@@ -413,7 +413,10 @@
       <Interval id="id3C63479E" days_of_week="0" from_day="-1" from_hour="0" from_minute="0" from_month="-1" from_weekday="0" from_year="-1" to_day="-1" to_hour="23" to_minute="59" to_month="-1" to_weekday="0" to_year="-1" name="Sun" comment="" ro="False"/>
     </IntervalGroup>
   </Library>
-  <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
+  <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
+    <IPv4 id="id2564X9501" name="test4:eth2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+    <IPv4 id="id2554X9501" name="test4:eth1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+  </Library>
   <Library id="id1548X1251" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1549X1251" name="Objects" comment="" ro="False">
       <ObjectGroup id="id1550X1251" name="Addresses" comment="" ro="False"/>
@@ -509,7 +512,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3844X1251" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1269830380" platform="iptables" version="" name="test2" comment="using iptables-restore" ro="False">
+      <Firewall id="id3844X1251" host_OS="linux24" inactive="False" lastCompiled="1269885939" lastInstalled="0" lastModified="1269884190" platform="iptables" version="" name="test2" comment="using iptables-restore" ro="False">
         <NAT id="id3874X1251" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -609,7 +612,251 @@
           <Option name="prolog_place">top</Option>
           <Option name="prolog_script"></Option>
           <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="script_name_on_firewall">firewall.fw</Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">True</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id2384X9501" host_OS="linux24" inactive="False" lastCompiled="1269885939" lastInstalled="0" lastModified="1269886019" platform="iptables" version="" name="test3" comment="using iptables-restore" ro="False">
+        <NAT id="id2414X9501" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id2412X9501" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id2416X9501" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id2392X9501" dedicated_failover="False" dyn="False" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id2395X9501" name="test3:eth0:ip" comment="This is a test address, change it to your real one" ro="False" address="192.0.2.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id2397X9501" dedicated_failover="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id2400X9501" name="test3:eth1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id2402X9501" dedicated_failover="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id2405X9501" name="test3:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id2407X9501" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+          <IPv4 id="id2410X9501" name="test3:eth2:ip" comment="" ro="False" address="192.168.2.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix"></Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">True</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_invalid">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall">firewall.fw</Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">True</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id2538X9501" host_OS="linux24" inactive="False" lastCompiled="1269884091" lastInstalled="0" lastModified="1269884083" platform="iptables" version="" name="test4" comment="using iptables-restore" ro="False">
+        <NAT id="id2568X9501" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id2566X9501" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id2570X9501" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id2546X9501" dedicated_failover="False" dyn="False" label="outside" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id2549X9501" name="test4:eth0:ip" comment="This is a test address, change it to your real one" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id2551X9501" dedicated_failover="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="True" unprotected="False" name="eth1" comment="" ro="False">
+          <InterfaceOptions/>
+          <Interface id="id2707X9501" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth1.200" comment="" ro="False">
+            <IPv4 id="id2721X9501" name="test4:eth1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+            <IPv6 id="id2734X9501" name="test4:eth1:eth1.200:ipv6" comment="" ro="False" address="fe80::20c:29ff:fed2:cca1" netmask="64"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">200</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id2556X9501" dedicated_failover="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id2559X9501" name="test4:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id2561X9501" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" security_level="0" unnum="True" unprotected="False" name="eth2" comment="" ro="False">
+          <InterfaceOptions/>
+          <Interface id="id2665X9501" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan110" comment="" ro="False">
+            <IPv4 id="id2679X9501" name="test4:eth2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">110</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id2684X9501" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="vlan111" comment="" ro="False">
+            <IPv4 id="id2690X9501" name="test4:eth2:ip" comment="" ro="False" address="192.168.3.1" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">111</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix"></Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">True</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_invalid">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall">/etc/init.d/firewall.fw</Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
@@ -622,7 +869,67 @@
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
-    <ObjectGroup id="id1567X1251" name="Clusters" comment="" ro="False"/>
+    <ObjectGroup id="id1567X1251" name="Clusters" comment="" ro="False">
+      <Cluster id="id2876X9501" host_OS="linux24" lastCompiled="1269885939" lastInstalled="0" lastModified="1269886019" platform="iptables" name="cluster-2-3" comment="" ro="False">
+        <NAT id="id2880X9501" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id2878X9501" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id2882X9501" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id2886X9501" dedicated_failover="False" dyn="False" label="outside" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id2887X9501" name="cluster-2-3:eth0:ip" comment="" ro="False" address="192.0.2.100" netmask="255.255.255.0"/>
+          <IPv4 id="id2915X9501" name="cluster-2-3:eth0:ip-1" comment="" ro="False" address="192.0.2.101" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">cluster_interface</Option>
+          </InterfaceOptions>
+          <FailoverClusterGroup id="id2889X9501" master_iface="id3852X1251" type="heartbeat" name="cluster-2-3:eth0:members" comment="">
+            <ObjectRef ref="id3852X1251"/>
+            <ObjectRef ref="id2392X9501"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <Interface id="id2893X9501" dedicated_failover="False" dyn="False" label="inside" security_level="0" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id2894X9501" name="cluster-2-3:eth1:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">cluster_interface</Option>
+          </InterfaceOptions>
+          <FailoverClusterGroup id="id2896X9501" master_iface="id3857X1251" type="heartbeat" name="cluster-2-3:eth1:members" comment="">
+            <ObjectRef ref="id3857X1251"/>
+            <ObjectRef ref="id2397X9501"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <Interface id="id2900X9501" dedicated_failover="False" dyn="False" label="dmz" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+          <IPv4 id="id2901X9501" name="cluster-2-3:eth2:ip" comment="" ro="False" address="192.168.2.100" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">cluster_interface</Option>
+          </InterfaceOptions>
+          <FailoverClusterGroup id="id2903X9501" master_iface="id3867X1251" type="heartbeat" name="cluster-2-3:eth2:members" comment="">
+            <ObjectRef ref="id3867X1251"/>
+            <ObjectRef ref="id2407X9501"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <Interface id="id2907X9501" dedicated_failover="False" dyn="False" label="loopback" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">cluster_interface</Option>
+          </InterfaceOptions>
+          <FailoverClusterGroup id="id2909X9501" master_iface="id3862X1251" type="none" name="cluster-2-3:lo:members" comment="">
+            <ObjectRef ref="id3862X1251"/>
+            <ObjectRef ref="id2402X9501"/>
+            <ClusterGroupOptions/>
+          </FailoverClusterGroup>
+        </Interface>
+        <FirewallOptions/>
+        <StateSyncClusterGroup id="id2884X9501" type="conntrack" name="State Sync Group" comment="">
+          <ClusterGroupOptions/>
+        </StateSyncClusterGroup>
+      </Cluster>
+    </ObjectGroup>
     <IntervalGroup id="id1568X1251" name="Time" comment="" ro="False"/>
   </Library>
 </FWObjectDatabase>
