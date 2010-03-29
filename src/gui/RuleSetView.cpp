@@ -2172,17 +2172,19 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
             {
                 QMessageBox::information(
                     NULL , "Firewall Builder",
-                    "A single interface belonging to this firewall is "
-                    "expected in this field.",
+                    QObject::tr(
+                        "A single interface belonging to this firewall is "
+                        "expected in this field."),
                     QString::null,QString::null);
             }
             else if (RuleElementRGtw::cast(re))
             {
                 QMessageBox::information(
                     NULL , "Firewall Builder",
-                    "A single ip adress is expected here. You may also "
-                    "insert a host or a network adapter leading to a single "
-                    "ip adress.",
+                    QObject::tr(
+                        "A single ip adress is expected here. You may also "
+                        "insert a host or a network adapter leading to a single "
+                        "ip adress."),
                     QString::null,QString::null);
             }
         }

@@ -58,7 +58,9 @@ namespace fwcompiler
          *  intact.
          */
         DECLARE_ROUTING_RULE_PROCESSOR(ExpandMultipleAddressesExceptInterface);
-        
+
+        DECLARE_ROUTING_RULE_PROCESSOR(checkRItfAndGw);
+
         class PrintRule : public RoutingCompiler_cisco::PrintRule
         {
             public:

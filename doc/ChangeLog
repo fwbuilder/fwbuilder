@@ -1,5 +1,11 @@
 2010-03-29  vadim  <vadim@vk.crocodile.org>
 
+	* RoutingCompiler_iosacl_writers.cpp (PrintRule::_printRItf):
+	fixed #1379 "Should be able to build routing rules with interface
+	as gateway for IOS". Routing rules for IOS now have column
+	"Interface". Rules can be built either with explicit address of
+	the gateway or interface.
+
 	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::compile): fixed #1375
 	Interface group is not expanded in "Interface" rule element by
 	compiler for PF

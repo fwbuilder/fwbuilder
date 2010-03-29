@@ -135,6 +135,13 @@ string RoutingCompiler_iosacl::PrintRule::_printRGtw(RoutingRule *rule)
     
 string RoutingCompiler_iosacl::PrintRule::_printRItf(RoutingRule *rule)
 {
+    RuleElementRItf *itfrel = rule->getRItf();
+    if (!itfrel->isAny())
+    {
+        Interface *itf =
+            Interface::cast(FWObjectReference::getObject(itfrel->front()));
+        if (itf != NULL) return itf->getName() + " ";
+    }
     return "";
 }
 
@@ -152,7 +159,7 @@ string RoutingCompiler_iosacl::PrintRule::RoutingRuleToString(RoutingRule *rule)
     command_line << "ip route ";
     command_line << _printRDst(rule);
     command_line << _printRGtw(rule);
-    //command_line << _printRItf(rule);
+    command_line << _printRItf(rule);
 
     // default metric in IOS is 1 (can't have metric 0)
     if (rule->getMetricAsString() == "0")

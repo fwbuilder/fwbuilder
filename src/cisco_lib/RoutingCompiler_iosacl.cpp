@@ -97,6 +97,23 @@ bool RoutingCompiler_iosacl::ExpandMultipleAddressesExceptInterface::processNext
 }
 
 
+bool RoutingCompiler_iosacl::checkRItfAndGw::processNext()
+{
+    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    tmp_queue.push_back(rule);
+
+    RuleElementRItf *itfrel = rule->getRItf();    assert(itfrel);
+    RuleElementRGtw *gtwrel = rule->getRGtw();    assert(gtwrel);
+
+    if (!itfrel->isAny() && !gtwrel->isAny())
+        compiler->abort(rule, "Can not use both gateway address and interface in "
+                        "IOS routing rule");
+
+    return true;
+}
+
+
+
 /**
  *-----------------------------------------------------------------------
  */
@@ -121,7 +138,9 @@ void RoutingCompiler_iosacl::compile()
 
         // add(new singleAdressInRGtw(
         //         "Check if RGtw object has exactly one IP adress"));
-        // add(new rItfChildOfFw("Check if RItf is an Iterface of this firewall"));
+
+        add(new rItfChildOfFw("Check if RItf is an Iterface of this firewall"));
+        add(new checkRItfAndGw("Both gateway and interface can not be used in the same rule"));
 
         add(new validateNetwork("Validate network addresses"));
         add(new reachableAddressInRGtw(
