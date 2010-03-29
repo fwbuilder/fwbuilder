@@ -699,12 +699,6 @@ protected:
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(checkUserServiceInWrongChains);
 
-
-	/**
-	 * expand groups in Srv
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(expandGroupsInSrv);
-
 	/**
          * split a rule if action Reject is used in a rule with
          * Service 'any' and rule options do not specify what should

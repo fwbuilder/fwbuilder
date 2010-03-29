@@ -3570,19 +3570,6 @@ bool PolicyCompiler_ipt::fillActionOnReject::processNext()
     return true;
 }
 
-bool PolicyCompiler_ipt::expandGroupsInSrv::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementSrv *srv= rule->getSrv();
-
-    compiler->expandGroupsInRuleElement(srv);
-
-    tmp_queue.push_back(rule);
-    return true;
-}
-
-
 bool PolicyCompiler_ipt::splitRuleIfSrvAnyActionReject::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
@@ -4259,6 +4246,7 @@ void PolicyCompiler_ipt::compile()
 
     add( new Logging1("check global logging override option"));
 
+    add( new expandGroupsInItf("expand groups in Interface" ));
     add( new replaceClusterInterfaceInItf(
              "replace cluster interfaces with member interfaces in the Interface rule element"));
     add( new singleItfNegation("negation in Itf if it holds single object"));
