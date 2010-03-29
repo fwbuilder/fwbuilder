@@ -1,3 +1,11 @@
+2010-03-29  vadim  <vadim@vk.crocodile.org>
+
+	* RuleElement.cpp (RuleElementItf::checkItfChildOfThisFw): fixed
+	fwbuilder:ticket:1372 group is not allowed in the "Interface"
+	column. Group of interfaces should be allowed in the "Interface"
+	rule element provided all group members are children of the same
+	firewall.
+
 2010-03-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* inet_net_pton.c (inet_cidr_pton_ipv4): fixed fwbuilder:ticket:1328

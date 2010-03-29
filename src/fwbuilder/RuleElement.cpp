@@ -346,6 +346,16 @@ bool RuleElementItf::validateChild(FWObject *o)
  */
 bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
 {
+    if (Group::cast(o) != NULL)
+    {
+        for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
+        {
+            FWObject *o1 = FWReference::getObject(*i);
+            if (!checkItfChildOfThisFw(o1)) return false;
+        }
+        return true;
+    }
+
     FWObject* o_tmp = getRoot()->findInIndex(o->getId());
     FWObject* o_tmp2 = getRoot()->findInIndex(this->getId());
 
@@ -354,7 +364,7 @@ bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
     FWObject *fw2 = o_tmp2;
     while (fw2 && Firewall::cast(fw2) == NULL) fw2 = fw2->getParent();
 
-    return (fw1 == fw2);
+    return (fw1 != NULL && fw1 == fw2);
 }
 
 
