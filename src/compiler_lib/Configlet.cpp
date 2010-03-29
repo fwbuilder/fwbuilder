@@ -45,14 +45,12 @@ using namespace std;
 
 /*
  * Switch to the special debugging mode if this flag is true. Used in
- * unit tests.
- *
- * - keep "##" comments even when removeComments() is called
- * - add special comment lines to mark beginning and end of the generated text
+ * unit tests. This adds special comment lines to mark beginning and
+ * end of the generated text
  */
 bool Configlet::configlet_debugging = false;
-QString Configlet::begin_marker = "################ Begin configlet %1";
-QString Configlet::end_marker = "################ End configlet %1";
+QString Configlet::begin_marker = "|||||||||||||||| Begin configlet %1";
+QString Configlet::end_marker = "|||||||||||||||| End configlet %1";
 
 /*
  * @filename is a name of the configlet file. The program searches for
@@ -179,9 +177,7 @@ QString Configlet::expand()
     // use these in comments
     QString all_code;
 
-    if (configlet_debugging) all_code.push_front(begin_marker.arg(name));
-
-    if ( !configlet_debugging && remove_comments)
+    if (remove_comments)
     {
         QStringList res;
         foreach(QString line, code)
@@ -222,6 +218,12 @@ QString Configlet::expand()
 
     if (counter >= 1000) qDebug() << err;
 
+    if (configlet_debugging)
+    {
+        all_code.push_front(begin_marker.arg(name) + "\n");
+        all_code.push_back(end_marker.arg(name) + "\n");
+    }
+
     if (collapse_empty_strings)
     {
         QStringList res;
@@ -232,8 +234,6 @@ QString Configlet::expand()
         }
         return res.join("\n");
     }
-
-    if (configlet_debugging) all_code.push_back(end_marker.arg(name));
 
     return all_code;
 }
