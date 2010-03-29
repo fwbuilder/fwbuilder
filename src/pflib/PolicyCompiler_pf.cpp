@@ -1091,6 +1091,7 @@ void PolicyCompiler_pf::compile()
         add(new replaceFailoverInterfaceInItf("replace carp interfaces"));
 
 
+        add(new expandGroupsInItf("expand groups in Interface"));
         add(new replaceClusterInterfaceInItf(
                 "replace cluster interfaces with member interfaces in the Interface rule element"));
         add(new ItfNegation("process negation in Itf"));

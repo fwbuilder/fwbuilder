@@ -1,5 +1,9 @@
 2010-03-29  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_pf.cpp (PolicyCompiler_pf::compile): fixed #1375
+	Interface group is not expanded in "Interface" rule element by
+	compiler for PF
+
 	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getObjectProperties):
 	fixed #1371 "interface properties look ugly when interface is a
 	member of a group".

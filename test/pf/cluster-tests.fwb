@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1269724623" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1269892626" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -2083,7 +2083,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id3642X20162" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1269724803" platform="pf" name="pf_cluster_3" comment="" ro="False">
+      <Cluster id="id3642X20162" host_OS="openbsd" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1269892711" platform="pf" name="pf_cluster_3" comment="" ro="False">
         <NAT id="id3646X20162" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2128,7 +2128,50 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id72694X50958" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id4808X69263" disabled="False" group="test for interface group" log="False" position="2" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3642X20162"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id3650X20162"/>
+              <ObjectRef ref="id3655X20162"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id24679X69263" disabled="False" group="test for interface group" log="False" position="3" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3642X20162"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id24637X69263"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id72694X50958" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2148,7 +2191,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id89654X50958" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id89654X50958" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2169,7 +2212,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id106892X50958" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id106892X50958" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2191,7 +2234,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id124525X50958" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
+          <PolicyRule id="id124525X50958" disabled="False" group="" log="False" position="7" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2211,48 +2254,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id124478X50958" disabled="False" group="" log="False" position="6" action="Accept" direction="Inbound" comment="">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="True">
-              <ObjectRef ref="id3650X20162"/>
-              <ObjectRef ref="id3655X20162"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id124667X50958" disabled="False" group="" log="False" position="7" action="Accept" direction="Outbound" comment="">
-            <Src neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="True">
-              <ObjectRef ref="id3650X20162"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">False</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id124620X50958" disabled="False" group="" log="False" position="8" action="Accept" direction="Outbound" comment="">
+          <PolicyRule id="id124478X50958" disabled="False" group="" log="False" position="8" action="Accept" direction="Inbound" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2273,7 +2275,48 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id181105X50958" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id124667X50958" disabled="False" group="" log="False" position="9" action="Accept" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="True">
+              <ObjectRef ref="id3650X20162"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id124620X50958" disabled="False" group="" log="False" position="10" action="Accept" direction="Outbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="True">
+              <ObjectRef ref="id3650X20162"/>
+              <ObjectRef ref="id3655X20162"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id181105X50958" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2293,7 +2336,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id181058X50958" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id181058X50958" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2386,7 +2429,12 @@
       </ObjectGroup>
       <ObjectGroup id="id1498X69605" name="DNS Names" comment="" ro="False"/>
       <ObjectGroup id="id1499X69605" name="Address Tables" comment="" ro="False"/>
-      <ObjectGroup id="id1500X69605" name="Groups" comment="" ro="False"/>
+      <ObjectGroup id="id1500X69605" name="Groups" comment="" ro="False">
+        <ObjectGroup id="id24637X69263" name="cl3 itf" comment="" ro="False">
+          <ObjectRef ref="id3650X20162"/>
+          <ObjectRef ref="id3655X20162"/>
+        </ObjectGroup>
+      </ObjectGroup>
       <ObjectGroup id="id1501X69605" name="Hosts" comment="" ro="False"/>
       <ObjectGroup id="id1503X69605" name="Networks" comment="" ro="False"/>
       <ObjectGroup id="id1504X69605" name="Address Ranges" comment="" ro="False"/>
