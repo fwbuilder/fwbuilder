@@ -1,3 +1,8 @@
+2010-03-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* Configlet.h (class Configlet): fixes #1369 "Framework for unit
+	testing of code generation via configlets"
+
 2010-03-28  vadim  <vadim@vk.crocodile.org>
 
 	* configlets/openbsd/installer_commands_reg_user: see #1368 A fix

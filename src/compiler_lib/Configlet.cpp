@@ -43,6 +43,16 @@ extern std::string     respath;
 using namespace libfwbuilder;
 using namespace std;
 
+/*
+ * Switch to the special debugging mode if this flag is true. Used in
+ * unit tests.
+ *
+ * - keep "##" comments even when removeComments() is called
+ * - add special comment lines to mark beginning and end of the generated text
+ */
+bool Configlet::configlet_debugging = false;
+QString Configlet::begin_marker = "################ Begin configlet %1";
+QString Configlet::end_marker = "################ End configlet %1";
 
 /*
  * @filename is a name of the configlet file. The program searches for
@@ -52,6 +62,7 @@ using namespace std;
  */
 Configlet::Configlet(const std::string &prefix, const QString &file_name)
 {
+    name = file_name;
     reload(prefix, file_name);
 }
 
@@ -60,6 +71,7 @@ Configlet::Configlet(const std::string &prefix,
                      const QString &file_name)
 {
     clear();
+    name = file_name;
     if (!reload(prefix, file_name)) reload(default_prefix, file_name);
 }
 
@@ -72,6 +84,7 @@ Configlet::Configlet(FWObject *fw, const std::string &default_prefix,
     remove_comments = true;
     comment_str = "##";
     collapse_empty_strings = false;
+    name = file_name;
     if (!reload(os_family, file_name)) reload(default_prefix, file_name);
     if (code.size() == 0)
         qCritical() << "Could not open configlet file"
@@ -165,7 +178,10 @@ QString Configlet::expand()
     // remove comments before processing {{$var}} and {{if var}} so we can
     // use these in comments
     QString all_code;
-    if (remove_comments)
+
+    if (configlet_debugging) all_code.push_front(begin_marker.arg(name));
+
+    if ( !configlet_debugging && remove_comments)
     {
         QStringList res;
         foreach(QString line, code)
@@ -216,6 +232,8 @@ QString Configlet::expand()
         }
         return res.join("\n");
     }
+
+    if (configlet_debugging) all_code.push_back(end_marker.arg(name));
 
     return all_code;
 }
@@ -291,3 +309,40 @@ void Configlet::collapseEmptyStrings(bool f)
 {
     collapse_empty_strings = f;
 }
+
+
+QString Configlet::findGeneratedText(const QString &configlet_name,
+                                     const QString &text)
+{
+    QString begin_m = begin_marker.arg(configlet_name) + "\n";
+    QString end_m = end_marker.arg(configlet_name) + "\n";
+    int n1, n2;
+    n1 = text.indexOf(begin_m);
+    if (n1 == -1) return "";
+    n1 += begin_m.length();
+    n2 = text.indexOf(end_m);
+    if (n2 != -1) return text.mid(n1, n2 - n1);
+    return text.mid(n1);
+}
+
+QString Configlet::findConfigletInFile(const QString &configlet_name,
+                                       const QString &file_path)
+{
+    QStringList res;
+    if (!QFile(file_path).exists())  return "";
+    else
+    {
+        QFile file(file_path);
+        if (file.open(QFile::ReadOnly))
+        {
+            QTextStream ts(&file);
+            do
+            {
+                QString line = ts.readLine();
+                res.push_back(line);
+            } while (!ts.atEnd());
+        }
+    }
+    return findGeneratedText(configlet_name, res.join("\n"));
+}
+

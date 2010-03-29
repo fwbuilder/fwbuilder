@@ -40,6 +40,8 @@ class Configlet {
     bool processIf(QString &stream, int pos);
     
 protected:
+
+    QString name;
     QString prefix;
     QString file_path;
     QStringList code;
@@ -48,6 +50,10 @@ protected:
     QString comment_str;
     bool collapse_empty_strings;
 
+    static bool configlet_debugging;
+    static QString begin_marker;
+    static QString end_marker;
+    
     QString getFullPath(const QString &rel_path);
     QString getConfigletPath(const QString &configlet_name);
     
@@ -62,7 +68,7 @@ public:
 
     bool reload(const std::string &prefix, const QString &filename);
     void clear();
-    
+
     void setVariable(const QString &name, const QString &value);
     void setVariable(const QString &name, int value);
 
@@ -70,7 +76,15 @@ public:
 
     void removeComments(const QString &comment_str="##");
     void collapseEmptyStrings(bool f);
-    
+
+    /*
+     * the following methods are used in unit tests
+     */
+    static void setDebugging(bool f) { configlet_debugging = f; }
+    static QString findGeneratedText(const QString &configlet_name,
+                                     const QString &text);
+    static QString findConfigletInFile(const QString &configlet_name,
+                                       const QString &file_path);
 };
 
 #endif
