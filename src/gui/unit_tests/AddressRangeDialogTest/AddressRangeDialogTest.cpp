@@ -80,7 +80,7 @@ void AddressRangeDialogTest::initTestCase()
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     d->close();
-    QTest::qWait(1000);
+    QTest::qWait(10);
 }
 
 void AddressRangeDialogTest::checkMessageBox()

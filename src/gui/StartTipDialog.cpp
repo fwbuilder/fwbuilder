@@ -104,6 +104,17 @@ StartTipDialog::~StartTipDialog()
 };
 
 /*
+ * disconnect signal in case dialog is closed before http query completes.
+ * This does happen in unit tests and might happen on slow machines or
+ * slow internet connections
+ */
+void StartTipDialog::closeEvent(QCloseEvent *event)
+{
+    disconnect(http_getter, SIGNAL(done(const QString&)),
+               this, SLOT(downloadComplete(const QString&)));
+}
+
+/*
  * Returns file name for a random tip
  */
 QString StartTipDialog::getRandomTip()

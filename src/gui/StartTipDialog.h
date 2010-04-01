@@ -51,7 +51,8 @@ class StartTipDialog : public QDialog
     void showTip(const QString &txt, bool new_tip=true);
     void showTip(int tip_idx);
     QString getRandomTip();
-
+    virtual void closeEvent(QCloseEvent *event);
+    
 public:
     Ui::StartTipDialog_q *m_dialog;
 
@@ -67,6 +68,7 @@ public slots:
     void prevTip();
     void showGettingStartedTutorial();
     void showSummary();
+
     virtual void close();
 };
 
