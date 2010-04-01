@@ -335,4 +335,7 @@ HEADERS += ../../../../config.h \
     ../../UsageResolver.h \
     ../../TutorialDialog.h \
     ../../MDIEventFilter.h
-    
+
+RESOURCES += ../../MainRes.qrc
+OBJECTS_DIR = ../../.obj
+MOC_DIR = ../../.moc
