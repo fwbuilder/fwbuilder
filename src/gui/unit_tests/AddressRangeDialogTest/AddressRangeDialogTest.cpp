@@ -50,12 +50,14 @@
 #include "FWObjectClipboard.h"
 #include "TextEditWidget.h"
 #include "fwbuilder/AddressRange.h"
+#include "StartTipDialog.h"
 #include "FWBTree.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/FWObjectDatabase.h"
 
 using namespace std;
 using namespace libfwbuilder;
+
 
 QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 {
@@ -70,6 +72,17 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
     return QPoint(-1,-1);
 }
 
+void AddressRangeDialogTest::initTestCase()
+{
+    new FWObjectClipboard();
+    mw = new FWWindow();
+    mw->show();
+    mw->startupLoad();
+    StartTipDialog *d = mw->findChild<StartTipDialog*>();
+    d->close();
+    QTest::qWait(1000);
+}
+
 void AddressRangeDialogTest::checkMessageBox()
 {
     QVERIFY(app->activeModalWidget()->metaObject()->className() == QMessageBox().metaObject()->className());
@@ -80,11 +93,6 @@ void AddressRangeDialogTest::checkMessageBox()
 
 void AddressRangeDialogTest::editSelectedObject()
 {
-    new FWObjectClipboard();
-    mw = new FWWindow();
-    mw->show();
-    mw->startupLoad();
-    QTest::qWait(100);
     QToolButton* newButton = mw->findChild<QToolButton*>("newButton");
     mw->findChild<QAction*>(QString("newObject_") + AddressRange::TYPENAME)->trigger();
     QTest::qWait(100);
@@ -93,11 +101,18 @@ void AddressRangeDialogTest::editSelectedObject()
     ObjectManipulator *om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     om->editSelectedObject();
     QTest::qWait(100);
+
     om->editSelectedObject();
-    QLineEdit *rangeStart = mw->findChildren<QLineEdit*>("rangeStart").first();
-    QLineEdit *rangeEnd = mw->findChildren<QLineEdit*>("rangeEnd").first();
-    QLineEdit *objName = rangeStart->parent()->findChild<QLineEdit*>("obj_name");
-    TextEditWidget *comment = rangeStart->parent()->parent()->findChild<TextEditWidget*>("comment");
+
+    QWidget *address_range_dialog = mw->findChild<QWidget*>("w_AddressRangeDialog");
+    QVERIFY(address_range_dialog != NULL);
+
+    QLineEdit *rangeStart = address_range_dialog->findChildren<QLineEdit*>("rangeStart").first();
+    QLineEdit *rangeEnd = address_range_dialog->findChildren<QLineEdit*>("rangeEnd").first();
+    QLineEdit *objName = address_range_dialog->findChild<QLineEdit*>("obj_name");
+    QVERIFY(objName != NULL);
+
+    TextEditWidget *comment = address_range_dialog->findChild<TextEditWidget*>("comment");
     QVERIFY(comment != NULL);
 
     objName->clear();
@@ -113,6 +128,7 @@ void AddressRangeDialogTest::editSelectedObject()
     QTest::mouseClick(comment, Qt::LeftButton);
     QTest::keyClick(comment, Qt::Key_Tab);
     QTest::qWait(100);
+
     QVERIFY (dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject()->getComment() == "Test comment");
 
 

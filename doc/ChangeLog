@@ -1,3 +1,8 @@
+2010-04-01  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* AddressRangeDialogTest.cpp (AddressRangeDialogTest::initTestCase):
+	fixed #1366 - fixed unit test for AddressRangeDialog class
+
 2010-03-29  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler_iosacl_writers.cpp (PrintRule::_printRItf):

@@ -33,6 +33,7 @@ class AddressRangeDialogTest : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void editSelectedObject();
 public slots:
     void checkMessageBox();
