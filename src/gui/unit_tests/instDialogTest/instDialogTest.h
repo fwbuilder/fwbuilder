@@ -42,12 +42,15 @@
 class instDialogTest : public QObject
 {
     Q_OBJECT
+    const char *ssh_auth_sock;
     void openPolicy(QString fw);
     void verifyDialog(instDialog *dlg, int items = -1);
     void openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item, ObjectTreeView *tree, const QString &actionText);
+    void removeFiles();
 
 private slots:
     void initTestCase();
+    void cleanupTestCase();
     void page1_1();
     void page1_2();
     void page1_3();
@@ -59,9 +62,17 @@ private slots:
     void page1_9();
     void page1_10();
     void page1_11();
+    void testCompile();
+    void testInstall1();
+    void testInstall2();
+    void testInstall3();
+    void testInstall4();
 
 public slots:
+
     void closeContextMenu();
+    void testInstall1_part2();
+    void testInstall3_part2();
 
 };
 
