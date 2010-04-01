@@ -30,9 +30,9 @@
 
 {{$shell_functions}}
 
-## we do not load modules on Sveasoft
 load_modules() {
     :
+    {{$load_modules}}
 }
 
 verify_interfaces() {
@@ -73,8 +73,6 @@ reset_all() {
     :
     {{$reset_all}}
 }
-
-{{$stop_action}}
 
 log "Activating firewall script generated {{$timestamp}} by {{$user}}"
 check_tools

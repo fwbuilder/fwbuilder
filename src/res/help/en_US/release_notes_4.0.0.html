@@ -12,6 +12,7 @@
     <li><a href="#iptables">Changes in support for iptables</a></li>
     <li><a href="#ipcop">Support for IPCOP</a></li>
     <li><a href="#openwrt">Support for OpenWRT</a></li>
+    <li><a href="#ddwrt">Support for DD-WRT</a></li>
     <li><a href="#pf">Changes in support for PF</a></li>
     <li><a href="#ios">Changes in support for Cisco IOS ACL</a></li>
     <li><a href="#pix">Changes in support for Cisco ASA (PIX)</a></li>
@@ -205,7 +206,7 @@
 <p>
   Built-in policy installer gets commands that it needs to execute on
   the firewall from configlets. Two configlets are used for Unix-based
-  firewalls (Linux, OpenWRT, Sveasoft, IPCOP and its variants,
+  firewalls (Linux, OpenWRT, DD-WRT, Sveasoft, IPCOP and its variants,
   OpenBSD, FreeBSD, MacOSX, Solaris): "installer_commands_reg_user"
   and "installer_commands_root". You can change the behavior of the
   installer without having to touch C++ code, just create a copy of
@@ -838,6 +839,57 @@ rule sets of this object rather than in the actual firewalls.
   /tmp on the firewall.
 </p>
 
+
+<a name="ddwrt"></a>
+<h2>Support for DD-WRT</h2>
+
+<p>
+  This version of Firewall Builder introduces direct support for
+  DD-WRT. There are two options: you can use nvram to install
+  generated firewall policy or you can use jffs (journaling flash file
+  system) on the device and store generated script there. Two host OS
+  settings are provided: <strong>"DD-WRT (nvram)"</strong>
+  and <strong>"DD-WRT (jffs)"</strong>.
+</p>
+
+<h3>DD-WRT (nvram)</h3>
+
+<p>
+  In this mode generated script is somewhat shorter and does not
+  support command line arguments "start", "stop", "status". The script
+  does not try to load iptables modules on the firewall but configures
+  inetrface addresses, vlans, bridge ports and bonding
+  interfaces. Built-in policy installer saves the script in nvram
+  variable "fwb" and configures nvram variable "rc_firewall" to run
+  this script.
+</p>
+
+
+<h3>DD-WRT (jffs)</h3>
+
+<p>
+  First of all, you need to activate JFFS/JFFS2 (Journaling Flash File
+  System) on the firewall. Instructions are provided in
+  the <a href="http://www.dd-wrt.com/wiki/index.php/Journalling_Flash_File_System">
+    DD-WRT wiki</a>. Once jffs is mounted read-write, you also need to create
+  directory "/jffs/firewall" where fwbuilder will store generated script. This
+  is explained in <a href="http://www.dd-wrt.com/wiki/index.php/Firewall_Builder">
+    this article in DD-WRT wiki</a>.
+</p>
+
+<p>
+  When firewall is configured with host OS "dd-wrt (jffs)", built-in
+  policy installer copies generated script to the
+  file <strong>"/jffs/firewall/firewall.fs"</strong> on the firewall
+  and configures nvram variable "rc_firewall" to call this script.
+</p>
+
+<blockquote>
+  Note: recent builds of DD-WRT (tested with v24 and v24SP1) seem to
+  disable JFFS for some reason. If you plan to use jffs method of
+  installing firewall script, check if the version you run supports
+  it.
+</blockquote>
 
 
 <a name="pf"></a>

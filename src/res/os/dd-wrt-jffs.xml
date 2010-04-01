@@ -1,0 +1,140 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources>
+    <Target name="dd-wrt-jffs">
+      <description>DD-WRT (jffs)</description>
+      <status>active</status>
+      <family>dd-wrt-jffs</family>
+      <dialog>linux24</dialog>
+      <interface_dialog>linux24</interface_dialog>
+      <cluster_dialog>basic</cluster_dialog>
+
+      <options>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
+        <default>
+          <linux24_ip_forward>1</linux24_ip_forward>
+          <loopback_interface>lo</loopback_interface>
+          <flush_and_set_default_policy>True</flush_and_set_default_policy>
+          <modules_dir>/lib/modules/`uname -r`/kernel</modules_dir>
+          <firewall_dir>/jffs/firewall</firewall_dir>
+          <output_file>firewall.fw</output_file>
+          <admUser>root</admUser>
+        </default>
+
+        <activation>
+          <fwdir>/jffs/firewall/</fwdir>
+          <fwdir_test>/tmp</fwdir_test>
+        </activation>
+
+<!-- set to True if you want to suppress comments in the generated script -->
+        <suppress_comments>False</suppress_comments>
+<!-- set to True if you do not need the script to load kernel modules -->
+        <suppress_modules>True</suppress_modules>
+
+      </options>
+
+      <capabilities>
+        <supports_routing>True</supports_routing>
+        <supports_subinterfaces>True</supports_subinterfaces>
+        <supports_cluster>True</supports_cluster>
+      </capabilities>
+
+      <protocols>
+        <failover>
+          <string>vrrp,VRRP</string>
+          <string>heartbeat,heartbeat</string>
+          <string>openais,OpenAIS</string>
+          <string>none,None</string>
+        </failover>
+
+        <state_sync>
+          <string>conntrack,conntrack</string>
+        </state_sync>
+
+        <heartbeat>
+          <no_ip_ok>True</no_ip_ok>
+          <default_address>224.0.10.100</default_address>
+          <default_port>694</default_port>
+          <manage_addresses>False</manage_addresses>
+          <dialog>heartbeat</dialog>
+        </heartbeat>
+
+        <openais>
+          <no_ip_ok>True</no_ip_ok>
+          <needs_master>False</needs_master>
+          <default_address>226.94.1.1</default_address>
+          <default_port>5405</default_port>
+          <manage_addresses>False</manage_addresses>
+          <dialog>openais</dialog>
+        </openais>
+
+        <conntrack>
+          <needs_master>False</needs_master>
+          <default_address>225.0.0.50</default_address>
+          <default_port>3780</default_port>
+          <dialog>conntrack</dialog>
+        </conntrack>
+
+        <vrrp>
+          <needs_master>True</needs_master>
+          <no_ip_ok>False</no_ip_ok>
+          <manage_addresses>False</manage_addresses>
+          <dialog></dialog>
+        </vrrp>
+
+        <none>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <manage_addresses>False</manage_addresses>
+          <dialog></dialog>
+        </none>
+
+      </protocols>
+
+      <interfaces>
+        <cluster>
+          <string>vrrp,VRRP</string>
+          <string>heartbeat,heartbeat</string>
+        </cluster>
+        <firewall>
+          <string>ethernet,Ethernet</string>
+          <string>bridge,Bridge</string>
+          <string>bonding,Bonding</string>
+        </firewall>
+      </interfaces>
+
+      <subinterfaces>
+        <ethernet>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </ethernet>
+        <bridge>
+          <string>ethernet,Ethernet</string>
+          <string>unknown,Unknown</string>
+        </bridge>
+        <bonding>
+          <string>ethernet,Ethernet</string>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </bonding>
+      </subinterfaces>
+
+      <tools>
+        <Unknown>
+          <path_lsmod>/sbin/lsmod</path_lsmod>
+          <path_modprobe>/sbin/insmod</path_modprobe>
+          <path_iptables>/usr/sbin/iptables</path_iptables>
+          <path_ip6tables>/usr/sbin/ip6tables</path_ip6tables>
+          <path_iptables_restore>/usr/sbin/iptables-restore</path_iptables_restore>
+          <path_ip6tables_restore>/usr/sbin/ip6tables-restore</path_ip6tables_restore>
+          <path_ip>/usr/sbin/ip</path_ip>
+          <path_logger>/usr/bin/logger</path_logger>
+          <path_expect></path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/usr/sbin/brctl</path_brctl>
+          <path_ifenslave>/usr/sbin/ifenslave</path_ifenslave>
+        </Unknown>
+      </tools>
+    </Target>
+
+</FWBuilderResources>
