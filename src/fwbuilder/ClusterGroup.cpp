@@ -161,11 +161,22 @@ FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
 
 Interface* ClusterGroup::getInterfaceForMemberFirewall(Firewall *fw)
 {
+    cerr << "ClusterGroup::getInterfaceForMemberFirewall " << fw << endl;
+    if (fw)
+    {
+        cerr << "  fw: " << fw->getName() << endl;
+    }
+
     for (FWObjectTypedChildIterator it = findByType(FWObjectReference::TYPENAME);
          it != it.end(); ++it)
     {
         Interface *other_iface = Interface::cast(FWObjectReference::getObject(*it));
         assert(other_iface);
+
+        cerr << "  other_iface: " << other_iface->getName()
+             << "  isChildOf(fw): " << other_iface->isChildOf(fw)
+             << endl;
+
         if (other_iface->isChildOf(fw)) return other_iface;
     }
     return NULL;

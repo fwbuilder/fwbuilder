@@ -1387,13 +1387,32 @@ string Compiler::printComment(Rule *rule, string &prev_rule_label,
 
 Address* Compiler::correctForCluster(Address *addr)
 {
+    cerr << "Compiler::correctForCluster " << addr << endl;
+    if (addr)
+    {
+        cerr << "  addr: " << addr->getName() << endl;
+    }
+
     Interface *intf = Interface::cast(addr);
+
+    if (intf)
+    {
+        cerr << "    intf: " << intf->getName()
+             << "    isFailoverInterface: " << intf->isFailoverInterface()
+             << endl;
+    }
+
     if (intf && intf->isFailoverInterface())
     {
         FailoverClusterGroup *fg = FailoverClusterGroup::cast(
             intf->getFirstByType(FailoverClusterGroup::TYPENAME));
         if (fg)
-            return fg->getInterfaceForMemberFirewall(fw);
+        {
+            cerr << "    fg: " << fg->getName() << endl;
+            Address *other_intf = fg->getInterfaceForMemberFirewall(fw);
+            cerr << "    other_intf: " << other_intf << endl;
+            return other_intf;
+        }
     }
     return addr;
 }
