@@ -509,8 +509,10 @@ bool RoutingCompiler::rItfChildOfFw::processNext()
     tmp_queue.push_back(rule);
     
     RuleElementRItf *itfrel = rule->getRItf();
-    FWObject *o = FWReference::cast(itfrel->front())->getPointer();
 
+    if (itfrel->isAny()) return true;
+
+    FWObject *o = FWReference::cast(itfrel->front())->getPointer();
     if (o->isChildOf(compiler->fw)) return true;
 
     // the interface is not a child of the firewall. Could be
