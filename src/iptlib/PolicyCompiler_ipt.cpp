@@ -2868,15 +2868,15 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
         return true;
     }
 
+#ifdef DEBUG_FOR_DMZ
     cerr << endl;
     cerr << "PolicyCompiler_ipt::decideOnChainIfSrcFW "
          << " rule " << rule->getLabel()
          << endl;
+#endif
 
     Address *src = compiler->correctForCluster(compiler->getFirstSrc(rule));
     assert(src);
-
-    cerr << endl;
 
 /* Bug 811860: "IPTables Compiler Firewall IP to Input Chain".
  * on a bridging firewall rules not associated with interfaces should
