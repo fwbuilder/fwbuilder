@@ -1387,19 +1387,23 @@ string Compiler::printComment(Rule *rule, string &prev_rule_label,
 
 Address* Compiler::correctForCluster(Address *addr)
 {
+#ifdef DEBUG_FOR_DMZ
     cerr << "Compiler::correctForCluster " << addr << endl;
     if (addr)
     {
         cerr << "  addr: " << addr->getName() << endl;
     }
+#endif
 
     Interface *intf = Interface::cast(addr);
 
     if (intf)
     {
+#ifdef DEBUG_FOR_DMZ
         cerr << "    intf: " << intf->getName()
              << "    isFailoverInterface: " << intf->isFailoverInterface()
              << endl;
+#endif
     }
 
     if (intf && intf->isFailoverInterface())
@@ -1408,9 +1412,11 @@ Address* Compiler::correctForCluster(Address *addr)
             intf->getFirstByType(FailoverClusterGroup::TYPENAME));
         if (fg)
         {
-            cerr << "    fg: " << fg->getName() << endl;
             Address *other_intf = fg->getInterfaceForMemberFirewall(fw);
+#ifdef DEBUG_FOR_DMZ
+            cerr << "    fg: " << fg->getName() << endl;
             cerr << "    other_intf: " << other_intf << endl;
+#endif
             return other_intf;
         }
     }
