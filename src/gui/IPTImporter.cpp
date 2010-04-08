@@ -43,6 +43,7 @@
 #  include <winsock2.h>
 #endif
 
+#include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/Address.h"
@@ -670,26 +671,71 @@ void IPTImporter::pushPolicyRule()
         }
 
         //  add rule to the right ruleset
+        RuleSet *current_ruleset = NULL;
         std::string ruleset_name = "";
         if (isStandardChain(current_chain))
         {
-            RuleSet *policy = RuleSet::cast(
+            current_ruleset = RuleSet::cast(
                 getFirewallObject()->getFirstByType(Policy::TYPENAME));
-            assert( policy!=NULL );
-            policy->add(current_rule);
+            assert(current_ruleset!=NULL);
+            current_ruleset->add(current_rule);
         } else
         {
             UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain);
             assert(rs!=NULL);
             rs->ruleset->add(current_rule);
+            current_ruleset = rs->ruleset;
         }
     
         rule->setDirection(PolicyRule::Both);
 
         if ( !i_intf.empty() && !o_intf.empty())
         {
-            markCurrentRuleBad(
-                std::string("Can not set inbound and outbound interface simultaneously. Was: -i ") + i_intf + " -o " + o_intf);
+            // The rule defines inbound and outbound interfaces simultaneously.
+            // -i i_intf
+            // -o o_intf
+            // Making this rule inbound on i_intf, with action Branch
+            // Branch points to a new rule set where we put a rule with
+            // direction outbount on o_intf
+
+            std::string branch_ruleset_name = current_ruleset->getName() +
+                "_" + o_intf;
+
+            action = PolicyRule::Branch;
+            UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
+            if (rs==NULL)
+                rs = getUnidirRuleSet(branch_ruleset_name);
+            branch_rulesets[branch_ruleset_name] = rs;
+            rs->ruleset->setName(target);
+
+            FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+            PolicyRule *new_rule = PolicyRule::cast(dbroot->create(PolicyRule::TYPENAME));
+            FWOptions  *ropt = current_rule->getOptionsObject();
+            assert(ropt!=NULL);
+            new_rule->duplicate(rule);
+
+            RuleElement* re;
+            re = new_rule->getSrc();   re->reset();
+            re = new_rule->getDst();   re->reset();
+            re = new_rule->getSrv();   re->reset();
+            re = new_rule->getItf();   re->reset();
+            
+            rule->setDirection(PolicyRule::Inbound);
+            newInterface(i_intf);
+            Interface *intf = all_interfaces[i_intf];
+            re =rule->getItf();
+            re->addRef(intf);
+            rule->setAction(PolicyRule::Branch);
+            rule->setBranch(rs->ruleset);
+
+            new_rule->setDirection(PolicyRule::Outbound);
+            newInterface(o_intf);
+            intf = all_interfaces[o_intf];
+            re = new_rule->getItf();
+            re->addRef(intf);
+
+            // markCurrentRuleBad(
+            //     std::string("Can not set inbound and outbound interface simultaneously. Was: -i ") + i_intf + " -o " + o_intf);
         } else
         {
             if ( !i_intf.empty())
@@ -712,7 +758,6 @@ void IPTImporter::pushPolicyRule()
         }
 
         current_rule->setComment(rule_comment);
-
     }
 
 //     *Importer::logger << "Rule: " << rule->getActionAsString() << " "

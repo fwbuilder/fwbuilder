@@ -1,3 +1,8 @@
+2010-04-07  vadim  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): see #1390 'update
+	iptables importer to recognize rules with "-i intf -o intf"'
+
 2010-04-01  vadim  <vadim@vk.crocodile.org>
 
 	* src/res/os/dd-wrt-nvram.xml: Added direct support for DD-WRT
