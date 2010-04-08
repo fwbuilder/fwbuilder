@@ -1,5 +1,9 @@
 2010-04-08  vadim  <vadim@vk.crocodile.org>
 
+	* ProjectPanel_file_ops.cpp (ProjectPanel::exportLibraryTest):
+	fixed #1395 "routing rules are not reported properly while
+	exporting library"
+
 	* configlets/linux24/update_addresses: fixed #1391 "function
 	getaddr_internal does not work with point-to-point interfaces".
 	In fact, fwbuilder v3 and v4 can not manage ip addresses of

@@ -2048,7 +2048,7 @@
           <ClusterGroupOptions/>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id3433X13311" host_OS="linux24" inactive="False" lastCompiled="1265516307" lastInstalled="0" lastModified="1266184883" platform="iptables" name="heartbeat_cluster_1" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;" ro="False">
+      <Cluster id="id3433X13311" host_OS="linux24" inactive="False" lastCompiled="1265516307" lastInstalled="0" lastModified="1270766255" platform="iptables" name="heartbeat_cluster_1" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;" ro="False">
         <NAT id="id3587X13311" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id5131X78768" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2820,7 +2820,27 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3563X13311" disabled="False" log="True" position="19" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id8228X45618" disabled="False" group="" log="False" position="19" action="Deny" direction="Inbound" comment="using interface of another cluster in the rule">
+            <Src neg="False">
+              <ObjectRef ref="id58435X29313"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3433X13311"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3563X13311" disabled="False" log="True" position="20" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2838,7 +2858,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3575X13311" disabled="False" group="" log="True" position="20" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id3575X13311" disabled="False" group="" log="True" position="21" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -5054,7 +5074,7 @@
           <ClusterGroupOptions/>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id58425X29313" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="1268936640" platform="iptables" name="server-cluster-1" comment="" ro="False">
+      <Cluster id="id58425X29313" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="1270766255" platform="iptables" name="server-cluster-1" comment="" ro="False">
         <NAT id="id58429X29313" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -5128,7 +5148,7 @@
         <Routing id="id58431X29313" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id58435X29313" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <Interface id="id58435X29313" dedicated_failover="False" dyn="False" label="server-cluster-1 eth0" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
           <IPv4 id="id58436X29313" name="server-cluster-1:eth0:ip" comment="" ro="False" address="192.168.1.100" netmask="255.255.255.0"/>
           <InterfaceOptions>
             <Option name="type">cluster_interface</Option>

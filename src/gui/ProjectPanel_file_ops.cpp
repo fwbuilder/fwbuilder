@@ -668,7 +668,8 @@ bool ProjectPanel::exportLibraryTest(list<FWObject*> &selectedLibs)
         QString objlist = "";
         QString s       = "";
 
-        for (list<FWReference*>::iterator i=externalRefs2.begin(); i!=externalRefs2.end(); ++i)
+        for (list<FWReference*>::iterator i=externalRefs2.begin();
+             i!=externalRefs2.end(); ++i)
         {
             FWReference *robj   = *i;
             FWObject *selLib = robj->getLibrary();
@@ -702,31 +703,19 @@ bool ProjectPanel::exportLibraryTest(list<FWObject*> &selectedLibs)
                 while (fw!=NULL && Firewall::cast(fw)==NULL)
                     fw=fw->getParent();
 
-                QString rsname;
-                if (Policy::cast(ruleset)!=NULL)
-                {
-                    s =
-   QObject::tr("Library %1: Firewall '%2' (global policy rule #%3) uses object '%4' from library '%5'")
-                        .arg(selLib->getName().c_str())
-                        .arg(fw->getName().c_str())
-                        .arg(Rule::cast(rule)->getPosition())
-                        .arg(tgt->getName().c_str())
-                        .arg(tgtlib->getName().c_str());
-                }
-                if (NAT::cast(ruleset)!=NULL)
-                {
-                    s =
-   QObject::tr("Library %1: Firewall '%2' (NAT rule #%3) uses object '%4' from library '%5'")
-                        .arg(selLib->getName().c_str())
-                        .arg(fw->getName().c_str())
-                        .arg(Rule::cast(rule)->getPosition())
-                        .arg(tgt->getName().c_str())
-                        .arg(tgtlib->getName().c_str());
-                }
+                s = QObject::tr("Library %1: Firewall '%2' (%3 rule #%4) uses "
+                                "object '%5' from library '%6'")
+                    .arg(selLib->getName().c_str())
+                    .arg(fw->getName().c_str())
+                    .arg(ruleset->getTypeName().c_str())
+                    .arg(Rule::cast(rule)->getPosition())
+                    .arg(tgt->getName().c_str())
+                    .arg(tgtlib->getName().c_str());
+
             } else
             {
-                    s =
-   QObject::tr("Library %1: Group '%2' uses object '%3' from library '%4'")
+                s =
+                    QObject::tr("Library %1: Group '%2' uses object '%3' from library '%4'")
                         .arg(selLib->getName().c_str())
                         .arg(pp->getName().c_str())
                         .arg(tgt->getName().c_str())
@@ -739,13 +728,13 @@ bool ProjectPanel::exportLibraryTest(list<FWObject*> &selectedLibs)
             objlist = objlist + s;
         }
 
-        longTextDialog ltd( this,
-
+        longTextDialog ltd(
+            this,
             tr("A library that you are trying to export contains references\n"
                "to objects in the other libraries and can not be exported.\n"
                "The following objects need to be moved outside of it or\n"
                "objects that they refer to moved in it:"),
-                            objlist );
+            objlist );
 
         ltd.exec();
         return false;
