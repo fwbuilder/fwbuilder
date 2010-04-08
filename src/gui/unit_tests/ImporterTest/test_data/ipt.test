@@ -26,6 +26,9 @@
 -A INPUT -j user_chain
 -A INPUT -j scan_checks_chain
 
+# both -i intf and -o intf in the same rule. Crearing a branch
+-A FORWARD -i eth0 -o eth1 -p udp --dport 1604 -j ACCEPT
+
 # testing action REJECT with option
 -A INPUT -p tcp --dport 0:8000 -j REJECT --reject-with tcp-reset
 -A INPUT -p udp --dport 0:8000 -j REJECT --reject-with icmp-port-unreachable

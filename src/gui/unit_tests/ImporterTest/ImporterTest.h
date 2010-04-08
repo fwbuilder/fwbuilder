@@ -34,6 +34,8 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <QString>
+
 
 class ImporterTest : public CppUnit::TestFixture
 {
@@ -41,6 +43,10 @@ class ImporterTest : public CppUnit::TestFixture
     libfwbuilder::Library *lib;
     libfwbuilder::QueueLogger *logger;
 
+    void compareResults(libfwbuilder::QueueLogger* logger,
+                        QString expected_result_file_name,
+                        QString obtained_result_file_name);
+    
 public:
     void setUp();
     void IOSImporterTest();

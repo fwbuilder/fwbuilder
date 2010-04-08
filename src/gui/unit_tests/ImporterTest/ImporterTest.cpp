@@ -86,7 +86,7 @@ extern string platform;
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
     public:
-    virtual bool operator()(const string &msg) const
+    virtual bool operator()(const string &) const
     {
         return false;
     }
@@ -128,6 +128,35 @@ void ImporterTest::setUp()
     logger = new QueueLogger();
 }
 
+void ImporterTest::compareResults(QueueLogger* logger,
+                                  QString expected_result_file_name,
+                                  QString obtained_result_file_name)
+{
+    QString result;
+    while (logger->ready())
+        result.append(logger->getLine().c_str());
+    QStringList obtained_result = result.split("\n");
+
+    QFile rr(expected_result_file_name);
+    rr.open(QFile::ReadOnly);
+    QString result_file = rr.readAll();
+    QStringList expected_result = result_file.split("\n");
+
+    QFile rw(obtained_result_file_name);
+    rw.open(QFile::WriteOnly);
+    foreach (QString line, obtained_result)
+        rw.write(line.toAscii());
+    rw.close();
+
+    int max_idx = max(expected_result.size(), obtained_result.size());
+    for (int i=0; i < max_idx; ++i)
+    {
+        QString err = QString("Line %1:\nExpected: '%2'\nResult: '%3'\n")
+            .arg(i).arg(expected_result[i]).arg(obtained_result[i]);
+        CPPUNIT_ASSERT_MESSAGE(err.toStdString(), obtained_result[i] == expected_result[i]);
+    }
+}
+
 void ImporterTest::IOSImporterTest()
 {
     platform = "iosacl";
@@ -145,18 +174,8 @@ void ImporterTest::IOSImporterTest()
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     //imp->run();
 
-    QString result;
-    while (logger->ready())
-        result.append(logger->getLine().c_str());
-
     imp->finalize();
-
-    QFile rr("test_data/ios.result");
-    rr.open(QFile::ReadOnly);
-    QString rightResult = rr.readAll();
-
-    CPPUNIT_ASSERT(result == rightResult);
-
+    compareResults(logger, "test_data/ios.result", "ios.output");
 }
 
 void ImporterTest::IPTImporterTest()
@@ -176,17 +195,6 @@ void ImporterTest::IPTImporterTest()
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     //imp->run();
 
-
-    QString result;
-    while (logger->ready())
-        result.append(logger->getLine().c_str());
-
     imp->finalize();
-
-    QFile rr("test_data/ipt.result");
-    rr.open(QFile::ReadOnly);
-    QString rightResult = rr.readAll();
-
-    CPPUNIT_ASSERT(result == rightResult);
-
+    compareResults(logger, "test_data/ipt.result", "ipt.output");
 }

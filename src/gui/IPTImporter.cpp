@@ -60,7 +60,9 @@
 #include "fwbuilder/FWServiceReference.h"
 #include "fwbuilder/CustomService.h"
 
+#include <QString>
 #include <QtDebug>
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -698,41 +700,64 @@ void IPTImporter::pushPolicyRule()
             // Branch points to a new rule set where we put a rule with
             // direction outbount on o_intf
 
-            std::string branch_ruleset_name = current_ruleset->getName() +
-                "_" + o_intf;
+            string branch_ruleset_name = current_ruleset->getName() + "_" + o_intf;
 
             action = PolicyRule::Branch;
+
             UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
             if (rs==NULL)
                 rs = getUnidirRuleSet(branch_ruleset_name);
             branch_rulesets[branch_ruleset_name] = rs;
-            rs->ruleset->setName(target);
+            rs->ruleset->setName(branch_ruleset_name);
 
             FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
             PolicyRule *new_rule = PolicyRule::cast(dbroot->create(PolicyRule::TYPENAME));
-            FWOptions  *ropt = current_rule->getOptionsObject();
+            FWOptions  *ropt = new_rule->getOptionsObject();
             assert(ropt!=NULL);
-            new_rule->duplicate(rule);
+            // note that this new rule only matches interface and
+            // direction, everything else has been matched by the main
+            // rule. There is no need for the rule in the branch to be stateful.
+            ropt->setBool("stateless", true);
+            rs->ruleset->add(new_rule);
 
+            // Important: at this point we have assembled the
+            // current_rule completely. This means all rule elements,
+            // its action and options have been set above. By
+            // duplicating it into new_rule, we set the same action in
+            // the new_rule. We will change interface, direction and
+            // action in the current_rule below.
+            new_rule->duplicate(rule);
             RuleElement* re;
             re = new_rule->getSrc();   re->reset();
             re = new_rule->getDst();   re->reset();
             re = new_rule->getSrv();   re->reset();
             re = new_rule->getItf();   re->reset();
             
+            new_rule->setDirection(PolicyRule::Outbound);
+            newInterface(o_intf);
+            Interface *intf = all_interfaces[o_intf];
+            re = new_rule->getItf();
+            re->addRef(intf);
+
             rule->setDirection(PolicyRule::Inbound);
             newInterface(i_intf);
-            Interface *intf = all_interfaces[i_intf];
+            intf = all_interfaces[i_intf];
             re =rule->getItf();
             re->addRef(intf);
             rule->setAction(PolicyRule::Branch);
             rule->setBranch(rs->ruleset);
 
-            new_rule->setDirection(PolicyRule::Outbound);
-            newInterface(o_intf);
-            intf = all_interfaces[o_intf];
-            re = new_rule->getItf();
-            re->addRef(intf);
+            QString interfaces = QString("-i %1 -o %2").arg(i_intf.c_str()).arg(o_intf.c_str());
+
+            rule_comment += QString(
+                " Both inbound and outbound interfaces "
+                "in original iptables command: %1").arg(interfaces).toStdString();
+
+            QString log_str = QString("Creating branch ruleset '%1' to "
+                                      "match inbound and outbound interfaces %2")
+                .arg(branch_ruleset_name.c_str()).arg(interfaces);
+
+            *Importer::logger << log_str.toStdString() << "\n";
 
             // markCurrentRuleBad(
             //     std::string("Can not set inbound and outbound interface simultaneously. Was: -i ") + i_intf + " -o " + o_intf);
