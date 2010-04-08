@@ -6,6 +6,8 @@
 ##
 ############ add or remove ip addresses of interfaces #######################
 
+P2P_INTERFACE_WARNING=""
+
 missing_address() {
     address=$1
     cmd=$2
@@ -17,9 +19,39 @@ missing_address() {
     interface=$2
     IFS=$oldIFS
 
+## as of v4.0 we do not manage addresses of point-to-point
+## interfaces. The output of "ip addr show" command for these inetrfaces has
+## word "POINTOPOINT".
+
+## Since the user can not define interface address without netmask in
+## fwbuilder GUI, the script always assumes the address of p2p
+## interface has one. It is therefore something like 1.2.3.4/32. The
+## address in the output of "ip addr show" command does not have any
+## netmask, like in 
+##
+## 10: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UNKNOWN qlen 500
+##    link/[65534] 
+##    inet 10.0.0.100 peer 10.0.0.200 scope global tun0
+##
+## This means, we always have a discrepancy and the script will always
+## want to update the address, even if the address defined in the GUI
+## matches the one on the interface, the only difference being the
+## missing netmask. This leads to many repetitive warnings. We get two
+## warnings even if there is only one p2p interface. Using global
+## variable to suppress redundant warnings. This means the user will
+## see only one warning, citing the name of the first p2p interface
+## even if they have many.
+
+    $IP addr show dev $interface | grep -q POINTOPOINT && {
+        test -z "$P2P_INTERFACE_WARNING" && echo "Warning: Can not update address of interface $interface. fwbuilder can not manage addresses of point-to-point interfaces yet"
+        P2P_INTERFACE_WARNING="yes"
+        return
+    }
+
     test "$cmd" = "add" && {
       echo "# Adding ip address: $interface $addr"
     }
+
     test "$cmd" = "del" && {
       echo "# Removing ip address: $interface $addr"
     }
@@ -60,6 +92,7 @@ list_addresses_by_scope() {
 ##
 ## Addresses we should ignore are dropped from the list.
 ##
+
 update_addresses_of_interface() {
     ignore_list=$2
     set $1 

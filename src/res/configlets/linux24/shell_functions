@@ -19,7 +19,6 @@ getInterfaceVarName() {
 ##
 ## getaddr6() reimplementation idea courtesy Juergen Kammer
 ## <j.kammer@eurodata.de> See ticket #651
-## http://svn.vk.crocodile.org:8765/fwbuilder/ticket/651
 ##
 ## Can not use awk substr() function as originally suggested by
 ## Juergen because of the difference in behavior between GNU awk and
@@ -33,12 +32,11 @@ getInterfaceVarName() {
 ## of the interface. This is different from its behavior in fwbuilder
 ## v2 and v3 where it returned only the first address.
 ##
-
 getaddr_internal() {
     dev=$1
     name=$2
     af=$3
-    L=$($IP $af addr show dev $dev |  sed -n '/inet/{s!.*inet6* !!;s!/.*!!p}')
+    L=$($IP $af addr show dev $dev |  sed -n '/inet/{s!.*inet6* !!;s!/.*!!p}' | sed 's/peer.*//')
     test -z "$L" && { 
         eval "$name=''"
         return

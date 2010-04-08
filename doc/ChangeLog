@@ -1,3 +1,13 @@
+2010-04-08  vadim  <vadim@vk.crocodile.org>
+
+	* configlets/linux24/update_addresses: fixed #1391 "function
+	getaddr_internal does not work with point-to-point interfaces".
+	In fact, fwbuilder v3 and v4 can not manage ip addresses of
+	point-to-point interfaces. This fix makes generated script skip
+	such interfaces and do not try to add, remove or change their ip
+	addresses. Proper support for address management of point-to-point
+	interfaces will be added in the future versions of the program.
+
 2010-04-07  vadim  <vadim@vk.crocodile.org>
 
 	* IPTImporter.cpp (IPTImporter::pushPolicyRule): see #1390 'update
