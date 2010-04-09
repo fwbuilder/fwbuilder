@@ -1,5 +1,19 @@
 2010-04-09  vadim  <vadim@vk.crocodile.org>
 
+	* NATCompiler_ipt.cpp (AssignInterface::processNext): fixes #1403
+	refs #1150  "Using ip address of wrong interface" is broken in v4.0.
+	This effectively rolls back change r2437. With no "Interface" column
+	in the NAT rules, it is difficult to build rules with arbitrary
+	"-o" clause using address for SNAT that does not match interface
+	of the firewall, or especially rules with address for SNAT that does
+	match some inetrface but with another interface in "-o". Keeping old
+	documented behavior where object in TSrc dictated this. If the object
+	was a child of the firewall (an interface or address), then the rule
+	was attached to the interface using "-o". If the object is not a child
+	of the firewall, then the rule is attached to all interfaces using
+	"-o eth+" but skips unnumbered interfaces. Column "interface" should
+	be added to the NAT rules in the future to avoid these complications.
+
 	* ProjectPanel_state_ops.cpp (ProjectPanel::saveState): fixed #1402
 	GUI crashes on exit when no rules are opened in the ruleset panel view
 

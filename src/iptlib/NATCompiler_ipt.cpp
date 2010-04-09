@@ -2380,65 +2380,6 @@ bool NATCompiler_ipt::AssignInterface::processNext()
  * has no interfaces at all.  I wonder if I really have to do this,
  * but I do it anyway.
  */
-        ObjectMatcher om_exact;
-        om_exact.setRecognizeBroadcasts(true);
-        om_exact.setRecognizeMulticasts(true);
-        om_exact.setIPV6(ipt_comp->ipv6);
-        om_exact.setMatchSubnets(true);
-        om_exact.setAddressRangeMatchMode(ObjectMatcher::EXACT);
-
-        ObjectMatcher om_partial;
-        om_partial.setRecognizeBroadcasts(true);
-        om_partial.setRecognizeMulticasts(true);
-        om_partial.setIPV6(ipt_comp->ipv6);
-        om_partial.setMatchSubnets(true);
-        om_partial.setAddressRangeMatchMode(ObjectMatcher::PARTIAL);
-
-        bool found_interface = false;
-        foreach(FWObject* i, all_interfaces)
-        {
-            Interface *iface = Interface::cast(i);
-            assert(iface);
-
-            if (iface->isLoopback() ||
-                iface->isUnnumbered() ||
-                iface->isBridgePort()
-            ) continue;
-
-            if (om_partial.complexMatch(tsrc, iface))
-            {
-                found_interface = true;
-                NATRule *r = compiler->dbcopy->createNATRule();
-                r->duplicate(rule);
-                compiler->temp_ruleset->add(r);
-                r->setInterfaceId(iface->getId());
-                tmp_queue.push_back(r);
-
-                if (AddressRange::isA(tsrc) && !om_exact.complexMatch(tsrc, iface))
-                {
-                    // We have only partial match of this address range and subnet
-                    // defined by the interface
-                    QString err(
-                        "Object '%1' used in TSrc of the NAT rule defines "
-                        "address range that only partially matches subnet "
-                        "defined by the configuration of interface '%2'");
-                    compiler->warning(
-                        r,
-                        err
-                        .arg(tsrc->getName().c_str())
-                        .arg(iface->getName().c_str()).toStdString());
-                }
-            }
-
-    // TODO: add check for non-aligned boundaries of the range
-    // defined by TSrc. Example: interface is configured as
-    // 33.33.33.33//255.255.255.248 (subnet 33.33.33.32 .. 47)
-    // but address range used in TSrc is 33.33.33.20 .. 35.
-    // Both define 15 addresses but boundaries are different.
-
-        }
-        if (found_interface) return true;
-
         int n = 0;
         foreach(QString intf_name, regular_interfaces)
         {
