@@ -50,10 +50,18 @@ interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObj
 interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObject(
     const std::string &os_family)
 {
-    if (os_family == "linux24" || os_family == "secuwall") return new linux24Interfaces();
+    if (os_family == "linux24" ||
+        os_family == "openwrt" ||
+        os_family == "dd-wrt-nvram" ||
+        os_family == "dd-wrt-jffs" ||
+        os_family == "secuwall") return new linux24Interfaces();
+
     if (os_family == "ios") return new iosInterfaces();
+
     if (os_family == "pix_os" || os_family == "ios") return new pixInterfaces();
+
     if (os_family == "openbsd" || os_family == "freebsd") return new bsdInterfaces();
+
     // by default return object of the base class. It performs some
     // reasonable default actions.
     return new interfaceProperties();

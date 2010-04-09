@@ -46,20 +46,37 @@
 class interfacePropertiesTest: public CppUnit::TestFixture
 {
     libfwbuilder::FWObjectDatabase *db;
-
+    
+    void isValidVlanInterfaceNameLinuxFamilies(interfaceProperties *int_prop);
+  
 public:
-  //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
-  interfaceProperties* getIntProps(const QString &os);
+    //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
+    interfaceProperties* getIntProps(const QString &os);
+    
+    void validateInterface();
+    void isEligibleForCluster();
+    void isValidVlanInterfaceNameLinux24();
+    void isValidVlanInterfaceNameOpenWRT();
+    void isValidVlanInterfaceNameDDWRT1();
+    void isValidVlanInterfaceNameDDWRT2();
+    void isValidVlanInterfaceNameSecuwall();
+    void isValidVlanInterfaceNameBSD();
+    void isValidVlanInterfaceNameIOS();
+    void isValidVlanInterfaceNamePIX();
 
-  void validateInterface();
-  void isEligibleForCluster();
-  void isValidVlanInterfaceName();
-  void setUp();
+    void setUp();
 
     CPPUNIT_TEST_SUITE(interfacePropertiesTest);
     CPPUNIT_TEST(validateInterface);
     CPPUNIT_TEST(isEligibleForCluster);
-    CPPUNIT_TEST(isValidVlanInterfaceName);
+    CPPUNIT_TEST(isValidVlanInterfaceNameLinux24);
+    CPPUNIT_TEST(isValidVlanInterfaceNameOpenWRT);
+    CPPUNIT_TEST(isValidVlanInterfaceNameDDWRT1);
+    CPPUNIT_TEST(isValidVlanInterfaceNameDDWRT2);
+    CPPUNIT_TEST(isValidVlanInterfaceNameSecuwall);
+    CPPUNIT_TEST(isValidVlanInterfaceNameBSD);
+    CPPUNIT_TEST(isValidVlanInterfaceNameIOS);
+    CPPUNIT_TEST(isValidVlanInterfaceNamePIX);
     CPPUNIT_TEST_SUITE_END();
 
 };
