@@ -130,7 +130,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
             str << ar->getRangeEnd().toString().c_str();
         } else if (Firewall::cast(obj))
         {
-            if (Firewall::cast(obj)->needsInstall()) str << " * ";
+            if (Firewall::cast(obj)->needsCompile()) str << " * ";
             QString platform = obj->getStr("platform").c_str();
             QString version  = obj->getStr("version").c_str();
             QString readableVersion = getVersionString(platform,version);

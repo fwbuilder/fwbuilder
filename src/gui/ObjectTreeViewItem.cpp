@@ -66,7 +66,7 @@ QVariant ObjectTreeViewItem::data(int column, int role) const
 
         if (o!=NULL)
         {
-            bool mf = !o->getInactive() && (o->needsInstall()) ;
+            bool mf = !o->getInactive() && (o->needsCompile()) ;
             usual.setBold (mf);
             usual.setStrikeOut(o->getInactive());
             return QVariant(usual);

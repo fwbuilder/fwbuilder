@@ -1,3 +1,9 @@
+2010-04-09  vadim  <vadim@vk.crocodile.org>
+
+	* ObjectTreeViewItem.cpp (ObjectTreeViewItem::data): fixed #1398
+	bold font and "*" in the tree indicate firewalls that require
+	installation but should indicate those that require recompile
+
 2010-04-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* interfacePropertiesObjectFactory.cpp: fixed #1396, SF bug 2984193
