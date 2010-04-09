@@ -695,6 +695,12 @@ bool NATCompiler_pf::AssignInterface::processNext()
     NATCompiler_pf *pf_comp=dynamic_cast<NATCompiler_pf*>(compiler);
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
+    if (rule->getInterfaceStr() != "")
+    {
+        tmp_queue.push_back(rule);
+        return true;
+    }
+
     switch ( rule->getRuleType() )
     {
     case NATRule::SNAT:
@@ -747,13 +753,13 @@ bool NATCompiler_pf::ReplaceFirewallObjectsODst::processNext()
 
     list<FWObject*> cl;
     RuleElementODst *rel;
-    Address         *obj=NULL;
+    Address *obj=NULL;
 
-    rel=rule->getODst();      assert(rel);
-    obj=compiler->getFirstODst(rule);  assert(obj);
-
-    if (obj->getId()==compiler->getFwId() ) {
-
+    rel = rule->getODst();      assert(rel);
+    obj =compiler->getFirstODst(rule);  assert(obj);
+ 
+    if (obj->getId()==compiler->getFwId() )
+    {
 	list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
 	for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) {
 	    Interface *interface_=Interface::cast(*i);
@@ -768,14 +774,19 @@ bool NATCompiler_pf::ReplaceFirewallObjectsODst::processNext()
             if (! interface_->isLoopback() ) cl.push_back(interface_);
 
 	}
-	if ( ! cl.empty() ) {
+	if ( ! cl.empty() )
+        {
 	    rel->clearChildren();
-
 	    for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1) 
 	    {
 		rel->addRef( *i1 );
 	    }
 	}
+/*
+ * update for ticket 1397
+ * If firewall object is in ODst, do not assign the rule to any interface
+ */
+        rule->setInterfaceStr("nil");
     }
 
     return true;
