@@ -1,3 +1,11 @@
+2010-04-08  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::_expand_interface): fixes #1394 using
+	existing virtual functions that expand multiple addresses to
+	expand cluster interfaces. Renamed function _expandAddr to
+	_expand_addr, added parameter bool expand_cluster_interfaces_fully
+	to _expand_addr, _expand_addr_recursive and _expand_interface
+
 2010-03-29  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (expandGroupsInItf::processNext): added rule
