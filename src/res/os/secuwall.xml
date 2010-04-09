@@ -48,6 +48,7 @@
       <protocols>
         <failover>
           <string>vrrp,VRRP</string>
+          <string>none,None</string>
         </failover>
         <state_sync>
           <string>conntrack,conntrack</string>
