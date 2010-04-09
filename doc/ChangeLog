@@ -1,5 +1,9 @@
 2010-04-09  vadim  <vadim@vk.crocodile.org>
 
+	* RoutingCompiler_ipt.cpp (RoutingCompiler_ipt::epilog): fixed #1404
+	call to function restore_script_output in the generated iptables
+	script is sometimes added without function definition
+
 	* NATCompiler_pf.cpp (ReplaceFirewallObjectsODst::processNext):
 	fixes #1397   PF compiler fix: destination nat rule with fw object
 	in ODst should skip "on intf"

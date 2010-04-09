@@ -23225,7 +23225,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id439254F225682" host_OS="linux24" inactive="False" lastCompiled="1247364062" lastInstalled="1142003872" lastModified="1247524742" platform="iptables" version="" name="firewall35" comment="testing AddressTable object&#10;&#10;like firewall34, but uses different script format" ro="False">
+      <Firewall id="id439254F225682" host_OS="linux24" inactive="False" lastCompiled="1247364062" lastInstalled="1142003872" lastModified="1270847973" platform="iptables" version="" name="firewall35" comment="testing AddressTable object&#10;&#10;like firewall34, but uses different script format" ro="False">
         <NAT id="id4392558E25682" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4392558F25682" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="True">
@@ -23510,6 +23510,18 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <RuleSetOptions/>
         </Policy>
         <Routing id="id439255AB25682" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RoutingRule id="id53770X97650" disabled="True" metric="0" position="0" comment="for bug 1404 - routing_functions configlet should be expanded">
+            <RDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
           <RuleSetOptions/>
         </Routing>
         <Interface id="id439255AC25682" dedicated_failover="False" dyn="True" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth0.100" comment="VLAN interface" ro="False">

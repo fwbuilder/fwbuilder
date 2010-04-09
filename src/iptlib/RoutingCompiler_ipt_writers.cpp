@@ -158,7 +158,8 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
 
         routing_functions.setVariable("proto_filter", route_pattern);
         compiler->output << routing_functions.expand().toStdString();
- 
+
+        ipt_comp->defined_restore_script_output = true;
         print_once_on_top = false;
     }
     

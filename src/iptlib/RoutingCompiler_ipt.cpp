@@ -302,8 +302,10 @@ void RoutingCompiler_ipt::epilog()
         }
     }
     
-    if (!inSingleRuleCompileMode())
+    if (!inSingleRuleCompileMode() && defined_restore_script_output)
     {
+        // function restore_script_output may not be defined if we
+        // have no rules or all rules are disabled
         output << endl;
         output << "restore_script_output" << endl;
         output << "echo \"...done.\"" << endl;

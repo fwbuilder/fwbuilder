@@ -168,7 +168,8 @@ namespace fwcompiler {
         std::map< std::string, std::string> ecmp_rules_buffer; // sortedDstId+metric-->nexthops
         std::map< std::string, std::string> ecmp_comments_buffer; // sortedDstId+metric-->rule's info for the fw script
         bool have_default_route;
-
+        bool defined_restore_script_output;
+        
     public:
 
 	RoutingCompiler_ipt(libfwbuilder::FWObjectDatabase *_db,
@@ -177,6 +178,7 @@ namespace fwcompiler {
         RoutingCompiler(_db, fw, ipv6_policy, _oscnf)
         {
             have_default_route = false;
+            defined_restore_script_output = false;
         }
 
 
