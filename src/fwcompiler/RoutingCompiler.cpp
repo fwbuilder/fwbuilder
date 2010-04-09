@@ -186,8 +186,8 @@ bool RoutingCompiler::ExpandMultipleAddresses::processNext()
     RuleElementRDst *dst = rule->getRDst();    assert(dst);
     RuleElementRGtw *gtw = rule->getRGtw();    assert(gtw);
 
-    compiler->_expandAddr(rule, dst);
-    compiler->_expandAddr(rule, gtw);
+    compiler->_expand_addr(rule, dst, true);
+    compiler->_expand_addr(rule, gtw, false);
     return true;
 }
 

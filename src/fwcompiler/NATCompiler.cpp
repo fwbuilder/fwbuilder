@@ -340,28 +340,28 @@ bool NATCompiler::ExpandMultipleAddresses::processNext()
     if (rule->getRuleType()==NATRule::NONAT ||
         rule->getRuleType()==NATRule::Return)
     {
-	rel=rule->getOSrc();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getODst();    assert(rel); compiler->_expandAddr(rule,rel);
+	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
+	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, true);
     }
     if (rule->getRuleType()==NATRule::SNAT)
     {
-	rel=rule->getOSrc();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getODst();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getTSrc();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getTDst();    assert(rel); compiler->_expandAddr(rule,rel);
+	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
+	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, true);
+	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
+	rel=rule->getTDst();    assert(rel); compiler->_expand_addr(rule, rel, false);
     }
     if (rule->getRuleType()==NATRule::DNAT)
     {
-	rel=rule->getOSrc();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getODst();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getTSrc();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getTDst();    assert(rel); compiler->_expandAddr(rule,rel);
+	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
+	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, false);
+	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
+	rel=rule->getTDst();    assert(rel); compiler->_expand_addr(rule, rel, false);
     }
     if (rule->getRuleType()==NATRule::Redirect)
     {
-	rel=rule->getOSrc();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getODst();    assert(rel); compiler->_expandAddr(rule,rel);
-	rel=rule->getTSrc();    assert(rel); compiler->_expandAddr(rule,rel);
+	rel=rule->getOSrc();    assert(rel); compiler->_expand_addr(rule, rel, true);
+	rel=rule->getODst();    assert(rel); compiler->_expand_addr(rule, rel, false);
+	rel=rule->getTSrc();    assert(rel); compiler->_expand_addr(rule, rel, false);
     }
     return true;
 }

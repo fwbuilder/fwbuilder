@@ -131,11 +131,12 @@ public:
         void _init(libfwbuilder::FWObjectDatabase *_db, libfwbuilder::Firewall *fw);
 
         virtual void _expand_group_recursive(libfwbuilder::FWObject *o,
-				     std::list<libfwbuilder::FWObject*> &ol);
+                                             std::list<libfwbuilder::FWObject*> &ol);
 
         virtual void _expand_addr_recursive(libfwbuilder::Rule *rule,
-                                    libfwbuilder::FWObject *s,
-                                    std::list<libfwbuilder::FWObject*> &ol);
+                                            libfwbuilder::FWObject *s,
+                                            std::list<libfwbuilder::FWObject*> &ol,
+                                            bool expand_cluster_interfaces_fully);
 
         /* bool _complexMatchWithInterface(libfwbuilder::Address   *obj1, */
         /*                                 libfwbuilder::Interface *iface, */
@@ -552,7 +553,9 @@ protected:
 	 * or dst in the rule. Some platforms may require alterations
 	 * to * this algorithm, that's why it is virtual.
 	 */
-	virtual void _expandAddr(libfwbuilder::Rule *rule,libfwbuilder::FWObject *s);
+	virtual void _expand_addr(libfwbuilder::Rule *rule,
+                                  libfwbuilder::FWObject *s,
+                                  bool expand_cluster_interfaces_fully);
 
         /**
          * internal: scans child objects of interface iface, both IPv4
@@ -561,16 +564,29 @@ protected:
          * address should reimplement this method and do whatever is
          * right for them (e.g. create combined address objects to
          * fuse information from IPv4 and physAddress together).
+         *
+         * Parameter @expand_cluster_interfaces_fully is used when
+         * interface @iface belogns to a cluster and is failover
+         * interface. If @expand_cluster_interfaces_fully is true,
+         * this function scans failover group associated with this
+         * interface and takes address of the member firewall for
+         * which the policy is being compiled. If the cluster
+         * interface belongs to a cluster that is not being compiled,
+         * addresses of all members are returned instead. The address
+         * of the cluster interface is always returned even when
+         * @expand_cluster_interfaces_fully is false.
          */
         virtual void _expand_interface(libfwbuilder::Rule *rule,
                                        libfwbuilder::Interface *iface,
-                                       std::list<libfwbuilder::FWObject*> &ol);
+                                       std::list<libfwbuilder::FWObject*> &ol,
+                                       bool expand_cluster_interfaces_fully);
 
 	/**
-	 * internal: like _expandAddr, but expands address range
+	 * internal: like _expand_addr, but expands address range
 	 * objects
 	 */
-	void _expandAddressRanges(libfwbuilder::Rule *rule,libfwbuilder::FWObject *s);
+	void _expandAddressRanges(libfwbuilder::Rule *rule,
+                                  libfwbuilder::FWObject *s);
 
 	/*
 	 * normalizes port range (makes sure that niether range start

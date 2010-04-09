@@ -323,7 +323,8 @@ void Compiler::expandGroupsInRuleElement(RuleElement *s)
 }
 
 void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
-                                      list<FWObject*> &ol)
+                                      list<FWObject*> &ol,
+                                      bool expand_cluster_interfaces_fully)
 {
     Interface *rule_iface = Interface::cast(dbcopy->findInIndex(rule->getInterfaceId()));
     bool on_loopback= ( rule_iface && rule_iface->isLoopback() );
@@ -374,6 +375,11 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
             if (i2itf)
             {
 /*
+ * skip copy of the member interface added in CompilerDriver::copyFailoverInterface
+ */
+                if (i2itf->getBool("member_interface_copy")) continue;
+                    
+/*
  * Special case is loopback interface - skip it, but only if this rule is
  * not attached to loopback!
  *
@@ -385,26 +391,23 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
                 if (i2itf->isLoopback())
                 {
                     if (RuleElement::cast(s) || on_loopback)
-                        _expand_interface(rule, i2itf, ol);
+                        _expand_interface(rule, i2itf, ol, expand_cluster_interfaces_fully);
                 } else
 // this is not a loopback interface                
-                    _expand_interface(rule, i2itf, ol);
+                    _expand_interface(rule, i2itf, ol, expand_cluster_interfaces_fully);
 
                 continue;
             }
-            _expand_addr_recursive(rule, *i2, ol);
+            _expand_addr_recursive(rule, *i2, ol, expand_cluster_interfaces_fully);
         }
     }
 }
 
 void Compiler::_expand_interface(Rule *rule,
-                                 Interface *iface, std::list<FWObject*> &ol)
+                                 Interface *iface,
+                                 std::list<FWObject*> &ol,
+                                 bool expand_cluster_interfaces_fully)
 {
-/*
- * if this is unnumbered interface or a bridge port, then do not use it
- */
-//    if (iface->isUnnumbered() || iface->isBridgePort()) return;
-
 /*
  * if this is an interface with dynamic address, then simply use it
  * (that is, do not use its children elements "Address")
@@ -415,7 +418,6 @@ void Compiler::_expand_interface(Rule *rule,
         return;
     }
 
-//    physAddress *pa=iface->getPhysicalAddress();
 /*
  * we use physAddress only if Host option "use_mac_addr_filter" of the
  * parent Host object is true
@@ -441,16 +443,48 @@ void Compiler::_expand_interface(Rule *rule,
         if (subint)
         {
             if (subint->isBridgePort()) continue;
-            _expand_interface(rule, subint, ol);
+            _expand_interface(rule, subint, ol, expand_cluster_interfaces_fully);
             continue;
         }
 
         if (Address::cast(o)!=NULL && MatchesAddressFamily(o)) ol.push_back(o);
     }
 
-//    FWObjectTypedChildIterator j=iface->findByType(IPv4::TYPENAME);
-//    for ( ; j!=j.end(); ++j ) 
-//        ol.push_back(*j);
+    if (expand_cluster_interfaces_fully && iface->isFailoverInterface())
+    {
+        // See #1234  Cluster failover interface expands to its own addresses,
+        // plus addresses of the corresponding member interface
+
+        FailoverClusterGroup *fg = FailoverClusterGroup::cast(
+            iface->getFirstByType(FailoverClusterGroup::TYPENAME));
+
+        Interface* member_intf = fg->getInterfaceForMemberFirewall(fw);
+        if (member_intf) 
+            _expand_interface(rule, member_intf, ol, expand_cluster_interfaces_fully);
+        else
+        {
+            // per #1394, if the cluster interface used in the rule does not
+            // belong to the cluster being compiled, expand it to its own
+            // address and addresses of all corresponding member interfaces
+            for (FWObjectTypedChildIterator it =
+                     fg->findByType(FWObjectReference::TYPENAME);
+                 it != it.end(); ++it)
+            {
+                Interface *other_intf = Interface::cast(FWObjectReference::getObject(*it));
+                assert(other_intf);
+                _expand_interface(rule, other_intf, ol, expand_cluster_interfaces_fully);
+            }
+        }
+    }
+}
+
+bool compare_addresses(Address *a1, Address *a2)
+{
+    const InetAddr *addr1 = a1->getAddressPtr();
+    const InetAddr *addr2 = a2->getAddressPtr();
+    if (addr1 == NULL) return true;
+    if (addr2 == NULL) return false;
+    return *addr1 < *addr2;
 }
 
 /**
@@ -460,23 +494,25 @@ void Compiler::_expand_interface(Rule *rule,
  * a pointer at either src or dst in the rule
  *
  */
-void Compiler::_expandAddr(Rule *rule, FWObject *s) 
+void Compiler::_expand_addr(Rule *rule, FWObject *s,
+                            bool expand_cluster_interfaces_fully) 
 {
     list<FWObject*> cl;
+    _expand_addr_recursive(rule, s, cl, expand_cluster_interfaces_fully);
+    
+    list<Address*> expanded_addresses;
+    for (FWObject::iterator i=cl.begin(); i!=cl.end(); ++i) 
+    {
+        expanded_addresses.push_back(Address::cast(*i));
+    }
 
-    _expand_addr_recursive(rule, s, cl);
+    expanded_addresses.sort(compare_addresses);
 
     s->clearChildren();
 
-    for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1) 
+    for (list<Address*>::iterator i1=expanded_addresses.begin();
+         i1!=expanded_addresses.end(); ++i1) 
     {
-#if 0
-        cerr << "Compiler::_expandAddr: adding object: (*i1)->name=";
-        cerr << (*i1)->getName();
-        cerr << "  (*i1)->id=" << (*i1)->getId();
-        cerr << "  type=" << (*i1)->getTypeName();
-        cerr << endl;
-#endif        
         s->addRef( *i1 );
     }
 }
@@ -1054,7 +1090,7 @@ bool Compiler::expandMultipleAddressesInRE::processNext()
 {
     Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
     RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
-    if (re) compiler->_expandAddr(rule, re);
+    if (re) compiler->_expand_addr(rule, re, true);
     tmp_queue.push_back(rule);
     return true;
 }
@@ -1417,7 +1453,7 @@ Address* Compiler::correctForCluster(Address *addr)
             cerr << "    fg: " << fg->getName() << endl;
             cerr << "    other_intf: " << other_intf << endl;
 #endif
-            return other_intf;
+            if (other_intf) return other_intf;
         }
     }
     return addr;

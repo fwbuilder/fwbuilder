@@ -565,8 +565,8 @@ bool  PolicyCompiler::ExpandMultipleAddresses::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementDst *dst=rule->getDst();    assert(dst);
-    compiler->_expandAddr(rule,src);
-    compiler->_expandAddr(rule,dst);
+    compiler->_expand_addr(rule, src, true);
+    compiler->_expand_addr(rule, dst, true);
     tmp_queue.push_back(rule);
     return true;
 }
@@ -576,8 +576,8 @@ bool  PolicyCompiler::addressRanges::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementDst *dst=rule->getDst();    assert(dst);
-    compiler->_expandAddressRanges(rule,src);
-    compiler->_expandAddressRanges(rule,dst);
+    compiler->_expandAddressRanges(rule, src);
+    compiler->_expandAddressRanges(rule, dst);
     tmp_queue.push_back(rule);
     return true;
 }
