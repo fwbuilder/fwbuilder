@@ -84,7 +84,7 @@ bool RoutingCompiler_iosacl::ExpandMultipleAddressesExceptInterface::processNext
     tmp_queue.push_back(rule);
 
     RuleElementRDst *dst = rule->getRDst();    assert(dst);
-    compiler->_expandAddr(rule, dst);
+    compiler->_expand_addr(rule, dst, true);
 
     RuleElementRGtw *gtwrel = rule->getRGtw();    assert(gtwrel);
     Address *gtw = Address::cast(
@@ -92,7 +92,7 @@ bool RoutingCompiler_iosacl::ExpandMultipleAddressesExceptInterface::processNext
     if (gtw == NULL)
         compiler->abort(rule, "Broken GTW");
     if (Interface::isA(gtw) && gtw->isChildOf(compiler->fw)) return true;
-    compiler->_expandAddr(rule, gtwrel);
+    compiler->_expand_addr(rule, gtwrel, false);
     return true;
 }
 

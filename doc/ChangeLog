@@ -1,5 +1,19 @@
 2010-04-08  vadim  <vadim@vk.crocodile.org>
 
+	* CompilerDriver.cpp (CompilerDriver::copyFailoverInterface):
+	see #1394  there is no need to add a copy of member interface objects
+	to the cluster anymore.
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::_expand_interface):
+	fixes #1394 Using existing virtual functions that expand multiple
+	addresses to expand cluster interfaces. Added parameter bool
+	expand_cluster_interfaces_fully to _expand_addr,
+	_expand_addr_recursive and _expand_interface. Now expanding
+	cluster interface in the Compiler::_expand_interface instead of
+	PolicyCompiler_ipt::_expand_interface. Now it is possible to
+	use interface of another cluster in rules (interface of a cluster
+	object different from the one being compiled).
+
 	* ProjectPanel_file_ops.cpp (ProjectPanel::exportLibraryTest):
 	fixed #1395 "routing rules are not reported properly while
 	exporting library"

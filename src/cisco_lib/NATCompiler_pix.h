@@ -104,12 +104,14 @@ namespace fwcompiler {
         void _expand_addr_recursive_pix(libfwbuilder::Rule *rule,
                                         libfwbuilder::FWObject *re,
                                         libfwbuilder::FWObject *s,
-                                        std::list<libfwbuilder::FWObject*> &ol);
+                                        std::list<libfwbuilder::FWObject*> &ol,
+                                        bool expand_cluster_interfaces_fully);
 
         
         virtual void _expand_addr_recursive(libfwbuilder::Rule *rule,
-                                    libfwbuilder::FWObject *s,
-                                    std::list<libfwbuilder::FWObject*> &ol);
+                                            libfwbuilder::FWObject *s,
+                                            std::list<libfwbuilder::FWObject*> &ol,
+                                            bool expand_cluster_interfaces_fully);
 
         /**
          * internal: checks if interface is a child of a cluster and calls
@@ -119,7 +121,8 @@ namespace fwcompiler {
          */
         virtual void _expand_interface(libfwbuilder::Rule *rule,
                                        libfwbuilder::Interface *iface,
-                                       std::list<libfwbuilder::FWObject*> &ol);
+                                       std::list<libfwbuilder::FWObject*> &ol,
+                                       bool expand_cluster_interfaces_fully);
 
 /* this is a dictionary of all nat acl names and associated boolean
  * flag that indicates that corresponding 'clear' command has been

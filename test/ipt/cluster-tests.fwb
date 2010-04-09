@@ -2048,7 +2048,7 @@
           <ClusterGroupOptions/>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id3433X13311" host_OS="linux24" inactive="False" lastCompiled="1265516307" lastInstalled="0" lastModified="1270766255" platform="iptables" name="heartbeat_cluster_1" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;" ro="False">
+      <Cluster id="id3433X13311" host_OS="linux24" inactive="False" lastCompiled="1265516307" lastInstalled="0" lastModified="1270779748" platform="iptables" name="heartbeat_cluster_1" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;" ro="False">
         <NAT id="id3587X13311" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id5131X78768" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2820,7 +2820,7 @@
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id8228X45618" disabled="False" group="" log="False" position="19" action="Deny" direction="Inbound" comment="using interface of another cluster in the rule">
+          <PolicyRule id="id8228X45618" disabled="False" group="" log="False" position="19" action="Accept" direction="Inbound" comment="using interface of another cluster in the rule">
             <Src neg="False">
               <ObjectRef ref="id58435X29313"/>
             </Src>
@@ -2837,10 +2837,30 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
+              <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id3563X13311" disabled="False" log="True" position="20" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id147047X84105" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3433X13311"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id58435X29313"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SSH"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3563X13311" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2858,7 +2878,7 @@
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id3575X13311" disabled="False" group="" log="True" position="21" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id3575X13311" disabled="False" group="" log="True" position="22" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>

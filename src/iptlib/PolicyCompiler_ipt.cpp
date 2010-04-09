@@ -289,29 +289,15 @@ string PolicyCompiler_ipt::getNewChainName(PolicyRule *rule,
 
 void PolicyCompiler_ipt::_expand_interface(Rule *rule,
                                            Interface *iface,
-                                           std::list<FWObject*> &ol)
+                                           std::list<FWObject*> &ol,
+                                           bool expand_cluster_interfaces_fully)
 {
-    std::list<FWObject*>    ol1;
+    std::list<FWObject*> ol1;
+    std::list<FWObject*> lipaddr;
+    std::list<FWObject*> lother;
+    physAddress *pa = NULL;
 
-    std::list<FWObject*>    lipaddr;
-    std::list<FWObject*>    lother;
-    physAddress            *pa=NULL;
-
-    Compiler::_expand_interface(rule, iface,ol1);
-
-    if (iface->isFailoverInterface())
-    {
-        // See #1234  Cluster failover interface expands to its own addresses,
-        // plus addresses of the corresponding member interface
-
-        FailoverClusterGroup *fg = FailoverClusterGroup::cast(
-            iface->getFirstByType(FailoverClusterGroup::TYPENAME));
-
-        Interface* member_intf = fg->getInterfaceForMemberFirewall(fw);
-        if (member_intf)
-            Compiler::_expand_interface(rule, member_intf, ol1);
-
-    }
+    Compiler::_expand_interface(rule, iface, ol1, expand_cluster_interfaces_fully);
 
     for (std::list<FWObject*>::iterator j=ol1.begin(); j!=ol1.end(); j++)
     {
@@ -2794,7 +2780,7 @@ bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinSrc::processNext()
     RuleElementSrc *srcrel = rule->getSrc();
     Address *src =compiler->getFirstSrc(rule);
     assert(src);
-    if (Firewall::cast(src)==NULL)  compiler->_expandAddr(rule, srcrel);
+    if (Firewall::cast(src)==NULL)  compiler->_expand_addr(rule, srcrel, true);
     tmp_queue.push_back(rule);
     return true;
 }
@@ -2804,7 +2790,7 @@ bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinDst::processNext()
     PolicyRule *rule=getNext(); if (rule==NULL) return false;
     RuleElementDst *dstrel=rule->getDst();
     Address        *dst   =compiler->getFirstDst(rule);  assert(dst);
-    if (Firewall::cast(dst)==NULL)  compiler->_expandAddr(rule, dstrel);
+    if (Firewall::cast(dst)==NULL)  compiler->_expand_addr(rule, dstrel, true);
     tmp_queue.push_back(rule);
     return true;
 }

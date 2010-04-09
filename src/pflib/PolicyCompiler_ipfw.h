@@ -57,7 +57,9 @@ namespace fwcompiler {
 
 	virtual std::string myPlatformName();
 
-	virtual void _expandAddr(libfwbuilder::Rule *rule,libfwbuilder::FWObject *s);
+	virtual void _expand_addr(libfwbuilder::Rule *rule,
+                                  libfwbuilder::FWObject *s,
+                                  bool expand_cluster_interfaces_fully);
 
         /**
          * prints rule in some universal format (close to that visible

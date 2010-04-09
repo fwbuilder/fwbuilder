@@ -73,7 +73,7 @@ int PolicyCompiler_ipfw::prolog()
  *  object that own the policy we are processing, because we can use
  *  address 'me' in ipfw rules.
  */
-void PolicyCompiler_ipfw::_expandAddr(Rule *rule,FWObject *s) 
+void PolicyCompiler_ipfw::_expand_addr(Rule *rule, FWObject *s, bool expand_cluster_interfaces_fully) 
 {
     RuleElement *re=RuleElement::cast(s);
 
@@ -84,7 +84,7 @@ void PolicyCompiler_ipfw::_expandAddr(Rule *rule,FWObject *s)
 
         if (o->getId()==fw->getId()) return;
     }
-    Compiler::_expandAddr(rule,s);
+    Compiler::_expand_addr(rule, s, expand_cluster_interfaces_fully);
 }
 
 bool PolicyCompiler_ipfw::expandAnyService::processNext()

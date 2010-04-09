@@ -76,7 +76,8 @@ namespace fwcompiler {
          */
         virtual void _expand_interface(libfwbuilder::Rule *rule,
                                        libfwbuilder::Interface *iface,
-                                       std::list<libfwbuilder::FWObject*> &ol);
+                                       std::list<libfwbuilder::FWObject*> &ol,
+                                       bool expand_cluster_interfaces_fully);
 
         /*
          *************************************************************************

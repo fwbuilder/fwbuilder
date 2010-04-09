@@ -220,11 +220,12 @@ int NATCompiler_ipt::prolog()
 
 void NATCompiler_ipt::_expand_interface(Rule *rule,
                                         Interface *iface,
-                                        std::list<FWObject*> &ol)
+                                        std::list<FWObject*> &ol,
+                                        bool expand_cluster_interfaces_fully)
 {
     std::list<FWObject*> nol;
 
-    Compiler::_expand_interface(rule, iface, ol);
+    Compiler::_expand_interface(rule, iface, ol, expand_cluster_interfaces_fully);
 
     physAddress *pa=iface->getPhysicalAddress();
 /*
@@ -2693,21 +2694,6 @@ void NATCompiler_ipt::compile()
         add( new classifyNATRule( "reclassify rules" ));
         add( new ConvertLoadBalancingRules( "convert load balancing rules"));
         add( new VerifyRules( "verify rules" ));
-#if 0
-// ----------- 10/18/2008
-        add( new splitODstForSNAT(
-                 "split rule if objects in ODst belong to different subnets") );
-        add( new ReplaceFirewallObjectsODst("replace firewall in ODst" ) );
-	add( new ReplaceFirewallObjectsTSrc("replace firewall in TSrc" ) );
-        add( new splitOnDynamicInterfaceInODst(
-                 "split rule if ODst is dynamic interface" ) );
-        add( new splitOnDynamicInterfaceInTSrc(
-                 "split rule if TSrc is dynamic interface" ) );
-
-        add( new ExpandMultipleAddresses("expand multiple addresses") );
-        add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
-// ----------- 
-#endif
 
         add( new singleObjectNegationOSrc(
                  "negation in OSrc if it holds single object"));

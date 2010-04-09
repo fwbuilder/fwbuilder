@@ -1022,39 +1022,6 @@ void CompilerDriver::copyFailoverInterface(Cluster *cluster,
     new_cl_if->setUnprotected(iface->isUnprotected());
     
     fw->getOptionsObject()->setBool("cluster_member", true);
-
-    /* Add copy of firewall's real interface to the cluster to make sure
-     * compiler recognizes it when it encounters cluster object in rules.
-     * This fixes #15 (makes compiler choose correct chains)
-     *
-     * Update 01/31/2010:
-     *
-     * Example of rule where this is necessary is anti-spoofing
-     * rule. When cluster object is placed in rule element, it is
-     * assumed that it represents its own addresses, plus addresses of
-     * the members.
-     *
-     * A copy of the member interface does not have
-     * FailoverClusterGroup child object and is not recognized as
-     * failover interface. This is important when this interface is
-     * dynamic. When cluster object is used in the rule and then
-     * replaced with all its interfaces in one of the rule processors,
-     * this copy interface appears as having cluster as a parent, not
-     * the firewall that is being compiled. This creates problems with
-     * processing of dynamic interfaces. They look like they belong to
-     * some other object and trigger "can use dynamic interface
-     * because its address is unknown" error.
-     *
-     * However there is no need to add a copy of the interface of the
-     * member to the cluster if this interface is dynamic or
-     * unnumbered. Corresponding cluster interface inherits isDyn()
-     * property and is sufficient. This is for ticket #1184
-     */
-    if ( ! iface->isDyn() && ! iface->isUnnumbered())
-    {
-        FWObject *new_member_if = cluster->addCopyOf(iface, true);
-        new_member_if->setBool("member_interface_copy", true);
-    }
 }
 
 /**
