@@ -1,5 +1,8 @@
 2010-04-09  vadim  <vadim@vk.crocodile.org>
 
+	* ProjectPanel_state_ops.cpp (ProjectPanel::saveState): fixed #1402
+	GUI crashes on exit when no rules are opened in the ruleset panel view
+
 	* ObjectTreeViewItem.cpp (ObjectTreeViewItem::data): fixed #1398
 	bold font and "*" in the tree indicate firewalls that require
 	installation but should indicate those that require recompile

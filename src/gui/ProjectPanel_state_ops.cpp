@@ -69,8 +69,14 @@ void ProjectPanel::saveState()
     m_panel->om->saveExpandedTreeItems();
     m_panel->om->saveSectionSizes();
 
+    if (fwbdebug)
+        qDebug() << "ProjectPanel::saveState "
+                 << "rcs=" << rcs
+                 << "getCurrentRuleSetView()=" << getCurrentRuleSetView();
+
     saveLastOpenedLib();
-    saveOpenedRuleSet();
+
+    if (getCurrentRuleSetView()) saveOpenedRuleSet();
 
     if (fwbdebug) qDebug("ProjectPanel::saveState() done");
 }
