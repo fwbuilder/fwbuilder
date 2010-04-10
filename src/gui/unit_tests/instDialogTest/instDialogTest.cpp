@@ -21,6 +21,210 @@
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+  ================================
+
+  Tests implemented in this module:
+
+  ticket 1089
+
+  * user clicks "compile" button in the topmost toolbar. The list
+  should include all firewalls, but only those that require recompile
+  should have "compile" checkboxes checked.
+
+  * user uses main menu "Rules/Compile". This is the same function as
+  the previous one
+
+  * user opens Policy of the firewall "test1" and clicks button
+  "Compile" in the toolbar right above rule set view. The list should
+  include only firewall "test1" and checkbox "Compile" should be checked
+  because it requires recompile
+
+  * the same test as the previous one, but with firewall test2. This
+  one does not require recompile and checkbox "Compile" should not be
+  checked.
+
+  * user selects firewall test1 in the tree and opens context menu,
+  then clicks item "Compile". This is the same test as 3.
+
+  * user selects firewall test2 in the tree and opens context menu,
+  then clicks item "Compile". This is the same test as 4.
+
+  * Select two firewalls in the tree (test1 and test2), open context
+  menu and click "Compile". Should get a list with both firewalls, with
+  checkbox "Compile" selected for test2 and not selected for test1.
+
+  * all previous tests tested "Compile" function. This test should test
+  first step of the "Install" function.
+
+  * emulate clicking "Install" button in the main toolbar
+
+  * check that the first page of the dialog has column of "compile"
+  checkboxes and column of "install" checkboxes
+
+  * check that "compile" checkboxes are checked according to the rules
+  described above in this ticket
+
+  Tests for clusters: 
+
+  * when user clicks "install", checkboxes "install" should appear only
+  next to the firewalls and should not appear next to the clusters in
+  the list
+
+  Ticket 1153:
+
+  * tests page1_5(), page1_6(), page1_7() should emulate opening
+  context menu and clicking menu item "Compile" (see ticket
+  #1089). Please add check that the menu item "Compile" is present
+  and enabled
+
+  * test page1_8() should also check that checkboxes in column
+  "compile" and "install" are visible and enabled. Right now it only
+  checks their "checked" state
+
+  * test page1_8() should also test checkboxes next to the firewall
+  objects test3 and test4
+
+
+  Ticket 1308:
+
+  Using the same data file test.fwb, the test should do the following: 
+
+  test1: 
+
+  * select firewall object test3 in the tree 
+
+  * using context menu associated with test3 in the tree, use menu
+  item "Compile"
+
+  * verify that only firewall object test3 appears in the list in
+  instDialog
+
+  * verify that the warning text (QFrame widget warning_space and
+  QLabel widget warning_message) is visible in the dialog.
+
+  test2: 
+
+  * select cluster "cluster1" in the tree and use context menu to
+  compile it
+
+  * check that the list has objects "cluster1", "test3" and "test4" 
+
+  * check that the warning message is hidden 
+
+  test3: 
+
+  * regardless of the selection in the tree, simulate clicking on the
+  main toolbar button "Compile"
+
+  * check that the list includes objects "cluster1", "test3", "test4",
+  "test1", "test2" and the warning message is hidden
+
+  the focus of these tests is on the warning message. We verify
+  settings of the "Compile" checkboxes in other tests.
+
+
+  Ticket 1357:
+
+  before running the test check if files "test1.fw", "test2.fw", "test3.fw", "test4.fw" exist and delete them if they are there. If delete operation fails for any reason, fail the test 
+  click on the toolbar button "Compile" 
+  click "CompileALL" 
+  click "Next" 
+  let it run until it is done 
+  check that status in the list in the column on the left is "Success" for all objects: cluster1, test1 and test2 
+  check that it produced files "test1.fw", "test2.fw", "test3.fw", "test4.fw" 
+  check that each of these files has non-zero length 
+
+
+  Ticket 1358:
+
+  using the same data file test.fwb but work with a copy because
+  instDialog saves data to the disk and modifies the file
+
+  keep common parts of all these tests in a separate function. There
+  will be more tests like these in the future, the difference will be
+  in the installer parameters and in the options stored in the
+  firewall object. These tests check the status in the column on the
+  left (Success or Error) and status of the buttons in the dialog
+  (Finish). They also check if the file has been created and look for
+  certain lines in the progress output panel.
+
+  before running the test, check if files "test1.fw", "test2.fw",
+  "test3.fw", "test4.fw" exist and delete them. If delete operation
+  fails, fail the test. This should be done in the unit test code
+  (C++) rather than in the runner shell script
+
+  create subdirectory "test_install" in the current directory. If this
+  directory exists, remove files in it.
+
+  find firewall object test1, open it in the editor, click "Firewall
+  settings" button and in the dialog change "Directory on the firewall
+  where script should be installed" to the current
+  directory. Alternatively, you can do this by manipulating data in
+  the object instead of opening dialogs:
+
+    FWOptions *fwoptions = firewall_object->getOptionsObject();
+    fwoptions->setStr("firewall_dir", current_dir + "/test_install");
+
+  test1 
+
+  * click "Install" toolbar button 
+  * uncheck all checkboxes 
+  * check "compile" and "install" for test1 
+  * click Next 
+  * check that the status is "Success" in the list on the left 
+  * check that "Next" button is enabled and "Finish" button is disabled 
+  * check that file test1.fw has been created in directory "test_install" 
+    - delete file test1.fw in "test_install" 
+    - create this file again, with contents as follows: 
+
+#!/bin/sh
+echo "Testing policy activation script"
+
+  * set executable bit on this file (equivalent to chmod +x) 
+  * now click "Next" 
+  * set user name to the name of the account that is running the test 
+  * leave password empty 
+  * replace the address of the firewall with 127.0.0.1 
+  * click OK to start install 
+  * note that since you left password empty, you should have ssh authentication via ssh-agent set up for this to work 
+  * read lines from the installer progress output. Look for the line "Testing policy activation script". If you can't find it, fail the test 
+  * in all tests verify status in the column on the left. 
+  * most likely during debugging you are going to run into different errors with ssh. Make a note of these errors and add lines to the test to fail it if they appear in the installer progress output 
+    - delete file test1.fw in "test_install" and delete directory "test_install" 
+
+  test2 
+
+  test for "authentication failed" error: 
+
+  * before compiling and installing, set environment variable
+  "SSH_AUTH_SOCK" to empty string. Save its value before destroying it
+  and then restore when this test is done
+
+  * repeat the test1 with address 127.0.0.1. Since you have turned off
+  ssh-agent and left password field empty, the program should not be
+  able to authenticate and you should see "Permission denied" in the
+  progress output
+
+  test3 
+
+  another kind of error is a timeout. 
+
+  * To simulate timeout repeat the test with ip address 127.0.0.2. Ssh
+  should time out after some considerable time with appropriate error
+  message in the output. Check for this message and make sure at that
+  point button "Finish" is enabled and status is "Failed" (or is it
+  "Error" ? )
+
+  test4 
+
+  test cancellation. 
+
+  * Repeat the test using address 127.0.0.2 but click "Cancel" 1 sec
+  after you start installation (this is too short for the ssh timeout
+  to occur). Wait after that until the line "Stopping background
+  process" appears, then check that the installer dialog closes.
+
+
 */
 
 #include "instDialogTest.h"
