@@ -6,7 +6,7 @@
 
   Author:  Roman Bovsunivskiy     a2k0001@gmail.com
 
-  $Id$
+  $Id: main_instDialogTest.cpp 2707 2010-03-10 18:22:19Z a2k $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -23,7 +23,7 @@
 
 */
 
-#include "instDialogTest.h"
+#include "instDialogCompileTest.h"
 #include "FWWindow.h"
 #include "FWBSettings.h"
 #include "common/commoninit.h"
@@ -61,7 +61,7 @@ int main( int argc, char** argv)
     {
         cerr << "Can not read resource file from " << full_res_path << endl;
     }
-    instDialogTest tst;
+    instDialogCompileTest tst;
     QTest::qExec(&tst);
 }
 

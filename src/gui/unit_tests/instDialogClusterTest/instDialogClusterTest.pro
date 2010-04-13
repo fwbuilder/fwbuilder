@@ -6,14 +6,14 @@ include(../../../../qmake.inc)
 include(../gui_common.inc)
 
 QT += testlib network gui
-TARGET = instDialogTest
+TARGET = instDialogClusterTest
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-SOURCES += main_instDialogTest.cpp \
-    instDialogTest.cpp
+SOURCES += main_instDialogClusterTest.cpp \
+    instDialogClusterTest.cpp
     
-HEADERS += instDialogTest.h
+HEADERS += instDialogClusterTest.h
 
 RESOURCES += ../../MainRes.qrc
 CONFIG -= release
