@@ -34,6 +34,7 @@
 #include "HttpGet.h"
 #include "printerStream.h"
 #include "ObjectEditor.h"
+#include "instDialog.h"
 
 #include <QString>
 #include <QShowEvent>
@@ -94,7 +95,7 @@ class FWWindow : public QMainWindow {
         
     QMdiArea *m_space;
     QMdiSubWindow *previous_subwindow;
-    QWidget *instd;
+    instDialog *instd;
     HttpGet *current_version_http_getter;
     
     QTimer *instDialogOnScreenTimer;
@@ -232,8 +233,6 @@ public slots:
     virtual void cleanRulesMenu();
 
     virtual void toolsDiscoveryDruid();
-
-    virtual void killInstDialog();
 
     virtual void checkForUpgrade(const QString&);
 

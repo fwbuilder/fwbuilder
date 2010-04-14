@@ -179,6 +179,8 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
                        oe(0), findObjectWidget(0), findWhereUsedWidget(0),
                        undoGroup(0)
 {
+    instd = new instDialog(this);
+
     setUnifiedTitleAndToolBarOnMac(true);
 
     m_mainWindow = new Ui::FWBMainWindow_q();
@@ -254,9 +256,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     connect(current_version_http_getter, SIGNAL(done(const QString&)),
             this, SLOT(checkForUpgrade(const QString&)));
 
-    connect(instDialogOnScreenTimer, SIGNAL(timeout()),
-            this, SLOT(killInstDialog()));
-
     instDialogOnScreenTimer->start(1000);
 
 
@@ -308,6 +307,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     QWidget *tabbar= m_mainWindow->m_space->findChild<QTabBar*>();
     if (tabbar)
         tabbar->installEventFilter(new MDIEventFilter());
+
 }
 
 FWWindow::~FWWindow()
@@ -484,16 +484,6 @@ ProjectPanel* FWWindow::activeProject()
 
     if (w) return dynamic_cast<ProjectPanel*>(w->widget());
     return NULL;
-}
-
-void FWWindow::killInstDialog()
-{
-    if (instd!=NULL && !instd->isVisible())
-    {
-        if (fwbdebug) qDebug("killing instDialog...");
-        delete instd;
-        instd = NULL;
-    }
 }
 
 void FWWindow::updateWindowTitle()
@@ -1547,8 +1537,7 @@ void FWWindow::compile()
     if (activeProject())
     {
         std::set<Firewall*> emp;
-        instd = new instDialog(this, false, false, emp);
-        instd->show();
+        instd->show(this->activeProject(), false, false, emp);
     }
 }
 
@@ -1557,8 +1546,7 @@ void FWWindow::install()
     if (activeProject())
     {
         std::set<Firewall*> emp;
-        instd = new instDialog(this, true, false, emp);
-        instd->show();
+        instd->show(this->activeProject(), true, false, emp);
     }
 }
 
@@ -1568,9 +1556,7 @@ void FWWindow::compile(set<Firewall*> vf)
         qDebug("FWWindow::compile preselected %d firewalls", int(vf.size()));
     if (activeProject())
     {
-        instDialog *id = new instDialog(this, false, true, vf);
-        instd = id;
-        instd->show();
+        instd->show(this->activeProject(), false, true, vf);
     }
 }
 
@@ -1578,9 +1564,7 @@ void FWWindow::install(set<Firewall*> vf)
 {
     if (activeProject())
     {
-        instDialog *id = new instDialog(this, true, true, vf);
-        instd = id;
-        instd->show();
+        instd->show(this->activeProject(), true, true, vf);
     }
 }
 

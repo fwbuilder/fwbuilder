@@ -1005,6 +1005,8 @@ bool instDialog::getInstOptions(Firewall *fw)
             return false;
         }
         readInstallerOptionsFromDialog(fw, inst_opt_dlg);
+        inst_opt_dlg->close();
+        inst_opt_dlg->deleteLater();
     }
 
     return verifyManagementAddress();

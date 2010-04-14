@@ -90,8 +90,6 @@ class instDialog : public QDialog, public FakeWizard
 
     Q_OBJECT;
 
-    void init(QWidget*);
-
     Ui::instDialog_q *m_dialog;
     instConf cnf;
     Page1Operation page_1_op;
@@ -180,9 +178,9 @@ class instDialog : public QDialog, public FakeWizard
  
  public:
    
-    instDialog(QWidget *p, bool install, bool onlySelected, std::set<libfwbuilder::Firewall*> fws);
+    instDialog(QWidget *p);
     virtual ~instDialog();
-    
+
     void summary();
     void opSuccess(libfwbuilder::Firewall *fw);
     void opError(libfwbuilder::Firewall *fw);
@@ -237,6 +235,7 @@ protected:
     
 public slots:
 
+    void show(ProjectPanel *project, bool install, bool onlySelected, std::set<libfwbuilder::Firewall*> fws);
     void compilerFinished(int ret_code, QProcess::ExitStatus);
     void installerFinished(int ret_code, QProcess::ExitStatus);
     void installerSuccess();
