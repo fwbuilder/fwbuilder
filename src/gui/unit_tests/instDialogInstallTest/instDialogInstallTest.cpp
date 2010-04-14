@@ -517,6 +517,6 @@ void instDialogInstallTest::testInstall4()
     QString text = dlg->findChild<QTextBrowser*>("procLogDisplay")->toPlainText();
     QVERIFY(text.contains("Stopping background process"));
     QTest::qWait(3000);
-    QVERIFY(mw->findChild<instDialog*>() == NULL); // check that dialog is closed
+    QVERIFY(mw->findChild<instDialog*>()->isVisible() == false); // check that dialog is closed
     QTest::qWait(1000);
 }
