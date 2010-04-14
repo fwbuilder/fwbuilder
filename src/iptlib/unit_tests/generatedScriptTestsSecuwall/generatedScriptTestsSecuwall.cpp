@@ -94,7 +94,8 @@ void GeneratedScriptTest::assertDirsEqual(const std::string &left_dir,
 {
     QDirIterator leftIt(QString (left_dir.c_str()), QDir::Files, QDirIterator::Subdirectories);
     QDirIterator rightIt(QString (right_dir.c_str()), QDir::Files, QDirIterator::Subdirectories);
-    while (leftIt.hasNext() && rightIt.hasNext()) {
+    while (leftIt.hasNext() && rightIt.hasNext())
+    {
         assertFilesEqual(leftIt.next().toStdString(), rightIt.next().toStdString());
     }
 

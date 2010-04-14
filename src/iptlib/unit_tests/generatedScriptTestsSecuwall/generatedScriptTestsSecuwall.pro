@@ -50,7 +50,11 @@ run_tests.commands = echo "Running tests..." && \
     ./${TARGET} && \
     echo "OK" || { echo "FAILED"; exit 1; }
 
-clean_tests.commands = @rm -rf ./secuwall-*
+build_tests.commands = @tar -zxf ./ref.secuwall-1.tar.gz
+
+clean_tests.commands = @rm -rf ./secuwall-* && \
+    rm -rf ./ref.secuwall-1 && \
+	rm -f ${TARGET}
 
 run_tests.depends = build_tests
 build_tests.depends = all
