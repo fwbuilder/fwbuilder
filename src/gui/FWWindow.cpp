@@ -171,8 +171,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
                        m_space(0),
                        previous_subwindow(0),
                        instd(0),
-                       instDialogOnScreenTimer(
-                           new QTimer(static_cast<QObject*>(this))),
                        editorOwner(0),
                        printer(0), searchObject(0), replaceObject(0),
                        auto_load_from_rcs_head_revision(0),
@@ -255,9 +253,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     current_version_http_getter = new HttpGet();
     connect(current_version_http_getter, SIGNAL(done(const QString&)),
             this, SLOT(checkForUpgrade(const QString&)));
-
-    instDialogOnScreenTimer->start(1000);
-
 
     // connect( m_mainWindow->newObjectAction, SIGNAL( triggered() ),
     //          this, SLOT(newObject() ) );

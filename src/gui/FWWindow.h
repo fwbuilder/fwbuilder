@@ -97,8 +97,7 @@ class FWWindow : public QMainWindow {
     QMdiSubWindow *previous_subwindow;
     instDialog *instd;
     HttpGet *current_version_http_getter;
-    
-    QTimer *instDialogOnScreenTimer;
+
     QString noFirewalls;
 
     QWidget *editorOwner;
