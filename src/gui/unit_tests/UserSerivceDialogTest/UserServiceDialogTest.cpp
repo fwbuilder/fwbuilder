@@ -110,9 +110,9 @@ void UserServiceDialogTest::testDialog()
     QVERIFY(service->getName() == "TestTagService");
 
     userid->clear();
-    QTest::keyClicks(userid, "45");
+    QTest::keyClicks(userid, "username");
     QTest::keyClick(userid, Qt::Key_Enter);
-    QVERIFY(service->getUserId() == "45");
+    QVERIFY(service->getUserId() == "username");
 
     comment->clear();
     QTest::mouseClick(comment, Qt::LeftButton);
