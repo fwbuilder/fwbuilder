@@ -8,11 +8,15 @@ do
     cd $directory
     [ ! -e Makefile ] && qmake -spec $QMAKESPEC
 
-    Xvfb :1 &
-    PID=$!
-    export DISPLAY=":1"
-    $commands || { kill $PID; exit 1; }
-    kill $PID || exit 0
+    PID=""
+    [ -z "$DISPLAY" ] && {
+        Xvfb :1 &
+        PID=$!
+        export DISPLAY=":1"
+    }
+    $commands; TEST_STATUS=$?
+    [ -n "$PID" ] && kill $PID
+    [ $TEST_STATUS ] || exit 0
 
     cd -
 done
