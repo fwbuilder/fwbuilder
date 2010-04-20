@@ -334,15 +334,16 @@ bool RoutingCompiler::validateNetwork::processNext()
 bool RoutingCompiler::reachableAddressInRGtw::checkReachableIPAddress(FWObject *o)
 {
     // let's walk over all interfaces of this firewall
-    FWObjectTypedChildIterator j = compiler->fw->findByType(Interface::TYPENAME);
+    list<FWObject*> interfaces = compiler->fw->getByTypeDeep(Interface::TYPENAME);
+    list<FWObject*>::iterator intf;
 
     if( Host::cast(o) != NULL)
     {
         Host *host=Host::cast(o);
         const InetAddr *ip_host = host->getAddressPtr();
-        for ( ; j!=j.end(); ++j )
+        for (intf = interfaces.begin(); intf!=interfaces.end(); ++intf)
         {
-            Interface *i_firewall=Interface::cast(*j);
+            Interface *i_firewall = Interface::cast(*intf);
             for(FWObjectTypedChildIterator fw_ips = 
                     i_firewall->findByType(IPv4::TYPENAME);
                 fw_ips!=fw_ips.end(); ++fw_ips)
@@ -367,9 +368,9 @@ bool RoutingCompiler::reachableAddressInRGtw::checkReachableIPAddress(FWObject *
         const InetAddr *ip_gateway = gw_interface->getAddressPtr();
 
         // walk over all interfaces of this firewall
-        for ( ; j!=j.end(); ++j )
+        for (intf = interfaces.begin(); intf!=interfaces.end(); ++intf)
         {
-            Interface *if_firewall=Interface::cast(*j);
+            Interface *if_firewall=Interface::cast(*intf);
             FWObjectTypedChildIterator addresses =
                 if_firewall->findByType(IPv4::TYPENAME);
 
@@ -394,9 +395,9 @@ bool RoutingCompiler::reachableAddressInRGtw::checkReachableIPAddress(FWObject *
         IPv4 *ipv4=IPv4::cast(o);
         const InetAddr *ip_ipv4 = ipv4->getAddressPtr();
 
-        for ( ; j!=j.end(); ++j )
+        for (intf = interfaces.begin(); intf!=interfaces.end(); ++intf)
         {
-            Interface *if_firewall=Interface::cast(*j);
+            Interface *if_firewall=Interface::cast(*intf);
             FWObjectTypedChildIterator addresses =
                 if_firewall->findByType(IPv4::TYPENAME);
 
