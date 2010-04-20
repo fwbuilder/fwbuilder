@@ -3438,6 +3438,12 @@
         <IPv4 id="id45847X95438" name="h-10.3.14.201" comment="Imported from &quot;c3620&quot; 10.3.14.201/255.255.255.255" ro="False" address="10.3.14.201" netmask="255.255.255.255"/>
         <IPv4 id="id46523X95438" name="a-192.168.1.10" comment="" ro="False" address="192.168.1.10" netmask="0.0.0.0"/>
         <IPv4 id="id1971809X83572" name="fw2-5-eth1" comment="" ro="False" address="222.222.222.222" netmask="0.0.0.0"/>
+        <IPv4 id="id55195X40565" name="gw_200" comment="" ro="False" address="200.200.200.200" netmask="0.0.0.0"/>
+        <IPv4 id="id55215X40565" name="gw_001" comment="" ro="False" address="192.168.1.200" netmask="0.0.0.0"/>
+        <IPv4 id="id55235X40565" name="gw_002" comment="" ro="False" address="192.168.2.200" netmask="0.0.0.0"/>
+        <IPv4 id="id55255X40565" name="gw_011" comment="" ro="False" address="192.168.11.200" netmask="0.0.0.0"/>
+        <IPv4 id="id55275X40565" name="gw_201" comment="" ro="False" address="192.168.201.200" netmask="0.0.0.0"/>
+        <IPv4 id="id55295X40565" name="gw_202" comment="" ro="False" address="192.168.202.200" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups" comment="" ro="False">
         <ObjectGroup id="id3B4572AF" name="group1" comment="" ro="False">
@@ -4345,6 +4351,11 @@
         <Network id="id45876X95438" name="net-10.3.14.0/24" comment="Imported from &quot;c3620&quot; 10.3.14.0/255.255.255.0" ro="False" address="10.3.14.0" netmask="255.255.255.0"/>
         <NetworkIPv6 id="id46155X95438" name="ipv6 net fe80::/64" comment="" ro="False" address="fe80::" netmask="64"/>
         <Network id="id1380862X2261" name="net-33 24/255.255.255.248" comment="" ro="False" address="33.33.33.24" netmask="255.255.255.248"/>
+        <Network id="id55211X40565" name="lan_192.168.101" comment="" ro="False" address="192.168.101.0" netmask="255.255.255.0"/>
+        <Network id="id55231X40565" name="lan_192.168.102" comment="" ro="False" address="192.168.102.0" netmask="255.255.255.0"/>
+        <Network id="id55251X40565" name="lan_192.168.111" comment="" ro="False" address="192.168.111.0" netmask="255.255.255.0"/>
+        <Network id="id55271X40565" name="lan_192.168.211" comment="" ro="False" address="192.168.211.0" netmask="255.255.255.0"/>
+        <Network id="id55291X40565" name="lan_192.168.212" comment="" ro="False" address="192.168.212.0" netmask="255.255.255.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15_1" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3CD8769F" name="test_range_1" comment="" ro="False" start_address="192.168.1.11" end_address="192.168.1.15"/>
@@ -49376,6 +49387,289 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="use_ULOG">False</Option>
           <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id55125X40565" host_OS="linux24" inactive="False" lastCompiled="1271533331" lastInstalled="0" lastModified="1271785316" platform="iptables" version="1.3.0" name="fw-A" comment="" ro="False">
+        <NAT id="id55177X40565" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id55174X40565" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id55180X40565" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RoutingRule id="id55182X40565" disabled="False" metric="0" position="0" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id55195X40565"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id55153X40565"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id55201X40565" disabled="False" group="" metric="0" position="1" comment="for 1410: gateway matches subnet of a vlan interface">
+            <RDst neg="False">
+              <ObjectRef ref="id55211X40565"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id55215X40565"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id55142X40565"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id55221X40565" disabled="False" group="" metric="0" position="2" comment="for 1410: gateway matches subnet of a vlan interface">
+            <RDst neg="False">
+              <ObjectRef ref="id55231X40565"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id55235X40565"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id55139X40565"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id55241X40565" disabled="False" group="" metric="0" position="3" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id55251X40565"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id55255X40565"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id55156X40565"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id55261X40565" disabled="False" group="" metric="0" position="4" comment="for 1410: gateway matches subnet of a vlan interface">
+            <RDst neg="False">
+              <ObjectRef ref="id55271X40565"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id55275X40565"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id55147X40565"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id55281X40565" disabled="False" group="" metric="0" position="5" comment="for 1410: gateway matches subnet of a vlan interface">
+            <RDst neg="False">
+              <ObjectRef ref="id55291X40565"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id55295X40565"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="id55150X40565"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id55133X40565" dedicated_failover="False" dyn="False" label="bond0" mgmt="False" security_level="0" unnum="True" unprotected="False" name="bond0" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="bonding_policy">802.3ad</Option>
+            <Option name="bondng_driver_options">miimon=100</Option>
+            <Option name="enable_stp">False</Option>
+            <Option name="type">bonding</Option>
+            <Option name="vlan_id">0</Option>
+            <Option name="xmit_hash_policy">layer2</Option>
+          </InterfaceOptions>
+          <Interface id="id55135X40565" dedicated_failover="False" dyn="False" label="eth0" mgmt="False" security_level="0" unnum="True" unprotected="False" name="eth0" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="bonding_policy"></Option>
+              <Option name="bondng_driver_options"></Option>
+              <Option name="enable_stp">False</Option>
+              <Option name="type">ethernet</Option>
+              <Option name="vlan_id">0</Option>
+              <Option name="xmit_hash_policy"></Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id55137X40565" dedicated_failover="False" dyn="False" label="eth1" mgmt="False" security_level="0" unnum="True" unprotected="False" name="eth1" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="type">ethernet</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id55139X40565" dedicated_failover="False" dyn="False" label="bond0.2 - LAN usr" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bond0.2" comment="" ro="False">
+            <IPv4 id="id55140X40565" name="fw-A:bond0:bond0.2:ip" comment="" ro="False" address="192.168.2.11" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="bonding_policy"></Option>
+              <Option name="bondng_driver_options"></Option>
+              <Option name="enable_stp">False</Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">2</Option>
+              <Option name="xmit_hash_policy"></Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id55142X40565" dedicated_failover="False" dyn="False" label="bond0.1 - LAN des" mgmt="True" security_level="0" unnum="False" unprotected="False" name="bond0.1" comment="" ro="False">
+            <IPv4 id="id55143X40565" name="fw-A:bond0:bond0.1:ip" comment="" ro="False" address="192.168.1.11" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="bonding_policy"></Option>
+              <Option name="bondng_driver_options"></Option>
+              <Option name="enable_stp">False</Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">1</Option>
+              <Option name="xmit_hash_policy"></Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id55145X40565" dedicated_failover="False" dyn="False" label="eth2" mgmt="False" security_level="0" unnum="True" unprotected="False" name="eth2" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+          <Interface id="id55147X40565" dedicated_failover="False" dyn="False" label="eth2.201 - DMZ201" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth2.201" comment="" ro="False">
+            <IPv4 id="id55148X40565" name="fw-A:eth2:eth2.201:ip" comment="" ro="False" address="192.168.201.11" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">201</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id55150X40565" dedicated_failover="False" dyn="False" label="eth2.202 - DMZ 202" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth2.202" comment="" ro="False">
+            <IPv4 id="id55151X40565" name="fw-A:eth2:eth2.202:ip" comment="" ro="False" address="192.168.202.11" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">202</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id55153X40565" dedicated_failover="False" dyn="False" label="eth3 - Internet" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth3" comment="" ro="False">
+          <IPv4 id="id55154X40565" name="fw-A:eth3:ip" comment="" ro="False" address="192.0.2.11" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id55156X40565" dedicated_failover="False" dyn="False" label="bond1 - CAD" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bond1" comment="" ro="False">
+          <IPv4 id="id55157X40565" name="fw-A:bond1:ip" comment="" ro="False" address="192.168.11.11" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="bonding_policy">802.3ad</Option>
+            <Option name="bondng_driver_options">miimon=100</Option>
+            <Option name="enable_stp">False</Option>
+            <Option name="type">bonding</Option>
+            <Option name="vlan_id">0</Option>
+            <Option name="xmit_hash_policy">layer2</Option>
+          </InterfaceOptions>
+          <Interface id="id55159X40565" dedicated_failover="False" dyn="False" label="eth4" mgmt="False" security_level="0" unnum="True" unprotected="False" name="eth4" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="type">ethernet</Option>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id55161X40565" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="eth5" comment="" ro="False">
+            <InterfaceOptions>
+              <Option name="type">ethernet</Option>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Interface id="id55163X40565" dedicated_failover="False" dyn="False" label="lo" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+          <IPv4 id="id55164X40565" name="fw-A:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id55166X40565" dedicated_failover="False" dyn="False" label="eth6 - sync" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth6" comment="" ro="False">
+          <IPv4 id="id55167X40565" name="fw-A:eth6:ip" comment="" ro="False" address="192.168.6.11" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Management address="192.168.1.11">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">True</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">True</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">True</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">True</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir">/sw/FWbuilder</Option>
+          <Option name="firewall_is_part_of_any_and_networks">False</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix"></Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_accept_redirects">0</Option>
+          <Option name="linux24_accept_source_route">0</Option>
+          <Option name="linux24_conntrack_hashsize">250000</Option>
+          <Option name="linux24_conntrack_max">250000</Option>
+          <Option name="linux24_conntrack_tcp_be_liberal">1</Option>
+          <Option name="linux24_icmp_echo_ignore_all">0</Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts">1</Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses">0</Option>
+          <Option name="linux24_ip_dynaddr">1</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="linux24_ipv6_forward"></Option>
+          <Option name="linux24_log_martians">1</Option>
+          <Option name="linux24_path_brctl"></Option>
+          <Option name="linux24_path_ifenslave"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_ip6tables"></Option>
+          <Option name="linux24_path_ip6tables_restore"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_iptables_restore"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_path_vconfig"></Option>
+          <Option name="linux24_rp_filter">1</Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">0</Option>
+          <Option name="linux24_tcp_keepalive_interval">0</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies">1</Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">True</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_invalid">True</Option>
+          <Option name="log_ip_opt">True</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="log_tcp_opt">True</Option>
+          <Option name="log_tcp_seq">True</Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr">192.168.1.100</Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="output_file"></Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">True</Option>
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
