@@ -4870,6 +4870,20 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 iface->getFirstByType(FailoverClusterGroup::TYPENAME);
             PolicyRule *rule = NULL;
 
+            string fw_iface_id = iface->getOptionsObject()->getStr("base_interface_id");
+            Interface *fw_iface =
+                Interface::cast(
+                    dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_iface_id)));
+            if (fw_iface == NULL)
+            {
+                warning(
+                    QString("Can not find interface of the firewall "
+                            "for the cluster failover group %1. "
+                            "Falling back using cluster interface object.")
+                    .arg(failover_group->getName().c_str()).toStdString());
+                fw_iface = iface;
+            }
+
             if (failover_group->getStr("type") == "vrrp")
             {
                 /* Add VRRP-Address to database */
@@ -4891,34 +4905,55 @@ void PolicyCompiler_ipt::insertFailoverRule()
                     use_ipsec_ah = failover_opts->getBool("vrrp_over_ipsec_ah");
                 }
 
-                if (!use_ipsec_ah)
+                for (FWObjectTypedChildIterator it =
+                         failover_group->findByType(FWObjectReference::TYPENAME);
+                     it != it.end(); ++it)
                 {
-                    /* Add VRRP-Service to database */
-                    IPService* vrrp_srv = IPService::cast(
-                            dbcopy->create(IPService::TYPENAME));
-                    vrrp_srv->setComment("VRRP service");
-                    vrrp_srv->setProtocolNumber(112);
-                    dbcopy->add(vrrp_srv);
+                    Interface *other_iface =
+                        Interface::cast(FWObjectReference::getObject(*it));
+                    assert(other_iface);
+                    if (other_iface->getId() == fw_iface->getId()) continue;
+                    // if interface is dynamic, we can't use it in the rule
+                    // (because it belongs to another machine, not the fw
+                    // we compile for so we can't use script). NULL means "any"
+                    // in the call to addMgmtRule()
+                    if (other_iface->isDyn()) other_iface = NULL;
 
-                    addMgmtRule(NULL, vrrp_dst, vrrp_srv, iface,
-                            PolicyRule::Both, PolicyRule::Accept,
-                            "VRRP");
-                } else
-                {
-                    /*
-                     * Add AH-Service to database.
-                     * According to RFC 2338 section 5.3.6.3, VRRP can use
-                     * IPsec AH.
-                     */
-                    IPService* ah_srv = IPService::cast(
+                    if (!use_ipsec_ah)
+                    {
+                        /* Add VRRP-Service to database */
+                        IPService* vrrp_srv = IPService::cast(
                             dbcopy->create(IPService::TYPENAME));
-                    ah_srv->setComment("IPSEC-AH");
-                    ah_srv->setProtocolNumber(51);
-                    dbcopy->add(ah_srv);
+                        vrrp_srv->setComment("VRRP service");
+                        vrrp_srv->setProtocolNumber(112);
+                        dbcopy->add(vrrp_srv);
 
-                    addMgmtRule(NULL, vrrp_dst, ah_srv, iface,
-                            PolicyRule::Both, PolicyRule::Accept,
-                            "VRRP (with IPSEC-AH)");
+                        addMgmtRule(other_iface, vrrp_dst, vrrp_srv, iface,
+                                    PolicyRule::Inbound, PolicyRule::Accept,
+                                    "VRRP");
+                        addMgmtRule(fw, vrrp_dst, vrrp_srv, iface,
+                                    PolicyRule::Outbound, PolicyRule::Accept,
+                                    "VRRP");
+                    } else
+                    {
+                        /*
+                         * Add AH-Service to database.
+                         * According to RFC 2338 section 5.3.6.3, VRRP can use
+                         * IPsec AH.
+                         */
+                        IPService* ah_srv = IPService::cast(
+                            dbcopy->create(IPService::TYPENAME));
+                        ah_srv->setComment("IPSEC-AH");
+                        ah_srv->setProtocolNumber(51);
+                        dbcopy->add(ah_srv);
+
+                        addMgmtRule(other_iface, vrrp_dst, ah_srv, iface,
+                                    PolicyRule::Inbound, PolicyRule::Accept,
+                                    "VRRP (with IPSEC-AH)");
+                        addMgmtRule(fw, vrrp_dst, ah_srv, iface,
+                                    PolicyRule::Outbound, PolicyRule::Accept,
+                                    "VRRP (with IPSEC-AH)");
+                    }
                 }
             }
 
@@ -4929,20 +4964,6 @@ void PolicyCompiler_ipt::insertFailoverRule()
                  * Find interface of the member firewall fw that corresponds
                  * to the cluster interface iface
                  */
-
-                string fw_iface_id = iface->getOptionsObject()->getStr("base_interface_id");
-                Interface *fw_iface =
-                    Interface::cast(
-                        dbcopy->findInIndex(FWObjectDatabase::getIntId(fw_iface_id)));
-                if (fw_iface == NULL)
-                {
-                    warning(
-                        QString("Can not find interface of the firewall "
-                                "for the cluster failover group %1. "
-                                "Falling back using cluster interface object.")
-                        .arg(failover_group->getName().c_str()).toStdString());
-                    fw_iface = iface;
-                }
 
                 bool ucast = FailoverClusterGroup::cast(failover_group)->
                     getOptionsObject()->getBool("heartbeat_unicast");
@@ -4974,47 +4995,38 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 dbcopy->add(heartbeat_srv);
 
                 // Heartbeat can use either multicast or unicast
-                if (ucast)
+                for (FWObjectTypedChildIterator it =
+                         failover_group->findByType(FWObjectReference::TYPENAME);
+                     it != it.end(); ++it)
                 {
-                    for (FWObjectTypedChildIterator it =
-                             failover_group->findByType(FWObjectReference::TYPENAME);
-                         it != it.end(); ++it)
+                    Interface *other_iface =
+                        Interface::cast(FWObjectReference::getObject(*it));
+                    assert(other_iface);
+                    if (other_iface->getId() == fw_iface->getId()) continue;
+                    // if interface is dynamic, we can't use it in the rule
+                    // (because it belongs to another machine, not the fw
+                    // we compile for so we can't use script). NULL means "any"
+                    // in the call to addMgmtRule()
+                    if (other_iface->isDyn()) other_iface = NULL;
+
+                    if (ucast)
                     {
-                        Interface *other_iface =
-                            Interface::cast(FWObjectReference::getObject(*it));
-                        assert(other_iface);
-                        if (other_iface->getId() == fw_iface->getId()) continue;
-                        addMgmtRule(other_iface,
-                                    fw,
-                                    heartbeat_srv,
-                                    fw_iface,
-                                    PolicyRule::Inbound,
-                                    PolicyRule::Accept,
+                        addMgmtRule(other_iface, fw, heartbeat_srv, fw_iface,
+                                    PolicyRule::Inbound, PolicyRule::Accept,
                                     "heartbeat");
-                        addMgmtRule(fw,
-                                    other_iface,
-                                    heartbeat_srv,
-                                    fw_iface,
-                                    PolicyRule::Outbound,
-                                    PolicyRule::Accept,
+                        addMgmtRule(fw, other_iface, heartbeat_srv, fw_iface,
+                                    PolicyRule::Outbound, PolicyRule::Accept,
                                     "heartbeat");
                     }
-                } else
-                {
-                    addMgmtRule(NULL,
-                                heartbeat_dst,
-                                heartbeat_srv,
-                                fw_iface,
-                                PolicyRule::Inbound,
-                                PolicyRule::Accept,
-                                "heartbeat");
-                    addMgmtRule(fw,
-                                heartbeat_dst,
-                                heartbeat_srv,
-                                fw_iface,
-                                PolicyRule::Outbound,
-                                PolicyRule::Accept,
-                                "heartbeat");
+                    else
+                    {
+                        addMgmtRule(other_iface, heartbeat_dst, heartbeat_srv, fw_iface,
+                                    PolicyRule::Inbound, PolicyRule::Accept,
+                                    "heartbeat");
+                        addMgmtRule(fw, heartbeat_dst, heartbeat_srv, fw_iface,
+                                    PolicyRule::Outbound, PolicyRule::Accept,
+                                    "heartbeat");
+                    }
                 }
             }
 
@@ -5046,12 +5058,27 @@ void PolicyCompiler_ipt::insertFailoverRule()
                 openais_srv->setComment("OPENAIS UDP port");
                 dbcopy->add(openais_srv);
 
-                addMgmtRule(NULL, openais_dst, openais_srv, iface,
-                            PolicyRule::Inbound, PolicyRule::Accept,
-                            "openais");
-                addMgmtRule(fw, openais_dst, openais_srv, iface,
-                            PolicyRule::Outbound, PolicyRule::Accept,
-                            "openais");
+                for (FWObjectTypedChildIterator it =
+                         failover_group->findByType(FWObjectReference::TYPENAME);
+                     it != it.end(); ++it)
+                {
+                    Interface *other_iface =
+                        Interface::cast(FWObjectReference::getObject(*it));
+                    assert(other_iface);
+                    if (other_iface->getId() == fw_iface->getId()) continue;
+                    // if interface is dynamic, we can't use it in the rule
+                    // (because it belongs to another machine, not the fw
+                    // we compile for so we can't use script). NULL means "any"
+                    // in the call to addMgmtRule()
+                    if (other_iface->isDyn()) other_iface = NULL;
+
+                    addMgmtRule(other_iface, openais_dst, openais_srv, iface,
+                                PolicyRule::Inbound, PolicyRule::Accept,
+                                "openais");
+                    addMgmtRule(fw, openais_dst, openais_srv, iface,
+                                PolicyRule::Outbound, PolicyRule::Accept,
+                                "openais");
+                }
             }
 
             if (rule)
