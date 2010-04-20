@@ -24,6 +24,7 @@
 {{$shell_functions}}
 
 verify_interfaces() {
+    :
     {{$verify_interfaces}}
 }
 
@@ -47,6 +48,7 @@ script_body() {
 }
 
 reset_all() {
+    :
     {{$reset_all}}
 }
 

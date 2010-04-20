@@ -24,18 +24,22 @@ FWDIR=`dirname $0`
 {{$shell_functions}}
 
 verify_interfaces() {
+    :
     {{$verify_interfaces}}
 }
 
 set_kernel_vars() {
+    :
     {{$kernel_vars_commands}}
 }
 
 prolog_commands() {
+    :
     {{$prolog_script}}
 }
 
 epilog_commands() {
+    :
     {{$epilog_script}}
 }
 
@@ -45,6 +49,7 @@ run_epilog_and_exit() {
 }
 
 configure_interfaces() {
+    :
     {{$configure_interfaces}}
 }
 
