@@ -72,11 +72,22 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 {
     FWOptions *ruleopt =rule->getOptionsObject();
     Service *srv=compiler->getFirstSrv(rule);    assert(srv);
+    string version = compiler->fw->getStr("version");
 
     switch (rule->getAction())
     {
-    case PolicyRule::Accept:  
     case PolicyRule::Tag:
+    {
+        if (XMLTools::version_compare(version, "4.6")>=0)
+        {
+            compiler->output << "match ";
+        }else
+        {
+            compiler->output << "pass ";
+        }
+        break;
+    }
+    case PolicyRule::Accept:  
     case PolicyRule::Classify:
     case PolicyRule::Accounting:
     case PolicyRule::Route:
@@ -115,8 +126,17 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 	}
 	break;
     case PolicyRule::Scrub:
-        compiler->output << "scrub   ";
+    {
+        string version = compiler->fw->getStr("version");
+        if (XMLTools::version_compare(version, "4.7")>=0)
+        {
+            compiler->output << "match in all scrub   ";
+        } else
+        {
+            compiler->output << "scrub   ";
+        }
         break;
+    }
     case PolicyRule::Custom:
         compiler->output << ruleopt->getStr("custom_str") << " ";
         break;

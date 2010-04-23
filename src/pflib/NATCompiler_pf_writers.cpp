@@ -91,28 +91,28 @@ bool NATCompiler_pf::PrintRule::processNext()
     // string err = rule->getStr(".error_msg");
     // if (!err.empty()) compiler->output << "# " << err << endl;
 
-    RuleElementOSrc *osrcrel=rule->getOSrc();
-    RuleElementODst *odstrel=rule->getODst();
-    RuleElementTSrc *tsrcrel=rule->getTSrc();
-    RuleElementTDst *tdstrel=rule->getTDst();
+    RuleElementOSrc *osrcrel = rule->getOSrc();
+    RuleElementODst *odstrel = rule->getODst();
+    RuleElementTSrc *tsrcrel = rule->getTSrc();
+    RuleElementTDst *tdstrel = rule->getTDst();
 
     FWObject *osrc, *odst;
 
     osrc = osrcrel->front();
     if (osrc && FWReference::cast(osrc)!=NULL)
-        osrc=FWReference::cast(osrc)->getPointer();
+        osrc = FWReference::cast(osrc)->getPointer();
 
     odst = odstrel->front();
     if (odst && FWReference::cast(odst)!=NULL)
-        odst=FWReference::cast(odst)->getPointer();
+        odst = FWReference::cast(odst)->getPointer();
 
     //Address  *osrc=compiler->getFirstOSrc(rule);  //assert(osrc);
     //Address  *odst=compiler->getFirstODst(rule);  //assert(odst);
-    Service  *osrv=compiler->getFirstOSrv(rule);  //assert(osrv);
+    Service  *osrv = compiler->getFirstOSrv(rule);  //assert(osrv);
                                       
-    Address  *tsrc=compiler->getFirstTSrc(rule);  //assert(tsrc);
-    Address  *tdst=compiler->getFirstTDst(rule);  //assert(tdst);
-    Service  *tsrv=compiler->getFirstTSrv(rule);  //assert(tsrv);
+    Address  *tsrc = compiler->getFirstTSrc(rule);  //assert(tsrc);
+    Address  *tdst = compiler->getFirstTDst(rule);  //assert(tdst);
+    Service  *tsrv = compiler->getFirstTSrv(rule);  //assert(tsrv);
 
     char errstr[1024];
 
@@ -144,77 +144,164 @@ bool NATCompiler_pf::PrintRule::processNext()
     switch ( rule->getRuleType() ) {
     case NATRule::Continue:
     case NATRule::NONAT:
-	compiler->output  << "no nat ";
-        if (iface_name!="") compiler->output << "on " << iface_name << " ";
-	_printProtocol(osrv);
-	compiler->output  << "from ";
-	_printREAddr( osrcrel );
-	compiler->output  << "to ";
-	_printREAddr( odstrel );
-	compiler->output  << endl;
+    {
+        if (XMLTools::version_compare(version, "4.7")>=0)
+        {
+            /* I could not find a better way to implement old "no nat"
+             * behavior with 4.7. They seem to suggest that we should
+             * implement exceptions to the translations using "pass"
+             * or "block" actions. At least this is the only way they
+             * show in examples and there is no "no" keyword anymore.
+             */
+            compiler->output  << "pass in quick ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr(osrcrel);
+            _printSrcPort(osrv);
+            compiler->output  << "to ";
+            _printREAddr(odstrel);
+            _printPort(osrv, true);
+            compiler->output  << endl;
+        } else
+        {
+            compiler->output  << "no nat ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr(osrcrel);
+            compiler->output  << "to ";
+            _printREAddr(odstrel);
+            compiler->output  << endl;
 
-	compiler->output  << "no rdr ";
-        if (iface_name!="") compiler->output << "on " << iface_name << " ";
-	_printProtocol(osrv);
-	compiler->output  << "from ";
-	_printREAddr( osrcrel );
-	compiler->output  << "to ";
-	_printREAddr( odstrel );
-	compiler->output  << endl;
+            compiler->output  << "no rdr ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr( osrcrel );
+            compiler->output  << "to ";
+            _printREAddr( odstrel );
+            compiler->output  << endl;
+        }
         break;
-
+    }
     case NATRule::SNAT:
-	compiler->output  << "nat ";
-        if (iface_name!="") compiler->output << "on " << iface_name << " ";
-	_printProtocol(osrv);
-	compiler->output  << "from ";
-	_printREAddr( osrcrel );
-	_printSrcPort(osrv);
-	compiler->output  << "to ";
-	_printREAddr( odstrel );
-        _printPort( osrv, true );
+    {
+        if (XMLTools::version_compare(version, "4.7")>=0)
+        {
+            compiler->output  << "match out ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr( osrcrel );
+            _printSrcPort(osrv);
+            compiler->output  << "to ";
+            _printREAddr( odstrel );
+            _printPort( osrv, true );
 
-	compiler->output  << "-> ";
-	_printREAddr( tsrcrel );
-	_printSrcPort(tsrv);
-        _printNATRuleOptions(rule);
+            compiler->output  << "nat-to ";
+            _printREAddr( tsrcrel );
+            _printSrcPort(tsrv);
+            _printNATRuleOptions(rule);
 
-	compiler->output  << endl;
+            compiler->output  << endl;
+
+        } else
+        {
+            compiler->output  << "nat ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr( osrcrel );
+            _printSrcPort(osrv);
+            compiler->output  << "to ";
+            _printREAddr( odstrel );
+            _printPort( osrv, true );
+
+            compiler->output  << "-> ";
+            _printREAddr( tsrcrel );
+            _printSrcPort(tsrv);
+            _printNATRuleOptions(rule);
+
+            compiler->output  << endl;
+        }
         break;
+    }
 
     case NATRule::DNAT:
     case NATRule::LB:
-	compiler->output  << "rdr ";
-        if (iface_name!="") compiler->output << "on " << iface_name << " ";
-	_printProtocol(osrv);
-	compiler->output  << "from ";
-	_printREAddr( osrcrel );
-	_printSrcPort(osrv);
-	compiler->output  << "to ";
-	_printREAddr( odstrel );
-	_printPort(osrv, true);
-	compiler->output  << "-> ";
-	_printREAddr( tdstrel );
-	_printPort(tsrv, false);
-        _printNATRuleOptions(rule);
-	compiler->output  << endl;
+    {
+        if (XMLTools::version_compare(version, "4.7")>=0)
+        {
+            compiler->output  << "match in ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr( osrcrel );
+            _printSrcPort(osrv);        // this is where it is different from NATRule::Redirect
+            compiler->output  << "to ";
+            _printREAddr( odstrel );
+            _printPort(osrv, true);
+            compiler->output  << "rdr-to ";
+            _printREAddr( tdstrel );
+            _printPort(tsrv, false);
+            _printNATRuleOptions(rule);
+            compiler->output  << endl;
+        } else
+        {
+            compiler->output  << "rdr ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr( osrcrel );
+            _printSrcPort(osrv);        // this is where it is different from NATRule::Redirect
+            compiler->output  << "to ";
+            _printREAddr( odstrel );
+            _printPort(osrv, true);
+            compiler->output  << "-> ";
+            _printREAddr( tdstrel );
+            _printPort(tsrv, false);
+            _printNATRuleOptions(rule);
+            compiler->output  << endl;
+        }
         break;
+    }
 
     case NATRule::Redirect:
-	compiler->output  << "rdr ";
-        if (iface_name!="") compiler->output << "on " << iface_name << " ";
-	_printProtocol(osrv);
-	compiler->output  << "from ";
-	_printREAddr( osrcrel );
-	compiler->output  << "to ";
-	_printREAddr( odstrel );
-	_printPort(osrv, true);
-	compiler->output  << "-> ";
-	_printREAddr( tdstrel );
-	_printPort(tsrv, false);
-        _printNATRuleOptions(rule);
-	compiler->output  << endl;
+    {
+        if (XMLTools::version_compare(version, "4.7")>=0)
+        {
+            compiler->output  << "match in ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr( osrcrel );
+            compiler->output  << "to ";
+            _printREAddr( odstrel );
+            _printPort(osrv, true);
+            compiler->output  << "rdr-to ";
+            _printREAddr( tdstrel );
+            _printPort(tsrv, false);
+            _printNATRuleOptions(rule);
+            compiler->output  << endl;
+        } else
+        {
+            compiler->output  << "rdr ";
+            if (iface_name!="") compiler->output << "on " << iface_name << " ";
+            _printProtocol(osrv);
+            compiler->output  << "from ";
+            _printREAddr( osrcrel );
+            compiler->output  << "to ";
+            _printREAddr( odstrel );
+            _printPort(osrv, true);
+            compiler->output  << "-> ";
+            _printREAddr( tdstrel );
+            _printPort(tsrv, false);
+            _printNATRuleOptions(rule);
+            compiler->output  << endl;
+        }
         break;
+    }
 
     case NATRule::NATBranch:
     {

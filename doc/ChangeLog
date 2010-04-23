@@ -1,3 +1,15 @@
+2010-04-22  vadim  <vadim@vk.crocodile.org>
+
+	* NATCompiler_pf_writers.cpp (PrintRule::processNext): fixes #1401
+	nat rules syntax has changed in OpenBSD 4.7. Nat and rdr rules in
+	4.7 should be implemented using action "match" and keywords
+	"nat-to" and "rdr-to"
+
+	* PolicyCompiler_pf_writers.cpp (PrintRule::_printAction):
+	fixes #1414: use "match" action for tagging. Policy rules
+	with action Tag should use pf action "match" instead of "pass"
+	if version is 4.6 or later.
+
 2010-04-20  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::insertFailoverRule):

@@ -426,7 +426,8 @@ void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &res
                 res.push_back(QStringPair("4.0", QObject::tr("4.0 to 4.2")));
                 res.push_back(QStringPair("4.3", QObject::tr("4.3")));
                 res.push_back(QStringPair("4.5", QObject::tr("4.5")));
-                res.push_back(QStringPair("4.6", QObject::tr("4.6 and later")));
+                res.push_back(QStringPair("4.6", QObject::tr("4.6")));
+                res.push_back(QStringPair("4.7", QObject::tr("4.7 and later")));
 /* add pf versions here */
             } else
             {

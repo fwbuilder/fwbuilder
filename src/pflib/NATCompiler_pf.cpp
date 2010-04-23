@@ -157,7 +157,9 @@ bool NATCompiler_pf::NATRuleType::processNext()
 
 
 
-    if (tsrc->isAny() && tdst->isAny() && tsrv->isAny())
+    if (tsrc->isAny() && tdst->isAny() && 
+        (tsrv->isAny() || (tsrv->getId() == osrv->getId()))
+    )
     {
 	rule->setRuleType(NATRule::NONAT);
 	return true;
