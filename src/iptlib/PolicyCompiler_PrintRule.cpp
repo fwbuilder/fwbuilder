@@ -369,7 +369,7 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
 
     if (target=="CUSTOM")
     {
-        ostr << ruleopt->getStr("custom_str");
+        ostr << " " << ruleopt->getStr("custom_str");
         return ostr.str();
     }
 

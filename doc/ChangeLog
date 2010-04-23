@@ -1,3 +1,9 @@
+2010-04-23  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTarget): fixes #1416
+	leading blank space in front of the custom action is missing.
+	SF bug 2991397.
+
 2010-04-22  vadim  <vadim@vk.crocodile.org>
 
 	* NATCompiler_pf.cpp (VerifyRules::processNext): see #1401. Because
