@@ -435,7 +435,7 @@
       <ServiceGroup id="id14950X3268" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id14951X3268" name="Firewalls" comment="" ro="False">
-      <Firewall id="id16544X3268" host_OS="linux24" inactive="False" lastCompiled="1263673489" lastInstalled="0" lastModified="1263673477" platform="iptables" version="" name="test1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+      <Firewall id="id16544X3268" host_OS="linux24" inactive="False" lastCompiled="1263673489" lastInstalled="0" lastModified="1272058262" platform="iptables" version="" name="test1" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id16565X3268" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id16567X3268" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -651,7 +651,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id2198X35122" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1263673484" platform="iptables" version="" name="test2" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+      <Firewall id="id2198X35122" host_OS="linux24" inactive="False" lastCompiled="1272058388" lastInstalled="0" lastModified="1263673484" platform="iptables" version="" name="test2" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id2306X35122" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id2307X35122" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">

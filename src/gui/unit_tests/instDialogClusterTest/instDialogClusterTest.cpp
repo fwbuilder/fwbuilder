@@ -167,6 +167,38 @@ void instDialogClusterTest::openContextMenu(ObjectManipulator *om, ObjectTreeVie
     }
 }
 
+void instDialogClusterTest::page1_8()
+{
+    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    ObjectTreeViewItem *test3 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test3", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    tree->selectionModel()->select(tree->indexAt(findItemPos(test3, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test3);
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    openContextMenu(om, test3, tree, "Compile");
+    instDialog *dlg = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+    QVERIFY(dlg != NULL);
+
+    QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
+    QVERIFY(table != NULL);
+    QVERIFY(table->topLevelItemCount() == 1);
+    QVERIFY(table->topLevelItem(0)->text(0) == "test3");
+
+    QFrame *warning_space = dlg->findChild<QFrame*>("warning_space");
+    QLabel *warning_message_1 = dlg->findChild<QLabel*>("warning_message_1");
+    QLabel *warning_message_2 = dlg->findChild<QLabel*>("warning_message_2");
+
+    QVERIFY(warning_space->isVisible());
+    QVERIFY(warning_message_1->isVisible());
+    QVERIFY(warning_message_2->isVisible());
+
+    QTest::qWait(1000);
+    dlg->findChild<QPushButton*>("cancelButton")->click();
+    QTest::qWait(1000);
+}
+
 void instDialogClusterTest::page1_9()
 {
     ObjectTreeView *tree = mw->getCurrentObjectTree();

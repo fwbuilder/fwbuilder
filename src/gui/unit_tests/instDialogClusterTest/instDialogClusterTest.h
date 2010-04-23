@@ -50,6 +50,8 @@ class instDialogClusterTest : public QObject
 
 private slots:
     void initTestCase();
+
+    void page1_8();
     void page1_9();
     void page1_10();
     void page1_11();

@@ -27,6 +27,8 @@
 #define INSTDIALOGTEST_H
 
 #include <QTest>
+#include <QTreeWidget>
+
 #include "newClusterDialog.h"
 #include "upgradePredicate.h"
 #include "FWBTree.h"
@@ -36,6 +38,7 @@
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
 #include "events.h"
+
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Policy.h"
 
@@ -44,20 +47,24 @@ class instDialogObjectListTest : public QObject
     Q_OBJECT
     const char *ssh_auth_sock;
     void openPolicy(QString fw);
-    void verifyDialog(instDialog *dlg, int items = -1);
+
+    void verifyCompileCheckboxes(QTreeWidget *table, int items = -1);
+    void verifyInstallCheckboxes(QTreeWidget *table, int items = -1);
+
     void openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item, ObjectTreeView *tree, const QString &actionText);
     void removeFiles();
 
 private slots:
     void initTestCase();
-    void page1_1();
-    void page1_2();
-    void page1_3();
-    void page1_4();
-    void page1_5();
-    void page1_6();
-    void page1_7();
-    void page1_8();
+    void test_compile_1();
+    void test_compile_2();
+    void test_compile_3();
+    void test_compile_4();
+    void test_compile_5();
+    void test_compile_6();
+    void test_compile_7();
+
+    void test_install_1();
 
 public slots:
     void closeContextMenu();
