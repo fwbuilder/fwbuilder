@@ -1,5 +1,15 @@
 2010-04-22  vadim  <vadim@vk.crocodile.org>
 
+	* NATCompiler_pf.cpp (VerifyRules::processNext): see #1401. Because
+	of the change in the nat and rdr rules syntax in 4.7, I can no
+	longer implement no-nat rules correctly for this version. They
+	dropped the "no" keyword and their examples suggest using "pass"
+	to implement exclusions for the nat rules. I need no-nat rule to
+	just not translate but not make a decision whether the packet
+	should be passed or dropped. In the new PF model, translation
+	rules are just options on the matching policy rules and they do
+	not offer any keyword or option to not translate.
+
 	* NATCompiler_pf_writers.cpp (PrintRule::processNext): fixes #1401
 	nat rules syntax has changed in OpenBSD 4.7. Nat and rdr rules in
 	4.7 should be implemented using action "match" and keywords

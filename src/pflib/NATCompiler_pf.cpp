@@ -155,8 +155,6 @@ bool NATCompiler_pf::NATRuleType::processNext()
         return true;
     }
 
-
-
     if (tsrc->isAny() && tdst->isAny() && 
         (tsrv->isAny() || (tsrv->getId() == osrv->getId()))
     )
@@ -344,6 +342,8 @@ bool NATCompiler_pf::VerifyRules::processNext()
 {
     NATRule *rule=getNext(); if (rule==NULL) return false;
 
+    string version = compiler->fw->getStr("version");
+
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
     RuleElementODst  *odst=rule->getODst();  assert(odst);
     RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
@@ -351,6 +351,28 @@ bool NATCompiler_pf::VerifyRules::processNext()
     RuleElementTSrc  *tsrc=rule->getTSrc();  assert(tsrc);
     RuleElementTDst  *tdst=rule->getTDst();  assert(tdst);
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
+
+    /*
+     * because of the change in the nat and rdr rules syntax in
+     * 4.7, I can no longer implement no-nat rules correctly for
+     * this version. They dropped the "no" keyword and their
+     * examples suggest using "pass" to implement exclusions for
+     * the nat rules. I need no-nat rule to just not translate but
+     * not make a decision whether the packet should be passed or
+     * dropped. In the new PF model, translation rules are just
+     * options on the matching policy rules and they do not offer
+     * any keyword or option to not translate.
+     */
+    if (rule->getRuleType()==NATRule::NONAT &&
+        XMLTools::version_compare(version, "4.7")>=0)
+    {
+        compiler->abort(
+            rule,
+            "No translation rules are not supported for PF 4.7, "
+            "use negation to implement exclusions");
+        return true;
+    }
+
 
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
     {
