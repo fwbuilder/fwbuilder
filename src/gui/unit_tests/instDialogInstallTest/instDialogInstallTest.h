@@ -44,7 +44,9 @@ class instDialogInstallTest : public QObject
     Q_OBJECT
     const char *ssh_auth_sock;
     void removeFiles();
+    void verifyInstallSuccess(const QString &test_name);
 
+    
 private slots:
     void initTestCase();
     void cleanupTestCase();

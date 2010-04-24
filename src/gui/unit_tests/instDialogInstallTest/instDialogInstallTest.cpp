@@ -255,16 +255,11 @@ void instDialogInstallTest::testInstall1()
         QVERIFY(waited < 10000);
     }
 
-    QTest::qWait(2000);
+    QTest::qWait(3000);
 
-    for(int i=0; i<list->topLevelItemCount(); i++)
-    {
-        QVERIFY2(list->topLevelItem(i)->text(1) == "Success",
-                 QString("%1\n\n").arg(processLogDisplay->toPlainText()).toAscii().constData()
-        );
-    }
+    verifyInstallSuccess("instDialogInstallTest::testInstall1()");
 
-    QString text = dlg->findChild<QTextBrowser*>("procLogDisplay")->toPlainText();
+    QString text = processLogDisplay->toPlainText();
     QVERIFY(text.contains("Testing policy activation script"));
     QVERIFY(!text.contains("*** Fatal error"));
     QVERIFY(!text.isEmpty());
@@ -278,9 +273,30 @@ void instDialogInstallTest::testInstall1_part2() // sets install options in moda
     QLineEdit *uname = optdlg->findChild<QLineEdit*>("uname");
     QLineEdit *pwd = optdlg->findChild<QLineEdit*>("pwd");
     QLineEdit *altAddress = optdlg->findChild<QLineEdit*>("altAddress");
-    uname->setText("root");//getenv("USER"));
+    QCheckBox *verbose = optdlg->findChild<QCheckBox*>("verbose");
+    uname->setText("root"); // getenv("USER"));
     altAddress->setText("127.0.0.1");
+    verbose->setChecked(false); // turn verbose off even if it is on in settings
     optdlg->findChild<QPushButton*>("okButton")->click();
+}
+
+
+void instDialogInstallTest::verifyInstallSuccess(const QString &test_name)
+{
+    instDialog *dlg = mw->findChild<instDialog*>();
+    QTreeWidget *list= dlg->findChild<QTreeWidget*>("fwWorkList");
+    QTextBrowser *processLogDisplay = dlg->findChild<QTextBrowser*>("procLogDisplay");
+
+    for(int i=0; i<list->topLevelItemCount(); i++)
+    {
+        QString txt = processLogDisplay->toPlainText();
+        if (list->topLevelItem(i)->text(1) != "Success")
+        {
+            foreach(QString line, txt.split("\n"))
+                qDebug() << line;
+            QFAIL("Installation failure detected, see debug above for details");
+        }
+    }
 }
 
 void instDialogInstallTest::testInstall2()
@@ -325,10 +341,8 @@ void instDialogInstallTest::testInstall2()
         QVERIFY(waited < 10000);
     }
 
-    for(int i=0; i<list->topLevelItemCount(); i++)
-    {
-        QVERIFY(list->topLevelItem(i)->text(1) == "Success");
-    }
+    verifyInstallSuccess("instDialogInstallTest::testInstall2()");
+
     QTest::qWait(1000);
 
     QVERIFY(dlg->findChild<QPushButton*>("nextButton")->isEnabled());
@@ -409,10 +423,8 @@ void instDialogInstallTest::testInstall3()
         QVERIFY(waited < 10000);
     }
 
-    for(int i=0; i<list->topLevelItemCount(); i++)
-    {
-        QVERIFY(list->topLevelItem(i)->text(1) == "Success");
-    }
+    verifyInstallSuccess("instDialogInstallTest::testInstall3()");
+
     QTest::qWait(500);
 
     QVERIFY(dlg->findChild<QPushButton*>("nextButton")->isEnabled());
