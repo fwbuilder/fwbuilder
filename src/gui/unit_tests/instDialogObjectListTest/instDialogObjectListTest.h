@@ -49,6 +49,7 @@ class instDialogObjectListTest : public QObject
     void openPolicy(QString fw);
 
     void verifyCompileCheckboxes(QTreeWidget *table, int items = -1);
+    void verifyCompileCheckboxes_2(QTreeWidget *table);
     void verifyInstallCheckboxes(QTreeWidget *table, int items = -1);
 
     void openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item, ObjectTreeView *tree, const QString &actionText);
@@ -63,8 +64,8 @@ private slots:
     void test_compile_5();
     void test_compile_6();
     void test_compile_7();
-
     void test_install_1();
+    void test_actually_compile_1();
 
 public slots:
     void closeContextMenu();

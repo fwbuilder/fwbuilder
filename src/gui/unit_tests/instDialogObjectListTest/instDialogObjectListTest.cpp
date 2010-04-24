@@ -168,6 +168,48 @@ void instDialogObjectListTest::verifyCompileCheckboxes(QTreeWidget *table,
     }
 }
 
+/*
+ * This function checks the state of checkboxes after firewall test1 has been compiled
+ */
+void instDialogObjectListTest::verifyCompileCheckboxes_2(QTreeWidget *table)
+{
+    QTreeWidgetItemIterator it(table, QTreeWidgetItemIterator::Enabled);
+    while (*it)
+    {
+        if ((*it)->text(0) == "cluster1")
+        {
+            QVERIFY(((*it)->flags() & Qt::ItemIsUserCheckable) != 0);
+            QVERIFY((*it)->checkState(COMPILE_CHECKBOX_COLUMN) == Qt::Checked);
+        }
+
+        if ((*it)->text(0) == "test1")
+        {
+            QVERIFY(((*it)->flags() & Qt::ItemIsUserCheckable) != 0);
+            QVERIFY((*it)->checkState(COMPILE_CHECKBOX_COLUMN) == Qt::Unchecked);
+        }
+
+        if ((*it)->text(0) == "test2")
+        {
+            QVERIFY(((*it)->flags() & Qt::ItemIsUserCheckable) != 0);
+            QVERIFY((*it)->checkState(COMPILE_CHECKBOX_COLUMN) == Qt::Unchecked);
+        }
+
+        if ((*it)->text(0) == "test3")
+        {
+            QVERIFY(((*it)->flags() & Qt::ItemIsUserCheckable) != 0);
+            QVERIFY((*it)->checkState(COMPILE_CHECKBOX_COLUMN) == Qt::Unchecked);
+        }
+
+        if ((*it)->text(0) == "test4")
+        {
+            QVERIFY(((*it)->flags() & Qt::ItemIsUserCheckable) != 0);
+            QVERIFY((*it)->checkState(COMPILE_CHECKBOX_COLUMN) == Qt::Unchecked);
+        }
+
+        it++;
+    }
+}
+
 void instDialogObjectListTest::verifyInstallCheckboxes(QTreeWidget *table,
                                                        int items)
 {
@@ -501,6 +543,7 @@ void instDialogObjectListTest::test_compile_7()
     QTest::qWait(100);
 }
 
+
 /*
  * all previous tests tested "Compile" function. This test should test
  * first step of the "Install" function.
@@ -525,5 +568,95 @@ void instDialogObjectListTest::test_install_1()
     QTest::qWait(100);
     dlg->findChild<QPushButton*>("cancelButton")->click();
     QTest::qWait(100);
+}
+
+
+
+/*
+ * Select two firewalls in the tree (test1 and test2), open context
+ * menu and click "Compile". Should get a list with both firewalls,
+ * with checkbox "Compile" selected for test2 and not selected for
+ * test1. Then click "Next" to compile, wait until done, then click
+ * "Finish". Select the same firewalls in the tree and open instDialog
+ * again, now both checkboxes should be turned off.
+ * 
+ * This test changes "last_compiled" timestamp of the firewall object
+ * test2 so it should run after all tests above because it changes the
+ * state of the "compile" checkbox next to this firewall in the list.
+ */
+void instDialogObjectListTest::test_actually_compile_1()
+{
+    if (QFileInfo("test1.fw").exists())
+        QVERIFY(QFile("test1.fw").remove());
+
+    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    tree->expandAll();
+    ObjectTreeViewItem *test1 =
+        dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    ObjectTreeViewItem *test2 =
+        dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test2", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+
+    tree->scrollToItem(test1);
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test1);
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
+
+    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    openContextMenu(om, test2, tree, "Compile");
+    instDialog *dlg = NULL;
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+
+    QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
+    QVERIFY(table != NULL);
+    QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
+    QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
+    verifyCompileCheckboxes(table, 2);
+
+    QTest::qWait(100);
+    dlg->findChild<QPushButton*>("nextButton")->click();
+
+    QPushButton *finish = dlg->findChild<QPushButton*>("finishButton");
+    QVERIFY(finish != NULL);
+
+    int timeout_counter = 0;
+    while (!finish->isEnabled())
+    {
+        timeout_counter++;
+        QVERIFY2(timeout_counter < 600,
+                 "Compile takes too long (over 1 min) or button \"Finish\" "
+                 "is not enabled properly when compile is done");
+        QTest::qWait(100);
+    }
+
+    finish->click();
+
+    // Now select the same firewalls and open compile/install dialog again
+    tree->scrollToItem(test1);
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    tree->setCurrentItem(test1);
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
+
+    openContextMenu(om, test2, tree, "Compile");
+    foreach (QWidget *w, app->allWidgets())
+        if (dynamic_cast<instDialog*>(w) != NULL)
+            dlg = dynamic_cast<instDialog*>(w);
+
+    table = dlg->findChild<QTreeWidget*>("selectTable");
+    QVERIFY(table != NULL);
+    QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
+    QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
+    verifyCompileCheckboxes_2(table);
+
+    dlg->findChild<QPushButton*>("cancelButton")->click();
+    QTest::qWait(100);
+
+    QVERIFY(QFileInfo("test1.fw").exists() && QFileInfo("test1.fw").size());
+    QFile::remove("test1.fw");
 }
 
