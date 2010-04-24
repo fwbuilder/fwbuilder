@@ -255,10 +255,12 @@ void instDialogInstallTest::testInstall1()
         QVERIFY(waited < 10000);
     }
 
+    QTest::qWait(2000);
+
     for(int i=0; i<list->topLevelItemCount(); i++)
     {
         QVERIFY2(list->topLevelItem(i)->text(1) == "Success",
-                 QString("%1\n").arg(processLogDisplay->toPlainText()).toAscii().constData()
+                 QString("%1\n\n").arg(processLogDisplay->toPlainText()).toAscii().constData()
         );
     }
 
