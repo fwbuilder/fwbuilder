@@ -105,8 +105,6 @@ class instDialog : public QDialog, public FakeWizard
 
     QString fwb_prompt;
     
-    std::set<libfwbuilder::Firewall*> reqFirewalls;
-
     std::list<libfwbuilder::Firewall*> firewalls;
     std::list<libfwbuilder::Cluster*> clusters;
     
@@ -194,8 +192,6 @@ class instDialog : public QDialog, public FakeWizard
 
     QStringList prepareArgForCompiler(libfwbuilder::Firewall *fw);
     bool tableHasCheckedItems();
-    void clearReqFirewalls();
-    void addReqFirewall(libfwbuilder::Firewall *f);
     void replaceMacrosInCommand(Configlet *configlet);
     QString getActivationCmd();
     

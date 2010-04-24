@@ -165,7 +165,17 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
         setFinishEnabled(page, false);
 }
 
-void instDialog::show(ProjectPanel *proj, bool install, bool onlySelected, std::set<libfwbuilder::Firewall*> fws)
+/*
+ * list fws is empty when user hits main toolbar button Compile or
+ * Install or uses main menu Rules/Compile or Rules/Install. This list
+ * has firewall objects to be compiled/installed when user uses
+ * "compile-this" or "install-this" button or context menu items
+ * "Compile" or "Install".
+ */
+void instDialog::show(ProjectPanel *proj,
+                      bool install,
+                      bool onlySelected,
+                      std::set<Firewall*> fws)
 {
     if (isVisible()) return;
     lastPage = -1;
@@ -177,7 +187,6 @@ void instDialog::show(ProjectPanel *proj, bool install, bool onlySelected, std::
 
     m_dialog->selectTable->clear();
     this->project = proj;
-    reqFirewalls = fws;
 
     compile_only = ! install;
 
@@ -209,9 +218,10 @@ void instDialog::show(ProjectPanel *proj, bool install, bool onlySelected, std::
     }
 
     if (fwbdebug)
-        qDebug() << "instDialog::instDialog"
+        qDebug() << "instDialog::show"
                  << "firewalls.size()=" << firewalls.size()
-                 << "clusters.size()=" << clusters.size();
+                 << "clusters.size()=" << clusters.size()
+                 << "install=" << install;
 
     if (firewalls.size()==0 && clusters.size()==0)
     {
@@ -232,21 +242,25 @@ void instDialog::show(ProjectPanel *proj, bool install, bool onlySelected, std::
     m_dialog->selectTable->setFocus();
 
     m_dialog->selectInfoLabel->setText(
-        tr("<p align=\"center\"><b><font size=\"+2\">Select firewalls to compile.</font></b></p>"));
+        QString("<p align=\"center\"><b><font size=\"+2\">%1</font></b></p>")
+        .arg(tr("Select firewalls to compile.")));
 
     if (compile_only)
     {
         m_dialog->batchInstFlagFrame->hide();
         setAppropriate(2, false);
         m_dialog->selectTable->hideColumn(INSTALL_CHECKBOX_COLUMN);
+    } else
+    {
+        m_dialog->batchInstFlagFrame->show();
+        setAppropriate(2, true);
+        m_dialog->selectTable->showColumn(INSTALL_CHECKBOX_COLUMN);
     }
 
     m_dialog->detailMCframe->show();
     this->setVisible(true);
 
-
     showPage(0);
-
 }
 
 instDialog::~instDialog()
@@ -340,9 +354,6 @@ void instDialog::showPage(const int page)
     }
 
     FakeWizard::showPage(page);
-
-    if (fwbdebug && reqFirewalls.empty())
-        qDebug() << "instDialog::showPage reqFirewalls is empty";
 
     int p = page;
 

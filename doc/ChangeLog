@@ -1,4 +1,18 @@
-2010-04-23  vadim  <vadim@vk.crocodile.org>
+2010-04-23  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* instDialog.cpp (instDialog::show): fixed #1418 "install
+	checkboxes disappear from the compile/install dialog". This was a
+	regression introduced when we fixed #547 ("User can open multiple
+	compile/install dialogs")
+
+	* instDialog_ui_ops.cpp (instDialog::checkIfNeedToCompile): see #1418
+	Simplified algorithm that decides whether compile and install checkboxes
+	should be turned on in the install/compile dialog. Now always using
+	Firewall::needsCompile() and Firewall::needsInstall(), which check
+	"last_modified", "last_compiled" and "last_installed" timestamps.
+	Before this change, the dialog also tried to take into account how
+	the dialog was started, using main toolbar or menu or context menu
+	or local toolbar. This was confusing and hard to test.
 
 	* PolicyCompiler_PrintRule.cpp (PrintRule::_printTarget): fixes #1416
 	leading blank space in front of the custom action is missing.

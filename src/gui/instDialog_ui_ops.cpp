@@ -104,15 +104,12 @@ void instDialog::disableStopButton()
 
 bool instDialog::checkIfNeedToCompile(Firewall *fw)
 {
-    return (fw->needsCompile() && reqFirewalls.empty() && !fw->getInactive()) ||
-           (!onlySelected && !reqFirewalls.empty() && reqFirewalls.find(fw)!=reqFirewalls.end() ||
-           (onlySelected && fw->needsCompile() && !fw->getInactive()) );
+    return (fw->needsCompile() && !fw->getInactive());
 }
 
 bool instDialog::checkIfNeedToInstall(Firewall *fw)
 {
-    return ((fw->needsInstall() && reqFirewalls.empty() && !fw->getInactive()) ||
-            (!reqFirewalls.empty() && reqFirewalls.find(fw)!=reqFirewalls.end()));
+    return (fw->needsInstall() && !fw->getInactive());
 }
 
 QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
@@ -168,6 +165,21 @@ void instDialog::setFlags(QTreeWidgetItem* item)
     time_t lc = fw->getInt("lastCompiled");
     time_t li = fw->getInt("lastInstalled");
     QDateTime dt;
+
+    if (fwbdebug)
+    {
+        qDebug() << "instDialog::setFlags"
+                 << item->text(0)
+                 << "parent=" << parent
+                 << "fw=" << fw
+                 << "Firewall::isA(fw)=" << Firewall::isA(fw)
+                 << "lm=" << lm
+                 << "lc=" << lc
+                 << "li=" << li
+                 << "compile_only=" << compile_only;
+        qDebug() << "fw->needsCompile()" << fw->needsCompile()
+                 << "checkIfNeedToCompile(fw)=" << checkIfNeedToCompile(fw);
+    }
 
     // need to skip the secondary cluster members if platform only
     // allows installations on the primary (e.g. PIX).  Note that
@@ -269,15 +281,6 @@ void instDialog::setFlags(QTreeWidgetItem* item)
         if (num_members)
         {
             bool checked = checkIfNeedToCompile(fw);
-            // if any of the member firewalls are in reqFirewalls, re-check
-            // if we need to compile the cluster. checkIfNeedToCompile()
-            // uses different condition if reqFirewalls is not empty.
-            for (list<Firewall*>::iterator it=members.begin(); it!=members.end(); ++it)
-            {
-                if (reqFirewalls.find(*it)!=reqFirewalls.end() &&
-                    fw->needsCompile() && !fw->getInactive())
-                    checked = true;
-            }
             item->setCheckState(COMPILE_CHECKBOX_COLUMN,
                                 checked?Qt::Checked:Qt::Unchecked);
         }
@@ -447,9 +450,6 @@ void instDialog::fillCompileSelectList()
     Firewall *fw;
     Cluster *cl;
     QDateTime dt;
-
-    if (fwbdebug && reqFirewalls.empty())
-        qDebug("instDialog::fillCompileSelectList reqFirewalls is empty");
 
     creatingTable = true;
 
@@ -967,16 +967,6 @@ bool instDialog::tableHasCheckedItems()
         ++it;
     }
     return false;
-}
-
-void instDialog::clearReqFirewalls()
-{
-    reqFirewalls.clear();
-}
-
-void instDialog::addReqFirewall(Firewall *f)
-{
-    reqFirewalls.insert(f);
 }
 
 /*
