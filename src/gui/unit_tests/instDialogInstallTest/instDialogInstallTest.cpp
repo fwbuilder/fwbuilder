@@ -118,13 +118,15 @@ echo "Testing policy activation script"
 #include "instDialogInstallTest.h"
 
 #include "unistd.h"
+
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QDebug>
 #include <QMenuBar>
-#include <QApplication>
-#include <QCoreApplication>
+#include <QTextBrowser>
 
 #include "FWObjectClipboard.h"
 
@@ -211,6 +213,10 @@ void instDialogInstallTest::testInstall1()
     dlg->findChild<QPushButton*>("nextButton")->click();
 
     QTreeWidget *list= dlg->findChild<QTreeWidget*>("fwWorkList");
+    QTextBrowser *processLogDisplay = dlg->findChild<QTextBrowser*>("procLogDisplay");
+
+    QVERIFY(list!=NULL);
+    QVERIFY(processLogDisplay!=NULL);
 
     int waited = 0;
 
@@ -251,7 +257,9 @@ void instDialogInstallTest::testInstall1()
 
     for(int i=0; i<list->topLevelItemCount(); i++)
     {
-        QVERIFY(list->topLevelItem(i)->text(1) == "Success");
+        QVERIFY2(list->topLevelItem(i)->text(1) == "Success",
+                 QString("%1\n").arg(processLogDisplay->toPlainText()).toAscii().constData()
+        );
     }
 
     QString text = dlg->findChild<QTextBrowser*>("procLogDisplay")->toPlainText();
