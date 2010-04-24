@@ -779,6 +779,20 @@ bool PolicyCompiler_ipt::dropMangleTableRules::processNext()
         rule->getAction() == PolicyRule::Route ||
         rule->getAction() == PolicyRule::Classify) return true;
 
+    // Another special case (while working on #1415, although not
+    // related directly): branching rule that has "branch in mangle table"
+    // checkbox turned on and is branches to the "mangle only" rule set
+    // does not need any iptables rules in the filter table
+    FWOptions *ruleopt = rule->getOptionsObject();
+    if (rule->getAction() == PolicyRule::Branch &&
+        ruleopt->getBool("ipt_branch_in_mangle"))
+    {
+        RuleSet *ruleset = rule->getBranch();
+        assert(ruleset!=NULL);
+        rulesetopts = ruleset->getOptionsObject();
+        if (rulesetopts->getBool("mangle_only_rule_set")) return true;
+    }
+
     tmp_queue.push_back(rule);
 
     return true;

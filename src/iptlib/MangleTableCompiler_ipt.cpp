@@ -112,7 +112,31 @@ bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
                 tmp_queue.push_back(r);
             }
 
-            tmp_queue.push_back(rule);
+            // ticket #1415 User reports that only packets that went
+            // through the FORWARD chain can match inbound "-i" and
+            // outbound "-o" interface at the same time. Since we do
+            // not allow both in and out interface matches in one rule
+            // and have to use branch to do this, need to branch in
+            // FORWARD chain as well so that inbound interface can be
+            // matched in the branching rule and outbound interface
+            // can be matched in a rule in the branch
+            //
+            // This is ugly, this means the branch will inspect the
+            // packet at least twice - in PREROUTING and FORWARD, or
+            // FORWARD and POSTROUTING chains.
+            //
+            // I mention above that some targets can only be used in
+            // PREROUTING or POSTROUTING chains. It would help if
+            // these tagrets worked in FORWARD chain, in that case we
+            // could just branch in FORWARD instead of all thress chains.
+            //
+            r= compiler->dbcopy->createPolicyRule();
+            compiler->temp_ruleset->add(r);
+            r->duplicate(rule);
+            r->setStr("ipt_chain","FORWARD");
+            tmp_queue.push_back(r);
+
+            // tmp_queue.push_back(rule);
             return true;
         }
 

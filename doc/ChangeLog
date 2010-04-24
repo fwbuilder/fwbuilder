@@ -1,3 +1,13 @@
+2010-04-23  vadim  <vadim@vk.crocodile.org>
+
+	* MangleTableCompiler_ipt.cpp (keepMangleTableRules::processNext):
+	fixed #1415 "action branch that creates branch in mangle table
+	should branch in FORWARD chain". Rule with "any" in src and dst
+	and action Branch with option "branch in mangle table" will go
+	into FORWARD chain in addition to the PREROUTING and POSTROUTING
+	chains as before. Note that choice of PREROUTING or POSTROUTING
+	chains depends on direction.
+
 2010-04-23  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* instDialog.cpp (instDialog::show): fixed #1418 "install
