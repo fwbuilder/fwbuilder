@@ -214,7 +214,8 @@ void instDialogObjectListTest::verifyInstallCheckboxes(QTreeWidget *table,
                                                        int items)
 {
     if (items != -1)
-        QVERIFY(table->topLevelItemCount() == items);
+        Q_ASSERT(table->topLevelItemCount() == items);
+
 
     QTreeWidgetItemIterator it(table, QTreeWidgetItemIterator::Enabled);
     while (*it)
