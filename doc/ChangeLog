@@ -1,5 +1,10 @@
 2010-04-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::checkForShadowingPlatformSpecific):
+	fixes #1417 rule shadowing detection should recognize different rule options.
+	Policy compiler for iptables takes into account rule options for modules
+	limit, connlimit and hashlimit when it considers rules for rule shadowing.
+
 	* instDialog.cpp (instDialog::show): fixed #1419: clear progress
 	log display when instDialog is opened
 

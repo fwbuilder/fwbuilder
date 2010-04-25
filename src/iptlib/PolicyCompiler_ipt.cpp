@@ -5143,4 +5143,36 @@ list<string> PolicyCompiler_ipt::getUsedChains()
     return res;
 }
 
+/*
+ * see #1417 To policy rules with different module limit settings but
+ * otherwise identical should not shadow each other.
+ */
+bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate_r1,
+                                                           PolicyRule *candidate_r2)
+{
+    FWOptions *opt_1 = candidate_r1->getOptionsObject();
+    FWOptions *opt_2 = candidate_r2->getOptionsObject();
 
+    list<string>::iterator it;
+    for (it=rule_options_relevant_for_shadowing.begin();
+         it!=rule_options_relevant_for_shadowing.end(); ++it)
+    {
+        if ((opt_1->getInt(*it) > 0 || opt_2->getInt(*it) > 0) &&
+            opt_1->getInt(*it) != opt_2->getInt(*it)) return false;
+    }
+
+    if ((opt_1->getInt("limit_value")>0 || opt_2->getInt("limit_value")>0) &&
+        opt_1->getStr("limit_suffix") != opt_2->getStr("limit_suffix")) return false;
+
+    if (opt_1->getInt("hashlimit_value")>0 || opt_2->getInt("hashlimit_value")>0)
+    {
+        if (opt_1->getStr("hashlimit_suffix") != opt_2->getStr("hashlimit_suffix"))
+            return false;
+        if (opt_1->getStr("hashlimit_mode") != opt_2->getStr("hashlimit_mode"))
+            return false;
+        if (opt_1->getStr("hashlimit_name") != opt_2->getStr("hashlimit_name"))
+            return false;
+    }
+
+    return true;
+}
