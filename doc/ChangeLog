@@ -1,3 +1,11 @@
+2010-04-24  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowingPlatformSpecific):
+	added virtual function checkForShadowingPlatformSpecific() that
+	should be reimplemented in specific PolicyCompiler classes to check
+	if platform-specific rule options affect rule shadowing decision.
+	Also bumped so version of fwbuilder and fwcompiler libraries to 9.1.0
+
 2010-04-20  vadim  <vadim@vk.crocodile.org>
 
 	* RoutingCompiler.cpp (reachableAddressInRGtw::checkReachableIPAddress):

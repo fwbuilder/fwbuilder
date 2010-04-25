@@ -1078,6 +1078,12 @@ bool  PolicyCompiler::ConvertToAtomic::processNext()
 }
 
 
+bool PolicyCompiler::checkForShadowingPlatformSpecific(PolicyRule *r1,
+                                                       PolicyRule *r2)
+{
+    return true;
+}
+
 std::deque<Rule*>::iterator 
 PolicyCompiler::findMoreGeneralRule::find_more_general_rule(
     PolicyRule *rule,
@@ -1112,7 +1118,8 @@ PolicyCompiler::findMoreGeneralRule::find_more_general_rule(
                 cr = pcomp->checkForShadowing( *r , *rule );
             else
                 cr = pcomp->checkForShadowing( *rule , *r );
-            if ( cr ) 
+
+            if ( cr && pcomp->checkForShadowingPlatformSpecific(rule, r))
             {
                 if (compiler->debug>=9) 
                 {

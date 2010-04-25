@@ -109,6 +109,16 @@ namespace fwcompiler {
                                libfwbuilder::PolicyRule &r2);
 
         /**
+         * virtual method to let policy compiler check rules using
+         * options specific for the given fw platform. Base class
+         * PolicyCompiler has no visibility into platform-specific
+         * options and can not do this.
+         */
+        virtual bool checkForShadowingPlatformSpecific(libfwbuilder::PolicyRule *r1,
+                                                       libfwbuilder::PolicyRule *r2);
+
+        
+        /**
          * compare interfaces of rules r1 and r2.
          *
          * Return true if r2 shadows r1 (only inetrface rule element
