@@ -125,8 +125,7 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
     }
 
 
-    currentLog = m_dialog->procLogDisplay;
-    QTextCursor cursor(currentLog->textCursor());
+    QTextCursor cursor(m_dialog->procLogDisplay->textCursor());
     normal_format = cursor.charFormat();
     error_format = normal_format;
     error_format.setForeground(QBrush(Qt::red));
@@ -191,6 +190,7 @@ void instDialog::show(ProjectPanel *proj,
     compile_only = ! install;
 
     m_dialog->warning_space->hide();
+    m_dialog->procLogDisplay->clear();
 
     firewalls.clear();
     clusters.clear();
@@ -409,7 +409,7 @@ void instDialog::showPage(const int page)
 
             currentFirewallsBar->reset();
             currentFirewallsBar->setMaximum(compile_list_initial_size);
-            currentLog->clear();
+            m_dialog->procLogDisplay->clear();
             fillCompileUIList();
             qApp->processEvents();
             mainLoopCompile();
@@ -423,7 +423,7 @@ void instDialog::showPage(const int page)
             {
                 currentFirewallsBar->reset();
                 currentFirewallsBar->setMaximum(install_list_initial_size);
-                currentLog->clear();
+                m_dialog->procLogDisplay->clear();
                 fillInstallUIList();
                 qApp->processEvents();
                 mainLoopInstall();

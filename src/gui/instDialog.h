@@ -134,7 +134,6 @@ class instDialog : public QDialog, public FakeWizard
     bool finished;
     bool onlySelected;
 
-    QTextBrowser *currentLog;
     QTextCharFormat normal_format;
     QTextCharFormat error_format;
     QTextCharFormat warning_format;

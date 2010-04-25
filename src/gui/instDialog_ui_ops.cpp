@@ -438,7 +438,7 @@ void instDialog::summary()
 
     str.append("");
 
-    QTextCursor cursor = currentLog->textCursor();
+    QTextCursor cursor = m_dialog->procLogDisplay->textCursor();
     cursor.insertBlock();
     cursor.insertText(str.join("\n"), highlight_format);
 }
@@ -620,7 +620,7 @@ void instDialog::hideEvent( QHideEvent *ev)
 void instDialog::saveLog()
 {
     QString dir;
-    if (currentLog==NULL) return;
+    //if (m_dialog->procLogDisplay==NULL) return;
     dir=st->getWDir();
     if (dir.isEmpty())  dir=st->getOpenFileDir();
     if (dir.isEmpty())  dir="~";
@@ -632,8 +632,7 @@ void instDialog::saveLog()
      adding text from each paragraph separately.
      */
     QString logText;
-    logText = currentLog->toPlainText();
-    //logText = currentLog->toHtml();
+    logText = m_dialog->procLogDisplay->toPlainText();
 
     QString s = QFileDialog::getSaveFileName(
                     this,
@@ -672,57 +671,54 @@ void instDialog::addToLog(const QString &line)
 
     if (line.isEmpty()) return;
 
-    if (currentLog)
+    QString txt = line.trimmed();
+
+    QTextCharFormat format = normal_format;
+
+    list<QRegExp>::const_iterator it;
+    for (it=error_re.begin(); it!=error_re.end(); ++it)
     {
-        QString txt = line.trimmed();
-
-        QTextCharFormat format = normal_format;
-
-        list<QRegExp>::const_iterator it;
-        for (it=error_re.begin(); it!=error_re.end(); ++it)
+        if ((*it).indexIn(txt) != -1)
         {
-            if ((*it).indexIn(txt) != -1)
-            {
-                format = error_format;
-                break;
-            }
+            format = error_format;
+            break;
         }
-
-        for (it=warning_re.begin(); it!=warning_re.end(); ++it)
-        {
-            if ((*it).indexIn(txt) != -1)
-            {
-                format = warning_format;
-                break;
-            }
-        }
-
-        /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
-         *
-         * QTextEditor::insertHtml() becomes incrementally slow as the
-         * amount of text already in the QTextEditor
-         * increases. Compiling ~10 firewalls with few dozen rules
-         * each slows the output to a crawl on Windows.  Keeping each
-         * line in a separate block makes it much faster.
-         */
-
-        txt = line;
-        while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
-            txt.chop(1);
-
-        if (format == error_format || format == warning_format )
-            format.setAnchorHref(txt);
-
-        QTextCursor cursor = currentLog->textCursor();
-        cursor.insertBlock();
-        cursor.insertText(txt, format);
-
-        //m_dialog->procLogDisplayList->addItem(txt);
-
-        currentLog->ensureCursorVisible();
-
-        qApp->processEvents();
     }
+
+    for (it=warning_re.begin(); it!=warning_re.end(); ++it)
+    {
+        if ((*it).indexIn(txt) != -1)
+        {
+            format = warning_format;
+            break;
+        }
+    }
+
+    /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
+     *
+     * QTextEditor::insertHtml() becomes incrementally slow as the
+     * amount of text already in the QTextEditor
+     * increases. Compiling ~10 firewalls with few dozen rules
+     * each slows the output to a crawl on Windows.  Keeping each
+     * line in a separate block makes it much faster.
+     */
+
+    txt = line;
+    while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
+        txt.chop(1);
+
+    if (format == error_format || format == warning_format )
+        format.setAnchorHref(txt);
+
+    QTextCursor cursor = m_dialog->procLogDisplay->textCursor();
+    cursor.insertBlock();
+    cursor.insertText(txt, format);
+
+    //m_dialog->procLogDisplayList->addItem(txt);
+
+    m_dialog->procLogDisplay->ensureCursorVisible();
+
+    qApp->processEvents();
 }
 
 void instDialog::interpretLogLine(const QString &line)

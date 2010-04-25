@@ -1,3 +1,8 @@
+2010-04-24  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* instDialog.cpp (instDialog::show): fixed #1419: clear progress
+	log display when instDialog is opened
+
 2010-04-23  vadim  <vadim@vk.crocodile.org>
 
 	* MangleTableCompiler_ipt.cpp (keepMangleTableRules::processNext):

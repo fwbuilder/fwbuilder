@@ -29306,7 +29306,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4513DEA62143" host_OS="linux24" inactive="False" lastCompiled="1247364284" lastInstalled="0" lastModified="1256245133" platform="iptables" version="" name="test-shadowing-1" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is assumed to be part of any" ro="False">
+      <Firewall id="id4513DEA62143" host_OS="linux24" inactive="False" lastCompiled="1272160238" lastInstalled="0" lastModified="1256245133" platform="iptables" version="" name="test-shadowing-1" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is assumed to be part of any" ro="False">
         <NAT id="id4513DEAA2143" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -29617,7 +29617,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id451488C42143" host_OS="linux24" inactive="False" lastCompiled="1247364292" lastInstalled="0" lastModified="1158818614" platform="iptables" version="" name="test-shadowing-2" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is NOT assumed to be part of any" ro="False">
+      <Firewall id="id451488C42143" host_OS="linux24" inactive="False" lastCompiled="1272159361" lastInstalled="0" lastModified="1158818614" platform="iptables" version="" name="test-shadowing-2" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;firewall is NOT assumed to be part of any" ro="False">
         <NAT id="id451489072143" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
