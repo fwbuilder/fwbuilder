@@ -912,6 +912,19 @@ rule sets of this object rather than in the actual firewalls.
   ones and removes those that do not exist in fwbuilder.
 </p>
 
+<p>
+  OpenBSD 4.7 has changed the syntax of "nat" and "rdr" PF rules.
+  These keywords are gone, corresponding translations are done using
+  "nat-to" and "rdr-to" options in "pass" or "match" rules. Fwbuilder
+  4.0 adds support for this. The list of recognized versions for PF
+  has been extended with "4.7", choosing this version number makes
+  policy compiler generate nat and rdr rules using new syntax. Since
+  the "no" keyword has been removed as well, fwbuilder can no longer
+  generate "no nat" rules for 4.7. Policy compiler recognizes this as
+  a fatal error, administrator should use negation to implement
+  exceptions in NAT rule sets.
+</p>
+
 
 
 <a name="ios"></a>
