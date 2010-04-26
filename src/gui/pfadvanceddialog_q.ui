@@ -35,7 +35,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -627,7 +627,7 @@ with this address:</string>
           <number>0</number>
          </property>
          <property name="maximum">
-          <number>100000</number>
+          <number>100000000</number>
          </property>
          <property name="singleStep">
           <number>10</number>
@@ -684,7 +684,7 @@ with this address:</string>
           <number>0</number>
          </property>
          <property name="maximum">
-          <number>100000</number>
+          <number>100000000</number>
          </property>
          <property name="singleStep">
           <number>10</number>
@@ -739,7 +739,7 @@ with this address:</string>
           <number>0</number>
          </property>
          <property name="maximum">
-          <number>100000</number>
+          <number>100000000</number>
          </property>
          <property name="singleStep">
           <number>10</number>
@@ -764,7 +764,7 @@ with this address:</string>
           <number>0</number>
          </property>
          <property name="maximum">
-          <number>100000</number>
+          <number>100000000</number>
          </property>
          <property name="singleStep">
           <number>10</number>
@@ -1479,7 +1479,7 @@ with this address:</string>
              <number>0</number>
             </property>
             <property name="maximum">
-             <number>100000</number>
+             <number>100000000</number>
             </property>
             <property name="value">
              <number>0</number>
@@ -1517,7 +1517,7 @@ with this address:</string>
              <number>0</number>
             </property>
             <property name="maximum">
-             <number>100000</number>
+             <number>100000000</number>
             </property>
             <property name="value">
              <number>0</number>
