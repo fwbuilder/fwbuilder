@@ -23,10 +23,12 @@
 
 */
 
+#include "global.h"
 #include "FWCmdBasic.h"
 #include <QDebug>
 
 using namespace libfwbuilder;
+
 
 FWCmdBasic::FWCmdBasic(ProjectPanel *project, QUndoCommand* macro):QUndoCommand(macro)
 {
@@ -45,27 +47,34 @@ FWObject* FWCmdBasic::getObject(int id)
 
 bool FWCmdBasic::mergeWith(const QUndoCommand *other)
 {
-    qDebug() << "FWCmdBasic::mergeWith(const QUndoCommand *other) other=" << other;
-    qDebug() << "cmd:" << other->text();
-
+    if (fwbdebug)
+    {
+        qDebug() << "FWCmdBasic::mergeWith(const QUndoCommand *other) other=" << other;
+        qDebug() << "cmd:" << other->text();
+    }
     const FWCmdTerm* term = dynamic_cast<const FWCmdTerm*>(other);
     return term != 0;
 }
 
 bool FWCmdMacro::mergeWith(const QUndoCommand *other)
 {
-    qDebug() << "FWCmdMacro::mergeWith(const QUndoCommand *other) other=" << other;
-    qDebug() << "cmd:" << other->text();
-
+    if (fwbdebug)
+    {
+        qDebug() << "FWCmdMacro::mergeWith(const QUndoCommand *other) other=" << other;
+        qDebug() << "cmd:" << other->text();
+    }
     const FWCmdTerm* term = dynamic_cast<const FWCmdTerm*> (other);
     return term != 0;
 }
 
 void undoAndRemoveLastCommand(QUndoStack* undoStack)
 {
-    qDebug() << "undoAndRemoveLastCommand(QUndoStack undoStack)";
+    if (fwbdebug) qDebug() << "undoAndRemoveLastCommand(QUndoStack undoStack)";
+
     undoStack->undo();
-    qDebug() << "count:" << undoStack->count();
+
+    if (fwbdebug) qDebug() << "count:" << undoStack->count();
+
     if (undoStack->count() == 1) {
         undoStack->clear();
     } else {
