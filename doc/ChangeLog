@@ -1,3 +1,10 @@
+2010-04-26  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::checkForShadowingPlatformSpecific):
+	additional fix for #1417 (SF bug 2992177): compiler should compare
+	limit rate value and other parameters set for modules limit, connlimit
+	and hashlimit while deciding if rules shadow each other.
+
 2010-04-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::checkForShadowingPlatformSpecific):

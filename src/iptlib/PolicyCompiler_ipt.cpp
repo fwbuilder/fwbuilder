@@ -5153,16 +5153,25 @@ bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate
     FWOptions *opt_1 = candidate_r1->getOptionsObject();
     FWOptions *opt_2 = candidate_r2->getOptionsObject();
 
-    list<string>::iterator it;
-    for (it=rule_options_relevant_for_shadowing.begin();
-         it!=rule_options_relevant_for_shadowing.end(); ++it)
+    if (opt_1->getInt("limit_value")>0 || opt_2->getInt("limit_value")>0)
     {
-        if ((opt_1->getInt(*it) > 0 || opt_2->getInt(*it) > 0) &&
-            opt_1->getInt(*it) != opt_2->getInt(*it)) return false;
+        if (opt_1->getStr("limit_value") < opt_2->getStr("limit_value"))
+            return false;
+        if (opt_1->getStr("limit_value_not") != opt_2->getStr("limit_value_not"))
+            return false;
+        if (opt_1->getStr("limit_suffix") != opt_2->getStr("limit_suffix"))
+            return false;
     }
 
-    if ((opt_1->getInt("limit_value")>0 || opt_2->getInt("limit_value")>0) &&
-        opt_1->getStr("limit_suffix") != opt_2->getStr("limit_suffix")) return false;
+    if (opt_1->getInt("connlimit_value")>0 || opt_2->getInt("connlimit_value")>0)
+    {
+        if (opt_1->getStr("connlimit_value") < opt_2->getStr("connlimit_value"))
+            return false;
+        if (opt_1->getStr("connlimit_value_not") != opt_2->getStr("connlimit_value_not"))
+            return false;
+        if (opt_1->getStr("connlimit_suffix") != opt_2->getStr("connlimit_suffix"))
+            return false;
+    }
 
     if (opt_1->getInt("hashlimit_value")>0 || opt_2->getInt("hashlimit_value")>0)
     {
@@ -5171,6 +5180,9 @@ bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate
         if (opt_1->getStr("hashlimit_mode") != opt_2->getStr("hashlimit_mode"))
             return false;
         if (opt_1->getStr("hashlimit_name") != opt_2->getStr("hashlimit_name"))
+            return false;
+
+        if (opt_1->getInt("hashlimit_value") < opt_2->getInt("hashlimit_value"))
             return false;
     }
 

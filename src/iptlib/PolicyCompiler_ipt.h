@@ -73,7 +73,6 @@ protected:
 
         typedef std::list<std::string> chain_list;
         std::map<std::string, chain_list*> chains;
-        std::list<std::string> rule_options_relevant_for_shadowing;
 
         // use minus_n_commands map to track creation of chains.
         // Using external map object for this to be able to track
@@ -903,21 +902,6 @@ public:
             have_connmark_in_output = false;
             my_table = "filter";
             minus_n_commands = m_n_commands_map;
-
-            rule_options_relevant_for_shadowing.push_back("limit_value");
-            rule_options_relevant_for_shadowing.push_back("limit_value_not");
-            rule_options_relevant_for_shadowing.push_back("limit_burst");
-            rule_options_relevant_for_shadowing.push_back("connlimit_value");
-            rule_options_relevant_for_shadowing.push_back("connlimit_above_not");
-            rule_options_relevant_for_shadowing.push_back("connlimit_masklen");
-            rule_options_relevant_for_shadowing.push_back("hashlimit_name");
-            rule_options_relevant_for_shadowing.push_back("hashlimit_value");
-            rule_options_relevant_for_shadowing.push_back("hashlimit_burst");
-            rule_options_relevant_for_shadowing.push_back("hashlimit_size");
-            rule_options_relevant_for_shadowing.push_back("hashlimit_max");
-            rule_options_relevant_for_shadowing.push_back("hashlimit_expire");
-            rule_options_relevant_for_shadowing.push_back("hashlimit_gcinterval");
-            
         }
         virtual ~PolicyCompiler_ipt();
 
