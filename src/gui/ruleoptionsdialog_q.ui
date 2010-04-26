@@ -41,7 +41,7 @@
       <number>0</number>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="ipt">
       <layout class="QGridLayout">
@@ -63,7 +63,7 @@
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab1">
           <attribute name="title">
@@ -356,7 +356,7 @@
               </sizepolicy>
              </property>
              <property name="maximum">
-              <number>10000</number>
+              <number>99999</number>
              </property>
             </widget>
            </item>
@@ -518,7 +518,7 @@
               </sizepolicy>
              </property>
              <property name="maximum">
-              <number>10000</number>
+              <number>99999</number>
              </property>
             </widget>
            </item>
@@ -709,6 +709,9 @@
                  <width>80</width>
                  <height>32767</height>
                 </size>
+               </property>
+               <property name="maximum">
+                <number>99999</number>
                </property>
               </widget>
              </item>
