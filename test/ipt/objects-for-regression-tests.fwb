@@ -49959,7 +49959,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id54445X20318" host_OS="linux24" inactive="False" lastCompiled="1272299247" lastInstalled="0" lastModified="1272299240" platform="iptables" version="" name="test-shadowing-3" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;testing shadowing when rules have non-default options" ro="False">
+      <Firewall id="id54445X20318" host_OS="linux24" inactive="False" lastCompiled="1272384879" lastInstalled="0" lastModified="1272384869" platform="iptables" version="" name="test-shadowing-3" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;testing shadowing when rules have non-default options" ro="False">
         <NAT id="id54554X20318" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>

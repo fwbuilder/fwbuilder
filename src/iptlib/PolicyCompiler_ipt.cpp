@@ -5146,6 +5146,23 @@ list<string> PolicyCompiler_ipt::getUsedChains()
 /*
  * see #1417 To policy rules with different module limit settings but
  * otherwise identical should not shadow each other.
+ *
+ * For all limit modules:
+ * rule with rate "-1" (i.e. no rate limiting at all) shadows rule with
+ * rate > 0
+ * OR
+ * rule with lower rate shadows rule with greater rate
+ *
+ * consider for example two rules: rule 1 that matches 30 pkts/sec and
+ * rule 2 that matches 50 pkts/sec
+ *
+ * In this case neither rule matches when packet flow is at <30
+ * pkts/sec and rule 1 matches if packet flow is greater than 30
+ * pkts/sec . Even when packet flow is greater than 50 pkts/sec, it is
+ * still rule 1 that matches it. So rule 2 will never match at all,
+ * and rule with lower rate shadows rule with greater rate.
+ *
+ * we should return true if candidate_rule_2 shadows candidate_rule_1
  */
 bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate_r1,
                                                            PolicyRule *candidate_r2)
@@ -5155,7 +5172,7 @@ bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate
 
     if (opt_1->getInt("limit_value")>0 || opt_2->getInt("limit_value")>0)
     {
-        if (opt_1->getStr("limit_value") < opt_2->getStr("limit_value"))
+        if (opt_1->getInt("limit_value") < opt_2->getInt("limit_value"))
             return false;
         if (opt_1->getStr("limit_value_not") != opt_2->getStr("limit_value_not"))
             return false;
@@ -5165,7 +5182,7 @@ bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate
 
     if (opt_1->getInt("connlimit_value")>0 || opt_2->getInt("connlimit_value")>0)
     {
-        if (opt_1->getStr("connlimit_value") < opt_2->getStr("connlimit_value"))
+        if (opt_1->getInt("connlimit_value") < opt_2->getInt("connlimit_value"))
             return false;
         if (opt_1->getStr("connlimit_value_not") != opt_2->getStr("connlimit_value_not"))
             return false;
@@ -5175,14 +5192,13 @@ bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate
 
     if (opt_1->getInt("hashlimit_value")>0 || opt_2->getInt("hashlimit_value")>0)
     {
+        if (opt_1->getInt("hashlimit_value") < opt_2->getInt("hashlimit_value"))
+            return false;
         if (opt_1->getStr("hashlimit_suffix") != opt_2->getStr("hashlimit_suffix"))
             return false;
         if (opt_1->getStr("hashlimit_mode") != opt_2->getStr("hashlimit_mode"))
             return false;
         if (opt_1->getStr("hashlimit_name") != opt_2->getStr("hashlimit_name"))
-            return false;
-
-        if (opt_1->getInt("hashlimit_value") < opt_2->getInt("hashlimit_value"))
             return false;
     }
 
