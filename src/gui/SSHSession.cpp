@@ -38,11 +38,11 @@
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qeventloop.h>
-//#include <qcstring.h>
 #include <qtextcodec.h>
 #include <qapplication.h>
 #include <qdatetime.h>
 #include <QtDebug>
+#include <QTime>
 
 #include <iostream>
 
@@ -137,7 +137,7 @@ void SSHSession::startSession()
 
     if (fwbdebug)
         qDebug("SSHSession::startSession  this=%p  proc=%p   heartBeatTimer=%p",
-               this,proc,heartBeatTimer);
+               this, proc, heartBeatTimer);
 
     connect(proc,SIGNAL(readyReadStandardOutput()),
             this,  SLOT(readFromStdout() ) );
@@ -258,30 +258,50 @@ void SSHSession::terminate()
     // a lot of output and keeps the GUI busy updating buffers and
     // progress log display, it becomes possible for the user to hit
     // Cancel and place corresponding event in the queue after the
-    // process has actually finished but before its signal
-    // "processExited" could be processed by the slot
-    // SSHSession::terminated() This causes problems becuase we
-    // disconnect this signal here so we never process it
-    // anymore. Also, it looks like QProcess does not change its own
-    // state to indicate it is no longer running if its signal
-    // processExited has not been processed. This means that even
-    // though the background process has finished and exited, QProcess
-    // still thinks it is running. We try to send terminate and then
-    // kill signals to it in this function, to no avail. In the end,
-    // the program crashes trying to destroy QProcess object which
-    // still thinks it is running.
+    // process has actually finished but before its signal "finished"
+    // could be processed by the slot SSHSession::terminated(). This
+    // causes problems because we disconnect this signal here so we
+    // never process it anymore. Also, it looks like QProcess does not
+    // change its own state to indicate it is no longer running if its
+    // signal processExited has not been processed. This means that
+    // even though the background process has finished and exited,
+    // QProcess still thinks it is running. We try to send terminate
+    // and then kill signals to it in this function, to no avail. In
+    // the end, the program crashes trying to destroy QProcess object
+    // which still thinks it is running.
 
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    //qApp->processEvents();
 
     stopHeartBeat();
 
-    if (proc!=NULL)
+    if (proc != NULL)
     {
-        disconnect(proc,SIGNAL(finished(int, QProcess::ExitStatus)),
-                   this,SLOT(finished(int) ) );
+        if (proc->state() == QProcess::Running)
+        {
+            if (fwbdebug)
+                qDebug() << "SSHSession::terminate   waiting for pending signal 'finished()', if any";
+            // this processes events and lets QProcess send signal finished()
+            // in case user hit Cancel at just right time when background process
+            // already exited but QProcess has not noticed this yet.
+            proc->waitForFinished(100);
+        }
 
-        if (fwbdebug)
-            qDebug() << "SSHSession::terminate   terminating child process";
+        // If QProcess sent signal finished() while we were waiting in
+        // waitForFinished(), the signal has been processed in SSHSession::finished
+        // and proc has already been deleted.
+
+        if (proc == NULL)
+        {
+            if (fwbdebug) qDebug("SSHSession::terminate   proc==NULL");
+            return;
+        }
+
+        disconnect(proc, SIGNAL(readyReadStandardOutput()),
+                   this, SLOT(readFromStdout() ) );
+        disconnect(proc, SIGNAL(readyReadStandardError()),
+                   this, SLOT(readFromStderr() ) );
+        disconnect(proc, SIGNAL(finished(int, QProcess::ExitStatus)),
+                   this, SLOT(finished(int) ) );
 
 #ifdef _WIN32
         if (proc->pid() != NULL)
@@ -292,7 +312,9 @@ void SSHSession::terminate()
             if (proc->state() == QProcess::Running)
             {
                 Q_PID pid = proc->pid();
-                if (fwbdebug) qDebug() << "Process is running pid=" << pid;
+                if (fwbdebug)
+                    qDebug() << "SSHSession::terminate   terminating child process pid="  << pid;
+
                 emit printStdout_sign(QString("Stopping background process"));
 
                 /*
@@ -310,7 +332,7 @@ void SSHSession::terminate()
 #endif
 
                 if (fwbdebug)
-                    qDebug() << "Terminate signal sent, waiting for it to finish";
+                    qDebug() << "SSHSession::terminate   terminate signal sent, waiting for it to finish";
 
                 int time_to_wait = 20;
                 for (int timeout = 0; timeout < time_to_wait; timeout++)
@@ -337,7 +359,8 @@ void SSHSession::terminate()
 #endif
                 }
 
-                if (fwbdebug) qDebug() << "Reading last output buffers";
+                if (fwbdebug)
+                    qDebug() << "SSHSession::terminate   Reading last output buffers";
 
                 QString s = QString(proc->readAllStandardOutput());
                 if (!quiet)
@@ -346,13 +369,15 @@ void SSHSession::terminate()
                     emit printStdout_sign(s);
                 }
 
-                if (fwbdebug) qDebug() << "done reading I/O buffers";
+                if (fwbdebug)
+                    qDebug() << "SSHSession::terminate   done reading I/O buffers";
 
                 // Looks like sometimes the process may still be running
                 // after 20 sec. Ticket #1426, SF bug 2990333
                 if (proc->state() == QProcess::Running)
                 {
-                    if (fwbdebug) qDebug() << "Still running, killing";
+                    if (fwbdebug)
+                        qDebug() << "SSHSession::terminate   Still running, killing";
                     proc->kill();
                 }
 
@@ -455,20 +480,23 @@ void SSHSession::allDataSent()
 
 void SSHSession::startHeartBeat()
 {
-    if (fwbdebug) qDebug("SSHSession::startHeartBeat");
-    heartBeatTimer->start(1000);
+    if (fwbdebug)
+        qDebug() << "SSHSession::startHeartBeat" << QTime::currentTime().toString();
+    heartBeatTimer->start(100);
 }
 
 void SSHSession::stopHeartBeat()
 {
-    if (fwbdebug) qDebug("SSHSession::stopHeartBeat");
+    if (fwbdebug)
+        qDebug() << "SSHSession::stopHeartBeat" << QTime::currentTime().toString();
     heartBeatTimer->stop();
     send_keepalive = false;
 }
 
 void SSHSession::heartBeat()
 {
-    if (fwbdebug) qDebug("SSHSession::heartBeat");
+    if (fwbdebug)
+        qDebug() << "SSHSession::heartBeat begin" << QTime::currentTime().toString();
     if (send_keepalive) proc->write("\n");
     readFromStderr();
     readFromStdout();
@@ -477,10 +505,17 @@ void SSHSession::heartBeat()
         allDataSent();
         endOfCopy = false;
     }
+    if (fwbdebug)
+        qDebug() << "SSHSession::heartBeat end  " << QTime::currentTime().toString();
 }
 
 void SSHSession::readFromStdout()
 {
+    if (fwbdebug)
+        qDebug() << "SSHSession::readFromStdout"
+                 << QTime::currentTime().toString()
+                 << "################ proc=" << proc;
+
     if (proc)
     {
         QByteArray ba = proc->readAllStandardOutput();
@@ -491,8 +526,7 @@ void SSHSession::readFromStdout()
 
         stdoutBuffer.append(buf);
 
-        if (fwbdebug)
-            qDebug("SSHSession::readFromStdout: '%s'", buf.toAscii().constData());
+        if (fwbdebug) qDebug() << buf;
 
         bool endsWithLF = buf.endsWith("\n");
         QString lastLine = "";
@@ -537,8 +571,16 @@ void SSHSession::readFromStdout()
 
         pendingLogLine += lastLine;
 
+        if (fwbdebug)
+            qDebug() << "SSHSession::readFromStdout"
+                     << QTime::currentTime().toString()
+                     << "calling stateMachine()";
         stateMachine();
     }
+    if (fwbdebug)
+        qDebug() << "SSHSession::readFromStdout"
+                 << QTime::currentTime().toString()
+                 << "---------------- end";
 }
 
 /*
@@ -583,8 +625,16 @@ void SSHSession::finished(int retcode)
                          proc, retcode);
 
     // background process has exited now, we do not need proc object anymore
+
+    disconnect(proc, SIGNAL(readyReadStandardOutput()),
+               this, SLOT(readFromStdout() ) );
+    disconnect(proc, SIGNAL(readyReadStandardError()),
+               this, SLOT(readFromStderr() ) );
+    disconnect(proc, SIGNAL(finished(int, QProcess::ExitStatus)),
+               this, SLOT(finished(int) ) );
+
     delete proc;
-    proc=NULL;
+    proc = NULL;
 
     QString exitStatus = (retcode)?QObject::tr("ERROR"):QObject::tr("OK");
 

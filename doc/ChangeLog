@@ -1,23 +1,43 @@
-2010-04-27  vadim  <vadim@vk.crocodile.org>
+2010-04-27  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* SSHSession.cpp (terminate): fixes #1426 "segfault when cancel
+	while installing" (SF bug 2990333). No need to process events in
+	terminate(); instead, using QProcess::waitForFinished() to give
+	QProcess object opportunity to call this signal if user hit Cancel
+	at just right time when background process has finished but
+	QProcess has not noticed this yet. This situation caused crash
+	reported in the SF bug. This problem appears to be specific to
+	some versions of Qt. It does not happen with Qt 4.5.0 or Qt 4.6.2
+	but happens with 4.5.3.
+
+	* instDialog_ui_ops.cpp (addToLog): working on #1426 "segfault
+	when cancel while installing". SF bug 2990333. Processing of large
+	chunks of compile or installer output took long time, especially
+	scanning for errors and warnings which involves RegEx
+	match. Splitting the buffer onto individual QString lines and
+	matching each line against all error and warning pattern regexes
+	made it much faster. Also do not call qApp->processEvents() from
+	addtoLog() to avoid recursive call.
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::checkForShadowingPlatformSpecific):
 	see #1417 (SF bug 2992177) rule with greater limit module rate
-	value shadows rule with lower rate value. Comments in the code explain
-	why.
+	value shadows rule with lower rate value. Comments in the code
+	explain why.
 
 2010-04-26  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::checkForShadowingPlatformSpecific):
 	additional fix for #1417 (SF bug 2992177): compiler should compare
-	limit rate value and other parameters set for modules limit, connlimit
-	and hashlimit while deciding if rules shadow each other.
+	limit rate value and other parameters set for modules limit,
+	connlimit and hashlimit while deciding if rules shadow each other.
 
 2010-04-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::checkForShadowingPlatformSpecific):
-	fixes #1417 rule shadowing detection should recognize different rule options.
-	Policy compiler for iptables takes into account rule options for modules
-	limit, connlimit and hashlimit when it considers rules for rule shadowing.
+	fixes #1417 rule shadowing detection should recognize different
+	rule options.  Policy compiler for iptables takes into account
+	rule options for modules limit, connlimit and hashlimit when it
+	considers rules for rule shadowing.
 
 	* instDialog.cpp (instDialog::show): fixed #1419: clear progress
 	log display when instDialog is opened

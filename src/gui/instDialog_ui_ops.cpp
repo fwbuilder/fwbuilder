@@ -68,6 +68,7 @@
 #include <QBrush>
 #include <QTextFormat>
 #include <QtDebug>
+#include <QTime>
 
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
@@ -588,6 +589,8 @@ void instDialog::cancelClicked()
 
     if (proc.state() == QProcess::Running)
     {
+        if (fwbdebug)
+            qDebug() << "instDialog::cancelClicked  killing background process";
         rejectDialogFlag = true;
         proc.kill();
     }
@@ -664,61 +667,68 @@ void instDialog::saveLog()
  * Adds one line of text to the log
  *
  */
-void instDialog::addToLog(const QString &line)
+void instDialog::addToLog(const QString &buf)
 {
-    // if (fwbdebug)
-    //     qDebug("instDialog::addToLog: '%s'", line.toLatin1().constData());
+    if (fwbdebug)
+        qDebug() << "instDialog::addToLog" << QTime::currentTime().toString();
 
-    if (line.isEmpty()) return;
+    if (buf.isEmpty()) return;
 
-    QString txt = line.trimmed();
-
-    QTextCharFormat format = normal_format;
-
-    list<QRegExp>::const_iterator it;
-    for (it=error_re.begin(); it!=error_re.end(); ++it)
+    foreach(QString line, buf.trimmed().split("\n"))
     {
-        if ((*it).indexIn(txt) != -1)
+        QTextCharFormat format = normal_format;
+
+        list<QRegExp>::const_iterator it;
+        for (it=error_re.begin(); it!=error_re.end(); ++it)
         {
-            format = error_format;
-            break;
+            if ((*it).indexIn(line) != -1)
+            {
+                format = error_format;
+                break;
+            }
         }
-    }
 
-    for (it=warning_re.begin(); it!=warning_re.end(); ++it)
-    {
-        if ((*it).indexIn(txt) != -1)
+        for (it=warning_re.begin(); it!=warning_re.end(); ++it)
         {
-            format = warning_format;
-            break;
+            if ((*it).indexIn(line) != -1)
+            {
+                format = warning_format;
+                break;
+            }
         }
+
+        if (fwbdebug)
+            qDebug() << "instDialog::addToLog" << QTime::currentTime().toString()
+                     << "errors and warnings scan done";
+
+        /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
+         *
+         * QTextEditor::insertHtml() becomes incrementally slow as the
+         * amount of text already in the QTextEditor
+         * increases. Compiling ~10 firewalls with few dozen rules
+         * each slows the output to a crawl on Windows.  Keeping each
+         * line in a separate block makes it much faster.
+         */
+
+        QString txt = line;
+        while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
+            txt.chop(1);
+
+        if (format == error_format || format == warning_format )
+            format.setAnchorHref(txt);
+
+        QTextCursor cursor = m_dialog->procLogDisplay->textCursor();
+
+        cursor.insertBlock();
+
+        cursor.insertText(txt, format);
     }
-
-    /* See sourceforge bug https://sourceforge.net/tracker/?func=detail&aid=2847263&group_id=5314&atid=1070394
-     *
-     * QTextEditor::insertHtml() becomes incrementally slow as the
-     * amount of text already in the QTextEditor
-     * increases. Compiling ~10 firewalls with few dozen rules
-     * each slows the output to a crawl on Windows.  Keeping each
-     * line in a separate block makes it much faster.
-     */
-
-    txt = line;
-    while (!txt.isEmpty() && (txt.endsWith("\n") || txt.endsWith("\r")))
-        txt.chop(1);
-
-    if (format == error_format || format == warning_format )
-        format.setAnchorHref(txt);
-
-    QTextCursor cursor = m_dialog->procLogDisplay->textCursor();
-    cursor.insertBlock();
-    cursor.insertText(txt, format);
 
     //m_dialog->procLogDisplayList->addItem(txt);
 
     m_dialog->procLogDisplay->ensureCursorVisible();
 
-    qApp->processEvents();
+    //qApp->processEvents();
 }
 
 void instDialog::interpretLogLine(const QString &line)
