@@ -296,13 +296,6 @@ void SSHSession::terminate()
             return;
         }
 
-        disconnect(proc, SIGNAL(readyReadStandardOutput()),
-                   this, SLOT(readFromStdout() ) );
-        disconnect(proc, SIGNAL(readyReadStandardError()),
-                   this, SLOT(readFromStderr() ) );
-        disconnect(proc, SIGNAL(finished(int, QProcess::ExitStatus)),
-                   this, SLOT(finished(int) ) );
-
 #ifdef _WIN32
         if (proc->pid() != NULL)
 #else
@@ -315,7 +308,7 @@ void SSHSession::terminate()
                 if (fwbdebug)
                     qDebug() << "SSHSession::terminate   terminating child process pid="  << pid;
 
-                emit printStdout_sign(QString("Stopping background process"));
+                emit printStdout_sign(QString("Stopping background process %1").arg(pid));
 
                 /*
                  * on windows proc->terminate() posts a WM_CLOSE
@@ -337,7 +330,7 @@ void SSHSession::terminate()
                 int time_to_wait = 20;
                 for (int timeout = 0; timeout < time_to_wait; timeout++)
                 {
-                    if (proc->state() != QProcess::Running) break;
+                    if (proc==NULL || proc->state() != QProcess::Running) break;
                     // print countdown only if we've been waiting more than 3 sec
                     if (timeout > 3)
                         emit printStdout_sign(
@@ -351,12 +344,17 @@ void SSHSession::terminate()
                         s.replace('\r',"");
                         emit printStdout_sign(s);
                     }
-                    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-#ifdef _WIN32
-                    Sleep(1000);
-#else
-                    sleep(1);
-#endif
+
+                    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,1);
+                    proc->waitForFinished(1000);
+                }
+
+                // proc can be NULL at this point if it had sent signal finished()
+                // which we processed in the call to waitForFinished() above
+                if (proc == NULL)
+                {
+                    if (fwbdebug) qDebug("SSHSession::terminate   proc==NULL");
+                    return;
                 }
 
                 if (fwbdebug)
@@ -370,10 +368,15 @@ void SSHSession::terminate()
                 }
 
                 if (fwbdebug)
-                    qDebug() << "SSHSession::terminate   done reading I/O buffers";
+                    qDebug() << "SSHSession::terminate   done reading I/O buffers. Disconnecting signals";
 
-                // Looks like sometimes the process may still be running
-                // after 20 sec. Ticket #1426, SF bug 2990333
+                disconnect(proc, SIGNAL(readyReadStandardOutput()),
+                           this, SLOT(readFromStdout() ) );
+                disconnect(proc, SIGNAL(readyReadStandardError()),
+                           this, SLOT(readFromStderr() ) );
+                disconnect(proc, SIGNAL(finished(int, QProcess::ExitStatus)),
+                           this, SLOT(finished(int) ) );
+
                 if (proc->state() == QProcess::Running)
                 {
                     if (fwbdebug)

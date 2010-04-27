@@ -670,7 +670,8 @@ void instDialog::saveLog()
 void instDialog::addToLog(const QString &buf)
 {
     if (fwbdebug)
-        qDebug() << "instDialog::addToLog" << QTime::currentTime().toString();
+        qDebug() << "instDialog::addToLog" << QTime::currentTime().toString()
+                 << "buf.size()=" << buf.size();
 
     if (buf.isEmpty()) return;
 

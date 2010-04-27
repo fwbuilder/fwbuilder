@@ -146,13 +146,21 @@ bool instDialog::runInstaller(Firewall *fw)
 void instDialog::stopInstall()
 {
     currentStopButton->setEnabled(false);
-    stopProcessFlag=true;
 
-    disconnect(currentStopButton, SIGNAL(clicked()) );
-    currentStopButton->setEnabled(false);
+    disconnect(currentStopButton, SIGNAL(clicked()));
 
-    proc.terminate();                                  //try to close proc.
-    QTimer::singleShot( 1000, &proc, SLOT( kill() ) ); //if it doesn't respond, kill it
+    stopProcessFlag = true; // likely unused
+    proc.terminate(); // try to close proc.
+    QTimer::singleShot(1000, &proc, SLOT(kill())); //if it doesn't respond, kill it
+
+    if (installer != NULL)
+    {
+        if (fwbdebug)
+            qDebug() << "instDialog::stopInstall  killing installer";
+        installer->terminate();
+        delete installer;
+        installer = NULL;
+    }
 
     // to terminate whole install sequence rather than just current
     // process, clear the list.

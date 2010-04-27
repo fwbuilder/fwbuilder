@@ -1,4 +1,13 @@
-2010-04-27  Vadim Kurland  <vadim@vk.crocodile.org>
+2010-04-27  vadim  <vadim@vk.crocodile.org>
+
+	* SSHSession.cpp (SSHSession::terminate): see #1426, #1428 use
+	QProcess::waitForFinished() instead of just sleep() after we send
+	TERM signal to the background process. Also let Qt process events
+	to update the GUI while waiting.
+
+	* instDialog_installer.cpp (instDialog::stopInstall): fixed #1428
+	button "Stop" in the installer dialog does not stop installer
+	process
 
 	* SSHSession.cpp (terminate): fixes #1426 "segfault when cancel
 	while installing" (SF bug 2990333). No need to process events in
