@@ -49959,12 +49959,12 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id54445X20318" host_OS="linux24" inactive="False" lastCompiled="1272384879" lastInstalled="0" lastModified="1272384869" platform="iptables" version="" name="test-shadowing-3" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;testing shadowing when rules have non-default options" ro="False">
+      <Firewall id="id54445X20318" host_OS="linux24" inactive="False" lastCompiled="1272387175" lastInstalled="0" lastModified="1272387229" platform="iptables" version="" name="test-shadowing-3" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;testing shadowing when rules have non-default options" ro="False">
         <NAT id="id54554X20318" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
         <Policy id="id54468X20318" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id54469X20318" disabled="False" log="False" position="0" action="Accept" direction="Outbound" comment="">
+          <PolicyRule id="id54469X20318" disabled="False" log="False" position="0" action="Accept" direction="Outbound" comment="limit ">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -50031,7 +50031,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <RuleSetOptions/>
         </Policy>
         <Policy id="id55734X20318" name="Policy_1" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id55855X20318" disabled="False" group="" log="False" position="0" action="Accept" direction="Outbound" comment="">
+          <PolicyRule id="id55855X20318" disabled="False" group="" log="False" position="0" action="Accept" direction="Outbound" comment="connlimit">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -50098,7 +50098,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <RuleSetOptions/>
         </Policy>
         <Policy id="id55760X20318" name="Policy_2" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id55947X20318" disabled="False" group="" log="False" position="0" action="Accept" direction="Outbound" comment="">
+          <PolicyRule id="id55947X20318" disabled="False" group="" log="False" position="0" action="Accept" direction="Outbound" comment="hashlimit">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -50182,7 +50182,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="color">#C0C0C0</Option>
+              <Option name="color">#C86E6E</Option>
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
@@ -50227,7 +50227,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="color">#C0C0C0</Option>
+              <Option name="color">#C86E6E</Option>
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
@@ -50258,52 +50258,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <RuleSetOptions/>
         </Policy>
         <Policy id="id54971X87331" name="Policy_4" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id55158X87331" disabled="False" group="" log="False" position="0" action="Accept" direction="Outbound" comment="50/sec">
-            <Src neg="False">
-              <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="id54453X20318"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="color">#8BC065</Option>
-              <Option name="connlimit_above_not">False</Option>
-              <Option name="connlimit_masklen">0</Option>
-              <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
-              <Option name="hashlimit_burst">0</Option>
-              <Option name="hashlimit_dstlimit">False</Option>
-              <Option name="hashlimit_expire">0</Option>
-              <Option name="hashlimit_gcinterval">0</Option>
-              <Option name="hashlimit_max">0</Option>
-              <Option name="hashlimit_mode_dstip">False</Option>
-              <Option name="hashlimit_mode_dstport">False</Option>
-              <Option name="hashlimit_mode_srcip">True</Option>
-              <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name">test</Option>
-              <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix">/second</Option>
-              <Option name="hashlimit_value">50</Option>
-              <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
-              <Option name="limit_value">0</Option>
-              <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="stateless">False</Option>
-              <Option name="ulog_nlgroup">1</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id55112X87331" disabled="False" group="" log="False" position="1" action="Accept" direction="Outbound" comment="30/sec">
+          <PolicyRule id="id55112X87331" disabled="False" group="" log="False" position="0" action="Accept" direction="Outbound" comment="30/sec">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -50338,6 +50293,51 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="hashlimit_size">0</Option>
               <Option name="hashlimit_suffix">/second</Option>
               <Option name="hashlimit_value">30</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id55158X87331" disabled="False" group="" log="False" position="1" action="Accept" direction="Outbound" comment="50/sec">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id54453X20318"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">True</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name">test</Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix">/second</Option>
+              <Option name="hashlimit_value">50</Option>
               <Option name="limit_burst">0</Option>
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>
@@ -50441,52 +50441,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <RuleSetOptions/>
         </Policy>
         <Policy id="id54773X87346" name="Policy_5" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
-          <PolicyRule id="id54868X87346" disabled="False" group="" log="False" position="0" action="Accept" direction="Outbound" comment="30/sec">
-            <Src neg="False">
-              <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="id54453X20318"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="color">#C86E6E</Option>
-              <Option name="connlimit_above_not">False</Option>
-              <Option name="connlimit_masklen">0</Option>
-              <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
-              <Option name="hashlimit_burst">0</Option>
-              <Option name="hashlimit_dstlimit">False</Option>
-              <Option name="hashlimit_expire">0</Option>
-              <Option name="hashlimit_gcinterval">0</Option>
-              <Option name="hashlimit_max">0</Option>
-              <Option name="hashlimit_mode_dstip">False</Option>
-              <Option name="hashlimit_mode_dstport">False</Option>
-              <Option name="hashlimit_mode_srcip">True</Option>
-              <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name">test</Option>
-              <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix">/second</Option>
-              <Option name="hashlimit_value">30</Option>
-              <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
-              <Option name="limit_value">0</Option>
-              <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="stateless">False</Option>
-              <Option name="ulog_nlgroup">1</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id54822X87346" disabled="False" group="" log="False" position="1" action="Accept" direction="Outbound" comment="50/sec">
+          <PolicyRule id="id54822X87346" disabled="False" group="" log="False" position="0" action="Accept" direction="Outbound" comment="50/sec">
             <Src neg="False">
               <ObjectRef ref="net-Internal_net"/>
             </Src>
@@ -50521,6 +50476,51 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="hashlimit_size">0</Option>
               <Option name="hashlimit_suffix">/second</Option>
               <Option name="hashlimit_value">50</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="stateless">False</Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id54868X87346" disabled="False" group="" log="False" position="1" action="Accept" direction="Outbound" comment="30/sec">
+            <Src neg="False">
+              <ObjectRef ref="net-Internal_net"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id54453X20318"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">True</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name">test</Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix">/second</Option>
+              <Option name="hashlimit_value">30</Option>
               <Option name="limit_burst">0</Option>
               <Option name="limit_suffix"></Option>
               <Option name="limit_value">0</Option>

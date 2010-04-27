@@ -1,3 +1,10 @@
+2010-04-27  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::checkForShadowingPlatformSpecific):
+	see #1417 (SF bug 2992177) rule with greater limit module rate
+	value shadows rule with lower rate value. Comments in the code explain
+	why.
+
 2010-04-26  vadim  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler_ipt.cpp (PolicyCompiler_ipt::checkForShadowingPlatformSpecific):

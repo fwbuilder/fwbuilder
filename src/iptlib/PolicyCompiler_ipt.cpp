@@ -5151,16 +5151,17 @@ list<string> PolicyCompiler_ipt::getUsedChains()
  * rule with rate "-1" (i.e. no rate limiting at all) shadows rule with
  * rate > 0
  * OR
- * rule with lower rate shadows rule with greater rate
+ * rule with greater rate shadows rule with lower rate
  *
- * consider for example two rules: rule 1 that matches 30 pkts/sec and
- * rule 2 that matches 50 pkts/sec
+ * From man iptables: "A rule using this extension will match until
+ * this limit is reached "
  *
- * In this case neither rule matches when packet flow is at <30
- * pkts/sec and rule 1 matches if packet flow is greater than 30
- * pkts/sec . Even when packet flow is greater than 50 pkts/sec, it is
- * still rule 1 that matches it. So rule 2 will never match at all,
- * and rule with lower rate shadows rule with greater rate.
+ * consider for example two rules: rule 1 that matches 50 pkts/sec and
+ * rule 2 that matches 30 pkts/sec
+ *
+ * rule 1 matches rates between 0 and 49 and rule 2 rates between 0
+ * and 29.  This means rule 2 will never match any rate and rule with
+ * greater limit value shadows the one with lower limit value
  *
  * we should return true if candidate_rule_2 shadows candidate_rule_1
  */
@@ -5172,8 +5173,10 @@ bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate
 
     if (opt_1->getInt("limit_value")>0 || opt_2->getInt("limit_value")>0)
     {
-        if (opt_1->getInt("limit_value") < opt_2->getInt("limit_value"))
-            return false;
+        int rate_1 = opt_1->getInt("limit_value"); if (rate_1 == -1) rate_1 = INT_MAX;
+        int rate_2 = opt_2->getInt("limit_value"); if (rate_2 == -1) rate_2 = INT_MAX;
+        if (rate_1 > rate_2) return false;
+
         if (opt_1->getStr("limit_value_not") != opt_2->getStr("limit_value_not"))
             return false;
         if (opt_1->getStr("limit_suffix") != opt_2->getStr("limit_suffix"))
@@ -5182,8 +5185,10 @@ bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate
 
     if (opt_1->getInt("connlimit_value")>0 || opt_2->getInt("connlimit_value")>0)
     {
-        if (opt_1->getInt("connlimit_value") < opt_2->getInt("connlimit_value"))
-            return false;
+        int rate_1 = opt_1->getInt("connlimit_value"); if (rate_1 == -1) rate_1 = INT_MAX;
+        int rate_2 = opt_2->getInt("connlimit_value"); if (rate_2 == -1) rate_2 = INT_MAX;
+        if (rate_1 > rate_2) return false;
+
         if (opt_1->getStr("connlimit_value_not") != opt_2->getStr("connlimit_value_not"))
             return false;
         if (opt_1->getStr("connlimit_suffix") != opt_2->getStr("connlimit_suffix"))
@@ -5192,8 +5197,10 @@ bool PolicyCompiler_ipt::checkForShadowingPlatformSpecific(PolicyRule *candidate
 
     if (opt_1->getInt("hashlimit_value")>0 || opt_2->getInt("hashlimit_value")>0)
     {
-        if (opt_1->getInt("hashlimit_value") < opt_2->getInt("hashlimit_value"))
-            return false;
+        int rate_1 = opt_1->getInt("hashlimit_value"); if (rate_1 == -1) rate_1 = INT_MAX;
+        int rate_2 = opt_2->getInt("hashlimit_value"); if (rate_2 == -1) rate_2 = INT_MAX;
+        if (rate_1 > rate_2) return false;
+
         if (opt_1->getStr("hashlimit_suffix") != opt_2->getStr("hashlimit_suffix"))
             return false;
         if (opt_1->getStr("hashlimit_mode") != opt_2->getStr("hashlimit_mode"))
