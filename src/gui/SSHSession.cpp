@@ -254,6 +254,25 @@ void SSHSession::terminate()
                  << "proc=" << proc
                  << "heartBeatTimer=" << heartBeatTimer;
 
+    // Ticket #1426, SF bug 2990333. If installation process generates
+    // a lot of output and keeps the GUI busy updating buffers and
+    // progress log display, it becomes possible for the user to hit
+    // Cancel and place corresponding event in the queue after the
+    // process has actually finished but before its signal
+    // "processExited" could be processed by the slot
+    // SSHSession::terminated() This causes problems becuase we
+    // disconnect this signal here so we never process it
+    // anymore. Also, it looks like QProcess does not change its own
+    // state to indicate it is no longer running if its signal
+    // processExited has not been processed. This means that even
+    // though the background process has finished and exited, QProcess
+    // still thinks it is running. We try to send terminate and then
+    // kill signals to it in this function, to no avail. In the end,
+    // the program crashes trying to destroy QProcess object which
+    // still thinks it is running.
+
+    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
     stopHeartBeat();
 
     if (proc!=NULL)
