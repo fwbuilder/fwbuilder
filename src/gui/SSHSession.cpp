@@ -329,11 +329,14 @@ void SSHSession::terminate()
 
                 if (fwbdebug) qDebug() << "done reading I/O buffers";
 
+                // Looks like sometimes the process may still be running
+                // after 20 sec. Ticket #1426, SF bug 2990333
                 if (proc->state() == QProcess::Running)
                 {
                     if (fwbdebug) qDebug() << "Still running, killing";
                     proc->kill();
                 }
+
             }
 
             delete proc;
