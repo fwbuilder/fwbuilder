@@ -751,6 +751,15 @@ rule sets of this object rather than in the actual firewalls.
   SNAT, DNAT) if version is set to 1.4.3 or later in the firewall object.
 </p>
 
+<p>
+  Algorithm that finds policy rules that shadow each other can now
+  recognize rules configured to use iptables modules "limit",
+  "connlimit" and "hashlimit" and detects shadowing taking into account
+  rate, burst and other parameters for these modules.
+</p>
+
+
+
 <a name="ipcop"></a>
 <h2>Support for IPCOP</h2>
 
