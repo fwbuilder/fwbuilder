@@ -308,7 +308,7 @@ void SSHSession::terminate()
                 if (fwbdebug)
                     qDebug() << "SSHSession::terminate   terminating child process pid="  << pid;
 
-                emit printStdout_sign(QString("Stopping background process %1").arg(pid));
+                emit printStdout_sign(tr("Stopping background process"));
 
                 /*
                  * on windows proc->terminate() posts a WM_CLOSE
@@ -334,7 +334,7 @@ void SSHSession::terminate()
                     // print countdown only if we've been waiting more than 3 sec
                     if (timeout > 3)
                         emit printStdout_sign(
-                            QString(
+                            tr(
                                 "Background process is still running. "
                                 "Will wait %1 sec").arg(time_to_wait - timeout));
 
