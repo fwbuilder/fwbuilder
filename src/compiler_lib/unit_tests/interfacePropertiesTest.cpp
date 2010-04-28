@@ -243,6 +243,11 @@ eth1.101	 eth0	 false
     CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.bar", parent, err) == false);
     CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.99999", parent, err) == false);
     CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth1.101", parent, err) == false);
+
+    parent = "bond1";
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("bond1.15", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("bond1.515", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("bond1.1205", parent, err) == true);
 }
 
 
