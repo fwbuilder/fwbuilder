@@ -1,3 +1,8 @@
+2010-04-28  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* instDialog.cpp (instDialog::show): fixes #1429 "Finish" button
+	is activated during compile. Also added unit test for this.
+
 2010-04-27  vadim  <vadim@vk.crocodile.org>
 
 	* CompilerDriver_ipt.cpp (CompilerDriver_ipt::dumpScript): fixes #1425

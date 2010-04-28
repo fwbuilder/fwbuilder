@@ -144,7 +144,7 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
 
     currentSaveButton = m_dialog->saveMCLogButton;
     currentSaveButton->setEnabled(true);
-    currentStopButton = m_dialog->controlMCButton;
+    currentStopButton = m_dialog->stopButton;
     currentProgressBar = m_dialog->compProgress;
     currentFirewallsBar = m_dialog->compFirewallProgress;
     currentLabel = m_dialog->infoMCLabel;
@@ -159,9 +159,6 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
     proc.setProcessChannelMode(QProcess::MergedChannels);
 
     m_dialog->fwWorkList->setSortingEnabled(true);
-
-    for (int page=0; page < pageCount(); page++)
-        setFinishEnabled(page, false);
 }
 
 /*
@@ -196,6 +193,9 @@ void instDialog::show(ProjectPanel *proj,
     clusters.clear();
     compile_fw_list.clear();
     install_fw_list.clear();
+
+    for (int page=0; page < pageCount(); page++)
+        setFinishEnabled(page, false);
 
     if (!onlySelected)
     {

@@ -90,12 +90,22 @@ void instDialogCompileTest::testCompile()
     QTest::qWait(500);
     dlg->findChild<QPushButton*>("nextButton")->click();
 
-    QTreeWidget *list= dlg->findChild<QTreeWidget*>("fwWorkList");
+    QTreeWidget *list = dlg->findChild<QTreeWidget*>("fwWorkList");
+    QPushButton *back = dlg->findChild<QPushButton*>("backButton");
+    QPushButton *next = dlg->findChild<QPushButton*>("nextButton");
+    QPushButton *finish = dlg->findChild<QPushButton*>("finishButton");
+    QPushButton *cancel = dlg->findChild<QPushButton*>("cancelButton");
 
     int waited = 0;
 
     while (!checkProgress(list))
     {
+        // test state of the buttons
+        QVERIFY(back->isEnabled() == false);
+        QVERIFY(next->isEnabled() == false);
+        QVERIFY(cancel->isEnabled() == true);
+        QVERIFY(finish->isEnabled() == false);
+
         QTest::qWait(500);
         waited += 500;
         QVERIFY(waited < 10000);
@@ -105,6 +115,13 @@ void instDialogCompileTest::testCompile()
     {
         QVERIFY(list->topLevelItem(i)->text(1) == "Success");
     }
+
+    // test state of the buttons
+    QVERIFY(back->isEnabled() == false);
+    QVERIFY(next->isEnabled() == false);
+    QVERIFY(cancel->isEnabled() == true);
+    QVERIFY(finish->isEnabled() == true);
+
     dlg->reject();
 
     QVERIFY(QFileInfo("test1.fw").exists() && QFileInfo("test1.fw").size());

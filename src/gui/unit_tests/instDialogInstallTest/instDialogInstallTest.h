@@ -27,25 +27,32 @@
 #define INSTDIALOGTEST_H
 
 #include <QTest>
-#include "newClusterDialog.h"
-#include "upgradePredicate.h"
+
 #include "FWBTree.h"
-#include "fwbuilder/Library.h"
-#include "instDialog.h"
 #include "FWWindow.h"
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
 #include "events.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Library.h"
 #include "fwbuilder/Policy.h"
+#include "instDialog.h"
+#include "newClusterDialog.h"
+#include "upgradePredicate.h"
 
 class instDialogInstallTest : public QObject
 {
-    Q_OBJECT
+    Q_OBJECT;
     const char *ssh_auth_sock;
     void removeFiles();
     void verifyInstallSuccess(const QString &test_name);
-
+    void resetDialogs();
+    void fillInstOptionsDialog(const QString &user_name,
+                               const QString &pwd,
+                               const QString &alt_address,
+                               bool verbose);
+    void executeCancelAndStopTests(const QString &button_name,
+                                   bool dialog_should_stay_open);
     
 private slots:
     void initTestCase();
@@ -54,11 +61,15 @@ private slots:
     void testInstall2();
     void testInstall3();
     void testInstall4();
+    void testInstall5();
 
 public slots:
-    void testInstall1_part2();
-    void testInstall3_part2();
-
+    void instOptionsForTest1();
+    void instOptionsForTest2();
+    void instOptionsForTest3();
+    void instOptionsForTest4();
+    void instOptionsForTest5();
+    
 };
 
 #endif // INSTDIALOGTEST_H
