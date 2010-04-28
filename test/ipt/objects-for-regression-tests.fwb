@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1272299233" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1272414284" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -3486,6 +3486,32 @@
       <RuleSetOptions>
         <Option name="mangle_only_rule_set">True</Option>
       </RuleSetOptions>
+    </Policy>
+    <Policy id="id54793X99373" name="fw71_policy_2" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
+      <PolicyRule id="id54794X99373" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+        <Src neg="False">
+          <ObjectRef ref="sysid0"/>
+        </Src>
+        <Dst neg="False">
+          <ObjectRef ref="sysid0"/>
+        </Dst>
+        <Srv neg="False">
+          <ServiceRef ref="sysid1"/>
+        </Srv>
+        <Itf neg="False">
+          <ObjectRef ref="sysid0"/>
+        </Itf>
+        <When neg="False">
+          <IntervalRef ref="sysid2"/>
+        </When>
+        <PolicyRuleOptions>
+          <Option name="stateless">True</Option>
+        </PolicyRuleOptions>
+      </PolicyRule>
+      <RuleSetOptions/>
+    </Policy>
+    <Policy id="id54807X99373" name="mangle_ruleset" comment="Pure mangle rule set. Checking that there will be only one COMMIT" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+      <RuleSetOptions/>
     </Policy>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
@@ -50623,6 +50649,116 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="ulog_qthreshold">1</Option>
           <Option name="use_ULOG">False</Option>
           <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id54736X99373" host_OS="linux24" inactive="False" lastCompiled="1272414362" lastInstalled="0" lastModified="1272414351" platform="iptables" version="1.4.0" name="firewall74" comment="this firewall uses iptables-restore format and has no rules&#10;" ro="False">
+        <NAT id="id54809X99373" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id54754X99373" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id54825X99373" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id54744X99373" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id54747X99373" name="firewall74:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id54749X99373" dedicated_failover="False" dyn="False" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+          <IPv4 id="id54752X99373" name="firewall74:eth2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="192.168.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="True" identity="" port="9999"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="action_on_reject">ICMP host prohibited</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">False</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">True</Option>
+          <Option name="dyn_addr">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any">True</Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="id"></Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="install_script"></Option>
+          <Option name="ipt_mangle_only_rulesets"> Policy_2 mangle_ruleset</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix">/day</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_accept_redirects"></Option>
+          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"></Option>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
+          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_ip_forward"></Option>
+          <Option name="linux24_log_martians"></Option>
+          <Option name="linux24_path_ip"></Option>
+          <Option name="linux24_path_iptables"></Option>
+          <Option name="linux24_path_logger"></Option>
+          <Option name="linux24_path_lsmod"></Option>
+          <Option name="linux24_path_modprobe"></Option>
+          <Option name="linux24_rp_filter"></Option>
+          <Option name="linux24_tcp_ecn"></Option>
+          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_tcp_fin_timeout">30</Option>
+          <Option name="linux24_tcp_keepalive_interval">1800</Option>
+          <Option name="linux24_tcp_sack"></Option>
+          <Option name="linux24_tcp_syncookies"></Option>
+          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_window_scaling"></Option>
+          <Option name="load_modules">False</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_all_dropped">False</Option>
+          <Option name="log_invalid">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level"></Option>
+          <Option name="log_limit_suffix"></Option>
+          <Option name="log_limit_value">0</Option>
+          <Option name="log_prefix"></Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr">192.168.1.1</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="no_iochains_for_any">False</Option>
+          <Option name="no_ipv6_default_policy">False</Option>
+          <Option name="no_optimisation">False</Option>
+          <Option name="output_file"></Option>
+          <Option name="platform">iptables</Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_env_path"></Option>
+          <Option name="snmp_contact"></Option>
+          <Option name="snmp_description"></Option>
+          <Option name="snmp_location"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">True</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>

@@ -158,6 +158,7 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
     conf->setVariable("reset_script", reset_script.c_str());
 
     conf->setVariable("filter", !filter_script.empty());
+    conf->setVariable("filter_or_reset", have_reset || !filter_script.empty());
     conf->setVariable("filter_script", filter_script.c_str());
 
     conf->setVariable("mangle", !mangle_script.empty());
@@ -170,7 +171,7 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
                         !filter_script.empty() ||
                         !mangle_script.empty() ||
                         !nat_script.empty());
-        
+
     conf->setVariable("have_script", have_script);
     conf->setVariable("ipv4", !ipv6_policy);
     conf->setVariable("ipv6",  ipv6_policy);

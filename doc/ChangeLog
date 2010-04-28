@@ -1,5 +1,10 @@
 2010-04-27  vadim  <vadim@vk.crocodile.org>
 
+	* CompilerDriver_ipt.cpp (CompilerDriver_ipt::dumpScript): fixes #1425
+	"iptables script generated for the empty rule set is broken". Compiler
+	generated empty shell function for empty Policy rule set. It should
+	always include at least automatic rules.
+
 	* SSHSession.cpp (SSHSession::terminate): see #1426, #1428 use
 	QProcess::waitForFinished() instead of just sleep() after we send
 	TERM signal to the background process. Also let Qt process events
