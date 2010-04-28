@@ -686,12 +686,6 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
             SNMPVariable::freeVarList(v);
 
             list<string> &addlist = addr[ifindex];
-            if (addlist.empty())
-            {
-                str << "Interface #" << ifindex << " " << descr
-                    << " has no IP address.\n";
-                *logger << str;
-            }
 
             // Get physical address
             sprintf(oid, "%s.%ld", SNMP_INTERFACES_PHYSA , ifindex);
@@ -721,6 +715,17 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
 
             if (physa!="") idata.mac_addr = physa;
 
+            str << "Adding interface #" << ifindex 
+                << " " << idata.name
+                << " MAC: " << idata.mac_addr << endl;
+            *logger << str;
+
+             if (addlist.empty())
+             {
+                 str << "    no IP addresses." << endl;
+                 *logger << str;
+             }
+
             for (list<string>::iterator ali = addlist.begin();
                  ali!=addlist.end(); ali++)
             {
@@ -738,8 +743,8 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
                 iam->setNetmask(*nm);
                 idata.addr_mask.push_back(iam);
 
-                str << "Adding interface #" << ifindex 
-                    << " " << descr
+                str << "    " << descr
+                    << " IP address"
                     << " " << iam->toString()
                     << "\n";
                 *logger << str;
