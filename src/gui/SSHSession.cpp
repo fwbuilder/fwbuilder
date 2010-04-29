@@ -279,7 +279,8 @@ void SSHSession::terminate()
         if (proc->state() == QProcess::Running)
         {
             if (fwbdebug)
-                qDebug() << "SSHSession::terminate   waiting for pending signal 'finished()', if any";
+                qDebug() << "SSHSession::terminate   "
+                         << "waiting for pending signal 'finished()', if any";
             // this processes events and lets QProcess send signal finished()
             // in case user hit Cancel at just right time when background process
             // already exited but QProcess has not noticed this yet.
@@ -287,8 +288,8 @@ void SSHSession::terminate()
         }
 
         // If QProcess sent signal finished() while we were waiting in
-        // waitForFinished(), the signal has been processed in SSHSession::finished
-        // and proc has already been deleted.
+        // waitForFinished(), the signal has been processed in
+        // SSHSession::finished and proc has already been deleted.
 
         if (proc == NULL)
         {
@@ -306,7 +307,8 @@ void SSHSession::terminate()
             {
                 Q_PID pid = proc->pid();
                 if (fwbdebug)
-                    qDebug() << "SSHSession::terminate   terminating child process pid="  << pid;
+                    qDebug() << "SSHSession::terminate   "
+                             << "terminating child process pid="  << pid;
 
                 emit printStdout_sign(tr("Stopping background process"));
 
@@ -325,12 +327,15 @@ void SSHSession::terminate()
 #endif
 
                 if (fwbdebug)
-                    qDebug() << "SSHSession::terminate   terminate signal sent, waiting for it to finish";
+                    qDebug() << "SSHSession::terminate   terminate signal sent,"
+                             << "waiting for it to finish";
 
                 int time_to_wait = 20;
-                for (int timeout = 0; timeout < time_to_wait; timeout++)
+                for (int timeout = 0; proc != NULL &&
+                         proc->state() == QProcess::Running &&
+                         timeout < time_to_wait;
+                     timeout++)
                 {
-                    if (proc==NULL || proc->state() != QProcess::Running) break;
                     // print countdown only if we've been waiting more than 3 sec
                     if (timeout > 3)
                         emit printStdout_sign(
@@ -345,8 +350,11 @@ void SSHSession::terminate()
                         emit printStdout_sign(s);
                     }
 
-                    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents,1);
-                    proc->waitForFinished(1000);
+                    QApplication::processEvents(
+                        QEventLoop::ExcludeUserInputEvents,1);
+
+                    // check if proc is still running after we processed events
+                    if (proc != NULL) proc->waitForFinished(1000);
                 }
 
                 // proc can be NULL at this point if it had sent signal finished()
@@ -358,7 +366,8 @@ void SSHSession::terminate()
                 }
 
                 if (fwbdebug)
-                    qDebug() << "SSHSession::terminate   Reading last output buffers";
+                    qDebug() << "SSHSession::terminate   "
+                             << "Reading last output buffers";
 
                 QString s = QString(proc->readAllStandardOutput());
                 if (!quiet)
@@ -619,6 +628,7 @@ void SSHSession::sessionComplete(bool err)
         emit sessionFatalError_sign();
     else
         emit sessionFinished_sign();
+    if (fwbdebug) qDebug("SSHSession::sessionComplete  done");
 }
 
 void SSHSession::finished(int retcode)
@@ -644,6 +654,8 @@ void SSHSession::finished(int retcode)
     emit printStdout_sign(tr("SSH session terminated, exit status: %1").arg(
                               retcode) + "\n");
     sessionComplete( retcode!=0 );
+
+    if (fwbdebug) qDebug("SSHSession::processExited done");
 //    if (retcode) error=true;
 //    emit sessionFinished_sign();
 }
