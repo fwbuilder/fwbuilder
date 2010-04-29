@@ -852,7 +852,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
             FWBTree().getPasteMenuState(object_path) &&
             (FWObjectClipboard::obj_clipboard->size()!=0);
         delMenuItem = delMenuItem && getDeleteMenuState(obj);
-        delMenuItem = delMenuItem &&
+        delMenuItem = delMenuItem && current_library != NULL &&
             current_library->getId() != FWObjectDatabase::STANDARD_LIB_ID;
 
 #if DISABLE_PASTE_MENU_ITEM_IF_PASTE_IS_ILLEGAL
