@@ -197,6 +197,8 @@ void instDialog::show(ProjectPanel *proj,
     for (int page=0; page < pageCount(); page++)
         setFinishEnabled(page, false);
 
+    disableStopButton();
+
     if (!onlySelected)
     {
         findFirewalls();
@@ -279,6 +281,8 @@ void instDialog::mainLoopCompile()
 {
     if (finished) return;
 
+    enableStopButton();
+
     // first compile all
     if (compile_fw_list.size())
     {
@@ -296,6 +300,7 @@ void instDialog::mainLoopCompile()
         // here.
         state = COMPILE_DONE;
         fillInstallOpList();
+        disableStopButton();
 
         if (compile_only)
         {
@@ -318,6 +323,8 @@ void instDialog::mainLoopInstall()
 
     if (finished) return;
 
+    enableStopButton();
+
     if (install_fw_list.size())
     {
         Firewall *fw = install_fw_list.front();
@@ -339,6 +346,7 @@ void instDialog::mainLoopInstall()
     state = INSTALL_DONE;
     finished = true;
     setFinishEnabled(currentPage(), true);
+    disableStopButton();
 }
 
 // ========================================================================
