@@ -146,6 +146,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         if (mangle_compiler->haveErrorsAndWarnings())
         {
             all_errors.push_back(mangle_compiler->getErrors("").c_str());
+            mangle_compiler->clearErrors();
         }
 
         if (m_str_pos!=mangle_rules_stream.tellp())
@@ -197,6 +198,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         if (policy_compiler->haveErrorsAndWarnings())
         {
             all_errors.push_back(policy_compiler->getErrors("").c_str());
+            policy_compiler->clearErrors();
         }
     }
 
@@ -230,6 +232,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         if (policy_compiler->haveErrorsAndWarnings())
         {
             all_errors.push_back(policy_compiler->getErrors("").c_str());
+            policy_compiler->clearErrors();
         }
 
         if (tmp.tellp() > 0)
@@ -261,6 +264,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         if (mangle_compiler->haveErrorsAndWarnings())
         {
             all_errors.push_back(mangle_compiler->getErrors("").c_str());
+            mangle_compiler->clearErrors();
         }
 
         if (tmp_m.tellp() > 0)
