@@ -73,6 +73,7 @@
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
@@ -131,6 +132,7 @@ void initConstants()
     systemGroupPaths[UserService::TYPENAME] = "Services/Users";
 
     systemGroupPaths[Firewall::TYPENAME] = "Firewalls";
+    systemGroupPaths[Cluster::TYPENAME] = "Clusters";
 
     systemGroupPaths[Interval::TYPENAME] = "Time";
 
@@ -155,6 +157,7 @@ void initConstants()
     systemGroupTypes["Services/Users"] = ServiceGroup::TYPENAME;
 
     systemGroupTypes["Firewalls"] = ObjectGroup::TYPENAME;
+    systemGroupTypes["Clusters"] = ObjectGroup::TYPENAME;
 
     systemGroupTypes["Time"] = IntervalGroup::TYPENAME;
 
@@ -437,7 +440,7 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
         istr >> masklen;
         o->setNetmask(InetAddr(AF_INET6, masklen));
     }
-    else if (objtype==Firewall::TYPENAME)
+    else if (objtype==Firewall::TYPENAME || objtype==Cluster::TYPENAME)
     {
         try
         {

@@ -1,5 +1,10 @@
 2010-05-01  vadim  <vadim@vk.crocodile.org>
 
+	* new_object.cpp (_modObject): fixed #1437: fwbedit should support
+	object type Cluster.
+
+	* fwbedit.cpp (usage): fixed #1435: typo in fwbedit "usage" text
+
 	* new_object.cpp (_modObject): fixed #1434 "fwbedit modify comment
 	operation expects an attribute"
 

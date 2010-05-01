@@ -75,6 +75,7 @@ extern int errno;
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
@@ -163,7 +164,7 @@ void usage()
         "    modify -f file.fwb -o object -c comment [-a attrs]\n"
         "\n"
         "           -f file.fwb: data file\n"
-        "           -o object: object to be deleted, full path or ID\n"
+        "           -o object: object to be modified, full path or ID\n"
         "           -c txt:  specify comment for the new object\n"
         "           -a attribute1[,attribute2...]  :  specify attributes that\n"
         "              define parameters of the new object (see below)\n";
@@ -189,7 +190,7 @@ void usage()
         "           -f file.fwb: data file\n"
         "           -g group: group the object should be added to, \n"
         "              full path or ID\n"
-        "           -o object: object to be deleted, full path or ID\n";
+        "           -o object: object to be added, full path or ID\n";
     cout << endl;
 
     cout <<
@@ -198,7 +199,7 @@ void usage()
         "          -f file.fwb: data file\n"
         "          -g group: group the object should be removed from,\n"
         "             full path or ID\n"
-        "          -o object: object to be deleted, full path or ID\n";
+        "          -o object: object to be removed, full path or ID\n";
     cout << endl;
 
     cout <<
@@ -230,6 +231,9 @@ void usage()
     cout << endl;
     cout << "      "
          << " -t " <<Firewall::TYPENAME
+         << " -a platform, host OS" << endl;
+    cout << "      "
+         << " -t " <<Cluster::TYPENAME
          << " -a platform, host OS" << endl;
     cout << "      "
          << " -t " <<IPv4::TYPENAME

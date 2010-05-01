@@ -121,6 +121,8 @@ void checkAndRepairTree(FWObjectDatabase *objdb)
             testAndFix(objdb, lib_name + "/Services/Users",
                        ServiceGroup::TYPENAME, root);
                         
+            testAndFix(objdb, lib_name + "/Clusters",
+                       ObjectGroup::TYPENAME,nlib);
             testAndFix(objdb, lib_name + "/Firewalls",
                        ObjectGroup::TYPENAME,nlib);
             testAndFix(objdb, lib_name + "/Time",
