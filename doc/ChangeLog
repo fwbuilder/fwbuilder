@@ -1,3 +1,9 @@
+2010-05-01  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_ipt_policy.cpp (CompilerDriver_ipt::processPolicyRuleSet):
+	fixes #1432 "automatic rule with --restore-mark is missing if
+	rules using action Tag are not in the default Policy rule set".
+
 2010-05-01  yalovoy <yalovoy@gmail.com>
 	* RuleSetView.cpp: fixes #1431 GUI crash adding rules to rule group
 

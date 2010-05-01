@@ -14,7 +14,8 @@
 ## this template is used for single rule compile, both
 ## iptables-restore and regular, as well as for the regular
 ## (not iptables-restore) script
-{{if reset}}{{$reset_script}}{{endif}}
+{{if auto}}{{$filter_auto_script}}
+{{$mangle_auto_script}}{{endif}}
 
 {{if nat}}{{$nat_script}}{{endif}}
 

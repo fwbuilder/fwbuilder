@@ -49,14 +49,16 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
-
+// we always first process all non-top rule sets, then all top rule
+// sets
 bool CompilerDriver_ipt::processPolicyRuleSet(
     Firewall *fw,
     FWObject *ruleset,
     const string &single_rule_id,
-    ostringstream &filter_table_stream,
-    ostringstream &mangle_table_stream,
+    ostringstream &filter_rules_stream,
+    ostringstream &mangle_rules_stream,
     ostringstream &automatic_rules_stream,
+    ostringstream &automatic_mangle_stream,
     OSConfigurator_linux24 *oscnf,
     int policy_af,
     std::map<const std::string, bool> &minus_n_commands_filter,
@@ -64,8 +66,6 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
 {
     int policy_rules_count  = 0;
     int mangle_rules_count  = 0;
-    bool have_connmark = false;
-    bool have_connmark_in_output = false;
     bool empty_output = true;
     string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
     string platform = fw->getStr("platform");
@@ -124,28 +124,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
         have_connmark |= mangle_compiler->haveConnMarkRules();
         have_connmark_in_output |= mangle_compiler->haveConnMarkRulesInOutput();
 
-        long m_str_pos = mangle_table_stream.tellp();
-
-        if (policy->isTop())
-        {
-            ostringstream tmp;
-
-            if (flush_and_set_default_policy)
-                tmp << mangle_compiler->flushAndSetDefaultPolicy();
-
-            tmp << mangle_compiler->printAutomaticRules();
-
-            if (tmp.tellp() > 0)
-            {
-                if (!single_rule_compile_on)
-                {
-                    mangle_table_stream << "# ================ Table 'mangle', ";
-                    mangle_table_stream << "automatic rules";
-                    mangle_table_stream << "\n";
-                }
-                mangle_table_stream << tmp.str();
-            }
-        }
+        long m_str_pos = mangle_rules_stream.tellp();
 
         if (mangle_compiler->getCompiledScriptLength() > 0)
         {
@@ -157,10 +136,10 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
             {
                 if (!single_rule_compile_on)
                 {
-                    mangle_table_stream << "# ================ Table 'mangle', ";
-                    mangle_table_stream << "rule set " << branch_name << "\n";
+                    mangle_rules_stream << "# ================ Table 'mangle', ";
+                    mangle_rules_stream << "rule set " << branch_name << "\n";
                 }
-                mangle_table_stream << tmp.str();
+                mangle_rules_stream << tmp.str();
             }
         }
 
@@ -169,11 +148,12 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
             all_errors.push_back(mangle_compiler->getErrors("").c_str());
         }
 
-        if (m_str_pos!=mangle_table_stream.tellp())
+        if (m_str_pos!=mangle_rules_stream.tellp())
         {
-            mangle_table_stream << "\n";
+            //mangle_rules_stream << "\n";
             empty_output = false;
         }
+
     }
 
     std::auto_ptr<PolicyCompiler_ipt> policy_compiler = createPolicyCompiler(
@@ -207,10 +187,10 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
                 empty_output = false;
                 if (!single_rule_compile_on)
                 {
-                    filter_table_stream << "# ================ Table 'filter', ";
-                    filter_table_stream << "rule set " << branch_name << "\n";
+                    filter_rules_stream << "# ================ Table 'filter', ";
+                    filter_rules_stream << "rule set " << branch_name << "\n";
                 }
-                filter_table_stream << tmp.str();
+                filter_rules_stream << tmp.str();
             }
         }
 
@@ -246,6 +226,12 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
 
         tmp << policy_compiler->printAutomaticRules();
 
+        // printAutomaticRules() can generate errors and warnings
+        if (policy_compiler->haveErrorsAndWarnings())
+        {
+            all_errors.push_back(policy_compiler->getErrors("").c_str());
+        }
+
         if (tmp.tellp() > 0)
         {
             empty_output = false;
@@ -258,5 +244,36 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
             automatic_rules_stream << tmp.str();
         }
     }
+
+    long auto_mangle_stream_position = automatic_mangle_stream.tellp();
+    if (policy->isTop() && auto_mangle_stream_position <= 0)
+    {
+        // Note that we process non-top rule sets first and then
+        // deal with the top rule set. By the time we get here the
+        // have_connmark flags reflect the state of all other rule
+        // sets and the top one.
+
+        ostringstream tmp_m;
+        tmp_m << mangle_compiler->printAutomaticRulesForMangleTable(
+            have_connmark, have_connmark_in_output);
+
+        // printAutomaticRulesForMangleTable() can generate errors and warnings
+        if (mangle_compiler->haveErrorsAndWarnings())
+        {
+            all_errors.push_back(mangle_compiler->getErrors("").c_str());
+        }
+
+        if (tmp_m.tellp() > 0)
+        {
+            if (!single_rule_compile_on)
+            {
+                automatic_mangle_stream << "# ================ Table 'mangle', ";
+                automatic_mangle_stream << "automatic rules";
+                automatic_mangle_stream << "\n";
+            }
+            automatic_mangle_stream << tmp_m.str();
+        }
+    }
+
     return empty_output;
 }

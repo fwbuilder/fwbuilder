@@ -72,6 +72,9 @@ namespace fwcompiler {
             fwcompiler::OSConfigurator *_oscnf,
             std::map<const std::string, bool> *m_n_commands_map);
 
+        bool have_connmark;
+        bool have_connmark_in_output;
+
 public:
 
         CompilerDriver_ipt(libfwbuilder::FWObjectDatabase *db);
@@ -88,7 +91,8 @@ public:
                                        std::list<libfwbuilder::FWObject*> &all_policies);
 
         std::string dumpScript(libfwbuilder::Firewall *fw,
-                               const std::string& reset_script,
+                               const std::string& automatic_rules_script,
+                               const std::string& automatic_mangle_script,
                                const std::string& nat_script,
                                const std::string& mangle_script,
                                const std::string& filter_script,
@@ -101,6 +105,7 @@ public:
             std::ostringstream &filter_table_stream,
             std::ostringstream &mangle_table_stream,
             std::ostringstream &automatic_rules_stream,
+            std::ostringstream &automatic_mangle_stream,
             fwcompiler::OSConfigurator_linux24 *oscnf,
             int policy_af,
             std::map<const std::string, bool> &minus_n_commands_filter,

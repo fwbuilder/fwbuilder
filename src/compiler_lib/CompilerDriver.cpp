@@ -753,15 +753,8 @@ QTextStream& operator<< (QTextStream &text_stream, const string &str)
  */
 string CompilerDriver::indent(int n_spaces, const string &txt)
 {
-    ostringstream output;
-    istringstream str(txt);
-    char line[65536];
-    while (!str.eof())
-    {
-        str.getline(line, sizeof(line));
-        output << std::setw(n_spaces) << std::setfill(' ') << " " << line << endl;
-    }
-    return output.str();
+    QString res = indent(n_spaces, QString(txt.c_str()));
+    return res.toStdString();
 }
 
 QString CompilerDriver::indent(int n_spaces, const QString &txt)
@@ -770,12 +763,17 @@ QString CompilerDriver::indent(int n_spaces, const QString &txt)
     return prepend(fill, txt);
 }
 
+/*
+ * prepend each line in @txt with @prep, however there is no need to
+ * prepend empty lines
+ */
 QString CompilerDriver::prepend(const QString &prep, const QString &txt)
 {
     QStringList str;
     foreach (QString line, txt.split("\n"))
     {
-        str.append(line.prepend(prep));
+        if (line.isEmpty()) str.append(line);
+        else str.append(line.prepend(prep));
     }
     return str.join("\n");
 }

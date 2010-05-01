@@ -52,6 +52,8 @@ using namespace fwcompiler;
 CompilerDriver_ipt::CompilerDriver_ipt(FWObjectDatabase *db) :
     CompilerDriver(db)
 {
+    have_connmark = false;
+    have_connmark_in_output = false;
 }
 
 // create a copy of itself, including objdb
@@ -127,7 +129,8 @@ void CompilerDriver_ipt::findBranchesInMangleTable(Firewall*,
  * compile or more if-then-else in configlet code.
  */
 string CompilerDriver_ipt::dumpScript(Firewall *fw,
-                                      const string& reset_script,
+                                      const string& automatic_rules_script,
+                                      const string& automatic_mangle_script,
                                       const string& nat_script,
                                       const string& mangle_script,
                                       const string& filter_script,
@@ -138,11 +141,11 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
     string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
 
     Configlet *conf = NULL;
-    bool have_reset = !reset_script.empty();
+    bool have_auto = !automatic_rules_script.empty() || !automatic_mangle_script.empty();
 
     if (single_rule_compile_on)
     {
-        have_reset = false;
+        have_auto = false;
         conf = new Configlet(fw, "linux24", "script_body_single_rule");
         conf->collapseEmptyStrings(true);
     } else
@@ -154,20 +157,22 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
             conf = new Configlet(fw, "linux24", "script_body_single_rule");
     }
 
-    conf->setVariable("reset", have_reset);
-    conf->setVariable("reset_script", reset_script.c_str());
+    conf->setVariable("auto", have_auto);
 
     conf->setVariable("filter", !filter_script.empty());
-    conf->setVariable("filter_or_reset", have_reset || !filter_script.empty());
+    conf->setVariable("filter_or_auto", have_auto || !filter_script.empty());
+    conf->setVariable("filter_auto_script", automatic_rules_script.c_str());
     conf->setVariable("filter_script", filter_script.c_str());
 
     conf->setVariable("mangle", !mangle_script.empty());
+    conf->setVariable("mangle_or_auto", !mangle_script.empty() || !automatic_mangle_script.empty());
+    conf->setVariable("mangle_auto_script", automatic_mangle_script.c_str());
     conf->setVariable("mangle_script", mangle_script.c_str());
-        
+
     conf->setVariable("nat", !nat_script.empty());
     conf->setVariable("nat_script", nat_script.c_str());
 
-    bool have_script = (have_reset ||
+    bool have_script = (have_auto ||
                         !filter_script.empty() ||
                         !mangle_script.empty() ||
                         !nat_script.empty());

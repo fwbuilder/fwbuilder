@@ -288,6 +288,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             }
 
             ostringstream automaitc_rules_stream;
+            ostringstream automaitc_mangle_stream;
             ostringstream filter_rules_stream;
             ostringstream mangle_rules_stream;
             ostringstream nat_rules_stream;
@@ -327,6 +328,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                     policy_af,
                     minus_n_commands_nat)) empty_output = false;
 
+            // first process all non-top rule sets, then all top rule sets
             for (int all_top = 0; all_top < 2; ++all_top)
             {
                 for (list<FWObject*>::iterator p=all_policies.begin();
@@ -345,6 +347,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                             filter_rules_stream,
                             mangle_rules_stream,
                             automaitc_rules_stream,
+                            automaitc_mangle_stream,
                             oscnf.get(),
                             policy_af,
                             minus_n_commands_filter,
@@ -370,6 +373,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
             generated_script += dumpScript(fw,
                                            automaitc_rules_stream.str(),
+                                           automaitc_mangle_stream.str(),
                                            nat_rules_stream.str(),
                                            mangle_rules_stream.str(),
                                            filter_rules_stream.str(),

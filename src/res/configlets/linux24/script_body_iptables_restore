@@ -14,14 +14,15 @@
 ##  iptables-restore method, not single rule compile
 {{if have_script}}
 (
-{{if filter_or_reset}}
+{{if filter_or_auto}}
 echo '*filter'
-{{$reset_script}}
+{{$filter_auto_script}}
 {{$filter_script}}
 echo COMMIT
 {{endif}}
-{{if mangle}}
+{{if mangle_or_auto}}
 echo '*mangle'
+{{$mangle_auto_script}}
 {{$mangle_script}}
 echo COMMIT
 {{endif}}

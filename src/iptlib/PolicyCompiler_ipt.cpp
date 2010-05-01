@@ -1740,10 +1740,10 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 	PolicyRule *r, *r1;
 
         if (make_terminating)
-            ruleopt->setBool("already_terminating_target",true);
+            ruleopt->setBool("already_terminating_target", true);
 
-        string this_chain  = rule->getStr("ipt_chain");
-	string new_chain=ipt_comp->getNewChainName(rule,rule_iface);
+        string this_chain = rule->getStr("ipt_chain");
+	string new_chain = ipt_comp->getNewChainName(rule,rule_iface);
 
 	r= compiler->dbcopy->createPolicyRule();
 	compiler->temp_ruleset->add(r);

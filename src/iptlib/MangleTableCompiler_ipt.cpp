@@ -160,10 +160,13 @@ string MangleTableCompiler_ipt::flushAndSetDefaultPolicy()
     return "";
 }
 
+// mangle table compiler is special, it needs additional parameters to
+// generate automatic rules correctly. But virtual function
+// printAutomaticRules() has no parameters so we have another one
+// that takes parameters: printAutomaticRulesForMangleTable()
 string MangleTableCompiler_ipt::printAutomaticRules()
 {
-    return printAutomaticRulesForMangleTable(have_connmark,
-                                             have_connmark_in_output);
+    return "";
 }
 
 string MangleTableCompiler_ipt::printAutomaticRulesForMangleTable(
