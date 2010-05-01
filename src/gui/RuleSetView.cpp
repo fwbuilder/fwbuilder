@@ -79,7 +79,7 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
     this->project = project;
     fwosm = new FWObjectSelectionModel();
     setContextMenuPolicy(Qt::CustomContextMenu);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setSelectionMode(QAbstractItemView::ContiguousSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
 
     setDragEnabled(true);
@@ -2829,12 +2829,15 @@ void RuleSetView::updateSelectionSensitiveActions()
             if (index.isValid())
             {
                 RuleNode* node = md->nodeFromIndex(index);
+
+                topLevelOnly = topLevelOnly && (node->type == RuleNode::Rule);
+
                 if (node!=0 && node->type == RuleNode::Rule && node->rule != 0)
                 {
                     bool isInGroup = node->isInGroup();
                     inGroup = inGroup && isInGroup;
                     topLevelOnly = topLevelOnly && !isInGroup;
-                    outermost = outermost || node->isOutermost();
+                    outermost = outermost || (node->isOutermost() && isInGroup);
 
                     Rule *r =  node->rule;
 
