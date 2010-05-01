@@ -309,6 +309,8 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
 
     if (!comment_txt.empty()) nobj->setComment(comment_txt);
 
+    if (ops.size()==0) return;
+
     if (objtype==IPv4::TYPENAME || objtype==IPv6::TYPENAME)
     {
         if (objtype==IPv4::TYPENAME)

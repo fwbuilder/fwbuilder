@@ -1,5 +1,8 @@
 2010-05-01  vadim  <vadim@vk.crocodile.org>
 
+	* new_object.cpp (_modObject): fixed #1434 "fwbedit modify comment
+	operation expects an attribute"
+
 	* instDialog.cpp (instDialog::show): fixes #1433 "batch install"
 	checkbox should be enabled even when when there is only one
 	cluster in the list of objects to compile and install.
