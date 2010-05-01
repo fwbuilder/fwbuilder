@@ -4912,6 +4912,24 @@ void PolicyCompiler_ipt::insertFailoverRule()
                     use_ipsec_ah = failover_opts->getBool("vrrp_over_ipsec_ah");
                 }
 
+                /* Add VRRP-Service to database */
+                IPService* vrrp_srv = IPService::cast(
+                    dbcopy->create(IPService::TYPENAME));
+                vrrp_srv->setComment("VRRP service");
+                vrrp_srv->setProtocolNumber(112);
+                dbcopy->add(vrrp_srv);
+
+                /*
+                 * Add AH-Service to database.
+                 * According to RFC 2338 section 5.3.6.3, VRRP can use
+                 * IPsec AH.
+                 */
+                IPService* ah_srv = IPService::cast(
+                    dbcopy->create(IPService::TYPENAME));
+                ah_srv->setComment("IPSEC-AH");
+                ah_srv->setProtocolNumber(51);
+                dbcopy->add(ah_srv);
+
                 for (FWObjectTypedChildIterator it =
                          failover_group->findByType(FWObjectReference::TYPENAME);
                      it != it.end(); ++it)
@@ -4928,39 +4946,30 @@ void PolicyCompiler_ipt::insertFailoverRule()
 
                     if (!use_ipsec_ah)
                     {
-                        /* Add VRRP-Service to database */
-                        IPService* vrrp_srv = IPService::cast(
-                            dbcopy->create(IPService::TYPENAME));
-                        vrrp_srv->setComment("VRRP service");
-                        vrrp_srv->setProtocolNumber(112);
-                        dbcopy->add(vrrp_srv);
-
                         addMgmtRule(other_iface, vrrp_dst, vrrp_srv, iface,
                                     PolicyRule::Inbound, PolicyRule::Accept,
                                     "VRRP");
-                        addMgmtRule(fw, vrrp_dst, vrrp_srv, iface,
-                                    PolicyRule::Outbound, PolicyRule::Accept,
-                                    "VRRP");
                     } else
                     {
-                        /*
-                         * Add AH-Service to database.
-                         * According to RFC 2338 section 5.3.6.3, VRRP can use
-                         * IPsec AH.
-                         */
-                        IPService* ah_srv = IPService::cast(
-                            dbcopy->create(IPService::TYPENAME));
-                        ah_srv->setComment("IPSEC-AH");
-                        ah_srv->setProtocolNumber(51);
-                        dbcopy->add(ah_srv);
-
                         addMgmtRule(other_iface, vrrp_dst, ah_srv, iface,
                                     PolicyRule::Inbound, PolicyRule::Accept,
                                     "VRRP (with IPSEC-AH)");
-                        addMgmtRule(fw, vrrp_dst, ah_srv, iface,
-                                    PolicyRule::Outbound, PolicyRule::Accept,
-                                    "VRRP (with IPSEC-AH)");
                     }
+                }
+                // outbound rule does not use other_interface and
+                // should be created outside the loop to avoid
+                // duplicates. Duplicates happen when cluster has 3 or
+                // more members.
+                if (!use_ipsec_ah)
+                {
+                    addMgmtRule(fw, vrrp_dst, vrrp_srv, iface,
+                                PolicyRule::Outbound, PolicyRule::Accept,
+                                "VRRP");
+                } else
+                {
+                    addMgmtRule(fw, vrrp_dst, ah_srv, iface,
+                                PolicyRule::Outbound, PolicyRule::Accept,
+                                "VRRP (with IPSEC-AH)");
                 }
             }
 
