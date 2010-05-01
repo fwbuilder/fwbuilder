@@ -236,8 +236,13 @@ void instDialog::show(ProjectPanel *proj,
         return;
     }
 
-    if ((firewalls.size() + clusters.size()) == 1)
-        m_dialog->batchInstall->setEnabled(false);
+    m_dialog->batchInstall->setEnabled(false);
+
+    if (firewalls.size() > 1)
+        m_dialog->batchInstall->setEnabled(true);
+
+    if (clusters.size() >= 1)  // even one cluster enables batch install btn
+        m_dialog->batchInstall->setEnabled(true);
 
     creatingTable = false;
 

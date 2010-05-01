@@ -1,5 +1,9 @@
 2010-05-01  vadim  <vadim@vk.crocodile.org>
 
+	* instDialog.cpp (instDialog::show): fixes #1433 "batch install"
+	checkbox should be enabled even when when there is only one
+	cluster in the list of objects to compile and install.
+
 	* CompilerDriver_ipt_policy.cpp (CompilerDriver_ipt::processPolicyRuleSet):
 	fixes #1432 "automatic rule with --restore-mark is missing if
 	rules using action Tag are not in the default Policy rule set".
