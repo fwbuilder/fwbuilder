@@ -57,7 +57,7 @@ class instDialogInstallTest : public QObject
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void testInstall1();
+
     void testInstall2();
     void testInstall3();
     void testInstall4();
@@ -65,6 +65,7 @@ private slots:
 
 public slots:
 
+    void instOptionsForTest1();
     void instOptionsForTest2();
     void instOptionsForTest3();
     void instOptionsForTest4();
