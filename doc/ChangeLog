@@ -1,3 +1,10 @@
+2010-05-02  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* instDialog_ui_ops.cpp (instDialog::opError): fixed #1438
+	"installer crashes when user interrupts install to PIX". This only
+	affected installs to PIX cluster and only if user decided to
+	interrupt the process.
+
 2010-05-01  vadim  <vadim@vk.crocodile.org>
 
 	* new_object.cpp (_modObject): fixed #1437: fwbedit should support

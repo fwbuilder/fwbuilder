@@ -357,22 +357,36 @@ void instDialog::setInProcessState(QTreeWidgetItem *item)
 
 void instDialog::opSuccess(Firewall *fw)
 {
-    opListMapping[(fw)->getId()]->setText(1,tr("Success"));
-    setSuccessState(opListMapping[(fw)->getId()]);
+    QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
+    if (itm)
+    {
+        itm->setText(1,tr("Success"));
+        setSuccessState(itm);
+    }
     currentLabel->setText("");
 }
 
 void instDialog::opError(Firewall *fw)
 {
-    opListMapping[(fw)->getId()]->setText(1, tr("Error"));
-    setErrorState(opListMapping[(fw)->getId()]);
+    QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
+    if (itm)
+    {
+        itm->setText(1, tr("Error"));
+        setErrorState(itm);
+    }
     currentLabel->setText("");
 }
 
 void instDialog::opCancelled(Firewall *fw)
 {
-    opListMapping[(fw)->getId()]->setText(1, tr("Cancelled"));
-    setErrorState(opListMapping[(fw)->getId()]);
+    QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
+    // itm can be NULL, for example when we install to PIX cluster
+    // where we skip one of the members
+    if (itm)
+    {
+        itm ->setText(1, tr("Cancelled"));
+        setErrorState(itm);
+    }
     currentLabel->setText("");
 }
 
