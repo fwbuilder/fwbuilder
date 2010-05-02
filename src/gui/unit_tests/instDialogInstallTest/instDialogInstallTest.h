@@ -64,7 +64,7 @@ private slots:
     void testInstall5();
 
 public slots:
-    void instOptionsForTest1();
+
     void instOptionsForTest2();
     void instOptionsForTest3();
     void instOptionsForTest4();

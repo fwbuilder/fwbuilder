@@ -24,6 +24,12 @@
   ================================
 
 
+  All tests in this module are designed to either fail installation or
+  never supposed to complete it because they lack authentication
+  credentials when they run unattended. Tests that perform successfull
+  installs are located in a separate module fwbuilder-tests.
+
+
   Ticket 1358:
 
   using the same data file test.fwb but work with a copy because
@@ -54,32 +60,6 @@
     FWOptions *fwoptions = firewall_object->getOptionsObject();
     fwoptions->setStr("firewall_dir", current_dir + "/test_install");
 
-  test1
-
-  * click "Install" toolbar button
-  * uncheck all checkboxes
-  * check "compile" and "install" for test1
-  * click Next
-  * check that the status is "Success" in the list on the left
-  * check that "Next" button is enabled and "Finish" button is disabled
-  * check that file test1.fw has been created in directory "test_install"
-    - delete file test1.fw in "test_install"
-    - create this file again, with contents as follows:
-
-#!/bin/sh
-echo "Testing policy activation script"
-
-  * set executable bit on this file (equivalent to chmod +x)
-  * now click "Next"
-  * set user name to the name of the account that is running the test
-  * leave password empty
-  * replace the address of the firewall with 127.0.0.1
-  * click OK to start install
-  * note that since you left password empty, you should have ssh authentication via ssh-agent set up for this to work
-  * read lines from the installer progress output. Look for the line "Testing policy activation script". If you can't find it, fail the test
-  * in all tests verify status in the column on the left.
-  * most likely during debugging you are going to run into different errors with ssh. Make a note of these errors and add lines to the test to fail it if they appear in the installer progress output
-    - delete file test1.fw in "test_install" and delete directory "test_install"
 
   test2
 
@@ -243,136 +223,6 @@ void instDialogInstallTest::removeFiles()
     QVERIFY(QDir().mkdir("test_install"));
 }
 
-/*
- * compile and install object test1. After it is compiled, test
- * verifies that all buttons in the dialog are in the right state and
- * the file test1.fw has been produced. Then the file is replaced with
- * a dummy test script and test proceeds to the install phase by
- * clicking Next in the dialog.
- */
-void instDialogInstallTest::testInstall1()
-{
-    resetDialogs();
-
-    removeFiles();
-    Firewall *test1 = NULL;
-    foreach(FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
-    {
-        if (fw->getName() == "test1")
-        {
-            test1 = Firewall::cast(fw);
-            break;
-        }
-    }
-    QVERIFY(test1 != NULL);
-
-    // reset additional args for scp and ssh
-    FWOptions *fwoptions = test1->getOptionsObject();
-    fwoptions->setStr("scpArgs", "");
-    fwoptions->setStr("sshArgs", "");
-
-    fwoptions->setStr("firewall_dir", (QDir::currentPath()+"/test_install").toStdString());
-    // add -v command line arg for ssh 
-    fwoptions->setStr("sshArgs", "-o ConnectTimeout=2");
-
-    mw->findChild<QAction*>("installAction")->trigger();
-    QTest::qWait(500);
-
-    instDialog *dlg = mw->findChild<instDialog*>();
-    dlg->findChild<QPushButton*>("pushButton17")->click();
-
-    QPushButton *back = dlg->findChild<QPushButton*>("backButton");
-    QPushButton *next = dlg->findChild<QPushButton*>("nextButton");
-    QPushButton *finish = dlg->findChild<QPushButton*>("finishButton");
-    QPushButton *cancel = dlg->findChild<QPushButton*>("cancelButton");
-
-    QTreeWidget *selectTable = dlg->findChild<QTreeWidget*>("selectTable");
-    QTreeWidgetItem *test1item = selectTable->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first();
-    test1item->setCheckState(1, Qt::Checked);
-    test1item->setCheckState(2, Qt::Checked);
-    QTest::qWait(500);
-    next->click();
-
-    QTreeWidget *list= dlg->findChild<QTreeWidget*>("fwWorkList");
-    QTextBrowser *processLogDisplay = dlg->findChild<QTextBrowser*>("procLogDisplay");
-
-    QVERIFY(list!=NULL);
-    QVERIFY(processLogDisplay!=NULL);
-
-    int waited = 0;
-
-    while (!checkProgress(list))
-    {
-        QVERIFY(back->isEnabled() == false);
-        QVERIFY(next->isEnabled() == false);
-        QVERIFY(cancel->isEnabled() == true);
-        QVERIFY2(finish->isEnabled() == false, "Button Finish is enabled during operation");
-
-        QTest::qWait(500);
-        waited += 500;
-        QVERIFY(waited < 10000);
-    }
-
-    for(int i=0; i<list->topLevelItemCount(); i++)
-    {
-        QVERIFY(list->topLevelItem(i)->text(1) == "Success");
-    }
-    QTest::qWait(500);
-
-    QVERIFY(back->isEnabled() == false);
-    QVERIFY(next->isEnabled() == true);
-    QVERIFY(cancel->isEnabled() == true);
-    QVERIFY(finish->isEnabled() == false);
-
-    // Compile phase is done. Replace generated script test1.fw with a test script
-    // and proceed to install phase
-
-    QVERIFY(QFile::exists("test1.fw"));
-    QVERIFY(QFile::remove("test1.fw"));
-    QFile testfile("test1.fw");
-    testfile.open(QFile::WriteOnly);
-    testfile.write("#!/bin/sh\n#\n#  This is automatically generated file. DO NOT MODIFY !\n#\n#  Firewall Builder  fwb_ipt v4.0.0-2784\n#\n#  Generated Wed Mar 31 16:41:46 2010 EEST by a2k\n#\n# files: * test1.fw\n#\n# Compiled for iptables (any version)\n#\n# This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.\n# Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0\n\n\necho \"Testing policy activation script\"\n");
-    testfile.close();
-    testfile.setPermissions(testfile.permissions() | QFile::ExeOwner);
-
-    QTimer::singleShot(200, this, SLOT(instOptionsForTest1()));
-
-    next->click();
-    QTest::qWait(500);
-
-    waited = 0;
-    while (!checkProgress(list))
-    {
-        QVERIFY(back->isEnabled() == false);
-        QVERIFY(next->isEnabled() == false);
-        QVERIFY(cancel->isEnabled() == true);
-        QVERIFY2(finish->isEnabled() == false, "Button Finish is enabled during operation");
-
-        QTest::qWait(500);
-        waited += 500;
-        QVERIFY(waited < 10000);
-    }
-
-    QTest::qWait(2000);
-
-    verifyInstallSuccess("instDialogInstallTest::testInstall1()");
-
-    QVERIFY(back->isEnabled() == false);
-    QVERIFY(next->isEnabled() == false);
-    QVERIFY(cancel->isEnabled() == true);
-    QVERIFY(finish->isEnabled() == true);
-
-    QString text = processLogDisplay->toPlainText();
-
-    // check that additional ssh command line argument was indeed used
-    QVERIFY(text.contains("-o ConnectTimeout=2"));
-
-    QVERIFY(text.contains("Testing policy activation script"));
-    QVERIFY(!text.contains("*** Fatal error"));
-    QVERIFY(!text.isEmpty());
-    dlg->reject();
-    QTest::qWait(500);
-}
 
 void instDialogInstallTest::verifyInstallSuccess(const QString &test_name)
 {
