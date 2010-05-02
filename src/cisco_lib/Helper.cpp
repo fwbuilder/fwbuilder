@@ -43,6 +43,9 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
+
+// #define DEBUG_NETZONE_OPS 1
+
 static unsigned long calculateDimension(FWObject* obj)
 {
     if (Group::cast(obj)!=NULL)
@@ -129,6 +132,13 @@ int  Helper::findInterfaceByNetzone(Address *obj)
 
 int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
 {
+#if DEBUG_NETZONE_OPS
+    cerr << "Helper::findInterfaceByNetzone "
+         << " matching to " << addr;
+    if (addr) cerr << " " << addr->toString();
+    cerr << endl;
+#endif
+
     Firewall *fw = compiler->fw;
     map<int,FWObject*> zones;
     list<FWObject*> l2 = fw->getByTypeDeep(Interface::TYPENAME);
@@ -142,23 +152,28 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
         int netzone_id =
             FWObjectDatabase::getIntId(iface->getStr("network_zone"));
 
-#if 0
-        FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
-        cerr << "netzone_id=" << netzone_id
-             << "  " << iface->getStr("network_zone")
-             << "  " << netzone->getName()
-             << endl;
-#endif
-
         if (netzone_id != -1)
         {
             FWObject *netzone = fw->getRoot()->findInIndex(netzone_id);
             list<FWObject*> nz;
             expand_group_recursive(netzone, nz);
 
+#if DEBUG_NETZONE_OPS
+            cerr << "netzone_id=" << netzone_id
+                 << "  " << iface->getStr("network_zone")
+                 << "  " << netzone->getName()
+                 << endl;
+#endif
+
             for (list<FWObject*>::iterator j=nz.begin(); j!=nz.end(); ++j)
             {
                 if (Address::cast(*j) == NULL) continue;
+
+#if DEBUG_NETZONE_OPS
+                cerr << "    " << (*j)->getName()
+                     << "  " << Address::cast(*j)->getAddressPtr()->toString()
+                     << endl;
+#endif
 
                 // if addr==NULL, return id of the interfacce that has
                 // net_zone=="any"
@@ -170,7 +185,11 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
                 {
                     if (Address::cast(*j)->belongs(*addr))
                     {
-                        zones[iface->getId()] = netzone;
+                        zones[iface->getId()] = *j;
+
+#if DEBUG_NETZONE_OPS
+                        cerr << "    match" << endl;
+#endif
                     }
                 }
             }
@@ -188,6 +207,13 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr) throw(string)
         int iface_id = (*i).first;
         FWObject *netzone = (*i).second;
         unsigned long dim = calculateDimension(netzone);
+
+#if DEBUG_NETZONE_OPS
+        cerr << "    netzone=" << netzone->getName()
+             << "  dim=" << dim
+             << "  res_dim=" << res_dim
+             << endl;
+#endif
 
         if (dim<=res_dim) 
         {

@@ -1,5 +1,8 @@
 2010-05-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Helper.cpp (Helper::findInterfaceByNetzone): fixed #1439 "ssh
+	access rule uses wrong interface in the generated PIX config"
+
 	* instDialog_ui_ops.cpp (instDialog::opError): fixed #1438
 	"installer crashes when user interrupts install to PIX". This only
 	affected installs to PIX cluster and only if user decided to
