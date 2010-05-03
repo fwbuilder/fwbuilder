@@ -141,7 +141,19 @@ void RuleSetViewTest::actuallyClickMenuItem()
             return;
         }
     }
-    QFAIL(QString("Menu item %1 not found").arg(itemToClick).toStdString().c_str());
+    // menu item not found. Include menu items that were actually
+    // present in the menu in the error message to implify debugging
+    QStringList items;
+    foreach(QAction *action, menu->actions())
+    {
+        items.push_back(QString("\"%1\"").arg(action->text()));
+    }
+
+    // need to hide the menu, otherwise test just hangs
+    menu->hide();
+    QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
+          .arg(itemToClick)
+          .arg(items.join(" ")).toAscii().constData());
 }
 
 /*
