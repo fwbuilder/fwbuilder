@@ -29,6 +29,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QDesktopWidget>
 #include <QDebug>
 #include <QMenuBar>
 #include <QInputDialog>
@@ -51,6 +52,7 @@ void RuleSetViewTest::initTestCase()
 {
     mw = new FWWindow();
     mw->show();
+    mw->resize(app->desktop()->size());
     mw->startupLoad();
     FWObjectClipboard *clip = new FWObjectClipboard();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
