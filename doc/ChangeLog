@@ -1,3 +1,9 @@
+2010-05-05  vadim  <vadim@vk.crocodile.org>
+
+	* ssh_wrappers.cpp: fixed #1444 compile error on FreeBSD-Current
+	Compiler issues error "/usr/include/utmp.h:2:2: error: #error
+	<utmp.h> has been replaced by <utmpx.> h>"
+
 2010-05-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Helper.cpp (Helper::findInterfaceByNetzone): fixed #1439 "ssh
