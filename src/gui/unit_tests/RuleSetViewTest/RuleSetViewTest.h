@@ -57,6 +57,9 @@ class RuleSetViewTest : public QObject
     void clickMenuItem(QString item);
     QPoint findRulePosition(int rule);
     QPoint findRulePosition(libfwbuilder::Rule *rule);
+    QPoint getViewBottomPoint();
+    void showContextMenu(QPoint point);
+    void showContextMenu(int,int);
     void createGroup(QString name);
 
 private slots:
