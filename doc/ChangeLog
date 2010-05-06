@@ -1,4 +1,10 @@
-2010-05-05  vadim  <vadim@vk.crocodile.org>
+2010-05-05  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ProjectPanel_events.cpp (ProjectPanel::event): fixed #1443
+	GUI crashes compiling file opened read-only. If a file that was
+	added to RCS was opened read-only and then any firewall object
+	in it compiled, the GUI crashed trying to update "last_compiled"
+	timestamp.
 
 	* ssh_wrappers.cpp: fixed #1444 compile error on FreeBSD-Current
 	Compiler issues error "/usr/include/utmp.h:2:2: error: #error

@@ -199,7 +199,7 @@ bool ProjectPanel::event(QEvent *event)
             }
 
             case UPDATE_LAST_COMPILED_TIMESTAMP_EVENT:
-                if (Firewall::cast(obj))
+                if (rcs && !rcs->isRO() && Firewall::cast(obj))
                 {
                     Firewall::cast(obj)->updateLastCompiledTimestamp();
                     QCoreApplication::postEvent(
@@ -210,7 +210,7 @@ bool ProjectPanel::event(QEvent *event)
                 break;
 
             case UPDATE_LAST_INSTALLED_TIMESTAMP_EVENT:
-                if (Firewall::cast(obj))
+                if (rcs && !rcs->isRO() && Firewall::cast(obj))
                 {
                     Firewall::cast(obj)->updateLastInstalledTimestamp();
                     QCoreApplication::postEvent(
