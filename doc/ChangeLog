@@ -10,6 +10,13 @@
 	Compiler issues error "/usr/include/utmp.h:2:2: error: #error
 	<utmp.h> has been replaced by <utmpx.> h>"
 
+	* started work on v4.0.1. VERSION set to 4.0.1 in libfwbuilder and
+	fwbuilder
+
+2010-05-04  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* v 4.0.0 released
+	
 2010-05-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Helper.cpp (Helper::findInterfaceByNetzone): fixed #1439 "ssh
