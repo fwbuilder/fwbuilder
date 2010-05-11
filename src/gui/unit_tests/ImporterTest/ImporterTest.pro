@@ -23,6 +23,7 @@ HEADERS += ImporterTest.h \
         ../../../compiler_lib/linux24Interfaces.h \
         ../../../compiler_lib/bsdInterfaces.h \
         ../../../compiler_lib/iosInterfaces.h \
+        ../../../compiler_lib/procurveInterfaces.h \
         ../../../compiler_lib/pixInterfaces.h
 
 SOURCES += main_ImporterTest.cpp \
@@ -43,6 +44,7 @@ SOURCES += main_ImporterTest.cpp \
         ../../../compiler_lib/linux24Interfaces.cpp \
         ../../../compiler_lib/bsdInterfaces.cpp \
         ../../../compiler_lib/iosInterfaces.cpp \
+        ../../../compiler_lib/procurveInterfaces.cpp \
         ../../../compiler_lib/pixInterfaces.cpp
 
 
