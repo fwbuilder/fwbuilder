@@ -1,5 +1,8 @@
 2010-05-11  vadim  <vadim@vk.crocodile.org>
 
+	* ../src/res/configlets/dd-wrt-jffs/installer_commands_root:
+	fixes #1448 "need to commit nvram changes on DD-WRT".
+
 	* ObjectManipulator.cpp (ObjectManipulator::editSelectedObject):
 	fixes #1447: context menu item "Edit" associated with rule set
 	object in the tree opens it in the rule set view and the editor

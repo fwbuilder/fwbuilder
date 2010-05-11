@@ -22,6 +22,7 @@ echo '{{$fwbprompt}}';
 chmod +x {{$fwdir}}/{{$fwscript}};
 /usr/sbin/nvram unset rc_firewall;
 /usr/sbin/nvram set rc_firewall="{{$fwdir}}/{{$fwscript}}";
+/usr/sbin/nvram commit;
 sh {{$fwdir}}/{{$fwscript}} && ( test -f /var/run/shutdown.pid && shutdown -c; echo 'Policy activated' )
 {{endif}}
 
