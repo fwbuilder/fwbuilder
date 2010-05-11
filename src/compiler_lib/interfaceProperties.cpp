@@ -63,6 +63,20 @@ bool interfaceProperties::looksLikeVlanInterface(const QString &int_name)
     return parseVlan(int_name, NULL, NULL);
 }
 
+// simple name validation: does not allow space and "-"
+// However some platform permit space (procurve).
+bool interfaceProperties::basicValidateInterfaceName(const QString &obj_name,
+                                                     QString &err)
+{
+    if (obj_name.indexOf(' ') != -1 || obj_name.indexOf('-') != -1)
+    {
+        err = QObject::tr("Interface name can not contain white space and \"-\"");
+        return false;
+    }
+    return true;
+}
+    
+
 /*
  * While looksLikeVlanInterface only checks interface name format,
  * this method does more detailed check to determine if the interface

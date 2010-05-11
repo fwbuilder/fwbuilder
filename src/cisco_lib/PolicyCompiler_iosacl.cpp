@@ -67,8 +67,9 @@ PolicyCompiler_iosacl::PolicyCompiler_iosacl(FWObjectDatabase *_db,
                                              OSConfigurator *_oscnf) :
     PolicyCompiler_cisco(_db, fw, ipv6_policy, _oscnf)
 {
-    resetinbound=false;
-    fragguard=false;
+    resetinbound = false;
+    fragguard = false;
+    comment_symbol = "!";
 }
 
 int PolicyCompiler_iosacl::prolog()
@@ -82,8 +83,6 @@ int PolicyCompiler_iosacl::prolog()
 
     object_groups = new Group();
     dbcopy->add( object_groups );
-
-//    output << "!################"  << endl;
 
     return PolicyCompiler::prolog();
 }
@@ -483,7 +482,7 @@ void PolicyCompiler_iosacl::compile()
     }
 }
 
-string PolicyCompiler_iosacl::printAccessGroupCmd(ciscoACL *acl)
+string PolicyCompiler_iosacl::printAccessGroupCmd(ciscoACL *acl, bool neg)
 {
     ostringstream str;
 
@@ -497,6 +496,7 @@ string PolicyCompiler_iosacl::printAccessGroupCmd(ciscoACL *acl)
         if (acl->direction()=="out" || acl->direction()=="Outbound") dir="out";
 
         str << "interface " << acl->getInterface()->getName() << endl;
+        if (neg) str << "  no";
         str << "  " << addr_family_prefix << " ";
         str << getAccessGroupCommandForAddressFamily(ipv6);
         str << " " << acl->workName() << " " << dir << endl;
@@ -512,7 +512,7 @@ void PolicyCompiler_iosacl::epilog()
     for (map<string,ciscoACL*>::iterator i=acls.begin(); i!=acls.end(); ++i) 
     {
         ciscoACL *acl=(*i).second;
-        if (acl->size()!=0) output << printAccessGroupCmd(acl);
+        if (acl->size()!=0) output << printAccessGroupCmd(acl, false);
     }
     output << endl;
 

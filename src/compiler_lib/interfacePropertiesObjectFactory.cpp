@@ -29,6 +29,7 @@
 #include "iosInterfaces.h"
 #include "bsdInterfaces.h"
 #include "pixInterfaces.h"
+#include "procurveInterfaces.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Resources.h"
@@ -61,6 +62,8 @@ interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObj
     if (os_family == "pix_os" || os_family == "ios") return new pixInterfaces();
 
     if (os_family == "openbsd" || os_family == "freebsd") return new bsdInterfaces();
+
+    if (os_family == "procurve") return new procurveInterfaces();
 
     // by default return object of the base class. It performs some
     // reasonable default actions.

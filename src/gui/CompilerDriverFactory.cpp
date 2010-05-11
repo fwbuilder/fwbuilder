@@ -35,6 +35,7 @@
 #include "CompilerDriver_ipfw.h"
 #include "CompilerDriver_iosacl.h"
 #include "CompilerDriver_pix.h"
+#include "CompilerDriver_procurve_acl.h"
 
 #include <string>
 
@@ -53,6 +54,8 @@ CompilerDriver* CompilerDriverFactory::createCompilerDriver(Firewall *fw)
     if (platform == "iosacl") return new CompilerDriver_iosacl(fw->getRoot());
     if (platform == "pix" || platform == "fwsm")
         return new CompilerDriver_pix(fw->getRoot());
+    if (platform == "procurve_acl")
+        return new CompilerDriver_procurve_acl(fw->getRoot());
     return NULL;
 }
 

@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2007 NetCitadel, LLC
+                 Copyright (C) 2010 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
@@ -21,40 +21,46 @@
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
 */
 
-#ifndef _OSNETWORKCONFIGURATOR_IOS_HH
-#define _OSNETWORKCONFIGURATOR_IOS_HH
+#ifndef __POLICYCOMPILER_PROCURVE_ACL_HH
+#define __POLICYCOMPILER_PROCURVE_ACL_HH
 
-#include "config.h"
+#include <fwbuilder/libfwbuilder-config.h>
 
-#include "fwcompiler/OSConfigurator.h"
+#include "PolicyCompiler_iosacl.h"
 
-#include <map>
+namespace libfwbuilder {
+    class FWObjectDatabase;
+    class Firewall;
+};
+
+namespace fwcompiler {
+    class OSConfigurator;
+};
+
 
 namespace fwcompiler {
 
-    class OSConfigurator_ios : public OSConfigurator {
+    class PolicyCompiler_procurve_acl : public PolicyCompiler_iosacl {
 
-        std::string _printNameif();
-        std::string _printIPAddress();
-        std::string _printLogging();
-
-	public:
-
-	virtual ~OSConfigurator_ios() {};
-	OSConfigurator_ios(libfwbuilder::FWObjectDatabase *_db,
-                           libfwbuilder::Firewall *fw,
-                           bool ipv6_policy) : OSConfigurator(_db, fw, ipv6_policy) {}
-
-	virtual int  prolog();
+	protected:
 
 	virtual std::string myPlatformName();
-	virtual void processFirewallOptions();
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Address   *addr);
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Network   *nw);
+
+        virtual void _printClearCommands();
+        
+	public:
+
+	PolicyCompiler_procurve_acl(libfwbuilder::FWObjectDatabase *_db,
+                                    libfwbuilder::Firewall *fw,
+                                    bool ipv6_policy,
+                                    fwcompiler::OSConfigurator *_oscnf);
+        virtual ~PolicyCompiler_procurve_acl() {}
+
+	virtual int prolog();
     };
-};
+
+}
 
 #endif

@@ -330,3 +330,70 @@ void interfacePropertiesTest::isValidVlanInterfaceNamePIX()
     parent = "Ethernet0/0";
     CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.99999", parent, err) == false);
 }
+
+void interfacePropertiesTest::isValidVlanInterfaceNameProCurve()
+{
+    QString err, parent;
+
+/*
+ * As of 05/10/2010 we do not restrict interfaces for ProCurve
+ * 
+  Vlan interface name    parent                  ok/not ok
+  vlan 2                 anything               true
+  vlan2                  anything               false
+  Ethernet0/0.101        FastEthernet0/1	 false
+  Ethernet0/0.99999	 Ethernet0/0             false
+*/
+    interfaceProperties *int_prop = getIntProps("procurve");
+    parent = "FastEthernet0/1";
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan 2", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("VLAN 2", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Vlan 2", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan2", parent, err) == false);
+
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan 101", parent, err) == true);
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
+
+    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
+}
+
+void interfacePropertiesTest::validateInterfaceProCurve()
+{
+    string host_OS = "procurve";
+
+    Resources* os_res = Resources::os_res[host_OS];
+    string os_family = host_OS;
+    if (os_res!=NULL)
+        os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
+
+    interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
+
+    CPPUNIT_ASSERT(int_prop != NULL);
+
+    QString err;
+
+    Firewall fw;
+    fw.setStr("host_OS", host_OS);
+    db->add(&fw);
+
+    Interface* parent = Interface::cast(db->create(Interface::TYPENAME));
+    Interface* iface = Interface::cast(db->create(Interface::TYPENAME));
+    Interface* subiface = Interface::cast(db->create(Interface::TYPENAME));
+
+    fw.add(parent);
+
+    init();
+
+    Resources("../../res/resources.xml");
+
+    iface->setName("vlan 2");
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(fw),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                   == true);
+
+    iface->setName("vlan 34324");
+    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(fw),
+                                               dynamic_cast<FWObject*>(iface), false, err)
+                   == false);
+}
+

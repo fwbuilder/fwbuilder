@@ -1,0 +1,55 @@
+/* 
+
+                          Firewall Builder
+
+                 Copyright (C) 2009 NetCitadel, LLC
+
+  Author:  Vadim Kurland     vadim@fwbuilder.org
+
+  $Id$
+
+  This program is free software which we release under the GNU General Public
+  License. You may redistribute and/or modify this program under the terms
+  of that license as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  To get a copy of the GNU General Public License, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
+#ifndef PROCURVE_INTERFACE_PROPERTIES_HH
+#define PROCURVE_INTERFACE_PROPERTIES_HH
+
+#include "interfaceProperties.h"
+
+
+class procurveInterfaces : public interfaceProperties
+{
+
+public:
+    procurveInterfaces() : interfaceProperties() {}
+    // simple name validation: does not allow space and "-"
+    // However some platform permit space (procurve).
+    virtual bool basicValidateInterfaceName(const QString &name, QString &err);
+    
+    virtual bool parseVlan(const QString&, QString*, int*);
+
+    virtual bool isValidVlanInterfaceName(const QString &,
+                                          const QString &,
+                                          QString&);
+    virtual bool validateInterface(libfwbuilder::FWObject *parent,
+                                   const QString &inetrface_name,
+                                   QString &err);
+    virtual bool validateInterface(libfwbuilder::FWObject *parent,
+                                   libfwbuilder::FWObject *intf,
+                                   bool check_types,
+                                   QString &err);
+};
+
+#endif

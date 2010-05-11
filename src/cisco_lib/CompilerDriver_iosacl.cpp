@@ -41,9 +41,11 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
 
+#include "Configlet.h"
 #include "CompilerDriver_iosacl.h"
 #include "PolicyCompiler_iosacl.h"
 
+#include <QString>
 #include <QFileInfo>
 #include <QDir>
 
@@ -62,6 +64,8 @@ string fs_separator = "/";
 CompilerDriver_iosacl::CompilerDriver_iosacl(FWObjectDatabase *db) :
     CompilerDriver(db)
 {
+    safety_net_install_option_name = "iosacl_acl_substitution";
+    safety_net_install_acl_addr_option_name = "iosacl_acl_temp_addr";
 }
 
 // create a copy of itself, including objdb
@@ -87,25 +91,22 @@ void CompilerDriver_iosacl::printProlog(QTextStream &file, const string &prolog_
 string CompilerDriver_iosacl::safetyNetInstall(Firewall *fw)
 {
     ostringstream output;
-    if ( fw->getOptionsObject()->getBool("iosacl_acl_substitution") )
+    if ( fw->getOptionsObject()->getBool(safety_net_install_option_name) )
     {
         /* Generate short temporary ACL and assign it to all
          * interfaces. This ACL permits IPSEC (IP proto 50 and UDP port 500)
          as well as ssh from given subnet to any.
         */
 
-        string platform = fw->getStr("platform");
-        string version = fw->getStr("version");
-
-        string temp_acl = "tmp_acl";
         string temp_acl_addr = fw->getOptionsObject()->getStr(
-            "iosacl_acl_temp_addr");
+            safety_net_install_acl_addr_option_name);
 
         if (temp_acl_addr.empty())
         {
-            cerr << "Missing address for management host or subnet for temporary ACL.\nPlease enter it in the tab 'Script options' in 'Firewall Settings' dialog"
-                 << endl;
-            exit(-1);
+            QString err = QObject::tr("Missing address for management host or subnet "
+                                      "for the temporary ACL.\nPlease enter it in the "
+                                      "tab 'Script options' in 'Firewall Settings' dialog");
+            abort(fw, NULL, NULL, err.toStdString());
         }
 
         // if templ_acl_addr is ipv4 address, then we can not create this
@@ -161,9 +162,9 @@ string CompilerDriver_iosacl::safetyNetInstall(Firewall *fw)
                         }
                     } catch(FWException &ex)
                     {
-                        cerr << "Invalid netmask for management subnet: '"+netmask+"'"
-                             << endl;
-                        exit(-1);
+                        QString err = QObject::tr("Invalid netmask for management subnet: "
+                                                  "'%1'").arg(netmask.c_str());
+                        abort(fw, NULL, NULL, err.toStdString());
                     }
                 }
 
@@ -173,92 +174,45 @@ string CompilerDriver_iosacl::safetyNetInstall(Firewall *fw)
                     a.isAny();
                 } catch(FWException &ex)
                 {
-                    cerr << "Invalid address for management subnet: '"+addr+"'"
-                         << endl;
-                    exit(-1);
+                    QString err = QObject::tr("Invalid address for management subnet: "
+                                              "'%1'").arg(addr.c_str());
+                    abort(fw, NULL, NULL, err.toStdString());
                 }
             }
 
-            string xml_element = "clear_ip_acl";
-            if (tmp_acl_ipv6) xml_element = "clear_ipv6_acl";
-
-            string clearACLcmd = Resources::platform_res[platform]->getResourceStr(
-                string("/FWBuilderResources/Target/options/")+
-                "version_"+version+"/iosacl_commands/" + xml_element);
-
-            output << endl;
-
-            string addr_family_prefix = "ip";
-
-            string access_group_cmd =
-                PolicyCompiler_iosacl::getAccessGroupCommandForAddressFamily(tmp_acl_v6);
-
-            output << "! temporary access list for \"safety net install\""
-                   << endl;
-            output << endl;
+            Configlet configlet(fw, "cisco", "safety_net_acl");
+            configlet.collapseEmptyStrings(true);
 
             if (tmp_acl_v6)
             {
-                addr_family_prefix = "ipv6";
-                output << clearACLcmd << " " << temp_acl << endl;
-                output << "ipv6 access-list " << temp_acl << endl;
-                if (slash_idx!=string::npos)
-                    output << "  permit ipv6 " << addr << " any " << endl;
-                else
-                    output << "  permit ipv6 host " << addr << " any " << endl;
-                output << "  permit icmp any any " << endl;
-                output << "  deny ipv6 any any " << endl;
-                output << "exit" << endl;
-                output << endl;
-            } else
+                configlet.setVariable("ipv4",   false);
+                configlet.setVariable("ipv6",   true);
+                configlet.setVariable("slash_notation", slash_idx!=string::npos);
+                configlet.setVariable("host_addr", slash_idx==string::npos);
+                configlet.setVariable("management_addr", addr.c_str());
+                configlet.setVariable("management_netm", "");
+            } else 
             {
-                // cisco uses "wildcards" instead of netmasks
-
-                //long nm = InetAddr(netmask).to32BitInt();
-                //struct in_addr na;
-                //na.s_addr = ~nm;
                 InetAddr nnm( ~(InetAddr(netmask)) );
-                addr_family_prefix = "ip";
-                output << clearACLcmd << " " << temp_acl << endl;
-                output << "ip access-list extended " << temp_acl << endl;
-                output << "  permit ip "
-                       << addr << " " << nnm.toString() << " any " << endl;
-                output << "  deny ip any any " << endl;
-                output << "exit" << endl;
-                output << endl;
+                configlet.setVariable("ipv4", true);
+                configlet.setVariable("ipv6", false);
+                configlet.setVariable("management_addr", addr.c_str());
+                configlet.setVariable("management_netm", nnm.toString().c_str());
             }
 
             // find management interface
-            int nmi = 0;
             list<FWObject*> ll = fw->getByType(Interface::TYPENAME);
             for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
             {
                 Interface *intf = Interface::cast( *i );
                 if (intf->isManagement())
                 {
-                    nmi++;
-                    output << "interface " << intf->getName() << endl;
-                    output << "  no " << addr_family_prefix << " ";
-                    output << access_group_cmd;
-                    output << " in" << endl;
-
-                    output << "  no " << addr_family_prefix << " ";
-                    output << access_group_cmd;
-                    output << " out" << endl;
-
-                    output << " " << addr_family_prefix << " ";
-                    output << access_group_cmd;
-                    output << " " << temp_acl << " in" << endl;
-                    output << "exit" << endl;
+                    configlet.setVariable("management_interface",
+                                          intf->getName().c_str());
+                    break;
                 }
             }
-            if (nmi==0)
-            {
-                cerr << "One of the interfaces of the firewall must be marked as management interface."
-                     << endl;
-                exit(-1);
-            }
-
+            output << configlet.expand().toStdString();
             output << endl;
         }
     }

@@ -110,9 +110,6 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
     Rule *rule = Rule::cast(obj);
 
     CompilerDriver *dr = CompilerDriverFactory::createCompilerDriver(fw);
-    // run in test mode to prevent fatal errors from causing exit
-    dr->setTestMode();
-    dr->setEmbeddedMode();
 
     QTextCharFormat format;
     QTextCharFormat normal_format;
@@ -140,6 +137,22 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
     warning_format.setProperty(QTextFormat::FontWeight, 99);
 
     //m_widget->compiler_output_panel->clear();
+
+    if (dr == NULL)
+    {
+        // we have no compiler for this platform or unknown platform
+        format = error_format;
+        cursor.insertText(
+            QObject::tr("Compiler for firewall platform %1 not found")
+            .arg(fw->getStr("platform").c_str()), format);
+        cursor.insertText("\n");
+        cursor.insertBlock();
+        return;
+    }
+
+    // run in test mode to prevent fatal errors from causing exit
+    dr->setTestMode();
+    dr->setEmbeddedMode();
 
     try
     {

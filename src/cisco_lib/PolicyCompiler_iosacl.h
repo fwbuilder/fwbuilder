@@ -55,8 +55,12 @@ namespace fwcompiler {
 
         protected:
 
+        std::string comment_symbol;
+        
 	virtual void addDefaultPolicyRule();
 
+        virtual void _printClearCommands();
+        
         /**
          * dynamic interfaces can not be used in policy rules in IOS ACLs
          */
@@ -277,7 +281,7 @@ namespace fwcompiler {
 	protected:
 
 	virtual std::string myPlatformName();
-        std::string printAccessGroupCmd(ciscoACL *acl);
+        std::string printAccessGroupCmd(ciscoACL *acl, bool neg=false);
 
 	public:
 

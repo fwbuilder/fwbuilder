@@ -104,6 +104,7 @@ HEADERS += ../../config.h \
     linksysAdvancedDialog.h \
     freebsdAdvancedDialog.h \
     openbsdAdvancedDialog.h \
+    procurveaclAdvancedDialog.h \
     solarisAdvancedDialog.h \
     macosxAdvancedDialog.h \
     secuwallAdvancedDialog.h \
@@ -274,6 +275,7 @@ SOURCES += ProjectPanel.cpp \
     linksysAdvancedDialog.cpp \
     freebsdAdvancedDialog.cpp \
     openbsdAdvancedDialog.cpp \
+    procurveaclAdvancedDialog.cpp \
     solarisAdvancedDialog.cpp \
     macosxAdvancedDialog.cpp \
     secuwallAdvancedDialog.cpp \
@@ -389,6 +391,7 @@ FORMS = FWBMainWindow_q.ui \
     pixosadvanceddialog_q.ui \
     iosacladvanceddialog_q.ui \
     iosadvanceddialog_q.ui \
+    procurveacladvanceddialog_q.ui \
     simpletexteditor_q.ui \
     simpleinteditor_q.ui \
     aboutdialog_q.ui \

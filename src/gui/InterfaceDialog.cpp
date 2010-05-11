@@ -374,7 +374,17 @@ void InterfaceDialog::validate(bool *res)
         return;
     }
 
-    if (obj_name.indexOf(' ') != -1 || obj_name.indexOf('-') != -1)
+    interfaceProperties *int_prop =
+        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+            Interface::cast(obj)->getParentHost());
+    QString err;
+
+    /*
+     * TODO:
+     * See if basicValidateInterfaceName() can be rolled into
+     * validateInterface()
+     */
+    if ( ! int_prop->basicValidateInterfaceName(obj_name, err))
     {
         *res = false;
         if (QApplication::focusWidget() != NULL)
@@ -382,7 +392,7 @@ void InterfaceDialog::validate(bool *res)
             blockSignals(true);
             QMessageBox::critical(
                 this,"Firewall Builder",
-                tr("Interface name can not contain white space and '-'"),
+                err,
                 tr("&Continue"), QString::null,QString::null,
                 0, 1 );
             blockSignals(false);
@@ -390,11 +400,6 @@ void InterfaceDialog::validate(bool *res)
         return;
     }
 
-    interfaceProperties *int_prop =
-        interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-            Interface::cast(obj)->getParentHost());
-
-    QString err;
     if ( ! int_prop->validateInterface(obj->getParent(), obj_name, err))
     {
         /*

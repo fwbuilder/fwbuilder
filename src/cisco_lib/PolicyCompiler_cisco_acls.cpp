@@ -261,6 +261,15 @@ bool PolicyCompiler_cisco::pickACL::processNext()
      * and can be used for both.
      */
 
+    /*
+     * TODO: Here we hardcode this option to True for IOS. Instead of
+     * doing it here, just set option "generate_out_acl" to true in
+     * PolicyCompiler_iosacl::prolog(). It is done that way in
+     * PolicyCompiler_procurveacl already. This way, base class
+     * PolicyCompiler_cisco does not need to be aware of the actual
+     * platform.
+     */
+
     bool generate_out_acl = false;
 
     if (compiler->myPlatformName()=="pix")

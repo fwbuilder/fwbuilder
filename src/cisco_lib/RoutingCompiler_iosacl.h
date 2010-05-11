@@ -76,8 +76,7 @@ namespace fwcompiler
 
 	RoutingCompiler_iosacl(libfwbuilder::FWObjectDatabase *_db,
                                libfwbuilder::Firewall *fw, bool ipv6_policy,
-                               fwcompiler::OSConfigurator *_oscnf) :
-        RoutingCompiler_cisco(_db, fw, ipv6_policy, _oscnf) {};
+                               fwcompiler::OSConfigurator *_oscnf) : RoutingCompiler_cisco(_db, fw, ipv6_policy, _oscnf) {};
 
 	virtual int  prolog();
 	virtual void compile();

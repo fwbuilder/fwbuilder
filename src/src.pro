@@ -32,5 +32,6 @@ SUBDIRS += common \
 			ipfw \
 			iosacl \
 			pix \
+			procurve_acl \
 			transfer_agents
 

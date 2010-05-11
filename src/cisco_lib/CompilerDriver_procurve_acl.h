@@ -23,10 +23,10 @@
 
 */
 
-#ifndef __COMPILER_DRIVER_IOSACL_HH__
-#define __COMPILER_DRIVER_IOSACL_HH__
+#ifndef __COMPILER_DRIVER_PROCURVE_ACL_HH__
+#define __COMPILER_DRIVER_PROCURVE_ACL_HH__
 
-#include "CompilerDriver.h"
+#include "CompilerDriver_iosacl.h"
 
 #include <string>
 #include <sstream>
@@ -46,23 +46,13 @@ namespace libfwbuilder {
 
 namespace fwcompiler {
 
-    class CompilerDriver_iosacl : public CompilerDriver {
-   
+    class CompilerDriver_procurve_acl : public CompilerDriver_iosacl {
+
 protected:
-        std::string system_configuration_script;
-        std::string nat_script;
-        std::string policy_script;
-        std::string routing_script;
-        std::string safety_net_install_option_name;
-        std::string safety_net_install_acl_addr_option_name;
-
-        std::string safetyNetInstall(libfwbuilder::Firewall *fw);
         void printProlog(QTextStream &file, const std::string &prolog_code);
-
         virtual QString assembleManifest(libfwbuilder::Cluster *cluster,
                                          libfwbuilder::Firewall* fw,
                                          bool cluster_member);
-        virtual QString printActivationCommands(libfwbuilder::Firewall *fw);
         virtual QString assembleFwScript(libfwbuilder::Cluster *cluster,
                                          libfwbuilder::Firewall* fw,
                                          bool cluster_member,
@@ -70,7 +60,7 @@ protected:
         
 public:
 
-        CompilerDriver_iosacl(libfwbuilder::FWObjectDatabase *db);
+        CompilerDriver_procurve_acl(libfwbuilder::FWObjectDatabase *db);
 
         // create a copy of itself, including objdb
         virtual CompilerDriver* clone();

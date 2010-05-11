@@ -65,6 +65,7 @@
 #include "iosaclAdvancedDialog.h"
 #include "ipcopAdvancedDialog.h"
 #include "secuwallAdvancedDialog.h"
+#include "procurveaclAdvancedDialog.h"
 
 #include "linux24IfaceOptsDialog.h"
 #include "secuwallIfaceOptsDialog.h"
@@ -242,6 +243,7 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
     if (dlgname=="pf")       return new pfAdvancedDialog(parent,o);
     if (dlgname=="pix")      return new pixAdvancedDialog(parent,o);
     if (dlgname=="secuwall") return new secuwallAdvancedDialog(parent,o);
+    if (dlgname=="procurveacl") return new procurveaclAdvancedDialog(parent,o);
 
     cerr << "Firewall settings dialog for " << dlgname
          << " is not implemented" << endl;

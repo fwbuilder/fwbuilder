@@ -319,6 +319,13 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
         {
             res = !opt->getBool("iosacl_add_mirror_rule");
         }
+
+        // all rules are stateless for HP Procurve ACL
+	if (platform=="procurve_acl")
+        {
+            res = !opt->getBool("procurve_acl_add_mirror_rule");
+        }
+
     }
     return res;
 }
@@ -406,7 +413,12 @@ void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &res
         res.push_back(QStringPair("1.4.3", QObject::tr("1.4.3 or later")));
     } else
     {
-        if (platform=="pix" || platform=="fwsm" || platform=="iosacl")
+        // we list supported versions for the following platforms in
+        // corresponding resource .xml file
+        if (platform=="pix" ||
+            platform=="fwsm" ||
+            platform=="iosacl" ||
+            platform=="procurve_acl")
         {
             QString lst = Resources::platform_res[
                 platform.toAscii().constData()]->getResourceStr(

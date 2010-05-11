@@ -2,11 +2,11 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2007 NetCitadel, LLC
+                 Copyright (C) 2010 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@vk.crocodile.org
 
-  $Id$
+  $Id: RoutingCompiler_procurve.h -1   $
 
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
@@ -21,40 +21,44 @@
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
 */
 
-#ifndef _OSNETWORKCONFIGURATOR_IOS_HH
-#define _OSNETWORKCONFIGURATOR_IOS_HH
 
+#ifndef __ROUTINGCOMPILER_PROCURVE_ACL_HH__
+#define __ROUTINGCOMPILER_PROCURVE_ACL_HH__
+
+#include <fwbuilder/libfwbuilder-config.h>
 #include "config.h"
 
-#include "fwcompiler/OSConfigurator.h"
+#include "RoutingCompiler_iosacl.h"
 
-#include <map>
+namespace libfwbuilder {
+    class RuleElementRDst;
+    class RuleElementRItf;
+    class RuleElementRGtw;
+};
 
-namespace fwcompiler {
 
-    class OSConfigurator_ios : public OSConfigurator {
+namespace fwcompiler
+{
 
-        std::string _printNameif();
-        std::string _printIPAddress();
-        std::string _printLogging();
-
-	public:
-
-	virtual ~OSConfigurator_ios() {};
-	OSConfigurator_ios(libfwbuilder::FWObjectDatabase *_db,
-                           libfwbuilder::Firewall *fw,
-                           bool ipv6_policy) : OSConfigurator(_db, fw, ipv6_policy) {}
-
-	virtual int  prolog();
+    class RoutingCompiler_procurve_acl : public RoutingCompiler_iosacl
+    {
+    protected:
 
 	virtual std::string myPlatformName();
-	virtual void processFirewallOptions();
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Address   *addr);
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Network   *nw);
+
+    public:
+
+	RoutingCompiler_procurve_acl(libfwbuilder::FWObjectDatabase *_db,
+                                     libfwbuilder::Firewall *fw, bool ipv6_policy,
+                                     fwcompiler::OSConfigurator *_oscnf) :
+        RoutingCompiler_iosacl(_db, fw, ipv6_policy, _oscnf) {}
+        
+	virtual int  prolog();
+
     };
-};
+
+}
 
 #endif

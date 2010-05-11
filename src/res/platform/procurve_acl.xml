@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<FWBuilderResources>
+    <Target name="procurve_acl">
+      <description>HP ProCurve ACL</description>
+      <status>active</status>
+      <group>procurve_acl</group>
+      <compiler>fwb_procurve_acl</compiler>
+      <dialog>procurveacl</dialog>
+      <supported_os>procurve</supported_os>
+
+      <versions>K.13</versions>
+
+      <options>
+        <default>
+          <procurve_acl_include_comments>true</procurve_acl_include_comments>
+          <procurve_acl_add_clear_statements>true</procurve_acl_add_clear_statements>
+          <procurve_acl_assume_fw_part_of_any>true</procurve_acl_assume_fw_part_of_any>
+        </default>
+
+        <version_K.13>
+          <procurve_acl_include_comments>true</procurve_acl_include_comments>
+          <procurve_acl_add_clear_statements>true</procurve_acl_add_clear_statements>
+          <procurve_acl_assume_fw_part_of_any>true</procurve_acl_assume_fw_part_of_any>
+          <procurve_acl_commands>
+            <clear_acl>no access-list</clear_acl>
+            <clear_ip_acl>no ip access-list extended</clear_ip_acl>
+            <clear_ipv6_acl>no ipv6 access-list</clear_ipv6_acl>
+            <ip_addr_static>
+interface %in
+  ip address %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+interface %in
+  ip address dhcp 
+            </ip_addr_dyn>
+          </procurve_acl_commands>
+        </version_K.13>
+
+      </options>
+
+      <capabilities>
+        <negation_in_interface_policy>False</negation_in_interface_policy>
+        <negation_in_policy>False</negation_in_policy>
+        <negation_in_nat>False</negation_in_nat>
+        <logging_in_policy>True</logging_in_policy>
+        <options_in_policy>True</options_in_policy>
+        <supports_nat>False</supports_nat>
+        <actions_in_nat>False</actions_in_nat>
+        <supports_time>False</supports_time>
+        <supports_accounting>False</supports_accounting>
+        <supports_routing_itf>True</supports_routing_itf>
+        <security_levels>False</security_levels>
+        <network_zones>False</network_zones>
+        <unprotected_interfaces>True</unprotected_interfaces>
+        <supports_prolog_epilog>True</supports_prolog_epilog>
+        <supports_cluster>False</supports_cluster>
+        <install_only_on_primary>False</install_only_on_primary>
+
+        <actions>
+            <Accept>
+                <supported>True</supported>
+                <description>Accept</description>
+                <dialog_page>None</dialog_page>
+            </Accept>
+            <Deny>
+                <supported>True</supported>
+                <description>Deny</description>
+                <dialog_page>None</dialog_page>
+            </Deny>
+            <Reject>
+                <supported>False</supported>
+                <description>Reject</description>
+                <dialog_page>Reject</dialog_page>
+            </Reject>
+            <Accounting>
+                <supported>False</supported>
+                <description>Accounting</description>
+                <dialog_page>None</dialog_page>
+            </Accounting>
+            <Tag>
+                <supported>False</supported>
+                <description>Tag</description>
+                <dialog_page>None</dialog_page>
+            </Tag>
+            <Pipe>
+                <supported>False</supported>
+                <description>Pipe</description>
+                <dialog_page>None</dialog_page>
+            </Pipe>
+            <Classify>
+                <supported>False</supported>
+                <description>Classify</description>
+                <dialog_page>None</dialog_page>
+            </Classify>
+            <Custom>
+                <supported>False</supported>
+                <description>Custom</description>
+                <dialog_page>None</dialog_page>
+            </Custom>
+            <Branch>
+                <supported>False</supported>
+                <description>Branch</description>
+                <dialog_page>None</dialog_page>
+            </Branch>
+            <Route>
+                <supported>False</supported>
+                <description>Route</description>
+                <dialog_page>None</dialog_page>
+            </Route>
+            <Translate>
+                <supported>False</supported>
+                <description>Translate</description>
+                <dialog_page>None</dialog_page>
+            </Translate>
+            <NATBranch>
+                <supported>False</supported>
+                <description>Branch</description>
+                <dialog_page>None</dialog_page>
+            </NATBranch>
+        </actions>
+      </capabilities>
+
+    </Target>
+
+</FWBuilderResources>

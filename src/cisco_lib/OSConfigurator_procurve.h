@@ -24,36 +24,31 @@
 
 */
 
-#ifndef _OSNETWORKCONFIGURATOR_IOS_HH
-#define _OSNETWORKCONFIGURATOR_IOS_HH
+#ifndef _OSNETWORKCONFIGURATOR_PROCURVE_HH
+#define _OSNETWORKCONFIGURATOR_PROCURVE_HH
 
 #include "config.h"
 
-#include "fwcompiler/OSConfigurator.h"
+#include "OSConfigurator_ios.h"
 
 #include <map>
 
 namespace fwcompiler {
 
-    class OSConfigurator_ios : public OSConfigurator {
-
-        std::string _printNameif();
-        std::string _printIPAddress();
-        std::string _printLogging();
+    class OSConfigurator_procurve : public OSConfigurator_ios {
 
 	public:
 
-	virtual ~OSConfigurator_ios() {};
-	OSConfigurator_ios(libfwbuilder::FWObjectDatabase *_db,
-                           libfwbuilder::Firewall *fw,
-                           bool ipv6_policy) : OSConfigurator(_db, fw, ipv6_policy) {}
+	virtual ~OSConfigurator_procurve() {};
+	OSConfigurator_procurve(libfwbuilder::FWObjectDatabase *_db,
+                                libfwbuilder::Firewall *fw,
+                                bool ipv6_policy) :
+        OSConfigurator_ios(_db, fw, ipv6_policy) {}
 
 	virtual int  prolog();
 
 	virtual std::string myPlatformName();
 	virtual void processFirewallOptions();
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Address   *addr);
-	virtual void addVirtualAddressForNAT(const libfwbuilder::Network   *nw);
     };
 };
 

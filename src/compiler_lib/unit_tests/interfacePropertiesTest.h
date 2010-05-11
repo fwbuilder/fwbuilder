@@ -63,6 +63,8 @@ public:
     void isValidVlanInterfaceNameBSD();
     void isValidVlanInterfaceNameIOS();
     void isValidVlanInterfaceNamePIX();
+    void isValidVlanInterfaceNameProCurve();
+    void validateInterfaceProCurve();
 
     void setUp();
 

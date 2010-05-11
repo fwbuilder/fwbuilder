@@ -1,0 +1,45 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources>
+    <Target name="procurve">
+      <description>HP ProCurve</description>
+      <status>active</status>
+      <compiler>fwb_procurve</compiler>
+      <family>procurve</family>
+      <dialog>procurve</dialog>
+
+      <options>
+        <user_can_change_install_dir>false</user_can_change_install_dir>
+        <default>
+        </default>
+
+        <activation>
+          <fwdir>nvram:</fwdir>
+          <fwdir_test>nvram:</fwdir_test>
+        </activation>
+      </options>
+
+      <capabilities>
+        <supports_routing>True</supports_routing>
+        <supports_subinterfaces>False</supports_subinterfaces>
+        <supports_cluster>False</supports_cluster>
+      </capabilities>
+
+      <interfaces>
+        <cluster>
+        </cluster>
+        <firewall>
+          <string>ethernet,Ethernet</string>
+        </firewall>
+      </interfaces>
+
+      <subinterfaces>
+        <ethernet>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </ethernet>
+      </subinterfaces>
+
+
+    </Target>
+
+</FWBuilderResources>

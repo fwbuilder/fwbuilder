@@ -1,3 +1,17 @@
+2010-05-10  vadim  <vadim@vk.crocodile.org>
+
+	* CompilerDriver_procurve_acl_run.cpp (CompilerDriver_procurve_acl::run):
+	See #1442 Support for HP ProCurve. Added experimental support for
+	HP ProCurve "intelligent" switches (L3). Code is based on the policy
+	compiler for Cisco IOS extended access lists. Differences include
+	';' character for comments, different naming convention for Vlan
+	interfaces ("VLAN 2", with a space), requirement to unbind an ACL
+	from interface before it can be cleared.
+
+	* CompilerDriver_iosacl.cpp (CompilerDriver_iosacl::safetyNetInstall):
+	using configlet "safety_net" to add temporary ACL for the "safety
+	net" install method.
+
 2010-05-05  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* ProjectPanel_events.cpp (ProjectPanel::event): fixed #1443
@@ -16,7 +30,7 @@
 2010-05-04  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* v 4.0.0 released
-	
+
 2010-05-02  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* Helper.cpp (Helper::findInterfaceByNetzone): fixed #1439 "ssh
