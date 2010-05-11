@@ -22,6 +22,7 @@ SOURCES += main_UsageResolverTest.cpp \
     ../../../compiler_lib/linux24Interfaces.cpp \
     ../../../compiler_lib/bsdInterfaces.cpp \
     ../../../compiler_lib/iosInterfaces.cpp \
+    ../../../compiler_lib/procurveInterfaces.cpp \
     ../../../compiler_lib/pixInterfaces.cpp
 
 HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../FWBTree.h \
@@ -31,6 +32,7 @@ HEADERS += UsageResolverTest.h ../../UsageResolver.h ../../FWBTree.h \
    ../../../compiler_lib/linux24Interfaces.h \
    ../../../compiler_lib/bsdInterfaces.h \
    ../../../compiler_lib/iosInterfaces.h \
+   ../../../compiler_lib/procurveInterfaces.h \
    ../../../compiler_lib/pixInterfaces.h
 
 CONFIG -= release
