@@ -193,6 +193,8 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 
     FWObject *f = s->getParentHost();
 
+    m_dialog->advancedconfig->setEnabled(true);
+
 /* if parent is a host, hide firewall related settings */
     if (Host::isA(f))
     {
@@ -218,20 +220,31 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     {
         // platform specific
         supports_security_levels =
-            Resources::getTargetCapabilityBool(f->getStr("platform"), "security_levels");
+            Resources::getTargetCapabilityBool(
+                f->getStr("platform"), "security_levels");
         supports_network_zones =
-            Resources::getTargetCapabilityBool(f->getStr("platform"), "network_zones");
+            Resources::getTargetCapabilityBool(
+                f->getStr("platform"), "network_zones");
         supports_unprotected =
-            Resources::getTargetCapabilityBool(f->getStr("platform"), "unprotected_interfaces");
+            Resources::getTargetCapabilityBool(
+                f->getStr("platform"), "unprotected_interfaces");
 
         // OS specific
         supports_advanced_ifaces =
-            Resources::getTargetCapabilityBool(f->getStr("host_OS"),
-                                               "supports_subinterfaces");
+            Resources::getTargetCapabilityBool(
+                f->getStr("host_OS"), "supports_advanced_interface_options");
+
         // disable advanced options dialog if this is main interface of a cluster
-        if (Cluster::isA(s->getParent()))
-            supports_advanced_ifaces = false;
+        if (Cluster::isA(s->getParent())) supports_advanced_ifaces = false;
+
     } catch (FWException &ex)  { }
+
+    if (fwbdebug)
+        qDebug() << "parent=" << f->getName().c_str()
+                 << "Firewall::isA(f)=" << Firewall::isA(f)
+                 << "host_OS=" << f->getStr("host_OS").c_str()
+                 << "supports_advanced_ifaces=" << supports_advanced_ifaces;
+
 
 /* if parent is a firewall or a fw cluster, it is more complex ... */
     if (Firewall::isA(f) || Cluster::isA(f))
@@ -270,8 +283,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         // well. Current implementation can not generate configuration
         // code for interfaces and subinterfaces of member firewalls
         // from cluster interface or subinterface objects
-        m_dialog->interfaceOptionsGroup->setEnabled(
-            !Cluster::isA(s->getParentHost()));
+        m_dialog->interfaceOptionsGroup->setEnabled(!Cluster::isA(f));
 
         if (supports_network_zones)
         {

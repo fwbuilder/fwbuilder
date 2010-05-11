@@ -6,6 +6,7 @@
       <compiler>fwb_procurve</compiler>
       <family>procurve</family>
       <dialog>procurve</dialog>
+      <interface_dialog>vlan_only</interface_dialog>
 
       <options>
         <user_can_change_install_dir>false</user_can_change_install_dir>
@@ -21,6 +22,7 @@
       <capabilities>
         <supports_routing>True</supports_routing>
         <supports_subinterfaces>False</supports_subinterfaces>
+        <supports_advanced_interface_options>True</supports_advanced_interface_options>
         <supports_cluster>False</supports_cluster>
       </capabilities>
 
@@ -29,14 +31,12 @@
         </cluster>
         <firewall>
           <string>ethernet,Ethernet</string>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
         </firewall>
       </interfaces>
 
       <subinterfaces>
-        <ethernet>
-          <string>8021q,VLAN</string>
-          <string>unknown,Unknown</string>
-        </ethernet>
       </subinterfaces>
 
 

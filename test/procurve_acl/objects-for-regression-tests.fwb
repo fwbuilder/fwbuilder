@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1273546043" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1273597059" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -598,7 +598,7 @@
       <ServiceGroup id="id4511636C23682_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls" comment="" ro="False">
-      <Firewall id="id46412B5226577" host_OS="procurve" inactive="False" lastCompiled="1261963115" lastInstalled="0" lastModified="1273546106" platform="procurve_acl" version="K.13" name="testhp1" comment="" ro="False">
+      <Firewall id="id46412B5226577" host_OS="procurve" inactive="False" lastCompiled="1273596546" lastInstalled="0" lastModified="1273597135" platform="procurve_acl" version="K.13" name="testhp1" comment="" ro="False">
         <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -1044,7 +1044,48 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id46412C2726611" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id5646X48212" disabled="False" group="" log="False" position="21" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5494X48212"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5801X48212" disabled="False" group="" log="False" position="22" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5494X48212"/>
+              <ObjectRef ref="id5528X48212"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id46412C2726611" disabled="False" log="True" position="23" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -1100,6 +1141,26 @@
           <InterfaceOptions>
             <Option name="type">8021q</Option>
             <Option name="vlan_id">402</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5494X48212" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="a1" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5528X48212" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="a2" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5554X48212" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="b1" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5588X48212" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="b2" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
           </InterfaceOptions>
         </Interface>
         <Management address="1.1.1.1">

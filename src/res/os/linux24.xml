@@ -32,6 +32,7 @@
       <capabilities>
         <supports_routing>True</supports_routing>
         <supports_subinterfaces>True</supports_subinterfaces>
+        <supports_advanced_interface_options>True</supports_advanced_interface_options>
         <supports_cluster>True</supports_cluster>
       </capabilities>
 

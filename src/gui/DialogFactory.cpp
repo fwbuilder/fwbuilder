@@ -295,7 +295,8 @@ QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
                               QObject::tr("Support module for %1 is not available").
                               arg(host_OS.c_str()).toLocal8Bit().constData()));
 
-    string dlgname = os->Resources::getResourceStr("/FWBuilderResources/Target/interface_dialog");
+    string dlgname = os->Resources::getResourceStr(
+        "/FWBuilderResources/Target/interface_dialog");
 
     // add further dlgname support here ...
 

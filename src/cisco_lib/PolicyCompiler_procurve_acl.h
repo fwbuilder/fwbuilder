@@ -47,8 +47,8 @@ namespace fwcompiler {
 	protected:
 
 	virtual std::string myPlatformName();
-
         virtual void _printClearCommands();
+        virtual std::string printAccessGroupCmd(ciscoACL *acl, bool neg=false);
         
 	public:
 

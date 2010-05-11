@@ -1,3 +1,18 @@
+2010-05-11  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_procurve_acl_writers.cpp (PolicyCompiler_procurve_acl::printAccessGroupCmd):
+	ProCurve uses different syntax for vlan ACLs and ACLs bound to
+	switch ports. Enabled "advanced interface settings" dialog for
+	ProCurve interfaces.
+
+	* InterfaceDialog.cpp (InterfaceDialog::loadFWObject): button
+	"Advanced interface settings" is controlled by element
+	<supports_advanced_interface_options> in the host OS xml resource
+	file. Before, it was controlled by the element
+	<supports_subinterfaces>. I need this button and associated dialog
+	for vlan interfaces on ProCurves, where vlan interfaces are not
+	subinterfaces.
+
 2010-05-10  vadim  <vadim@vk.crocodile.org>
 
 	* CompilerDriver_procurve_acl_run.cpp (CompilerDriver_procurve_acl::run):

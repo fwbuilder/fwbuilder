@@ -27,10 +27,14 @@
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/RuleSet.h"
 
 #include <iostream>
 
 #include <assert.h>
+
+#include <QStringList>
+#include <QString>
 
 
 using namespace libfwbuilder;
@@ -71,4 +75,53 @@ void PolicyCompiler_procurve_acl::_printClearCommands()
     output << endl;
 }
         
+string PolicyCompiler_procurve_acl::printAccessGroupCmd(ciscoACL *acl, bool neg)
+{
+    if (getSourceRuleSet()->isTop())
+    {
+        QString dir;
+        if (acl->direction()=="in"  || acl->direction()=="Inbound")  dir="in";
+        if (acl->direction()=="out" || acl->direction()=="Outbound") dir="out";
+
+        QString addr_family_prefix = "ip";
+        if (ipv6) addr_family_prefix = "ipv6";
+
+        // ProCurve uses different syntax for vlan ACLs
+        Interface *intf = acl->getInterface();
+        FWOptions *ifopt = intf->getOptionsObject();
+        string itype = ifopt->getStr("type");
+
+        if (itype == "8021q")
+        {
+            int vlan_id = ifopt->getInt("vlan_id");
+            QStringList outp;
+            if (neg) outp.push_back("no");
+            outp.push_back("vlan");
+            outp.push_back(QString("%1").arg(vlan_id));
+            outp.push_back(addr_family_prefix);
+            outp.push_back(getAccessGroupCommandForAddressFamily(ipv6).c_str());
+            outp.push_back(acl->workName().c_str());
+            outp.push_back(dir);
+            return outp.join(" ").toStdString() + "\n";
+        } else
+        {
+            QStringList outp;
+            QStringList outp_combined;
+            outp_combined.push_back(
+                QString("interface %1").arg(intf->getName().c_str()));
+
+            if (neg) outp.push_back("no");
+            outp.push_back(addr_family_prefix);
+            outp.push_back(getAccessGroupCommandForAddressFamily(ipv6).c_str());
+            outp.push_back(acl->workName().c_str());
+            outp.push_back(dir);
+
+            outp_combined.push_back("  " + outp.join(" "));
+            outp_combined.push_back("exit");
+            return outp_combined.join("\n").toStdString();
+        }
+    }
+    return "";
+}
+
 
