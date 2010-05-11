@@ -101,6 +101,7 @@ HEADERS += FWWindowTest.h \
     ../../secuwallAdvancedDialog.h \
     ../../secuwallosAdvancedDialog.h \
     ../../secuwallIfaceOptsDialog.h \
+    ../../procurveaclAdvancedDialog.h \
     ../../vlanOnlyIfaceOptsDialog.h \
     ../../linux24IfaceOptsDialog.h \
     ../../pixosIfaceOptsDialog.h \
@@ -272,6 +273,7 @@ SOURCES += main_FWWindowTest.cpp \
     ../../secuwallAdvancedDialog.cpp \
     ../../secuwallosAdvancedDialog.cpp \
     ../../secuwallIfaceOptsDialog.cpp \
+    ../../procurveaclAdvancedDialog.cpp \
     ../../vlanOnlyIfaceOptsDialog.cpp \
     ../../linux24IfaceOptsDialog.cpp \
     ../../pixosIfaceOptsDialog.cpp \
