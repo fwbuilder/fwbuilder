@@ -18,6 +18,7 @@ SOURCES	 =  ../CompilerDriver.cpp \
     ../linux24Interfaces.cpp \
     ../bsdInterfaces.cpp \
     ../iosInterfaces.cpp \
+    ../procurveInterfaces.cpp \
     ../pixInterfaces.cpp \
     ../interfacePropertiesObjectFactory.cpp
 
@@ -28,6 +29,7 @@ HEADERS	 = ../../../config.h \
     ../linux24Interfaces.h \
     ../bsdInterfaces.h \
     ../iosInterfaces.h \
+    ../procurveInterfaces.h \
     ../pixInterfaces.h \
     ../interfacePropertiesObjectFactory.h
 

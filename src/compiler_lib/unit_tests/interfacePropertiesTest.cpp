@@ -387,13 +387,9 @@ void interfacePropertiesTest::validateInterfaceProCurve()
     Resources("../../res/resources.xml");
 
     iface->setName("vlan 2");
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(fw),
-                                               dynamic_cast<FWObject*>(iface), false, err)
-                   == true);
+    CPPUNIT_ASSERT(int_prop->validateInterface(&fw, iface, false, err) == true);
 
     iface->setName("vlan 34324");
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(fw),
-                                               dynamic_cast<FWObject*>(iface), false, err)
-                   == false);
+    CPPUNIT_ASSERT(int_prop->validateInterface(&fw, iface, false, err) == false);
 }
 
