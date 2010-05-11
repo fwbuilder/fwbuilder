@@ -1,5 +1,17 @@
 2010-05-11  vadim  <vadim@vk.crocodile.org>
 
+	* ObjectManipulator.cpp (ObjectManipulator::editSelectedObject):
+	fixes #1447: context menu item "Edit" associated with rule set
+	object in the tree opens it in the rule set view and the editor
+	panel. Menu item "Open" only opens it in the rule set view. This
+	eliminates strange behavior where it would open in the rule set
+	view on first click on "Edit" and then in the editor in the second
+	click on "Edit". Double click used to work the same, the first
+	double click opened in rule set view, the second in the
+	editor. Now double click always opens in rule set view and the
+	editor which is more consistent with the behavior for other object
+	types.
+
 	* PolicyCompiler_procurve_acl_writers.cpp (PolicyCompiler_procurve_acl::printAccessGroupCmd):
 	ProCurve uses different syntax for vlan ACLs and ACLs bound to
 	switch ports. Enabled "advanced interface settings" dialog for
