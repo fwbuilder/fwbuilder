@@ -349,7 +349,10 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     // "fragments" should be the last option in the access-list command
     aclstr << _printIPServiceOptions(rule);
 
-    if (compiler->fw->getOptionsObject()->getBool("iosacl_use_acl_remarks"))
+    // Note that option "use_acl_remarks" is set in prolog() because
+    // we use different options for this function in GUI dialogs for 
+    // iosacl and procurve. This is historical.
+    if (compiler->fw->getOptionsObject()->getBool("use_acl_remarks"))
     {
         ruleout << acl->addRemark(rule->getLabel(), rule->getComment());
     }

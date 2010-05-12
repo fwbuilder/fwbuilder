@@ -68,6 +68,10 @@ int PolicyCompiler_procurve_acl::prolog()
      */
     fw->getOptionsObject()->setBool("generate_out_acl", true);
 
+    fw->getOptionsObject()->setBool(
+        "use_acl_remarks",
+        fw->getOptionsObject()->getBool("procurve_acl_use_acl_remarks"));
+
 
     return PolicyCompiler::prolog();
 }

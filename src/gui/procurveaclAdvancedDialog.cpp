@@ -238,6 +238,12 @@ procurveaclAdvancedDialog::procurveaclAdvancedDialog(QWidget *parent,FWObject *o
     data.registerOption( m_dialog->procurve_acl_acl_temp_addr, fwoptions,
                          "procurve_acl_acl_temp_addr" );
 
+    data.registerOption( m_dialog->procurve_acl_include_comments, fwoptions,
+                         "procurve_acl_include_comments" );
+
+    data.registerOption( m_dialog->procurve_acl_use_acl_remarks, fwoptions,
+                         "procurve_acl_use_acl_remarks" );
+
 
 /* Page Installer */
 

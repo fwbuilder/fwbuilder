@@ -81,6 +81,10 @@ int PolicyCompiler_iosacl::prolog()
     if (platform!="iosacl")
 	abort("Unsupported platform " + platform );
 
+    fw->getOptionsObject()->setBool(
+        "use_acl_remarks",
+        fw->getOptionsObject()->getBool("iosacl_use_acl_remarks"));
+
     object_groups = new Group();
     dbcopy->add( object_groups );
 

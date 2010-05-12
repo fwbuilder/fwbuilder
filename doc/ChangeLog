@@ -1,5 +1,8 @@
 2010-05-12  vadim  <vadim@vk.crocodile.org>
 
+	* procurveaclAdvancedDialog.cpp (procurveaclAdvancedDialog::procurveaclAdvancedDialog):
+	fixed #1449 options for ACL remarks and comments for ProCurve
+
 	* PolicyCompiler_procurve_acl_writers.cpp (PolicyCompiler_procurve_acl::printAccessGroupCmd):
 	generated commands that attach acl to a regular inetrface needed
 	newline after "exit".
