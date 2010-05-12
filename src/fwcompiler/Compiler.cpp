@@ -81,8 +81,6 @@ int Compiler::prolog()
 
 void Compiler::epilog()
 {
-    cerr << "Compiler::epilog must be overloaded\n";
-    exit(1);
 }
 
 void Compiler::abort(const string &errstr) throw(FWException)

@@ -1,3 +1,10 @@
+2010-05-12  vadim  <vadim@vk.crocodile.org>
+
+	* Compiler.cpp (Compiler::epilog): fixed SourceForge bug #3000159
+	"libfwbuilder-4.0.1. calls exit warning.". Calling exit() or
+	_exit() from a library function is discouraged, and as it turns
+	out unnecessary in our case.
+
 2010-04-24  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* PolicyCompiler.cpp (PolicyCompiler::checkForShadowingPlatformSpecific):
