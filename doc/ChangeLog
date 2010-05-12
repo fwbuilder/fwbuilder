@@ -1,4 +1,7 @@
-2010-05-11  vadim  <vadim@vk.crocodile.org>
+2010-05-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* ObjectManipulatorTest.cpp (ObjectManipulatorTest::editSelectedObject): 
+	see #1447 fixed unit test for this change
 
 	* ../src/res/configlets/dd-wrt-jffs/installer_commands_root:
 	fixes #1448 "need to commit nvram changes on DD-WRT".

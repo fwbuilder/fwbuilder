@@ -35,7 +35,7 @@ using namespace libfwbuilder;
 //std::string respath;
 //int fwbdebug = 0;
 //QString user_name;
-int fwbdebug = 1;
+int fwbdebug = 0;
 FWWindow *mw = NULL;
 FWBSettings *st = NULL;
 char** args;

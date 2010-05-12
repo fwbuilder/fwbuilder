@@ -44,8 +44,11 @@
 #include "ObjectTreeViewItem.h"
 #include "ObjectEditor.h"
 
+#include "fwbuilder/RuleSet.h"
+
 using namespace std;
 using namespace libfwbuilder;
+
 
 QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 {
@@ -67,20 +70,28 @@ void ObjectManipulatorTest::editSelectedObject()
     mw->loadFile("test.fwb", false);
     ObjectTreeView *tree = mw->getCurrentObjectTree();
     tree->expandAll();
+
     ObjectTreeViewItem *policy = dynamic_cast<ObjectTreeViewItem*>(
             tree->findItems("Policy", Qt::MatchRecursive | Qt::MatchExactly, 0).first());
     ObjectTreeViewItem *fw = dynamic_cast<ObjectTreeViewItem*>(
             tree->findItems("TestFirewall", Qt::MatchRecursive | Qt::MatchExactly, 0).first());
+
     ObjectManipulator *om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
-    tree->setCurrentItem(policy, 0, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
-    om->editSelectedObject();
+    tree->setCurrentItem(
+        policy, 0, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+
+    om->openSelectedRuleSet();
     QTest::qWait(100);
     QVERIFY(mw->getOpenedEditor() == NULL);
+    QVERIFY(mw->activeProject()->getCurrentRuleSet() == RuleSet::cast(policy->getFWObject()));
+
     om->editSelectedObject();
     QTest::qWait(100);
     QVERIFY(mw->getOpenedEditor() == policy->getFWObject());
     mw->closeEditor();
-    tree->setCurrentItem(fw, 0, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+
+    tree->setCurrentItem(
+        fw, 0, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     om->editSelectedObject();
     QTest::qWait(100);
     QVERIFY(mw->getOpenedEditor() == fw->getFWObject());
