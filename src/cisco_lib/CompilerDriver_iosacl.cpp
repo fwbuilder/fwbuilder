@@ -209,6 +209,13 @@ string CompilerDriver_iosacl::safetyNetInstall(Firewall *fw)
                 {
                     configlet.setVariable("management_interface",
                                           intf->getName().c_str());
+
+                    FWOptions *ifopt = intf->getOptionsObject();
+                    string itype = ifopt->getStr("type");
+                    configlet.setVariable("management_interface_is_vlan",
+                                          (itype == "8021q"));
+                    configlet.setVariable("management_interface_is_not_vlan",
+                                          (itype != "8021q"));
                     break;
                 }
             }

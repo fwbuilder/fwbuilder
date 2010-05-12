@@ -1,6 +1,16 @@
+2010-05-12  vadim  <vadim@vk.crocodile.org>
+
+	* PolicyCompiler_procurve_acl_writers.cpp (PolicyCompiler_procurve_acl::printAccessGroupCmd):
+	generated commands that attach acl to a regular inetrface needed
+	newline after "exit".
+
+	* configlets/procurve/safety_net_acl: generating different
+	commands in "Safety net" install mode depending on whether
+	management interface is vlan or not.
+
 2010-05-11  Vadim Kurland  <vadim@vk.crocodile.org>
 
-	* ObjectManipulatorTest.cpp (ObjectManipulatorTest::editSelectedObject): 
+	* ObjectManipulatorTest.cpp (ObjectManipulatorTest::editSelectedObject):
 	see #1447 fixed unit test for this change
 
 	* ../src/res/configlets/dd-wrt-jffs/installer_commands_root:

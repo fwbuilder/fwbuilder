@@ -15,40 +15,31 @@
 ; temporary access list for "safety net install"
 
 {{if ipv4}}
-interface {{$management_interface}}
-  no ip access-group in
-  no ip access-group out
-  no ip access-group tmp_acl in
-exit
-
+{{if management_interface_is_vlan}}
+no {{$management_interface}} ip access-group tmp_acl in
 no ip access-list extended tmp_acl
 ip access-list extended tmp_acl
   permit ip {{$management_addr}} {{$management_netm}} any 
   deny ip any any 
 exit
+{{$management_interface}} ip access-group tmp_acl in
+{{endif}}
 
+{{if management_interface_is_not_vlan}}
+interface {{$management_interface}}
+  no ip access-group tmp_acl in
+exit
+no ip access-list extended tmp_acl
+ip access-list extended tmp_acl
+  permit ip {{$management_addr}} {{$management_netm}} any 
+  deny ip any any 
+exit
 interface {{$management_interface}}
   ip access-group tmp_acl in
 exit
 {{endif}}
+{{endif}}
 
 {{if ipv6}}
-no ipv6 access-list tmp_acl
-ipv6 access-list tmp_acl
-{{if slash_notation}}
-  permit ipv6 {{$management_addr}} any 
-{{endif}}
-{{if host_addr}}
-  permit ipv6 host {{$management_addr}} any 
-{{endif}}
-  permit icmp any any
-  deny ipv6 any any 
-exit
-
-interface {{$management_interface}}
-  no ipv6 traffic-filter in
-  no ipv6 traffic-filter out
-  ipv6 traffic-filter tmp_acl in
-exit
 {{endif}}
 

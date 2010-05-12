@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1273597059" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1273676680" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -598,7 +598,7 @@
       <ServiceGroup id="id4511636C23682_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls" comment="" ro="False">
-      <Firewall id="id46412B5226577" host_OS="procurve" inactive="False" lastCompiled="1273596546" lastInstalled="0" lastModified="1273597135" platform="procurve_acl" version="K.13" name="testhp1" comment="" ro="False">
+      <Firewall id="id46412B5226577" host_OS="procurve" inactive="False" lastCompiled="1273675344" lastInstalled="0" lastModified="1273597135" platform="procurve_acl" version="K.13" name="testhp1" comment="" ro="False">
         <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3199,7 +3199,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4722X40592" host_OS="procurve" inactive="False" lastCompiled="1261963115" lastInstalled="0" lastModified="1273546094" platform="procurve_acl" version="K.13" name="testhp3" comment="Using &quot;safety net&quot; script option" ro="False">
+      <Firewall id="id4722X40592" host_OS="procurve" inactive="False" lastCompiled="1273676640" lastInstalled="0" lastModified="1273546094" platform="procurve_acl" version="K.13" name="testhp3" comment="Using &quot;safety net&quot; script option" ro="False">
         <NAT id="id5018X40592" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3701,6 +3701,620 @@
           <InterfaceOptions>
             <Option name="type">8021q</Option>
             <Option name="vlan_id">402</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Management address="1.1.1.1">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="add_check_state_rule">true</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">False</Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="filesystem">/etc</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ios_ip_address">True</Option>
+          <Option name="ios_set_host_name">True</Option>
+          <Option name="iosacl_acl_basic">False</Option>
+          <Option name="iosacl_acl_no_clear">False</Option>
+          <Option name="iosacl_acl_substitution">True</Option>
+          <Option name="iosacl_acl_temp_addr">10.10.10.1</Option>
+          <Option name="iosacl_add_clear_statements">true</Option>
+          <Option name="iosacl_assume_fw_part_of_any">true</Option>
+          <Option name="iosacl_epilog_script">! This is epilog for testing
+</Option>
+          <Option name="iosacl_generate_logging_commands">False</Option>
+          <Option name="iosacl_include_comments">True</Option>
+          <Option name="iosacl_logging_buffered">False</Option>
+          <Option name="iosacl_logging_buffered_level">3</Option>
+          <Option name="iosacl_logging_console">False</Option>
+          <Option name="iosacl_logging_console_level">3</Option>
+          <Option name="iosacl_logging_timestamp">False</Option>
+          <Option name="iosacl_logging_trap_level">3</Option>
+          <Option name="iosacl_prolog_script">! This is prolog</Option>
+          <Option name="iosacl_regroup_commands">False</Option>
+          <Option name="iosacl_syslog_facility"></Option>
+          <Option name="iosacl_syslog_host"></Option>
+          <Option name="iosacl_use_acl_remarks">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="mgmt_addr">10.10.11.10</Option>
+          <Option name="mgmt_ssh">True</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="procurve_acl_acl_basic">False</Option>
+          <Option name="procurve_acl_acl_no_clear">False</Option>
+          <Option name="procurve_acl_acl_substitution">True</Option>
+          <Option name="procurve_acl_acl_temp_addr">10.10.11.10</Option>
+          <Option name="procurve_acl_add_clear_statements">true</Option>
+          <Option name="procurve_acl_assume_fw_part_of_any">true</Option>
+          <Option name="procurve_acl_epilog_script"></Option>
+          <Option name="procurve_acl_generate_logging_commands">False</Option>
+          <Option name="procurve_acl_include_comments">true</Option>
+          <Option name="procurve_acl_logging_buffered">False</Option>
+          <Option name="procurve_acl_logging_buffered_level">4</Option>
+          <Option name="procurve_acl_logging_console">False</Option>
+          <Option name="procurve_acl_logging_console_level">4</Option>
+          <Option name="procurve_acl_logging_timestamp">False</Option>
+          <Option name="procurve_acl_logging_trap_level">4</Option>
+          <Option name="procurve_acl_prolog_script"></Option>
+          <Option name="procurve_acl_syslog_facility"></Option>
+          <Option name="procurve_acl_syslog_host"></Option>
+          <Option name="prompt1">$ </Option>
+          <Option name="prompt2"> # </Option>
+          <Option name="scpArgs"></Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="use_scp">False</Option>
+          <Option name="verify_interfaces">true</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id5570X54035" host_OS="procurve" inactive="False" lastCompiled="1273676701" lastInstalled="0" lastModified="1273676694" platform="procurve_acl" version="K.13" name="testhp4" comment="Using &quot;safety net&quot; script option, management interface is not a vlan" ro="False">
+        <NAT id="id5866X54035" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id5599X54035" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id5600X54035" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="anti-spoofing">
+            <Src neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5578X54035"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5612X54035" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5624X54035" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5581X54035"/>
+              <ObjectRef ref="id5578X54035"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5637X54035" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id25373X82668"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5649X54035" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5578X54035"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5661X54035" disabled="False" log="False" position="5" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5581X54035"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5673X54035" disabled="False" log="False" position="6" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5685X54035" disabled="False" log="False" position="7" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5578X54035"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5697X54035" disabled="False" log="False" position="8" action="Accept" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5581X54035"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5709X54035" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456929061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5721X54035" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456929061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5578X54035"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5733X54035" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456929061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C4226611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id5581X54035"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5745X54035" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="interface ethernet1 has address on network 10.10.10.0/24,&#10;therefore net-10.10.10 is behind the router and we do&#10;not need to put rules 12-18 in outbound acl of eth0">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id464147DE29061"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5757X54035" disabled="False" log="False" position="13" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id464147DD29061"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5769X54035" disabled="False" log="False" position="14" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id464147DB29061"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5781X54035" disabled="False" log="False" position="15" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id464147DC29061"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5793X54035" disabled="False" log="False" position="16" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id463FE5FE11008"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5805X54035" disabled="False" log="False" position="17" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id4641521729061"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5817X54035" disabled="False" log="False" position="18" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id464147DA29061"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5829X54035" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id4226X64279"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5841X54035" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4641456629061"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id46412C3F26611"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id8888X64279"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#7694C0</Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id5853X54035" disabled="False" log="True" position="21" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id5868X54035" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id5578X54035" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="vlan 10" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">8021q</Option>
+            <Option name="vlan_id">10</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5581X54035" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="True" unprotected="False" name="vlan 20" comment="" ro="False">
+          <InterfaceOptions>
+            <Option name="type">8021q</Option>
+            <Option name="vlan_id">20</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5584X54035" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan 40" comment="" ro="False">
+          <IPv4 id="id5587X54035" name="testhp4:vlan 40:ip" comment="" ro="False" address="10.10.11.1" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">8021q</Option>
+            <Option name="vlan_id">40</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5589X54035" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan 401" comment="" ro="False">
+          <IPv4 id="id5592X54035" name="testhp4:vlan 401:ip" comment="" ro="False" address="10.10.12.1" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">8021q</Option>
+            <Option name="vlan_id">401</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5594X54035" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="vlan 402" comment="" ro="False">
+          <IPv4 id="id5597X54035" name="testhp4:vlan 402:ip" comment="" ro="False" address="10.10.10.1" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">8021q</Option>
+            <Option name="vlan_id">402</Option>
+          </InterfaceOptions>
+        </Interface>
+        <Interface id="id5961X54035" dedicated_failover="False" dyn="False" label="" mgmt="True" security_level="0" unnum="False" unprotected="False" name="a1" comment="" ro="False">
+          <IPv4 id="id5995X54035" name="testhp4:a1:ip" comment="" ro="False" address="10.10.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="type">ethernet</Option>
           </InterfaceOptions>
         </Interface>
         <Management address="1.1.1.1">

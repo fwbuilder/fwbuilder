@@ -118,6 +118,7 @@ string PolicyCompiler_procurve_acl::printAccessGroupCmd(ciscoACL *acl, bool neg)
 
             outp_combined.push_back("  " + outp.join(" "));
             outp_combined.push_back("exit");
+            outp_combined.push_back("");
             return outp_combined.join("\n").toStdString();
         }
     }
