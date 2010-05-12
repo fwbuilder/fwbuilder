@@ -3199,7 +3199,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4722X40592" host_OS="procurve" inactive="False" lastCompiled="1273699659" lastInstalled="0" lastModified="1273546094" platform="procurve_acl" version="K.13" name="testhp3" comment="Using &quot;safety net&quot; script option" ro="False">
+      <Firewall id="id4722X40592" host_OS="procurve" inactive="False" lastCompiled="1273700581" lastInstalled="0" lastModified="1273700578" platform="procurve_acl" version="K.13" name="testhp3" comment="Using &quot;safety net&quot; script option" ro="False">
         <NAT id="id5018X40592" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3718,8 +3718,8 @@
           <Option name="compiler"></Option>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="filesystem">/etc</Option>
-          <Option name="firewall_dir">/etc</Option>
+          <Option name="filesystem"></Option>
+          <Option name="firewall_dir"></Option>
           <Option name="firewall_is_part_of_any_and_networks">true</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
@@ -3787,23 +3787,24 @@
           <Option name="procurve_acl_assume_fw_part_of_any">true</Option>
           <Option name="procurve_acl_epilog_script"></Option>
           <Option name="procurve_acl_generate_logging_commands">False</Option>
-          <Option name="procurve_acl_include_comments">true</Option>
+          <Option name="procurve_acl_include_comments">True</Option>
           <Option name="procurve_acl_logging_buffered">False</Option>
-          <Option name="procurve_acl_logging_buffered_level">4</Option>
+          <Option name="procurve_acl_logging_buffered_level">6</Option>
           <Option name="procurve_acl_logging_console">False</Option>
-          <Option name="procurve_acl_logging_console_level">4</Option>
+          <Option name="procurve_acl_logging_console_level">6</Option>
           <Option name="procurve_acl_logging_timestamp">False</Option>
-          <Option name="procurve_acl_logging_trap_level">4</Option>
+          <Option name="procurve_acl_logging_trap_level">6</Option>
           <Option name="procurve_acl_prolog_script"></Option>
           <Option name="procurve_acl_syslog_facility"></Option>
           <Option name="procurve_acl_syslog_host"></Option>
+          <Option name="procurve_acl_use_acl_remarks">False</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="scpArgs"></Option>
           <Option name="solaris_ip_forward">1</Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_nlgroup">1</Option>
-          <Option name="use_scp">False</Option>
+          <Option name="use_scp">True</Option>
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>

@@ -1,5 +1,11 @@
 2010-05-12  vadim  <vadim@vk.crocodile.org>
 
+	* configlets/procurve/installer_commands_pre_config: commands
+	for the installer for ProCurve
+
+	* instDialog.cpp (instDialog::isCiscoFamily): Using the same
+	built-in installer for Cisco and for ProCurve.
+
 	* procurveaclAdvancedDialog.cpp (procurveaclAdvancedDialog::procurveaclAdvancedDialog):
 	fixed #1449 options for ACL remarks and comments for ProCurve
 
