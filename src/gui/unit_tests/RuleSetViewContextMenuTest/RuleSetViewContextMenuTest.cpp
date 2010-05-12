@@ -208,6 +208,7 @@ void RuleSetViewContextMenuTest::actuallyCreateGroup()
 
 QPoint RuleSetViewContextMenuTest::findCell(Rule *rule, int col)
 {
+    view->scrollTo(((RuleSetModel*)view->model())->index(rule, col));
     for (int x=0; x<view->width(); x++)
     {
         for(int y=view->height(); y>0; y--)
