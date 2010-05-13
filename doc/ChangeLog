@@ -1,3 +1,11 @@
+2010-05-13  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::addSrv): See #1450, SourceForge
+	ticket 3000809: iptables parser can now import "mark" module
+	matches with hexadecimal parameters and "length" module
+	matches. Also added check in the importer for broken iptables-save
+	files where rules for any table are not terminated with "COMMIT".
+
 2010-05-12  vadim  <vadim@vk.crocodile.org>
 
 	* configlets/procurve/installer_commands_pre_config: commands

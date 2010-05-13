@@ -52,7 +52,9 @@ header "post_include_cpp"
 #include <antlr/TokenBuffer.hpp>
 
 #include "../gui/IPTImporter.h"
+
 #include "fwbuilder/TCPService.h"
+#include "fwbuilder/Logger.h"
 
 #include <algorithm>
 
@@ -121,6 +123,22 @@ commit : COMMIT
 
 start_table : STAR WORD
         {
+            if (!importer->current_table.empty())
+            {
+                // we did not see COMMIT
+                *(importer->logger) << "********************************\n";
+                *(importer->logger) << "Missing COMMIT for the table " << importer->current_table << "\n";
+                *(importer->logger) << "Perhaps the file is broken ?" << "\n";
+                *(importer->logger) << "********************************\n";
+
+                *dbg << "Missing COMMIT for the table " << importer->current_table;
+                *dbg << "Perhaps the file is broken ?";
+
+                // push last rule
+                importer->pushRule();
+                // clear current table
+                importer->current_table = "";
+            }
             importer->current_table = LT(0)->getText();
             *dbg << "TABLE " << LT(0)->getText() << std::endl;
         }
@@ -199,6 +217,8 @@ ipt_option :
         |
             match_limit_burst
         |
+            match_length
+        |
             unknown_option
         )
     ;
@@ -268,7 +288,7 @@ unknown_parameter
 
 //****************************************************************
 
-module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_mark | m_limit | m_comment | m_unknown_module) 
+module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_mark | m_limit | m_length | m_comment | m_unknown_module) 
     ;
 
 //****************************************************************
@@ -630,7 +650,7 @@ m_mark : M_MARK
 
 //****************************************************************
 
-match_mark : MATCH_MARK INT_CONST
+match_mark : MATCH_MARK (INT_CONST | HEX_CONST)
         {
             importer->match_mark = LT(0)->getText();
             *dbg << " MATCH MARK " << LT(0)->getText();
@@ -668,6 +688,29 @@ match_limit_burst : MATCH_LIMIT_BURST INT_CONST
         }
     ;
         
+//****************************************************************
+
+m_length : M_LENGTH
+        {
+            *dbg << " LENGTH";
+        }
+    ;
+
+//****************************************************************
+
+match_length : MATCH_LENGTH length_spec
+    ;
+
+length_spec :
+        INT_CONST { importer->length_spec = LT(0)->getText(); }
+        COLON
+        INT_CONST { importer->length_spec += ":";
+                    importer->length_spec += LT(0)->getText(); }
+        {
+            *dbg << " MATCH LENGTH " << importer->length_spec;
+        }
+    ;
+
 //****************************************************************
 
 m_mport : M_MPORT
@@ -989,6 +1032,7 @@ tokens
     M_MPORT = "multiport";
     M_MARK = "mark";
     M_LIMIT = "limit" ;
+    M_LENGTH = "length" ;
 
     ICMP = "icmp";
     TCP = "tcp";
@@ -1129,6 +1173,7 @@ MATCH_ICMP_TYPE : "--icmp-type" ;
 
 MATCH_MARK : "--mark" ;
 MATCH_LIMIT : "--limit" ;
+MATCH_LENGTH : "--length" ;
 MATCH_LIMIT_BURST : "--limit-burst" ;
 
 MATCH_COMMENT : "--comment" ;

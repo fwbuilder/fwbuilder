@@ -56,6 +56,22 @@ TCP Service object: tcp 201-201
 TCP Service object: tcp 202-202
 TCP Service object: tcp 204-204
 TCP Service object: tcp 206-206
+Custom Service object: cust-1-
+TCP Service object: tcp 5190-5190
+Parser error: Original rule combines match of tcp/udp/icmp 
+protocols with one or more module matches, such as 
+module 'mark' or 'length'. Can not translate it 
+into one fwbuilder rule, you need to reimplement 
+this complex match using branch and additional 
+rule.
+Parser error: 
+Tag Service object: tag-0x11
+Parser error: Original rule combines match of tcp/udp/icmp 
+protocols with one or more module matches, such as 
+module 'mark' or 'length'. Can not translate it 
+into one fwbuilder rule, you need to reimplement 
+this complex match using branch and additional 
+rule.
 Tag Service object: tag-16
 TCP Service object: tcp 25-25
 Tag Service object: tag-0xa

@@ -158,6 +158,7 @@ void IPTImporter::clear()
     limit_val = "";
     limit_suffix = "";
     limit_burst = "";
+    length_spec = "";
     if (!action_params.empty()) action_params.clear();
     nat_addr1 = "";
     nat_addr2 = "";
@@ -398,13 +399,52 @@ void IPTImporter::addSrv()
     RuleElementSrv* srv = rule->getSrv();
     assert(srv!=NULL);
 
-    if (match_mark.empty())
+    /*
+     * Importer::addSrv() adds regular (IP/ICMP/UDP/TCP) service
+     * object.  If we have mark module match, implement it as
+     * TagService object only if there is no IP/ICMP/UDP/TCP service
+     * as well. Other modules, such as length, are added only if there
+     * is nothing else. If we have more than one service to deal with,
+     * mark rule as bad and issue warning.
+     *
+     * I check and issue warning after I try to add TagService because
+     * I want to add it in case when there are no regular services
+     * but there is "mark" and some other module in the original rule.
+     * Priorities: 1) IP/ICMP/UDP/TCP service 2) TagService (module mark)
+     * 3) any other module
+     *
+     */
+    Importer::addSrv();
+
+    int count_services = 0;
+    if (!rule->getSrv()->isAny()) count_services++;
+    if (!match_mark.empty()) count_services++;
+    if (!length_spec.empty()) count_services++;
+
+    if (rule->getSrv()->isAny() && !match_mark.empty())
     {
-        Importer::addSrv();
-        return;
+        srv->addRef( getTagService(match_mark) );
     }
 
-    srv->addRef( getTagService(match_mark) );
+    if (rule->getSrv()->isAny() && !length_spec.empty())
+    {
+        // create custom service with module "length"
+        srv->addRef(getCustomService(
+                        "iptables", "-m length --length " + length_spec, ""));
+    }
+
+    if (count_services > 1)
+    {
+        QString err;
+        if (!match_mark.empty())
+            err = QObject::tr("Original rule combines match of tcp/udp/icmp \n"
+                              "protocols with one or more module matches, such as \n"
+                              "module 'mark' or 'length'. Can not translate it \n"
+                              "into one fwbuilder rule, you need to reimplement \n"
+                              "this complex match using branch and additional \n"
+                              "rule.");
+        markCurrentRuleBad(err.toUtf8().constData());
+    }
 }
 
 void IPTImporter::pushRule()

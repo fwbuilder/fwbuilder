@@ -85,7 +85,6 @@ protected:
     int  error_counter;
 
     libfwbuilder::FWObject *library;
-    libfwbuilder::Logger *logger;
 
     std::istringstream &input;
     
@@ -193,6 +192,9 @@ protected:
     
 public:
 
+    // making logger public so I can access it from the code in the grammar
+    libfwbuilder::Logger *logger;
+    
     // temporary variables used by parser to store values
     // Importer converts these into a proper rule using method
     // pushRule()

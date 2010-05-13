@@ -137,16 +137,15 @@ void ImporterTest::compareResults(QueueLogger* logger,
         result.append(logger->getLine().c_str());
     QStringList obtained_result = result.split("\n");
 
+    QFile rw(obtained_result_file_name);
+    rw.open(QFile::WriteOnly);
+    rw.write(result.toAscii());
+    rw.close();
+
     QFile rr(expected_result_file_name);
     rr.open(QFile::ReadOnly);
     QString result_file = rr.readAll();
     QStringList expected_result = result_file.split("\n");
-
-    QFile rw(obtained_result_file_name);
-    rw.open(QFile::WriteOnly);
-    foreach (QString line, obtained_result)
-        rw.write(line.toAscii());
-    rw.close();
 
     int max_idx = max(expected_result.size(), obtained_result.size());
     for (int i=0; i < max_idx; ++i)

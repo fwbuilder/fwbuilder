@@ -24,7 +24,7 @@
 class IPTImporter;
 
 #line 27 "IPTCfgParser.hpp"
-#line 62 "iptables.g"
+#line 64 "iptables.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
@@ -32,7 +32,7 @@ class IPTImporter;
 #line 33 "IPTCfgParser.hpp"
 class CUSTOM_API IPTCfgParser : public ANTLR_USE_NAMESPACE(antlr)LLkParser, public IPTCfgParserTokenTypes
 {
-#line 79 "iptables.g"
+#line 81 "iptables.g"
 
 // additional methods and members
 
@@ -88,6 +88,7 @@ public:
 	public: void match_mark();
 	public: void match_limit();
 	public: void match_limit_burst();
+	public: void match_length();
 	public: void unknown_option();
 	public: void unknown_parameter();
 	public: void m_state();
@@ -97,6 +98,7 @@ public:
 	public: void m_udp();
 	public: void m_mark();
 	public: void m_limit();
+	public: void m_length();
 	public: void m_comment();
 	public: void m_unknown_module();
 	public: void protocol_word();
@@ -107,6 +109,7 @@ public:
 	public: void nat_port_def_with_range();
 	public: void state_word();
 	public: void limit_rate();
+	public: void length_spec();
 	public: void port_def_no_range();
 	public: void port_def_with_range();
 	public: void port_def_with_incomplete_range();
@@ -126,10 +129,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 127;
+	static const int NUM_TOKENS = 129;
 #else
 	enum {
-		NUM_TOKENS = 127
+		NUM_TOKENS = 129
 	};
 #endif
 	

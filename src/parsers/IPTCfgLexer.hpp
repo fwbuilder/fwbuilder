@@ -24,7 +24,7 @@
 class IPTImporter;
 
 #line 27 "IPTCfgLexer.hpp"
-#line 62 "iptables.g"
+#line 64 "iptables.g"
 
     // gets inserted after generated namespace specifications in the
     // header file. But outside the generated class.
@@ -82,6 +82,7 @@ public:
 	public: void mMATCH_ICMP_TYPE(bool _createToken);
 	public: void mMATCH_MARK(bool _createToken);
 	public: void mMATCH_LIMIT(bool _createToken);
+	public: void mMATCH_LENGTH(bool _createToken);
 	public: void mMATCH_LIMIT_BURST(bool _createToken);
 	public: void mMATCH_COMMENT(bool _createToken);
 	public: void mREJECT_WITH(bool _createToken);

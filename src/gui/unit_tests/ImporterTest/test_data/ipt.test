@@ -120,6 +120,15 @@
 #
 -A user_chain -m multiport -s 128.143.0.0/16 -p tcp --dports 548,201,202,204,206 -j ACCEPT
 
+# module length
+-A user_chain -m length --length 400:65535 -j DROP
+
+# combination of some regular service and module or two modules (error)
+#
+-A user_chain  -s 128.143.0.0/16 -p tcp --dport 5190 -m mark --mark 0x11 -j DROP
+-A user_chain  -s 128.143.0.0/16 -p tcp --dport 5190 -m length --length 400:1500 -j DROP
+-A user_chain  -m mark --mark 0x11  -m length --length 400:1500 -j DROP
+
 -A user_chain -j DROP
 
 COMMIT

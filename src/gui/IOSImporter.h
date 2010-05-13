@@ -38,9 +38,8 @@
 #include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Logger.h"
 
-class IOSImporter : public Importer {
-
-    libfwbuilder::Logger *logger;
+class IOSImporter : public Importer
+{
 
     std::map<std::string, std::pair<int,int> > ios_icmp_specs;
     std::map<std::string, int>                 ios_proto_specs;

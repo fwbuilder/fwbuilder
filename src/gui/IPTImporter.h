@@ -41,9 +41,8 @@
                               
 typedef std::pair<std::string,std::string> str_tuple;
 
-class IPTImporter : public Importer {
-
-    libfwbuilder::Logger *logger;
+class IPTImporter : public Importer
+{
 
     std::map<std::string, std::pair<int,int> > icmp_specs;
 
@@ -101,6 +100,7 @@ class IPTImporter : public Importer {
     std::string limit_val;
     std::string limit_suffix;
     std::string limit_burst;
+    std::string length_spec;
 
     std::string nat_addr1;
     std::string nat_addr2;
