@@ -120,6 +120,19 @@
 #
 -A user_chain -m multiport -s 128.143.0.0/16 -p tcp --dports 548,201,202,204,206 -j ACCEPT
 
+# there can be just one port with multiport
+#
+-A user_chain -m multiport -s 128.143.0.0/16 -p tcp --dports 2222 -j ACCEPT
+
+# source ports with multiport
+-A user_chain -m multiport -s 128.143.0.0/16 -p tcp --sports 548,201,202,204,206 -j ACCEPT
+-A user_chain -m multiport -s 128.143.0.0/16 -p tcp --sports 2222 -j ACCEPT
+
+# --ports (source OR destination port)
+-A user_chain -m multiport -s 128.143.0.0/16 -p tcp --ports 548,201,202,204,206 -j ACCEPT
+-A user_chain -m multiport -s 128.143.0.0/16 -p tcp --ports 2222 -j ACCEPT
+
+
 # module length
 -A user_chain -m length --length 400:65535 -j DROP
 
@@ -127,7 +140,7 @@
 -A user_chain -m recent  --name badguy --rcheck --seconds 60  -j DROP
 -A user_chain -p tcp -i eth0 --dport 139 -m recent --name badguy --set -j DROP
 
-# combination of some regular service and module or two modules 
+# combinations of a regular service and module or two modules 
 #
 -A user_chain  -s 128.143.0.0/16 -p tcp --dport 5190 -m mark --mark 0x11 -j DROP
 -A user_chain  -s 128.143.0.0/16 -p tcp --dport 5190 -m length --length 400:1500 -j DROP
@@ -140,7 +153,8 @@
 -A user_chain -p tcp -m mark --mark 0x4 -m tcp ! --tcp-flags FIN,SYN,RST,PSH,ACK,URG SYN -j MARK --set-mark 0x1
 
 # this rule has three matches which is not supported
--A user_chain -p tcp -m length --length 0:128 -m mark ! --mark 0x4 -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG SYN -j MARK --set-mark 0x1
+-A user_chain -p tcp -m length --length 0:128 -m mark --mark 0x4 -m tcp --sport 53 -j ACCEPT
+-A user_chain -p tcp -m length --length 0:128 -m mark ! --mark 0x4 -m tcp --sport 53 -j ACCEPT
 
 
 -A user_chain -j DROP

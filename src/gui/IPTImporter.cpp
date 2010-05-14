@@ -145,8 +145,9 @@ IPTImporter::~IPTImporter()
 void IPTImporter::clear()
 {
     Importer::clear();
-    if (!src_port_list.empty())  src_port_list.clear();
-    if (!dst_port_list.empty())  dst_port_list.clear();
+    if (!src_port_list.empty())   src_port_list.clear();
+    if (!dst_port_list.empty())   dst_port_list.clear();
+    if (!both_port_list.empty())  both_port_list.clear();
     current_state = "";
     i_intf = "";
     o_intf = "";
@@ -189,6 +190,17 @@ void IPTImporter::startDstMultiPort()
 void IPTImporter::pushTmpPortSpecToDstPortList()
 {
     dst_port_list.push_back(
+        str_tuple( tmp_port_range_start, tmp_port_range_end ) );
+}
+
+void IPTImporter::startBothMultiPort()
+{
+    both_port_list.clear();
+}
+
+void IPTImporter::pushTmpPortSpecToBothPortList()
+{
+    both_port_list.push_back(
         str_tuple( tmp_port_range_start, tmp_port_range_end ) );
 }
 
@@ -394,6 +406,32 @@ FWObject* IPTImporter::createUDPService()
 {
     return createTCPUDPService("udp");
 }
+
+
+void IPTImporter::addSrv()
+{
+    // special case for the multiport module parameter "--ports". This
+    // parameter matches source OR destination ports. Will created two
+    // separate service objects in the same rule
+    if (!both_port_list.empty())
+    {
+        src_port_list.insert(src_port_list.begin(),
+                             both_port_list.begin(), both_port_list.end());
+        Importer::addSrv();
+
+        src_port_list.clear();
+
+        dst_port_list.insert(dst_port_list.begin(),
+                             both_port_list.begin(), both_port_list.end());
+
+        Importer::addSrv();
+
+        dst_port_list.clear();
+    } else
+        Importer::addSrv();
+}
+
+
 
 /*
  * Importer::addSrv() adds regular (IP/ICMP/UDP/TCP) service

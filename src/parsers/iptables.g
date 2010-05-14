@@ -769,7 +769,9 @@ m_comment : M_COMMENT MATCH_COMMENT STRING
     ;
 
 //****************************************************************
-
+/*
+ * Note that there can be just one port (i.e. no ,port[,port] part)
+ */
 multiport_tcp_udp_port_spec :
         (
             ( (MATCH_SRC_MULTIPORT | MATCH_SRC_MULTIPORT_SHORT)
@@ -784,7 +786,8 @@ multiport_tcp_udp_port_spec :
                 ( COMMA port_def_no_range
                     {
                         importer->pushTmpPortSpecToSrcPortList();
-                    } )+
+                    }
+                )*
             )
         |
             ( (MATCH_DST_MULTIPORT | MATCH_DST_MULTIPORT_SHORT)
@@ -799,8 +802,26 @@ multiport_tcp_udp_port_spec :
                 ( COMMA port_def_no_range
                     {
                         importer->pushTmpPortSpecToDstPortList();
-                    } )+
+                    }
+                )*
             )
+        |
+            ( MATCH_BOTH_MULTIPORT
+                {
+                    importer->startBothMultiPort();
+                    *dbg << " MULTIPORT PORTS=";
+                }
+                port_def_no_range
+                {
+                    importer->pushTmpPortSpecToBothPortList();
+                }
+                ( COMMA port_def_no_range
+                    {
+                        importer->pushTmpPortSpecToBothPortList();
+                    }
+                )*
+            )
+
         )
     ;
 
@@ -1195,6 +1216,7 @@ MATCH_STATE : "--state" ;
 
 MATCH_SRC_MULTIPORT : "--source-ports" ;
 MATCH_DST_MULTIPORT : "--destination-ports" ;
+MATCH_BOTH_MULTIPORT : "--ports" ;
 
 MATCH_SRC_MULTIPORT_SHORT : "--sports" ;
 MATCH_DST_MULTIPORT_SHORT : "--dports" ;

@@ -87,6 +87,7 @@ class IPTImporter : public Importer
 
     std::list<str_tuple> src_port_list;
     std::list<str_tuple> dst_port_list;
+    std::list<str_tuple> both_port_list;
 
     std::map<std::string, std::string> action_params;
 
@@ -132,8 +133,13 @@ class IPTImporter : public Importer
     void startDstMultiPort();
     void pushTmpPortSpecToDstPortList();
 
+    void startBothMultiPort();
+    void pushTmpPortSpecToBothPortList();
+    
     void pushPolicyRule();
     void pushNATRule();
+
+    virtual void addSrv();
 
     virtual void pushRule();
     virtual void newUnidirRuleSet(const std::string &name);

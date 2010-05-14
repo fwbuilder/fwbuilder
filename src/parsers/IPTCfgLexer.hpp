@@ -68,6 +68,7 @@ public:
 	public: void mMATCH_STATE(bool _createToken);
 	public: void mMATCH_SRC_MULTIPORT(bool _createToken);
 	public: void mMATCH_DST_MULTIPORT(bool _createToken);
+	public: void mMATCH_BOTH_MULTIPORT(bool _createToken);
 	public: void mMATCH_SRC_MULTIPORT_SHORT(bool _createToken);
 	public: void mMATCH_DST_MULTIPORT_SHORT(bool _createToken);
 	public: void mMATCH_SRC_PORT(bool _createToken);

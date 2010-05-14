@@ -8,6 +8,12 @@
 	rule and additional rule in a branch rule set that implements
 	module match.
 
+	* iptables.g (multiport_tcp_udp_port_spec): fixes #1453 "iptables
+	importer should parse multiport module parameter --ports". Module
+	multuport with parameter "--ports" matches either source or
+	destination port numbers. Importer creates two tcp (or udp)
+	service objects to implement this match.
+
 	* IPTImporter.cpp (IPTImporter::addSrv): See #1450, SourceForge
 	ticket 3000809: iptables parser can now import "mark" module
 	matches with hexadecimal parameters and "length" module

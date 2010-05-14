@@ -56,6 +56,13 @@ TCP Service object: tcp 201-201
 TCP Service object: tcp 202-202
 TCP Service object: tcp 204-204
 TCP Service object: tcp 206-206
+TCP Service object: tcp 2222-2222
+TCP Service object: tcp 548-548:
+TCP Service object: tcp 201-201:
+TCP Service object: tcp 202-202:
+TCP Service object: tcp 204-204:
+TCP Service object: tcp 206-206:
+TCP Service object: tcp 2222-2222:
 Custom Service object: cust-1-: iptables: -m length --length 400:65535
 Custom Service object: cust-2-: iptables: -m recent --name badguy --rcheck --seconds 60 
 Custom Service object: cust-3-: iptables: -m recent --name badguy --set 
@@ -65,6 +72,11 @@ Custom Service object: cust-4-: iptables: -m length --length 400:1500
 Tag Service object: tag-0x1
 TCP Service object: tcp fsrpau/s
 Tag Service object: tag-0x4
+TCP Service object: tcp 53-53:
+Parser error: Original rule combines match of tcp/udp/icmp 
+protocols with two or more module matches, such as 
+module 'mark', 'recent' or 'length'. Use additional 
+branches to implement this complex match.
 Parser error: Original rule combines match of tcp/udp/icmp 
 protocols with two or more module matches, such as 
 module 'mark', 'recent' or 'length'. Use additional 
