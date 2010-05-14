@@ -74,6 +74,8 @@ public:
 	public: void chain_def();
 	public: void ipt_option();
 	public: void module();
+	public: void match_mark();
+	public: void match_recent();
 	public: void src();
 	public: void dst();
 	public: void i_intf();
@@ -85,7 +87,6 @@ public:
 	public: void basic_tcp_udp_port_spec();
 	public: void multiport_tcp_udp_port_spec();
 	public: void tcp_options();
-	public: void match_mark();
 	public: void match_limit();
 	public: void match_limit_burst();
 	public: void match_length();
@@ -96,7 +97,6 @@ public:
 	public: void m_icmp();
 	public: void m_tcp();
 	public: void m_udp();
-	public: void m_mark();
 	public: void m_limit();
 	public: void m_length();
 	public: void m_comment();
@@ -108,7 +108,12 @@ public:
 	public: void nat_addr_range();
 	public: void nat_port_def_with_range();
 	public: void state_word();
+	public: void m_mark();
 	public: void limit_rate();
+	public: void m_recent();
+	public: void recent_opts();
+	public: void recent_args_no_param();
+	public: void recent_args_param();
 	public: void length_spec();
 	public: void port_def_no_range();
 	public: void port_def_with_range();
@@ -129,10 +134,10 @@ protected:
 private:
 	static const char* tokenNames[];
 #ifndef NO_STATIC_CONSTS
-	static const int NUM_TOKENS = 129;
+	static const int NUM_TOKENS = 137;
 #else
 	enum {
-		NUM_TOKENS = 129
+		NUM_TOKENS = 137
 	};
 #endif
 	
@@ -158,6 +163,14 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_9;
 	static const unsigned long _tokenSet_10_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_10;
+	static const unsigned long _tokenSet_11_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_11;
+	static const unsigned long _tokenSet_12_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_12;
+	static const unsigned long _tokenSet_13_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_13;
+	static const unsigned long _tokenSet_14_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_14;
 };
 
 #endif /*INC_IPTCfgParser_hpp_*/

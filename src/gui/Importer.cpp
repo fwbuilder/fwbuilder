@@ -547,7 +547,12 @@ FWObject* Importer::getCustomService(const std::string &platform,
     s->setComment(cstr.str());
     all_objects[sstr.str()] = s;
 
-    *logger << "Custom Service object: " << nstr.str() << "\n";
+    *logger << "Custom Service object: " << nstr.str()
+            << ": "
+            << platform
+            << ": "
+            << code
+            << "\n";
     return s;
 }
 
@@ -1019,9 +1024,7 @@ void Importer::markCurrentRuleBad(const std::string &comment)
     FWOptions  *ropt = current_rule->getOptionsObject();
     assert(ropt!=NULL);
 
-    QString color = getBadRuleColor().c_str();
-
-    ropt->setStr("color", color.toLatin1().constData());
+    ropt->setStr("color", getBadRuleColor());
 
     if (!rule_comment.empty()) rule_comment += "\n";
     rule_comment += comment;

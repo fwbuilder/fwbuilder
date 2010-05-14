@@ -155,6 +155,8 @@ void IPTImporter::clear()
     tmp_port_range_end = "";
     src_neg = dst_neg = srv_neg = intf_neg = false;
     match_mark = "";
+    neg_match_mark = false;
+    recent_match = "";
     limit_val = "";
     limit_suffix = "";
     limit_burst = "";
@@ -393,57 +395,159 @@ FWObject* IPTImporter::createUDPService()
     return createTCPUDPService("udp");
 }
 
-void IPTImporter::addSrv()
+/*
+ * Importer::addSrv() adds regular (IP/ICMP/UDP/TCP) service
+ * object.  If we have mark module match, implement it as
+ * TagService object only if there is no IP/ICMP/UDP/TCP service
+ * as well. Other modules, such as length, are added only if there
+ * is nothing else. If we have more than one service to deal with,
+ * mark rule as bad and issue warning.
+ *
+ * I check and issue warning after I try to add TagService because
+ * I want to add it in case when there are no regular services
+ * but there is "mark" and some other module in the original rule.
+ * Priorities: 1) IP/ICMP/UDP/TCP service 2) TagService (module mark)
+ * 3) any other module
+ *
+ */
+
+void IPTImporter::processModuleMatches()
 {
     PolicyRule *rule = PolicyRule::cast(current_rule);
     RuleElementSrv* srv = rule->getSrv();
     assert(srv!=NULL);
 
-    /*
-     * Importer::addSrv() adds regular (IP/ICMP/UDP/TCP) service
-     * object.  If we have mark module match, implement it as
-     * TagService object only if there is no IP/ICMP/UDP/TCP service
-     * as well. Other modules, such as length, are added only if there
-     * is nothing else. If we have more than one service to deal with,
-     * mark rule as bad and issue warning.
-     *
-     * I check and issue warning after I try to add TagService because
-     * I want to add it in case when there are no regular services
-     * but there is "mark" and some other module in the original rule.
-     * Priorities: 1) IP/ICMP/UDP/TCP service 2) TagService (module mark)
-     * 3) any other module
-     *
-     */
-    Importer::addSrv();
+    FWOptions  *fwopt = getFirewallObject()->getOptionsObject();
+    assert(fwopt!=NULL);
 
-    int count_services = 0;
-    if (!rule->getSrv()->isAny()) count_services++;
-    if (!match_mark.empty()) count_services++;
-    if (!length_spec.empty()) count_services++;
+    FWOptions  *ropt = current_rule->getOptionsObject();
+    assert(ropt!=NULL);
 
+    addAllModuleMatches(rule);
+
+    // functions that addAllModuleMatches() calls actually clear
+    // variables match_mark, length_spec etc.
+
+    list<string> module_match_options;
+    module_match_options.push_back(match_mark);
+    module_match_options.push_back(length_spec);
+    module_match_options.push_back(recent_match);
+
+    int branch_depth = 0;
+    for(list<string>::iterator it=module_match_options.begin();
+        it!=module_match_options.end(); ++it)
+    {
+        if (!it->empty())
+        {
+            if (branch_depth)
+            {
+                // at this time I create branches only one level deep
+                QString err = QObject::tr(
+                    "Original rule combines match of tcp/udp/icmp \n"
+                    "protocols with two or more module matches, such as \n"
+                    "module 'mark', 'recent' or 'length'. Use additional \n"
+                    "branches to implement this complex match.");
+                markCurrentRuleBad(err.toUtf8().constData());
+                break;
+            }
+
+            ostringstream str;
+            str << current_chain << "_" << rule->getPosition() << "_mod_match";
+            string branch_chain = str.str();
+            branch_depth++;
+
+            UnidirectionalRuleSet *rs = branch_rulesets[branch_chain];
+            if (rs==NULL)
+                rs = getUnidirRuleSet(branch_chain);
+            branch_rulesets[branch_chain] = rs;
+            rs->ruleset->setName(branch_chain);
+
+            FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+            PolicyRule *new_rule = PolicyRule::cast(dbroot->create(PolicyRule::TYPENAME));
+            FWOptions  *ropt = new_rule->getOptionsObject();
+            assert(ropt!=NULL);
+            ropt->setBool("stateless", true);
+            rs->ruleset->add(new_rule);
+
+            // duplicate() ensures that new_rule has right action
+            new_rule->duplicate(rule);
+            RuleElement* re;
+            re = new_rule->getSrc();   re->reset();
+            re = new_rule->getDst();   re->reset();
+            re = new_rule->getSrv();   re->reset();
+            re = new_rule->getItf();   re->reset();
+
+            addAllModuleMatches(new_rule);
+
+            ostringstream str1;
+            str1 << "Called from ruleset " << rule->getParent()->getName()
+                 << ", rule " << rule->getPosition();
+            new_rule->setComment(str1.str());
+
+            rule->setAction(PolicyRule::Branch);
+            rule->setBranch(rs->ruleset);
+        }
+    }
+}
+
+void IPTImporter::addAllModuleMatches(PolicyRule *rule)
+{
+    addLimitMatch(rule);
+    addMarkMatch(rule);
+    addLengthMatch(rule);
+    addRecentMatch(rule);
+}
+
+void IPTImporter::addMarkMatch(PolicyRule *rule)
+{
+    RuleElementSrv* srv = rule->getSrv();
+    assert(srv!=NULL);
     if (rule->getSrv()->isAny() && !match_mark.empty())
     {
         srv->addRef( getTagService(match_mark) );
+        if (neg_match_mark) srv->setNeg(true);
+        match_mark = "";
     }
+}
 
+void IPTImporter::addLengthMatch(PolicyRule *rule)
+{
+    RuleElementSrv* srv = rule->getSrv();
+    assert(srv!=NULL);
     if (rule->getSrv()->isAny() && !length_spec.empty())
     {
         // create custom service with module "length"
         srv->addRef(getCustomService(
                         "iptables", "-m length --length " + length_spec, ""));
+        length_spec = "";
     }
+}
 
-    if (count_services > 1)
+void IPTImporter::addLimitMatch(PolicyRule *rule)
+{
+    FWOptions  *ropt = rule->getOptionsObject();
+    assert(ropt!=NULL);
+    if (target!="LOG" && !limit_val.empty())
     {
-        QString err;
-        if (!match_mark.empty())
-            err = QObject::tr("Original rule combines match of tcp/udp/icmp \n"
-                              "protocols with one or more module matches, such as \n"
-                              "module 'mark' or 'length'. Can not translate it \n"
-                              "into one fwbuilder rule, you need to reimplement \n"
-                              "this complex match using branch and additional \n"
-                              "rule.");
-        markCurrentRuleBad(err.toUtf8().constData());
+        /* TODO: this is where we should add support for hashlimit */
+        ropt->setStr("limit_value", limit_val);
+        ropt->setStr("limit_suffix", std::string("/") + limit_suffix);
+        if (!limit_burst.empty())
+            ropt->setStr("limit_burst", limit_burst);
+        limit_val = "";
+    }
+}
+
+void IPTImporter::addRecentMatch(PolicyRule *rule)
+{
+    RuleElementSrv* srv = rule->getSrv();
+    assert(srv!=NULL);
+    if (rule->getSrv()->isAny() && !recent_match.empty())
+    {
+        // create custom service with module "recent"
+        srv->addRef(getCustomService(
+                        "iptables", "-m recent " + recent_match, ""));
+        recent_match = "";
     }
 }
 
@@ -592,14 +696,6 @@ void IPTImporter::pushPolicyRule()
 
     rule->setAction(action);
 
-    if (target!="LOG" && !limit_val.empty())
-    {
-        ropt->setStr("limit_value", limit_val);
-        ropt->setStr("limit_suffix", std::string("/") + limit_suffix);
-        if (!limit_burst.empty())
-            ropt->setStr("limit_burst", limit_burst);
-    }
-
     addSrc();
     addDst();
     addSrv();
@@ -728,7 +824,10 @@ void IPTImporter::pushPolicyRule()
             rs->ruleset->add(current_rule);
             current_ruleset = rs->ruleset;
         }
-    
+
+        // renumber to clean-up rule positions
+        current_ruleset->renumberRules();
+
         rule->setDirection(PolicyRule::Both);
 
         if ( !i_intf.empty() && !o_intf.empty())
@@ -822,7 +921,10 @@ void IPTImporter::pushPolicyRule()
             }
         }
 
+        processModuleMatches();
+
         current_rule->setComment(rule_comment);
+
     }
 
 //     *Importer::logger << "Rule: " << rule->getActionAsString() << " "

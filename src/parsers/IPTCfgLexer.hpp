@@ -63,8 +63,6 @@ public:
 	public: void mWORD(bool _createToken);
 	public: void mSTRING(bool _createToken);
 	protected: void mUNSUPPORTED_OPTION(bool _createToken);
-	public: void mSECONDS(bool _createToken);
-	public: void mSET(bool _createToken);
 	public: void mRSOURCE(bool _createToken);
 	public: void mADD_RULE(bool _createToken);
 	public: void mMATCH_STATE(bool _createToken);
@@ -81,9 +79,18 @@ public:
 	public: void mMATCH_DST_PORT_SHORT(bool _createToken);
 	public: void mMATCH_ICMP_TYPE(bool _createToken);
 	public: void mMATCH_MARK(bool _createToken);
-	public: void mMATCH_LIMIT(bool _createToken);
 	public: void mMATCH_LENGTH(bool _createToken);
+	public: void mMATCH_LIMIT(bool _createToken);
 	public: void mMATCH_LIMIT_BURST(bool _createToken);
+	public: void mMATCH_RECENT_NAME(bool _createToken);
+	public: void mMATCH_RECENT_RCHECK(bool _createToken);
+	public: void mMATCH_RECENT_UPDATE(bool _createToken);
+	public: void mMATCH_RECENT_REMOVE(bool _createToken);
+	public: void mMATCH_RECENT_SECONDS(bool _createToken);
+	public: void mMATCH_RECENT_HITCOUNT(bool _createToken);
+	public: void mMATCH_RECENT_RTTL(bool _createToken);
+	public: void mMATCH_RECENT_RDEST(bool _createToken);
+	public: void mMATCH_RECENT_SET(bool _createToken);
 	public: void mMATCH_COMMENT(bool _createToken);
 	public: void mREJECT_WITH(bool _createToken);
 	public: void mSET_MARK(bool _createToken);

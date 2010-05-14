@@ -4,7 +4,7 @@ Using automatic rule controlled by option 'Drop packet that do not match any kno
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Address object: h-21.21.21.21
 TCP Service object: tcp 22-22:
-Custom Service object: cust-0-tcp
+Custom Service object: cust-0-tcp: iptables: -m state --state RELATED,ESTABLISHED
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Interface: lo
 UDP Service object: udp 0-0:1604-1604
@@ -56,22 +56,19 @@ TCP Service object: tcp 201-201
 TCP Service object: tcp 202-202
 TCP Service object: tcp 204-204
 TCP Service object: tcp 206-206
-Custom Service object: cust-1-
+Custom Service object: cust-1-: iptables: -m length --length 400:65535
+Custom Service object: cust-2-: iptables: -m recent --name badguy --rcheck --seconds 60 
+Custom Service object: cust-3-: iptables: -m recent --name badguy --set 
 TCP Service object: tcp 5190-5190
-Parser error: Original rule combines match of tcp/udp/icmp 
-protocols with one or more module matches, such as 
-module 'mark' or 'length'. Can not translate it 
-into one fwbuilder rule, you need to reimplement 
-this complex match using branch and additional 
-rule.
-Parser error: 
 Tag Service object: tag-0x11
+Custom Service object: cust-4-: iptables: -m length --length 400:1500
+Tag Service object: tag-0x1
+TCP Service object: tcp fsrpau/s
+Tag Service object: tag-0x4
 Parser error: Original rule combines match of tcp/udp/icmp 
-protocols with one or more module matches, such as 
-module 'mark' or 'length'. Can not translate it 
-into one fwbuilder rule, you need to reimplement 
-this complex match using branch and additional 
-rule.
+protocols with two or more module matches, such as 
+module 'mark', 'recent' or 'length'. Use additional 
+branches to implement this complex match.
 Tag Service object: tag-16
 TCP Service object: tcp 25-25
 Tag Service object: tag-0xa

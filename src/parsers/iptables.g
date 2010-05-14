@@ -189,6 +189,10 @@ ipt_option :
         (
             module
         |
+            match_mark
+        |
+            match_recent
+        |
             src
         |
             dst
@@ -210,8 +214,6 @@ ipt_option :
             multiport_tcp_udp_port_spec
         |
             tcp_options
-        |
-            match_mark
         |
             match_limit
         |
@@ -287,8 +289,11 @@ unknown_parameter
     ;
 
 //****************************************************************
+// this matches "-m module", except for modules "mark" and "recent"
+// which have some parameters that look the same as parameters for
+// other modules. See match_mark and match_recent 
 
-module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_mark | m_limit | m_length | m_comment | m_unknown_module) 
+module   : OPT_MODULE ( m_state | m_mport | m_icmp | m_tcp | m_udp | m_limit |  m_length | m_comment | m_unknown_module) 
     ;
 
 //****************************************************************
@@ -650,11 +655,13 @@ m_mark : M_MARK
 
 //****************************************************************
 
-match_mark : MATCH_MARK (INT_CONST | HEX_CONST)
-        {
-            importer->match_mark = LT(0)->getText();
-            *dbg << " MATCH MARK " << LT(0)->getText();
-        }
+match_mark : OPT_MODULE m_mark
+            ( EXCLAMATION {importer->neg_match_mark = true;} )?
+            MATCH_MARK (INT_CONST | HEX_CONST)
+            {
+                importer->match_mark = LT(0)->getText();
+                *dbg << " MATCH MARK " << LT(0)->getText();
+            }
     ;
 
 //****************************************************************
@@ -686,6 +693,39 @@ match_limit_burst : MATCH_LIMIT_BURST INT_CONST
             importer->limit_burst = LT(0)->getText();
             *dbg << " LIMIT BURST " << LT(0)->getText();
         }
+    ;
+        
+//****************************************************************
+
+m_recent : M_RECENT
+        {
+            *dbg << " RECENT";
+        }
+    ;
+
+//****************************************************************
+/* Unlike with other modules, this matches both "-m recent" and 
+ * module arguments
+ * I am having difficulties writing grammar to catch negation
+ * in front of arguments, such as ! --set
+ */
+match_recent : OPT_MODULE m_recent ( recent_opts )+
+    ;
+
+recent_opts: recent_args_no_param | recent_args_param
+    ;
+
+recent_args_no_param: (MATCH_RECENT_SET | MATCH_RECENT_RCHECK |
+                       MATCH_RECENT_UPDATE | MATCH_RECENT_REMOVE |
+                       MATCH_RECENT_RTTL | RSOURCE |
+                       MATCH_RECENT_RDEST)
+        { importer->recent_match += LT(0)->getText() + " "; }
+    ;
+
+recent_args_param: (MATCH_RECENT_NAME | MATCH_RECENT_SECONDS | MATCH_RECENT_HITCOUNT)
+        { importer->recent_match += LT(0)->getText() + " "; }
+        (INT_CONST | WORD)
+        { importer->recent_match += LT(0)->getText() + " "; }
     ;
         
 //****************************************************************
@@ -1033,6 +1073,7 @@ tokens
     M_MARK = "mark";
     M_LIMIT = "limit" ;
     M_LENGTH = "length" ;
+    M_RECENT = "recent" ;
 
     ICMP = "icmp";
     TCP = "tcp";
@@ -1141,10 +1182,9 @@ protected
 UNSUPPORTED_OPTION:;
 
 //"--seconds" confuses lexer because it interprets it as "-" "-s" "econds"
-SECONDS : "--seconds" { $setType(UNSUPPORTED_OPTION); };
+//SECONDS : "--seconds" { $setType(UNSUPPORTED_OPTION); };
 
-//"--seconds" confuses lexer because it interprets it as "-" "-s" "econds"
-SET : "--set" { $setType(UNSUPPORTED_OPTION); };
+// SET : "--set" { $setType(UNSUPPORTED_OPTION); };
 
 // "--rsource" also confuses lexer which expects "--reject"
 RSOURCE : "--rsource" { $setType(UNSUPPORTED_OPTION); };
@@ -1172,9 +1212,22 @@ MATCH_DST_PORT_SHORT : "--dport" ;
 MATCH_ICMP_TYPE : "--icmp-type" ;
 
 MATCH_MARK : "--mark" ;
-MATCH_LIMIT : "--limit" ;
+
 MATCH_LENGTH : "--length" ;
+
+MATCH_LIMIT : "--limit" ;
 MATCH_LIMIT_BURST : "--limit-burst" ;
+
+MATCH_RECENT_NAME : "--name" ;
+MATCH_RECENT_RCHECK : "--rcheck" ;
+MATCH_RECENT_UPDATE : "--update" ;
+MATCH_RECENT_REMOVE : "--remove" ;
+MATCH_RECENT_SECONDS : "--seconds" ;
+MATCH_RECENT_HITCOUNT : "--hitcount" ;
+MATCH_RECENT_RTTL : "--rttl" ;
+MATCH_RECENT_RDEST : "--rdest" ;
+MATCH_RECENT_SET : "--set" ;
+
 
 MATCH_COMMENT : "--comment" ;
 

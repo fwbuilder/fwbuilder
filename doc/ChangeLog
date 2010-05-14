@@ -1,5 +1,13 @@
 2010-05-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* iptables.g (MATCH_RECENT_SET): see #1451 "policy importer should
+	support some popular iptables modules". Added support for module
+	"recent" and rules that match standard ip/icmp/udp/tcp protocols
+	and at the same time module "mark", "length", "limit" or "recent".
+	Rules like these are translated into a combination of a branching
+	rule and additional rule in a branch rule set that implements
+	module match.
+
 	* IPTImporter.cpp (IPTImporter::addSrv): See #1450, SourceForge
 	ticket 3000809: iptables parser can now import "mark" module
 	matches with hexadecimal parameters and "length" module

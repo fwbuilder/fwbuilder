@@ -6665,7 +6665,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AF5AA0A" host_OS="linux24" inactive="False" lastCompiled="1272404302" lastInstalled="1142003872" lastModified="1264474374" platform="iptables" version="" name="firewall1" comment="this object is used to test all kinds of negation in policy and NAT rules" ro="False">
+      <Firewall id="id3AF5AA0A" host_OS="linux24" inactive="False" lastCompiled="1273779948" lastInstalled="1142003872" lastModified="1273779964" platform="iptables" version="" name="firewall1" comment="this object is used to test all kinds of negation in policy and NAT rules" ro="False">
         <NAT id="id3AF5AA0D" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3C98491C" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -8047,14 +8047,21 @@
           <Option name="accept_new_tcp_with_no_syn">True</Option>
           <Option name="action_on_reject">ICMP net unreachable</Option>
           <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
           <Option name="admUser"></Option>
           <Option name="altAddress"></Option>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
-          <Option name="cmdline"></Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
+          <Option name="cmdline">-xt</Option>
           <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
           <Option name="debug">False</Option>
           <Option name="drop_invalid">True</Option>
           <Option name="dyn_addr">False</Option>
@@ -8067,6 +8074,7 @@
           <Option name="inst_script"></Option>
           <Option name="install_script"></Option>
           <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
           <Option name="limit_suffix">/second</Option>
           <Option name="limit_value">0</Option>
           <Option name="linux24_accept_redirects"></Option>
@@ -8113,7 +8121,9 @@
           <Option name="prolog_place">after_interfaces</Option>
           <Option name="prolog_script"></Option>
           <Option name="proxy_arp">False</Option>
+          <Option name="scpArgs"></Option>
           <Option name="script_env_path"></Option>
+          <Option name="script_name_on_firewall"></Option>
           <Option name="snmp_contact"></Option>
           <Option name="snmp_description"></Option>
           <Option name="snmp_location"></Option>
@@ -8128,7 +8138,7 @@
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1272404335" lastInstalled="1142003872" lastModified="1264552639" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
+      <Firewall id="id3AFB66C6" host_OS="linux24" inactive="False" lastCompiled="1273779773" lastInstalled="1142003872" lastModified="1264552639" platform="iptables" version="" name="firewall2" comment="this object has several interfaces and shows different rules for NAT. Also testing policy rule options " ro="False">
         <NAT id="id3AFB66C7" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3AFB66C8" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">

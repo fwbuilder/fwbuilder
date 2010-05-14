@@ -63,7 +63,12 @@ class IPTImporter : public Importer
     std::pair<int,int> convertPortRange(str_tuple &range, const char *proto);
     int convertPort(const std::string &port_spec, const char *proto, int default_port);
 
-    virtual void addSrv();
+    void processModuleMatches();
+    void addAllModuleMatches(libfwbuilder::PolicyRule *rule);
+    void addMarkMatch(libfwbuilder::PolicyRule *rule);
+    void addLengthMatch(libfwbuilder::PolicyRule *rule);
+    void addLimitMatch(libfwbuilder::PolicyRule *rule);
+    void addRecentMatch(libfwbuilder::PolicyRule *rule);
 
     public:
 
@@ -91,6 +96,7 @@ class IPTImporter : public Importer
     std::map<std::string, UnidirectionalRuleSet*> branch_rulesets;
 
     std::string match_mark;
+    bool neg_match_mark;
     
     bool src_neg;
     bool dst_neg;
@@ -101,7 +107,8 @@ class IPTImporter : public Importer
     std::string limit_suffix;
     std::string limit_burst;
     std::string length_spec;
-
+    std::string recent_match;
+    
     std::string nat_addr1;
     std::string nat_addr2;
     std::string nat_nm;
