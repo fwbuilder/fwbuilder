@@ -39,7 +39,7 @@ missing_bond() {
 
     test "$cmd" = "down" && {
       echo "# Bring unconfigured bonding interface $bond_intf down"
-      $FWBDEBUG $IFCONFIG $bond_intf down
+      $FWBDEBUG $IP link set $bond_intf down
     }
 }
 
@@ -59,7 +59,7 @@ missing_slave() {
       $FWBDEBUG $IFENSLAVE -d $bond_interface $intf
     } || {
       echo "# Add bonding interface slave: $bond_interface $intf"
-      $FWBDEBUG $IFCONFIG $bond_interface up
+      $FWBDEBUG $IP link set $bond_interface up
       $FWBDEBUG $IFENSLAVE $bond_interface $intf
     }
 }
@@ -174,9 +174,9 @@ clear_bonding_except_known() {
              slaves=$(cat $PROD_BOND_IFACE | awk '/[sS]lave [iI]nterface:/ { printf "%s ",$NF;}')
              test -n "$slaves" && {
                  echo "Removing slaves and bringing unconfigured bonding interface $bond_intf down"
-                 $FWBDEBUG $IFCONFIG $bond_intf up
+                 $FWBDEBUG $IP link set $bond_intf up
                  $FWBDEBUG $IFENSLAVE  -d $bond_intf $slaves
-                 $FWBDEBUG $IFCONFIG $bond_intf down
+                 $FWBDEBUG $IP link set $bond_intf down
              }
          done
 }

@@ -45,7 +45,7 @@ missing_vlan() {
         echo "# Adding VLAN interface $subint (parent: $parent)"
         $FWBDEBUG $VCONFIG set_name_type $name_type
         $FWBDEBUG $VCONFIG $cmd $parent $vlan_id
-        $FWBDEBUG $IFCONFIG $subint up
+        $FWBDEBUG $IP link set $subint up
     }
     test "$cmd" = "rem" && {
         echo "# Removing VLAN interface $subint (parent: $parent)"
@@ -94,7 +94,7 @@ update_vlans_of_interface() {
     FWB_VLANS=$(parse_fwb_vlans "$args")
     CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
 
-    $IFCONFIG $vlan_parent_interface up
+    $IP link set $vlan_parent_interface up
     diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
     diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
 }
@@ -107,7 +107,7 @@ add_vlans() {
     FWB_VLANS=$(parse_fwb_vlans $args)
     CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
 
-    $IFCONFIG $vlan_parent_interface up
+    $IP link set $vlan_parent_interface up
     diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
 }
 

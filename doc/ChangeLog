@@ -1,3 +1,10 @@
+2010-05-14  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* update_addresses: fixed #1455 Function update_addresses() (host
+	OS linux24 and derivatives) uses both ip and ifconfig. Should stick
+	with /sbin/ip so the script works on systems where ifconfig is
+	not installed.
+
 2010-05-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* FWObjectDropArea.cpp (FWObjectDropArea::editObject): fixed #1452

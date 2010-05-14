@@ -57,7 +57,7 @@ missing_address() {
     }
 
     $FWBDEBUG $IP addr $cmd $addr dev $interface
-    $FWBDEBUG $IFCONFIG $interface up
+    $FWBDEBUG $IP link set $interface up
 }
 
 ##
@@ -141,6 +141,6 @@ clear_addresses_except_known_interfaces() {
          while read intf; do
             echo "# Removing addresses not configured in fwbuilder from interface $intf"
             $FWBDEBUG $IP addr flush dev $intf scope global
-            $FWBDEBUG $IFCONFIG $intf down
+            $FWBDEBUG $IP link set $intf down
          done
 }

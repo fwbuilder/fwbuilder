@@ -31,7 +31,7 @@ missing_port() {
 
     echo "# Updating bridge configuration: $cmd $bridge_interface $port"
     $FWBDEBUG $BRCTL $cmd $bridge_interface $port
-    test "$cmd" = "addif" && $FWBDEBUG $IFCONFIG $port up
+    test "$cmd" = "addif" && $FWBDEBUG $IP link set $port up
 }
 
 # update_bridge br0 "eth2 eth3"
@@ -58,7 +58,7 @@ update_bridge() {
     $BRCTL showmacs $bridge_interface >/dev/null 2>&1 || {
         echo "# Creating bridge interface $bridge_interface"
         $FWBDEBUG $BRCTL addbr $bridge_interface
-        $FWBDEBUG $IFCONFIG $bridge_interface up
+        $FWBDEBUG $IP link set $bridge_interface up
     }
 
     PORTS=$(
@@ -110,7 +110,7 @@ sync_bridge_interfaces() {
          ($1 ~ /^br[0-9]/ && !($1 in ignored_dict)) {print $1;}' | \
          while read brintf; do
             echo "# Deleting bridge interface $brintf"
-             $FWBDEBUG $IFCONFIG $brintf down
+             $FWBDEBUG $IP link set $brintf down
              $FWBDEBUG $BRCTL delbr $brintf
          done
 
@@ -118,7 +118,7 @@ sync_bridge_interfaces() {
         $BRCTL showmacs $brint >/dev/null 2>&1 || {
             echo "# Creating bridge interface $brintf"
             $FWBDEBUG $BRCTL addbr $brint
-            $FWBDEBUG $IFCONFIG $brint up
+            $FWBDEBUG $IP link set $brint up
         }
     done
 }
