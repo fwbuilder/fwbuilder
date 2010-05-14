@@ -37,6 +37,7 @@
 #include "ProjectPanel.h"
 
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/RuleSet.h"
 
 #include <qpainter.h>
 #include <qrect.h>
@@ -250,6 +251,10 @@ void FWObjectDropArea::editObject()
     ProjectPanel * pp = mw->activeProject();
     if (pp!=NULL)
     {
+        if (RuleSet::cast(object)!=NULL)
+            QCoreApplication::postEvent(
+                pp, new openRulesetEvent(pp->getFileName(), object->getId()));
+
         QCoreApplication::postEvent(
             mw, new openObjectInEditorEvent(pp->getFileName(), object->getId()));
         QCoreApplication::postEvent(

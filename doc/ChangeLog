@@ -1,5 +1,9 @@
 2010-05-13  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWObjectDropArea.cpp (FWObjectDropArea::editObject): fixed #1452
+	double click on a rule set in the branch action dialog should open
+	it in rule set view
+
 	* iptables.g (MATCH_RECENT_SET): see #1451 "policy importer should
 	support some popular iptables modules". Added support for module
 	"recent" and rules that match standard ip/icmp/udp/tcp protocols
