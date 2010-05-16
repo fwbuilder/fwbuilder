@@ -44,7 +44,178 @@ interfaceProperties* interfacePropertiesTest::getIntProps(const QString &os)
 
 void interfacePropertiesTest::setUp()
 {
+    init();
+
+    Resources("../../res/resources.xml");
+
     db = new FWObjectDatabase();
+}
+
+void interfacePropertiesTest::validateInterfaceNameCommon()
+{
+    QString err;
+
+    Firewall fw;
+    fw.setStr("host_OS", "unknown");
+    db->add(&fw);
+
+    Interface* iface = Interface::cast(db->create(Interface::TYPENAME));
+
+    fw.add(iface);
+
+    iface->getOptionsObject()->setStr("type", "ethernet");
+
+    interfaceProperties * int_prop = getIntProps("unknown");
+
+    CPPUNIT_ASSERT(int_prop != NULL);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "eth0", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "foo0", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "bar0", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "vlan100", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "Vlan100", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "VlAn100", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "foo 0", err) == false);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "foo 12345", err) == false);
+
+    iface->getOptionsObject()->setStr("type", "bridge");
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "br0", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "Br0", err) == true);
+
+    // all OS except Linux and possibly some other do not permit
+    // interface name with "-"
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "br-lan", err) == false);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "br 200", err) == false);
+
+}
+
+void interfacePropertiesTest::validateInterfaceNameLinux()
+{
+    QString err;
+
+    Firewall fw;
+    fw.setStr("host_OS", "linux24");
+    db->add(&fw);
+
+    Interface* iface = Interface::cast(db->create(Interface::TYPENAME));
+
+    fw.add(iface);
+
+    iface->getOptionsObject()->setStr("type", "ethernet");
+
+    interfaceProperties * int_prop = getIntProps("linux24");
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "eth0", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "foo0", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "bar0", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "vlan100", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "Vlan100", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "VlAn100", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "foo 0", err) == false);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "foo 12345", err) == false);
+
+    iface->getOptionsObject()->setStr("type", "bridge");
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "br0", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "Br0", err) == true);
+
+    // Linux permits "-" in bridge interface names
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "br-lan", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "br 200", err) == false);
+
+}
+
+void interfacePropertiesTest::validateInterfaceNameProCurve()
+{
+    QString err;
+
+    Firewall fw;
+    fw.setStr("host_OS", "procurve");
+    db->add(&fw);
+
+    Interface* iface = Interface::cast(db->create(Interface::TYPENAME));
+
+    fw.add(iface);
+
+    iface->getOptionsObject()->setStr("type", "ethernet");
+
+    interfaceProperties * int_prop = getIntProps("procurve");
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "a1", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "b1", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "A1", err) == true);
+
+    // basicValidateInterfaceName() only checks name format,
+    // it does not check if port number makes sense
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "A1234567890", err) == true);
+
+    // "-" is not permitted
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "vlan-100", err) == false);
+
+    // but space is permitted
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "vlan 100", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "Vlan 100", err) == true);
+
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "VlAn 100", err) == true);
+
+    // basicValidateInterfaceName() only checks name format,
+    // it does not check if vlan ID is valid.
+    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+                       iface, "VlAn 1000000000", err) == true);
 }
 
 void interfacePropertiesTest::validateInterface()
@@ -102,10 +273,6 @@ void interfacePropertiesTest::validateInterface()
     Interface* subiface = Interface::cast(db->create(Interface::TYPENAME));
 
     fw.add(parent);
-
-    init();
-
-    Resources("../../res/resources.xml");
 
     CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
                                                dynamic_cast<FWObject*>(iface), true, err)
@@ -381,10 +548,6 @@ void interfacePropertiesTest::validateInterfaceProCurve()
     Interface* subiface = Interface::cast(db->create(Interface::TYPENAME));
 
     fw.add(parent);
-
-    init();
-
-    Resources("../../res/resources.xml");
 
     iface->setName("vlan 2");
     CPPUNIT_ASSERT(int_prop->validateInterface(&fw, iface, false, err) == true);

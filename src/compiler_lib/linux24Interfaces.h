@@ -33,7 +33,11 @@ class linux24Interfaces : public interfaceProperties
 {
 public:
     linux24Interfaces() : interfaceProperties() {}
-    
+    virtual ~linux24Interfaces() {}
+
+    virtual bool basicValidateInterfaceName(libfwbuilder::Interface *intf,
+                                            const QString &proposed_name,
+                                            QString &err);
     virtual bool parseVlan(const QString&, QString*, int*);
     virtual void rearrangeInterfaces(
         std::map<int,libfwbuilder::InterfaceData> &interfaces,

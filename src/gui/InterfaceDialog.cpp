@@ -396,7 +396,8 @@ void InterfaceDialog::validate(bool *res)
      * See if basicValidateInterfaceName() can be rolled into
      * validateInterface()
      */
-    if ( ! int_prop->basicValidateInterfaceName(obj_name, err))
+    if ( ! int_prop->basicValidateInterfaceName(
+             Interface::cast(obj), obj_name, err))
     {
         *res = false;
         if (QApplication::focusWidget() != NULL)

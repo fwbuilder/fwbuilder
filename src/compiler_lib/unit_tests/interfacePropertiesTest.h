@@ -53,6 +53,9 @@ public:
     //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
     interfaceProperties* getIntProps(const QString &os);
     
+    void validateInterfaceNameCommon();
+    void validateInterfaceNameLinux();
+    void validateInterfaceNameProCurve();
     void validateInterface();
     void isEligibleForCluster();
     void isValidVlanInterfaceNameLinux24();
@@ -69,6 +72,9 @@ public:
     void setUp();
 
     CPPUNIT_TEST_SUITE(interfacePropertiesTest);
+    CPPUNIT_TEST(validateInterfaceNameCommon);
+    CPPUNIT_TEST(validateInterfaceNameLinux);
+    CPPUNIT_TEST(validateInterfaceNameProCurve);
     CPPUNIT_TEST(validateInterface);
     CPPUNIT_TEST(isEligibleForCluster);
     CPPUNIT_TEST(isValidVlanInterfaceNameLinux24);

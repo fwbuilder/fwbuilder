@@ -57,7 +57,9 @@ public:
 
     // simple name validation: does not allow space and "-"
     // However some platform permit space (procurve).
-    virtual bool basicValidateInterfaceName(const QString &name, QString &err);
+    virtual bool basicValidateInterfaceName(libfwbuilder::Interface *intf,
+                                            const QString &proposed_name,
+                                            QString &err);
     
     virtual void rearrangeInterfaces(
         std::map<int,libfwbuilder::InterfaceData> &interfaces,

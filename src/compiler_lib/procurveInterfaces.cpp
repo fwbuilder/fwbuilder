@@ -35,9 +35,16 @@ using namespace libfwbuilder;
 
 
 // simple name validation: does not allow space and "-"
-// However some platform permit space (procurve).
-bool procurveInterfaces::basicValidateInterfaceName(const QString &name, QString &err)
+// However PoCurve permits space. What about "-" ?
+bool procurveInterfaces::basicValidateInterfaceName(Interface*,
+                                                    const QString &obj_name,
+                                                    QString &err)
 {
+    if (obj_name.indexOf('-') != -1)
+    {
+        err = QObject::tr("Interface name '%1' can not contain \"-\"").arg(obj_name);
+        return false;
+    }
     err = "";
     return true;
 }

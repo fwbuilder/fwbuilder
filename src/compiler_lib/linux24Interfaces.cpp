@@ -57,6 +57,34 @@ bool linux24Interfaces::parseVlan(const QString &name, QString *base_name, int *
 }
 
 /*
+ * Bridge interfaces on Linux can have "-" in the name
+ */
+bool linux24Interfaces::basicValidateInterfaceName(Interface *intf,
+                                                   const QString &obj_name,
+                                                   QString &err)
+{
+    string interface_type = intf->getOptionsObject()->getStr("type");
+
+    if (interface_type == "bridge")
+    {
+        if (obj_name.indexOf(' ') != -1)
+        {
+            err = QObject::tr("Bridge interface name '%1' can not contain white space").arg(obj_name);
+            return false;
+        }
+        return true;
+    }
+
+    if (obj_name.indexOf(' ') != -1 || obj_name.indexOf('-') != -1)
+    {
+        err = QObject::tr("Interface name '%1' can not contain white space and \"-\"").arg(obj_name);
+        return false;
+    }
+
+    return true;
+}
+    
+/*
  * Take original information about interfaces provided by the crawler
  * and try to arrange it into a tree or interfaces and
  * subinterfaces. Guess based on host OS, inetrface names and their
