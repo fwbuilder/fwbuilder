@@ -433,29 +433,30 @@ QString wordWrap(const QString& s, int maxchinline)
     return res;
 }
 
-void loadIcon(QPixmap &pm, libfwbuilder::FWObject *obj)
+void loadIcon(QPixmap &pm, FWObject *obj)
 {
     QString icn_file = (":/Icons/" + obj->getTypeName()+"/icon-tree").c_str();
+    LoadPixmap(icn_file, pm);
 
-    if ( ! QPixmapCache::find( icn_file, pm) )
-    {
-        pm.load( icn_file );
-        QPixmapCache::insert( icn_file, pm);
-    }
+    // if ( ! QPixmapCache::find( icn_file, pm) )
+    // {
+    //     pm.load( icn_file );
+    //     QPixmapCache::insert( icn_file, pm);
+    // }
 }
 
-void LoadPixmap(const QString path, QPixmap &where)
+void LoadPixmap(const QString &path, QPixmap &pm)
 {
-    if ( ! QPixmapCache::find( path, where ) )
+    if ( ! QPixmapCache::find( path, pm ) )
     {
-        where.load( path );
-        if (where.width() == 0)
+        pm.load( path );
+        if (pm.width() == 0)
             qDebug("pixmap load failed: %s", path.toAscii().constData());
-        QPixmapCache::insert( path, where );
+        QPixmapCache::insert( path, pm );
     }
 }
 
-QPixmap LoadPixmap(const QString path)
+QPixmap LoadPixmap(const QString &path)
 {
 
     QPixmap p;
@@ -480,7 +481,7 @@ QString calculateIconName(const QString &_icn, bool negation)
     return icn;
 }
 
-void doSetObjectIcon(libfwbuilder::FWObject *obj, QPixmap *pm, int icon_size)
+void doSetObjectIcon(FWObject *obj, QPixmap *pm, int icon_size)
 {
     QString icn_alias;
     QString icn_sfx;

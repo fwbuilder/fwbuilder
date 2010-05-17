@@ -1,3 +1,13 @@
+2010-05-17  vadim  <vadim@vk.crocodile.org>
+
+	* RuleSetViewDelegate.cpp (RuleSetViewDelegate::paintOptions):
+	fixed #1460 "when "show icons in rules" is turned off, there is no
+	way to tell when logging is turned on and non-default options are
+	present in a rule".
+
+	* fixed #1339 "Logging" icon appears looking the same as "Rule
+	options" icon on Mac
+
 2010-05-15  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* linux24Interfaces.cpp (linux24Interfaces::basicValidateInterfaceName):

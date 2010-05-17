@@ -118,24 +118,27 @@ void RuleSetViewDelegate::paintGroup(QPainter *painter, const QStyleOptionViewIt
 void RuleSetViewDelegate::drawIcons(QPainter *painter, QRect rect,
                                     const QStringList &icons) const
 {
+    if (fwbdebug)
+        qDebug() << "RuleSetViewDelegate::drawIcons"
+                 << "icons.size()=" << icons.size();
+
     int x = rect.left();
     int y = rect.top();
+    int iconWidth = 0;
 
-    if (st->getShowIconsInRules())
+    for (int i=0; i<icons.size(); i++)
     {
         QPixmap pm;
-        QString icon;
-        for (int i=0; i<icons.size(); i++)
-        {
-            icon = calculateIconName(icons[i], false);
-            LoadPixmap(icon, pm);
-            painter->drawPixmap(x,y,pm);
-            x += pm.width() + ICON_TEXT_GAP;
-        }
-    }
-    else
-    {
-        //TODO we should show something in this case!
+        QString icon = calculateIconName(icons[i], false);
+        if (fwbdebug)
+            qDebug() << "i=" << i
+                     << "icons[i]=" << icons[i]
+                     << "icon=" << icon;
+
+        LoadPixmap(icon, pm);
+        painter->drawPixmap(x, y, pm);
+        iconWidth = pm.width();
+        x += iconWidth + ICON_TEXT_GAP;
     }
 }
 
@@ -147,7 +150,6 @@ void RuleSetViewDelegate::drawIconAndText(QPainter *painter,
 {
     int x = rect.left();
     int y = rect.top();
-
     int iconWidth = 0;
 
     if (!icon.isEmpty() && st->getShowIconsInRules())
@@ -178,11 +180,16 @@ void RuleSetViewDelegate::drawSelectedFocus(QPainter *painter, const QStyleOptio
     }
 }
 
-void RuleSetViewDelegate::paintRule(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, RuleNode * node) const
+void RuleSetViewDelegate::paintRule(QPainter *painter,
+                                    const QStyleOptionViewItem &option,
+                                    const QModelIndex &index,
+                                    RuleNode * node) const
 {
-    //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintRule";
     QVariant v = index.data(Qt::DisplayRole);
     if (!v.isValid()) return;
+
+    // if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintRule"
+    //                        << v;
 
     if (node != 0)
     {
@@ -239,16 +246,30 @@ void RuleSetViewDelegate::paintAction(QPainter *painter, const QStyleOptionViewI
     ActionDesc actionDesc = v.value<ActionDesc>();
     drawSelectedFocus(painter, option, ctx.objectRect);
     QString text = (st->getShowDirectionText())?actionDesc.displayName:"";
-    drawIconAndText(painter, ctx.drawRect,actionDesc.name,text);
+    drawIconAndText(painter, ctx.drawRect, actionDesc.name, text);
 }
 
 void RuleSetViewDelegate::paintOptions(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const
 {
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintOptions";
     DrawingContext ctx = initContext(option.rect);
-    QStringList options = v.value<QStringList>();
     drawSelectedFocus(painter, option, ctx.objectRect);
-    drawIcons(painter, ctx.drawRect, options);
+    QStringList icons;
+    icons = v.value<QStringList>();
+    QStringList text;
+
+    if (st->getShowIconsInRules())
+    {
+        drawIcons(painter, ctx.drawRect, icons);
+    } else
+    {
+        for (int i=0; i<icons.size(); i++)
+        {
+            if (icons[i].contains("Log")) text.push_back(tr("log"));
+            if (icons[i].contains("Options")) text.push_back(tr("(options)"));
+        }
+        drawIconAndText(painter, ctx.drawRect, "", text.join(", "), false);
+    }
 }
 
 
