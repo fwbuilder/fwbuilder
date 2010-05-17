@@ -598,7 +598,7 @@
       <ServiceGroup id="id4511636C23682_userservices" name="Users" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id4511637423682" name="Firewalls" comment="" ro="False">
-      <Firewall id="id46412B5226577" host_OS="procurve" inactive="False" lastCompiled="1273675344" lastInstalled="0" lastModified="1273597135" platform="procurve_acl" version="K.13" name="testhp1" comment="" ro="False">
+      <Firewall id="id46412B5226577" host_OS="procurve" inactive="False" lastCompiled="1274128070" lastInstalled="0" lastModified="1273597135" platform="procurve_acl" version="K.13" name="testhp1" comment="" ro="False">
         <NAT id="id46412B5626577" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2591,7 +2591,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id4304X40592" host_OS="procurve" inactive="False" lastCompiled="1261963115" lastInstalled="0" lastModified="1273546100" platform="procurve_acl" version="K.13" name="testhp2" comment="Using &quot;no clear acl&quot; script option" ro="False">
+      <Firewall id="id4304X40592" host_OS="procurve" inactive="False" lastCompiled="1274128448" lastInstalled="0" lastModified="1274128088" platform="procurve_acl" version="K.13" name="testhp2" comment="Using &quot;no clear acl&quot; script option" ro="False">
         <NAT id="id4600X40592" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3179,16 +3179,17 @@
           <Option name="procurve_acl_assume_fw_part_of_any">true</Option>
           <Option name="procurve_acl_epilog_script"></Option>
           <Option name="procurve_acl_generate_logging_commands">False</Option>
-          <Option name="procurve_acl_include_comments">true</Option>
+          <Option name="procurve_acl_include_comments">False</Option>
           <Option name="procurve_acl_logging_buffered">False</Option>
-          <Option name="procurve_acl_logging_buffered_level">3</Option>
+          <Option name="procurve_acl_logging_buffered_level">4</Option>
           <Option name="procurve_acl_logging_console">False</Option>
-          <Option name="procurve_acl_logging_console_level">3</Option>
+          <Option name="procurve_acl_logging_console_level">4</Option>
           <Option name="procurve_acl_logging_timestamp">False</Option>
-          <Option name="procurve_acl_logging_trap_level">3</Option>
+          <Option name="procurve_acl_logging_trap_level">4</Option>
           <Option name="procurve_acl_prolog_script"></Option>
           <Option name="procurve_acl_syslog_facility"></Option>
           <Option name="procurve_acl_syslog_host"></Option>
+          <Option name="procurve_acl_use_acl_remarks">False</Option>
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="scpArgs"></Option>

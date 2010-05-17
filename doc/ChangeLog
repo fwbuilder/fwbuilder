@@ -1,5 +1,11 @@
 2010-05-17  vadim  <vadim@vk.crocodile.org>
 
+	* PolicyCompiler_iosacl_writers.cpp (PrintRule::_printRule):
+	restored function of the "comment the code" in the "Script
+	options" of the firewall settings dialog for Cisco IOS ACL and
+	ProCurve ACL. When this checkbox is off, comments are not
+	added to generated script.
+
 	* RuleSetViewDelegate.cpp (RuleSetViewDelegate::paintOptions):
 	fixed #1460 "when "show icons in rules" is turned off, there is no
 	way to tell when logging is turned on and non-default options are

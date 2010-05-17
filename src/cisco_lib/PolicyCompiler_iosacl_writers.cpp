@@ -215,17 +215,17 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
 {
     PolicyCompiler_iosacl *iosacl_comp = 
         dynamic_cast<PolicyCompiler_iosacl*>(compiler);
-    //FWOptions  *ruleopt =rule->getOptionsObject();
-    //bool write_comments = compiler->fw->getOptionsObject()->getBool("iosacl_include_comments");
+    string platform = compiler->fw->getStr("platform");
+    FWOptions  *ruleopt =rule->getOptionsObject();
+    bool write_comments = compiler->fw->getOptionsObject()->getBool(
+        platform + "_include_comments");
 
     ostringstream  ruleout;
     ostringstream  aclstr;
 
-    compiler->output << compiler->printComment(
-        rule, current_rule_label1, iosacl_comp->comment_symbol);
-
-    // string err = rule->getStr(".error_msg");
-    // if (!err.empty()) ruleout << "! " << err << endl;
+    if (write_comments)
+        compiler->output << compiler->printComment(
+            rule, current_rule_label1, iosacl_comp->comment_symbol);
 
     /*
      * all three rule elements contain exactly one object, which can
