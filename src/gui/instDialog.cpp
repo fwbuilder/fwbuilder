@@ -244,6 +244,8 @@ void instDialog::show(ProjectPanel *proj,
     if (clusters.size() >= 1)  // even one cluster enables batch install btn
         m_dialog->batchInstall->setEnabled(true);
 
+    m_dialog->batchInstall->setChecked(false);
+
     creatingTable = false;
 
     m_dialog->selectTable->setFocus();
