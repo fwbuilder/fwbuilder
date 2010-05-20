@@ -417,7 +417,7 @@ void ActionsDialog::setRule(Rule *r)
     {
         w=m_dialog->BranchAnchorPage;
         RuleSet *ruleset = r->getBranch();
-        m_dialog->iptBranchDropArea->setObject(ruleset);
+        m_dialog->pfBranchDropArea->setObject(ruleset);
     }
     else if (editor=="NATBranch")
     {
