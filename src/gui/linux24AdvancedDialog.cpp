@@ -209,7 +209,7 @@ void linux24AdvancedDialog::accept()
 
     data.saveAll(fwoptions);
 
-    if (!cmd->getOldState()->cmp(new_state, true))
+    if (!Firewall::cast(cmd->getOldState())->getOptionsObject()->cmp(fwoptions, true))
         project->undoStack->push(cmd.release());
     
     QDialog::accept();
