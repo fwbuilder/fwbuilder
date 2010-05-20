@@ -722,6 +722,16 @@ RCS * ProjectPanel::getRCS()
     return rcs;
 }
 
+/*
+ * This slot is connected to the "add rule" button in the mini-toolbar
+ * at the top of the rule set view
+ */
+void ProjectPanel::addRule()
+{
+    if (visibleRuleSet==NULL) return ;
+    getCurrentRuleSetView()->insertRule();
+}
+
 void ProjectPanel::compileThis()
 {
     if (visibleRuleSet==NULL) return ;

@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ProjectPanel_q</class>
- <widget class="QWidget" name="ProjectPanel_q" >
-  <property name="geometry" >
+ <widget class="QWidget" name="ProjectPanel_q">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,70 +10,70 @@
     <height>494</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="windowIcon" >
-   <iconset resource="MainRes.qrc" >
+  <property name="windowIcon">
+   <iconset resource="MainRes.qrc">
     <normaloff>:/Images/fwbuilder3.png</normaloff>:/Images/fwbuilder3.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2" >
-   <property name="margin" >
+  <layout class="QGridLayout" name="gridLayout_2">
+   <property name="margin">
     <number>2</number>
    </property>
-   <item row="0" column="0" >
-    <widget class="QSplitter" name="topSplitter" >
-     <property name="orientation" >
+   <item row="0" column="0">
+    <widget class="QSplitter" name="topSplitter">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QFrame" name="treeDockWidgetParentFrame" >
-      <property name="minimumSize" >
+     <widget class="QFrame" name="treeDockWidgetParentFrame">
+      <property name="minimumSize">
        <size>
         <width>20</width>
         <height>0</height>
        </size>
       </property>
-      <property name="frameShape" >
+      <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
-      <property name="frameShadow" >
+      <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QGridLayout" name="treeDockWidgetParentFrameLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout" name="treeDockWidgetParentFrameLayout">
+       <property name="margin">
         <number>0</number>
        </property>
-       <item row="0" column="0" >
-        <widget class="QDockWidget" name="treeDockWidget" >
-         <property name="floating" >
+       <item row="0" column="0">
+        <widget class="QDockWidget" name="treeDockWidget">
+         <property name="floating">
           <bool>false</bool>
          </property>
-         <property name="allowedAreas" >
+         <property name="allowedAreas">
           <set>Qt::LeftDockWidgetArea</set>
          </property>
-         <property name="windowTitle" >
+         <property name="windowTitle">
           <string/>
          </property>
-         <widget class="QWidget" name="dockWidgetContents" >
-          <layout class="QGridLayout" name="gridLayout_4" >
-           <property name="margin" >
+         <widget class="QWidget" name="dockWidgetContents">
+          <layout class="QGridLayout" name="gridLayout_4">
+           <property name="margin">
             <number>0</number>
            </property>
-           <item row="0" column="0" >
-            <widget class="ObjectManipulator" native="1" name="om" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+           <item row="0" column="0">
+            <widget class="ObjectManipulator" name="om" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="minimumSize" >
+             <property name="minimumSize">
               <size>
                <width>10</width>
                <height>20</height>
               </size>
              </property>
-             <property name="maximumSize" >
+             <property name="maximumSize">
               <size>
                <width>16777215</width>
                <height>16777215</height>
@@ -86,91 +87,142 @@
        </item>
       </layout>
      </widget>
-     <widget class="QFrame" name="rulesDockWidgetParentFrame" >
-      <property name="minimumSize" >
+     <widget class="QFrame" name="rulesDockWidgetParentFrame">
+      <property name="minimumSize">
        <size>
         <width>20</width>
         <height>0</height>
        </size>
       </property>
-      <property name="frameShape" >
+      <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
-      <property name="frameShadow" >
+      <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QGridLayout" name="gridLayout" >
-       <property name="leftMargin" >
-        <number>12</number>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>2</number>
        </property>
-       <property name="topMargin" >
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
         <number>0</number>
        </property>
-       <property name="rightMargin" >
+       <property name="bottomMargin">
         <number>0</number>
        </property>
-       <property name="bottomMargin" >
-        <number>0</number>
+       <property name="spacing">
+        <number>2</number>
        </property>
-       <item row="0" column="0" >
-        <layout class="QHBoxLayout" name="horizontalLayout" >
-         <property name="spacing" >
-          <number>4</number>
-         </property>
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QToolButton" name="compile_this_fw" >
-           <property name="toolTip" >
-            <string>Compile this firewall</string>
+          <widget class="QToolButton" name="add_rule">
+           <property name="toolTip">
+            <string>Add rule</string>
            </property>
-           <property name="statusTip" >
-            <string>Compile this firewall</string>
+           <property name="statusTip">
+            <string>Add rule</string>
            </property>
-           <property name="whatsThis" >
-            <string>Compile this firewall</string>
+           <property name="whatsThis">
+            <string>Add rule</string>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>...</string>
            </property>
-           <property name="icon" >
-            <iconset resource="MainRes.qrc" >
-             <normaloff>:/Icons/Compile</normaloff>:/Icons/Compile</iconset>
+           <property name="icon">
+            <iconset resource="MainRes.qrc">
+             <normaloff>:/Icons/add.png</normaloff>:/Icons/add.png</iconset>
            </property>
-           <property name="iconSize" >
+           <property name="iconSize">
             <size>
              <width>25</width>
              <height>25</height>
             </size>
            </property>
-           <property name="checkable" >
+           <property name="checkable">
             <bool>false</bool>
            </property>
-           <property name="popupMode" >
+           <property name="popupMode">
             <enum>QToolButton::DelayedPopup</enum>
            </property>
-           <property name="arrowType" >
+           <property name="arrowType">
             <enum>Qt::NoArrow</enum>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="install_this_fw" >
-           <property name="toolTip" >
-            <string>Compile and install this firewall</string>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
-           <property name="statusTip" >
-            <string>Compile and install this firewall</string>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
            </property>
-           <property name="whatsThis" >
-            <string>Compile and install this firewall</string>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>10</width>
+             <height>20</height>
+            </size>
            </property>
-           <property name="text" >
+          </spacer>
+         </item>
+         <item>
+          <widget class="QToolButton" name="compile_this_fw">
+           <property name="toolTip">
+            <string>Compile this firewall</string>
+           </property>
+           <property name="statusTip">
+            <string>Compile this firewall</string>
+           </property>
+           <property name="whatsThis">
+            <string>Compile this firewall</string>
+           </property>
+           <property name="text">
             <string>...</string>
            </property>
-           <property name="icon" >
-            <iconset resource="MainRes.qrc" >
+           <property name="icon">
+            <iconset resource="MainRes.qrc">
+             <normaloff>:/Icons/Compile</normaloff>:/Icons/Compile</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+           <property name="popupMode">
+            <enum>QToolButton::DelayedPopup</enum>
+           </property>
+           <property name="arrowType">
+            <enum>Qt::NoArrow</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="install_this_fw">
+           <property name="toolTip">
+            <string>Compile and install this firewall</string>
+           </property>
+           <property name="statusTip">
+            <string>Compile and install this firewall</string>
+           </property>
+           <property name="whatsThis">
+            <string>Compile and install this firewall</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="MainRes.qrc">
              <normaloff>:/Icons/Install</normaloff>:/Icons/Install</iconset>
            </property>
-           <property name="iconSize" >
+           <property name="iconSize">
             <size>
              <width>25</width>
              <height>25</height>
@@ -179,14 +231,14 @@
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeType" >
+           <property name="sizeType">
             <enum>QSizePolicy::Fixed</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
              <height>20</height>
@@ -195,31 +247,31 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="rulesetname" >
-           <property name="font" >
+          <widget class="QLabel" name="rulesetname">
+           <property name="font">
             <font>
              <pointsize>14</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>Firewall / ruleset</string>
            </property>
-           <property name="alignment" >
+           <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item row="1" column="0" >
-        <widget class="QStackedWidget" name="ruleSets" >
-         <property name="currentIndex" >
+       <item row="1" column="0">
+        <widget class="QStackedWidget" name="ruleSets">
+         <property name="currentIndex">
           <number>1</number>
          </property>
-         <widget class="QWidget" name="page" />
-         <widget class="QWidget" name="page_2" />
+         <widget class="QWidget" name="page"/>
+         <widget class="QWidget" name="page_2"/>
         </widget>
        </item>
       </layout>
@@ -237,7 +289,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="MainRes.qrc" />
+  <include location="MainRes.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -246,11 +298,11 @@
    <receiver>ProjectPanel_q</receiver>
    <slot>compileThis()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>344</x>
      <y>30</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>417</x>
      <y>246</y>
     </hint>
@@ -262,11 +314,27 @@
    <receiver>ProjectPanel_q</receiver>
    <slot>installThis()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>391</x>
      <y>30</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>add_rule</sender>
+   <signal>clicked()</signal>
+   <receiver>ProjectPanel_q</receiver>
+   <slot>addRule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>230</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
      <x>417</x>
      <y>246</y>
     </hint>
@@ -276,5 +344,6 @@
  <slots>
   <slot>compileThis()</slot>
   <slot>installThis()</slot>
+  <slot>addRule()</slot>
  </slots>
 </ui>
