@@ -2463,8 +2463,9 @@ bool RuleSetView::showToolTip(QEvent *event)
                     Rule* rule = node->rule;
                     if (PolicyRule::cast(rule)!=NULL )
                     {
-                        if (!isDefaultPolicyRuleOptions(rule->getOptionsObject()))
+                        if (!isDefaultPolicyRuleOptions(rule->getOptionsObject())) {
                             toolTip = FWObjectPropertiesFactory::getPolicyRuleOptions(rule);
+                        }
                     }
                     if (NATRule::cast(rule)!=NULL )
                     {
@@ -2495,7 +2496,6 @@ bool RuleSetView::showToolTip(QEvent *event)
 
     if (toolTip.isEmpty())
     {
-        qDebug() << "empty!";
         QToolTip::hideText();
         return true;
     }
@@ -2513,7 +2513,6 @@ bool RuleSetView::showToolTip(QEvent *event)
         viewport()->mapToGlobal(cr.bottomRight()));
 
     QToolTip::showText(mapToGlobal( he->pos() ), toolTip, this, global);
-    qDebug() << "show: [" << toolTip << "]";
     return true;
 
 }
