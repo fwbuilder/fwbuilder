@@ -2431,8 +2431,15 @@ bool RuleSetView::showToolTip(QEvent *event)
 
     QPoint pos = viewport()->mapFromGlobal(he->globalPos());
 
+//    qDebug() << "RuleSetView::showToolTip(QEvent *event) "<< pos;
+
     QModelIndex index = indexAt(pos);
-    if (!index.isValid()) return false;
+    if (!index.isValid())
+    {
+        QToolTip::hideText();
+        qDebug() << "invalid!";
+        return false;
+    }
 
     RuleSetModel* md = ((RuleSetModel*)model());
     RuleNode *node = md->nodeFromIndex(index);
@@ -2486,7 +2493,12 @@ bool RuleSetView::showToolTip(QEvent *event)
         toolTip = node->name;
     }
 
-    if (toolTip.isEmpty()) return true;
+    if (toolTip.isEmpty())
+    {
+        qDebug() << "empty!";
+        QToolTip::hideText();
+        return true;
+    }
 
     QRect   cr = visualRect(index);
 
@@ -2501,6 +2513,7 @@ bool RuleSetView::showToolTip(QEvent *event)
         viewport()->mapToGlobal(cr.bottomRight()));
 
     QToolTip::showText(mapToGlobal( he->pos() ), toolTip, this, global);
+    qDebug() << "show: [" << toolTip << "]";
     return true;
 
 }
