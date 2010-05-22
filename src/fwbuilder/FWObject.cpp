@@ -38,6 +38,7 @@
 #include <fwbuilder/RuleElement.h>
 #include <fwbuilder/Rule.h>
 #include <fwbuilder/Host.h>
+#include <fwbuilder/Interface.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -329,15 +330,24 @@ FWObject* FWObject::findObjectByAttribute(const std::string &attr,
 
 bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
-    if (name != obj->name || comment != obj->comment || ro != obj->ro)
+    if (getTypeName() != obj->getTypeName() || name != obj->name || comment != obj->comment || ro != obj->ro)
         return false;
 
-    if (data.size() != obj->data.size()) return false;
+    int mySize = 0;
+    int otherSize = 0;
+    for (map<string,string>::const_iterator i=data.begin(); i!=data.end(); i++)
+        if ((*i).second.length() != 0)
+            mySize ++;
+    for (map<string,string>::const_iterator i=obj->data.begin(); i!=obj->data.end(); i++)
+        if ((*i).second.length() != 0)
+            otherSize ++;
+    if (mySize != otherSize) return false;
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
     {
         const string &name  = (*i).first;
         const string &value = (*i).second;
+        if (value.length() == 0) continue;
 // 10/21/2008 --vk
         map<string,string>::const_iterator j=obj->data.find(name);
         if (j==obj->data.end()) return false;
@@ -349,6 +359,7 @@ bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
         if (size()!=obj->size())  return false;
 
 /* chidren are not necessarily in the same order in two groups */
+        std::set<FWObject*> matched;
         FWObject::const_iterator i1=begin();
         for ( ; i1!=end(); ++i1)
         {
@@ -358,8 +369,17 @@ bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
             {
                 if ((*i1)->cmp(*j1, recursive))
                 {
-                    found=true;
-                    break;
+                    int oldsize = matched.size();
+                    matched.insert(*j1);
+                    if (matched.size() == oldsize)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        found = true;
+                        break;
+                    }
                 }
             }
             if (!found) return false;
