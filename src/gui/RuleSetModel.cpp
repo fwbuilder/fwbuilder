@@ -1226,12 +1226,7 @@ ActionDesc RuleSetModel::getRuleActionDesc(Rule* r) const
         res.tooltip = "";
     }
 
-    QString par = FWObjectPropertiesFactory::getRuleActionProperties(r);
-    if (!par.isEmpty()) {
-        if (par.length() > 20)
-            par = par.left(17) + "...";
-        res.displayName += ":"+par;
-    }
+    res.argument = FWObjectPropertiesFactory::getRuleActionProperties(r);
 
     return res;
 }

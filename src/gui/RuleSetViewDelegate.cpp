@@ -535,8 +535,19 @@ QSize RuleSetViewDelegate::calculateCellSizeForObject(const QModelIndex & index)
 
 QString RuleSetViewDelegate::constructActionText(ActionDesc &actionDesc) const
 {
-    return (st->getShowDirectionText())?actionDesc.displayName:
-            (actionDesc.displayName.contains(":")?actionDesc.displayName.right(actionDesc.displayName.size() - actionDesc.displayName.indexOf(":") - 1):"");
+    QString text;
+    if (st->getShowDirectionText())
+    {
+        text = actionDesc.displayName + (actionDesc.argument.isEmpty()?"":(":"+actionDesc.argument));
+    } else if (!actionDesc.argument.isEmpty())
+    {
+        text = actionDesc.argument;
+    }
+
+    if (text.length() > 20)
+        text = text.left(17) + "...";
+
+    return text;
 }
 
 QSize RuleSetViewDelegate::calculateCellSizeForIconAndText(const QModelIndex & index) const

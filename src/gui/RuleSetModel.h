@@ -86,6 +86,7 @@ class ActionDesc
     QString name;
     QString displayName;
     QString tooltip;
+    QString argument;
 };
 
 Q_DECLARE_METATYPE(ActionDesc)
