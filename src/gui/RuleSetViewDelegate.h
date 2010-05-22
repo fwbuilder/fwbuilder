@@ -27,6 +27,7 @@
 #define RULESETVIEWDELEGATE_H
 
 #include <QItemDelegate>
+#include "RuleSetModel.h"
 
 class RuleNode;
 class FWObjectSelectionModel;
@@ -99,6 +100,8 @@ private:
     void paintOptions(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const;
     void paintComment(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const;
     void paintMetric(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const;
+
+    QString constructActionText(ActionDesc &actionDesc)const;
 };
 
 #endif // RULESETVIEWDELEGATE_H

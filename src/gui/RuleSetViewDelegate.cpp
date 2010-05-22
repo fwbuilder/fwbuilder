@@ -33,7 +33,6 @@
 #include "RuleNode.h"
 #include "ColDesc.h"
 #include "FWObjectSelectionModel.h"
-#include "RuleSetModel.h"
 
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Resources.h"
@@ -245,7 +244,7 @@ void RuleSetViewDelegate::paintAction(QPainter *painter, const QStyleOptionViewI
     DrawingContext ctx = initContext(option.rect);
     ActionDesc actionDesc = v.value<ActionDesc>();
     drawSelectedFocus(painter, option, ctx.objectRect);
-    QString text = (st->getShowDirectionText())?actionDesc.displayName:"";
+    QString text = constructActionText(actionDesc);
     drawIconAndText(painter, ctx.drawRect, actionDesc.name, text);
 }
 
@@ -534,11 +533,17 @@ QSize RuleSetViewDelegate::calculateCellSizeForObject(const QModelIndex & index)
     return res;
 }
 
+QString RuleSetViewDelegate::constructActionText(ActionDesc &actionDesc) const
+{
+    return (st->getShowDirectionText())?actionDesc.displayName:
+                   (actionDesc.name == "Branch"?actionDesc.displayName.right(actionDesc.displayName.size() - actionDesc.displayName.indexOf(":") - 1):"");
+}
+
 QSize RuleSetViewDelegate::calculateCellSizeForIconAndText(const QModelIndex & index) const
 {
     QVariant v = index.data(Qt::DisplayRole);
     ActionDesc actionDesc = v.value<ActionDesc>();
-    QString text = (st->getShowDirectionText())?actionDesc.displayName:"";
+    QString text = constructActionText(actionDesc);
 
     if (text == "Undefined") text = "Both";
 

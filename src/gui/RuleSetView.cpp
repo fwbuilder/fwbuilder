@@ -2431,13 +2431,10 @@ bool RuleSetView::showToolTip(QEvent *event)
 
     QPoint pos = viewport()->mapFromGlobal(he->globalPos());
 
-//    qDebug() << "RuleSetView::showToolTip(QEvent *event) "<< pos;
-
     QModelIndex index = indexAt(pos);
     if (!index.isValid())
     {
         QToolTip::hideText();
-        qDebug() << "invalid!";
         return false;
     }
 
