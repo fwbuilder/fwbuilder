@@ -1,5 +1,9 @@
 2010-05-21  vadim  <vadim@vk.crocodile.org>
 
+	* RuleOptionsDialog.cpp (RuleOptionsDialog::loadFWObject):
+	fixes #1467: "rule options dialog shows iptables parameters for
+	procurve_acl"
+
 	* FWObjectPropertiesFactory.cpp (FWObjectPropertiesFactory::getPolicyRuleOptions):
 	fixes #1457 "tooltips for rule options seem to be broken". Tooltip
 	always includes the line telling of the rule is "stateful" or

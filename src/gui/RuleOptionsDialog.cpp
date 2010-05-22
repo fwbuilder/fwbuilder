@@ -105,7 +105,7 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     if (platform=="pf")       wid=2;
     if (platform=="ipfw")     wid=3;
     if (platform=="pix" || platform=="fwsm")      wid=4;
-    if (platform=="iosacl")   wid=5;
+    if (platform=="iosacl" || platform=="procurve_acl")   wid=5;
 
     m_dialog->wStack->widget(wid)->raise();
     m_dialog->wStack->setCurrentWidget(m_dialog->wStack->widget(wid));
@@ -261,7 +261,7 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
         data.registerOption(m_dialog->ipfw_stateless, ropt,"stateless");
     }
 
-    if (platform=="iosacl")
+    if (platform=="iosacl" || platform=="procurve_acl")
     {
         data.registerOption(m_dialog->iosacl_add_mirror_rule,
                             ropt, "iosacl_add_mirror_rule");

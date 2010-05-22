@@ -1159,16 +1159,9 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
         }else if (platform=="ipfw")
         {
             ;
-        }else if (platform=="iosacl")
+        }else if (platform == "iosacl" || platform == "procurve_acl")
         {
             if (ropt->getBool("iosacl_add_mirror_rule"))
-            {
-                options << qMakePair(QObject::tr("Add mirrored rule"), QString(""));
-            }
-            
-        }else if (platform=="procurve_acl")
-        {
-            if (ropt->getBool("procurve_acl_add_mirror_rule"))
             {
                 options << qMakePair(QObject::tr("Add mirrored rule"), QString(""));
             }

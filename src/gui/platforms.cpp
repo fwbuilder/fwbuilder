@@ -315,15 +315,9 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
         }
 
         // all rules are stateless for IOS ACL
-	if (platform=="iosacl")
+	if (platform=="iosacl" || platform=="procurve_acl")
         {
             res = !opt->getBool("iosacl_add_mirror_rule");
-        }
-
-        // all rules are stateless for HP Procurve ACL
-	if (platform=="procurve_acl")
-        {
-            res = !opt->getBool("procurve_acl_add_mirror_rule");
         }
 
     }
