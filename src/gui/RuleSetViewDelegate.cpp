@@ -536,7 +536,7 @@ QSize RuleSetViewDelegate::calculateCellSizeForObject(const QModelIndex & index)
 QString RuleSetViewDelegate::constructActionText(ActionDesc &actionDesc) const
 {
     return (st->getShowDirectionText())?actionDesc.displayName:
-                   (actionDesc.name == "Branch"?actionDesc.displayName.right(actionDesc.displayName.size() - actionDesc.displayName.indexOf(":") - 1):"");
+            (actionDesc.displayName.contains(":")?actionDesc.displayName.right(actionDesc.displayName.size() - actionDesc.displayName.indexOf(":") - 1):"");
 }
 
 QSize RuleSetViewDelegate::calculateCellSizeForIconAndText(const QModelIndex & index) const

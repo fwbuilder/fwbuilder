@@ -1,6 +1,8 @@
 2010-05-22 yalovoy <yalovoy@gmail.com>
 	* fixes #1463 Always show branch rule set name with action "Branch"
 	affected files: RuleSetView.cpp, RuleSetViewDelegate.cpp, RuleSetViewDelegate.h
+	* fixes #1469 some actions should always display argument, even when text labels for actions and directions is off
+	affected files: RuleSetViewDelegate.cpp
 
 2010-05-21  vadim  <vadim@vk.crocodile.org>
 
