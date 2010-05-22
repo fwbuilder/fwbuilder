@@ -36,12 +36,11 @@ class genericDialogTest : public QObject
     Q_OBJECT
     libfwbuilder::Library* findUserLibrary();
     ObjectManipulator *om;
-    libfwbuilder::Firewall *firewall;
     bool dialog_rejected;
 
     QList<QWidget*> scanDialog(QWidget*);
     bool testControl(QWidget* control);
-    void testDialog(QDialog *dialog);
+    void testDialog(QDialog *dialog, libfwbuilder::FWObject *object);
 private slots:
     void initTestCase();
     void testFirewallSettingsDialog_iptables();

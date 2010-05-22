@@ -156,13 +156,13 @@ bool genericDialogTest::testControl(QWidget *control)
     return true;
 }
 
-void genericDialogTest::testDialog(QDialog *dialog)
+void genericDialogTest::testDialog(QDialog *dialog, FWObject *object)
 {
     QList<QWidget*> widgets = scanDialog(dialog);
-    Firewall *oldfw = dynamic_cast<Firewall*>(mw->db()->create(Firewall::TYPENAME));
+    FWObject *old = mw->db()->create(object->getTypeName());
     for (int i=0; i<widgets.size(); i++)
     {
-        oldfw->duplicate(firewall);
+        old->duplicate(object);
 
         QWidget *widget = widgets.at(i);
         dialog->open();
@@ -174,29 +174,29 @@ void genericDialogTest::testDialog(QDialog *dialog)
             continue;
         }
         dialog->accept();
-        QVERIFY2(!oldfw->getOptionsObject()->cmp(firewall->getOptionsObject(), true),
+        QVERIFY2(!old->cmp(object, true),
                  QString("Widget %1 does not affect object").arg(widget->objectName()).toAscii().data());
     }
 }
 
 void genericDialogTest::testFirewallSettingsDialog_iptables()
 {
-    firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
+    Firewall *firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
     firewall->setStr("platform", "iptables");
     firewall->setStr("host_OS", "linux24");
 
     QDialog *dialog = dynamic_cast<QDialog*>(DialogFactory::createFWDialog(mw, firewall));
-    testDialog(dialog);
+    testDialog(dialog, firewall);
 }
 
 void genericDialogTest::testHostOSSettingsDialog_linux24()
 {
-    firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
+    Firewall *firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
     firewall->setStr("platform", "iptables");
     firewall->setStr("host_OS", "linux24");
 
     QDialog *dialog = dynamic_cast<QDialog*>(DialogFactory::createOSDialog(mw, firewall));
-    testDialog(dialog);
+    testDialog(dialog, firewall);
 }
 
 Library* genericDialogTest::findUserLibrary()
