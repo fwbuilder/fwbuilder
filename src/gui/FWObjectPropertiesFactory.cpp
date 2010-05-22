@@ -977,204 +977,207 @@ QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(Rule *rule)
 
 QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
 {
-    QString res;
-    
+    QList<QPair<QString,QString> > options;
+
     if (rule!=NULL)
     {
-        res="";
         FWObject *o = rule;
-        while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
+        while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
         assert(o!=NULL);
-        Firewall *f=Firewall::cast(o);
-        string platform=f->getStr("platform");
+        Firewall *f = Firewall::cast(o);
+        string platform = f->getStr("platform");
         FWOptions *ropt = rule->getOptionsObject();
-        
+
+        if (platform!="iosacl" && platform!="procurve_acl")
+        {
+            if (ropt->getBool("stateless"))
+            {
+                options << qMakePair(QObject::tr("Stateless"), QString(""));
+            } else
+            {
+                options << qMakePair(QObject::tr("Stateful"), QString(""));
+            }
+        }
+
         if (platform=="iptables")
         {
             if (!ropt->getStr("log_prefix").empty())
             {
-                res+=QObject::tr("<b>Log prefix    :</b> ");
-                res+=QString(ropt->getStr("log_prefix").c_str())+"<br>\n";
+                options << qMakePair(QObject::tr("Log prefix:"),
+                                     QString(ropt->getStr("log_prefix").c_str()));
             }
 
             if (!ropt->getStr("log_level").empty())
             {
-                res+=QObject::tr("<b>Log Level     :</b> ");
-                res+=getScreenName(ropt->getStr("log_level").c_str(),
-                        getLogLevels(platform.c_str()))+"<br>\n";
+                options << qMakePair(QObject::tr("Log Level:"),
+                                     QString(getScreenName(ropt->getStr("log_level").c_str(),
+                                                           getLogLevels(platform.c_str()))));
             }
 
             if (ropt->getInt("ulog_nlgroup")>1)
             {
-                res+=QObject::tr("<b>Netlink group :</b> ");
-                res+=QString(ropt->getStr("ulog_nlgroup").c_str())+"<br>\n";
+                options << qMakePair(QObject::tr("Netlink group:"),
+                                     QString(ropt->getStr("ulog_nlgroup").c_str()));
             }
             
             if (ropt->getInt("limit_value")>0)
             {
-                res += QObject::tr("<b>Limit value   :</b> ");
-                if (ropt->getBool("limit_value_not")) res += " ! ";
-                res += QString(ropt->getStr("limit_value").c_str())+" ";
-           
+                QString arg;
+                if (ropt->getBool("limit_value_not")) arg = " ! ";
+                arg += QString(ropt->getStr("limit_value").c_str());
                 if (!ropt->getStr("limit_suffix").empty())
                 {
-                    res+=getScreenName(ropt->getStr("limit_suffix").c_str(),
-                                       getLimitSuffixes(platform.c_str()))+"<br>\n";
+                    arg += getScreenName(ropt->getStr("limit_suffix").c_str(),
+                                         getLimitSuffixes(platform.c_str()));
                 }
+                options << qMakePair(QString("Limit value:"), arg);
             }
 
             if (ropt->getInt("limit_burst")>0)
             {
-                res+=QObject::tr("<b>Limit burst   :</b> ");
-                res+=QString(ropt->getStr("limit_burst").c_str())+"<br>\n";
+                options << qMakePair(QString("Limit burst:"),
+                                     QString(ropt->getStr("limit_burst").c_str()));
             }
 
             if (ropt->getInt("connlimit_value")>0)
             {
-                res+=QObject::tr("<b>connlimit value   :</b> ");
-                if (ropt->getBool("connlimit_above_not")) res += " ! ";
-                res+=QString(ropt->getStr("connlimit_value").c_str())+"<br>\n";
+                QString arg;
+
+                if (ropt->getBool("connlimit_above_not")) arg = " ! ";
+                arg += QString(ropt->getStr("connlimit_value").c_str());
+
+                options << qMakePair(QObject::tr("connlimit value:"), arg);
+            }
+
+            if (ropt->getInt("hashlimit_value")>0)
+            {
+                QString arg;
+                if (ropt->getBool("hashlimit_value_not")) arg = " ! ";
+                arg += QString(ropt->getStr("hashlimit_value").c_str());
+                if (!ropt->getStr("hashlimit_suffix").empty())
+                {
+                    arg += getScreenName(ropt->getStr("limit_suffix").c_str(),
+                                         getLimitSuffixes(platform.c_str()));
+                }
+
+                options << qMakePair(QString("hashlimit name:"),
+                                     QString(ropt->getStr("hashlimit_name").c_str()));
+                options << qMakePair(QString("hashlimit value:"), arg);
+
+                if (ropt->getInt("hashlimit_burst")>0)
+                {
+                    options << qMakePair(QString("haslimit burst:"),
+                                         QString(ropt->getStr("hashlimit_burst").c_str()));
+                }
             }
             
             if (ropt->getBool("firewall_is_part_of_any_and_networks"))
             {
-                res+=QObject::tr("<b>Part of Any</b>");
-                res+="<br>\n";
+                options << qMakePair(QObject::tr("Part of Any"), QString(""));
             }
 
-            if (ropt->getBool("stateless"))
-            {
-                res+=QObject::tr("<b>Stateless</b>");
-                res+="<br>\n";
-            }
             
-        }else if (platform=="ipf") 
+        } else if (platform=="ipf") 
         {
             if (!ropt->getStr("ipf_log_facility").empty())
             {
-                res+=QObject::tr("<b>Log facility:</b> ");
-                res+=getScreenName(ropt->getStr("ipf_log_facility").c_str(),
-                    getLogFacilities(platform.c_str()))+"<br>\n";
+                options << qMakePair(QObject::tr("Log facility:"),
+                                     QString(getScreenName(ropt->getStr("ipf_log_facility").c_str(),
+                                                           getLogFacilities(platform.c_str()))));
             }
             
             if (!ropt->getStr("log_level").empty())
             {
-                res+=QObject::tr("<b>Log level   :</b> ");
-                res+=getScreenName(ropt->getStr("log_level").c_str(),
-                    getLogLevels(platform.c_str()))+"<br>\n";
+                options << qMakePair(QObject::tr("Log level:"),
+                                     QString(getScreenName(ropt->getStr("log_level").c_str(),
+                                                           getLogLevels(platform.c_str()))));
             }
             
-            res+="<ul>";
             if (ropt->getBool("ipf_return_icmp_as_dest"))
             {
-                res+=QObject::tr("<li><b>Send 'unreachable'</b></li>");
-                res+="<br>\n";
-            }
-
-            if (ropt->getBool("stateless"))
-            {
-                res+=QObject::tr("<li><b>Stateless</b></li> ");
-                res+="<br>\n";
+                options << qMakePair(QObject::tr("Send 'unreachable'"), QString(""));
             }
 
             if (ropt->getBool("ipf_keep_frags"))
             {
-                res+=QObject::tr("<li><b>Keep information on fragmented packets</b></li> ");
-                res+="<br>\n";
+                options << qMakePair(QObject::tr("Keep information on fragmented packets"), QString(""));
             }
-            res+="</ul>";
             
         }else if (platform=="pf")
         {
             
             if (!ropt->getStr("log_prefix").empty())
             {
-                res+=QObject::tr("<b>Log prefix :</b> ");
-                res+=QString(ropt->getStr("log_prefix").c_str())+"<br>\n";
+                options << qMakePair(QObject::tr("Log prefix:"), 
+                                     QString(ropt->getStr("log_prefix").c_str()));
             }
             
             if (ropt->getInt("pf_rule_max_state")>0)
             {
-                res+=QObject::tr("<b>Max state  :</b> ");
-                res+=QString(ropt->getStr("pf_rule_max_state").c_str())+"<br>\n";
+                options << qMakePair(QObject::tr("Max state:"),
+                                     QString(ropt->getStr("pf_rule_max_state").c_str()));
             }
             
-            res+="<ul>";
-            if (ropt->getBool("stateless"))
-            {
-                res+=QObject::tr("<li><b>Stateless</b></li> ");
-                //res+="<br>\n";
-            }
             if (ropt->getBool("pf_keep_state"))
             {
-                res+=QObject::tr("<li><b>Force 'keep-state'</b></li> ");
-                //res+="<br>\n";
+                options << qMakePair(QObject::tr("Force 'keep-state'"), QString(""));
             }
             if (ropt->getBool("pf_no_sync"))
             {
-                res+=QObject::tr("<li><b>no-sync</b></li> ");
-                //res+="<br>\n";
+                options << qMakePair(QString("no-sync"), QString(""));
             }
             if (ropt->getBool("pf_pflow"))
             {
-                res+=QObject::tr("<li><b>pflow</b></li> ");
-                //res+="<br>\n";
+                options << qMakePair(QString("pflow"), QString(""));
             }
             if (ropt->getBool("pf_sloppy_tracker"))
             {
-                res+=QObject::tr("<li><b>sloppy-tracker</b></li> ");
-                //res+="<br>\n";
+                options << qMakePair(QString("sloppy-tracker"), QString(""));
             }
             
             if (ropt->getBool("pf_source_tracking"))
             {
-                res+=QObject::tr("<li><b>Source tracking</b></li> ");
-                //res+="<br>\n";
+                options << qMakePair(QObject::tr("Source tracking"), QString(""));
                 
-                res+=QObject::tr("<b>Max src nodes :</b> ");
-                res+=QString(ropt->getStr("pf_max_src_nodes").c_str())+"<br>\n";
+                options << qMakePair(QObject::tr("Max src nodes:"),
+                                     QString(ropt->getStr("pf_max_src_nodes").c_str()));
                 
-                res+=QObject::tr("<b>Max src states:</b> ");
-                res+=QString(ropt->getStr("pf_max_src_states").c_str())+"<br>\n";
+                options << qMakePair(QObject::tr("Max src states:"),
+                                     QString(ropt->getStr("pf_max_src_states").c_str()));
             }
 
             if (ropt->getBool("pf_synproxy"))
             {
-                res+=QObject::tr("<li><b>synproxy</b></li> ");
+                options << qMakePair(QString("synproxy"), QString(""));
             }
 
             if (ropt->getBool("pf_modulate_state"))
             {
-                res+=QObject::tr("<li><b>modulate_state</b></li> ");
+                options << qMakePair(QString("modulate_state"), QString(""));
             }
-
-            res+="</ul>";
             
         }else if (platform=="ipfw")
         {
-            res+="<ul>";
-            if (ropt->getBool("stateless"))
-            {
-                res+=QObject::tr("<li><b>Stateless</b></li> ");
-                res+="<br>\n";
-            }
-            res+="</ul>";
-
+            ;
         }else if (platform=="iosacl")
         {
-            res+="<ul>";
             if (ropt->getBool("iosacl_add_mirror_rule"))
             {
-                res+=QObject::tr("<li><b>Add mirrored rule</b></li> ");
-                res+="<br>\n";
+                options << qMakePair(QObject::tr("Add mirrored rule"), QString(""));
             }
-            res+="</ul>";
+            
+        }else if (platform=="procurve_acl")
+        {
+            if (ropt->getBool("procurve_acl_add_mirror_rule"))
+            {
+                options << qMakePair(QObject::tr("Add mirrored rule"), QString(""));
+            }
             
         }else if (platform=="pix" || platform=="fwsm")
         {
-            string vers="version_"+f->getStr("version");
+            string vers = "version_"+f->getStr("version");
             
-            res+=QObject::tr("<u><b>Ver:%1</b></u><br>\n").arg(vers.c_str());
+            options << qMakePair(QObject::tr("Version:"), QString(vers.c_str()));
             
             if ( Resources::platform_res[platform]->getResourceBool(
                   "/FWBuilderResources/Target/options/"+vers+"/pix_rule_syslog_settings"))
@@ -1182,30 +1185,39 @@ QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
                 
                 if (!ropt->getStr("log_level").empty())
                 {
-                    res+=QObject::tr("<b>Log level   :</b> ");
-                    res+=getScreenName(ropt->getStr("log_level").c_str(),
-                        getLogLevels(platform.c_str()))+"<br>\n";
+                    options << qMakePair(QObject::tr("Log level:"),
+                                         QString(getScreenName(ropt->getStr("log_level").c_str(),
+                                                               getLogLevels(platform.c_str()))));
                 }
                 if (ropt->getInt("log_interval")>0)
                 {
-                    res+=QObject::tr("<b>Log interval  :</b> ");
-                    res+=QString(ropt->getStr("log_interval").c_str())+"<br>\n";
+                    options << qMakePair(QObject::tr("Log interval:"),
+                                         QString(ropt->getStr("log_interval").c_str()));
                 }
                 
-                res+="<ul>";
                 if (ropt->getBool("disable_logging_for_this_rule"))
                 {
-                    res+=QObject::tr("<li><b>Disable logging for this rule</b></li> ");
-                    res+="<br>\n";
+                    options << qMakePair(QObject::tr("Disable logging for this rule"), QString(""));
                 }
-                res+="</ul>";
                 
             } 
         }
         
     }
-    
-    return res;
+
+    QStringList res;
+    res << "<table>";
+    QList<QPair<QString,QString> >::iterator it;
+    for (it=options.begin(); it!=options.end(); ++it)
+    {
+        QPair<QString,QString> p = *it;
+        res << "<tr><th align='left'>" + p.first + "</th><td>" + p.second + "</td></tr>";
+    }
+    res << "</table>";
+    QString html = res.join("\n");
+    if (fwbdebug)
+        qDebug() << html;
+    return html;
 }
 
 QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
