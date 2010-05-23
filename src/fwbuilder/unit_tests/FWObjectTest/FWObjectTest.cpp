@@ -51,7 +51,7 @@ void FWObjectTest::cmpTest()
     obj2->duplicate(obj1);
     obj1->setStr("key", "value1");
     CPPUNIT_ASSERT(obj1->cmp(obj2) == false);
-    obj1->setStr("key", "");
+    obj1->remStr("key");
     CPPUNIT_ASSERT(obj2->cmp(obj1) == true);
 
     FWObject *ch1 = db.create(Interface::TYPENAME);
