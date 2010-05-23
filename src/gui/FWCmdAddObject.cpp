@@ -201,9 +201,9 @@ void FWCmdAddObject::redo()
     // this matters if the tree needs to scroll to show the object when
     // showObjectInTreeEvent is posted because vertical size of the tree
     // changes when editor opens
-    if (mw->isEditorVisible())
-        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, member->getId()));
 
+    //if (mw->isEditorVisible())
+    QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, member->getId()));
     QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, member->getId()));
 }
 
@@ -278,8 +278,9 @@ void FWCmdAddLibrary::redo()
     // this matters if the tree needs to scroll to show the object when
     // showObjectInTreeEvent is posted because vertical size of the tree
     // changes when editor opens
-    if (mw->isEditorVisible())
-        QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, lib->getId()));
+
+    //if (mw->isEditorVisible())
+    QCoreApplication::postEvent(mw, new openObjectInEditorEvent(filename, lib->getId()));
     QCoreApplication::postEvent(mw, new showObjectInTreeEvent(filename, lib->getId()));
 }
 

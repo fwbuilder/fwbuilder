@@ -1,4 +1,10 @@
+2010-05-23  vadim  <vadim@vk.crocodile.org>
+
+	* FWCmdAddObject.cpp (FWCmdAddObject::redo): fixed #1468 Open new
+	object in the editor after it has been created.
+
 2010-05-22 yalovoy <yalovoy@gmail.com>
+
 	* fixes #1463 Always show branch rule set name with action "Branch"
 	affected files: RuleSetView.cpp, RuleSetViewDelegate.cpp, RuleSetViewDelegate.h
 	* fixes #1469 some actions should always display argument, even when text labels for actions and directions is off
