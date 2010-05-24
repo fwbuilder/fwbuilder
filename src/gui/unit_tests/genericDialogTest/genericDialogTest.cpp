@@ -65,6 +65,14 @@
 #include "fwbuilder/IPService.h"
 #include "DialogFactory.h"
 #include "FWCmdChange.h"
+#include "RuleOptionsDialog.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/NAT.h"
+#include "RoutingRuleOptionsDialog.h"
+#include "platforms.h"
+#include "NATRuleOptionsDialog.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -102,6 +110,29 @@ QList<QWidget*> genericDialogTest::scanDialog(QWidget *dialog)
     return result;
 }
 
+// Activates tab which contains widget
+void genericDialogTest::activateTab(QWidget *widget)
+{
+    QWidget *current = widget;
+    while (current->parent() != NULL)
+    {
+        if (dynamic_cast<QTabWidget*>(current->parent()) != NULL)
+        {
+            QTabWidget *tabs = dynamic_cast<QTabWidget*>(current->parent());
+            for (int i=0; i<tabs->count(); i++)
+            {
+                if (tabs->widget(i)->findChildren<QWidget*>(widget->objectName()).contains(widget))
+                {
+                    tabs->setCurrentIndex(i);
+                    break;
+                }
+            }
+        }
+        current = dynamic_cast<QWidget*>(current->parent());
+    }
+
+}
+
 bool genericDialogTest::testControl(QWidget *control)
 {
     QString className = control->metaObject()->className();
@@ -118,6 +149,7 @@ bool genericDialogTest::testControl(QWidget *control)
         QLineEdit *line = dynamic_cast<QLineEdit*>(control);
         line->clear();
         QTest::keyClicks(line, QString("Some text for %1").arg(line->objectName()));
+        //line->setText(QString("Some text for %1").arg(control->objectName()));
         QTest::keyClick(line, Qt::Key_Enter);
     }
     else if (dynamic_cast<QCheckBox*>(control) != NULL)
@@ -133,6 +165,7 @@ bool genericDialogTest::testControl(QWidget *control)
             QTest::mouseClick(box, Qt::LeftButton, Qt::NoModifier, QPoint(5, 5));
         else
         { 
+            if (box->group() == NULL) return false;
             if (box->group()->buttons().count() < 2) return false;
             // looking for first radio button in same group that is not checked and clicking it
             foreach(QAbstractButton *button, box->group()->buttons())
@@ -156,24 +189,39 @@ bool genericDialogTest::testControl(QWidget *control)
     return true;
 }
 
-void genericDialogTest::testDialog(QDialog *dialog, FWObject *object)
+void genericDialogTest::testDialog(QWidget *dialog, FWObject *object)
 {
+    qDebug() << "testing dialog" << dialog;
     QList<QWidget*> widgets = scanDialog(dialog);
+    qDebug() << "it contains" << widgets.size() << "controls";
+    QList<QTabWidget*> tabs = dialog->findChildren<QTabWidget*>();
     FWObject *old = mw->db()->create(object->getTypeName());
     for (int i=0; i<widgets.size(); i++)
     {
+        //qDebug() << "testing control" << widgets.at(i);
         old->duplicate(object);
-
         QWidget *widget = widgets.at(i);
-        dialog->open();
-        if (!widget->isVisible()) continue;
-        if (!testControl(scanDialog(dialog).at(i)))
+        // Skipping QSpinBox (which inherits QLineEdit) with QLineEdit type
+        // there should be another one with right type in list
+        if (widget->objectName() == "qt_spinbox_lineedit") continue;
+        if (dynamic_cast<QDialog*>(dialog) != NULL)
+            dynamic_cast<QDialog*>(dialog)->open();
+        activateTab(widget);
+        if (!widget->isVisible() || !widget->isEnabled()) continue;
+
+        if (!testControl(widget))
         {
             QWARN(QString("Dont know how to test widget %1. It might be unknown class, empty QComboBox or QRadioButton with not other QRadio button in group.")
                   .arg(widgets.at(i)->objectName()).toAscii().data());
             continue;
         }
-        dialog->accept();
+        if (dynamic_cast<QDialog*>(dialog) != NULL)
+            dynamic_cast<QDialog*>(dialog)->accept();
+        else
+        {
+            QMetaObject::invokeMethod(dialog, "changed");
+            QMetaObject::invokeMethod(dialog, "applyChanges");
+        }
         QVERIFY2(!old->cmp(object, true),
                  QString("Widget %1 does not affect object").arg(widget->objectName()).toAscii().data());
     }
@@ -197,6 +245,64 @@ void genericDialogTest::testHostOSSettingsDialog_linux24()
 
     QDialog *dialog = dynamic_cast<QDialog*>(DialogFactory::createOSDialog(mw, firewall));
     testDialog(dialog, firewall);
+}
+
+void genericDialogTest::testRuleOptionsDialog()
+{
+    Firewall *firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
+    QMap<QString, QString> platforms = getAllPlatforms();
+    platforms.remove("unknown"); // dialog does not set options for it
+    foreach(QString platform, platforms.keys())
+    {
+        qDebug() << "Testing platform:" << platform;
+        firewall->setStr("platform", platform.toStdString());
+        PolicyRule *rule = PolicyRule::cast(firewall->getPolicy()->createRule());
+        firewall->getPolicy()->add(rule);
+        QWidget *dialog = dynamic_cast<QWidget*>(DialogFactory::createDialog(mw->activeProject(), Rule::TYPENAME));
+        dynamic_cast<BaseObjectDialog*>(dialog)->attachToProjectWindow(mw->activeProject());
+        dialog->setVisible(true);
+        dynamic_cast<RuleOptionsDialog*>(dialog)->loadFWObject(rule);
+        testDialog(dynamic_cast<QWidget*>(dialog), FWObject::cast(rule));
+    }
+}
+
+void genericDialogTest::testRoutingRuleOptionsDialog()
+{
+    Firewall *firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
+/*    QMap<QString, QString> platforms = getAllPlatforms();
+    platforms.remove("unknown"); // dialog does not set options for it
+    foreach(QString platform, platforms.keys())
+    {
+        firewall->setStr("platform", platform.toStdString());
+*/
+    // it currently works only with iptables
+    firewall->setStr("platform", "iptables");
+    RoutingRule *rule = RoutingRule::cast(firewall->getRouting()->createRule());
+    firewall->getRouting()->add(rule);
+    QWidget *dialog = dynamic_cast<QWidget*>(DialogFactory::createDialog(mw->activeProject(), RoutingRule::TYPENAME));
+    dynamic_cast<BaseObjectDialog*>(dialog)->attachToProjectWindow(mw->activeProject());
+    dialog->setVisible(true);
+    dynamic_cast<RoutingRuleOptionsDialog*>(dialog)->loadFWObject(rule);
+    testDialog(dynamic_cast<QWidget*>(dialog), FWObject::cast(rule));
+}
+
+void genericDialogTest::testNATRuleOptionsDialog()
+{
+    Firewall *firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
+    QMap<QString, QString> platforms = getAllPlatforms();
+    platforms.remove("unknown"); // dialog does not set options for it
+    foreach(QString platform, platforms.keys())
+    {
+        qDebug() << "Testing platform:" << platform;
+        firewall->setStr("platform", platform.toStdString());
+        NATRule *rule = NATRule::cast(firewall->getNAT()->createRule());
+        firewall->getNAT()->add(rule);
+        QWidget *dialog = dynamic_cast<QWidget*>(DialogFactory::createDialog(mw->activeProject(), NATRule::TYPENAME));
+        dynamic_cast<BaseObjectDialog*>(dialog)->attachToProjectWindow(mw->activeProject());
+        dialog->setVisible(true);
+        dynamic_cast<NATRuleOptionsDialog*>(dialog)->loadFWObject(rule);
+        testDialog(dynamic_cast<QWidget*>(dialog), FWObject::cast(rule));
+    }
 }
 
 Library* genericDialogTest::findUserLibrary()

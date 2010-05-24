@@ -40,13 +40,18 @@ class genericDialogTest : public QObject
 
     QList<QWidget*> scanDialog(QWidget*);
     bool testControl(QWidget* control);
-    void testDialog(QDialog *dialog, libfwbuilder::FWObject *object);
+    void testDialog(QWidget *dialog, libfwbuilder::FWObject *object);
+    void activateTab(QWidget *widget);
 private slots:
     void initTestCase();
+
     void testFirewallSettingsDialog_iptables();
-    void testHostOSSettingsDialog_linux24();
+    void testRuleOptionsDialog();
+    void testRoutingRuleOptionsDialog();
+    void testNATRuleOptionsDialog();
 
 public slots:
+    void testHostOSSettingsDialog_linux24();
     //void rejectDialog();
 };
 
