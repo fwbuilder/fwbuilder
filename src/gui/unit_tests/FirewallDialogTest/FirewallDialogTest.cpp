@@ -75,8 +75,8 @@ void FirewallDialogTest::initTestCase()
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
-    QTest::qWait(1000);
     firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
+    QTest::qWait(1000);    
 }
 
 Library* FirewallDialogTest::findUserLibrary()
@@ -103,7 +103,6 @@ void FirewallDialogTest::rejectDialog()
 
 void FirewallDialogTest::testDialog()
 {
-    om->editObject(firewall);
     FirewallDialog *dialog = mw->findChild<FirewallDialog*>("w_FirewallDialog");
     QVERIFY(dialog != NULL);
 
