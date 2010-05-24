@@ -61,6 +61,7 @@
 #undef HAVE_PTY_H
 #undef HAVE_LIBUTIL_H
 #undef HAVE_UTIL_H
+#undef HAVE_UNISTD_H
 
 #ifdef HAVE_GETOPT_H
 #  define HAVE_DECL_GETOPT  HAVE_GETOPT_H

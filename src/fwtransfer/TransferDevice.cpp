@@ -19,6 +19,9 @@
 #include <string>
 
 #include <sys/types.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include <QDebug>
 #include <QString>

@@ -14,9 +14,16 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
+#include "../../../config.h"
+#include "../../../build_num"
+
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #ifdef _WIN32
 #include <windows.h>
@@ -34,9 +41,6 @@
 #include <stdlib.h>
 #endif
 #endif
-
-#include "../../../config.h"
-#include "../../../build_num"
 
 #include "fwbuilder/FWException.h"
 

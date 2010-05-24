@@ -3,6 +3,9 @@
 	* FWCmdAddObject.cpp (FWCmdAddObject::redo): fixed #1468 Open new
 	object in the editor after it has been created.
 
+	* applied patch by Vadim Jukov <persgray@gmail.com>, maintainer of
+	OpenBSD port. Patch fixes compile issues on OpenBSD
+
 2010-05-22 yalovoy <yalovoy@gmail.com>
 
 	* fixes #1463 Always show branch rule set name with action "Branch"

@@ -39,7 +39,6 @@
 #include <termios.h>
 #include <time.h>
 #include <sys/select.h>
-#include <utmpx.h>
 
 #ifdef HAVE_SIGNAL_H
 #include <signal.h>
