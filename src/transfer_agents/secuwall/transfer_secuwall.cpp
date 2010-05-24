@@ -20,6 +20,7 @@
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -29,7 +30,6 @@
 #include <windows.h>
 #include <direct.h>
 #include <stdio.h>
-#include <stdlib.h>
 #endif
 
 #ifdef HAVE_GETOPT_H
@@ -38,7 +38,7 @@
 #ifdef _WIN32
 #include <getopt.h>
 #else
-#include <stdlib.h>
+//#include <stdlib.h>
 #endif
 #endif
 
