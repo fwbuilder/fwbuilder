@@ -52,7 +52,7 @@ void RuleSetViewContextMenuTest::initTestCase()
 {
     mw = new FWWindow();
     mw->show();
-    mw->resize(800, 600);
+    mw->resize(1280, 1024);
     mw->startupLoad();
     FWObjectClipboard *clip = new FWObjectClipboard();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
@@ -62,6 +62,7 @@ void RuleSetViewContextMenuTest::initTestCase()
     firewall->setStr("platform", "iptables");
     openPolicy("testFirewall");
     view = mw->findChild<RuleSetView*>("");
+    om->closeObject();
 }
 
 /*
