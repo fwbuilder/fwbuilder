@@ -72,7 +72,7 @@ class UserWorkflow : public QObject {
     Q_OBJECT;
 
 public:
-    enum workflowEvents { UPDATE_CHECKS_DISABLED  = 1,
+    enum workflowFlags { UPDATE_CHECKS_DISABLED  = 1,
                           GETTING_STARTED_TUTOTIAL = 2,
                           NEW_FW_WITH_TEMPLATE = 4,
                           NEW_FW_NO_TEMPLATE = 8,
@@ -85,17 +85,17 @@ public:
 
 private:
     QDateTime start_timestamp;
-    QSet<enum workflowEvents> events;
+    QSet<enum workflowFlags> flags;
     HttpGet *report_query;
     
-    int eventsToInt();
+    int flagsToInt();
     
 public:
     UserWorkflow();
     virtual ~UserWorkflow();
-    bool checkEvent(enum workflowEvents e);
-    void registerEvent(enum workflowEvents e);
-    void clearEvent(enum workflowEvents e);
+    bool checkFlag(enum workflowFlags e);
+    void registerFlag(enum workflowFlags e);
+    void clearFlag(enum workflowFlags e);
     void registerTutorialViewing(const QString &tutorial_name);
     void report();
     bool reportInProgress() { return report_query != NULL; }

@@ -41,13 +41,19 @@ UserWorkflow::UserWorkflow()
     assert(st != NULL);
     start_timestamp = QDateTime::currentDateTime();
     report_query = NULL;
-    int flags = st->getUserWorkflowFlags();
+    int int_flags = st->getUserWorkflowFlags();
     int f = 1;
     for (int i=0; i<32; ++i)
     {
-        if (flags & f) events.insert((enum workflowEvents)(f));
+        if (int_flags & f) flags.insert((enum workflowFlags)(f));
         f = f << 1;
     }
+
+    // what if the user disabled tip of the day before they upgraded
+    // to the version with UserWorkflow ?
+
+    if (st->getBool("UI/NoStartTip"))
+        flags.insert(TIP_OF_THE_DAY_DISABLED);
 }
 
 UserWorkflow::~UserWorkflow()
@@ -55,38 +61,38 @@ UserWorkflow::~UserWorkflow()
     if (report_query != NULL) delete report_query;
 }
 
-int UserWorkflow::eventsToInt()
+int UserWorkflow::flagsToInt()
 {
-    int flags = 0;
-    foreach(int f, events) flags |= f;
-    return flags;
+    int int_flags = 0;
+    foreach(int f, flags) int_flags |= f;
+    return int_flags;
 }
 
-bool UserWorkflow::checkEvent(enum workflowEvents e)
+bool UserWorkflow::checkFlag(enum workflowFlags e)
 {
-    return events.contains(e);
+    return flags.contains(e);
 }
 
-void UserWorkflow::registerEvent(enum workflowEvents e)
+void UserWorkflow::registerFlag(enum workflowFlags e)
 {
     if (fwbdebug)
-        qDebug() << "UserWorkflow::registerEvent():" << e;
-    events.insert(e);
-    st->setUserWorkflowFlags(eventsToInt());
+        qDebug() << "UserWorkflow::registerFlag():" << e;
+    flags.insert(e);
+    st->setUserWorkflowFlags(flagsToInt());
 }
 
-void UserWorkflow::clearEvent(enum workflowEvents e)
+void UserWorkflow::clearFlag(enum workflowFlags e)
 {
     if (fwbdebug)
-        qDebug() << "UserWorkflow::clearEvent():" << e;
-    events.remove(e);
-    st->setUserWorkflowFlags(eventsToInt());
+        qDebug() << "UserWorkflow::clearFlag():" << e;
+    flags.remove(e);
+    st->setUserWorkflowFlags(flagsToInt());
 }
 
 void UserWorkflow::registerTutorialViewing(const QString &tutorial_name)
 {
     if (tutorial_name == "getting_started")
-        registerEvent(UserWorkflow::GETTING_STARTED_TUTOTIAL);
+        registerFlag(UserWorkflow::GETTING_STARTED_TUTOTIAL);
 }
 
 void UserWorkflow::report()
@@ -102,7 +108,7 @@ void UserWorkflow::report()
     if (fwbdebug)
     {
         QString s("%1");
-        qDebug() << "UserWorkflow::report():" << s.arg(eventsToInt(), 0, 16);
+        qDebug() << "UserWorkflow::report():" << s.arg(flagsToInt(), 0, 16);
         qDebug() << "Session:" << elapsed_time << "sec";
     }
 
@@ -121,7 +127,7 @@ void UserWorkflow::report()
 
     // start http query to get latest version from the web site
     QString url = QString(report_url)
-        .arg(VERSION).arg(st->getAppGUID()).arg(eventsToInt());
+        .arg(VERSION).arg(st->getAppGUID()).arg(flagsToInt());
     if (!report_query->get(url) && fwbdebug)
     {
         qDebug() << "HttpGet error: " << report_query->getLastError();

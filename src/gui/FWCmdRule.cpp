@@ -74,7 +74,7 @@ void FWCmdRule::notify()
 
 void FWCmdRule::redo()
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     RuleSetModel* md = getRuleSetModel();
     redoOnModel(md);
     notify();
@@ -114,7 +114,7 @@ FWCmdRuleInsert::~FWCmdRuleInsert()
 
 void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     if (insertedRule == 0) {
         if (ruleToInsert == 0)
         {
@@ -215,7 +215,7 @@ FWCmdRuleDelete::~FWCmdRuleDelete()
 
 void FWCmdRuleDelete::redoOnModel(RuleSetModel *md)
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     if (fwbdebug)
         qDebug() << "FWCmdRuleDelete::redoOnModel(RuleSetModel *md)";
     foreach(Rule* rule, rulesToDelete)
@@ -273,7 +273,7 @@ void FWCmdRuleColor::redoOnModel(RuleSetModel *md)
 {
     QModelIndexList indexes;
 
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
 
     foreach(int ruleId, oldColors.keys())
     {
@@ -315,7 +315,7 @@ FWCmdRuleMove::FWCmdRuleMove(ProjectPanel *project, libfwbuilder::RuleSet* rules
 
 void FWCmdRuleMove::redoOnModel(RuleSetModel *md)
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     move(md, direction);
 }
 
@@ -363,7 +363,7 @@ FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(ProjectPanel *project, RuleSet* rules
 
 void FWCmdRuleRenameGroup::redoOnModel(RuleSetModel *md)
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     QModelIndex grp = md->index(oldName);
     md->renameGroup(grp, newName);
 }
@@ -386,7 +386,7 @@ FWCmdRuleRemoveFromGroup::FWCmdRuleRemoveFromGroup(ProjectPanel* project, RuleSe
 
 void FWCmdRuleRemoveFromGroup::redoOnModel(RuleSetModel *md)
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     QModelIndex group = md->index(groupName);
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
@@ -430,7 +430,7 @@ FWCmdRuleNewGroup::FWCmdRuleNewGroup(ProjectPanel* project, RuleSet* ruleset, Ru
 
 void FWCmdRuleNewGroup::redoOnModel(RuleSetModel *md)
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
     QModelIndex index = md->createNewGroup(groupName, first.row(), last.row());
@@ -459,7 +459,7 @@ FWCmdRuleAddToGroup::FWCmdRuleAddToGroup(ProjectPanel* project, RuleSet* ruleset
 
 void FWCmdRuleAddToGroup::redoOnModel(RuleSetModel *md)
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
 
@@ -492,7 +492,7 @@ void FWCmdRuleChange::selectAffectedRule()
 
 void FWCmdRuleChange::redo()
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
     prepareRuleSetView();
     FWCmdChange::redo();
     selectAffectedRule();
@@ -630,7 +630,7 @@ FWCmdRuleNegateRE::FWCmdRuleNegateRE(ProjectPanel *project,
 
 void FWCmdRuleNegateRE::redo()
 {
-    if (!wfl->checkEvent(UserWorkflow::RULE_MOD)) wfl->registerEvent(UserWorkflow::RULE_MOD);
+    if (!wfl->checkFlag(UserWorkflow::RULE_MOD)) wfl->registerFlag(UserWorkflow::RULE_MOD);
 
     prepareRuleSetView();
     RuleElement* ruleElement = RuleElement::cast(getObject());

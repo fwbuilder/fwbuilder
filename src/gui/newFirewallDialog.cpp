@@ -853,7 +853,7 @@ void newFirewallDialog::finishClicked()
 
     } else
     {
-        wfl->registerEvent(UserWorkflow::NEW_FW_NO_TEMPLATE);
+        wfl->registerFlag(UserWorkflow::NEW_FW_NO_TEMPLATE);
 
         // Create from interface list (obtained either manually or via snmp)
         if ( !this->m_dialog->interfaceEditor1->isValid() )
