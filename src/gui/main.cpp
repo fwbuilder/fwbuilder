@@ -245,6 +245,9 @@ int main( int argc, char *argv[] )
 
     mw->show();
 
+    // it is connected to QApplication's slot, not to FWBApplication
+    app->setQuitOnLastWindowClosed(false);
+    // connecting to right slot
     app->connect(app, SIGNAL(lastWindowClosed()), app, SLOT(quit()));
 
 #if defined(Q_WS_MAC)
