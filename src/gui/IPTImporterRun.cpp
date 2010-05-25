@@ -34,14 +34,11 @@
 #include <iostream>
 #include <algorithm>
 
-#ifdef HAVE_ANTLR_RUNTIME
 #include <antlr/ANTLRException.hpp>
 
 // parser and lexer for files produced by iptables-save
 #include "../parsers/IPTCfgLexer.hpp"
 #include "../parsers/IPTCfgParser.hpp"
-
-#endif
 
 /*
  * Only this module depends on IPTCfgLexer and IPTCfgParser,
@@ -50,7 +47,6 @@
 
 void IPTImporter::run()
 {
-#ifdef HAVE_ANTLR_RUNTIME
 // it is probably safer to create an empty firewall if we do not have
 // ANTLR on the system rather than try to #ifdef out chunks of code
 // here and there in this module
@@ -81,6 +77,5 @@ void IPTImporter::run()
 
     if (!err.empty())  throw ImporterException(err);
 
-#endif
 }
 

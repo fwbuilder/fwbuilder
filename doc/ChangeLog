@@ -1,3 +1,12 @@
+2010-05-25  vadim  <vadim@vk.crocodile.org>
+
+	* configure.in (CPPUNIT_LIBS): fixed #1478 always use included
+	antlr run-time library. Because of the fixes I've made in
+	CircularQueue?.hpp in 2008 for 64 bit systems, we should always
+	link with antlr run-time that is included with fwbuilder code tree
+	rather than attempt to use the one that might be installed with
+	the OS.
+
 2010-05-24  vadim  <vadim@vk.crocodile.org>
 
 	* UserWorkflow.cpp (UserWorkflow::report): see #1466 Implemented

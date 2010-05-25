@@ -163,9 +163,7 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     m_dialog->dm_usesnmp->setEnabled(false);
 #endif
 
-#ifndef HAVE_ANTLR_RUNTIME
     m_dialog->dm_import_config->setEnabled(false);
-#endif
 
     restore();
 
@@ -174,7 +172,6 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     showPage(0);
     setNextEnabled(0, true);
 
-#ifdef HAVE_ANTLR_RUNTIME
     if (start_with_import)
     {
         m_dialog->dm_import_config->setDown(true);
@@ -185,7 +182,6 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
         setNextEnabled(2, true);
         cancelButton->show();
     }
-#endif
 
     prg_timer->start(100);
 }

@@ -43,12 +43,10 @@ clean_tests.depends = all
 QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 
-contains( HAVE_ANTLR_RUNTIME, 1 ) {
-    INCLUDEPATH += $$ANTLR_INCLUDEPATH
-    LIBS += ../../$$FWBPARSER_LIB \
-        $$ANTLR_LIBS
-    DEFINES += $$ANTLR_DEFINES
-}
+INCLUDEPATH += $$ANTLR_INCLUDEPATH
+LIBS += ../../$$FWBPARSER_LIB $$ANTLR_LIBS
+DEFINES += $$ANTLR_DEFINES
+
 LIBS += $$LIBS_FWCOMPILER
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below

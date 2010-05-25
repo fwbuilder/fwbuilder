@@ -468,12 +468,11 @@ FORMS = FWBMainWindow_q.ui \
 HEADERS += transferDialog.h
 SOURCES += transferDialog.cpp
 FORMS += transferdialog_q.ui
-contains( HAVE_ANTLR_RUNTIME, 1 ) { 
-    INCLUDEPATH += $$ANTLR_INCLUDEPATH
-    LIBS += $$FWBPARSER_LIB \
-        $$ANTLR_LIBS
-    DEFINES += $$ANTLR_DEFINES
-}
+
+INCLUDEPATH += $$ANTLR_INCLUDEPATH
+LIBS += $$FWBPARSER_LIB $$ANTLR_LIBS
+DEFINES += $$ANTLR_DEFINES
+
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
 LIBS += $$FWTRANSFER_LIB

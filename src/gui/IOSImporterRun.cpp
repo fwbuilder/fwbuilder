@@ -34,14 +34,11 @@
 #include <iostream>
 #include <algorithm>
 
-#ifdef HAVE_ANTLR_RUNTIME
 #include <antlr/ANTLRException.hpp>
 
 // parser and lexer for Cisco IOS access lists
 #include "../parsers/IOSCfgLexer.hpp"
 #include "../parsers/IOSCfgParser.hpp"
-
-#endif
 
 /*
  * Only this module depends on IOSCfgLexer and IOSCfgParser,
@@ -50,7 +47,6 @@
 
 void IOSImporter::run()
 {
-#ifdef HAVE_ANTLR_RUNTIME
 // it is probably safer to create an empty firewall if we do not have
 // ANTLR on the system rather than try to #ifdef out chunks of code
 // here and there in this module
@@ -81,6 +77,5 @@ void IOSImporter::run()
 
     if (!err.empty())  throw ImporterException(err);
 
-#endif
 }
 

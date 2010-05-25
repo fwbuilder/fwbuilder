@@ -248,31 +248,17 @@ AC_SUBST(HAVE_CPPUNIT)
 AC_SUBST(CPPUNIT_CFLAGS)
 AC_SUBST(CPPUNIT_LIBS)
 
-AC_PATH_PROG(ANTLR_CONFIG, antlr-config, , [$EXTENDED_PATH])
-AC_MSG_CHECKING(antlr)
-HAVE_ANTLR_RUNTIME="1"
-HAVE_EXTERNAL_ANTLR="0";
-if test x$ANTLR_CONFIG = x; then
-  ANTLR_INCLUDEPATH="`pwd`/src/"
-  ANTLR_LIBS="`pwd`/src/antlr/libantlr.a"
-  AC_MSG_RESULT(using provided)
-else
-  ANTLR_VERSION="`$ANTLR_CONFIG --version`"
-  if test x$ANTLR_VERSION != x2.7.7; then
-    ANTLR_INCLUDEPATH="`pwd`/src/"
-    ANTLR_LIBS="`pwd`/src/antlr/libantlr.a"
-    AC_MSG_RESULT(using provided)
-  else
-    ANTLR_INCLUDEPATH="`$ANTLR_CONFIG --cflags`"
-    ANTLR_LIBS="`$ANTLR_CONFIG --libs`"
-    HAVE_EXTERNAL_ANTLR="1"
-    AC_MSG_RESULT(using external version $ANTLR_VERSION)
-  fi
-fi
-AC_DEFINE_UNQUOTED(HAVE_ANTLR_RUNTIME, 1, [antlr_runtime])
-AC_DEFINE_UNQUOTED(HAVE_EXTERNAL_ANTLR, $HAVE_EXTERNAL_ANTLR, [external_antlr])
-AC_SUBST(HAVE_ANTLR_RUNTIME)
-AC_SUBST(HAVE_EXTERNAL_ANTLR)
+dnl A check for antlr-runtime library used to be here but has been
+dnl removed. We should always use antlr runtime code incuded with
+dnl fwbuilder code tree because of the fixes I've done in
+dnl CurcularQueue.hpp module for 64 bit systems. This problem seems to
+dnl have been fixed in antlr v3 but until we convert all grammars to
+dnl the new antlr, we have to use provided antlr 2.7.7 with these
+dnl fixes. This means we can't use antlr runtime that comes with the
+dnl OS even if it is installed.
+
+ANTLR_INCLUDEPATH="`pwd`/src/"
+ANTLR_LIBS="`pwd`/src/antlr/libantlr.a"
 AC_SUBST(ANTLR_LIBS)
 AC_SUBST(ANTLR_INCLUDEPATH)
 
