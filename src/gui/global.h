@@ -32,13 +32,15 @@
 #include <QEvent>
 
 class QString;
-class QApplication;
+class FWBApplication;
 class FWWindow;
 class FWBSettings;
+class UserWorkflow;
 
-extern QApplication *app;
+extern FWBApplication *app;
 extern FWWindow *mw;
 extern FWBSettings *st;
+extern UserWorkflow *wfl;
 
 extern std::string     appRootDir;
 extern std::string     userDataDir;

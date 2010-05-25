@@ -35,6 +35,7 @@
 #include "FWBSettings.h"
 #include "FWBTree.h"
 #include "events.h"
+#include "UserWorkflow.h"
 
 #include "fwbuilder/Library.h"
 #include "fwbuilder/Firewall.h"
@@ -852,6 +853,8 @@ void newFirewallDialog::finishClicked()
 
     } else
     {
+        wfl->registerEvent(UserWorkflow::NEW_FW_NO_TEMPLATE);
+
         // Create from interface list (obtained either manually or via snmp)
         if ( !this->m_dialog->interfaceEditor1->isValid() )
             return;

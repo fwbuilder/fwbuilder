@@ -32,6 +32,7 @@
 #include "FWBSettings.h"
 #include "FWWindow.h"
 #include "Help.h"
+#include "UserWorkflow.h"
 
 #include <QCheckBox>
 #include <QLocale>

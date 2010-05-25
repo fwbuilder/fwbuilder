@@ -29,6 +29,7 @@
 
 #include "newFirewallDialog.h"
 #include "FWBSettings.h"
+#include "UserWorkflow.h"
 #include "FWBTree.h"
 #include "InterfaceEditorWidget.h"
 #include "InterfacesTabWidget.h"
@@ -72,6 +73,8 @@ class FindNetwork : public FWObjectFindPredicate
 
 void newFirewallDialog::createFirewallFromTemplate()
 {
+    wfl->registerEvent(UserWorkflow::NEW_FW_WITH_TEMPLATE);
+
     QListWidgetItem *itm = m_dialog->templateList->currentItem();
     FWObject *template_fw=templates[itm];
     assert (template_fw!=NULL);

@@ -177,7 +177,9 @@ HEADERS += ../../config.h \
     UsageResolver.h \
     IconSetter.h \
     TutorialDialog.h \
-    MDIEventFilter.h
+    MDIEventFilter.h \
+	UserWorkflow.h \
+	FWBApplication.h
 
 SOURCES += ProjectPanel.cpp \
     ProjectPanel_events.cpp \
@@ -354,7 +356,9 @@ SOURCES += ProjectPanel.cpp \
     IconSetter.cpp \
     UsageResolver.cpp \
     TutorialDialog.cpp \
-    MDIEventFilter.cpp
+    MDIEventFilter.cpp \
+	UserWorkflow.cpp \
+	FWBApplication.cpp
 
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \

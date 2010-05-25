@@ -38,6 +38,7 @@
 #include "ProjectPanel.h"
 #include "HttpGet.h"
 #include "RuleSetView.h"
+#include "UserWorkflow.h"
 
 #include "fwbuilder/Resources.h"
 
@@ -466,6 +467,25 @@ void PrefsDialog::accept()
     st->setCompilerOutputFont(compilerOutputFont);
 
     st->setClipComment(m_dialog->chClipComment->isChecked());
+
+
+    if (m_dialog->checkUpdates->isChecked())
+    {
+        wfl->clearEvent(UserWorkflow::UPDATE_CHECKS_DISABLED);
+    } else
+    {
+        wfl->registerEvent(UserWorkflow::UPDATE_CHECKS_DISABLED);
+
+        if (st->getCheckUpdates())
+        {
+            // update checking was enabled but the user disabled it in
+            // this preferences dialog session. Run last closing
+            // report before disabling both update check and closing
+            // report.
+            wfl->report();
+        }
+    }
+
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
     st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
 
@@ -507,7 +527,15 @@ void PrefsDialog::accept()
     mw->showDeletedObjects(st->getBool("UI/ShowDeletedObjects"));
     mw->updateTreeFont();
 //    app->setFont(st->getTreeFont());
+
+    if (m_dialog->showTips->isChecked())
+        wfl->clearEvent(UserWorkflow::TIP_OF_THE_DAY_DISABLED);
+    else
+        wfl->registerEvent(UserWorkflow::TIP_OF_THE_DAY_DISABLED);
+
     st->setBool("UI/NoStartTip", m_dialog->showTips->isChecked());
+
+
     QDialog::accept();
 }
 

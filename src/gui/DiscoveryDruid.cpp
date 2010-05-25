@@ -82,6 +82,7 @@
 #include "fwbuilder/Logger.h"
 
 #include "FWBSettings.h"
+#include "UserWorkflow.h"
 #include "ObjectManipulator.h"
 #include "FWWindow.h"
 
@@ -776,6 +777,9 @@ void DiscoveryDruid::startConfigImport()
         thread = new ConfigImport(buffer, platform);
         thread->setTargetWidget(this);
         thread->start();
+
+        wfl->registerEvent(UserWorkflow::IMPORT);
+
     } else
     {
         QMessageBox::critical(this, tr("Discovery error"),

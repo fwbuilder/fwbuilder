@@ -117,10 +117,6 @@ void RuleSetViewDelegate::paintGroup(QPainter *painter, const QStyleOptionViewIt
 void RuleSetViewDelegate::drawIcons(QPainter *painter, QRect rect,
                                     const QStringList &icons) const
 {
-    if (fwbdebug)
-        qDebug() << "RuleSetViewDelegate::drawIcons"
-                 << "icons.size()=" << icons.size();
-
     int x = rect.left();
     int y = rect.top();
     int iconWidth = 0;
@@ -129,11 +125,6 @@ void RuleSetViewDelegate::drawIcons(QPainter *painter, QRect rect,
     {
         QPixmap pm;
         QString icon = calculateIconName(icons[i], false);
-        if (fwbdebug)
-            qDebug() << "i=" << i
-                     << "icons[i]=" << icons[i]
-                     << "icon=" << icon;
-
         LoadPixmap(icon, pm);
         painter->drawPixmap(x, y, pm);
         iconWidth = pm.width();

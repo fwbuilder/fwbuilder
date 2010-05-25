@@ -241,7 +241,10 @@ class FWBSettings : public QSettings {
     bool getShowUndoPanel();
     void setShowUndoPanel(bool);
 
-
+    int getUserWorkflowFlags();
+    void setUserWorkflowFlags(int);
+    
+   
 private:
     QFont getFontByType(const char*type);
 };

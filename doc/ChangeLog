@@ -1,3 +1,16 @@
+2010-05-24  vadim  <vadim@vk.crocodile.org>
+
+	* UserWorkflow.cpp (UserWorkflow::report): see #1466 Implemented
+	instrumentation that should help us improve user experience. Will
+	track few things that new users do (or don't) and report as a
+	combination of bit flags at the end of the GUI session. Reporting
+	things such as if user looked at "Getting Started" tutorial, if
+	they created their first firewall object, modified any rules,
+	tried to compile or install. Information passed in the report is
+	strictly a set of boolean flags, is not identifiable and does not
+	reveal what firewall platform they are using or anything about
+	their objects and rules.
+
 2010-05-23  vadim  <vadim@vk.crocodile.org>
 
 	* FWCmdAddObject.cpp (FWCmdAddObject::redo): fixed #1468 Open new

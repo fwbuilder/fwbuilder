@@ -51,6 +51,7 @@
 #include <QLibraryInfo>
 #include <QtDebug>
 
+#include "FWBApplication.h"
 #include "FWBSettings.h"
 #include "RCS.h"
 #include "FWWindow.h"
@@ -61,6 +62,7 @@
 #include "findDialog.h"
 #include "ProjectPanel.h"
 #include "RCS.h"
+#include "UserWorkflow.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Tools.h"
@@ -87,9 +89,10 @@ using namespace std;
 static QString filename;
 static QString print_output_file_name;
 bool auto_load_from_rcs_head_revision = false;
-QApplication *app = NULL;
+FWBApplication *app = NULL;
 FWWindow *mw = NULL;
 FWBSettings *st = NULL;
+UserWorkflow *wfl = NULL;
 int fwbdebug = 0;
 bool safemode = false;
 bool cli_print = false;
@@ -154,7 +157,7 @@ int main( int argc, char *argv[] )
 
     Q_INIT_RESOURCE(MainRes);
 
-    app = new QApplication( argc, argv );
+    app = new FWBApplication( argc, argv );
     app->setOrganizationName(QLatin1String("NetCitadel"));
     app->setApplicationName(QLatin1String("Firewall Builder"));
 
@@ -169,6 +172,8 @@ int main( int argc, char *argv[] )
     st = new FWBSettings();
     st->init();
     if (fwbdebug) qDebug("done");
+
+    wfl = new UserWorkflow();
 
     QPixmapCache::setCacheLimit(4096);
 

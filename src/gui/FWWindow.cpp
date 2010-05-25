@@ -34,6 +34,7 @@
 #include <ui_FWBMainWindow_q.h>
 #include <ui_pagesetupdialog_q.h>
 
+#include "FWBApplication.h"
 #include "FWWindow.h"
 #include "ProjectPanel.h"
 #include "ObjectTreeView.h"
@@ -41,6 +42,7 @@
 #include "FWObjectClipboard.h"
 #include "FWBTree.h"
 #include "FWBSettings.h"
+#include "UserWorkflow.h"
 #include "FWObjectPropertiesFactory.h"
 #include "upgradePredicate.h"
 #include "ObjConflictResolutionDialog.h"
@@ -751,7 +753,7 @@ void FWWindow::fileExit()
 
     st->setInt("Window/maximized", window_maximized_state);
 
-    qApp->quit();
+    app->quit();
 }
 
 void FWWindow::toolsDiscoveryDruid()
@@ -1356,6 +1358,9 @@ void FWWindow::showSummary()
  */
 void FWWindow::showTutorial(QString tutorial)
 {
+    if (fwbdebug)
+        qDebug() << "FWWindow::showTutorial:" << tutorial;
+
     TutorialDialog *dialog;
     if (tutorial.isEmpty())
         dialog= new TutorialDialog(

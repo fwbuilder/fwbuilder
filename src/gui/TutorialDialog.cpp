@@ -27,6 +27,7 @@
 
 #include "TutorialDialog.h"
 #include "ui_TutorialDialog.h"
+#include "UserWorkflow.h"
 
 #include <QDebug>
 #include <QFile>
@@ -55,6 +56,8 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     //this->setWindowModality(Qt::ApplicationModal);
     showPage(currentPage);
+
+    wfl->registerTutorialViewing(tutorial);
 }
 
 void TutorialDialog::resizeEvent(QResizeEvent *)

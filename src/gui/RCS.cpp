@@ -28,6 +28,7 @@
 #include "utils.h"
 #include "utils_no_qt.h"
 
+#include "FWBApplication.h"
 #include "RCS.h"
 
 // need this for FS_SEPARATOR

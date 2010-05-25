@@ -39,6 +39,7 @@
 #include "fwbuilder/RuleElement.h"
 
 #include "FWBSettings.h"
+#include "UserWorkflow.h"
 #include "FWBTree.h"
 #include "FWObjectPropertiesFactory.h"
 #include "FWWindow.h"
@@ -735,6 +736,9 @@ void ProjectPanel::addRule()
 void ProjectPanel::compileThis()
 {
     if (visibleRuleSet==NULL) return ;
+
+    wfl->registerEvent(UserWorkflow::COMPILE);
+
     set<Firewall*> fw;
     Firewall *f = Firewall::cast(visibleRuleSet->getParent());
     if (f)
@@ -747,6 +751,9 @@ void ProjectPanel::compileThis()
 void ProjectPanel::installThis()
 {
     if (visibleRuleSet==NULL) return ;
+
+    wfl->registerEvent(UserWorkflow::INSTALL);
+
     set<Firewall*> fw;
     Firewall *f = Firewall::cast(visibleRuleSet->getParent());
     if (f)
@@ -763,6 +770,7 @@ void ProjectPanel::compile()
         return;
 
     fileSave();
+    wfl->registerEvent(UserWorkflow::COMPILE);
     mainW->compile();
 }
 
@@ -773,16 +781,19 @@ void ProjectPanel::compile(set<Firewall*> vf)
         return;
 
     fileSave();
+    wfl->registerEvent(UserWorkflow::COMPILE);
     mainW->compile(vf);
 }
 
 void ProjectPanel::install(set<Firewall*> vf)
 {
+    wfl->registerEvent(UserWorkflow::INSTALL);
     mainW->install(vf);
 }
 
 void ProjectPanel::install()
 {
+    wfl->registerEvent(UserWorkflow::INSTALL);
     mainW->install();
 }
 

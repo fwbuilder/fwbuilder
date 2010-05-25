@@ -2,7 +2,7 @@
 
                           Firewall Builder
 
-                 Copyright (C) 2003 NetCitadel, LLC
+                 Copyright (C) 2010 NetCitadel, LLC
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
@@ -23,46 +23,24 @@
 
 */
 
+#ifndef __FWBAPPLICATION_H_
+#define __FWBAPPLICATION_H_
 
-#include "../../config.h"
-#include "global.h"
-#include "utils.h"
+#include <QApplication>
 
-#include "FWBApplication.h"
-#include "newGroupDialog.h"
 
-#include <qlineedit.h>
-#include <qapplication.h>
+class FWBApplication : public QApplication {
 
-#include <iostream>
+    Q_OBJECT;
 
-using namespace libfwbuilder;
-using namespace std;
+public:
+    FWBApplication(int &argc, char **argv) : QApplication(argc, argv) {}
 
-newGroupDialog::~newGroupDialog()
-{
-    delete m_dialog;
-}
+public slots:
 
-newGroupDialog::newGroupDialog(QWidget *parent, FWObjectDatabase *_db) : QDialog(parent)
-{
-    db = _db;
+    void quit();
 
-    m_dialog = new Ui::newGroupDialog_q;
-    m_dialog->setupUi(this);
+};
 
-    fillLibraries(m_dialog->libs, db, true);   // only read-write libs
-    m_dialog->obj_name->setFocus();
-}
+#endif
 
-void newGroupDialog::accept()
-{
-/* create a group */
-
-    if (m_dialog->obj_name->text().isEmpty())
-    {
-        app->beep();
-        return;
-    }
-    QDialog::accept();
-}
