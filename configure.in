@@ -462,14 +462,15 @@ fi
 AC_ARG_WITH(distcc,[  --with-distcc=N        Use distcc with N parallel make count])
 
 if test -n "$with_distcc"; then
-  AC_PATH_PROG(HAVE_DISTCC, distcc, , )
-  if test -n "$HAVE_DISTCC"; then
-    DISTCC=$HAVE_DISTCC
-    AC_SUBST(DISTCC)
-    PARALLEL_MAKE_COUNT=$with_distcc
-    AC_SUBST(PARALLEL_MAKE_COUNT)
+  if test "x$with_distcc" != "xno"; then
+    AC_PATH_PROG(HAVE_DISTCC, distcc, , )
+    if test -n "$HAVE_DISTCC"; then
+       DISTCC=$HAVE_DISTCC
+       AC_SUBST(DISTCC)
+       PARALLEL_MAKE_COUNT=$with_distcc
+       AC_SUBST(PARALLEL_MAKE_COUNT)
+    fi
   fi
-
 else
 
   AC_PATH_PROG(HAVE_DISTCC, distcc, , )
@@ -484,7 +485,6 @@ else
   fi
 fi
 
-dnl AC_CONFIG_FILES([ Main.make ])
 AC_CONFIG_FILES([ qmake.inc ])
 
 AC_CONFIG_FILES([ src/res/objects_init.xml ])
