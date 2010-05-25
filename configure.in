@@ -445,17 +445,31 @@ AC_DEFINE_UNQUOTED(DOCDIR,           "${DOCDIR}")
 AC_PATH_PROG(CCACHE, ccache, , )
 AC_SUBST(CCACHE)
 
-AC_PATH_PROG(HAVE_DISTCC, distcc, , )
-if test -n "$HAVE_DISTCC"; then
-   M_J=$(distcc -j 2>/dev/null)
-   if test -n "$M_J"; then
-      DISTCC=$HAVE_DISTCC
-      AC_SUBST(DISTCC)
-      PARALLEL_MAKE_COUNT=$M_J
-      AC_SUBST(PARALLEL_MAKE_COUNT)
-   fi
-fi
+AC_ARG_WITH(distcc,[  --with-distcc=N        Use distcc with N parallel make count])
 
+if test -n "$with_distcc"; then
+  if test "x$with_distcc" != "xno"; then
+    AC_PATH_PROG(HAVE_DISTCC, distcc, , )
+    if test -n "$HAVE_DISTCC"; then
+       DISTCC=$HAVE_DISTCC
+       AC_SUBST(DISTCC)
+       PARALLEL_MAKE_COUNT=$with_distcc
+       AC_SUBST(PARALLEL_MAKE_COUNT)
+    fi
+  fi
+else
+
+  AC_PATH_PROG(HAVE_DISTCC, distcc, , )
+  if test -n "$HAVE_DISTCC"; then
+     M_J=$(distcc -j 2>/dev/null)
+     if test -n "$M_J"; then
+        DISTCC=$HAVE_DISTCC
+        AC_SUBST(DISTCC)
+        PARALLEL_MAKE_COUNT=$M_J
+        AC_SUBST(PARALLEL_MAKE_COUNT)
+     fi
+  fi
+fi
 
 # qmake does not understand syntax ${var}, but configure defines
 # libdir as ${exec_prefix}/lib. Convert it to $$exec_prefix/lib for qmake
