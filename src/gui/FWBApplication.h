@@ -32,13 +32,15 @@
 class FWBApplication : public QApplication {
 
     Q_OBJECT;
-
+    int timeout;
+    
 public:
     FWBApplication(int &argc, char **argv) : QApplication(argc, argv) {}
 
 public slots:
 
     void quit();
+    void delayedQuit();
 
 };
 

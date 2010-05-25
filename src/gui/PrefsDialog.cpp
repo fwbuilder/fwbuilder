@@ -528,10 +528,12 @@ void PrefsDialog::accept()
     mw->updateTreeFont();
 //    app->setFont(st->getTreeFont());
 
+    // annoyingly, widget shotTip has the name opposite to its meaning.
+    // When it is checked, we do not show tip of the day.
     if (m_dialog->showTips->isChecked())
-        wfl->clearEvent(UserWorkflow::TIP_OF_THE_DAY_DISABLED);
-    else
         wfl->registerEvent(UserWorkflow::TIP_OF_THE_DAY_DISABLED);
+    else
+        wfl->clearEvent(UserWorkflow::TIP_OF_THE_DAY_DISABLED);
 
     st->setBool("UI/NoStartTip", m_dialog->showTips->isChecked());
 

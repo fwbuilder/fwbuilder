@@ -72,15 +72,15 @@ class UserWorkflow : public QObject {
     Q_OBJECT;
 
 public:
-    enum workflowEvents { UPDATE_CHECKS_DISABLED  = 0,
-                          GETTING_STARTED_TUTOTIAL = 1,
-                          NEW_FW_WITH_TEMPLATE = 2,
-                          NEW_FW_NO_TEMPLATE = 4,
-                          RULE_MOD = 8,
-                          COMPILE = 16,
-                          INSTALL = 32,
-                          IMPORT = 64,
-                          TIP_OF_THE_DAY_DISABLED = 128,
+    enum workflowEvents { UPDATE_CHECKS_DISABLED  = 1,
+                          GETTING_STARTED_TUTOTIAL = 2,
+                          NEW_FW_WITH_TEMPLATE = 4,
+                          NEW_FW_NO_TEMPLATE = 8,
+                          RULE_MOD = 16,
+                          COMPILE = 32,
+                          INSTALL = 64,
+                          IMPORT = 128,
+                          TIP_OF_THE_DAY_DISABLED = 256,
     };
 
 private:
@@ -98,10 +98,10 @@ public:
     void clearEvent(enum workflowEvents e);
     void registerTutorialViewing(const QString &tutorial_name);
     void report();
-
+    bool reportInProgress() { return report_query != NULL; }
+    
 public slots:
     void reportDone(const QString&);
-
 };
 
 #endif

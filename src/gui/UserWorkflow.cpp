@@ -30,6 +30,7 @@
 #include "HttpGet.h"
 
 #include <QtDebug>
+#include <QTimer>
 
 /*
  * Create object UserWorkflow only after FWBSettings object has been
@@ -126,6 +127,8 @@ void UserWorkflow::report()
         qDebug() << "HttpGet error: " << report_query->getLastError();
         qDebug() << "Url: " << url;
     }
+
+    if (fwbdebug) qDebug() << "Request launched";
 }
 
 void UserWorkflow::reportDone(const QString& resp)

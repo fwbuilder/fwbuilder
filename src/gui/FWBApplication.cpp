@@ -30,12 +30,32 @@
 #include "FWBApplication.h"
 
 #include <QtDebug>
+#include <QTimer>
 
 
 void FWBApplication::quit()
 {
-    if (st->getCheckUpdates()) wfl->report();
-    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 10000);
+    if (fwbdebug) qDebug() << "FWBApplication::quit()";
+    timeout = 0;
+
+    if (st->getCheckUpdates())
+    {
+        wfl->report();
+        QTimer::singleShot(100, this, SLOT(delayedQuit()));
+    } else
+        delayedQuit();
+}
+
+void FWBApplication::delayedQuit()
+{
+    if (fwbdebug) qDebug() << "FWBApplication::delayedQuit()";
+
+    if (timeout < 20 && wfl->reportInProgress())
+    {
+        QTimer::singleShot(100, this, SLOT(delayedQuit()));
+        return;
+    }
+
     QApplication::quit();
 }
 
