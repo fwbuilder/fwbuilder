@@ -737,7 +737,7 @@ void ProjectPanel::compileThis()
 {
     if (visibleRuleSet==NULL) return ;
 
-    wfl->registerFlag(UserWorkflow::COMPILE);
+    wfl->registerFlag(UserWorkflow::COMPILE, true);
 
     set<Firewall*> fw;
     Firewall *f = Firewall::cast(visibleRuleSet->getParent());
@@ -752,7 +752,7 @@ void ProjectPanel::installThis()
 {
     if (visibleRuleSet==NULL) return ;
 
-    wfl->registerFlag(UserWorkflow::INSTALL);
+    wfl->registerFlag(UserWorkflow::INSTALL, true);
 
     set<Firewall*> fw;
     Firewall *f = Firewall::cast(visibleRuleSet->getParent());
@@ -770,7 +770,7 @@ void ProjectPanel::compile()
         return;
 
     fileSave();
-    wfl->registerFlag(UserWorkflow::COMPILE);
+    wfl->registerFlag(UserWorkflow::COMPILE, true);
     mainW->compile();
 }
 
@@ -781,19 +781,19 @@ void ProjectPanel::compile(set<Firewall*> vf)
         return;
 
     fileSave();
-    wfl->registerFlag(UserWorkflow::COMPILE);
+    wfl->registerFlag(UserWorkflow::COMPILE, true);
     mainW->compile(vf);
 }
 
 void ProjectPanel::install(set<Firewall*> vf)
 {
-    wfl->registerFlag(UserWorkflow::INSTALL);
+    wfl->registerFlag(UserWorkflow::INSTALL, true);
     mainW->install(vf);
 }
 
 void ProjectPanel::install()
 {
-    wfl->registerFlag(UserWorkflow::INSTALL);
+    wfl->registerFlag(UserWorkflow::INSTALL, true);
     mainW->install();
 }
 

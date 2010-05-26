@@ -774,7 +774,7 @@ void DiscoveryDruid::startConfigImport()
         thread->setTargetWidget(this);
         thread->start();
 
-        wfl->registerFlag(UserWorkflow::IMPORT);
+        wfl->registerFlag(UserWorkflow::IMPORT, true);
 
     } else
     {

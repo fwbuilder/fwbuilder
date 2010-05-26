@@ -471,10 +471,10 @@ void PrefsDialog::accept()
 
     if (m_dialog->checkUpdates->isChecked())
     {
-        wfl->clearFlag(UserWorkflow::UPDATE_CHECKS_DISABLED);
+        wfl->registerFlag(UserWorkflow::UPDATE_CHECKS_DISABLED, false);
     } else
     {
-        wfl->registerFlag(UserWorkflow::UPDATE_CHECKS_DISABLED);
+        wfl->registerFlag(UserWorkflow::UPDATE_CHECKS_DISABLED, true);
 
         if (st->getCheckUpdates())
         {
@@ -530,10 +530,9 @@ void PrefsDialog::accept()
 
     // annoyingly, widget shotTip has the name opposite to its meaning.
     // When it is checked, we do not show tip of the day.
-    if (m_dialog->showTips->isChecked())
-        wfl->registerFlag(UserWorkflow::TIP_OF_THE_DAY_DISABLED);
-    else
-        wfl->clearFlag(UserWorkflow::TIP_OF_THE_DAY_DISABLED);
+
+    wfl->registerFlag(UserWorkflow::TIP_OF_THE_DAY_DISABLED,
+                      m_dialog->showTips->isChecked());
 
     st->setBool("UI/NoStartTip", m_dialog->showTips->isChecked());
 

@@ -50,10 +50,11 @@ UserWorkflow::UserWorkflow()
     }
 
     // what if the user disabled tip of the day before they upgraded
-    // to the version with UserWorkflow ?
+    // to the version with UserWorkflow ? Or re-enabled version update
+    // check ?
 
-    if (st->getBool("UI/NoStartTip"))
-        flags.insert(TIP_OF_THE_DAY_DISABLED);
+    registerFlag(TIP_OF_THE_DAY_DISABLED, st->getBool("UI/NoStartTip"));
+    registerFlag(UPDATE_CHECKS_DISABLED, !st->getCheckUpdates());
 }
 
 UserWorkflow::~UserWorkflow()
@@ -73,26 +74,18 @@ bool UserWorkflow::checkFlag(enum workflowFlags e)
     return flags.contains(e);
 }
 
-void UserWorkflow::registerFlag(enum workflowFlags e)
+void UserWorkflow::registerFlag(enum workflowFlags e, bool f)
 {
-    if (fwbdebug)
-        qDebug() << "UserWorkflow::registerFlag():" << e;
-    flags.insert(e);
-    st->setUserWorkflowFlags(flagsToInt());
-}
-
-void UserWorkflow::clearFlag(enum workflowFlags e)
-{
-    if (fwbdebug)
-        qDebug() << "UserWorkflow::clearFlag():" << e;
-    flags.remove(e);
+    if (fwbdebug) qDebug() << "UserWorkflow::registerFlag(" << e << "," << f << ")";
+    if (f) flags.insert(e);
+    else flags.remove(e);
     st->setUserWorkflowFlags(flagsToInt());
 }
 
 void UserWorkflow::registerTutorialViewing(const QString &tutorial_name)
 {
     if (tutorial_name == "getting_started")
-        registerFlag(UserWorkflow::GETTING_STARTED_TUTOTIAL);
+        registerFlag(UserWorkflow::GETTING_STARTED_TUTOTIAL, true);
 }
 
 void UserWorkflow::report()

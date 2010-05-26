@@ -73,7 +73,7 @@ class FindNetwork : public FWObjectFindPredicate
 
 void newFirewallDialog::createFirewallFromTemplate()
 {
-    wfl->registerFlag(UserWorkflow::NEW_FW_WITH_TEMPLATE);
+    wfl->registerFlag(UserWorkflow::NEW_FW_WITH_TEMPLATE, true);
 
     QListWidgetItem *itm = m_dialog->templateList->currentItem();
     FWObject *template_fw=templates[itm];

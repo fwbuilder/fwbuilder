@@ -94,8 +94,7 @@ public:
     UserWorkflow();
     virtual ~UserWorkflow();
     bool checkFlag(enum workflowFlags e);
-    void registerFlag(enum workflowFlags e);
-    void clearFlag(enum workflowFlags e);
+    void registerFlag(enum workflowFlags e, bool f);
     void registerTutorialViewing(const QString &tutorial_name);
     void report();
     bool reportInProgress() { return report_query != NULL; }
