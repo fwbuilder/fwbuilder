@@ -28,7 +28,7 @@
 
 #include <QObject>
 #include <QDateTime>
-#include <QSet>
+#include <QHash>
 
 #include "HttpGet.h"
 
@@ -65,36 +65,37 @@
  */
 
 #define CLOSING_REPORT_URL \
-    "http://update.fwbuilder.org/reports/closing.cgi?v=%1&uuid=%2&flags=%3"
+    "http://update.fwbuilder.org/reports/closing.cgi?v=%1&uuid=%2&%3"
 
 class UserWorkflow : public QObject {
 
     Q_OBJECT;
 
 public:
-    enum workflowFlags { UPDATE_CHECKS_DISABLED  = 1,
-                          GETTING_STARTED_TUTOTIAL = 2,
-                          NEW_FW_WITH_TEMPLATE = 4,
-                          NEW_FW_NO_TEMPLATE = 8,
-                          RULE_MOD = 16,
-                          COMPILE = 32,
-                          INSTALL = 64,
-                          IMPORT = 128,
-                          TIP_OF_THE_DAY_DISABLED = 256,
+
+    enum workflowFlags {
+         UPDATE_CHECKS_DISABLED,
+         GETTING_STARTED_TUTOTIAL,
+         NEW_FW_WITH_TEMPLATE,
+         NEW_FW_NO_TEMPLATE,
+         RULE_MOD,
+         COMPILE,
+         INSTALL,
+         IMPORT,
+         TIP_OF_THE_DAY_DISABLED,
     };
 
 private:
     QDateTime start_timestamp;
-    QSet<enum workflowFlags> flags;
+    QHash<quint32, quint32> flags;
     HttpGet *report_query;
-    
-    int flagsToInt();
-    
+
+    QString flagsToQueryString();
+
 public:
     UserWorkflow();
     virtual ~UserWorkflow();
-    bool checkFlag(enum workflowFlags e);
-    void registerFlag(enum workflowFlags e, bool f);
+    void registerFlag(enum workflowFlags e, quint32 f);
     void registerTutorialViewing(const QString &tutorial_name);
     void report();
     bool reportInProgress() { return report_query != NULL; }

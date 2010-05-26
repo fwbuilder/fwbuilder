@@ -241,8 +241,8 @@ class FWBSettings : public QSettings {
     bool getShowUndoPanel();
     void setShowUndoPanel(bool);
 
-    int getUserWorkflowFlags();
-    void setUserWorkflowFlags(int);
+    QByteArray getUserWorkflowFlags();
+    void setUserWorkflowFlags(const QByteArray &);
     
    
 private:

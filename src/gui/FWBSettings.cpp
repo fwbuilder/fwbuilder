@@ -397,8 +397,15 @@ void FWBSettings::setDontSaveStdLib( bool f) { setValue(dontSaveStdLib,f);}
 bool FWBSettings::getShowUndoPanel() {return value(showUndoPanel).toBool();}
 void FWBSettings::setShowUndoPanel(bool f) {setValue(showUndoPanel, f);}
 
-int FWBSettings::getUserWorkflowFlags() {return value(userWorkflowFlags).toInt();}
-void FWBSettings::setUserWorkflowFlags(int f)  {setValue(userWorkflowFlags, f);}
+QByteArray FWBSettings::getUserWorkflowFlags()
+{
+    return value(userWorkflowFlags).toByteArray();
+}
+
+void FWBSettings::setUserWorkflowFlags(const QByteArray &f)
+{
+    setValue(userWorkflowFlags, f);
+}
 
 bool FWBSettings::haveScreenPosition(const QString &wname)
 {

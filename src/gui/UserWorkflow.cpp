@@ -31,6 +31,8 @@
 
 #include <QtDebug>
 #include <QTimer>
+#include <QDataStream>
+
 
 /*
  * Create object UserWorkflow only after FWBSettings object has been
@@ -41,13 +43,13 @@ UserWorkflow::UserWorkflow()
     assert(st != NULL);
     start_timestamp = QDateTime::currentDateTime();
     report_query = NULL;
-    int int_flags = st->getUserWorkflowFlags();
-    int f = 1;
-    for (int i=0; i<32; ++i)
-    {
-        if (int_flags & f) flags.insert((enum workflowFlags)(f));
-        f = f << 1;
-    }
+
+    QDataStream str(st->getUserWorkflowFlags());
+    str.setVersion(QDataStream::Qt_4_0);
+    str >> flags;
+
+    if (fwbdebug)
+        qDebug() << "UserWorkflow flags initialization:" << flagsToQueryString();
 
     // what if the user disabled tip of the day before they upgraded
     // to the version with UserWorkflow ? Or re-enabled version update
@@ -62,30 +64,41 @@ UserWorkflow::~UserWorkflow()
     if (report_query != NULL) delete report_query;
 }
 
-int UserWorkflow::flagsToInt()
+void UserWorkflow::registerFlag(enum workflowFlags e, quint32 f)
 {
-    int int_flags = 0;
-    foreach(int f, flags) int_flags |= f;
-    return int_flags;
-}
+    if (fwbdebug)
+        qDebug() << "UserWorkflow::registerFlag(" << e << "," << f << ")";
+    flags.insert(e, f);
 
-bool UserWorkflow::checkFlag(enum workflowFlags e)
-{
-    return flags.contains(e);
-}
+    QByteArray buffer;
+    QDataStream str(&buffer, QIODevice::WriteOnly);
+    str.setVersion(QDataStream::Qt_4_0);
+    str << flags;
 
-void UserWorkflow::registerFlag(enum workflowFlags e, bool f)
-{
-    if (fwbdebug) qDebug() << "UserWorkflow::registerFlag(" << e << "," << f << ")";
-    if (f) flags.insert(e);
-    else flags.remove(e);
-    st->setUserWorkflowFlags(flagsToInt());
+    st->setUserWorkflowFlags(buffer);
 }
 
 void UserWorkflow::registerTutorialViewing(const QString &tutorial_name)
 {
     if (tutorial_name == "getting_started")
         registerFlag(UserWorkflow::GETTING_STARTED_TUTOTIAL, true);
+}
+
+QString UserWorkflow::flagsToQueryString()
+{
+    // query string of flags has the format uc=0&gs=1&ft=0 ...
+    // each flag is a two-characters variable with a value of 0 or 1
+    QStringList fl;
+    fl << QString("uc=%1").arg(flags.value(UPDATE_CHECKS_DISABLED));
+    fl << QString("gs=%1").arg(flags.value(GETTING_STARTED_TUTOTIAL));
+    fl << QString("ft=%1").arg(flags.value(NEW_FW_WITH_TEMPLATE));
+    fl << QString("fn=%1").arg(flags.value(NEW_FW_NO_TEMPLATE));
+    fl << QString("rm=%1").arg(flags.value(RULE_MOD));
+    fl << QString("co=%1").arg(flags.value(COMPILE));
+    fl << QString("in=%1").arg(flags.value(INSTALL));
+    fl << QString("im=%1").arg(flags.value(IMPORT));
+    fl << QString("ti=%1").arg(flags.value(TIP_OF_THE_DAY_DISABLED));
+    return fl.join("&");
 }
 
 void UserWorkflow::report()
@@ -97,11 +110,14 @@ void UserWorkflow::report()
     // program stayed open for over 24 hr, it would return incorrect
     // session duration.
 
-
     if (fwbdebug)
     {
-        QString s("%1");
-        qDebug() << "UserWorkflow::report():" << s.arg(flagsToInt(), 0, 16);
+        QByteArray buffer;
+        QDataStream str(&buffer, QIODevice::WriteOnly);
+        str.setVersion(QDataStream::Qt_4_0);
+        str << flags;
+
+        qDebug() << "UserWorkflow::report():" << flagsToQueryString();
         qDebug() << "Session:" << elapsed_time << "sec";
     }
 
@@ -118,9 +134,16 @@ void UserWorkflow::report()
     if (report_override_url != NULL)
         report_url = QString(report_override_url);
 
-    // start http query to get latest version from the web site
+    // closing report url has three parameters: 
+    // %1 = version
+    // %2 = uuid
+    // %3 = a query string of flags in the format uc=0&gs=1&ft=0 ...
+    // each flag is a two-characters variable with a value of 0 or 1
+
     QString url = QString(report_url)
-        .arg(VERSION).arg(st->getAppGUID()).arg(flagsToInt());
+        .arg(VERSION).arg(st->getAppGUID()).arg(flagsToQueryString());
+
+    // start http query
     if (!report_query->get(url) && fwbdebug)
     {
         qDebug() << "HttpGet error: " << report_query->getLastError();

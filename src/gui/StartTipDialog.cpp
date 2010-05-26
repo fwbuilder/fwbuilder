@@ -109,7 +109,7 @@ StartTipDialog::~StartTipDialog()
  * This does happen in unit tests and might happen on slow machines or
  * slow internet connections
  */
-void StartTipDialog::closeEvent(QCloseEvent *event)
+void StartTipDialog::closeEvent(QCloseEvent*)
 {
     disconnect(http_getter, SIGNAL(done(const QString&)),
                this, SLOT(downloadComplete(const QString&)));
