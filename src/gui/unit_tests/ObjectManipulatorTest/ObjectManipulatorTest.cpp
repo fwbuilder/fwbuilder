@@ -80,7 +80,7 @@ void ObjectManipulatorTest::editSelectedObject()
     tree->setCurrentItem(
         policy, 0, QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
 
-    om->openSelectedRuleSet();
+    om->editSelectedObject();
     QTest::qWait(100);
     QVERIFY(mw->getOpenedEditor() == NULL);
     QVERIFY(mw->activeProject()->getCurrentRuleSet() == RuleSet::cast(policy->getFWObject()));
