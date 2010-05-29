@@ -83,6 +83,7 @@ public:
          INSTALL,
          IMPORT,
          TIP_OF_THE_DAY_DISABLED,
+         USING_HTTP_PROXY,
     };
 
 private:
@@ -90,7 +91,7 @@ private:
     QHash<quint32, quint32> flags;
     HttpGet *report_query;
 
-    QString flagsToQueryString();
+    QString flagsToQueryString(int session_duration);
 
 public:
     UserWorkflow();

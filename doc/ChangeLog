@@ -20,14 +20,15 @@
 
 	* UserWorkflow.cpp (UserWorkflow::report): see #1466 Implemented
 	instrumentation that should help us improve user experience. Will
-	track few things that new users do (or don't) and report as a
-	combination of bit flags at the end of the GUI session. Reporting
-	things such as if user looked at "Getting Started" tutorial, if
-	they created their first firewall object, modified any rules,
-	tried to compile or install. Information passed in the report is
-	strictly a set of boolean flags, is not identifiable and does not
-	reveal what firewall platform they are using or anything about
-	their objects and rules.
+	track few things that new users do (or don't do) and report as a
+	combination of boolean flags at the end of the GUI
+	session. Reporting things such as if user ever looked at the
+	"Getting Started" tutorial, if they created their first firewall
+	object, modified any rules, tried to compile, install or import
+	existing rule set. Information passed in the report is strictly a
+	set of boolean flags, it is not identifiable and does not reveal
+	what firewall platform they are using or anything about their
+	objects and rules. List of flags is listed in the module UserWorkflow.h
 
 2010-05-23  vadim  <vadim@vk.crocodile.org>
 

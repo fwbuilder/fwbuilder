@@ -49,7 +49,7 @@ UserWorkflow::UserWorkflow()
     str >> flags;
 
     if (fwbdebug)
-        qDebug() << "UserWorkflow flags initialization:" << flagsToQueryString();
+        qDebug() << "UserWorkflow flags initialization:" << flagsToQueryString(0);
 
     // what if the user disabled tip of the day before they upgraded
     // to the version with UserWorkflow ? Or re-enabled version update
@@ -84,11 +84,12 @@ void UserWorkflow::registerTutorialViewing(const QString &tutorial_name)
         registerFlag(UserWorkflow::GETTING_STARTED_TUTOTIAL, true);
 }
 
-QString UserWorkflow::flagsToQueryString()
+QString UserWorkflow::flagsToQueryString(int session_duration)
 {
     // query string of flags has the format uc=0&gs=1&ft=0 ...
     // each flag is a two-characters variable with a value of 0 or 1
     QStringList fl;
+    fl << QString("sd=%1").arg(session_duration);
     fl << QString("uc=%1").arg(flags.value(UPDATE_CHECKS_DISABLED));
     fl << QString("gs=%1").arg(flags.value(GETTING_STARTED_TUTOTIAL));
     fl << QString("ft=%1").arg(flags.value(NEW_FW_WITH_TEMPLATE));
@@ -98,6 +99,7 @@ QString UserWorkflow::flagsToQueryString()
     fl << QString("in=%1").arg(flags.value(INSTALL));
     fl << QString("im=%1").arg(flags.value(IMPORT));
     fl << QString("ti=%1").arg(flags.value(TIP_OF_THE_DAY_DISABLED));
+    fl << QString("pr=%1").arg(flags.value(USING_HTTP_PROXY));
     return fl.join("&");
 }
 
@@ -117,7 +119,7 @@ void UserWorkflow::report()
         str.setVersion(QDataStream::Qt_4_0);
         str << flags;
 
-        qDebug() << "UserWorkflow::report():" << flagsToQueryString();
+        qDebug() << "UserWorkflow::report():" << flagsToQueryString(elapsed_time);
         qDebug() << "Session:" << elapsed_time << "sec";
     }
 
@@ -141,7 +143,7 @@ void UserWorkflow::report()
     // each flag is a two-characters variable with a value of 0 or 1
 
     QString url = QString(report_url)
-        .arg(VERSION).arg(st->getAppGUID()).arg(flagsToQueryString());
+        .arg(VERSION).arg(st->getAppGUID()).arg(flagsToQueryString(elapsed_time));
 
     // start http query
     if (!report_query->get(url) && fwbdebug)

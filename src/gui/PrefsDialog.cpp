@@ -489,6 +489,9 @@ void PrefsDialog::accept()
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
     st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
 
+    wfl->registerFlag(UserWorkflow::USING_HTTP_PROXY,
+                      !st->getCheckUpdatesProxy().isEmpty());
+
     st->setSSHPath( m_dialog->sshPath->text() );
     st->setSCPPath( m_dialog->scpPath->text() );
     st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
@@ -533,9 +536,7 @@ void PrefsDialog::accept()
 
     wfl->registerFlag(UserWorkflow::TIP_OF_THE_DAY_DISABLED,
                       m_dialog->showTips->isChecked());
-
     st->setBool("UI/NoStartTip", m_dialog->showTips->isChecked());
-
 
     QDialog::accept();
 }
