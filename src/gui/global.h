@@ -54,6 +54,7 @@ extern std::string     ee;
 extern int             fwbdebug;
 extern QString         build_num;
 extern QString         user_name;
+extern int             sig;
 
 
 #ifdef NDEBUG

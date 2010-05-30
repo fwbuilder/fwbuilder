@@ -102,26 +102,24 @@ bool HttpGet::get(const QUrl &_url)
 
     QString locale = QLocale::system().name();//"en_US";//
 
-    QString agent = QString("fwbuilder/%1 (").arg(VERSION);
-
+    QString os;
 #if defined(Q_WS_MAC)
-    agent += "MacOSX; ";
+    os = "MacOSX";
 #else
   #if defined(Q_WS_WIN)
-    agent += "Windows; ";
+     os= "Windows";
   #else
-    agent += QString("%1; %2; ").arg(OS).arg(DISTRO);
+     os = QString("%1; %2").arg(OS).arg(DISTRO);
   #endif
 #endif
-    agent += locale;
-    agent += QString("; b:%1; ").arg(build_num);
+
+    QString reg = "u";
 #ifdef ELC
-    if (getRegistrationStatus()==2) agent += "r";
-    else                            agent += "u";
-#else
-    agent += "u";
+    if (getRegistrationStatus()==2) reg = "r";
 #endif
-    agent += ")";
+
+    QString agent = QString("fwbuilder/%1 (%2; %3; b:%4; s:%5; %6)")
+        .arg(VERSION).arg(os).arg(locale).arg(build_num).arg(sig).arg(reg);
 
     hdr.setValue("User-Agent", agent);
     request_id = http.request(hdr, NULL, &strm);
