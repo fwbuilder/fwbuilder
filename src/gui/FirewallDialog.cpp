@@ -175,6 +175,7 @@ void FirewallDialog::fillVersion()
     list<QStringPair> vl;
     getVersionsForPlatform(readPlatform(m_dialog->platform), vl);
     QString v = obj->getStr("version").c_str();
+    bool found_version = false;
     int cp = 0;
     for (list<QStringPair>::iterator i1=vl.begin(); i1!=vl.end(); i1++,cp++)
     {
@@ -182,7 +183,14 @@ void FirewallDialog::fillVersion()
             qDebug() << "Adding version " << i1->second;
 
         m_dialog->version->addItem( i1->second );
-        if ( v == i1->first ) m_dialog->version->setCurrentIndex( cp );
+        if ( v == i1->first ) { found_version = true; m_dialog->version->setCurrentIndex( cp ); }
+    }
+    if (!found_version)
+    {
+        // version configured in the object does not match any valid
+        // version for this platform.
+        obj->setStr("version", vl.front().first.toStdString());
+        fillVersion();
     }
 }
 
