@@ -30,6 +30,8 @@
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/CustomService.h"
+#include "fwbuilder/Resources.h"
 
 #include "ObjConflictResolutionDialog.h"
 #include "FWObjectPropertiesFactory.h"
@@ -85,9 +87,40 @@ QString ObjConflictResolutionDialog::makeBold(const QString &str)
     return QString("%1%2%3").arg(bold).arg(str).arg(unbold);
 }
 
-int ObjConflictResolutionDialog::run(    FWObject *o1,
-                                         FWObject *o2)
+int ObjConflictResolutionDialog::run(FWObject *o1, FWObject *o2)
 {
+    // some simple cases where we don't have to ask the user and can make
+    // decision automatically.
+
+    // CustomService object, if one of the objects adds code string
+    // for a platform which was absent in another
+    if (CustomService::isA(o1) && CustomService::isA(o2))
+    {
+        bool o1_adds_code_string = false;
+        bool o2_adds_code_string = false;
+        bool code_changes = false;
+        map<string,string> platforms = Resources::getPlatforms();
+        for (map<string,string>::iterator i=platforms.begin(); i!=platforms.end(); i++)
+        {
+            string c1 = CustomService::cast(o1)->getCodeForPlatform( (*i).first );
+            string c2 = CustomService::cast(o2)->getCodeForPlatform( (*i).first );
+            if (c1 != c2 && !c1.empty() && !c2.empty()) code_changes = true;
+            if (c1 != c2 && c1.empty()) o2_adds_code_string = true;
+            if (c1 != c2 && c2.empty()) o1_adds_code_string = true;
+        }
+
+        if (fwbdebug)
+        {
+            qDebug() << "Comparing to CustomService objects:";
+            qDebug() << "o1=" << o1->getName().c_str()
+                     << "o2=" << o2->getName().c_str();
+            qDebug() << "code_changes=" << code_changes
+                     << "o1_adds_code_string=" << o1_adds_code_string
+                     << "o2_adds_code_string=" << o2_adds_code_string;
+        }
+
+        if (!code_changes && o1_adds_code_string) return QDialog::Rejected;
+    }
 
     // fill in dialogs even though the user might have
     // checked checkbox that makes  decision without

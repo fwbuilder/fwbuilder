@@ -1,3 +1,14 @@
+2010-06-01  vadim  <vadim@vk.crocodile.org>
+
+	* ObjConflictResolutionDialog.cpp (ObjConflictResolutionDialog::run):
+	refs #1483 If program detects change in CustomService object and
+	the change just adds code string for a platform that was not
+	in the object in the user's data file, the change is accepted without
+	showing the dialog.
+
+	* ../src/res/objects_init.xml.in: fixed #1483 "missing code in the
+	custom service object ESTABLISHED for ProCurve"
+
 2010-05-31  vadim  <vadim@vk.crocodile.org>
 
 	* FWWindow.cpp (FWWindow::checkForUpgrade): added mechanism for
