@@ -1,5 +1,8 @@
 2010-06-01  vadim  <vadim@vk.crocodile.org>
 
+	* Help.cpp (Help::downloadComplete): fixed #1482 Class Help should
+	open window only after successful download
+
 	* ObjConflictResolutionDialog.cpp (ObjConflictResolutionDialog::run):
 	refs #1483 If program detects change in CustomService object and
 	the change just adds code string for a platform that was not

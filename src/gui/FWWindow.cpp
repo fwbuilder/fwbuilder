@@ -1327,8 +1327,6 @@ void FWWindow::checkForUpgrade(const QString& server_response)
                         st->setTimeOfLastAnnouncement(announcement_url, now);
                         Help *h = Help::getHelpWindow(this);
                         h->setSource(QUrl(announcement_url));
-                        h->raise();
-                        h->show();
                     }
                 }
             }

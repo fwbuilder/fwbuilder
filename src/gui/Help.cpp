@@ -47,6 +47,7 @@ Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
     m_dialog->setupUi(this);
     setWindowTitle("Firewall Builder Help");
     setWindowFlags( windowFlags() | Qt::WindowStaysOnTopHint);
+    delayed_open = false;
 
     http_getter = new HttpGet();
     connect(http_getter, SIGNAL(done(const QString&)),
@@ -94,17 +95,24 @@ void Help::setSource(const QUrl &url)
 {
     if (url.toString().startsWith("http:"))
     {
+        delayed_open = true;
         if (!http_getter->get(QUrl(url)) && fwbdebug)
         {
             qDebug() << "HttpGet error: " << http_getter->getLastError();
             qDebug() << "Url: " << url;
         }
     } else
+    {
+        delayed_open = false;
         m_dialog->textview->setSource(url);
+    }
 }
 
 void Help::downloadComplete(const QString& server_response)
 {
+    if (fwbdebug)
+        qDebug() << "Help::downloadComplete"
+                 << "status=" << http_getter->getStatus();
     /*
      * getStatus() returns error status if server esponded with 302 or
      * 301 redirect. Only "200" is considered success.
@@ -112,6 +120,25 @@ void Help::downloadComplete(const QString& server_response)
     if (http_getter->getStatus())
     {
         m_dialog->textview->setHtml(server_response);
+        
+        /* here is additional layer of protection: if I make a mistake
+         * and feed empty page as an announcement, do not show it to
+         * the user.  If the user is behind captive portal or dns
+         * intercept that feeds them fancy page that consists of only
+         * a chunk of javascript and empty body, do not show it
+         * either. One example of such case is dnsadvantage.com
+         */
+
+        QString c = m_dialog->textview->toPlainText();
+
+        if (fwbdebug) qDebug() << "Announcement in plain text:"
+                               << c;
+
+        if (!c.isEmpty() && delayed_open)
+        {
+            raise();
+            show();
+        }
     }
 }
 

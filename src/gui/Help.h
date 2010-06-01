@@ -47,6 +47,7 @@ class Help : public QMainWindow
     Qt::WindowFlags flags;
     bool load_links_in_browser;
     HttpGet *http_getter;
+    bool delayed_open;
     
 public:
     Ui::HelpView_q *m_dialog;
