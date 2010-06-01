@@ -30,6 +30,8 @@
 #include "../../config.h"
 #include "ui_helpview_q.h"
 
+#include "HttpGet.h"
+
 #include <QMainWindow>
 #include <QStringList>
 #include <QUrl>
@@ -44,14 +46,15 @@ class Help : public QMainWindow
     QByteArray window_geometry;
     Qt::WindowFlags flags;
     bool load_links_in_browser;
-
+    HttpGet *http_getter;
+    
 public:
     Ui::HelpView_q *m_dialog;
     
     Help(QWidget *parent, const QString &title, bool load_links_in_browser=true);
     virtual ~Help();
 
-    void setSource(const QUrl &url) { m_dialog->textview->setSource(url); }
+    void setSource(const QUrl &url);
     QString findHelpFile(const QString &file_base_name);
 
     void setName(const QString &name);
@@ -62,6 +65,10 @@ public:
 
     static Help* getHelpWindow(QWidget *parent);
     static Help* help_window;
+
+public slots:
+    void downloadComplete(const QString&);
+
 };
 
 #endif 

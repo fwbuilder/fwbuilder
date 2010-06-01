@@ -35,11 +35,13 @@
 #include <qtextbrowser.h>
 #include <qmessagebox.h>
 #include <qapplication.h>
+
 #include <QDir>
 #include <QDesktopWidget>
 #include <QUuid>
 #include <QRegExp>
 #include <QtDebug>
+#include <QCryptographicHash>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -104,6 +106,7 @@ const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 
 const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
 const char* updateAvailableWarningLastTime = SETTINGS_PATH_PREFIX "/UI/updateAvailableWarningLastTime";
+const char* announcementLastTime = SETTINGS_PATH_PREFIX "/UI/announcementLastTime/%1";
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
 
 const char* newFirewallPlatform = SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
@@ -786,7 +789,19 @@ void FWBSettings::setTimeOfLastUpdateAvailableWarning(uint v)
     setValue(updateAvailableWarningLastTime, v);
 }
 
+uint FWBSettings::getTimeOfLastAnnouncement(const QString &announcement)
+{
+    QByteArray h = QCryptographicHash::hash(announcement.toAscii().constData(),
+                                            QCryptographicHash::Md5).toHex();
+    return value(QString(announcementLastTime).arg(h.constData())).toUInt();
+}
 
+void FWBSettings::setTimeOfLastAnnouncement(const QString &announcement, uint v)
+{
+    QByteArray h = QCryptographicHash::hash(announcement.toAscii().constData(),
+                                            QCryptographicHash::Md5).toHex();
+    setValue(QString(announcementLastTime).arg(h.constData()), v);
+}
 
 QString FWBSettings::getCheckUpdatesProxy()
 {

@@ -1292,16 +1292,47 @@ void FWWindow::checkForUpgrade(const QString& server_response)
             st->getTimeOfLastUpdateAvailableWarning();
         bool update_available = (server_response.trimmed() == "update = 1");
 
-        if (update_available &&
-            (now - last_update_available_warning_time > 24*3600))
+        if (update_available
+            && (now - last_update_available_warning_time > 24*3600)
+        )
         {
             QMessageBox::warning(
                 this,"Firewall Builder",
                 tr("A new version of Firewall Builder is available at"
                    " http://www.fwbuilder.org"));
             st->setTimeOfLastUpdateAvailableWarning(now);
-        }
+        } else
+        {
+            // format of the announcement string is very simple: it is just
+            // announcement = URL
+            // All on one line.
+            QRegExp announcement_re = QRegExp("announcement\\s*=\\s*(\\S+)");
+            if (announcement_re.indexIn(server_response.trimmed()) != -1)
+            {
+                QStringList list = announcement_re.capturedTexts();
+                if (list.size() > 1)
+                {
+                    QString announcement_url = list[1];
+                    uint last_annluncement_time = st->getTimeOfLastAnnouncement(
+                        announcement_url);
 
+                    if (fwbdebug)
+                        qDebug() << "announcement_url=" << announcement_url
+                                 << "last_annluncement_time=" << last_annluncement_time;
+
+                    if (last_annluncement_time == 0)
+                    {
+                        // We have an announcement to make and this user has not
+                        // seen it yet.
+                        st->setTimeOfLastAnnouncement(announcement_url, now);
+                        Help *h = Help::getHelpWindow(this);
+                        h->setSource(QUrl(announcement_url));
+                        h->raise();
+                        h->show();
+                    }
+                }
+            }
+        }
     } else
     {
         if (fwbdebug)

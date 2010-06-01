@@ -32,6 +32,7 @@
 
 #include <QFile>
 #include <QLocale>
+#include <QtDebug>
 
 
 using namespace std;
@@ -46,6 +47,10 @@ Help::Help(QWidget *parent, const QString &title, bool _load_links_in_browser) :
     m_dialog->setupUi(this);
     setWindowTitle("Firewall Builder Help");
     setWindowFlags( windowFlags() | Qt::WindowStaysOnTopHint);
+
+    http_getter = new HttpGet();
+    connect(http_getter, SIGNAL(done(const QString&)),
+            this, SLOT(downloadComplete(const QString&)));
 
     m_dialog->menubar->hide();
     m_dialog->statusbar->hide();
@@ -83,6 +88,31 @@ Help* Help::getHelpWindow(QWidget*)
 void Help::setName(const QString &name)
 {
     m_dialog->objectname->setText(name);
+}
+
+void Help::setSource(const QUrl &url)
+{
+    if (url.toString().startsWith("http:"))
+    {
+        if (!http_getter->get(QUrl(url)) && fwbdebug)
+        {
+            qDebug() << "HttpGet error: " << http_getter->getLastError();
+            qDebug() << "Url: " << url;
+        }
+    } else
+        m_dialog->textview->setSource(url);
+}
+
+void Help::downloadComplete(const QString& server_response)
+{
+    /*
+     * getStatus() returns error status if server esponded with 302 or
+     * 301 redirect. Only "200" is considered success.
+     */
+    if (http_getter->getStatus())
+    {
+        m_dialog->textview->setHtml(server_response);
+    }
 }
 
 QString Help::findHelpFile(const QString &file_base_name)

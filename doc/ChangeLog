@@ -1,5 +1,14 @@
 2010-05-31  vadim  <vadim@vk.crocodile.org>
 
+	* FWWindow.cpp (FWWindow::checkForUpgrade): added mechanism for
+	one-time announcements that can be pulled from the web site
+	when version check server says there is one. Announcement is
+	shown only once. To do this, I store time stamp when it was shown
+	in settings using hash of the announcement url.
+
+	* Help.cpp (Help::setSource): made class Help capable of
+	downloading contents via HTTP.
+
 	* FirewallDialog.cpp (FirewallDialog::fillVersion): fixed #1481
 	when user changes platform in the firewall object, its version
 	should change too.
