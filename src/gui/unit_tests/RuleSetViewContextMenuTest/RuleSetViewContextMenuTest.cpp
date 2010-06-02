@@ -35,6 +35,8 @@
 #include <QInputDialog>
 #include <QApplication>
 #include <QCoreApplication>
+
+#include "FWBApplication.h"
 #include "StartTipDialog.h"
 #include "QMetaProperty"
 #include "FWObjectClipboard.h"

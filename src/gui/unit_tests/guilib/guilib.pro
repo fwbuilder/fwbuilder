@@ -389,3 +389,4 @@ CONFIG += staticlib
 TARGET = guilib
 
 INSTALLS -= target
+
