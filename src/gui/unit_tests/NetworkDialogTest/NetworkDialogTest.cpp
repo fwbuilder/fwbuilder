@@ -61,6 +61,7 @@
 #include "fwbuilder/Interface.h"""
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
+#include "FWBApplication.h"
 
 using namespace std;
 using namespace libfwbuilder;

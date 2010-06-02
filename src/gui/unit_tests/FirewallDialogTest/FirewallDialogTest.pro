@@ -1,5 +1,4 @@
 include(../../../../qmake.inc)
-include(../gui_common.inc)
 
 QT += testlib network gui
 TARGET = FirewallDialogTest
@@ -13,6 +12,8 @@ HEADERS += FirewallDialogTest.h
 
 CONFIG -= release
 CONFIG += debug
+RESOURCES += ../../MainRes.qrc
+LIBS += ../guilib/libguilib.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
 INCLUDEPATH += ../../.ui

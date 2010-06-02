@@ -67,7 +67,8 @@
 #include <QMenuBar>
 #include <QApplication>
 #include <QCoreApplication>
-
+#include "FWBApplication.h"
+#include "UserWorkflow.h"
 #include "FWObjectClipboard.h"
 
 using namespace std;
@@ -77,6 +78,7 @@ using namespace libfwbuilder;
 void instDialogClusterTest::initTestCase()
 {
     mw = new FWWindow();
+    wfl = new UserWorkflow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
     FWObjectClipboard *clip = new FWObjectClipboard();

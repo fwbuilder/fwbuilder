@@ -73,6 +73,7 @@
 #include "RoutingRuleOptionsDialog.h"
 #include "platforms.h"
 #include "NATRuleOptionsDialog.h"
+#include "UserWorkflow.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -81,6 +82,7 @@ void genericDialogTest::initTestCase()
 {
     new FWObjectClipboard();
     mw = new FWWindow();
+    wfl = new UserWorkflow();
     mw->show();
     mw->startupLoad();
     mw->resize(1200, 600);

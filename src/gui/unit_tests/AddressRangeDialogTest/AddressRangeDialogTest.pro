@@ -1,15 +1,21 @@
 include(../../../../qmake.inc)
-include(../gui_common.inc)
+#include(../gui_common.inc)
+RESOURCES += ../../MainRes.qrc
+OBJECTS_DIR = ../../.obj
+MOC_DIR = ../../.moc
+
 
 QT += testlib network gui
 TARGET = AddressRangeDialogTest
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-SOURCES += main_AddressRangeDialogTest.cpp \
-    AddressRangeDialogTest.cpp 
+SOURCES += AddressRangeDialogTest.cpp \
+        main_AddressRangeDialogTest.cpp
+
 
 HEADERS += AddressRangeDialogTest.h
+LIBS += ../guilib/libguilib.a
 
 CONFIG -= release
 CONFIG += debug
@@ -44,10 +50,11 @@ QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
-LIBS += ../../$$FWBPARSER_LIB $$ANTLR_LIBS
+LIBS += ../../$$FWBPARSER_LIB
 DEFINES += $$ANTLR_DEFINES
 
 LIBS += $$LIBS_FWCOMPILER
+LIBS += $$ANTLR_LIBS
 
 # fwtransfer lib. Add this before adding -lQtDBus to LIBS below
 LIBS += ../../$$FWTRANSFER_LIB

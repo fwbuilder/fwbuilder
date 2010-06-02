@@ -39,6 +39,7 @@
 #include "QMetaProperty"
 #include "FWObjectClipboard.h"
 #include "RuleSetModel.h"
+#include "FWBApplication.h"
 
 using namespace std;
 using namespace QTest;

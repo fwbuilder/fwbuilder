@@ -37,6 +37,7 @@
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
 #include "FWObjectClipboard.h"
+#include "FWBApplication.h"
 
 using namespace libfwbuilder;
 using namespace std;

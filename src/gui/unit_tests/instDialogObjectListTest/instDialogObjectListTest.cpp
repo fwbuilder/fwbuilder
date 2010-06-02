@@ -90,6 +90,7 @@
 #include <QMenuBar>
 #include <QApplication>
 #include <QCoreApplication>
+#include "FWBApplication.h"
 
 #include "FWObjectClipboard.h"
 

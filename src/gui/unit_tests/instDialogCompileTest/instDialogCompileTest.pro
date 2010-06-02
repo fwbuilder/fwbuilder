@@ -3,7 +3,6 @@
 # -------------------------------------------------
 
 include(../../../../qmake.inc)
-include(../gui_common.inc)
 
 QT += testlib network gui
 TARGET = instDialogCompileTest
@@ -18,6 +17,8 @@ HEADERS += instDialogCompileTest.h
 RESOURCES += ../../MainRes.qrc
 CONFIG -= release
 CONFIG += debug
+RESOURCES += ../../MainRes.qrc
+LIBS += ../guilib/libguilib.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 OBJECTS_DIR = ../../.obj
 MOC_DIR = ../../.moc

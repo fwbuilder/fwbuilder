@@ -24,44 +24,6 @@
 */
 
 #include "InterfaceDialogTest.h"
-#include "FWWindow.h"
-#include "FWBSettings.h"
-#include "common/commoninit.h"
-#include "fwbuilder/Resources.h"
-#include <QTest>
+#include "../main/main_macros.cpp"
 
-using namespace std;
-using namespace libfwbuilder;
-//std::string respath;
-//int fwbdebug = 0;
-//QString user_name;
-int fwbdebug = 0;
-FWWindow *mw = NULL;
-FWBSettings *st = NULL;
-char** args;
-QApplication *app = NULL;
-
-int main( int argc, char** argv)
-{
-    app = new QApplication(argc, argv, 0);
-    app->setOrganizationName(QLatin1String("NetCitadel"));
-    app->setApplicationName(QLatin1String("Firewall Builder"));
-    st = new FWBSettings();
-    st->init();
-    init(argv);
-
-    //respath = std::string(PREFIX) + "/share/libfwbuilder";
-    //std::string full_res_path = std::string(PREFIX) + "/resources/resources.xml";
-
-    string full_res_path = respath + FS_SEPARATOR + "resources.xml";
-
-    try
-    {
-        new Resources(full_res_path);
-    } catch (FWException &e)
-    {
-        cerr << "Can not read resource file from " << full_res_path << endl;
-    }
-    InterfaceDialogTest tst;
-    QTest::qExec(&tst);
-}
+RUN_TEST(new InterfaceDialogTest());

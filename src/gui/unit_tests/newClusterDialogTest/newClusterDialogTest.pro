@@ -1,5 +1,4 @@
 include(../../../../qmake.inc)
-include(../gui_common.inc)
 
 QT += testlib network gui
 TARGET = newClusterDialogTest
@@ -14,6 +13,8 @@ HEADERS += newClusterDialogTest.h
 CONFIG -= release
 CONFIG += debug
 QMAKE_CXXFLAGS += $$CPPUNIT_CFLAGS
+RESOURCES += ../../MainRes.qrc
+LIBS += ../guilib/libguilib.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
 INCLUDEPATH += ../../.ui

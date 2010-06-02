@@ -1,5 +1,4 @@
 include(../../../../qmake.inc)
-include(../gui_common.inc)
 
 QT += testlib network gui
 TARGET = CustomServiceDialogTest
@@ -9,10 +8,12 @@ TEMPLATE = app
 SOURCES += main_CustomServiceDialogTest.cpp \
     CustomServiceDialogTest.cpp
 
+RESOURCES += ../../MainRes.qrc
 HEADERS += CustomServiceDialogTest.h
 
 CONFIG -= release
 CONFIG += debug
+LIBS += ../guilib/libguilib.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
 INCLUDEPATH += ../../.ui

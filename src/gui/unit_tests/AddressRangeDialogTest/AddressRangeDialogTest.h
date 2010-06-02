@@ -27,6 +27,7 @@
 #define OBJECTMANIPULATORTEST_H
 
 #include <QObject>
+#include "../main/main_macros.cpp"
 
 
 class AddressRangeDialogTest : public QObject
@@ -38,5 +39,6 @@ private slots:
 public slots:
     void checkMessageBox();
 };
+
 
 #endif // OBJECTMANIPULATORTEST_H

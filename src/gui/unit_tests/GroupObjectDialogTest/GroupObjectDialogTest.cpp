@@ -56,6 +56,7 @@
 #include "StartTipDialog.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWServiceReference.h"
+#include "FWBApplication.h"
 
 #include "GroupObjectDialog.h"
 

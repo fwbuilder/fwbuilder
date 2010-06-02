@@ -1,5 +1,5 @@
 include(../../../../qmake.inc)
-include(../gui_common.inc)
+#include(../gui_common.inc)
 
 QT += testlib network gui
 TARGET = InterfaceDialogTest
@@ -13,6 +13,8 @@ HEADERS += InterfaceDialogTest.h
 
 CONFIG -= release
 CONFIG += debug
+RESOURCES += ../../MainRes.qrc
+LIBS += ../guilib/libguilib.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
 INCLUDEPATH += ../../.ui
@@ -92,3 +94,7 @@ win32:PRE_TARGETDEPS = ../../../common/release/common.lib \
     ../../../pflib/libfwbpf.a \
     ../../../cisco_lib/libfwbcisco.a \
     ../../../compiler_lib/libcompilerdriver.a
+
+RESOURCES += ../../MainRes.qrc
+OBJECTS_DIR = ../../.obj
+MOC_DIR = ../../.moc

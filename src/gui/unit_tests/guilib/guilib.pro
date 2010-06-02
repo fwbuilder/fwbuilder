@@ -1,3 +1,12 @@
+#-*- mode: makefile; tab-width: 4; -*-
+#
+FWBUILDER_SRC_DIR = ../../..
+FWBUILDER_GUI_DIR = $$FWBUILDER_SRC_DIR/gui/
+
+include($$FWBUILDER_SRC_DIR/../qmake.inc)
+
+QT += gui network 
+TEMPLATE = lib
 SOURCES += ../../ProjectPanel.cpp \
     ../../ProjectPanel_events.cpp \
     ../../ProjectPanel_file_ops.cpp \
@@ -173,7 +182,8 @@ SOURCES += ../../ProjectPanel.cpp \
     ../../UsageResolver.cpp \
     ../../TutorialDialog.cpp \
     ../../MDIEventFilter.cpp \
-    ../../UserWorkflow.cpp
+    ../../UserWorkflow.cpp \
+    ../../FWBApplication.cpp
 
 HEADERS += ../../../../config.h \
     ../../../../build_num \
@@ -338,8 +348,44 @@ HEADERS += ../../../../config.h \
     ../../UsageResolver.h \
     ../../TutorialDialog.h \
     ../../MDIEventFilter.h \
-    ../../UserWorkflow.h
+    ../../UserWorkflow.h \
+    ../../FWBApplication.h
 
+
+INCLUDEPATH += ../../.ui
 RESOURCES += ../../MainRes.qrc
 OBJECTS_DIR = ../../.obj
 MOC_DIR = ../../.moc
+
+INCLUDEPATH += $$FWBUILDER_GUI_DIR/
+INCLUDEPATH += $$FWBUILDER_GUI_DIR/.ui
+INCLUDEPATH += $$FWBUILDER_SRC_DIR/compiler_lib
+INCLUDEPATH += $$FWBUILDER_SRC_DIR/iptlib
+INCLUDEPATH += $$FWBUILDER_SRC_DIR/.. \
+               $$FWBUILDER_SRC_DIR/cisco_lib \
+               $$FWBUILDER_SRC_DIR/pflib \
+               $$FWBUILDER_SRC_DIR
+
+DEPENDPATH = $$FWBUILDER_SRC_DIR/common
+
+INCLUDEPATH += $$ANTLR_INCLUDEPATH
+LIBS += $$FWBUILDER_GUI_DIR/$$FWBPARSER_LIB $$ANTLR_LIBS
+DEFINES += $$ANTLR_DEFINES
+
+
+# fwtransfer lib. Add this before adding -lQtDBus to LIBS below
+LIBS += $$FWBUILDER_GUI_DIR/$$FWTRANSFER_LIB
+contains( HAVE_QTDBUS, 1 ):unix {
+    !macx:QT += network \
+        dbus
+    macx:LIBS += -framework \
+        QtDBus
+}
+
+LIBS += $$LIBS_FWCOMPILER
+
+CONFIG += staticlib
+
+TARGET = guilib
+
+INSTALLS -= target

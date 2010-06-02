@@ -1,5 +1,4 @@
 include(../../../../qmake.inc)
-include(../gui_common.inc)
 
 QT += testlib network gui
 TARGET = genericDialogTest
@@ -13,6 +12,8 @@ HEADERS += genericDialogTest.h
 
 CONFIG -= release
 CONFIG += debug
+RESOURCES += ../../MainRes.qrc
+LIBS += ../guilib/libguilib.a
 LIBS += $$LIBS_FWCOMPILER $$LIBS_FWBUILDER $$CPPUNIT_LIBS
 
 INCLUDEPATH += ../../.ui
@@ -44,7 +45,7 @@ QMAKE_EXTRA_TARGETS += run_tests build_tests clean_tests
 
 
 INCLUDEPATH += $$ANTLR_INCLUDEPATH
-LIBS += ../../$$FWBPARSER_LIB $$ANTLR_LIBS
+LIBS += ../../$$FWBPARSER_LIB $$ANTLR_LIBS -L../guilib -lguilib
 DEFINES += $$ANTLR_DEFINES
 
 LIBS += $$LIBS_FWCOMPILER

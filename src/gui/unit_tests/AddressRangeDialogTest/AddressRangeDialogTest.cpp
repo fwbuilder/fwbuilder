@@ -47,6 +47,7 @@
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
 #include "ObjectEditor.h"
+#include "FWBApplication.h"
 #include "FWObjectClipboard.h"
 #include "TextEditWidget.h"
 #include "fwbuilder/AddressRange.h"
@@ -57,7 +58,6 @@
 
 using namespace std;
 using namespace libfwbuilder;
-
 
 QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 {
@@ -161,3 +161,4 @@ void AddressRangeDialogTest::editSelectedObject()
 
     QTest::qWait(1000);
 }
+

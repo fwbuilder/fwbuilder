@@ -45,7 +45,6 @@
 #include <QMenuBar>
 #include <QApplication>
 #include <QCoreApplication>
-
 #include "FWObjectClipboard.h"
 
 using namespace std;

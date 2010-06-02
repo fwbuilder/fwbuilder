@@ -59,6 +59,7 @@
 #include "StartTipDialog.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Interface.h"
+#include "FWBApplication.h"
 
 using namespace std;
 using namespace libfwbuilder;
