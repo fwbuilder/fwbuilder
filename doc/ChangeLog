@@ -1,3 +1,13 @@
+2010-05-22 yalovoy <yalovoy@gmail.com>
+	* fixes #1484 "paste below" function pastes rules out of order
+	1) copy 2 complete rules
+	2) go to a(nother) policy
+	3) right click on rule 0, say "paste rules below"
+	=> BUG: the two rules from the buffer become rules 0+2, the original
+	rule 0 becomes rule 1
+	The original should stay rule 0, the two from buffer become 1+2
+	Affected files: FWCmdRule.cpp, FWCmdRule.h, RuleSetView.cpp
+
 2010-06-01  vadim  <vadim@vk.crocodile.org>
 
 	* Help.cpp (Help::downloadComplete): fixed #1482 Class Help should

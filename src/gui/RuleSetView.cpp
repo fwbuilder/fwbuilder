@@ -1408,7 +1408,6 @@ void RuleSetView::pasteRuleBelow()
     RuleSetModel* md = ((RuleSetModel*)model());
     if (!canChange(md)) return;
 
-    QModelIndexList selection = getSelectedRows();
     QModelIndex index = currentIndex();
 
     vector<std::pair<int,ProjectPanel*> >::reverse_iterator i;
