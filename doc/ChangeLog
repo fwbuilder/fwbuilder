@@ -1,4 +1,11 @@
-2010-05-22 yalovoy <yalovoy@gmail.com>
+2010-06-02  vadim  <vadim@vk.crocodile.org>
+
+	* Preprocessor.cpp (Preprocessor::findMultiAddressObjectsUsedInRules):
+	change in libfwbuilder: fixed #1485 "dns name object is recognized
+	as an empty group when it appears in shared rule set"
+
+2010-06-02 yalovoy <yalovoy@gmail.com>
+
 	* fixes #1484 "paste below" function pastes rules out of order
 	1) copy 2 complete rules
 	2) go to a(nother) policy

@@ -101,17 +101,29 @@
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="pf"></CustomServiceCommand>
+        <CustomServiceCommand platform="pix"></CustomServiceCommand>
+        <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="pf"></CustomServiceCommand>
+        <CustomServiceCommand platform="pix"></CustomServiceCommand>
+        <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
         <ServiceGroup id="sg-DHCP" name="DHCP" comment="" ro="False">
@@ -22518,7 +22530,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">False</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id43867C1018346" host_OS="linux24" inactive="False" lastCompiled="1247364049" lastInstalled="1142003872" lastModified="1261688054" platform="iptables" version="" name="firewall33" comment="testing DNSName object" ro="False">
+      <Firewall id="id43867C1018346" host_OS="linux24" inactive="False" lastCompiled="1247364049" lastInstalled="1142003872" lastModified="1275495585" platform="iptables" version="" name="firewall33" comment="testing DNSName object" ro="False">
         <NAT id="id43867C4818346" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id43867C4918346" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -22630,28 +22642,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <RuleSetOptions/>
         </NAT>
         <Policy id="id43867C1618346" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id43867C1718346" disabled="False" log="False" position="0" action="Deny" direction="Inbound" comment="">
-            <Src neg="False">
-              <ObjectRef ref="net-Internal_net"/>
-              <ObjectRef ref="id43867C5818346"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="id43867C5818346"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id43867C2418346" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id43867C2418346" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8C18346"/>
             </Src>
@@ -22669,7 +22660,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id43869E9018346" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id43869E9018346" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8D18346"/>
             </Src>
@@ -22687,7 +22678,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id43869E9E18346" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id43869E9E18346" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8E18346"/>
             </Src>
@@ -22705,7 +22696,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id43869EAA18346" disabled="False" log="False" position="4" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id43869EAA18346" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="id43869E8F18346"/>
             </Src>
@@ -22723,7 +22714,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4386E38318346" disabled="False" log="False" position="5" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4386E38318346" disabled="False" log="False" position="4" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22743,7 +22734,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4386E37718346" disabled="False" log="False" position="6" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id4386E37718346" disabled="False" log="False" position="5" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22763,7 +22754,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43867C3018346" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id43867C3018346" disabled="False" log="False" position="6" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22781,7 +22772,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id4386C10D18346" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id4386C10D18346" disabled="False" log="False" position="7" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22799,7 +22790,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id438728A918346" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id438728A918346" disabled="False" log="False" position="8" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22818,7 +22809,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id438728BA18346" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id438728BA18346" disabled="False" log="False" position="9" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22837,7 +22828,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id438728CD18346" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id438728CD18346" disabled="False" log="False" position="10" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22856,7 +22847,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
             </When>
             <PolicyRuleOptions/>
           </PolicyRule>
-          <PolicyRule id="id47CBF5D429252" disabled="False" log="False" position="12" action="Accept" direction="Both" comment="test for bug #1905718&#10;Group of DNS Name objects considered empty&#10;">
+          <PolicyRule id="id47CBF5D429252" disabled="False" log="False" position="11" action="Accept" direction="Both" comment="test for bug #1905718&#10;Group of DNS Name objects considered empty&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22877,7 +22868,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id44703X361" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id44703X361" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -22897,7 +22888,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id43867C3C18346" disabled="False" log="True" position="14" action="Deny" direction="Both" comment="">
+          <PolicyRule id="id43867C3C18346" disabled="False" log="True" position="13" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -51547,6 +51538,132 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="prompt1">$ </Option>
           <Option name="prompt2"> # </Option>
           <Option name="solaris_ip_forward">1</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id55404X17308" host_OS="linux24" lastCompiled="1275496386" lastInstalled="0" lastModified="1275496350" platform="iptables" name="firewall33-1" comment="" ro="False">
+        <NAT id="id55408X17308" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id55406X17308" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id55421X17308" disabled="False" log="False" position="0" action="Branch" direction="Both" comment="branches to firewall33:Policy which uses DNSName objects&#10;testing for bug 1485">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="action_on_reject"></Option>
+              <Option name="branch_id">id43867C1618346</Option>
+              <Option name="classify_str"></Option>
+              <Option name="custom_str"></Option>
+              <Option name="ipf_route_opt_addr"></Option>
+              <Option name="ipf_route_opt_if"></Option>
+              <Option name="ipf_route_option">route_through</Option>
+              <Option name="ipfw_classify_method">2</Option>
+              <Option name="ipfw_pipe_port_num">0</Option>
+              <Option name="ipfw_pipe_queue_num">0</Option>
+              <Option name="ipt_branch_in_mangle">False</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="pf_fastroute">False</Option>
+              <Option name="pf_route_load_option">none</Option>
+              <Option name="pf_route_opt_addr"></Option>
+              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_option">none</Option>
+              <Option name="rule_name_accounting"></Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id55410X17308" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id55412X17308" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id55413X17308" name="firewall33-1:eth0:ip" comment="" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id55414X17308" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+          <IPv4 id="id55415X17308" name="firewall33-1:eth1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">True</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="classify_mark_terminating">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
+          <Option name="cmdline">-xt</Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix"></Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">True</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_invalid">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="output_file"></Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
           <Option name="sshArgs"></Option>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
