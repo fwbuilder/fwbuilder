@@ -32,6 +32,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/ServiceGroup.h"
+#include "fwbuilder/RuleSet.h"
 
 #include <iostream>
 
@@ -81,6 +82,14 @@ void Preprocessor::findMultiAddressObjectsUsedInRules(FWObject *top,
     for (FWObject::iterator i=top->begin(); i!=top->end(); ++i)
     {
         FWObject *obj = *i;
+        PolicyRule *rule = PolicyRule::cast(obj);
+        if (rule && rule->getAction() == PolicyRule::Branch)
+        {
+            RuleSet *branch_ruleset = rule->getBranch();
+            if (branch_ruleset)
+                findMultiAddressObjectsUsedInRules(branch_ruleset, resset);
+        }
+
         FWReference *ref = FWReference::cast(obj);
         if (ref == NULL)
             findMultiAddressObjectsUsedInRules(obj, resset);

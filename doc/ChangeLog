@@ -1,3 +1,9 @@
+2010-06-02  vadim  <vadim@vk.crocodile.org>
+
+	* Preprocessor.cpp (Preprocessor::findMultiAddressObjectsUsedInRules):
+	fixed #1485 "dns name object is recognized as an empty group when
+	it appears in shared rule set"
+
 2010-05-12  vadim  <vadim@vk.crocodile.org>
 
 	* Compiler.cpp (Compiler::epilog): fixed SourceForge bug #3000159
