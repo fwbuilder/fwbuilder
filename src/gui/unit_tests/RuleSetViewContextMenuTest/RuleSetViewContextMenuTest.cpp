@@ -54,7 +54,11 @@ void RuleSetViewContextMenuTest::initTestCase()
 {
     mw = new FWWindow();
     mw->show();
-    mw->resize(1280, 1024);
+    mw->move(0,0);
+    if (app->desktop()->size().width() < 1024 || app->desktop()->size().height()<768)
+        mw->resize(app->desktop()->size());
+    else
+        mw->resize(1024, 768);
     mw->startupLoad();
     FWObjectClipboard *clip = new FWObjectClipboard();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
