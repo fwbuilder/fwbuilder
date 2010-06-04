@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1275679305" id="root">
-  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="False">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1275680671" id="root">
+  <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
@@ -418,13 +418,19 @@
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="id1548X32395" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1549X32395" name="Objects" comment="" ro="False">
-      <ObjectGroup id="id1550X32395" name="Addresses" comment="" ro="False"/>
+      <ObjectGroup id="id1550X32395" name="Addresses" comment="" ro="False">
+        <IPv4 id="id4679X30714" name="admin workstation" comment="" ro="False" address="10.14.8.50" netmask="0.0.0.0"/>
+        <IPv4 id="id9596X30714" name="RTRA" comment="" ro="False" address="131.1.23.1" netmask="0.0.0.0"/>
+        <IPv4 id="id9603X30714" name="RTRB" comment="" ro="False" address="10.10.254.2" netmask="0.0.0.0"/>
+        <IPv4 id="id9610X30714" name="mail server" comment="" ro="False" address="10.10.254.3" netmask="0.0.0.0"/>
+      </ObjectGroup>
       <ObjectGroup id="id1551X32395" name="DNS Names" comment="" ro="False"/>
       <ObjectGroup id="id1552X32395" name="Address Tables" comment="" ro="False"/>
       <ObjectGroup id="id1553X32395" name="Groups" comment="" ro="False"/>
       <ObjectGroup id="id1554X32395" name="Hosts" comment="" ro="False"/>
       <ObjectGroup id="id1555X32395" name="Networks" comment="" ro="False">
         <Network id="id1643X32395" name="net-10.10.254" comment="" ro="False" address="10.10.254.0" netmask="255.255.255.0"/>
+        <Network id="id26733X30714" name="net-10.14.8" comment="" ro="False" address="10.14.8.0" netmask="255.255.255.0"/>
       </ObjectGroup>
       <ObjectGroup id="id1556X32395" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id1670X32395" name="outside range" comment="" ro="False" start_address="131.1.23.12" end_address="131.1.23.254"/>
@@ -441,7 +447,7 @@
       <ServiceGroup id="id1565X32395" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id1566X32395" name="Firewalls" comment="" ro="False">
-      <Firewall id="id1569X32395" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1275679354" platform="pix" version="6.1" name="pix" comment="this firewall object reproduces configuration in Cisco document id 15244&#10;http://www.cisco.com/en/US/products/hw/vpndevc/ps2030/products_configuration_example09186a0080094763.shtml" ro="False">
+      <Firewall id="id1569X32395" host_OS="pix_os" inactive="False" lastCompiled="1275680964" lastInstalled="0" lastModified="1275680960" platform="pix" version="6.1" name="pix" comment="this firewall object reproduces configuration in Cisco document id 15244&#10;http://www.cisco.com/en/US/products/hw/vpndevc/ps2030/products_configuration_example09186a0080094763.shtml" ro="False">
         <NAT id="id1573X32395" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id1656X32395" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -464,20 +470,168 @@
             </TSrv>
             <NATRuleOptions/>
           </NATRule>
+          <NATRule id="id4648X30714" disabled="False" position="1" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id4662X30714"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id4679X30714"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <NATRule id="id12218X30714" disabled="False" group="" position="2" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="id12209X30714"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="id9610X30714"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
           <RuleSetOptions/>
         </NAT>
         <Policy id="id1571X32395" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id9584X30714" disabled="False" log="False" position="0" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id9596X30714"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id4662X30714"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="id3AECF780"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id20299X30714" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id12209X30714"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-SMTP"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id37132X30714" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id4679X30714"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id1569X32395"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="tcp-Telnet"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id37208X30714" disabled="False" group="" log="True" position="3" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
           <RuleSetOptions/>
         </Policy>
         <Routing id="id1575X32395" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RoutingRule id="id32408X30714" disabled="False" metric="0" position="0" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id9596X30714"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
+          <RoutingRule id="id26742X30714" disabled="False" metric="0" position="1" comment="">
+            <RDst neg="False">
+              <ObjectRef ref="id26733X30714"/>
+            </RDst>
+            <RGtw neg="False">
+              <ObjectRef ref="id9603X30714"/>
+            </RGtw>
+            <RItf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </RItf>
+            <RoutingRuleOptions/>
+          </RoutingRule>
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id1577X32395" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id2986X75851" security_level="100" unnum="False" unprotected="False" name="Ethernet1" comment="" ro="False">
+        <Interface id="id1577X32395" dedicated_failover="False" dyn="False" label="inside" mgmt="True" network_zone="id3DC75CE5" security_level="100" unnum="False" unprotected="False" name="Ethernet1" comment="" ro="False">
           <IPv4 id="id1578X32395" name="pix:Ethernet1:ip" comment="" ro="False" address="10.10.254.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Interface id="id1579X32395" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="Ethernet0" comment="" ro="False">
           <IPv4 id="id1580X32395" name="pix:Ethernet0:ip" comment="" ro="False" address="131.1.23.2" netmask="255.255.255.0"/>
+          <IPv4 id="id4662X30714" name="pix:Ethernet0:ip-1" comment="" ro="False" address="131.1.23.11" netmask="255.255.255.0"/>
+          <IPv4 id="id12209X30714" name="pix:Ethernet0:ip-2" comment="" ro="False" address="131.1.23.10" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Management address="0.0.0.0">
@@ -486,18 +640,134 @@
           <PolicyInstallScript arguments="" command="" enabled="False"/>
         </Management>
         <FirewallOptions>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">False</Option>
+          <Option name="conn_hh">0</Option>
+          <Option name="conn_mm">0</Option>
+          <Option name="conn_ss">0</Option>
+          <Option name="ctiqbe_fixup">2 2748 0 nil 0</Option>
+          <Option name="dns_fixup">2 65535 0 nil 0</Option>
+          <Option name="espike_fixup">2 0 0 nil 0</Option>
+          <Option name="filesystem"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="ftp_fixup">2 21 0 strict 0</Option>
+          <Option name="h323_h225_fixup">2 1720 1720 nil 0</Option>
+          <Option name="h323_hh">0</Option>
+          <Option name="h323_mm">0</Option>
+          <Option name="h323_ras_fixup">2 1718 1719 nil 0</Option>
+          <Option name="h323_ss">0</Option>
+          <Option name="half-closed_hh">0</Option>
+          <Option name="half-closed_mm">0</Option>
+          <Option name="half-closed_ss">0</Option>
+          <Option name="http_fixup">2 80 80 nil 0</Option>
+          <Option name="icmp_error_fixup">2 0 0 nil 0</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="ils_fixup">2 389 389 nil 0</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="mgcp_fixup">2 2427 2727 nil 0</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="output_file"></Option>
+          <Option name="pix_acl_basic">True</Option>
+          <Option name="pix_acl_no_clear">False</Option>
+          <Option name="pix_acl_substitution">False</Option>
+          <Option name="pix_acl_temp_addr"></Option>
           <Option name="pix_add_clear_statements">true</Option>
-          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_assume_fw_part_of_any">True</Option>
+          <Option name="pix_check_duplicate_nat">False</Option>
+          <Option name="pix_check_overlapping_global_pools">False</Option>
+          <Option name="pix_check_overlapping_global_statics">False</Option>
+          <Option name="pix_check_overlapping_statics">False</Option>
+          <Option name="pix_connection_timewait">False</Option>
           <Option name="pix_default_logint">300</Option>
-          <Option name="pix_emblem_log_format">false</Option>
-          <Option name="pix_emulate_out_acl">true</Option>
-          <Option name="pix_floodguard">true</Option>
-          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_disable_snmp_agent">False</Option>
+          <Option name="pix_emb_limit">0</Option>
+          <Option name="pix_emblem_log_format">False</Option>
+          <Option name="pix_emulate_out_acl">True</Option>
+          <Option name="pix_enable_snmp_traps">False</Option>
+          <Option name="pix_epilog_script"></Option>
+          <Option name="pix_floodguard">True</Option>
+          <Option name="pix_fragguard">False</Option>
+          <Option name="pix_generate_out_acl">False</Option>
+          <Option name="pix_include_comments">True</Option>
+          <Option name="pix_ip_address">False</Option>
+          <Option name="pix_logging_buffered">False</Option>
+          <Option name="pix_logging_buffered_level">3</Option>
+          <Option name="pix_logging_console">False</Option>
+          <Option name="pix_logging_console_level">3</Option>
+          <Option name="pix_logging_timestamp">False</Option>
+          <Option name="pix_logging_trap_level">3</Option>
+          <Option name="pix_max_conns">0</Option>
+          <Option name="pix_nodnsalias_inbound">False</Option>
+          <Option name="pix_nodnsalias_outbound">False</Option>
+          <Option name="pix_ntp1"></Option>
+          <Option name="pix_ntp1_pref">False</Option>
+          <Option name="pix_ntp2"></Option>
+          <Option name="pix_ntp2_pref">False</Option>
+          <Option name="pix_ntp3"></Option>
+          <Option name="pix_ntp3_pref">False</Option>
+          <Option name="pix_optimize_default_nat">False</Option>
+          <Option name="pix_prolog_script"></Option>
+          <Option name="pix_regroup_commands">False</Option>
+          <Option name="pix_replace_natted_objects">False</Option>
+          <Option name="pix_resetinbound">False</Option>
+          <Option name="pix_resetoutside">False</Option>
+          <Option name="pix_route_dnat">False</Option>
           <Option name="pix_route_dnat_supported">true</Option>
           <Option name="pix_rule_syslog_settings">false</Option>
           <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_set_communities_from_object_data">False</Option>
+          <Option name="pix_set_host_name">False</Option>
+          <Option name="pix_snmp_poll_traps_1">Poll</Option>
+          <Option name="pix_snmp_poll_traps_2"></Option>
+          <Option name="pix_snmp_server1">10.14.8.50</Option>
+          <Option name="pix_snmp_server2"></Option>
+          <Option name="pix_ssh_timeout">0</Option>
+          <Option name="pix_syslog_device_id_opt">interface</Option>
           <Option name="pix_syslog_device_id_supported">false</Option>
-          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="pix_syslog_device_id_val">inside</Option>
+          <Option name="pix_syslog_facility">20</Option>
+          <Option name="pix_syslog_host">10.14.8.50</Option>
+          <Option name="pix_syslog_queue_size">0</Option>
+          <Option name="pix_tcpmss">False</Option>
+          <Option name="pix_tcpmss_value">0</Option>
+          <Option name="pix_telnet_timeout">0</Option>
+          <Option name="pix_use_acl_remarks">False</Option>
+          <Option name="pix_use_manual_commit">False</Option>
+          <Option name="pptp_fixup">2 1723 0 nil 0</Option>
+          <Option name="rpc_hh">0</Option>
+          <Option name="rpc_mm">0</Option>
+          <Option name="rpc_ss">0</Option>
+          <Option name="rsh_fixup">2 514 0 nil 0</Option>
+          <Option name="rtsp_fixup">2 554 0 nil 0</Option>
+          <Option name="scpArgs"></Option>
+          <Option name="short_script">False</Option>
+          <Option name="sip_fixup">2 5060 5060 nil 0</Option>
+          <Option name="sip_hh">0</Option>
+          <Option name="sip_media_hh">0</Option>
+          <Option name="sip_media_mm">0</Option>
+          <Option name="sip_media_ss">0</Option>
+          <Option name="sip_mm">0</Option>
+          <Option name="sip_ss">0</Option>
+          <Option name="sip_udp_fixup">2 5060 0 nil 0</Option>
+          <Option name="skinny_fixup">2 2000 2000 nil 0</Option>
+          <Option name="smtp_fixup">0 25 25 nil 0</Option>
+          <Option name="sqlnet_fixup">2 1521 1521 nil 0</Option>
+          <Option name="sshArgs"></Option>
+          <Option name="tftp_fixup">2 69 0 nil 0</Option>
+          <Option name="uauth_abs">False</Option>
+          <Option name="uauth_hh">0</Option>
+          <Option name="uauth_inact">False</Option>
+          <Option name="uauth_mm">0</Option>
+          <Option name="uauth_ss">0</Option>
+          <Option name="udp_hh">0</Option>
+          <Option name="udp_mm">0</Option>
+          <Option name="udp_ss">0</Option>
+          <Option name="use_scp">False</Option>
+          <Option name="xlate_hh">0</Option>
+          <Option name="xlate_mm">0</Option>
+          <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
