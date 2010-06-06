@@ -468,6 +468,26 @@ void PrefsDialog::accept()
 
     st->setClipComment(m_dialog->chClipComment->isChecked());
 
+    st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
+
+    wfl->registerFlag(UserWorkflow::USING_HTTP_PROXY,
+                      !st->getCheckUpdatesProxy().isEmpty());
+
+    // annoyingly, widget shotTip has the name opposite to its meaning.
+    // When it is checked, we do not show tip of the day.
+
+    wfl->registerFlag(UserWorkflow::TIP_OF_THE_DAY_DISABLED,
+                      m_dialog->showTips->isChecked());
+    st->setBool("UI/NoStartTip", m_dialog->showTips->isChecked());
+
+    st->setSSHPath( m_dialog->sshPath->text() );
+    st->setSCPPath( m_dialog->scpPath->text() );
+    st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
+    
+    wfl->registerFlag(UserWorkflow::SSH_CONFIGURED, 
+                      !m_dialog->sshPath->text().isEmpty() &&
+                      !m_dialog->scpPath->text().isEmpty());
+
 
     if (m_dialog->checkUpdates->isChecked())
     {
@@ -487,15 +507,7 @@ void PrefsDialog::accept()
     }
 
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
-    st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
 
-    wfl->registerFlag(UserWorkflow::USING_HTTP_PROXY,
-                      !st->getCheckUpdatesProxy().isEmpty());
-
-    st->setSSHPath( m_dialog->sshPath->text() );
-    st->setSCPPath( m_dialog->scpPath->text() );
-    st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
-    
     for (int row=0; row < m_dialog->enabled_platforms->rowCount(); ++row)
     {
         QTableWidgetItem *itm = m_dialog->enabled_platforms->item(row, 0);
@@ -531,12 +543,6 @@ void PrefsDialog::accept()
     mw->updateTreeFont();
 //    app->setFont(st->getTreeFont());
 
-    // annoyingly, widget shotTip has the name opposite to its meaning.
-    // When it is checked, we do not show tip of the day.
-
-    wfl->registerFlag(UserWorkflow::TIP_OF_THE_DAY_DISABLED,
-                      m_dialog->showTips->isChecked());
-    st->setBool("UI/NoStartTip", m_dialog->showTips->isChecked());
 
     QDialog::accept();
 }

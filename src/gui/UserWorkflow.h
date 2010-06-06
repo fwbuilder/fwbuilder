@@ -81,9 +81,12 @@ public:
          RULE_MOD,
          COMPILE,
          INSTALL,
+         INSTALL_RAN,
+         INSTALL_SUCCESS,
          IMPORT,
          TIP_OF_THE_DAY_DISABLED,
          USING_HTTP_PROXY,
+         SSH_CONFIGURED,
     };
 
 private:

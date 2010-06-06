@@ -35,6 +35,7 @@
 #include "InstallFirewallViewItem.h"
 #include "instOptionsDialog.h"
 #include "instBatchOptionsDialog.h"
+#include "UserWorkflow.h"
 
 #include <qcheckbox.h>
 #include <qlineedit.h>
@@ -364,6 +365,9 @@ void instDialog::opSuccess(Firewall *fw)
         setSuccessState(itm);
     }
     currentLabel->setText("");
+
+    if (installer)
+        wfl->registerFlag(UserWorkflow::INSTALL_SUCCESS, true);
 }
 
 void instDialog::opError(Firewall *fw)

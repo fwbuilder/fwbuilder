@@ -1,3 +1,24 @@
+2010-06-06  vadim  <vadim@vk.crocodile.org>
+
+	* UserWorkflow.cpp (UserWorkflow::flagsToQueryString): added user
+	workflow progress flags for an attempted install and first
+	successful install. Both flags are boolean true/false indicating
+	that the even occurred. We do not track and do not report any
+	information about the firewall, platform, rules etc. These flags
+	will be used to determine how many users abandon the program
+	before even trying to run install for real because it is too
+	complicated or the UI is not good enough. Fixes #1495
+
+	* UserWorkflow.cpp (UserWorkflow::flagsToQueryString): added user
+	workflow flag indicating that ssh/scp have been configured in the
+	Prefereces dialog. The flag is boolean and registers only the fact
+	that something was entered in ssh and scp fields. Actual path and
+	programs used are not registered and reported. Fixes #1496
+
+2010-06-03  vadim  <vadim@vk.crocodile.org>
+
+	* v4.0.1 released
+
 2010-06-02  vadim  <vadim@vk.crocodile.org>
 
 	* Preprocessor.cpp (Preprocessor::findMultiAddressObjectsUsedInRules):

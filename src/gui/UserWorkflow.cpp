@@ -57,6 +57,9 @@ UserWorkflow::UserWorkflow()
 
     registerFlag(TIP_OF_THE_DAY_DISABLED, st->getBool("UI/NoStartTip"));
     registerFlag(UPDATE_CHECKS_DISABLED, !st->getCheckUpdates());
+
+    registerFlag(UserWorkflow::SSH_CONFIGURED, 
+                 !st->getSCPPath().isEmpty() && !st->getSCPPath().isEmpty());
 }
 
 UserWorkflow::~UserWorkflow()
@@ -89,17 +92,20 @@ QString UserWorkflow::flagsToQueryString(int session_duration)
     // query string of flags has the format uc=0&gs=1&ft=0 ...
     // each flag is a two-characters variable with a value of 0 or 1
     QStringList fl;
-    fl << QString("sd=%1").arg(session_duration);
-    fl << QString("uc=%1").arg(flags.value(UPDATE_CHECKS_DISABLED));
-    fl << QString("gs=%1").arg(flags.value(GETTING_STARTED_TUTOTIAL));
-    fl << QString("ft=%1").arg(flags.value(NEW_FW_WITH_TEMPLATE));
-    fl << QString("fn=%1").arg(flags.value(NEW_FW_NO_TEMPLATE));
-    fl << QString("rm=%1").arg(flags.value(RULE_MOD));
     fl << QString("co=%1").arg(flags.value(COMPILE));
-    fl << QString("in=%1").arg(flags.value(INSTALL));
+    fl << QString("fn=%1").arg(flags.value(NEW_FW_NO_TEMPLATE));
+    fl << QString("ft=%1").arg(flags.value(NEW_FW_WITH_TEMPLATE));
+    fl << QString("gs=%1").arg(flags.value(GETTING_STARTED_TUTOTIAL));
     fl << QString("im=%1").arg(flags.value(IMPORT));
-    fl << QString("ti=%1").arg(flags.value(TIP_OF_THE_DAY_DISABLED));
+    fl << QString("in=%1").arg(flags.value(INSTALL));
+    fl << QString("ir=%1").arg(flags.value(INSTALL_RAN));
+    fl << QString("is=%1").arg(flags.value(INSTALL_SUCCESS));
     fl << QString("pr=%1").arg(flags.value(USING_HTTP_PROXY));
+    fl << QString("rm=%1").arg(flags.value(RULE_MOD));
+    fl << QString("sc=%1").arg(flags.value(SSH_CONFIGURED));
+    fl << QString("sd=%1").arg(session_duration);
+    fl << QString("ti=%1").arg(flags.value(TIP_OF_THE_DAY_DISABLED));
+    fl << QString("uc=%1").arg(flags.value(UPDATE_CHECKS_DISABLED));
     return fl.join("&");
 }
 
