@@ -119,9 +119,15 @@ const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
 /**
  * Settings path defined here should match Windows registry paths used
  * in the Windows installer/uninstaller scripts.
+ *
+ * Path used for uuid_settings should not include version to ensure
+ * uuid persistence across upgrades. This means do not use getApplicationNameForSettings()
  */
 FWBSettings::FWBSettings() :
-    QSettings(QSettings::UserScope, "netcitadel.com", getApplicationNameForSettings())
+    QSettings(QSettings::UserScope,
+              "netcitadel.com", getApplicationNameForSettings()),
+    uuid_settings(QSettings::IniFormat, QSettings::UserScope,
+                  "netcitadel.com", "FirewallBuilder")
 {
 }
 
@@ -136,8 +142,20 @@ void FWBSettings::init()
 {
     bool ok=false;
 
-    ok = contains(appGUID);
-    if (!ok) setValue(appGUID, QUuid::createUuid().toString() );
+    ok = uuid_settings.contains(appGUID);
+    if (!ok)
+    {
+        // migrate uuid from the old native format settings to uuid_settings
+        // See #1497
+        ok = contains(appGUID);
+        if (ok)
+        {
+            uuid_settings.setValue(appGUID, value(appGUID).toString());
+        } else
+        {
+            uuid_settings.setValue(appGUID, QUuid::createUuid().toString() );
+        }
+    }
 
     // By default sort RCS File preview by date, which is column 1
     ok = contains(rcsFilePreviewSortColumn);
@@ -256,7 +274,7 @@ bool FWBSettings::hasKey(const QString &attribute)
 
 QString FWBSettings::getAppGUID()
 {
-    return value(appGUID).toString();
+    return uuid_settings.value(appGUID).toString();
 }
 
 QString FWBSettings::getStr(const QString &attribute)

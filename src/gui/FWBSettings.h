@@ -57,7 +57,8 @@ class FWBSettings : public QSettings {
 
  private:
     QString getLabelColorStr(enum LabelColors c);
-
+    QSettings uuid_settings;
+    
  public:
 
     FWBSettings();

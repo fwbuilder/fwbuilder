@@ -1,5 +1,10 @@
 2010-06-06  vadim  <vadim@vk.crocodile.org>
 
+	* FWBSettings.cpp (FWBSettings::FWBSettings): using separate
+	settings object and file in the .ini format to store instance uuid
+	to ensure uuid persistence on windows across upgrades done with
+	complete deinstall. Fixes #1497
+
 	* UserWorkflow.cpp (UserWorkflow::flagsToQueryString): added user
 	workflow progress flags for an attempted install and first
 	successful install. Both flags are boolean true/false indicating
