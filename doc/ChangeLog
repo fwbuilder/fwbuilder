@@ -1,9 +1,10 @@
 2010-06-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* TransferDevice.h (fwtransfer): fixed #1490 compile problem with
+	Qt 4.7
+
 	* FWWindow.cpp (FWWindow::prepareRulesMenu): fixed #1489 removed
 	unnecessary debugging messages.
-
-2010-06-07  vadim  <vadim@vk.crocodile.org>
 
 	* interfaceProperties.cpp (interfaceProperties::manageIpAddresses):
 	fixed #1506 SF bug #3011516: generated iptables script tries to

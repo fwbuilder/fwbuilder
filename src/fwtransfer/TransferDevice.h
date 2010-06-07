@@ -44,13 +44,14 @@ namespace fwtransfer
     {
     public:
         TransferDevice() :
-                volume_udi(NULL),
-                volume_fs(NULL),
+                volume_udi(QString()),
+                volume_fs(QString()),
                 volume_size(0),
-                device_udi(NULL),
-                device_name(NULL),
-                device_bus(NULL),
-                mountpoint(NULL),
+                device_udi(QString()),
+                device_name(QString()),
+                device_bus(QString()),
+                device_type(QString()),
+                mountpoint(QString()),
                 is_mounted(false),
                 is_removable(false),
                 is_hotpluggable(false) {};
