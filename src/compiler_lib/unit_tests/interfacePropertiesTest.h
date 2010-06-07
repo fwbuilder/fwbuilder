@@ -68,7 +68,9 @@ public:
     void isValidVlanInterfaceNamePIX();
     void isValidVlanInterfaceNameProCurve();
     void validateInterfaceProCurve();
-
+    void testManageIpAddresses();
+    void testManageIpAddressesCluster();
+    
     void setUp();
 
     CPPUNIT_TEST_SUITE(interfacePropertiesTest);
@@ -86,6 +88,7 @@ public:
     CPPUNIT_TEST(isValidVlanInterfaceNameIOS);
     CPPUNIT_TEST(isValidVlanInterfaceNamePIX);
     CPPUNIT_TEST(testManageIpAddresses);
+    CPPUNIT_TEST(testManageIpAddressesCluster);
     CPPUNIT_TEST_SUITE_END();
 
 };

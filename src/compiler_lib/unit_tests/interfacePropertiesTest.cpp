@@ -25,8 +25,6 @@
 
 #include "interfacePropertiesTest.h"
 
-#include <common/init.cpp>
-
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
 
@@ -37,6 +35,20 @@
 using namespace std;
 using namespace libfwbuilder;
 using namespace CppUnit;
+
+
+extern string librespath;
+
+class UpgradePredicate: public XMLTools::UpgradePredicate
+{
+    public:
+    virtual bool operator()(const string&) const 
+    { 
+	cout << "Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it." << std::endl;
+	return false;
+    }
+};
+
 
 interfaceProperties* interfacePropertiesTest::getIntProps(const QString &os)
 {
@@ -49,10 +61,6 @@ interfaceProperties* interfacePropertiesTest::getIntProps(const QString &os)
 
 void interfacePropertiesTest::setUp()
 {
-    init();
-
-    Resources("../../res/resources.xml");
-
     db = new FWObjectDatabase();
 }
 
@@ -565,15 +573,17 @@ void interfacePropertiesTest::testManageIpAddresses()
 {
     UpgradePredicate upgrade_predicate; 
 
+    string file_name = "test.fwb";
     db->setReadOnly( false );
-    db->load("test.fwb", &upgrade_predicate, librespath);
+    db->load(file_name, &upgrade_predicate, librespath);
     db->setFileName(file_name);
     db->reIndex();
 
-    FWObject *fw = db->findObjectByName(Firewall::TYPENAME, "test-fw");
+    FWObject *fw = db->findObjectByName(Firewall::TYPENAME, "fw1");
     CPPUNIT_ASSERT(fw != NULL);
 
-    FWObject *intf = fw->findObjectByName(Interface::TYPENAME, "eth0");
+    Interface *intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "eth0"));
 
     interfaceProperties *int_prop = getIntProps("linux24");
 
@@ -582,37 +592,85 @@ void interfacePropertiesTest::testManageIpAddresses()
 
     CPPUNIT_ASSERT(
         int_prop->manageIpAddresses(
-            iface, update_addresses, ignore_addresses) == true);
+            intf, update_addresses, ignore_addresses) == true);
 
-    intf = fw->findObjectByName(Interface::TYPENAME, "eth1"); // dyn
-
-    CPPUNIT_ASSERT(
-        int_prop->manageIpAddresses(
-            iface, update_addresses, ignore_addresses) == false);
-
-    intf = fw->findObjectByName(Interface::TYPENAME, "eth2"); // bridge port
+    intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "lo"));
 
     CPPUNIT_ASSERT(
         int_prop->manageIpAddresses(
-            iface, update_addresses, ignore_addresses) == false);
+            intf, update_addresses, ignore_addresses) == true);
 
-    intf = fw->findObjectByName(Interface::TYPENAME, "eth3"); // bonding intf slave
-
-    CPPUNIT_ASSERT(
-        int_prop->manageIpAddresses(
-            iface, update_addresses, ignore_addresses) == false);
-
-
-    intf = fw->findObjectByName(Interface::TYPENAME, "tun0"); // unnumbered
+    intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "eth1")); // dyn
 
     CPPUNIT_ASSERT(
         int_prop->manageIpAddresses(
-            iface, update_addresses, ignore_addresses) == false);
+            intf, update_addresses, ignore_addresses) == false);
 
-    intf = fw->findObjectByName(Interface::TYPENAME, "tun*"); // unnumbered
+    intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "eth2")); // bridge port
 
     CPPUNIT_ASSERT(
         int_prop->manageIpAddresses(
-            iface, update_addresses, ignore_addresses) == false);
+            intf, update_addresses, ignore_addresses) == false);
+
+    intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "eth3")); // bonding intf slave
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            intf, update_addresses, ignore_addresses) == false);
+
+
+    intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "tun0")); // unnumbered
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            intf, update_addresses, ignore_addresses) == false);
+
+    intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "tun*")); // unnumbered
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            intf, update_addresses, ignore_addresses) == false);
+
+}
+
+void interfacePropertiesTest::testManageIpAddressesCluster()
+{
+    UpgradePredicate upgrade_predicate; 
+
+    string file_name = "test.fwb";
+    db->setReadOnly( false );
+    db->load(file_name, &upgrade_predicate, librespath);
+    db->setFileName(file_name);
+    db->reIndex();
+
+    FWObject *fw = db->findObjectByName(Cluster::TYPENAME, "cluster1");
+    CPPUNIT_ASSERT(fw != NULL);
+
+    Interface *intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "lo"));
+
+    intf->getOptionsObject()->setBool("cluster_interface", true);
+
+    interfaceProperties *int_prop = getIntProps("linux24");
+
+    QStringList update_addresses;
+    QStringList ignore_addresses;
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            intf, update_addresses, ignore_addresses) == false);
+
+    intf = Interface::cast(
+        fw->findObjectByName(Interface::TYPENAME, "eth0"));
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            intf, update_addresses, ignore_addresses) == true);
 
 }

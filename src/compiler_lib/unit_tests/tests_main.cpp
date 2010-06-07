@@ -23,17 +23,29 @@
 
 */
 
+#include "../../config.h"
+
+#include "../../common/init.cpp"
+#include "interfacePropertiesTest.h"
+
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
-#include "interfacePropertiesTest.h"
 #include <string>
 
 //int build_num = 0;
 //std::string respath;
 //QString user_name;
 
-int main( int, char** )
+int main(int, char **argv)
 {
+    init(argv);
+
+    init();
+
+    Resources res(respath + FS_SEPARATOR + "resources.xml");
+    // Resources("../../res/resources.xml");
+
+
     CppUnit::TextUi::TestRunner runner;
     runner.addTest( interfacePropertiesTest::suite() );
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),

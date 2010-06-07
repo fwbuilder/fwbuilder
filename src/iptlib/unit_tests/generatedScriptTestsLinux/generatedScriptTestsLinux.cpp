@@ -210,9 +210,7 @@ void GeneratedScriptTest::configureInterfacesTest()
 {
     QStringList sample;
     sample << "update_addresses_of_interface \"eth0 192.0.2.1/24\" \"\"";
-    sample << "update_addresses_of_interface \"eth1\" \"\"";
     sample << "update_addresses_of_interface \"lo 127.0.0.1/8\" \"\"";
-    sample << "update_addresses_of_interface \"eth2\" \"\"";
     sample << "update_addresses_of_interface \"eth1.200 fe80::20c:29ff:fed2:cca1/64 192.168.1.1/24\" \"\"";
     sample << "update_addresses_of_interface \"vlan110 192.168.2.1/24\" \"\"";
     sample << "update_addresses_of_interface \"vlan111 192.168.3.1/24\" \"\"";
