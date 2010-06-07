@@ -1,3 +1,8 @@
+2010-06-07  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* FWWindow.cpp (FWWindow::prepareRulesMenu): fixed #1489 removed
+	unnecessary debugging messages.
+
 2010-06-07  vadim  <vadim@vk.crocodile.org>
 
 	* interfaceProperties.cpp (interfaceProperties::manageIpAddresses):

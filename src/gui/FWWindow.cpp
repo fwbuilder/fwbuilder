@@ -1490,8 +1490,6 @@ void FWWindow::updateGlobalToolbar()
  */
 void FWWindow::prepareRulesMenu()
 {
-    qDebug("FWWindow::ruleMenuAboutToShow ()");
-
     cleanRulesMenu();
 
     ProjectPanel* pp = activeProject();
@@ -1514,7 +1512,6 @@ void FWWindow::prepareRulesMenu()
 
 void FWWindow::cleanRulesMenu ()
 {
-    qDebug("FWWindow::cleanRulesMenu ()");
     m_mainWindow->RulesMenu->actions().clear();
     m_mainWindow->RulesMenu->clear();
 }
