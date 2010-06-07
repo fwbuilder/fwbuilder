@@ -163,6 +163,7 @@ bool interfaceProperties::manageIpAddresses(Interface *intf,
     if (intf->isDyn()) return false;
     if (intf->isBridgePort()) return false;
     if (intf->isSlave()) return false;
+    if (intf->isUnnumbered()) return false;   // see #1506
 
     string intf_name = intf->getName();
 

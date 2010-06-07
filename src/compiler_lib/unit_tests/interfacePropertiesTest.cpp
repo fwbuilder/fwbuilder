@@ -27,7 +27,12 @@
 
 #include <common/init.cpp>
 
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Interface.h"
+
+#include <QStringList>
 #include <QDebug>
+
 
 using namespace std;
 using namespace libfwbuilder;
@@ -556,3 +561,58 @@ void interfacePropertiesTest::validateInterfaceProCurve()
     CPPUNIT_ASSERT(int_prop->validateInterface(&fw, iface, false, err) == false);
 }
 
+void interfacePropertiesTest::testManageIpAddresses()
+{
+    UpgradePredicate upgrade_predicate; 
+
+    db->setReadOnly( false );
+    db->load("test.fwb", &upgrade_predicate, librespath);
+    db->setFileName(file_name);
+    db->reIndex();
+
+    FWObject *fw = db->findObjectByName(Firewall::TYPENAME, "test-fw");
+    CPPUNIT_ASSERT(fw != NULL);
+
+    FWObject *intf = fw->findObjectByName(Interface::TYPENAME, "eth0");
+
+    interfaceProperties *int_prop = getIntProps("linux24");
+
+    QStringList update_addresses;
+    QStringList ignore_addresses;
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            iface, update_addresses, ignore_addresses) == true);
+
+    intf = fw->findObjectByName(Interface::TYPENAME, "eth1"); // dyn
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            iface, update_addresses, ignore_addresses) == false);
+
+    intf = fw->findObjectByName(Interface::TYPENAME, "eth2"); // bridge port
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            iface, update_addresses, ignore_addresses) == false);
+
+    intf = fw->findObjectByName(Interface::TYPENAME, "eth3"); // bonding intf slave
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            iface, update_addresses, ignore_addresses) == false);
+
+
+    intf = fw->findObjectByName(Interface::TYPENAME, "tun0"); // unnumbered
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            iface, update_addresses, ignore_addresses) == false);
+
+    intf = fw->findObjectByName(Interface::TYPENAME, "tun*"); // unnumbered
+
+    CPPUNIT_ASSERT(
+        int_prop->manageIpAddresses(
+            iface, update_addresses, ignore_addresses) == false);
+
+}

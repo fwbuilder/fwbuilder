@@ -112,6 +112,7 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
         QStringList out;
         QStringList update_addresses;
         QStringList ignore_addresses;
+
         if (int_prop->manageIpAddresses(iface, update_addresses, ignore_addresses))
         {
             if (virtual_addresses_for_nat.count(iface_name) > 0)

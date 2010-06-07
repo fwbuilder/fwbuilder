@@ -1,5 +1,9 @@
 2010-06-07  vadim  <vadim@vk.crocodile.org>
 
+	* interfaceProperties.cpp (interfaceProperties::manageIpAddresses):
+	fixed #1506 SF bug #3011516: generated iptables script tries to
+	update ip addresses of unnumbered interface.
+
 	* v4.0.2 started
 
 2010-06-06  vadim  <vadim@vk.crocodile.org>

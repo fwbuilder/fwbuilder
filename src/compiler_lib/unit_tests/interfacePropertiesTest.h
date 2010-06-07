@@ -85,6 +85,7 @@ public:
     CPPUNIT_TEST(isValidVlanInterfaceNameBSD);
     CPPUNIT_TEST(isValidVlanInterfaceNameIOS);
     CPPUNIT_TEST(isValidVlanInterfaceNamePIX);
+    CPPUNIT_TEST(testManageIpAddresses);
     CPPUNIT_TEST_SUITE_END();
 
 };
