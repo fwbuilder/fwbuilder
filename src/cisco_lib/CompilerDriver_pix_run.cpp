@@ -254,196 +254,12 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             else options->setBool("pix_acl_no_clear",true);
         }
 
-        Helper helper(NULL);
 
-        multimap<string, FWObject*> netzone_objects;
 
         std::list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
-        for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
-        {
-            Interface *iface = dynamic_cast<Interface*>(*i);
-            assert(iface);
 
-            if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
-
-            if ((iface->getOptionsObject()->getStr("type") == "" ||
-                 iface->getOptionsObject()->getStr("type") == "ethernet") &&
-                iface->getByType(Interface::TYPENAME).size() > 0)
-            {
-                // Parent vlan interface (i.e. trunk)
-                if (!iface->isUnprotected())
-                {
-                    QString err(
-                        "Interface %1 has vlan subinterfaces, it can not "
-                        "be used for ACL. Marking this interface \"unprotected\" "
-                        "to exclude it."
-                    );
-                    warning(fw, NULL, NULL,
-                            err.arg(iface->getName().c_str())
-                            .toStdString());
-                    iface->setUnprotected(true);
-                }
-            }
-
-            // Tests for label, security level and network zone make sense
-            // only for interfaces that can be used in ACLs or to bind
-            // ACLs to.  Unnumbered interfaces can't, so we do not need to
-            // run these checks.  One example of unnumbered interface is
-            // parent interface for vlan subinterfaces.
-            if (iface->isUnnumbered()) continue;
-            if (iface->isUnprotected()) continue;
-
-/*
- * there shouldn't be two interfaces with the same security level and same label
- * 
- */
-            for (std::list<FWObject*>::iterator j=all_interfaces.begin(); j!=all_interfaces.end(); ++j)
-            {
-                Interface *iface2 = dynamic_cast<Interface*>(*j);
-                assert(iface2);
-                if (iface2->isUnnumbered()) continue;
-                if (iface2->isUnprotected()) continue;
-                if (iface->getId()==iface2->getId()) continue;
-                if (iface->getOptionsObject()->getBool("cluster_interface") ||
-                    iface2->getOptionsObject()->getBool("cluster_interface"))
-                    continue;
-
-                if (iface->getSecurityLevel()==iface2->getSecurityLevel())
-                {
-                    QString err(
-                        "Security level of each interface should be unique, "
-                        "however interfaces %1 (%2) and %3 (%4)"
-                        " have the same security level."
-                    );
-                    abort(fw, NULL, NULL,
-                          err.arg(iface->getName().c_str())
-                          .arg(iface->getLabel().c_str())
-                          .arg(iface2->getName().c_str())
-                          .arg(iface2->getLabel().c_str()).toStdString());
-                    throw FatalErrorInSingleRuleCompileMode();
-                }
-
-                if (iface->getLabel()==iface2->getLabel())
-                {
-                    QString err(
-                        "Label of each interface should be unique, "
-                        "however interfaces %1 (%2) and %3 (%4)"
-                        " have the same."
-                    );
-                    abort(fw, NULL, NULL,
-                          err.arg(iface->getName().c_str())
-                          .arg(iface->getLabel().c_str())
-                          .arg(iface2->getName().c_str())
-                          .arg(iface2->getLabel().c_str()).toStdString());
-                    throw FatalErrorInSingleRuleCompileMode();
-                }
-            }
-
-            // We only do limited checks for dedicated failover
-            // interfaces because they are not used in ACLs or
-            // anywhere else in configuration, except in "failover"
-            // commands.
-            if (iface->isDedicatedFailover()) continue;
-
-/*
- * in PIX, we need network zones to be defined for all interfaces
- */
-            string netzone_id = iface->getStr("network_zone");
-            if (netzone_id=="")
-            {
-                QString err("Network zone definition is missing for interface %1 (%2)");
-                abort(fw, NULL, NULL,
-                      err.arg(iface->getName().c_str())
-                      .arg(iface->getLabel().c_str()).toStdString());
-                throw FatalErrorInSingleRuleCompileMode();
-            }
-
-            FWObject *netzone = objdb->findInIndex(
-                FWObjectDatabase::getIntId(netzone_id));
-            if (netzone==NULL) 
-            {
-                QString err("Network zone points at nonexisting object for interface %1 (%2)");
-                abort(fw, NULL, NULL,
-                      err.arg(iface->getName().c_str())
-                      .arg(iface->getLabel().c_str()).toStdString());
-                throw FatalErrorInSingleRuleCompileMode();
-            }
-/*
- * netzone may be a group, in which case we need to expand it
- * (recursively). 
- * 
- * 1. We create new temporary object (type Group).
- *
- * 2. put it in the database somewhere
- *
- * 3. add all objects that belong to the network zone to this
- * group. We add objects directly, not as a reference.
- *
- * 4. finally replace reference to the old network zone object in the
- * interface with reference to this new group.
- *
- * 5. we store ID of the original network zone object 
- *    using iface->setStr("orig_netzone_id")
- *
- * This ensures netzones do not contain other groups and do not
- * require any recursive expanding anymore. Since objects were added
- * to netzones directly, we do not need to bother with dereferencing,
- * too.
- */
-            list<FWObject*> ol;
-            helper.expand_group_recursive(netzone,ol);
-
-            FWObject *nz = objdb->createObjectGroup();
-            assert(nz!=NULL);
-            nz->setName("netzone_"+iface->getLabel());
-            objdb->add(nz);
-
-            for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j)
-            {
-                netzone_objects.insert( pair<string,FWObject*>(iface->getLabel(),*j));
-                nz->addRef(*j);
-            }
-            iface->setStr("orig_netzone_id", netzone_id );
-            iface->setStr("network_zone",
-                          FWObjectDatabase::getStringId(nz->getId()) );
-        }
-
-/*
- * the same object (network or host) can not belong to network zones
- * of two different interfaces. Map netzone_objects holds pairs
- * interface_id/object. We just make sure the same object does not
- * appear in two pairs with different interfaces.
- */
-        multimap<string,FWObject*>::iterator k;
-        for (k=netzone_objects.begin(); k!=netzone_objects.end(); ++k)
-        {
-            multimap<string,FWObject*>::iterator l;
-            l=k;
-            ++l;
-            for ( ; l!=netzone_objects.end(); ++l)
-            {
-                if ( l->second->getId() == k->second->getId() )
-                {
-                    if (k->first==l->first)
-                    {
-                        QString err("Object %1 is used more than once in network zone of interface %2");
-                        abort(fw, NULL, NULL,
-                              err.arg(l->second->getName().c_str())
-                              .arg(k->first.c_str()).toStdString());
-                        throw FatalErrorInSingleRuleCompileMode();
-                    } else
-                    {
-                        QString err("Object %1 is used in network zones of "
-                                    "interfaces %2 and %3");
-                        abort(fw, NULL, NULL,
-                              err.arg(l->second->getName().c_str())
-                              .arg(k->first.c_str())
-                              .arg(l->first.c_str()).toStdString());
-                        throw FatalErrorInSingleRuleCompileMode();
-                    }
-                }
-            }
-        }
+        pixSecurityLevelChecks(fw, all_interfaces);
+        pixNetworkZoneChecks(fw, all_interfaces);
 
         /* Now that all checks are done, we can drop copies of cluster
          * interfaces that were added to the firewall by
@@ -463,8 +279,6 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             fw->remove(copies_of_cluster_interfaces.front());
             copies_of_cluster_interfaces.pop_front();
         }
-
-        all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
 
         for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
         {
@@ -521,12 +335,14 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
          std::sort(fw->begin(), fw->end(), sort_by_net_zone() );
         */
 
-        std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
+        std::auto_ptr<Preprocessor> prep(
+            new Preprocessor(objdb , fw, false));
         if (inTestMode()) prep->setTestMode();
         if (inEmbeddedMode()) prep->setEmbeddedMode();
         prep->compile();
 
-        std::auto_ptr<OSConfigurator> oscnf(new OSConfigurator_pix_os(objdb , fw, false));
+        std::auto_ptr<OSConfigurator> oscnf(
+            new OSConfigurator_pix_os(objdb , fw, false));
         if (inTestMode()) oscnf->setTestMode();
         if (inEmbeddedMode()) oscnf->setEmbeddedMode();
 
@@ -536,7 +352,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
 /* create compilers and run the whole thing */
 
-        std::auto_ptr<NATCompiler_pix> n(new NATCompiler_pix(objdb, fw, false, oscnf.get()));
+        std::auto_ptr<NATCompiler_pix> n(
+            new NATCompiler_pix(objdb, fw, false, oscnf.get()));
 
         RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
         if (nat)
@@ -583,7 +400,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 info(" Nothing to compile in Policy");
         }
 
-        std::auto_ptr<RoutingCompiler_pix> r(new RoutingCompiler_pix(objdb, fw, false, oscnf.get()));
+        std::auto_ptr<RoutingCompiler_pix> r(
+            new RoutingCompiler_pix(objdb, fw, false, oscnf.get()));
 
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
         if (routing)
@@ -671,6 +489,243 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
     }
 
     return "";
+}
+
+
+void CompilerDriver_pix::pixSecurityLevelChecks(Firewall *fw,
+                                                list<FWObject*> &all_interfaces)
+{
+    for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+    {
+        Interface *iface = dynamic_cast<Interface*>(*i);
+        assert(iface);
+
+        if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
+
+        if ((iface->getOptionsObject()->getStr("type") == "" ||
+             iface->getOptionsObject()->getStr("type") == "ethernet") &&
+            iface->getByType(Interface::TYPENAME).size() > 0)
+        {
+            // Parent vlan interface (i.e. trunk)
+            if (!iface->isUnprotected())
+            {
+                QString err(
+                    "Interface %1 has vlan subinterfaces, it can not "
+                    "be used for ACL. Marking this interface \"unprotected\" "
+                    "to exclude it."
+                );
+                warning(fw, NULL, NULL,
+                        err.arg(iface->getName().c_str())
+                        .toStdString());
+                iface->setUnprotected(true);
+            }
+        }
+
+        // Tests for label, security level and network zone make sense
+        // only for interfaces that can be used in ACLs or to bind
+        // ACLs to.  Unnumbered interfaces can't, so we do not need to
+        // run these checks.  One example of unnumbered interface is
+        // parent interface for vlan subinterfaces.
+        if (iface->isUnnumbered()) continue;
+        if (iface->isUnprotected()) continue;
+
+/*
+ * there shouldn't be two interfaces with the same security level and
+ * same label
+ * 
+ */
+        for (std::list<FWObject*>::iterator j=all_interfaces.begin(); j!=all_interfaces.end(); ++j)
+        {
+            Interface *iface2 = dynamic_cast<Interface*>(*j);
+            assert(iface2);
+            if (iface2->isUnnumbered()) continue;
+            if (iface2->isUnprotected()) continue;
+            if (iface->getId()==iface2->getId()) continue;
+            if (iface->getOptionsObject()->getBool("cluster_interface") ||
+                iface2->getOptionsObject()->getBool("cluster_interface"))
+                continue;
+
+            if (iface->getSecurityLevel()==iface2->getSecurityLevel())
+            {
+                QString err(
+                    "Security level of each interface should be unique, "
+                    "however interfaces %1 (%2) and %3 (%4)"
+                    " have the same security level."
+                );
+                abort(fw, NULL, NULL,
+                      err.arg(iface->getName().c_str())
+                      .arg(iface->getLabel().c_str())
+                      .arg(iface2->getName().c_str())
+                      .arg(iface2->getLabel().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
+            }
+
+            if (iface->getLabel()==iface2->getLabel())
+            {
+                QString err(
+                    "Label of each interface should be unique, "
+                    "however interfaces %1 (%2) and %3 (%4)"
+                    " have the same."
+                );
+                abort(fw, NULL, NULL,
+                      err.arg(iface->getName().c_str())
+                      .arg(iface->getLabel().c_str())
+                      .arg(iface2->getName().c_str())
+                      .arg(iface2->getLabel().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
+            }
+        }
+
+        // We only do limited checks for dedicated failover
+        // interfaces because they are not used in ACLs or
+        // anywhere else in configuration, except in "failover"
+        // commands.
+        if (iface->isDedicatedFailover()) continue;
+
+    }
+}
+
+
+void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
+                                              list<FWObject*> &all_interfaces)
+{
+    multimap<string, FWObject*> netzone_objects;
+    Helper helper(NULL);
+
+    for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
+    {
+        Interface *iface = dynamic_cast<Interface*>(*i);
+        assert(iface);
+
+        if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
+        if (iface->isDedicatedFailover()) continue;
+
+
+        /*
+         * in PIX, we need network zones to be defined for all
+         * interfaces
+         */
+        string netzone_id = iface->getStr("network_zone");
+        if (netzone_id=="")
+        {
+            QString err("Network zone definition is missing for interface %1 (%2)");
+            abort(fw, NULL, NULL,
+                  err.arg(iface->getName().c_str())
+                  .arg(iface->getLabel().c_str()).toStdString());
+            throw FatalErrorInSingleRuleCompileMode();
+        }
+
+        FWObject *netzone = objdb->findInIndex(
+            FWObjectDatabase::getIntId(netzone_id));
+        if (netzone==NULL) 
+        {
+            QString err("Network zone points at nonexisting object for interface %1 (%2)");
+            abort(fw, NULL, NULL,
+                  err.arg(iface->getName().c_str())
+                  .arg(iface->getLabel().c_str()).toStdString());
+            throw FatalErrorInSingleRuleCompileMode();
+        }
+/*
+ * netzone may be a group, in which case we need to expand it
+ * (recursively). 
+ * 
+ * 1. We create new temporary object (type Group).
+ *
+ * 2. put it in the database somewhere
+ *
+ * 3. add all objects that belong to the network zone to this
+ * group. We add objects directly, not as a reference.
+ *
+ * 4. finally replace reference to the old network zone object in the
+ * interface with reference to this new group.
+ *
+ * 5. we store ID of the original network zone object 
+ *    using iface->setStr("orig_netzone_id")
+ *
+ * This ensures netzones do not contain other groups and do not
+ * require any recursive expanding anymore. Since objects were added
+ * to netzones directly, we do not need to bother with dereferencing,
+ * too.
+ */
+        list<FWObject*> ol;
+        helper.expand_group_recursive(netzone, ol);
+
+        FWObject *nz = objdb->createObjectGroup();
+        assert(nz!=NULL);
+        nz->setName("netzone_" + iface->getLabel());
+        objdb->add(nz);
+
+        for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j)
+        {
+            Address *addr = Address::cast(*j);
+            if (addr == NULL || addr->getAddressPtr() == NULL)
+            {
+                QString err("Network zone of interface %1 uses object '%2' "
+                            "that is not an address");
+                abort(fw, NULL, NULL,
+                      err.arg(iface->getLabel().c_str())
+                      .arg((*j)->getName().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
+            }
+
+            if (addr->getAddressPtr()->isV6())
+            {
+                QString err("Network zone of interface %1 uses object '%2' "
+                            "that is IPv6 address");
+                abort(fw, NULL, NULL,
+                      err.arg(iface->getLabel().c_str())
+                      .arg((*j)->getName().c_str()).toStdString());
+                throw FatalErrorInSingleRuleCompileMode();
+            }
+
+            netzone_objects.insert(
+                pair<string,FWObject*>(iface->getLabel(),*j));
+            nz->addRef(*j);
+        }
+        iface->setStr("orig_netzone_id", netzone_id );
+        iface->setStr("network_zone",
+                      FWObjectDatabase::getStringId(nz->getId()) );
+    }
+
+
+/*
+ * the same object (network or host) can not belong to network zones
+ * of two different interfaces. Map netzone_objects holds pairs
+ * interface_id/object. We just make sure the same object does not
+ * appear in two pairs with different interfaces.
+ */
+    multimap<string,FWObject*>::iterator k;
+    for (k=netzone_objects.begin(); k!=netzone_objects.end(); ++k)
+    {
+        multimap<string,FWObject*>::iterator l;
+        l=k;
+        ++l;
+        for ( ; l!=netzone_objects.end(); ++l)
+        {
+            if ( l->second->getId() == k->second->getId() )
+            {
+                if (k->first==l->first)
+                {
+                    QString err("Object %1 is used more than once in network zone of interface %2");
+                    abort(fw, NULL, NULL,
+                          err.arg(l->second->getName().c_str())
+                          .arg(k->first.c_str()).toStdString());
+                    throw FatalErrorInSingleRuleCompileMode();
+                } else
+                {
+                    QString err("Object %1 is used in network zones of "
+                                "interfaces %2 and %3");
+                    abort(fw, NULL, NULL,
+                          err.arg(l->second->getName().c_str())
+                          .arg(k->first.c_str())
+                          .arg(l->first.c_str()).toStdString());
+                    throw FatalErrorInSingleRuleCompileMode();
+                }
+            }
+        }
+    }
+
+
 }
 
 /*

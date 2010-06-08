@@ -54,6 +54,10 @@ protected:
         std::string policy_script;
         std::string routing_script;
 
+        void pixSecurityLevelChecks(libfwbuilder::Firewall *fw,
+                                    std::list<libfwbuilder::FWObject*> &all_interfaces);
+        void pixNetworkZoneChecks(libfwbuilder::Firewall *fw,
+                                  std::list<libfwbuilder::FWObject*> &all_interfaces);
         void pixClusterGroupChecks(libfwbuilder::ClusterGroup *clgrp);
         void pixClusterConfigurationChecks(libfwbuilder::Cluster *cluster,
                                            libfwbuilder::Firewall *fw);

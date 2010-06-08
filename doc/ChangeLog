@@ -1,5 +1,9 @@
 2010-06-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* CompilerDriver_pix_run.cpp (CompilerDriver_pix::pixNetworkZoneChecks):
+	fixed #1491 fwb_pix crashes trying to compile simple rule. Compiler
+	should check validity of the object used as network zone of an interface.
+
 	* FWBSettings.cpp (FWBSettings::init): fixed #1501 call qsrand(seed)
 	to seed random generator before generating new UUID
 

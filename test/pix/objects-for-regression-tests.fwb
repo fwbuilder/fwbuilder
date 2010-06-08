@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1269037883" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="16" lastModified="1275958417" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -101,17 +101,29 @@
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="pf"></CustomServiceCommand>
+        <CustomServiceCommand platform="pix"></CustomServiceCommand>
+        <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
         <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="ipf"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="pf"></CustomServiceCommand>
+        <CustomServiceCommand platform="pix"></CustomServiceCommand>
+        <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
+        <CustomServiceCommand platform="unknown"></CustomServiceCommand>
       </CustomService>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
         <ServiceGroup id="sg-DHCP" name="DHCP" comment="" ro="False">
@@ -8667,7 +8679,7 @@ no sysopt nodnsalias outbound
           <Option name="xlate_ss">0</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3F957BF2" host_OS="pix_os" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pix" version="6.1" name="test" comment="" ro="False">
+      <Firewall id="id3F957BF2" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1275958329" platform="pix" version="6.1" name="test_sec_levels_1" comment="testing security levels and labels" ro="False">
         <NAT id="id3F957BF6" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id3F957C35" disabled="False" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -8694,83 +8706,7 @@ no sysopt nodnsalias outbound
           <RuleSetOptions/>
         </NAT>
         <Policy id="id3F957BF5" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id3F957C00" disabled="False" log="True" position="0" action="Deny" direction="Inbound" comment="Anti-spoofing rule">
-            <Src neg="False">
-              <ObjectRef ref="id3CD87A53"/>
-              <ObjectRef ref="net-Internal_net"/>
-              <ObjectRef ref="id3F957BF2"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="id3F957BF9"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions>
-              <Option name="stateless">True</Option>
-            </PolicyRuleOptions>
-          </PolicyRule>
-          <PolicyRule id="id3F957C0D" disabled="False" log="False" position="1" action="Accept" direction="Both" comment="ssh access to firewall">
-            <Src neg="False">
-              <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="id3F957BF2"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="tcp-SSH"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions/>
-          </PolicyRule>
-          <PolicyRule id="id3F957C1B" disabled="False" log="False" position="2" action="Accept" direction="Both" comment="firewall uses DNS server on LAN">
-            <Src neg="False">
-              <ObjectRef ref="id3F957BF2"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="net-Internal_net"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="udp-DNS"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions/>
-          </PolicyRule>
-          <PolicyRule id="id3F957C29" disabled="False" log="False" position="3" action="Accept" direction="Both" comment="'masquerading' rule">
-            <Src neg="False">
-              <ObjectRef ref="net-Internal_net"/>
-            </Src>
-            <Dst neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Dst>
-            <Srv neg="False">
-              <ServiceRef ref="sysid1"/>
-            </Srv>
-            <Itf neg="False">
-              <ObjectRef ref="sysid0"/>
-            </Itf>
-            <When neg="False">
-              <IntervalRef ref="sysid2"/>
-            </When>
-            <PolicyRuleOptions/>
-          </PolicyRule>
-          <PolicyRule id="id3F957C46" disabled="False" log="True" position="4" action="Deny" direction="Both" comment="'catch all' rule">
+          <PolicyRule id="id18638X20598" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -8795,11 +8731,11 @@ no sysopt nodnsalias outbound
         <Routing id="id3F957BF2-routing" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id3F957BF9" dedicated_failover="False" dyn="True" label="" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+        <Interface id="id3F957BF9" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id3F957BFB" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
-          <IPv4 id="id3F957BFD" name="test:ethernet1(ip)" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        <Interface id="id3F957BFB" dedicated_failover="False" dyn="False" label="outside" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+          <IPv4 id="id3F957BFD" name="test_sec_levels_1:ethernet1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
           <InterfaceOptions/>
         </Interface>
         <Management address="0.0.0.0">
@@ -16161,6 +16097,747 @@ no sysopt nodnsalias outbound
           <Option name="xlate_hh">3</Option>
           <Option name="xlate_mm">0</Option>
           <Option name="xlate_ss">0</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id26666X20598" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1275958371" platform="pix" version="6.1" name="test_sec_levels_2" comment="testing security levels and labels" ro="False">
+        <NAT id="id26696X20598" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id26697X20598" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3CD87A53"/>
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id26674X20598"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id26682X20598" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id26683X20598" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id26713X20598" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id26674X20598" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id26677X20598" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+          <IPv4 id="id26680X20598" name="test_sec_levels_2:ethernet1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="version_6.1">
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+          false
+          true
+          true
+
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+    
+          
+            ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup
+          
+        </Option>
+          <Option name="version_6.2">
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+          false
+          true
+          true
+    
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+        
+          
+            ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,ils_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup
+          
+        </Option>
+          <Option name="version_6.3">
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+    
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+        
+          
+            ctiqbe_fixup,dns_fixup,esp_ike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,pptp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup
+          
+        </Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id42990X20598" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1275958390" platform="pix" version="6.1" name="test_net_zone_1" comment="testing security levels and labels" ro="False">
+        <NAT id="id43020X20598" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id43021X20598" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3CD87A53"/>
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id42998X20598"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id43006X20598" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id43007X20598" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id43037X20598" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id42998X20598" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id43001X20598" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="sysid0" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+          <IPv4 id="id43004X20598" name="test_net_zone_1:ethernet1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="version_6.1">
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+          false
+          true
+          true
+
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+    
+          
+            ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup
+          
+        </Option>
+          <Option name="version_6.2">
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+          false
+          true
+          true
+    
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+        
+          
+            ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,ils_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup
+          
+        </Option>
+          <Option name="version_6.3">
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+    
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+        
+          
+            ctiqbe_fixup,dns_fixup,esp_ike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,pptp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup
+          
+        </Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id59331X20598" host_OS="pix_os" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1275958431" platform="pix" version="6.1" name="test_net_zone_2" comment="testing security levels and labels" ro="False">
+        <NAT id="id59361X20598" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <NATRule id="id59362X20598" disabled="False" position="0" action="Translate" comment="">
+            <OSrc neg="False">
+              <ObjectRef ref="id3CD87A53"/>
+              <ObjectRef ref="net-Internal_net"/>
+            </OSrc>
+            <ODst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </ODst>
+            <OSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </OSrv>
+            <TSrc neg="False">
+              <ObjectRef ref="id59339X20598"/>
+            </TSrc>
+            <TDst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </TDst>
+            <TSrv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </TSrv>
+            <NATRuleOptions/>
+          </NATRule>
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id59347X20598" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id59348X20598" disabled="False" log="True" position="0" action="Deny" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id59378X20598" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id59339X20598" dedicated_failover="False" dyn="True" label="outside" mgmt="False" network_zone="sysid0" security_level="0" unnum="False" unprotected="False" name="ethernet0" comment="" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id59342X20598" dedicated_failover="False" dyn="False" label="inside" mgmt="False" network_zone="id2986X75851" security_level="100" unnum="False" unprotected="False" name="ethernet1" comment="" ro="False">
+          <IPv4 id="id59345X20598" name="test_net_zone_2:ethernet1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="public" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="version_6.1">
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+          false
+          true
+          true
+
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+    
+          
+            ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup
+          
+        </Option>
+          <Option name="version_6.2">
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+          false
+          true
+          true
+    
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+        
+          
+            ftp_fixup,http_fixup,h323_h225_fixup,h323_ras_fixup,ils_fixup,rsh_fixup,rtsp_fixup,sip_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup
+          
+        </Option>
+          <Option name="version_6.3">
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          true
+          false
+          false
+    
+          
+              3
+              0
+              0
+      
+              1
+              0
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+      
+              0
+              5
+              0
+      
+              0
+              30
+              0
+      
+              0
+              2
+              0
+      
+              0
+              10
+              0
+
+              2
+              0
+              0
+              True
+              False
+      
+            5
+            5
+          
+        
+          
+            ctiqbe_fixup,dns_fixup,esp_ike_fixup,ftp_fixup,h323_h225_fixup,h323_ras_fixup,http_fixup,icmp_error_fixup,ils_fixup,mgcp_fixup,pptp_fixup,rsh_fixup,rtsp_fixup,sip_fixup,sip_udp_fixup,skinny_fixup,smtp_fixup,sqlnet_fixup,tftp_fixup
+          
+        </Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
