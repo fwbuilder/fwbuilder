@@ -716,10 +716,12 @@ FWObject* Importer::getUDPService(int srs, int sre, int drs, int dre)
          << srs << "-" << sre << ":" << drs << "-" << dre;
 
     std::ostringstream nstr;
-    nstr << "udp "
-         << srs << "-" << sre << ":" << drs << "-" << dre;
+    nstr << "udp " ;
+    if (srs!=0 || sre!=0)  nstr << srs << "-" << sre << ":";
+    if (drs!=0 || dre!=0)  nstr << drs << "-" << dre;
 
-    UDPService* s = UDPService::cast(createObject(UDPService::TYPENAME, nstr.str()));
+    UDPService* s = UDPService::cast(
+        createObject(UDPService::TYPENAME, nstr.str()));
     s->setSrcRangeStart(srs);
     s->setSrcRangeEnd(sre);
     s->setDstRangeStart(drs);

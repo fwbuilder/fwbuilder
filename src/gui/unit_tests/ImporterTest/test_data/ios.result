@@ -31,7 +31,7 @@ Ruleset: fe0_0_acl_out
 Ruleset: outside
 Rule comment: / / path1/path2/path3 
 Rule comment: access list comment 
-UDP Service object: udp 0-0:500-500
+UDP Service object: udp 500-500
 TCP Service object: tcp 80-80:
 TCP Service object: tcp 80-80: est
 TCP Service object: tcp 1023-65535:
@@ -40,8 +40,8 @@ TCP Service object: tcp 80-80
 TCP Service object: tcp 22-80
 TCP Service object: tcp 2967-2967
 TCP Service object: tcp 2967-2967:
-UDP Service object: udp 0-0:2967-2967
-UDP Service object: udp 2967-2967:0-0
+UDP Service object: udp 2967-2967
+UDP Service object: udp 2967-2967:
 IP Service object: ip-51
 IP Service object: ip-50
 ICMP Service object: icmp -1/-1
@@ -49,9 +49,9 @@ ICMP Service object: icmp 8/0
 ICMP Service object: icmp 3/-1
 ICMP Service object: icmp 3/1
 ICMP Service object: icmp 3/14
-UDP Service object: udp 0-0:68-68
-UDP Service object: udp 0-0:67-67
-UDP Service object: udp 53-53:0-0
+UDP Service object: udp 68-68
+UDP Service object: udp 67-67
+UDP Service object: udp 53-53:
 Network object: net-10.10.10.0/255.255.255.0
 Ruleset: tmp_acl
 Ruleset: acl_133

@@ -1,5 +1,10 @@
 2010-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* Importer.cpp (Importer::getUDPService): fixed sourceforge bug
+	3012953 name of UDP and TCP objects created during import should
+	follow the same pattern and not include "0-0" for the source ports
+	if they are equal to zero.
+
 	* IPTImporter.cpp (IPTImporter::IPTImporter): fixed #1511, SF bug 3012953:
 	iptables import parse error icmp_type any
 

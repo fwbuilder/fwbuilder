@@ -7,12 +7,12 @@ TCP Service object: tcp 22-22:
 Custom Service object: cust-0-tcp: iptables: -m state --state RELATED,ESTABLISHED
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Interface: lo
-UDP Service object: udp 0-0:1604-1604
+UDP Service object: udp 1604-1604
 Interface: eth1
 Interface: eth0
 Creating branch ruleset 'Policy_eth1' to match inbound and outbound interfaces -i eth0 -o eth1
 TCP Service object: tcp 0-8000
-UDP Service object: udp 0-0:0-8000
+UDP Service object: udp 0-8000
 Network object: net-192.168.0.0/16
 Network object: net-128.143.0.0/16
 ICMP Service object: icmp -1/-1
@@ -29,8 +29,8 @@ Address object: h-192.0.34.166
 TCP Service object: tcp 137-139
 TCP Service object: tcp 0-1023
 TCP Service object: tcp 6000-65535
-UDP Service object: udp 0-0:137-137
-UDP Service object: udp 0-0:138-138
+UDP Service object: udp 137-137
+UDP Service object: udp 138-138
 TCP Service object: tcp 139-139
 TCP Service object: tcp 445-445
 TCP Service object: tcp 80-80
@@ -50,7 +50,7 @@ Parser error: Port spec 'foo' unknown. Error basic_ios::clear
 Parser error: Port spec 'foo' unknown. Error basic_ios::clear
 TCP Service object: tcp 
 TCP Service object: tcp 427-427
-UDP Service object: udp 0-0:427-427
+UDP Service object: udp 427-427
 TCP Service object: tcp 548-548
 TCP Service object: tcp 201-201
 TCP Service object: tcp 202-202
