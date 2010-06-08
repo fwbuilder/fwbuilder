@@ -755,7 +755,8 @@ void IPTImporter::pushPolicyRule()
     rule->getSrv()->setNeg(srv_neg);
     rule->getItf()->setNeg(intf_neg);
 
-    if (current_state == "RELATED,ESTABLISHED")
+    if (current_state == "RELATED,ESTABLISHED" ||
+        current_state == "ESTABLISHED,RELATED")
     {
         if (rule->getSrc()->isAny() &&
             rule->getDst()->isAny() &&

@@ -8,6 +8,9 @@
 # this should be recognized as built-in rule
 -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT 
 
+# and this, too
+-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
 # this should be recognized as built-in rule
 -A FORWARD -m state --state INVALID -j drop_invalid 
 

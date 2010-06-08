@@ -1,5 +1,11 @@
 2010-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed #1512 SF
+	bug 3012953: iptables importer sometimes does not recognize rule
+	with " ESTABLISHED,RELATED ". Parser properly processed iptables
+	rules with state "RELATED,ESTABLISHED" but not when states were
+	in the opposite order.
+
 	* Importer.cpp (Importer::getUDPService): fixed sourceforge bug
 	3012953 name of UDP and TCP objects created during import should
 	follow the same pattern and not include "0-0" for the source ports

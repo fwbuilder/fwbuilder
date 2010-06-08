@@ -1,5 +1,6 @@
 Ruleset: user_chain
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
+Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Using automatic rule controlled by option 'Drop packet that do not match any known connection' to match state INVALID
 Using automatic rule controlled by option 'Accept established,related states' to match states RELATED,ESTABLISHED
 Address object: h-21.21.21.21
