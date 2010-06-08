@@ -503,7 +503,7 @@ void SNMPQuery::walkInterfaceIndexTable(Logger *logger,
     w.clear();
 }
 
-void SNMPQuery::getAddressAndNetmask(Logger *logger,
+void SNMPQuery::getAddressAndNetmask(Logger * /* UNUSED logger */,
                                      SNMPConnection *c,
                                      std::string adentry,
                                      InetAddr **addr,

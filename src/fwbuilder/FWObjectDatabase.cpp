@@ -378,7 +378,8 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent) throw(FWException)
 
     int rootid = getId();
 
-    xmlAttrPtr pr = xmlNewProp(parent, 
+    //NOTUSED xmlAttrPtr pr =
+    xmlNewProp(parent,
 			       TOXMLCAST("id") , 
 			       STRTOXMLCAST(id_dict[rootid]));
 

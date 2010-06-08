@@ -90,7 +90,8 @@ xmlNodePtr FWReference::toXML(xmlNodePtr parent) throw(FWException)
     if (int_ref > -1 && str_ref.empty())
         str_ref = FWObjectDatabase::getStringId(int_ref);
 
-    xmlAttrPtr pr = xmlNewProp(me, 
+    //NOTUSED xmlAttrPtr pr =
+    xmlNewProp(me,
                                TOXMLCAST("ref"),
                                STRTOXMLCAST(str_ref));
     //xmlAddRef(NULL, parent->doc, STRTOXMLCAST(str_ref), pr);
@@ -107,7 +108,7 @@ FWObject& FWReference::shallowDuplicate(const FWObject *_other,
     return *this;
 }
 
-bool FWReference::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool FWReference::cmp(const FWObject *obj, bool /* UNUSED recursive */) throw(FWException)
 {
     const FWReference *rx = FWReference::constcast(obj);
     if (rx == NULL) return false;

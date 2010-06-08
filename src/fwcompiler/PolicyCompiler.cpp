@@ -1078,8 +1078,8 @@ bool  PolicyCompiler::ConvertToAtomic::processNext()
 }
 
 
-bool PolicyCompiler::checkForShadowingPlatformSpecific(PolicyRule *r1,
-                                                       PolicyRule *r2)
+bool PolicyCompiler::checkForShadowingPlatformSpecific(PolicyRule * /*UNUSED r1 */,
+                                                       PolicyRule * /*UNUSED r2 */)
 {
     return true;
 }
