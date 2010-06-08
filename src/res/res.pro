@@ -33,9 +33,6 @@ res_configlets.files = configlets/*
 
 
 INSTALLS -= target
-INSTALLS += res 
-INSTALLS += res_os
-INSTALLS += res_platform
 INSTALLS += res_help_en_US
 INSTALLS += res_configlets
 

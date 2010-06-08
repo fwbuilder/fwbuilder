@@ -2,7 +2,7 @@
 
 	* applied patch from slif@bellsouth.net to fix compiler
 	warnings. Patch applied partially since not all fixes were
-	appropriate.
+	appropriate. fixes #1510
 	
 	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed #1512 SF
 	bug 3012953: iptables importer sometimes does not recognize rule
