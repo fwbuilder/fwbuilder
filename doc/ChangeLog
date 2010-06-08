@@ -1,5 +1,9 @@
 2010-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* applied patch from slif@bellsouth.net to fix compiler
+	warnings. Patch applied partially since not all fixes were
+	appropriate.
+	
 	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed #1512 SF
 	bug 3012953: iptables importer sometimes does not recognize rule
 	with " ESTABLISHED,RELATED ". Parser properly processed iptables

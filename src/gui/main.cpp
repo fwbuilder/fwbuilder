@@ -255,7 +255,7 @@ int main( int argc, char *argv[] )
 #endif
 
     // setup single shot timer to call startupLoad()
-    QTimer::singleShot(0.5, mw, SLOT(startupLoad()));
+    QTimer::singleShot(500, mw, SLOT(startupLoad()));
 
     app->exec();
 

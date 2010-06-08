@@ -249,7 +249,7 @@ void FirewallSelectorWidget::clear()
 void FirewallSelectorWidget::resizeEvent(QResizeEvent*)
 {
     int total = this->viewport()->width();
-    if (total < 100) total = this->width() * 0.95;
+    if (total < 100) total = int(this->width() * 0.95);
     int controls;
     if ( total/3 > 100 ) controls = 100; else controls = total/3;
     this->setColumnWidth(0, total - controls*2);

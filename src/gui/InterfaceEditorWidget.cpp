@@ -120,9 +120,9 @@ void InterfaceEditorWidget::setData(InterfaceData *data)
     {
         foreach( InetAddrMask* addr, data->addr_mask )
         {
-            int row = addNewAddress(addr->getAddressPtr()->toString().c_str(),
-                                    addr->getNetmaskPtr()->toString().c_str(),
-                                    !addr->getAddressPtr()->isV6());
+            addNewAddress(addr->getAddressPtr()->toString().c_str(),
+                          addr->getNetmaskPtr()->toString().c_str(),
+                          !addr->getAddressPtr()->isV6());
         }
     }
 }
@@ -406,7 +406,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
 void InterfaceEditorWidget::resizeEvent ( QResizeEvent * )
 {
     int total = this->m_ui->addresses->viewport()->width();
-    if (total < 100) total = this->m_ui->addresses->width() * 0.95;
+    if (total < 100) total = int(this->m_ui->addresses->width() * 0.95);
     int controls;
     if ( total/4 > 130 ) controls = 130; else controls = total/4;
     this->m_ui->addresses->setColumnWidth(0, (total - controls*2)/2);

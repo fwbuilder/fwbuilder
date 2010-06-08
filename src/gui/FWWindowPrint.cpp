@@ -103,13 +103,13 @@ void FWWindow::filePrint()
     if (!st->getStr("PrintSetup/tableResolution").isEmpty())
     {
         tableResolution = st->getInt("PrintSetup/tableResolution");
-        // for backwards compatibility, convert resolutino from an index
+        // for backwards compatibility, convert resolution from an index
         // in a table to float 0..1.0
         // Previously values were from the following list:
         // 50%, 75%, 100%, 150%, 200%, default 100%
-        float old_res[] = {50, 75, 100, 150, 200 };
+        int old_res[] = {50, 75, 100, 150, 200 };
         if (tableResolution <= 4  )
-            tableResolution = old_res[int(tableResolution)];
+            tableResolution = old_res[tableResolution];
     }
 
     QDialog dlg;
