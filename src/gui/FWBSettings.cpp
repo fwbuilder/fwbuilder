@@ -47,6 +47,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <time.h>
 
 #ifdef _WIN32
 #  include <direct.h>
@@ -153,6 +154,7 @@ void FWBSettings::init()
             uuid_settings.setValue(appGUID, value(appGUID).toString());
         } else
         {
+            qsrand(time(NULL));
             uuid_settings.setValue(appGUID, QUuid::createUuid().toString() );
         }
     }

@@ -1,5 +1,8 @@
 2010-06-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
+	* FWBSettings.cpp (FWBSettings::init): fixed #1501 call qsrand(seed)
+	to seed random generator before generating new UUID
+
 	* TransferDevice.h (fwtransfer): fixed #1490 compile problem with
 	Qt 4.7
 
