@@ -1,3 +1,8 @@
+2010-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::IPTImporter): fixed #1511, SF bug 3012953:
+	iptables import parse error icmp_type any
+
 2010-06-07  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* CompilerDriver_pix_run.cpp (CompilerDriver_pix::pixNetworkZoneChecks):

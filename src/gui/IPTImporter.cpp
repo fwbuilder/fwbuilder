@@ -78,6 +78,8 @@ IPTImporter::IPTImporter(FWObject *lib,
 
     clear();
 
+    icmp_specs["any"] = std::pair<int,int>(-1, -1);
+
     icmp_specs["echo-reply"] = std::pair<int,int>(0, 0);
 
     // all "unreachables"

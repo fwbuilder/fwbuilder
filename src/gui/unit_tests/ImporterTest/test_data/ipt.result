@@ -63,6 +63,8 @@ TCP Service object: tcp 202-202:
 TCP Service object: tcp 204-204:
 TCP Service object: tcp 206-206:
 TCP Service object: tcp 2222-2222:
+ICMP Service object: icmp 3/-1
+ICMP Service object: icmp 3/6
 Custom Service object: cust-1-: iptables: -m length --length 400:65535
 Custom Service object: cust-2-: iptables: -m recent --name badguy --rcheck --seconds 60 
 Custom Service object: cust-3-: iptables: -m recent --name badguy --set 

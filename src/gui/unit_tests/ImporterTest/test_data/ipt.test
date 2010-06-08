@@ -132,6 +132,11 @@
 -A user_chain -m multiport -s 128.143.0.0/16 -p tcp --ports 548,201,202,204,206 -j ACCEPT
 -A user_chain -m multiport -s 128.143.0.0/16 -p tcp --ports 2222 -j ACCEPT
 
+# icmp
+-A user_chain -p icmp -s 128.143.0.0/16 --icmp-type any  -j ACCEPT
+-A user_chain -p icmp -s 128.143.0.0/16 --icmp-type 3  -j ACCEPT
+-A user_chain -p icmp -s 128.143.0.0/16 --icmp-type network-unknown  -j ACCEPT
+
 
 # module length
 -A user_chain -m length --length 400:65535 -j DROP
