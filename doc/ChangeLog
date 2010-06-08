@@ -6,6 +6,9 @@
 	rules with state "RELATED,ESTABLISHED" but not when states were
 	in the opposite order.
 
+	* IPTImporter.cpp (IPTImporter::pushPolicyRule): policy importer
+	for iptables can now parse numerical log levels.
+
 	* Importer.cpp (Importer::getUDPService): fixed sourceforge bug
 	3012953 name of UDP and TCP objects created during import should
 	follow the same pattern and not include "0-0" for the source ports

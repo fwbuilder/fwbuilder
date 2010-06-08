@@ -445,7 +445,7 @@ target_options :
                 *dbg << " ULOG PREFIX=" << LT(0)->getText();
             }
         |
-            LOG_LEVEL WORD
+            LOG_LEVEL (INT_CONST | WORD)
             {
                 importer->action_params["log_level"] = LT(0)->getText();
                 *dbg << " LOG LEVEL=" << LT(0)->getText();

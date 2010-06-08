@@ -642,7 +642,38 @@ void IPTImporter::pushPolicyRule()
         ropt->setStr("log_tcp_seq", action_params["log_tcp_seq"]);
         ropt->setStr("log_tcp_options", action_params["log_tcp_options"]);
         ropt->setStr("log_ip_options", action_params["log_ip_options"]);
-        ropt->setStr("log_level", action_params["log_level"]);
+
+        string slevel = action_params["log_level"];
+        int llevel;
+        std::istringstream str1(slevel);
+        str1.exceptions(std::ios::failbit);
+        try
+        {
+            str1 >> llevel;
+            // log level defined as a number
+            map<int,string> levels;
+            levels[0] = "";
+            levels[1] = "alert";
+            levels[2] = "crit";
+            levels[3] = "error";
+            levels[4] = "warning";
+            levels[5] = "notice";
+            levels[6] = "info";
+            levels[7] = "debug";
+            if (llevel <= 7)
+                ropt->setStr("log_level", levels[llevel]);
+            else
+            {
+                markCurrentRuleBad(
+                    std::string("Unrecognized log level '") + slevel);
+            }
+
+        } catch (const std::exception &ex) {
+            // not an integer
+            ropt->setStr("log_level", slevel);
+        }
+
+        //ropt->setStr("log_level", action_params["log_level"]);
         if (!limit_val.empty())
         {
             ropt->setStr("limit_value", limit_val);
