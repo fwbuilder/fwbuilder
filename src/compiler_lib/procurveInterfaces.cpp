@@ -73,7 +73,7 @@ bool procurveInterfaces::parseVlan(
  * in common and can not be verified.
  */
 bool procurveInterfaces::isValidVlanInterfaceName(const QString &subint_name,
-                                                  const QString &parent_name,
+                                                  const QString & /*UNUSED parent_name */,
                                                   QString &err)
 {
     if (!looksLikeVlanInterface(subint_name))
@@ -100,23 +100,23 @@ bool procurveInterfaces::isValidVlanInterfaceName(const QString &subint_name,
 
 /*
  * many switch ports can be part of the same vlan. It would be ideal
- * if I could make interface objects that represent siwtch ports a
+ * if I could make interface objects that represent switch ports as
  * subinterfaces of a vlan interface. Unfortunately this is reverse of
  * our normal model, where vlans are subinterfaces of ethernet
  * interface objects. Until I figure this out, there will be no
  * restrictions on ProCurve interface objects.
  */
-bool procurveInterfaces::validateInterface(FWObject *target,
-                                           FWObject *intf,
-                                           bool check_types,
-                                           QString &err)
+bool procurveInterfaces::validateInterface(FWObject * /*UNUSED target */,
+                                           FWObject * /*UNUSED intf */,
+                                           bool  /*UNUSED check_types */,
+                                           QString & /*UNUSED err */)
 {
     return true;
 }
 
-bool procurveInterfaces::validateInterface(FWObject *target,
-                                           const QString &interface_name,
-                                           QString &err)
+bool procurveInterfaces::validateInterface(FWObject * /*UNUSED target */,
+                                           const QString & /*UNUSED interface_name */,
+                                           QString & /*UNUSED err */)
 {
     return true;
 }

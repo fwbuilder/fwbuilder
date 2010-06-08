@@ -38,7 +38,7 @@ AutocompletedComboBox::AutocompletedComboBox(QWidget* parent)
     connect(&timer, SIGNAL(timeout ()), this, SLOT(addWord()));
 }
 
-void AutocompletedComboBox::filterUpdate(QString text)
+void AutocompletedComboBox::filterUpdate(QString /*UNUSED text */)
 {
     timer.stop();
     timer.start(1000);

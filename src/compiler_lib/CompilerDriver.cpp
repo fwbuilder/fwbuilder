@@ -977,7 +977,7 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
  *   addresses of the firewalls (perhaps this restriction can be
  *   lifted? Was originally implemented by Secunet folks like this)
  */
-void CompilerDriver::copyFailoverInterface(Cluster *cluster,
+void CompilerDriver::copyFailoverInterface(Cluster * /*UNUSED cluster */,
                                            Firewall *fw,
                                            FailoverClusterGroup *cluster_group,
                                            Interface *iface)
