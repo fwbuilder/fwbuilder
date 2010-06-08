@@ -26,8 +26,9 @@ for directory in directories:
     profiles = glob(directory+"/*.pro")
     if not profiles:
         print directory
-        print "No pro file found in specified directory. Exiting."
-        sys.exit(1)
+        print "No pro file found in specified directory. Skipping."
+        continue
+
     profile = open(profiles[0]).read()
     objdirs = OBJRE.findall(profile)
     objdir = directory
@@ -61,5 +62,11 @@ for directory in directories:
         if os.path.exists(moc):
             print "deleting", moc
             os.remove(moc)
+
+    files = glob(directory+"/*.a")
+    for file in files:
+        print "deleting", file
+        os.remove(file)
+
     print directory, ": done."
 print "all done."
