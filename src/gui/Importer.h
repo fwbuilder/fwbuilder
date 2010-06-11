@@ -57,6 +57,7 @@ public:
     std::string name;
     // interface names and directions
     std::map<std::string,std::string> intf_dir;
+    libfwbuilder::PolicyRule::Action default_action;
 };
 
 class ImporterException : public std::exception
@@ -109,7 +110,7 @@ protected:
     std::map<const std::string, int> custom_service_codes;
 
     UnidirectionalRuleSet* current_ruleset;
-
+    
     libfwbuilder::Rule* current_rule;
 
     libfwbuilder::FWObject* createObject(const std::string &objType,
@@ -270,6 +271,11 @@ public:
      * in the set.
      */
     virtual void newUnidirRuleSet(const std::string &name);
+
+    /**
+     * Sets default action for the current rule set.
+     */
+    virtual void setDefaultAction(const std::string &iptables_action_name);
 
     /**
      * add interface and direction setting to a ruleset. Note that the

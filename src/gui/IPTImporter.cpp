@@ -1166,6 +1166,46 @@ Firewall* IPTImporter::finalize()
 
         fwopt->setBool("firewall_is_part_of_any_and_networks", false);
 
+        // scan all UnidirectionalRuleSet objects and take care of
+        // their default action
+        std::map<const string, UnidirectionalRuleSet*>::iterator it;
+        for (it=all_rulesets.begin(); it!=all_rulesets.end(); ++it)
+        {
+            UnidirectionalRuleSet* rs = it->second;
+            if (Policy::isA(rs->ruleset) && rs->default_action == PolicyRule::Accept)
+            {
+
+                FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+                PolicyRule *rule = PolicyRule::cast(
+                    dbroot->create(PolicyRule::TYPENAME));
+
+                // check if all child objects were populated properly
+                FWOptions  *ropt = current_rule->getOptionsObject();
+                assert(ropt!=NULL);
+                ropt->setBool("stateless",true);
+
+                rule->setAction(PolicyRule::Accept);
+
+                if (rs->name == "INPUT")
+                {
+                    RuleElementSrc* src = rule->getSrc();
+                    assert(src!=NULL);
+                    src->addRef(fw);
+                    rule->setDirection(PolicyRule::Inbound);
+                }
+                if (rs->name == "OUTPUT")
+                {
+                    RuleElementDst* dst = rule->getDst();
+                    assert(dst!=NULL);
+                    dst->addRef(fw);
+                    rule->setDirection(PolicyRule::Outbound);
+                }
+
+                rs->ruleset->add(rule);
+
+            }
+        }
+
         list<FWObject*> l2 = fw->getByType(Policy::TYPENAME);
         for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
         {

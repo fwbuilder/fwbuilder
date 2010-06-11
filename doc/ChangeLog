@@ -1,9 +1,14 @@
+2010-06-11  vadim  <vadim@vk.crocodile.org>
+
+	* IPTImporter.cpp (IPTImporter::finalize): see #1513 iptables
+	importer should check default policy in standard chains.
+
 2010-06-08  Vadim Kurland  <vadim@vk.crocodile.org>
 
 	* applied patch from slif@bellsouth.net to fix compiler
 	warnings. Patch applied partially since not all fixes were
 	appropriate. fixes #1510
-	
+
 	* IPTImporter.cpp (IPTImporter::pushPolicyRule): fixed #1512 SF
 	bug 3012953: iptables importer sometimes does not recognize rule
 	with " ESTABLISHED,RELATED ". Parser properly processed iptables

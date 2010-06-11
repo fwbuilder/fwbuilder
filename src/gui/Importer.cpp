@@ -372,6 +372,23 @@ void Importer::newUnidirRuleSet(const std::string &ruleset_name)
     *logger << "Ruleset: " << ruleset_name << "\n";
 }
 
+/*
+ * Grammar must ensure the call to setDefaultAction() happens
+ * after the call to newUnidirRuleSet()
+ * 
+ */
+void Importer::setDefaultAction(const std::string &iptables_action_name)
+{
+    string default_action_str = "Deny";
+    if (iptables_action_name == "ACCEPT")
+    {
+        current_ruleset->default_action = PolicyRule::Accept;
+        default_action_str = "Accept";
+    } else current_ruleset->default_action = PolicyRule::Deny;
+
+    *logger << "Default action: " << default_action_str << "\n";
+}
+
 
 void Importer::newPolicyRule()
 {

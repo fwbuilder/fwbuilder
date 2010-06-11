@@ -162,6 +162,10 @@ create_chain : COLON chain_def
             *dbg << "NEW CHAIN " << LT(0)->getText() << std::endl;
         }
         (WORD | MINUS)
+        {
+            importer->setDefaultAction(LT(0)->getText());
+            *dbg << "DEFAULT ACTION " << LT(0)->getText() << std::endl;
+        }
         (OPENING_SQUARE INT_CONST COLON INT_CONST CLOSING_SQUARE)?
     ;
 
