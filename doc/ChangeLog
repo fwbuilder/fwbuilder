@@ -1,4 +1,8 @@
-2010-06-11  vadim  <vadim@vk.crocodile.org>
+2010-06-11  Vadim Kurland  <vadim@vk.crocodile.org>
+
+	* DiscoveryDruid.cpp (DiscoveryDruid::browseForImport): fixed SF
+	bug #3013532 "file chooser dialog for import policy does not show
+	all files".
 
 	* IPTImporter.cpp (IPTImporter::finalize): fixed #1513 iptables
 	importer should check default policy in standard chains. Importer

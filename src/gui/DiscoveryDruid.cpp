@@ -618,7 +618,7 @@ void DiscoveryDruid::browseForImport()
                     this,
                     "Choose a file",
                     dir,
-                    "All files (*.*)");
+                    "All files (*)");
     
     if (!s.isEmpty())
     {
